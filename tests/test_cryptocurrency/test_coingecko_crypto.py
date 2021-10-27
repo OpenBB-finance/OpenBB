@@ -34,7 +34,7 @@ def get_bitcoin(mock_load):
     with open("tests/data/btc_usd_test_data.json", encoding="utf8") as f:
         sample_return = json.load(f)
     mock_load.return_value = sample_return
-    coin, _ = load(coin="bitcoin", source="cg")
+    coin, _, _ = load(coin="bitcoin", source="cg")
     return coin
 
 

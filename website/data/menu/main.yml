@@ -315,6 +315,8 @@ main:
             ref: "/stocks/comparison_analysis/historical"
           - name: hcorr
             ref: "/stocks/comparison_analysis/hcorr"
+          - name: volume
+            ref: "/stocks/comparison_analysis/volume"
           - name: income
             ref: "/stocks/comparison_analysis/income"
           - name: balance
@@ -616,6 +618,8 @@ main:
         ref: "/etf/decliners"
       - name: active
         ref: "/etf/active"
+      - name: pir
+        ref: "/etf/pir"
   - name: portfolio
     ref: "/portfolio"
     sub:
@@ -787,6 +791,8 @@ main:
       - name: due diligence
         ref: "/cryptocurrency/due_diligence"
         sub:
+          - name: oi
+            ref: "/cryptocurrency/due_diligence/oi"
           - name: info
             ref: "/cryptocurrency/due_diligence/info"
           - name: market

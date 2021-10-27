@@ -10,6 +10,7 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.due_diligence import (
+    bybt_view,
     pycoingecko_view,
     coinpaprika_view,
     binance_view,
@@ -30,14 +31,13 @@ import gamestonk_terminal.config_terminal as cfg
 
 class DueDiligenceController:
 
-    CHOICES = [
-        "?",
-        "cls",
-        "help",
-        "q",
-        "quit",
-        "chart",
+    CHOICES = ["?", "cls", "help", "q", "quit", "chart"]
+
+    CHOICES_COMMANDS = [
+        "oi",
     ]
+
+    CHOICES += CHOICES_COMMANDS
 
     SPECIFIC_CHOICES = {
         "cp": [
@@ -72,7 +72,7 @@ class DueDiligenceController:
         "bin": binance_view,
     }
 
-    def __init__(self, coin=None, source=None):
+    def __init__(self, coin=None, source=None, symbol=None):
         """CONSTRUCTOR"""
 
         self._dd_parser = argparse.ArgumentParser(add_help=False, prog="dd")
@@ -81,6 +81,7 @@ class DueDiligenceController:
         self.current_currency = None
         self.current_df = pd.DataFrame()
         self.source = source
+        self.symbol = symbol
 
         self.CHOICES.extend(self.SPECIFIC_CHOICES[self.source])
 
@@ -94,6 +95,9 @@ Due Diligence:
     ?/help      show this menu again
     q           quit this menu, and shows back to main menu
     quit        quit to abandon the program
+
+Bybt:
+   oi              open interest per exchange
 """
         if self.source == "cp":
             help_text += """
@@ -179,6 +183,58 @@ Coinbase:
     def call_quit(self, _):
         """Process Quit command - quit the program."""
         return True
+
+    def call_oi(self, other_args):
+        """Process oi command"""
+        if self.symbol:
+            assert isinstance(self.symbol, str)
+            parser = argparse.ArgumentParser(
+                add_help=False,
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                prog="oi",
+                description="""
+                    Displays open interest by exchange for a certain asset
+                    [Source: https://bybt.gitbook.io]
+                """,
+            )
+
+            parser.add_argument(
+                "-i",
+                "--interval",
+                dest="interval",
+                type=int,
+                help="Frequency interval. Default: 0",
+                default=0,
+                choices=[0, 1, 2, 4],
+            )
+
+            parser.add_argument(
+                "--export",
+                choices=["csv", "json", "xlsx"],
+                default="",
+                type=str,
+                dest="export",
+                help="Export dataframe data to csv,json,xlsx file",
+            )
+
+            try:
+                ns_parser = parse_known_args_and_warn(parser, other_args)
+
+                if not ns_parser:
+                    return
+
+                bybt_view.display_open_interest(
+                    symbol=self.symbol.upper(),
+                    interval=ns_parser.interval,
+                    export=ns_parser.export,
+                )
+
+            except Exception as e:
+                print(e)
+        else:
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
     def call_info(self, other_args):
         """Process info command"""
@@ -1364,10 +1420,10 @@ Coinbase:
             )
 
 
-def menu(coin=None, source=None):
+def menu(coin=None, source=None, symbol=None):
 
     source = source if source else "cg"
-    dd_controller = DueDiligenceController(coin=coin, source=source)
+    dd_controller = DueDiligenceController(coin=coin, source=source, symbol=symbol)
     dd_controller.print_help()
 
     while True:

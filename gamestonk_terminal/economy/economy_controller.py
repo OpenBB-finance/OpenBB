@@ -16,7 +16,6 @@ from gamestonk_terminal.economy import (
     fred_view,
     wsj_view,
 )
-from gamestonk_terminal.economy.report import report_controller
 from gamestonk_terminal.helper_funcs import (
     check_positive,
     get_flair,
@@ -81,12 +80,7 @@ class EconomyController:
         "industry",
     ]
 
-    CHOICES_MENUS = [
-        "report",
-    ]
-
     CHOICES += CHOICES_COMMANDS
-    CHOICES += CHOICES_MENUS
 
     def __init__(self):
         """Constructor"""
@@ -130,8 +124,6 @@ Alpha Vantage:
 FRED:
     search        search FRED series notes
     series        plot series from https://fred.stlouisfed.org
-
->   report        generate automatic report
 """
         print(help_text)
 
@@ -790,15 +782,6 @@ FRED:
 
         except Exception as e:
             print(e, "\n")
-
-    def call_report(self, _):
-        """Process report command"""
-        ret = report_controller.menu()
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
 
 
 def menu():

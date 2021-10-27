@@ -1,6 +1,5 @@
 import os
 from matplotlib import pyplot as plt
-import pandas as pd
 from gamestonk_terminal.cryptocurrency.onchain.glassnode_model import (
     get_active_addresses,
 )
@@ -45,15 +44,9 @@ def display_active_addresses(
 
 
 def plot_data(df, asset):
-    df = df.set_index("t")
-    df.index = pd.to_datetime(df.index, unit="s")
-    df = df.loc[df.index > "2010-1-1"]
-    df.reset_index(inplace=True)
-
     _, main_ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
 
     main_ax.plot(df["t"], df["v"], linewidth=0.5)
-    main_ax.set_yscale("log")
     main_ax.grid(True)
 
     main_ax.set_title(f"Active {asset} addresses over time")

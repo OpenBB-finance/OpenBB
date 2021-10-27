@@ -1,19 +1,22 @@
 """Technical Analysis Trendline Module"""
 __docformat__ = "numpy"
 
+from typing import Union
+from datetime import datetime
+
 import yfinance as yf
 from pandas.core.frame import DataFrame
 from scipy.stats import linregress
 
 
-def load_ticker(ticker: str, start_date: str) -> DataFrame:
+def load_ticker(ticker: str, start_date: Union[str, datetime]) -> DataFrame:
     """Loads a ticker data from Yahoo Finance, adds a data index column data_id and Open-Close High/Low columns.
 
     Parameters
     ----------
     ticker : str
         The stock ticker.
-    start_date : str
+    start_date : Union[str,datetime]
         Start date to load stock ticker data formatted YYYY-MM-DD.
 
     Returns

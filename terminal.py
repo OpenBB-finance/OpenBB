@@ -47,7 +47,7 @@ class TerminalController:
         "keys",
     ]
 
-    CHOICES_SHORTHAND_MENUS = ["s", "e", "c", "p", "f", "o", "r"]
+    CHOICES_SHORTHAND_MENUS = ["s", "e", "c", "p", "f", "o", "rp", "rs"]
     CHOICES_MENUS = [
         "stocks",
         "economy",
@@ -56,6 +56,7 @@ class TerminalController:
         "forex",
         "options",
         "etf",
+        "reports",
         "resources",
     ]
 
@@ -94,6 +95,7 @@ What do you want to do?
 >>  portfolio
 >>  etf
 >>  forex
+>>  reports
 >>  resources
     """
         print(help_text)
@@ -217,13 +219,23 @@ What do you want to do?
         """Process forex command"""
         return self.call_forex(_)
 
+    def call_reports(self, _):
+        """Process reports command"""
+        from gamestonk_terminal.reports import reports_controller
+
+        return reports_controller.menu()
+
+    def call_rp(self, _):
+        """Process reports command"""
+        return self.call_reports(_)
+
     def call_resources(self, _):
         """Process resources command"""
         from gamestonk_terminal.resources import resources_controller
 
         return resources_controller.menu()
 
-    def call_r(self, _):
+    def call_rs(self, _):
         """Process resources command"""
         return self.call_resources(_)
 
@@ -296,7 +308,7 @@ def terminal(menu_prior_to_reset=""):
 
                 if process_input == MENU_GO_BACK:
                     t_controller.print_help()
-                else:
+                elif process_input in (MENU_QUIT, MENU_RESET):
                     break
 
             except SystemExit:
