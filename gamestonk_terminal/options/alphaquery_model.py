@@ -11,7 +11,7 @@ def get_put_call_ratio(
     window: int = 30,
     start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
 ) -> pd.DataFrame:
-    """Gets put call ratio over last time window
+    """Gets put call ratio over last time window [Source: AlphaQuery.com]
 
     Parameters
     ----------

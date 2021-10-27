@@ -19,7 +19,7 @@ def display_put_call_ratio(
     start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
     export: str = "",
 ):
-    """Display put call ratio
+    """Display put call ratio [Source: AlphaQuery.com]
 
     Parameters
     ----------

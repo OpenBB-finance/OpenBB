@@ -142,7 +142,7 @@ Current Expiry: {self.selected_date or None}
     load          load new ticker
     exp           see and set expiration dates
 {"" if self.ticker else Style.DIM}
-    pcr           display put call ratio for ticker{Style.DIM if not colored else ''}
+    pcr           display put call ratio for ticker [AlphaQuery.com]{Style.DIM if not colored else ''}
     info          display option information (volatility, IV rank etc) [Barchart.com]
     chains        display option chains with greeks [Tradier]
     oi            plot open interest [Tradier/YF]
