@@ -129,7 +129,7 @@ def display_volume(
     df_similar.plot(ax=ax)
     ax.set_title("Volume over time")
     # ax.plot(df_similar.index, df_similar[ticker].values/1_000_000)
-    ax.set_xlabel("Time")
+    ax.set_xlabel("Date")
     ax.set_ylabel(f"{['','Normalized'][normalize]} Volume {['[K]',''][normalize]}")
     ax.grid(b=True, which="major", color="#666666", linestyle="-")
     # ensures that the historical data starts from same datapoint
