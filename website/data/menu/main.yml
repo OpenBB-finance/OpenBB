@@ -804,6 +804,8 @@ main:
         ref: "/etf/active"
       - name: pir
         ref: "/etf/pir"
+      - name: fds
+        ref: "/etf/fds"
   - name: portfolio
     ref: "/portfolio"
     sub:
