@@ -278,7 +278,7 @@ Graphs:
             "--type",
             dest="type",
             type=str,
-            choices=["stock", "bond", "option", "crypto"],
+            choices=["stock", "bond", "option", "crypto", "cash"],
             default="stock",
             help="Type of asset to add",
         )
@@ -321,12 +321,13 @@ Graphs:
             help="Premium paid/received for the option",
         )
         parser.add_argument(
-            "--side",
+            "-a",
+            "--action",
             type=str,
-            dest="side",
-            choices=["buy", "sell", "interest"],
+            dest="action",
+            choices=["buy", "sell", "interest", "deposit", "withdrawal"],
             default="buy",
-            help="Choose to buy, sell, or record interest for an asset. Enter interest per item.",
+            help="Select what you did in the transaction",
         )
         if other_args:
             if "-n" not in other_args and "-h" not in other_args:
@@ -335,7 +336,12 @@ Graphs:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
-
+        if ns_parser.type == "cash" and ns_parser.action not in ["deposit", "withdrawal"]:
+            print("Cash can only be deposited or withdrew\n")
+            return
+        if ns_parser.type != "cash" and ns_parser.action in ["deposit", "withdrawal"]:
+            print("Only cash can be deposited or withdrew\n")
+            return
         data = {
             "Name": ns_parser.name,
             "Type": ns_parser.type,
