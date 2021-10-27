@@ -3810,8 +3810,8 @@ ffn = [
     {file = "ffn-0.3.6.tar.gz", hash = "sha256:4a79e72e06ff328e333ffe97010b1ce110bcd694fcd03be7351bf5065cd273e8"},
 ]
 financedatabase = [
-    {file = "FinanceDatabase-0.1.11-py3-none-any.whl", hash = "sha256:882522d26c35c401ea913d735f6fef1c2e534a28eb3cc613012bff0ff9458f3e"},
-    {file = "FinanceDatabase-0.1.11.tar.gz", hash = "sha256:cb6844d4f2492c06d62d5b44cbf784dbc7cab0bfb6b3d329c2b4651b607f3886"},
+    {file = "financedatabase-0.1.11-py3-none-any.whl"},
+    {file = "financedatabase-0.1.11.tar.gz"},
 ]
 finviz = [
     {file = "finviz-1.4.2.tar.gz", hash = "sha256:f921a2674ea16f5ee9320834ab80554872fdb32a2bc9e0fdf23542ea33094d24"},
