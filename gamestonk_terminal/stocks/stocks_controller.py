@@ -37,6 +37,7 @@ from gamestonk_terminal.helper_funcs import (
     MENU_GO_BACK,
     MENU_QUIT,
     MENU_RESET,
+    try_except,
 )
 from gamestonk_terminal.common.quantitative_analysis import qa_view
 
@@ -215,6 +216,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             other_args, self.ticker + "." + self.suffix if self.suffix else self.ticker
         )
 
+    @try_except
     def call_candle(self, other_args: List[str]):
         """Process candle command"""
         parser = argparse.ArgumentParser(
@@ -287,35 +289,32 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             default=20,
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if not self.ticker:
-                print("No ticker loaded.  First use `load {ticker}`\n")
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not self.ticker:
+            print("No ticker loaded.  First use `load {ticker}`\n")
+            return
 
-            if ns_parser.raw:
-                qa_view.display_raw(
-                    df=self.stock,
-                    export=ns_parser.export,
-                    sort=ns_parser.sort,
-                    des=ns_parser.descending,
-                    num=ns_parser.num,
-                )
+        if ns_parser.raw:
+            qa_view.display_raw(
+                df=self.stock,
+                export=ns_parser.export,
+                sort=ns_parser.sort,
+                des=ns_parser.descending,
+                num=ns_parser.num,
+            )
 
-            else:
-                display_candle(
-                    s_ticker=self.ticker + "." + self.suffix
-                    if self.suffix
-                    else self.ticker,
-                    s_start=ns_parser.s_start,
-                    plotly=ns_parser.plotly,
-                )
+        else:
+            display_candle(
+                s_ticker=self.ticker + "." + self.suffix
+                if self.suffix
+                else self.ticker,
+                s_start=ns_parser.s_start,
+                plotly=ns_parser.plotly,
+            )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_news(self, other_args: List[str]):
         """Process news command"""
         if not self.ticker:
@@ -363,30 +362,26 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             help="Show news only from the sources specified (e.g bbc yahoo.com)",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            sources = ns_parser.sources
-            for idx, source in enumerate(sources):
-                if source.find(".") == -1:
-                    sources[idx] += ".com"
+        sources = ns_parser.sources
+        for idx, source in enumerate(sources):
+            if source.find(".") == -1:
+                sources[idx] += ".com"
 
-            d_stock = yf.Ticker(self.ticker).info
+        d_stock = yf.Ticker(self.ticker).info
 
-            newsapi_view.news(
-                term=d_stock["shortName"].replace(" ", "+")
-                if "shortName" in d_stock
-                else self.ticker,
-                num=ns_parser.n_num,
-                s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
-                show_newest=ns_parser.n_oldest,
-                sources=",".join(sources),
-            )
-
-        except Exception as e:
-            print(e, "\n")
+        newsapi_view.news(
+            term=d_stock["shortName"].replace(" ", "+")
+            if "shortName" in d_stock
+            else self.ticker,
+            num=ns_parser.n_num,
+            s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
+            show_newest=ns_parser.n_oldest,
+            sources=",".join(sources),
+        )
 
     # MENUS
     def call_disc(self, _):
@@ -565,6 +560,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         else:
             return True
 
+    @try_except
     def call_pred(self, _):
         """Process pred command"""
         if not gtff.ENABLE_PREDICT:
@@ -588,9 +584,6 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             from gamestonk_terminal.stocks.prediction_techniques import pred_controller
         except ModuleNotFoundError as e:
             print("One of the optional packages seems to be missing: ", e, "\n")
-            return
-        except Exception as e:
-            print(e, "\n")
             return
 
         ret = pred_controller.menu(

@@ -11,6 +11,7 @@ from gamestonk_terminal.portfolio.brokers.ally import ally_view
 from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
+    try_except,
 )
 
 
@@ -99,6 +100,7 @@ Stock Information:
         """Process Quit command - quit the program."""
         return True
 
+    @try_except
     def call_holdings(self, other_args: List[str]):
         """Process holdings command"""
         parser = argparse.ArgumentParser(
@@ -115,14 +117,12 @@ Stock Information:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            ally_view.display_holdings(export=ns_parser.export)
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        ally_view.display_holdings(export=ns_parser.export)
 
+    @try_except
     def call_history(self, other_args: List[str]):
         """Process history command"""
         parser = argparse.ArgumentParser(
@@ -147,14 +147,12 @@ Stock Information:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            ally_view.display_history(n_to_show=ns_parser.num, export=ns_parser.export)
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        ally_view.display_history(n_to_show=ns_parser.num, export=ns_parser.export)
 
+    @try_except
     def call_balances(self, other_args: List[str]):
         """Process balances command"""
         parser = argparse.ArgumentParser(
@@ -171,15 +169,12 @@ Stock Information:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            ally_view.display_balances(export=ns_parser.export)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        ally_view.display_balances(export=ns_parser.export)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_quote(self, other_args: List[str]):
         """Process balances command"""
         parser = argparse.ArgumentParser(
@@ -198,15 +193,12 @@ Stock Information:
             dest="ticker",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            ally_view.display_stock_quote(ns_parser.ticker)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        ally_view.display_stock_quote(ns_parser.ticker)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_movers(self, other_args: List[str]):
         """Process movers command"""
         parser = argparse.ArgumentParser(
@@ -254,19 +246,15 @@ Stock Information:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            ally_view.display_top_lists(
-                list_type=ns_parser.list_type,
-                exchange=ns_parser.exchange,
-                num_to_show=ns_parser.num,
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        ally_view.display_top_lists(
+            list_type=ns_parser.list_type,
+            exchange=ns_parser.exchange,
+            num_to_show=ns_parser.num,
+            export=ns_parser.export,
+        )
 
 
 def menu():

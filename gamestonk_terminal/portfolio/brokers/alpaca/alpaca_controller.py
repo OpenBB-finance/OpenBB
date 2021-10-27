@@ -11,6 +11,7 @@ from gamestonk_terminal.portfolio.brokers.alpaca import alpaca_view
 from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
+    try_except,
 )
 
 
@@ -93,6 +94,7 @@ Alpaca:
         """Process Quit command - quit the program."""
         return True
 
+    @try_except
     def call_holdings(self, other_args: List[str]):
         """Process holdings command"""
         parser = argparse.ArgumentParser(
@@ -109,14 +111,12 @@ Alpaca:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            alpaca_view.view_holdings()
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        alpaca_view.view_holdings()
 
+    @try_except
     def call_history(self, other_args: List[str]):
         """Process history command"""
         parser = argparse.ArgumentParser(
@@ -149,17 +149,14 @@ Alpaca:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            alpaca_view.view_history(
-                period=ns_parser.period,
-                timeframe=ns_parser.timeframe,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        alpaca_view.view_history(
+            period=ns_parser.period,
+            timeframe=ns_parser.timeframe,
+            export=ns_parser.export,
+        )
 
 
 def menu():

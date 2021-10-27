@@ -11,6 +11,7 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     check_non_negative,
+    try_except,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.portfolio_optimization import (
@@ -156,6 +157,7 @@ Mean Variance Optimization:
         """Process rmv command"""
         self.rmv_stocks(other_args)
 
+    @try_except
     def call_equal(self, other_args: List[str]):
         """Process equal command"""
         parser = argparse.ArgumentParser(
@@ -180,21 +182,19 @@ Mean Variance Optimization:
             help="Display a pie chart for weights",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            if len(self.tickers) < 2:
-                print("Please have at least 2 loaded tickers to calculate weights.\n")
-                return
+        if len(self.tickers) < 2:
+            print("Please have at least 2 loaded tickers to calculate weights.\n")
+            return
 
-            optimizer_view.display_equal_weight(
-                stocks=self.tickers, value=ns_parser.value, pie=ns_parser.pie
-            )
-        except Exception as e:
-            print(e, "\n")
+        optimizer_view.display_equal_weight(
+            stocks=self.tickers, value=ns_parser.value, pie=ns_parser.pie
+        )
 
+    @try_except
     def call_mktcap(self, other_args: List[str]):
         """Process mktcap command"""
         parser = argparse.ArgumentParser(
@@ -218,23 +218,21 @@ Mean Variance Optimization:
             default=False,
             help="Display a pie chart for weights",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if len(self.tickers) < 2:
-                print("Please have at least 2 stocks selected to perform calculations.")
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if len(self.tickers) < 2:
+            print("Please have at least 2 stocks selected to perform calculations.")
+            return
 
-            optimizer_view.display_property_weighting(
-                self.tickers,
-                s_property="marketCap",
-                value=ns_parser.value,
-                pie=ns_parser.pie,
-            )
-        except Exception as e:
-            print(e, "\n")
+        optimizer_view.display_property_weighting(
+            self.tickers,
+            s_property="marketCap",
+            value=ns_parser.value,
+            pie=ns_parser.pie,
+        )
 
+    @try_except
     def call_dividend(self, other_args: List[str]):
         """Process dividend command"""
         parser = argparse.ArgumentParser(
@@ -258,23 +256,21 @@ Mean Variance Optimization:
             default=False,
             help="Display a pie chart for weights",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if len(self.tickers) < 2:
-                print("Please have at least 2 stocks selected to perform calculations.")
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if len(self.tickers) < 2:
+            print("Please have at least 2 stocks selected to perform calculations.")
+            return
 
-            optimizer_view.display_property_weighting(
-                self.tickers,
-                s_property="dividendYield",
-                value=ns_parser.value,
-                pie=ns_parser.pie,
-            )
-        except Exception as e:
-            print(e, "\n")
+        optimizer_view.display_property_weighting(
+            self.tickers,
+            s_property="dividendYield",
+            value=ns_parser.value,
+            pie=ns_parser.pie,
+        )
 
+    @try_except
     def call_property(self, other_args: List[str]):
         """Process property command"""
         parser = argparse.ArgumentParser(
@@ -321,23 +317,21 @@ Mean Variance Optimization:
             default=False,
             help="Display a pie chart for weights",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if len(self.tickers) < 2:
-                print("Please have at least 2 stocks selected to perform calculations.")
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if len(self.tickers) < 2:
+            print("Please have at least 2 stocks selected to perform calculations.")
+            return
 
-            optimizer_view.display_property_weighting(
-                self.tickers,
-                s_property=ns_parser.property,
-                value=ns_parser.value,
-                pie=ns_parser.pie,
-            )
-        except Exception as e:
-            print(e, "\n")
+        optimizer_view.display_property_weighting(
+            self.tickers,
+            s_property=ns_parser.property,
+            value=ns_parser.value,
+            pie=ns_parser.pie,
+        )
 
+    @try_except
     def call_maxsharpe(self, other_args: List[str]):
         """Process maxsharpe command"""
         parser = argparse.ArgumentParser(
@@ -379,24 +373,22 @@ Mean Variance Optimization:
                 should correspond to the frequency of expected returns.""",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            if len(self.tickers) < 2:
-                print("Please have at least 2 loaded tickers to calculate weights.\n")
-                return
-            optimizer_view.display_max_sharpe(
-                stocks=self.tickers,
-                period=ns_parser.period,
-                value=ns_parser.value,
-                rfrate=ns_parser.risk_free_rate,
-                pie=ns_parser.pie,
-            )
-        except Exception as e:
-            print(e, "\n")
+        if len(self.tickers) < 2:
+            print("Please have at least 2 loaded tickers to calculate weights.\n")
+            return
+        optimizer_view.display_max_sharpe(
+            stocks=self.tickers,
+            period=ns_parser.period,
+            value=ns_parser.value,
+            rfrate=ns_parser.risk_free_rate,
+            pie=ns_parser.pie,
+        )
 
+    @try_except
     def call_minvol(self, other_args: List[str]):
         """Process minvol command"""
         parser = argparse.ArgumentParser(
@@ -428,26 +420,23 @@ Mean Variance Optimization:
             default=False,
             help="Display a pie chart for weights",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
-                return
+        if not ns_parser:
+            return
 
-            if len(self.tickers) < 2:
-                print("Please have at least 2 loaded tickers to calculate weights.\n")
-                return
+        if len(self.tickers) < 2:
+            print("Please have at least 2 loaded tickers to calculate weights.\n")
+            return
 
-            optimizer_view.display_min_volatility(
-                stocks=self.tickers,
-                period=ns_parser.period,
-                value=ns_parser.value,
-                pie=ns_parser.pie,
-            )
+        optimizer_view.display_min_volatility(
+            stocks=self.tickers,
+            period=ns_parser.period,
+            value=ns_parser.value,
+            pie=ns_parser.pie,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_maxquadutil(self, other_args: List[str]):
         """Process maxquadutil command"""
         parser = argparse.ArgumentParser(
@@ -497,33 +486,28 @@ Mean Variance Optimization:
             help="risk aversion parameter",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            if len(self.tickers) < 2:
-                print("Please have at least 2 loaded tickers to calculate weights.\n")
-                return
+        if len(self.tickers) < 2:
+            print("Please have at least 2 loaded tickers to calculate weights.\n")
+            return
 
-            if ns_parser.pie and ns_parser.market_neutral:
-                print(
-                    "Cannot show pie chart for market neutral due to negative weights."
-                )
-                return
+        if ns_parser.pie and ns_parser.market_neutral:
+            print("Cannot show pie chart for market neutral due to negative weights.")
+            return
 
-            optimizer_view.display_max_quadratic_utility(
-                stocks=self.tickers,
-                period=ns_parser.period,
-                value=ns_parser.value,
-                risk_aversion=ns_parser.risk_aversion,
-                market_neutral=ns_parser.market_neutral,
-                pie=ns_parser.pie,
-            )
+        optimizer_view.display_max_quadratic_utility(
+            stocks=self.tickers,
+            period=ns_parser.period,
+            value=ns_parser.value,
+            risk_aversion=ns_parser.risk_aversion,
+            market_neutral=ns_parser.market_neutral,
+            pie=ns_parser.pie,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_effrisk(self, other_args: List[str]):
         """Process effrisk command"""
         parser = argparse.ArgumentParser(
@@ -578,33 +562,28 @@ Mean Variance Optimization:
             help="The desired maximum volatility of the resulting portfolio",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            if len(self.tickers) < 2:
-                print("Please have at least 2 loaded tickers to calculate weights.\n")
-                return
+        if len(self.tickers) < 2:
+            print("Please have at least 2 loaded tickers to calculate weights.\n")
+            return
 
-            if ns_parser.pie and ns_parser.market_neutral:
-                print(
-                    "Cannot show pie chart for market neutral due to negative weights."
-                )
-                return
+        if ns_parser.pie and ns_parser.market_neutral:
+            print("Cannot show pie chart for market neutral due to negative weights.")
+            return
 
-            optimizer_view.display_efficient_risk(
-                stocks=self.tickers,
-                period=ns_parser.period,
-                value=ns_parser.value,
-                target_volatility=ns_parser.target_volatility,
-                market_neutral=ns_parser.market_neutral,
-                pie=ns_parser.pie,
-            )
+        optimizer_view.display_efficient_risk(
+            stocks=self.tickers,
+            period=ns_parser.period,
+            value=ns_parser.value,
+            target_volatility=ns_parser.target_volatility,
+            market_neutral=ns_parser.market_neutral,
+            pie=ns_parser.pie,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_effret(self, other_args: List[str]):
         """Process effret command"""
         parser = argparse.ArgumentParser(
@@ -657,33 +636,28 @@ Mean Variance Optimization:
             default=0.1,
             help="the desired return of the resulting portfolio",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            if len(self.tickers) < 2:
-                print("Please have at least 2 loaded tickers to calculate weights.\n")
-                return
+        if len(self.tickers) < 2:
+            print("Please have at least 2 loaded tickers to calculate weights.\n")
+            return
 
-            if ns_parser.pie and ns_parser.market_neutral:
-                print(
-                    "Cannot show pie chart for market neutral due to negative weights."
-                )
-                return
+        if ns_parser.pie and ns_parser.market_neutral:
+            print("Cannot show pie chart for market neutral due to negative weights.")
+            return
 
-            optimizer_view.display_efficient_return(
-                stocks=self.tickers,
-                period=ns_parser.period,
-                value=ns_parser.value,
-                target_return=ns_parser.target_return,
-                market_neutral=ns_parser.market_neutral,
-                pie=ns_parser.pie,
-            )
+        optimizer_view.display_efficient_return(
+            stocks=self.tickers,
+            period=ns_parser.period,
+            value=ns_parser.value,
+            target_return=ns_parser.target_return,
+            market_neutral=ns_parser.market_neutral,
+            pie=ns_parser.pie,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_ef(self, other_args):
         """Process ef command"""
         parser = argparse.ArgumentParser(
@@ -720,30 +694,27 @@ Mean Variance Optimization:
             help="Adds the optimal line with the risk-free asset",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            if len(self.tickers) < 2:
-                print("Please have at least 2 loaded tickers to calculate weights.\n")
-                return
+        if len(self.tickers) < 2:
+            print("Please have at least 2 loaded tickers to calculate weights.\n")
+            return
 
-            optimizer_view.display_ef(
-                stocks=self.tickers,
-                period=ns_parser.period,
-                n_portfolios=ns_parser.n_port,
-                risk_free=ns_parser.risk_free,
-            )
-
-        except Exception as e:
-            print(e, "\n")
+        optimizer_view.display_ef(
+            stocks=self.tickers,
+            period=ns_parser.period,
+            n_portfolios=ns_parser.n_port,
+            risk_free=ns_parser.risk_free,
+        )
 
     def call_yolo(self, _):
         # Easter egg :)
         print("DFV YOLO")
         print("GME: ALL", "\n")
 
+    @try_except
     def add_stocks(self, other_args: List[str]):
         """Add ticker or Select tickes for portfolio to be optimized"""
         parser = argparse.ArgumentParser(
@@ -759,29 +730,24 @@ Mean Variance Optimization:
             default=[],
             help="tickers to be used in the portfolio to optimize.",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-t")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-t")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            tickers = set(self.tickers)
-            for ticker in ns_parser.add_tickers:
-                tickers.add(ticker)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        tickers = set(self.tickers)
+        for ticker in ns_parser.add_tickers:
+            tickers.add(ticker)
 
-            if self.tickers:
-                print(
-                    f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}"
-                )
+        if self.tickers:
+            print(f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}")
 
-            self.tickers = list(tickers)
-            print("")
+        self.tickers = list(tickers)
+        print("")
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def rmv_stocks(self, other_args: List[str]):
         """Remove one of the tickers to be optimized"""
         parser = argparse.ArgumentParser(
@@ -797,29 +763,23 @@ Mean Variance Optimization:
             default=[],
             help="tickers to be removed from the tickers to optimize.",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-t")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-t")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            tickers = set(self.tickers)
-            for ticker in ns_parser.rmv_tickers:
-                tickers.remove(ticker)
+        tickers = set(self.tickers)
+        for ticker in ns_parser.rmv_tickers:
+            tickers.remove(ticker)
 
-            if self.tickers:
-                print(
-                    f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}"
-                )
+        if self.tickers:
+            print(f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}")
 
-            self.tickers = list(tickers)
-            print("")
-
-        except Exception as e:
-            print(e, "\n")
+        self.tickers = list(tickers)
+        print("")
 
 
 def menu(tickers: List[str]):

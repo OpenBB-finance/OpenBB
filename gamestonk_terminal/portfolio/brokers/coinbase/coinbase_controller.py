@@ -14,6 +14,7 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     check_positive,
+    try_except,
 )
 
 
@@ -97,6 +98,7 @@ Coinbase:
         """Process Quit command - quit the program."""
         return True
 
+    @try_except
     def call_account(self, other_args):
         """Process account command"""
         parser = argparse.ArgumentParser(
@@ -129,23 +131,20 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            if other_args and other_args[0][0] != "-":
-                other_args.insert(0, "--acc")
+        if other_args and other_args[0][0] != "-":
+            other_args.insert(0, "--acc")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
-                return
+        if not ns_parser:
+            return
 
-            coinbase_view.display_account(
-                currency=ns_parser.currency,
-                export=ns_parser.export,
-            )
+        coinbase_view.display_account(
+            currency=ns_parser.currency,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_history(self, other_args):
         """Process account command"""
         parser = argparse.ArgumentParser(
@@ -180,22 +179,19 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            if other_args and other_args[0][0] != "-":
-                other_args.insert(0, "--acc")
+        if other_args and other_args[0][0] != "-":
+            other_args.insert(0, "--acc")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
-                return
+        if not ns_parser:
+            return
 
-            coinbase_view.display_history(
-                ns_parser.account, ns_parser.export, ns_parser.limit
-            )
+        coinbase_view.display_history(
+            ns_parser.account, ns_parser.export, ns_parser.limit
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_orders(self, other_args):
         """Process orders command"""
         parser = argparse.ArgumentParser(
@@ -245,22 +241,19 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            if other_args and other_args[0][0] != "-":
-                other_args.insert(0, "--acc")
+        if other_args and other_args[0][0] != "-":
+            other_args.insert(0, "--acc")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
-                return
+        if not ns_parser:
+            return
 
-            coinbase_view.display_orders(
-                ns_parser.limit, ns_parser.sortby, ns_parser.descend, ns_parser.export
-            )
+        coinbase_view.display_orders(
+            ns_parser.limit, ns_parser.sortby, ns_parser.descend, ns_parser.export
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_deposits(self, other_args):
         """Process deposits command"""
         parser = argparse.ArgumentParser(
@@ -313,21 +306,17 @@ Coinbase:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            coinbase_view.display_deposits(
-                ns_parser.limit,
-                ns_parser.sortby,
-                ns_parser.type,
-                ns_parser.descend,
-                ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
+        coinbase_view.display_deposits(
+            ns_parser.limit,
+            ns_parser.sortby,
+            ns_parser.type,
+            ns_parser.descend,
+            ns_parser.export,
+        )
 
 
 def menu():
