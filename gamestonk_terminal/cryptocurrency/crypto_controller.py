@@ -89,6 +89,7 @@ class CryptoController:
         self.crypto_parser = argparse.ArgumentParser(add_help=False, prog="crypto")
         self.crypto_parser.add_argument("cmd", choices=self.CHOICES)
 
+        self.symbol = ""
         self.current_coin = ""
         self.current_df = pd.DataFrame()
         self.current_currency = ""
@@ -226,7 +227,7 @@ What do you want to do?
                     if arg in other_args:
                         other_args.remove(arg)
 
-                self.current_coin, self.source = load(
+                self.current_coin, self.source, self.symbol = load(
                     coin=ns_parser.coin, source=ns_parser.source
                 )
 
@@ -725,7 +726,7 @@ What do you want to do?
     def call_dd(self, _):
         """Process dd command"""
         if self.current_coin:
-            dd = dd_controller.menu(self.current_coin, self.source)
+            dd = dd_controller.menu(self.current_coin, self.source, self.symbol)
             if dd is False:
                 self.print_help()
             else:
