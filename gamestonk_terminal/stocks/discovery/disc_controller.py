@@ -3,15 +3,14 @@ __docformat__ = "numpy"
 
 import argparse
 import os
-from typing import List
 from datetime import datetime
+from typing import List
 
 from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
-from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_non_negative,
@@ -20,6 +19,7 @@ from gamestonk_terminal.helper_funcs import (
     check_int_range,
     try_except,
 )
+from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.discovery import (
     ark_view,
     fidelity_view,
@@ -28,6 +28,7 @@ from gamestonk_terminal.stocks.discovery import (
     yahoofinance_view,
     finnhub_view,
     geekofwallstreet_view,
+    financedatabase_view,
 )
 
 
@@ -61,6 +62,7 @@ class DiscoveryController:
         "lowfloat",
         "hotpenny",
         "rtearn",
+        "fds",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -107,6 +109,8 @@ shortinterest.com
     lowfloat       low float stocks under 10M shares float
 pennystockflow.com
     hotpenny       today's hot penny stocks
+Finance Database:
+    fds            advanced Equities search based on country, sector, industry, name and/or description
 """
         print(help_text)
 
@@ -880,6 +884,9 @@ pennystockflow.com
             num=ns_parser.n_num,
             export=ns_parser.export,
         )
+
+    def call_fds(self, other_args: List[str]):
+        financedatabase_view.show_equities(other_args)
 
 
 def menu():
