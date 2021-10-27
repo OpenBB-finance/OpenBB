@@ -71,7 +71,6 @@ class TechnicalAnalysisController:
         self.interval = interval
         self.stock = stock
         self.stock["Adj Close"] = stock["Close"]
-        print(self.stock)
 
         self.ta_parser = argparse.ArgumentParser(add_help=False, prog="ta")
         self.ta_parser.add_argument(

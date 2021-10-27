@@ -144,7 +144,7 @@ def _create_closest_match_df(
 def load(
     coin: str,
     source: str,
-) -> Tuple[Union[Optional[str], pycoingecko_model.Coin], Any]:
+) -> Tuple[Union[Optional[str], pycoingecko_model.Coin], Optional[Any], Optional[Any]]:
     """Load cryptocurrency from given source. Available sources are: CoinGecko, CoinPaprika, Coinbase and Binance.
 
     Loading coin from Binance and CoinPaprika means validation if given coins exists in chosen source,
@@ -161,16 +161,17 @@ def load(
 
     Returns
     -------
-    Tuple[Union[str, pycoingecko_model.Coin], Any]
+    Tuple[Union[str, pycoingecko_model.Coin], str, str]
         - str or Coin object for provided coin
         - str with source of the loaded data. CoinGecko, CoinPaprika, or Binance
+        - str with
     """
 
     current_coin = ""  # type: Optional[Any]
 
     if source == "cg":
-        current_coin = pycoingecko_model.Coin(coin)
-        return current_coin, source
+        coingecko = pycoingecko_model.Coin(coin)
+        return coingecko, source, coingecko.symbol
 
     if source == "bin":
         parsed_coin = coin.upper()
@@ -179,13 +180,13 @@ def load(
             print(f"Coin found : {current_coin}\n")
         else:
             print(f"Couldn't find coin with symbol {current_coin}\n")
-        return current_coin, source
+        return current_coin, source, parsed_coin
 
     if source == "cp":
         paprika_coins = get_list_of_coins()
         paprika_coins_dict = dict(zip(paprika_coins.id, paprika_coins.symbol))
-        current_coin, _ = coinpaprika_model.validate_coin(coin, paprika_coins_dict)
-        return current_coin, source
+        current_coin, symbol = coinpaprika_model.validate_coin(coin, paprika_coins_dict)
+        return current_coin, source, symbol
 
     if source == "cb":
         coinbase_coin = coin.upper()
@@ -196,9 +197,9 @@ def load(
             print(f"Coin found : {current_coin}\n")
         else:
             print(f"Couldn't find coin with symbol {current_coin}\n")
-        return current_coin, source
+        return current_coin, source, coin
 
-    return current_coin, None
+    return current_coin, None, None
 
 
 # TODO: Find better algorithm then difflib.get_close_matches to find most similar coins

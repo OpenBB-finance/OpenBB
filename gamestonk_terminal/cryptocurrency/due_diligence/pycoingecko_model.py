@@ -1,7 +1,7 @@
 """CoinGecko model"""
 __docformat__ = "numpy"
 
-from typing import Union, Any, Dict, List, Optional
+from typing import Tuple, Union, Any, Dict, List, Optional
 import regex as re
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
@@ -44,7 +44,7 @@ class Coin:
     def __init__(self, symbol: str):
         self.client = CoinGeckoAPI()
         self._coin_list = self.client.get_coins_list()
-        self.coin_symbol = self._validate_coin(symbol)
+        self.coin_symbol, self.symbol = self._validate_coin(symbol)
 
         if self.coin_symbol:
             self.coin: Dict[Any, Any] = self._get_coin_info()
@@ -52,7 +52,7 @@ class Coin:
     def __str__(self):
         return f"{self.coin_symbol}"
 
-    def _validate_coin(self, symbol: str) -> str:
+    def _validate_coin(self, search_coin: str) -> Tuple[Optional[Any], Optional[Any]]:
         """Validate if given coin symbol or id exists in list of available coins on CoinGecko.
         If yes it returns coin id. [Source: CoinGecko]
 
@@ -63,19 +63,22 @@ class Coin:
 
         Returns
         -------
-        str
-            id of the coin on CoinGecko service.
+        Tuple[str, str]
+            - str with coin
+            - str with symbol
         """
 
         coin = None
+        symbol = None
         for dct in self._coin_list:
-            if symbol.lower() in list(dct.values()):
+            if search_coin.lower() in list(dct.values()):
                 coin = dct.get("id")
+                symbol = dct.get("symbol")
                 print(f"Coin found : {coin} with symbol {symbol}\n")
                 break
         if not coin:
             raise ValueError(f"Could not find coin with the given id: {symbol}\n")
-        return coin
+        return coin, symbol
 
     def coin_list(self) -> list:
         """List all available coins [Source: CoinGecko]

@@ -791,6 +791,8 @@ main:
       - name: due diligence
         ref: "/cryptocurrency/due_diligence"
         sub:
+          - name: oi
+            ref: "/cryptocurrency/due_diligence/oi"
           - name: info
             ref: "/cryptocurrency/due_diligence/info"
           - name: market
