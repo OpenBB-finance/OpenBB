@@ -315,6 +315,8 @@ main:
             ref: "/stocks/comparison_analysis/historical"
           - name: hcorr
             ref: "/stocks/comparison_analysis/hcorr"
+          - name: volume
+            ref: "/stocks/comparison_analysis/volume"
           - name: income
             ref: "/stocks/comparison_analysis/income"
           - name: balance

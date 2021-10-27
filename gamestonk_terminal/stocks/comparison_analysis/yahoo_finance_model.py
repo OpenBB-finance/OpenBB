@@ -19,6 +19,7 @@ d_candle_types = {
     "l": "Low",
     "c": "Close",
     "a": "Adj Close",
+    "v": "Volume",
 }
 
 

@@ -16,6 +16,7 @@ from gamestonk_terminal.helper_funcs import (
     check_non_negative,
     get_flair,
     parse_known_args_and_warn,
+    try_except,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
@@ -49,6 +50,7 @@ class ComparisonAnalysisController:
         "add",
         "historical",
         "hcorr",
+        "volume",
         "income",
         "balance",
         "cashflow",
@@ -128,7 +130,8 @@ Get Similar:
     getfinviz     get similar stocks from finviz API
 {Style.DIM if all_loaded else Style.NORMAL}Yahoo Finance:
     historical    historical price data comparison
-    hcorr         historical price correlation {Style.RESET_ALL}
+    hcorr         historical price correlation
+    volume        historical volume data comparison {Style.RESET_ALL}
 Market Watch:
     income        income financials comparison
     balance       balance financials comparison
@@ -439,7 +442,7 @@ Finviz:
             help="Candle data to use: o-open, h-high, l-low, c-close, a-adjusted close.",
         )
         parser.add_argument(
-            "-s",
+            "-n",
             "--no-scale",
             action="store_false",
             dest="no_scale",
@@ -574,6 +577,55 @@ Finviz:
             )
         except Exception as e:
             print(e, "\n")
+
+    @try_except
+    def call_volume(self, other_args: List[str]):
+        """Process volume command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="volume",
+            description="""Historical volume comparison between similar companies.
+            """,
+        )
+        parser.add_argument(
+            "-s",
+            "--scale",
+            action="store_true",
+            dest="scale",
+            default=False,
+            help="Flag to not put all prices on same 0-1 scale",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        if self.interval != "1440min":
+            print("Intraday historical data analysis comparison is not yet available.")
+            # Alpha Vantage only supports 5 calls per minute, we need another API to get intraday data
+        else:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if not self.similar or not self.ticker:
+                print(
+                    "Please make sure there are both a loaded ticker and similar tickers selected. \n"
+                )
+                return
+
+            yahoo_finance_view.display_volume(
+                ticker=self.ticker,
+                similar_tickers=self.similar,
+                start=self.start,
+                normalize=ns_parser.scale,
+                export=ns_parser.export,
+            )
 
     def call_balance(self, other_args: List[str]):
         """Process balance command"""

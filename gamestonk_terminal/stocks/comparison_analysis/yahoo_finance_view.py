@@ -25,6 +25,7 @@ d_candle_types = {
     "l": "Low",
     "c": "Close",
     "a": "Adj Close",
+    "v": "Volume",
 }
 
 
@@ -36,7 +37,7 @@ def display_historical(
     normalize: bool = True,
     export: str = "",
 ):
-    """Display historical stock prices
+    """Display historical stock prices. [Source: Yahoo Finance]
 
     Parameters
     ----------
@@ -82,6 +83,62 @@ def display_historical(
     plt.show()
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "historical", df_similar
+    )
+    print("")
+
+
+def display_volume(
+    ticker: str,
+    similar_tickers: List[str],
+    start: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+    normalize: bool = True,
+    export: str = "",
+):
+    """Display volume stock prices. [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    ticker : str
+        Base ticker
+    similar_tickers : List[str]
+        List of similar tickers
+    start : str, optional
+        Start date of comparison, by default 1 year ago
+    normalize : bool, optional
+        Boolean to normalize all stock prices using MinMax defaults True
+    export : str, optional
+        Format to export historical prices, by default ""
+    """
+    ordered_tickers = [ticker, *similar_tickers]
+    df_similar = yahoo_finance_model.get_historical(ticker, similar_tickers, start, "v")
+    # To plot with ticker first
+    df_similar = df_similar[ordered_tickers]
+
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    # This puts everything on 0-1 scale for visualizing
+    if normalize:
+        mm_scale = MinMaxScaler()
+        df_similar = pd.DataFrame(
+            mm_scale.fit_transform(df_similar),
+            columns=df_similar.columns,
+            index=df_similar.index,
+        )
+    else:
+        df_similar = df_similar.div(1_000_000)
+
+    df_similar.plot(ax=ax)
+    ax.set_title("Volume over time")
+    # ax.plot(df_similar.index, df_similar[ticker].values/1_000_000)
+    ax.set_xlabel("Date")
+    ax.set_ylabel(f"{['','Normalized'][normalize]} Volume {['[K]',''][normalize]}")
+    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+    # ensures that the historical data starts from same datapoint
+    ax.set_xlim([df_similar.index[0], df_similar.index[-1]])
+    plt.gcf().autofmt_xdate()
+    fig.tight_layout()
+    plt.show()
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "volume", df_similar
     )
     print("")
 
