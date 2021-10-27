@@ -88,6 +88,7 @@ def plot_overall_return(
     img : ImageReader
         Overal return graph
     """
+    plt.close("all")
     df = df.copy()
     df = df[df.index >= datetime.now() - timedelta(days=n + 1)]
     comb = pd.merge(df, df_m, how="left", left_index=True, right_index=True)
@@ -135,6 +136,7 @@ def plot_overall_return(
     fig.autofmt_xdate()
     if plot:
         plt.show()
+        print("")
         return None
 
     imgdata = BytesIO()
