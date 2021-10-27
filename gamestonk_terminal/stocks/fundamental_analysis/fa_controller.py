@@ -744,7 +744,7 @@ Other Sources:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="dcf",
             description="""
-                Generates a completed discounted cash flow statement. The statement uses machine
+                Generates a discounted cash flow statement. The statement uses machine
                 learning to predict the future financial statement, and then predicts the future
                 value of the stock based on the predicted financials.""",
         )
