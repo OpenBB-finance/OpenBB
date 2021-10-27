@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 
 import argparse
 import os
+from datetime import datetime, timedelta
 from typing import List
 
 import matplotlib.pyplot as plt
@@ -14,12 +15,15 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     check_positive,
     get_flair,
     parse_known_args_and_warn,
     MENU_GO_BACK,
     MENU_QUIT,
     MENU_RESET,
+    try_except,
+    valid_date,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.options import (
@@ -31,6 +35,7 @@ from gamestonk_terminal.options import (
     tradier_view,
     yfinance_model,
     yfinance_view,
+    alphaquery_view,
 )
 from gamestonk_terminal.stocks import stocks_controller
 from gamestonk_terminal.options import payoff_controller, chartexchange_view
@@ -48,13 +53,14 @@ class OptionsController:
         "reset",
     ]
 
-    CHOICES_MENUS = [
+    CHOICES_COMMANDS = [
         "disp",
         "scr",
         "calc",
         "yf",
         "tr",
         "info",
+        "pcr",
         "load",
         "exp",
         "vol",
@@ -70,7 +76,7 @@ class OptionsController:
         "parity",
     ]
 
-    CHOICES += CHOICES_MENUS
+    CHOICES += CHOICES_COMMANDS
 
     PRESET_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -135,7 +141,8 @@ Current Expiry: {self.selected_date or None}
 
     load          load new ticker
     exp           see and set expiration dates
-{Style.DIM if not colored else ''}
+{"" if self.ticker else Style.DIM}
+    pcr           display put call ratio for ticker [AlphaQuery.com]{Style.DIM if not colored else ''}
     info          display option information (volatility, IV rank etc) [Barchart.com]
     chains        display option chains with greeks [Tradier]
     oi            plot open interest [Tradier/YF]
@@ -322,6 +329,48 @@ Current Expiry: {self.selected_date or None}
             )
         except Exception as e:
             print(e, "\n")
+
+    @try_except
+    def call_pcr(self, other_args: List[str]):
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="pcr",
+            description="Display put to call ratio for ticker [AlphaQuery.com]",
+        )
+        parser.add_argument(
+            "-l",
+            "-length",
+            help="Window length to get",
+            dest="length",
+            choices=[10, 20, 30, 60, 90, 120, 150, 180],
+            default=30,
+            type=int,
+        )
+        parser.add_argument(
+            "-s",
+            "--start-date",
+            help="Start date for plot",
+            type=valid_date,
+            default=datetime.now() - timedelta(days=366),
+            dest="start",
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if not ns_parser:
+            return
+        if not self.ticker:
+            print("No ticker loaded.\n")
+            return
+
+        alphaquery_view.display_put_call_ratio(
+            ticker=self.ticker,
+            window=ns_parser.length,
+            start_date=ns_parser.start.strftime("%Y-%m-%d"),
+            export=ns_parser.export,
+        )
 
     def call_info(self, other_args: List[str]):
         """Process info command"""
