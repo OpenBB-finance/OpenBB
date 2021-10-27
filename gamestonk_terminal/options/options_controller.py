@@ -368,7 +368,6 @@ Current Expiry: {self.selected_date or None}
             export=ns_parser.export,
         )
 
-
     def call_info(self, other_args: List[str]):
         """Process info command"""
         if not self.ticker:
@@ -1147,7 +1146,6 @@ Current Expiry: {self.selected_date or None}
             help="Choose from already created graphs",
         )
 
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
@@ -1166,7 +1164,6 @@ Current Expiry: {self.selected_date or None}
             ns_parser.custom,
         )
         print("")
-
 
     def call_stocks(self, _):
         """Process stocks command"""
