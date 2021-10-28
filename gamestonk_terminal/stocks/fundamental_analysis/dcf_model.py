@@ -9,7 +9,7 @@ from io import BytesIO
 from sklearn.linear_model import LinearRegression
 from openpyxl.styles import Border, Side, Font, PatternFill, Alignment
 from openpyxl import worksheet
-import financedatabase as fd
+import FinanceDatabase as fd
 import yfinance as yf
 import pandas as pd
 
