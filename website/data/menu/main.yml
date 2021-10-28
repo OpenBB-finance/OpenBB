@@ -349,7 +349,7 @@ main:
           - name: rsi
             ref: "/stocks/backtesting/rsi"
       - name: technical analysis
-        ref: "/stocks/technical_analysis"
+        ref: "/common/technical_analysis"
         sub:
           - name: view
             ref: "/common/technical_analysis/view"
@@ -402,7 +402,7 @@ main:
           - name: fib
             ref: "/common/technical_analysis/fib"
       - name: behavioural analysis
-        ref: "/stocks/behavioural_analysis"
+        ref: "/common/behavioural_analysis"
         sub:
           - name: headlines
             ref: "/common/behavioural_analysis/headlines"
@@ -451,7 +451,7 @@ main:
           - name: historical
             ref: "/common/behavioural_analysis/historical"
       - name: quantitative analysis
-        ref: "/stocks/quantitative_analysis"
+        ref: "/common/quantitative_analysis"
         sub:
           - name: load
             ref: "/common/quantitative_analysis/load"
@@ -492,7 +492,7 @@ main:
           - name: data
             ref: "/common/quantitative_analysis/data"
       - name: prediction techniques
-        ref: "/stocks/prediction_techniques"
+        ref: "/common/prediction_techniques"
         sub:
           - name: ets
             ref: "/common/prediction_techniques/ets"
@@ -512,43 +512,6 @@ main:
             ref: "/common/prediction_techniques/conv1d"
           - name: mc
             ref: "/common/prediction_techniques/mc"
-  - name: forex
-    ref: "/forex"
-  - name: resources
-    ref: "/resources"
-  - name: economy
-    ref: "/economy"
-    sub:
-      - name: feargreed
-        ref: "/economy/feargreed"
-      - name: events
-        ref: "/economy/events"
-      - name: overview
-        ref: "/economy/overview"
-      - name: indices
-        ref: "/economy/indices"
-      - name: futures
-        ref: "/economy/futures"
-      - name: usbonds
-        ref: "/economy/usbonds"
-      - name: glbonds
-        ref: "/economy/glbonds"
-      - name: currencies
-        ref: "/economy/currencies"
-      - name: map
-        ref: "/economy/map"
-      - name: valuation
-        ref: "/economy/valuation"
-      - name: performance
-        ref: "/economy/performance"
-      - name: spectrum
-        ref: "/economy/spectrum"
-      - name: rtps
-        ref: "/economy/rtps"
-      - name: search
-        ref: "/economy/search"
-      - name: series
-        ref: "/economy/series"
   - name: options
     ref: "/options"
     sub:
@@ -597,102 +560,6 @@ main:
             ref: "/options/payoff/plot"
           - name: rmv
             ref: "/options/payoff/rmv"
-  - name: etf
-    ref: "/etf"
-    sub:
-      - name: search
-        ref: "/etf/search"
-      - name: overview
-        ref: "/etf/overview"
-      - name: holdings
-        ref: "/etf/holdings"
-      - name: compare
-        ref: "/etf/compare"
-      - name: screener
-        ref: "/etf/screener"
-      - name: gainers
-        ref: "/etf/gainers"
-      - name: decliners
-        ref: "/etf/decliners"
-      - name: active
-        ref: "/etf/active"
-      - name: pir
-        ref: "/etf/pir"
-  - name: portfolio
-    ref: "/portfolio"
-    sub:
-      - name: brokers
-        ref: "/portfolio/brokers"
-        sub:
-          - name: ally
-            ref: "/portfolio/brokers/ally"
-            sub:
-              - name: balances
-                ref: "/portfolio/brokers/ally/balances"
-              - name: history
-                ref: "/portfolio/brokers/ally/history"
-              - name: holdings
-                ref: "/portfolio/brokers/ally/holdings"
-              - name: movers
-                ref: "/portfolio/brokers/ally/movers"
-              - name: quote
-                ref: "/portfolio/brokers/ally/quote"
-          - name: alpaca
-            ref: "/portfolio/brokers/alpaca"
-            sub:
-              - name: history
-                ref: "/portfolio/brokers/alpaca/history"
-              - name: holdings
-                ref: "/portfolio/brokers/alpaca/holdings"
-          - name: coinbase
-            ref: "/portfolio/brokers/coinbase"
-            sub:
-              - name: account
-                ref: "/portfolio/brokers/coinbase/account"
-              - name: deposits
-                ref: "/portfolio/brokers/coinbase/deposits"
-              - name: history
-                ref: "/portfolio/brokers/coinbase/history"
-              - name: orders
-                ref: "/portfolio/brokers/coinbase/orders"
-          - name: robinhood
-            ref: "/portfolio/brokers/robinhood"
-            sub:
-              - name: history
-                ref: "/portfolio/brokers/robinhood/history"
-              - name: holdings
-                ref: "/portfolio/brokers/robinhood/holdings"
-      - name: portfolio analysis
-        ref: "/portfolio/portfolio_analysis"
-      - name: portfolio optimization
-        ref: "/portfolio/portfolio_optimization"
-        sub:
-          - name: select
-            ref: "/portfolio/portfolio_optimization/select"
-          - name: add
-            ref: "/portfolio/portfolio_optimization/add"
-          - name: rmv
-            ref: "/portfolio/portfolio_optimization/rmv"
-          - name: equal
-            ref: "/portfolio/portfolio_optimization/equal"
-          - name: mktcap
-            ref: "/portfolio/portfolio_optimization/mktcap"
-          - name: dividend
-            ref: "/portfolio/portfolio_optimization/dividend"
-          - name: property
-            ref: "/portfolio/portfolio_optimization/property"
-          - name: maxhsarpe
-            ref: "/portfolio/portfolio_optimization/maxsharpe"
-          - name: minvol
-            ref: "/portfolio/portfolio_optimization/minvol"
-          - name: maxquadutil
-            ref: "/portfolio/portfolio_optimization/maxquadutil"
-          - name: effret
-            ref: "/portfolio/portfolio_optimization/effret"
-          - name: effrisk
-            ref: "/portfolio/portfolio_optimization/effrisk"
-          - name: ef
-            ref: "/portfolio/portfolio_optimization/ef"
   - name: cryptocurrency
     ref: "/cryptocurrency"
     sub:
@@ -883,3 +750,136 @@ main:
             ref: "/common/technical_analysis/obv"
           - name: fib
             ref: "/common/technical_analysis/fib"
+  - name: economy
+    ref: "/economy"
+    sub:
+      - name: feargreed
+        ref: "/economy/feargreed"
+      - name: events
+        ref: "/economy/events"
+      - name: overview
+        ref: "/economy/overview"
+      - name: indices
+        ref: "/economy/indices"
+      - name: futures
+        ref: "/economy/futures"
+      - name: usbonds
+        ref: "/economy/usbonds"
+      - name: glbonds
+        ref: "/economy/glbonds"
+      - name: currencies
+        ref: "/economy/currencies"
+      - name: map
+        ref: "/economy/map"
+      - name: valuation
+        ref: "/economy/valuation"
+      - name: performance
+        ref: "/economy/performance"
+      - name: spectrum
+        ref: "/economy/spectrum"
+      - name: rtps
+        ref: "/economy/rtps"
+      - name: search
+        ref: "/economy/search"
+      - name: series
+        ref: "/economy/series"
+  - name: etf
+    ref: "/etf"
+    sub:
+      - name: search
+        ref: "/etf/search"
+      - name: overview
+        ref: "/etf/overview"
+      - name: holdings
+        ref: "/etf/holdings"
+      - name: compare
+        ref: "/etf/compare"
+      - name: screener
+        ref: "/etf/screener"
+      - name: gainers
+        ref: "/etf/gainers"
+      - name: decliners
+        ref: "/etf/decliners"
+      - name: active
+        ref: "/etf/active"
+      - name: pir
+        ref: "/etf/pir"
+  - name: portfolio
+    ref: "/portfolio"
+    sub:
+      - name: brokers
+        ref: "/portfolio/brokers"
+        sub:
+          - name: ally
+            ref: "/portfolio/brokers/ally"
+            sub:
+              - name: balances
+                ref: "/portfolio/brokers/ally/balances"
+              - name: history
+                ref: "/portfolio/brokers/ally/history"
+              - name: holdings
+                ref: "/portfolio/brokers/ally/holdings"
+              - name: movers
+                ref: "/portfolio/brokers/ally/movers"
+              - name: quote
+                ref: "/portfolio/brokers/ally/quote"
+          - name: alpaca
+            ref: "/portfolio/brokers/alpaca"
+            sub:
+              - name: history
+                ref: "/portfolio/brokers/alpaca/history"
+              - name: holdings
+                ref: "/portfolio/brokers/alpaca/holdings"
+          - name: coinbase
+            ref: "/portfolio/brokers/coinbase"
+            sub:
+              - name: account
+                ref: "/portfolio/brokers/coinbase/account"
+              - name: deposits
+                ref: "/portfolio/brokers/coinbase/deposits"
+              - name: history
+                ref: "/portfolio/brokers/coinbase/history"
+              - name: orders
+                ref: "/portfolio/brokers/coinbase/orders"
+          - name: robinhood
+            ref: "/portfolio/brokers/robinhood"
+            sub:
+              - name: history
+                ref: "/portfolio/brokers/robinhood/history"
+              - name: holdings
+                ref: "/portfolio/brokers/robinhood/holdings"
+      - name: portfolio analysis
+        ref: "/portfolio/portfolio_analysis"
+      - name: portfolio optimization
+        ref: "/portfolio/portfolio_optimization"
+        sub:
+          - name: select
+            ref: "/portfolio/portfolio_optimization/select"
+          - name: add
+            ref: "/portfolio/portfolio_optimization/add"
+          - name: rmv
+            ref: "/portfolio/portfolio_optimization/rmv"
+          - name: equal
+            ref: "/portfolio/portfolio_optimization/equal"
+          - name: mktcap
+            ref: "/portfolio/portfolio_optimization/mktcap"
+          - name: dividend
+            ref: "/portfolio/portfolio_optimization/dividend"
+          - name: property
+            ref: "/portfolio/portfolio_optimization/property"
+          - name: maxhsarpe
+            ref: "/portfolio/portfolio_optimization/maxsharpe"
+          - name: minvol
+            ref: "/portfolio/portfolio_optimization/minvol"
+          - name: maxquadutil
+            ref: "/portfolio/portfolio_optimization/maxquadutil"
+          - name: effret
+            ref: "/portfolio/portfolio_optimization/effret"
+          - name: effrisk
+            ref: "/portfolio/portfolio_optimization/effrisk"
+          - name: ef
+            ref: "/portfolio/portfolio_optimization/ef"
+  - name: forex
+    ref: "/forex"
+  - name: resources
+    ref: "/resources"
