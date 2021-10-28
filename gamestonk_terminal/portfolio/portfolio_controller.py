@@ -17,6 +17,7 @@ from gamestonk_terminal.helper_funcs import (
     MENU_GO_BACK,
     MENU_QUIT,
     MENU_RESET,
+    try_except,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers import bro_controller
@@ -183,6 +184,7 @@ Graphs:
         else:
             return True
 
+    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         path = os.path.dirname(os.path.abspath(__file__))
@@ -210,12 +212,10 @@ Graphs:
         if not ns_parser:
             return
 
-        try:
-            self.portfolio = portfolio_model.load_df(ns_parser.name)
-            print("")
-        except Exception as e:
-            print(e, "\n")
+        self.portfolio = portfolio_model.load_df(ns_parser.name)
+        print("")
 
+    @try_except
     def call_save(self, other_args: List[str]):
         """Process save command"""
         parser = argparse.ArgumentParser(
@@ -248,10 +248,7 @@ Graphs:
                 "Please submit as 'filename.filetype' with filetype being csv, xlsx, or json\n"
             )
 
-        try:
-            portfolio_model.save_df(self.portfolio, ns_parser.name)
-        except Exception as e:
-            print(e, "\n")
+        portfolio_model.save_df(self.portfolio, ns_parser.name)
 
     def call_show(self, _):
         """Process show command"""
@@ -371,6 +368,7 @@ Graphs:
                 f"Invalid index please use an integer between 0 and {len(self.portfolio.index)-1}\n"
             )
 
+    @try_except
     def call_ar(self, other_args: List[str]):
         """Process ar command"""
         parser = argparse.ArgumentParser(
@@ -396,12 +394,10 @@ Graphs:
             print("Please add items to the portfolio\n")
             return
 
-        try:
-            val, hist = portfolio_model.generate_performance(self.portfolio)
-            portfolio_view.annual_report(val, hist, ns_parser.market)
-        except Exception as e:
-            print(e, "\n")
+        val, hist = portfolio_model.generate_performance(self.portfolio)
+        portfolio_view.annual_report(val, hist, ns_parser.market)
 
+    @try_except
     def call_ret(self, other_args: List[str]):
         """Process ret command"""
         parser = argparse.ArgumentParser(
@@ -423,12 +419,9 @@ Graphs:
         if not ns_parser:
             return
 
-        try:
-            val, _ = portfolio_model.generate_performance(self.portfolio)
-            df_m = yfinance_model.get_market(ns_parser.market)
-            portfolio_view.plot_overall_return(val, df_m, 365, ns_parser.market, True)
-        except Exception as e:
-            print(e, "\n")
+        val, _ = portfolio_model.generate_performance(self.portfolio)
+        df_m = yfinance_model.get_market(ns_parser.market)
+        portfolio_view.plot_overall_return(val, df_m, 365, ns_parser.market, True)
 
 
 def menu():

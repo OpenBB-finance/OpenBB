@@ -75,7 +75,7 @@ The fact that this is an Open Source project makes the possibilities of contribu
 The following layout is expected: `/<context>/<category>/<command_files>`
 
 If there are sub-categories, the layout will be: `/<context>/<category>/<sub-category>/<command_files>`
-    
+
 **Example:**
 ```
 gamestonk_terminal/stocks/stocks_controller.py
@@ -103,18 +103,18 @@ With:
 
 |**Context**|**Category**|**File**|**Description**|
 |:-|:-|:-|:-|
-|`stocks/`|  | `stocks_controller.py` | Manages **stocks** _context_ from a user perspective, i.e. routing _commands_ and arguments to output data, or, more importantly, redirecting to the selected _category_.  | 
-|`stocks/`|  | `stocks_helper.py` | Helper to `stocks_controller.py`. This file is meant to implement `commands` needed by `stocks_controller.py` | 
-|`stocks/`| `due_diligence/` | `dd_controller.py` | Manages **due_diligence** _category_ from **stocks** _context_ from a user perspective, i.e. routing _commands_ and arguments to output data. | 
-|`stocks/`| `due_diligence/` | `marketwatch_view.py` | This file contains functions that rely on **Market Watch** data. These functions represent _commands_ that belong to **due_diligence** _category_ from **stocks** _context_. These functions are called by `dd_controller.py` using the arguments given by the user and will output either a string, table or plot. | 
-|`stocks/`| `due_diligence/` | `marketwatch_model.py` | This file contains functions that rely on **Market Watch** data. These functions represent _commands_ that belong to **due_diligence** _category_ from **stocks** _context_. These functions are called by `marketwatch_view.py` and will return data to be processed in either a string, dictionary or dataframe format. | 
-|`stocks/`| `due_diligence/` | `finviz_view.py` | This file contains functions that rely on **Finviz** data. These functions represent _commands_ that belong to **due_diligence** _category_ from **stocks** _context_. These functions are called by `dd_controller.py` using the arguments given by the user and will output either a string, table or plot. | 
-|`stocks/`| `due_diligence/` | `finviz_model.py` | This file contains functions that rely on **Finviz** data. These functions represent _commands_ that belong to **due_diligence** _category_ from **stocks** _context_. These functions are called by `finviz_view.py` and will return data to be processed in either a string, dictionary or dataframe format. | 
-|`stocks/`| `technical_analysis/` | `ta_controller.py` | Manages **technical_analysis** _category_ from **stocks** _context_ from a user perspective, i.e. routing _commands_ and arguments to output data. | 
-|`stocks/`| `technical_analysis/` | `tradingview_view.py` | This file contains functions that rely on **TradingView** data. These functions represent _commands_ that belong to **technical_analysis** _category_ from **stocks** _context_. These functions are called by `ta_controller.py` using the arguments given by the user and will output either a string, table or plot. | 
-|`stocks/`| `technical_analysis/` | `tradingview_model.py` | This file contains functions that rely on **TradingView** data. These functions represent _commands_ that belong to **technical_analysis** _category_ from **stocks** _context_. These functions are called by `tradingview_view.py` and will return data to be processed in either a string, dictionary or dataframe format. | 
-|`common/`| `technical_analysis/` | `overlap_view.py` | This file contains functions that rely on **overlap** data. In this case **overlap** is not a data source, but the type of technical analysis performed. These functions represent _commands_ that belong to **technical_analysis** _category_ from **MULTIPLE** _contexts_. These functions are called by `ta_controller.py`, from **MULTIPLE** _contexts_, using the arguments given by the user and will output either a string, table or plot. Due to the fact that this file is **common** to multiple _contexts_ the functions need to be generic enough to accomodate for this. E.g. if we are proving a dataframe to these functions, we should make sure that `stocks/ta_controller.py` and `crypto/ta_controller` use the same formatting. | 
-|`common/`| `technical_analysis/` | `overlap_model.py` | This file contains functions that rely on **overlap** data. In this case **overlap** is not a data source, but the type of technical analysis performed. These functions represent _commands_ that belong to **technical_analysis** _category_ from **MULTIPLE** _contexts_. These functions are called by `overlap_view.py`, and will return data to be processed in either a string, dictionary or dataframe format. Due to the fact that this file is **common** to multiple _contexts_ the functions need to be generic enough to accomodate for this. E.g. if we are getting the sentiment of an instrument, we  should ensure that these functions accept both a "GME" or a "BTC", for `stocks` and `crypto`, respectively. | 
+|`stocks/`|  | `stocks_controller.py` | Manages **stocks** _context_ from a user perspective, i.e. routing _commands_ and arguments to output data, or, more importantly, redirecting to the selected _category_.  |
+|`stocks/`|  | `stocks_helper.py` | Helper to `stocks_controller.py`. This file is meant to implement `commands` needed by `stocks_controller.py` |
+|`stocks/`| `due_diligence/` | `dd_controller.py` | Manages **due_diligence** _category_ from **stocks** _context_ from a user perspective, i.e. routing _commands_ and arguments to output data. |
+|`stocks/`| `due_diligence/` | `marketwatch_view.py` | This file contains functions that rely on **Market Watch** data. These functions represent _commands_ that belong to **due_diligence** _category_ from **stocks** _context_. These functions are called by `dd_controller.py` using the arguments given by the user and will output either a string, table or plot. |
+|`stocks/`| `due_diligence/` | `marketwatch_model.py` | This file contains functions that rely on **Market Watch** data. These functions represent _commands_ that belong to **due_diligence** _category_ from **stocks** _context_. These functions are called by `marketwatch_view.py` and will return data to be processed in either a string, dictionary or dataframe format. |
+|`stocks/`| `due_diligence/` | `finviz_view.py` | This file contains functions that rely on **Finviz** data. These functions represent _commands_ that belong to **due_diligence** _category_ from **stocks** _context_. These functions are called by `dd_controller.py` using the arguments given by the user and will output either a string, table or plot. |
+|`stocks/`| `due_diligence/` | `finviz_model.py` | This file contains functions that rely on **Finviz** data. These functions represent _commands_ that belong to **due_diligence** _category_ from **stocks** _context_. These functions are called by `finviz_view.py` and will return data to be processed in either a string, dictionary or dataframe format. |
+|`stocks/`| `technical_analysis/` | `ta_controller.py` | Manages **technical_analysis** _category_ from **stocks** _context_ from a user perspective, i.e. routing _commands_ and arguments to output data. |
+|`stocks/`| `technical_analysis/` | `tradingview_view.py` | This file contains functions that rely on **TradingView** data. These functions represent _commands_ that belong to **technical_analysis** _category_ from **stocks** _context_. These functions are called by `ta_controller.py` using the arguments given by the user and will output either a string, table or plot. |
+|`stocks/`| `technical_analysis/` | `tradingview_model.py` | This file contains functions that rely on **TradingView** data. These functions represent _commands_ that belong to **technical_analysis** _category_ from **stocks** _context_. These functions are called by `tradingview_view.py` and will return data to be processed in either a string, dictionary or dataframe format. |
+|`common/`| `technical_analysis/` | `overlap_view.py` | This file contains functions that rely on **overlap** data. In this case **overlap** is not a data source, but the type of technical analysis performed. These functions represent _commands_ that belong to **technical_analysis** _category_ from **MULTIPLE** _contexts_. These functions are called by `ta_controller.py`, from **MULTIPLE** _contexts_, using the arguments given by the user and will output either a string, table or plot. Due to the fact that this file is **common** to multiple _contexts_ the functions need to be generic enough to accommodate for this. E.g. if we are proving a dataframe to these functions, we should make sure that `stocks/ta_controller.py` and `crypto/ta_controller` use the same formatting. |
+|`common/`| `technical_analysis/` | `overlap_model.py` | This file contains functions that rely on **overlap** data. In this case **overlap** is not a data source, but the type of technical analysis performed. These functions represent _commands_ that belong to **technical_analysis** _category_ from **MULTIPLE** _contexts_. These functions are called by `overlap_view.py`, and will return data to be processed in either a string, dictionary or dataframe format. Due to the fact that this file is **common** to multiple _contexts_ the functions need to be generic enough to accommodate for this. E.g. if we are getting the sentiment of an instrument, we  should ensure that these functions accept both a "GME" or a "BTC", for `stocks` and `crypto`, respectively. |
 
 
 ## Follow Coding Guidelines
@@ -166,7 +166,7 @@ Note: As explained before, it is possible that this file needs to be created und
 5. In this function:
   1. Use typing hints
   2. Write a descriptive description where at the end the source is specified
-  3. Get the data from the `_model` and parse it to be output in a more meaningful way. 
+  3. Get the data from the `_model` and parse it to be output in a more meaningful way.
   4. Ensure that the data that comes through is reasonable, i.e. at least that we aren't displaying an empty dataframe.
   5. Do not degrade the main data dataframe coming from model if there's an export flag. This is so that the export can have all the data rather than the short amount of information we may show to the user. Thus, in order to do so `df_data = df.copy()` can be useful as if you change `df_data`, `df` remains intact.
   6. Always add a new line at the end, this allows for an additional line between 2 commands and makes it easier for the user to visualize what is happening.
@@ -238,6 +238,7 @@ Yahoo Finance:
    5. Parse known args from list of arguments and values provided by the user.
    6. Call the function contained in a `_view.py` file with the arguments parsed by argparse.
 ```
+@try_except
 def call_shorted(self, other_args: List[str]):
         """Process shorted command"""
         parser = argparse.ArgumentParser(
@@ -263,22 +264,19 @@ def call_shorted(self, other_args: List[str]):
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+          if other_args:
+              if "-" not in other_args[0]:
+                  other_args.insert(0, "-n")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+          ns_parser = parse_known_args_and_warn(parser, other_args)
+          if not ns_parser:
+              return
 
-            yahoofinance_view.display_most_shorted(
-                num_stocks=ns_parser.num,
-                export=ns_parser.export,
-            )
+          yahoofinance_view.display_most_shorted(
+              num_stocks=ns_parser.num,
+              export=ns_parser.export,
+          )
 
-        except Exception as e:
-            print(e, "\n")
 ```
 
 
@@ -346,7 +344,7 @@ Install the pre-commit hooks by running: `pre-commit install`.
 
 #### Coding
 
-Although the Coding Guidelines section has been already explained. It is worth mentioning that if you want to be faster at developing a new feature, you may implement it first on a `jupyter notebook` and then carry it accross to the terminal. This is mostly useful when the feature relies on scraping data from a website, or implementing a Neural Network model.
+Although the Coding Guidelines section has been already explained. It is worth mentioning that if you want to be faster at developing a new feature, you may implement it first on a `jupyter notebook` and then carry it across to the terminal. This is mostly useful when the feature relies on scraping data from a website, or implementing a Neural Network model.
 
 #### Git Process
 
@@ -428,9 +426,9 @@ Past and future IPOs. [Source: https://finnhub.io]
 * -f : Number of future days to look for IPOs. Default 10.
 
 <IMAGE HERE - Use drag and drop hint mentioned above>
- 
+
 ---
- 
+
 3. Update the Navigation bar to match the content you've added. This is done by adding 2 lines of code to `website/data/menu/`, i.e. a `name` and a `ref`. Example:
 
 ```
@@ -492,6 +490,6 @@ A label **must** be selected from the following types:
 
 As soon as the Pull Request is opened, our repository has a specific set of github actions that will not only run linters on the branch just pushed, but also run pytest on it. This allows for another layer of safety on the code developed.
 
-In addition, our team is known for performing `diligent` code reviews. This not only allows us to reduce the amount of iterations on that code and have it to be more future proof, but also allows the developer to learn/improve his coding skills. 
+In addition, our team is known for performing `diligent` code reviews. This not only allows us to reduce the amount of iterations on that code and have it to be more future proof, but also allows the developer to learn/improve his coding skills.
 
 Often in the past the reviewers have suggested better coding practices, e.g. using `1_000_000` instead of `1000000` for better visibility, or suggesting a speed optimization improvement.
