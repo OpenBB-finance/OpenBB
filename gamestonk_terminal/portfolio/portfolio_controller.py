@@ -395,7 +395,8 @@ Graphs:
             return
 
         val, hist = portfolio_model.generate_performance(self.portfolio)
-        portfolio_view.annual_report(val, hist, ns_parser.market)
+        if not val.empty:
+            portfolio_view.annual_report(val, hist, ns_parser.market)
 
     @try_except
     def call_ret(self, other_args: List[str]):
@@ -420,8 +421,9 @@ Graphs:
             return
 
         val, _ = portfolio_model.generate_performance(self.portfolio)
-        df_m = yfinance_model.get_market(ns_parser.market)
-        portfolio_view.plot_overall_return(val, df_m, 365, ns_parser.market, True)
+        if not val.empty:
+            df_m = yfinance_model.get_market(ns_parser.market)
+            portfolio_view.plot_overall_return(val, df_m, 365, ns_parser.market, True)
 
 
 def menu():

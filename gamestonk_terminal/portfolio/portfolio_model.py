@@ -94,6 +94,8 @@ def generate_performance(portfolio: pd.DataFrame) -> pd.DataFrame:
     changes = portfolio.copy()
     # Transactions sorted for only stocks
     cashes = changes[changes["Type"] == "cash"]
+    if cashes.empty:
+        raise ValueError("Brokers require cash, input cash deposits")
     changes = changes[changes["Type"] == "stock"]
     uniques = list(set(changes["Name"].tolist()))
     if uniques:
@@ -112,6 +114,7 @@ def generate_performance(portfolio: pd.DataFrame) -> pd.DataFrame:
     tuples = list(zip(*arrays))
     headers = pd.MultiIndex.from_tuples(tuples, names=["first", "second"])
     log = pd.DataFrame(data, columns=headers, index=days)
+    log[("Cash", "User")] = 0
 
     for index, _ in log.iterrows():
         # Add stocks to dataframe
@@ -182,8 +185,12 @@ def generate_performance(portfolio: pd.DataFrame) -> pd.DataFrame:
                 log.at[index, ("Cash", "Cash")] = (
                     log.at[index, ("Cash", "Cash")] + d * amount
                 )
+                log.at[index, ("Cash", "User")] = (
+                    log.at[index, ("Cash", "User")] + d * amount
+                )
 
     log[("Cash", "Cash")] = log[("Cash", "Cash")].cumsum()
+    log[("Cash", "User")] = log[("Cash", "User")].cumsum()
 
     comb = pd.merge(log, hist, how="left", left_index=True, right_index=True)
     comb = comb.fillna(method="ffill")
@@ -196,11 +203,13 @@ def generate_performance(portfolio: pd.DataFrame) -> pd.DataFrame:
         comb[("Cash", "Cash")] = comb[("Cash", "Cash")] + (
             comb[("Quantity", uni)] * comb[("Dividend", uni)]
         )
-        comb[("Holding", uni)] = comb[("Quantity", uni)] * comb[("Close", uni)]
-        comb[("Holding", uni)] = np.where(
-            comb[("Quantity", uni)] > 0,
-            comb[("Holding", uni)],
-            (2 * comb[("Holding", uni)][0] - comb[("Holding", uni)]),
+        comb[("Holding", uni)] = (
+            np.where(
+                comb[("Quantity", uni)] > 0,
+                comb[("Close", uni)],
+                (2 * comb[("Close", uni)][0] - comb[("Close", uni)]),
+            )
+            * comb[("Quantity", uni)]
         )
         comb[("Profit", uni)] = comb[("Profit", uni)].cumsum()
 

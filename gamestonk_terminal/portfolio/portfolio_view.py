@@ -94,15 +94,21 @@ def plot_overall_return(
     comb = pd.merge(df, df_m, how="left", left_index=True, right_index=True)
     comb = comb.fillna(method="ffill")
     comb = comb.dropna()
+    comb[("Cash", "WA")] = comb[("Cash", "Cash")].expanding().mean()
+    pd.set_option("display.max_rows", None)
+    print(comb)
     comb["return"] = (
-        (0 if "holdings" not in comb.columns else comb["holdings"])
-        + comb["Cash"]["Cash"]
-        - (0 if "holdings" not in comb.columns else comb["holdings"][0])
-        - comb["Cash"]["Cash"][0]
+        (
+            0
+            if "holdings" not in comb.columns
+            else comb["holdings"] - comb["holdings"][0]
+        )
+        + (comb["Cash"]["Cash"] - comb["Cash"]["Cash"][0])
+        - (comb["Cash"]["User"] - comb["Cash"]["User"][0])
     ) / (
-        comb["Cash"]["Cash"][0]
+        comb["Cash"]["WA"]
         + (0 if "holdings" not in comb.columns else comb["holdings"][0])
-    )  # + comb["total_cost"][0]
+    )
 
     comb[("Market", "Return")] = (
         comb[("Market", "Close")] - comb[("Market", "Close")][0]
