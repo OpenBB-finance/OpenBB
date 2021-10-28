@@ -10,6 +10,7 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     check_positive,
+    try_except,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.overview import (
@@ -147,6 +148,7 @@ Coinbase:
         """Process Quit command - quit the program."""
         return True
 
+    @try_except
     def call_cghold(self, other_args):
         """Process hold command"""
         parser = argparse.ArgumentParser(
@@ -179,17 +181,14 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            pycoingecko_view.display_holdings_overview(
-                coin=ns_parser.coin, export=ns_parser.export
-            )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        pycoingecko_view.display_holdings_overview(
+            coin=ns_parser.coin, export=ns_parser.export
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cgcompanies(self, other_args):
         """Process companies command"""
         parser = argparse.ArgumentParser(
@@ -232,18 +231,15 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            pycoingecko_view.display_holdings_companies_list(
-                coin=ns_parser.coin, export=ns_parser.export, links=ns_parser.links
-            )
+        pycoingecko_view.display_holdings_companies_list(
+            coin=ns_parser.coin, export=ns_parser.export, links=ns_parser.links
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cgnews(self, other_args):
         """Process news command"""
         parser = argparse.ArgumentParser(
@@ -301,21 +297,18 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            pycoingecko_view.display_news(
-                top=ns_parser.top,
-                export=ns_parser.export,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                links=ns_parser.links,
-            )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        pycoingecko_view.display_news(
+            top=ns_parser.top,
+            export=ns_parser.export,
+            sortby=ns_parser.sortby,
+            descend=ns_parser.descend,
+            links=ns_parser.links,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cgcategories(self, other_args):
         """Process top_categories command"""
         parser = argparse.ArgumentParser(
@@ -383,21 +376,18 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            pycoingecko_view.display_categories(
-                top=ns_parser.top,
-                export=ns_parser.export,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                links=ns_parser.links,
-            )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        pycoingecko_view.display_categories(
+            top=ns_parser.top,
+            export=ns_parser.export,
+            sortby=ns_parser.sortby,
+            descend=ns_parser.descend,
+            links=ns_parser.links,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cgstables(self, other_args):
         """Process stables command"""
         parser = argparse.ArgumentParser(
@@ -467,22 +457,19 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            pycoingecko_view.display_stablecoins(
-                top=ns_parser.top,
-                export=ns_parser.export,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                links=ns_parser.links,
-            )
+        pycoingecko_view.display_stablecoins(
+            top=ns_parser.top,
+            export=ns_parser.export,
+            sortby=ns_parser.sortby,
+            descend=ns_parser.descend,
+            links=ns_parser.links,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cgnft(self, other_args):
         """Process nft command"""
 
@@ -506,16 +493,13 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            pycoingecko_view.display_nft_market_status(export=ns_parser.export)
+        pycoingecko_view.display_nft_market_status(export=ns_parser.export)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cgnftday(self, other_args):
         """Process nftday command"""
         parser = argparse.ArgumentParser(
@@ -538,16 +522,13 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            pycoingecko_view.display_nft_of_the_day(export=ns_parser.export)
+        pycoingecko_view.display_nft_of_the_day(export=ns_parser.export)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cgproducts(self, other_args):
         """Process products command"""
         parser = argparse.ArgumentParser(
@@ -603,21 +584,18 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            pycoingecko_view.display_products(
-                top=ns_parser.top,
-                export=ns_parser.export,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-            )
+        pycoingecko_view.display_products(
+            top=ns_parser.top,
+            export=ns_parser.export,
+            sortby=ns_parser.sortby,
+            descend=ns_parser.descend,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cgplatforms(self, other_args):
         """Process platforms command"""
         parser = argparse.ArgumentParser(
@@ -668,21 +646,18 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            pycoingecko_view.display_platforms(
-                top=ns_parser.top,
-                export=ns_parser.export,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-            )
+        pycoingecko_view.display_platforms(
+            top=ns_parser.top,
+            export=ns_parser.export,
+            sortby=ns_parser.sortby,
+            descend=ns_parser.descend,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cgexchanges(self, other_args):
         """Process exchanges command"""
         parser = argparse.ArgumentParser(
@@ -749,22 +724,19 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            pycoingecko_view.display_exchanges(
-                top=ns_parser.top,
-                export=ns_parser.export,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                links=ns_parser.links,
-            )
+        pycoingecko_view.display_exchanges(
+            top=ns_parser.top,
+            export=ns_parser.export,
+            sortby=ns_parser.sortby,
+            descend=ns_parser.descend,
+            links=ns_parser.links,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cgexrates(self, other_args):
         """Process exchange_rates command"""
         parser = argparse.ArgumentParser(
@@ -813,20 +785,17 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            pycoingecko_view.display_exchange_rates(
-                sortby=ns_parser.sortby,
-                top=ns_parser.top,
-                descend=ns_parser.descend,
-                export=ns_parser.export,
-            )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        pycoingecko_view.display_exchange_rates(
+            sortby=ns_parser.sortby,
+            top=ns_parser.top,
+            descend=ns_parser.descend,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cgindexes(self, other_args):
         """Process indexes command"""
         parser = argparse.ArgumentParser(
@@ -878,21 +847,18 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            pycoingecko_view.display_indexes(
-                top=ns_parser.top,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                export=ns_parser.export,
-            )
+        pycoingecko_view.display_indexes(
+            top=ns_parser.top,
+            sortby=ns_parser.sortby,
+            descend=ns_parser.descend,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cgderivatives(self, other_args):
         """Process derivatives command"""
         parser = argparse.ArgumentParser(
@@ -957,20 +923,17 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            pycoingecko_view.display_derivatives(
-                top=ns_parser.top,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                export=ns_parser.export,
-            )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        pycoingecko_view.display_derivatives(
+            top=ns_parser.top,
+            sortby=ns_parser.sortby,
+            descend=ns_parser.descend,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cgglobal(self, other_args):
         """Process global command"""
         parser = argparse.ArgumentParser(
@@ -989,16 +952,13 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            pycoingecko_view.display_global_market_info(export=ns_parser.export)
+        pycoingecko_view.display_global_market_info(export=ns_parser.export)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cgdefi(self, other_args):
         """Process defi command"""
         parser = argparse.ArgumentParser(
@@ -1021,16 +981,13 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            pycoingecko_view.display_global_defi_info(export=ns_parser.export)
+        pycoingecko_view.display_global_defi_info(export=ns_parser.export)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cpglobal(self, other_args):
         """Process global command"""
 
@@ -1051,16 +1008,13 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            coinpaprika_view.display_global_market(export=ns_parser.export)
+        coinpaprika_view.display_global_market(export=ns_parser.export)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cpmarkets(self, other_args):
         """Process markets command"""
         parser = argparse.ArgumentParser(
@@ -1133,22 +1087,19 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            coinpaprika_view.display_all_coins_market_info(
-                currency=ns_parser.vs,
-                top=ns_parser.top,
-                descend=ns_parser.descend,
-                export=ns_parser.export,
-                sortby=ns_parser.sortby,
-            )
+        coinpaprika_view.display_all_coins_market_info(
+            currency=ns_parser.vs,
+            top=ns_parser.top,
+            descend=ns_parser.descend,
+            export=ns_parser.export,
+            sortby=ns_parser.sortby,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cpexmarkets(self, other_args):
         """Process exmarkets command"""
         parser = argparse.ArgumentParser(
@@ -1228,23 +1179,20 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            coinpaprika_view.display_exchange_markets(
-                exchange=ns_parser.exchange,
-                top=ns_parser.top,
-                export=ns_parser.export,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                links=ns_parser.links,
-            )
+        coinpaprika_view.display_exchange_markets(
+            exchange=ns_parser.exchange,
+            top=ns_parser.top,
+            export=ns_parser.export,
+            sortby=ns_parser.sortby,
+            descend=ns_parser.descend,
+            links=ns_parser.links,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cpinfo(self, other_args):
         """Process info command"""
         parser = argparse.ArgumentParser(
@@ -1318,21 +1266,18 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            coinpaprika_view.display_all_coins_info(
-                currency=ns_parser.vs,
-                top=ns_parser.top,
-                descend=ns_parser.descend,
-                sortby=ns_parser.sortby,
-                export=ns_parser.export,
-            )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        coinpaprika_view.display_all_coins_info(
+            currency=ns_parser.vs,
+            top=ns_parser.top,
+            descend=ns_parser.descend,
+            sortby=ns_parser.sortby,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cpexchanges(self, other_args):
         """Process coins_market command"""
         parser = argparse.ArgumentParser(
@@ -1405,21 +1350,18 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            coinpaprika_view.display_all_exchanges(
-                currency=ns_parser.vs,
-                top=ns_parser.top,
-                descend=ns_parser.descend,
-                sortby=ns_parser.sortby,
-                export=ns_parser.export,
-            )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        coinpaprika_view.display_all_exchanges(
+            currency=ns_parser.vs,
+            top=ns_parser.top,
+            descend=ns_parser.descend,
+            sortby=ns_parser.sortby,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cpplatforms(self, other_args):
         """Process platforms command"""
         parser = argparse.ArgumentParser(
@@ -1438,15 +1380,12 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            coinpaprika_view.display_all_platforms(export=ns_parser.export)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        coinpaprika_view.display_all_platforms(export=ns_parser.export)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cpcontracts(self, other_args):
         """Process contracts command"""
         platforms = get_all_contract_platforms()["platform_id"].tolist()
@@ -1512,22 +1451,19 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            coinpaprika_view.display_contracts(
-                platform=ns_parser.platform,
-                top=ns_parser.top,
-                descend=ns_parser.descend,
-                sortby=ns_parser.sortby,
-                export=ns_parser.export,
-            )
+        coinpaprika_view.display_contracts(
+            platform=ns_parser.platform,
+            top=ns_parser.top,
+            descend=ns_parser.descend,
+            sortby=ns_parser.sortby,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cbpairs(self, other_args):
         """Process news command"""
         parser = argparse.ArgumentParser(
@@ -1582,20 +1518,16 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            coinbase_view.display_trading_pairs(
-                top=ns_parser.top,
-                export=ns_parser.export,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-            )
-
-        except Exception as e:
-            print(e, "\n")
+        coinbase_view.display_trading_pairs(
+            top=ns_parser.top,
+            export=ns_parser.export,
+            sortby=ns_parser.sortby,
+            descend=ns_parser.descend,
+        )
 
 
 def menu():

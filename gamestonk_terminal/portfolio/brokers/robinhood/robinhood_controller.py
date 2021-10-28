@@ -14,6 +14,7 @@ from gamestonk_terminal.portfolio.brokers.robinhood import (
 from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
+    try_except,
 )
 
 valid_span = ["day", "week", "month", "3month", "year", "5year", "all"]
@@ -113,6 +114,7 @@ Robinhood:
         """Process login"""
         robinhood_model.login()
 
+    @try_except
     def call_holdings(self, other_args: List[str]):
         """Process holdings command"""
         parser = argparse.ArgumentParser(
@@ -129,14 +131,12 @@ Robinhood:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            robinhood_view.display_holdings(export=ns_parser.export)
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        robinhood_view.display_holdings(export=ns_parser.export)
 
+    @try_except
     def call_history(self, other_args: List[str]):
         """Process history command"""
         parser = argparse.ArgumentParser(
@@ -171,17 +171,14 @@ Robinhood:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            robinhood_view.display_historical(
-                interval=ns_parser.interval,
-                span=ns_parser.span,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        robinhood_view.display_historical(
+            interval=ns_parser.interval,
+            span=ns_parser.span,
+            export=ns_parser.export,
+        )
 
 
 def menu():

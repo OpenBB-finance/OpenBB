@@ -15,6 +15,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    try_except,
 )
 from gamestonk_terminal.menu import session
 
@@ -133,6 +134,7 @@ Financial Modeling Prep:
         """Process Quit command - quit the program"""
         return True
 
+    @try_except
     def call_profile(self, other_args: List[str]):
         """Process profile command"""
         parser = argparse.ArgumentParser(
@@ -148,14 +150,12 @@ Financial Modeling Prep:
                 [Source: Financial Modeling Prep]
             """,
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            fmp_view.display_profile(self.ticker)
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        fmp_view.display_profile(self.ticker)
 
+    @try_except
     def call_quote(self, other_args: List[str]):
         """Process quote command"""
         parser = argparse.ArgumentParser(
@@ -171,14 +171,12 @@ Financial Modeling Prep:
                 low. [Source: Financial Modeling Prep]
             """,
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            fmp_view.display_quote(self.ticker)
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        fmp_view.display_quote(self.ticker)
 
+    @try_except
     def call_enterprise(self, other_args: List[str]):
         """Process income command"""
         parser = argparse.ArgumentParser(
@@ -209,24 +207,20 @@ Financial Modeling Prep:
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if not ns_parser:
+            return
 
-        try:
+        fmp_view.display_enterprise(
+            ticker=self.ticker,
+            number=ns_parser.n_num,
+            quarterly=ns_parser.b_quarter,
+            export=ns_parser.export,
+        )
 
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
-            if not ns_parser:
-                return
-
-            fmp_view.display_enterprise(
-                ticker=self.ticker,
-                number=ns_parser.n_num,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_dcf(self, other_args: List[str]):
         """Process dcf command"""
         parser = argparse.ArgumentParser(
@@ -256,21 +250,19 @@ Financial Modeling Prep:
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
-            if not ns_parser:
-                return
-            fmp_view.display_discounted_cash_flow(
-                ticker=self.ticker,
-                number=ns_parser.n_num,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if not ns_parser:
+            return
+        fmp_view.display_discounted_cash_flow(
+            ticker=self.ticker,
+            number=ns_parser.n_num,
+            quarterly=ns_parser.b_quarter,
+            export=ns_parser.export,
+        )
 
+    @try_except
     def call_income(self, other_args: List[str]):
         """Process income command"""
         parser = argparse.ArgumentParser(
@@ -306,21 +298,19 @@ Financial Modeling Prep:
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
-            if not ns_parser:
-                return
-            fmp_view.display_income_statement(
-                ticker=self.ticker,
-                number=ns_parser.n_num,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if not ns_parser:
+            return
+        fmp_view.display_income_statement(
+            ticker=self.ticker,
+            number=ns_parser.n_num,
+            quarterly=ns_parser.b_quarter,
+            export=ns_parser.export,
+        )
 
+    @try_except
     def call_balance(self, other_args: List[str]):
         """Process balance command"""
         parser = argparse.ArgumentParser(
@@ -361,21 +351,19 @@ Financial Modeling Prep:
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
-            if not ns_parser:
-                return
-            fmp_view.display_balance_sheet(
-                ticker=self.ticker,
-                number=ns_parser.n_num,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if not ns_parser:
+            return
+        fmp_view.display_balance_sheet(
+            ticker=self.ticker,
+            number=ns_parser.n_num,
+            quarterly=ns_parser.b_quarter,
+            export=ns_parser.export,
+        )
 
+    @try_except
     def call_cash(self, other_args: List[str]):
         """Process cash command"""
         parser = argparse.ArgumentParser(
@@ -414,21 +402,19 @@ Financial Modeling Prep:
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
-            if not ns_parser:
-                return
-            fmp_view.display_cash_flow(
-                ticker=self.ticker,
-                number=ns_parser.n_num,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if not ns_parser:
+            return
+        fmp_view.display_cash_flow(
+            ticker=self.ticker,
+            number=ns_parser.n_num,
+            quarterly=ns_parser.b_quarter,
+            export=ns_parser.export,
+        )
 
+    @try_except
     def call_metrics(self, other_args: List[str]):
         """Process metrics command"""
         parser = argparse.ArgumentParser(
@@ -472,21 +458,19 @@ Financial Modeling Prep:
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
-            if not ns_parser:
-                return
-            fmp_view.display_key_metrics(
-                ticker=self.ticker,
-                number=ns_parser.n_num,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if not ns_parser:
+            return
+        fmp_view.display_key_metrics(
+            ticker=self.ticker,
+            number=ns_parser.n_num,
+            quarterly=ns_parser.b_quarter,
+            export=ns_parser.export,
+        )
 
+    @try_except
     def call_ratios(self, other_args: List[str]):
         """Process cash command"""
         parser = argparse.ArgumentParser(
@@ -531,21 +515,19 @@ Financial Modeling Prep:
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
-            if not ns_parser:
-                return
-            fmp_view.display_financial_ratios(
-                ticker=self.ticker,
-                number=ns_parser.n_num,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if not ns_parser:
+            return
+        fmp_view.display_financial_ratios(
+            ticker=self.ticker,
+            number=ns_parser.n_num,
+            quarterly=ns_parser.b_quarter,
+            export=ns_parser.export,
+        )
 
+    @try_except
     def call_growth(self, other_args: List[str]):
         """Process cash command"""
         parser = argparse.ArgumentParser(
@@ -586,20 +568,17 @@ Financial Modeling Prep:
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
-            if not ns_parser:
-                return
-            fmp_view.display_financial_statement_growth(
-                ticker=self.ticker,
-                number=ns_parser.n_num,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if not ns_parser:
+            return
+        fmp_view.display_financial_statement_growth(
+            ticker=self.ticker,
+            number=ns_parser.n_num,
+            quarterly=ns_parser.b_quarter,
+            export=ns_parser.export,
+        )
 
 
 def menu(ticker: str, start: str, interval: str):

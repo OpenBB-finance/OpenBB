@@ -22,6 +22,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    try_except,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.stocks_helper import load
@@ -161,6 +162,7 @@ cathiesark.com
             other_args, self.ticker, self.start, "1440min", self.stock
         )
 
+    @try_except
     def call_analyst(self, other_args: List[str]):
         """Process analyst command"""
         parser = argparse.ArgumentParser(
@@ -179,16 +181,13 @@ cathiesark.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            finviz_view.analyst(ticker=self.ticker, export=ns_parser.export)
+        finviz_view.analyst(ticker=self.ticker, export=ns_parser.export)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_pt(self, other_args: List[str]):
         """Process pt command"""
         parser = argparse.ArgumentParser(
@@ -219,25 +218,21 @@ cathiesark.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        business_insider_view.price_target_from_analysts(
+            ticker=self.ticker,
+            start=self.start,
+            interval=self.interval,
+            stock=self.stock,
+            num=ns_parser.n_num,
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
 
-            business_insider_view.price_target_from_analysts(
-                ticker=self.ticker,
-                start=self.start,
-                interval=self.interval,
-                stock=self.stock,
-                num=ns_parser.n_num,
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_est(self, other_args: List[str]):
         """Process est command"""
         parser = argparse.ArgumentParser(
@@ -253,19 +248,16 @@ cathiesark.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            business_insider_view.estimates(
-                ticker=self.ticker,
-                export=ns_parser.export,
-            )
+        business_insider_view.estimates(
+            ticker=self.ticker,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_rot(self, other_args: List[str]):
         """Process rot command"""
         parser = argparse.ArgumentParser(
@@ -298,25 +290,22 @@ cathiesark.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-n")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            finnhub_view.rating_over_time(
-                ticker=self.ticker,
-                num=ns_parser.n_num,
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-            )
+        finnhub_view.rating_over_time(
+            ticker=self.ticker,
+            num=ns_parser.n_num,
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_rating(self, other_args: List[str]):
         """Process rating command"""
         parser = argparse.ArgumentParser(
@@ -345,25 +334,21 @@ cathiesark.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-n")
 
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        fmp_view.rating(
+            ticker=self.ticker,
+            num=ns_parser.n_num,
+            export=ns_parser.export,
+        )
 
-            fmp_view.rating(
-                ticker=self.ticker,
-                num=ns_parser.n_num,
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_sec(self, other_args: List[str]):
         """Process sec command"""
         parser = argparse.ArgumentParser(
@@ -391,25 +376,21 @@ cathiesark.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-n")
 
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        marketwatch_view.sec_filings(
+            ticker=self.ticker,
+            num=ns_parser.n_num,
+            export=ns_parser.export,
+        )
 
-            marketwatch_view.sec_filings(
-                ticker=self.ticker,
-                num=ns_parser.n_num,
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_supplier(self, other_args: List[str]):
         """Process supplier command"""
         parser = argparse.ArgumentParser(
@@ -425,18 +406,14 @@ cathiesark.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            csimarket_view.suppliers(
-                ticker=self.ticker,
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
+        csimarket_view.suppliers(
+            ticker=self.ticker,
+            export=ns_parser.export,
+        )
 
     def call_customer(self, other_args: List[str]):
         """Process customer command"""
@@ -453,19 +430,16 @@ cathiesark.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            csimarket_view.customers(
-                ticker=self.ticker,
-                export=ns_parser.export,
-            )
+        csimarket_view.customers(
+            ticker=self.ticker,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_arktrades(self, other_args):
         """Process arktrades command"""
         parser = argparse.ArgumentParser(
@@ -491,20 +465,17 @@ cathiesark.com
             help="Flag to show ticker in table",
             dest="show_ticker",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
-            if not ns_parser:
-                return
-            ark_view.display_ark_trades(
-                ticker=self.ticker,
-                num=ns_parser.num,
-                export=ns_parser.export,
-                show_ticker=ns_parser.show_ticker,
-            )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if not ns_parser:
+            return
+        ark_view.display_ark_trades(
+            ticker=self.ticker,
+            num=ns_parser.num,
+            export=ns_parser.export,
+            show_ticker=ns_parser.show_ticker,
+        )
 
 
 def menu(ticker: str, start: str, interval: str, stock: DataFrame):

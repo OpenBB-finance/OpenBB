@@ -18,6 +18,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     check_int_range,
     valid_date,
+    try_except,
 )
 
 from gamestonk_terminal.cryptocurrency.onchain import (
@@ -131,6 +132,7 @@ class OnchainController:
         """Process Quit command - quit the program"""
         return True
 
+    @try_except
     def call_gwei(self, other_args: List[str]):
         """Process gwei command"""
         parser = argparse.ArgumentParser(
@@ -152,16 +154,12 @@ class OnchainController:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
-                return
+        if not ns_parser:
+            return
 
-            ethgasstation_view.display_gwei_fees(export=ns_parser.export)
-
-        except Exception as e:
-            print(e, "\n")
+        ethgasstation_view.display_gwei_fees(export=ns_parser.export)
 
     def call_active(self, other_args: List[str]):
         """Process active command"""

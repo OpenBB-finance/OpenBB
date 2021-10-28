@@ -308,7 +308,7 @@ def terminal(menu_prior_to_reset=""):
 
                 if process_input == MENU_GO_BACK:
                     t_controller.print_help()
-                else:
+                elif process_input in (MENU_QUIT, MENU_RESET):
                     break
 
             except SystemExit:

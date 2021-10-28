@@ -1,4 +1,3 @@
-
 # TROUBLESHOOT
 
 If you are visiting this page it means that you're having issues installing. We deeply apologize for that.
@@ -36,7 +35,6 @@ Since the start of the project we've come across different types of issues exper
 </li>
 </ol>
 
-
 ## Standard Install Troubles
 
 ### Microsoft Visual C++
@@ -44,11 +42,9 @@ Since the start of the project we've come across different types of issues exper
 If your terminal has too many red error lines, it is likely that this is the issue. Go to this page and install the c++ build tools:
 https://answers.microsoft.com/en-us/windows/forum/windows_other-windows_install/microsoft-visual-c-140/6f0726e2-6c32-4719-9fe5-aa68b5ad8e6d
 
-
 ### Wheel
 
 `conda install -c conda-forge wheel` or `pip install wheel`
-
 
 ### Cvxpy
 
@@ -63,6 +59,7 @@ pip install --upgrade numpy==1.20.2
 ```
 
 ### Poetry
+
 If you get errors about .whl files not existing (usually on Windows) you have to reinitialize the following folder.
 Just removing the 'artifacts' folder could also be enough:
 
@@ -98,27 +95,31 @@ If you run into trouble with Poetry, and the advice above did not help, your bes
 
 ### General
 
-In the case when you run into an error of the form `ModuleNotFoundError: No module named '_______'`.  The solution is to
+In the case when you run into an error of the form `ModuleNotFoundError: No module named '_______'`. The solution is to
 install the missing package via pip.
 
 If you get the error that `yfinance` is not found, you would run
-* `pip install yfinance`
+
+- `pip install yfinance`
 
 Then please submit an issue so that we can address why that was not imported.
 
 Please note that the package `pmdarima` needs to installed through `pip install` and not through `conda install`.
 
 ### pypfopt
+
 ```
 pip install PyPortfolioOpt
 ```
 
 ### dotenv
+
 ```
 pip install python-dotenv
 ```
 
 ### ally
+
 ```
 pip install pyally
 ```
@@ -133,27 +134,40 @@ poetry install
 poetry install -E prediction
 ```
 
-*Commands that may help you in case of an error:*
+_Commands that may help you in case of an error:_
 
-* `python -m pip install --upgrade pip`
-* `pip install pystan --upgrade`
-* `poetry update --lock`
-
+- `python -m pip install --upgrade pip`
+- `pip install pystan --upgrade`
+- `poetry update --lock`
 
 ## Other Issues
 
 ### CRLF versus LF
+
 When trying to commit code changes, pylint will prevent you from doing so if your line break settings are set to
 CRLF (default for Windows). This is because the entire package uses LF (default for Linux/Mac), and it is therefore
-important that you change this setting to LF *before* you make any changes to the code.
+important that you change this setting to LF _before_ you make any changes to the code.
 
 It is possible that CRLF automatically turns back on, you can correct this with:
+
 ```
 git config --global core.autocrlf false
 ```
+
 In case you already made coding adjustments, you have to reset your cache, and the changes you made to the code with
 the following:
+
 ```
 git rm --cached -r .
 git reset --hard
+```
+
+### Unable to run gst from VS Code integrated terminal
+
+Occurs when vscode terminal python version/path is different from the terminal version.
+
+To fix it add this to vscode JSON settings ([ref](https://stackoverflow.com/questions/54582361/vscode-terminal-shows-incorrect-python-version-and-path-launching-terminal-from)):
+
+```
+    "terminal.integrated.inheritEnv": false,
 ```

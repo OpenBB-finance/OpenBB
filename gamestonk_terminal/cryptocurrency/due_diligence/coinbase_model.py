@@ -152,7 +152,7 @@ def get_candles(product_id: str, interval: str = "24h") -> pd.DataFrame:
     )
     df = pd.DataFrame(candles)
     df.columns = [
-        "Time0",
+        "date",
         "Low",
         "High",
         "Open",
@@ -161,7 +161,7 @@ def get_candles(product_id: str, interval: str = "24h") -> pd.DataFrame:
     ]
     return df[
         [
-            "Time0",
+            "date",
             "Open",
             "High",
             "Low",

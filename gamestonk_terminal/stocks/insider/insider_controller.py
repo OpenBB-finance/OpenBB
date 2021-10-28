@@ -12,6 +12,7 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     check_positive,
+    try_except,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
@@ -408,6 +409,7 @@ Ticker: {self.ticker}
         """Process top-insider-sales-of-the-month"""
         return openinsider_view.print_insider_data(other_args, "tispm")
 
+    @try_except
     def call_act(self, other_args: List[str]):
         """Process act command"""
         parser = argparse.ArgumentParser(
@@ -439,32 +441,29 @@ Ticker: {self.ticker}
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-n")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            if not self.ticker:
-                print("No ticker loaded.  First use `load {ticker}` \n")
-                return
+        if not self.ticker:
+            print("No ticker loaded.  First use `load {ticker}` \n")
+            return
 
-            businessinsider_view.insider_activity(
-                stock=self.stock,
-                ticker=self.ticker,
-                start=self.start,
-                interval=self.interval,
-                num=ns_parser.n_num,
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-            )
+        businessinsider_view.insider_activity(
+            stock=self.stock,
+            ticker=self.ticker,
+            start=self.start,
+            interval=self.interval,
+            num=ns_parser.n_num,
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_lins(self, other_args: List[str]):
         """Process lins command"""
         parser = argparse.ArgumentParser(
@@ -492,23 +491,19 @@ Ticker: {self.ticker}
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            if not self.ticker:
-                print("No ticker loaded.  First use `load {ticker}` \n")
-                return
+        if not self.ticker:
+            print("No ticker loaded.  First use `load {ticker}` \n")
+            return
 
-            finviz_view.last_insider_activity(
-                ticker=self.ticker,
-                num=ns_parser.n_num,
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
+        finviz_view.last_insider_activity(
+            ticker=self.ticker,
+            num=ns_parser.n_num,
+            export=ns_parser.export,
+        )
 
 
 def menu(ticker: str, start: str, interval: str, stock: pd.DataFrame):

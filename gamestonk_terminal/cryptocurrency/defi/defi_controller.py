@@ -12,6 +12,7 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     check_positive,
+    try_except,
 )
 
 from gamestonk_terminal.cryptocurrency.defi import (
@@ -102,6 +103,7 @@ class DefiController:
         """Process Quit command - quit the program"""
         return True
 
+    @try_except
     def call_dpi(self, other_args: List[str]):
         """Process dpi command"""
         parser = argparse.ArgumentParser(
@@ -150,22 +152,19 @@ class DefiController:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
-                return
+        if not ns_parser:
+            return
 
-            defipulse_view.display_defipulse(
-                top=ns_parser.top,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                export=ns_parser.export,
-            )
+        defipulse_view.display_defipulse(
+            top=ns_parser.top,
+            sortby=ns_parser.sortby,
+            descend=ns_parser.descend,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_llama(self, other_args: List[str]):
         """Process llama command"""
         parser = argparse.ArgumentParser(
@@ -231,23 +230,20 @@ class DefiController:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
-                return
+        if not ns_parser:
+            return
 
-            llama_view.display_defi_protocols(
-                top=ns_parser.top,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                description=ns_parser.description,
-                export=ns_parser.export,
-            )
+        llama_view.display_defi_protocols(
+            top=ns_parser.top,
+            sortby=ns_parser.sortby,
+            descend=ns_parser.descend,
+            description=ns_parser.description,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_tvl(self, other_args: List[str]):
         """Process tvl command"""
         parser = argparse.ArgumentParser(
@@ -278,17 +274,14 @@ class DefiController:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
-                return
+        if not ns_parser:
+            return
 
-            llama_view.display_defi_tvl(top=ns_parser.top, export=ns_parser.export)
+        llama_view.display_defi_tvl(top=ns_parser.top, export=ns_parser.export)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_funding(self, other_args: List[str]):
         """Process funding command"""
         parser = argparse.ArgumentParser(
@@ -327,19 +320,16 @@ class DefiController:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
-                return
+        if not ns_parser:
+            return
 
-            defirate_view.display_funding_rates(
-                top=ns_parser.top, current=ns_parser.current, export=ns_parser.export
-            )
+        defirate_view.display_funding_rates(
+            top=ns_parser.top, current=ns_parser.current, export=ns_parser.export
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_borrow(self, other_args: List[str]):
         """Process borrow command"""
         parser = argparse.ArgumentParser(
@@ -378,19 +368,16 @@ class DefiController:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
-                return
+        if not ns_parser:
+            return
 
-            defirate_view.display_borrow_rates(
-                top=ns_parser.top, current=ns_parser.current, export=ns_parser.export
-            )
+        defirate_view.display_borrow_rates(
+            top=ns_parser.top, current=ns_parser.current, export=ns_parser.export
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_lending(self, other_args: List[str]):
         """Process lending command"""
         parser = argparse.ArgumentParser(
@@ -429,19 +416,16 @@ class DefiController:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
-                return
+        if not ns_parser:
+            return
 
-            defirate_view.dislpay_lending_rates(
-                top=ns_parser.top, current=ns_parser.current, export=ns_parser.export
-            )
+        defirate_view.dislpay_lending_rates(
+            top=ns_parser.top, current=ns_parser.current, export=ns_parser.export
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_newsletter(self, other_args: List[str]):
         """Process newsletter command"""
         parser = argparse.ArgumentParser(
@@ -472,18 +456,12 @@ class DefiController:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
-                return
+        if not ns_parser:
+            return
 
-            substack_view.display_newsletters(
-                top=ns_parser.top, export=ns_parser.export
-            )
-
-        except Exception as e:
-            print(e, "\n")
+        substack_view.display_newsletters(top=ns_parser.top, export=ns_parser.export)
 
 
 def print_help():

@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 from typing import List, Union
 from datetime import datetime
 from pathlib import Path
+import random
 import os
 
 from openpyxl.styles.numbers import FORMAT_PERCENTAGE_00
@@ -52,6 +53,10 @@ class CreateExcelFA:
         self.info: pd.DataFrame = yf.Ticker(ticker).info
         self.t_bill: float = get_rf()
         self.r_ff: float = dcf_model.get_fama_coe(self.ticker)
+        self.sisters: List[str] = dcf_model.others_in_sector(
+            self.ticker, self.info["sector"], self.info["industry"]
+        )
+        self.sister_data: List[List[pd.DataFrame]] = [[pd.DataFrame()]]
 
     def create_workbook(self):
         self.ws1.column_dimensions["A"].width = 25
@@ -136,7 +141,13 @@ class CreateExcelFA:
         body = table.find("tbody")
         rows = body.find_all("tr")
 
-        all_data = [[x.get_text().strip() for x in y.find_all("td")] for y in rows]
+        all_data = [
+            [
+                x.get_text().strip() if x.get_text().strip() != "-" else "0"
+                for x in y.find_all("td")
+            ]
+            for y in rows
+        ]
 
         df = pd.DataFrame(data=all_data)
         df = df.set_index(0)
@@ -153,36 +164,19 @@ class CreateExcelFA:
         self.ws1[f"A{row}"] = title
         self.ws1[f"A{row}"].font = dcf_model.bold_font
 
-        # Refactor in the future
         if statement == "IS":
-            if "Revenue" in df.index:
-                blank_list = ["0" for x in df.loc["Revenue"].to_list()]
-            else:
-                raise ValueError("Dataframe does not have key information.")
-            for i, value in enumerate(dcf_model.gaap_is[1:]):
-                df = dcf_model.insert_row(
-                    dcf_model.gaap_is[i + 1], dcf_model.gaap_is[i], df, blank_list
-                )
+            vals = ["Revenue", dcf_model.gaap_is]
+        elif statement == "BS":
+            vals = ["Cash & Equivalents", dcf_model.gaap_bs]
+        elif statement == "CF":
+            vals = ["Net Income", dcf_model.gaap_cf]
 
-        if statement == "BS":
-            if "Cash & Equivalents" in df.index:
-                blank_list = ["0" for x in df.loc["Cash & Equivalents"].to_list()]
-            else:
-                raise ValueError("Dataframe does not have key information.")
-            for i, value in enumerate(dcf_model.gaap_bs[1:]):
-                df = dcf_model.insert_row(
-                    dcf_model.gaap_bs[i + 1], dcf_model.gaap_bs[i], df, blank_list
-                )
-
-        if statement == "CF":
-            if "Net Income" in df.index:
-                blank_list = ["0" for x in df.loc["Net Income"].to_list()]
-            else:
-                raise ValueError("Dataframe does not have key information.")
-            for i, value in enumerate(dcf_model.gaap_cf[1:]):
-                df = dcf_model.insert_row(
-                    dcf_model.gaap_cf[i + 1], dcf_model.gaap_cf[i], df, blank_list
-                )
+        if vals[0] in df.index:
+            blank_list = ["0" for _ in df.loc[vals[0]].to_list()]
+        else:
+            raise ValueError("Dataframe does not have key information.")
+        for i, _ in enumerate(vals[1][1:]):
+            df = dcf_model.insert_row(vals[1][i + 1], vals[1][i], df, blank_list)
 
         rowI = row + 1
         names = df.index.values.tolist()
@@ -618,195 +612,265 @@ class CreateExcelFA:
         self.ws4.column_dimensions["A"].width = 27
         dcf_model.set_cell(self.ws4, "B4", "Sector:")
         dcf_model.set_cell(self.ws4, "C4", self.info["sector"])
-        dcf_model.set_cell(
-            self.ws4,
-            "A6",
-            "Liquidity Ratios",
-            border=dcf_model.thin_border,
-            font=dcf_model.bold_font,
-        )
-        dcf_model.set_cell(self.ws4, "A7", "Current Ratio")
-        dcf_model.set_cell(self.ws4, "A8", "Quick Ratio")
-        dcf_model.set_cell(self.ws4, "A10", "Activity Ratios", font=dcf_model.bold_font)
-        dcf_model.set_cell(self.ws4, "A11", "AR Turnover")
-        dcf_model.set_cell(self.ws4, "A12", "Days Sales in AR")
-        dcf_model.set_cell(self.ws4, "A13", "Inventory Turnover")
-        dcf_model.set_cell(self.ws4, "A14", "Days in Inventory")
-        dcf_model.set_cell(self.ws4, "A15", "Average Payable Turnover")
-        dcf_model.set_cell(self.ws4, "A16", "Days of Payables Outstanding")
-        dcf_model.set_cell(self.ws4, "A17", "Cash Conversion Cycle")
-        dcf_model.set_cell(self.ws4, "A18", "Asset Turnover")
-        dcf_model.set_cell(
-            self.ws4,
-            "A20",
-            "Profitability Ratios",
-            border=dcf_model.thin_border,
-            font=dcf_model.bold_font,
-        )
-        dcf_model.set_cell(self.ws4, "A21", "Profit Margin")
-        dcf_model.set_cell(self.ws4, "A22", "Return on Assets")
-        dcf_model.set_cell(self.ws4, "A23", "Return on Equity")
-        dcf_model.set_cell(self.ws4, "A24", "Return on Sales")
-        dcf_model.set_cell(self.ws4, "A25", "Gross Margin")
-        dcf_model.set_cell(self.ws4, "A26", "Operating Cash Flow Ratio")
-        dcf_model.set_cell(
-            self.ws4,
-            "A28",
-            "Coverage Ratios",
-            border=dcf_model.thin_border,
-            font=dcf_model.bold_font,
-        )
-        dcf_model.set_cell(self.ws4, "A29", "Debt-to-Equity")
-        dcf_model.set_cell(self.ws4, "A30", "Total Debt Ratio")
-        dcf_model.set_cell(self.ws4, "A31", "Equity Multiplier")
-        dcf_model.set_cell(self.ws4, "A32", "Times Interest Earned")
-        dcf_model.set_cell(
-            self.ws4,
-            "A34",
-            "Investor Ratios",
-            border=dcf_model.thin_border,
-            font=dcf_model.bold_font,
-        )
-        dcf_model.set_cell(self.ws4, "A35", "Earnings Per Share")
-        dcf_model.set_cell(self.ws4, "A36", "Price Earnings Ratio")
 
-        for i in range(len(self.df_bs.columns) - 1):
-            lt = dcf_model.letters[i + 1]
-
-            cace1 = float(
-                self.df_bs.at[
-                    "Cash & Cash Equivalents", self.df_bs.columns[i + 1]
-                ].replace(",", "")
-            )
-            ar0 = float(
-                self.df_bs.at["Receivables", self.df_bs.columns[i]].replace(",", "")
-            )
-            ar1 = float(
-                self.df_bs.at["Receivables", self.df_bs.columns[i + 1]].replace(",", "")
-            )
-            inv0 = float(
-                self.df_bs.at["Inventory", self.df_bs.columns[i]].replace(",", "")
-            )
-            inv1 = float(
-                self.df_bs.at["Inventory", self.df_bs.columns[i + 1]].replace(",", "")
-            )
-            ca1 = float(
-                self.df_bs.at[
-                    "Total Current Assets", self.df_bs.columns[i + 1]
-                ].replace(",", "")
-            )
-            ta0 = float(
-                self.df_bs.at["Total Assets", self.df_bs.columns[i]].replace(",", "")
-            )
-            ta1 = float(
-                self.df_bs.at["Total Assets", self.df_bs.columns[i + 1]].replace(
-                    ",", ""
-                )
-            )
-            ap0 = float(
-                self.df_bs.at["Accounts Payable", self.df_bs.columns[i]].replace(
-                    ",", ""
-                )
-            )
-            ap1 = float(
-                self.df_bs.at["Accounts Payable", self.df_bs.columns[i + 1]].replace(
-                    ",", ""
-                )
-            )
-            cl1 = float(
-                self.df_bs.at[
-                    "Total Current Liabilities", self.df_bs.columns[i + 1]
-                ].replace(",", "")
-            )
-            tl1 = float(
-                self.df_bs.at["Total Liabilities", self.df_bs.columns[i + 1]].replace(
-                    ",", ""
-                )
-            )
-            te0 = float(
-                self.df_bs.at["Shareholders' Equity", self.df_bs.columns[i]].replace(
-                    ",", ""
-                )
-            )
-            te1 = float(
-                self.df_bs.at[
-                    "Shareholders' Equity", self.df_bs.columns[i + 1]
-                ].replace(",", "")
-            )
-            sls1 = float(
-                self.df_is.at["Revenue", self.df_bs.columns[i + 1]].replace(",", "")
-            )
-            cogs1 = float(
-                self.df_is.at["Cost of Revenue", self.df_bs.columns[i + 1]].replace(
-                    ",", ""
-                )
-            )
-            inte1 = float(
-                self.df_is.at[
-                    "Interest Expense / Income", self.df_bs.columns[i + 1]
-                ].replace(",", "")
-            )
-            tax1 = float(
-                self.df_is.at["Income Tax", self.df_bs.columns[i + 1]].replace(",", "")
-            )
-            ni1 = float(
-                self.df_is.at["Net Income", self.df_bs.columns[i + 1]].replace(",", "")
-            )
-            pdiv1 = float(
-                self.df_is.at["Preferred Dividends", self.df_bs.columns[i + 1]].replace(
-                    ",", ""
-                )
-            )
-            opcf1 = float(
-                self.df_cf.at["Operating Cash Flow", self.df_bs.columns[i + 1]].replace(
-                    ",", ""
-                )
-            )
-
+        self.get_sister_dfs()
+        self.sister_data.insert(0, [self.ticker, [self.df_bs, self.df_is, self.df_cf]])
+        row = 6
+        for i in self.sister_data:
+            self.ws4.merge_cells(f"A{row}:J{row}")
+            dcf_model.set_cell(self.ws4, f"A{row}", i[0], alignment=dcf_model.center)
             dcf_model.set_cell(
                 self.ws4,
-                f"{lt}6",
-                int(self.df_bs.columns[i + 1]),
+                f"A{row+1}",
+                "Liquidity Ratios",
+                border=dcf_model.thin_border,
                 font=dcf_model.bold_font,
             )
-            dcf_model.set_cell(self.ws4, f"{lt}7", ca1 / cl1)
-            dcf_model.set_cell(self.ws4, f"{lt}8", (cace1 + ar1) / cl1)
-            dcf_model.set_cell(self.ws4, f"{lt}11", sls1 / ((ar0 + ar1) / 2))
-            dcf_model.set_cell(self.ws4, f"{lt}12", ar1 / (sls1 / 365))
-            dcf_model.set_cell(self.ws4, f"{lt}13", cogs1 / ((inv0 + inv1) / 2))
-            dcf_model.set_cell(self.ws4, f"{lt}14", inv1 / (cogs1 / 365))
-            dcf_model.set_cell(self.ws4, f"{lt}15", cogs1 / ((ap0 + ap1) / 2))
-            dcf_model.set_cell(self.ws4, f"{lt}16", ap1 / (cogs1 / 365))
+            dcf_model.set_cell(self.ws4, f"A{row+2}", "Current Ratio")
+            dcf_model.set_cell(self.ws4, f"A{row+3}", "Quick Ratio")
             dcf_model.set_cell(
                 self.ws4,
-                f"{lt}17",
-                (ar1 / (sls1 / 365)) + (inv1 / (cogs1 / 365)) - (ap1 / (cogs1 / 365)),
+                f"A{row+5}",
+                "Activity Ratios",
+                border=dcf_model.thin_border,
+                font=dcf_model.bold_font,
             )
-            dcf_model.set_cell(self.ws4, f"{lt}18", sls1 / ((ta0 + ta1) / 2))
-            dcf_model.set_cell(self.ws4, f"{lt}21", ni1 / sls1)
-            dcf_model.set_cell(self.ws4, f"{lt}22", ni1 / ((ar0 + ar1) / 2))
-            dcf_model.set_cell(self.ws4, f"{lt}23", ni1 / ((te0 + te1) / 2))
-            dcf_model.set_cell(self.ws4, f"{lt}24", (ni1 + inte1 + tax1) / sls1)
-            dcf_model.set_cell(self.ws4, f"{lt}25", (sls1 - cogs1) / sls1)
-            dcf_model.set_cell(self.ws4, f"{lt}26", opcf1 / cl1)
-            dcf_model.set_cell(self.ws4, f"{lt}29", tl1 / te1)
-            dcf_model.set_cell(self.ws4, f"{lt}30", tl1 / ta1)
-            dcf_model.set_cell(self.ws4, f"{lt}31", ta1 / te1)
-            if inte1 == 0:
-                dcf_model.set_cell(self.ws4, f"{lt}32", "N/A")
-            else:
-                dcf_model.set_cell(self.ws4, f"{lt}32", (ni1 + inte1 + tax1) / inte1)
+            dcf_model.set_cell(self.ws4, f"A{row+6}", "AR Turnover")
+            dcf_model.set_cell(self.ws4, f"A{row+7}", "Days Sales in AR")
+            dcf_model.set_cell(self.ws4, f"A{row+8}", "Inventory Turnover")
+            dcf_model.set_cell(self.ws4, f"A{row+9}", "Days in Inventory")
+            dcf_model.set_cell(self.ws4, f"A{row+10}", "Average Payable Turnover")
+            dcf_model.set_cell(self.ws4, f"A{row+11}", "Days of Payables Outstanding")
+            dcf_model.set_cell(self.ws4, f"A{row+12}", "Cash Conversion Cycle")
+            dcf_model.set_cell(self.ws4, f"A{row+13}", "Asset Turnover")
             dcf_model.set_cell(
                 self.ws4,
-                f"{lt}35",
-                (ni1 - pdiv1) / float(self.info["sharesOutstanding"]),
+                f"A{row+15}",
+                "Profitability Ratios",
+                border=dcf_model.thin_border,
+                font=dcf_model.bold_font,
             )
+            dcf_model.set_cell(self.ws4, f"A{row+16}", "Profit Margin")
+            dcf_model.set_cell(self.ws4, f"A{row+17}", "Return on Assets")
+            dcf_model.set_cell(self.ws4, f"A{row+18}", "Return on Equity")
+            dcf_model.set_cell(self.ws4, f"A{row+19}", "Return on Sales")
+            dcf_model.set_cell(self.ws4, f"A{row+20}", "Gross Margin")
+            dcf_model.set_cell(self.ws4, f"A{row+21}", "Operating Cash Flow Ratio")
             dcf_model.set_cell(
                 self.ws4,
-                f"{lt}36",
-                float(self.info["previousClose"])
-                / ((ni1 - pdiv1) / float(self.info["sharesOutstanding"])),
+                f"A{row+23}",
+                "Coverage Ratios",
+                border=dcf_model.thin_border,
+                font=dcf_model.bold_font,
             )
+            dcf_model.set_cell(self.ws4, f"A{row+24}", "Debt-to-Equity")
+            dcf_model.set_cell(self.ws4, f"A{row+25}", "Total Debt Ratio")
+            dcf_model.set_cell(self.ws4, f"A{row+26}", "Equity Multiplier")
+            dcf_model.set_cell(self.ws4, f"A{row+27}", "Times Interest Earned")
+            dcf_model.set_cell(
+                self.ws4,
+                f"A{row+29}",
+                "Investor Ratios",
+                border=dcf_model.thin_border,
+                font=dcf_model.bold_font,
+            )
+            dcf_model.set_cell(self.ws4, f"A{row+30}", "Earnings Per Share")
+            dcf_model.set_cell(self.ws4, f"A{row+31}", "Price Earnings Ratio")
+            for j in range(len(self.df_bs.columns) - 1):
+                lt = dcf_model.letters[j + 1]
+
+                cace1 = float(
+                    i[1][0]
+                    .at["Cash & Cash Equivalents", i[1][0].columns[j + 1]]
+                    .replace(",", "")
+                )
+                ar0 = float(
+                    i[1][0].at["Receivables", i[1][0].columns[j]].replace(",", "")
+                )
+                ar1 = float(
+                    i[1][0].at["Receivables", i[1][0].columns[j + 1]].replace(",", "")
+                )
+                inv0 = float(
+                    i[1][0].at["Inventory", i[1][0].columns[j]].replace(",", "")
+                )
+                inv1 = float(
+                    i[1][0].at["Inventory", i[1][0].columns[j + 1]].replace(",", "")
+                )
+                ca1 = float(
+                    i[1][0]
+                    .at["Total Current Assets", i[1][0].columns[j + 1]]
+                    .replace(",", "")
+                )
+                ta0 = float(
+                    i[1][0].at["Total Assets", i[1][0].columns[j]].replace(",", "")
+                )
+                ta1 = float(
+                    i[1][0].at["Total Assets", i[1][0].columns[j + 1]].replace(",", "")
+                )
+                ap0 = float(
+                    i[1][0].at["Accounts Payable", i[1][0].columns[j]].replace(",", "")
+                )
+                ap1 = float(
+                    i[1][0]
+                    .at["Accounts Payable", i[1][0].columns[j + 1]]
+                    .replace(",", "")
+                )
+                cl1 = float(
+                    i[1][0]
+                    .at["Total Current Liabilities", i[1][0].columns[j + 1]]
+                    .replace(",", "")
+                )
+                tl1 = float(
+                    i[1][0]
+                    .at["Total Liabilities", i[1][0].columns[j + 1]]
+                    .replace(",", "")
+                )
+                te0 = float(
+                    i[1][0]
+                    .at["Shareholders' Equity", i[1][0].columns[j]]
+                    .replace(",", "")
+                )
+                te1 = float(
+                    i[1][0]
+                    .at["Shareholders' Equity", i[1][0].columns[j + 1]]
+                    .replace(",", "")
+                )
+                sls1 = float(
+                    i[1][1].at["Revenue", i[1][1].columns[j + 1]].replace(",", "")
+                )
+                cogs1 = float(
+                    i[1][1]
+                    .at["Cost of Revenue", i[1][1].columns[j + 1]]
+                    .replace(",", "")
+                )
+                inte1 = float(
+                    i[1][1]
+                    .at["Interest Expense / Income", i[1][1].columns[j + 1]]
+                    .replace(",", "")
+                )
+                tax1 = float(
+                    i[1][1].at["Income Tax", i[1][1].columns[j + 1]].replace(",", "")
+                )
+                ni1 = float(
+                    i[1][1].at["Net Income", i[1][1].columns[j + 1]].replace(",", "")
+                )
+                pdiv1 = float(
+                    i[1][1]
+                    .at["Preferred Dividends", i[1][0].columns[j + 1]]
+                    .replace(",", "")
+                )
+                opcf1 = float(
+                    i[1][2]
+                    .at["Operating Cash Flow", i[1][2].columns[j + 1]]
+                    .replace(",", "")
+                )
+
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+1}",
+                    int(i[1][0].columns[j + 1]),
+                    font=dcf_model.bold_font,
+                )
+                dcf_model.set_cell(
+                    self.ws4, f"{lt}{row+2}", "N/A" if cl1 == 0 else ca1 / cl1
+                )
+                dcf_model.set_cell(
+                    self.ws4, f"{lt}{row+3}", "N/A" if cl1 == 0 else (cace1 + ar1) / cl1
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+6}",
+                    "N/A" if ar0 + ar1 == 0 else sls1 / ((ar0 + ar1) / 2),
+                )
+                dcf_model.set_cell(
+                    self.ws4, f"{lt}{row+7}", "N/A" if sls1 == 0 else ar1 / (sls1 / 365)
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+8}",
+                    "N/A" if inv0 + inv1 == 0 else cogs1 / ((inv0 + inv1) / 2),
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+9}",
+                    "N/A" if cogs1 == 0 else inv1 / (cogs1 / 365),
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+10}",
+                    "N/A" if ap0 + ap1 == 0 else cogs1 / ((ap0 + ap1) / 2),
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+11}",
+                    "N/A" if cogs1 == 0 else ap1 / (cogs1 / 365),
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+12}",
+                    "N/A"
+                    if cogs1 == 0
+                    else (ar1 / (sls1 / 365))
+                    + (inv1 / (cogs1 / 365))
+                    - (ap1 / (cogs1 / 365)),
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+13}",
+                    "N/A" if ta0 + ta1 == 0 else sls1 / ((ta0 + ta1) / 2),
+                )
+                dcf_model.set_cell(
+                    self.ws4, f"{lt}{row+16}", "N/A" if sls1 == 0 else ni1 / sls1
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+17}",
+                    "N/A" if ar0 + ar1 == 0 else ni1 / ((ar0 + ar1) / 2),
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+18}",
+                    "N/A" if te0 + te1 == 0 else ni1 / ((te0 + te1) / 2),
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+19}",
+                    "N/A" if sls1 == 0 else (ni1 + inte1 + tax1) / sls1,
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+20}",
+                    "N/A" if sls1 == 0 else (sls1 - cogs1) / sls1,
+                )
+                dcf_model.set_cell(
+                    self.ws4, f"{lt}{row+21}", "N/A" if cl1 == 0 else opcf1 / cl1
+                )
+                dcf_model.set_cell(
+                    self.ws4, f"{lt}{row+24}", "N/A" if te1 == 0 else tl1 / te1
+                )
+                dcf_model.set_cell(
+                    self.ws4, f"{lt}{row+25}", "N/A" if ta1 == 0 else tl1 / ta1
+                )
+                dcf_model.set_cell(
+                    self.ws4, f"{lt}{row+26}", "N/A" if te1 == 0 else ta1 / te1
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+27}",
+                    "N/A" if inte1 == 0 else (ni1 + inte1 + tax1) / inte1,
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+30}",
+                    (ni1 - pdiv1) / float(self.info["sharesOutstanding"]),
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+31}",
+                    float(self.info["previousClose"])
+                    / ((ni1 - pdiv1) / float(self.info["sharesOutstanding"])),
+                )
+            row += 35
 
     def create_header(self, ws: Workbook):
         for i in range(10):
@@ -1138,3 +1202,100 @@ class CreateExcelFA:
         )
         dcf_model.set_cell(self.ws3, f"B{self.letter+4}", text)
         self.letter += 1
+
+    def get_sister_dfs(self):
+        # Once mcap is added to this, we can add as an additional filters for more comparative results
+        sisters = self.sisters
+        random.shuffle(sisters)
+        i = 0
+        new_list = []
+        while i < 3 and sisters:
+            try:
+                vals = [
+                    sisters[0],
+                    [self.get_sister_data(x, sisters[0]) for x in ["BS", "IS", "CF"]],
+                ]
+                new_list.append(vals)
+                i += 1
+                sisters.pop(0)
+            except ValueError:
+                sisters.pop(0)
+        self.sister_data = new_list
+
+    def get_sister_data(self, statement: str, ticker: str) -> pd.DataFrame:
+        URL = f"https://stockanalysis.com/stocks/{ticker}/financials/"
+        if statement == "BS":
+            URL += "balance-sheet/"
+            ignores = dcf_model.non_gaap_bs
+        if statement == "CF":
+            URL += "cash-flow-statement/"
+            ignores = dcf_model.non_gaap_cf
+        if statement == "IS":
+            ignores = dcf_model.non_gaap_is
+
+        r = requests.get(URL, headers=dcf_model.headers)
+
+        if "404 - Page Not Found" in r.text:
+            raise ValueError("The ticker given is not in the stock analysis website.")
+        soup = BeautifulSoup(r.content, "html.parser")
+
+        table = soup.find(
+            "table", attrs={"class": "FinancialTable_table_financial__1RhYq"}
+        )
+        head = table.find("thead")
+        if head is None:
+            raise ValueError("Incorrect website format")
+        columns = head.find_all("th")
+
+        if self.years == []:
+            self.years = [x.get_text().strip() for x in columns]
+            self.len_data = len(self.years) - 1
+
+        if self.rounding == 0:
+            phrase = soup.find(
+                "div", attrs={"class": "text-sm pb-1 text-gray-600"}
+            ).get_text()
+            if "thousand" in phrase:
+                self.rounding = 1_000
+            elif "millions" in phrase:
+                self.rounding = 1_000_000
+            elif "billions" in phrase:
+                self.rounding = 1_000_000_000
+            else:
+                raise ValueError(
+                    "Stock Analysis did not specify a proper rounding amount"
+                )
+
+        body = table.find("tbody")
+        rows = body.find_all("tr")
+
+        all_data = [[x.get_text().strip() for x in y.find_all("td")] for y in rows]
+
+        df = pd.DataFrame(data=all_data)
+        df = df.set_index(0)
+        n = df.shape[1] - self.len_data
+        if n > 0:
+            df = df.iloc[:, :-n]
+
+        df.columns = self.years[1:]
+
+        for ignore in ignores:
+            if ignore in df.index:
+                df = df.drop([ignore])
+        df = df[df.columns[::-1]]
+
+        if statement == "IS":
+            vals = ["Revenue", dcf_model.gaap_is]
+        elif statement == "BS":
+            vals = ["Cash & Equivalents", dcf_model.gaap_bs]
+        elif statement == "CF":
+            vals = ["Net Income", dcf_model.gaap_cf]
+
+        if vals[0] in df.index:
+            blank_list = ["0" for _ in df.loc[vals[0]].to_list()]
+        else:
+            raise ValueError("Dataframe does not have key information.")
+        for i, _ in enumerate(vals[1][1:]):
+            df = dcf_model.insert_row(vals[1][i + 1], vals[1][i], df, blank_list)
+
+        return df

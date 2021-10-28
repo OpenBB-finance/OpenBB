@@ -46,6 +46,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence import binance_model
 from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
 from gamestonk_terminal.cryptocurrency.onchain import onchain_controller
 import gamestonk_terminal.config_terminal as cfg
+from gamestonk_terminal.helper_funcs import try_except
 
 
 class CryptoController:
@@ -89,6 +90,7 @@ class CryptoController:
         self.crypto_parser = argparse.ArgumentParser(add_help=False, prog="crypto")
         self.crypto_parser.add_argument("cmd", choices=self.CHOICES)
 
+        self.symbol = ""
         self.current_coin = ""
         self.current_df = pd.DataFrame()
         self.current_currency = ""
@@ -226,7 +228,7 @@ What do you want to do?
                     if arg in other_args:
                         other_args.remove(arg)
 
-                self.current_coin, self.source = load(
+                self.current_coin, self.source, self.symbol = load(
                     coin=ns_parser.coin, source=ns_parser.source
                 )
 
@@ -422,7 +424,7 @@ What do you want to do?
                 prog="ta",
                 description="""Loads data for technical analysis. You can specify currency vs which you want
                                    to show chart and also number of days to get data for.
-                                   By default currency: usd and days: 30.
+                                   By default currency: usd and days: 60.
                                    E.g. if you loaded in previous step Ethereum and you want to see it's price vs btc
                                    in last 90 days range use `ta --vs btc --days 90`""",
             )
@@ -440,7 +442,7 @@ What do you want to do?
                 parser.add_argument(
                     "-d",
                     "--days",
-                    default=30,
+                    default=60,
                     dest="days",
                     help="Number of days to get data for",
                     type=check_positive,
@@ -454,7 +456,7 @@ What do you want to do?
                 parser.add_argument(
                     "-d",
                     "--days",
-                    default=30,
+                    default=60,
                     dest="days",
                     help="Number of days to get data for",
                 )
@@ -681,6 +683,7 @@ What do you want to do?
         else:
             return True
 
+    @try_except
     def call_finbrain(self, other_args):
         """Process finbrain command"""
         parser = argparse.ArgumentParser(
@@ -709,23 +712,19 @@ What do you want to do?
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
-                return
+        if not ns_parser:
+            return
 
-            finbrain_crypto_view.display_crypto_sentiment_analysis(
-                coin=ns_parser.coin, export=ns_parser.export
-            )
-
-        except Exception as e:
-            print(e, "\n")
+        finbrain_crypto_view.display_crypto_sentiment_analysis(
+            coin=ns_parser.coin, export=ns_parser.export
+        )
 
     def call_dd(self, _):
         """Process dd command"""
         if self.current_coin:
-            dd = dd_controller.menu(self.current_coin, self.source)
+            dd = dd_controller.menu(self.current_coin, self.source, self.symbol)
             if dd is False:
                 self.print_help()
             else:
@@ -744,6 +743,7 @@ What do you want to do?
         else:
             return True
 
+    @try_except
     def call_find(self, other_args):
         """Process find command"""
         parser = argparse.ArgumentParser(
@@ -807,26 +807,21 @@ What do you want to do?
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
+        if other_args:
+            if not other_args[0][0] == "-":
+                other_args.insert(0, "-c")
 
-            if other_args:
-                if not other_args[0][0] == "-":
-                    other_args.insert(0, "-c")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-
-            find(
-                coin=ns_parser.coin,
-                source=ns_parser.source,
-                key=ns_parser.key,
-                top=ns_parser.top,
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
+        find(
+            coin=ns_parser.coin,
+            source=ns_parser.source,
+            key=ns_parser.key,
+            top=ns_parser.top,
+            export=ns_parser.export,
+        )
 
 
 def menu():
