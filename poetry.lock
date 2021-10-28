@@ -660,7 +660,7 @@ dev = ["black (>=20.8b1)", "codecov", "coverage", "flake8", "flake8-black", "fut
 
 [[package]]
 name = "financedatabase"
-version = "0.1.11"
+version = "1.0.0"
 description = "This is a database of 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets."
 category = "main"
 optional = false
@@ -1172,7 +1172,7 @@ test = ["pexpect"]
 
 [[package]]
 name = "jupyter-core"
-version = "4.9.0"
+version = "4.9.1"
 description = "Jupyter core package. A base package on which Jupyter projects rely."
 category = "main"
 optional = false
@@ -3334,7 +3334,7 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "13c3b736562de31d0012ef71d2740a9e94f040b1f55c3d0df7fa0afe27550ac7"
+content-hash = "647fe08199b9ba50dca3198d36f21ceba3b8f1cb98374beae93c9d00bfc05915"
 
 [metadata.files]
 absl-py = [
@@ -3828,8 +3828,8 @@ ffn = [
     {file = "ffn-0.3.6.tar.gz", hash = "sha256:4a79e72e06ff328e333ffe97010b1ce110bcd694fcd03be7351bf5065cd273e8"},
 ]
 financedatabase = [
-    {file = "FinanceDatabase-0.1.11-py3-none-any.whl", hash = "sha256:882522d26c35c401ea913d735f6fef1c2e534a28eb3cc613012bff0ff9458f3e"},
-    {file = "FinanceDatabase-0.1.11.tar.gz", hash = "sha256:cb6844d4f2492c06d62d5b44cbf784dbc7cab0bfb6b3d329c2b4651b607f3886"},
+    {file = "financedatabase-1.0.0-py3-none-any.whl", hash = "sha256:d7620be1863645d9281bcf6f00f202dbd3196cf2d23373ffe334769c9181696c"},
+    {file = "financedatabase-1.0.0.tar.gz", hash = "sha256:b301644426bea89fe240326cf5bb6872761e90f1afc41caf1808b46012fade9c"},
 ]
 finviz = [
     {file = "finviz-1.4.2.tar.gz", hash = "sha256:f921a2674ea16f5ee9320834ab80554872fdb32a2bc9e0fdf23542ea33094d24"},
@@ -4038,8 +4038,8 @@ jupyter-console = [
     {file = "jupyter_console-6.4.0.tar.gz", hash = "sha256:242248e1685039cd8bff2c2ecb7ce6c1546eb50ee3b08519729e6e881aec19c7"},
 ]
 jupyter-core = [
-    {file = "jupyter_core-4.9.0-py3-none-any.whl", hash = "sha256:d03ef9eaa5b28925d30c8f83547ccc24b95cd0394b272000a1a6ab069a652be3"},
-    {file = "jupyter_core-4.9.0.tar.gz", hash = "sha256:adfc754536b34a1cd987c7991a24536d95f4a791e9761e9327fa919fc8d424f3"},
+    {file = "jupyter_core-4.9.1-py3-none-any.whl", hash = "sha256:1c091f3bbefd6f2a8782f2c1db662ca8478ac240e962ae2c66f0b87c818154ea"},
+    {file = "jupyter_core-4.9.1.tar.gz", hash = "sha256:dce8a7499da5a53ae3afd5a9f4b02e5df1d57250cf48f3ad79da23b4778cd6fa"},
 ]
 jupyter-server = [
     {file = "jupyter_server-1.11.1-py3-none-any.whl", hash = "sha256:618aba127b1ff35f50e274b6055dfeff006a6008e94d4e9511c251a2d99131e5"},
