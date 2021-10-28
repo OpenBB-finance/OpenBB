@@ -2,7 +2,6 @@
 
 Check all features [HERE](https://gamestonkterminal.github.io/GamestonkTerminal/common/technical_analysis/).
 
-
 Command | Description | Sources
 ------ | ------ | ------
 `view`         | view historical data and trendlines| [Finviz](https://finviz.com/quote.ashx?t=tsla)
