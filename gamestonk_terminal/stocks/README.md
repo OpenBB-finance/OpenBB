@@ -1,24 +1,4 @@
-# STOCKS 📈
-
-* [Commands](#Commands)
-   * [Load](#Load)
-   * [Quote](#Quote)
-   * [Candle](#Candle)
-   * [News](#News)
-* [Discover Stocks](#Discover-Stocks-)
-* [Behavioural Analysis](#Behavioural-Analysis-)
-* [Research](#Research-)
-* [Fundamental Analysis](#Fundamental-Analysis-)
-* [Technical Analysis](#Technical-Analysis-)
-* [Due Diligence](#Due-Diligence-)
-* [Prediction Techniques](#Prediction-Techniques-)
-* [Comparison Analysis](#Comparison-Analysis-)
-* [Exploratory Data Analysis](#Exploratory-Data-Analysis-)
-* [Residual Analysis](#Residual-Analysis-)
-* [Screener](#Screener-)
-* [Insider](#Insider-)
-* [Backtesting](#Backtesting-)
-* [Government](#Government-)
+# STOCKS
 
 ## Commands
 
@@ -66,35 +46,6 @@ Prints latest news about company, including date, title and web link. [Source: N
 <img width="770" alt="Captura de ecrã 2021-03-22, às 22 47 42" src="https://user-images.githubusercontent.com/25267873/112070935-b2587a00-8b66-11eb-8dfb-0353fc83311d.png">
 
 
-## [Discover Stocks »»](discovery/README.md)
-
-Command|Description|Source
----|---|---
-`ipo`           |past and future IPOs |[Finnhub](https://finnhub.io)
-`map`           |S&P500 index stocks map |[Finviz](https://finviz.com)
-`rtp_sectors`   |real-time performance sectors |[Alpha Vantage](www.alphavantage.co)
-`gainers`       |show latest top gainers |[Yahoo Finance](https://finance.yahoo.com/)
-`losers`        |show latest top losers |[Yahoo Finance](https://finance.yahoo.com/)
-`orders`        |orders by Fidelity Customers |[Fidelity](https://www.fidelity.com/)
-`ark_orders`    |orders by ARK Investment Management LLC | [Cathiesark](https://www.cathiesark.com)
-`up_earnings`   |upcoming earnings release dates |[Seeking Alpha](https://seekingalpha.com/)
-`high_short`    |show top high short interest stocks of over 20% ratio |[High Short Interest](https://www.highshortinterest.com/)
-`low_float`     |show low float stocks under 10M shares float |[Low Float](https://www.lowfloat.com/)
-`simply_wallst` |Simply Wall St. research data |[Simply Wall St.](https://simplywall.st/about)
-`spachero`      |great website for SPACs research |[SpacHero](https://www.spachero.com/)
-`uwhales`       |good website for SPACs research |[UnusualWhales](https://unusualwhales.com/)
-`valuation`     |valuation of sectors, industry, country |[Finviz](https://finviz.com)
-`performance`   |performance of sectors, industry, country |[Finviz](https://finviz.com)
-`spectrum`      |spectrum of sectors, industry, country |[Finviz](https://finviz.com)
-`latest`        |latest news |[Seeking Alpha](https://seekingalpha.com/)
-`trending`      |trending news |[Seeking Alpha](https://seekingalpha.com/)
-`darkpool`      |dark pool tickers with growing activity |[FINRA](https://www.finra.org)
-`darkshort`     |dark pool short position|[Stockgrid](https://stockgrid.io)
-`shortvol`      |short interest and days to cover |[Stockgrid](https://stockgrid.io)
-`popular`       |show most popular stocks on social media right now|[Sentiment Investor](https://sentimentinvestor.com)
-`emerging`      |show stocks that are being talked about more than usual|[Sentiment Investor](https://sentimentinvestor.com)
-
-&nbsp;
 
 
 
@@ -120,94 +71,6 @@ Command|Website
 `macrotrends`       |<https://www.macrotrends.net>
 `newsfilter`        |<https://www.newsfilter.io>
 `stockanalysis`     |<https://www.stockanalysis.com>
-
-&nbsp;
-
-## [Fundamental Analysis »»](fundamental_analysis/README.md)
-
-Command|Description
------ | ---------
-`screener`      |screen info about the company ([Finviz](https://finviz.com/))
-`mgmt`          |management team of the company ([Business Insider](https://markets.businessinsider.com/))
-`score`         |investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham  ([FMP](https://financialmodelingprep.com/))
-`dcf`           |a discounted cash flow with an option to edit in excel
-[Yahoo Finance API](https://finance.yahoo.com/) |
-`info`          |information scope of the company
-`shrs`          |shareholders of the company
-`sust`          |sustainability values of the company
-`cal`           |calendar earnings and estimates of the company
-[Alpha Vantage API](https://www.alphavantage.co/) |
-`overview`      |overview of the company
-`income`        |income statements of the company
-`balance`       |balance sheet of the company
-`cash`          |cash flow of the company
-`earnings`      |earnings dates and reported EPS
-`fraud`         |key fraud ratios
-[Financial Modeling Prep API](https://financialmodelingprep.com/) |
-`profile`       |profile of the company
-`quote`         |quote of the company
-`enterprise`    |enterprise value of the company over time
-`dcf`           |discounted cash flow of the company over time
-`income`        |income statements of the company
-`balance`       |balance sheet of the company
-`cash`          |cash flow of the company
-`metrics`       |key metrics of the company
-`ratios`        |financial ratios of the company
-`growth`        |financial statement growth of the company
-
-&nbsp;
-
-
-## [Due Diligence »»](due_diligence/README.md)
-
-Command|Description|Source
------- | --------|----
-`news`          |latest news of the company |[Finviz](https://finviz.com/)
-`red`           |gets due diligence from another user's post |[Reddit](https://reddit.com)
-`analyst`       |analyst prices and ratings of the company |[Finviz](https://finviz.com/)
-`rating`        |rating of the company from strong sell to strong buy | [FMP](https://financialmodelingprep.com/)
-`pt`            |price targets over time |[Business Insider](https://www.businessinsider.com/)
-`rot`           |ratings over time |[Finnhub](https://finnhub.io)
-`est`           |quarter and year analysts earnings estimates |[Business Insider](https://www.businessinsider.com/)
-`ins`           |insider activity over time |[Business Insider](https://www.businessinsider.com/)
-`insider`       |insider trading of the company |[Finviz](https://finviz.com/)
-`sec`           |SEC filings |[MarketWatch](https://www.marketwatch.com/)
-`short`         |short interest |[Quandl](https://www.quandl.com/)
-`warnings`      |company warnings according to Sean Seah book |[MarketWatch](https://www.marketwatch.com/)
-`dp`            |dark pools (ATS) vs OTC data | [FINRA](https://www.finra.org/#/)
-`ftd`           |display fails-to-deliver data | [SEC](https://www.sec.gov)
-`shortview`     |shows price vs short interest volume | [Stockgrid](https://stockgrid.io)
-`darkpos`       |net short vs position | [Stockgrid](https://stockgrid.io)
-`supplier`      |list of suppliers | [csimarket](https://csimarket.com)
-`customer`      |list of customers | [csimarket](https://csimarket.com)
-
-&nbsp;
-
-## [Comparison Analysis »»](comparison_analysis/README.md)
-
-Command|Description
------- | --------
-`select`        |select similar companies
-[Polygon](https://polygon.io), [Finhub](https://finnhub.io), [Finviz](https://finviz.com)|
-`get`           |get similar companies
-[Yahoo Finance](https://finance.yahoo.com/) |
-`historical`    |historical price data comparison
-`hcorr`         |historical price correlation
-[MarketWatch](https://www.marketwatch.com/) |
-`income`        |income financials comparison
-`balance`       |balance financials comparison
-`cashflow`      |cashflow comparison
-[FinBrain](https://finbrain.tech) |
-`sentiment`     |sentiment analysis comparison
-`scorr`         |sentiment correlation
-[Finviz](https://finviz.com/screener.ashx) |
-`overview`        |brief overview comparison
-`valuation`       |brief valuation comparison
-`financial`       |brief financial comparison
-`ownership`       |brief ownership comparison
-`performance`     |brief performance comparison
-`technical`       |brief technical comparison
-
 
 &nbsp;
 
