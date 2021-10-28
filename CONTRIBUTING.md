@@ -396,7 +396,7 @@ If you do not want to assert an item but your test still prints output, please a
 
 ## Add Documentation
 
-See [Hugo Server instructions](/gamestonk_terminal/website/README.md).
+See [Hugo Server instructions](/website/README.md).
 
 ## Open a Pull Request
 
