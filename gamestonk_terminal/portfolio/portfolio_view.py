@@ -94,13 +94,15 @@ def plot_overall_return(
     comb = pd.merge(df, df_m, how="left", left_index=True, right_index=True)
     comb = comb.fillna(method="ffill")
     comb = comb.dropna()
-
     comb["return"] = (
-        comb["holdings"]
+        (0 if "holdings" not in comb.columns else comb["holdings"])
         + comb["Cash"]["Cash"]
-        - comb["holdings"][0]
+        - (0 if "holdings" not in comb.columns else comb["holdings"][0])
         - comb["Cash"]["Cash"][0]
-    ) / (comb["Cash"]["Cash"][0] + comb["holdings"][0] + comb["total_cost"][0])
+    ) / (
+        comb["Cash"]["Cash"][0]
+        + (0 if "holdings" not in comb.columns else comb["holdings"][0])
+    )  # + comb["total_cost"][0]
 
     comb[("Market", "Return")] = (
         comb[("Market", "Close")] - comb[("Market", "Close")][0]
@@ -166,6 +168,7 @@ def plot_rolling_beta(
     img : ImageReader
         Rolling beta graph
     """
+    plt.close("all")
     df = df["Holding"]
     uniques = df.columns.tolist()
     res = df.div(df.sum(axis=1), axis=0)
@@ -258,7 +261,8 @@ def annual_report(df: pd.DataFrame, hist: pd.DataFrame, m_tick: str) -> None:
     )
     report.showPage()
     reportlab_helpers.base_format(report, "Portfolio Analysis")
-    report.drawImage(plot_rolling_beta(df, hist, df_m, 365), 15, 360, 600, 300)
+    if "Holding" in df.columns:
+        report.drawImage(plot_rolling_beta(df, hist, df_m, 365), 15, 360, 600, 300)
     report.save()
 
     print("File save in:\n", path, "\n")

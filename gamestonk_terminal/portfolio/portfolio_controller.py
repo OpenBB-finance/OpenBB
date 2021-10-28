@@ -336,7 +336,10 @@ Graphs:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
-        if ns_parser.type == "cash" and ns_parser.action not in ["deposit", "withdrawal"]:
+        if ns_parser.type == "cash" and ns_parser.action not in [
+            "deposit",
+            "withdrawal",
+        ]:
             print("Cash can only be deposited or withdrew\n")
             return
         if ns_parser.type != "cash" and ns_parser.action in ["deposit", "withdrawal"]:
@@ -350,7 +353,7 @@ Graphs:
             "Price": ns_parser.price,
             "Fees": ns_parser.fees,
             "Premium": ns_parser.premium,
-            "Side": ns_parser.side,
+            "Side": ns_parser.action,
         }
         self.portfolio = self.portfolio.append([data])
         self.portfolio.index = list(range(0, len(self.portfolio.values)))
@@ -387,6 +390,10 @@ Graphs:
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
+            return
+
+        if self.portfolio.empty:
+            print("Please add items to the portfolio\n")
             return
 
         try:

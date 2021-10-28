@@ -93,14 +93,17 @@ def generate_performance(portfolio: pd.DataFrame) -> pd.DataFrame:
     """
     changes = portfolio.copy()
     # Transactions sorted for only stocks
+    cashes = changes[changes["Type"] == "cash"]
     changes = changes[changes["Type"] == "stock"]
     uniques = list(set(changes["Name"].tolist()))
-    # Stock price history for each stock
-    hist = yfinance_model.get_stocks(uniques)
-    # Dividends for each stock
-    divs = yfinance_model.get_dividends(uniques)
+    if uniques:
+        hist = yfinance_model.get_stocks(uniques)
+        divs = yfinance_model.get_dividends(uniques)
+    else:
+        hist, divs = pd.DataFrame(), pd.DataFrame()
+
     divs = divs.fillna(0)
-    mini = min(changes["Date"])
+    mini = min(cashes["Date"].to_list() + changes["Date"].to_list())
     days = pd.date_range(mini, date.today() - timedelta(days=1), freq="d")
     zeros = [0 for _ in uniques]
     data = [zeros + zeros + zeros + [0] for _ in days]
@@ -111,6 +114,7 @@ def generate_performance(portfolio: pd.DataFrame) -> pd.DataFrame:
     log = pd.DataFrame(data, columns=headers, index=days)
 
     for index, _ in log.iterrows():
+        # Add stocks to dataframe
         values = changes[changes["Date"] == index]
         if len(values.index) > 0:
             for _, sub_row in values.iterrows():
@@ -165,6 +169,19 @@ def generate_performance(portfolio: pd.DataFrame) -> pd.DataFrame:
                     log.at[index, ("Cost Basis", ticker)] = (
                         log.at[index, ("Cost Basis", ticker)] - wa_cost
                     )
+        cash_vals = cashes[cashes["Date"] == index]
+        if len(cash_vals.index) > 0:
+            for _, sub_row in cash_vals.iterrows():
+                amount = sub_row["Price"]
+                if sub_row["Side"] == "deposit":
+                    d = 1
+                elif sub_row["Side"] == "withdrawal":
+                    d = -1
+                else:
+                    raise ValueError("Cash type must be deposit or withdrawal")
+                log.at[index, ("Cash", "Cash")] = (
+                    log.at[index, ("Cash", "Cash")] + d * amount
+                )
 
     log[("Cash", "Cash")] = log[("Cash", "Cash")].cumsum()
 
@@ -187,8 +204,9 @@ def generate_performance(portfolio: pd.DataFrame) -> pd.DataFrame:
         )
         comb[("Profit", uni)] = comb[("Profit", uni)].cumsum()
 
-    comb["holdings"] = comb.sum(level=0, axis=1)["Holding"]
-    comb["profits"] = comb.sum(level=0, axis=1)["Profit"]
-    comb["total_prof"] = comb["holdings"] + comb["profits"]
-    comb["total_cost"] = comb.sum(level=0, axis=1)["Cost Basis"]
+    if len(changes["Date"]) > 0:
+        comb["holdings"] = comb.sum(level=0, axis=1)["Holding"]
+        comb["profits"] = comb.sum(level=0, axis=1)["Profit"]
+        comb["total_prof"] = comb["holdings"] + comb["profits"]
+        comb["total_cost"] = comb.sum(level=0, axis=1)["Cost Basis"]
     return comb, hist

@@ -1,2 +1,3 @@
 Name,Type,Quantity,Date,Price,Fees,Premium,Side
-spy,stock,-1.0,2019/10/21,2000.0,,,Buy
+spy,stock,1.0,2019-10-21 00:00:00,200.0,,,Buy
+cash,cash,1.0,2019/10/22,2000.0,,,deposit
