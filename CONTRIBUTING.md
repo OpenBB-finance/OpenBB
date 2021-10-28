@@ -396,7 +396,17 @@ If you do not want to assert an item but your test still prints output, please a
 
 ## Add Documentation
 
-See [Hugo Server instructions](/website/README.md).
+- **High-level documentation**:
+   - Add a row to the table on the README of the corresponding context/folder.
+   - E.g. if you are adding `pipo` feature to `discovery` menu under `stocks` context, you need to go into the corresponding [README](https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/gamestonk_terminal/stocks/discovery/README.md) and add a new row to the table, like:
+
+Command|Description|Source
+---|---|---
+`pipo`           |past IPOs |[Finnhub](https://finnhub.io)
+
+- **Low-level documentation**:
+    - See [Hugo Server instructions](/website/README.md).
+
 
 ## Open a Pull Request
 
