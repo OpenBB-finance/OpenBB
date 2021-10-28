@@ -96,38 +96,7 @@ Command|Description|Source
 
 &nbsp;
 
-## [Behavioural Analysis »»](behavioural_analysis/README.md)
 
-Command|Description
-----|----
-[FinBrain](https://finbrain.tech)|
-`finbrain`      |sentiment from 15+ major news headlines
-`stats`         |sentiment stats including comparison with sector
-[Reddit](https://reddit.com)|
-`wsb`           |show what WSB gang is up to in subreddit wallstreetbets
-`watchlist`     |show other users watchlist
-`popular`       |show popular tickers
-`spac_c`        |show other users spacs announcements from subreddit SPACs community
-`spac`          |show other users spacs announcements from other subs
-[Stocktwits](https://stocktwits.com/)|
-`bullbear`      |estimate quick sentiment from last 30 messages on board
-`messages`      |output up to the 30 last messages on the board
-`trending`      |trending stocks
-`stalker`       |stalk stocktwits user's last message
-[Twitter](https://twitter.com/)|
-`infer`         |infer about stock's sentiment from latest tweets
-`sentiment`     |in-depth sentiment prediction from tweets over time
-[Google](https://google.com/)|
-`mentions`      |interest over time based on stock's mentions
-`regions`       |regions that show highest interest in stock
-`queries`       |top related queries with this stock
-`rise`          |top rising related queries with stock
-[Sentiment Investor](https://sentimentinvestor.com)|
-`metrics`       |core social sentiment metrics for this stock
-`social`        |social media figures for stock popularity
-`historical`    |plot the past week of data for a selected metric
-
-&nbsp;
 
 ## [Research »»](research/README.md)
 
@@ -188,34 +157,6 @@ Command|Description
 
 &nbsp;
 
-## [Technical Analysis »»](technical_analysis/README.md)
-
-Command | Description | Sources
------- | ------ | ------
-`view`         | view historical data and trendlines| [Finviz](https://finviz.com/quote.ashx?t=tsla)
-`summary`      | technical summary report| [FinBrain](https://finbrain.tech)
-`recom`        | recommendation based on Technical Indicators| [Tradingview](https://uk.tradingview.com/widget/technical-analysis/)
-`pr`           | pattern recognition| [Finnhub](https://finnhub.io)
-[overlap](https://github.com/twopirllc/pandas-ta/tree/master/pandas_ta/overlap) |
-`ema`         | exponential moving average | [Wikipedia](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average), [Investopedia](https://www.investopedia.com/terms/e/ema.asp)
-`sma`         |simple moving average | [Wikipedia](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average_(boxcar_filter)), [Investopedia](https://www.investopedia.com/terms/s/sma.asp)
-`vwap`        |volume weighted average price | [Wikipedia](https://en.wikipedia.org/wiki/Volume-weighted_average_price), [Investopedia](https://www.investopedia.com/terms/v/vwap.asp)
-[momentum](https://github.com/twopirllc/pandas-ta/tree/master/pandas_ta/momentum) |
-`cci`         |commodity channel index | [Wikipedia](https://en.wikipedia.org/wiki/Commodity_channel_index), [Investopedia](https://www.investopedia.com/terms/c/commoditychannelindex.asp)
-`macd`        |moving average convergence/divergence | [Wikipedia](https://en.wikipedia.org/wiki/MACD), [Investopedia](https://www.investopedia.com/terms/m/macd.asp)
-`rsi`         |relative strength index | [Wikipedia](https://en.wikipedia.org/wiki/Relative_strength_index), [Investopedia](https://www.investopedia.com/terms/r/rsi.asp)
-`stoch`       |stochastic oscillator | [Wikipedia](https://en.wikipedia.org/wiki/Stochastic_oscillator), [Investopedia](https://www.investopedia.com/terms/s/stochasticoscillator.asp)
-[trend](https://github.com/twopirllc/pandas-ta/tree/master/pandas_ta/trend) |
-`adx`         |average directional movement index | [Wikipedia](https://en.wikipedia.org/wiki/Average_directional_movement_index), [Investopedia](https://www.investopedia.com/terms/a/adx.asp)
-`aroon`       |aroon indicator | [Investopedia](https://www.investopedia.com/terms/a/aroon.asp)
-[volatility](https://github.com/twopirllc/pandas-ta/tree/master/pandas_ta/volatility) |
-`bbands`      |bollinger bands | [Wikipedia](https://en.wikipedia.org/wiki/Bollinger_Bands), [Investopedia](https://www.investopedia.com/terms/b/bollingerbands.asp)
-[volume](https://github.com/twopirllc/pandas-ta/tree/master/pandas_ta/volume) |
-`ad`          |accumulation/distribution line values | [Wikipedia](https://en.wikipedia.org/wiki/Accumulation/distribution_index), [Investopedia](https://www.investopedia.com/terms/a/accumulationdistribution.asp)
-`obv`         |on balance volume | [Wikipedia](https://en.wikipedia.org/wiki/On-balance_volume), [Investopedia](https://www.investopedia.com/terms/o/onbalancevolume.asp)
-custom|
-`fib`          | Fibonocci levels | [Investopedia](https://www.investopedia.com/terms/f/fibonacciretracement.asp)
-&nbsp;
 
 ## [Due Diligence »»](due_diligence/README.md)
 
@@ -240,22 +181,6 @@ Command|Description|Source
 `supplier`      |list of suppliers | [csimarket](https://csimarket.com)
 `customer`      |list of customers | [csimarket](https://csimarket.com)
 
-&nbsp;
-
-## [Prediction Techniques »»](prediction_techniques/README.md)
-
-Command|Technique|Sources
------- | ------------|---
-`knn`         |k-Nearest Neighbors | [Wikipedia](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm)
-`linear`      |linear regression (polynomial 1) | [Wikipedia](https://en.wikipedia.org/wiki/Linear_regression), [Investopedia](https://www.investopedia.com/terms/r/regression.asp)
-`quadratic`   |quadratic regression (polynomial 2) | [Wikipedia](https://en.wikipedia.org/wiki/Polynomial_regression), [Investopedia](https://www.investopedia.com/terms/r/regression.asp)
-`cubic`       |cubic regression (polynomial 3) | [Wikipedia](https://en.wikipedia.org/wiki/Polynomial_regression), [Investopedia](https://www.investopedia.com/terms/r/regression.asp)
-`regression`  |regression (other polynomial) | [Wikipedia](https://en.wikipedia.org/wiki/Polynomial_regression), [Investopedia](https://www.investopedia.com/terms/r/regression.asp)
-`arima`       |autoregressive integrated moving average | [Wikipedia](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average), [Investopedia](https://www.investopedia.com/terms/a/autoregressive-integrated-moving-average-arima.asp)
-`mlp`         |MultiLayer Perceptron | [Wikipedia](https://en.wikipedia.org/wiki/Multilayer_perceptron)
-`rnn`         |Recurrent Neural Network  | [Wikipedia](https://en.wikipedia.org/wiki/Recurrent_neural_network)
-`lstm`        |Long Short-Term Memory  | [Wikipedia](https://en.wikipedia.org/wiki/Long_short-term_memory), [Details](https://colah.github.io/posts/2015-08-Understanding-LSTMs/)
-`conv1d`      |1D Convolution Neural Net| [Wikipedia](https://en.wikipedia.org/wiki/Convolutional_neural_network)
 &nbsp;
 
 ## [Comparison Analysis »»](comparison_analysis/README.md)
@@ -286,21 +211,7 @@ Command|Description
 
 &nbsp;
 
-## [Exploratory Data Analysis »»](exploratory_data_analysis/README.md)
 
-Command|Description
------- | --------
-`summary`      | brief summary statistics
-`hist`         | histogram with density plot
-`cdf`          | cumulative distribution function
-`bwy`          | box and whisker yearly plot
-`bwm`          | box and whisker monthly plot
-`rolling`      | rolling mean and std deviation
-`decompose`    | decomposition in cyclic-trend, season, and residuals
-`cusum`        | detects abrupt changes using cumulative sum algorithm
-`acf`          | (partial) auto-correlation function differentials
-
-&nbsp;
 
 ## [Residual Analysis »»](residuals_analysis/README.md)
 
