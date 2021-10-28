@@ -1,6 +1,6 @@
 # BEHAVIOURAL ANALYSIS
 
--> Check all features [HERE](https://gamestonkterminal.github.io/GamestonkTerminal/common/behavioural_analysis/).
+Check all features [HERE](https://gamestonkterminal.github.io/GamestonkTerminal/common/behavioural_analysis/).
 
 Command|Description|Source
 ----|----|----
