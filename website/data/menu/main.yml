@@ -512,8 +512,6 @@ main:
             ref: "/stocks/prediction_techniques/conv1d"
           - name: mc
             ref: "/stocks/prediction_techniques/mc"
-      - name: report
-        ref: "/stocks/report"
   - name: forex
     ref: "/forex"
   - name: resources
@@ -551,8 +549,6 @@ main:
         ref: "/economy/search"
       - name: series
         ref: "/economy/series"
-      - name: report
-        ref: "/economy/report"
   - name: options
     ref: "/options"
     sub:
@@ -887,5 +883,3 @@ main:
             ref: "/common/technical_analysis/obv"
           - name: fib
             ref: "/common/technical_analysis/fib"
-      - name: report
-        ref: "/cryptocurrency/report"

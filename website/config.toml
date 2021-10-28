@@ -39,12 +39,12 @@ enableGitInfo = true
 
   # (Optional, default none) Set source repository location. Used for 'Edit this page' links.
   # You can also specify this parameter per page in front matter.
-  geekdocRepo = "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/master/website"
+  geekdocRepo = "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/website"
 
   # (Optional, default none) Enable 'Edit this page' links. Requires 'GeekdocRepo' param
   # and path must point to 'content' directory of repo.
   # You can also specify this parameter per page in front matter.
-  geekdocEditPath = "tree/main/content"
+  geekdocEditPath = "/content"
 
   # (Optional, default true) Enables search function with flexsearch.
   # Index is built on the fly and might slowdown your website.
