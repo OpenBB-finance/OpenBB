@@ -1,5 +1,6 @@
 """ Disc Controller """
 __docformat__ = "numpy"
+# pylint:disable=too-many-lines
 
 import argparse
 import os
@@ -886,7 +887,95 @@ Finance Database:
         )
 
     def call_fds(self, other_args: List[str]):
-        financedatabase_view.show_equities(other_args)
+        """Process fds command"""
+        parser = argparse.ArgumentParser(
+            description="Display a selection of Equities based on country, sector, industry, name and/or description "
+            "filtered by market cap. If no arguments are given, return the equities with the highest "
+            "market cap.",
+            add_help=False,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--country",
+            default=None,
+            nargs="+",
+            dest="country",
+            help="Specify the Equities selection based on a country",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sector",
+            default=None,
+            nargs="+",
+            dest="sector",
+            help="Specify the Equities selection based on a sector",
+        )
+
+        parser.add_argument(
+            "-i",
+            "--industry",
+            default=None,
+            nargs="+",
+            dest="industry",
+            help="Specify the Equities selection based on an industry",
+        )
+
+        parser.add_argument(
+            "-n",
+            "--name",
+            default=None,
+            nargs="+",
+            dest="name",
+            help="Specify the Equities selection based on the name",
+        )
+
+        parser.add_argument(
+            "-d",
+            "--description",
+            default=None,
+            nargs="+",
+            dest="description",
+            help="Specify the Equities selection based on the description (not shown in table)",
+        )
+
+        parser.add_argument(
+            "-a",
+            "--amount",
+            default=10,
+            type=int,
+            dest="amount",
+            help="Enter the number of Equities you wish to see in the Tabulate window",
+        )
+
+        parser.add_argument(
+            "-o",
+            "--options ",
+            choices=["countries", "sectors", "industries"],
+            default=None,
+            dest="options",
+            help="Obtain the available options for country, sector and industry",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            financedatabase_view.show_equities(
+                country=ns_parser.country,
+                sector=ns_parser.sector,
+                industry=ns_parser.industry,
+                name=ns_parser.name,
+                description=ns_parser.description,
+                amount=ns_parser.amount,
+                options=ns_parser.options,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
 
 def menu():
