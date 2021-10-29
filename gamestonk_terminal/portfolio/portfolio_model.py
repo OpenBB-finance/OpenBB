@@ -76,22 +76,99 @@ def load_df(name: str) -> pd.DataFrame:
         return pd.DataFrame()
 
 
-def add_values() -> pd.DataFrame:
+def add_values(
+    log: pd.DataFrame, changes: pd.DataFrame, cashes: pd.DataFrame
+) -> pd.DataFrame:
     """
     Creates a new df with performance results
 
     Parameters
     ----------
-    portfolio : pd.DataFrame
-        The dataframe of transactions
+    log : pd.DataFrame
+        The dataframe that will have daily holdings
+    changes : pd.DataFrame
+        Transactions that changed holdings
+    cahses : pd.DataFrame
+        Cash changing transactions
 
     Returns
     ----------
-    data : pd.DataFrame
-        A dataframe with performance of portfolio
-    hist : pd.DataFrame
-        The historical performance of tickers in portfolio
+    log : pd.DataFrame
+        A dataframe with daily holdings
     """
+    for index, _ in log.iterrows():
+        # Add stocks to dataframe
+        values = changes[changes["Date"] == index]
+        if len(values.index) > 0:
+            for _, sub_row in values.iterrows():
+                ticker = sub_row["Name"]
+                quantity = sub_row["Quantity"]
+                price = sub_row["Price"]
+                fees = sub_row["Fees"]
+                if math.isnan(fees):
+                    fees = 0
+                sign = -1 if sub_row["Side"].lower() == "sell" else 1
+                pos1 = log.cumsum().at[index, ("Quantity", ticker)] > 0
+                pos2 = (quantity * sign) > 0
+
+                if sub_row["Side"].lower() == "interest":
+                    log.at[index, ("Cost Basis", ticker)] = (
+                        log.at[index, ("Cost Basis", ticker)] + quantity * price
+                    )
+                    log.at[index, ("Cash", "Cash")] = log.at[
+                        index, ("Cash", "Cash")
+                    ] - (quantity * price)
+
+                elif (
+                    pos1 == pos2
+                    or log.cumsum().at[index, ("Quantity", ticker)] == 0
+                    or (quantity * sign) == 0
+                ):
+                    log.at[index, ("Quantity", ticker)] = (
+                        log.at[index, ("Quantity", ticker)] + quantity * sign
+                    )
+                    log.at[index, ("Cost Basis", ticker)] = (
+                        log.at[index, ("Cost Basis", ticker)]
+                        + fees
+                        + quantity * sign * price
+                    )
+                    log.at[index, ("Cash", "Cash")] = log.at[
+                        index, ("Cash", "Cash")
+                    ] - (fees + quantity * sign * price)
+                else:
+                    rev = (
+                        log.at[index, ("Profit", ticker)] + quantity * sign * price * -1
+                    )
+                    wa_cost = (
+                        quantity / log.cumsum().at[index, ("Quantity", ticker)]
+                    ) * log.cumsum().at[index, ("Cost Basis", ticker)]
+                    log.at[index, ("Profit", ticker)] = rev - wa_cost - fees
+                    log.at[index, ("Cash", "Cash")] = (
+                        log.at[index, ("Cash", "Cash")] + rev - fees
+                    )
+                    log.at[index, ("Quantity", ticker)] = (
+                        log.at[index, ("Quantity", ticker)] + quantity * sign
+                    )
+                    log.at[index, ("Cost Basis", ticker)] = (
+                        log.at[index, ("Cost Basis", ticker)] - wa_cost
+                    )
+        cash_vals = cashes[cashes["Date"] == index]
+        if len(cash_vals.index) > 0:
+            for _, sub_row in cash_vals.iterrows():
+                amount = sub_row["Price"]
+                if sub_row["Side"] == "deposit":
+                    d = 1
+                elif sub_row["Side"] == "withdrawal":
+                    d = -1
+                else:
+                    raise ValueError("Cash type must be deposit or withdrawal")
+                log.at[index, ("Cash", "Cash")] = (
+                    log.at[index, ("Cash", "Cash")] + d * amount
+                )
+                log.at[index, ("Cash", "User")] = (
+                    log.at[index, ("Cash", "User")] + d * amount
+                )
+    return log
 
 
 def merge_dataframes(
@@ -191,79 +268,7 @@ def generate_performance(portfolio: pd.DataFrame) -> pd.DataFrame:
     headers = pd.MultiIndex.from_tuples(tuples, names=["first", "second"])
     log = pd.DataFrame(data, columns=headers, index=days)
     log[("Cash", "User")] = 0
-
-    for index, _ in log.iterrows():
-        # Add stocks to dataframe
-        values = changes[changes["Date"] == index]
-        if len(values.index) > 0:
-            for _, sub_row in values.iterrows():
-                ticker = sub_row["Name"]
-                quantity = sub_row["Quantity"]
-                price = sub_row["Price"]
-                fees = sub_row["Fees"]
-                if math.isnan(fees):
-                    fees = 0
-                sign = -1 if sub_row["Side"].lower() == "sell" else 1
-                pos1 = log.cumsum().at[index, ("Quantity", ticker)] > 0
-                pos2 = (quantity * sign) > 0
-
-                if sub_row["Side"].lower() == "interest":
-                    log.at[index, ("Cost Basis", ticker)] = (
-                        log.at[index, ("Cost Basis", ticker)] + quantity * price
-                    )
-                    log.at[index, ("Cash", "Cash")] = log.at[
-                        index, ("Cash", "Cash")
-                    ] - (quantity * price)
-
-                elif (
-                    pos1 == pos2
-                    or log.cumsum().at[index, ("Quantity", ticker)] == 0
-                    or (quantity * sign) == 0
-                ):
-                    log.at[index, ("Quantity", ticker)] = (
-                        log.at[index, ("Quantity", ticker)] + quantity * sign
-                    )
-                    log.at[index, ("Cost Basis", ticker)] = (
-                        log.at[index, ("Cost Basis", ticker)]
-                        + fees
-                        + quantity * sign * price
-                    )
-                    log.at[index, ("Cash", "Cash")] = log.at[
-                        index, ("Cash", "Cash")
-                    ] - (fees + quantity * sign * price)
-                else:
-                    rev = (
-                        log.at[index, ("Profit", ticker)] + quantity * sign * price * -1
-                    )
-                    wa_cost = (
-                        quantity / log.cumsum().at[index, ("Quantity", ticker)]
-                    ) * log.cumsum().at[index, ("Cost Basis", ticker)]
-                    log.at[index, ("Profit", ticker)] = rev - wa_cost - fees
-                    log.at[index, ("Cash", "Cash")] = (
-                        log.at[index, ("Cash", "Cash")] + rev - fees
-                    )
-                    log.at[index, ("Quantity", ticker)] = (
-                        log.at[index, ("Quantity", ticker)] + quantity * sign
-                    )
-                    log.at[index, ("Cost Basis", ticker)] = (
-                        log.at[index, ("Cost Basis", ticker)] - wa_cost
-                    )
-        cash_vals = cashes[cashes["Date"] == index]
-        if len(cash_vals.index) > 0:
-            for _, sub_row in cash_vals.iterrows():
-                amount = sub_row["Price"]
-                if sub_row["Side"] == "deposit":
-                    d = 1
-                elif sub_row["Side"] == "withdrawal":
-                    d = -1
-                else:
-                    raise ValueError("Cash type must be deposit or withdrawal")
-                log.at[index, ("Cash", "Cash")] = (
-                    log.at[index, ("Cash", "Cash")] + d * amount
-                )
-                log.at[index, ("Cash", "User")] = (
-                    log.at[index, ("Cash", "User")] + d * amount
-                )
+    log = add_values(log, changes, cashes)
     comb = merge_dataframes(log, hist, changes, divs, uniques)
 
     return comb, hist
