@@ -94,26 +94,19 @@ def plot_overall_return(
     comb = pd.merge(df, df_m, how="left", left_index=True, right_index=True)
     comb = comb.fillna(method="ffill")
     comb = comb.dropna()
-    comb[("Cash", "WA")] = comb[("Cash", "Cash")].expanding().mean()
-    pd.set_option("display.max_rows", None)
-    print(comb)
     comb["return"] = (
-        (
-            0
-            if "holdings" not in comb.columns
-            else comb["holdings"] - comb["holdings"][0]
-        )
-        + (comb["Cash"]["Cash"] - comb["Cash"]["Cash"][0])
-        - (comb["Cash"]["User"] - comb["Cash"]["User"][0])
+        comb[("Cash", "Cash")]
+        + (0 if "holdings" not in comb.columns else comb["holdings"])
     ) / (
-        comb["Cash"]["WA"]
-        + (0 if "holdings" not in comb.columns else comb["holdings"][0])
+        comb[("Cash", "Cash")].shift(1)
+        + comb[("Cash", "User")]
+        + (0 if "holdings" not in comb.columns else comb["holdings"].shift(1))
     )
-
+    comb["return"] = comb["return"].fillna(1)
+    comb["return"] = comb["return"].cumprod() - 1
     comb[("Market", "Return")] = (
         comb[("Market", "Close")] - comb[("Market", "Close")][0]
     ) / comb[("Market", "Close")][0]
-
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.plot(comb.index, comb["return"], color="tab:blue", label="Portfolio")
     ax.plot(comb.index, comb[("Market", "Return")], color="orange", label=m_tick)

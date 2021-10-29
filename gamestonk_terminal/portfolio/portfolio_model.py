@@ -75,6 +75,24 @@ def load_df(name: str) -> pd.DataFrame:
         return pd.DataFrame()
 
 
+def add_values() -> pd.DataFrame:
+    """
+    Creates a new df with performance results
+
+    Parameters
+    ----------
+    portfolio : pd.DataFrame
+        The dataframe of transactions
+
+    Returns
+    ----------
+    data : pd.DataFrame
+        A dataframe with performance of portfolio
+    hist : pd.DataFrame
+        The historical performance of tickers in portfolio
+    """
+
+
 def generate_performance(portfolio: pd.DataFrame) -> pd.DataFrame:
     """
     Creates a new df with performance results
@@ -189,9 +207,6 @@ def generate_performance(portfolio: pd.DataFrame) -> pd.DataFrame:
                     log.at[index, ("Cash", "User")] + d * amount
                 )
 
-    log[("Cash", "Cash")] = log[("Cash", "Cash")].cumsum()
-    log[("Cash", "User")] = log[("Cash", "User")].cumsum()
-
     comb = pd.merge(log, hist, how="left", left_index=True, right_index=True)
     comb = comb.fillna(method="ffill")
     comb = pd.merge(comb, divs, how="left", left_index=True, right_index=True)
@@ -212,7 +227,7 @@ def generate_performance(portfolio: pd.DataFrame) -> pd.DataFrame:
             * comb[("Quantity", uni)]
         )
         comb[("Profit", uni)] = comb[("Profit", uni)].cumsum()
-
+    comb[("Cash", "Cash")] = comb[("Cash", "Cash")].cumsum()
     if len(changes["Date"]) > 0:
         comb["holdings"] = comb.sum(level=0, axis=1)["Holding"]
         comb["profits"] = comb.sum(level=0, axis=1)["Profit"]
