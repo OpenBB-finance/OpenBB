@@ -1,4 +1,4 @@
-"""WSJ view"""
+"""Finance Database view"""
 __docformat__ = "numpy"
 
 import financedatabase as fd
