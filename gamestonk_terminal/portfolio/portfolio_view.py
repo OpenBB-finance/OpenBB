@@ -6,7 +6,6 @@ from io import BytesIO
 import os
 
 import pandas as pd
-import numpy as np
 from tabulate import tabulate
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
@@ -171,31 +170,28 @@ def plot_rolling_beta(
     df = df["Holding"]
     uniques = df.columns.tolist()
     res = df.div(df.sum(axis=1), axis=0)
+    res = res.fillna(0)
     comb = pd.merge(
         hist["Close"], mark["Market"], how="left", left_index=True, right_index=True
     )
     comb = comb.fillna(method="ffill")
     df_var = comb.rolling(600).var().unstack()["Close"].to_frame(name="var")
-
     for col in hist["Close"].columns:
         df1 = (
             comb.rolling(600).cov().unstack()[col]["Close"].to_frame(name=f"cov_{col}")
         )
         df_var = pd.merge(df_var, df1, how="left", left_index=True, right_index=True)
         df_var[f"beta_{col}"] = df_var[f"cov_{col}"] / df_var["var"]
-
     final = pd.merge(res, df_var, how="left", left_index=True, right_index=True)
     final = final.fillna(method="ffill")
     final = final.drop(columns=["var"] + [f"cov_{x}" for x in uniques])
     for uni in uniques:
         final[f"prod_{uni}"] = final[uni] * final[f"beta_{uni}"]
-
     final = final.drop(columns=[f"beta_{x}" for x in uniques] + uniques)
     final["total"] = final.sum(axis=1)
     final = final[final.index >= datetime.now() - timedelta(days=n + 1)]
 
-    final[final == 0] = np.nan
-
+    # final[final == 0] = np.nan
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.plot(
         final.index,
@@ -211,7 +207,9 @@ def plot_rolling_beta(
     ax.spines["right"].set_visible(False)
     ax.spines["bottom"].set_visible(False)
     ax.spines["left"].set_visible(False)
-    fig.suptitle("Rolling Beta", y=0.99, fontweight="bold", fontsize=14, color="black")
+    fig.suptitle(
+        "Rolling Beta of Stocks", y=0.99, fontweight="bold", fontsize=14, color="black"
+    )
     ax.axhline(0, ls="-", lw=1, color="gray", zorder=1)
     ax.axhline(0, ls="--", lw=1, color="black", zorder=2)
     fig.set_facecolor("white")
