@@ -48,6 +48,8 @@ main:
             ref: "/stocks/discovery/lowfloat"
           - name: hotpenny
             ref: "/stocks/discovery/hotpenny"
+          - name: fds
+            ref: "/stocks/discovery/fds"
       - name: dark pool shorts
         ref: "/stocks/dark_pool_shorts"
         sub:
@@ -804,6 +806,8 @@ main:
         ref: "/etf/active"
       - name: pir
         ref: "/etf/pir"
+      - name: fds
+        ref: "/etf/fds"
   - name: portfolio
     ref: "/portfolio"
     sub:

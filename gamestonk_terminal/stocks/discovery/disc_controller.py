@@ -1,17 +1,17 @@
 """ Disc Controller """
 __docformat__ = "numpy"
+# pylint:disable=too-many-lines
 
 import argparse
 import os
-from typing import List
 from datetime import datetime
+from typing import List
 
 from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
-from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_non_negative,
@@ -20,6 +20,7 @@ from gamestonk_terminal.helper_funcs import (
     check_int_range,
     try_except,
 )
+from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.discovery import (
     ark_view,
     fidelity_view,
@@ -28,6 +29,7 @@ from gamestonk_terminal.stocks.discovery import (
     yahoofinance_view,
     finnhub_view,
     geekofwallstreet_view,
+    financedatabase_view,
 )
 
 
@@ -61,6 +63,7 @@ class DiscoveryController:
         "lowfloat",
         "hotpenny",
         "rtearn",
+        "fds",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -107,6 +110,8 @@ shortinterest.com
     lowfloat       low float stocks under 10M shares float
 pennystockflow.com
     hotpenny       today's hot penny stocks
+Finance Database:
+    fds            advanced Equities search based on country, sector, industry, name and/or description
 """
         print(help_text)
 
@@ -879,6 +884,103 @@ pennystockflow.com
         shortinterest_view.hot_penny_stocks(
             num=ns_parser.n_num,
             export=ns_parser.export,
+        )
+
+    @try_except
+    def call_fds(self, other_args: List[str]):
+        """Process fds command"""
+        parser = argparse.ArgumentParser(
+            description="Display a selection of Equities based on country, sector, industry, name and/or description "
+            "filtered by market cap. If no arguments are given, return the equities with the highest "
+            "market cap. [Source: Finance Database]",
+            add_help=False,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--country",
+            default=None,
+            nargs="+",
+            dest="country",
+            help="Specify the Equities selection based on a country",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sector",
+            default=None,
+            nargs="+",
+            dest="sector",
+            help="Specify the Equities selection based on a sector",
+        )
+
+        parser.add_argument(
+            "-i",
+            "--industry",
+            default=None,
+            nargs="+",
+            dest="industry",
+            help="Specify the Equities selection based on an industry",
+        )
+
+        parser.add_argument(
+            "-n",
+            "--name",
+            default=None,
+            nargs="+",
+            dest="name",
+            help="Specify the Equities selection based on the name",
+        )
+
+        parser.add_argument(
+            "-d",
+            "--description",
+            default=None,
+            nargs="+",
+            dest="description",
+            help="Specify the Equities selection based on the description (not shown in table)",
+        )
+
+        parser.add_argument(
+            "-ie",
+            "--include_exchanges",
+            action="store_false",
+            help="When used, data from different exchanges is also included. This leads to a much larger "
+            "pool of data due to the same company being listed on multiple exchanges",
+        )
+
+        parser.add_argument(
+            "-a",
+            "--amount",
+            default=10,
+            type=int,
+            dest="amount",
+            help="Enter the number of Equities you wish to see in the Tabulate window",
+        )
+
+        parser.add_argument(
+            "-o",
+            "--options ",
+            choices=["countries", "sectors", "industries"],
+            default=None,
+            dest="options",
+            help="Obtain the available options for country, sector and industry",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if not ns_parser:
+            return
+
+        financedatabase_view.show_equities(
+            country=ns_parser.country,
+            sector=ns_parser.sector,
+            industry=ns_parser.industry,
+            name=ns_parser.name,
+            description=ns_parser.description,
+            include_exchanges=ns_parser.include_exchanges,
+            amount=ns_parser.amount,
+            options=ns_parser.options,
         )
 
 
