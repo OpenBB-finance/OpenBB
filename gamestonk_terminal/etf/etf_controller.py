@@ -409,11 +409,12 @@ Finance Database:
             f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
         )
 
+    @try_except
     def call_fds(self, other_args):
         """Process fds command"""
         parser = argparse.ArgumentParser(
             description="Display a selection of ETFs based on category, name and/or description filtered by total "
-            "assets. Returns the top ETFs when no argument is given.",
+            "assets. Returns the top ETFs when no argument is given. [Source: Finance Database]",
             add_help=False,
         )
 
@@ -445,6 +446,14 @@ Finance Database:
         )
 
         parser.add_argument(
+            "-ie",
+            "--include_exchanges",
+            action="store_false",
+            help="When used, data from different exchanges is also included. This leads to a much larger "
+            "pool of data but a the same company multiple times due to being listed on multiple exchanges",
+        )
+
+        parser.add_argument(
             "-a",
             "--amount",
             default=10,
@@ -460,21 +469,18 @@ Finance Database:
             help="Obtain the available categories",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            financedatabase_view.show_etfs(
-                category=ns_parser.category,
-                name=ns_parser.name,
-                description=ns_parser.description,
-                amount=ns_parser.amount,
-                options=ns_parser.options,
-            )
-
-        except Exception as e:
-            print(e, "\n")
+        financedatabase_view.show_etfs(
+            category=ns_parser.category,
+            name=ns_parser.name,
+            description=ns_parser.description,
+            include_exchanges=ns_parser.include_exchanges,
+            amount=ns_parser.amount,
+            options=ns_parser.options,
+        )
 
 
 def menu():

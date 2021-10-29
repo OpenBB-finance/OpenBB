@@ -4,12 +4,20 @@ __docformat__ = "numpy"
 import financedatabase as fd
 import pandas as pd
 from tabulate import tabulate
+from gamestonk_terminal import feature_flags as gtff
 
 
-def show_etfs(category: str, name: str, description: str, amount: int, options: str):
+def show_etfs(
+    category: str,
+    name: str,
+    description: str,
+    include_exchanges: bool,
+    amount: int,
+    options: str,
+):
     """
     Display a selection of ETFs based on category, name and/or description filtered by total assets.
-    Returns the top ETFs when no argument is given.
+    Returns the top ETFs when no argument is given. [Source: Finance Database]
 
     Parameters
     ----------
@@ -19,6 +27,8 @@ def show_etfs(category: str, name: str, description: str, amount: int, options: 
         Search by name to find ETFs matching the criteria.
     description: str
         Search by description to find ETFs matching the criteria.
+    include_exchanges: bool
+        When you wish to include different exchanges use this boolean.
     amount : int
         Number of ETFs to display, default is 10.
     options : str
@@ -30,11 +40,14 @@ def show_etfs(category: str, name: str, description: str, amount: int, options: 
         return
 
     if category is not None:
-        data = fd.select_etfs(category=" ".join(category))
+        data = fd.select_etfs(
+            category=" ".join(category).title(), exclude_exchanges=include_exchanges
+        )
     else:
-        data = fd.select_etfs(category=category)
+        data = fd.select_etfs(category=category, exclude_exchanges=include_exchanges)
 
     if name is not None:
+        print(name)
         data = fd.search_products(data, query=" ".join(name), search="long_name")
     if description is not None:
         data = fd.search_products(data, query=" ".join(description), search="summary")
@@ -43,13 +56,20 @@ def show_etfs(category: str, name: str, description: str, amount: int, options: 
         ["long_name", "family", "category", "total_assets"]
     ]
     tabulate_data_sorted = tabulate_data.sort_values(by="total_assets", ascending=False)
-
-    print(
-        tabulate(
-            tabulate_data_sorted.iloc[:amount],
-            showindex=True,
-            headers=["Name", "Family", "Category", "Total Assets"],
-            floatfmt=".2f",
-            tablefmt="fancy_grid",
-        )
+    tabulate_data_sorted["total_assets"] = (
+        tabulate_data_sorted["total_assets [M]"] / 1e6
     )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                tabulate_data_sorted.iloc[:amount],
+                showindex=True,
+                headers=["Name", "Family", "Category", "Total Assets [M]"],
+                floatfmt=".2f",
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(tabulate_data_sorted.iloc[:amount].to_string(), "\n")

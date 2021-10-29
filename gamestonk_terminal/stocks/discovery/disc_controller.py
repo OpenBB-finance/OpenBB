@@ -886,12 +886,13 @@ Finance Database:
             export=ns_parser.export,
         )
 
+    @try_except
     def call_fds(self, other_args: List[str]):
         """Process fds command"""
         parser = argparse.ArgumentParser(
             description="Display a selection of Equities based on country, sector, industry, name and/or description "
             "filtered by market cap. If no arguments are given, return the equities with the highest "
-            "market cap.",
+            "market cap. [Source: Finance Database]",
             add_help=False,
         )
 
@@ -941,6 +942,14 @@ Finance Database:
         )
 
         parser.add_argument(
+            "-ie",
+            "--include_exchanges",
+            action="store_false",
+            help="When used, data from different exchanges is also included. This leads to a much larger "
+            "pool of data but a the same company multiple times due to being listed on multiple exchanges",
+        )
+
+        parser.add_argument(
             "-a",
             "--amount",
             default=10,
@@ -958,24 +967,21 @@ Finance Database:
             help="Obtain the available options for country, sector and industry",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
-                return
+        if not ns_parser:
+            return
 
-            financedatabase_view.show_equities(
-                country=ns_parser.country,
-                sector=ns_parser.sector,
-                industry=ns_parser.industry,
-                name=ns_parser.name,
-                description=ns_parser.description,
-                amount=ns_parser.amount,
-                options=ns_parser.options,
-            )
-
-        except Exception as e:
-            print(e, "\n")
+        financedatabase_view.show_equities(
+            country=ns_parser.country,
+            sector=ns_parser.sector,
+            industry=ns_parser.industry,
+            name=ns_parser.name,
+            description=ns_parser.description,
+            include_exchanges=ns_parser.include_exchanges,
+            amount=ns_parser.amount,
+            options=ns_parser.options,
+        )
 
 
 def menu():
