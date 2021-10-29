@@ -450,7 +450,7 @@ Finance Database:
             "--include_exchanges",
             action="store_false",
             help="When used, data from different exchanges is also included. This leads to a much larger "
-            "pool of data but a the same company multiple times due to being listed on multiple exchanges",
+            "pool of data due to the same ETF being listed on multiple exchanges",
         )
 
         parser.add_argument(
