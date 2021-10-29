@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import os
 import math
 from datetime import date, timedelta
+from typing import List
 
 import numpy as np
 import pandas as pd
@@ -91,6 +92,63 @@ def add_values() -> pd.DataFrame:
     hist : pd.DataFrame
         The historical performance of tickers in portfolio
     """
+
+
+def merge_dataframes(
+    log: pd.DataFrame,
+    hist: pd.DataFrame,
+    changes: pd.DataFrame,
+    divs: pd.DataFrame,
+    uniques: List[str],
+) -> pd.DataFrame:
+    """
+    Merge dataframes to create final dataframe
+
+    Parameters
+    ----------
+    log : pd.DataFrame
+        The new dataframe with daily holdings
+    hist : pd.DataFrame
+        Historical returns for stocks in portfolio
+    changes : pd.DataFrame
+        A log of past transactions
+    divs : pd.DataFrame
+        The dividend history for stocks in portfolio
+    unqiues: List[str]
+        A list of stocks in the portfolio
+
+    Returns
+    ----------
+    comn : pd.DataFrame
+        Thew new aggregated dataframe
+    """
+    comb = pd.merge(log, hist, how="left", left_index=True, right_index=True)
+    comb = comb.fillna(method="ffill")
+    comb = pd.merge(comb, divs, how="left", left_index=True, right_index=True)
+    comb = comb.fillna(0)
+
+    for uni in uniques:
+        comb[("Quantity", uni)] = comb[("Quantity", uni)].cumsum()
+        comb[("Cost Basis", uni)] = comb[("Cost Basis", uni)].cumsum()
+        comb[("Cash", "Cash")] = comb[("Cash", "Cash")] + (
+            comb[("Quantity", uni)] * comb[("Dividend", uni)]
+        )
+        comb[("Holding", uni)] = (
+            np.where(
+                comb[("Quantity", uni)] > 0,
+                comb[("Close", uni)],
+                (2 * comb[("Close", uni)][0] - comb[("Close", uni)]),
+            )
+            * comb[("Quantity", uni)]
+        )
+        comb[("Profit", uni)] = comb[("Profit", uni)].cumsum()
+    comb[("Cash", "Cash")] = comb[("Cash", "Cash")].cumsum()
+    if len(changes["Date"]) > 0:
+        comb["holdings"] = comb.sum(level=0, axis=1)["Holding"]
+        comb["profits"] = comb.sum(level=0, axis=1)["Profit"]
+        comb["total_prof"] = comb["holdings"] + comb["profits"]
+        comb["total_cost"] = comb.sum(level=0, axis=1)["Cost Basis"]
+    return comb
 
 
 def generate_performance(portfolio: pd.DataFrame) -> pd.DataFrame:
@@ -206,31 +264,6 @@ def generate_performance(portfolio: pd.DataFrame) -> pd.DataFrame:
                 log.at[index, ("Cash", "User")] = (
                     log.at[index, ("Cash", "User")] + d * amount
                 )
+    comb = merge_dataframes(log, hist, changes, divs, uniques)
 
-    comb = pd.merge(log, hist, how="left", left_index=True, right_index=True)
-    comb = comb.fillna(method="ffill")
-    comb = pd.merge(comb, divs, how="left", left_index=True, right_index=True)
-    comb = comb.fillna(0)
-
-    for uni in uniques:
-        comb[("Quantity", uni)] = comb[("Quantity", uni)].cumsum()
-        comb[("Cost Basis", uni)] = comb[("Cost Basis", uni)].cumsum()
-        comb[("Cash", "Cash")] = comb[("Cash", "Cash")] + (
-            comb[("Quantity", uni)] * comb[("Dividend", uni)]
-        )
-        comb[("Holding", uni)] = (
-            np.where(
-                comb[("Quantity", uni)] > 0,
-                comb[("Close", uni)],
-                (2 * comb[("Close", uni)][0] - comb[("Close", uni)]),
-            )
-            * comb[("Quantity", uni)]
-        )
-        comb[("Profit", uni)] = comb[("Profit", uni)].cumsum()
-    comb[("Cash", "Cash")] = comb[("Cash", "Cash")].cumsum()
-    if len(changes["Date"]) > 0:
-        comb["holdings"] = comb.sum(level=0, axis=1)["Holding"]
-        comb["profits"] = comb.sum(level=0, axis=1)["Profit"]
-        comb["total_prof"] = comb["holdings"] + comb["profits"]
-        comb["total_cost"] = comb.sum(level=0, axis=1)["Cost Basis"]
     return comb, hist
