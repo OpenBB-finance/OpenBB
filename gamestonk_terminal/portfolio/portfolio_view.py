@@ -175,10 +175,10 @@ def plot_rolling_beta(
         hist["Close"], mark["Market"], how="left", left_index=True, right_index=True
     )
     comb = comb.fillna(method="ffill")
-    df_var = comb.rolling(600).var().unstack()["Close"].to_frame(name="var")
+    df_var = comb.rolling(252).var().unstack()["Close"].to_frame(name="var")
     for col in hist["Close"].columns:
         df1 = (
-            comb.rolling(600).cov().unstack()[col]["Close"].to_frame(name=f"cov_{col}")
+            comb.rolling(252).cov().unstack()[col]["Close"].to_frame(name=f"cov_{col}")
         )
         df_var = pd.merge(df_var, df1, how="left", left_index=True, right_index=True)
         df_var[f"beta_{col}"] = df_var[f"cov_{col}"] / df_var["var"]
