@@ -281,7 +281,7 @@ Graphs:
             "--type",
             dest="type",
             type=str,
-            choices=["stock", "bond", "option", "crypto", "cash"],
+            choices=["stock", "cash"],  # "bond", "option", "crypto",
             default="stock",
             help="Type of asset to add",
         )
@@ -316,13 +316,13 @@ Graphs:
             type=check_positive_float,
             help="Fees paid for transaction",
         )
-        parser.add_argument(
-            "-r",
-            "--premium",
-            dest="premium",
-            type=check_positive_float,
-            help="Premium paid/received for the option",
-        )
+        # parser.add_argument(
+        #     "-r",
+        #     "--premium",
+        #     dest="premium",
+        #     type=check_positive_float,
+        #     help="Premium paid/received for the option",
+        # )
         parser.add_argument(
             "-a",
             "--action",
@@ -361,7 +361,7 @@ Graphs:
             "Date": ns_parser.date,
             "Price": ns_parser.price,
             "Fees": ns_parser.fees,
-            "Premium": ns_parser.premium,
+            "Premium": None,  # ns_parser.premium
             "Side": ns_parser.action,
         }
         self.portfolio = self.portfolio.append([data])
