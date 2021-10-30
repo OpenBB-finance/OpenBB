@@ -17,21 +17,8 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.options import options_controller
-from gamestonk_terminal.stocks.backtesting import bt_controller
-from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
-from gamestonk_terminal.stocks.comparison_analysis import ca_controller
-from gamestonk_terminal.stocks.dark_pool_shorts import dps_controller
-from gamestonk_terminal.stocks.discovery import disc_controller
-from gamestonk_terminal.stocks.due_diligence import dd_controller
-from gamestonk_terminal.stocks.quantitative_analysis import qa_controller
-from gamestonk_terminal.stocks.fundamental_analysis import fa_controller
-from gamestonk_terminal.stocks.government import gov_controller
-from gamestonk_terminal.stocks.insider import insider_controller
-from gamestonk_terminal.stocks.research import res_controller
-from gamestonk_terminal.stocks.screener import screener_controller
 from gamestonk_terminal.stocks.stocks_helper import display_candle, load, quote
-from gamestonk_terminal.stocks.technical_analysis import ta_controller
+
 from gamestonk_terminal.helper_funcs import (
     valid_date,
     MENU_GO_BACK,
@@ -41,7 +28,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.common.quantitative_analysis import qa_view
 
-# pylint: disable=R1710
+# pylint: disable=R1710,import-outside-toplevel
 
 
 class StocksController:
@@ -386,6 +373,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
     # MENUS
     def call_disc(self, _):
         """Process disc command"""
+        from gamestonk_terminal.stocks.discovery import disc_controller
+
         ret = disc_controller.menu()
         if ret is False:
             self.print_help()
@@ -394,6 +383,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_dps(self, _):
         """Process dps command"""
+        from gamestonk_terminal.stocks.dark_pool_shorts import dps_controller
+
         ret = dps_controller.menu(self.ticker, self.start, self.stock)
         if ret is False:
             self.print_help()
@@ -402,6 +393,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_scr(self, _):
         """Process scr command"""
+        from gamestonk_terminal.stocks.screener import screener_controller
+
         ret = screener_controller.menu()
         if ret is False:
             self.print_help()
@@ -410,6 +403,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_ins(self, _):
         """Process ins command"""
+        from gamestonk_terminal.stocks.insider import insider_controller
+
         ret = insider_controller.menu(
             self.ticker,
             self.start,
@@ -423,6 +418,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_gov(self, _):
         """Process gov command"""
+        from gamestonk_terminal.stocks.government import gov_controller
+
         ret = gov_controller.menu(self.ticker)
         if ret is False:
             self.print_help()
@@ -431,6 +428,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_res(self, _):
         """Process res command"""
+        from gamestonk_terminal.stocks.research import res_controller
+
         if not self.ticker:
             print("Use 'load <ticker>' prior to this command!", "\n")
             return
@@ -448,6 +447,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_dd(self, _):
         """Process dd command"""
+        from gamestonk_terminal.stocks.due_diligence import dd_controller
+
         if not self.ticker:
             print("Use 'load <ticker>' prior to this command!", "\n")
             return
@@ -470,6 +471,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             print("Use 'load <ticker>' prior to this command!", "\n")
             return
 
+        from gamestonk_terminal.stocks.comparison_analysis import ca_controller
+
         ret = ca_controller.menu(self.ticker, self.start, self.interval, self.stock)
 
         if ret is False:
@@ -482,6 +485,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         if not self.ticker:
             print("Use 'load <ticker>' prior to this command!", "\n")
             return
+
+        from gamestonk_terminal.stocks.fundamental_analysis import fa_controller
 
         ret = fa_controller.menu(
             self.ticker,
@@ -500,6 +505,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             print("Use 'load <ticker>' prior to this command!", "\n")
             return
 
+        from gamestonk_terminal.stocks.backtesting import bt_controller
+
         ret = bt_controller.menu(self.ticker, self.stock)
 
         if ret is False:
@@ -512,6 +519,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         if not self.ticker:
             print("Use 'load <ticker>' prior to this command!", "\n")
             return
+
+        from gamestonk_terminal.stocks.technical_analysis import ta_controller
 
         ret = ta_controller.menu(
             self.ticker,
@@ -527,6 +536,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_ba(self, _):
         """Process ba command"""
+        from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
+
         ret = ba_controller.menu(
             self.ticker,
             self.start,
@@ -547,6 +558,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             # TODO: This menu should work regardless of data being daily or not!
             print("Load daily data to use this menu!", "\n")
             return
+
+        from gamestonk_terminal.stocks.quantitative_analysis import qa_controller
 
         ret = qa_controller.menu(
             self.ticker,
@@ -600,6 +613,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_options(self, _):
         """Process options command"""
+        from gamestonk_terminal.options import options_controller
+
         return options_controller.menu(self.ticker)
 
 
