@@ -4,5 +4,7 @@
   "MD013": {
     "line_length": 120,
     "tables": false
-  }
+  },
+  "MD036": false,
+  "MD041": false
 }
