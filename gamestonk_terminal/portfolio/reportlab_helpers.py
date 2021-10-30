@@ -4,6 +4,8 @@ __docformat__ = "numpy"
 from datetime import datetime
 
 from reportlab.pdfgen import canvas
+from reportlab.lib.styles import ParagraphStyle
+from reportlab.platypus import Paragraph
 
 
 def base_format(report: canvas.Canvas, header: str) -> None:
@@ -28,3 +30,13 @@ def base_format(report: canvas.Canvas, header: str) -> None:
     report.setFont("Helvetica", 20)
     report.drawString(50, 670, header)
     report.setFont("Helvetica", 12)
+
+
+def draw_paragraph(
+    report: canvas.Canvas, msg: str, x: int, y: int, max_width: int, max_height: int
+) -> None:
+    message_style = ParagraphStyle("Normal")
+    message = msg.replace("\n", "<br />")
+    message = Paragraph(message, style=message_style)
+    _, h = message.wrap(max_width, max_height)
+    message.drawOn(report, x, y - h)

@@ -226,6 +226,8 @@ def annual_report(df: pd.DataFrame, hist: pd.DataFrame, m_tick: str) -> None:
     report.drawImage(
         plot_overall_return(df, df_m, 365, m_tick, False), 15, 360, 600, 300
     )
+    main_t = portfolio_model.get_main_text()
+    reportlab_helpers.draw_paragraph(report, main_t, 30, 400, 550, 200)
     report.showPage()
     reportlab_helpers.base_format(report, "Portfolio Analysis")
     if "Holding" in df.columns:

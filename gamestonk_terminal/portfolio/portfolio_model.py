@@ -349,3 +349,10 @@ def get_rolling_beta(
     final["total"] = final.sum(axis=1)
     final = final[final.index >= datetime.now() - timedelta(days=n + 1)]
     return final
+
+
+def get_main_text() -> str:
+    text = """
+    Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning.
+    """
+    return text
