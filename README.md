@@ -102,7 +102,8 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
 
    ```bash
    Server:
-   ERROR: Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+   ERROR: Cannot connect to the Docker daemon at unix:///var/run/docker.sock.
+   Is the docker daemon running?
    ```
 
    Open the docker desktop app in this case.
