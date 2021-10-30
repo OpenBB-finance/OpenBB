@@ -37,6 +37,6 @@ def draw_paragraph(
 ) -> None:
     message_style = ParagraphStyle("Normal")
     message = msg.replace("\n", "<br />")
-    message = Paragraph(message, style=message_style)
-    _, h = message.wrap(max_width, max_height)
-    message.drawOn(report, x, y - h)
+    paragraph = Paragraph(message, style=message_style)
+    _, h = paragraph.wrap(max_width, max_height)
+    paragraph.drawOn(report, x, y - h)

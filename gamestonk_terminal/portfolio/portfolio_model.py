@@ -301,6 +301,9 @@ def get_return(df: pd.DataFrame, df_m: pd.DataFrame, n: int) -> pd.DataFrame:
     )
     comb["return"] = comb["return"].fillna(1)
     comb["return"] = comb["return"].cumprod() - 1
+    comb[("Market", "Return")] = (
+        comb[("Market", "Close")] - comb[("Market", "Close")][0]
+    ) / comb[("Market", "Close")][0]
     return comb
 
 
@@ -351,8 +354,43 @@ def get_rolling_beta(
     return final
 
 
-def get_main_text() -> str:
-    text = """
-    Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning. Hello this is some sample text that you can read to learn more about learning.
+def get_main_text(df: pd.DataFrame) -> str:
+    """Get main performance summary from a dataframe with returns
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Stock holdings and returns with market returns
+
+    Returns
+    ----------
+    text : str
+        The main summary of performance
     """
-    return text
+    v_com = (
+        "greater" if np.var(df["return"]) > np.var(df[("Market", "Return")]) else "less"
+    )
+    d_debt = np.where(df[("Cash", "Cash")] > 0, 0, 1)
+    bcash = 0 if df[("Cash", "Cash")][0] > 0 else abs(df[("Cash", "Cash")][0])
+    ecash = 0 if df[("Cash", "Cash")][-1] > 0 else abs(df[("Cash", "Cash")][-1])
+    bdte = bcash / (df["holdings"][0] - bcash)
+    edte = ecash / (df["holdings"][-1] - ecash)
+    if sum(d_debt) > 0:
+        t_debt = (
+            f"Beginning debt to equity was {bdte:.2%} and ending debt to equity was"
+            f" {edte:.2%}. Debt adds risk to a portfolio by amplifying the gains and losses when"
+            " equities change in value."
+        )
+    else:
+        t_debt = "Debt was not used this year. This reduces this risk of the portfolio."
+    t = (
+        f"Your portfolio's performance for the period was {df['return'][-1]:.2%}. This was"
+        f" {'greater' if df['return'][-1] > df[('Market', 'Return')][-1] else 'less'} than"
+        f" the market return of {df[('Market', 'Return')][-1]:.2%}. The variance for the"
+        f" portfolio is {np.var(df['return']):.2%}, while the variance for the market was"
+        f" {np.var(df[('Market', 'Return')]):.2%}. Since our portfolio's variance was"
+        f" {v_com} than the market's variance, our returns should be {v_com} than those"
+        f" of the market. {t_debt} The following report details various analytics from the"
+        f" portfolio. Read below to see the moving beta for a stock."
+    )
+    return t

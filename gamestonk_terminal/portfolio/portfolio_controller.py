@@ -408,7 +408,7 @@ Graphs:
 
         val, hist = portfolio_model.convert_df(self.portfolio)
         if not val.empty:
-            portfolio_view.annual_report(val, hist, ns_parser.market)
+            portfolio_view.Report(val, hist, ns_parser.market, 365).generate_report()
 
     @try_except
     def call_rmr(self, other_args: List[str]):
@@ -439,7 +439,8 @@ Graphs:
         val, _ = portfolio_model.convert_df(self.portfolio)
         if not val.empty:
             df_m = yfinance_model.get_market(val.index[0], ns_parser.market)
-            portfolio_view.plot_overall_return(val, df_m, 365, ns_parser.market, True)
+            returns = portfolio_model.get_return(val, df_m, 365)
+            portfolio_view.plot_overall_return(returns, ns_parser.market, True)
         else:
             print("Cannot generate a graph from an empty dataframe\n")
 

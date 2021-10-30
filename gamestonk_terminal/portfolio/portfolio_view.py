@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 from datetime import datetime
 from io import BytesIO
-import os
+from os import path
 
 import pandas as pd
 from tabulate import tabulate
@@ -72,18 +72,14 @@ def show_df(df: pd.DataFrame, show: bool) -> None:
 
 
 def plot_overall_return(
-    df: pd.DataFrame, df_m: pd.DataFrame, n: int, m_tick: str, plot: bool = False
+    comb: pd.DataFrame, m_tick: str, plot: bool = False
 ) -> ImageReader:
     """Generates overall return graph
 
     Parameters
     ----------
-    df : pd.DataFrame
-        The dataframe to be analyzed
-    df_m : pd.DataFrame
-        The dataframe for historical market performance
-    n : int
-        The number of days to include in chart
+    comb : pd.DataFrame
+        Dataframe with returns
     m_tick : str
         The ticker for the market asset
     plot : bool
@@ -95,10 +91,6 @@ def plot_overall_return(
         Overal return graph
     """
     plt.close("all")
-    comb = portfolio_model.get_return(df, df_m, n)
-    comb[("Market", "Return")] = (
-        comb[("Market", "Close")] - comb[("Market", "Close")][0]
-    ) / comb[("Market", "Close")][0]
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.plot(comb.index, comb["return"], color="tab:blue", label="Portfolio")
     ax.plot(comb.index, comb[("Market", "Return")], color="orange", label=m_tick)
@@ -119,7 +111,10 @@ def plot_overall_return(
     fig.set_facecolor("white")
     ax.set_title(
         "%s - %s"
-        % (df.index[:1][0].strftime("%Y/%m/%d"), df.index[-1:][0].strftime("%Y/%m/%d")),
+        % (
+            comb.index[:1][0].strftime("%Y/%m/%d"),
+            comb.index[-1:][0].strftime("%Y/%m/%d"),
+        ),
         fontsize=12,
         color="gray",
     )
@@ -198,40 +193,42 @@ def plot_rolling_beta(
     return ImageReader(imgdata)
 
 
-def annual_report(df: pd.DataFrame, hist: pd.DataFrame, m_tick: str) -> None:
-    """Generates an annual report
+class Report:
+    def __init__(self, df: pd.DataFrame, hist: pd.DataFrame, m_tick: str, n: int):
+        self.df = df
+        self.hist = hist
+        self.m_tick = m_tick
+        self.df_m = yfinance_model.get_market(self.df.index[0], self.m_tick)
+        self.returns = portfolio_model.get_return(df, self.df_m, n)
 
-    Parameters
-    ----------
-    df : pd.DataFrame
-        The dataframe to be analyzed
-    m_tick : str
-        The ticker for the market asset
-    hist : pd.DataFrame
-        A dataframe of historical returns
-    """
-    df_m = yfinance_model.get_market(df.index[0], m_tick)
-    dire = os.path.dirname(os.path.abspath(__file__)).replace(
-        "gamestonk_terminal", "exports"
-    )
-
-    path = os.path.abspath(
-        os.path.join(
-            dire,
-            f"ar_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
+    def generate_report(self):
+        d = path.dirname(path.abspath(__file__)).replace(
+            "gamestonk_terminal", "exports"
         )
-    )
-    report = canvas.Canvas(path, pagesize=letter)
-    reportlab_helpers.base_format(report, "Overview")
-    report.drawImage(
-        plot_overall_return(df, df_m, 365, m_tick, False), 15, 360, 600, 300
-    )
-    main_t = portfolio_model.get_main_text()
-    reportlab_helpers.draw_paragraph(report, main_t, 30, 400, 550, 200)
-    report.showPage()
-    reportlab_helpers.base_format(report, "Portfolio Analysis")
-    if "Holding" in df.columns:
-        report.drawImage(plot_rolling_beta(df, hist, df_m, 365), 15, 360, 600, 300)
-    report.save()
+        loc = path.abspath(
+            path.join(
+                d,
+                f"ar_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
+            )
+        )
+        report = canvas.Canvas(loc, pagesize=letter)
+        reportlab_helpers.base_format(report, "Overview")
+        self.generate_pg1(report)
+        self.generate_pg2(report, self.df_m)
+        report.save()
+        print("File save in:\n", loc, "\n")
 
-    print("File save in:\n", path, "\n")
+    def generate_pg1(self, report: canvas.Canvas):
+        report.drawImage(
+            plot_overall_return(self.returns, self.m_tick, False), 15, 360, 600, 300
+        )
+        main_t = portfolio_model.get_main_text(self.returns)
+        reportlab_helpers.draw_paragraph(report, main_t, 30, 380, 550, 200)
+        report.showPage()
+
+    def generate_pg2(self, report: canvas.Canvas, df_m: pd.DataFrame):
+        reportlab_helpers.base_format(report, "Portfolio Analysis")
+        if "Holding" in self.df.columns:
+            report.drawImage(
+                plot_rolling_beta(self.df, self.hist, df_m, 365), 15, 360, 600, 300
+            )
