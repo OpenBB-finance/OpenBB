@@ -22,8 +22,10 @@ if cfg.IMGUR_CLIENT_ID == "REPLACE_ME" or cfg.DISCORD_BOT_TOKEN == "REPLACE_ME":
     )
     sys.exit()
 
+
 async def on_ready():
     print("GST Discord Bot Ready to Gamestonk!")
+
 
 gst_imgur = pyimgur.Imgur(cfg.IMGUR_CLIENT_ID)
 
@@ -53,7 +55,7 @@ async def on_command_error(ctx, error):
             error_help = f"**Possible commands are:** {', '.join(all_cmds)}"
 
         await ctx.send(f"_{error}_\n{error_help}\n")
-        
+
 
 # Runs the bot
 gst_bot.run(cfg.DISCORD_BOT_TOKEN)
