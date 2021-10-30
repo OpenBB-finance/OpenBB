@@ -84,6 +84,16 @@ jobs:
         run: |
           source $VENV
           python terminal.py
+  markdown-link-check:
+    name: Markdown linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        name: Check out the code
+      - name: Lint Code Base
+        uses: docker://avtodev/markdown-lint:v1
+        with:
+          args: "./gamestonk_terminal/options/README.md"
   tests-python:
     name: Python (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
