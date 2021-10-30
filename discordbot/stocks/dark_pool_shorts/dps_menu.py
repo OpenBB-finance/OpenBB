@@ -1,7 +1,6 @@
-import discord
-from discordbot import gst_bot
-import config_discordbot as cfg
 import asyncio
+import discord
+import config_discordbot as cfg
 
 from stocks.dark_pool_shorts.shorted import shorted_command
 from stocks.dark_pool_shorts.ftd import ftd_command
@@ -11,49 +10,58 @@ from stocks.dark_pool_shorts.psi import psi_command
 from stocks.dark_pool_shorts.hsi import hsi_command
 from stocks.dark_pool_shorts.pos import pos_command
 from stocks.dark_pool_shorts.sidtc import sidtc_command
+from discordbot import gst_bot
 
 
 class DarkPoolShortsCommands(discord.ext.commands.Cog):
-    """Dark Pool Shorts menu."""
+    """Dark Pool Shorts menu"""
 
     def __init__(self, bot: discord.ext.commands.Bot):
         self.bot = bot
 
     @discord.ext.commands.command(name="stocks.dps.shorted")
     async def shorted(self, ctx: discord.ext.commands.Context, arg=""):
+        """Show most shorted stocks [Yahoo Finance]"""
         await shorted_command(ctx, arg)
 
     @discord.ext.commands.command(name="stocks.dps.hsi")
     async def hsi(self, ctx: discord.ext.commands.Context, arg=""):
+        """Show top high short interest stocks of over 20% ratio [shortinterest.com]"""
         await hsi_command(ctx, arg)
 
     @discord.ext.commands.command(name="stocks.dps.pos")
     async def pos(self, ctx: discord.ext.commands.Context, arg="", arg2=""):
+        """Dark pool short position [Stockgrid]"""
         await pos_command(ctx, arg, arg2)
 
     @discord.ext.commands.command(name="stocks.dps.sidtc")
     async def sidtc(self, ctx: discord.ext.commands.Context, arg="", arg2=""):
+        """Short interest and days to cover [Stockgrid]"""
         await sidtc_command(ctx, arg, arg2)
 
     @discord.ext.commands.command(name="stocks.dps.ftd")
     async def ftd(self, ctx: discord.ext.commands.Context, arg, arg2="", arg3=""):
+        """Fails-to-deliver data [SEC]"""
         await ftd_command(ctx, arg, arg2, arg3)
 
     @discord.ext.commands.command(name="stocks.dps.dpotc")
     async def dpotc(self, ctx: discord.ext.commands.Context, arg):
+        """Dark pools (ATS) vs OTC data [FINRA]"""
         await dpotc_command(ctx, arg)
 
     @discord.ext.commands.command(name="stocks.dps.spos")
     async def spos(self, ctx: discord.ext.commands.Context, arg):
+        """Net short vs position [Stockgrid]"""
         await spos_command(ctx, arg)
 
     @discord.ext.commands.command(name="stocks.dps.psi")
     async def psi(self, ctx: discord.ext.commands.Context, arg):
+        """Price vs short interest volume [Stockgrid]"""
         await psi_command(ctx, arg)
 
     @discord.ext.commands.command(name="stocks.dps")
     async def dark_pool_shorts_menu(self, ctx: discord.ext.commands.Context, arg=""):
-        """Shows Economy Menu
+        """Stocks Context - Shows Dark Pool Shorts Menu
 
         Returns
         -------
@@ -103,7 +111,7 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
             return user == ctx.message.author and str(reaction.emoji) in emoji_list
 
         try:
-            reaction, user = await gst_bot.wait_for(
+            reaction, _ = await gst_bot.wait_for(
                 "reaction_add", timeout=cfg.MENU_TIMEOUT, check=check
             )
             if reaction.emoji == "0️⃣":

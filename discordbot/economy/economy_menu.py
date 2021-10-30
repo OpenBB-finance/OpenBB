@@ -1,7 +1,6 @@
-import discord
 import asyncio
+import discord
 import config_discordbot as cfg
-from discordbot import gst_bot
 
 from economy.feargreed import feargreed_command
 from economy.overview import overview_command
@@ -12,6 +11,7 @@ from economy.glbonds import glbonds_command
 from economy.currencies import currencies_command
 from economy.valuation import valuation_command
 from economy.performance import performance_command
+from discordbot import gst_bot
 
 
 class EconomyCommands(discord.ext.commands.Cog):
@@ -22,43 +22,52 @@ class EconomyCommands(discord.ext.commands.Cog):
 
     @discord.ext.commands.command(name="economy.feargreed")
     async def feargreed(self, ctx: discord.ext.commands.Context, arg=""):
+        """CNN Fear and Greed Index [CNN]"""
         await feargreed_command(ctx, arg)
 
     @discord.ext.commands.command(name="economy.overview")
     async def overview(self, ctx: discord.ext.commands.Context, arg=""):
+        """Market data overview [Wall St. Journal]"""
         await overview_command(ctx, arg)
 
     @discord.ext.commands.command(name="economy.indices")
     async def indices(self, ctx: discord.ext.commands.Context, arg=""):
+        """US indices overview [Wall St. Journal]"""
         await indices_command(ctx, arg)
 
     @discord.ext.commands.command(name="economy.futures")
     async def futures(self, ctx: discord.ext.commands.Context, arg=""):
+        """Futures and commodities overview [Wall St. Journal]"""
         await futures_command(ctx, arg)
 
     @discord.ext.commands.command(name="economy.usbonds")
     async def usbonds(self, ctx: discord.ext.commands.Context, arg=""):
+        """US bonds overview [Wall St. Journal]"""
         await usbonds_command(ctx, arg)
 
     @discord.ext.commands.command(name="economy.glbonds")
     async def glbonds(self, ctx: discord.ext.commands.Context, arg=""):
+        """Global bonds overview [Wall St. Journal]"""
         await glbonds_command(ctx, arg)
 
     @discord.ext.commands.command(name="economy.currencies")
     async def currencies(self, ctx: discord.ext.commands.Context, arg=""):
+        """Currencies overview [Wall St. Journal]"""
         await currencies_command(ctx, arg)
 
     @discord.ext.commands.command(name="economy.valuation")
     async def valuation(self, ctx: discord.ext.commands.Context, arg=""):
+        """Valuation of sectors, industry, country [Finviz]"""
         await valuation_command(ctx, arg)
 
     @discord.ext.commands.command(name="economy.performance")
     async def performance(self, ctx: discord.ext.commands.Context, arg=""):
+        """Performance of sectors, industry, country [Finviz]"""
         await performance_command(ctx, arg)
 
     @discord.ext.commands.command(name="economy")
     async def economy(self, ctx: discord.ext.commands.Context):
-        """Shows Economy Menu
+        """Economy Context Menu
 
         Returns
         -------
@@ -98,7 +107,7 @@ class EconomyCommands(discord.ext.commands.Cog):
             return user == ctx.message.author and str(reaction.emoji) in emoji_list
 
         try:
-            reaction, user = await gst_bot.wait_for(
+            reaction, _ = await gst_bot.wait_for(
                 "reaction_add", timeout=cfg.MENU_TIMEOUT, check=check
             )
             if reaction.emoji == "0️⃣":
