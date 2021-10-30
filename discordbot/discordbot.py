@@ -1,3 +1,5 @@
+import os
+import sys
 import discord
 import discord_components
 import pyimgur
@@ -24,6 +26,12 @@ gst_imgur = pyimgur.Imgur(cfg.IMGUR_CLIENT_ID)
 gst_bot.load_extension("generic_commands")
 gst_bot.load_extension("economy.economy_menu")
 gst_bot.load_extension("stocks.dark_pool_shorts.dps_menu")
+
+if cfg.IMGUR_CLIENT_ID == "REPLACE_ME" or cfg.DISCORD_BOT_TOKEN == "REPLACE_ME":
+    print(
+        f"Update IMGUR_CLIENT_ID or DISCORD_BOT_TOKEN or both in { os.path.join('discordbot', 'config_discordot') } \n"
+    )
+    sys.exit()
 
 # Runs the bot
 gst_bot.run(cfg.DISCORD_BOT_TOKEN)
