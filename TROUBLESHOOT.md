@@ -63,7 +63,8 @@ pip install --upgrade numpy==1.20.2
 
 ### Poetry
 
-If you get errors about .whl files not existing (usually on Windows) you have to reinitialize the following folder. Just removing the 'artifacts' folder could also be enough:
+If you get errors about .whl files not existing (usually on Windows) you have to reinitialize the following folder.
+Just removing the 'artifacts' folder could also be enough:
 
 | Platform | Location                        |
 | -------- | ------------------------------- |

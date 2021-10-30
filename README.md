@@ -146,7 +146,8 @@ This project supports Python 3.7, 3.8 and 3.9.
 
 Our current recommendation is to use this project with Anaconda's Python distribution - either full
 [__Anaconda3 Latest__](https://repo.anaconda.com/archive/) or [__Miniconda3 Latest__](https://repo.anaconda.com/archive/).
-Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. If you decided to add Machine Learning features at a later point, you will likely have better user experience with
+Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional.
+If you decided to add Machine Learning features at a later point, you will likely have better user experience with
 Anaconda's Python distribution.
 
 0. Star the project

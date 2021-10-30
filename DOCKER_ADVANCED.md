@@ -42,7 +42,8 @@ docker run -it --rm --env-file=path/to/setenv ghcr.io/gamestonkterminal/gst-poet
 
 In order to display plots in the docker container, we can configure our XServer.
 
-Users familiar with Docker and X-Server can set the `DISPLAY` variable in the file [setenv](/docker/setenv) described above. If you use this approach remember to add `:0` at the end of your inet address. E.g. `DISPLAY=192.168.1.155:0`.
+Users familiar with Docker and X-Server can set the `DISPLAY` variable in the file [setenv](/docker/setenv) described
+above. If you use this approach remember to add `:0` at the end of your inet address. E.g. `DISPLAY=192.168.1.155:0`.
 
 ### X-Server
 
