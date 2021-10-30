@@ -163,6 +163,7 @@ qtpy==1.11.2; python_version >= "3.6" and python_full_version < "3.0.0" or pytho
 quandl==3.6.1; python_version >= "3.5"
 rapidfuzz==1.8.2; python_version >= "2.7"
 regex==2020.11.13
+reportlab==3.6.2; python_version >= "3.6" and python_version < "4"
 requests-oauthlib==1.3.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
 requests-unixsocket==0.2.0; python_version >= "3.6"
 requests==2.26.0; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")

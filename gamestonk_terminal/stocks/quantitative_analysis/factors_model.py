@@ -4,14 +4,21 @@ __docformat__ = "numpy"
 from urllib.request import urlopen
 from zipfile import ZipFile
 from io import BytesIO
+from typing import Tuple
 
 import statsmodels.api as sm
 import yfinance as yf
 import pandas as pd
 
 
-def get_fama_raw():
-    """Gets base Fama French data to calculate risk"""
+def get_fama_raw() -> pd.DataFrame:
+    """Gets base Fama French data to calculate risk
+
+    Returns
+    ----------
+    fama : pd.DataFrame
+        A data with fama french model information
+    """
     with urlopen(
         "http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
     ) as url:
@@ -42,7 +49,18 @@ def get_fama_raw():
 
 
 def get_historical_5(ticker: str):
-    """Get 5 year monthly historical performance for a ticker with dividends filtered"""
+    """Get 5 year monthly historical performance for a ticker with dividends filtered
+
+    Parameters
+    ----------
+    ticker : str
+        A ticker in string form
+
+    Returns
+    ----------
+    data : pd.DataFrame
+        A dataframe with historical information
+    """
     tick = yf.Ticker(ticker)
     df = tick.history(period="5y", interval="1mo")
     df = df[df.index.to_series().apply(lambda x: x.day == 1)]
@@ -51,8 +69,21 @@ def get_historical_5(ticker: str):
     return df
 
 
-def capm_information(ticker):
-    """Provides information that relates to the CAPM model"""
+def capm_information(ticker) -> Tuple[float, float]:
+    """Provides information that relates to the CAPM model
+
+    Parameters
+    ----------
+    ticker : str
+        A ticker in string form
+
+    Returns
+    ----------
+    beta : float
+        The beta for a stock
+    sys : float
+        The systematic risk for a stock
+    """
     df_f = get_fama_raw()
     df_h = get_historical_5(ticker)
     df = df_h.join(df_f)
