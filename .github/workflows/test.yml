@@ -7,7 +7,7 @@ env:
 on: [pull_request, push]
 jobs:
   linting:
-    name: Linting
+    name: General Linting
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
@@ -38,7 +38,7 @@ jobs:
       - run: |
           pylint terminal.py gamestonk_terminal tests
   test:
-    name: ubuntu-latest - Python 3.9
+    name: Base Tests - Ubuntu-latest - Python 3.9
     needs: linting
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
@@ -85,17 +85,18 @@ jobs:
           source $VENV
           python terminal.py
   markdown-link-check:
-    name: Markdown linting
+    name: Markdown Linting
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - uses: actions/checkout@v2
         name: Check out the code
       - name: Lint Code Base
         uses: docker://avtodev/markdown-lint:v1
         with:
-          args: "./gamestonk_terminal/options/README.md"
+          args: "./gamestonk_terminal/options/README.md ./CONTRIBUTING.md"
   tests-python:
-    name: Python (${{ matrix.python-version }}, ${{ matrix.os }})
+    name: Vanilla Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
     runs-on: ${{ matrix.os }}
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
@@ -156,7 +157,7 @@ jobs:
           source $VENV
           python terminal.py
   tests-conda:
-    name: Conda (${{ matrix.python-version }}, ${{ matrix.os }})
+    name: Anaconda Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
     runs-on: ${{ matrix.os }}-latest
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
