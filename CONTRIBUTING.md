@@ -264,18 +264,18 @@ def call_shorted(self, other_args: List[str]):
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-          if other_args:
-              if "-" not in other_args[0]:
-                  other_args.insert(0, "-n")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-n")
 
-          ns_parser = parse_known_args_and_warn(parser, other_args)
-          if not ns_parser:
-              return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-          yahoofinance_view.display_most_shorted(
-              num_stocks=ns_parser.num,
-              export=ns_parser.export,
-          )
+        yahoofinance_view.display_most_shorted(
+            num_stocks=ns_parser.num,
+            export=ns_parser.export,
+        )
 
 ```
 

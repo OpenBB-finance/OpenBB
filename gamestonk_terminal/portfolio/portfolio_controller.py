@@ -18,16 +18,22 @@ from gamestonk_terminal.helper_funcs import (
     MENU_QUIT,
     MENU_RESET,
     try_except,
+    valid_date,
+    check_positive_float,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers import bro_controller
 from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
-from gamestonk_terminal.portfolio import portfolio_view, portfolio_model, yfinance_model
+from gamestonk_terminal.portfolio import (
+    portfolio_view,
+    portfolio_model,
+    yfinance_model,
+    portfolio_helper,
+)
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
-# pylint: disable=R1710
-# pylint: disable=E1101
+# pylint: disable=R1710,E1101
 
 
 class PortfolioController:
@@ -52,7 +58,7 @@ class PortfolioController:
         "add",
         "rmv",
         "ar",
-        "ret",
+        "rmr",
     ]
 
     CHOICES += CHOICES_MENUS
@@ -107,7 +113,7 @@ Reports:
     ar          annual report for performance of a given portfolio
 
 Graphs:
-    ret         graph your returns versus the market's returns
+    rmr         graph your returns versus the market's returns
         """
         print(help_text)
 
@@ -283,7 +289,7 @@ Graphs:
             "-q",
             "--quantity",
             dest="quantity",
-            type=float,
+            type=check_positive_float,
             default=1,
             help="Amounts of the asset owned",
         )
@@ -291,15 +297,15 @@ Graphs:
             "-d",
             "--date",
             dest="date",
-            type=str,
-            default=datetime.now().strftime("%Y/%m/%d"),
+            type=valid_date,
+            default=datetime.now(),
             help="Date: yyyy/mm/dd",
         )
         parser.add_argument(
             "-p",
             "--price",
             dest="price",
-            type=float,
+            type=check_positive_float,
             required="-h" not in other_args,
             help="Price purchased for asset",
         )
@@ -307,14 +313,14 @@ Graphs:
             "-f",
             "--fees",
             dest="fees",
-            type=float,
+            type=check_positive_float,
             help="Fees paid for transaction",
         )
         parser.add_argument(
             "-r",
             "--premium",
             dest="premium",
-            type=float,
+            type=check_positive_float,
             help="Premium paid/received for the option",
         )
         parser.add_argument(
@@ -342,11 +348,17 @@ Graphs:
         if ns_parser.type != "cash" and ns_parser.action in ["deposit", "withdrawal"]:
             print("Only cash can be deposited or withdrew\n")
             return
+
+        if ns_parser.type == "stock":
+            if not portfolio_helper.is_ticker(ns_parser.name):
+                print("Invalid ticker\n")
+                return
+
         data = {
             "Name": ns_parser.name,
             "Type": ns_parser.type,
             "Quantity": ns_parser.quantity,
-            "Date": ns_parser.date.replace("_", " "),
+            "Date": ns_parser.date,
             "Price": ns_parser.price,
             "Fees": ns_parser.fees,
             "Premium": ns_parser.premium,
@@ -399,8 +411,8 @@ Graphs:
             portfolio_view.annual_report(val, hist, ns_parser.market)
 
     @try_except
-    def call_ret(self, other_args: List[str]):
-        """Process ret command"""
+    def call_rmr(self, other_args: List[str]):
+        """Process rmr command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,

@@ -54,6 +54,8 @@ def show_df(df: pd.DataFrame, show: bool) -> None:
         Whether to show the dataframe index
     """
 
+    df = df.dropna(how="all", axis=1).fillna("")
+
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
