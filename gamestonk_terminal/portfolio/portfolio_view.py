@@ -1,7 +1,7 @@
 """Portfolio View"""
 __docformat__ = "numpy"
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from io import BytesIO
 import os
 
@@ -14,12 +14,18 @@ from matplotlib import pyplot as plt
 import matplotlib.ticker as mtick
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.portfolio import yfinance_model
+from gamestonk_terminal.portfolio import portfolio_model, yfinance_model
 from gamestonk_terminal.portfolio import reportlab_helpers
 
 
 def load_info():
-    """Prints instructions to load a CSV"""
+    """Prints instructions to load a CSV
+
+    Returns
+    ----------
+    text : str
+        Information on how to load a csv
+    """
     text = """
 In order to load a CSV do the following:
 
@@ -38,8 +44,7 @@ In order to load a CSV do the following:
 
 
 def show_df(df: pd.DataFrame, show: bool) -> None:
-    """
-    Shows the given dataframe
+    """Shows the given dataframe
 
     Parameters
     ----------
@@ -88,21 +93,7 @@ def plot_overall_return(
         Overal return graph
     """
     plt.close("all")
-    df = df.copy()
-    df = df[df.index >= datetime.now() - timedelta(days=n + 1)]
-    comb = pd.merge(df, df_m, how="left", left_index=True, right_index=True)
-    comb = comb.fillna(method="ffill")
-    comb = comb.dropna()
-    comb["return"] = (
-        comb[("Cash", "Cash")]
-        + (0 if "holdings" not in comb.columns else comb["holdings"])
-    ) / (
-        comb[("Cash", "Cash")].shift(1)
-        + comb[("Cash", "User")]
-        + (0 if "holdings" not in comb.columns else comb["holdings"].shift(1))
-    )
-    comb["return"] = comb["return"].fillna(1)
-    comb["return"] = comb["return"].cumprod() - 1
+    comb = portfolio_model.get_return(df, df_m, n)
     comb[("Market", "Return")] = (
         comb[("Market", "Close")] - comb[("Market", "Close")][0]
     ) / comb[("Market", "Close")][0]
@@ -167,29 +158,7 @@ def plot_rolling_beta(
         Rolling beta graph
     """
     plt.close("all")
-    df = df["Holding"]
-    uniques = df.columns.tolist()
-    res = df.div(df.sum(axis=1), axis=0)
-    res = res.fillna(0)
-    comb = pd.merge(
-        hist["Close"], mark["Market"], how="left", left_index=True, right_index=True
-    )
-    comb = comb.fillna(method="ffill")
-    df_var = comb.rolling(252).var().unstack()["Close"].to_frame(name="var")
-    for col in hist["Close"].columns:
-        df1 = (
-            comb.rolling(252).cov().unstack()[col]["Close"].to_frame(name=f"cov_{col}")
-        )
-        df_var = pd.merge(df_var, df1, how="left", left_index=True, right_index=True)
-        df_var[f"beta_{col}"] = df_var[f"cov_{col}"] / df_var["var"]
-    final = pd.merge(res, df_var, how="left", left_index=True, right_index=True)
-    final = final.fillna(method="ffill")
-    final = final.drop(columns=["var"] + [f"cov_{x}" for x in uniques])
-    for uni in uniques:
-        final[f"prod_{uni}"] = final[uni] * final[f"beta_{uni}"]
-    final = final.drop(columns=[f"beta_{x}" for x in uniques] + uniques)
-    final["total"] = final.sum(axis=1)
-    final = final[final.index >= datetime.now() - timedelta(days=n + 1)]
+    final = portfolio_model.get_rolling_beta(df, hist, mark, n)
 
     # final[final == 0] = np.nan
     fig, ax = plt.subplots(figsize=(10, 5))
@@ -236,11 +205,10 @@ def annual_report(df: pd.DataFrame, hist: pd.DataFrame, m_tick: str) -> None:
         The dataframe to be analyzed
     m_tick : str
         The ticker for the market asset
-
     hist : pd.DataFrame
         A dataframe of historical returns
     """
-    df_m = yfinance_model.get_market(m_tick)
+    df_m = yfinance_model.get_market(df.index[0], m_tick)
     dire = os.path.dirname(os.path.abspath(__file__)).replace(
         "gamestonk_terminal", "exports"
     )

@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import os
 import math
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from typing import List
 
 import numpy as np
@@ -16,8 +16,7 @@ from gamestonk_terminal.portfolio import portfolio_view, yfinance_model
 
 
 def save_df(df: pd.DataFrame, name: str) -> None:
-    """
-    Saves the portfolio as a csv
+    """Saves the portfolio as a csv
 
     Parameters
     ----------
@@ -37,8 +36,7 @@ def save_df(df: pd.DataFrame, name: str) -> None:
 
 
 def load_df(name: str) -> pd.DataFrame:
-    """
-    Saves the portfolio as a csv
+    """Load the portfolio from a csv
 
     Parameters
     ----------
@@ -79,8 +77,7 @@ def load_df(name: str) -> pd.DataFrame:
 def add_values(
     log: pd.DataFrame, changes: pd.DataFrame, cashes: pd.DataFrame
 ) -> pd.DataFrame:
-    """
-    Creates a new df with performance results
+    """Creates a new df with performance results
 
     Parameters
     ----------
@@ -88,7 +85,7 @@ def add_values(
         The dataframe that will have daily holdings
     changes : pd.DataFrame
         Transactions that changed holdings
-    cahses : pd.DataFrame
+    cashes : pd.DataFrame
         Cash changing transactions
 
     Returns
@@ -178,8 +175,7 @@ def merge_dataframes(
     divs: pd.DataFrame,
     uniques: List[str],
 ) -> pd.DataFrame:
-    """
-    Merge dataframes to create final dataframe
+    """Merge dataframes to create final dataframe
 
     Parameters
     ----------
@@ -196,7 +192,7 @@ def merge_dataframes(
 
     Returns
     ----------
-    comn : pd.DataFrame
+    comb : pd.DataFrame
         Thew new aggregated dataframe
     """
     comb = pd.merge(log, hist, how="left", left_index=True, right_index=True)
@@ -228,9 +224,8 @@ def merge_dataframes(
     return comb
 
 
-def generate_performance(portfolio: pd.DataFrame) -> pd.DataFrame:
-    """
-    Creates a new df with performance results
+def convert_df(portfolio: pd.DataFrame) -> pd.DataFrame:
+    """Converts a df from activity to daily holdings
 
     Parameters
     ----------
@@ -240,7 +235,7 @@ def generate_performance(portfolio: pd.DataFrame) -> pd.DataFrame:
     Returns
     ----------
     data : pd.DataFrame
-        A dataframe with performance of portfolio
+        A dataframe with daily holdings of portfolio
     hist : pd.DataFrame
         The historical performance of tickers in portfolio
     """
@@ -252,7 +247,7 @@ def generate_performance(portfolio: pd.DataFrame) -> pd.DataFrame:
     changes = changes[changes["Type"] == "stock"]
     uniques = list(set(changes["Name"].tolist()))
     if uniques:
-        hist = yfinance_model.get_stocks(uniques)
+        hist = yfinance_model.get_stocks(uniques, min(changes["Date"]))
         divs = yfinance_model.get_dividends(uniques)
     else:
         hist, divs = pd.DataFrame(), pd.DataFrame()
@@ -272,3 +267,85 @@ def generate_performance(portfolio: pd.DataFrame) -> pd.DataFrame:
     comb = merge_dataframes(log, hist, changes, divs, uniques)
 
     return comb, hist
+
+
+def get_return(df: pd.DataFrame, df_m: pd.DataFrame, n: int) -> pd.DataFrame:
+    """Adds cumulative returns to a holdings df
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The dataframe of daily holdings
+    df_m : pd.DataFrame
+        The dataframe of market performance
+    n : int
+        The period to get returns for
+
+    Returns
+    ----------
+    comb : pd.DataFrame
+        Dataframe with holdings and returns
+    """
+    df = df.copy()
+    df = df[df.index >= datetime.now() - timedelta(days=n + 1)]
+    comb = pd.merge(df, df_m, how="left", left_index=True, right_index=True)
+    comb = comb.fillna(method="ffill")
+    comb = comb.dropna()
+    comb["return"] = (
+        comb[("Cash", "Cash")]
+        + (0 if "holdings" not in comb.columns else comb["holdings"])
+    ) / (
+        comb[("Cash", "Cash")].shift(1)
+        + comb[("Cash", "User")]
+        + (0 if "holdings" not in comb.columns else comb["holdings"].shift(1))
+    )
+    comb["return"] = comb["return"].fillna(1)
+    comb["return"] = comb["return"].cumprod() - 1
+    return comb
+
+
+def get_rolling_beta(
+    df: pd.DataFrame, hist: pd.DataFrame, mark: pd.DataFrame, n: pd.DataFrame
+) -> pd.DataFrame:
+    """Turns a holdings portfolio into a rolling beta dataframe
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The dataframe of daily holdings
+    hist : pd.DataFrame
+        A dataframe of historical returns
+    mark : pd.DataFrame
+        The dataframe of market performance
+    n : int
+        The period to get returns for
+
+    Returns
+    ----------
+    final : pd.DataFrame
+        Dataframe with rolling beta
+    """
+    df = df["Holding"]
+    uniques = df.columns.tolist()
+    res = df.div(df.sum(axis=1), axis=0)
+    res = res.fillna(0)
+    comb = pd.merge(
+        hist["Close"], mark["Market"], how="left", left_index=True, right_index=True
+    )
+    comb = comb.fillna(method="ffill")
+    df_var = comb.rolling(252).var().unstack()["Close"].to_frame(name="var")
+    for col in hist["Close"].columns:
+        df1 = (
+            comb.rolling(252).cov().unstack()[col]["Close"].to_frame(name=f"cov_{col}")
+        )
+        df_var = pd.merge(df_var, df1, how="left", left_index=True, right_index=True)
+        df_var[f"beta_{col}"] = df_var[f"cov_{col}"] / df_var["var"]
+    final = pd.merge(res, df_var, how="left", left_index=True, right_index=True)
+    final = final.fillna(method="ffill")
+    final = final.drop(columns=["var"] + [f"cov_{x}" for x in uniques])
+    for uni in uniques:
+        final[f"prod_{uni}"] = final[uni] * final[f"beta_{uni}"]
+    final = final.drop(columns=[f"beta_{x}" for x in uniques] + uniques)
+    final["total"] = final.sum(axis=1)
+    final = final[final.index >= datetime.now() - timedelta(days=n + 1)]
+    return final

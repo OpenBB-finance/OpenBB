@@ -2,26 +2,33 @@
 __docformat__ = "numpy"
 
 from typing import List
+from datetime import datetime, timedelta
 
 import yfinance as yf
 import pandas as pd
 
 
-def get_stocks(tickers: List[str]) -> pd.DataFrame:
+def get_stocks(tickers: List[str], start: datetime) -> pd.DataFrame:
     """Gets historic data for list of tickers
 
     Parameters
     ----------
     tickers : List[str]
         Tickers to get data for
+    start : datetime
+        First date in stock filtered dataframe
 
     Returns
     ----------
     data : pd.DataFrame
         Historic daily prices for stocks
     """
-
-    df = yf.download(tickers=tickers, period="5y", interval="1d", progress=False)
+    df = yf.download(
+        tickers=tickers,
+        start=start - timedelta(days=255),
+        interval="1d",
+        progress=False,
+    )
     df = df["Adj Close"]
     if len(tickers) > 1:
         df.columns = df.columns.str.lower()
@@ -55,13 +62,15 @@ def get_dividends(tickers: List[str]) -> pd.DataFrame:
     return pd.concat(dfs)
 
 
-def get_market(ticker: str = "SPY") -> pd.DataFrame:
+def get_market(start: datetime, ticker: str = "SPY") -> pd.DataFrame:
     """Get historical data for market asset
 
     Parameters
     ----------
     ticker : str
         Ticker to get data for
+    start : datetime
+        First date in stock filtered dataframe
 
     Returns
     ----------
@@ -70,7 +79,7 @@ def get_market(ticker: str = "SPY") -> pd.DataFrame:
     """
     tick = yf.Ticker(ticker)
     df = tick.history(
-        period="5y",
+        start=start - timedelta(days=255),
         interval="1d",
     )["Close"]
     return df.to_frame(name=("Market", "Close"))

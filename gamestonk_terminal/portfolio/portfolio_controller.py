@@ -394,7 +394,7 @@ Graphs:
             print("Please add items to the portfolio\n")
             return
 
-        val, hist = portfolio_model.generate_performance(self.portfolio)
+        val, hist = portfolio_model.convert_df(self.portfolio)
         if not val.empty:
             portfolio_view.annual_report(val, hist, ns_parser.market)
 
@@ -420,10 +420,16 @@ Graphs:
         if not ns_parser:
             return
 
-        val, _ = portfolio_model.generate_performance(self.portfolio)
+        if self.portfolio.empty:
+            print("Please add items to the portfolio\n")
+            return
+
+        val, _ = portfolio_model.convert_df(self.portfolio)
         if not val.empty:
-            df_m = yfinance_model.get_market(ns_parser.market)
+            df_m = yfinance_model.get_market(val.index[0], ns_parser.market)
             portfolio_view.plot_overall_return(val, df_m, 365, ns_parser.market, True)
+        else:
+            print("Cannot generate a graph from an empty dataframe\n")
 
 
 def menu():
