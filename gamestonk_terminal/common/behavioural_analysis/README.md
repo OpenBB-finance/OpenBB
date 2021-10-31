@@ -203,7 +203,8 @@ Print up to the last 30 messages of a user. [Source: Stocktwits]
 
 # TWITTER <a name="TWITTER"></a>
 
-Uses VADER sentiment.  VADER (Valence Aware Dictionary and sEntiment Reasoner) is a lexicon and rule-based sentiment analysis tool that is specifically attuned to sentiments expressed in social media.
+Uses VADER sentiment.  VADER (Valence Aware Dictionary and sEntiment Reasoner) is a lexicon and rule-based sentiment
+analysis tool that is specifically attuned to sentiments expressed in social media.
 
 The output of VADER analysis :
 
