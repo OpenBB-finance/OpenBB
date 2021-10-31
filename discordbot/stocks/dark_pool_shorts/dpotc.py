@@ -32,7 +32,7 @@ async def dpotc_command(ctx, ticker=""):
             print(otc.to_string())
 
         # Output data
-        title = "Stocks: [FINRA] Dark Pools (ATS) vs OTC " + ticker
+        title = f"Stocks: [FINRA] Dark Pools (ATS) vs OTC {ticker}"
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
             name=cfg.AUTHOR_NAME,
