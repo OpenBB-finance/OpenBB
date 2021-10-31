@@ -133,21 +133,13 @@ def plot_overall_return(
     return ImageReader(imgdata)
 
 
-def plot_rolling_beta(
-    df: pd.DataFrame, hist: pd.DataFrame, mark: pd.DataFrame, n: int
-) -> ImageReader:
+def plot_rolling_beta(df: pd.DataFrame) -> ImageReader:
     """Returns a chart with the portfolio's rolling beta
 
     Parameters
     ----------
     df : pd.DataFrame
         The dataframe to be analyzed
-    hist : pd.DataFrame
-        A dataframe of historical returns
-    market : pd.DataFrame
-        A dataframe of SPY returns
-    n : int
-        The number of days to include in chart
 
     Returns
     ----------
@@ -155,13 +147,11 @@ def plot_rolling_beta(
         Rolling beta graph
     """
     plt.close("all")
-    final = portfolio_model.get_rolling_beta(df, hist, mark, n)
 
-    # final[final == 0] = np.nan
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.plot(
-        final.index,
-        final["total"],
+        df.index,
+        df["total"],
         color="tab:blue",
     )
 
@@ -229,6 +219,9 @@ class Report:
     def generate_pg2(self, report: canvas.Canvas, df_m: pd.DataFrame):
         reportlab_helpers.base_format(report, "Portfolio Analysis")
         if "Holding" in self.df.columns:
-            report.drawImage(
-                plot_rolling_beta(self.df, self.hist, df_m, 365), 15, 360, 600, 300
+            rolling_beta = portfolio_model.get_rolling_beta(
+                self.df, self.hist, df_m, 365
             )
+            report.drawImage(plot_rolling_beta(rolling_beta), 15, 360, 600, 300)
+            main_t = portfolio_model.get_beta_text(rolling_beta)
+            reportlab_helpers.draw_paragraph(report, main_t, 30, 380, 550, 200)

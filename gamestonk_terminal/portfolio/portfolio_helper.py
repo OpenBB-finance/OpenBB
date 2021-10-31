@@ -19,3 +19,44 @@ def is_ticker(ticker: str) -> bool:
     """
     item = yf.Ticker(ticker)
     return "previousClose" in item.info
+
+
+def beta_word(beta: float) -> str:
+    """Describe a beta
+
+    Parameters
+    ----------
+    beta : float
+        The beta for a portfolio
+
+    Returns
+    ----------
+    text : str
+        The description of the beta
+    """
+    if abs(1 - beta) > 3:
+        part = "extremely "
+    elif abs(1 - beta) > 2:
+        part = "very "
+    elif abs(1 - beta) > 1:
+        part = ""
+    else:
+        part = "moderately "
+
+    return part + "high" if beta > 1 else "low"
+
+
+def clean_name(name: str) -> str:
+    """Clean a name to a ticker
+
+    Parameters
+    ----------
+    name : str
+        The value to be cleaned
+
+    Returns
+    ----------
+    text : str
+        A cleaned value
+    """
+    return name.replace("beta_", "").upper()

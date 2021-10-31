@@ -9,7 +9,11 @@ from typing import List
 import numpy as np
 import pandas as pd
 
-from gamestonk_terminal.portfolio import portfolio_view, yfinance_model
+from gamestonk_terminal.portfolio import (
+    portfolio_view,
+    yfinance_model,
+    portfolio_helper,
+)
 
 # pylint: disable=E1136
 # pylint: disable=unsupported-assignment-operation
@@ -348,10 +352,12 @@ def get_rolling_beta(
     final = final.drop(columns=["var"] + [f"cov_{x}" for x in uniques])
     for uni in uniques:
         final[f"prod_{uni}"] = final[uni] * final[f"beta_{uni}"]
+    dropped = final[[f"beta_{x}" for x in uniques]].copy()
     final = final.drop(columns=[f"beta_{x}" for x in uniques] + uniques)
     final["total"] = final.sum(axis=1)
     final = final[final.index >= datetime.now() - timedelta(days=n + 1)]
-    return final
+    comb = pd.merge(final, dropped, how="left", left_index=True, right_index=True)
+    return comb
 
 
 def get_main_text(df: pd.DataFrame) -> str:
@@ -364,7 +370,7 @@ def get_main_text(df: pd.DataFrame) -> str:
 
     Returns
     ----------
-    text : str
+    t : str
         The main summary of performance
     """
     v_com = (
@@ -381,6 +387,8 @@ def get_main_text(df: pd.DataFrame) -> str:
             f" {edte:.2%}. Debt adds risk to a portfolio by amplifying the gains and losses when"
             " equities change in value."
         )
+        if bdte > 1 or edte > 1:
+            t_debt += " Debt to equity ratios above one represent a significant amount of risk."
     else:
         t_debt = "Debt was not used this year. This reduces this risk of the portfolio."
     t = (
@@ -392,5 +400,40 @@ def get_main_text(df: pd.DataFrame) -> str:
         f" {v_com} than the market's variance, our returns should be {v_com} than those"
         f" of the market. {t_debt} The following report details various analytics from the"
         f" portfolio. Read below to see the moving beta for a stock."
+    )
+    return t
+
+
+def get_beta_text(df: pd.DataFrame) -> str:
+    """Get beta summary for a dataframe
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The beta history of the stock
+
+    Returns
+    ----------
+    t : str
+        The beta history for a ticker
+    """
+    betas = df[list(filter(lambda score: "beta" in score, list(df.columns)))]
+    high = betas.idxmax(axis=1)
+    low = betas.idxmin(axis=1)
+    t = (
+        "Beta is how strongly a portfolio's movements correlate with the market's movements."
+        " A stock with a high beta is considered to be riskier, with the average being one."
+        f" The beginning beta for the period was {portfolio_helper.beta_word(df['total'][0])}"
+        f" at {df['total'][0]:.2f}. This went"
+        f" {'up' if df['total'][-1] > df['total'][0] else 'down'} to"
+        f" {portfolio_helper.beta_word(df['total'][-1])} at {df['total'][-1]:.2f} by the end"
+        f" of the period. The ending beta was pulled {'up' if df['total'][-1] > 1 else 'down'} by"
+        f" {portfolio_helper.clean_name(high[-1] if df['total'][-1] > 1 else low[-1])}, which had"
+        f" an ending beta of {df[high[-1]][-1] if df['total'][-1] > 1 else df[low[-1]][-1]:.2f}."
+        f" To {'lower' if df['total'][-1] > 1 else 'raise'} the beta of the portfolio and"
+        f" {'decrease portfolio risk' if df['total'][-1] > 1 else 'increase potential return'}"
+        f" invest more heavily in"
+        f" {portfolio_helper.clean_name(low[-1] if df['total'][-1] > 1 else high[-1])} which had"
+        f" an ending beta of {df[low[-1]][-1] if df['total'][-1] > 1 else df[high[-1]][-1]:.2f}."
     )
     return t
