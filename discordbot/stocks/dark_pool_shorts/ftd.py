@@ -63,6 +63,7 @@ async def ftd_command(ctx, ticker="", start="", end=""):
         plt.close("all")
         uploaded_image = gst_imgur.upload_image("dps_ftd.png", title="something")
         image_link = uploaded_image.link
+
         title = "Stocks: [SEC] Failure-to-deliver " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

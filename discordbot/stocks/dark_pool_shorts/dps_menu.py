@@ -88,19 +88,37 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         await ftd_command(ctx, ticker, start, end)
 
     @discord.ext.commands.command(name="stocks.dps.dpotc")
-    async def dpotc(self, ctx: discord.ext.commands.Context, arg):
-        """Dark pools (ATS) vs OTC data [FINRA]"""
-        await dpotc_command(ctx, arg)
+    async def dpotc(self, ctx: discord.ext.commands.Context, ticker=""):
+        """Dark pools (ATS) vs OTC data [FINRA]
+
+        Parameters
+        ----------
+        ticker: str
+            Stock ticker
+        """
+        await dpotc_command(ctx, ticker)
 
     @discord.ext.commands.command(name="stocks.dps.spos")
-    async def spos(self, ctx: discord.ext.commands.Context, arg):
-        """Net short vs position [Stockgrid]"""
-        await spos_command(ctx, arg)
+    async def spos(self, ctx: discord.ext.commands.Context, ticker=""):
+        """Net short vs position [Stockgrid]
+
+        Parameters
+        ----------
+        ticker: str
+            Stock ticker
+        """
+        await spos_command(ctx, ticker)
 
     @discord.ext.commands.command(name="stocks.dps.psi")
-    async def psi(self, ctx: discord.ext.commands.Context, arg):
-        """Price vs short interest volume [Stockgrid]"""
-        await psi_command(ctx, arg)
+    async def psi(self, ctx: discord.ext.commands.Context, ticker=""):
+        """Price vs short interest volume [Stockgrid]
+
+        Parameters
+        ----------
+        ticker: str
+            Stock ticker
+        """
+        await psi_command(ctx, ticker)
 
     @discord.ext.commands.command(name="stocks.dps")
     async def dark_pool_shorts_menu(self, ctx: discord.ext.commands.Context, ticker=""):
