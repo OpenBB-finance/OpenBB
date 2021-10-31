@@ -1,12 +1,15 @@
-# GPU acceleration with CUDA
+# GPU Acceleration
 
-Most up-to-date docs and recommendations: https://www.tensorflow.org/install/gpu
+## GPU acceleration with CUDA
+
+Most up-to-date docs and recommendations: <https://www.tensorflow.org/install/gpu>
 
 ### CUDA 11.0.3, cuDNN 8.0.5 - Tested working
 
 1. Install [CUDA 11.0.3](https://developer.nvidia.com/cuda-toolkit-archive)
 
-2. Install [cuDNN 8.0.5 for CUDA 11.0](https://developer.nvidia.com/rdp/cudnn-archive). This requires signing up for the nvidia developer program. To install, copy the bin/, lib/, include/ dirs into your CUDA install dirs.
+2. Install [cuDNN 8.0.5 for CUDA 11.0](https://developer.nvidia.com/rdp/cudnn-archive). This requires signing up for
+the nvidia developer program. To install, copy the bin/, lib/, include/ dirs into your CUDA install dirs.
 
     | Platform | CUDA path                                                  |
     | -------- | ---------------------------------------------------------- |
@@ -19,7 +22,8 @@ Most up-to-date docs and recommendations: https://www.tensorflow.org/install/gpu
 
 ### CUDA 11.2.1, cuDNN 8.1 - may work, requires hack
 
-Getting this to run at all requires you to make a link for cusolver10. Even with this fix I ran into out-of-memory issues, so your mileage may vary. See https://github.com/tensorflow/tensorflow/issues/44777.
+Getting this to run at all requires you to make a link for cusolver10. Even with this fix I ran into out-of-memory
+issues, so your mileage may vary. See <https://github.com/tensorflow/tensorflow/issues/44777>.
 
 Linux:
 
@@ -37,7 +41,9 @@ mklink /h cusolver64_10.dll cusolver64_11.dll
 
 ## Enable XLA for Neural Networks
 
-For neural network training, there are flags defined to enable XLA and GPU options. Note that XLA and especially GPU acceleration may be slower than the defaults if you are not configuring a larger batch size. The default settings produce matrices that are too small to effectively take advantage of these features.
+For neural network training, there are flags defined to enable XLA and GPU options. Note that XLA and especially GPU
+acceleration may be slower than the defaults if you are not configuring a larger batch size. The default settings
+produce matrices that are too small to effectively take advantage of these features.
 
 ```bash
 > load -t GME
@@ -48,7 +54,8 @@ For neural network training, there are flags defined to enable XLA and GPU optio
 
 ## Globally enable XLA
 
-XLA is a domain specific compiler for linear algebra that can accelerate TensorFlow models if you can get it working. https://www.tensorflow.org/xla
+XLA is a domain specific compiler for linear algebra that can accelerate TensorFlow models if you can get it working.
+<https://www.tensorflow.org/xla>
 
 | Env var name              | Value                                                        |
 | ------------------------- | ------------------------------------------------------------ |
@@ -58,7 +65,8 @@ XLA is a domain specific compiler for linear algebra that can accelerate TensorF
 
 ## Globally enable GPU + XLA
 
-By default, TensorFlow will allocate 100% of your available GPU memory before it starts doing work. Using `TF_FORCE_GPU_ALLOW_GROWTH` below will override this behavior so that it only allocates memory as needed.
+By default, TensorFlow will allocate 100% of your available GPU memory before it starts doing work. Using
+`TF_FORCE_GPU_ALLOW_GROWTH` below will override this behavior so that it only allocates memory as needed.
 
 | Env var name              | Value                                                        |
 | ------------------------- | ------------------------------------------------------------ |
