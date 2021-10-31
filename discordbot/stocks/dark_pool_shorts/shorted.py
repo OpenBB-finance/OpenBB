@@ -29,6 +29,7 @@ async def shorted_command(ctx, num="5"):
         if cfg.DEBUG:
             print(df.to_string())
 
+        # Output data
         df.dropna(how="all", axis=1, inplace=True)
         df = df.replace(float("NaN"), "")
         future_column_name = df["Symbol"]

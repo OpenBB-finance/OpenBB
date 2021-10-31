@@ -30,6 +30,7 @@ async def hsi_command(ctx, num="5"):
         if cfg.DEBUG:
             print(df.to_string())
 
+        # Output data
         future_column_name = df["Ticker"]
         df = df.transpose()
         df.columns = future_column_name

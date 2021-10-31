@@ -22,7 +22,7 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         self.bot = bot
 
     @discord.ext.commands.command(name="stocks.dps.shorted")
-    async def shorted(self, ctx: discord.ext.commands.Context, num="7"):
+    async def shorted(self, ctx: discord.ext.commands.Context, num="5"):
         """Show most shorted stocks [Yahoo Finance]
 
         Parameters
@@ -33,7 +33,7 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         await shorted_command(ctx, num)
 
     @discord.ext.commands.command(name="stocks.dps.hsi")
-    async def hsi(self, ctx: discord.ext.commands.Context, num="7"):
+    async def hsi(self, ctx: discord.ext.commands.Context, num="5"):
         """Show top high short interest stocks of over 20% ratio [shortinterest.com]
 
         Parameters
@@ -44,9 +44,19 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         await hsi_command(ctx, num)
 
     @discord.ext.commands.command(name="stocks.dps.pos")
-    async def pos(self, ctx: discord.ext.commands.Context, arg="", arg2=""):
-        """Dark pool short position [Stockgrid]"""
-        await pos_command(ctx, arg, arg2)
+    async def pos(self, ctx: discord.ext.commands.Context, sort="dpp_dollar", num="5"):
+        """Dark pool short position [Stockgrid]
+
+        Parameters
+        -----------
+        sort: str
+            Possible sorts are: sv, sv_pct, nsv, nsv_dollar, dpp, dpp_dollar.
+            These correspond to Short Vol. (1M), Short Vol. %%, Net Short Vol. (1M),
+            Net Short Vol. ($100M), DP Position (1M), DP Position ($1B), respectively.
+        num: int
+            Number of top tickers to show
+        """
+        await pos_command(ctx, sort, num)
 
     @discord.ext.commands.command(name="stocks.dps.sidtc")
     async def sidtc(self, ctx: discord.ext.commands.Context, arg="", arg2=""):
