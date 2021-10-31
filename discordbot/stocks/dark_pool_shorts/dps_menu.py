@@ -73,9 +73,19 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         await sidtc_command(ctx, sort, num)
 
     @discord.ext.commands.command(name="stocks.dps.ftd")
-    async def ftd(self, ctx: discord.ext.commands.Context, arg, arg2="", arg3=""):
-        """Fails-to-deliver data [SEC]"""
-        await ftd_command(ctx, arg, arg2, arg3)
+    async def ftd(self, ctx: discord.ext.commands.Context, ticker="", start="", end=""):
+        """Fails-to-deliver data [SEC]
+
+        Parameters
+        ----------
+        ticker: str
+            Stock ticker
+        start: datetime
+            Start of date
+        end: datetime
+            End of date
+        """
+        await ftd_command(ctx, ticker, start, end)
 
     @discord.ext.commands.command(name="stocks.dps.dpotc")
     async def dpotc(self, ctx: discord.ext.commands.Context, arg):
@@ -93,7 +103,7 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         await psi_command(ctx, arg)
 
     @discord.ext.commands.command(name="stocks.dps")
-    async def dark_pool_shorts_menu(self, ctx: discord.ext.commands.Context, arg=""):
+    async def dark_pool_shorts_menu(self, ctx: discord.ext.commands.Context, ticker=""):
         """Stocks Context - Shows Dark Pool Shorts Menu
 
         Returns
@@ -111,12 +121,12 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
             "2️⃣ !stocks.dps.pos <NUM> <SORT>\n"
             "3️⃣ !stocks.dps.sidtc <NUM> <SORT>\n"
         )
-        if arg:
+        if ticker:
             text += (
-                f"4️⃣ !stocks.dps.ftd {arg} <DATE_START> <DATE_END>\n"
-                f"5️⃣ !stocks.dps.dpotc {arg}\n"
-                f"6️⃣ !stocks.dps.spos {arg}\n"
-                f"7️⃣ !stocks.dps.psi {arg}\n"
+                f"4️⃣ !stocks.dps.ftd {ticker} <DATE_START> <DATE_END>\n"
+                f"5️⃣ !stocks.dps.dpotc {ticker}\n"
+                f"6️⃣ !stocks.dps.spos {ticker}\n"
+                f"7️⃣ !stocks.dps.psi {ticker}\n"
             )
         else:
             text += (
@@ -134,7 +144,7 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
 
         emoji_list = ["0️⃣", "1️⃣", "2️⃣", "3️⃣"]
 
-        if arg:
+        if ticker:
             emoji_list += ["4️⃣", "5️⃣", "6️⃣", "7️⃣"]
 
         for emoji in emoji_list:
@@ -166,19 +176,19 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
             elif reaction.emoji == "4️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 4")
-                await ftd_command(ctx, arg)
+                await ftd_command(ctx, ticker)
             elif reaction.emoji == "5️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 5")
-                await dpotc_command(ctx, arg)
+                await dpotc_command(ctx, ticker)
             elif reaction.emoji == "6️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 6")
-                await spos_command(ctx, arg)
+                await spos_command(ctx, ticker)
             elif reaction.emoji == "7️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 7")
-                await psi_command(ctx, arg)
+                await psi_command(ctx, ticker)
 
             for emoji in emoji_list:
                 await msg.remove_reaction(emoji, ctx.bot.user)
