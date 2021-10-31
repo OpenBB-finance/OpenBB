@@ -27,7 +27,7 @@ async def performance_command(ctx, economy_group="sector"):
     }
 
     try:
-        # Debug
+        # Debug user input
         if cfg.DEBUG:
             print(f"\n!economy.performance {economy_group}")
 
@@ -37,35 +37,22 @@ async def performance_command(ctx, economy_group="sector"):
                 print("Use default economy_group: 'sector'")
             economy_group = "sector"
 
-        # Parse argument
-        try:
-            group = d_economy_group[economy_group]
-            if cfg.DEBUG:
-                print(f"Group selected: {group}")
+        # Check for argument
+        possible_groups = list(d_economy_group.keys())
 
-        except KeyError:
-            err = f"Invalid group argument: {economy_group}\n\n"
-            err += f"Possible group arguments are: {', '.join(d_economy_group.keys())}"
+        if economy_group not in possible_groups:
+            raise Exception(f"Select a valid group from {', '.join(possible_groups)}")
 
-            if cfg.DEBUG:
-                print(err)
+        group = d_economy_group[economy_group]
 
-            title = "ERROR Economy: [Finviz] Performance"
-            embed = discord.Embed(title=title, colour=cfg.COLOR, description=err)
-            embed.set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
-            )
-
-            await ctx.send(embed=embed)
-
-            return
-
+        # Retrieve data
         df_group = finviz_model.get_valuation_performance_data(group, "performance")
 
+        # Debug user output
         if cfg.DEBUG:
             print(df_group.to_string())
 
+        # Output data
         future_column_name = df_group["Name"]
         df_group = df_group.transpose()
         df_group.columns = future_column_name
@@ -102,7 +89,7 @@ async def performance_command(ctx, economy_group="sector"):
 
     except Exception as e:
         embed = discord.Embed(
-            title="INTERNAL ERROR",
+            title="ERROR Economy: [Finviz] Performance",
             colour=cfg.COLOR,
             description=e,
         )

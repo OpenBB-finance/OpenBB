@@ -8,15 +8,18 @@ async def futures_command(ctx):
     """Futures and commodities overview [Wall St. Journal]"""
 
     try:
-        # Debug
+        # Debug user input
         if cfg.DEBUG:
             print("\n!economy.futures")
 
+        # Retrieve data
         df_data = wsj_model.top_commodities()
 
+        # Debug user output
         if cfg.DEBUG:
             print(df_data.to_string())
 
+        # Output data
         if df_data.empty:
             df_data_str = "No futures/commodities data available"
         else:
@@ -36,7 +39,7 @@ async def futures_command(ctx):
 
     except Exception as e:
         embed = discord.Embed(
-            title="INTERNAL ERROR",
+            title="ERROR Economy: [WSJ] Futures/Commodities",
             colour=cfg.COLOR,
             description=e,
         )

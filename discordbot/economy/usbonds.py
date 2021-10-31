@@ -8,15 +8,18 @@ async def usbonds_command(ctx):
     """US bonds overview [Wall St. Journal]"""
 
     try:
-        # Debug
+        # Debug user input
         if cfg.DEBUG:
             print("\n!economy.usbonds")
 
+        # Retrieve data
         df_data = wsj_model.us_bonds()
 
+        # Debug user output
         if cfg.DEBUG:
             print(df_data.to_string())
 
+        # Output data
         if df_data.empty:
             df_data_str = "No US bonds data available"
         else:
@@ -36,7 +39,7 @@ async def usbonds_command(ctx):
 
     except Exception as e:
         embed = discord.Embed(
-            title="INTERNAL ERROR",
+            title="ERROR Economy: [WSJ] US Bonds",
             colour=cfg.COLOR,
             description=e,
         )

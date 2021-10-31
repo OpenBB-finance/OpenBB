@@ -12,7 +12,7 @@ async def feargreed_command(ctx, indicator=""):
     """CNN Fear and Greed Index [CNN]"""
 
     try:
-        # Debug
+        # Debug user input
         if cfg.DEBUG:
             print(f"\n!economy.feargreed {indicator}")
 

@@ -8,15 +8,18 @@ async def currencies_command(ctx):
     """Currencies overview [Wall St. Journal]"""
 
     try:
-        # Debug
+        # Debug user input
         if cfg.DEBUG:
             print("\n!economy.currencies")
 
+        # Retrieve data
         df_data = wsj_model.global_currencies()
 
+        # Debug user output
         if cfg.DEBUG:
             print(df_data.to_string())
 
+        # Output data
         if df_data.empty:
             df_data_str = "No currencies data available"
         else:
@@ -36,7 +39,7 @@ async def currencies_command(ctx):
 
     except Exception as e:
         embed = discord.Embed(
-            title="INTERNAL ERROR",
+            title="ERROR Economy: [WSJ] Currencies",
             colour=cfg.COLOR,
             description=e,
         )

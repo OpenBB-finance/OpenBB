@@ -10,7 +10,7 @@ async def indices_command(ctx):
     try:
         # Debug user input
         if cfg.DEBUG:
-            print("!economy.indices")
+            print("\n!economy.indices")
 
         # Retrieve data
         df_data = wsj_model.us_indices()
@@ -39,7 +39,7 @@ async def indices_command(ctx):
 
     except Exception as e:
         embed = discord.Embed(
-            title="ERROR Economy: [WSK] US Indices",
+            title="ERROR Economy: [WSJ] US Indices",
             colour=cfg.COLOR,
             description=e,
         )
