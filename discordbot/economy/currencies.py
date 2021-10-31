@@ -13,6 +13,10 @@ async def currencies_command(ctx):
             print("\n!economy.currencies")
 
         df_data = wsj_model.global_currencies()
+
+        if cfg.DEBUG:
+            print(df_data.to_string())
+
         if df_data.empty:
             df_data_str = "No currencies data available"
         else:

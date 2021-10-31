@@ -13,6 +13,10 @@ async def overview_command(ctx):
             print("\n!economy.overview")
 
         df_data = wsj_model.market_overview()
+
+        if cfg.DEBUG:
+            print(df_data.to_string())
+
         if df_data.empty:
             df_data_str = "No overview data available"
         else:

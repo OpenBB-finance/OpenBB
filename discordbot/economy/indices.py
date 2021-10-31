@@ -13,6 +13,10 @@ async def indices_command(ctx):
             print("!economy.indices")
 
         df_data = wsj_model.us_indices()
+
+        if cfg.DEBUG:
+            print(df_data.to_string())
+
         if df_data.empty:
             df_data_str = "No indices data available"
         else:

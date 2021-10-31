@@ -13,6 +13,9 @@ async def glbonds_command(ctx):
             print("\n!economy.glbonds")
 
         df_data = wsj_model.global_bonds()
+        if cfg.DEBUG:
+            print(df_data.to_string())
+
         if df_data.empty:
             df_data_str = "No global bonds data available"
         else:

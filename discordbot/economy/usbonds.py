@@ -13,6 +13,10 @@ async def usbonds_command(ctx):
             print("\n!economy.usbonds")
 
         df_data = wsj_model.us_bonds()
+
+        if cfg.DEBUG:
+            print(df_data.to_string())
+
         if df_data.empty:
             df_data_str = "No US bonds data available"
         else:

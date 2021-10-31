@@ -13,6 +13,10 @@ async def futures_command(ctx):
             print("\n!economy.futures")
 
         df_data = wsj_model.top_commodities()
+
+        if cfg.DEBUG:
+            print(df_data.to_string())
+
         if df_data.empty:
             df_data_str = "No futures/commodities data available"
         else:
