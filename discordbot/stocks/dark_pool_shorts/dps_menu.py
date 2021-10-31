@@ -1,8 +1,9 @@
 import asyncio
 import discord
 import config_discordbot as cfg
+import yfinance as yf
 
-# pylint: disable=wrong-import-order
+# pylint: disable=wrong-import-order,too-many-branches
 from discordbot import gst_bot
 
 from stocks.dark_pool_shorts.shorted import shorted_command
@@ -131,7 +132,23 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         """
 
         if cfg.DEBUG:
-            print("!stocks.dps")
+            print(f"\n!stocks.dps {ticker}")
+
+        if ticker:
+            stock = yf.download(ticker, progress=False)
+            if stock.empty:
+                embed = discord.Embed(
+                    title="ERROR Stocks: Dark Pool and Short data",
+                    colour=cfg.COLOR,
+                    description="Stock ticker is invalid",
+                )
+                embed.set_author(
+                    name=cfg.AUTHOR_NAME,
+                    icon_url=cfg.AUTHOR_ICON_URL,
+                )
+
+                await ctx.send(embed=embed)
+                return
 
         text = (
             "0️⃣ !stocks.dps.shorted <NUM>\n"
