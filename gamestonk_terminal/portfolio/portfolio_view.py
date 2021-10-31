@@ -171,7 +171,7 @@ def plot_rolling_beta(df: pd.DataFrame) -> ImageReader:
     fig.set_facecolor("white")
     ax.set_title(
         "%s - %s"
-        % (df.index[:1][0].strftime("%Y/%m/%d"), df.index[-1:][0].strftime("%Y/%m/%d")),
+        % (df.index[:1][0].strftime("%Y-%m-%d"), df.index[-1:][0].strftime("%Y-%m-%d")),
         fontsize=12,
         color="gray",
     )

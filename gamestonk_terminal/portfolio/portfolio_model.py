@@ -390,7 +390,7 @@ def get_main_text(df: pd.DataFrame) -> str:
             t_debt += " Debt to equity ratios above one represent a significant amount of risk."
     else:
         t_debt = "Debt was not used this year. This reduces this risk of the portfolio."
-    return (
+    string = (
         f"Your portfolio's performance for the period was {df['return'][-1]:.2%}. This was"
         f" {'greater' if df['return'][-1] > df[('Market', 'Return')][-1] else 'less'} than"
         f" the market return of {df[('Market', 'Return')][-1]:.2%}. The variance for the"
@@ -400,6 +400,7 @@ def get_main_text(df: pd.DataFrame) -> str:
         f" of the market. {t_debt} The following report details various analytics from the"
         f" portfolio. Read below to see the moving beta for a stock."
     )
+    return string
 
 
 def get_beta_text(df: pd.DataFrame) -> str:
@@ -418,7 +419,7 @@ def get_beta_text(df: pd.DataFrame) -> str:
     betas = df[list(filter(lambda score: "beta" in score, list(df.columns)))]
     high = betas.idxmax(axis=1)
     low = betas.idxmin(axis=1)
-    return (
+    string = (
         "Beta is how strongly a portfolio's movements correlate with the market's movements."
         " A stock with a high beta is considered to be riskier, with the average being one."
         f" The beginning beta for the period was {portfolio_helper.beta_word(df['total'][0])}"
@@ -434,3 +435,4 @@ def get_beta_text(df: pd.DataFrame) -> str:
         f" {portfolio_helper.clean_name(low[-1] if df['total'][-1] > 1 else high[-1])} which had"
         f" an ending beta of {df[low[-1]][-1] if df['total'][-1] > 1 else df[high[-1]][-1]:.2f}."
     )
+    return string
