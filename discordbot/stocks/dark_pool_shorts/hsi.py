@@ -5,7 +5,7 @@ from helpers import pagination
 from gamestonk_terminal.stocks.dark_pool_shorts import shortinterest_model
 
 
-async def hsi_command(ctx, num="5"):
+async def hsi_command(ctx, num="10"):
     """Show top high short interest stocks of over 20% ratio [shortinterest.com]"""
 
     try:

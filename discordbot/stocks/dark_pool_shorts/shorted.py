@@ -5,7 +5,7 @@ from helpers import pagination
 from gamestonk_terminal.stocks.dark_pool_shorts import yahoofinance_model
 
 
-async def shorted_command(ctx, num="5"):
+async def shorted_command(ctx, num="10"):
     """Show most shorted stocks [Yahoo Finance]"""
 
     try:

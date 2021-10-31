@@ -5,7 +5,7 @@ from helpers import pagination
 from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
 
 
-async def pos_command(ctx, sort="dpp_dollar", num="5"):
+async def pos_command(ctx, sort="dpp_dollar", num="10"):
     """Dark pool short position [Stockgrid]"""
 
     try:
