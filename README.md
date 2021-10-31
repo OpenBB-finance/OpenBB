@@ -100,7 +100,7 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
   To confirm that your docker desktop is downloaded and running, open a command prompt or terminal and enter
 `docker info`.  If you get the following you are not running the docker desktop:
 
-   ```bash
+   ```text
    Server:
    ERROR: Cannot connect to the Docker daemon at unix:///var/run/docker.sock.
    Is the docker daemon running?
@@ -122,7 +122,7 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
    Once the download is complete, confirm that the image has been created by doing `docker images`.  You should see
    something similar to
 
-   ```bash
+   ```text
    REPOSITORY                             TAG       IMAGE ID       CREATED        SIZE
    ghcr.io/gamestonkterminal/gst-poetry   latest    e2bbeebcc73c   42 hours ago   2.02GB
    ```
