@@ -2,6 +2,9 @@ import asyncio
 import discord
 import config_discordbot as cfg
 
+# pylint: disable=wrong-import-order
+from discordbot import gst_bot
+
 from stocks.dark_pool_shorts.shorted import shorted_command
 from stocks.dark_pool_shorts.ftd import ftd_command
 from stocks.dark_pool_shorts.dpotc import dpotc_command
@@ -10,7 +13,6 @@ from stocks.dark_pool_shorts.psi import psi_command
 from stocks.dark_pool_shorts.hsi import hsi_command
 from stocks.dark_pool_shorts.pos import pos_command
 from stocks.dark_pool_shorts.sidtc import sidtc_command
-from discordbot import gst_bot
 
 
 class DarkPoolShortsCommands(discord.ext.commands.Cog):
