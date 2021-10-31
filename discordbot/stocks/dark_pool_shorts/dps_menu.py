@@ -22,9 +22,15 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         self.bot = bot
 
     @discord.ext.commands.command(name="stocks.dps.shorted")
-    async def shorted(self, ctx: discord.ext.commands.Context, arg=""):
-        """Show most shorted stocks [Yahoo Finance]"""
-        await shorted_command(ctx, arg)
+    async def shorted(self, ctx: discord.ext.commands.Context, num="5"):
+        """Show most shorted stocks [Yahoo Finance]
+
+        Parameters
+        -----------
+        num: int
+            Number of the most shorted stocks to retrieve
+        """
+        await shorted_command(ctx, num)
 
     @discord.ext.commands.command(name="stocks.dps.hsi")
     async def hsi(self, ctx: discord.ext.commands.Context, arg=""):
