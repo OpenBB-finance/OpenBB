@@ -421,7 +421,7 @@ def get_beta_text(df: pd.DataFrame) -> str:
     low = betas.idxmin(axis=1)
     string = (
         "Beta is how strongly a portfolio's movements correlate with the market's movements."
-        " A stock with a high beta is considered to be riskier, with the average being one."
+        " A stock with a high beta is considered to be riskier. The market has a beta of one."
         f" The beginning beta for the period was {portfolio_helper.beta_word(df['total'][0])}"
         f" at {df['total'][0]:.2f}. This went"
         f" {'up' if df['total'][-1] > df['total'][0] else 'down'} to"
