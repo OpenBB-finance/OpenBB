@@ -429,10 +429,5 @@ def get_beta_text(df: pd.DataFrame) -> str:
         f" of the period. The ending beta was pulled {'up' if df['total'][-1] > 1 else 'down'} by"
         f" {portfolio_helper.clean_name(high[-1] if df['total'][-1] > 1 else low[-1])}, which had"
         f" an ending beta of {df[high[-1]][-1] if df['total'][-1] > 1 else df[low[-1]][-1]:.2f}."
-        f" To {'lower' if df['total'][-1] > 1 else 'raise'} the beta of the portfolio and"
-        f" {'decrease portfolio risk' if df['total'][-1] > 1 else 'increase potential return'}"
-        f" invest more heavily in"
-        f" {portfolio_helper.clean_name(low[-1] if df['total'][-1] > 1 else high[-1])} which had"
-        f" an ending beta of {df[low[-1]][-1] if df['total'][-1] > 1 else df[high[-1]][-1]:.2f}."
     )
     return string

@@ -280,7 +280,7 @@ Graphs:
             "-t",
             "--type",
             dest="type",
-            type=str,
+            type=lambda s: s.lower(),
             choices=["stock", "cash"],  # "bond", "option", "crypto",
             default="stock",
             help="Type of asset to add",
@@ -326,7 +326,7 @@ Graphs:
         parser.add_argument(
             "-a",
             "--action",
-            type=str,
+            type=lambda s: s.lower(),
             dest="action",
             choices=["buy", "sell", "interest", "deposit", "withdrawal"],
             default="buy",
