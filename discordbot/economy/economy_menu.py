@@ -23,9 +23,17 @@ class EconomyCommands(discord.ext.commands.Cog):
         self.bot = bot
 
     @discord.ext.commands.command(name="economy.feargreed")
-    async def feargreed(self, ctx: discord.ext.commands.Context, arg=""):
-        """CNN Fear and Greed Index [CNN]"""
-        await feargreed_command(ctx, arg)
+    async def feargreed(self, ctx: discord.ext.commands.Context, indicator=""):
+        """CNN Fear and Greed Index [CNN]
+
+        Parameters
+        -----------
+        indicator: str
+            Possible indicatores are: jbd, mv, pco, mm, sps, spb, shd. Which stand for
+            Junk Bond Demand, Market Volatility, Put and Call Options, Market Momentum,
+            Stock Price Strength, Stock Price Breadth, Safe Heaven Demand.
+        """
+        await feargreed_command(ctx, indicator)
 
     @discord.ext.commands.command(name="economy.overview")
     async def overview(self, ctx: discord.ext.commands.Context, arg=""):
@@ -58,14 +66,30 @@ class EconomyCommands(discord.ext.commands.Cog):
         await currencies_command(ctx, arg)
 
     @discord.ext.commands.command(name="economy.valuation")
-    async def valuation(self, ctx: discord.ext.commands.Context, arg=""):
-        """Valuation of sectors, industry, country [Finviz]"""
-        await valuation_command(ctx, arg)
+    async def valuation(self, ctx: discord.ext.commands.Context, economy_group=""):
+        """Valuation of sectors, industry, country [Finviz]
+
+        Parameters
+        -----------
+        economy_group: str
+            Possible groups are: sector, industry, basic_materials, communication_services,
+            consumer_cyclical, consumer_defensive, energy, financial, healthcare, industrials,
+            real_estate, technology, utilities, country, capitalization.
+        """
+        await valuation_command(ctx, economy_group)
 
     @discord.ext.commands.command(name="economy.performance")
-    async def performance(self, ctx: discord.ext.commands.Context, arg=""):
-        """Performance of sectors, industry, country [Finviz]"""
-        await performance_command(ctx, arg)
+    async def performance(self, ctx: discord.ext.commands.Context, economy_group=""):
+        """Performance of sectors, industry, country [Finviz]
+
+        Parameters
+        -----------
+        economy_group: str
+            Possible groups are: sector, industry, basic_materials, communication_services,
+            consumer_cyclical, consumer_defensive, energy, financial, healthcare, industrials,
+            real_estate, technology, utilities, country, capitalization.
+        """
+        await performance_command(ctx, economy_group)
 
     @discord.ext.commands.command(name="economy")
     async def economy(self, ctx: discord.ext.commands.Context):

@@ -101,9 +101,8 @@ async def performance_command(ctx, economy_group="sector"):
         await pagination(columns, ctx)
 
     except Exception as e:
-        title = "INTERNAL ERROR"
         embed = discord.Embed(
-            title=title,
+            title="INTERNAL ERROR",
             colour=cfg.COLOR,
             description=e,
         )
