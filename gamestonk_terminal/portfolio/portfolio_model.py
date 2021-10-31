@@ -8,6 +8,8 @@ from typing import List
 
 import numpy as np
 import pandas as pd
+import statsmodels.api as sm
+from statsmodels.regression.rolling import RollingOLS
 
 from gamestonk_terminal.portfolio import (
     portfolio_view,
@@ -340,16 +342,13 @@ def get_rolling_beta(
         hist["Close"], mark["Market"], how="left", left_index=True, right_index=True
     )
     comb = comb.fillna(method="ffill")
-    df_var = comb.rolling(252).var().unstack()["Close"].to_frame(name="var")
     for col in hist["Close"].columns:
-        df1 = (
-            comb.rolling(252).cov().unstack()[col]["Close"].to_frame(name=f"cov_{col}")
-        )
-        df_var = pd.merge(df_var, df1, how="left", left_index=True, right_index=True)
-        df_var[f"beta_{col}"] = df_var[f"cov_{col}"] / df_var["var"]
-    final = pd.merge(res, df_var, how="left", left_index=True, right_index=True)
-    final = final.fillna(method="ffill")
-    final = final.drop(columns=["var"] + [f"cov_{x}" for x in uniques])
+        exog = sm.add_constant(comb["Close"])
+        rols = RollingOLS(comb[col], exog, window=252)
+        rres = rols.fit()
+        res[f"beta_{col}"] = rres.params["Close"]
+
+    final = res.fillna(method="ffill")
     for uni in uniques:
         final[f"prod_{uni}"] = final[uni] * final[f"beta_{uni}"]
     dropped = final[[f"beta_{x}" for x in uniques]].copy()
@@ -391,7 +390,7 @@ def get_main_text(df: pd.DataFrame) -> str:
             t_debt += " Debt to equity ratios above one represent a significant amount of risk."
     else:
         t_debt = "Debt was not used this year. This reduces this risk of the portfolio."
-    t = (
+    return (
         f"Your portfolio's performance for the period was {df['return'][-1]:.2%}. This was"
         f" {'greater' if df['return'][-1] > df[('Market', 'Return')][-1] else 'less'} than"
         f" the market return of {df[('Market', 'Return')][-1]:.2%}. The variance for the"
@@ -401,7 +400,6 @@ def get_main_text(df: pd.DataFrame) -> str:
         f" of the market. {t_debt} The following report details various analytics from the"
         f" portfolio. Read below to see the moving beta for a stock."
     )
-    return t
 
 
 def get_beta_text(df: pd.DataFrame) -> str:
@@ -420,7 +418,7 @@ def get_beta_text(df: pd.DataFrame) -> str:
     betas = df[list(filter(lambda score: "beta" in score, list(df.columns)))]
     high = betas.idxmax(axis=1)
     low = betas.idxmin(axis=1)
-    t = (
+    return (
         "Beta is how strongly a portfolio's movements correlate with the market's movements."
         " A stock with a high beta is considered to be riskier, with the average being one."
         f" The beginning beta for the period was {portfolio_helper.beta_word(df['total'][0])}"
@@ -436,4 +434,3 @@ def get_beta_text(df: pd.DataFrame) -> str:
         f" {portfolio_helper.clean_name(low[-1] if df['total'][-1] > 1 else high[-1])} which had"
         f" an ending beta of {df[low[-1]][-1] if df['total'][-1] > 1 else df[high[-1]][-1]:.2f}."
     )
-    return t
