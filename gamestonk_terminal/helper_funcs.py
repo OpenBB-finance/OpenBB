@@ -14,7 +14,7 @@ import iso8601
 
 import matplotlib
 import matplotlib.pyplot as plt
-from holidays import US as holidaysUS
+from holidays import US as us_holidays
 from colorama import Fore, Style
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
@@ -41,7 +41,8 @@ MENU_RESET = 2
 
 
 def check_int_range(mini: int, maxi: int):
-    """Checks if argparse argument is an int between 2 values.
+    """
+    Checks if argparse argument is an int between 2 values.
 
     Parameters
     ----------
@@ -58,7 +59,8 @@ def check_int_range(mini: int, maxi: int):
 
     # Define the function with default arguments
     def int_range_checker(num: int) -> int:
-        """Checks if int is between a high and low value
+        """
+        Checks if int is between a high and low value
 
         Parameters
         ----------
@@ -86,44 +88,45 @@ def check_int_range(mini: int, maxi: int):
 
 def check_non_negative(value) -> int:
     """Argparse type to check non negative int"""
-    ivalue = int(value)
-    if ivalue < 0:
+    new_value = int(value)
+    if new_value < 0:
         raise argparse.ArgumentTypeError(f"{value} is negative")
-    return ivalue
+    return new_value
 
 
 def check_positive_list(value) -> List[int]:
     """Argparse type to return list of positive ints"""
     list_of_nums = value.split(",")
     list_of_pos = []
-    for ivalue in list_of_nums:
-        ival = int(ivalue)
-        if ival <= 0:
+    for a_value in list_of_nums:
+        new_value = int(a_value)
+        if new_value <= 0:
             raise argparse.ArgumentTypeError(
                 f"{value} is an invalid positive int value"
             )
-        list_of_pos.append(ival)
+        list_of_pos.append(new_value)
     return list_of_pos
 
 
 def check_positive(value) -> int:
     """Argparse type to check positive int"""
-    ivalue = int(value)
-    if ivalue <= 0:
+    new_value = int(value)
+    if new_value <= 0:
         raise argparse.ArgumentTypeError(f"{value} is an invalid positive int value")
-    return ivalue
+    return new_value
 
 
 def check_positive_float(value) -> float:
     """Argparse type to check positive int"""
-    fvalue = float(value)
-    if fvalue <= 0:
+    new_value = float(value)
+    if new_value <= 0:
         raise argparse.ArgumentTypeError(f"{value} is not a positive float value")
-    return fvalue
+    return new_value
 
 
 def check_proportion_range(num) -> float:
-    """Checks if float is between 0 and 1. If so, return it.
+    """
+    Checks if float is between 0 and 1. If so, return it.
 
     Parameters
     ----------
@@ -160,7 +163,7 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
     Parameters
     ----------
     df: Dataframe
-        Dataframe of prices and volumnes
+        Dataframe of prices and volumes
     symbol: str
         Symbol of ticker
     interval: str
@@ -235,13 +238,13 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
 
 
 def us_market_holidays(years) -> list:
-    """get US market holidays"""
+    """Get US market holidays"""
     if isinstance(years, int):
         years = [
             years,
         ]
     # https://www.nyse.com/markets/hours-calendars
-    marketHolidays = [
+    market_holidays = [
         "Martin Luther King Jr. Day",
         "Washington's Birthday",
         "Memorial Day",
@@ -251,7 +254,7 @@ def us_market_holidays(years) -> list:
         "Christmas Day",
     ]
     #   http://www.maa.clell.de/StarDate/publ_holidays.html
-    goodFridays = {
+    good_fridays = {
         2010: "2010-04-02",
         2011: "2011-04-22",
         2012: "2012-04-06",
@@ -274,27 +277,27 @@ def us_market_holidays(years) -> list:
         2029: "2029-03-30",
         2030: "2030-04-19",
     }
-    marketHolidays_and_obsrvd = marketHolidays + [
-        holiday + " (Observed)" for holiday in marketHolidays
+    market_and_observed_holidays = market_holidays + [
+        holiday + " (Observed)" for holiday in market_holidays
     ]
-    allHolidays = holidaysUS(years=years)
-    validHolidays = []
-    for date in list(allHolidays):
-        if allHolidays[date] in marketHolidays_and_obsrvd:
-            validHolidays.append(date)
+    all_holidays = us_holidays(years=years)
+    valid_holidays = []
+    for date in list(all_holidays):
+        if all_holidays[date] in market_and_observed_holidays:
+            valid_holidays.append(date)
     for year in years:
         new_Year = datetime.strptime(f"{year}-01-01", "%Y-%m-%d")
         if new_Year.weekday() != 5:  # ignore saturday
-            validHolidays.append(new_Year.date())
+            valid_holidays.append(new_Year.date())
         if new_Year.weekday() == 6:  # add monday for Sunday
-            validHolidays.append(new_Year.date() + timedelta(1))
+            valid_holidays.append(new_Year.date() + timedelta(1))
     for year in years:
-        validHolidays.append(datetime.strptime(goodFridays[year], "%Y-%m-%d").date())
-    return validHolidays
+        valid_holidays.append(datetime.strptime(good_fridays[year], "%Y-%m-%d").date())
+    return valid_holidays
 
 
 def b_is_stock_market_open() -> bool:
-    """checks if the stock market is open"""
+    """Checks if the stock market is open"""
     # Get current US time
     now = datetime.now(timezone("US/Eastern"))
     # Check if it is a weekend
@@ -314,6 +317,7 @@ def b_is_stock_market_open() -> bool:
 
 
 def long_number_format(num) -> str:
+    """Format a long number"""
     if isinstance(num, float):
         magnitude = 0
         while abs(num) >= 1000:
@@ -355,6 +359,7 @@ def clean_data_values_to_float(val: str) -> float:
 
 
 def int_or_round_float(x) -> str:
+    """Format int or round float"""
     if (x - int(x) < -sys.float_info.epsilon) or (x - int(x) > sys.float_info.epsilon):
         return " " + str(round(x, 2))
 
@@ -362,13 +367,14 @@ def int_or_round_float(x) -> str:
 
 
 def divide_chunks(data, n):
+    """Split into chunks"""
     # looping till length of data
     for i in range(0, len(data), n):
         yield data[i : i + n]
 
 
 def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
-    """gets the next stock market day. Checks against weekends and holidays"""
+    """Gets the next stock market day. Checks against weekends and holidays"""
     n_days = 0
     l_pred_days = []
     years: list = []
@@ -421,6 +427,7 @@ def clean_tweet(tweet: str, s_ticker: str) -> str:
 
 
 def get_user_agent() -> str:
+    """Get a not very random user agent"""
     user_agent_strings = [
         "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:86.1) Gecko/20100101 Firefox/86.1",
         "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:86.1) Gecko/20100101 Firefox/86.1",
@@ -434,19 +441,21 @@ def get_user_agent() -> str:
     return random.choice(user_agent_strings)
 
 
-# monkey patch Pandas
 def text_adjustment_init(self):
+    """Adjust text monkey patch for Pandas"""
     self.ansi_regx = re.compile(r"\x1B[@-_][0-?]*[ -/]*[@-~]")
     self.encoding = get_option("display.encoding")
 
 
 def text_adjustment_len(self, text):
+    """Get the length of the text adjustment"""
     # return compat.strlen(self.ansi_regx.sub("", text), encoding=self.encoding)
     return len(self.ansi_regx.sub("", text))
 
 
 def text_adjustment_justify(self, texts, max_len, mode="right"):
-    jfunc = (
+    """Justify text"""
+    justify = (
         str.ljust
         if (mode == "left")
         else str.rjust
@@ -459,16 +468,17 @@ def text_adjustment_justify(self, texts, max_len, mode="right"):
         if len(escapes) == 2:
             out.append(
                 escapes[0].strip()
-                + jfunc(self.ansi_regx.sub("", s), max_len)
+                + justify(self.ansi_regx.sub("", s), max_len)
                 + escapes[1].strip()
             )
         else:
-            out.append(jfunc(s, max_len))
+            out.append(justify(s, max_len))
     return out
 
 
 # pylint: disable=unused-argument
 def text_adjustment_join_unicode(self, lines, sep=""):
+    """Join Unicode"""
     try:
         return sep.join(lines)
     except UnicodeDecodeError:
@@ -478,6 +488,7 @@ def text_adjustment_join_unicode(self, lines, sep=""):
 
 # pylint: disable=unused-argument
 def text_adjustment_adjoin(self, space, *lists, **kwargs):
+    """Adjoin"""
     # Add space for all but the last column:
     pads = ([space] * (len(lists) - 1)) + [0]
     max_col_len = max(len(col) for col in lists)
@@ -496,6 +507,7 @@ def text_adjustment_adjoin(self, space, *lists, **kwargs):
 
 # https://github.com/pandas-dev/pandas/issues/18066#issuecomment-522192922
 def patch_pandas_text_adjustment():
+    """Set pandas text adjustment settings"""
     pandas.io.formats.format.TextAdjustment.__init__ = text_adjustment_init
     pandas.io.formats.format.TextAdjustment.len = text_adjustment_len
     pandas.io.formats.format.TextAdjustment.justify = text_adjustment_justify
@@ -567,6 +579,7 @@ def parse_known_args_and_warn(
 
 
 def financials_colored_values(val: str) -> str:
+    """Add a color to a value"""
     if val == "N/A" or str(val) == "nan":
         val = f"{Fore.YELLOW}N/A{Style.RESET_ALL}"
     elif sum(c.isalpha() for c in val) < 2:
@@ -593,6 +606,7 @@ def lett_to_num(word: str) -> str:
 
 
 def get_flair() -> str:
+    """Get a flair icon"""
     flair = {
         "rocket": "(🚀🚀)",
         "diamond": "(💎💎)",
@@ -635,6 +649,7 @@ def str_to_bool(value) -> bool:
 
 
 def get_screeninfo():
+    """Get screeninfo"""
     screens = get_monitors()  # Get all available monitors
     if len(screens) - 1 < cfgPlot.MONITOR:  # Check to see if chosen monitor is detected
         monitor = 0
@@ -647,6 +662,7 @@ def get_screeninfo():
 
 
 def plot_autoscale():
+    """Autoscale plot"""
 
     if gtff.USE_PLOT_AUTOSCALING:
         x, y = get_screeninfo()  # Get screen size
@@ -663,12 +679,13 @@ def plot_autoscale():
 
 
 def get_last_time_market_was_open(dt):
+    """Get last time the US market was open"""
     # Check if it is a weekend
     if dt.date().weekday() > 4:
         dt = get_last_time_market_was_open(dt - timedelta(hours=24))
 
     # Check if it is a holiday
-    if dt.strftime("%Y-%m-%d") in holidaysUS():
+    if dt.strftime("%Y-%m-%d") in us_holidays():
         dt = get_last_time_market_was_open(dt - timedelta(hours=24))
 
     dt = dt.replace(hour=21, minute=0, second=0)
