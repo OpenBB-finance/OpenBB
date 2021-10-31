@@ -9,7 +9,7 @@ async def pos_command(ctx, sort="dpp_dollar", num="10"):
     """Dark pool short position [Stockgrid]"""
 
     try:
-        # Debug
+        # Debug user input
         if cfg.DEBUG:
             print(f"\n!stocks.dps.pos {sort} {num}")
 

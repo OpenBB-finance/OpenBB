@@ -13,7 +13,7 @@ async def spos_command(ctx, ticker=""):
     """Net short vs position [Stockgrid]"""
 
     try:
-        # Debug
+        # Debug user input
         if cfg.DEBUG:
             print(f"\n!stocks.dps.spos {ticker}")
 

@@ -8,15 +8,18 @@ async def indices_command(ctx):
     """US indices overview [Wall St. Journal]"""
 
     try:
-        # Debug
+        # Debug user input
         if cfg.DEBUG:
             print("!economy.indices")
 
+        # Retrieve data
         df_data = wsj_model.us_indices()
 
+        # Debug user output
         if cfg.DEBUG:
             print(df_data.to_string())
 
+        # Output data
         if df_data.empty:
             df_data_str = "No indices data available"
         else:
@@ -36,7 +39,7 @@ async def indices_command(ctx):
 
     except Exception as e:
         embed = discord.Embed(
-            title="INTERNAL ERROR",
+            title="ERROR Economy: [WSK] US Indices",
             colour=cfg.COLOR,
             description=e,
         )

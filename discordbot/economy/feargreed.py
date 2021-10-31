@@ -16,33 +16,22 @@ async def feargreed_command(ctx, indicator=""):
         if cfg.DEBUG:
             print(f"\n!economy.feargreed {indicator}")
 
+        # Check for argument
         possible_indicators = ("", "jbd", "mv", "pco", "mm", "sps", "spb", "shd")
 
         if indicator not in possible_indicators:
-            err = f"Invalid group argument: {indicator}\n\n"
-            err += f"Possible group arguments are: {', '.join(possible_indicators)}"
-
-            if cfg.DEBUG:
-                print(err)
-
-            title = "ERROR Economy: [CNN] Feargreed"
-            embed = discord.Embed(title=title, colour=cfg.COLOR, description=err)
-            embed.set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
+            raise Exception(
+                f"Select a valid indicator from {', '.join(possible_indicators)}"
             )
 
-            await ctx.send(embed=embed)
-
-            return
-
-        plt.ion()
+        # Retrieve data
         fig = plt.figure(figsize=[1, 1], dpi=10)
 
         report, _ = cnn_model.get_feargreed_report(indicator, fig)
         cnn_view.fear_and_greed_index(indicator=indicator, export="png")
         plt.close("all")
 
+        # Output data
         now = datetime.datetime.now()
         image_path = os.path.join(
             cfg.GST_PATH,
@@ -86,7 +75,7 @@ async def feargreed_command(ctx, indicator=""):
 
     except Exception as e:
         embed = discord.Embed(
-            title="INTERNAL ERROR",
+            title="ERROR Economy: [CNN] Feargreed",
             colour=cfg.COLOR,
             description=e,
         )
