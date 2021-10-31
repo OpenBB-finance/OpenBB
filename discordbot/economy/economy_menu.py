@@ -36,34 +36,34 @@ class EconomyCommands(discord.ext.commands.Cog):
         await feargreed_command(ctx, indicator)
 
     @discord.ext.commands.command(name="economy.overview")
-    async def overview(self, ctx: discord.ext.commands.Context, arg=""):
+    async def overview(self, ctx: discord.ext.commands.Context):
         """Market data overview [Wall St. Journal]"""
-        await overview_command(ctx, arg)
+        await overview_command(ctx)
 
     @discord.ext.commands.command(name="economy.indices")
-    async def indices(self, ctx: discord.ext.commands.Context, arg=""):
+    async def indices(self, ctx: discord.ext.commands.Context):
         """US indices overview [Wall St. Journal]"""
-        await indices_command(ctx, arg)
+        await indices_command(ctx)
 
     @discord.ext.commands.command(name="economy.futures")
-    async def futures(self, ctx: discord.ext.commands.Context, arg=""):
+    async def futures(self, ctx: discord.ext.commands.Context):
         """Futures and commodities overview [Wall St. Journal]"""
-        await futures_command(ctx, arg)
+        await futures_command(ctx)
 
     @discord.ext.commands.command(name="economy.usbonds")
-    async def usbonds(self, ctx: discord.ext.commands.Context, arg=""):
+    async def usbonds(self, ctx: discord.ext.commands.Context):
         """US bonds overview [Wall St. Journal]"""
-        await usbonds_command(ctx, arg)
+        await usbonds_command(ctx)
 
     @discord.ext.commands.command(name="economy.glbonds")
-    async def glbonds(self, ctx: discord.ext.commands.Context, arg=""):
+    async def glbonds(self, ctx: discord.ext.commands.Context):
         """Global bonds overview [Wall St. Journal]"""
-        await glbonds_command(ctx, arg)
+        await glbonds_command(ctx)
 
     @discord.ext.commands.command(name="economy.currencies")
-    async def currencies(self, ctx: discord.ext.commands.Context, arg=""):
+    async def currencies(self, ctx: discord.ext.commands.Context):
         """Currencies overview [Wall St. Journal]"""
-        await currencies_command(ctx, arg)
+        await currencies_command(ctx)
 
     @discord.ext.commands.command(name="economy.valuation")
     async def valuation(self, ctx: discord.ext.commands.Context, economy_group=""):
