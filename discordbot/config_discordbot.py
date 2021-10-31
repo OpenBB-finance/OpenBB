@@ -24,6 +24,8 @@ COLOR = discord.Color.from_rgb(0, 206, 154)
 MENU_TIMEOUT = 30
 DEBUG = True
 
+GST_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
 AUTHOR_NAME = "Gamestonk Terminal"
 AUTHOR_ICON_URL = (
     "https://github.com/GamestonkTerminal/GamestonkTerminal/"
