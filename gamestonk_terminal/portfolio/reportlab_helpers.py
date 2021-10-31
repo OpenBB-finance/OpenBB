@@ -20,15 +20,12 @@ def base_format(report: canvas.Canvas, header: str) -> None:
     """
     report.setLineWidth(0.3)
     report.setFont("Helvetica", 12)
-    report.drawString(30, 750, "Gamestonk Terminal")
-    report.drawString(500, 750, datetime.now().strftime("%Y/%m/%d"))
-    report.drawString(275, 725, "Annual Report")
-    report.setFillColorRGB(255, 0, 0)
-    report.drawString(200, 710, "Warning: currently only analyzes stocks")
-    report.setFillColorRGB(0, 0, 0)
-    report.line(50, 700, 580, 700)
+    report.drawString(30, 760, "Gamestonk Terminal")
+    report.drawString(500, 760, datetime.now().strftime("%Y/%m/%d"))
+    report.drawString(275, 750, "Annual Report")
+    report.line(50, 730, 580, 730)
     report.setFont("Helvetica", 20)
-    report.drawString(50, 670, header)
+    report.drawString(50, 705, header)
     report.setFont("Helvetica", 12)
 
 

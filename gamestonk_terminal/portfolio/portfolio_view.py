@@ -1,6 +1,7 @@
 """Portfolio View"""
 __docformat__ = "numpy"
 
+from typing import List
 from datetime import datetime
 from io import BytesIO
 from os import path
@@ -10,12 +11,17 @@ from tabulate import tabulate
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.lib.utils import ImageReader
+from matplotlib.lines import Line2D
 from matplotlib import pyplot as plt
 import matplotlib.ticker as mtick
+from pypfopt import plotting
 
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.portfolio import portfolio_model, yfinance_model
 from gamestonk_terminal.portfolio import reportlab_helpers
+from gamestonk_terminal.helper_funcs import get_rf
+from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_model
 
 
 def load_info():
@@ -183,6 +189,60 @@ def plot_rolling_beta(df: pd.DataFrame) -> ImageReader:
     return ImageReader(imgdata)
 
 
+def plot_ef(
+    stocks: List[str],
+    period: str = "3mo",
+    n_portfolios: int = 300,
+    risk_free: bool = False,
+):
+    """Display efficient frontier
+
+    Parameters
+    ----------
+    stocks : List[str]
+        List of the stocks to be included in the weights
+    period : str
+        The period to track
+    n_portfolios : int
+        The number of portfolios to generate
+    risk_free : bool
+        Include the risk-free asset
+    """
+    fig, ax = plt.subplots(figsize=(10, 5), dpi=PLOT_DPI)
+    ef, rets, stds = optimizer_model.generate_random_portfolios(
+        [x.upper() for x in stocks], period, n_portfolios
+    )
+    sharpes = rets / stds
+    ax.scatter(stds, rets, marker=".", c=sharpes, cmap="viridis_r")
+    plotting.plot_efficient_frontier(ef, ax=ax, show_assets=True)
+    # Find the tangency portfolio
+    rfrate = get_rf()
+    ret_sharpe, std_sharpe, _ = ef.portfolio_performance(risk_free_rate=rfrate)
+    ax.scatter(std_sharpe, ret_sharpe, marker="*", s=100, c="r", label="Max Sharpe")
+    # Add risk free line
+    if risk_free:
+        y = ret_sharpe * 1.2
+        m = (ret_sharpe - rfrate) / std_sharpe
+        x2 = (y - rfrate) / m
+        x = [0, x2]
+        y = [rfrate, y]
+        line = Line2D(x, y, color="#FF0000", label="Capital Allocation Line")
+        ax.set_xlim(xmin=min(stds) * 0.8)
+        ax.add_line(line)
+    ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
+    ax.legend()
+    fig.tight_layout()
+    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+
+    if gtff.USE_ION:
+        plt.ion()
+
+    imgdata = BytesIO()
+    fig.savefig(imgdata, format="png")
+    imgdata.seek(0)
+    return ImageReader(imgdata)
+
+
 class Report:
     def __init__(self, df: pd.DataFrame, hist: pd.DataFrame, m_tick: str, n: int):
         self.df = df
@@ -210,18 +270,20 @@ class Report:
 
     def generate_pg1(self, report: canvas.Canvas):
         report.drawImage(
-            plot_overall_return(self.returns, self.m_tick, False), 15, 360, 600, 300
+            plot_overall_return(self.returns, self.m_tick, False), 15, 400, 600, 300
         )
         main_t = portfolio_model.get_main_text(self.returns)
-        reportlab_helpers.draw_paragraph(report, main_t, 30, 380, 550, 200)
+        reportlab_helpers.draw_paragraph(report, main_t, 30, 410, 550, 200)
         report.showPage()
 
     def generate_pg2(self, report: canvas.Canvas, df_m: pd.DataFrame):
         reportlab_helpers.base_format(report, "Portfolio Analysis")
         if "Holding" in self.df.columns:
+            uniques = self.df["Holding"].columns.tolist()
             rolling_beta = portfolio_model.get_rolling_beta(
                 self.df, self.hist, df_m, 365
             )
-            report.drawImage(plot_rolling_beta(rolling_beta), 15, 360, 600, 300)
+            report.drawImage(plot_rolling_beta(rolling_beta), 15, 400, 600, 300)
             main_t = portfolio_model.get_beta_text(rolling_beta)
-            reportlab_helpers.draw_paragraph(report, main_t, 30, 380, 550, 200)
+            reportlab_helpers.draw_paragraph(report, main_t, 30, 410, 550, 200)
+            report.drawImage(plot_ef(uniques), 15, 65, 600, 300)
