@@ -1,6 +1,7 @@
 import os
 import matplotlib.dates as mdates
 import discord
+import yfinance as yf
 import config_discordbot as cfg
 from matplotlib import pyplot as plt
 from discordbot import gst_imgur
@@ -22,6 +23,10 @@ async def dpotc_command(ctx, ticker=""):
             raise Exception("Stock ticker is required")
 
         ticker = ticker.upper()
+
+        stock = yf.download(ticker, progress=False)
+        if stock.empty:
+            raise Exception("Stock ticker is invalid")
 
         # Retrieve data
         ats, otc = finra_model.getTickerFINRAdata(ticker)

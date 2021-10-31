@@ -2,6 +2,7 @@ import os
 import config_discordbot as cfg
 import discord
 from matplotlib import pyplot as plt
+import yfinance as yf
 from discordbot import gst_imgur
 from gamestonk_terminal.config_plot import PLOT_DPI
 
@@ -21,6 +22,10 @@ async def spos_command(ctx, ticker=""):
             raise Exception("Stock ticker is required")
 
         ticker = ticker.upper()
+
+        stock = yf.download(ticker, progress=False)
+        if stock.empty:
+            raise Exception("Stock ticker is invalid")
 
         # Retrieve data
         df = stockgrid_model.get_net_short_position(ticker)

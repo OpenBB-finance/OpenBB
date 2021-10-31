@@ -1,11 +1,13 @@
 import os
 from datetime import datetime, timedelta
 import discord
+import yfinance as yf
 import config_discordbot as cfg
 import helpers
 from matplotlib import pyplot as plt
 import matplotlib.dates as mdates
 from discordbot import gst_imgur
+
 
 from gamestonk_terminal.stocks.dark_pool_shorts import sec_model
 
@@ -23,6 +25,10 @@ async def ftd_command(ctx, ticker="", start="", end=""):
             raise Exception("Stock ticker is required")
 
         ticker = ticker.upper()
+
+        stock = yf.download(ticker, progress=False)
+        if stock.empty:
+            raise Exception("Stock ticker is invalid")
 
         if start == "":
             start = datetime.now() - timedelta(days=365)
