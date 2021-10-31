@@ -9,37 +9,23 @@ async def shorted_command(ctx, num="5"):
     """Show most shorted stocks [Yahoo Finance]"""
 
     try:
-        # Debug
+        # Debug user input
         if cfg.DEBUG:
-            print(f"!stocks.dps.shorted {num}")
+            print(f"\n!stocks.dps.shorted {num}")
 
-        try:
-            # Parse argument
-            if not num.isnumeric():
-                raise ValueError("Number has to be an integer")
+        # Check for argument
+        if not num.lstrip("-").isnumeric():
+            raise Exception("Number has to be an integer")
 
-            num = int(num)
+        num = int(num)
 
-            if num < 0:
-                raise ValueError("Number has to be above 0")
+        if num < 0:
+            raise Exception("Number has to be above 0")
 
-        except ValueError as e:
-            embed = discord.Embed(
-                title="ERROR Stocks: [Yahoo Finance] Most Shorted",
-                colour=cfg.COLOR,
-                description=e,
-            )
-            embed.set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
-            )
-
-            await ctx.send(embed=embed)
-
-            return
-
+        # Retrieve data
         df = yahoofinance_model.get_most_shorted().head(num)
 
+        # Debug user output
         if cfg.DEBUG:
             print(df.to_string())
 
@@ -83,7 +69,7 @@ async def shorted_command(ctx, num="5"):
 
     except Exception as e:
         embed = discord.Embed(
-            title="INTERNAL ERROR",
+            title="ERROR Stocks: [Yahoo Finance] Most Shorted",
             colour=cfg.COLOR,
             description=e,
         )
