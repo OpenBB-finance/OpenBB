@@ -191,6 +191,8 @@ def plot_rolling_beta(df: pd.DataFrame) -> ImageReader:
 
 def plot_ef(
     stocks: List[str],
+    variance: float,
+    per_ret: float,
     period: str = "3mo",
     n_portfolios: int = 300,
     risk_free: bool = False,
@@ -201,6 +203,10 @@ def plot_ef(
     ----------
     stocks : List[str]
         List of the stocks to be included in the weights
+    variance : float
+        The variance for the portfolio
+    per_ret : float
+        The portfolio's return for the portfolio
     period : str
         The period to track
     n_portfolios : int
@@ -219,6 +225,7 @@ def plot_ef(
     rfrate = get_rf()
     ret_sharpe, std_sharpe, _ = ef.portfolio_performance(risk_free_rate=rfrate)
     ax.scatter(std_sharpe, ret_sharpe, marker="*", s=100, c="r", label="Max Sharpe")
+    plt.plot(variance, per_ret, "ro", label="Portfolio")
     # Add risk free line
     if risk_free:
         y = ret_sharpe * 1.2
@@ -249,7 +256,7 @@ class Report:
         self.hist = hist
         self.m_tick = m_tick
         self.df_m = yfinance_model.get_market(self.df.index[0], self.m_tick)
-        self.returns = portfolio_model.get_return(df, self.df_m, n)
+        self.returns, self.variance = portfolio_model.get_return(df, self.df_m, n)
 
     def generate_report(self):
         d = path.dirname(path.abspath(__file__)).replace(
@@ -279,11 +286,10 @@ class Report:
     def generate_pg2(self, report: canvas.Canvas, df_m: pd.DataFrame):
         reportlab_helpers.base_format(report, "Portfolio Analysis")
         if "Holding" in self.df.columns:
-            uniques = self.df["Holding"].columns.tolist()
             rolling_beta = portfolio_model.get_rolling_beta(
                 self.df, self.hist, df_m, 365
             )
             report.drawImage(plot_rolling_beta(rolling_beta), 15, 400, 600, 300)
             main_t = portfolio_model.get_beta_text(rolling_beta)
             reportlab_helpers.draw_paragraph(report, main_t, 30, 410, 550, 200)
-            report.drawImage(plot_ef(uniques), 15, 65, 600, 300)
+            # report.drawImage(plot_ef(uniques, self.variance, self.returns["return"][-1]), 15, 65, 600, 300)

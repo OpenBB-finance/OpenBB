@@ -439,7 +439,7 @@ Graphs:
         val, _ = portfolio_model.convert_df(self.portfolio)
         if not val.empty:
             df_m = yfinance_model.get_market(val.index[0], ns_parser.market)
-            returns = portfolio_model.get_return(val, df_m, 365)
+            returns, _ = portfolio_model.get_return(val, df_m, 365)
             portfolio_view.plot_overall_return(returns, ns_parser.market, True)
         else:
             print("Cannot generate a graph from an empty dataframe\n")

@@ -307,11 +307,12 @@ def get_return(df: pd.DataFrame, df_m: pd.DataFrame, n: int) -> pd.DataFrame:
         + (0 if "holdings" not in comb.columns else comb["holdings"].shift(1))
     )
     comb["return"] = comb["return"].fillna(1)
+    variance = np.var(comb["return"])
     comb["return"] = comb["return"].cumprod() - 1
     comb[("Market", "Return")] = (
         comb[("Market", "Close")] - comb[("Market", "Close")][0]
     ) / comb[("Market", "Close")][0]
-    return comb
+    return comb, variance
 
 
 def get_rolling_beta(
