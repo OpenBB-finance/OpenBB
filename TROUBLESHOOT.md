@@ -2,7 +2,9 @@
 
 If you are visiting this page it means that you're having issues installing. We deeply apologize for that.
 
-Since the start of the project we've come across different types of issues experienced by the users. This page tries to combine issues, and their solutions. This will allow to give the best install experience to everyone regardless of any programming skills.
+Since the start of the project we've come across different types of issues experienced by the users. This page tries to
+combine issues, and their solutions. This will allow to give the best install experience to everyone regardless of any
+programming skills.
 
 <ol>
 <li>
@@ -39,8 +41,9 @@ Since the start of the project we've come across different types of issues exper
 
 ### Microsoft Visual C++
 
-If your terminal has too many red error lines, it is likely that this is the issue. Go to this page and install the c++ build tools:
-https://answers.microsoft.com/en-us/windows/forum/windows_other-windows_install/microsoft-visual-c-140/6f0726e2-6c32-4719-9fe5-aa68b5ad8e6d
+If your terminal has too many red error lines, it is likely that this is the issue. Go to this page and install the c++
+build tools:
+<https://answers.microsoft.com/en-us/windows/forum/windows_other-windows_install/microsoft-visual-c-140/6f0726e2-6c32-4719-9fe5-aa68b5ad8e6d>
 
 ### Wheel
 
@@ -48,13 +51,13 @@ https://answers.microsoft.com/en-us/windows/forum/windows_other-windows_install/
 
 ### Cvxpy
 
-```
+```bash
 conda install -c conda-forge cvxpy
 ```
 
 ### Numpy
 
-```
+```bash
 pip install --upgrade numpy==1.20.2
 ```
 
@@ -78,7 +81,8 @@ If you run into trouble with Poetry, and the advice above did not help, your bes
 
 2. `conda deactivate` -> `conda activate gst`, then try again
 
-3. Track down the offensive package and purge it from your anaconda `<environment_name>` folder, then try again (removing through conda can sometimes leave locks behind)
+3. Track down the offensive package and purge it from your anaconda `<environment_name>` folder, then try again
+   (removing through conda can sometimes leave locks behind)
 
    | Platform  | Location                                     |
    | --------- | -------------------------------------------- |
@@ -108,19 +112,19 @@ Please note that the package `pmdarima` needs to installed through `pip install`
 
 ### pypfopt
 
-```
+```bash
 pip install PyPortfolioOpt
 ```
 
 ### dotenv
 
-```
+```bash
 pip install python-dotenv
 ```
 
 ### ally
 
-```
+```bash
 pip install pyally
 ```
 
@@ -128,7 +132,7 @@ pip install pyally
 
 If you run into issues installing or `Cannot convert a symbolic Tensor...` at runtime, try this:
 
-```
+```bash
 conda install -c conda-forge numpy=1.19.5 hdf5=1.10.5
 poetry install
 poetry install -E prediction
@@ -150,14 +154,14 @@ important that you change this setting to LF _before_ you make any changes to th
 
 It is possible that CRLF automatically turns back on, you can correct this with:
 
-```
+```bash
 git config --global core.autocrlf false
 ```
 
 In case you already made coding adjustments, you have to reset your cache, and the changes you made to the code with
 the following:
 
-```
+```bash
 git rm --cached -r .
 git reset --hard
 ```
@@ -168,6 +172,6 @@ Occurs when vscode terminal python version/path is different from the terminal v
 
 To fix it add this to vscode JSON settings ([ref](https://stackoverflow.com/questions/54582361/vscode-terminal-shows-incorrect-python-version-and-path-launching-terminal-from)):
 
-```
+```bash
     "terminal.integrated.inheritEnv": false,
 ```

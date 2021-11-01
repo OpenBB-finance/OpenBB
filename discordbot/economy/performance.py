@@ -5,26 +5,14 @@ from helpers import pagination
 from gamestonk_terminal.economy import finviz_model
 
 
-async def performance_command(ctx, arg="sector"):
-    """Gets the performance data of a entered sector from GST and sends it
+async def performance_command(ctx, economy_group="sector"):
+    """Performance of sectors, industry, country [Finviz]"""
 
-    Parameters
-    -----------
-    arg: str
-        sector (or any other input in the economy_group), -h or help
-
-    Returns
-    -------
-    discord message
-        Sends a message containing an embed of the performance data of the given arg
-        with pagination to the user
-    """
-
-    economy_group = {
+    d_economy_group = {
         "sector": "Sector",
         "industry": "Industry",
         "basic_materials": "Industry (Basic Materials)",
-        "communication services": "Industry (Communication Services)",
+        "communication_services": "Industry (Communication Services)",
         "consumer_cyclical": "Industry (Consumer Cyclical)",
         "consumer_defensive": "Industry (Consumer Defensive)",
         "energy": "Industry (Energy)",
@@ -39,105 +27,75 @@ async def performance_command(ctx, arg="sector"):
     }
 
     try:
-        # Debug
+        # Debug user input
         if cfg.DEBUG:
-            print(f"!stocks.economy.performance {arg}")
+            print(f"\n!economy.performance {economy_group}")
 
-        # Help
-        if arg == "-h" or arg == "help":
-            help_txt = "Group performance [Source: Finviz]\n"
+        # Select default group
+        if not economy_group:
+            if cfg.DEBUG:
+                print("Use default economy_group: 'sector'")
+            economy_group = "sector"
 
-            possible_args = ""
-            for k, v in economy_group.items():
-                possible_args += f"\n{k}: {v}"
+        # Check for argument
+        possible_groups = list(d_economy_group.keys())
 
-            help_txt += "\nPossible arguments:\n"
-            help_txt += "<GROUP> Groups to get data from. Default: sector\n"
-            help_txt += f"The choices are:{possible_args}"
-            embed = discord.Embed(
-                title="Economy: [Finviz] Performance HELP",
-                description=help_txt,
+        if economy_group not in possible_groups:
+            raise Exception(f"Select a valid group from {', '.join(possible_groups)}")
+
+        group = d_economy_group[economy_group]
+
+        # Retrieve data
+        df_group = finviz_model.get_valuation_performance_data(group, "performance")
+
+        # Debug user output
+        if cfg.DEBUG:
+            print(df_group.to_string())
+
+        # Output data
+        future_column_name = df_group["Name"]
+        df_group = df_group.transpose()
+        df_group.columns = future_column_name
+        df_group.drop("Name")
+        columns = []
+        initial_str = "Page 0: Overview"
+        i = 1
+        for col_name in df_group.columns.values:
+            initial_str += f"\nPage {i}: {col_name}"
+            i += 1
+
+        columns.append(
+            discord.Embed(
+                title=f"Economy: [Finviz] Performance {group}",
+                description=initial_str,
                 colour=cfg.COLOR,
-            )
-            embed.set_author(
+            ).set_author(
                 name=cfg.AUTHOR_NAME,
                 icon_url=cfg.AUTHOR_ICON_URL,
             )
-
-            await ctx.send(embed=embed)
-
-        else:
-            # Parse argument
-            try:
-                group = economy_group[arg]
-            except KeyError:
-                title = "ERROR Economy: [Finviz] Performance"
-                embed = discord.Embed(title=title, colour=cfg.COLOR)
-                embed.set_author(
-                    name=cfg.AUTHOR_NAME,
-                    icon_url=cfg.AUTHOR_ICON_URL,
-                )
-                embed.set_description(
-                    f"Entered group argument: {arg}"
-                    "\nEnter a valid group argument, example: sector"
-                )
-                await ctx.send(embed=embed)
-                if cfg.DEBUG:
-                    print("ERROR: Bad group argument entered")
-                return
-
-            df_group = finviz_model.get_valuation_performance_data(group, "performance")
-
-            future_column_name = df_group["Name"]
-            df_group = df_group.transpose()
-            df_group.columns = future_column_name
-            df_group.drop("Name")
-            columns = []
-
-            initial_str = "Page 0: Overview"
-            i = 1
-            for col_name in df_group.columns.values:
-                initial_str += f"\nPage {i}: {col_name}"
-                i += 1
-
+        )
+        for column in df_group.columns.values:
             columns.append(
                 discord.Embed(
-                    title=f"Economy: [Finviz] Performance {group}",
-                    description=initial_str,
+                    description="```" + df_group[column].fillna("").to_string() + "```",
                     colour=cfg.COLOR,
                 ).set_author(
                     name=cfg.AUTHOR_NAME,
                     icon_url=cfg.AUTHOR_ICON_URL,
                 )
             )
-            for column in df_group.columns.values:
-                columns.append(
-                    discord.Embed(
-                        description="```"
-                        + df_group[column].fillna("").to_string()
-                        + "```",
-                        colour=cfg.COLOR,
-                    ).set_author(
-                        name=cfg.AUTHOR_NAME,
-                        icon_url=cfg.AUTHOR_ICON_URL,
-                    )
-                )
 
-            await pagination(columns, ctx)
+        await pagination(columns, ctx)
 
     except Exception as e:
-        title = "INTERNAL ERROR"
-        embed = discord.Embed(title=title, colour=cfg.COLOR)
+        embed = discord.Embed(
+            title="ERROR Economy: [Finviz] Performance",
+            colour=cfg.COLOR,
+            description=e,
+        )
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
         )
-        embed.set_description(
-            "Try updating the bot, make sure DEBUG is True in the config "
-            "and restart it.\nIf the error still occurs open a issue at: "
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
-            f"\n{e}"
-        )
+
         await ctx.send(embed=embed)
-        if cfg.DEBUG:
-            print(e)

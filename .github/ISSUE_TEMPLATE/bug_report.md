@@ -16,8 +16,9 @@ Steps(from the start) and commands to reproduce the behavior
 If applicable, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information):**
- - OS: [e.g. Mac Sierra]
- - Python version [e.g. 3.6.8]
+
+- OS: [e.g. Mac Sierra]
+- Python version [e.g. 3.6.8]
 
 **Additional context**
 Add any other information that you think could be useful for us.

@@ -714,6 +714,7 @@ Models:
         finally:
             pred_helper.restore_env()
 
+    @try_except
     def call_mc(self, other_args: List[str]):
         """Process mc command"""
         parser = argparse.ArgumentParser(
@@ -747,25 +748,22 @@ Models:
             help="Whether to model returns or log returns",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
-            )
-            if not ns_parser:
-                return
-            if self.target != "AdjClose":
-                print("MC Prediction designed for AdjClose prices")
-                return
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if not ns_parser:
+            return
+        if self.target != "AdjClose":
+            print("MC Prediction designed for AdjClose prices")
+            return
 
-            mc_view.display_mc_forecast(
-                data=self.stock[self.target],
-                n_future=ns_parser.n_days,
-                n_sims=ns_parser.n_sims,
-                use_log=ns_parser.dist == "lognormal",
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        mc_view.display_mc_forecast(
+            data=self.stock[self.target],
+            n_future=ns_parser.n_days,
+            n_sims=ns_parser.n_sims,
+            use_log=ns_parser.dist == "lognormal",
+            export=ns_parser.export,
+        )
 
 
 def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):
