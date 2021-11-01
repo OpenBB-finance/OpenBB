@@ -10,7 +10,6 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 
-from gamestonk_terminal.portfolio.brokers.alpaca import alpaca_controller
 from gamestonk_terminal.portfolio.brokers.ally import ally_controller
 from gamestonk_terminal.portfolio.brokers.degiro import degiro_controller
 from gamestonk_terminal.portfolio.brokers.robinhood import robinhood_controller
@@ -22,7 +21,7 @@ class BrokersController:
 
     CHOICES = ["?", "cls", "help", "q", "quit"]
 
-    BROKERS = ["cb", "alpaca", "ally", "rh", "degiro"]
+    BROKERS = ["cb", "ally", "rh", "degiro"]
 
     CHOICES += BROKERS
 
@@ -45,7 +44,6 @@ What would you like to do?
 
 Brokers:
 >   ally         Ally Invest Menu
->   alpaca       Alpaca Menu
 >   degiro       Degiro Menu
 >   rh           Robinhood Menu
 
@@ -101,12 +99,6 @@ Crypto Brokers:
     def call_degiro(self, _):
         """Process degiro command."""
         if degiro_controller.menu():
-            return True
-        print("")
-
-    def call_alpaca(self, _):
-        """Process alpaca command."""
-        if alpaca_controller.menu():
             return True
         print("")
 

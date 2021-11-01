@@ -827,13 +827,6 @@ main:
                 ref: "/portfolio/brokers/ally/movers"
               - name: quote
                 ref: "/portfolio/brokers/ally/quote"
-          - name: alpaca
-            ref: "/portfolio/brokers/alpaca"
-            sub:
-              - name: history
-                ref: "/portfolio/brokers/alpaca/history"
-              - name: holdings
-                ref: "/portfolio/brokers/alpaca/holdings"
           - name: coinbase
             ref: "/portfolio/brokers/coinbase"
             sub:

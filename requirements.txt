@@ -1,6 +1,6 @@
-aiohttp==3.7.4; python_version >= "3.6"
+aiohttp==3.8.0; python_version >= "3.6"
+aiosignal==1.2.0; python_version >= "3.6"
 alabaster==0.7.12; python_full_version >= "3.6.8" and python_full_version < "4.0.0" and python_version >= "3.6"
-alpaca-trade-api==1.4.0
 alpha-vantage==2.3.1
 ansiwrap==0.8.4; python_version >= "3.6"
 anyio==3.3.4; python_full_version >= "3.6.2" and python_version >= "3.6"
@@ -8,7 +8,8 @@ appdirs==1.4.4; python_full_version >= "3.6.2" and python_version >= "3.6"
 appnope==0.1.2; platform_system == "Darwin" and python_version >= "3.7" and sys_platform == "darwin"
 argcomplete==1.12.3; python_version < "3.8.0" and python_version >= "3.7"
 argon2-cffi==21.1.0; python_version >= "3.6"
-async-timeout==3.0.1; python_full_version >= "3.5.3" and python_version >= "3.6"
+async-timeout==4.0.0; python_version >= "3.6"
+asynctest==0.13.0; python_version < "3.8" and python_version >= "3.6"
 attrs==21.2.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
 babel==2.9.1; python_full_version >= "3.6.8" and python_full_version < "4.0.0" and python_version >= "3.6" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6")
 backcall==0.2.0; python_version >= "3.7"
@@ -20,7 +21,6 @@ bs4==0.0.1
 bt==0.2.9; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
 certifi==2021.10.8; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 cffi==1.15.0; implementation_name == "pypy" and python_version >= "3.6"
-chardet==3.0.4; python_version >= "3.6"
 charset-normalizer==2.0.1; python_full_version >= "3.5.0"
 click==8.0.3; python_full_version >= "3.6.2" and python_version >= "3.6"
 colorama==0.4.4; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
@@ -51,6 +51,7 @@ finvizfinance==0.9.10; python_version >= "3.5"
 fred==3.1
 fredapi==0.4.3
 frozendict==2.0.7; python_version >= "3.6"
+frozenlist==1.2.0; python_version >= "3.6"
 fundamentalanalysis==0.2.12
 future==0.18.2; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 gitdb==4.0.9; python_version >= "3.7"
@@ -91,7 +92,6 @@ matplotlib==3.4.3; python_version >= "3.7"
 mistune==0.8.4; python_full_version >= "3.6.8" and python_full_version < "4.0.0" and python_version >= "3.7"
 more-itertools==8.10.0; python_version >= "3.5"
 mplfinance==0.12.7a17
-msgpack==1.0.2
 multidict==5.2.0; python_version >= "3.6"
 multitasking==0.0.9
 mypy-extensions==0.4.3; python_full_version >= "3.6.2" and python_version >= "3.6"
@@ -125,7 +125,7 @@ plotly==4.14.3
 pmdarima==1.8.3; python_version >= "3.6"
 praw==7.4.0; python_version >= "3.6" and python_version < "4.0"
 prawcore==2.3.0; python_version >= "3.6" and python_version < "4.0"
-prettytable==2.2.1; python_version >= "3.6"
+prettytable==2.3.0; python_version >= "3.6"
 prometheus-client==0.12.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6"
 prompt-toolkit==3.0.21; python_full_version >= "3.6.2"
 protobuf==3.19.1; python_version >= "3.6"
@@ -155,7 +155,7 @@ pytz==2021.3; python_full_version >= "3.6.8" and python_version >= "3.6" and pyt
 pyupgrade==2.18.2; python_full_version >= "3.6.1"
 pywin32==302; sys_platform == "win32" and platform_python_implementation != "PyPy" and python_version >= "3.6"
 pywinpty==1.1.5; os_name == "nt" and python_version >= "3.6"
-pyyaml==5.4.1; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6"
+pyyaml==6.0; python_version >= "3.6"
 pyzmq==22.3.0; python_full_version >= "3.6.1" and python_version >= "3.6"
 qdldl==0.1.5.post0; python_full_version >= "3.6.1" and python_full_version < "4.0.0" and python_version >= "3.5"
 qtconsole==5.1.1; python_version >= "3.6"

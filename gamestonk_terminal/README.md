@@ -283,8 +283,6 @@ Command|Description|Brokers
 `login`   | login to your brokers
 `rhhold`  | view robinhood holdings | [Robinhood](https://robinhood.com/us/en/)
 `rhhist`  | plot robinhood portfolio history | [Robinhood](https://robinhood.com/us/en/)
-`alphold` | view alpaca holdings | [Alpaca](https://app.alpaca.markets/login)
-`alphist` | view alpaca portfolio history | [Alpaca](https://app.alpaca.markets/login)
 `allyhold`| view ally holdings | [Ally](https://www.ally.com/invest/)
 `hold`    | view net holdings across all logins
 `degiro`  | degiro standalone menu | [Degiro](https://trader.degiro.nl/login/#/login)
