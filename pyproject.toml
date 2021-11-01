@@ -92,7 +92,8 @@ mypy = "^0.901"
 mock = "^4.0.3"
 codespell = "^2.0.0"
 pyupgrade = "^2.11.0"
-Sphinx = "4.1.1"
+sphinx = "4.1.1"
+myst-parser = "^0.15.2"
 black = "21.7b0"
 
 [tool.poetry.extras]
