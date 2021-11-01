@@ -95,6 +95,19 @@ If you run into trouble with Poetry, and the advice above did not help, your bes
 
 6. Submit a ticket on GitHub
 
+#### JSONDecodeError during `poetry install`
+
+Sometimes poetry can throw a `JSONDecodeError` on random packages while running `poetry install`.
+This can be observed on macOS 10.14+ running python 3.8+.
+This is because of the use of an experimental installer that can be switched off to avoid the mentioned error.
+Run
+
+```bash
+poetry config experimental.new-installer false
+```
+
+as advised [here](https://github.com/python-poetry/poetry/issues/4210) and it should fix the installation process.
+
 ## ModuleNotFoundError Trouble
 
 ### General
