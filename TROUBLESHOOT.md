@@ -108,7 +108,6 @@ poetry config experimental.new-installer false
 
 as advised [here](https://github.com/python-poetry/poetry/issues/4210) and it should fix the installation process.
 
-
 ## ModuleNotFoundError Trouble
 
 ### General
