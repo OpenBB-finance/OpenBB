@@ -220,6 +220,9 @@ def others_in_sector(ticker: str, sector: str, industry: str) -> List[str]:
     tickers : List[str]
         List of tickers in the same sector
     """
+    industry = industry.replace("—", " - ")
+    industry = industry.replace("/", " ")
+
     sister_ticks = list(
         fd.select_equities(country="United States", sector=sector, industry=industry)
     )

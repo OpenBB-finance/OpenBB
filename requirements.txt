@@ -201,6 +201,7 @@ termcolor==1.1.0
 terminado==0.12.1; python_version >= "3.6"
 testpath==0.5.0; python_version >= "3.7"
 textwrap3==0.9.2; python_version >= "3.6"
+thepassiveinvestor==1.0.9
 threadpoolctl==3.0.0; python_version >= "3.7"
 timeseries-cv==0.1.4; python_version >= "3.6" and python_version < "4.0"
 tokenize-rt==4.2.1; python_full_version >= "3.6.1"
