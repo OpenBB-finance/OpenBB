@@ -2,7 +2,8 @@
 
 This menu aims to give insight on options.
 
-This menu aims to give insight on options. Options can cause significant share price movement, and option pricing gives info about market sentiment for a ticker. The usage of the following commands along with an example will be exploited below:
+This menu aims to give insight on options. Options can cause significant share price movement, and option pricing gives
+info about market sentiment for a ticker. The usage of the following commands along with an example will be exploited below:
 
 * [disp](#disp)
   * Display all preset screeners filters
@@ -29,9 +30,7 @@ This menu aims to give insight on options. Options can cause significant share p
 * [hist](#hist)
   * Plot option history [Source: Tradier.com]
 * [grhist](#grhist)
-   * Plot historical option greek [Source: ops.syncretism.io]
-
-
+  * Plot historical option greek [Source: ops.syncretism.io]
 
 ## disp <a name="disp"></a>
 
@@ -43,7 +42,7 @@ View available presets under [presets folder](/gamestonk_terminal/options/preset
 
 * -p : View specific preset
 
-<img width="979" alt="Captura de ecrã 2021-06-27, às 02 32 21" src="https://user-images.githubusercontent.com/25267873/123530365-59fac080-d6f1-11eb-85e1-536f7e927308.png">
+<img width="979" alt="View presets" src="https://user-images.githubusercontent.com/25267873/123530365-59fac080-d6f1-11eb-85e1-536f7e927308.png">
 
 ## scr <a name="scr"></a>
 
@@ -51,35 +50,46 @@ View available presets under [presets folder](/gamestonk_terminal/options/preset
 usage: scr [-p {template,...}]
 ```
 
-Sreener filter output from https://ops.syncretism.io/index.html. Where: CS: Contract Symbol; S: Symbol, T: Option Type; Str: Strike; Exp v: Expiration; IV:
-Implied Volatility; LP: Last Price; B: Bid; A: Ask; V: Volume; OI: Open Interest; Y: Yield; MY: Monthly Yield; SMP: Regular Market Price; SMDL: Regular Market
-Day Low; SMDH: Regular Market Day High; LU: Last Trade Date; LC: Last Crawl; ITM: In The Money; PC: Price Change; PB: Price-to-book. [Source: Ops.Syncretism]
+Screener filter output from <https://ops.syncretism.io/index.html>. Where: CS: Contract Symbol; S: Symbol, T:
+Option Type; Str: Strike; Exp v: Expiration; IV:
+Implied Volatility; LP: Last Price; B: Bid; A: Ask; V: Volume; OI: Open Interest; Y: Yield; MY: Monthly Yield; SMP:
+Regular Market Price; SMDL: Regular Market
+Day Low; SMDH: Regular Market Day High; LU: Last Trade Date; LC: Last Crawl; ITM: In The Money; PC: Price Change; PB:
+Price-to-book. [Source: Ops.Syncretism]
 
 * -p : Filter presets
 
-<img width="1220" alt="Captura de ecrã 2021-06-27, às 02 31 28" src="https://user-images.githubusercontent.com/25267873/123530368-5e26de00-d6f1-11eb-9a23-0b481b5efae1.png">
+<img width="1220" alt="Filter presets" src="https://user-images.githubusercontent.com/25267873/123530368-5e26de00-d6f1-11eb-9a23-0b481b5efae1.png">
 
 ## load <a name="load"></a>
+
 Load new ticker
-```python
+
+```text
 usage: load [-t Ticker]
 ```
+
 * -t/--ticker: Ticker to load.  Flag is optional, as `load aapl` will also work
 
 ## info <a name="info"></a>
-This scrapes the options information from barchart.com/stocks overview.  This includes information such as Historical Volatility and IV Rank.
 
-````
+This scrapes the options information from barchart.com/stocks overview.  This includes information such as Historical
+Volatility and IV Rank.
+
+````text
 usage: info
 ````
 
-<img width="989" alt="opinfo" src="https://user-images.githubusercontent.com/25267873/115787028-80cb0c80-a3b9-11eb-97a4-ca208aed3be8.png">
+<img width="989" alt="op info" src="https://user-images.githubusercontent.com/25267873/115787028-80cb0c80-a3b9-11eb-97a4-ca208aed3be8.png">
 
 ## calc <a name="calc"></a>
+
 Basic profit calculator for options
-```python
+
+```text
 usage: calc [-s STRIKE] [-p PREMIUM] [--put] [--sell]  [-h]
 ```
+
 * -s/--strike : Strike price to consider
 * -p/--premium: Premium being paid
 * --put: Flag to calculate for put option
@@ -88,16 +98,19 @@ usage: calc [-s STRIKE] [-p PREMIUM] [--put] [--sell]  [-h]
 ![calc](https://user-images.githubusercontent.com/18151143/126883982-c54cb5ec-7eb2-41c1-812e-75e830e3703d.png)
 
 ## unu <a name="unu"></a>
+
 Show unusual options activity from fdscreener.com
 
-```python
+```text
 usage: unu [-n NUM] [--sortby] [-a] [--export] [-h]
 ```
+
 * -n/--num : Number to get.  Defaults to 20.  Each page scrapes 20 results
 * --sortby : Column to sort data by.  Can be {Option,Vol/OI,Vol,OI,Bid,Ask}.  Defaults to Vol/OI
 * -a : Flag to sort in ascending order
 * --export : Flag to export.  Can be {csv, json, xlsx}
-```python
+
+```text
 (✨) (op)> unu -n 5
 Last Updated: 2021-08-03 18:06:07
 ╒══════════╤════════════╤══════════╤══════════╤═══════╤══════╤═══════╤═══════╕
@@ -116,7 +129,9 @@ Last Updated: 2021-08-03 18:06:07
 ```
 
 ## exp <a name="exp"></a>
+
 See/set expiry dates.
+
 ```text
 usage: exp [-d] [-D
 ```
@@ -125,7 +140,8 @@ usage: exp [-d] [-D
 * -D : Date to set
 
 Running `exp` will show available option expirations
-```python
+
+```text
 (✨) (op)> exp
 
 Available expiry dates:
@@ -136,14 +152,17 @@ Available expiry dates:
     4.  2021-08-27
     5.  2021-09-03
 ```
+
 To set 2021-08-13, the following two options are equivalent
-```python
+
+```text
 exp 2
 exp -D 2021-08-13
 ```
+
 ## chains <a name="chains"></a>
 
-````
+````text
 usage: chains [--calls] [--puts] [-m MIN_SP] [-M MAX_SP] [-d] [--export]
 ````
 
@@ -153,16 +172,21 @@ Display options chains. [Source: Tradier]
 * --puts : Flag to show puts only
 * -m : Minimum strike price to consider.
 * -M : Maximum strike price to consider.
-* -d : Columns to display.  Should be comma separated.  Must be in * -d : Columns to display from the following selection: symbol, bid, ask, strike, bidsize, asksize, volume, open_interest, delta, gamma, theta, vega, iv. Note that they are separated by comma.
+* -d : Columns to display.  Should be comma separated.  Must be in * -d : Columns to display from the following
+selection: symbol, bid, ask, strike, bidsize, asksize, volume, open_interest, delta, gamma, theta, vega, iv.
+Note that they are separated by comma.
 * --export: Flag to export.  Options are {csv,json,xlsx}.
 
 ![chains](https://user-images.githubusercontent.com/18151143/126855845-4f156b6d-a368-4e66-8dc9-b971792128d8.png)
 
 ## oi <a name="oi"></a>
+
 Plot open interest.
-```python
+
+```text
 usage: oi [-m MIN] [-M MAX] [--calls] [--puts] [--source {tr,yf}] [-h]
 ```
+
 * -m/--min: Min strike to plot.  Defaults to .75 * current price
 * -M/--max: Max strike to plot.  Defaults to 1.25 * current price
 * --calls: Flag to plot calls only
@@ -172,10 +196,13 @@ usage: oi [-m MIN] [-M MAX] [--calls] [--puts] [--source {tr,yf}] [-h]
 ![oi](https://user-images.githubusercontent.com/18151143/126855897-87eadd56-cca0-4eb0-8e55-6b7035762cbc.png)
 
 ## vol <a name="vol"></a>
+
 Plot volume.
-```python
+
+```text
 usage: vol [-m MIN] [-M MAX] [--calls] [--puts] [--source {tr,yf}] [-h]
 ```
+
 * -m/--min: Min strike to plot.  Defaults to .75 * current price
 * -M/--max: Max strike to plot.  Defaults to 1.25 * current price
 * --calls: Flag to plot calls only
@@ -199,10 +226,13 @@ Plots Volume + Open Interest of calls vs puts.
 ![voi](https://user-images.githubusercontent.com/18151143/126855842-927ca7ff-78ca-46ce-9cc0-2a8dff4593af.png)
 
 ## hist <a name="hist"></a>
+
 Shows historical option chain
-```python
+
+```text
 usage: hist [-s STRIKE] [--put] [--chain CHAIN_ID] [--raw] [--export {csv,json,xlsx}] [-h]
 ```
+
 * -s/--strike: Strike to show history for
 * --put: Flag to indicate the option is a put
 * --chain: OCC Chain ID.  Example: AAPL210730C00144000.  This flag overwrites the strike and put option
@@ -213,13 +243,15 @@ Note that the chain ID can be obtained by using `chains -d symbol`
 
 ![hist](https://user-images.githubusercontent.com/18151143/126855841-6884b19b-63c8-4746-a63f-82ad1a523c0c.png)
 
-
 ## grhist <a name="grhist"></a>
+
 Plot historical option greeks.  Data from ops.syncretism.io
 
-```python
-usage: grhist [-s STRIKE] [--put] [-g {iv,gamma,theta,vega,delta,rho,premium}] [--chain CHAIN_ID] [--raw] [--export {csv,json,xlsx}] [-h]
+```text
+usage: grhist [-s STRIKE] [--put] [-g {iv,gamma,theta,vega,delta,rho,premium}] [--chain CHAIN_ID] [--raw]
+  [--export {csv,json,xlsx}] [-h]
 ```
+
 * -s/--strike: Strike to show history for
 * -g/--greek: Greek to get data for.  Can be {iv,gamma,theta,vega,delta,rho}.  Also can be premium
 * --put: Flag to indicate the option is a put
@@ -227,7 +259,8 @@ usage: grhist [-s STRIKE] [--put] [-g {iv,gamma,theta,vega,delta,rho,premium}] [
 * --raw: Show raw output (last 20 entries)
 * --export: Export file.  Can be {csv, json, xlsx}.
 
-```python
+```text
 (✨) (op)> grhist -s 145 --put -g delta
 ```
+
 ![gr_hist](https://user-images.githubusercontent.com/18151143/126881002-c516d94b-5c87-43b1-9e16-dce304795e1c.png)
