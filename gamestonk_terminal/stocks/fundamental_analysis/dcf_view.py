@@ -77,8 +77,7 @@ class CreateExcelFA:
             self.run_audit()
 
         trypath = os.path.join(
-            "..",
-            "GamestonkTerminal",
+            os.getcwd(),
             "exports",
             "excel",
             f"{self.ticker} {self.now}.xlsx",
