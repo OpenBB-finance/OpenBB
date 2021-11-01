@@ -2,6 +2,9 @@ import asyncio
 import discord
 import config_discordbot as cfg
 
+# pylint: disable=wrong-import-order
+from discordbot import gst_bot
+
 from economy.feargreed import feargreed_command
 from economy.overview import overview_command
 from economy.indices import indices_command
@@ -11,7 +14,6 @@ from economy.glbonds import glbonds_command
 from economy.currencies import currencies_command
 from economy.valuation import valuation_command
 from economy.performance import performance_command
-from discordbot import gst_bot
 
 
 class EconomyCommands(discord.ext.commands.Cog):
@@ -21,49 +23,73 @@ class EconomyCommands(discord.ext.commands.Cog):
         self.bot = bot
 
     @discord.ext.commands.command(name="economy.feargreed")
-    async def feargreed(self, ctx: discord.ext.commands.Context, arg=""):
-        """CNN Fear and Greed Index [CNN]"""
-        await feargreed_command(ctx, arg)
+    async def feargreed(self, ctx: discord.ext.commands.Context, indicator=""):
+        """CNN Fear and Greed Index [CNN]
+
+        Parameters
+        -----------
+        indicator: str
+            Possible indicatores are: jbd, mv, pco, mm, sps, spb, shd. Which stand for
+            Junk Bond Demand, Market Volatility, Put and Call Options, Market Momentum,
+            Stock Price Strength, Stock Price Breadth, Safe Heaven Demand.
+        """
+        await feargreed_command(ctx, indicator)
 
     @discord.ext.commands.command(name="economy.overview")
-    async def overview(self, ctx: discord.ext.commands.Context, arg=""):
+    async def overview(self, ctx: discord.ext.commands.Context):
         """Market data overview [Wall St. Journal]"""
-        await overview_command(ctx, arg)
+        await overview_command(ctx)
 
     @discord.ext.commands.command(name="economy.indices")
-    async def indices(self, ctx: discord.ext.commands.Context, arg=""):
+    async def indices(self, ctx: discord.ext.commands.Context):
         """US indices overview [Wall St. Journal]"""
-        await indices_command(ctx, arg)
+        await indices_command(ctx)
 
     @discord.ext.commands.command(name="economy.futures")
-    async def futures(self, ctx: discord.ext.commands.Context, arg=""):
+    async def futures(self, ctx: discord.ext.commands.Context):
         """Futures and commodities overview [Wall St. Journal]"""
-        await futures_command(ctx, arg)
+        await futures_command(ctx)
 
     @discord.ext.commands.command(name="economy.usbonds")
-    async def usbonds(self, ctx: discord.ext.commands.Context, arg=""):
+    async def usbonds(self, ctx: discord.ext.commands.Context):
         """US bonds overview [Wall St. Journal]"""
-        await usbonds_command(ctx, arg)
+        await usbonds_command(ctx)
 
     @discord.ext.commands.command(name="economy.glbonds")
-    async def glbonds(self, ctx: discord.ext.commands.Context, arg=""):
+    async def glbonds(self, ctx: discord.ext.commands.Context):
         """Global bonds overview [Wall St. Journal]"""
-        await glbonds_command(ctx, arg)
+        await glbonds_command(ctx)
 
     @discord.ext.commands.command(name="economy.currencies")
-    async def currencies(self, ctx: discord.ext.commands.Context, arg=""):
+    async def currencies(self, ctx: discord.ext.commands.Context):
         """Currencies overview [Wall St. Journal]"""
-        await currencies_command(ctx, arg)
+        await currencies_command(ctx)
 
     @discord.ext.commands.command(name="economy.valuation")
-    async def valuation(self, ctx: discord.ext.commands.Context, arg=""):
-        """Valuation of sectors, industry, country [Finviz]"""
-        await valuation_command(ctx, arg)
+    async def valuation(self, ctx: discord.ext.commands.Context, economy_group=""):
+        """Valuation of sectors, industry, country [Finviz]
+
+        Parameters
+        -----------
+        economy_group: str
+            Possible groups are: sector, industry, basic_materials, communication_services,
+            consumer_cyclical, consumer_defensive, energy, financial, healthcare, industrials,
+            real_estate, technology, utilities, country, capitalization.
+        """
+        await valuation_command(ctx, economy_group)
 
     @discord.ext.commands.command(name="economy.performance")
-    async def performance(self, ctx: discord.ext.commands.Context, arg=""):
-        """Performance of sectors, industry, country [Finviz]"""
-        await performance_command(ctx, arg)
+    async def performance(self, ctx: discord.ext.commands.Context, economy_group=""):
+        """Performance of sectors, industry, country [Finviz]
+
+        Parameters
+        -----------
+        economy_group: str
+            Possible groups are: sector, industry, basic_materials, communication_services,
+            consumer_cyclical, consumer_defensive, energy, financial, healthcare, industrials,
+            real_estate, technology, utilities, country, capitalization.
+        """
+        await performance_command(ctx, economy_group)
 
     @discord.ext.commands.command(name="economy")
     async def economy(self, ctx: discord.ext.commands.Context):

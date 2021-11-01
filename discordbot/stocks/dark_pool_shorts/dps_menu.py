@@ -1,6 +1,10 @@
 import asyncio
 import discord
 import config_discordbot as cfg
+import yfinance as yf
+
+# pylint: disable=wrong-import-order,too-many-branches
+from discordbot import gst_bot
 
 from stocks.dark_pool_shorts.shorted import shorted_command
 from stocks.dark_pool_shorts.ftd import ftd_command
@@ -10,7 +14,6 @@ from stocks.dark_pool_shorts.psi import psi_command
 from stocks.dark_pool_shorts.hsi import hsi_command
 from stocks.dark_pool_shorts.pos import pos_command
 from stocks.dark_pool_shorts.sidtc import sidtc_command
-from discordbot import gst_bot
 
 
 class DarkPoolShortsCommands(discord.ext.commands.Cog):
@@ -20,47 +23,106 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         self.bot = bot
 
     @discord.ext.commands.command(name="stocks.dps.shorted")
-    async def shorted(self, ctx: discord.ext.commands.Context, arg=""):
-        """Show most shorted stocks [Yahoo Finance]"""
-        await shorted_command(ctx, arg)
+    async def shorted(self, ctx: discord.ext.commands.Context, num="10"):
+        """Show most shorted stocks [Yahoo Finance]
+
+        Parameters
+        -----------
+        num: int
+            Number of the most shorted stocks to retrieve
+        """
+        await shorted_command(ctx, num)
 
     @discord.ext.commands.command(name="stocks.dps.hsi")
-    async def hsi(self, ctx: discord.ext.commands.Context, arg=""):
-        """Show top high short interest stocks of over 20% ratio [shortinterest.com]"""
-        await hsi_command(ctx, arg)
+    async def hsi(self, ctx: discord.ext.commands.Context, num="10"):
+        """Show top high short interest stocks of over 20% ratio [shortinterest.com]
+
+        Parameters
+        -----------
+        num: int
+            Number of top stocks to print
+        """
+        await hsi_command(ctx, num)
 
     @discord.ext.commands.command(name="stocks.dps.pos")
-    async def pos(self, ctx: discord.ext.commands.Context, arg="", arg2=""):
-        """Dark pool short position [Stockgrid]"""
-        await pos_command(ctx, arg, arg2)
+    async def pos(self, ctx: discord.ext.commands.Context, sort="dpp_dollar", num="10"):
+        """Dark pool short position [Stockgrid]
+
+        Parameters
+        -----------
+        sort: str
+            Field for which to sort. Possible are: sv, sv_pct, nsv, nsv_dollar, dpp, dpp_dollar.
+            These correspond to Short Vol. (1M), Short Vol. %%, Net Short Vol. (1M),
+            Net Short Vol. ($100M), DP Position (1M), DP Position ($1B), respectively.
+        num: int
+            Number of top tickers to show
+        """
+        await pos_command(ctx, sort, num)
 
     @discord.ext.commands.command(name="stocks.dps.sidtc")
-    async def sidtc(self, ctx: discord.ext.commands.Context, arg="", arg2=""):
-        """Short interest and days to cover [Stockgrid]"""
-        await sidtc_command(ctx, arg, arg2)
+    async def sidtc(self, ctx: discord.ext.commands.Context, sort="float", num="10"):
+        """Short interest and days to cover [Stockgrid]
+
+        Parameters
+        -----------
+        sort: str
+            Field for which to sort. Possible are: float, dtc, si.
+            These correspond to Float Short %%, Days to Cover, Short Interest, respectively.
+        num: int
+            Number of top tickers to show
+        """
+        await sidtc_command(ctx, sort, num)
 
     @discord.ext.commands.command(name="stocks.dps.ftd")
-    async def ftd(self, ctx: discord.ext.commands.Context, arg, arg2="", arg3=""):
-        """Fails-to-deliver data [SEC]"""
-        await ftd_command(ctx, arg, arg2, arg3)
+    async def ftd(self, ctx: discord.ext.commands.Context, ticker="", start="", end=""):
+        """Fails-to-deliver data [SEC]
+
+        Parameters
+        ----------
+        ticker: str
+            Stock ticker
+        start: datetime
+            Start of date
+        end: datetime
+            End of date
+        """
+        await ftd_command(ctx, ticker, start, end)
 
     @discord.ext.commands.command(name="stocks.dps.dpotc")
-    async def dpotc(self, ctx: discord.ext.commands.Context, arg):
-        """Dark pools (ATS) vs OTC data [FINRA]"""
-        await dpotc_command(ctx, arg)
+    async def dpotc(self, ctx: discord.ext.commands.Context, ticker=""):
+        """Dark pools (ATS) vs OTC data [FINRA]
+
+        Parameters
+        ----------
+        ticker: str
+            Stock ticker
+        """
+        await dpotc_command(ctx, ticker)
 
     @discord.ext.commands.command(name="stocks.dps.spos")
-    async def spos(self, ctx: discord.ext.commands.Context, arg):
-        """Net short vs position [Stockgrid]"""
-        await spos_command(ctx, arg)
+    async def spos(self, ctx: discord.ext.commands.Context, ticker=""):
+        """Net short vs position [Stockgrid]
+
+        Parameters
+        ----------
+        ticker: str
+            Stock ticker
+        """
+        await spos_command(ctx, ticker)
 
     @discord.ext.commands.command(name="stocks.dps.psi")
-    async def psi(self, ctx: discord.ext.commands.Context, arg):
-        """Price vs short interest volume [Stockgrid]"""
-        await psi_command(ctx, arg)
+    async def psi(self, ctx: discord.ext.commands.Context, ticker=""):
+        """Price vs short interest volume [Stockgrid]
+
+        Parameters
+        ----------
+        ticker: str
+            Stock ticker
+        """
+        await psi_command(ctx, ticker)
 
     @discord.ext.commands.command(name="stocks.dps")
-    async def dark_pool_shorts_menu(self, ctx: discord.ext.commands.Context, arg=""):
+    async def dark_pool_shorts_menu(self, ctx: discord.ext.commands.Context, ticker=""):
         """Stocks Context - Shows Dark Pool Shorts Menu
 
         Returns
@@ -70,7 +132,23 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         """
 
         if cfg.DEBUG:
-            print("!stocks.dps")
+            print(f"\n!stocks.dps {ticker}")
+
+        if ticker:
+            stock = yf.download(ticker, progress=False)
+            if stock.empty:
+                embed = discord.Embed(
+                    title="ERROR Stocks: Dark Pool and Short data",
+                    colour=cfg.COLOR,
+                    description="Stock ticker is invalid",
+                )
+                embed.set_author(
+                    name=cfg.AUTHOR_NAME,
+                    icon_url=cfg.AUTHOR_ICON_URL,
+                )
+
+                await ctx.send(embed=embed)
+                return
 
         text = (
             "0️⃣ !stocks.dps.shorted <NUM>\n"
@@ -78,12 +156,12 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
             "2️⃣ !stocks.dps.pos <NUM> <SORT>\n"
             "3️⃣ !stocks.dps.sidtc <NUM> <SORT>\n"
         )
-        if arg:
+        if ticker:
             text += (
-                f"4️⃣ !stocks.dps.ftd {arg} <DATE_START> <DATE_END>\n"
-                f"5️⃣ !stocks.dps.dpotc {arg}\n"
-                f"6️⃣ !stocks.dps.spos {arg}\n"
-                f"7️⃣ !stocks.dps.psi {arg}\n"
+                f"4️⃣ !stocks.dps.ftd {ticker} <DATE_START> <DATE_END>\n"
+                f"5️⃣ !stocks.dps.dpotc {ticker}\n"
+                f"6️⃣ !stocks.dps.spos {ticker}\n"
+                f"7️⃣ !stocks.dps.psi {ticker}\n"
             )
         else:
             text += (
@@ -101,7 +179,7 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
 
         emoji_list = ["0️⃣", "1️⃣", "2️⃣", "3️⃣"]
 
-        if arg:
+        if ticker:
             emoji_list += ["4️⃣", "5️⃣", "6️⃣", "7️⃣"]
 
         for emoji in emoji_list:
@@ -133,19 +211,19 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
             elif reaction.emoji == "4️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 4")
-                await ftd_command(ctx, arg)
+                await ftd_command(ctx, ticker)
             elif reaction.emoji == "5️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 5")
-                await dpotc_command(ctx, arg)
+                await dpotc_command(ctx, ticker)
             elif reaction.emoji == "6️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 6")
-                await spos_command(ctx, arg)
+                await spos_command(ctx, ticker)
             elif reaction.emoji == "7️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 7")
-                await psi_command(ctx, arg)
+                await psi_command(ctx, ticker)
 
             for emoji in emoji_list:
                 await msg.remove_reaction(emoji, ctx.bot.user)

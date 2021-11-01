@@ -25,30 +25,31 @@ Next, go into the discordbot folder with `cd discordbot` and install the followi
 pip install discord
 pip install discord_components
 pip install pyimgur
+pip install python-dotenv
 ```
 
 ## Registering Applications
 
 ### DISCORD
 
-1. Login into your discord account in https://discord.com/developers/applications 
+1. Login into your discord account in https://discord.com/developers/applications
 2. On the "Applications" tab, select "New Application" and name it something like "GST Bot". This will create a new application.
 3. For creating a bot, we need to go into the "GST Bot" application previously created, and on the "Bot" tab select "Add Bot". Note: On this same page you can manage the bot permissions with regards to the server it will be added.
 4. Next we need to obtain the "Client ID". For that we choose the "OAuth2" tab and copy our "Client ID" under "Client".
 5. At this stage the bot is created and we are ready to invite it to one of our servers. To do so we need to access:
-https://discord.com/oauth2/authorize?client_id=CLIENTID&scope=bot, where **CLIENTID** is replaced by the value copied above. 
+https://discord.com/oauth2/authorize?client_id=CLIENTID&scope=bot, where **CLIENTID** is replaced by the value copied above.
 6. If everything went well, you should see a window popup where the Bot that was just created asks to which of your own servers do you want to add it to.
 
-**NOTE:** If you haven't managed the bot permissions on the Bot tab previously you can do it via this link generator https://discordapi.com/permissions.html   
+**NOTE:** If you haven't managed the bot permissions on the Bot tab previously you can do it via this link generator https://discordapi.com/permissions.html
 
 ### IMGUR
 
 1. Login into your https://imgur.com account. Create one if you don't have it.
 2. Access https://api.imgur.com/oauth2/addclient to create your application.
 3. Select "OAuth 2 authorization without a callback URL" when creating such.
-4. You will receive a client ID and client secret once you submit the form. 
+4. You will receive a client ID and client secret once you submit the form.
 
-**NOTE:** Registering is free for all open source projects and if your discord bot uses fewer than 1250 uploads per day. 
+**NOTE:** Registering is free for all open source projects and if your discord bot uses fewer than 1250 uploads per day.
 
 ## Discord Configs
 
