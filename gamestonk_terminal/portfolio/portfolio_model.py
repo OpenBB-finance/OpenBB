@@ -159,6 +159,7 @@ def add_values(
         if len(cash_vals.index) > 0:
             for _, sub_row in cash_vals.iterrows():
                 amount = sub_row["Price"]
+                quantity = sub_row["Quantity"]
                 if sub_row["Side"] == "deposit":
                     d = 1
                 elif sub_row["Side"] == "withdrawal":
@@ -166,10 +167,10 @@ def add_values(
                 else:
                     raise ValueError("Cash type must be deposit or withdrawal")
                 log.at[index, ("Cash", "Cash")] = (
-                    log.at[index, ("Cash", "Cash")] + d * amount
+                    log.at[index, ("Cash", "Cash")] + d * amount * quantity
                 )
                 log.at[index, ("Cash", "User")] = (
-                    log.at[index, ("Cash", "User")] + d * amount
+                    log.at[index, ("Cash", "User")] + d * amount * quantity
                 )
     return log
 
@@ -421,9 +422,8 @@ def get_beta_text(df: pd.DataFrame) -> str:
     low = betas.idxmin(axis=1)
     string = (
         "Beta is how strongly a portfolio's movements correlate with the market's movements."
-        " A stock with a high beta is considered to be riskier. The market has a beta of one."
-        f" The beginning beta for the period was {portfolio_helper.beta_word(df['total'][0])}"
-        f" at {df['total'][0]:.2f}. This went"
+        " A stock with a high beta is considered to be riskier. The beginning beta for the period"
+        f" was {portfolio_helper.beta_word(df['total'][0])} at {df['total'][0]:.2f}. This went"
         f" {'up' if df['total'][-1] > df['total'][0] else 'down'} to"
         f" {portfolio_helper.beta_word(df['total'][-1])} at {df['total'][-1]:.2f} by the end"
         f" of the period. The ending beta was pulled {'up' if df['total'][-1] > 1 else 'down'} by"
