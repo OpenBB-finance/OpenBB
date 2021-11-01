@@ -77,7 +77,11 @@ class CreateExcelFA:
             self.run_audit()
 
         trypath = os.path.join(
-            os.getcwd(),
+            os.path.abspath(
+                os.path.join(
+                    os.path.dirname(os.path.dirname(os.path.dirname(__file__))), ".."
+                )
+            ),
             "exports",
             "excel",
             f"{self.ticker} {self.now}.xlsx",
