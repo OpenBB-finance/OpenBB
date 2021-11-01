@@ -278,7 +278,7 @@ def terminal(menu_prior_to_reset=""):
         else:
             print("\nInvalid DEFAULT_CONTEXT config selected!", "\n")
 
-    if process_input != MENU_QUIT:
+    if process_input not in (MENU_QUIT, MENU_RESET):
         t_controller.print_help()
 
         while True:

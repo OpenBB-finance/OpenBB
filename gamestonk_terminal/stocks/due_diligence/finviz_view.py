@@ -55,7 +55,7 @@ def news(ticker: str, num: int):
     print("")
 
 
-def analyst(ticker: str, export: str):
+def analyst(ticker: str, export: str = ""):
     """Display analyst ratings. [Source: Finviz]
 
     Parameters
