@@ -12,6 +12,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
+    try_except,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.options.yfinance_model import get_option_chain, get_price
@@ -179,6 +180,7 @@ Underlying Asset: {text}
 
         self.print_help(self.underlying)
 
+    @try_except
     def call_plot(self, other_args):
         """Process plot command"""
         parser = argparse.ArgumentParser(
@@ -188,21 +190,17 @@ Underlying Asset: {text}
             description="This function plots option payoff diagrams",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            plot_payoff(
-                self.current_price,
-                self.options,
-                self.underlying,
-                self.ticker,
-                self.expiration,
-            )
-
-        except Exception as e:
-            print(e, "\n")
+        plot_payoff(
+            self.current_price,
+            self.options,
+            self.underlying,
+            self.ticker,
+            self.expiration,
+        )
 
     def show_setup(self, nl: bool = False):
         """Shows the current assets to display in the diagram"""
@@ -213,6 +211,7 @@ Underlying Asset: {text}
         if nl:
             print("")
 
+    @try_except
     def add_option(self, other_args: List[str]):
         """Add an option to the diagram"""
         parser = argparse.ArgumentParser(
@@ -253,45 +252,41 @@ Underlying Asset: {text}
             help="strike price for the option",
             default=None,
         )
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-i")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        opt_type = "put" if ns_parser.put else "call"
+        sign = -1 if ns_parser.short else 1
+        options_list = self.puts if ns_parser.put else self.calls
+        if ns_parser.strike is None:
+            index = ns_parser.index
+        elif float(ns_parser.strike) in [float(x[0]) for x in options_list]:
+            index = filter(
+                lambda x: float(x[0]) == float(ns_parser.strike), options_list
+            )
+            index = options_list.index(list(index)[0])
+            print(index)
+        else:
+            print("Invalid strike price, please select a valid price from the list")
+            return
         try:
+            strike = options_list[index][0]
+            cost = options_list[index][1]
+        except IndexError:
+            print("Please use the index, and not the strike price\n")
+            return
 
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-i")
+        option = {"type": opt_type, "sign": sign, "strike": strike, "cost": cost}
+        self.options.append(option)
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        self.show_setup(True)
 
-            opt_type = "put" if ns_parser.put else "call"
-            sign = -1 if ns_parser.short else 1
-            options_list = self.puts if ns_parser.put else self.calls
-            if ns_parser.strike is None:
-                index = ns_parser.index
-            elif float(ns_parser.strike) in [float(x[0]) for x in options_list]:
-                index = filter(
-                    lambda x: float(x[0]) == float(ns_parser.strike), options_list
-                )
-                index = options_list.index(list(index)[0])
-                print(index)
-            else:
-                print("Invalid strike price, please select a valid price from the list")
-                return
-            try:
-                strike = options_list[index][0]
-                cost = options_list[index][1]
-            except IndexError:
-                print("Please use the index, and not the strike price\n")
-                return
-
-            option = {"type": opt_type, "sign": sign, "strike": strike, "cost": cost}
-            self.options.append(option)
-
-            self.show_setup(True)
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def rmv_option(self, other_args: List[str]):
         """Remove one of the options from the diagram"""
         parser = argparse.ArgumentParser(
@@ -316,27 +311,23 @@ Underlying Asset: {text}
             help="remove all of the options",
             default=False,
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-k")
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-k")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        if ns_parser.all:
+            self.options = []
+        else:
+            try:
+                del self.options[ns_parser.strike]
+            except IndexError:
+                print("Please use the index, and not the strike price\n")
                 return
 
-            if ns_parser.all:
-                self.options = []
-            else:
-                try:
-                    del self.options[ns_parser.strike]
-                except IndexError:
-                    print("Please use the index, and not the strike price\n")
-                    return
-
-            self.show_setup(True)
-
-        except Exception as e:
-            print(e, "\n")
+        self.show_setup(True)
 
 
 def menu(ticker: str, expiration: str):

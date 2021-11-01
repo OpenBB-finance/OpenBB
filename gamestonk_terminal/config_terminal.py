@@ -9,8 +9,11 @@ if env_files:
 # Choose one of: stocks, options, crypto, economy, etf, portfolio, forex
 DEFAULT_CONTEXT = ""
 
+# Choose one of: developer, user
+DEBUG_MODE = False
+
 # By default the jupyter notebook will be run on port 8888
-PAPERMILL_NOTEBOOK_REPORT_PORT = "8892"
+PAPERMILL_NOTEBOOK_REPORT_PORT = "8888"
 
 # https://www.alphavantage.co
 API_KEY_ALPHAVANTAGE = os.getenv("GT_API_KEY_ALPHAVANTAGE") or "REPLACE_ME"
@@ -96,3 +99,12 @@ API_COINBASE_PASS_PHRASE = os.getenv("GT_API_COINBASE_PASS_PHRASE") or "REPLACE_
 
 # https://docs.whale-alert.io/
 API_WHALE_ALERT_KEY = os.getenv("GT_API_WHALE_ALERT_KEY") or "REPLACE_ME"
+
+# https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key
+API_GLASSNODE_KEY = os.getenv("GT_API_GLASSNODE_KEY") or "REPLACE_ME"
+
+# https://bybt.gitbook.io/bybt/api-key
+API_BYBT_KEY = os.getenv("GT_API_BYBT_KEY") or "REPLACE_ME"
+
+# https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API
+API_ETHPLORER_KEY = os.getenv("GT_API_ETHPLORER_KEY") or "freekey"

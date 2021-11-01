@@ -85,7 +85,7 @@ async def pagination(cols, ctx):
                         disabled=True,
                     ),
                     discord_components.Button(
-                        label=f"Page {int(cols.index(cols[current])) + 1}/{len(cols)-1}",
+                        label=f"Page {int(cols.index(cols[current]))}/{len(cols)-1}",
                         id="cur",
                         style=discord_components.ButtonStyle.grey,
                         disabled=True,

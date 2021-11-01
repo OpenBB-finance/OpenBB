@@ -339,23 +339,10 @@ def about_us():
         f"{Fore.CYAN}Follow our twitter for updates: {Style.RESET_ALL}https://twitter.com/gamestonkt\n"
         f"{Fore.CYAN}Access our landing page: {Style.RESET_ALL}https://gamestonkterminal.vercel.app\n"
         "\n"
-        f"{Fore.YELLOW}Author:{Style.RESET_ALL} DidierRLopes\n"
-        f"{Fore.YELLOW}Main Devs:{Style.RESET_ALL} jmaslek, aia\n"
-        "\n"
-        f"{Fore.YELLOW}Main Contributors:{Style.RESET_ALL}\n"
-        f"{Fore.MAGENTA}Working towards a GUI using Qt:{Style.RESET_ALL} piiq, hinxx\n"
-        f"{Fore.MAGENTA}Working on our landing page:{Style.RESET_ALL} jose-donato, crspy, martiaaz\n"
-        f"{Fore.MAGENTA}Managing Twitter account:{Style.RESET_ALL} Meghan Hone\n"
-        f"{Fore.MAGENTA}Responsible by developing Forex menu:{Style.RESET_ALL} alokan\n"
-        f"{Fore.MAGENTA}Degiro's integration:{Style.RESET_ALL} Chavithra, Deel18\n"
-        f"{Fore.MAGENTA}Preset screeners:{Style.RESET_ALL} Traceabl3\n"
-        "\n"
         f"{Fore.YELLOW}Partnerships:{Style.RESET_ALL}\n"
         f"{Fore.CYAN}FinBrain: {Style.RESET_ALL}https://finbrain.tech\n"
         f"{Fore.CYAN}Quiver Quantitative: {Style.RESET_ALL}https://www.quiverquant.com\n"
-        f"{Fore.CYAN}Ops.Syncretism: {Style.RESET_ALL}https://ops.syncretism.io/api.html\n"
         f"{Fore.CYAN}SentimentInvestor: {Style.RESET_ALL}https://sentimentinvestor.com\n"
-        f"{Fore.CYAN}The Geek of Wall Street: {Style.RESET_ALL}https://thegeekofwallstreet.com/\n"
         f"\n{Fore.RED}"
         "DISCLAIMER: Trading in financial instruments involves high risks including the risk of losing some, "
         "or all, of your investment amount, and may not be suitable for all investors. Before deciding to trade in "
@@ -397,16 +384,16 @@ def bootup():
         print("")
 
 
-def reset():
+def reset(menu_prior_to_reset=""):
     """Resets the terminal.  Allows for checking code or keys without quitting"""
     print("resetting...")
     plt.close("all")
-    completed_process = subprocess.run("python terminal.py", shell=True, check=False)
+
+    arg = f" {menu_prior_to_reset}" if menu_prior_to_reset else ""
+    completed_process = subprocess.run(
+        f"{sys.executable} terminal.py{arg}", shell=True, check=False
+    )
     if completed_process.returncode != 0:
-        completed_process = subprocess.run(
-            "python3 terminal.py", shell=True, check=False
-        )
-        if completed_process.returncode != 0:
-            print("Unfortunately, resetting wasn't possible!\n")
+        print("Unfortunately, resetting wasn't possible!\n")
 
     return completed_process.returncode

@@ -6,6 +6,7 @@ import argparse
 import os
 from typing import List
 from datetime import datetime
+from colorama import Style
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -18,6 +19,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive_list,
     check_positive,
     valid_date,
+    try_except,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.technical_analysis import (
@@ -69,6 +71,7 @@ class TechnicalAnalysisController:
         self.start = start
         self.interval = interval
         self.stock = stock
+        self.stock["Adj Close"] = stock["Close"]
 
         self.ta_parser = argparse.ArgumentParser(add_help=False, prog="ta")
         self.ta_parser.add_argument(
@@ -80,10 +83,12 @@ class TechnicalAnalysisController:
         """Print help"""
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.start:
-            stock_str = f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            stock_str = f"\n{s_intraday} Crypto: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            stock_str = f"\n{s_intraday} Stock: {self.ticker}"
+            stock_str = f"\n{s_intraday} Crypto: {self.ticker}"
 
+        dim = Style.DIM if "Volume" not in self.stock else ""
+        not_dim = Style.RESET_ALL if "Volume" not in self.stock else ""
         help_str = f"""
 {stock_str}
 
@@ -96,8 +101,8 @@ Technical Analysis:
 Overlap:
     ema         exponential moving average
     sma         simple moving average
-    zlma        zero lag moving average"
-    vwap        volume weighted average price
+    zlma        zero lag moving average{dim}
+    vwap        volume weighted average price{not_dim}
 Momentum:
     cci         commodity channel index
     macd        moving average convergence/divergence
@@ -110,10 +115,10 @@ Trend:
     aroon       aroon indicator
 Volatility:
     bbands      bollinger bands
-    donchian    donchian channels
+    donchian    donchian channels{dim}
 Volume:
     ad          accumulation/distribution line values
-    obv         on balance volume
+    obv         on balance volume{not_dim}
 Custom:
     fib         fibonacci retracement
 """
@@ -164,6 +169,7 @@ Custom:
         return True
 
     # TODO: Go through all models and make sure all needed columns are in dfs
+    @try_except
     def call_ema(self, other_args: List[str]):
         """Process ema command"""
         parser = argparse.ArgumentParser(
@@ -211,28 +217,25 @@ Custom:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-l")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-l")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            overlap_view.view_ma(
-                ma_type="EMA",
-                s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
-                length=ns_parser.n_length,
-                offset=ns_parser.n_offset,
-                export=ns_parser.export,
-            )
+        overlap_view.view_ma(
+            ma_type="EMA",
+            s_ticker=self.ticker,
+            s_interval=self.interval,
+            df_stock=self.stock,
+            length=ns_parser.n_length,
+            offset=ns_parser.n_offset,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_sma(self, other_args: List[str]):
         """Process sma command"""
         parser = argparse.ArgumentParser(
@@ -279,27 +282,24 @@ Custom:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-l")
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            overlap_view.view_ma(
-                ma_type="SMA",
-                s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
-                length=ns_parser.n_length,
-                offset=ns_parser.n_offset,
-                export=ns_parser.export,
-            )
+        overlap_view.view_ma(
+            ma_type="SMA",
+            s_ticker=self.ticker,
+            s_interval=self.interval,
+            df_stock=self.stock,
+            length=ns_parser.n_length,
+            offset=ns_parser.n_offset,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_zlma(self, other_args: List[str]):
         """Process zlma command"""
         parser = argparse.ArgumentParser(
@@ -346,28 +346,25 @@ Custom:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-l")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-l")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            overlap_view.view_ma(
-                ma_type="ZLMA",
-                s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
-                length=ns_parser.n_length,
-                offset=ns_parser.n_offset,
-                export=ns_parser.export,
-            )
+        overlap_view.view_ma(
+            ma_type="ZLMA",
+            s_ticker=self.ticker,
+            s_interval=self.interval,
+            df_stock=self.stock,
+            length=ns_parser.n_length,
+            offset=ns_parser.n_offset,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_vwap(self, other_args: List[str]):
         """Process vwap command"""
         parser = argparse.ArgumentParser(
@@ -398,27 +395,24 @@ Custom:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            # Daily
-            if self.interval == "1440min":
-                print("VWAP should be used with intraday data. \n")
-                return
+        # Daily
+        if self.interval == "1440min":
+            print("VWAP should be used with intraday data. \n")
+            return
 
-            overlap_view.view_vwap(
-                s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
-                offset=ns_parser.n_offset,
-                export=ns_parser.export,
-            )
+        overlap_view.view_vwap(
+            s_ticker=self.ticker,
+            s_interval=self.interval,
+            df_stock=self.stock,
+            offset=ns_parser.n_offset,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cci(self, other_args: List[str]):
         """Process cci command"""
 
@@ -464,23 +458,20 @@ Custom:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            momentum_view.plot_cci(
-                s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
-                length=ns_parser.n_length,
-                scalar=ns_parser.n_scalar,
-                export=ns_parser.export,
-            )
+        momentum_view.plot_cci(
+            s_ticker=self.ticker,
+            s_interval=self.interval,
+            df_stock=self.stock,
+            length=ns_parser.n_length,
+            scalar=ns_parser.n_scalar,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_macd(self, other_args: List[str]):
         """Process macd command"""
         parser = argparse.ArgumentParser(
@@ -538,23 +529,21 @@ Custom:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            momentum_view.view_macd(
-                s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
-                n_fast=ns_parser.n_fast,
-                n_slow=ns_parser.n_slow,
-                n_signal=ns_parser.n_signal,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        momentum_view.view_macd(
+            s_ticker=self.ticker,
+            s_interval=self.interval,
+            df_stock=self.stock,
+            n_fast=ns_parser.n_fast,
+            n_slow=ns_parser.n_slow,
+            n_signal=ns_parser.n_signal,
+            export=ns_parser.export,
+        )
 
+    @try_except
     def call_rsi(self, other_args: List[str]):
         """Process rsi command"""
         parser = argparse.ArgumentParser(
@@ -609,24 +598,21 @@ Custom:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            momentum_view.view_rsi(
-                s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
-                length=ns_parser.n_length,
-                scalar=ns_parser.n_scalar,
-                drift=ns_parser.n_drift,
-                export=ns_parser.export,
-            )
+        momentum_view.view_rsi(
+            s_ticker=self.ticker,
+            s_interval=self.interval,
+            df_stock=self.stock,
+            length=ns_parser.n_length,
+            scalar=ns_parser.n_scalar,
+            drift=ns_parser.n_drift,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_stoch(self, other_args: List[str]):
         """Process stoch command"""
         parser = argparse.ArgumentParser(
@@ -681,22 +667,20 @@ Custom:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            momentum_view.view_stoch(
-                s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
-                fastkperiod=ns_parser.n_fastkperiod,
-                slowdperiod=ns_parser.n_slowdperiod,
-                slowkperiod=ns_parser.n_slowkperiod,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        momentum_view.view_stoch(
+            s_ticker=self.ticker,
+            s_interval=self.interval,
+            df_stock=self.stock,
+            fastkperiod=ns_parser.n_fastkperiod,
+            slowdperiod=ns_parser.n_slowdperiod,
+            slowkperiod=ns_parser.n_slowkperiod,
+            export=ns_parser.export,
+        )
 
+    @try_except
     def call_fisher(self, other_args: List[str]):
         """Process fisher command"""
         parser = argparse.ArgumentParser(
@@ -731,21 +715,19 @@ Custom:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            momentum_view.view_fisher(
-                s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
-                length=ns_parser.n_length,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        momentum_view.view_fisher(
+            s_ticker=self.ticker,
+            s_interval=self.interval,
+            df_stock=self.stock,
+            length=ns_parser.n_length,
+            export=ns_parser.export,
+        )
 
+    @try_except
     def call_cg(self, other_args: List[str]):
         """Process cg command"""
         parser = argparse.ArgumentParser(
@@ -780,21 +762,18 @@ Custom:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            momentum_view.view_cg(
-                s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
-                length=ns_parser.n_length,
-                export=ns_parser.export,
-            )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        momentum_view.view_cg(
+            s_ticker=self.ticker,
+            s_interval=self.interval,
+            df_stock=self.stock,
+            length=ns_parser.n_length,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_adx(self, other_args: List[str]):
         """Process adx command"""
         parser = argparse.ArgumentParser(
@@ -847,24 +826,21 @@ Custom:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            trend_indicators_view.plot_adx(
-                s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
-                length=ns_parser.n_length,
-                scalar=ns_parser.n_scalar,
-                drift=ns_parser.n_drift,
-                export=ns_parser.export,
-            )
+        trend_indicators_view.plot_adx(
+            s_ticker=self.ticker,
+            s_interval=self.interval,
+            df_stock=self.stock,
+            length=ns_parser.n_length,
+            scalar=ns_parser.n_scalar,
+            drift=ns_parser.n_drift,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_aroon(self, other_args: List[str]):
         """Process aroon command"""
         parser = argparse.ArgumentParser(
@@ -924,23 +900,20 @@ Custom:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            trend_indicators_view.plot_aroon(
-                s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
-                length=ns_parser.n_length,
-                scalar=ns_parser.n_scalar,
-                export=ns_parser.export,
-            )
+        trend_indicators_view.plot_aroon(
+            s_ticker=self.ticker,
+            s_interval=self.interval,
+            df_stock=self.stock,
+            length=ns_parser.n_length,
+            scalar=ns_parser.n_scalar,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_bbands(self, other_args: List[str]):
         """Process bbands command"""
         parser = argparse.ArgumentParser(
@@ -999,23 +972,20 @@ Custom:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            volatility_view.view_bbands(
-                ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
-                length=ns_parser.n_length,
-                n_std=ns_parser.n_std,
-                mamode=ns_parser.s_mamode,
-                export=ns_parser.export,
-            )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        volatility_view.view_bbands(
+            ticker=self.ticker,
+            s_interval=self.interval,
+            df_stock=self.stock,
+            length=ns_parser.n_length,
+            n_std=ns_parser.n_std,
+            mamode=ns_parser.s_mamode,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_donchian(self, other_args: List[str]):
         """Process donchian command"""
         parser = argparse.ArgumentParser(
@@ -1061,22 +1031,19 @@ Custom:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            volatility_view.view_donchian(
-                ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
-                upper_length=ns_parser.n_length_upper,
-                lower_length=ns_parser.n_length_lower,
-                export=ns_parser.export,
-            )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        volatility_view.view_donchian(
+            ticker=self.ticker,
+            s_interval=self.interval,
+            df_stock=self.stock,
+            upper_length=ns_parser.n_length_upper,
+            lower_length=ns_parser.n_length_lower,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_ad(self, other_args: List[str]):
         """Process ad command"""
         parser = argparse.ArgumentParser(
@@ -1114,21 +1081,19 @@ Custom:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            volume_view.plot_ad(
-                s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
-                use_open=ns_parser.b_use_open,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        volume_view.plot_ad(
+            s_ticker=self.ticker,
+            s_interval=self.interval,
+            df_stock=self.stock,
+            use_open=ns_parser.b_use_open,
+            export=ns_parser.export,
+        )
 
+    @try_except
     def call_obv(self, other_args: List[str]):
         """Process obv command"""
         parser = argparse.ArgumentParser(
@@ -1155,21 +1120,18 @@ Custom:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            volume_view.plot_obv(
-                s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
-                export=ns_parser.export,
-            )
+        volume_view.plot_obv(
+            s_ticker=self.ticker,
+            s_interval=self.interval,
+            df_stock=self.stock,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_fib(self, other_args: List[str]):
         """Process fib command"""
         parser = argparse.ArgumentParser(
@@ -1213,21 +1175,18 @@ Custom:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            custom_indicators_view.fibonacci_retracement(
-                s_ticker=self.ticker,
-                df_stock=self.stock,
-                period=ns_parser.period,
-                start_date=ns_parser.start,
-                end_date=ns_parser.end,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        custom_indicators_view.fibonacci_retracement(
+            s_ticker=self.ticker,
+            df_stock=self.stock,
+            period=ns_parser.period,
+            start_date=ns_parser.start,
+            end_date=ns_parser.end,
+            export=ns_parser.export,
+        )
 
 
 def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):
@@ -1243,11 +1202,11 @@ def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):
                 {c: None for c in ta_controller.CHOICES}
             )
             an_input = session.prompt(
-                f"{get_flair()} (stocks)>(ta)> ",
+                f"{get_flair()} (crypto)>(ta)> ",
                 completer=completer,
             )
         else:
-            an_input = input(f"{get_flair()} (stocks)>(ta)> ")
+            an_input = input(f"{get_flair()} (crypto)>(ta)> ")
 
         try:
             plt.close("all")

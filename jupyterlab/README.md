@@ -8,10 +8,12 @@
 To install the Terminal Launcher and the Settings Extensions run the following commands from the [root folder of the project](/):
 
 ```bash
-pip install -e jupyterlab/gst
-pip install -e jupyterlab/gst-settings
+pip install jupyterlab/gst
+pip install jupyterlab/gst-settings
+pip install jupyterlab/documentation
 jupyter labextension install jupyterlab/gst
 jupyter labextension install jupyterlab/gst-settings
+jupyter labextension install jupyterlab/documentation
 ```
 
 ## Development setup

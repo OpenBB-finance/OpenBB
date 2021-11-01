@@ -9,19 +9,18 @@ class GenericCommands(discord.ext.commands.Cog):
         self.bot = bot
 
     @discord.ext.commands.command(name="about")
-    async def hello_world(self, ctx: discord.ext.commands.Context):
+    async def about(self, ctx: discord.ext.commands.Context):
+        """About Gamestonk Terminal"""
         links = (
             "Join our community on discord: https://discord.gg/Up2QGbMKHY\n"
             "Follow our twitter for updates: https://twitter.com/gamestonkt\n"
             "Access our landing page: https://gamestonkterminal.vercel.app\n\n"
-            "**Maintainers:** DidierRLopes, jmaslek, aia\n"
+            "**Main maintainers:** DidierRLopes, jmaslek, aia\n"
         )
         partnerships = (
             "FinBrain: https://finbrain.tech\n"
             "Quiver Quantitative: https://www.quiverquant.com\n"
-            "Ops.Syncretism: https://ops.syncretism.io/api.html\n"
             "SentimentInvestor: https://sentimentinvestor.com\n"
-            "The Geek of Wall Street: https://thegeekofwallstreet.com\n"
         )
         disclaimer = (
             "Trading in financial instruments involves high risks including "

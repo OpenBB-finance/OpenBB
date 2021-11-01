@@ -16,12 +16,15 @@ from gamestonk_terminal.economy import (
     fred_view,
     wsj_view,
 )
-from gamestonk_terminal.economy.report import report_controller
 from gamestonk_terminal.helper_funcs import (
     check_positive,
     get_flair,
     parse_known_args_and_warn,
     valid_date,
+    MENU_GO_BACK,
+    MENU_QUIT,
+    MENU_RESET,
+    try_except,
 )
 from gamestonk_terminal.menu import session
 
@@ -55,6 +58,7 @@ class EconomyController:
         "help",
         "q",
         "quit",
+        "reset",
     ]
 
     CHOICES_COMMANDS = [
@@ -77,12 +81,7 @@ class EconomyController:
         "industry",
     ]
 
-    CHOICES_MENUS = [
-        "report",
-    ]
-
     CHOICES += CHOICES_COMMANDS
-    CHOICES += CHOICES_MENUS
 
     def __init__(self):
         """Constructor"""
@@ -103,6 +102,7 @@ What do you want to do?
     ?/help        show this menu again
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
+    reset         reset terminal and reload configs
 
 CNN:
     feargreed     CNN Fear and Greed Index
@@ -125,8 +125,6 @@ Alpha Vantage:
 FRED:
     search        search FRED series notes
     series        plot series from https://fred.stlouisfed.org
-
->   report        generate automatic report
 """
         print(help_text)
 
@@ -135,10 +133,10 @@ FRED:
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        MENU_GO_BACK, MENU_QUIT, MENU_RESET
+            MENU_GO_BACK - Show main context menu again
+            MENU_QUIT - Quit terminal
+            MENU_RESET - Reset terminal and go back to same previous menu
         """
 
         # Empty command
@@ -168,12 +166,17 @@ FRED:
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
-        return False
+        return MENU_GO_BACK
 
     def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+        """Process Quit command - exit the program"""
+        return MENU_QUIT
 
+    def call_reset(self, _):
+        """Process Reset command - reset the program"""
+        return MENU_RESET
+
+    @try_except
     def call_events(self, other_args: List[str]):
         """Process events command"""
         parser = argparse.ArgumentParser(
@@ -221,25 +224,22 @@ FRED:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-c")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-c")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            finnhub_view.economy_calendar_events(
-                country=ns_parser.country,
-                num=ns_parser.num,
-                impact=ns_parser.impact,
-                export=ns_parser.export,
-            )
+        finnhub_view.economy_calendar_events(
+            country=ns_parser.country,
+            num=ns_parser.num,
+            impact=ns_parser.impact,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_feargreed(self, other_args: List[str]):
         """Process feargreed command"""
         parser = argparse.ArgumentParser(
@@ -270,23 +270,20 @@ FRED:
             dest="export",
             help="Export plot to png,jpg,pdf,svg file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-i")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-i")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            cnn_view.fear_and_greed_index(
-                indicator=ns_parser.indicator,
-                export=ns_parser.export,
-            )
+        cnn_view.fear_and_greed_index(
+            indicator=ns_parser.indicator,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
         parser = argparse.ArgumentParser(
@@ -303,18 +300,15 @@ FRED:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            wsj_view.display_overview(
-                export=ns_parser.export,
-            )
+        wsj_view.display_overview(
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_indices(self, other_args: List[str]):
         """Process indices command"""
         parser = argparse.ArgumentParser(
@@ -331,18 +325,15 @@ FRED:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            wsj_view.display_indices(
-                export=ns_parser.export,
-            )
+        wsj_view.display_indices(
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_futures(self, other_args: List[str]):
         """Process futures command"""
         parser = argparse.ArgumentParser(
@@ -359,18 +350,15 @@ FRED:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            wsj_view.display_futures(
-                export=ns_parser.export,
-            )
+        wsj_view.display_futures(
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_usbonds(self, other_args: List[str]):
         """Process usbonds command"""
         parser = argparse.ArgumentParser(
@@ -387,18 +375,15 @@ FRED:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            wsj_view.display_usbonds(
-                export=ns_parser.export,
-            )
+        wsj_view.display_usbonds(
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_glbonds(self, other_args: List[str]):
         """Process glbonds command"""
         parser = argparse.ArgumentParser(
@@ -415,18 +400,15 @@ FRED:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            wsj_view.display_glbonds(
-                export=ns_parser.export,
-            )
+        wsj_view.display_glbonds(
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_currencies(self, other_args: List[str]):
         """Process currencies command"""
         parser = argparse.ArgumentParser(
@@ -443,18 +425,15 @@ FRED:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            wsj_view.display_currencies(
-                export=ns_parser.export,
-            )
+        wsj_view.display_currencies(
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_map(self, other_args: List[str]):
         """Process map command"""
         parser = argparse.ArgumentParser(
@@ -486,19 +465,16 @@ FRED:
             choices=["sp500", "world", "full", "etf"],
             help="Map filter type.",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            finviz_view.map_sp500_view(
-                period=ns_parser.s_period,
-                map_type=ns_parser.s_type,
-            )
+        finviz_view.map_sp500_view(
+            period=ns_parser.s_period,
+            map_type=ns_parser.s_type,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_valuation(self, other_args: List[str]):
         """Process valuation command"""
         parser = argparse.ArgumentParser(
@@ -526,25 +502,22 @@ FRED:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-g")
-                other_args = [other_args[0], " ".join(other_args[1:])]
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-g")
+            other_args = [other_args[0], " ".join(other_args[1:])]
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            finviz_view.view_group_data(
-                s_group=self.d_GROUPS[ns_parser.group],
-                data_type="valuation",
-                export=ns_parser.export,
-            )
+        finviz_view.view_group_data(
+            s_group=self.d_GROUPS[ns_parser.group],
+            data_type="valuation",
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_performance(self, other_args: List[str]):
         """Process performance command"""
         parser = argparse.ArgumentParser(
@@ -572,25 +545,22 @@ FRED:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-g")
-                other_args = [other_args[0], " ".join(other_args[1:])]
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-g")
+            other_args = [other_args[0], " ".join(other_args[1:])]
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            finviz_view.view_group_data(
-                s_group=self.d_GROUPS[ns_parser.group],
-                data_type="performance",
-                export=ns_parser.export,
-            )
+        finviz_view.view_group_data(
+            s_group=self.d_GROUPS[ns_parser.group],
+            data_type="performance",
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_spectrum(self, other_args: List[str]):
         """Process spectrum command"""
         parser = argparse.ArgumentParser(
@@ -618,28 +588,25 @@ FRED:
             dest="export",
             help="Export plot to png,jpg,pdf,svg file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-g")
-                other_args = [other_args[0], " ".join(other_args[1:])]
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-g")
+            other_args = [other_args[0], " ".join(other_args[1:])]
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            finviz_view.view_group_data(
-                s_group=self.d_GROUPS[ns_parser.group],
-                data_type="spectrum",
-                export="",
-            )
-            # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
-            # after saving it and displaying it to the user
-            os.remove(ns_parser.group + ".jpg")
+        finviz_view.view_group_data(
+            s_group=self.d_GROUPS[ns_parser.group],
+            data_type="spectrum",
+            export="",
+        )
+        # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
+        # after saving it and displaying it to the user
+        os.remove(ns_parser.group + ".jpg")
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_rtps(self, other_args: List[str]):
         """Process rtps command"""
         parser = argparse.ArgumentParser(
@@ -667,19 +634,16 @@ FRED:
             dest="export",
             help="Export data to csv,json,xlsx or png,jpg,pdf,svg file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            alphavantage_view.realtime_performance_sector(
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-            )
+        alphavantage_view.realtime_performance_sector(
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_series(self, other_args: List[str]):
         """Process series command"""
         parser = argparse.ArgumentParser(
@@ -720,25 +684,22 @@ FRED:
             dest="export",
             help="Export data to csv,json,xlsx or png,jpg,pdf,svg file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-i")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-i")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            fred_view.display_series(
-                series=ns_parser.series_id,
-                start_date=ns_parser.start_date,
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-            )
+        fred_view.display_series(
+            series=ns_parser.series_id,
+            start_date=ns_parser.start_date,
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_search(self, other_args: List[str]):
         """Process search command"""
         parser = argparse.ArgumentParser(
@@ -765,31 +726,18 @@ FRED:
             default=5,
             help="Maximum number of series notes to display.",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-s")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-s")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            fred_view.notes(
-                series_term=ns_parser.series_term,
-                num=ns_parser.num,
-            )
-
-        except Exception as e:
-            print(e, "\n")
-
-    def call_report(self, _):
-        """Process report command"""
-        ret = report_controller.menu()
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        fred_view.notes(
+            series_term=ns_parser.series_term,
+            num=ns_parser.num,
+        )
 
 
 def menu():

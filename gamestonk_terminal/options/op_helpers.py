@@ -60,3 +60,37 @@ def calculate_max_pain(chain: pd.DataFrame) -> int:
     max_pain = chain["loss"].idxmin()
 
     return max_pain
+
+
+def convert(orig: str, to: str) -> float:
+    """Convert a string to a specific type of number
+    Parameters
+    ----------
+    orig: str
+        String to convert
+    Returns
+    -------
+    number : float
+        Decimal value of string
+    """
+    if to == "%":
+        clean = orig.replace("%", "").replace("+", "")
+        return float(clean) / 100
+    if to == ",":
+        clean = orig.replace(",", "")
+        return float(clean)
+    raise ValueError("Invalid to format, please use '%' or ','.")
+
+
+opt_chain_cols = {
+    "lastTradeDate": {"format": "date", "label": "Last Trade Date"},
+    "strike": {"format": "${x:.2f}", "label": "Strike"},
+    "lastPrice": {"format": "${x:.2f}", "label": "Last Price"},
+    "bid": {"format": "${x:.2f}", "label": "Bid"},
+    "ask": {"format": "${x:.2f}", "label": "Ask"},
+    "change": {"format": "${x:.2f}", "label": "Change"},
+    "percentChange": {"format": "{x:.2f}%", "label": "Percent Change"},
+    "volume": {"format": "{x:.2f}", "label": "Volume"},
+    "openInterest": {"format": "", "label": "Open Interest"},
+    "impliedVolatility": {"format": "{x:.2f}", "label": "Implied Volatility"},
+}

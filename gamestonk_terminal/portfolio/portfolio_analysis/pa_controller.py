@@ -11,6 +11,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
+    try_except,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.portfolio_analysis import (
@@ -114,6 +115,7 @@ Portfolio: {self.portfolio_name or None}
         """Process Quit command - quit the program"""
         return True
 
+    @try_except
     def call_load(self, other_args):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -154,27 +156,24 @@ Portfolio: {self.portfolio_name or None}
             dest="path",
         )
 
-        try:
-            if other_args and "-" not in other_args[0]:
-                other_args.insert(0, "-p")
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-p")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            self.portfolio_name = ns_parser.path
-            self.portfolio = portfolio_model.load_portfolio(
-                full_path=os.path.join(portfolios_path, ns_parser.path),
-                sector=ns_parser.sector,
-                last_price=ns_parser.last_price,
-                show_nan=ns_parser.show_nan,
-            )
-            if not self.portfolio.empty:
-                print(f"Successfully loaded: {self.portfolio_name}\n")
+        self.portfolio_name = ns_parser.path
+        self.portfolio = portfolio_model.load_portfolio(
+            full_path=os.path.join(portfolios_path, ns_parser.path),
+            sector=ns_parser.sector,
+            last_price=ns_parser.last_price,
+            show_nan=ns_parser.show_nan,
+        )
+        if not self.portfolio.empty:
+            print(f"Successfully loaded: {self.portfolio_name}\n")
 
-        except Exception as e:
-            print(e)
-
+    @try_except
     def call_group(self, other_args):
         """Process group command"""
         parser = argparse.ArgumentParser(
@@ -210,24 +209,21 @@ Portfolio: {self.portfolio_name or None}
         #                     help = "Columns to display",
         #                     dest="cols")
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            if "value" not in self.portfolio.columns:
-                print(
-                    "'value' column not in portfolio.  Either add manually or load without --no_last_price flag\n"
-                )
-                return
-
-            portfolio_view.display_group_holdings(
-                portfolio=self.portfolio, group_column=ns_parser.group
+        if "value" not in self.portfolio.columns:
+            print(
+                "'value' column not in portfolio.  Either add manually or load without --no_last_price flag\n"
             )
+            return
 
-        except Exception as e:
-            print(e, "\n")
+        portfolio_view.display_group_holdings(
+            portfolio=self.portfolio, group_column=ns_parser.group
+        )
 
+    @try_except
     def call_view(self, other_args):
         parser = argparse.ArgumentParser(
             prog="view",
@@ -244,26 +240,20 @@ Portfolio: {self.portfolio_name or None}
             dest="file_format",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            available_ports = os.listdir(portfolios_path)
-            if ns_parser.file_format != "all":
-                available_ports = [
-                    port
-                    for port in available_ports
-                    if port.endswith(ns_parser.file_format)
-                ]
+        available_ports = os.listdir(portfolios_path)
+        if ns_parser.file_format != "all":
+            available_ports = [
+                port for port in available_ports if port.endswith(ns_parser.file_format)
+            ]
 
-            print("\nAvailable Portfolios:\n")
-            for port in available_ports:
-                print(port)
-            print("")
-
-        except Exception as e:
-            print(e, "\n")
+        print("\nAvailable Portfolios:\n")
+        for port in available_ports:
+            print(port)
+        print("")
 
 
 def menu():

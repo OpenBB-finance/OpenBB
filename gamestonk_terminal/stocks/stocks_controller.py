@@ -17,25 +17,18 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.options import options_controller
-from gamestonk_terminal.stocks.backtesting import bt_controller
-from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
-from gamestonk_terminal.stocks.comparison_analysis import ca_controller
-from gamestonk_terminal.stocks.dark_pool_shorts import dps_controller
-from gamestonk_terminal.stocks.discovery import disc_controller
-from gamestonk_terminal.stocks.due_diligence import dd_controller
-from gamestonk_terminal.stocks.quantitative_analysis import qa_controller
-from gamestonk_terminal.stocks.fundamental_analysis import fa_controller
-from gamestonk_terminal.stocks.government import gov_controller
-from gamestonk_terminal.stocks.insider import insider_controller
-from gamestonk_terminal.stocks.report import report_controller
-from gamestonk_terminal.stocks.research import res_controller
-from gamestonk_terminal.stocks.screener import screener_controller
-from gamestonk_terminal.stocks.stocks_helper import candle, load, quote
-from gamestonk_terminal.stocks.technical_analysis import ta_controller
-from gamestonk_terminal.helper_funcs import valid_date
+from gamestonk_terminal.stocks.stocks_helper import display_candle, load, quote
 
-# pylint: disable=R1710
+from gamestonk_terminal.helper_funcs import (
+    valid_date,
+    MENU_GO_BACK,
+    MENU_QUIT,
+    MENU_RESET,
+    try_except,
+)
+from gamestonk_terminal.common.quantitative_analysis import qa_view
+
+# pylint: disable=R1710,import-outside-toplevel
 
 
 class StocksController:
@@ -50,6 +43,7 @@ class StocksController:
         "help",
         "q",
         "quit",
+        "reset",
     ]
 
     CHOICES_COMMANDS = [
@@ -74,7 +68,6 @@ class StocksController:
         "bt",
         "dd",
         "ca",
-        "report",
         "options",
     ]
 
@@ -108,7 +101,6 @@ class StocksController:
         dim_if_no_ticker = Style.DIM if not self.ticker else ""
         reset_style_if_no_ticker = Style.RESET_ALL if not self.ticker else ""
         help_text = f"""
-
 >> STOCKS <<
 
 What do you want to do?
@@ -116,6 +108,7 @@ What do you want to do?
     ?/help      show this menu again
     q           quit this menu, and shows back to main menu
     quit        quit to abandon the program
+    reset       reset terminal and reload configs
 
     load        load a specific stock ticker for analysis
 
@@ -133,7 +126,6 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 >   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
 >   ins         insider trading,         \t e.g.: latest penny stock buys, top officer purchases
 >   gov         government menu, \t\t e.g. house trading, contracts, corporate lobbying
->   report      generate automatic report,   \t e.g.: dark pool, due diligence
 >   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google{dim_if_no_ticker}
 >   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings
 >   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool
@@ -151,10 +143,10 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
         Returns
         -------
-        True, False, or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        MENU_GO_BACK, MENU_QUIT, MENU_RESET
+            MENU_GO_BACK - Show main context menu again
+            MENU_QUIT - Quit terminal
+            MENU_RESET - Reset terminal and go back to same previous menu
         """
 
         # Empty command
@@ -184,11 +176,15 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
-        return False
+        return MENU_GO_BACK
 
     def call_quit(self, _):
         """Process Quit command - exit the program"""
-        return True
+        return MENU_QUIT
+
+    def call_reset(self, _):
+        """Process Reset command - reset the program"""
+        return MENU_RESET
 
     # COMMANDS
     def call_load(self, other_args: List[str]):
@@ -207,13 +203,105 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             other_args, self.ticker + "." + self.suffix if self.suffix else self.ticker
         )
 
+    @try_except
     def call_candle(self, other_args: List[str]):
         """Process candle command"""
-        candle(
-            self.ticker + "." + self.suffix if self.suffix else self.ticker,
-            other_args,
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="candle",
+            description="Shows historic data for a stock",
+        )
+        parser.add_argument(
+            "-s",
+            "--start_date",
+            dest="s_start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            help="Start date for candle data",
+        )
+        parser.add_argument(
+            "--plotly",
+            dest="plotly",
+            action="store_true",
+            default=False,
+            help="Flag to show interactive plot using plotly.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        parser.add_argument(
+            "--sort",
+            choices=[
+                "AdjClose",
+                "Open",
+                "Close",
+                "High",
+                "Low",
+                "Volume",
+                "Returns",
+                "LogRet",
+            ],
+            default="",
+            type=str,
+            dest="sort",
+            help="Choose a column to sort by",
+        )
+        parser.add_argument(
+            "-d",
+            "--descending",
+            action="store_false",
+            dest="descending",
+            default=True,
+            help="Sort selected column descending",
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Shows raw data instead of chart",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            type=check_positive,
+            help="Number to show if raw selected",
+            dest="num",
+            default=20,
         )
 
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not self.ticker:
+            print("No ticker loaded.  First use `load {ticker}`\n")
+            return
+
+        if ns_parser.raw:
+            qa_view.display_raw(
+                df=self.stock,
+                export=ns_parser.export,
+                sort=ns_parser.sort,
+                des=ns_parser.descending,
+                num=ns_parser.num,
+            )
+
+        else:
+            display_candle(
+                s_ticker=self.ticker + "." + self.suffix
+                if self.suffix
+                else self.ticker,
+                s_start=ns_parser.s_start,
+                plotly=ns_parser.plotly,
+            )
+
+    @try_except
     def call_news(self, other_args: List[str]):
         """Process news command"""
         if not self.ticker:
@@ -261,34 +349,32 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             help="Show news only from the sources specified (e.g bbc yahoo.com)",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            sources = ns_parser.sources
-            for idx, source in enumerate(sources):
-                if source.find(".") == -1:
-                    sources[idx] += ".com"
+        sources = ns_parser.sources
+        for idx, source in enumerate(sources):
+            if source.find(".") == -1:
+                sources[idx] += ".com"
 
-            d_stock = yf.Ticker(self.ticker).info
+        d_stock = yf.Ticker(self.ticker).info
 
-            newsapi_view.news(
-                term=d_stock["shortName"].replace(" ", "+")
-                if "shortName" in d_stock
-                else self.ticker,
-                num=ns_parser.n_num,
-                s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
-                show_newest=ns_parser.n_oldest,
-                sources=",".join(sources),
-            )
-
-        except Exception as e:
-            print(e, "\n")
+        newsapi_view.news(
+            term=d_stock["shortName"].replace(" ", "+")
+            if "shortName" in d_stock
+            else self.ticker,
+            num=ns_parser.n_num,
+            s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
+            show_newest=ns_parser.n_oldest,
+            sources=",".join(sources),
+        )
 
     # MENUS
     def call_disc(self, _):
         """Process disc command"""
+        from gamestonk_terminal.stocks.discovery import disc_controller
+
         ret = disc_controller.menu()
         if ret is False:
             self.print_help()
@@ -297,6 +383,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_dps(self, _):
         """Process dps command"""
+        from gamestonk_terminal.stocks.dark_pool_shorts import dps_controller
+
         ret = dps_controller.menu(self.ticker, self.start, self.stock)
         if ret is False:
             self.print_help()
@@ -305,6 +393,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_scr(self, _):
         """Process scr command"""
+        from gamestonk_terminal.stocks.screener import screener_controller
+
         ret = screener_controller.menu()
         if ret is False:
             self.print_help()
@@ -313,6 +403,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_ins(self, _):
         """Process ins command"""
+        from gamestonk_terminal.stocks.insider import insider_controller
+
         ret = insider_controller.menu(
             self.ticker,
             self.start,
@@ -326,16 +418,9 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_gov(self, _):
         """Process gov command"""
+        from gamestonk_terminal.stocks.government import gov_controller
+
         ret = gov_controller.menu(self.ticker)
-        if ret is False:
-            self.print_help()
-        else:
-            return True
-
-    def call_report(self, _):
-        """Process report command"""
-        ret = report_controller.menu()
-
         if ret is False:
             self.print_help()
         else:
@@ -343,6 +428,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_res(self, _):
         """Process res command"""
+        from gamestonk_terminal.stocks.research import res_controller
+
         if not self.ticker:
             print("Use 'load <ticker>' prior to this command!", "\n")
             return
@@ -360,6 +447,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_dd(self, _):
         """Process dd command"""
+        from gamestonk_terminal.stocks.due_diligence import dd_controller
+
         if not self.ticker:
             print("Use 'load <ticker>' prior to this command!", "\n")
             return
@@ -382,6 +471,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             print("Use 'load <ticker>' prior to this command!", "\n")
             return
 
+        from gamestonk_terminal.stocks.comparison_analysis import ca_controller
+
         ret = ca_controller.menu(self.ticker, self.start, self.interval, self.stock)
 
         if ret is False:
@@ -394,6 +485,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         if not self.ticker:
             print("Use 'load <ticker>' prior to this command!", "\n")
             return
+
+        from gamestonk_terminal.stocks.fundamental_analysis import fa_controller
 
         ret = fa_controller.menu(
             self.ticker,
@@ -412,6 +505,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             print("Use 'load <ticker>' prior to this command!", "\n")
             return
 
+        from gamestonk_terminal.stocks.backtesting import bt_controller
+
         ret = bt_controller.menu(self.ticker, self.stock)
 
         if ret is False:
@@ -424,6 +519,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         if not self.ticker:
             print("Use 'load <ticker>' prior to this command!", "\n")
             return
+
+        from gamestonk_terminal.stocks.technical_analysis import ta_controller
 
         ret = ta_controller.menu(
             self.ticker,
@@ -439,6 +536,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_ba(self, _):
         """Process ba command"""
+        from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
+
         ret = ba_controller.menu(
             self.ticker,
             self.start,
@@ -460,6 +559,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             print("Load daily data to use this menu!", "\n")
             return
 
+        from gamestonk_terminal.stocks.quantitative_analysis import qa_controller
+
         ret = qa_controller.menu(
             self.ticker,
             self.start,
@@ -472,6 +573,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         else:
             return True
 
+    @try_except
     def call_pred(self, _):
         """Process pred command"""
         if not gtff.ENABLE_PREDICT:
@@ -496,9 +598,6 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         except ModuleNotFoundError as e:
             print("One of the optional packages seems to be missing: ", e, "\n")
             return
-        except Exception as e:
-            print(e, "\n")
-            return
 
         ret = pred_controller.menu(
             self.ticker,
@@ -514,6 +613,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_options(self, _):
         """Process options command"""
+        from gamestonk_terminal.options import options_controller
+
         return options_controller.menu(self.ticker)
 
 

@@ -144,7 +144,7 @@ def _create_closest_match_df(
 def load(
     coin: str,
     source: str,
-) -> Tuple[Union[Optional[str], pycoingecko_model.Coin], Any]:
+) -> Tuple[Union[Optional[str], pycoingecko_model.Coin], Optional[Any], Optional[Any]]:
     """Load cryptocurrency from given source. Available sources are: CoinGecko, CoinPaprika, Coinbase and Binance.
 
     Loading coin from Binance and CoinPaprika means validation if given coins exists in chosen source,
@@ -161,16 +161,17 @@ def load(
 
     Returns
     -------
-    Tuple[Union[str, pycoingecko_model.Coin], Any]
+    Tuple[Union[str, pycoingecko_model.Coin], str, str]
         - str or Coin object for provided coin
         - str with source of the loaded data. CoinGecko, CoinPaprika, or Binance
+        - str with
     """
 
     current_coin = ""  # type: Optional[Any]
 
     if source == "cg":
-        current_coin = pycoingecko_model.Coin(coin)
-        return current_coin, source
+        coingecko = pycoingecko_model.Coin(coin)
+        return coingecko, source, coingecko.symbol
 
     if source == "bin":
         parsed_coin = coin.upper()
@@ -179,13 +180,13 @@ def load(
             print(f"Coin found : {current_coin}\n")
         else:
             print(f"Couldn't find coin with symbol {current_coin}\n")
-        return current_coin, source
+        return current_coin, source, parsed_coin
 
     if source == "cp":
         paprika_coins = get_list_of_coins()
         paprika_coins_dict = dict(zip(paprika_coins.id, paprika_coins.symbol))
-        current_coin, _ = coinpaprika_model.validate_coin(coin, paprika_coins_dict)
-        return current_coin, source
+        current_coin, symbol = coinpaprika_model.validate_coin(coin, paprika_coins_dict)
+        return current_coin, source, symbol
 
     if source == "cb":
         coinbase_coin = coin.upper()
@@ -196,9 +197,9 @@ def load(
             print(f"Coin found : {current_coin}\n")
         else:
             print(f"Couldn't find coin with symbol {current_coin}\n")
-        return current_coin, source
+        return current_coin, source, coin
 
-    return current_coin, None
+    return current_coin, None, None
 
 
 # TODO: Find better algorithm then difflib.get_close_matches to find most similar coins
@@ -496,7 +497,7 @@ def load_ta_data(
             )
             candles_df = pd.DataFrame(candles).astype(float).iloc[:, :6]
             candles_df.columns = [
-                "Time0",
+                "date",
                 "Open",
                 "High",
                 "Low",
@@ -504,8 +505,8 @@ def load_ta_data(
                 "Volume",
             ]
             df_coin = candles_df.set_index(
-                pd.to_datetime(candles_df["Time0"], unit="ms")
-            ).drop("Time0", axis=1)
+                pd.to_datetime(candles_df["date"], unit="ms")
+            ).drop("date", axis=1)
 
             return df_coin, currency
         return pd.DataFrame(), currency
@@ -519,14 +520,14 @@ def load_ta_data(
 
         df.drop(["time_close", "market_cap"], axis=1, inplace=True)
         df.columns = [
-            "Time0",
+            "date",
             "Open",
             "High",
             "Low",
             "Close",
             "Volume",
         ]
-        df = df.set_index(pd.to_datetime(df["Time0"])).drop("Time0", axis=1)
+        df = df.set_index(pd.to_datetime(df["date"])).drop("date", axis=1)
         return df, currency
 
     if source == "cg":
@@ -555,10 +556,11 @@ def load_ta_data(
                 interval=interval or "24hour",
             ).head(limit)
 
-            df_coin = df.set_index(pd.to_datetime(df["Time0"], unit="s")).drop(
-                "Time0", axis=1
+            df_coin = df.set_index(pd.to_datetime(df["date"], unit="s")).drop(
+                "date", axis=1
             )
-            return df_coin, currency
+
+            return df_coin[::-1], currency
 
     return pd.DataFrame(), currency
 
@@ -628,7 +630,7 @@ def plot_chart(
             )
             candles_df = pd.DataFrame(candles).astype(float).iloc[:, :6]
             candles_df.columns = [
-                "Time0",
+                "date",
                 "Open",
                 "High",
                 "Low",
@@ -636,8 +638,8 @@ def plot_chart(
                 "Volume",
             ]
             df_coin = candles_df.set_index(
-                pd.to_datetime(candles_df["Time0"], unit="ms")
-            ).drop("Time0", axis=1)
+                pd.to_datetime(candles_df["date"], unit="ms")
+            ).drop("date", axis=1)
 
             plot_candles(
                 df_coin,
@@ -654,14 +656,14 @@ def plot_chart(
 
         df.drop(["time_close", "market_cap"], axis=1, inplace=True)
         df.columns = [
-            "Time0",
+            "date",
             "Open",
             "High",
             "Low",
             "Close",
             "Volume",
         ]
-        df = df.set_index(pd.to_datetime(df["Time0"])).drop("Time0", axis=1)
+        df = df.set_index(pd.to_datetime(df["date"])).drop("date", axis=1)
         title = (
             f"\n{coin}/{currency} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}",
         )
@@ -737,10 +739,8 @@ def plot_chart(
                 interval=interval or "24hour",
             ).head(limit)
             df = df.astype(float).iloc[:, :6]
-            df.sort_values(by="Time0", inplace=True, ascending=True)
-            df = df.set_index(pd.to_datetime(df["Time0"], unit="s")).drop(
-                "Time0", axis=1
-            )
+            df.sort_values(by="date", inplace=True, ascending=True)
+            df = df.set_index(pd.to_datetime(df["date"], unit="s")).drop("date", axis=1)
 
             title = (
                 f"\n{coin}/{currency} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}",

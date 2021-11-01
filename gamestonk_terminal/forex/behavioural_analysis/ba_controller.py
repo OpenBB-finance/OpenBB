@@ -17,6 +17,7 @@ from gamestonk_terminal.helper_funcs import (
     check_int_range,
     valid_date,
     check_positive,
+    try_except,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.behavioural_analysis import (
@@ -178,6 +179,7 @@ SentimentInvestor:
         if "." in self.ticker:
             self.ticker = self.ticker.split(".")[0]
 
+    @try_except
     def call_watchlist(self, other_args: List[str]):
         """Process watchlist command"""
         parser = argparse.ArgumentParser(
@@ -196,16 +198,13 @@ SentimentInvestor:
             help="limit of posts with watchlists retrieved.",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            reddit_view.display_watchlist(num=ns_parser.n_limit)
+        reddit_view.display_watchlist(num=ns_parser.n_limit)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_spac(self, other_args: List[str]):
         """Process spac command"""
         parser = argparse.ArgumentParser(
@@ -224,16 +223,13 @@ SentimentInvestor:
             help="limit of posts with SPACs retrieved.",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            reddit_view.display_spac(limit=ns_parser.n_limit)
+        reddit_view.display_spac(limit=ns_parser.n_limit)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_spac_c(self, other_args: List[str]):
         """Process spac_c command"""
         parser = argparse.ArgumentParser(
@@ -260,18 +256,15 @@ SentimentInvestor:
             help="popular flag, if true the posts retrieved are based on score rather than time",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            reddit_view.display_spac_community(
-                limit=ns_parser.n_limit, popular=ns_parser.b_popular
-            )
+        reddit_view.display_spac_community(
+            limit=ns_parser.n_limit, popular=ns_parser.b_popular
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_wsb(self, other_args: List[str]):
         """Process wsb command"""
         parser = argparse.ArgumentParser(
@@ -297,18 +290,13 @@ SentimentInvestor:
             help="new flag, if true the posts retrieved are based on being more recent rather than their score.",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            reddit_view.display_wsb_community(
-                limit=ns_parser.n_limit, new=ns_parser.b_new
-            )
+        reddit_view.display_wsb_community(limit=ns_parser.n_limit, new=ns_parser.b_new)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_popular(self, other_args: List[str]):
         """Process popular command"""
         parser = argparse.ArgumentParser(
@@ -348,20 +336,17 @@ SentimentInvestor:
             """,
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            reddit_view.display_popular_tickers(
-                n_top=ns_parser.n_top,
-                posts_to_look_at=ns_parser.n_limit,
-                subreddits=ns_parser.s_subreddit,
-            )
+        reddit_view.display_popular_tickers(
+            n_top=ns_parser.n_top,
+            posts_to_look_at=ns_parser.n_limit,
+            subreddits=ns_parser.s_subreddit,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_getdd(self, other_args: List[str]):
         """Process getdd command"""
         parser = argparse.ArgumentParser(
@@ -400,20 +385,18 @@ SentimentInvestor:
                 specific flairs: DD, technical analysis, Catalyst, News, Advice, Chart""",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if self._check_ticker():
-                reddit_view.display_due_diligence(
-                    ticker=self.ticker,
-                    limit=ns_parser.n_limit,
-                    n_days=ns_parser.n_days,
-                    show_all_flairs=ns_parser.b_all,
-                )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if self._check_ticker():
+            reddit_view.display_due_diligence(
+                ticker=self.ticker,
+                limit=ns_parser.n_limit,
+                n_days=ns_parser.n_days,
+                show_all_flairs=ns_parser.b_all,
+            )
 
+    @try_except
     def call_bullbear(self, other_args: List[str]):
         """Process bullbear command"""
         parser = argparse.ArgumentParser(
@@ -426,16 +409,13 @@ SentimentInvestor:
             """,
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if self._check_ticker():
-                stocktwits_view.display_bullbear(ticker=self.ticker)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if self._check_ticker():
+            stocktwits_view.display_bullbear(ticker=self.ticker)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_messages(self, other_args: List[str]):
         """Process messages command"""
         parser = argparse.ArgumentParser(
@@ -453,17 +433,13 @@ SentimentInvestor:
             default=30,
             help="limit messages shown.",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if self._check_ticker():
-                stocktwits_view.display_messages(
-                    ticker=self.ticker, limit=ns_parser.n_lim
-                )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if self._check_ticker():
+            stocktwits_view.display_messages(ticker=self.ticker, limit=ns_parser.n_lim)
 
+    @try_except
     def call_trending(self, other_args: List[str]):
         """Process trending command"""
         parser = argparse.ArgumentParser(
@@ -472,16 +448,13 @@ SentimentInvestor:
             prog="trending",
             description="""Stocks trending. [Source: Stocktwits]""",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            stocktwits_view.display_trending()
+        stocktwits_view.display_trending()
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_stalker(self, other_args: List[str]):
         """Process stalker command"""
         parser = argparse.ArgumentParser(
@@ -508,17 +481,13 @@ SentimentInvestor:
             default=30,
             help="limit messages shown.",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            stocktwits_view.display_stalker(
-                user=ns_parser.s_user, limit=ns_parser.n_lim
-            )
-        except Exception as e:
-            print(e, "\n")
+        stocktwits_view.display_stalker(user=ns_parser.s_user, limit=ns_parser.n_lim)
 
+    @try_except
     def call_mentions(self, other_args: List[str]):
         """Process mentions command"""
         parser = argparse.ArgumentParser(
@@ -537,18 +506,15 @@ SentimentInvestor:
             default=self.start,
             help="starting date (format YYYY-MM-DD) from when we are interested in stock's mentions.",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if self._check_ticker():
-                google_view.display_mentions(
-                    ticker=self.ticker, start=self.start, export=ns_parser.export
-                )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if self._check_ticker():
+            google_view.display_mentions(
+                ticker=self.ticker, start=self.start, export=ns_parser.export
+            )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_regions(self, other_args: List[str]):
         """Process regions command"""
         parser = argparse.ArgumentParser(
@@ -566,17 +532,15 @@ SentimentInvestor:
             default=10,
             help="number of regions to plot that show highest interest.",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if self._check_ticker():
-                google_view.display_regions(
-                    ticker=self.ticker, num=ns_parser.n_num, export=ns_parser.export
-                )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if self._check_ticker():
+            google_view.display_regions(
+                ticker=self.ticker, num=ns_parser.n_num, export=ns_parser.export
+            )
 
+    @try_except
     def call_queries(self, other_args: List[str]):
         """Process queries command"""
         parser = argparse.ArgumentParser(
@@ -594,17 +558,15 @@ SentimentInvestor:
             default=10,
             help="number of top related queries to print.",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if self._check_ticker():
-                google_view.display_queries(
-                    ticker=self.ticker, num=ns_parser.n_num, export=ns_parser.export
-                )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if self._check_ticker():
+            google_view.display_queries(
+                ticker=self.ticker, num=ns_parser.n_num, export=ns_parser.export
+            )
 
+    @try_except
     def call_rise(self, other_args: List[str]):
         """Process rise command"""
         parser = argparse.ArgumentParser(
@@ -622,17 +584,15 @@ SentimentInvestor:
             default=10,
             help="number of top rising related queries to print.",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if self._check_ticker():
-                google_view.display_rise(
-                    ticker=self.ticker, num=ns_parser.n_num, export=ns_parser.export
-                )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if self._check_ticker():
+            google_view.display_rise(
+                ticker=self.ticker, num=ns_parser.n_num, export=ns_parser.export
+            )
 
+    @try_except
     def call_infer(self, other_args: List[str]):
         """Process infer command"""
         parser = argparse.ArgumentParser(
@@ -655,16 +615,14 @@ SentimentInvestor:
             help="num of latest tweets to infer from.",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            if self._check_ticker():
-                twitter_view.display_inference(ticker=self.ticker, num=ns_parser.n_num)
-        except Exception as e:
-            print(e, "\n")
+        if self._check_ticker():
+            twitter_view.display_inference(ticker=self.ticker, num=ns_parser.n_num)
 
+    @try_except
     def call_sentiment(self, other_args: List[str]):
         """Process sentiment command"""
         parser = argparse.ArgumentParser(
@@ -696,20 +654,18 @@ SentimentInvestor:
             default=6,
             help="number of days in the past to extract tweets.",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if self._check_ticker():
-                twitter_view.display_sentiment(
-                    ticker=self.ticker,
-                    n_tweets=ns_parser.n_tweets,
-                    n_days_past=ns_parser.n_days_past,
-                    export=ns_parser.export,
-                )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if self._check_ticker():
+            twitter_view.display_sentiment(
+                ticker=self.ticker,
+                n_tweets=ns_parser.n_tweets,
+                n_days_past=ns_parser.n_days_past,
+                export=ns_parser.export,
+            )
 
+    @try_except
     def call_finbrain(self, other_args: List[str]):
         """Process finbrain command"""
         parser = argparse.ArgumentParser(
@@ -731,17 +687,15 @@ SentimentInvestor:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if self._check_ticker():
-                finbrain_view.display_sentiment_analysis(
-                    ticker=self.ticker, export=ns_parser.export
-                )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if self._check_ticker():
+            finbrain_view.display_sentiment_analysis(
+                ticker=self.ticker, export=ns_parser.export
+            )
 
+    @try_except
     def call_stats(self, other_args: List[str]):
         """Process stats command"""
         parser = argparse.ArgumentParser(
@@ -762,19 +716,16 @@ SentimentInvestor:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            if self._check_ticker():
-                finnhub_view.display_sentiment_stats(
-                    ticker=self.ticker, export=ns_parser.export
-                )
+        if self._check_ticker():
+            finnhub_view.display_sentiment_stats(
+                ticker=self.ticker, export=ns_parser.export
+            )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_metrics(self, other_args: List[str]):
         """Process metrics command"""
         command_description = f"""
@@ -815,17 +766,14 @@ SentimentInvestor:
             formatter_class=argparse.RawDescriptionHelpFormatter,
             description=textwrap.dedent(command_description),
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            if self._check_ticker():
-                sentimentinvestor_view.display_metrics(ticker=self.ticker)
+        if self._check_ticker():
+            sentimentinvestor_view.display_metrics(ticker=self.ticker)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_social(self, other_args: List[str]):
         """Process social command"""
         command_description = f"""
@@ -844,17 +792,14 @@ SentimentInvestor:
             description=textwrap.dedent(command_description),
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            if self._check_ticker():
-                sentimentinvestor_view.display_social(ticker=self.ticker)
+        if self._check_ticker():
+            sentimentinvestor_view.display_social(ticker=self.ticker)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
         command_description = f"""
@@ -926,20 +871,18 @@ SentimentInvestor:
             choices=["sentiment", "AHI", "RHI", "SGP"],
             help="the metric to plot",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if self._check_ticker():
-                sentimentinvestor_view.display_historical(
-                    ticker=self.ticker,
-                    sort_param=ns_parser.sort_param,
-                    sort_dir=ns_parser.sort_dir,
-                    metric=ns_parser.metric,
-                )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if self._check_ticker():
+            sentimentinvestor_view.display_historical(
+                ticker=self.ticker,
+                sort_param=ns_parser.sort_param,
+                sort_dir=ns_parser.sort_dir,
+                metric=ns_parser.metric,
+            )
 
+    @try_except
     def call_popularsi(self, other_args: List[str]):
         """Process popular command"""
         command_description = f"""
@@ -973,14 +916,12 @@ SentimentInvestor:
             default=10,
             help="the maximum number of stocks to retrieve",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            sentimentinvestor_view.display_top(metric="AHI", limit=ns_parser.limit)
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        sentimentinvestor_view.display_top(metric="AHI", limit=ns_parser.limit)
 
+    @try_except
     def call_emerging(self, other_args: List[str]):
         """Process emerging command"""
         command_description = f"""
@@ -1013,13 +954,10 @@ SentimentInvestor:
             default=10,
             help="the maximum number of stocks to retrieve",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            sentimentinvestor_view.display_top(metric="RHI", limit=ns_parser.limit)
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        sentimentinvestor_view.display_top(metric="RHI", limit=ns_parser.limit)
 
 
 def menu(ticker: str, start: datetime):

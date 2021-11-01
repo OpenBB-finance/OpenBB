@@ -7,7 +7,7 @@ env:
 on: [pull_request, push]
 jobs:
   linting:
-    name: Linting
+    name: General Linting
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
@@ -30,7 +30,7 @@ jobs:
       - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil
       - run: bandit -r . || true
       - run: black --check .
-      - run: codespell --ignore-words-list=pres,coo,navagation,ser,buil,operatio,mape,ba,hist,yeld,ether,hsi --quiet-level=2 --skip=".git" --skip="*.yaml" --skip="*.json" --skip="*.js" --skip="*.css" --skip="*.scss" --skip="*.html" --skip="*.ini" --skip="*.md" --skip="*.lock"
+      - run: codespell --ignore-words-list=pres,hsi,hist,mape,ba,ser,coo --quiet-level=2 --skip=".git" --skip="*.yaml" --skip="*.ipynb" --skip="*.json" --skip="*.js" --skip="*.css" --skip="*.scss" --skip="*.html" --skip="*.ini" --skip="*.lock"
       - run: flake8 . --count --ignore=E203,W503 --max-line-length=122 --show-source --statistics
       - run: mypy --ignore-missing-imports --exclude '/setup\.py$' .
       - run: shopt -s globstar && pyupgrade --py36-plus **/*.py
@@ -38,7 +38,7 @@ jobs:
       - run: |
           pylint terminal.py gamestonk_terminal tests
   test:
-    name: ubuntu-latest - Python 3.9
+    name: Base Tests - Ubuntu-latest - Python 3.9
     needs: linting
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
@@ -84,8 +84,19 @@ jobs:
         run: |
           source $VENV
           python terminal.py
+  markdown-link-check:
+    name: Markdown Linting
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    steps:
+      - uses: actions/checkout@v2
+        name: Check out the code
+      - name: Lint Code Base
+        uses: docker://avtodev/markdown-lint:v1
+        with:
+          args: "./gamestonk_terminal/options/README.md ./*.md ./changelogs/*.md ./gamestonk_terminal/common/**/*.md"
   tests-python:
-    name: Python (${{ matrix.python-version }}, ${{ matrix.os }})
+    name: Vanilla Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
     runs-on: ${{ matrix.os }}
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
@@ -102,7 +113,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
           architecture: x64
@@ -146,7 +157,7 @@ jobs:
           source $VENV
           python terminal.py
   tests-conda:
-    name: Conda (${{ matrix.python-version }}, ${{ matrix.os }})
+    name: Anaconda Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
     runs-on: ${{ matrix.os }}-latest
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository

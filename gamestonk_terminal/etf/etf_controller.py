@@ -3,14 +3,28 @@ __docformat__ = "numpy"
 
 import argparse
 import os
+from datetime import datetime
 from typing import List
 
 import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
+from thepassiveinvestor import create_ETF_report
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.etf import screener_view, stockanalysis_view, wsj_view
-from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
+from gamestonk_terminal.etf import (
+    screener_view,
+    stockanalysis_view,
+    wsj_view,
+    financedatabase_view,
+)
+from gamestonk_terminal.helper_funcs import (
+    get_flair,
+    parse_known_args_and_warn,
+    MENU_GO_BACK,
+    MENU_QUIT,
+    MENU_RESET,
+    try_except,
+)
 from gamestonk_terminal.menu import session
 
 
@@ -23,6 +37,7 @@ class ETFController:
         "help",
         "q",
         "quit",
+        "reset",
     ]
 
     CHOICES_COMMANDS = [
@@ -34,6 +49,8 @@ class ETFController:
         "gainers",
         "decliners",
         "active",
+        "pir",
+        "fds",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -53,6 +70,7 @@ What do you want to do?
     ?/help      show this menu again
     q           quit this menu, and shows back to main menu
     quit        quit to abandon the program
+    reset       reset terminal and reload configs
 
 StockAnalysis.com:
     search        search ETFs matching name (i.e. BlackRock or Invesco)
@@ -65,6 +83,12 @@ Wall St. Journal:
     gainers       show top gainers
     decliners     show top decliners
     active        show most active
+
+The Passive Investor:
+    pir           create ETF report of multiple tickers
+
+Finance Database:
+    fds           advanced ETF search based on category, name and/or description
 """
         print(help_str)
 
@@ -73,10 +97,10 @@ Wall St. Journal:
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        MENU_GO_BACK, MENU_QUIT, MENU_RESET
+            MENU_GO_BACK - Show main context menu again
+            MENU_QUIT - Quit terminal
+            MENU_RESET - Reset terminal and go back to same previous menu
         """
 
         # Empty command
@@ -106,12 +130,17 @@ Wall St. Journal:
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
-        return False
+        return MENU_GO_BACK
 
     def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+        """Process Quit command - exit the program"""
+        return MENU_QUIT
 
+    def call_reset(self, _):
+        """Process Reset command - reset the program"""
+        return MENU_RESET
+
+    @try_except
     def call_search(self, other_args: List[str]):
         """Process search command"""
         parser = argparse.ArgumentParser(
@@ -137,23 +166,18 @@ Wall St. Journal:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-e")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-e")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            search_string = " ".join(ns_parser.search_str)
-            stockanalysis_view.view_search(
-                to_match=search_string, export=ns_parser.export
-            )
+        search_string = " ".join(ns_parser.search_str)
+        stockanalysis_view.view_search(to_match=search_string, export=ns_parser.export)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
 
@@ -180,23 +204,18 @@ Wall St. Journal:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-e")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-e")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
-                return
+        if not ns_parser:
+            return
 
-            stockanalysis_view.view_overview(
-                symbol=ns_parser.name, export=ns_parser.export
-            )
+        stockanalysis_view.view_overview(symbol=ns_parser.name, export=ns_parser.export)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_holdings(self, other_args: List[str]):
         """Process holdings command"""
         parser = argparse.ArgumentParser(
@@ -229,24 +248,21 @@ Wall St. Journal:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-e")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-e")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            stockanalysis_view.view_holdings(
-                symbol=ns_parser.name,
-                num_to_show=ns_parser.limit,
-                export=ns_parser.export,
-            )
+        stockanalysis_view.view_holdings(
+            symbol=ns_parser.name,
+            num_to_show=ns_parser.limit,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_compare(self, other_args):
         """Process compare command"""
         parser = argparse.ArgumentParser(
@@ -271,21 +287,18 @@ Wall St. Journal:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-e")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-e")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            etf_list = ns_parser.names.upper().split(",")
-            stockanalysis_view.view_comparisons(etf_list, export=ns_parser.export)
+        etf_list = ns_parser.names.upper().split(",")
+        stockanalysis_view.view_comparisons(etf_list, export=ns_parser.export)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_screener(self, other_args):
         """Process screener command"""
         # TODO: Change presets to use view/set like in stocks/options
@@ -326,19 +339,15 @@ Wall St. Journal:
             dest="preset",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            screener_view.view_screener(
-                num_to_show=ns_parser.num,
-                preset=ns_parser.preset,
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
+        screener_view.view_screener(
+            num_to_show=ns_parser.num,
+            preset=ns_parser.preset,
+            export=ns_parser.export,
+        )
 
     def call_gainers(self, other_args):
         """Process gainers command"""
@@ -351,6 +360,127 @@ Wall St. Journal:
     def call_active(self, other_args):
         """Process gainers command"""
         wsj_view.show_top_mover("active", other_args)
+
+    @try_except
+    def call_pir(self, other_args):
+        """Process pir command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="pir",
+            description="Create a ETF Report of the selected ETFs",
+        )
+        parser.add_argument(
+            "-e",
+            "--etfs",
+            type=str,
+            dest="names",
+            help="Symbols to create a report for",
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "--filename",
+            default=f"ETF_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+            dest="filename",
+            help="Filename of the ETF report",
+        )
+        parser.add_argument(
+            "--folder",
+            default=os.path.dirname(os.path.abspath(__file__)).replace(
+                "gamestonk_terminal", "exports"
+            ),
+            dest="folder",
+            help="Folder where the ETF report will be saved",
+        )
+
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-e")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        etf_list = ns_parser.names.upper().split(",")
+        create_ETF_report(
+            etf_list, filename=ns_parser.filename, folder=ns_parser.folder
+        )
+        print(
+            f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
+        )
+
+    @try_except
+    def call_fds(self, other_args):
+        """Process fds command"""
+        parser = argparse.ArgumentParser(
+            description="Display a selection of ETFs based on category, name and/or description filtered by total "
+            "assets. Returns the top ETFs when no argument is given. [Source: Finance Database]",
+            add_help=False,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--category",
+            default=None,
+            nargs="+",
+            dest="category",
+            help="Specify the ETF selection based on a category",
+        )
+
+        parser.add_argument(
+            "-n",
+            "--name",
+            default=None,
+            nargs="+",
+            dest="name",
+            help="Specify the ETF selection based on the name",
+        )
+
+        parser.add_argument(
+            "-d",
+            "--description",
+            default=None,
+            nargs="+",
+            dest="description",
+            help="Specify the ETF selection based on the description (not shown in table)",
+        )
+
+        parser.add_argument(
+            "-ie",
+            "--include_exchanges",
+            action="store_false",
+            help="When used, data from different exchanges is also included. This leads to a much larger "
+            "pool of data due to the same ETF being listed on multiple exchanges",
+        )
+
+        parser.add_argument(
+            "-a",
+            "--amount",
+            default=10,
+            type=int,
+            dest="amount",
+            help="Enter the number of ETFs you wish to see in the Tabulate window",
+        )
+
+        parser.add_argument(
+            "-o",
+            "--options",
+            action="store_true",
+            help="Obtain the available categories",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        financedatabase_view.show_etfs(
+            category=ns_parser.category,
+            name=ns_parser.name,
+            description=ns_parser.description,
+            include_exchanges=ns_parser.include_exchanges,
+            amount=ns_parser.amount,
+            options=ns_parser.options,
+        )
 
 
 def menu():

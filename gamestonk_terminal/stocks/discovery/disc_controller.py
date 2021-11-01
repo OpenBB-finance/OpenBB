@@ -1,24 +1,26 @@
 """ Disc Controller """
 __docformat__ = "numpy"
+# pylint:disable=too-many-lines
 
 import argparse
 import os
-from typing import List
 from datetime import datetime
+from typing import List
 
 from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
-from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_non_negative,
     check_positive,
     valid_date,
     check_int_range,
+    try_except,
 )
+from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.discovery import (
     ark_view,
     fidelity_view,
@@ -27,6 +29,7 @@ from gamestonk_terminal.stocks.discovery import (
     yahoofinance_view,
     finnhub_view,
     geekofwallstreet_view,
+    financedatabase_view,
 )
 
 
@@ -60,6 +63,7 @@ class DiscoveryController:
         "lowfloat",
         "hotpenny",
         "rtearn",
+        "fds",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -106,6 +110,8 @@ shortinterest.com
     lowfloat       low float stocks under 10M shares float
 pennystockflow.com
     hotpenny       today's hot penny stocks
+Finance Database:
+    fds            advanced Equities search based on country, sector, industry, name and/or description
 """
         print(help_text)
 
@@ -151,6 +157,7 @@ pennystockflow.com
         """Process Quit command - quit the program"""
         return True
 
+    @try_except
     def call_rtearn(self, other_args: List[str]):
         """Process rtearn command"""
         parser = argparse.ArgumentParser(
@@ -169,17 +176,13 @@ pennystockflow.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        geekofwallstreet_view.display_realtime_earnings(ns_parser.export)
 
-            geekofwallstreet_view.display_realtime_earnings(ns_parser.export)
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_pipo(self, other_args: List[str]):
         """Process pipo command"""
         parser = argparse.ArgumentParser(
@@ -207,23 +210,20 @@ pennystockflow.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-n")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            finnhub_view.past_ipo(
-                num_days_behind=ns_parser.num,
-                export=ns_parser.export,
-            )
+        finnhub_view.past_ipo(
+            num_days_behind=ns_parser.num,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_fipo(self, other_args: List[str]):
         """Process fipo command"""
         parser = argparse.ArgumentParser(
@@ -251,22 +251,19 @@ pennystockflow.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            if other_args and "-" not in other_args[0]:
-                other_args.insert(0, "-n")
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-n")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            finnhub_view.future_ipo(
-                num_days_ahead=ns_parser.num,
-                export=ns_parser.export,
-            )
+        finnhub_view.future_ipo(
+            num_days_ahead=ns_parser.num,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_gainers(self, other_args: List[str]):
         """Process gainers command"""
         parser = argparse.ArgumentParser(
@@ -292,23 +289,20 @@ pennystockflow.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-n")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            yahoofinance_view.display_gainers(
-                num_stocks=ns_parser.num,
-                export=ns_parser.export,
-            )
+        yahoofinance_view.display_gainers(
+            num_stocks=ns_parser.num,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_losers(self, other_args: List[str]):
         """Process losers command"""
         parser = argparse.ArgumentParser(
@@ -334,23 +328,20 @@ pennystockflow.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-n")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            yahoofinance_view.display_losers(
-                num_stocks=ns_parser.num,
-                export=ns_parser.export,
-            )
+        yahoofinance_view.display_losers(
+            num_stocks=ns_parser.num,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_ugs(self, other_args: List[str]):
         """Process ugs command"""
         parser = argparse.ArgumentParser(
@@ -379,23 +370,20 @@ pennystockflow.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-n")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            yahoofinance_view.display_ugs(
-                num_stocks=ns_parser.num,
-                export=ns_parser.export,
-            )
+        yahoofinance_view.display_ugs(
+            num_stocks=ns_parser.num,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_gtech(self, other_args: List[str]):
         """Process gtech command"""
         parser = argparse.ArgumentParser(
@@ -423,23 +411,20 @@ pennystockflow.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-n")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            yahoofinance_view.display_gtech(
-                num_stocks=ns_parser.num,
-                export=ns_parser.export,
-            )
+        yahoofinance_view.display_gtech(
+            num_stocks=ns_parser.num,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_active(self, other_args: List[str]):
         """Process active command"""
         parser = argparse.ArgumentParser(
@@ -467,23 +452,20 @@ pennystockflow.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-n")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            yahoofinance_view.display_active(
-                num_stocks=ns_parser.num,
-                export=ns_parser.export,
-            )
+        yahoofinance_view.display_active(
+            num_stocks=ns_parser.num,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_ulc(self, other_args: List[str]):
         """Process ulc command"""
         parser = argparse.ArgumentParser(
@@ -511,23 +493,20 @@ pennystockflow.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-n")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            yahoofinance_view.display_ulc(
-                num_stocks=ns_parser.num,
-                export=ns_parser.export,
-            )
+        yahoofinance_view.display_ulc(
+            num_stocks=ns_parser.num,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_asc(self, other_args: List[str]):
         """Process asc command"""
         parser = argparse.ArgumentParser(
@@ -555,23 +534,20 @@ pennystockflow.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-n")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            yahoofinance_view.display_asc(
-                num_stocks=ns_parser.num,
-                export=ns_parser.export,
-            )
+        yahoofinance_view.display_asc(
+            num_stocks=ns_parser.num,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_ford(self, other_args: List[str]):
         """Process ford command"""
         parser = argparse.ArgumentParser(
@@ -602,23 +578,20 @@ pennystockflow.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-n")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            fidelity_view.orders_view(
-                num=ns_parser.n_num,
-                export=ns_parser.export,
-            )
+        fidelity_view.orders_view(
+            num=ns_parser.n_num,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_arkord(self, other_args: List[str]):
         """Process arkord command"""
         parser = argparse.ArgumentParser(
@@ -646,23 +619,20 @@ pennystockflow.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-n")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            ark_view.ark_orders_view(
-                num=ns_parser.n_num,
-                export=ns_parser.export,
-            )
+        ark_view.ark_orders_view(
+            num=ns_parser.n_num,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_upcoming(self, other_args: List[str]):
         # TODO: switch to nasdaq
         """Process upcoming command"""
@@ -698,24 +668,21 @@ pennystockflow.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-n")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            seeking_alpha_view.upcoming_earning_release_dates(
-                num_pages=ns_parser.n_pages,
-                num_earnings=ns_parser.n_num,
-                export=ns_parser.export,
-            )
+        seeking_alpha_view.upcoming_earning_release_dates(
+            num_pages=ns_parser.n_pages,
+            num_earnings=ns_parser.n_num,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_latest(self, other_args: List[str]):
         """Process latest command"""
         parser = argparse.ArgumentParser(
@@ -759,26 +726,23 @@ pennystockflow.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-i")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-i")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            seeking_alpha_view.news(
-                news_type="latest",
-                article_id=ns_parser.n_id,
-                num=ns_parser.n_num,
-                start_date=ns_parser.s_date,
-                export=ns_parser.export,
-            )
+        seeking_alpha_view.news(
+            news_type="latest",
+            article_id=ns_parser.n_id,
+            num=ns_parser.n_num,
+            start_date=ns_parser.s_date,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_trending(self, other_args: List[str]):
         """Process trending command"""
         parser = argparse.ArgumentParser(
@@ -822,26 +786,23 @@ pennystockflow.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-i")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-i")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            seeking_alpha_view.news(
-                news_type="trending",
-                article_id=ns_parser.n_id,
-                num=ns_parser.n_num,
-                start_date=ns_parser.s_date,
-                export=ns_parser.export,
-            )
+        seeking_alpha_view.news(
+            news_type="trending",
+            article_id=ns_parser.n_id,
+            num=ns_parser.n_num,
+            start_date=ns_parser.s_date,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_lowfloat(self, other_args: List[str]):
         """Process lowfloat command"""
         parser = argparse.ArgumentParser(
@@ -873,19 +834,16 @@ pennystockflow.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            shortinterest_view.low_float(
-                num=ns_parser.n_num,
-                export=ns_parser.export,
-            )
+        shortinterest_view.low_float(
+            num=ns_parser.n_num,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_hotpenny(self, other_args: List[str]):
         """Process hotpenny command"""
         parser = argparse.ArgumentParser(
@@ -919,18 +877,111 @@ pennystockflow.com
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            shortinterest_view.hot_penny_stocks(
-                num=ns_parser.n_num,
-                export=ns_parser.export,
-            )
+        shortinterest_view.hot_penny_stocks(
+            num=ns_parser.n_num,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
+    @try_except
+    def call_fds(self, other_args: List[str]):
+        """Process fds command"""
+        parser = argparse.ArgumentParser(
+            description="Display a selection of Equities based on country, sector, industry, name and/or description "
+            "filtered by market cap. If no arguments are given, return the equities with the highest "
+            "market cap. [Source: Finance Database]",
+            add_help=False,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--country",
+            default=None,
+            nargs="+",
+            dest="country",
+            help="Specify the Equities selection based on a country",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sector",
+            default=None,
+            nargs="+",
+            dest="sector",
+            help="Specify the Equities selection based on a sector",
+        )
+
+        parser.add_argument(
+            "-i",
+            "--industry",
+            default=None,
+            nargs="+",
+            dest="industry",
+            help="Specify the Equities selection based on an industry",
+        )
+
+        parser.add_argument(
+            "-n",
+            "--name",
+            default=None,
+            nargs="+",
+            dest="name",
+            help="Specify the Equities selection based on the name",
+        )
+
+        parser.add_argument(
+            "-d",
+            "--description",
+            default=None,
+            nargs="+",
+            dest="description",
+            help="Specify the Equities selection based on the description (not shown in table)",
+        )
+
+        parser.add_argument(
+            "-ie",
+            "--include_exchanges",
+            action="store_false",
+            help="When used, data from different exchanges is also included. This leads to a much larger "
+            "pool of data due to the same company being listed on multiple exchanges",
+        )
+
+        parser.add_argument(
+            "-a",
+            "--amount",
+            default=10,
+            type=int,
+            dest="amount",
+            help="Enter the number of Equities you wish to see in the Tabulate window",
+        )
+
+        parser.add_argument(
+            "-o",
+            "--options ",
+            choices=["countries", "sectors", "industries"],
+            default=None,
+            dest="options",
+            help="Obtain the available options for country, sector and industry",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if not ns_parser:
+            return
+
+        financedatabase_view.show_equities(
+            country=ns_parser.country,
+            sector=ns_parser.sector,
+            industry=ns_parser.industry,
+            name=ns_parser.name,
+            description=ns_parser.description,
+            include_exchanges=ns_parser.include_exchanges,
+            amount=ns_parser.amount,
+            options=ns_parser.options,
+        )
 
 
 def menu():
