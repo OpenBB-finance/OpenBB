@@ -58,15 +58,15 @@ def get_uni_tokens(skip: int = 0, limit: int = 100) -> pd.DataFrame:
                 }
             }
         """ % (
-        skip,
         limit,
+        skip,
     )
 
     data = query_graph(UNI_URL, query)
     if not data:
         return pd.DataFrame()
 
-    return pd.DataFrame(data["tokens"])
+    return pd.DataFrame(data["tokens"]).reset_index()
 
 
 def get_uniswap_stats():
@@ -93,10 +93,12 @@ def get_uniswap_stats():
     data = query_graph(UNI_URL, query)
     if not data:
         return pd.DataFrame()
-    return pd.Series(data["uniswapFactory"]).reset_index()
+    df = pd.Series(data["uniswapFactory"]).reset_index()
+    df.columns = ["Metric", "Value"]
+    return df
 
 
-def get_uniswap_pool_lastly_added(
+def get_uniswap_pool_recently_added(
     last_days: int = 14,
     min_volume: int = 100,
     min_liquidity: int = 0,
@@ -264,4 +266,4 @@ def get_last_uni_swaps() -> pd.DataFrame:
         lambda x: datetime.datetime.fromtimestamp(int(x))
     )
     df.columns = ["amountUSD", "timestamp", "token0", "token1"]
-    return df[["timestamp", "token0", "token1", "amountUSD", "timestamp"]]
+    return df[["timestamp", "token0", "token1", "amountUSD"]]
