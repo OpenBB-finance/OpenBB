@@ -2,7 +2,7 @@
 usage: dpotc [--export {csv,json,xlsx}] [-h]
 ```
 
-Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]
+Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA] Test
 
 ```
 optional arguments:
