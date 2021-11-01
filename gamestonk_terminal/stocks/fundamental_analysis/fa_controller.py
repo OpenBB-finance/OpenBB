@@ -120,7 +120,7 @@ What would you like to do?
 
     data          fundamental and technical data of company [FinViz]
     mgmt          management team of the company [Business Insider]
-    analysis      analyse SEC filings with the help of machine learning [Elect.us]
+    analysis      analyse SEC filings with the help of machine learning [Eclect.us]
     score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]
     warnings      company warnings according to Sean Seah book [Market Watch]
     dcf           a customizable discounted cash flow created in excel [stockanalysis]
