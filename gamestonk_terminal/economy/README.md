@@ -3,35 +3,36 @@
 This menu aims to assess economy data, and the usage of the following commands along with an example will be exploited below.
 
 * [feargreed](#feargreed)
-    * CNN Fear Greed Index from https://money.cnn.com/data/fear-and-greed/
+  * CNN Fear Greed Index from <https://money.cnn.com/data/fear-and-greed/>
 * [events](#events)
-    * economic impact events [Finnhub]
+  * economic impact events [Finnhub]
 * [fred](#fred)
-    * display customized FRED from https://fred.stlouisfed.org
+  * display customized FRED from <https://fred.stlouisfed.org>
 * [vixcls](#vixcls)
-    * Volatility Index
+  * Volatility Index
 * [gdp](#gdp)
-    * Gross Domestic Product
+  * Gross Domestic Product
 * [unrate](#unrate)
-    * Unemployment Rate
+  * Unemployment Rate
 * [dgs1](#dgs1)
-    * 1-Year Treasury Constant Maturity Rate
+  * 1-Year Treasury Constant Maturity Rate
 * [dgs5](#dgs5)
-    * 5-Year Treasury Constant Maturity Rate
+  * 5-Year Treasury Constant Maturity Rate
 * [dgs10](#dgs10)
-    * 10-Year Treasury Constant Maturity Rate
+  * 10-Year Treasury Constant Maturity Rate
 * [dgs30](#dgs30)
-    * 30-Year Treasury Constant Maturity Rate
+  * 30-Year Treasury Constant Maturity Rate
 * [mortgage30us](#mortgage30us)
-    * 30-Year Fixed Rate Mortgage Average
+  * 30-Year Fixed Rate Mortgage Average
 * [fedfunds](#fedfunds)
-    * Effective Federal Funds Rate
+  * Effective Federal Funds Rate
 * [aaa](#aaa)
-    * Moody's Seasoned AAA Corporate Bond Yield
+  * Moody's Seasoned AAA Corporate Bond Yield
 * [dexcaus](#dexcaus)
-    * Canada / U.S. Foreign Exchange Rate (CAD per 1 USD)
+  * Canada / U.S. Foreign Exchange Rate (CAD per 1 USD)
 
 [WSJ](#wsj)
+
 * [overview](#overview)
   * Get market overview
 * [indices](#indices)
@@ -45,26 +46,28 @@ This menu aims to assess economy data, and the usage of the following commands a
 * [currencies](#currencies)
   * Get global currency overview
 
-
 ## feargreed <a name="feargreed"></a>
+
 ```text
 usage: feargreed [-i {jbd,mv,pco,mm,sps,spb,shd,index}]
 ```
 
-Display CNN Fear And Greed Index from https://money.cnn.com/data/fear-and-greed/.
-* -i : CNN Fear And Greed indicator or index. From Junk Bond Demand, Market Volatility, Put and Call Options, Market Momentum Stock Price, Strength, Stock Price Breadth, Safe Heaven Demand, and Index. Default: None, shows all.
+Display CNN Fear And Greed Index from <https://money.cnn.com/data/fear-and-greed/>.
+
+* -i : CNN Fear And Greed indicator or index. From Junk Bond Demand, Market Volatility, Put and Call Options, Market
+  Momentum Stock Price, Strength, Stock Price Breadth, Safe Heaven Demand, and Index. Default: None, shows all.
 
 ![feargreed](https://user-images.githubusercontent.com/25267873/122684285-7338d400-d1fc-11eb-8702-d409d96a2672.png)
 
 <img width="962" alt="Captura de ecrã 2021-06-20, às 19 18 12" src="https://user-images.githubusercontent.com/25267873/122684256-4a184380-d1fc-11eb-939c-d8007310324d.png">
 
-
 ## events <a name="events"></a>
+
 ```text
 usage: events [-c {NZ,AU,ERL,CA,EU,US,JP,CN,GB,CH}] [-i {low,medium,high,all}] [-n NUM]
 ```
 
-Output economy impact calendar impact events. [Source: https://finnhub.io]
+Output economy impact calendar impact events. [Source: <https://finnhub.io>]
 
 * -c : Country from where to get economy calendar impact events, between NZ,AU,ERL,CA,EU,US,JP,CN,GB,CH. Default: US.
 * -i : Impact of the economy event, between low,medium,high,all. Default: all.
@@ -72,15 +75,16 @@ Output economy impact calendar impact events. [Source: https://finnhub.io]
 
 <img width="1055" alt="Captura de ecrã 2021-05-02, às 19 51 47" src="https://user-images.githubusercontent.com/25267873/116824200-def9ab80-ab80-11eb-948a-48a94f662b53.png">
 
-
 ## fred <a name="fred"></a>
+
 ```text
 usage: fred [-i SERIES_ID] [-s START_DATE] [-t]
 ```
 
-Display customized Federal Reserve Economic Data (FRED) from https://fred.stlouisfed.org. It is possible to display multiple series.
+Display customized Federal Reserve Economic Data (FRED) from <https://fred.stlouisfed.org>. It is possible to display
+multiple series.
 
-* -i : FRED Series ID from https://fred.stlouisfed.org. For multiple series use: `fred series1,series2,series3`
+* -i : FRED Series ID from <https://fred.stlouisfed.org>. For multiple series use: `fred series1,series2,series3`
 * -s : Starting date (YYYY-MM-DD) of data. Default: 2019-01-01.
 * -t : Only output text data.
 
@@ -88,9 +92,8 @@ Example: `fred gdp,t10yie,cpiaucsl`
 
 ![fred_series](https://user-images.githubusercontent.com/25267873/127773594-2518ddfd-eae2-4f41-a963-356214c71e8c.png)
 
-
-
 ## vixcls <a name="vixcls"></a>
+
 ```text
 usage: vixcls [-s START_DATE] [-t]
 ```
@@ -102,8 +105,8 @@ Volatility Index
 
 ![vixcls](https://user-images.githubusercontent.com/25267873/116769167-160d7700-aa32-11eb-8874-3b864908c9c2.png)
 
-
 ## gdp <a name="gdp"></a>
+
 ```text
 usage: gdp [-s START_DATE] [-t]
 ```
@@ -115,8 +118,8 @@ Gross Domestic Product
 
 ![gdp](https://user-images.githubusercontent.com/25267873/116769162-14dc4a00-aa32-11eb-886a-b5368146ed37.png)
 
-
 ## unrate <a name="unrate"></a>
+
 ```text
 usage: unrate [-s START_DATE] [-t]
 ```
@@ -128,8 +131,8 @@ Unemployment Rate
 
 ![unrate](https://user-images.githubusercontent.com/25267873/116769161-14dc4a00-aa32-11eb-91f3-a0f80d687a12.png)
 
-
 ## dgs1 <a name="dgs1"></a>
+
 ```text
 usage: dgs1 [-s START_DATE] [-t]
 ```
@@ -141,8 +144,8 @@ usage: dgs1 [-s START_DATE] [-t]
 
 ![dgs1](https://user-images.githubusercontent.com/25267873/116769166-160d7700-aa32-11eb-9247-78156af4d527.png)
 
-
 ## dgs5 <a name="dgs5"></a>
+
 ```text
 usage: dgs5 [-s START_DATE] [-t]
 ```
@@ -154,8 +157,8 @@ usage: dgs5 [-s START_DATE] [-t]
 
 ![dgs5](https://user-images.githubusercontent.com/25267873/116769165-1574e080-aa32-11eb-96ee-c57728d8f57c.png)
 
-
 ## dgs10 <a name="dgs10"></a>
+
 ```text
 usage: dgs10 [-s START_DATE] [-t]
 ```
@@ -167,8 +170,8 @@ usage: dgs10 [-s START_DATE] [-t]
 
 ![dgs10](https://user-images.githubusercontent.com/25267873/116769164-1574e080-aa32-11eb-93a0-3b8a2b7cb3d2.png)
 
-
 ## dgs30 <a name="dgs30"></a>
+
 ```text
 usage: dgs30 [-s START_DATE] [-t]
 ```
@@ -180,8 +183,8 @@ usage: dgs30 [-s START_DATE] [-t]
 
 ![dgs30](https://user-images.githubusercontent.com/25267873/116769159-13ab1d00-aa32-11eb-8c3d-e53c8d1f1a19.png)
 
-
 ## mortgage30us <a name="mortgage30us"></a>
+
 ```text
 usage: mortgage30us [-s START_DATE] [-t]
 ```
@@ -193,8 +196,8 @@ usage: mortgage30us [-s START_DATE] [-t]
 
 ![mortgage30us](https://user-images.githubusercontent.com/25267873/116769157-13128680-aa32-11eb-8826-ccb2e6ae764e.png)
 
-
 ## fedfunds <a name="fedfunds"></a>
+
 ```text
 usage: fedfunds [-s START_DATE] [-t]
 ```
@@ -206,8 +209,8 @@ Effective Federal Funds Rate
 
 ![fedfunds](https://user-images.githubusercontent.com/25267873/116769158-13ab1d00-aa32-11eb-9dc2-8296bc4f7e2c.png)
 
-
 ## aaa <a name="aaa"></a>
+
 ```text
 usage: aaa [-s START_DATE] [-t]
 ```
@@ -219,8 +222,8 @@ Moody's Seasoned AAA Corporate Bond Yield
 
 ![aaa](https://user-images.githubusercontent.com/25267873/116769160-1443b380-aa32-11eb-84a8-036e15b47c9b.png)
 
-
 ## dexcaus <a name="dexcaus"></a>
+
 ```text
 usage: dexcaus [-s START_DATE] [-t]
 ```
@@ -233,57 +236,65 @@ Canada / U.S. Foreign Exchange Rate (CAD per 1 USD)
 ![dexcaus](https://user-images.githubusercontent.com/25267873/116769155-10b02c80-aa32-11eb-8ece-d8e92b8df1af.png)
 
 # WSJ <a name="wsj"></a>
+
 The following functions are meant to take the information from the [WSJ Market Data Page](https://www.wsj.com/market-data)
 
 ## overview <a name="overview"></a>
+
 ```python
 usage: overview
 ```
+
 Market overview
 
 <img width="943" alt="overview" src="https://user-images.githubusercontent.com/25267873/127777489-325b2d70-7f35-4efe-bee9-0f6e8de232b0.png">
 
-
 ## indices <a name="indices"></a>
+
 ```python
 usage: indices
 ```
+
 US indices overview
 
 <img width="947" alt="indices" src="https://user-images.githubusercontent.com/25267873/127777487-d7d70600-ba07-446b-8609-725b93fe5c89.png">
 
-
 ## futures <a name="futures"></a>
+
 ```python
 usage: futures
 ```
+
 Top futures/commodities overview
 
 <img width="949" alt="futures" src="https://user-images.githubusercontent.com/25267873/127777482-4032c6da-7739-49d9-a5e6-83f8260baac0.png">
 
-
 ## us_bonds <a name="us_bonds"></a>
+
 ```python
 usage: us_bonds
 ```
+
 US bonds overview
 
 <img width="949" alt="us_bonds" src="https://user-images.githubusercontent.com/25267873/127777484-85384a7c-d7f0-4fd8-875d-9739dc9d6371.png">
 
-
 ## gl_bonds <a name="gl_bonds"></a>
+
 ```python
 usage: gl_bonds
 ```
+
 Global bonds overview
 
 <img width="937" alt="gl_bonds" src="https://user-images.githubusercontent.com/25267873/127777486-40239a41-92bf-410d-b8d8-e1fe85bbea25.png">
 
-
 ## currencies <a name="currencies"></a>
+
 ```python
 usage: currencies
 ```
+
 Global currencies overview
 
 <img width="945" alt="currencies" src="https://user-images.githubusercontent.com/25267873/127777481-cf9ab6a8-5e9a-4954-a6dc-0b09981e7743.png">

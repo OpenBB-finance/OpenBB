@@ -1,5 +1,5 @@
 ```
-usage: finbrain [-c COIN] [--export {csv,json,xlsx}] [-h]
+usage: headlines [-c COIN] [--export {csv,json,xlsx}] [-h]
 ```
 
 Display sentiment analysis from FinBrain for chosen Cryptocurrencies

@@ -1,4 +1,5 @@
 # ETF
+
 Menu for Exchange Traded Funds.
 
 Data is currently scraped from StockAnalysis.com/etf
@@ -6,7 +7,7 @@ Data is currently scraped from StockAnalysis.com/etf
 * [search](#search)
   * search for ETFs matching an input
 * [overview](#overview)
-  *  get ETF overview
+  * get ETF overview
 * [holdings](#holdings)
   * show ETF holdings
 * [compare](#compare)
@@ -15,6 +16,7 @@ Data is currently scraped from StockAnalysis.com/etf
   * screen ETFs
 
 [WSJ](#WSJ)
+
 * [gainers](#gainers)
   * show top gainers
 * [decliners](#decliners)
@@ -23,20 +25,26 @@ Data is currently scraped from StockAnalysis.com/etf
   * show most active
 
 ## web <a name="web"></a>
+
 ```python
 usage: web
 ```
-Opens StockAnalysis.com/etf.  This site shows all avalaiable ETFs (currently > 2800).
+
+Opens StockAnalysis.com/etf.  This site shows all available ETFs (currently > 2800).
 
 ## search <a name="search"></a>
+
 ```python
 usage: search [-e --etf] [--export {csv,json,xlsx}]
 ```
+
 Search for ETFs matching
+
 * -e/--etf : Name to search for.  Can be a company or other search term
 * --export {csv,json,xlsx} : Export to the selected file
 
 Example Usage: Search for all ETFs that deal with AI
+
 ```python
 (✨) (etf)> search artificial intelligence
 BOTZ - Global X Robotics & Artificial Intelligence ETF
@@ -45,23 +53,29 @@ ROBT - First Trust Nasdaq Artificial Intelligence and Robotics ETF
 THNQ - ROBO Global Artificial Intelligence ETF
 UBOT - Daily Robotics, Artificial Intelligence & Automation Index Bull 3X Shares
 ```
+
 Note that this searches for exact strings in the ETF name.  Searching for SPY will return nothing.
 
 ## overview <a name="overview"></a>
+
 ```python
 usage: overview [-e --etf] [--export {csv,json,xlsx}]
 ```
+
 * -e/--etf : ETF to get data for
 * --export {csv,json,xlsx} : Export to the selected file
 
-Returns the overview of the ETF.  Shows Last Price, Assets, Net Asset Value (NAV), Expense Ratio, PE Ratio, 5Year Beta, Total Dividend and Dividend Yield.
+Returns the overview of the ETF.  Shows Last Price, Assets, Net Asset Value (NAV), Expense Ratio, PE Ratio, 5Year Beta,
+Total Dividend and Dividend Yield.
 
 Example will be a single column from the [compare](#compare) example.
 
 ## holdings <a name="holdings"></a>
+
 ```python
 usage: overview [-e --etf] [-l --limit] [--export {csv,json,xlsx}]
 ```
+
 * -e/--etf : Name of ETF to get data for.
 * -l/--limit : Number of assets to show.  Max 200.  Defaults to 20.
 * --export {csv,json,xlsx} : Export to the selected file
@@ -69,7 +83,8 @@ usage: overview [-e --etf] [-l --limit] [--export {csv,json,xlsx}]
 Returns the top holdings in the ETF.  Shows percentage and total shares held.
 
 Example:
-```
+
+```text
 (✨) (etf)> holdings spy -l 5
 ╒════╤══════════╤════════════╤═════════════╕
 │    │ Ticker   │ % of ETF   │ Shares      │
@@ -87,17 +102,19 @@ Example:
 ```
 
 ## compare <a name="compare"></a>
+
 ```python
 usage: compare [-e --etfs] [--export {csv,json,xlsx}]
 ```
+
 * -e/--etfs : ETFs to compare.  Input as comma separated (ETF1,ETF2,..)
 * --export {csv,json,xlsx} : Export to the selected file
 
-Campares the overview of different ETFs.
+Compares the overview of different ETFs.
 
 Example:
 
-```
+```text
 (✨) (etf)> compare spy,qqq,voo,doge
 DOGE not found
 ╒════════════════╤══════════╤══════════╤══════════╕
@@ -120,7 +137,9 @@ DOGE not found
 │ Dividend Yield │ 1.34%    │ 0.54%    │ 1.41%    │
 ╘════════════════╧══════════╧══════════╧══════════╛
 ```
+
 ## screener <a name="screener"></a>
+
 ````python
 usage: screener  [-n --num] [--export {csv,json,xlsx}] [-h]
 ````
@@ -129,11 +148,13 @@ usage: screener  [-n --num] [--export {csv,json,xlsx}] [-h]
 * --export {csv,json,xlsx} : Export to the selected file
 
 Screen ETFs based on the overview data from stockanalysis.com.  This data is scraped hourly during market hours.
-Repo can be found at https://github.com/jmaslek/etf_scraper. For screeners with many results (exceeding the `--num` flag)
+Repo can be found at <https://github.com/jmaslek/etf_scraper>. For screeners with many results (exceeding the `--num` flag)
 , the console will display a random subset of them.
 
-Note that to use the config file, locate the desired data column then change MIN and MAX.  Make sure unused columns are set to None.
-Example which will screen for ETFs the Opened between $45 and $57 (note the available data is Open and Previous Close):
+Note that to use the config file, locate the desired data column then change MIN and MAX.  Make sure unused columns are
+set to None. Example which will screen for ETFs the Opened between $45 and $57 (note the available data is Open and
+Previous Close):
+
 ```python
 [OPEN]
 MIN = 45
@@ -163,17 +184,18 @@ MAX = 57
 
 ```
 
-
-```
+```text
 # WSJ <a name="wsj"></a>
-The following functions atake the information from the [WSJ Market Data Page](https://www.wsj.com/market-data)
+The following functions take the information from the [WSJ Market Data Page](https://www.wsj.com/market-data)
 
 ## gainers <a name="gainers"></a>
 
 ```python
 usage: gainers [-n NUM] [--export {csv,json,xlsx}] [-h]
 ```
+
 Shows top gaining ETFs
+
 * -n/--num: Number to show.  Defaults to 25, which is the max provided
 * --export: Export data to one of {csv, json, xlsx}.
 
@@ -182,7 +204,9 @@ Shows top gaining ETFs
 ```python
 usage: decliners [-n NUM] [--export {csv,json,xlsx}] [-h]
 ```
+
 Shows highest declining ETFs
+
 * -n/--num: Number to show.  Defaults to 25, which is the max provided
 * --export: Export data to one of {csv, json, xlsx}.
 
@@ -191,6 +215,8 @@ Shows highest declining ETFs
 ```python
 usage: active [-n NUM] [--export {csv,json,xlsx}] [-h]
 ```
+
 Shows most active ETFs
+
 * -n/--num: Number to show.  Defaults to 25, which is the max provided
 * --export: Export data to one of {csv, json, xlsx}.

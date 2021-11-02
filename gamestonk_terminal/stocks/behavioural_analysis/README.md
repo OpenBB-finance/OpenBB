@@ -24,4 +24,3 @@ Command|Description|Source
 `metrics`       |core social sentiment metrics for this stock|[Sentiment Investor](https://sentimentinvestor.com)
 `social`        |social media figures for stock popularity|[Sentiment Investor](https://sentimentinvestor.com)
 `historical`    |plot the past week of data for a selected metric|[Sentiment Investor](https://sentimentinvestor.com)
-

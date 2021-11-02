@@ -3,12 +3,13 @@ import os
 from datetime import timedelta, datetime
 from typing import List
 
-import pandas as pd
+# import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 from colorama import Style
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.forex.oanda import oanda_controller
 from gamestonk_terminal.forex import av_view, av_model
+
 
 # from gamestonk_terminal.forex.exploratory_data_analysis import eda_controller
 from gamestonk_terminal.helper_funcs import (
@@ -36,7 +37,6 @@ class ForexController:
     ]
 
     CHOICES_COMMANDS = ["select", "load", "quote", "candle"]
-
     CHOICES_MENUS = ["oanda"]
 
     CHOICES += CHOICES_COMMANDS
