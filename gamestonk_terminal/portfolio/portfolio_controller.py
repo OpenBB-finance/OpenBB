@@ -98,7 +98,7 @@ What do you want to do?
     quit        quit to abandon the program
     reset       reset terminal and reload configs
 
->   bro         brokers holdings, \t\t supports: robinhood, alpaca, ally, degiro
+>   bro         brokers holdings, \t\t supports: robinhood, ally, degiro
 >   pa          portfolio analysis, \t\t analyses your custom portfolio
 >   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt
 
