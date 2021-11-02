@@ -20,5 +20,5 @@ def display_analysis(
     if analysis:
         print(analysis)
     else:
-        print("No SEC filings analysis found for this ticker")
+        print("Filings not found from eclect.us")
     print("")
