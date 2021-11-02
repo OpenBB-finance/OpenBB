@@ -50,13 +50,65 @@ def get_quote(to_symbol: str, from_symbol: str) -> Dict:
     Dict
         Dictionary of exchange rate
     """
-    url = f"https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency={from_symbol}&\
-        to_currency={to_symbol}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    url = "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RAT"
+    url += f"E&from_currency={from_symbol}&to_currency={to_symbol}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url)
     if r.status_code != 200:
         return {}
     return r.json()
 
 
-def load():
-    pass
+def get_historical(
+    to_symbol: str,
+    from_symbol: str,
+    resolution: str = "d",
+    interval: int = 5,
+    start_date: str = "",
+) -> pd.DataFrame:
+    """Get historical forex data
+
+    Parameters
+    ----------
+    to_symbol : str
+        To forex symbol
+    from_symbol : str
+        From forex symbol
+    resolution : str, optional
+        Resolution of data.  Can be "i", "d", "w", "m" for intraday, daily, weekly or monthly
+    interval : int, optional
+        Interval for intraday data
+    start_date : str, optional
+        Start date for data.
+
+    Returns
+    -------
+    pd.DataFrame
+        Historical data for forex pair
+    """
+    d_res = {"i": "FX_INTRADAY", "d": "FX_DAILY", "w": "FX_WEEKLY", "m": "FX_MONTHLY"}
+
+    url = f"https://www.alphavantage.co/query?function={d_res[resolution]}&from_symbol={from_symbol}"
+    url += f"&to_symbol={to_symbol}&outputsize=full&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    if resolution == "i":
+        url += f"&interval={interval}min"
+
+    r = requests.get(url)
+    if r.status_code != 200:
+        return pd.DataFrame()
+
+    key = list(r.json().keys())[1]
+
+    df = pd.DataFrame.from_dict(r.json()[key], orient="index")
+    if start_date and resolution != "i":
+        df = df[df.index > start_date]
+
+    df = df.rename(
+        columns={
+            "1. open": "Open",
+            "2. high": "High",
+            "3. low": "Low",
+            "4. close": "Close",
+        }
+    )
+    df.index = pd.DatetimeIndex(df.index)
+    return df.astype(float)

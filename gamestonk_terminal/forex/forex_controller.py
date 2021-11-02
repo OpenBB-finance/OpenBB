@@ -1,9 +1,11 @@
 import argparse
 import os
+from datetime import timedelta, datetime
 from typing import List
 
+import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-
+from colorama import Style
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.forex.oanda import oanda_controller
 from gamestonk_terminal.forex import av_view, av_model
@@ -16,6 +18,7 @@ from gamestonk_terminal.helper_funcs import (
     MENU_RESET,
     parse_known_args_and_warn,
     try_except,
+    valid_date,
 )
 from gamestonk_terminal.menu import session
 
@@ -48,9 +51,11 @@ class ForexController:
         )
         self.from_symbol = "USD"
         self.to_symbol = ""
+        self.data = pd.DataFrame()
 
     def print_help(self):
         """Print help"""
+        dim_bool = self.from_symbol and self.to_symbol
         help_str = f"""
 >>> FOREX <<<
 
@@ -64,11 +69,12 @@ What would you like to do?
 
 To:   {None or self.to_symbol}
 From: {None or self.from_symbol}
-
+{Style.DIM if not dim_bool else ""}
 AlphaVantage (API Key required):
     quote         get last quote
     load          get historical data
-
+    candle        show candle plot for loaded data
+{Style.RESET_ALL}
 Brokerages:
 >   oanda         access oanda menu
 
@@ -166,8 +172,79 @@ Brokerages:
         print("")
 
     @try_except
-    def call_quote(self, other_args: List[str]):
+    def call_load(self, other_args: List[str]):
         """Process select command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load historical exchange rate data.",
+        )
+        parser.add_argument(
+            "-r",
+            "--resolution",
+            choices=["i", "d", "w", "m"],
+            default="d",
+            help="Resolution of data.  Can be intraday, daily, weekly or monthly",
+            dest="resolution",
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            choices=[1, 5, 15, 30, 60],
+            default="5",
+            help="Interval of intraday data.  Can be 1, 5, 15, 30 or 60.",
+            dest="interval",
+        )
+        parser.add_argument(
+            "-s",
+            "--start_date",
+            default=(datetime.now() - timedelta(days=366)),
+            type=valid_date,
+            help="Start date of data.",
+            dest="start_date",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        if not self.to_symbol or not self.from_symbol:
+            print(
+                "Make sure both a to symbol and a from symbol are supplied using <select> \n"
+            )
+            return
+
+        self.data = av_model.get_historical(
+            to_symbol=self.to_symbol,
+            from_symbol=self.from_symbol,
+            resolution=ns_parser.resolution,
+            interval=ns_parser.interval,
+            start_date=ns_parser.start_date.strftime("%Y-%m-%d"),
+        )
+        print("")
+
+    @try_except
+    def call_candle(self, other_args: List[str]):
+        """Process quote command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="candle",
+            description="Show candle for loaded fx data",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if self.data.empty:
+            print("No forex historical data loaded.  Load first using <load>.")
+            return
+
+        av_view.display_candle(self.data, self.to_symbol, self.from_symbol)
+
+    @try_except
+    def call_quote(self, other_args: List[str]):
+        """Process quote command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
