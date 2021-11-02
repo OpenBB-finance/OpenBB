@@ -5,7 +5,7 @@ Load a symbol to perform analysis using the string above as a template. Optional
 
 To load a symbol from an exchange outside of the NYSE/NASDAQ default, use yFinance as the source and add the corresponding exchange to the end of the symbol. i.e. 'BNS.TO'. 
 
-BNS is a dual-listed stock, there are seperate options chains and order books for each listing. Opportunities for arbitrage may arise from momentary pricing discrepencies between listings with a dynamic exchange rate as a second order artitrage opportunity in ForEx spreads. 
+BNS is a dual-listed stock, there are seperate options chains and order books for each listing. Opportunities for arbitrage may arise from momentary pricing discrepencies between listings with a dynamic exchange rate as a second order opportunity in ForEx spreads. 
 
 Find the full list of supported exchanges here: https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html
 
