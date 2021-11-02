@@ -3,7 +3,7 @@ import os
 from datetime import timedelta, datetime
 from typing import List
 
-# import pandas as pd
+import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 from colorama import Style
 from gamestonk_terminal import feature_flags as gtff
