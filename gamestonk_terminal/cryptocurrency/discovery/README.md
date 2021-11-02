@@ -1,6 +1,7 @@
 # DISCOVERY CRYPTO
 
-This menu aims to discover crypto currencies. You can find the most trending coins, top nfts, best defi tokens and many others. The usage of the following commands along with an example will be exploited below.
+This menu aims to discover crypto currencies. You can find the most trending coins, top nfts, best defi tokens and many
+others. The usage of the following commands along with an example will be exploited below.
 
 [CoinGecko](#CoinGecko)
 
