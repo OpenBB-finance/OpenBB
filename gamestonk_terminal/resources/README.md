@@ -1,6 +1,7 @@
 # RESOURCE COLLECTION
 
-This menu aims to store a collection of useful resources that can't be scraped, or extracted in a "useful" manner, and the usage of the following commands along with an example will be exploited below.
+This menu aims to store a collection of useful resources that can't be scraped, or extracted in a "useful" manner, and
+the usage of the following commands along with an example will be exploited below.
 
 * [hfletters](#hfletters)
   * hedge fund letters or reports
