@@ -571,8 +571,8 @@ main:
         ref: "/cryptocurrency/chart"
       - name: find
         ref: "/cryptocurrency/find"
-      - name: finbrain
-        ref: "/cryptocurrency/finbrain"
+      - name: sentiment
+        ref: "/cryptocurrency/sentiment"
       - name: discovery
         ref: "/cryptocurrency/discovery"
         sub:
