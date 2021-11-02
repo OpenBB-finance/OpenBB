@@ -21,7 +21,8 @@ In order to use 2FA you need to update [config file](/gamestonk_terminal/config_
 | :--- | :--- |
 | DG_TOTP_SECRET | This secret key will let Gamestonk generate the `OneTimePassword` for you. |
 
-If you provide your `DG_TOTP_SECRET`, you won't have to type your `OneTimePassword`, Gamestonk will generate it for you at each connection.
+If you provide your `DG_TOTP_SECRET`, you won't have to type your `OneTimePassword`, Gamestonk will generate it for you
+at each connection.
 
 `DG_TOTP_SECRET` is the text representation of the `QRCODE` that Degiro's provide you when you enable 2FA.
 
@@ -30,34 +31,34 @@ More information on 2FA credentials, in the documentation of the [degiro-connect
 ## Features
 
 * [login](#login)
-    * Connect to your Degiro account
+  * Connect to your Degiro account
 * [logout](#login)
-    * Disconnect from Degiro account
+  * Disconnect from Degiro account
 
 * [hold](#hold)
-    * Command to look at current holdings
+  * Command to look at current holdings
 * [lookup](#lookup)
-    * Command to search for a product by name
+  * Command to search for a product by name
 
 * [create](#create)
-    * Create and `Order`
+  * Create and `Order`
 * [update](#update)
-    * Update and `Order`
+  * Update and `Order`
 * [cancel](#cancel)
-    * Cancel and `Order`
+  * Cancel and `Order`
 * [pending](#pending)
-    * Command to list pending orders
+  * Command to list pending orders
 
 * [companynews](#companynews)
-    * Command to get news about a company with it's isin
+  * Command to get news about a company with it's isin
 * [lastnews](#lastnews)
-    * Command to get latest news
+  * Command to get latest news
 * [topnews](#topnews)
-    * Command to get top news preview
-
+  * Command to get top news preview
 
 ### login <a name="login"></a>
-````
+
+```text
 usage: login [-u USERNAME] [-p PASSWORD] [-o OTP] [-s TOPT_SECRET] [-h]
 
 optional arguments:
@@ -69,28 +70,31 @@ optional arguments:
   -s TOPT_SECRET, --topt-secret TOPT_SECRET
                         TOTP SECRET (2FA).
   -h, --help            show this help message
-````
+```
 
 ### logout <a name="logout"></a>
-````
-usage: logout
-````
 
+```text
+usage: logout
+```
 
 ### hold <a name="hold"></a>
-````
+
+```text
 usage: hold
-````
+```
 
 Displays current holdings to the console.
 
 ### lookup <a name="lookup"></a>
-````
+
+```text
 usage: lookup TESLA
-````
+```
 
 It will display a result like this :
-```
+
+```text
                            name          isin        symbol productType currency  closePrice closePriceDate
 0                         Tesla  US88160R1014          TSLA       STOCK      USD     571.690     2021-05-13
 1                     Tesla Inc  US88160R1014           TL0       STOCK      EUR     478.000     2021-05-13
@@ -104,47 +108,52 @@ It will display a result like this :
 9  Leverage Shares 1x Tesla ETP  IE00BKT6ZH01          STSL         ETF      GBX     135.550     2021-05-13
 ```
 
-
 ### create <a name="create"></a>
-````
+
+```text
 usage: create [-a {buy,sell}] (-prod PRODUCT | -sym SYMBOL) -p PRICE (-s SIZE | -up UP_TO) [-d {gtd,gtc}] [-t {limit,market,stop-limit,stop-loss}] [-h]
-````
+```
 
 ### update <a name="update"></a>
-````
+
+```text
 usage: update ORDER_ID -p PRICE
-````
+```
 
 ### cancel <a name="cancel"></a>
-````
+
+```text
 usage: cancel ORDER_ID
-````
+```
 
 ### pending <a name="pending"></a>
-````
-usage: pending
-````
 
+```text
+usage: pending
+```
 
 ### companynews <a name="companynews"></a>
-````
+
+```text
 usage: companynews NL0000235190
-````
+```
 
 You need to provide the `ISIN` number of the company.
 You can get this `ISIN` using the `dglookup` command for instance.
 
 ### lastnews <a name="lastnews"></a>
-````
+
+```text
 usage: lastnews [-l LIMIT] [-h]
 
 optional arguments:
   -l LIMIT, --limit LIMIT
                         Number of news to display.
   -h, --help            show this help message
-````
+```
 
 ### topnews <a name="topnews"></a>
-````
+
+```text
 usage: topnews
-````
+```

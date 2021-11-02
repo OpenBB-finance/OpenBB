@@ -1,6 +1,6 @@
 # Features 📈
 
-### Table of contents
+## Table of contents
 
 * [Discover Stocks](#Discover-Stocks-)
 * [Behavioural Analysis](#Behavioural-Analysis-)
@@ -30,11 +30,12 @@
 
 The main menu allows the following commands:
 
-```
+```text
 usage: load [-t S_TICKER] [-s S_START_DATE] [-i {1,5,15,30,60}] [--source {yf,av,iex}] [-p]
 ```
 
-* Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in <https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html>.
+* Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be loaded by using '.NS'
+  at the end, e.g. 'SBIN.NS'. See available market in <https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html>.
   * -t : Stock ticker
   * -s : The starting date (format YYYY-MM-DD) of the stock
   * -i : Intraday stock minutes
@@ -43,29 +44,28 @@ usage: load [-t S_TICKER] [-s S_START_DATE] [-i {1,5,15,30,60}] [--source {yf,av
 
 **Note:** Until a ticker is loaded, the menu will only show *disc* and *sen* menu, as the others require a ticker being provided.
 
-```
+```text
 usage: clear
 ```
 
 * Clear previously loaded stock ticker.
 
-```
+```text
 view
 ```
 
-* Visualise historical data of a stock.
+* Visualize historical data of a stock.
 ![AAPL](https://user-images.githubusercontent.com/18151143/125211301-69424800-e273-11eb-853d-0b7a0db8ffb7.png)
-
 
 Line plot color is configurable in config_plot.py
 
-```
+```text
 quote -t S_TICKER
 ```
 
 * Show the current price of a stock.
 
-```
+```text
 candle -s START_DATE
 ```
 
@@ -73,7 +73,7 @@ candle -s START_DATE
 
 ![nio](https://user-images.githubusercontent.com/25267873/111053397-4d609e00-845b-11eb-9c94-89b8892a8e81.png)
 
-```
+```text
 export -f GNUS_data -F csv
 ```
 
@@ -413,7 +413,6 @@ Command|Description|Source
 `gl_bonds`      | Global bonds overview  |  <https://www.wsj.com/market-data>
 `currencies`    | Global currencies overview  |  <https://www.wsj.com/market-data>
 
-
 &nbsp;
 
 ## Options [»](options/README.md)
@@ -527,8 +526,8 @@ Command|Website
 
 &nbsp;
 
-
 ## Government [»](government/README.md)
+
 Command|Website
 ----|----
 `last_congress`         | last congress trading
@@ -555,6 +554,7 @@ with ticker provided    |
 &nbsp;
 
 ## ETF [»](etf/README.md)
+
 command|description
 ---|----
 `web`|open webbroswer to stockanalysis.com
