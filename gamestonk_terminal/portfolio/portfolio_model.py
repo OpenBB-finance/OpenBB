@@ -341,7 +341,7 @@ def get_rolling_beta(
     res = df.div(df.sum(axis=1), axis=0)
     res = res.fillna(0)
     comb = pd.merge(
-        hist["Close"], mark["Market"], how="left", left_index=True, right_index=True
+        hist["Close"], mark["Market"], how="outer", left_index=True, right_index=True
     )
     comb = comb.fillna(method="ffill")
     for col in hist["Close"].columns:
@@ -349,7 +349,6 @@ def get_rolling_beta(
         rols = RollingOLS(comb[col], exog, window=252)
         rres = rols.fit()
         res[f"beta_{col}"] = rres.params["Close"]
-
     final = res.fillna(method="ffill")
     for uni in uniques:
         final[f"prod_{uni}"] = final[uni] * final[f"beta_{uni}"]
@@ -374,9 +373,6 @@ def get_main_text(df: pd.DataFrame) -> str:
     t : str
         The main summary of performance
     """
-    v_com = (
-        "greater" if np.var(df["return"]) > np.var(df[("Market", "Return")]) else "less"
-    )
     d_debt = np.where(df[("Cash", "Cash")] > 0, 0, 1)
     bcash = 0 if df[("Cash", "Cash")][0] > 0 else abs(df[("Cash", "Cash")][0])
     ecash = 0 if df[("Cash", "Cash")][-1] > 0 else abs(df[("Cash", "Cash")][-1])
@@ -391,16 +387,17 @@ def get_main_text(df: pd.DataFrame) -> str:
         if bdte > 1 or edte > 1:
             t_debt += " Debt to equity ratios above one represent a significant amount of risk."
     else:
-        t_debt = "Debt was not used this year. This reduces this risk of the portfolio."
+        t_debt = (
+            "Margin was not used this year. This reduces this risk of the portfolio."
+        )
     string = (
         f"Your portfolio's performance for the period was {df['return'][-1]:.2%}. This was"
         f" {'greater' if df['return'][-1] > df[('Market', 'Return')][-1] else 'less'} than"
         f" the market return of {df[('Market', 'Return')][-1]:.2%}. The variance for the"
         f" portfolio is {np.var(df['return']):.2%}, while the variance for the market was"
-        f" {np.var(df[('Market', 'Return')]):.2%}. Since our portfolio's variance was"
-        f" {v_com} than the market's variance, our returns should be {v_com} than those"
-        f" of the market. {t_debt} The following report details various analytics from the"
-        f" portfolio. Read below to see the moving beta for a stock."
+        f" {np.var(df[('Market', 'Return')]):.2%}. {t_debt} The following report details"
+        f" various analytics from the portfolio. Read below to see the moving beta for a"
+        f" stock."
     )
     return string
 
