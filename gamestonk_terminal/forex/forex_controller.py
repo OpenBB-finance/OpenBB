@@ -2,13 +2,14 @@ import argparse
 import os
 from typing import List
 
-import pandas as pd
+# import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.forex import fx_view
-from gamestonk_terminal.forex.behavioural_analysis import ba_controller
+
+# from gamestonk_terminal.forex.behavioural_analysis import ba_controller
 
 # from gamestonk_terminal.forex.exploratory_data_analysis import eda_controller
 from gamestonk_terminal.helper_funcs import (
@@ -56,13 +57,13 @@ class ForexController:
         # "reddit",
     ]
 
-    CHOICES_MENUS = [
-        # "eda",
-        "ba",
-    ]
+    # CHOICES_MENUS = [
+    # "eda",
+    # "ba",
+    # ]
 
     CHOICES += CHOICES_COMMANDS
-    CHOICES += CHOICES_MENUS
+    # CHOICES += CHOICES_MENUS
 
     def __init__(self):
         """Construct Data"""
@@ -104,10 +105,10 @@ class ForexController:
             print(
                 "   reddit        search reddit for posts about the loaded instrument"
             )
-            print("")
-            print(
-                ">  ba          behavioural analysis,    	 from: reddit, stocktwits, twitter, google"
-            )
+            # print("")
+            # print(
+            #    ">  ba          behavioural analysis,    	 from: reddit, stocktwits, twitter, google"
+            # )
         print("")
 
     def switch(self, an_input: str):
@@ -225,14 +226,14 @@ class ForexController:
     #    except AttributeError:
     #        print("No data found, do you have your oanda API keys set?")
 
-    def call_ba(self, _):
-        instrument = fx_view.format_instrument(self.instrument, " ")
-        try:
-            df = fx_view.get_candles_dataframe(account, self.instrument, None)
-            s_start = pd.to_datetime(df.index.values[0])
-            ba_controller.menu(instrument, s_start)
-        except AttributeError:
-            print("No data found, do you have your oanda API keys set?")
+    # def call_ba(self, _):
+    #    instrument = fx_view.format_instrument(self.instrument, " ")
+    #    try:
+    #        df = fx_view.get_candles_dataframe(account, self.instrument, None)
+    #        s_start = pd.to_datetime(df.index.values[0])
+    #        ba_controller.menu(instrument, s_start)
+    #    except AttributeError:
+    #        print("No data found, do you have your oanda API keys set?")
 
 
 def menu():
