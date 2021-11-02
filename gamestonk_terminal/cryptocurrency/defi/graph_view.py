@@ -155,7 +155,7 @@ def display_recently_added(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "paris",
+        "pairs",
         df_data,
     )
 
