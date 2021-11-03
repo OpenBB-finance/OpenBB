@@ -2,10 +2,13 @@
 usage: rnval [-p] [-m MIN] [-M MAX] [-r RISK] [-h]
 ```
 
-calculates the value of an option based on ending price estimates. this
-calculates the expected value of the option payoff and then compares it
-to current prices.
-learn more: https://en.wikipedia.org/wiki/Rational_pricing#Delta_hedging
+calculates the expcected value of a given option by multiplying
+the payoff at each predicted stock price by the probability of
+that stock price happening. This expected profit is divided by
+one over the risk free rate to determine the value of those
+future dollars today. The expected payoff for each strike price
+is then compared with the last traded price to determine if there
+are differences in the market.
 
 ```
 optional arguments:
