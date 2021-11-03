@@ -18,7 +18,7 @@ from gamestonk_terminal.helper_funcs import (
     get_next_stock_market_days,
     EXPORT_ONLY_FIGURES_ALLOWED,
     try_except,
-    system_clear
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.prediction_techniques import (

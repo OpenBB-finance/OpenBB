@@ -19,7 +19,7 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     check_positive,
     try_except,
-    system_clear
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.behavioural_analysis import (

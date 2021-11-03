@@ -11,7 +11,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
-    system_clear
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers.degiro.degiro_view import DegiroView

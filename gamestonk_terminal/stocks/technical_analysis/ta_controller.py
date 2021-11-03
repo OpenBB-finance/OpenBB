@@ -19,7 +19,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     try_except,
     valid_date,
-    system_clear
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.technical_analysis import (

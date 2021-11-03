@@ -20,7 +20,7 @@ from gamestonk_terminal.helper_funcs import (
     try_except,
     valid_date,
     check_positive_float,
-    system_clear
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers import bro_controller

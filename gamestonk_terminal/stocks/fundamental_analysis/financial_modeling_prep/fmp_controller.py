@@ -15,7 +15,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     try_except,
-    system_clear
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 

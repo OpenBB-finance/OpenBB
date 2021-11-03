@@ -25,7 +25,7 @@ from gamestonk_terminal.helper_funcs import (
     MENU_QUIT,
     MENU_RESET,
     try_except,
-    system_clear
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 

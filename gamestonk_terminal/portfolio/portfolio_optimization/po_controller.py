@@ -11,7 +11,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_non_negative,
     try_except,
-    system_clear
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.portfolio_optimization import (

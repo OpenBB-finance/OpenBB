@@ -18,7 +18,7 @@ from gamestonk_terminal.helper_funcs import (
     check_int_range,
     valid_date,
     try_except,
-    system_clear
+    system_clear,
 )
 
 from gamestonk_terminal.cryptocurrency.onchain import (

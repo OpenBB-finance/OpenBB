@@ -24,7 +24,7 @@ from gamestonk_terminal.helper_funcs import (
     MENU_RESET,
     try_except,
     valid_date,
-    system_clear
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.options import (

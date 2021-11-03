@@ -12,7 +12,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
     try_except,
-    system_clear
+    system_clear,
 )
 
 from gamestonk_terminal.cryptocurrency.defi import (

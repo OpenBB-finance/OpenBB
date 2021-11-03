@@ -438,7 +438,7 @@ def get_user_agent() -> str:
         "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:84.0) Gecko/20100101 Firefox/84.0",
     ]
 
-    return random.choice(user_agent_strings) # nosec
+    return random.choice(user_agent_strings)  # nosec
 
 
 def text_adjustment_init(self):
@@ -787,6 +787,7 @@ def try_except(f):
 
     return inner
 
+
 def system_clear():
     """Clear screen"""
-    os.system("cls||clear") # nosec
+    os.system("cls||clear")  # nosec

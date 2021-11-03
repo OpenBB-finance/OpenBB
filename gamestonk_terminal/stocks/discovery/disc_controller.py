@@ -18,7 +18,7 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     check_int_range,
     try_except,
-    system_clear
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.discovery import (
