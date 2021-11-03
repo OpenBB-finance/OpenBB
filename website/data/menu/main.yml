@@ -551,6 +551,14 @@ main:
         ref: "/portfolio/portfolio_optimization"
       - name: parity
         ref: "/options/parity"
+      - name: add
+        ref: "/options/add"
+      - name: rmv
+        ref: "/options/rmv"
+      - name: show
+        ref: "/options/show"
+      - name: rnval
+        ref: "/options/rnval"
       - name: payoff
         ref: "/options/payoff"
         sub:
