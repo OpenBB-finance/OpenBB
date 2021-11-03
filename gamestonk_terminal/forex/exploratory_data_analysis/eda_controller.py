@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import os
 from typing import List
 from datetime import datetime
 import pandas as pd
@@ -10,7 +9,7 @@ from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.common.exploratory_data_analysis import eda_api
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import get_flair, system_clear
 from gamestonk_terminal.menu import session
 
 
@@ -111,7 +110,7 @@ class EdaController:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

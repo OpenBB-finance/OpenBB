@@ -2,12 +2,11 @@
 __docformat__ = "numpy"
 
 import argparse
-import os
 import webbrowser
 from datetime import datetime
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import get_flair, system_clear
 from gamestonk_terminal.menu import session
 
 
@@ -113,7 +112,7 @@ class ResearchController:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         if other_args:
