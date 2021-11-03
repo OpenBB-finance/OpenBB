@@ -1,0 +1,5 @@
+Name,Type,Quantity,Date,Price,Fees,Premium,Side
+cash,cash,1.0,2021/3/24,2000.0,,,deposit
+aapl,stock,10,2021/3/24,120.7,0,0,Buy
+msft,stock,3,2021/3/26,232.8,0,0,Buy
+aapl,stock,5,2021/7/2,139.8,0,0,Sell
