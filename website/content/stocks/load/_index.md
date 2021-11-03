@@ -26,6 +26,7 @@ Find the full list of supported exchanges here: https://help.yahoo.com/kb/exchan
 Certain analytical features, such as VWAP, require the ticker to be loaded as intraday using the '-i x' argument. When encountering this error, simply reload the symbol using the interval argument. i.e. 'load -t BNS -s YYYY-MM-DD -i 1 -p' loads one-minute intervals, including Pre/After Market data, using the default source, yFinance. 
 
 Certain features, such as the Prediction menu, require the symbol to be loaded as daily and not intraday.
-<img width="1394" alt="Feature Screenshot - Load" src="https://user-images.githubusercontent.com/85772166/139941491-9c94d242-b7e7-420c-8cd9-b30fa926e335.png">
+
+<img width="1390" alt="Feature Screenshot - Load" src="https://user-images.githubusercontent.com/85772166/139967994-82e42c75-3ff5-4a04-80a2-c9c9b870934c.png">
 
 
