@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 
 import argparse
-import os
 from datetime import datetime
 from typing import List
 
@@ -19,6 +18,7 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     check_int_range,
     try_except,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.discovery import (
@@ -138,7 +138,7 @@ Finance Database:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

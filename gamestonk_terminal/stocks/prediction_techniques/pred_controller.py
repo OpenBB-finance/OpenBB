@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import os
 from typing import List
 from datetime import datetime
 import pandas as pd
@@ -19,6 +18,7 @@ from gamestonk_terminal.helper_funcs import (
     get_next_stock_market_days,
     EXPORT_ONLY_FIGURES_ALLOWED,
     try_except,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.prediction_techniques import (
@@ -137,7 +137,7 @@ Models:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

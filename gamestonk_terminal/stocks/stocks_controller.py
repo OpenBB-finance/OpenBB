@@ -1,5 +1,4 @@
 import argparse
-import os
 from typing import List
 
 from datetime import datetime, timedelta
@@ -25,6 +24,7 @@ from gamestonk_terminal.helper_funcs import (
     MENU_QUIT,
     MENU_RESET,
     try_except,
+    system_clear,
 )
 from gamestonk_terminal.common.quantitative_analysis import qa_view
 
@@ -163,7 +163,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

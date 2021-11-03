@@ -24,6 +24,7 @@ from gamestonk_terminal.helper_funcs import (
     MENU_RESET,
     try_except,
     valid_date,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.options import (
@@ -181,7 +182,7 @@ Current Expiry: {self.selected_date or None}
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(
@@ -432,7 +433,7 @@ Current Expiry: {self.selected_date or None}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="scr",
-            description="""Sreener filter output from https://ops.syncretism.io/index.html.
+            description="""Screener filter output from https://ops.syncretism.io/index.html.
         Where: CS: Contract Symbol; S: Symbol, T: Option Type; Str: Strike; Exp v: Expiration;
         IV: Implied Volatility; LP: Last Price; B: Bid; A: Ask; V: Volume; OI: Open Interest;
         Y: Yield; MY: Monthly Yield; SMP: Regular Market Price; SMDL: Regular Market Day Low;

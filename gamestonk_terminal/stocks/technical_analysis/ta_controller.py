@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 # pylint:disable=R0904
 
 import argparse
-import os
 from typing import List
 from datetime import datetime
 
@@ -20,6 +19,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     try_except,
     valid_date,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.technical_analysis import (
@@ -169,7 +169,7 @@ Custom:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

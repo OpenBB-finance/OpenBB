@@ -438,7 +438,7 @@ def get_user_agent() -> str:
         "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:84.0) Gecko/20100101 Firefox/84.0",
     ]
 
-    return random.choice(user_agent_strings)
+    return random.choice(user_agent_strings)  # nosec
 
 
 def text_adjustment_init(self):
@@ -563,7 +563,7 @@ def parse_known_args_and_warn(
         )
 
     if gtff.USE_CLEAR_AFTER_CMD:
-        os.system("cls||clear")
+        system_clear()
 
     (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
 
@@ -786,3 +786,8 @@ def try_except(f):
             print(e, "\n")
 
     return inner
+
+
+def system_clear():
+    """Clear screen"""
+    os.system("cls||clear")  # nosec

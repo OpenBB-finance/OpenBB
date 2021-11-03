@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 # pylint: disable=R0904, C0302, W0622
 import argparse
-import os
 import pandas as pd
 from binance.client import Client
 from prompt_toolkit.completion import NestedCompleter
@@ -23,6 +22,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
     try_except,
+    system_clear,
 )
 
 from gamestonk_terminal.cryptocurrency.due_diligence.coinpaprika_view import CURRENCIES
@@ -165,7 +165,7 @@ Coinbase:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

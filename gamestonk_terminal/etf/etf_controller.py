@@ -24,6 +24,7 @@ from gamestonk_terminal.helper_funcs import (
     MENU_QUIT,
     MENU_RESET,
     try_except,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 
@@ -117,7 +118,7 @@ Finance Database:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

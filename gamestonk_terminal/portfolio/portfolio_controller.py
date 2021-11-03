@@ -20,6 +20,7 @@ from gamestonk_terminal.helper_funcs import (
     try_except,
     valid_date,
     check_positive_float,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers import bro_controller
@@ -142,7 +143,7 @@ Graphs:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

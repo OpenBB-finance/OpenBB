@@ -1,7 +1,6 @@
 """Defi Controller Module"""
 __docformat__ = "numpy"
 
-import os
 import argparse
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
@@ -13,6 +12,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
     try_except,
+    system_clear,
 )
 
 from gamestonk_terminal.cryptocurrency.defi import (
@@ -84,7 +84,7 @@ class DefiController:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(
@@ -421,7 +421,7 @@ class DefiController:
         if not ns_parser:
             return
 
-        defirate_view.dislpay_lending_rates(
+        defirate_view.display_lending_rates(
             top=ns_parser.top, current=ns_parser.current, export=ns_parser.export
         )
 
@@ -476,7 +476,7 @@ def print_help():
     print("   tvl           Total value locked of DeFi protocols")
     print("   newsletter    Recent DeFi related newsletters")
     print("   dpi           DeFi protocols listed on DefiPulse")
-    print("   funding       Funding reates - current or last 30 days average")
+    print("   funding       Funding rates - current or last 30 days average")
     print("   borrow        DeFi borrow rates - current or last 30 days average")
     print("   lending       DeFi ending rates - current or last 30 days average")
     print("")

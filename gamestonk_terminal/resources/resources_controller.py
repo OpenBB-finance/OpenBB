@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import os
 import webbrowser
 
 from prompt_toolkit.completion import NestedCompleter
@@ -10,6 +9,7 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
+    system_clear,
     MENU_GO_BACK,
     MENU_QUIT,
     MENU_RESET,
@@ -98,7 +98,7 @@ What do you want to do?
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         if other_args:

@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import os
 from typing import List
 from colorama import Style
 from matplotlib import pyplot as plt
@@ -16,6 +15,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
     try_except,
+    system_clear,
 )
 from gamestonk_terminal.stocks.stocks_helper import load
 from gamestonk_terminal.helper_funcs import (
@@ -113,7 +113,7 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

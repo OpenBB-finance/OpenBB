@@ -14,7 +14,7 @@ import papermill as pm
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import get_flair, system_clear
 from gamestonk_terminal import config_terminal
 
 
@@ -133,7 +133,7 @@ Select one of the following reports:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         # Go back to menu above

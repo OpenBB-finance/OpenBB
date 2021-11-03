@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import os
 from typing import List
 
 import matplotlib as mpl
@@ -16,6 +15,7 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     try_except,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.stocks_helper import load
@@ -90,7 +90,7 @@ Current Ticker: {self.ticker.upper()}
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

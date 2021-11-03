@@ -1,5 +1,4 @@
 import argparse
-import os
 from datetime import timedelta, datetime
 from typing import List
 
@@ -14,6 +13,7 @@ from gamestonk_terminal.forex import av_view, av_model
 # from gamestonk_terminal.forex.exploratory_data_analysis import eda_controller
 from gamestonk_terminal.helper_funcs import (
     get_flair,
+    system_clear,
     MENU_GO_BACK,
     MENU_QUIT,
     MENU_RESET,
@@ -106,7 +106,7 @@ Brokerages:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

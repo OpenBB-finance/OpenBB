@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import os
 from typing import List
 import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
@@ -12,6 +11,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_non_negative,
     try_except,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.portfolio_optimization import (
@@ -125,7 +125,7 @@ Mean Variance Optimization:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

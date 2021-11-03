@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 
 import argparse
-import os
 from typing import List
 from datetime import datetime
 import textwrap
@@ -18,6 +17,7 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     check_positive,
     try_except,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.behavioural_analysis import (
@@ -145,7 +145,7 @@ SentimentInvestor:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

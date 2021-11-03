@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import os
 from typing import List
 from datetime import datetime, timedelta
 from colorama import Style
@@ -18,6 +17,7 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     check_int_range,
     try_except,
+    system_clear,
 )
 from gamestonk_terminal.stocks.stocks_helper import load
 from gamestonk_terminal.stocks.dark_pool_shorts import (
@@ -129,7 +129,7 @@ Quandl/Stockgrid:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

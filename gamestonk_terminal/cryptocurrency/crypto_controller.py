@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 # pylint: disable=R0904, C0302, R1710, W0622
 
 import argparse
-import os
 import matplotlib.pyplot as plt
 import pandas as pd
 from colorama import Style
@@ -14,6 +13,7 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     check_positive,
+    system_clear,
     MENU_GO_BACK,
     MENU_QUIT,
     MENU_RESET,
@@ -157,7 +157,7 @@ What do you want to do?
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(
