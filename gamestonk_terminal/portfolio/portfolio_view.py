@@ -252,13 +252,39 @@ def plot_ef(
 
 class Report:
     def __init__(self, df: pd.DataFrame, hist: pd.DataFrame, m_tick: str, n: int):
+        """Generate financial reports.
+        Financial reports allow users to show the how they have been performing in
+        trades. This allows for a simple way to show progress and analyze metrics
+        that track portfolio performance
+
+        Parameters
+        ----------
+        df : pd.DataFrame
+            The dataframe with previous holdings information
+        hist : pd.DataFrame
+            The dataframe with previous prices for stocks in the portfolio
+        m_tick : str
+            The market asset to be identified
+        n : int
+            The number of days to analyze
+
+        Attributes
+        ----------
+        generate_report : None
+            Generates a report with the given parameters
+        generate_pg1 : None
+            Creates the first page of the PDF report
+        generate_pg2 : None
+            Creates the second page of the PDF report
+
+        """
         self.df = df
         self.hist = hist
         self.m_tick = m_tick
         self.df_m = yfinance_model.get_market(self.df.index[0], self.m_tick)
         self.returns, self.variance = portfolio_model.get_return(df, self.df_m, n)
 
-    def generate_report(self):
+    def generate_report(self) -> None:
         d = path.dirname(path.abspath(__file__)).replace(
             "gamestonk_terminal", "exports"
         )
@@ -275,7 +301,7 @@ class Report:
         report.save()
         print("File save in:\n", loc, "\n")
 
-    def generate_pg1(self, report: canvas.Canvas):
+    def generate_pg1(self, report: canvas.Canvas) -> None:
         report.drawImage(
             plot_overall_return(self.returns, self.m_tick, False), 15, 400, 600, 300
         )
@@ -283,7 +309,7 @@ class Report:
         reportlab_helpers.draw_paragraph(report, main_t, 30, 410, 550, 200)
         report.showPage()
 
-    def generate_pg2(self, report: canvas.Canvas, df_m: pd.DataFrame):
+    def generate_pg2(self, report: canvas.Canvas, df_m: pd.DataFrame) -> None:
         reportlab_helpers.base_format(report, "Portfolio Analysis")
         if "Holding" in self.df.columns:
             rolling_beta = portfolio_model.get_rolling_beta(
