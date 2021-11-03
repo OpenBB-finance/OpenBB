@@ -1,15 +1,15 @@
 import argparse
 import os
+from datetime import timedelta, datetime
 from typing import List
 
-# import pandas as pd
+import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-
-from gamestonk_terminal import config_terminal as cfg
+from colorama import Style
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.forex import fx_view
+from gamestonk_terminal.forex.oanda import oanda_controller
+from gamestonk_terminal.forex import av_view, av_model
 
-# from gamestonk_terminal.forex.behavioural_analysis import ba_controller
 
 # from gamestonk_terminal.forex.exploratory_data_analysis import eda_controller
 from gamestonk_terminal.helper_funcs import (
@@ -17,13 +17,11 @@ from gamestonk_terminal.helper_funcs import (
     MENU_GO_BACK,
     MENU_QUIT,
     MENU_RESET,
+    parse_known_args_and_warn,
+    try_except,
+    valid_date,
 )
 from gamestonk_terminal.menu import session
-
-# from gamestonk_terminal.stocks.due_diligence import news_view, reddit_view
-
-
-account = cfg.OANDA_ACCOUNT
 
 
 class ForexController:
@@ -38,32 +36,11 @@ class ForexController:
         "reset",
     ]
 
-    CHOICES_COMMANDS = [
-        "price",
-        "summary",
-        "list",
-        "orderbook",
-        "positionbook",
-        "order",
-        "load",
-        "cancel",
-        "positions",
-        "closetrade",
-        "trades",
-        "candles",
-        "pending",
-        "calendar",
-        # "news",
-        # "reddit",
-    ]
-
-    # CHOICES_MENUS = [
-    # "eda",
-    # "ba",
-    # ]
+    CHOICES_COMMANDS = ["select", "load", "quote", "candle"]
+    CHOICES_MENUS = ["oanda"]
 
     CHOICES += CHOICES_COMMANDS
-    # CHOICES += CHOICES_MENUS
+    CHOICES += CHOICES_MENUS
 
     def __init__(self):
         """Construct Data"""
@@ -72,44 +49,37 @@ class ForexController:
             "cmd",
             choices=self.CHOICES,
         )
-        self.instrument = None
+        self.from_symbol = "USD"
+        self.to_symbol = ""
+        self.data = pd.DataFrame()
 
     def print_help(self):
         """Print help"""
-        print("\nForex Mode:")
-        print("   cls           clear screen")
-        print("   ?/help        show this menu again")
-        print("   q             quit this menu and goes back to main menu")
-        print("   quit          quit to abandon program")
-        print("   reset         reset terminal and reload configs")
-        print("")
-        print("   summary       shows account summary")
-        print("   calendar      show calendar")
-        print("   list          list order history")
-        print("   pending       get information on pending orders")
-        print("   cancel        cancel a pending order by ID -i order ID")
-        print("   positions     get open positions")
-        print("   trades        list open trades")
-        print("   closetrade    close a trade by id")
-        print("")
-        print(f"Loaded instrument: {self.instrument if self.instrument else ''}")
-        print("")
-        print("   load          load an instrument to use")
-        if self.instrument:
-            print("   candles       show candles")
-            print("   price         shows price for selected instrument")
-            print("   order         place limit order -u # of units -p price")
-            print("   orderbook     print orderbook")
-            print("   positionbook  print positionbook")
-            print("   news          print news [News API]")
-            print(
-                "   reddit        search reddit for posts about the loaded instrument"
-            )
-            # print("")
-            # print(
-            #    ">  ba          behavioural analysis,    	 from: reddit, stocktwits, twitter, google"
-            # )
-        print("")
+        dim_bool = self.from_symbol and self.to_symbol
+        help_str = f"""
+>>> FOREX <<<
+
+What would you like to do?
+    cls           clear screen
+    ?/help        show this menu again
+    q             quit this menu and goes back to main menu
+    quit          quit to abandon program
+    reset         reset terminal and reload configs
+    select        select fx pair
+
+To:   {None or self.to_symbol}
+From: {None or self.from_symbol}
+{Style.DIM if not dim_bool else ""}
+AlphaVantage (API Key required):
+    quote         get last quote
+    load          get historical data
+    candle        show candle plot for loaded data
+{Style.RESET_ALL}
+Brokerages:
+>   oanda         access oanda menu
+
+ """
+        print(help_str)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -159,59 +129,147 @@ class ForexController:
         """Process Reset command - reset the program"""
         return MENU_RESET
 
-    def call_price(self, other_args):
-        """Process Price Command"""
-        fx_view.get_fx_price(account, self.instrument, other_args)
+    @try_except
+    def call_select(self, other_args: List[str]):
+        """Process select command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="select",
+            description="Select Forex pair in the form of TO -f FROM",
+        )
+        parser.add_argument(
+            "-t",
+            "--to",
+            help="To currency",
+            type=av_model.check_valid_forex_currency,
+            dest="to_symbol",
+        )
+        parser.add_argument(
+            "-f",
+            "--from",
+            help="From currency",
+            type=av_model.check_valid_forex_currency,
+            dest="from_symbol",
+            default=None,
+        )
 
-    def call_load(self, other_args):
-        self.instrument = fx_view.load(other_args)
+        if (
+            other_args
+            and "-f" not in other_args[0]
+            and "--from" not in other_args[0]
+            and "-t" not in other_args
+            and "-h" not in other_args
+        ):
+            other_args.insert(0, "-t")
 
-    def call_summary(self, other_args):
-        """Process account summary command"""
-        fx_view.get_account_summary(account, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        self.to_symbol = ns_parser.to_symbol
+        if ns_parser.from_symbol:
+            self.from_symbol = ns_parser.from_symbol
+        print("")
 
-    def call_orderbook(self, other_args):
-        """Process Oanda Order Book"""
-        fx_view.get_order_book(self.instrument, other_args)
+    @try_except
+    def call_load(self, other_args: List[str]):
+        """Process select command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load historical exchange rate data.",
+        )
+        parser.add_argument(
+            "-r",
+            "--resolution",
+            choices=["i", "d", "w", "m"],
+            default="d",
+            help="Resolution of data.  Can be intraday, daily, weekly or monthly",
+            dest="resolution",
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            choices=[1, 5, 15, 30, 60],
+            default="5",
+            help="Interval of intraday data.  Can be 1, 5, 15, 30 or 60.",
+            dest="interval",
+        )
+        parser.add_argument(
+            "-s",
+            "--start_date",
+            default=(datetime.now() - timedelta(days=366)),
+            type=valid_date,
+            help="Start date of data.",
+            dest="start_date",
+        )
 
-    def call_positionbook(self, other_args):
-        """Process Oanda Position Book"""
-        fx_view.get_position_book(self.instrument, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-    def call_list(self, other_args: List[str]):
-        """Process list orders command"""
-        fx_view.list_orders(account, other_args)
+        if not self.to_symbol or not self.from_symbol:
+            print(
+                "Make sure both a to symbol and a from symbol are supplied using <select> \n"
+            )
+            return
 
-    def call_order(self, other_args: List[str]):
-        """Place limit order"""
-        fx_view.create_order(account, self.instrument, other_args)
+        self.data = av_model.get_historical(
+            to_symbol=self.to_symbol,
+            from_symbol=self.from_symbol,
+            resolution=ns_parser.resolution,
+            interval=ns_parser.interval,
+            start_date=ns_parser.start_date.strftime("%Y-%m-%d"),
+        )
+        print("")
 
-    def call_cancel(self, other_args: List[str]):
-        """Cancel pending order by ID"""
-        fx_view.cancel_pending_order(account, other_args)
+    @try_except
+    def call_candle(self, other_args: List[str]):
+        """Process quote command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="candle",
+            description="Show candle for loaded fx data",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if self.data.empty:
+            print("No forex historical data loaded.  Load first using <load>.")
+            return
 
-    def call_positions(self, other_args):
-        """Get Open Positions"""
-        fx_view.get_open_positions(account, other_args)
+        av_view.display_candle(self.data, self.to_symbol, self.from_symbol)
 
-    def call_pending(self, other_args):
-        """See up to 25 pending orders"""
-        fx_view.get_pending_orders(account, other_args)
+    @try_except
+    def call_quote(self, other_args: List[str]):
+        """Process quote command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="quote",
+            description="Get current exchange rate quote",
+        )
 
-    def call_closetrade(self, other_args: List[str]):
-        """Close a trade by id"""
-        fx_view.close_trade(account, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-    def call_candles(self, other_args: List[str]):
-        fx_view.show_candles(account, self.instrument, other_args)
+        if not self.to_symbol or not self.from_symbol:
+            print(
+                "Make sure both a to symbol and a from symbol are supplied using <select> \n"
+            )
+            return
 
-    def call_trades(self, other_args):
-        """List open trades"""
-        fx_view.get_open_trades(account, other_args)
+        av_view.display_quote(self.to_symbol, self.from_symbol)
 
-    def call_calendar(self, other_args: List[str]):
-        """Call calendar"""
-        fx_view.calendar(self.instrument, other_args)
+    # pylint: disable=inconsistent-return-statements
+    def call_oanda(self, _):
+        ret = oanda_controller.menu()
+        if ret:
+            return True
+        self.print_help()
 
     # TODO: Add news and reddit commands back
 

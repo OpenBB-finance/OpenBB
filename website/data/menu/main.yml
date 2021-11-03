@@ -878,5 +878,12 @@ main:
             ref: "/portfolio/portfolio_optimization/ef"
   - name: forex
     ref: "/forex"
+    sub:
+      - name: select
+        ref: "/forex/select"
+      - name: load
+        ref: "/forex/load"
+      - name: candle
+        ref: "/forex/candle"
   - name: resources
     ref: "/resources"
