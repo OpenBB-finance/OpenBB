@@ -329,7 +329,7 @@ Graphs:
             type=lambda s: s.lower(),
             dest="action",
             choices=["buy", "sell", "interest", "deposit", "withdrawal"],
-            default="buy",
+            default="deposit" if "cash" in other_args else "buy",
             help="Select what you did in the transaction",
         )
         if other_args:
