@@ -1,5 +1,5 @@
 ```
-usage: ret [-m MARKET] [-h]
+usage: rmr [-m MARKET] [-h]
 ```
 
 Show portfolio returns versus market returns

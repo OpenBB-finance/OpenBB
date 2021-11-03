@@ -25,7 +25,7 @@ def get_stocks(tickers: List[str], start: datetime) -> pd.DataFrame:
     """
     df = yf.download(
         tickers=tickers,
-        start=start - timedelta(days=255),
+        start=start - timedelta(days=365),
         interval="1d",
         progress=False,
     )
@@ -79,7 +79,7 @@ def get_market(start: datetime, ticker: str = "SPY") -> pd.DataFrame:
     """
     tick = yf.Ticker(ticker)
     df = tick.history(
-        start=start - timedelta(days=255),
+        start=start - timedelta(days=365),
         interval="1d",
     )["Close"]
     return df.to_frame(name=("Market", "Close"))

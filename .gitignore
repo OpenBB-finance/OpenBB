@@ -14,6 +14,7 @@ exports/*
 .coverage
 htmlcov
 gamestonk_terminal/reports/stored/*
+gamestonk_terminal/portfolio/portfolios/*
 
 # Jupyter Lab Extension build files
 jupyterlab/*/*.bundle.*
