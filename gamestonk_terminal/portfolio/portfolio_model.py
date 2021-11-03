@@ -8,8 +8,14 @@ from typing import List
 
 import numpy as np
 import pandas as pd
+import statsmodels.api as sm
+from statsmodels.regression.rolling import RollingOLS
 
-from gamestonk_terminal.portfolio import portfolio_view, yfinance_model
+from gamestonk_terminal.portfolio import (
+    portfolio_view,
+    yfinance_model,
+    portfolio_helper,
+)
 
 # pylint: disable=E1136
 # pylint: disable=unsupported-assignment-operation
@@ -153,6 +159,7 @@ def add_values(
         if len(cash_vals.index) > 0:
             for _, sub_row in cash_vals.iterrows():
                 amount = sub_row["Price"]
+                quantity = sub_row["Quantity"]
                 if sub_row["Side"] == "deposit":
                     d = 1
                 elif sub_row["Side"] == "withdrawal":
@@ -160,10 +167,10 @@ def add_values(
                 else:
                     raise ValueError("Cash type must be deposit or withdrawal")
                 log.at[index, ("Cash", "Cash")] = (
-                    log.at[index, ("Cash", "Cash")] + d * amount
+                    log.at[index, ("Cash", "Cash")] + d * amount * quantity
                 )
                 log.at[index, ("Cash", "User")] = (
-                    log.at[index, ("Cash", "User")] + d * amount
+                    log.at[index, ("Cash", "User")] + d * amount * quantity
                 )
     return log
 
@@ -300,8 +307,12 @@ def get_return(df: pd.DataFrame, df_m: pd.DataFrame, n: int) -> pd.DataFrame:
         + (0 if "holdings" not in comb.columns else comb["holdings"].shift(1))
     )
     comb["return"] = comb["return"].fillna(1)
+    variance = np.var(comb["return"])
     comb["return"] = comb["return"].cumprod() - 1
-    return comb
+    comb[("Market", "Return")] = (
+        comb[("Market", "Close")] - comb[("Market", "Close")][0]
+    ) / comb[("Market", "Close")][0]
+    return comb, variance
 
 
 def get_rolling_beta(
@@ -330,22 +341,91 @@ def get_rolling_beta(
     res = df.div(df.sum(axis=1), axis=0)
     res = res.fillna(0)
     comb = pd.merge(
-        hist["Close"], mark["Market"], how="left", left_index=True, right_index=True
+        hist["Close"], mark["Market"], how="outer", left_index=True, right_index=True
     )
     comb = comb.fillna(method="ffill")
-    df_var = comb.rolling(252).var().unstack()["Close"].to_frame(name="var")
     for col in hist["Close"].columns:
-        df1 = (
-            comb.rolling(252).cov().unstack()[col]["Close"].to_frame(name=f"cov_{col}")
-        )
-        df_var = pd.merge(df_var, df1, how="left", left_index=True, right_index=True)
-        df_var[f"beta_{col}"] = df_var[f"cov_{col}"] / df_var["var"]
-    final = pd.merge(res, df_var, how="left", left_index=True, right_index=True)
-    final = final.fillna(method="ffill")
-    final = final.drop(columns=["var"] + [f"cov_{x}" for x in uniques])
+        exog = sm.add_constant(comb["Close"])
+        rols = RollingOLS(comb[col], exog, window=252)
+        rres = rols.fit()
+        res[f"beta_{col}"] = rres.params["Close"]
+    final = res.fillna(method="ffill")
     for uni in uniques:
         final[f"prod_{uni}"] = final[uni] * final[f"beta_{uni}"]
+    dropped = final[[f"beta_{x}" for x in uniques]].copy()
     final = final.drop(columns=[f"beta_{x}" for x in uniques] + uniques)
     final["total"] = final.sum(axis=1)
     final = final[final.index >= datetime.now() - timedelta(days=n + 1)]
-    return final
+    comb = pd.merge(final, dropped, how="left", left_index=True, right_index=True)
+    return comb
+
+
+def get_main_text(df: pd.DataFrame) -> str:
+    """Get main performance summary from a dataframe with returns
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Stock holdings and returns with market returns
+
+    Returns
+    ----------
+    t : str
+        The main summary of performance
+    """
+    d_debt = np.where(df[("Cash", "Cash")] > 0, 0, 1)
+    bcash = 0 if df[("Cash", "Cash")][0] > 0 else abs(df[("Cash", "Cash")][0])
+    ecash = 0 if df[("Cash", "Cash")][-1] > 0 else abs(df[("Cash", "Cash")][-1])
+    bdte = bcash / (df["holdings"][0] - bcash)
+    edte = ecash / (df["holdings"][-1] - ecash)
+    if sum(d_debt) > 0:
+        t_debt = (
+            f"Beginning debt to equity was {bdte:.2%} and ending debt to equity was"
+            f" {edte:.2%}. Debt adds risk to a portfolio by amplifying the gains and losses when"
+            " equities change in value."
+        )
+        if bdte > 1 or edte > 1:
+            t_debt += " Debt to equity ratios above one represent a significant amount of risk."
+    else:
+        t_debt = (
+            "Margin was not used this year. This reduces this risk of the portfolio."
+        )
+    string = (
+        f"Your portfolio's performance for the period was {df['return'][-1]:.2%}. This was"
+        f" {'greater' if df['return'][-1] > df[('Market', 'Return')][-1] else 'less'} than"
+        f" the market return of {df[('Market', 'Return')][-1]:.2%}. The variance for the"
+        f" portfolio is {np.var(df['return']):.2%}, while the variance for the market was"
+        f" {np.var(df[('Market', 'Return')]):.2%}. {t_debt} The following report details"
+        f" various analytics from the portfolio. Read below to see the moving beta for a"
+        f" stock."
+    )
+    return string
+
+
+def get_beta_text(df: pd.DataFrame) -> str:
+    """Get beta summary for a dataframe
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The beta history of the stock
+
+    Returns
+    ----------
+    t : str
+        The beta history for a ticker
+    """
+    betas = df[list(filter(lambda score: "beta" in score, list(df.columns)))]
+    high = betas.idxmax(axis=1)
+    low = betas.idxmin(axis=1)
+    string = (
+        "Beta is how strongly a portfolio's movements correlate with the market's movements."
+        " A stock with a high beta is considered to be riskier. The beginning beta for the period"
+        f" was {portfolio_helper.beta_word(df['total'][0])} at {df['total'][0]:.2f}. This went"
+        f" {'up' if df['total'][-1] > df['total'][0] else 'down'} to"
+        f" {portfolio_helper.beta_word(df['total'][-1])} at {df['total'][-1]:.2f} by the end"
+        f" of the period. The ending beta was pulled {'up' if df['total'][-1] > 1 else 'down'} by"
+        f" {portfolio_helper.clean_name(high[-1] if df['total'][-1] > 1 else low[-1])}, which had"
+        f" an ending beta of {df[high[-1]][-1] if df['total'][-1] > 1 else df[low[-1]][-1]:.2f}."
+    )
+    return string
