@@ -2,7 +2,7 @@
 usage: arkord [-n N_NUM] [--export {csv,json,xlsx}] [-h]
 ```
 
-Track the orders by ARK Investment Management LLC with an exportable table - https://ark-funds.com/. [Source: https://cathiesark.com]
+Track the orders by ARK Investment Management LLC with an exportable table - https://cathiesark.com/ark-funds-combined/complete-holdings
 
 ```
 optional arguments:
