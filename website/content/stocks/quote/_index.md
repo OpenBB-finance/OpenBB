@@ -2,7 +2,7 @@
 usage: quote [-t S_TICKER] [-h]
 ```
 
-Current quote for stock ticker
+Retrieves a current quote from the currently [loaded ticker](https://gamestonkterminal.github.io/GamestonkTerminal/stocks/load/). To view a quote from a different symbol than what is currently loaded, add the '-t' argument to the command string. 
 
 ```
 optional arguments:
@@ -11,4 +11,5 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-<img width="896" alt="Captura de ecrã 2021-08-06, às 21 31 12" src="https://user-images.githubusercontent.com/25267873/128567977-7185427e-1511-460e-954d-047b53ea5c7d.png">
+
+<img width="1399" alt="Feature Screenshot - Quote" src="https://user-images.githubusercontent.com/85772166/140181687-79c75dfa-38a7-4442-b0dc-7e740bb28c27.png">
