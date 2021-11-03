@@ -1364,6 +1364,14 @@ Options Pricing:
             dest="maxi",
             help="Maximum strike price shown",
         )
+        parser.add_argument(
+            "-r",
+            "--risk",
+            type=float,
+            default=None,
+            dest="risk",
+            help="The risk-free rate to use",
+        )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
@@ -1381,6 +1389,7 @@ Options Pricing:
             self.prices,
             ns_parser.mini,
             ns_parser.maxi,
+            ns_parser.risk,
         )
 
 

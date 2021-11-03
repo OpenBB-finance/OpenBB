@@ -593,7 +593,13 @@ def show_parity(
 
 
 def risk_neutral_vals(
-    ticker: str, exp: str, put: bool, df: pd.DataFrame, mini: float, maxi: float
+    ticker: str,
+    exp: str,
+    put: bool,
+    df: pd.DataFrame,
+    mini: float,
+    maxi: float,
+    risk: float,
 ) -> None:
     """Prints current options prices and risk neutral values [Source: Yahoo Finance]
 
@@ -611,6 +617,8 @@ def risk_neutral_vals(
         Minimum strike price to show
     maxi : float
         Maximum strike price to show
+    risk : float
+        The risk-free rate for the asset
     """
     if put:
         chain = get_option_chain(ticker, exp).puts
@@ -620,13 +628,14 @@ def risk_neutral_vals(
     r_date = datetime.strptime(exp, "%Y-%m-%d").date()
     delta = (r_date - date.today()).days
     vals = []
-    rf = get_rf()
+    if risk is None:
+        risk = get_rf()
     for _, row in chain.iterrows():
         vals.append(
             [
                 row["strike"],
                 row["lastPrice"],
-                op_helpers.rn_payoff(row["strike"], df, put, delta, rf),
+                op_helpers.rn_payoff(row["strike"], df, put, delta, risk),
             ]
         )
     new_df = pd.DataFrame(vals, columns=["Strike", "Last Price", "Value"], dtype=float)
