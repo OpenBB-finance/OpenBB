@@ -1,4 +1,4 @@
-# DISCOVERY [>>](https://gamestonkterminal.github.io/GamestonkTerminal/stocks/discovery/)
+# Discovery [>>](https://gamestonkterminal.github.io/GamestonkTerminal/stocks/discovery/)
 
 Command|Description|Source
 ---|---|---

@@ -1,4 +1,4 @@
-# BEHAVIOURAL ANALYSIS [>>](https://gamestonkterminal.github.io/GamestonkTerminal/common/behavioural_analysis/)
+# Behavioural Analysis [>>](https://gamestonkterminal.github.io/GamestonkTerminal/common/behavioural_analysis/)
 
 Command|Description|Source
 ----|----|----
