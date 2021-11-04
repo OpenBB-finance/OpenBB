@@ -1,7 +1,7 @@
 # IMPORTATION THIRDPARTY
 from argparse import Namespace
 import pandas as pd
-import degiro_connector.core.helpers.pb_handler as pb_handler
+from degiro_connector.core.helpers import pb_handler
 
 from degiro_connector.trading.models.trading_pb2 import (
     Credentials,
