@@ -2,7 +2,7 @@
 usage: losers [-n NUM] [--export {csv,json,xlsx}] [-h]
 ```
 
-Print up to 25 top losers. [Source: Yahoo Finance]
+Calls a list of the biggest losers for the day in US markets. Source: https://finance.yahoo.com/losers/
 
 ```
 optional arguments:
@@ -11,5 +11,5 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
+<img width="1399" alt="Feature Screenshot - losers" src="https://user-images.githubusercontent.com/85772166/140382544-be59099d-099f-4ad3-a897-5f0f15217543.png">
 
-<img width="993" alt="Captura de ecrã 2021-03-14, às 20 23 21" src="https://user-images.githubusercontent.com/25267873/111083099-a421b280-8503-11eb-9bb0-c728ce1e313f.png">
