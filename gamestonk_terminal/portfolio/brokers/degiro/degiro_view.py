@@ -1,9 +1,9 @@
 # IMPORTATION THIRDPARTY
 from argparse import Namespace
 import pandas as pd
-from degiro_connector.trading.helpers import payload_handler
+import degiro_connector.core.helpers.pb_handler as pb_handler
 
-from degiro_connector.trading.pb.trading_pb2 import (
+from degiro_connector.trading.models.trading_pb2 import (
     Credentials,
     LatestNews,
     NewsByCompany,
@@ -97,7 +97,7 @@ class DegiroView:
 
     @staticmethod
     def __companynews_display(news_by_company: NewsByCompany):
-        news_dict = payload_handler.message_to_dict(
+        news_dict = pb_handler.message_to_dict(
             message=news_by_company,
         )
         for article in news_dict["items"]:
@@ -171,10 +171,10 @@ class DegiroView:
         order: Order,
         checking_response: Order.CheckingResponse,
     ):
-        checking_response_dict = payload_handler.message_to_dict(
+        checking_response_dict = pb_handler.message_to_dict(
             message=checking_response,
         )
-        order_dict = payload_handler.message_to_dict(message=order)
+        order_dict = pb_handler.message_to_dict(message=order)
         order_df = pd.DataFrame([order_dict])
         fields = [
             "action",
@@ -197,7 +197,7 @@ class DegiroView:
 
     @staticmethod
     def __create_display_created_order(order: Order):
-        order_dict = payload_handler.message_to_dict(message=order)
+        order_dict = pb_handler.message_to_dict(message=order)
         order_df = pd.DataFrame([order_dict])
         fields = [
             "id",
@@ -274,7 +274,7 @@ class DegiroView:
 
     @staticmethod
     def __lastnews_display(latest_news: LatestNews):
-        news_dict = payload_handler.message_to_dict(
+        news_dict = pb_handler.message_to_dict(
             message=latest_news,
         )
         for article in news_dict["items"]:
@@ -345,7 +345,7 @@ class DegiroView:
 
     @staticmethod
     def __lookup_display(product_search: ProductSearch):
-        products_dict = payload_handler.message_to_dict(
+        products_dict = pb_handler.message_to_dict(
             message=product_search,
         )
         products_df = pd.DataFrame(products_dict["products"])
@@ -384,7 +384,7 @@ class DegiroView:
 
     @staticmethod
     def __pending_display(orders: Update.Orders):
-        orders_dict = payload_handler.message_to_dict(message=orders)
+        orders_dict = pb_handler.message_to_dict(message=orders)
         orders_df = pd.DataFrame(orders_dict["values"])
         fields = [
             "action",
@@ -418,7 +418,7 @@ class DegiroView:
 
     @staticmethod
     def __topnews_display(top_news: TopNewsPreview):
-        news_dict = payload_handler.message_to_dict(
+        news_dict = pb_handler.message_to_dict(
             message=top_news,
         )
         for article in news_dict["items"]:

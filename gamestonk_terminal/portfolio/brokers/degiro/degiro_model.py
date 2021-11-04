@@ -5,10 +5,10 @@ from typing import Union
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
-from degiro_connector.trading.helpers import payload_handler
+import degiro_connector.core.helpers.pb_handler as pb_handler
 
 from degiro_connector.trading.api import API as TradingAPI
-from degiro_connector.trading.pb.trading_pb2 import (
+from degiro_connector.trading.models.trading_pb2 import (
     Credentials,
     LatestNews,
     NewsByCompany,
@@ -75,7 +75,7 @@ class DegiroModel:
         )
 
         # CONVERT TO DICT
-        products_info_dict = payload_handler.message_to_dict(
+        products_info_dict = pb_handler.message_to_dict(
             message=products_info_pb,
         )
 
@@ -140,7 +140,7 @@ class DegiroModel:
         """
 
         # CONVERT TO DATAFRAME
-        portfolio_dict = payload_handler.message_to_dict(message=portfolio)
+        portfolio_dict = pb_handler.message_to_dict(message=portfolio)
         positions = pd.DataFrame(portfolio_dict["values"])
 
         # SETUP MASK
@@ -198,7 +198,7 @@ class DegiroModel:
                 request=request_lookup,
                 raw=False,
             )
-            products_lookup_dict = payload_handler.message_to_dict(
+            products_lookup_dict = pb_handler.message_to_dict(
                 message=products_lookup,
             )
             product = products_lookup_dict["products"][0]
