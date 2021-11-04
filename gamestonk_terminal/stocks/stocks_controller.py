@@ -27,6 +27,7 @@ from gamestonk_terminal.helper_funcs import (
     try_except,
 )
 from gamestonk_terminal.common.quantitative_analysis import qa_view
+from gamestonk_terminal.common.technical_analysis import trendline_api
 
 # pylint: disable=R1710,import-outside-toplevel
 
@@ -214,11 +215,19 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         )
         parser.add_argument(
             "-s",
-            "--start_date",
+            "--start",
             dest="s_start",
             type=valid_date,
-            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            default=self.stock.index[0],
             help="Start date for candle data",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            dest="s_end",
+            type=valid_date,
+            default=self.stock.index[-1],
+            help="End date for candle data",
         )
         parser.add_argument(
             "--plotly",
@@ -280,7 +289,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         if not ns_parser:
             return
         if not self.ticker:
-            print("No ticker loaded.  First use `load {ticker}`\n")
+            print("No ticker loaded. First use `load {ticker}`\n")
             return
 
         if ns_parser.raw:
@@ -293,11 +302,11 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             )
 
         else:
+            df_stock = trendline_api.process_candle(self.stock)
+
             display_candle(
-                s_ticker=self.ticker + "." + self.suffix
-                if self.suffix
-                else self.ticker,
-                s_start=ns_parser.s_start,
+                s_ticker=self.ticker,
+                df_stock=df_stock,
                 plotly=ns_parser.plotly,
             )
 

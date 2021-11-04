@@ -140,6 +140,14 @@ def load(
         help="The starting date (format YYYY-MM-DD) of the stock",
     )
     parser.add_argument(
+        "-e",
+        "--end",
+        type=valid_date,
+        default=datetime.now().strftime("%Y-%m-%d"),
+        dest="s_end_date",
+        help="The ending date (format YYYY-MM-DD) of the stock",
+    )
+    parser.add_argument(
         "-i",
         "--interval",
         action="store",
@@ -209,12 +217,17 @@ def load(
                 df_stock_candidate.sort_index(ascending=True, inplace=True)
 
                 # Slice dataframe from the starting date YYYY-MM-DD selected
-                df_stock_candidate = df_stock_candidate[ns_parser.s_start_date :]
+                df_stock_candidate = df_stock_candidate[
+                    ns_parser.s_start_date : ns_parser.s_end_date
+                ]
 
             # Yahoo Finance Source
             elif ns_parser.source == "yf":
                 df_stock_candidate = yf.download(
-                    ns_parser.s_ticker, start=ns_parser.s_start_date, progress=False
+                    ns_parser.s_ticker,
+                    start=ns_parser.s_start_date,
+                    end=ns_parser.s_end_date,
+                    progress=False,
                 )
 
                 # Check that loading a stock was not successful
@@ -252,7 +265,9 @@ def load(
                 df_stock_candidate.sort_index(ascending=True, inplace=True)
 
                 # Slice dataframe from the starting date YYYY-MM-DD selected
-                df_stock_candidate = df_stock_candidate[ns_parser.s_start_date :]
+                df_stock_candidate = df_stock_candidate[
+                    ns_parser.s_start_date : ns_parser.s_end_date
+                ]
 
             # Check if start time from dataframe is more recent than specified
             if df_stock_candidate.index[0] > pd.to_datetime(ns_parser.s_start_date):
@@ -290,7 +305,9 @@ def load(
             df_stock_candidate.sort_index(ascending=True, inplace=True)
 
             # Slice dataframe from the starting date YYYY-MM-DD selected
-            df_stock_candidate = df_stock_candidate[ns_parser.s_start_date :]
+            df_stock_candidate = df_stock_candidate[
+                ns_parser.s_start_date : ns_parser.s_end_date
+            ]
 
             # Check if start time from dataframe is more recent than specified
             if df_stock_candidate.index[0] > pd.to_datetime(ns_parser.s_start_date):
@@ -376,7 +393,9 @@ def load(
             df_stock_candidate.index.name = "date"
 
             # Slice dataframe from the starting date YYYY-MM-DD selected
-            df_stock_candidate = df_stock_candidate[ns_parser.s_start_date :]
+            df_stock_candidate = df_stock_candidate[
+                ns_parser.s_start_date : ns_parser.s_end_date
+            ]
 
             # Check if start time from dataframe is more recent than specified
             if df_stock_candidate.index[0] > pd.to_datetime(ns_parser.s_start_date):
@@ -407,22 +426,18 @@ def load(
         return [s_ticker, s_start, s_interval, df_stock]
 
 
-def display_candle(s_ticker: str, s_start: datetime, plotly: bool):
-    """Shows candle plot of loaded ticker
+def display_candle(s_ticker: str, df_stock: pd.DataFrame, plotly: bool):
+    """Shows candle plot of loaded ticker. [Source: Yahoo Finance]
 
     Parameters
     ----------
+    df_stock: pd.DataFrame
+        Stock dataframe
     s_ticker: str
-        Ticker to display
-    s_start: datetime
-        Starting date for candle
+        Ticker name
     plotly: bool
         Flag to show interactive plotly chart
-
     """
-    # TODO: Add option to customize plot even further
-    print(type(s_start))
-    df_stock = trend.load_ticker(s_ticker, s_start)
     df_stock["ma20"] = df_stock["Close"].rolling(20).mean().fillna(method="bfill")
     df_stock["ma50"] = df_stock["Close"].rolling(50).mean().fillna(method="bfill")
 
@@ -460,7 +475,7 @@ def display_candle(s_ticker: str, s_start: datetime, plotly: bool):
             type="candle",
             mav=(20, 50),
             volume=True,
-            title=f"\n{s_ticker} - Starting {s_start.strftime('%Y-%m-%d')}",
+            title=f"\nStock {s_ticker}",
             addplot=ap0,
             xrotation=10,
             style=s,

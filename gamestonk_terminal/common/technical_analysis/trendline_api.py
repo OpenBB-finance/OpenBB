@@ -9,7 +9,33 @@ from pandas.core.frame import DataFrame
 from scipy.stats import linregress
 
 
-def load_ticker(ticker: str, start_date: Union[str, datetime]) -> DataFrame:
+def process_candle(df_data: DataFrame) -> DataFrame:
+    """Process DataFrame into candle style plot
+
+    Parameters
+    ----------
+    df_data : DataFrame
+        Stock dataframe.
+
+    Returns
+    -------
+    DataFrame
+        A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume, date_id, OC-High, OC-Low.
+    """
+    df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
+        "timedelta64[D]"
+    )
+    df_data["date_id"] = df_data["date_id"].dt.days + 1
+
+    df_data["OC_High"] = df_data[["Open", "Close"]].max(axis=1)
+    df_data["OC_Low"] = df_data[["Open", "Close"]].min(axis=1)
+
+    return df_data
+
+
+def load_ticker(
+    ticker: str, start_date: Union[str, datetime], end_date: Union[str, datetime] = ""
+) -> DataFrame:
     """Loads a ticker data from Yahoo Finance, adds a data index column data_id and Open-Close High/Low columns.
 
     Parameters
@@ -18,14 +44,18 @@ def load_ticker(ticker: str, start_date: Union[str, datetime]) -> DataFrame:
         The stock ticker.
     start_date : Union[str,datetime]
         Start date to load stock ticker data formatted YYYY-MM-DD.
+    end_date : Union[str,datetime]
+        End date to load stock ticker data formatted YYYY-MM-DD.
 
     Returns
     -------
     DataFrame
         A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume, date_id, OC-High, OC-Low.
     """
-    # print(f"Start date: {start_date}")
-    df_data = yf.download(ticker, start=start_date, progress=False)
+    if end_date:
+        df_data = yf.download(ticker, start=start_date, end=end_date, progress=False)
+    else:
+        df_data = yf.download(ticker, start=start_date, progress=False)
 
     df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
         "timedelta64[D]"
