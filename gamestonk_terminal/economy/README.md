@@ -3,7 +3,6 @@
 Command|Description|Source
 ------ | ------------|---
 `feargreed`     | CNN Fear and Greed Index | [CNN Business Insider](https://money.cnn.com/data/fear-and-greed)
-:
 `events`        | economic impact events | [Finnhub](https://finnhub.io)
 `overview`      | market data overview | [Wall St. Journal](https://www.wsj.com)
 `indices`       | US indices overview | [Wall St. Journal](https://www.wsj.com)
@@ -18,4 +17,4 @@ Command|Description|Source
 `rtps`          | real-time performance sectors | [AlphaVantage](https://www.alphavantage.co)
 FRED:
 `search`        | search FRED series notes | [FRED](https://fred.stlouisfed.org)
-`series`        | plot series from https://fred.stlouisfed.org | [FRED](https://fred.stlouisfed.org)
+`series`        | plot series from FRED | [FRED](https://fred.stlouisfed.org)
