@@ -1,6 +1,4 @@
-# BEHAVIOURAL ANALYSIS
-
-Check all features [HERE](https://gamestonkterminal.github.io/GamestonkTerminal/common/behavioural_analysis/).
+# Behavioural Analysis [>>](https://gamestonkterminal.github.io/GamestonkTerminal/common/behavioural_analysis/)
 
 Command|Description|Source
 ----|----|----
@@ -11,6 +9,7 @@ Command|Description|Source
 `popular`       |show popular tickers|[Reddit](https://reddit.com)
 `spac_c`        |show other users spacs announcements from subreddit SPACs community|[Reddit](https://reddit.com)
 `spac`          |show other users spacs announcements from other subs|[Reddit](https://reddit.com)
+`getdd`          |gets due diligence from another user's post|[Reddit](https://reddit.com)
 `bullbear`      |estimate quick sentiment from last 30 messages on board|[Stocktwits](https://stocktwits.com/)
 `messages`      |output up to the 30 last messages on the board|[Stocktwits](https://stocktwits.com/)
 `trending`      |trending stocks|[Stocktwits](https://stocktwits.com/)
@@ -21,6 +20,8 @@ Command|Description|Source
 `regions`       |regions that show highest interest in stock|[Google](https://google.com/)
 `queries`       |top related queries with this stock|[Google](https://google.com/)
 `rise`          |top rising related queries with stock|[Google](https://google.com/)
+`popularsi`     |show most popular stocks on social media right now|[Sentiment Investor](https://sentimentinvestor.com)
+`emerging`      |show stocks that are being talked about more than usual|[Sentiment Investor](https://sentimentinvestor.com)
 `metrics`       |core social sentiment metrics for this stock|[Sentiment Investor](https://sentimentinvestor.com)
 `social`        |social media figures for stock popularity|[Sentiment Investor](https://sentimentinvestor.com)
 `historical`    |plot the past week of data for a selected metric|[Sentiment Investor](https://sentimentinvestor.com)
