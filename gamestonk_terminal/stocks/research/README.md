@@ -1,4 +1,4 @@
-# RESEARCH
+# Research [>>](https://gamestonkterminal.github.io/GamestonkTerminal/stocks/research/)
 
 This menu aims to investigate a stock from a website of reference. The list of the supported websites is displayed below.
 

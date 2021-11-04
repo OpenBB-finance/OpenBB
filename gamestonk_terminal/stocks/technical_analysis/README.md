@@ -1,6 +1,4 @@
-# TECHNICAL ANALYSIS
-
-Check all features [HERE](https://gamestonkterminal.github.io/GamestonkTerminal/common/technical_analysis/).
+# TECHNICAL ANALYSIS [>>](https://gamestonkterminal.github.io/GamestonkTerminal/common/technical_analysis/)
 
 Command | Description | Sources
 ------ | ------ | ------
