@@ -3,7 +3,7 @@ usage: ford [-n N_NUM] [--export {csv,json,xlsx}] [-h]
 ```
 
 Orders by Fidelity customers. Information shown in the table below is based on the volume of orders entered on the "as of" date shown. Securities
-identified are not recommended or endorsed by Fidelity and are displayed for informational purposes only. [Source: Fidelity]
+identified are not recommended or endorsed by Fidelity and are displayed for informational purposes only. Source: https://eresearch.fidelity.com/eresearch/gotoBL/fidelityTopOrders.jhtml
 
 ```
 optional arguments:
