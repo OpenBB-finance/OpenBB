@@ -101,13 +101,13 @@ class TechnicalAnalysisController:
             stock_str = f"\n{s_intraday} Stock: {self.ticker}"
 
         help_str = f"""
-{stock_str}
-
 Technical Analysis:
     cls         clear screen
     help        show this menu again
     q           quit this menu, and shows back to main menu
     quit        quit to abandon program
+
+{stock_str}
 
     view        view historical data and trendlines [Finviz]
     summary     technical summary report [FinBrain API]

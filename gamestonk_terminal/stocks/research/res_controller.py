@@ -53,39 +53,34 @@ class ResearchController:
 
     def print_help(self):
         """Print help"""
-        s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
+        help_text = f"""
+Research:
+    cls               clear screen
+    ?/help            show this menu again
+    q                 quit this menu, and shows back to main menu
+    quit              quit to abandon program
 
-        if self.start:
-            print(
-                f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-            )
-        else:
-            print(f"\n{s_intraday} Stock: {self.ticker}")
+Ticker: {self.ticker}
 
-        print("\nResearch:")
-        print("   cls               clear screen")
-        print("   ?/help            show this menu again")
-        print("   q                 quit this menu, and shows back to main menu")
-        print("   quit              quit to abandon program")
-        print("")
-        print("   macroaxis         www.macroaxis.com")
-        print("   yahoo             www.finance.yahoo.com")
-        print("   finviz            www.finviz.com")
-        print("   marketwatch       www.marketwatch.com")
-        print("   fool              www.fool.com")
-        print("   businessinsider   www.markets.businessinsider.com")
-        print("   fmp               www.financialmodelingprep.com")
-        print("   fidelity          www.eresearch.fidelity.com")
-        print("   tradingview       www.tradingview.com")
-        print("   marketchameleon   www.marketchameleon.com")
-        print("   stockrow          www.stockrow.com")
-        print("   barchart          www.barchart.com")
-        print("   grufity           www.grufity.com")
-        print("   fintel            www.fintel.com")
-        print("   zacks             www.zacks.com")
-        print("   macrotrends       www.macrotrends.net")
-        print("   newsfilter        www.newsfilter.io")
-        print("   stockanalysis     www.stockanalysis.com")
+    macroaxis         www.macroaxis.com
+    yahoo             www.finance.yahoo.com
+    finviz            www.finviz.com
+    marketwatch       www.marketwatch.com
+    fool              www.fool.com
+    businessinsider   www.markets.businessinsider.com
+    fmp               www.financialmodelingprep.com
+    fidelity          www.eresearch.fidelity.com
+    tradingview       www.tradingview.com
+    marketchameleon   www.marketchameleon.com
+    stockrow          www.stockrow.com
+    barchart          www.barchart.com
+    grufity           www.grufity.com
+    fintel            www.fintel.com
+    zacks             www.zacks.com
+    macrotrends       www.macrotrends.net
+    newsfilter        www.newsfilter.io
+    stockanalysis     www.stockanalysis.com"""
+        print(help_text)
 
     def switch(self, an_input: str):
         """Process and dispatch input

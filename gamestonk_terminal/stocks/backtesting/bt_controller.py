@@ -57,7 +57,7 @@ Backtesting:
     quit        quit to abandon program
     load        load new ticker to analyze
 
-Current Ticker: {self.ticker.upper()}
+Ticker: {self.ticker.upper()}
 
     ema         buy when price exceeds EMA(l)
     ema_cross   buy when EMA(short) > EMA(long)

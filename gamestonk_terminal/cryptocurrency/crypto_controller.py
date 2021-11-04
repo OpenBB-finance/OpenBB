@@ -99,8 +99,6 @@ class CryptoController:
     def print_help(self):
         """Print help"""
         help_text = """
->> CRYPTO <<
-
 What do you want to do?
     cls         clear screen
     ?/help      show this menu again

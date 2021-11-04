@@ -115,8 +115,6 @@ class OptionsController:
         """Print help."""
         colored = self.ticker and self.selected_date
         help_text = """
->> OPTIONS <<
-
 What do you want to do?
     cls           clear screen
     ?/help        show this menu again

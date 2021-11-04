@@ -64,8 +64,6 @@ class ETFController:
     def print_help(self):
         """Print help"""
         help_str = """
->> ETF <<
-
 What do you want to do?
     cls         clear screen
     ?/help      show this menu again
@@ -79,15 +77,12 @@ StockAnalysis.com:
     holdings      get top holdings for ETF
     compare       compare overview of multiple ETF
     screener      screen etfs based on overview data
-
 Wall St. Journal:
     gainers       show top gainers
     decliners     show top decliners
     active        show most active
-
 The Passive Investor:
     pir           create ETF report of multiple tickers
-
 Finance Database:
     fds           advanced ETF search based on category, name and/or description
 """

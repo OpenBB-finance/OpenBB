@@ -54,8 +54,6 @@ class ResourceCollectionController:
     def print_help():
         """Print help"""
         help_str = """
-
->> RESOURCES <<
 What do you want to do?
    cls           clear screen
    ?/help        show this menu again

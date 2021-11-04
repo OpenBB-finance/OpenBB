@@ -85,6 +85,7 @@ Discovery:
     ?/help         show this menu again
     q              quit this menu, and shows back to main menu
     quit           quit to abandon program
+
 Geek of Wall St:
     rtearn         realtime earnings from and expected moves
 Finnhub:

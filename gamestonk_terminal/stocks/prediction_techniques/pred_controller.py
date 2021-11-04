@@ -86,9 +86,8 @@ class PredictionTechniquesController:
         else:
             stock_info = "{s_intraday} Stock: {self.ticker}"
 
-        help_string = f""">>> PREDICTION <<<
-
-What would you like to do?
+        help_string = f"""
+Prediction Techniques:
     cls         clear screen
     ?/help      show this menu again
     q           quit this menu, and shows back to main menu
