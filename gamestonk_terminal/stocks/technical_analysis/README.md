@@ -1,6 +1,6 @@
 # TECHNICAL ANALYSIS [>>](https://gamestonkterminal.github.io/GamestonkTerminal/common/technical_analysis/)
 
-Command | Description | Sources
+Command | Description | Info
 ------ | ------ | ------
 `view`         | view historical data and trendlines| [Finviz](https://finviz.com/quote.ashx?t=tsla)
 `summary`      | technical summary report| [FinBrain](https://finbrain.tech)

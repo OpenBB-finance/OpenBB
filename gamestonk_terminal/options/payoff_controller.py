@@ -67,8 +67,6 @@ class Payoff:
             text = "Short"
 
         help_text = f"""
->>OPTION PAYOFF DIAGRAM<<
-
 Underlying Asset: {text}
 
     list          list available strike prices for calls and puts
