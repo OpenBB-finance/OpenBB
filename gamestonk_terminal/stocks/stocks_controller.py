@@ -234,7 +234,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             help="End date for candle data",
         )
         parser.add_argument(
-            "--plotly",
+            "--it",
             dest="plotly",
             action="store_true",
             default=False,
