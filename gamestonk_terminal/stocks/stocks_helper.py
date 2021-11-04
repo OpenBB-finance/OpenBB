@@ -2,8 +2,9 @@
 __docformat__ = "numpy"
 import argparse
 from datetime import datetime, timedelta
-from typing import List
-
+from typing import List, Union
+import warnings
+from scipy import stats
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 import pandas as pd
@@ -19,13 +20,13 @@ from tabulate import tabulate
 from gamestonk_terminal import config_plot as cfgPlot
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.common.technical_analysis import trendline_api as trend
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     plot_autoscale,
     valid_date,
 )
 
+warnings.simplefilter("ignore")
 # pylint: disable=no-member,too-many-branches,C0302
 
 
@@ -427,7 +428,7 @@ def load(
 
 
 def display_candle(s_ticker: str, df_stock: pd.DataFrame, plotly: bool):
-    """Shows candle plot of loaded ticker. [Source: Yahoo Finance]
+    """Shows candle plot of loaded ticker. [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
 
     Parameters
     ----------
@@ -441,8 +442,8 @@ def display_candle(s_ticker: str, df_stock: pd.DataFrame, plotly: bool):
     df_stock["ma20"] = df_stock["Close"].rolling(20).mean().fillna(method="bfill")
     df_stock["ma50"] = df_stock["Close"].rolling(50).mean().fillna(method="bfill")
 
-    df_stock = trend.find_trendline(df_stock, "OC_High", "high")
-    df_stock = trend.find_trendline(df_stock, "OC_Low", "low")
+    df_stock = find_trendline(df_stock, "OC_High", "high")
+    df_stock = find_trendline(df_stock, "OC_Low", "low")
     if not plotly:
         mc = mpf.make_marketcolors(
             up="green",
@@ -827,3 +828,120 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
 
     plt.show()
     print("")
+
+
+def load_ticker(
+    ticker: str, start_date: Union[str, datetime], end_date: Union[str, datetime] = ""
+) -> pd.DataFrame:
+    """Loads a ticker data from Yahoo Finance, adds a data index column data_id and Open-Close High/Low columns.
+
+    Parameters
+    ----------
+    ticker : str
+        The stock ticker.
+    start_date : Union[str,datetime]
+        Start date to load stock ticker data formatted YYYY-MM-DD.
+    end_date : Union[str,datetime]
+        End date to load stock ticker data formatted YYYY-MM-DD.
+
+    Returns
+    -------
+    DataFrame
+        A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume, date_id, OC-High, OC-Low.
+    """
+    if end_date:
+        df_data = yf.download(ticker, start=start_date, end=end_date, progress=False)
+    else:
+        df_data = yf.download(ticker, start=start_date, progress=False)
+
+    df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
+        "timedelta64[D]"
+    )
+    df_data["date_id"] = df_data["date_id"].dt.days + 1
+
+    df_data["OC_High"] = df_data[["Open", "Close"]].max(axis=1)
+    df_data["OC_Low"] = df_data[["Open", "Close"]].min(axis=1)
+
+    return df_data
+
+
+def process_candle(df_data: pd.DataFrame) -> pd.DataFrame:
+    """Process DataFrame into candle style plot
+
+    Parameters
+    ----------
+    df_data : DataFrame
+        Stock dataframe.
+
+    Returns
+    -------
+    DataFrame
+        A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume, date_id, OC-High, OC-Low.
+    """
+    df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
+        "timedelta64[D]"
+    )
+    df_data["date_id"] = df_data["date_id"].dt.days + 1
+
+    df_data["OC_High"] = df_data[["Open", "Close"]].max(axis=1)
+    df_data["OC_Low"] = df_data[["Open", "Close"]].min(axis=1)
+
+    return df_data
+
+
+def find_trendline(
+    df_data: pd.DataFrame, y_key: str, high_low: str = "high"
+) -> pd.DataFrame:
+    """Attempts to find a trend line based on y_key column from a given stock ticker data frame.
+
+    Parameters
+    ----------
+    df_data : DataFrame
+        The stock ticker data frame with at least date_id, y_key columns.
+
+    y_key : str
+        Column name to base the trend line on.
+
+    high_low: str, optional
+        Either "high" or "low". High is the default.
+
+    Returns
+    -------
+    DataFrame
+        If a trend is successfully found,
+            An updated Panda's data frame with a trend data {y_key}_trend column.
+        If no trend was found,
+            An original Panda's data frame
+    """
+
+    for iteration in [3, 4, 5, 6, 7]:
+        df_temp = df_data.copy()
+        while len(df_temp) > iteration:
+            reg = stats.linregress(
+                x=df_temp["date_id"],
+                y=df_temp[y_key],
+            )
+
+            if high_low == "high":
+                df_temp = df_temp.loc[
+                    df_temp[y_key] > reg[0] * df_temp["date_id"] + reg[1]
+                ]
+            else:
+                df_temp = df_temp.loc[
+                    df_temp[y_key] < reg[0] * df_temp["date_id"] + reg[1]
+                ]
+
+        if len(df_temp) > 1:
+            break
+
+    if len(df_temp) == 1:
+        return df_data
+
+    reg = stats.linregress(
+        x=df_temp["date_id"],
+        y=df_temp[y_key],
+    )
+
+    df_data[f"{y_key}_trend"] = reg[0] * df_data["date_id"] + reg[1]
+
+    return df_data

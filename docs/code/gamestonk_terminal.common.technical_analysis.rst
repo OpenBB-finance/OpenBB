@@ -68,14 +68,6 @@ gamestonk\_terminal.common.technical\_analysis.trend\_indicators\_view module
    :undoc-members:
    :show-inheritance:
 
-gamestonk\_terminal.common.technical\_analysis.trendline\_api module
---------------------------------------------------------------------
-
-.. automodule:: gamestonk_terminal.common.technical_analysis.trendline_api
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 gamestonk\_terminal.common.technical\_analysis.volatility\_model module
 -----------------------------------------------------------------------
 

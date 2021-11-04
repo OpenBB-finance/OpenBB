@@ -17,7 +17,12 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.stocks.stocks_helper import display_candle, load, quote
+from gamestonk_terminal.stocks.stocks_helper import (
+    display_candle,
+    load,
+    quote,
+    process_candle,
+)
 
 from gamestonk_terminal.helper_funcs import (
     valid_date,
@@ -27,7 +32,6 @@ from gamestonk_terminal.helper_funcs import (
     try_except,
 )
 from gamestonk_terminal.common.quantitative_analysis import qa_view
-from gamestonk_terminal.common.technical_analysis import trendline_api
 
 # pylint: disable=R1710,import-outside-toplevel
 
@@ -302,7 +306,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             )
 
         else:
-            df_stock = trendline_api.process_candle(self.stock)
+            df_stock = process_candle(self.stock)
 
             display_candle(
                 s_ticker=self.ticker,
