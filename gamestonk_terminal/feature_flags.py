@@ -20,10 +20,10 @@ USE_COLOR = strtobool(os.getenv("GTFF_USE_COLOR", "True"))
 USE_FLAIR = os.getenv("GTFF_USE_FLAIR") or "stars"
 
 # Enable interactive matplotlib mode
-USE_ION = strtobool(os.getenv("GTFF_USE_ION", "False"))
+USE_ION = strtobool(os.getenv("GTFF_USE_ION", "True"))
 
 # Enable Prompt Toolkit
-USE_PROMPT_TOOLKIT = strtobool(os.getenv("GTFF_USE_PROMPT_TOOLKIT", "False"))
+USE_PROMPT_TOOLKIT = strtobool(os.getenv("GTFF_USE_PROMPT_TOOLKIT", "True"))
 
 # Enable Prediction features
 ENABLE_PREDICT = strtobool(os.getenv("GTFF_ENABLE_PREDICT", "True"))
@@ -36,3 +36,6 @@ ENABLE_THOUGHTS_DAY = strtobool(os.getenv("GTFF_ENABLE_THOUGHTS_DAY", "False"))
 
 # Quick exit for testing
 ENABLE_QUICK_EXIT = strtobool(os.getenv("GTFF_ENABLE_QUICK_EXIT", "False"))
+
+# Open report as HTML, otherwise notebook
+OPEN_REPORT_AS_HTML = strtobool(os.getenv("GTFF_OPEN_REPORT_AS_HTML", "True"))

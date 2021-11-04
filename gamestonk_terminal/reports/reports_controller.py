@@ -16,6 +16,11 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import get_flair, system_clear
 from gamestonk_terminal import config_terminal
+from gamestonk_terminal.helper_funcs import (
+    MENU_GO_BACK,
+    MENU_QUIT,
+    MENU_RESET,
+)
 
 
 class ReportController:
@@ -27,6 +32,7 @@ class ReportController:
         "help",
         "q",
         "quit",
+        "reset",
     ]
 
     reports_folder = os.path.dirname(os.path.abspath(__file__))
@@ -96,6 +102,7 @@ What do you want to do?
     ?/help      show this menu again
     q           quit this menu, and shows back to main menu
     quit        quit to abandon the program
+    reset       reset terminal and reload configs
 
 Select one of the following reports:
 {self.reports_opts}"""
@@ -139,12 +146,19 @@ Select one of the following reports:
         # Go back to menu above
         if known_args.cmd == "q":
             proc.kill()
-            return False
+            print("")
+            return MENU_GO_BACK
 
         # Quit terminal
         if known_args.cmd == "quit":
             proc.kill()
-            return True
+            print("")
+            return MENU_QUIT
+
+        # Reset menu
+        if known_args.cmd == "reset":
+            print("")
+            return MENU_RESET
 
         if known_args.cmd:
             if known_args.cmd in list(self.d_id_to_report_name.keys()):
@@ -191,13 +205,23 @@ Select one of the following reports:
                 parameters=d_report_params,
             )
 
-            webbrowser.open(
-                os.path.join(
-                    f"http://localhost:{config_terminal.PAPERMILL_NOTEBOOK_REPORT_PORT}",
-                    "notebooks",
-                    notebook_output + ".ipynb",
+            if gtff.OPEN_REPORT_AS_HTML:
+                webbrowser.open(
+                    os.path.join(
+                        f"http://localhost:{config_terminal.PAPERMILL_NOTEBOOK_REPORT_PORT}",
+                        "view",
+                        notebook_output + ".html",
+                    )
                 )
-            )
+
+            else:
+                webbrowser.open(
+                    os.path.join(
+                        f"http://localhost:{config_terminal.PAPERMILL_NOTEBOOK_REPORT_PORT}",
+                        "notebooks",
+                        notebook_output + ".ipynb",
+                    )
+                )
 
             print("")
             print(
@@ -242,12 +266,10 @@ def menu():
 
         try:
             process_input = report_controller.switch(an_input, proc)
+
+            if process_input is not None:
+                return process_input
+
         except SystemExit:
             print("The command selected doesn't exist\n")
             continue
-
-        if process_input is False:
-            return False
-
-        if process_input is True:
-            return True
