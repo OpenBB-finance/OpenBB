@@ -2,10 +2,7 @@
 usage: lowfloat [-n N_NUM] [--export {csv,json,xlsx}] [-h]
 ```
 
-Print top stocks with lowest float. LowFloat.com provides a convenient sorted database of stocks which have a float of under 10 million shares.
-Additional key data such as the number of outstanding shares, short interest, and company industry is displayed. Data is presented for the Nasdaq Stock
-Market, the New York Stock Exchange, the American Stock Exchange, and the Over the Counter Bulletin Board. [Source: www.lowfloat.com]
-
+Request a list of stocks with floats under ten million shares, covering: NASDAQ, NYSE, AMEX, and OTC markets. Companies with low floats are easier targets for price manipulation; it takes fewer millions to move the needle. Many of these companies also accrue high levels of short interest. Source: (https://lowfloat.com)
 ```
 optional arguments:
   -n N_NUM, --num N_NUM
@@ -14,3 +11,4 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
+<img width="1400" alt="Feature Screeshot - lowfloat" src="https://user-images.githubusercontent.com/85772166/140385628-9fd091a7-7dc9-46e1-bdc1-42b87eb9a78b.png">
