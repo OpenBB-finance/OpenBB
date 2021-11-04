@@ -468,11 +468,11 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "cvxpy"
-version = "1.1.12"
+version = "1.1.17"
 description = "A domain-specific language for modeling convex optimization problems in Python."
 category = "main"
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=3.6"
 
 [package.dependencies]
 ecos = ">=2"
@@ -554,24 +554,20 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "degiro-connector"
-version = "1.0.0"
-description = ""
+version = "2.0.3"
+description = "This is yet another library to access Degiro's API."
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.6.2"
 
 [package.dependencies]
-grpcio = "*"
-onetimepass = "*"
-orjson = "*"
-pandas = "*"
-protobuf = "*"
-requests = "*"
-wrapt = "*"
-
-[package.extras]
-lint = ["flake8"]
-tests = ["pytest"]
+grpcio = ">=1.38.1,<2.0.0"
+onetimepass = ">=1.0.1,<2.0.0"
+orjson = ">=3.6.0,<4.0.0"
+pandas = "<=1.1.5"
+protobuf = ">=3.17.3,<4.0.0"
+requests = ">=2.26.0,<3.0.0"
+wrapt = ">=1.12.1,<2.0.0"
 
 [[package]]
 name = "deprecation"
@@ -3431,7 +3427,7 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "197f0e63a43061a0ef594f9dec2f93abf5c05143910fb4878e236ae2c81e0c53"
+content-hash = "5a5b6aa73296c693d4cac5f01df47d191383cc61d60a15637abd570a01b07e56"
 
 [metadata.files]
 absl-py = [
@@ -3806,22 +3802,19 @@ cssselect = [
     {file = "cssselect-1.1.0.tar.gz", hash = "sha256:f95f8dedd925fd8f54edb3d2dfb44c190d9d18512377d3c1e2388d16126879bc"},
 ]
 cvxpy = [
-    {file = "cvxpy-1.1.12-cp35-cp35m-macosx_10_9_x86_64.whl", hash = "sha256:48e9bae36a43453659ca5d0c85e78f1eb0dfe629b8aa0f023f65aa59d0ac04d7"},
-    {file = "cvxpy-1.1.12-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:fe0bcb7f83b5d4deb760bf033cb72ab97c8e0770b116e08d96e9726cb1a52c01"},
-    {file = "cvxpy-1.1.12-cp36-cp36m-win_amd64.whl", hash = "sha256:86f8e4aa1a79482431b89aa526249d9fda04c74e04a3ec224d1175d281643d71"},
-    {file = "cvxpy-1.1.12-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:90b09a7361b9c614166fa673e1fe9321317df6939135330e1621b9a0bf10e3a8"},
-    {file = "cvxpy-1.1.12-cp37-cp37m-win_amd64.whl", hash = "sha256:084e5292f2a13133a1cd28d68f5af1df33a5119b0f1aec7cecf834eea3e2d11d"},
-    {file = "cvxpy-1.1.12-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:575f6e1c70274008961edff97a7494701faed20b40fbd49327010c0e7d186256"},
-    {file = "cvxpy-1.1.12-cp38-cp38-win_amd64.whl", hash = "sha256:76d04444cb50ad2840bbc72a625ac246b5eeeeb580ee20c71bec057822667738"},
-    {file = "cvxpy-1.1.12-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:2de5e0e75316839bc71b5df2c2db0131cee7ef06dac566c6c44dc852c091502b"},
-    {file = "cvxpy-1.1.12-cp39-cp39-win_amd64.whl", hash = "sha256:9fa4d033ab31855aea090e4b358017b36880390a7d0e6e97ecc5226c77eab489"},
-    {file = "cvxpy-1.1.12-py3.5-macosx-10.9-x86_64.egg", hash = "sha256:27ff263c80700b097d3714ba34161bd284f736f3029dfa89a95bf4c4a2801cb9"},
-    {file = "cvxpy-1.1.12-py3.6-macosx-10.7-x86_64.egg", hash = "sha256:7c1c5371dda78580f0892fba6776abb6e43bdb45589311c3179a057f1a984110"},
-    {file = "cvxpy-1.1.12-py3.6-win-amd64.egg", hash = "sha256:d2c28e0eea1b6dc70262c9ed8b63c5c1747d85c28b3ec24cbaab07583b3ad729"},
-    {file = "cvxpy-1.1.12-py3.7-win-amd64.egg", hash = "sha256:44d0e3d60693831ac70bdc9b2e23faf84401347bfcdef4eb5da5ae22ac57f5ff"},
-    {file = "cvxpy-1.1.12-py3.8-win-amd64.egg", hash = "sha256:c86f8de9a63ccbd45844a4482df8099824688b5329060f089aad1c3beb939190"},
-    {file = "cvxpy-1.1.12-py3.9-win-amd64.egg", hash = "sha256:08c720706abd94c25903a4db5dd2171232e72d0969b874a5de9a8181f96357d5"},
-    {file = "cvxpy-1.1.12.tar.gz", hash = "sha256:b499ebfae4fc645e9523621573ffcb1c5b6854a1b5c0ce1d66a8a9a458605807"},
+    {file = "cvxpy-1.1.17-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:f612f2a07550eaf286dc79ddbafde74504d10e218d5efab0e8e4c022b97d90b5"},
+    {file = "cvxpy-1.1.17-cp36-cp36m-manylinux_2_24_x86_64.whl", hash = "sha256:8af6aaae658471f05856555847363e68140169f164c5b0b184e85bc296b69a20"},
+    {file = "cvxpy-1.1.17-cp36-cp36m-win_amd64.whl", hash = "sha256:4fec0b03c2b995d6191b9176f51b1f1fdd057c89d5b5ca12ef4263ad19214a03"},
+    {file = "cvxpy-1.1.17-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:6ae101311b28a9e7c501ff6aefb03c588d5cce6803865b6df1bfbd80b969f9f8"},
+    {file = "cvxpy-1.1.17-cp37-cp37m-manylinux_2_24_x86_64.whl", hash = "sha256:5d217c25e970c2f2a55ee607822823e91aaa07522913f7c61c7f9d4d0d1de885"},
+    {file = "cvxpy-1.1.17-cp37-cp37m-win_amd64.whl", hash = "sha256:8269bf471f5e015cec6289dfad64e5f7c50e7f35d2d0823490a4c3ea278f1a20"},
+    {file = "cvxpy-1.1.17-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:1fa6768bcefe4b5c8e413e20547f914b8e3c908f06fc833a003dde0ea1aeb56d"},
+    {file = "cvxpy-1.1.17-cp38-cp38-manylinux_2_24_x86_64.whl", hash = "sha256:472c1fb6568a7bedc874f10b234d569cd16290fb9467dc2768d06dfa1c2dbc7f"},
+    {file = "cvxpy-1.1.17-cp38-cp38-win_amd64.whl", hash = "sha256:c0f23c57c4afe9ab5afa9bf408d8b0c8ffc3c8c57d54e81ab56b7dfe0bf9c34b"},
+    {file = "cvxpy-1.1.17-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:06136af30d1ea605ca8093a8664edc8f963155a8765214a430973259450b489e"},
+    {file = "cvxpy-1.1.17-cp39-cp39-manylinux_2_24_x86_64.whl", hash = "sha256:ea4381c55dd4f7c0a140a59dfa777c7bb09d6fa513d14a7f5381948d1540b966"},
+    {file = "cvxpy-1.1.17-cp39-cp39-win_amd64.whl", hash = "sha256:cdd9cfb864bcae5233a52fa4060bbeb7c81b29a23d82acafa071e372b23f6f0b"},
+    {file = "cvxpy-1.1.17.tar.gz", hash = "sha256:3397d3b89d770ea9f0fc359b1c9b3afede6a0d3bea1cff20e2653b13451cdb8a"},
 ]
 cycler = [
     {file = "cycler-0.11.0-py3-none-any.whl", hash = "sha256:3a27e95f763a428a739d2add979fa7494c912a32c17c4c38c4d5f082cad165a3"},
@@ -3908,8 +3901,8 @@ defusedxml = [
     {file = "defusedxml-0.7.1.tar.gz", hash = "sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69"},
 ]
 degiro-connector = [
-    {file = "degiro-connector-1.0.0.tar.gz", hash = "sha256:e4e694d3065bbc718cf32205c6880f621ec64be0d6003fb2e539f696e770e8dd"},
-    {file = "degiro_connector-1.0.0-py3-none-any.whl", hash = "sha256:948b93e2e917b432b59facf05736dad0a3f033b2284199af1ed536b17bfc1dba"},
+    {file = "degiro-connector-2.0.3.tar.gz", hash = "sha256:2f7793c90ba28959811a803b9621b36de65e16678b504487a8dbad363702e407"},
+    {file = "degiro_connector-2.0.3-py3-none-any.whl", hash = "sha256:e044a2b636bdf2db1667748262f4367db610ce22e042fa7afc46db32549bd9d7"},
 ]
 deprecation = [
     {file = "deprecation-2.1.0-py2.py3-none-any.whl", hash = "sha256:a10811591210e1fb0e768a8c25517cabeabcba6f0bf96564f8ff45189f90b14a"},
