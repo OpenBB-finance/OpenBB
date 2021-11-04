@@ -96,8 +96,6 @@ class EconomyController:
     def print_help():
         """Print help"""
         help_text = """
->> ECONOMY <<
-
 What do you want to do?
     cls           clear screen
     ?/help        show this menu again

@@ -69,19 +69,17 @@ class PortfolioOptimization:
     def print_help(tickers: List[str]):
         """Print help"""
         help_text = f"""
->>PORTFOLIO OPTIMIZATION<<
-
 What would you like to do?
     cls           clear screen
     ?/help        show this menu again
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
 
-Current Tickers: {('None', ', '.join(tickers))[bool(tickers)]}
-
     select        select list of tickers to be optimized
     add           add tickers to the list of the tickers to be optimized
-    rmv           remove tickers from the list of the tickers to be optimized"
+    rmv           remove tickers from the list of the tickers to be optimized
+
+Tickers: {('None', ', '.join(tickers))[bool(tickers)]}
 
 Optimization:
     equal         equally weighted

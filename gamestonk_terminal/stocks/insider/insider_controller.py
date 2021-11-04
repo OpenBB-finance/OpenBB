@@ -141,6 +141,7 @@ Top:
     tispm         top insider sales past month
 {Style.DIM if not self.ticker else ''}
 Ticker: {self.ticker}
+
     act           insider activity over time [Business Insider]
     lins          last insider trading of the company [Finviz]
 {Style.RESET_ALL if not self.ticker else ''}"""

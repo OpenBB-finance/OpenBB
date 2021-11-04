@@ -33,8 +33,6 @@ class BrokersController:
     def print_help(self):
         """Print help"""
         help_string = """
->>BROKERS<<
-
 What would you like to do?
     cls           clear screen
     ?/help        show this menu again

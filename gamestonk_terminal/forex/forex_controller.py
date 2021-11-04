@@ -57,27 +57,25 @@ class ForexController:
         """Print help"""
         dim_bool = self.from_symbol and self.to_symbol
         help_str = f"""
->>> FOREX <<<
-
 What would you like to do?
     cls           clear screen
     ?/help        show this menu again
     q             quit this menu and goes back to main menu
     quit          quit to abandon program
     reset         reset terminal and reload configs
+
     select        select fx pair
 
-To:   {None or self.to_symbol}
 From: {None or self.from_symbol}
+To:   {None or self.to_symbol}
 {Style.DIM if not dim_bool else ""}
-AlphaVantage (API Key required):
+AlphaVantage:
     quote         get last quote
     load          get historical data
     candle        show candle plot for loaded data
 {Style.RESET_ALL}
 Brokerages:
 >   oanda         access oanda menu
-
  """
         print(help_str)
 

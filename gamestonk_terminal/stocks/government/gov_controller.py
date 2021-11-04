@@ -63,9 +63,7 @@ class GovController:
         dim_no_ticker = Style.DIM if not self.ticker else ""
         reset_style = Style.RESET_ALL
         help_string = f"""
->>GOVERNMENT<<
-
-What would you like to do?
+Government:
     cls                  clear screen
     ?/help               show this menu again
     q                    quit this menu, and shows back to main menu
@@ -80,7 +78,8 @@ Explore:
     qtrcontracts         quarterly government contracts analysis
     toplobbying          top corporate lobbying tickers
 
-Current Ticker: {self.ticker or None}{dim_no_ticker}
+Ticker: {self.ticker or None}{dim_no_ticker}
+
     gtrades              show government trades for ticker
     contracts            show government contracts for ticker
     histcont             show historical quarterly government contracts for ticker

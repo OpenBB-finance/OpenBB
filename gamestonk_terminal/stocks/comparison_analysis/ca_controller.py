@@ -104,15 +104,11 @@ class ComparisonAnalysisController:
     def print_help(self):
         """Print help"""
         all_loaded = bool(not self.ticker or not self.similar)
-        s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.start:
-            stock_str = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            stock_str = f"Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            stock_str = f"{s_intraday} Stock: {self.ticker}"
+            stock_str = f"Stock: {self.ticker}"
         help_str = f"""
-{stock_str}
-Similar Companies: {', '.join(self.similar) or None}
-
 Comparison Analysis:
     cls           clear screen
     ?/help        show this menu again
@@ -122,6 +118,9 @@ Comparison Analysis:
     load          load new base ticker
     add           add more companies to current selected (max 10 total)
     select        reset and select similar companies
+
+{stock_str}
+Similar Companies: {', '.join(self.similar) or None}
 
 Get Similar:
     tsne          run TSNE on all SP500 stocks and returns 10 closest tickers

@@ -24,7 +24,8 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers import bro_controller
-from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
+
+# from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
 from gamestonk_terminal.portfolio import (
     portfolio_view,
@@ -51,7 +52,7 @@ class PortfolioController:
 
     CHOICES_MENUS = [
         "bro",
-        "pa",
+        # "pa",
         "po",
         "load",
         "save",
@@ -90,8 +91,6 @@ class PortfolioController:
     def print_help(self):
         """Print help"""
         help_text = """
->> PORTFOLIO <<
-
 What do you want to do?
     cls         clear screen
     ?/help      show this menu again
@@ -100,7 +99,6 @@ What do you want to do?
     reset       reset terminal and reload configs
 
 >   bro         brokers holdings, \t\t supports: robinhood, ally, degiro
->   pa          portfolio analysis, \t\t analyses your custom portfolio
 >   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt
 
 Portfolio:
@@ -175,13 +173,13 @@ Graphs:
         else:
             return True
 
-    def call_pa(self, _):
-        """Process pa command"""
-        ret = pa_controller.menu()
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+    # def call_pa(self, _):
+    #    """Process pa command"""
+    #    ret = pa_controller.menu()
+    #    if ret is False:
+    #        self.print_help()
+    #    else:
+    #        return True
 
     def call_po(self, _):
         """Process po command"""

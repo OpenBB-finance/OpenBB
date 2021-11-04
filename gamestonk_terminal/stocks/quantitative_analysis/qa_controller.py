@@ -91,7 +91,6 @@ class QaController:
         else:
             stock_str = f"{s_intraday} Stock: {self.ticker}"
         help_str = f"""
-
 Quantitative Analysis:
     cls         clear screen
     help        show this menu again

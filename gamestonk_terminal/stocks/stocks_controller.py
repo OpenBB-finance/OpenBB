@@ -106,8 +106,6 @@ class StocksController:
         dim_if_no_ticker = Style.DIM if not self.ticker else ""
         reset_style_if_no_ticker = Style.RESET_ALL if not self.ticker else ""
         help_text = f"""
->> STOCKS <<
-
 What do you want to do?
     cls         clear screen
     ?/help      show this menu again

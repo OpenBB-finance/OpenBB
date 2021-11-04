@@ -95,8 +95,6 @@ class ReportController:
     def print_help(self):
         """Print help"""
         help_text = f"""
->> REPORTS <<
-
 What do you want to do?
     cls         clear screen
     ?/help      show this menu again

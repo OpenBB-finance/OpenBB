@@ -80,9 +80,7 @@ class BehaviouralAnalysisController:
         dim = Style.DIM if not self.ticker else ""
         res = Style.RESET_ALL
         help_string = f"""
->>>Behavioural Analysis:<<<
-
-What would you like to do?
+Behavioural Analysis:
     cls           clear screen
     ?/help        show this menu again
     q             quit this menu, and shows back to main menu

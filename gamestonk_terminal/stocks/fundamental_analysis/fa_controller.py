@@ -100,31 +100,22 @@ class FundamentalAnalysisController:
 
     def print_help(self):
         """Print help"""
-        intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
-
-        if self.start:
-            stock_text = f"\n{intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-        else:
-            stock_text = f"\n{intraday} Stock: {self.ticker}"
-
         help_text = f"""
->>>Fundamental Analysis<<<
-
-What would you like to do?
+Fundamental Analysis:
     cls           clear screen
     ?/help        show this menu again
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
     load          load a new ticker
-{stock_text}
+
+Ticker: {self.ticker}
 
     data          fundamental and technical data of company [FinViz]
     mgmt          management team of the company [Business Insider]
     analysis      analyse SEC filings with the help of machine learning [Eclect.us]
     score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]
     warnings      company warnings according to Sean Seah book [Market Watch]
-    dcf           a customizable discounted cash flow created in excel [stockanalysis]
-
+    dcf           advanced Excel customizable discounted cash flow [stockanalysis]
 Yahoo Finance:
     info          information scope of the company
     shrs          shareholders of the company
@@ -132,7 +123,6 @@ Yahoo Finance:
     cal           calendar earnings and estimates of the company
     web           open web browser of the company
     hq            open HQ location of the company
-
 Alpha Vantage:
     overview      overview of the company
     key           company key metrics
@@ -141,7 +131,6 @@ Alpha Vantage:
     cash          cash flow of the company
     earnings      earnings dates and reported EPS
     fraud         key fraud ratios
-
 Other Sources:
 >   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP
         """
