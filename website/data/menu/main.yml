@@ -779,6 +779,16 @@ main:
         ref: "/economy/glbonds"
       - name: currencies
         ref: "/economy/currencies"
+      - name: energy
+        ref: "/economy/energy"
+      - name: metals
+        ref: "/economy/metals"
+      - name: meats
+        ref: "/economy/meats"
+      - name: grains
+        ref: "/economy/grains"
+      - name: softs
+        ref: "/economy/softs"
       - name: map
         ref: "/economy/map"
       - name: valuation
