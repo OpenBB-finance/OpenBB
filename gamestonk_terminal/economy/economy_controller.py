@@ -1,6 +1,6 @@
 """ Econ Controller """
 __docformat__ = "numpy"
-
+# pylint:disable=too-many-lines
 import argparse
 import os
 from typing import List
@@ -86,6 +86,7 @@ class EconomyController:
         "map",
         "rtps",
         "gdp",
+        "gdpc",
         "industry",
     ]
 
@@ -133,7 +134,8 @@ Finviz:
     spectrum      spectrum of sectors, industry, country
 Alpha Vantage:
     rtps          real-time performance sectors
-    gdp           Real GDP for US
+    gdp           Real GDP for United States
+    gdpc          quarterly Real GDP per Capita data of the United States
 FRED:
     search        search FRED series notes
     series        plot series from https://fred.stlouisfed.org
@@ -831,6 +833,46 @@ FRED:
 
         alphavantage_view.display_real_gdp(
             interval=ns_parser.interval,
+            start_year=ns_parser.start,
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_gdpc(self, other_args: List[str]):
+        """Process rtps command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="gdpc",
+            description="""
+                Get real GDP per capita for United States[Source: Alpha Vantage]
+            """,
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            help="Start year.",
+            dest="start",
+            type=int,
+            default=2010,
+        )
+        parser.add_argument(
+            "--raw",
+            help="Display raw data",
+            action="store_true",
+            dest="raw",
+            default=False,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if not ns_parser:
+            return
+
+        alphavantage_view.display_gdp_capita(
             start_year=ns_parser.start,
             raw=ns_parser.raw,
             export=ns_parser.export,

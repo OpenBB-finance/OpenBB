@@ -49,3 +49,19 @@ def get_real_gdp(interval: str = "a") -> pd.DataFrame:
     data["GDP"] = data["value"].astype(float)
     data = data.drop(columns=["value"])
     return data
+
+
+def get_gdp_capita() -> pd.DataFrame:
+    """Real GDP per Capita for United States
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of GDP per Capita
+    """
+    url = f"https://www.alphavantage.co/query?function=REAL_GDP_PER_CAPITA&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    r = requests.get(url, headers={"User-Agent": get_user_agent()})
+    data = pd.DataFrame(r.json()["data"])
+    data["date"] = pd.to_datetime(data["date"])
+    data["GDP"] = data["value"].astype(float)
+    return data
