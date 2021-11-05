@@ -61,7 +61,30 @@ def get_gdp_capita() -> pd.DataFrame:
     """
     url = f"https://www.alphavantage.co/query?function=REAL_GDP_PER_CAPITA&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url, headers={"User-Agent": get_user_agent()})
+    if r.status_code != 200:
+        return pd.DataFrame()
     data = pd.DataFrame(r.json()["data"])
     data["date"] = pd.to_datetime(data["date"])
     data["GDP"] = data["value"].astype(float)
+    data = data.drop(columns=["value"])
+    return data
+
+
+def get_inflation() -> pd.DataFrame:
+    """Get historical Inflation for United States from AlphaVantage
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of inflation rates
+    """
+    url = f"https://www.alphavantage.co/query?function=INFLATION&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    r = requests.get(url, headers={"User-Agent": get_user_agent()})
+    if r.status_code != 200:
+        return pd.DataFrame()
+    data = pd.DataFrame(r.json()["data"])
+    data["date"] = pd.to_datetime(data["date"])
+    data["Inflation"] = data["value"].astype(float)
+    data = data.drop(columns=["value"])
+
     return data

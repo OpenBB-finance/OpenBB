@@ -87,6 +87,7 @@ class EconomyController:
         "rtps",
         "gdp",
         "gdpc",
+        "inf",
         "industry",
     ]
 
@@ -134,8 +135,9 @@ Finviz:
     spectrum      spectrum of sectors, industry, country
 Alpha Vantage:
     rtps          real-time performance sectors
-    gdp           Real GDP for United States
-    gdpc          quarterly Real GDP per Capita data of the United States
+    gdp           real GDP for United States
+    gdpc          quarterly real GDP per Capita data of the United States
+    inf           infation rates for United States
 FRED:
     search        search FRED series notes
     series        plot series from https://fred.stlouisfed.org
@@ -873,6 +875,46 @@ FRED:
             return
 
         alphavantage_view.display_gdp_capita(
+            start_year=ns_parser.start,
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_inf(self, other_args: List[str]):
+        """Process rtps command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="inf",
+            description="""
+                Get historical Inflation for United States[Source: Alpha Vantage]
+            """,
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            help="Start year.",
+            dest="start",
+            type=int,
+            default=2010,
+        )
+        parser.add_argument(
+            "--raw",
+            help="Display raw data",
+            action="store_true",
+            dest="raw",
+            default=False,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if not ns_parser:
+            return
+
+        alphavantage_view.display_inflation(
             start_year=ns_parser.start,
             raw=ns_parser.raw,
             export=ns_parser.export,

@@ -79,6 +79,9 @@ def display_real_gdp(
         Format to export data, by default ""
     """
     gdp_full = alphavantage_model.get_real_gdp(interval)
+    if gdp_full.empty:
+        print("Error getting data.  Check API Key")
+        return
     gdp = gdp_full[gdp_full.date >= f"{start_year}-01-01"]
     int_string = "Annual" if interval == "a" else "Quarterly"
     year_str = str(start_year) if interval == "a" else str(list(gdp.date)[-1].year)
@@ -127,6 +130,9 @@ def display_gdp_capita(start_year: int = 2010, raw: bool = False, export: str = 
         Format to export data, by default ""
     """
     gdp_capita = alphavantage_model.get_gdp_capita()
+    if gdp_capita.empty:
+        print("Error getting data.  Check API Key")
+        return
     gdp = gdp_capita[gdp_capita.date >= f"{start_year}-01-01"]
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     ax.plot(gdp.date, gdp.GDP, marker="o", c="dodgerblue")
@@ -157,4 +163,53 @@ def display_gdp_capita(start_year: int = 2010, raw: bool = False, export: str = 
             )
         else:
             print(gdp.head(20).to_string())
+    print("")
+
+
+def display_inflation(start_year: int = 2010, raw: bool = False, export: str = ""):
+    """Display US Inflation from AlphaVantage
+
+    Parameters
+    ----------
+    start_year : int, optional
+        Start year for plot, by default 2010
+    raw : bool, optional
+        Flag to show raw data, by default False
+    export : str, optional
+        Format to export data, by default ""
+    """
+    inflation = alphavantage_model.get_inflation()
+    if inflation.empty:
+        print("Error getting data.  Check API Key")
+        return
+    inf = inflation[inflation.date >= f"{start_year}-01-01"]
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    ax.plot(inf.date, inf.Inflation, marker="o", c="dodgerblue")
+    ax.set_xlabel("Date")
+    ax.set_title(f"US Inflation from {list(inf.date)[-1].year}")
+    ax.set_ylabel("Inflation (%)")
+    ax.grid("on")
+    fig.tight_layout()
+    if gtff.USE_ION:
+        plt.ion()
+    plt.show()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "inf",
+        inflation,
+    )
+    if raw:
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    inf.head(20),
+                    headers=["Date", "GDP"],
+                    tablefmt="fancy_grid",
+                    showindex=False,
+                )
+            )
+        else:
+            print(inf.head(20).to_string())
     print("")
