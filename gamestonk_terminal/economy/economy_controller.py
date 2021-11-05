@@ -982,7 +982,7 @@ FRED:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="inf",
+            prog="tyld",
             description="""
                 Get historical Treasury Yield [Source: Alpha Vantage]
             """,
