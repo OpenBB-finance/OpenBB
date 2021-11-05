@@ -17,6 +17,7 @@ from gamestonk_terminal.economy import (
     wsj_view,
 )
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     check_positive,
     get_flair,
     parse_known_args_and_warn,
@@ -84,6 +85,7 @@ class EconomyController:
         "spectrum",
         "map",
         "rtps",
+        "gdp",
         "industry",
     ]
 
@@ -131,6 +133,7 @@ Finviz:
     spectrum      spectrum of sectors, industry, country
 Alpha Vantage:
     rtps          real-time performance sectors
+    gdp           Real GDP for US
 FRED:
     search        search FRED series notes
     series        plot series from https://fred.stlouisfed.org
@@ -778,6 +781,57 @@ FRED:
             return
 
         alphavantage_view.realtime_performance_sector(
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_gdp(self, other_args: List[str]):
+        """Process rtps command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="gdp",
+            description="""
+                Get real GDP for US on either annual or quarterly interval [Source: Alpha Vantage]
+            """,
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            help="Interval for GDP data",
+            dest="interval",
+            choices=["a", "q"],
+            default="a",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            help="Start year.  Quarterly only goes back to 2002.",
+            dest="start",
+            type=int,
+            default=2010,
+        )
+        parser.add_argument(
+            "--raw",
+            help="Display raw data",
+            action="store_true",
+            dest="raw",
+            default=False,
+        )
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-i")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if not ns_parser:
+            return
+
+        alphavantage_view.display_real_gdp(
+            interval=ns_parser.interval,
+            start_year=ns_parser.start,
             raw=ns_parser.raw,
             export=ns_parser.export,
         )
