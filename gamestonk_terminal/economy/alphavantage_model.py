@@ -88,3 +88,63 @@ def get_inflation() -> pd.DataFrame:
     data = data.drop(columns=["value"])
 
     return data
+
+
+def get_cpi(interval: str) -> pd.DataFrame:
+    """Get Consumer Price Index from Alpha Vantage
+
+    Parameters
+    ----------
+    interval : str
+        Interval for data.  Either "m" or "s" for monthly or semiannual
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of CPI
+    """
+    s_interval = "semiannual" if interval == "s" else "monthly"
+    url = f"https://www.alphavantage.co/query?function=CPI&interval={s_interval}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    r = requests.get(url, headers={"User-Agent": get_user_agent()})
+
+    if r.status_code != 200:
+        return pd.DataFrame()
+
+    data = pd.DataFrame(r.json()["data"])
+    data["date"] = pd.to_datetime(data["date"])
+    data["CPI"] = data["value"].astype(float)
+    data = data.drop(columns=["value"])
+
+    return data
+
+
+def get_treasury_yield(interval: str, maturity: str) -> pd.DataFrame:
+    """Get historical yield for a given maturity
+
+    Parameters
+    ----------
+    interval : str
+        Interval for data.  Can be "d","w","m" for daily, weekly or monthly
+    maturity : str
+        Maturity timeline.  Can be "3mo","5y","10y" or "30y"
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of historical yields
+    """
+    d_interval = {"d": "daily", "w": "weekly", "m": "monthly"}
+    d_maturity = {"3m": "3month", "5y": "5year", "10y": "10year", "30y": "30year"}
+
+    url = f"https://www.alphavantage.co/query?function=TREASURY_YIELD&interval={d_interval[interval]}&ma"
+    url += f"turity={d_maturity[maturity]}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    r = requests.get(url, headers={"User-Agent": get_user_agent()})
+    if r.status_code != 200:
+        return pd.DataFrame()
+
+    data = pd.DataFrame(r.json()["data"])
+    data["date"] = pd.to_datetime(data["date"])
+    data["Yield"] = data["value"].astype(float)
+    data = data.drop(columns=["value"])
+
+    return data

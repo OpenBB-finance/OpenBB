@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 import argparse
+from datetime import datetime, timedelta
 import os
 from typing import List
 
@@ -30,7 +31,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 
-# pylint: disable=R1710
+# pylint: disable=R1710,R0904
 
 
 class EconomyController:
@@ -88,6 +89,8 @@ class EconomyController:
         "gdp",
         "gdpc",
         "inf",
+        "cpi",
+        "tyld",
         "industry",
     ]
 
@@ -138,6 +141,8 @@ Alpha Vantage:
     gdp           real GDP for United States
     gdpc          quarterly real GDP per Capita data of the United States
     inf           infation rates for United States
+    cpi           consumer price index for United States
+    tyld          treasury yields for United States
 FRED:
     search        search FRED series notes
     series        plot series from https://fred.stlouisfed.org
@@ -916,6 +921,113 @@ FRED:
 
         alphavantage_view.display_inflation(
             start_year=ns_parser.start,
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_cpi(self, other_args: List[str]):
+        """Process rtps command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="inf",
+            description="""
+                Get historical CPI for United States [Source: Alpha Vantage]
+            """,
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            help="Interval for GDP data",
+            dest="interval",
+            choices=["s", "m"],
+            default="s",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            help="Start year.",
+            dest="start",
+            type=int,
+            default=2010,
+        )
+        parser.add_argument(
+            "--raw",
+            help="Display raw data",
+            action="store_true",
+            dest="raw",
+            default=False,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if not ns_parser:
+            return
+
+        alphavantage_view.display_cpi(
+            interval=ns_parser.interval,
+            start_year=ns_parser.start,
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_tyld(self, other_args: List[str]):
+        """Process tyld command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="inf",
+            description="""
+                Get historical Treasury Yield [Source: Alpha Vantage]
+            """,
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            help="Interval for treasury data",
+            dest="interval",
+            choices=["d", "w", "m"],
+            default="w",
+        )
+        parser.add_argument(
+            "-m",
+            "--maturity",
+            help="Maturity timeline for treasury",
+            dest="maturity",
+            choices=["3m", "5y", "10y", "30y"],
+            default="5y",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            help="Start date.",
+            dest="start",
+            type=valid_date,
+            default=datetime.now() - timedelta(days=366),
+        )
+        parser.add_argument(
+            "--raw",
+            help="Display raw data",
+            action="store_true",
+            dest="raw",
+            default=False,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if not ns_parser:
+            return
+
+        alphavantage_view.display_treasury_yield(
+            interval=ns_parser.interval,
+            maturity=ns_parser.maturity,
+            start_date=ns_parser.start,
             raw=ns_parser.raw,
             export=ns_parser.export,
         )

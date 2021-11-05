@@ -205,11 +205,122 @@ def display_inflation(start_year: int = 2010, raw: bool = False, export: str = "
             print(
                 tabulate(
                     inf.head(20),
-                    headers=["Date", "GDP"],
+                    headers=["Date", "Inflation"],
                     tablefmt="fancy_grid",
                     showindex=False,
                 )
             )
         else:
             print(inf.head(20).to_string())
+    print("")
+
+
+def display_cpi(
+    interval: str, start_year: int = 2010, raw: bool = False, export: str = ""
+):
+    """Display US consumer price index (CPI) from AlphaVantage
+
+    Parameters
+    ----------
+    interval : str
+        Interval for GDP.  Either "m" or "s"
+    start_year : int, optional
+        Start year for plot, by default 2010
+    raw : bool, optional
+        Flag to show raw data, by default False
+    export : str, optional
+        Format to export data, by default ""
+    """
+    cpi_full = alphavantage_model.get_cpi(interval)
+    if cpi_full.empty:
+        print("Error getting data.  Check API Key")
+        return
+    cpi = cpi_full[cpi_full.date >= f"{start_year}-01-01"]
+    int_string = "Semi-Annual" if interval == "s" else "Monthly"
+    year_str = str(list(cpi.date)[-1].year)
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    ax.plot(cpi.date, cpi.CPI, marker="o", c="dodgerblue")
+    ax.set_xlabel("Date")
+    ax.set_title(f"{int_string} CPI from {year_str}")
+    ax.set_ylabel("CPI ")
+    ax.grid("on")
+    fig.tight_layout()
+    if gtff.USE_ION:
+        plt.ion()
+    plt.show()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "cpi",
+        cpi_full,
+    )
+    if raw:
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    cpi.head(20),
+                    headers=["Date", "CPI"],
+                    tablefmt="fancy_grid",
+                    showindex=False,
+                )
+            )
+        else:
+            print(cpi.head(20).to_string())
+    print("")
+
+
+def display_treasury_yield(
+    interval: str, maturity: str, start_date: str, raw: bool = False, export: str = ""
+):
+    """Display historical treasury yield for given maturity
+
+    Parameters
+    ----------
+    interval : str
+        Interval for data.  Can be "d","w","m" for daily, weekly or monthly
+    maturity : str
+        Maturity timeline.  Can be "3mo","5y","10y" or "30y"
+    start_date: str
+        Start date for data.  Should be in YYYY-MM-DD format
+    raw : bool, optional
+        Flag to display raw data, by default False
+    export : str, optional
+        Format to export data, by default ""
+    """
+    d_maturity = {"3m": "3month", "5y": "5year", "10y": "10year", "30y": "30year"}
+    yields = alphavantage_model.get_treasury_yield(interval, maturity)
+    if yields.empty:
+        print("Error getting data.  Check API Key")
+        return
+    yld = yields[yields.date >= start_date]
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    ax.plot(yld.date, yld.Yield, marker="o", c="dodgerblue")
+    ax.set_xlabel("Date")
+    ax.set_title(f"{d_maturity[maturity]} Treasury Yield")
+    ax.set_ylabel("Yield")
+    ax.grid("on")
+    fig.tight_layout()
+    if gtff.USE_ION:
+        plt.ion()
+    plt.show()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "tyld",
+        yields,
+    )
+    if raw:
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    yld.head(20),
+                    headers=["Date", "Yield"],
+                    tablefmt="fancy_grid",
+                    showindex=False,
+                )
+            )
+        else:
+            print(yld.head(20).to_string())
     print("")
