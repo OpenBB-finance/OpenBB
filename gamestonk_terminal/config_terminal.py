@@ -108,3 +108,6 @@ API_BYBT_KEY = os.getenv("GT_API_BYBT_KEY") or "REPLACE_ME"
 
 # https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API
 API_ETHPLORER_KEY = os.getenv("GT_API_ETHPLORER_KEY") or "freekey"
+
+# https://bitquery.io/forms/api
+API_BITQUERY_KEY = os.getenv("GT_API_BITQUERY_KEY")
