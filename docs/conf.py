@@ -23,7 +23,7 @@ beacon = os.environ.get("BEACON")
 if beacon is not None:
     with open(os.path.join(".", "_templates", "layout.html")) as f:
         content = f.read()
-    with open(os.path.join(".", "_templates", "layout.html")) as f:
+    with open(os.path.join(".", "_templates", "layout.html"), "w") as f:
         f.write(content.replace("{{BEACON}}", beacon))
 
 # -- Project information -----------------------------------------------------
