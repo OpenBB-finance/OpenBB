@@ -58,7 +58,6 @@ class DiscoveryController:
         "ford",
         "arkord",
         "upcoming",
-        "latest",
         "trending",
         "lowfloat",
         "hotpenny",
@@ -105,7 +104,6 @@ cathiesark.com:
     arkord         orders by ARK Investment Management LLC
 Seeking Alpha:
     upcoming       upcoming earnings release dates
-    latest         latest news
     trending       trending news
 shortinterest.com
     lowfloat       low float stocks under 10M shares float
@@ -680,66 +678,6 @@ Finance Database:
         seeking_alpha_view.upcoming_earning_release_dates(
             num_pages=ns_parser.n_pages,
             num_earnings=ns_parser.n_num,
-            export=ns_parser.export,
-        )
-
-    @try_except
-    def call_latest(self, other_args: List[str]):
-        """Process latest command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="latest",
-            description="""Latest news articles. [Source: Seeking Alpha]""",
-        )
-        parser.add_argument(
-            "-i",
-            "--id",
-            action="store",
-            dest="n_id",
-            type=check_positive,
-            default=-1,
-            help="article ID",
-        )
-        parser.add_argument(
-            "-n",
-            "--num",
-            action="store",
-            dest="n_num",
-            type=check_positive,
-            default=5,
-            help="number of articles being printed",
-        )
-        parser.add_argument(
-            "-d",
-            "--date",
-            action="store",
-            dest="s_date",
-            type=valid_date,
-            default=datetime.now().strftime("%Y-%m-%d"),
-            help="starting date of articles",
-        )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-i")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        seeking_alpha_view.news(
-            news_type="latest",
-            article_id=ns_parser.n_id,
-            num=ns_parser.n_num,
-            start_date=ns_parser.s_date,
             export=ns_parser.export,
         )
 
