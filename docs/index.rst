@@ -19,13 +19,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-.. raw:: html
-
-   <!-- Cloudflare Web Analytics -->
-   <script
-   defer
-   src='https://static.cloudflareinsights.com/beacon.min.js'
-   data-cf-beacon='{"token": "{{BEACON}}"}'>
-   </script>
-   <!-- End Cloudflare Web Analytics -->

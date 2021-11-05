@@ -21,9 +21,9 @@ sys.path.insert(0, os.path.join(os.path.abspath("."), ".."))
 beacon = os.environ.get("BEACON")
 
 if beacon is not None:
-    with open("index.rst") as f:
+    with open(os.path.join(".", "_templates", "layout.html")) as f:
         content = f.read()
-    with open("index.rst", "w") as f:
+    with open(os.path.join(".", "_templates", "layout.html")) as f:
         f.write(content.replace("{{BEACON}}", beacon))
 
 # -- Project information -----------------------------------------------------

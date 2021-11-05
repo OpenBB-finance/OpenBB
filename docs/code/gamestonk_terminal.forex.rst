@@ -13,6 +13,22 @@ Subpackages
 Submodules
 ----------
 
+gamestonk\_terminal.forex.av\_model module
+------------------------------------------
+
+.. automodule:: gamestonk_terminal.forex.av_model
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gamestonk\_terminal.forex.av\_view module
+-----------------------------------------
+
+.. automodule:: gamestonk_terminal.forex.av_view
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 gamestonk\_terminal.forex.forex\_controller module
 --------------------------------------------------
 
