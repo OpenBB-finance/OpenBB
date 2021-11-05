@@ -91,6 +91,7 @@ class EconomyController:
         "inf",
         "cpi",
         "tyld",
+        "unemp",
         "industry",
     ]
 
@@ -143,6 +144,7 @@ Alpha Vantage:
     inf           infation rates for United States
     cpi           consumer price index for United States
     tyld          treasury yields for United States
+    unemp         United States unemployment rates
 FRED:
     search        search FRED series notes
     series        plot series from https://fred.stlouisfed.org
@@ -796,7 +798,7 @@ FRED:
 
     @try_except
     def call_gdp(self, other_args: List[str]):
-        """Process rtps command"""
+        """Process gdp command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -847,7 +849,7 @@ FRED:
 
     @try_except
     def call_gdpc(self, other_args: List[str]):
-        """Process rtps command"""
+        """Process gdpc command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -887,7 +889,7 @@ FRED:
 
     @try_except
     def call_inf(self, other_args: List[str]):
-        """Process rtps command"""
+        """Process inf command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -927,7 +929,7 @@ FRED:
 
     @try_except
     def call_cpi(self, other_args: List[str]):
-        """Process rtps command"""
+        """Process cpi command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -1028,6 +1030,46 @@ FRED:
             interval=ns_parser.interval,
             maturity=ns_parser.maturity,
             start_date=ns_parser.start,
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_unemp(self, other_args: List[str]):
+        """Process unemp command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="unemp",
+            description="""
+                Get United States Unemployment data [Source: Alpha Vantage]
+            """,
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            help="Start year.",
+            dest="start",
+            type=int,
+            default=2015,
+        )
+        parser.add_argument(
+            "--raw",
+            help="Display raw data",
+            action="store_true",
+            dest="raw",
+            default=False,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if not ns_parser:
+            return
+
+        alphavantage_view.display_unemployment(
+            start_year=ns_parser.start,
             raw=ns_parser.raw,
             export=ns_parser.export,
         )

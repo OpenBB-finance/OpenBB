@@ -324,3 +324,52 @@ def display_treasury_yield(
         else:
             print(yld.head(20).to_string())
     print("")
+
+
+def display_unemployment(start_year: int = 2015, raw: bool = False, export: str = ""):
+    """Display US unemployment AlphaVantage
+
+    Parameters
+    ----------
+    start_year : int, optional
+        Start year for plot, by default 2010
+    raw : bool, optional
+        Flag to show raw data, by default False
+    export : str, optional
+        Format to export data, by default ""
+    """
+    unemp = alphavantage_model.get_unemployment()
+    if unemp.empty:
+        print("Error getting data.  Check API Key")
+        return
+    un = unemp[unemp.date >= f"{start_year}-01-01"]
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    ax.plot(un.date, un.unemp, marker="o", c="dodgerblue")
+    ax.set_xlabel("Date")
+    ax.set_title(f"US Unemployment from {start_year}")
+    ax.set_ylabel("US Unemployment  ")
+    ax.grid("on")
+    fig.tight_layout()
+    if gtff.USE_ION:
+        plt.ion()
+    plt.show()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "unemp",
+        unemp,
+    )
+    if raw:
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    un.head(20),
+                    headers=["Date", "GDP"],
+                    tablefmt="fancy_grid",
+                    showindex=False,
+                )
+            )
+        else:
+            print(un.head(20).to_string())
+    print("")

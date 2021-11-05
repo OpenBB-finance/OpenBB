@@ -148,3 +148,22 @@ def get_treasury_yield(interval: str, maturity: str) -> pd.DataFrame:
     data = data.drop(columns=["value"])
 
     return data
+
+
+def get_unemployment() -> pd.DataFrame:
+    """Get historical unemployment for United States
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of historical yields
+    """
+    url = f"https://www.alphavantage.co/query?function=UNEMPLOYMENT&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    r = requests.get(url, headers={"User-Agent": get_user_agent()})
+    if r.status_code != 200:
+        return pd.DataFrame()
+    data = pd.DataFrame(r.json()["data"])
+    data["date"] = pd.to_datetime(data["date"])
+    data["unemp"] = data["value"].astype(float)
+    data = data.drop(columns=["value"])
+    return data
