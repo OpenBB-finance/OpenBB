@@ -13,6 +13,7 @@ import financedatabase as fd
 import yfinance as yf
 import pandas as pd
 
+from gamestonk_terminal.helper_funcs import get_user_agent
 
 opts = Union[int, str, float]
 
@@ -440,12 +441,7 @@ red = Font(color="FF0000")
 
 fmt_acct = "_($* #,##0.00_);[Red]_($* (#,##0.00);_($* -_0_0_);_(@"
 
-headers = {
-    "User-Agent": (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-        "(KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
-    )
-}
+headers = {"User-Agent": get_user_agent()}
 
 tickers = [
     "AEIS",
