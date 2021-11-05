@@ -57,7 +57,9 @@ async def adosc_command(ctx, ticker="", open=False, fast=3, slow=10, start="", e
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
         # Output Data
-        bar_colors = ["r" if x[1].Open < x[1].Close else "g" for x in df_stock.iterrows()]
+        bar_colors = [
+            "r" if x[1].Open < x[1].Close else "g" for x in df_stock.iterrows()
+        ]
 
         bar_width = timedelta(days=1)
 

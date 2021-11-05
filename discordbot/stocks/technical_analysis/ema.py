@@ -69,10 +69,9 @@ async def ema_command(ctx, ticker="", window="", offset="", start="", end=""):
 
         i = 1
         for win in window:
-            ema_data = overlap_model.ema(s_interval="1440min",
-                                         df_stock=stock,
-                                         length=win,
-                                         offset=offset)
+            ema_data = overlap_model.ema(
+                s_interval="1440min", df_stock=stock, length=win, offset=offset
+            )
             price_df = price_df.join(ema_data)
             l_legend.append(f"EMA {win}")
             i += 1

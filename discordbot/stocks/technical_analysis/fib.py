@@ -39,7 +39,6 @@ async def fib_command(ctx, ticker="", start="", end=""):
         if df_stock.empty:
             raise Exception("Stock ticker is invalid")
 
-
         # Retrieve Data
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
@@ -51,9 +50,7 @@ async def fib_command(ctx, ticker="", start="", end=""):
             max_date,
             min_pr,
             max_pr,
-        ) = custom_indicators_model.calculate_fib_levels(
-            df_stock, 120, start, end
-        )
+        ) = custom_indicators_model.calculate_fib_levels(df_stock, 120, start, end)
 
         levels = df_fib.Price
         fig, ax = plt.subplots(figsize=(plot_autoscale()), dpi=cfp.PLOT_DPI)

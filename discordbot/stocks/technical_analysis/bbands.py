@@ -11,7 +11,9 @@ from gamestonk_terminal.common.technical_analysis import volatility_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 
-async def bbands_command(ctx, ticker="", length=5, n_std=2, mamode="sma", start="", end=""):
+async def bbands_command(
+    ctx, ticker="", length=5, n_std=2, mamode="sma", start="", end=""
+):
     """Displays chart with bollinger bands of a given stock"""
 
     try:
@@ -21,8 +23,25 @@ async def bbands_command(ctx, ticker="", length=5, n_std=2, mamode="sma", start=
             print(f"!stocks.ta.bbands {ticker} {length} {n_std} {mamode} {start} {end}")
 
         # Check for argument
-        possible_ma = ["dema", "ema", "fwma", "hma", "linreg", "midpoint", "pwma", "rma",
-                       "sinwma", "sma", "swma", "t3", "tema", "trima", "vidya", "wma", "zlma"]
+        possible_ma = [
+            "dema",
+            "ema",
+            "fwma",
+            "hma",
+            "linreg",
+            "midpoint",
+            "pwma",
+            "rma",
+            "sinwma",
+            "sma",
+            "swma",
+            "t3",
+            "tema",
+            "trima",
+            "vidya",
+            "wma",
+            "zlma",
+        ]
 
         if ticker == "":
             raise Exception("Stock ticker is required")

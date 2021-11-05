@@ -51,7 +51,9 @@ async def ad_command(ctx, ticker="", open=False, start="", end=""):
         # Retrieve Data
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
-        bar_colors = ["r" if x[1].Open < x[1].Close else "g" for x in df_stock.iterrows()]
+        bar_colors = [
+            "r" if x[1].Open < x[1].Close else "g" for x in df_stock.iterrows()
+        ]
 
         bar_width = timedelta(days=1)
 

@@ -11,7 +11,9 @@ from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 
-async def stoch_command(ctx, ticker="", fast_k=14, slow_d=3, slow_k=3, start="", end=""):
+async def stoch_command(
+    ctx, ticker="", fast_k=14, slow_d=3, slow_k=3, start="", end=""
+):
     """Displays chart with stoch of a given stock"""
 
     try:
@@ -42,7 +44,7 @@ async def stoch_command(ctx, ticker="", fast_k=14, slow_d=3, slow_k=3, start="",
         slow_k = float(slow_k)
         if not slow_d.lstrip("-").isnumeric():
             raise Exception("Number has to be an integer")
-        slow_d= float(slow_d)
+        slow_d = float(slow_d)
 
         ticker = ticker.upper()
         df_stock = helpers.load(ticker, start)
@@ -52,9 +54,7 @@ async def stoch_command(ctx, ticker="", fast_k=14, slow_d=3, slow_k=3, start="",
         # Retrieve Data
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
-        df_ta = momentum_model.stoch(
-            "1440min", df_stock, fast_k, slow_d, slow_k
-        )
+        df_ta = momentum_model.stoch("1440min", df_stock, fast_k, slow_d, slow_k)
 
         # Output Data
         fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -81,7 +81,9 @@ async def stoch_command(ctx, ticker="", fast_k=14, slow_d=3, slow_k=3, start="",
         ax3.set_ylim(ax2.get_ylim())
         ax3.set_yticks([20, 80])
         ax3.set_yticklabels(["OVERSOLD", "OVERBOUGHT"])
-        ax2.legend([f"%K {df_ta.columns[0]}", f"%D {df_ta.columns[1]}"], loc="lower left")
+        ax2.legend(
+            [f"%K {df_ta.columns[0]}", f"%D {df_ta.columns[1]}"], loc="lower left"
+        )
 
         plt.gcf().autofmt_xdate()
         fig.tight_layout(pad=1)

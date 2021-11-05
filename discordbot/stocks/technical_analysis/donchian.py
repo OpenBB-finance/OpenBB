@@ -11,14 +11,18 @@ from gamestonk_terminal.common.technical_analysis import volatility_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 
-async def donchian_command(ctx, ticker="", upper_length=25, lower_length=100, start="", end=""):
+async def donchian_command(
+    ctx, ticker="", upper_length=25, lower_length=100, start="", end=""
+):
     """Displays chart with donchian channel of a given stock"""
 
     try:
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.donchian {ticker} {upper_length} {lower_length} {start} {end}")
+            print(
+                f"!stocks.ta.donchian {ticker} {upper_length} {lower_length} {start} {end}"
+            )
 
         # Check for argument
         if ticker == "":

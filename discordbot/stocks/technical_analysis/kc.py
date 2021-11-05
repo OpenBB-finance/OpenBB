@@ -11,14 +11,18 @@ from gamestonk_terminal.common.technical_analysis import volatility_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 
-async def kc_command(ctx, ticker="", length=20, scalar=2, mamode="sma", offset="0", start="", end=""):
+async def kc_command(
+    ctx, ticker="", length=20, scalar=2, mamode="sma", offset="0", start="", end=""
+):
     """Displays chart with keltner channel of a given stock"""
 
     try:
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.kc {ticker} {length} {scalar} {mamode} {offset} {start} {end}")
+            print(
+                f"!stocks.ta.kc {ticker} {length} {scalar} {mamode} {offset} {start} {end}"
+            )
 
         # Check for argument
         possible_ma = ["sma", "ema", "wma", "hma", "zlma"]
