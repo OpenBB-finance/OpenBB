@@ -799,6 +799,18 @@ main:
         ref: "/economy/spectrum"
       - name: rtps
         ref: "/economy/rtps"
+      - name: gdp
+        ref: "/economy/gdp"
+      - name: gdpc
+        ref: "/economy/gdpc"
+      - name: inf
+        ref: "/economy/inf"
+      - name: cpi
+        ref: "/economy/cpi"
+      - name: tyld
+        ref: "/economy/tyld"
+      - name: unemp
+        ref: "/economy/unemp"
       - name: search
         ref: "/economy/search"
       - name: series
