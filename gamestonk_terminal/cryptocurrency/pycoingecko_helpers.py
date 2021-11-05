@@ -12,6 +12,7 @@ import pandas as pd
 from dateutil import parser
 from requests.adapters import HTTPAdapter, RetryError
 from urllib3.util.retry import Retry
+from gamestonk_terminal.helper_funcs import get_user_agent
 
 
 GECKO_BASE_URL = "https://www.coingecko.com"
@@ -84,7 +85,7 @@ def scrape_gecko_data(url: str) -> BeautifulSoup:
     -------
         BeautifulSoup object
     """
-    headers = {"User-Agent": "Mozilla/5.0"}
+    headers = {"User-Agent": get_user_agent()}
     session = _retry_session("https://www.coingecko.com")
     try:
         req = session.get(url, headers=headers, timeout=5)

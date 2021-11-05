@@ -72,6 +72,11 @@ class EconomyController:
         "glbonds",
         "futures",
         "currencies",
+        "energy",
+        "metals",
+        "meats",
+        "grains",
+        "softs",
         "search",
         "series",
         "valuation",
@@ -115,6 +120,11 @@ Wall St. Journal:
     glbonds       global bonds overview
     currencies    currencies overview
 Finviz:
+    energy        energy futures overview
+    metals        metals futures overview
+    meats         meats futures overview
+    grains        grains futures overview
+    softs         softs futures overview
     map           S&P500 index stocks map
     valuation     valuation of sectors, industry, country
     performance   performance of sectors, industry, country
@@ -429,6 +439,136 @@ FRED:
             return
 
         wsj_view.display_currencies(
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_energy(self, other_args: List[str]):
+        """Process energy command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="energy",
+            description="Energy future overview. [Source: Finviz]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        finviz_view.display_future(
+            future_type="Energy",
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_metals(self, other_args: List[str]):
+        """Process metals command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="metals",
+            description="Metals future overview. [Source: Finviz]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        finviz_view.display_future(
+            future_type="Metals",
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_meats(self, other_args: List[str]):
+        """Process meats command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="meats",
+            description="Meats future overview. [Source: Finviz]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        finviz_view.display_future(
+            future_type="Meats",
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_grains(self, other_args: List[str]):
+        """Process grains command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="grains",
+            description="Grains future overview. [Source: Finviz]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        finviz_view.display_future(
+            future_type="Grains",
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_softs(self, other_args: List[str]):
+        """Process softs command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="softs",
+            description="Softs future overview. [Source: Finviz]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        finviz_view.display_future(
+            future_type="Softs",
             export=ns_parser.export,
         )
 
