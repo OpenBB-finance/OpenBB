@@ -5,7 +5,7 @@ from typing import Union
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
-import degiro_connector.core.helpers.pb_handler as pb_handler
+from degiro_connector.core.helpers import pb_handler
 
 from degiro_connector.trading.api import API as TradingAPI
 from degiro_connector.trading.models.trading_pb2 import (

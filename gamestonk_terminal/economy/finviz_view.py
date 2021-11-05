@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import os
 import webbrowser
+import pandas as pd
 
 from PIL import Image
 from tabulate import tabulate
@@ -34,7 +35,7 @@ def map_sp500_view(period: str, map_type: str):
 
 
 def view_group_data(s_group: str, data_type: str, export: str):
-    """View group (sectors, industry or country) valuation/performance/spectrum data
+    """View group (sectors, industry or country) valuation/performance/spectrum data. [Source: Finviz]
 
     Parameters
     ----------
@@ -87,3 +88,40 @@ def view_group_data(s_group: str, data_type: str, export: str):
         print(
             "Invalid data type. Choose between valuation, performance and spectrum.\n"
         )
+
+
+def display_future(future_type: str = "Indices", export: str = ""):
+    """Display table of a particular future type. [Source: Finviz]
+
+    Parameters
+    ----------
+    future_type : str
+        From the following: Indices, Energy, Metals, Meats, Grains, Softs, Bonds, Currencies
+    export : str
+        Export data to csv,json,xlsx or png,jpg,pdf,svg file
+    """
+    d_futures = finviz_model.get_futures()
+
+    df = pd.DataFrame(d_futures[future_type])
+    df = df.set_index("label")
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df[["prevClose", "last", "change"]].fillna(""),
+                showindex=True,
+                floatfmt=".2f",
+                headers=df.columns,
+                tablefmt="fancy_grid",
+            )
+        )
+    else:
+        print(df[["prevClose", "last", "change"]].fillna("").to_string(index=True))
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        future_type.lower(),
+        df,
+    )
+    print("")
