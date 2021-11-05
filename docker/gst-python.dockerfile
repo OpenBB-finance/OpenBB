@@ -22,7 +22,7 @@ RUN  apt-get update && apt-get -y install --no-install-recommends \
   libpng16-16 \
   procps \
   python3-tk && \
-  curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh && \
+  curl -sL https://deb.nodesource.com/setup_16.x -o nodesource_setup.sh && \
   bash nodesource_setup.sh && \
   apt-get install -y nodejs && \
   apt-get -y autoremove && \
