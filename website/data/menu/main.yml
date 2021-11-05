@@ -551,6 +551,14 @@ main:
         ref: "/portfolio/portfolio_optimization"
       - name: parity
         ref: "/options/parity"
+      - name: add
+        ref: "/options/add"
+      - name: rmv
+        ref: "/options/rmv"
+      - name: show
+        ref: "/options/show"
+      - name: rnval
+        ref: "/options/rnval"
       - name: payoff
         ref: "/options/payoff"
         sub:
@@ -571,8 +579,8 @@ main:
         ref: "/cryptocurrency/chart"
       - name: find
         ref: "/cryptocurrency/find"
-      - name: finbrain
-        ref: "/cryptocurrency/finbrain"
+      - name: headlines
+        ref: "/cryptocurrency/headlines"
       - name: discovery
         ref: "/cryptocurrency/discovery"
         sub:
@@ -771,6 +779,16 @@ main:
         ref: "/economy/glbonds"
       - name: currencies
         ref: "/economy/currencies"
+      - name: energy
+        ref: "/economy/energy"
+      - name: metals
+        ref: "/economy/metals"
+      - name: meats
+        ref: "/economy/meats"
+      - name: grains
+        ref: "/economy/grains"
+      - name: softs
+        ref: "/economy/softs"
       - name: map
         ref: "/economy/map"
       - name: valuation
@@ -827,13 +845,6 @@ main:
                 ref: "/portfolio/brokers/ally/movers"
               - name: quote
                 ref: "/portfolio/brokers/ally/quote"
-          - name: alpaca
-            ref: "/portfolio/brokers/alpaca"
-            sub:
-              - name: history
-                ref: "/portfolio/brokers/alpaca/history"
-              - name: holdings
-                ref: "/portfolio/brokers/alpaca/holdings"
           - name: coinbase
             ref: "/portfolio/brokers/coinbase"
             sub:
@@ -885,5 +896,12 @@ main:
             ref: "/portfolio/portfolio_optimization/ef"
   - name: forex
     ref: "/forex"
+    sub:
+      - name: select
+        ref: "/forex/select"
+      - name: load
+        ref: "/forex/load"
+      - name: candle
+        ref: "/forex/candle"
   - name: resources
     ref: "/resources"

@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import os
 from typing import List
 from pandas.core.frame import DataFrame
 from prompt_toolkit.completion import NestedCompleter
@@ -23,6 +22,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     try_except,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.stocks_helper import load
@@ -75,13 +75,6 @@ class DueDiligenceController:
 
     def print_help(self):
         """Print help"""
-
-        s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
-        if self.ticker and self.start:
-            stock_text = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-        else:
-            stock_text = f"{s_intraday} Stock: {self.ticker}"
-
         help_text = f"""
 Due Diligence:
     cls           clear screen
@@ -90,7 +83,7 @@ Due Diligence:
     quit          quit to abandon program
     load          load new ticker
 
-{stock_text}
+Ticker: {self.ticker}
 
 Finviz:
     analyst       analyst prices and ratings of the company
@@ -109,7 +102,6 @@ csimarket:
 cathiesark.com
     arktrades     get ARK trades for ticker
         """
-
         print(help_text)
 
     def switch(self, an_input: str):
@@ -137,7 +129,7 @@ cathiesark.com
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

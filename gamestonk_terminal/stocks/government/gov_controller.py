@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import os
 from typing import List
 from colorama import Style
 from matplotlib import pyplot as plt
@@ -16,6 +15,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
     try_except,
+    system_clear,
 )
 from gamestonk_terminal.stocks.stocks_helper import load
 from gamestonk_terminal.helper_funcs import (
@@ -63,9 +63,7 @@ class GovController:
         dim_no_ticker = Style.DIM if not self.ticker else ""
         reset_style = Style.RESET_ALL
         help_string = f"""
->>GOVERNMENT<<
-
-What would you like to do?
+Government:
     cls                  clear screen
     ?/help               show this menu again
     q                    quit this menu, and shows back to main menu
@@ -80,7 +78,8 @@ Explore:
     qtrcontracts         quarterly government contracts analysis
     toplobbying          top corporate lobbying tickers
 
-Current Ticker: {self.ticker or None}{dim_no_ticker}
+Ticker: {self.ticker or None}{dim_no_ticker}
+
     gtrades              show government trades for ticker
     contracts            show government contracts for ticker
     histcont             show historical quarterly government contracts for ticker
@@ -113,7 +112,7 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

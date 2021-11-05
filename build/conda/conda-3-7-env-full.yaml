@@ -7,7 +7,7 @@ dependencies:
   - poetry=1.1.11
   - numpy=1.19.5
   - gensim=3.8.3
-  - cvxpy=1.1.12
+  - cvxpy=1.1.17
   - jupyter_client=6.1.12
   - pytest
   - black=21.7b0

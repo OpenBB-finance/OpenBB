@@ -1,5 +1,4 @@
 import argparse
-import os
 from typing import List
 
 from datetime import datetime, timedelta
@@ -17,7 +16,12 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.stocks.stocks_helper import display_candle, load, quote
+from gamestonk_terminal.stocks.stocks_helper import (
+    display_candle,
+    load,
+    quote,
+    process_candle,
+)
 
 from gamestonk_terminal.helper_funcs import (
     valid_date,
@@ -25,6 +29,7 @@ from gamestonk_terminal.helper_funcs import (
     MENU_QUIT,
     MENU_RESET,
     try_except,
+    system_clear,
 )
 from gamestonk_terminal.common.quantitative_analysis import qa_view
 
@@ -101,8 +106,6 @@ class StocksController:
         dim_if_no_ticker = Style.DIM if not self.ticker else ""
         reset_style_if_no_ticker = Style.RESET_ALL if not self.ticker else ""
         help_text = f"""
->> STOCKS <<
-
 What do you want to do?
     cls         clear screen
     ?/help      show this menu again
@@ -163,7 +166,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(
@@ -214,14 +217,22 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         )
         parser.add_argument(
             "-s",
-            "--start_date",
+            "--start",
             dest="s_start",
             type=valid_date,
-            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            default=self.stock.index[0],
             help="Start date for candle data",
         )
         parser.add_argument(
-            "--plotly",
+            "-e",
+            "--end",
+            dest="s_end",
+            type=valid_date,
+            default=self.stock.index[-1],
+            help="End date for candle data",
+        )
+        parser.add_argument(
+            "--it",
             dest="plotly",
             action="store_true",
             default=False,
@@ -280,7 +291,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         if not ns_parser:
             return
         if not self.ticker:
-            print("No ticker loaded.  First use `load {ticker}`\n")
+            print("No ticker loaded. First use `load {ticker}`\n")
             return
 
         if ns_parser.raw:
@@ -293,11 +304,11 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             )
 
         else:
+            df_stock = process_candle(self.stock)
+
             display_candle(
-                s_ticker=self.ticker + "." + self.suffix
-                if self.suffix
-                else self.ticker,
-                s_start=ns_parser.s_start,
+                s_ticker=self.ticker,
+                df_stock=df_stock,
                 plotly=ns_parser.plotly,
             )
 

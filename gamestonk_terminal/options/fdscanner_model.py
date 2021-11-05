@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import numpy as np
 import pandas as pd
 import requests
+from gamestonk_terminal.helper_funcs import get_user_agent
 
 
 def unusual_options(num: int, sort_column: str, ascending: bool):
@@ -31,7 +32,7 @@ def unusual_options(num: int, sort_column: str, ascending: bool):
 
         r = requests.get(
             f"https://app.fdscanner.com/api2/unusualvolume?p=0&page_size=20&page={int(page_num)}",
-            headers={"User-Agent": "Mozilla/5.0"},
+            headers={"User-Agent": get_user_agent()},
         )
 
         if r.status_code != 200:

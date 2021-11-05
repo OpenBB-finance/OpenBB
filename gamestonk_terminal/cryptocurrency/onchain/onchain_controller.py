@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 # pylint: disable=C0302
 
-import os
 import argparse
 from typing import List
 from datetime import datetime, timedelta
@@ -19,6 +18,7 @@ from gamestonk_terminal.helper_funcs import (
     check_int_range,
     valid_date,
     try_except,
+    system_clear,
 )
 
 from gamestonk_terminal.cryptocurrency.onchain import (
@@ -113,7 +113,7 @@ class OnchainController:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

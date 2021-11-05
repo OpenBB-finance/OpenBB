@@ -10,14 +10,14 @@ def get_loss_at_strike(strike: float, chain: pd.DataFrame) -> float:
 
     Parameters
     ----------
-    strike: Union[int,float]
+    strike : Union[int,float]
         Value to calculate total loss at
-    chain: Dataframe:
+    chain : Dataframe:
         Dataframe containing at least strike and openInterest
 
     Returns
     -------
-    loss: Union[float,int]
+    loss : Union[float,int]
         Total loss
     """
 
@@ -38,7 +38,7 @@ def calculate_max_pain(chain: pd.DataFrame) -> int:
 
     Parameters
     ----------
-    chain: DataFrame
+    chain : DataFrame
         Dataframe to calculate value from
 
     Returns
@@ -66,7 +66,7 @@ def convert(orig: str, to: str) -> float:
     """Convert a string to a specific type of number
     Parameters
     ----------
-    orig: str
+    orig : str
         String to convert
     Returns
     -------
@@ -80,6 +80,35 @@ def convert(orig: str, to: str) -> float:
         clean = orig.replace(",", "")
         return float(clean)
     raise ValueError("Invalid to format, please use '%' or ','.")
+
+
+def rn_payoff(x: str, df: pd.DataFrame, put: bool, delta: int, rf: float) -> float:
+    """The risk neutral payoff for a stock
+    Parameters
+    ----------
+    x : str
+        Strike price
+    df : pd.DataFrame
+        Dataframe of stocks prices and probabilities
+    put : bool
+        Whether the asset is a put or a call
+    delta : int
+        Difference between today's date and expirations date in days
+    rf : float
+        The current risk-free rate
+
+    Returns
+    -------
+    number : float
+        Risk neutral value of option
+    """
+    if put:
+        df["Gain"] = np.where(x > df["Price"], x - df["Price"], 0)
+    else:
+        df["Gain"] = np.where(x < df["Price"], df["Price"] - x, 0)
+    df["Vals"] = df["Chance"] * df["Gain"]
+    risk_free = (1 + rf) ** (delta / 365)
+    return sum(df["Vals"]) / risk_free
 
 
 opt_chain_cols = {

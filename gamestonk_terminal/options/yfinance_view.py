@@ -496,17 +496,17 @@ def show_parity(
 
     Parameters
     ----------
-    ticker: str
+    ticker : str
         Ticker to get expirations for
-    exp: str
+    exp : str
         Expiration to use for options
-    put: bool
+    put : bool
         Whether to use puts or calls
-    ask: bool
+    ask : bool
         Whether to use ask or lastPrice
-    mini: float
+    mini : float
         Minimum strike price to show
-    maxi: float
+    maxi : float
         Maximum strike price to show
 
     """
@@ -567,8 +567,8 @@ def show_parity(
     if maxi is None:
         maxi = filtered.strike.quantile(0.75)
 
-    filtered = filtered.loc[filtered["strike"] > mini]
-    filtered = filtered.loc[filtered["strike"] < maxi]
+    filtered = filtered.loc[filtered["strike"] >= mini]
+    filtered = filtered.loc[filtered["strike"] <= maxi]
 
     show = filtered[["strike", diff]].copy()
 
@@ -589,4 +589,76 @@ def show_parity(
     else:
         print(show.to_string(index=False))
 
+    print("")
+
+
+def risk_neutral_vals(
+    ticker: str,
+    exp: str,
+    put: bool,
+    df: pd.DataFrame,
+    mini: float,
+    maxi: float,
+    risk: float,
+) -> None:
+    """Prints current options prices and risk neutral values [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    ticker : str
+        Ticker to get expirations for
+    exp : str
+        Expiration to use for options
+    put : bool
+        Whether to use puts or calls
+    df : pd.DataFrame
+        Estimates for stocks prices and probabilities
+    mini : float
+        Minimum strike price to show
+    maxi : float
+        Maximum strike price to show
+    risk : float
+        The risk-free rate for the asset
+    """
+    if put:
+        chain = get_option_chain(ticker, exp).puts
+    else:
+        chain = get_option_chain(ticker, exp).calls
+
+    r_date = datetime.strptime(exp, "%Y-%m-%d").date()
+    delta = (r_date - date.today()).days
+    vals = []
+    if risk is None:
+        risk = get_rf()
+    for _, row in chain.iterrows():
+        vals.append(
+            [
+                row["strike"],
+                row["lastPrice"],
+                op_helpers.rn_payoff(row["strike"], df, put, delta, risk),
+            ]
+        )
+    new_df = pd.DataFrame(vals, columns=["Strike", "Last Price", "Value"], dtype=float)
+    new_df["Difference"] = new_df["Last Price"] - new_df["Value"]
+
+    if mini is None:
+        mini = new_df.Strike.quantile(0.25)
+    if maxi is None:
+        maxi = new_df.Strike.quantile(0.75)
+
+    new_df = new_df[new_df["Strike"] >= mini]
+    new_df = new_df[new_df["Strike"] <= maxi]
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                new_df,
+                headers=[x.title() for x in new_df.columns],
+                tablefmt="fancy_grid",
+                showindex=False,
+                floatfmt=".2f",
+            )
+        )
+    else:
+        print(new_df.to_string(index=False))
     print("")

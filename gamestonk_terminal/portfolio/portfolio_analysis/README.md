@@ -1,6 +1,7 @@
 # PORTFOLIO ANALYSIS
 
-This menu aims to analyze a portfolio loaded through csv/json/xlsx, and the usage of the following commands along with an example will be exploited below.
+This menu aims to analyze a portfolio loaded through csv/json/xlsx, and the usage of the following commands along with
+an example will be exploited below.
 
 * [load](#load)
   * load portfolio from a file
@@ -8,10 +9,16 @@ This menu aims to analyze a portfolio loaded through csv/json/xlsx, and the usag
   * view holdings by a user input group
 
 ## load
-```
+
+```text
 usage: load [-p PATH] [--no_sector] [--no_last_price] [--nan]
 ```
-This function allows you to load from a predefined file.  The file can contain any information you want, but the stocks should be under a column `Ticker`.  The number owned should be defined in `Shares`.  By default, this will loop through all Tickers and pull sector and latest price. An example column that could be added would be if the ticker is considered a Value or Growth stock.
+
+This function allows you to load from a predefined file.  The file can contain any information you want, but the stocks
+should be under a column `Ticker`.  The number owned should be defined in `Shares`.  By default, this will loop through
+all Tickers and pull sector and latest price. An example column that could be added would be if the ticker is considered
+a Value or Growth stock.
+
 * -p/--path : Path to portfolio file.  A template is supplied and the default path points to it.
 * --no_sector : Flag to avoid getting the sector of each stock.
 * --no_last_price : Flag to avoid getting the latest price for each supplied stock.
@@ -35,10 +42,13 @@ This function allows you to load from a predefined file.  The file can contain a
 ```
 
 ## group
-```
+
+```text
 usage: group [-g GROUP]
 ```
+
 Displays data in groups based on columns.  Currently this only looks at the `value` column.
+
 * -g/--group : Column to group data by.  Ex: "sector"
 
 ```python

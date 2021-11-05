@@ -1,21 +1,27 @@
 """Portfolio View"""
 __docformat__ = "numpy"
 
+from typing import List
 from datetime import datetime
 from io import BytesIO
-import os
+from os import path
 
 import pandas as pd
 from tabulate import tabulate
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.lib.utils import ImageReader
+from matplotlib.lines import Line2D
 from matplotlib import pyplot as plt
 import matplotlib.ticker as mtick
+from pypfopt import plotting
 
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.portfolio import portfolio_model, yfinance_model
 from gamestonk_terminal.portfolio import reportlab_helpers
+from gamestonk_terminal.helper_funcs import get_rf
+from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_model
 
 
 def load_info():
@@ -72,18 +78,14 @@ def show_df(df: pd.DataFrame, show: bool) -> None:
 
 
 def plot_overall_return(
-    df: pd.DataFrame, df_m: pd.DataFrame, n: int, m_tick: str, plot: bool = False
+    comb: pd.DataFrame, m_tick: str, plot: bool = False
 ) -> ImageReader:
     """Generates overall return graph
 
     Parameters
     ----------
-    df : pd.DataFrame
-        The dataframe to be analyzed
-    df_m : pd.DataFrame
-        The dataframe for historical market performance
-    n : int
-        The number of days to include in chart
+    comb : pd.DataFrame
+        Dataframe with returns
     m_tick : str
         The ticker for the market asset
     plot : bool
@@ -95,10 +97,6 @@ def plot_overall_return(
         Overal return graph
     """
     plt.close("all")
-    comb = portfolio_model.get_return(df, df_m, n)
-    comb[("Market", "Return")] = (
-        comb[("Market", "Close")] - comb[("Market", "Close")][0]
-    ) / comb[("Market", "Close")][0]
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.plot(comb.index, comb["return"], color="tab:blue", label="Portfolio")
     ax.plot(comb.index, comb[("Market", "Return")], color="orange", label=m_tick)
@@ -119,7 +117,10 @@ def plot_overall_return(
     fig.set_facecolor("white")
     ax.set_title(
         "%s - %s"
-        % (df.index[:1][0].strftime("%Y/%m/%d"), df.index[-1:][0].strftime("%Y/%m/%d")),
+        % (
+            comb.index[:1][0].strftime("%Y/%m/%d"),
+            comb.index[-1:][0].strftime("%Y/%m/%d"),
+        ),
         fontsize=12,
         color="gray",
     )
@@ -138,21 +139,13 @@ def plot_overall_return(
     return ImageReader(imgdata)
 
 
-def plot_rolling_beta(
-    df: pd.DataFrame, hist: pd.DataFrame, mark: pd.DataFrame, n: int
-) -> ImageReader:
+def plot_rolling_beta(df: pd.DataFrame) -> ImageReader:
     """Returns a chart with the portfolio's rolling beta
 
     Parameters
     ----------
     df : pd.DataFrame
         The dataframe to be analyzed
-    hist : pd.DataFrame
-        A dataframe of historical returns
-    market : pd.DataFrame
-        A dataframe of SPY returns
-    n : int
-        The number of days to include in chart
 
     Returns
     ----------
@@ -160,13 +153,11 @@ def plot_rolling_beta(
         Rolling beta graph
     """
     plt.close("all")
-    final = portfolio_model.get_rolling_beta(df, hist, mark, n)
 
-    # final[final == 0] = np.nan
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.plot(
-        final.index,
-        final["total"],
+        df.index,
+        df["total"],
         color="tab:blue",
     )
 
@@ -186,7 +177,7 @@ def plot_rolling_beta(
     fig.set_facecolor("white")
     ax.set_title(
         "%s - %s"
-        % (df.index[:1][0].strftime("%Y/%m/%d"), df.index[-1:][0].strftime("%Y/%m/%d")),
+        % (df.index[:1][0].strftime("%Y-%m-%d"), df.index[-1:][0].strftime("%Y-%m-%d")),
         fontsize=12,
         color="gray",
     )
@@ -198,38 +189,133 @@ def plot_rolling_beta(
     return ImageReader(imgdata)
 
 
-def annual_report(df: pd.DataFrame, hist: pd.DataFrame, m_tick: str) -> None:
-    """Generates an annual report
+def plot_ef(
+    stocks: List[str],
+    variance: float,
+    per_ret: float,
+    period: str = "3mo",
+    n_portfolios: int = 300,
+    risk_free: bool = False,
+):
+    """Display efficient frontier
 
     Parameters
     ----------
-    df : pd.DataFrame
-        The dataframe to be analyzed
-    m_tick : str
-        The ticker for the market asset
-    hist : pd.DataFrame
-        A dataframe of historical returns
+    stocks : List[str]
+        List of the stocks to be included in the weights
+    variance : float
+        The variance for the portfolio
+    per_ret : float
+        The portfolio's return for the portfolio
+    period : str
+        The period to track
+    n_portfolios : int
+        The number of portfolios to generate
+    risk_free : bool
+        Include the risk-free asset
     """
-    df_m = yfinance_model.get_market(df.index[0], m_tick)
-    dire = os.path.dirname(os.path.abspath(__file__)).replace(
-        "gamestonk_terminal", "exports"
+    fig, ax = plt.subplots(figsize=(10, 5), dpi=PLOT_DPI)
+    ef, rets, stds = optimizer_model.generate_random_portfolios(
+        [x.upper() for x in stocks], period, n_portfolios
     )
+    sharpes = rets / stds
+    ax.scatter(stds, rets, marker=".", c=sharpes, cmap="viridis_r")
+    plotting.plot_efficient_frontier(ef, ax=ax, show_assets=True)
+    # Find the tangency portfolio
+    rfrate = get_rf()
+    ret_sharpe, std_sharpe, _ = ef.portfolio_performance(risk_free_rate=rfrate)
+    ax.scatter(std_sharpe, ret_sharpe, marker="*", s=100, c="r", label="Max Sharpe")
+    plt.plot(variance, per_ret, "ro", label="Portfolio")
+    # Add risk free line
+    if risk_free:
+        y = ret_sharpe * 1.2
+        m = (ret_sharpe - rfrate) / std_sharpe
+        x2 = (y - rfrate) / m
+        x = [0, x2]
+        y = [rfrate, y]
+        line = Line2D(x, y, color="#FF0000", label="Capital Allocation Line")
+        ax.set_xlim(xmin=min(stds) * 0.8)
+        ax.add_line(line)
+    ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
+    ax.legend()
+    fig.tight_layout()
+    ax.grid(b=True, which="major", color="#666666", linestyle="-")
 
-    path = os.path.abspath(
-        os.path.join(
-            dire,
-            f"ar_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
+    if gtff.USE_ION:
+        plt.ion()
+
+    imgdata = BytesIO()
+    fig.savefig(imgdata, format="png")
+    imgdata.seek(0)
+    return ImageReader(imgdata)
+
+
+class Report:
+    def __init__(self, df: pd.DataFrame, hist: pd.DataFrame, m_tick: str, n: int):
+        """Generate financial reports.
+        Financial reports allow users to show the how they have been performing in
+        trades. This allows for a simple way to show progress and analyze metrics
+        that track portfolio performance
+
+        Parameters
+        ----------
+        df : pd.DataFrame
+            The dataframe with previous holdings information
+        hist : pd.DataFrame
+            The dataframe with previous prices for stocks in the portfolio
+        m_tick : str
+            The market asset to be identified
+        n : int
+            The number of days to analyze
+
+        Attributes
+        ----------
+        generate_report : None
+            Generates a report with the given parameters
+        generate_pg1 : None
+            Creates the first page of the PDF report
+        generate_pg2 : None
+            Creates the second page of the PDF report
+
+        """
+        self.df = df
+        self.hist = hist
+        self.m_tick = m_tick
+        self.df_m = yfinance_model.get_market(self.df.index[0], self.m_tick)
+        self.returns, self.variance = portfolio_model.get_return(df, self.df_m, n)
+
+    def generate_report(self) -> None:
+        d = path.dirname(path.abspath(__file__)).replace(
+            "gamestonk_terminal", "exports"
         )
-    )
-    report = canvas.Canvas(path, pagesize=letter)
-    reportlab_helpers.base_format(report, "Overview")
-    report.drawImage(
-        plot_overall_return(df, df_m, 365, m_tick, False), 15, 360, 600, 300
-    )
-    report.showPage()
-    reportlab_helpers.base_format(report, "Portfolio Analysis")
-    if "Holding" in df.columns:
-        report.drawImage(plot_rolling_beta(df, hist, df_m, 365), 15, 360, 600, 300)
-    report.save()
+        loc = path.abspath(
+            path.join(
+                d,
+                f"ar_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
+            )
+        )
+        report = canvas.Canvas(loc, pagesize=letter)
+        reportlab_helpers.base_format(report, "Overview")
+        self.generate_pg1(report)
+        self.generate_pg2(report, self.df_m)
+        report.save()
+        print("File save in:\n", loc, "\n")
 
-    print("File save in:\n", path, "\n")
+    def generate_pg1(self, report: canvas.Canvas) -> None:
+        report.drawImage(
+            plot_overall_return(self.returns, self.m_tick, False), 15, 400, 600, 300
+        )
+        main_t = portfolio_model.get_main_text(self.returns)
+        reportlab_helpers.draw_paragraph(report, main_t, 30, 410, 550, 200)
+        report.showPage()
+
+    def generate_pg2(self, report: canvas.Canvas, df_m: pd.DataFrame) -> None:
+        reportlab_helpers.base_format(report, "Portfolio Analysis")
+        if "Holding" in self.df.columns:
+            rolling_beta = portfolio_model.get_rolling_beta(
+                self.df, self.hist, df_m, 365
+            )
+            report.drawImage(plot_rolling_beta(rolling_beta), 15, 400, 600, 300)
+            main_t = portfolio_model.get_beta_text(rolling_beta)
+            reportlab_helpers.draw_paragraph(report, main_t, 30, 410, 550, 200)
+            # report.drawImage(plot_ef(uniques, self.variance, self.returns["return"][-1]), 15, 65, 600, 300)

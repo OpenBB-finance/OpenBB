@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import os
 from typing import List
 
 import matplotlib as mpl
@@ -16,6 +15,7 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     try_except,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.stocks_helper import load
@@ -57,7 +57,7 @@ Backtesting:
     quit        quit to abandon program
     load        load new ticker to analyze
 
-Current Ticker: {self.ticker.upper()}
+Ticker: {self.ticker.upper()}
 
     ema         buy when price exceeds EMA(l)
     ema_cross   buy when EMA(short) > EMA(long)
@@ -90,7 +90,7 @@ Current Ticker: {self.ticker.upper()}
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

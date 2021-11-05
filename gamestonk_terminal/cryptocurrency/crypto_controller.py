@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 # pylint: disable=R0904, C0302, R1710, W0622
 
 import argparse
-import os
 import matplotlib.pyplot as plt
 import pandas as pd
 from colorama import Style
@@ -14,6 +13,7 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     check_positive,
+    system_clear,
     MENU_GO_BACK,
     MENU_QUIT,
     MENU_RESET,
@@ -60,7 +60,7 @@ class CryptoController:
     ]
 
     CHOICES_COMMAND = [
-        "finbrain",
+        "headlines",
         "chart",
         "load",
         "find",
@@ -99,8 +99,6 @@ class CryptoController:
     def print_help(self):
         """Print help"""
         help_text = """
->> CRYPTO <<
-
 What do you want to do?
     cls         clear screen
     ?/help      show this menu again
@@ -121,7 +119,7 @@ What do you want to do?
     load        load a specific cryptocurrency for analysis
     chart       view a candle chart for a specific cryptocurrency
     find        alternate way to search for coins
-    finbrain    crypto sentiment from 15+ major news headlines
+    headlines   crypto sentiment from 15+ major news headlines [Finbrain]
 
 >   disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
 >   ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
@@ -157,7 +155,7 @@ What do you want to do?
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(
@@ -684,12 +682,12 @@ What do you want to do?
             return True
 
     @try_except
-    def call_finbrain(self, other_args):
-        """Process finbrain command"""
+    def call_headlines(self, other_args):
+        """Process sentiment command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="finbrain",
+            prog="headlines",
             description="""Display sentiment analysis from FinBrain for chosen Cryptocurrencies""",
         )
 

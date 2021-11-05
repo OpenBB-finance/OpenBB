@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import os
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 
@@ -16,6 +15,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     try_except,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 
@@ -63,19 +63,14 @@ class FinancialModelingPrepController:
 
     def print_help(self):
         """Print help"""
-        intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
-        if self.start:
-            help_text = f"\n{intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-        else:
-            help_text = f"\n{intraday} Stock: {self.ticker}"
-
-        help_text += """
-
+        help_text = f"""
 Financial Modeling Prep:
     cls           clear screen
     ?/help        show this menu again
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
+
+Ticker: {self.ticker}
 
     profile       profile of the company
     quote         quote of the company
@@ -115,7 +110,7 @@ Financial Modeling Prep:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

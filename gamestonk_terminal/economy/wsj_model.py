@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 import pandas as pd
 import requests
+from gamestonk_terminal.helper_funcs import get_user_agent
 
 
 def us_indices() -> pd.DataFrame:
@@ -23,7 +24,7 @@ def us_indices() -> pd.DataFrame:
         "name%22%3A%22CBOE%20Volatility%22%7D%2C%7B%22symbol%22%3A%22FUTURE%2FUS%2F%2FDJIA%20FUTURES%22%2C%22name%22%3A%"
         "22DJIA%20Futures%22%7D%2C%7B%22symbol%22%3A%22FUTURE%2FUS%2F%2FS%26P%20500%20FUTURES%22%2C%22name%22%3A%22S%26P"
         "%20500%20Futures%22%7D%5D%7D&type=mdc_quotes",
-        headers={"User-Agent": "Mozilla/5.0"},
+        headers={"User-Agent": get_user_agent()},
     ).json()
 
     name, last_price, net_change, percent_change = [], [], [], []
@@ -59,7 +60,7 @@ def market_overview() -> pd.DataFrame:
         "%22%3A%22FUTURE%2FUS%2F%2FGOLD%22%2C%22name%22%3A%22Gold%20Futures%22%7D%2C%7B%22symbol%22%3A%22CURRENCY%2FUS%2"
         "F%2FUSDJPY%22%2C%22name%22%3A%22Yen%22%7D%2C%7B%22symbol%22%3A%22CURRENCY%2FUS%2F%2FEURUSD%22%2C%22name%22%3A%"
         "22Euro%22%7D%5D%7D&type=mdc_quotes",
-        headers={"User-Agent": "Mozilla/5.0"},
+        headers={"User-Agent": get_user_agent()},
     ).json()
     name, last_price, net_change, percent_change = [], [], [], []
 
@@ -95,7 +96,7 @@ def top_commodities() -> pd.DataFrame:
         "2FUS%2F%2FCOPPER%22%2C%22name%22%3A%22Copper%20Futures%22%7D%2C%7B%22symbol%22%3A%22FUTURE%2FUS%2F%2FCORN%22%2"
         "C%22name%22%3A%22Corn%20Futures%22%7D%2C%7B%22symbol%22%3A%22FUTURE%2FUS%2F%2FWHEAT%22%2C%22name%22%3A%22Wheat"
         "%20Futures%22%7D%2C%7B%22symbol%22%3A%22INDEX%2FXX%2F%2FBCOM%22%7D%5D%7D&type=mdc_quotes",
-        headers={"User-Agent": "Mozilla/5.0"},
+        headers={"User-Agent": get_user_agent()},
     ).json()
     name, last_price, net_change, percent_change = [], [], [], []
 
@@ -133,7 +134,7 @@ def us_bonds() -> pd.DataFrame:
         "BOND%2FBX%2F%2FTMUBMUSD06M%22%2C%22name%22%3A%226-Month%20Bill%22%7D%2C%7B%22symbol%22%3A%22BON"
         "D%2FBX%2F%2FTMUBMUSD03M%22%2C%22name%22%3A%223-Month%20Bill%22%7D%2C%7B%22symbol%22%3A%22BOND%"
         "2FBX%2F%2FTMUBMUSD01M%22%2C%22name%22%3A%221-Month%20Bill%22%7D%5D%7D&type=mdc_quotes",
-        headers={"User-Agent": "Mozilla/5.0"},
+        headers={"User-Agent": get_user_agent()},
     ).json()
     name, yield_pct, rate, yld_chng = [], [], [], []
 
@@ -165,7 +166,7 @@ def global_bonds() -> pd.DataFrame:
         "22name%22%3A%22Japan%2010%20Year%22%7D%2C%7B%22symbol%22%3A%22TMBMKAU-10Y%22%2C%22name%22%3A%2"
         "2Australia%2010%20Year%22%7D%2C%7B%22symbol%22%3A%22AMBMKRM-10Y%22%2C%22name%22%3A%22China%2010"
         "%20Year%22%7D%5D%7D&type=mdc_governmentbonds",
-        headers={"User-Agent": "Mozilla/5.0"},
+        headers={"User-Agent": get_user_agent()},
     ).json()
     name, yield_pct, rate, yld_chng = [], [], [], []
 
@@ -202,7 +203,7 @@ def global_currencies() -> pd.DataFrame:
         "CURRENCY%2FUS%2F%2FBTCUSD%22%2C%22name%22%3A%22Bitcoin%20(BTC%2FUSD)%22%7D%2C%7B%22symbol%22%3A"
         "%22INDEX%2FXX%2F%2FBUXX%22%2C%22name%22%3A%22WSJ%20Dollar%20Index%22%7D%2C%7B%22symbol%22%3A%2"
         "2INDEX%2FUS%2F%2FDXY%22%2C%22name%22%3A%22U.S.%20Dollar%20Index%22%7D%5D%7D&type=mdc_quotes",
-        headers={"User-Agent": "Mozilla/5.0"},
+        headers={"User-Agent": get_user_agent()},
     ).json()
 
     name, last_price, price_change, pct_change = [], [], [], []

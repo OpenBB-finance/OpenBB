@@ -48,7 +48,7 @@ def display_funding_rates(top: int, current: bool = True, export: str = "") -> N
     )
 
 
-def dislpay_lending_rates(top: int, current: bool = True, export: str = "") -> None:
+def display_lending_rates(top: int, current: bool = True, export: str = "") -> None:
     """Displays top DeFi lendings. Decentralized Finance lending – allows users to supply cryptocurrencies
     in exchange for earning an annualized return
     [Source: https://defirate.com/]

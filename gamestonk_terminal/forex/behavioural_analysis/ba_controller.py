@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 
 import argparse
-import os
 from typing import List
 from datetime import datetime
 import textwrap
@@ -18,6 +17,7 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     check_positive,
     try_except,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.behavioural_analysis import (
@@ -78,9 +78,7 @@ class BehaviouralAnalysisController:
         dim = Style.DIM if not self.ticker else ""
         res = Style.RESET_ALL
         help_string = f"""
->>>Behavioural Analysis:<<<
-
-What would you like to do?
+Behavioural Analysis:
     cls           clear screen
     ?/help        show this menu again
     q             quit this menu, and shows back to main menu
@@ -145,7 +143,7 @@ SentimentInvestor:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

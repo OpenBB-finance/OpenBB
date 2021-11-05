@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 
 import argparse
-import os
 from typing import List
 from datetime import datetime
 from colorama import Style
@@ -20,6 +19,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     valid_date,
     try_except,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.technical_analysis import (
@@ -149,7 +149,7 @@ Custom:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(
@@ -1138,7 +1138,7 @@ Custom:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="fib",
-            description="Calculates the fibinocci retracement levels",
+            description="Calculates the fibonacci retracement levels",
         )
 
         parser.add_argument(

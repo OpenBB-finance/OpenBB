@@ -3,7 +3,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import os
 import sys
 
 from prompt_toolkit.completion import NestedCompleter
@@ -12,6 +11,7 @@ from gamestonk_terminal import config_terminal
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
+    system_clear,
     MENU_RESET,
     MENU_GO_BACK,
     MENU_QUIT,
@@ -125,7 +125,7 @@ What do you want to do?
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(
@@ -278,7 +278,7 @@ def terminal(menu_prior_to_reset=""):
         else:
             print("\nInvalid DEFAULT_CONTEXT config selected!", "\n")
 
-    if process_input != MENU_QUIT:
+    if process_input not in (MENU_QUIT, MENU_RESET):
         t_controller.print_help()
 
         while True:
