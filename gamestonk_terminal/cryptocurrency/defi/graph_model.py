@@ -1,10 +1,11 @@
-"""The Graph"""
+"""The Graph model"""
 __docformat__ = "numpy"
 
 import datetime
 import requests
 import pandas as pd
 
+from cryptocurrency.dataframe_helpers import very_long_number_formatter
 
 UNI_URL = "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2"
 
@@ -95,6 +96,7 @@ def get_uniswap_stats():
         return pd.DataFrame()
     df = pd.Series(data["uniswapFactory"]).reset_index()
     df.columns = ["Metric", "Value"]
+    df["Value"] = df["Value"].apply(lambda x: very_long_number_formatter(x))
     return df
 
 
