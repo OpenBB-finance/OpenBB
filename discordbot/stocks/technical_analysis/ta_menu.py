@@ -300,7 +300,12 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
     @discord.ext.commands.command(name="stocks.ta.fisher")
     async def fisher(
-        self, ctx: discord.ext.commands.Context, ticker="", length="14", start="", end=""
+        self,
+        ctx: discord.ext.commands.Context,
+        ticker="",
+        length="14",
+        start="",
+        end="",
     ):
         """Displays chart with fisher of a given stock and sends it
 
@@ -320,7 +325,12 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
     @discord.ext.commands.command(name="stocks.ta.cg")
     async def cg(
-        self, ctx: discord.ext.commands.Context, ticker="", length="14", start="", end=""
+        self,
+        ctx: discord.ext.commands.Context,
+        ticker="",
+        length="14",
+        start="",
+        end="",
     ):
         """Displays chart with cg of a given stock and sends it
 
@@ -492,7 +502,12 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
     @discord.ext.commands.command(name="stocks.ta.ad")
     async def ad(
-        self, ctx: discord.ext.commands.Context, ticker="", open="False", start="", end=""
+        self,
+        ctx: discord.ext.commands.Context,
+        ticker="",
+        open="False",
+        start="",
+        end="",
     ):
         """Displays chart with ad of a given stock and sends it
 

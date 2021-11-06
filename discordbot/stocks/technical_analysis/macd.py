@@ -11,7 +11,9 @@ from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 
-async def macd_command(ctx, ticker="", fast="12", slow="26", signal="9", start="", end=""):
+async def macd_command(
+    ctx, ticker="", fast="12", slow="26", signal="9", start="", end=""
+):
     """Displays chart with macd of a given stock"""
 
     try:
