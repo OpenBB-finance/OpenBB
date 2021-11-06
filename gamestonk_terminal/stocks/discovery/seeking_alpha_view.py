@@ -166,14 +166,18 @@ def display_news(news_type: str = "Top-News", num: int = 5, export: str = ""):
     """
     l_news = seeking_alpha_model.get_news(news_type, num)
 
-    for d_news in l_news:
-        print(d_news["publishOn"] + " - " + d_news["id"] + " - " + d_news["title"])
-        print(d_news["url"])
-        print("")
+    if not l_news:
+        print("No news found.", "\n")
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "cnews : " + news_type,
-        pd.DataFrame(l_news),
-    )
+    else:
+        for d_news in l_news:
+            print(d_news["publishOn"] + " - " + d_news["id"] + " - " + d_news["title"])
+            print(d_news["url"])
+            print("")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "cnews : " + news_type,
+            pd.DataFrame(l_news),
+        )

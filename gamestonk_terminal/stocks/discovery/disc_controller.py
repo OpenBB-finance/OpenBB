@@ -106,7 +106,7 @@ cathiesark.com:
 Seeking Alpha:
     upcoming       upcoming earnings release dates
     trending       trending news
-    cnews          customized news (buybacks, IPOs, SPACs, healthcare, politics)
+    cnews          customized news (buybacks, ipos, spacs, healthcare, politics)
 shortinterest.com
     lowfloat       low float stocks under 10M shares float
 pennystockflow.com
@@ -821,7 +821,7 @@ Finance Database:
             "--type",
             action="store",
             dest="s_type",
-            choices=l_news_type,
+            choices=[tnews.lower() for tnews in l_news_type],
             default="Top-News",
             help="number of news to display",
         )
@@ -844,7 +844,7 @@ Finance Database:
         )
         if other_args:
             if "-" not in other_args[0]:
-                other_args.insert(0, "-i")
+                other_args.insert(0, "-t")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:

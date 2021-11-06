@@ -226,9 +226,12 @@ def get_news_html(news_type: str = "Top-News") -> dict:
     dict
         HTML page of articles
     """
-    sa_url = f"""http://seekingalpha.com/api/v3/news?filter%5Bcategory%5D=market-news%3A%3A{news_type}
-    &filter%5Bsince%5D=0&filter%5Buntil%5D=0&include=author%2CprimaryTickers%2CsecondaryTickers
-    &isMounting=true&page%5Bsize%5D=25&page%5Bnumber%5D=1"""
+    sa_url = (
+        f"http://seekingalpha.com/api/v3/news?filter%5Bcategory%5D=market-news%3A%3A{news_type}"
+        "&filter%5Bsince%5D=0&filter%5Buntil%5D=0&include=author%2CprimaryTickers%2CsecondaryTickers"
+        "&isMounting=true&page%5Bsize%5D=25&page%5Bnumber%5D=1"
+    )
+
     articles_html = requests.get(
         sa_url, headers={"User-Agent": get_user_agent()}
     ).json()
@@ -253,19 +256,20 @@ def get_news(news_type: str = "Top-News", num: int = 5) -> list:
         List of dict news
     """
     d_news = get_news_html(news_type)
-
     l_news = list()
-    for idx, news in enumerate(d_news["data"]):
-        if idx > num:
-            break
 
-        l_news.append(
-            {
-                "publishOn": news["attributes"]["publishOn"].replace("T", " ")[:-6],
-                "id": news["id"],
-                "title": news["attributes"]["title"],
-                "url": news["links"]["canonical"],
-            }
-        )
+    if d_news:
+        for idx, news in enumerate(d_news["data"]):
+            if idx > num:
+                break
+
+            l_news.append(
+                {
+                    "publishOn": news["attributes"]["publishOn"].replace("T", " ")[:-6],
+                    "id": news["id"],
+                    "title": news["attributes"]["title"],
+                    "url": news["links"]["canonical"],
+                }
+            )
 
     return l_news
