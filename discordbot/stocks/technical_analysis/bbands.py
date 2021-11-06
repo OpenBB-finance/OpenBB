@@ -103,6 +103,8 @@ async def bbands_command(
         plt.savefig("ta_bbands.png")
         uploaded_image = gst_imgur.upload_image("ta_bbands.png", title="something")
         image_link = uploaded_image.link
+        if cfg.DEBUG:
+            print(f"Image URL: {image_link}")
         title = "Stocks: Bollinger-Bands " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

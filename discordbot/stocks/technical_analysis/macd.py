@@ -86,6 +86,8 @@ async def macd_command(
         plt.savefig("ta_macd.png")
         uploaded_image = gst_imgur.upload_image("ta_cci.png", title="something")
         image_link = uploaded_image.link
+        if cfg.DEBUG:
+            print(f"Image URL: {image_link}")
         title = "Stocks: Moving-Average-Convergence-Divergence " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

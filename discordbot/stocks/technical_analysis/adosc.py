@@ -109,6 +109,8 @@ async def adosc_command(
         plt.savefig("ta_adosc.png")
         uploaded_image = gst_imgur.upload_image("ta_adosc.png", title="something")
         image_link = uploaded_image.link
+        if cfg.DEBUG:
+            print(f"Image URL: {image_link}")
         title = "Stocks: Accumulation/Distribution Oscillator " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

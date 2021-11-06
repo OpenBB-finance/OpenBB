@@ -78,6 +78,8 @@ async def cci_command(ctx, ticker="", length="14", scalar="0.015", start="", end
         plt.savefig("ta_cci.png")
         uploaded_image = gst_imgur.upload_image("ta_cci.png", title="something")
         image_link = uploaded_image.link
+        if cfg.DEBUG:
+            print(f"Image URL: {image_link}")
         title = "Stocks: Commodity-Channel-Index " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

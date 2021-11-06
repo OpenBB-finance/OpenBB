@@ -92,6 +92,8 @@ async def kc_command(
         plt.savefig("ta_kc.png")
         uploaded_image = gst_imgur.upload_image("ta_kc.png", title="something")
         image_link = uploaded_image.link
+        if cfg.DEBUG:
+            print(f"Image URL: {image_link}")
         title = "Stocks: Keltner-Channel " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

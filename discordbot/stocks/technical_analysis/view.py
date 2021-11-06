@@ -37,6 +37,8 @@ async def view_command(ctx, ticker=""):
         plt.savefig("ta_view.png")
         uploaded_image = gst_imgur.upload_image("ta_view.png", title="something")
         image_link = uploaded_image.link
+        if cfg.DEBUG:
+            print(f"Image URL: {image_link}")
         title = "Stocks: [Finviz] Trendlines & Data " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

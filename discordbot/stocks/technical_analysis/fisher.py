@@ -95,6 +95,8 @@ async def fisher_command(ctx, ticker="", length="14", start="", end=""):
         plt.savefig("ta_fisher.png")
         uploaded_image = gst_imgur.upload_image("ta_fisher.png", title="something")
         image_link = uploaded_image.link
+        if cfg.DEBUG:
+            print(f"Image URL: {image_link}")
         title = "Stocks: Fisher-Transform " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

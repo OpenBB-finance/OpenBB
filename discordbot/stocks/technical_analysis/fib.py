@@ -79,6 +79,8 @@ async def fib_command(ctx, ticker="", start="", end=""):
         plt.savefig("ta_fib.png")
         uploaded_image = gst_imgur.upload_image("ta_fib.png", title="something")
         image_link = uploaded_image.link
+        if cfg.DEBUG:
+            print(f"Image URL: {image_link}")
         title = "Stocks: Fibonacci-Retracement-Levels " + ticker
         str_df_fib = "```" + df_fib.to_string(index=False) + "```"
         embed = discord.Embed(title=title, colour=cfg.COLOR, description=str_df_fib)

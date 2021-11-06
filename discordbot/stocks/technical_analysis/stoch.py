@@ -91,6 +91,8 @@ async def stoch_command(
         plt.savefig("ta_stoch.png")
         uploaded_image = gst_imgur.upload_image("ta_stoch.png", title="something")
         image_link = uploaded_image.link
+        if cfg.DEBUG:
+            print(f"Image URL: {image_link}")
         title = "Stocks: Stochastic-Relative-Strength-Index " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

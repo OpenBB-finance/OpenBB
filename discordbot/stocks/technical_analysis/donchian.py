@@ -84,6 +84,8 @@ async def donchian_command(
         plt.savefig("ta_donchian.png")
         uploaded_image = gst_imgur.upload_image("ta_donchian.png", title="something")
         image_link = uploaded_image.link
+        if cfg.DEBUG:
+            print(f"Image URL: {image_link}")
         title = "Stocks: Donchian-Channels " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

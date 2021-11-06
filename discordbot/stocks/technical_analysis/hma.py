@@ -101,6 +101,8 @@ async def hma_command(ctx, ticker="", window="", offset="", start="", end=""):
         plt.savefig("ta_hma.png")
         uploaded_image = gst_imgur.upload_image("ta_hma.png", title="something")
         image_link = uploaded_image.link
+        if cfg.DEBUG:
+            print(f"Image URL: {image_link}")
         title = "Stocks: Hull-Moving-Average " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

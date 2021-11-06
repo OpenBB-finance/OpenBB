@@ -85,6 +85,8 @@ async def rsi_command(
         plt.savefig("ta_rsi.png")
         uploaded_image = gst_imgur.upload_image("ta_rsi.png", title="something")
         image_link = uploaded_image.link
+        if cfg.DEBUG:
+            print(f"Image URL: {image_link}")
         title = "Stocks: Relative-Strength-Index " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

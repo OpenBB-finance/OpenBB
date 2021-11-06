@@ -74,6 +74,8 @@ async def cg_command(ctx, ticker="", length="14", start="", end=""):
         plt.savefig("ta_cg.png")
         uploaded_image = gst_imgur.upload_image("ta_cg.png", title="something")
         image_link = uploaded_image.link
+        if cfg.DEBUG:
+            print(f"Image URL: {image_link}")
         title = "Stocks: Center-of-Gravity " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

@@ -97,6 +97,8 @@ async def obv_command(ctx, ticker="", start="", end=""):
         plt.savefig("ta_obv.png")
         uploaded_image = gst_imgur.upload_image("ta_obv.png", title="something")
         image_link = uploaded_image.link
+        if cfg.DEBUG:
+            print(f"Image URL: {image_link}")
         title = "Stocks: On-Balance-Volume " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

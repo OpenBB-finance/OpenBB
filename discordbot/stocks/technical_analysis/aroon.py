@@ -86,6 +86,8 @@ async def aroon_command(ctx, ticker="", length="25", scalar="100", start="", end
         plt.savefig("ta_aroon.png")
         uploaded_image = gst_imgur.upload_image("ta_aroon.png", title="something")
         image_link = uploaded_image.link
+        if cfg.DEBUG:
+            print(f"Image URL: {image_link}")
         title = "Stocks: Aroon-Indicator " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
