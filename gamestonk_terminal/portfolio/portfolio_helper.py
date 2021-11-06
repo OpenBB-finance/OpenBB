@@ -60,29 +60,3 @@ def clean_name(name: str) -> str:
         A cleaned value
     """
     return name.replace("beta_", "").upper()
-
-
-def get_fraction(
-    numerator: float, denominator: float, allow_negative_denominator: bool = True
-) -> str:
-    """Turn two numbers into a fraction
-
-    Parameters
-    ----------
-    numerator : float
-        The numerator
-    denominator : float
-        The denominator
-    allow_negative_denominator : bool
-        If false, a negative denominator will return "NA"
-
-    Returns
-    ----------
-    str
-        A fraction as a string
-    """
-    if allow_negative_denominator and denominator != 0:
-        return f"{(numerator/denominator):.2f}"
-    if denominator > 0:
-        return f"{(numerator/denominator):.2f}"
-    return "N/A"

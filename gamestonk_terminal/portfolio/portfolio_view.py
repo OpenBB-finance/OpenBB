@@ -20,7 +20,6 @@ from pypfopt import plotting
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.portfolio import (
-    portfolio_helper,
     portfolio_model,
     yfinance_model,
 )
@@ -322,15 +321,11 @@ class Report:
         current_return = self.returns["return"][-1]
         beta = self.betas["total"][-1]
         market_return = self.returns[("Market", "Return")][-1]
-        sharpe = portfolio_helper.get_fraction(
-            current_return - self.rf, np.std(self.returns["return"])
-        )
-        treynor = portfolio_helper.get_fraction(current_return - self.rf, beta, False)
-        alpha = portfolio_helper.get_fraction(
-            current_return - (self.rf + beta * (market_return - self.rf)), 1
-        )
-        information = portfolio_helper.get_fraction(
-            float(alpha), np.std(self.returns["return"] - market_return)
+        sharpe = f"{(current_return - self.rf)/ np.std(self.returns['return']):.2f}"
+        treynor = f"{(current_return - self.rf)/ beta:.2f}" if beta > 0 else "N/A"
+        alpha = f"{current_return - (self.rf + beta * (market_return - self.rf)):.2f}"
+        information = (
+            f"{float(alpha)/ (np.std(self.returns['return'] - market_return)):.2f}"
         )
         perf = [
             ["Sharpe", sharpe],
