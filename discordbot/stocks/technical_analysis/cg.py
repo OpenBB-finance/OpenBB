@@ -13,13 +13,13 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 
 
 async def cg_command(ctx, ticker="", length="14", start="", end=""):
-    """Displays chart with cg of a given stock"""
+    """Displays chart with centre of gravity [Yahoo Finance]"""
 
     try:
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.fisher {ticker} {length} {start} {end}")
+            print(f"!stocks.ta.cg {ticker} {length} {start} {end}")
 
         # Check for argument
         if ticker == "":

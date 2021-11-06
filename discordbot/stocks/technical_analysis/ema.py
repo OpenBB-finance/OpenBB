@@ -13,7 +13,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 
 
 async def ema_command(ctx, ticker="", window="", offset="", start="", end=""):
-    """Displays chart with ema of a given stock"""
+    """Displays chart with exponential moving average [Yahoo Finance]"""
 
     try:
         # Debug

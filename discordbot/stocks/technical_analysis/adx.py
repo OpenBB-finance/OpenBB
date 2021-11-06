@@ -14,7 +14,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 async def adx_command(
     ctx, ticker="", length="14", scalar="100", drift="1", start="", end=""
 ):
-    """Displays chart with adx of a given stock"""
+    """Displays chart with average directional movement index [Yahoo Finance]"""
 
     try:
 

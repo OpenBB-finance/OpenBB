@@ -12,13 +12,13 @@ from gamestonk_terminal import config_plot as cfp
 
 
 async def fib_command(ctx, ticker="", start="", end=""):
-    """Displays chart with fib of a given stock"""
+    """Displays chart with fibonacci retracement [Yahoo Finance]"""
 
     try:
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.obv {ticker} {start} {end}")
+            print(f"!stocks.ta.fib {ticker} {start} {end}")
 
         # Check for argument
         if ticker == "":

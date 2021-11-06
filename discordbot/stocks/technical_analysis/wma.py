@@ -13,7 +13,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 
 
 async def wma_command(ctx, ticker="", window="", offset="", start="", end=""):
-    """Displays chart with wma of a given stock"""
+    """Displays chart with weighted moving average [Yahoo Finance]"""
 
     try:
         # Debug

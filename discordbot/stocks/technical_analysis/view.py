@@ -13,7 +13,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 
 
 async def view_command(ctx, ticker=""):
-    """Displays image from Finviz of a given stock"""
+    """Displays image from Finviz [Finviz]"""
 
     try:
 

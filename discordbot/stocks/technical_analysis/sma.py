@@ -13,7 +13,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 
 
 async def sma_command(ctx, ticker="", window="", offset="", start="", end=""):
-    """Displays chart with sma of a given stock"""
+    """Displays chart with simple moving average [Yahoo Finance]"""
 
     try:
         # Debug

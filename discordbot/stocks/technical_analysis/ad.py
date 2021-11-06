@@ -12,7 +12,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 
 
 async def ad_command(ctx, ticker="", open="False", start="", end=""):
-    """Displays chart with ad of a given stock"""
+    """Displays chart with accumulation/distribution line [Yahoo Finance]"""
 
     try:
 

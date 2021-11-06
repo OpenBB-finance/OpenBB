@@ -13,7 +13,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 
 
 async def zlma_command(ctx, ticker="", window="", offset="", start="", end=""):
-    """Displays chart with zlma of a given stock"""
+    """Displays chart with zero lag moving average [Yahoo Finance]"""
 
     try:
         # Debug

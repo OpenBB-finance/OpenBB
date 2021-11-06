@@ -12,13 +12,13 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 
 
 async def cci_command(ctx, ticker="", length="14", scalar="0.015", start="", end=""):
-    """Displays chart with cci of a given stock"""
+    """Displays chart with commodity channel index [Yahoo Finance]"""
 
     try:
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.hma {ticker} {length} {scalar} {start} {end}")
+            print(f"!stocks.ta.cci {ticker} {length} {scalar} {start} {end}")
 
         # Check for argument
         if ticker == "":

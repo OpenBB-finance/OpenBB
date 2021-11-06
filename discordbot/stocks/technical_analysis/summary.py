@@ -5,7 +5,7 @@ from gamestonk_terminal.stocks.technical_analysis import finbrain_model
 
 
 async def summary_command(ctx, ticker=""):
-    """Displays text of a given stocks ta summary"""
+    """Displays text of a given stocks ta summary [FinBrain API]"""
 
     try:
 

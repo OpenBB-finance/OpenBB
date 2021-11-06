@@ -13,7 +13,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 
 
 async def hma_command(ctx, ticker="", window="", offset="", start="", end=""):
-    """Displays chart with hma of a given stock"""
+    """Displays chart with hull moving average [Yahoo Finance]"""
 
     try:
         # Debug

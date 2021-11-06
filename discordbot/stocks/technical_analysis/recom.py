@@ -5,7 +5,7 @@ from gamestonk_terminal.stocks.technical_analysis import tradingview_model
 
 
 async def recom_command(ctx, ticker=""):
-    """Displays text of a given stocks recommendation based on ta"""
+    """Displays text of a given stocks recommendation based on ta [Tradingview API]"""
 
     try:
 
@@ -20,6 +20,11 @@ async def recom_command(ctx, ticker=""):
         recom = tradingview_model.get_tradingview_recommendation(
             ticker, "america", "", ""
         )
+
+        cols = list(recom.columns)
+        a, b = cols.index("RECOMMENDATION"), cols.index("SELL")
+        cols[b], cols[a] = cols[a], cols[b]
+        recom = recom[cols]
 
         report = "```" + recom.to_string() + "```"
         embed = discord.Embed(

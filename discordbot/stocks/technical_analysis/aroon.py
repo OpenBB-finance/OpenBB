@@ -12,7 +12,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 
 
 async def aroon_command(ctx, ticker="", length="25", scalar="100", start="", end=""):
-    """Displays chart with adx of a given stock"""
+    """Displays chart with aroon indicator [Yahoo Finance]"""
 
     try:
 

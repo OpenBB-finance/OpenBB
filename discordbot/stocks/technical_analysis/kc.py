@@ -14,7 +14,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 async def kc_command(
     ctx, ticker="", length="20", scalar="2", mamode="sma", offset="0", start="", end=""
 ):
-    """Displays chart with keltner channel of a given stock"""
+    """Displays chart with keltner channel [Yahoo Finance]"""
 
     try:
 

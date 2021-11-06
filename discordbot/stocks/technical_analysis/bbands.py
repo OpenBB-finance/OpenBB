@@ -14,7 +14,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 async def bbands_command(
     ctx, ticker="", length="5", n_std="2", mamode="sma", start="", end=""
 ):
-    """Displays chart with bollinger bands of a given stock"""
+    """Displays chart with bollinger bands [Yahoo Finance]"""
 
     try:
 

@@ -14,7 +14,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 async def adosc_command(
     ctx, ticker="", open="False", fast="3", slow="10", start="", end=""
 ):
-    """Displays chart with ad oscillator of a given stock"""
+    """Displays chart with chaikin oscillator [Yahoo Finance]"""
 
     try:
 

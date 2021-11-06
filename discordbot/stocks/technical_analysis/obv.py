@@ -12,7 +12,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 
 
 async def obv_command(ctx, ticker="", start="", end=""):
-    """Displays chart with ad oscillator of a given stock"""
+    """Displays chart with on balance volume [Yahoo Finance]"""
 
     try:
 

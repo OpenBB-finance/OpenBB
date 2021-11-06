@@ -47,7 +47,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         start="",
         end="",
     ):
-        """Displays chart with ema of a given stock and sends it
+        """Displays chart with exponential moving average [Yahoo Finance]
 
         Parameters
         -----------
@@ -75,7 +75,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         start="",
         end="",
     ):
-        """Displays chart with sma of a given stock and sends it
+        """Displays chart with simple moving average [Yahoo Finance]
 
         Parameters
         -----------
@@ -103,7 +103,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         start="",
         end="",
     ):
-        """Displays chart with wma of a given stock and sends it
+        """Displays chart with weighted moving average [Yahoo Finance]
 
         Parameters
         -----------
@@ -131,7 +131,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         start="",
         end="",
     ):
-        """Displays chart with hma of a given stock and sends it
+        """Displays chart with hull moving average [Yahoo Finance]
 
         Parameters
         -----------
@@ -159,7 +159,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         start="",
         end="",
     ):
-        """Displays chart with zlma of a given stock and sends it
+        """Displays chart with zero lag moving average [Yahoo Finance]
 
         Parameters
         -----------
@@ -187,7 +187,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         start="",
         end="",
     ):
-        """Displays chart with cci of a given stock and sends it
+        """Displays chart with commodity channel index [Yahoo Finance]
 
         Parameters
         -----------
@@ -216,7 +216,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         start="",
         end="",
     ):
-        """Displays chart with macd of a given stock and sends it
+        """Displays chart with moving average convergence/divergence [Yahoo Finance]
 
         Parameters
         -----------
@@ -247,7 +247,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         start="",
         end="",
     ):
-        """Displays chart with rsi of a given stock and sends it
+        """Displays chart with relative strength index [Yahoo Finance]
 
         Parameters
         -----------
@@ -278,7 +278,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         start="",
         end="",
     ):
-        """Displays chart with stoch of a given stock and sends it
+        """Displays chart with stochastic relative strength average [Yahoo Finance]
 
         Parameters
         -----------
@@ -307,7 +307,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         start="",
         end="",
     ):
-        """Displays chart with fisher of a given stock and sends it
+        """Displays chart with fisher transformation [Yahoo Finance]
 
         Parameters
         -----------
@@ -332,7 +332,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         start="",
         end="",
     ):
-        """Displays chart with cg of a given stock and sends it
+        """Displays chart with centre of gravity [Yahoo Finance]
 
         Parameters
         -----------
@@ -359,7 +359,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         start="",
         end="",
     ):
-        """Displays chart with adx of a given stock and sends it
+        """Displays chart with average directional movement index [Yahoo Finance]
 
         Parameters
         -----------
@@ -389,7 +389,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         start="",
         end="",
     ):
-        """Displays chart with aroon of a given stock and sends it
+        """Displays chart with aroon indicator [Yahoo Finance]
 
         Parameters
         -----------
@@ -418,7 +418,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         start="",
         end="",
     ):
-        """Displays chart with bbands of a given stock and sends it
+        """Displays chart with bollinger bands [Yahoo Finance]
 
         Parameters
         -----------
@@ -448,7 +448,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         start="",
         end="",
     ):
-        """Displays chart with a donchian channel of a given stock and sends it
+        """Displays chart with donchian channel [Yahoo Finance]
 
         Parameters
         -----------
@@ -478,7 +478,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         start="",
         end="",
     ):
-        """Displays chart with kc of a given stock and sends it
+        """Displays chart with keltner channel [Yahoo Finance]
 
         Parameters
         -----------
@@ -509,7 +509,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         start="",
         end="",
     ):
-        """Displays chart with ad of a given stock and sends it
+        """Displays chart with accumulation/distribution line [Yahoo Finance]
 
         Parameters
         -----------
@@ -536,7 +536,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         start="",
         end="",
     ):
-        """Displays chart with adosc of a given stock and sends it
+        """Displays chart with chaikin oscillator [Yahoo Finance]
 
         Parameters
         -----------
@@ -558,7 +558,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
     @discord.ext.commands.command(name="stocks.ta.obv")
     async def obv(self, ctx: discord.ext.commands.Context, ticker="", start="", end=""):
-        """Displays chart with obv of a given stock and sends it
+        """Displays chart with on balance volume [Yahoo Finance]
 
         Parameters
         -----------
@@ -574,7 +574,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
     @discord.ext.commands.command(name="stocks.ta.fib")
     async def fib(self, ctx: discord.ext.commands.Context, ticker="", start="", end=""):
-        """Displays chart with fib of a given stock and sends it
+        """Displays chart with fibonacci retracement [Yahoo Finance]
 
         Parameters
         -----------
@@ -590,7 +590,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
     @discord.ext.commands.command(name="stocks.ta.view")
     async def view(self, ctx: discord.ext.commands.Context, ticker=""):
-        """Displays an image of a given stocks data from Finviz and sends it
+        """Displays image from Finviz [Finviz]
 
         Parameters
         -----------
@@ -602,7 +602,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
     @discord.ext.commands.command(name="stocks.ta.summary")
     async def summary(self, ctx: discord.ext.commands.Context, ticker=""):
-        """Displays a summary of a given stocks ta from FinBrain and sends it
+        """Displays text of a given stocks ta summary [FinBrain API]
 
         Parameters
         -----------
@@ -614,7 +614,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
     @discord.ext.commands.command(name="stocks.ta.recom")
     async def recom(self, ctx: discord.ext.commands.Context, ticker=""):
-        """Displays a recommendation of a given stocks ta from Tradingview and sends it
+        """Displays text of a given stocks recommendation based on ta [Tradingview API]
 
         Parameters
         -----------
@@ -640,21 +640,21 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         cols_temp = []
         cols = []
 
-        if ticker != "":
-            stock = helpers.load(ticker, datetime.now() - timedelta(days=365))
-            if stock.empty:
-                embed = discord.Embed(
-                    title="ERROR Stocks: Technical Analysis (TA) Menu",
-                    colour=cfg.COLOR,
-                    description="Stock ticker is invalid",
-                )
-                embed.set_author(
-                    name=cfg.AUTHOR_NAME,
-                    icon_url=cfg.AUTHOR_ICON_URL,
-                )
+        stock = helpers.load(ticker, datetime.now() - timedelta(days=365))
+        if ticker == "" or stock.empty:
+            embed = discord.Embed(
+                title="ERROR Stocks: Technical Analysis (TA) Menu",
+                colour=cfg.COLOR,
+                description="Enter a valid stock ticker",
+            )
+            embed.set_author(
+                name=cfg.AUTHOR_NAME,
+                icon_url=cfg.AUTHOR_ICON_URL,
+            )
 
-                await ctx.send(embed=embed)
-                return
+            await ctx.send(embed=embed)
+            return
+        else:
             text = (
                 f"0️⃣ !stocks.ta.view {ticker}\n"
                 f"1️⃣ !stocks.ta.summary {ticker}\n"
@@ -699,14 +699,18 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
                     )
                 )
 
-        else:
-            text = (
-                "\nAll commands aro only available when providing a ticker with:"
-                "\n!stocks.ta <TICKER>"
-            )
-            cols.append(text)
-
-        emoji_list = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "9️⃣"]
+        emoji_list = [
+            "0️⃣",
+            "1️⃣",
+            "2️⃣",
+            "3️⃣",
+            "4️⃣",
+            "5️⃣",
+            "6️⃣",
+            "7️⃣",
+            "8️⃣",
+            "9️⃣",
+        ]
 
         current = 0
         components = [

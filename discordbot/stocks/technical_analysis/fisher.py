@@ -12,7 +12,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 
 
 async def fisher_command(ctx, ticker="", length="14", start="", end=""):
-    """Displays chart with fisher transformation of a given stock"""
+    """Displays chart with fisher transformation [Yahoo Finance]"""
 
     try:
 

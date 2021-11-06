@@ -14,13 +14,13 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 async def macd_command(
     ctx, ticker="", fast="12", slow="26", signal="9", start="", end=""
 ):
-    """Displays chart with macd of a given stock"""
+    """Displays chart with moving average convergence/divergence [Yahoo Finance]"""
 
     try:
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.rsi {ticker} {fast} {slow} {signal} {start} {end}")
+            print(f"!stocks.ta.macd {ticker} {fast} {slow} {signal} {start} {end}")
 
         # Check for argument
         if ticker == "":
