@@ -12,7 +12,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 
 
 async def donchian_command(
-    ctx, ticker="", upper_length=25, lower_length=100, start="", end=""
+    ctx, ticker="", upper_length="25", lower_length="100", start="", end=""
 ):
     """Displays chart with donchian channel of a given stock"""
 

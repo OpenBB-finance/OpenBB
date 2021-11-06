@@ -182,8 +182,8 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         self,
         ctx: discord.ext.commands.Context,
         ticker="",
-        length="",
-        scalar="",
+        length="14",
+        scalar="0.015",
         start="",
         end="",
     ):
@@ -210,9 +210,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         self,
         ctx: discord.ext.commands.Context,
         ticker="",
-        fast="",
-        slow="",
-        signal="",
+        fast="12",
+        slow="26",
+        signal="9",
         start="",
         end="",
     ):
@@ -241,9 +241,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         self,
         ctx: discord.ext.commands.Context,
         ticker="",
-        length="",
-        scalar="",
-        drift="",
+        length="14",
+        scalar="100",
+        drift="1",
         start="",
         end="",
     ):
@@ -272,9 +272,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         self,
         ctx: discord.ext.commands.Context,
         ticker="",
-        fast_k="",
-        slow_d="",
-        slow_k="",
+        fast_k="14",
+        slow_d="3",
+        slow_k="3",
         start="",
         end="",
     ):
@@ -300,7 +300,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
     @discord.ext.commands.command(name="stocks.ta.fisher")
     async def fisher(
-        self, ctx: discord.ext.commands.Context, ticker="", length="", start="", end=""
+        self, ctx: discord.ext.commands.Context, ticker="", length="14", start="", end=""
     ):
         """Displays chart with fisher of a given stock and sends it
 
@@ -320,7 +320,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
     @discord.ext.commands.command(name="stocks.ta.cg")
     async def cg(
-        self, ctx: discord.ext.commands.Context, ticker="", length="", start="", end=""
+        self, ctx: discord.ext.commands.Context, ticker="", length="14", start="", end=""
     ):
         """Displays chart with cg of a given stock and sends it
 
@@ -343,9 +343,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         self,
         ctx: discord.ext.commands.Context,
         ticker="",
-        length="",
-        scalar="",
-        drift="",
+        length="14",
+        scalar="100",
+        drift="1",
         start="",
         end="",
     ):
@@ -374,8 +374,8 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         self,
         ctx: discord.ext.commands.Context,
         ticker="",
-        length="",
-        scalar="",
+        length="25",
+        scalar="100",
         start="",
         end="",
     ):
@@ -402,9 +402,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         self,
         ctx: discord.ext.commands.Context,
         ticker="",
-        length="",
-        std="",
-        ma_mode="",
+        length="5",
+        std="2",
+        ma_mode="sma",
         start="",
         end="",
     ):
@@ -433,8 +433,8 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         self,
         ctx: discord.ext.commands.Context,
         ticker="",
-        upper_length="",
-        lower_length="",
+        upper_length="25",
+        lower_length="100",
         start="",
         end="",
     ):
@@ -461,10 +461,10 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         self,
         ctx: discord.ext.commands.Context,
         ticker="",
-        length="",
-        scalar="",
-        ma_mode="",
-        offset="",
+        length="20",
+        scalar="2",
+        ma_mode="sma",
+        offset="0",
         start="",
         end="",
     ):
@@ -492,7 +492,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
     @discord.ext.commands.command(name="stocks.ta.ad")
     async def ad(
-        self, ctx: discord.ext.commands.Context, ticker="", open="", start="", end=""
+        self, ctx: discord.ext.commands.Context, ticker="", open="False", start="", end=""
     ):
         """Displays chart with ad of a given stock and sends it
 
@@ -515,9 +515,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         self,
         ctx: discord.ext.commands.Context,
         ticker="",
-        open="",
-        fast="",
-        slow="",
+        open="False",
+        fast="3",
+        slow="10",
         start="",
         end="",
     ):
@@ -629,7 +629,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
             stock = helpers.load(ticker, datetime.now() - timedelta(days=365))
             if stock.empty:
                 embed = discord.Embed(
-                    title="ERROR Stocks: Dark Pool and Short data",
+                    title="ERROR Stocks: Technical Analysis (TA) Menu",
                     colour=cfg.COLOR,
                     description="Stock ticker is invalid",
                 )
@@ -677,7 +677,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
                     discord.Embed(
                         description=col,
                         colour=cfg.COLOR,
-                        title="Technical Analysis (TA) Menu",
+                        title="Stocks: Technical Analysis (TA) Menu",
                     ).set_author(
                         name=cfg.AUTHOR_NAME,
                         icon_url=cfg.AUTHOR_ICON_URL,
@@ -713,124 +713,6 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         main_message = await ctx.send(embed=cols[current], components=components)
         for emoji in emoji_list:
             await main_message.add_reaction(emoji)
-
-        try:
-
-            def check(reaction, user):
-                return user == ctx.message.author and str(reaction.emoji) in emoji_list
-
-            reaction, _ = await gst_bot.wait_for(
-                "reaction_add", timeout=cfg.MENU_TIMEOUT, check=check
-            )
-
-            if reaction.emoji == "0️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 0")
-                if current == 0:
-                    await view_command(ctx, ticker)
-                elif current == 1:
-                    await rsi_command(ctx, ticker)
-                elif current == 2:
-                    await adosc_command(ctx, ticker)
-            elif reaction.emoji == "1️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 1")
-                if current == 0:
-                    await summary_command(ctx, ticker)
-                elif current == 1:
-                    await stoch_command(ctx, ticker)
-                elif current == 2:
-                    await obv_command(ctx, ticker)
-            elif reaction.emoji == "2️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 2")
-                if current == 0:
-                    await recom_command(ctx, ticker)
-                elif current == 1:
-                    await fisher_command(ctx, ticker)
-                elif current == 2:
-                    await fib_command(ctx, ticker)
-            elif reaction.emoji == "3️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 3")
-                if current == 0:
-                    await ema_command(ctx, ticker)
-                elif current == 1:
-                    await cg_command(ctx, ticker)
-            elif reaction.emoji == "4️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 4")
-                if current == 0:
-                    await sma_command(ctx, ticker)
-                elif current == 1:
-                    await adx_command(ctx, ticker)
-            elif reaction.emoji == "5️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 5")
-                if current == 0:
-                    await wma_command(ctx, ticker)
-                elif current == 1:
-                    await aroon_command(ctx, ticker)
-            elif reaction.emoji == "6️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 6")
-                if current == 0:
-                    await hma_command(ctx, ticker)
-                elif current == 1:
-                    await bbands_command(ctx, ticker)
-            elif reaction.emoji == "7️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 7")
-                if current == 0:
-                    await zlma_command(ctx, ticker)
-                elif current == 1:
-                    await donchian_command(ctx, ticker)
-            elif reaction.emoji == "8️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 8")
-                if current == 0:
-                    await cci_command(ctx, ticker)
-                elif current == 1:
-                    await kc_command(ctx, ticker)
-            elif reaction.emoji == "9️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 9")
-                if current == 0:
-                    await macd_command(ctx, ticker)
-                elif current == 1:
-                    await ad_command(ctx, ticker)
-        except asyncio.TimeoutError:
-            text = text + "\n\nCOMMAND TIMEOUT."
-            embed = discord.Embed(
-                title="Technical Analysis (TA) Menu", description=text
-            )
-            await main_message.edit(embed=embed)
-            for emoji in emoji_list:
-                await main_message.remove_reaction(emoji, ctx.bot.user)
-            components = [
-                [
-                    discord_components.Button(
-                        label="Prev",
-                        id="back",
-                        style=discord_components.ButtonStyle.green,
-                        disabled=True,
-                    ),
-                    discord_components.Button(
-                        label=f"Page {int(cols.index(cols[current]))}/{len(cols) - 1}",
-                        id="cur",
-                        style=discord_components.ButtonStyle.grey,
-                        disabled=True,
-                    ),
-                    discord_components.Button(
-                        label="Next",
-                        id="front",
-                        style=discord_components.ButtonStyle.green,
-                        disabled=True,
-                    ),
-                ]
-            ]
-            await main_message.edit(components=components)
-            return
 
         while True:
             # Try and except blocks to catch timeout and break
@@ -878,6 +760,112 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
                 await interaction.edit_origin(
                     embed=cols[current], components=components
                 )
+
+                @gst_bot.event
+                async def on_reaction_add(reaction, user):
+                    if user == ctx.message.author and str(reaction.emoji) in emoji_list:
+                        if reaction.emoji == "0️⃣":
+                            if cfg.DEBUG:
+                                print("Reaction selected: 0")
+                            if current == 0:
+                                await view_command(ctx, ticker)
+                            elif current == 1:
+                                await rsi_command(ctx, ticker)
+                            elif current == 2:
+                                await adosc_command(ctx, ticker)
+                        elif reaction.emoji == "1️⃣":
+                            if cfg.DEBUG:
+                                print("Reaction selected: 1")
+                            if current == 0:
+                                await summary_command(ctx, ticker)
+                            elif current == 1:
+                                await stoch_command(ctx, ticker)
+                            elif current == 2:
+                                await obv_command(ctx, ticker)
+                        elif reaction.emoji == "2️⃣":
+                            if cfg.DEBUG:
+                                print("Reaction selected: 2")
+                            if current == 0:
+                                await recom_command(ctx, ticker)
+                            elif current == 1:
+                                await fisher_command(ctx, ticker)
+                            elif current == 2:
+                                await fib_command(ctx, ticker)
+                        elif reaction.emoji == "3️⃣":
+                            if cfg.DEBUG:
+                                print("Reaction selected: 3")
+                            if current == 0:
+                                await ema_command(ctx, ticker)
+                            elif current == 1:
+                                await cg_command(ctx, ticker)
+                        elif reaction.emoji == "4️⃣":
+                            if cfg.DEBUG:
+                                print("Reaction selected: 4")
+                            if current == 0:
+                                await sma_command(ctx, ticker)
+                            elif current == 1:
+                                await adx_command(ctx, ticker)
+                        elif reaction.emoji == "5️⃣":
+                            if cfg.DEBUG:
+                                print("Reaction selected: 5")
+                            if current == 0:
+                                await wma_command(ctx, ticker)
+                            elif current == 1:
+                                await aroon_command(ctx, ticker)
+                        elif reaction.emoji == "6️⃣":
+                            if cfg.DEBUG:
+                                print("Reaction selected: 6")
+                            if current == 0:
+                                await hma_command(ctx, ticker)
+                            elif current == 1:
+                                await bbands_command(ctx, ticker)
+                        elif reaction.emoji == "7️⃣":
+                            if cfg.DEBUG:
+                                print("Reaction selected: 7")
+                            if current == 0:
+                                await zlma_command(ctx, ticker)
+                            elif current == 1:
+                                await donchian_command(ctx, ticker)
+                        elif reaction.emoji == "8️⃣":
+                            if cfg.DEBUG:
+                                print("Reaction selected: 8")
+                            if current == 0:
+                                await cci_command(ctx, ticker)
+                            elif current == 1:
+                                await kc_command(ctx, ticker)
+                        elif reaction.emoji == "9️⃣":
+                            if cfg.DEBUG:
+                                print("Reaction selected: 9")
+                            if current == 0:
+                                await macd_command(ctx, ticker)
+                            elif current == 1:
+                                await ad_command(ctx, ticker)
+                        for emoji in emoji_list:
+                            await main_message.remove_reaction(emoji, ctx.bot.user)
+                        components = [
+                            [
+                                discord_components.Button(
+                                    label="Prev",
+                                    id="back",
+                                    style=discord_components.ButtonStyle.green,
+                                    disabled=True,
+                                ),
+                                discord_components.Button(
+                                    label=f"Page {int(cols.index(cols[current]))}/{len(cols) - 1}",
+                                    id="cur",
+                                    style=discord_components.ButtonStyle.grey,
+                                    disabled=True,
+                                ),
+                                discord_components.Button(
+                                    label="Next",
+                                    id="front",
+                                    style=discord_components.ButtonStyle.green,
+                                    disabled=True,
+                                ),
+                            ]
+                        ]
+                        await main_message.edit(components=components)
+                        return
 
             except asyncio.TimeoutError:
                 # Disable and get outta here

@@ -11,7 +11,7 @@ from gamestonk_terminal.common.technical_analysis import volume_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 
-async def ad_command(ctx, ticker="", open=False, start="", end=""):
+async def ad_command(ctx, ticker="", open="False", start="", end=""):
     """Displays chart with ad of a given stock"""
 
     try:
@@ -21,8 +21,6 @@ async def ad_command(ctx, ticker="", open=False, start="", end=""):
             print(f"!stocks.ta.ad {ticker} {open} {start} {end}")
 
         # Check for argument
-        possible_ma = ["sma", "ema", "wma", "hma", "zlma"]
-
         if ticker == "":
             raise Exception("Stock ticker is required")
 
@@ -54,8 +52,6 @@ async def ad_command(ctx, ticker="", open=False, start="", end=""):
         bar_colors = [
             "r" if x[1].Open < x[1].Close else "g" for x in df_stock.iterrows()
         ]
-
-        bar_width = timedelta(days=1)
 
         divisor = 1_000_000
         df_vol = df_stock["Volume"].dropna()

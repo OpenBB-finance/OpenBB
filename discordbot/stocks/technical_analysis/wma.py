@@ -49,7 +49,6 @@ async def wma_command(ctx, ticker="", window="", offset="", start="", end=""):
                     b = i
                 i += 1
             window = window_temp
-        print(window)
 
         if offset == "":
             offset = 0

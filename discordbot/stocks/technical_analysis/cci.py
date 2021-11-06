@@ -3,7 +3,6 @@ import config_discordbot as cfg
 from discordbot import gst_imgur
 from datetime import datetime, timedelta
 from matplotlib import pyplot as plt
-import pandas as pd
 import os
 import helpers
 
@@ -12,7 +11,7 @@ from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 
-async def cci_command(ctx, ticker="", length=14, scalar=0.015, start="", end=""):
+async def cci_command(ctx, ticker="", length="14", scalar="0.015", start="", end=""):
     """Displays chart with cci of a given stock"""
 
     try:

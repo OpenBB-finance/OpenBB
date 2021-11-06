@@ -11,7 +11,7 @@ from gamestonk_terminal.common.technical_analysis import trend_indicators_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 
-async def aroon_command(ctx, ticker="", length=25, scalar=100, start="", end=""):
+async def aroon_command(ctx, ticker="", length="25", scalar="100", start="", end=""):
     """Displays chart with adx of a given stock"""
 
     try:

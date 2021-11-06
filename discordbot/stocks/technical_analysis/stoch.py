@@ -12,7 +12,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 
 
 async def stoch_command(
-    ctx, ticker="", fast_k=14, slow_d=3, slow_k=3, start="", end=""
+    ctx, ticker="", fast_k="14", slow_d="3", slow_k="3", start="", end=""
 ):
     """Displays chart with stoch of a given stock"""
 

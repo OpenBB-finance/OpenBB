@@ -12,7 +12,7 @@ from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 
-async def cg_command(ctx, ticker="", length=14, start="", end=""):
+async def cg_command(ctx, ticker="", length="14", start="", end=""):
     """Displays chart with cg of a given stock"""
 
     try:
