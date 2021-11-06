@@ -198,7 +198,7 @@ def plot_ef(
     stocks: List[str],
     variance: float,
     per_ret: float,
-    rf: float,
+    rf_rate: float,
     period: str = "3mo",
     n_portfolios: int = 300,
     risk_free: bool = False,
@@ -213,7 +213,7 @@ def plot_ef(
         The variance for the portfolio
     per_ret : float
         The portfolio's return for the portfolio
-    rf : float
+    rf_rate : float
         The risk free rate
     period : str
         The period to track
@@ -230,16 +230,16 @@ def plot_ef(
     ax.scatter(stds, rets, marker=".", c=sharpes, cmap="viridis_r")
     plotting.plot_efficient_frontier(ef, ax=ax, show_assets=True)
     # Find the tangency portfolio
-    ret_sharpe, std_sharpe, _ = ef.portfolio_performance(risk_free_rate=rf)
+    ret_sharpe, std_sharpe, _ = ef.portfolio_performance(risk_free_rate=rf_rate)
     ax.scatter(std_sharpe, ret_sharpe, marker="*", s=100, c="r", label="Max Sharpe")
     plt.plot(variance, per_ret, "ro", label="Portfolio")
     # Add risk free line
     if risk_free:
         y = ret_sharpe * 1.2
-        m = (ret_sharpe - rf) / std_sharpe
-        x2 = (y - rf) / m
+        m = (ret_sharpe - rf_rate) / std_sharpe
+        x2 = (y - rf_rate) / m
         x = [0, x2]
-        y = [rf, y]
+        y = [rf_rate, y]
         line = Line2D(x, y, color="#FF0000", label="Capital Allocation Line")
         ax.set_xlim(xmin=min(stds) * 0.8)
         ax.add_line(line)
@@ -317,23 +317,30 @@ class Report:
         report.drawImage(
             plot_overall_return(self.returns, self.m_tick, False), 15, 400, 600, 300
         )
-        main_t = portfolio_model.get_main_text(self.returns)
-        reportlab_helpers.draw_paragraph(report, main_t, 30, 410, 550, 200)
-        rp = self.returns["return"][-1]
-        b = self.betas["total"][-1]
-        mar = self.returns[("Market", "Return")][-1]
-        srp = portfolio_helper.get_fraction(
-            rp - self.rf, np.std(self.returns["return"])
+        main_text = portfolio_model.get_main_text(self.returns)
+        reportlab_helpers.draw_paragraph(report, main_text, 30, 410, 550, 200)
+        current_return = self.returns["return"][-1]
+        beta = self.betas["total"][-1]
+        market_return = self.returns[("Market", "Return")][-1]
+        sharpe = portfolio_helper.get_fraction(
+            current_return - self.rf, np.std(self.returns["return"])
         )
-        tnr = portfolio_helper.get_fraction(rp - self.rf, b)
-        a = portfolio_helper.get_fraction(rp - (self.rf + b * (mar - self.rf)), 1)
-        ir = portfolio_helper.get_fraction(
-            float(a), np.std(self.returns["return"] - mar)
+        treynor = portfolio_helper.get_fraction(current_return - self.rf, beta)
+        alpha = portfolio_helper.get_fraction(
+            current_return - (self.rf + beta * (market_return - self.rf)), 1
         )
-        perf = [["Sharpe", srp], ["Treynor", tnr], ["Alpha", a], ["Information", ir]]
+        information = portfolio_helper.get_fraction(
+            float(alpha), np.std(self.returns["return"] - market_return)
+        )
+        perf = [
+            ["Sharpe", sharpe],
+            ["Treynor", treynor],
+            ["Alpha", alpha],
+            ["Information", information],
+        ]
         reportlab_helpers.draw_table(report, "Performance", 540, 300, 30, perf)
-        perf_t = portfolio_model.get_perm_text()
-        reportlab_helpers.draw_paragraph(report, perf_t, 140, 290, 460, 200)
+        perf_text = portfolio_model.get_perm_text()
+        reportlab_helpers.draw_paragraph(report, perf_text, 140, 290, 460, 200)
         report.showPage()
 
     def generate_pg2(self, report: canvas.Canvas) -> None:

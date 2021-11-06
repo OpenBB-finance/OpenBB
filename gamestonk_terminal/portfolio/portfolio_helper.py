@@ -62,14 +62,14 @@ def clean_name(name: str) -> str:
     return name.replace("beta_", "").upper()
 
 
-def get_fraction(n: float, d: float) -> str:
+def get_fraction(numerator: float, denominator: float) -> str:
     """Turn two numbers into a fraction
 
     Parameters
     ----------
-    n : float
+    numerator : float
         The numerator
-    d : float
+    denominator : float
         The denominator
 
     Returns
@@ -77,6 +77,6 @@ def get_fraction(n: float, d: float) -> str:
     text : str
         A fraction as a string
     """
-    if d > 0:
-        return f"{(n/d):.2f}"
+    if denominator > 0:
+        return f"{(numerator/denominator):.2f}"
     return "N/A"
