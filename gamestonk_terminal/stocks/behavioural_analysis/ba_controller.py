@@ -685,21 +685,13 @@ SentimentInvestor:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="finbrain",
+            prog="headlines",
             description="""FinBrain collects the news headlines from 15+ major financial news
                         sources on a daily basis and analyzes them to generate sentiment scores
                         for more than 4500 US stocks.FinBrain Technologies develops deep learning
                         algorithms for financial analysis and prediction, which currently serves
                         traders from more than 150 countries all around the world.
                         [Source:  https://finbrain.tech]""",
-        )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -723,14 +715,6 @@ SentimentInvestor:
                 bullish vs bearish percentages, sector average bullish percentage, and sector average news score.
                 [Source: https://finnhub.io]
             """,
-        )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES

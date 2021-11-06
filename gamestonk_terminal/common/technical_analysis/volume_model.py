@@ -18,7 +18,7 @@ def ad(df_stock: pd.DataFrame, use_open: bool) -> pd.DataFrame:
     Returns
     -------
     pd.DataFrame
-        Dataframe with techinical indicator
+        Dataframe with technical indicator
     """
     if use_open:
         df_ta = ta.ad(
@@ -89,7 +89,7 @@ def obv(s_interval: str, df_stock: pd.DataFrame) -> pd.DataFrame:
     Returns
     -------
     pd.DataFrame
-        Dataframe with techinical indicator
+        Dataframe with technical indicator
     """
     # Daily
     if s_interval == "1440min":

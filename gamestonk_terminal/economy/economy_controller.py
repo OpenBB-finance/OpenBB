@@ -1,7 +1,8 @@
 """ Econ Controller """
 __docformat__ = "numpy"
-
+# pylint:disable=too-many-lines
 import argparse
+from datetime import datetime, timedelta
 import os
 from typing import List
 
@@ -17,6 +18,7 @@ from gamestonk_terminal.economy import (
     wsj_view,
 )
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     check_positive,
     get_flair,
     parse_known_args_and_warn,
@@ -29,7 +31,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 
-# pylint: disable=R1710
+# pylint: disable=R1710,R0904
 
 
 class EconomyController:
@@ -72,6 +74,11 @@ class EconomyController:
         "glbonds",
         "futures",
         "currencies",
+        "energy",
+        "metals",
+        "meats",
+        "grains",
+        "softs",
         "search",
         "series",
         "valuation",
@@ -79,6 +86,12 @@ class EconomyController:
         "spectrum",
         "map",
         "rtps",
+        "gdp",
+        "gdpc",
+        "inf",
+        "cpi",
+        "tyld",
+        "unemp",
         "industry",
     ]
 
@@ -115,12 +128,23 @@ Wall St. Journal:
     glbonds       global bonds overview
     currencies    currencies overview
 Finviz:
+    energy        energy futures overview
+    metals        metals futures overview
+    meats         meats futures overview
+    grains        grains futures overview
+    softs         softs futures overview
     map           S&P500 index stocks map
     valuation     valuation of sectors, industry, country
     performance   performance of sectors, industry, country
     spectrum      spectrum of sectors, industry, country
 Alpha Vantage:
     rtps          real-time performance sectors
+    gdp           real GDP for United States
+    gdpc          quarterly real GDP per Capita data of the United States
+    inf           infation rates for United States
+    cpi           consumer price index for United States
+    tyld          treasury yields for United States
+    unemp         United States unemployment rates
 FRED:
     search        search FRED series notes
     series        plot series from https://fred.stlouisfed.org
@@ -433,6 +457,136 @@ FRED:
         )
 
     @try_except
+    def call_energy(self, other_args: List[str]):
+        """Process energy command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="energy",
+            description="Energy future overview. [Source: Finviz]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        finviz_view.display_future(
+            future_type="Energy",
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_metals(self, other_args: List[str]):
+        """Process metals command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="metals",
+            description="Metals future overview. [Source: Finviz]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        finviz_view.display_future(
+            future_type="Metals",
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_meats(self, other_args: List[str]):
+        """Process meats command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="meats",
+            description="Meats future overview. [Source: Finviz]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        finviz_view.display_future(
+            future_type="Meats",
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_grains(self, other_args: List[str]):
+        """Process grains command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="grains",
+            description="Grains future overview. [Source: Finviz]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        finviz_view.display_future(
+            future_type="Grains",
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_softs(self, other_args: List[str]):
+        """Process softs command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="softs",
+            description="Softs future overview. [Source: Finviz]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        finviz_view.display_future(
+            future_type="Softs",
+            export=ns_parser.export,
+        )
+
+    @try_except
     def call_map(self, other_args: List[str]):
         """Process map command"""
         parser = argparse.ArgumentParser(
@@ -638,6 +792,284 @@ FRED:
             return
 
         alphavantage_view.realtime_performance_sector(
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_gdp(self, other_args: List[str]):
+        """Process gdp command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="gdp",
+            description="""
+                Get real GDP for US on either annual or quarterly interval [Source: Alpha Vantage]
+            """,
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            help="Interval for GDP data",
+            dest="interval",
+            choices=["a", "q"],
+            default="a",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            help="Start year.  Quarterly only goes back to 2002.",
+            dest="start",
+            type=int,
+            default=2010,
+        )
+        parser.add_argument(
+            "--raw",
+            help="Display raw data",
+            action="store_true",
+            dest="raw",
+            default=False,
+        )
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-i")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if not ns_parser:
+            return
+
+        alphavantage_view.display_real_gdp(
+            interval=ns_parser.interval,
+            start_year=ns_parser.start,
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_gdpc(self, other_args: List[str]):
+        """Process gdpc command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="gdpc",
+            description="""
+                Get real GDP per capita for United States[Source: Alpha Vantage]
+            """,
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            help="Start year.",
+            dest="start",
+            type=int,
+            default=2010,
+        )
+        parser.add_argument(
+            "--raw",
+            help="Display raw data",
+            action="store_true",
+            dest="raw",
+            default=False,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if not ns_parser:
+            return
+
+        alphavantage_view.display_gdp_capita(
+            start_year=ns_parser.start,
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_inf(self, other_args: List[str]):
+        """Process inf command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="inf",
+            description="""
+                Get historical Inflation for United States[Source: Alpha Vantage]
+            """,
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            help="Start year.",
+            dest="start",
+            type=int,
+            default=2010,
+        )
+        parser.add_argument(
+            "--raw",
+            help="Display raw data",
+            action="store_true",
+            dest="raw",
+            default=False,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if not ns_parser:
+            return
+
+        alphavantage_view.display_inflation(
+            start_year=ns_parser.start,
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_cpi(self, other_args: List[str]):
+        """Process cpi command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="inf",
+            description="""
+                Get historical CPI for United States [Source: Alpha Vantage]
+            """,
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            help="Interval for GDP data",
+            dest="interval",
+            choices=["s", "m"],
+            default="s",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            help="Start year.",
+            dest="start",
+            type=int,
+            default=2010,
+        )
+        parser.add_argument(
+            "--raw",
+            help="Display raw data",
+            action="store_true",
+            dest="raw",
+            default=False,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if not ns_parser:
+            return
+
+        alphavantage_view.display_cpi(
+            interval=ns_parser.interval,
+            start_year=ns_parser.start,
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_tyld(self, other_args: List[str]):
+        """Process tyld command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tyld",
+            description="""
+                Get historical Treasury Yield [Source: Alpha Vantage]
+            """,
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            help="Interval for treasury data",
+            dest="interval",
+            choices=["d", "w", "m"],
+            default="w",
+        )
+        parser.add_argument(
+            "-m",
+            "--maturity",
+            help="Maturity timeline for treasury",
+            dest="maturity",
+            choices=["3m", "5y", "10y", "30y"],
+            default="5y",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            help="Start date.",
+            dest="start",
+            type=valid_date,
+            default=datetime.now() - timedelta(days=366),
+        )
+        parser.add_argument(
+            "--raw",
+            help="Display raw data",
+            action="store_true",
+            dest="raw",
+            default=False,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if not ns_parser:
+            return
+
+        alphavantage_view.display_treasury_yield(
+            interval=ns_parser.interval,
+            maturity=ns_parser.maturity,
+            start_date=ns_parser.start,
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_unemp(self, other_args: List[str]):
+        """Process unemp command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="unemp",
+            description="""
+                Get United States Unemployment data [Source: Alpha Vantage]
+            """,
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            help="Start year.",
+            dest="start",
+            type=int,
+            default=2015,
+        )
+        parser.add_argument(
+            "--raw",
+            help="Display raw data",
+            action="store_true",
+            dest="raw",
+            default=False,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if not ns_parser:
+            return
+
+        alphavantage_view.display_unemployment(
+            start_year=ns_parser.start,
             raw=ns_parser.raw,
             export=ns_parser.export,
         )

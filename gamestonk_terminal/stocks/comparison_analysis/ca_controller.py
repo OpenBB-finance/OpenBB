@@ -273,7 +273,7 @@ Finviz:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="getfinnhub",
-            description="""Get similar companies from finnhubto compare with.""",
+            description="""Get similar companies from finnhub to compare with.""",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:

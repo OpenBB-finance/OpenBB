@@ -194,7 +194,7 @@ def merge_dataframes(
         A log of past transactions
     divs : pd.DataFrame
         The dividend history for stocks in portfolio
-    unqiues: List[str]
+    uniques: List[str]
         A list of stocks in the portfolio
 
     Returns

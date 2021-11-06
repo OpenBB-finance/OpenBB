@@ -18,7 +18,7 @@ def adx(s_interval: str, df_stock: pd.DataFrame, length: int, scalar: int, drift
         Length of window
     scalar: int
         Scalar variable
-    droft: int
+    drift: int
         Drift variable
 
     Returns

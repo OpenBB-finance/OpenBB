@@ -6,6 +6,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 
 from gamestonk_terminal.options.op_helpers import convert
+from gamestonk_terminal.helper_funcs import get_user_agent
 
 
 def get_option_history(ticker: str, date: str, call: bool, price: str) -> pd.DataFrame:
@@ -32,7 +33,7 @@ def get_option_history(ticker: str, date: str, call: bool, price: str) -> pd.Dat
     )
     url += f"{'c' if call else 'p'}{float(price):g}/historical/"
 
-    data = requests.get(url, headers={"User-Agent": "test"}).content
+    data = requests.get(url, headers={"User-Agent": get_user_agent()}).content
     soup = BeautifulSoup(data, "html.parser")
     table = soup.find("div", attrs={"style": "display: table; font-size: 0.9em; "})
     rows = table.find_all("div", attrs={"style": "display: table-row;"})

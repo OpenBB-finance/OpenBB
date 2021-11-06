@@ -25,8 +25,10 @@ def get_series_notes(series_term: str, num: int) -> str:
     notes : str
         Series notes output
     """
+
     fred.key(cfg.API_FRED_KEY)
     d_series = fred.search(series_term)
+
     if "seriess" not in d_series:
         return "No Series found using this term!\n"
 

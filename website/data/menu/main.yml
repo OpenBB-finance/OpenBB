@@ -40,8 +40,8 @@ main:
             ref: "/stocks/discovery/arkord"
           - name: upcoming
             ref: "/stocks/discovery/upcoming"
-          - name: latest
-            ref: "/stocks/discovery/latest"
+          - name: cnews
+            ref: "/stocks/discovery/cnews"
           - name: trending
             ref: "/stocks/discovery/trending"
           - name: lowfloat
@@ -359,8 +359,6 @@ main:
             ref: "/common/technical_analysis/summary"
           - name: recom
             ref: "/common/technical_analysis/recom"
-          - name: pr
-            ref: "/common/technical_analysis/pr"
           - name: ema
             ref: "/common/technical_analysis/ema"
           - name: sma
@@ -551,6 +549,14 @@ main:
         ref: "/portfolio/portfolio_optimization"
       - name: parity
         ref: "/options/parity"
+      - name: add
+        ref: "/options/add"
+      - name: rmv
+        ref: "/options/rmv"
+      - name: show
+        ref: "/options/show"
+      - name: rnval
+        ref: "/options/rnval"
       - name: payoff
         ref: "/options/payoff"
         sub:
@@ -771,6 +777,16 @@ main:
         ref: "/economy/glbonds"
       - name: currencies
         ref: "/economy/currencies"
+      - name: energy
+        ref: "/economy/energy"
+      - name: metals
+        ref: "/economy/metals"
+      - name: meats
+        ref: "/economy/meats"
+      - name: grains
+        ref: "/economy/grains"
+      - name: softs
+        ref: "/economy/softs"
       - name: map
         ref: "/economy/map"
       - name: valuation
@@ -781,6 +797,18 @@ main:
         ref: "/economy/spectrum"
       - name: rtps
         ref: "/economy/rtps"
+      - name: gdp
+        ref: "/economy/gdp"
+      - name: gdpc
+        ref: "/economy/gdpc"
+      - name: inf
+        ref: "/economy/inf"
+      - name: cpi
+        ref: "/economy/cpi"
+      - name: tyld
+        ref: "/economy/tyld"
+      - name: unemp
+        ref: "/economy/unemp"
       - name: search
         ref: "/economy/search"
       - name: series

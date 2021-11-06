@@ -135,7 +135,6 @@ def plot_overall_return(
         plt.show()
         print("")
         return None
-
     imgdata = BytesIO()
     fig.savefig(imgdata, format="png")
     plt.close("all")
