@@ -149,3 +149,31 @@ def news(news_type: str, article_id: int, num: int, start_date: datetime, export
             news_type,
             df_articles,
         )
+
+
+def display_news(news_type: str = "Top-News", num: int = 5, export: str = ""):
+    """Display news. [Source: SeekingAllpha]
+
+    Parameters
+    ----------
+    news_type : str
+        From: Top-News, On-The-Move, Market-Pulse, Notable-Calls, Buybacks, Commodities, Crypto, Issuance, Global,
+        Guidance, IPOs, SPACs, Politics, M-A, Consumer, Energy, Financials, Healthcare, MLPs, REITs, Technology
+    num : int
+        Number of news to display
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+    l_news = seeking_alpha_model.get_news(news_type, num)
+
+    for d_news in l_news:
+        print(d_news["publishOn"] + " - " + d_news["id"] + " - " + d_news["title"])
+        print(d_news["url"])
+        print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "cnews : " + news_type,
+        pd.DataFrame(l_news),
+    )

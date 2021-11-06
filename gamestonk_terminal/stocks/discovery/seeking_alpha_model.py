@@ -210,3 +210,62 @@ def get_article_data(article_id: int) -> dict:
     }
 
     return article
+
+
+def get_news_html(news_type: str = "Top-News") -> dict:
+    """Gets news. [Source: SeekingAllpha]
+
+    Parameters
+    ----------
+    news_type : str
+        From: Top-News, On-The-Move, Market-Pulse, Notable-Calls, Buybacks, Commodities, Crypto, Issuance, Global,
+        Guidance, IPOs, SPACs, Politics, M-A, Consumer, Energy, Financials, Healthcare, MLPs, REITs, Technology
+
+    Returns
+    -------
+    dict
+        HTML page of articles
+    """
+    sa_url = f"""http://seekingalpha.com/api/v3/news?filter%5Bcategory%5D=market-news%3A%3A{news_type}
+    &filter%5Bsince%5D=0&filter%5Buntil%5D=0&include=author%2CprimaryTickers%2CsecondaryTickers
+    &isMounting=true&page%5Bsize%5D=25&page%5Bnumber%5D=1"""
+    articles_html = requests.get(
+        sa_url, headers={"User-Agent": get_user_agent()}
+    ).json()
+
+    return articles_html
+
+
+def get_news(news_type: str = "Top-News", num: int = 5) -> list:
+    """Gets news. [Source: SeekingAllpha]
+
+    Parameters
+    ----------
+    news_type : str
+        From: Top-News, On-The-Move, Market-Pulse, Notable-Calls, Buybacks, Commodities, Crypto, Issuance, Global,
+        Guidance, IPOs, SPACs, Politics, M-A, Consumer, Energy, Financials, Healthcare, MLPs, REITs, Technology
+    num : int
+        Number of news to display
+
+    Returns
+    -------
+    list[dict]
+        List of dict news
+    """
+    d_news = get_news_html(news_type)
+
+    l_news = list()
+    for idx, news in enumerate(d_news["data"]):
+        if idx > num:
+            break
+
+        l_news.append(
+            {
+                "publishOn": news["attributes"]["publishOn"].replace("T", " ")[:-6],
+                "id": news["id"],
+                "title": news["attributes"]["title"],
+                "url": news["links"]["canonical"],
+            }
+        )
+
+    return l_news

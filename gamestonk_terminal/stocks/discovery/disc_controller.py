@@ -63,6 +63,7 @@ class DiscoveryController:
         "hotpenny",
         "rtearn",
         "fds",
+        "cnews",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -105,6 +106,7 @@ cathiesark.com:
 Seeking Alpha:
     upcoming       upcoming earnings release dates
     trending       trending news
+    cnews          customized news (buybacks, IPOs, SPACs, healthcare, politics)
 shortinterest.com
     lowfloat       low float stocks under 10M shares float
 pennystockflow.com
@@ -778,6 +780,78 @@ Finance Database:
             return
 
         shortinterest_view.low_float(
+            num=ns_parser.n_num,
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_cnews(self, other_args: List[str]):
+        """Process cnews command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cnews",
+            description="""Customized news. [Source: Seeking Alpha]""",
+        )
+        l_news_type = [
+            "Top-News",
+            "On-The-Move",
+            "Market-Pulse",
+            "Notable-Calls",
+            "Buybacks",
+            "Commodities",
+            "Crypto",
+            "Issuance",
+            "Global",
+            "Guidance",
+            "IPOs",
+            "SPACs",
+            "Politics",
+            "M-A",
+            "Consumer",
+            "Energy",
+            "Financials",
+            "Healthcare",
+            "MLPs",
+            "REITs",
+            "Technology",
+        ]
+        parser.add_argument(
+            "-t",
+            "--type",
+            action="store",
+            dest="s_type",
+            choices=l_news_type,
+            default="Top-News",
+            help="number of news to display",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=5,
+            help="number of news to display",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-i")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        seeking_alpha_view.display_news(
+            news_type=ns_parser.s_type,
             num=ns_parser.n_num,
             export=ns_parser.export,
         )
