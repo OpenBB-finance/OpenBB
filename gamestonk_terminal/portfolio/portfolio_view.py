@@ -133,10 +133,10 @@ def plot_overall_return(
         print("")
         return None
 
-    imgdata = BytesIO()
-    fig.savefig(imgdata, format="png")
-    imgdata.seek(0)
-    return ImageReader(imgdata)
+    image_data = BytesIO()
+    fig.savefig(image_data, format="png")
+    image_data.seek(0)
+    return ImageReader(image_data)
 
 
 def plot_rolling_beta(df: pd.DataFrame) -> ImageReader:
@@ -183,10 +183,10 @@ def plot_rolling_beta(df: pd.DataFrame) -> ImageReader:
     )
     ax.set_facecolor("white")
     fig.autofmt_xdate()
-    imgdata = BytesIO()
-    fig.savefig(imgdata, format="png")
-    imgdata.seek(0)
-    return ImageReader(imgdata)
+    image_data = BytesIO()
+    fig.savefig(image_data, format="png")
+    image_data.seek(0)
+    return ImageReader(image_data)
 
 
 def plot_ef(
@@ -244,10 +244,10 @@ def plot_ef(
     if gtff.USE_ION:
         plt.ion()
 
-    imgdata = BytesIO()
-    fig.savefig(imgdata, format="png")
-    imgdata.seek(0)
-    return ImageReader(imgdata)
+    image_data = BytesIO()
+    fig.savefig(image_data, format="png")
+    image_data.seek(0)
+    return ImageReader(image_data)
 
 
 class Report:

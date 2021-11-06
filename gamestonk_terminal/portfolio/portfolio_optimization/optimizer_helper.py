@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 
 # These are all the possible yfinance properties
-l_valid_property_infos = [
+valid_property_infos = [
     "previousClose",
     "regularMarketOpen",
     "twoHundredDayAverage",
@@ -99,9 +99,9 @@ l_valid_property_infos = [
 ]
 
 
-def check_valid_property_type(aproperty: str) -> str:
+def check_valid_property_type(check_property: str) -> str:
     """Check that the property selected is valid"""
-    if aproperty in l_valid_property_infos:
-        return aproperty
+    if check_property in valid_property_infos:
+        return check_property
 
-    raise argparse.ArgumentTypeError(f"{aproperty} is not a valid info")
+    raise argparse.ArgumentTypeError(f"{check_property} is not a valid info")

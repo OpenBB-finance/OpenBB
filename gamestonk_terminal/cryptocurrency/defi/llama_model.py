@@ -32,7 +32,7 @@ def get_defi_protocols() -> pd.DataFrame:
         "description",
     ]
     if response.status_code != 200:
-        raise Exception(f"Status code: {response.status_code}. Resason {response.text}")
+        raise Exception(f"Status code: {response.status_code}. Reason: {response.text}")
     try:
         df = pd.DataFrame(response.json())
         df.replace({float(np.nan): None}, inplace=True)
@@ -59,7 +59,7 @@ def get_defi_tvl() -> pd.DataFrame:
     """
     response = requests.get("https://api.llama.fi/charts")
     if response.status_code != 200:
-        raise Exception(f"Status code: {response.status_code}. Resason {response.text}")
+        raise Exception(f"Status code: {response.status_code}. Reason: {response.text}")
     try:
         df = pd.DataFrame(response.json())
         df["date"] = df["date"].apply(lambda x: datetime.fromtimestamp(int(x)).date())

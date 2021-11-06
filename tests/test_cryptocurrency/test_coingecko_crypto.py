@@ -174,7 +174,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="═══════")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_holding_comapnies.yaml",
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_holding_companies.yaml",
         record_mode="new_episodes",
     )
     def test_coin_holdings_companies_list(self):

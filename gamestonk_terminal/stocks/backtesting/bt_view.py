@@ -127,7 +127,7 @@ def display_rsi_strategy(
     df_stock : pd.Dataframe
         Dataframe of prices
     periods : int
-        Number of periods for RSI calculati
+        Number of periods for RSI calculation
     low_rsi : int
         Low RSI value to buy
     hirh_rsi : int

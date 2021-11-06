@@ -3092,6 +3092,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "thepassiveinvestor"
+version = "1.0.10"
+description = "Passive Investing for the Average Joe."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "threadpoolctl"
 version = "3.0.0"
 description = "threadpoolctl"
@@ -3427,7 +3435,7 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "5a5b6aa73296c693d4cac5f01df47d191383cc61d60a15637abd570a01b07e56"
+content-hash = "e549f92c10e484df042200c716831019ddc4c6a06b3b0a52505514e5eead622a"
 
 [metadata.files]
 absl-py = [
@@ -5627,6 +5635,10 @@ testpath = [
 textwrap3 = [
     {file = "textwrap3-0.9.2-py2.py3-none-any.whl", hash = "sha256:bf5f4c40faf2a9ff00a9e0791fed5da7415481054cef45bb4a3cfb1f69044ae0"},
     {file = "textwrap3-0.9.2.zip", hash = "sha256:5008eeebdb236f6303dcd68f18b856d355f6197511d952ba74bc75e40e0c3414"},
+]
+thepassiveinvestor = [
+    {file = "thepassiveinvestor-1.0.10-py3-none-any.whl", hash = "sha256:41fd07e5db0fde3587955d5ca86c52079c10c8f6e6572e3c213bded46f6969cf"},
+    {file = "thepassiveinvestor-1.0.10.tar.gz", hash = "sha256:6b325b0b9134588763c75a4d05eb2260d4111ec0cd741c27618fcb3918f0ae92"},
 ]
 threadpoolctl = [
     {file = "threadpoolctl-3.0.0-py3-none-any.whl", hash = "sha256:4fade5b3b48ae4b1c30f200b28f39180371104fccc642e039e0f2435ec8cc211"},
