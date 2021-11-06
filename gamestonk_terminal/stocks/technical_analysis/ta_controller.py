@@ -1397,7 +1397,7 @@ Custom:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="adosc",
             description="""
-                 Acummulation/Distribution Oscillator, also known as the Chaikin Oscillator
+                 Accumulation/Distribution Oscillator, also known as the Chaikin Oscillator
                  is essentially a momentum indicator, but of the Accumulation-Distribution line
                  rather than merely price. It looks at both the strength of price moves and the
                  underlying buying and selling pressure during a given time period. The oscillator

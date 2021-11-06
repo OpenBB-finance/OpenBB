@@ -330,7 +330,7 @@ class DegiroView:
         # GET ATTRIBUTES
         degiro_model = self.__degiro_model
 
-        # FECTH DATA
+        # FETCH DATA
         product_search = degiro_model.lookup(
             limit=ns_parser.limit,
             offset=ns_parser.offset,

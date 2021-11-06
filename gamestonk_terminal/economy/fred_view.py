@@ -70,15 +70,15 @@ def display_series(series: str, start_date: str, raw: bool, export: str):
         success_series = []
         success_titles = []
 
-    for serie_term in series.split(","):
-        if serie_term:
-            l_series, l_title = fred_model.get_series_ids(serie_term, 5)
+    for series_term in series.split(","):
+        if series_term:
+            l_series, l_title = fred_model.get_series_ids(series_term, 5)
 
             if len(l_series) == 0:
-                print(f"No series found for term '{serie_term}'\n")
+                print(f"No series found for term '{series_term}'\n")
                 continue
 
-            print(f"For '{serie_term}', series IDs found: {', '.join(l_series)}.\n")
+            print(f"For '{series_term}', series IDs found: {', '.join(l_series)}.\n")
 
             ser = l_series[0]
             ser_title = l_title[0]

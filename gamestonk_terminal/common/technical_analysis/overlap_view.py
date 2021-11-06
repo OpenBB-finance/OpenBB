@@ -132,13 +132,13 @@ def view_vwap(
     )
 
     s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
-    apdict = mpf.make_addplot(df_vwap, color="k")
+    addplot_result = mpf.make_addplot(df_vwap, color="k")
 
     mpf.plot(
         day_df,
         style=s,
         type="candle",
-        addplot=apdict,
+        addplot=addplot_result,
         volume=True,
         title=f"\n{s_ticker} {s_interval} VWAP",
     )

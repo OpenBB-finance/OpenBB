@@ -338,11 +338,15 @@ def display_unemployment(start_year: int = 2015, raw: bool = False, export: str 
     export : str, optional
         Format to export data, by default ""
     """
+
     unemp = alphavantage_model.get_unemployment()
+
     if unemp.empty:
         print("Error getting data.  Check API Key")
         return
+
     un = unemp[unemp.date >= f"{start_year}-01-01"]
+
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     ax.plot(un.date, un.unemp, marker="o", c="dodgerblue")
     ax.set_xlabel("Date")
@@ -360,6 +364,7 @@ def display_unemployment(start_year: int = 2015, raw: bool = False, export: str 
         "unemp",
         unemp,
     )
+
     if raw:
         if gtff.USE_TABULATE_DF:
             print(
@@ -372,4 +377,5 @@ def display_unemployment(start_year: int = 2015, raw: bool = False, export: str 
             )
         else:
             print(un.head(20).to_string())
+
     print("")
