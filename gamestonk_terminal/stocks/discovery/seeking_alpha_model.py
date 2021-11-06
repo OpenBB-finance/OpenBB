@@ -213,7 +213,7 @@ def get_article_data(article_id: int) -> dict:
 
 
 def get_news_html(news_type: str = "Top-News") -> dict:
-    """Gets news. [Source: SeekingAllpha]
+    """Gets news. [Source: SeekingAlpha]
 
     Parameters
     ----------
@@ -240,7 +240,7 @@ def get_news_html(news_type: str = "Top-News") -> dict:
 
 
 def get_news(news_type: str = "Top-News", num: int = 5) -> list:
-    """Gets news. [Source: SeekingAllpha]
+    """Gets news. [Source: SeekingAlpha]
 
     Parameters
     ----------

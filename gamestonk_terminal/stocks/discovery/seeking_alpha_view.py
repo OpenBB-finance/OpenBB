@@ -152,7 +152,7 @@ def news(news_type: str, article_id: int, num: int, start_date: datetime, export
 
 
 def display_news(news_type: str = "Top-News", num: int = 5, export: str = ""):
-    """Display news. [Source: SeekingAllpha]
+    """Display news. [Source: SeekingAlpha]
 
     Parameters
     ----------
