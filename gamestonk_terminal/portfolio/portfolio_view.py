@@ -101,7 +101,6 @@ def plot_overall_return(
     img : ImageReader
         Overal return graph
     """
-    plt.close("all")
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.plot(comb.index, comb["return"], color="tab:blue", label="Portfolio")
     ax.plot(comb.index, comb[("Market", "Return")], color="orange", label=m_tick)
@@ -140,6 +139,7 @@ def plot_overall_return(
 
     imgdata = BytesIO()
     fig.savefig(imgdata, format="png")
+    plt.close("all")
     imgdata.seek(0)
     return ImageReader(imgdata)
 
@@ -157,7 +157,6 @@ def plot_rolling_beta(df: pd.DataFrame) -> ImageReader:
     img : ImageReader
         Rolling beta graph
     """
-    plt.close("all")
 
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.plot(
@@ -190,6 +189,7 @@ def plot_rolling_beta(df: pd.DataFrame) -> ImageReader:
     fig.autofmt_xdate()
     imgdata = BytesIO()
     fig.savefig(imgdata, format="png")
+    plt.close("all")
     imgdata.seek(0)
     return ImageReader(imgdata)
 
@@ -253,6 +253,7 @@ def plot_ef(
 
     imgdata = BytesIO()
     fig.savefig(imgdata, format="png")
+    plt.close("all")
     imgdata.seek(0)
     return ImageReader(imgdata)
 
