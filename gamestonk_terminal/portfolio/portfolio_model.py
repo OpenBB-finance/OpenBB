@@ -74,6 +74,28 @@ def load_df(name: str) -> pd.DataFrame:
         df["Name"] = df["Name"].str.lower()
         df["Type"] = df["Type"].str.lower()
         df["Date"] = pd.to_datetime(df["Date"], format="%Y/%m/%d")
+
+        for item in ["Quantity", "Price", "Fees", "Premium"]:
+            result = any(df[item] < 0)
+            if result:
+                print(
+                    f"The column '{item}' has a negative value. Ensure all values are positive."
+                )
+                return pd.DataFrame()
+
+        if len(df[~df["Type"].isin(["cash", "stock"])].index):
+            print("Warning: 'Type' other than 'cash' and 'stock' will be ignored.")
+
+        if len(
+            df[
+                ~df["Side"]
+                .str.lower()
+                .isin(["buy", "sell", "interest", "deposit", "withdrawal"])
+            ].index
+        ):
+            print("Warning: 'Side' must be buy, sell, interest, deposit, or withdrawal")
+            return pd.DataFrame()
+
         return df
     except FileNotFoundError:
         portfolio_view.load_info()
