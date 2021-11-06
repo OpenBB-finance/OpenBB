@@ -828,7 +828,7 @@ Uniswap:
     swaps         Recent swaps done on Uniswap"""
         print(help_text, "\n")
 
-        
+
 def menu():
     """Defi Menu"""
     defi_controller = DefiController()
