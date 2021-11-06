@@ -10,12 +10,12 @@
 
 
 
-    <meta name="description" content="usage: latest [-i N_ID] [-n N_NUM] [-d S_DATE] [--export {csv,json,xlsx}] [-h] Latest news articles. [Source: Seeking Alpha]
-optional arguments: -i N_ID, --id N_ID article ID (default: -1) -n N_NUM, --num N_NUM number of articles being printed (default: 5) -d S_DATE, --date S_DATE starting date of articles (default: 2021-09-16) --export {csv,json,xlsx} Export dataframe data to csv,json,xlsx file (default: ) -h, --help show this help message (default: False) ">
+    <meta name="description" content="usage: cnews [-t {top-news,on-the-move,market-pulse,notable-calls,buybacks,commodities,crypto,issuance,global,guidance,ipos,spacs,politics,m-a,consumer,energy,financials,healthcare,mlps,reits,technology}] [-n N_NUM] [--export {csv,json,xlsx}] [-h] Customized news. [Source: Seeking Alpha]
+optional arguments: -t {top-news,on-the-move,market-pulse,notable-calls,buybacks,commodities,crypto,issuance,global,guidance,ipos,spacs,politics,m-a,consumer,energy,financials,healthcare,mlps,reits,technology}, --type {top-news,on-the-move,market-pulse,notable-calls,buybacks,commodities,crypto,issuance,global,guidance,ipos,spacs,politics,m-a,consumer,energy,financials,healthcare,mlps,reits,technology} number of news to display (default: Top-News) -n N_NUM, --num N_NUM number of news to display (default: 5) --export {csv,json,xlsx} Export dataframe data to csv,json,xlsx file (default: ) -h, --help show this help message (default: False) ">
 
 
 
-    <title>Latest | Gamestonk Terminal</title>
+    <title>Cnews | Gamestonk Terminal</title>
 
     <link rel="icon" href="/GamestonkTerminal/favicon/favicon-32x32.png" type="image/x-icon">
 
@@ -36,7 +36,7 @@ optional arguments: -i N_ID, --id N_ID article ID (default: -1) -n N_NUM, --num 
 <link rel="preload" href="/GamestonkTerminal/custom.css" as="style">
 <link rel="stylesheet" href="/GamestonkTerminal/custom.css" media="all">
 
-<link rel="alternate" type="application/rss+xml" href="https://gamestonkterminal.github.io/GamestonkTerminal/stocks/discovery/latest/index.xml" title="Gamestonk Terminal" />
+<link rel="alternate" type="application/rss+xml" href="https://gamestonkterminal.github.io/GamestonkTerminal/stocks/discovery/cnews/index.xml" title="Gamestonk Terminal" />
 
 
 <!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc -->
@@ -739,9 +739,9 @@ optional arguments: -i N_ID, --id N_ID article ID (default: -1) -n N_NUM, --num 
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/stocks/discovery/latest/"
+                <a href="/GamestonkTerminal/stocks/discovery/cnews/"
                     class="gdoc-nav__entry is-active">
-                    latest
+                    cnews
                 </a>
             </span>
             
@@ -14458,7 +14458,7 @@ optional arguments: -i N_ID, --id N_ID article ID (default: -1) -n N_NUM, --num 
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/' href='/GamestonkTerminal/'><span itemprop='name'>Gamestonk Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/stocks/' href='/GamestonkTerminal/stocks/'><span itemprop='name'>Stocks</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/stocks/discovery/' href='/GamestonkTerminal/stocks/discovery/'><span itemprop='name'>Discovery</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Latest</span><meta itemprop='position' content='5' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/' href='/GamestonkTerminal/'><span itemprop='name'>Gamestonk Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/stocks/' href='/GamestonkTerminal/stocks/'><span itemprop='name'>Stocks</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/stocks/discovery/' href='/GamestonkTerminal/stocks/discovery/'><span itemprop='name'>Discovery</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Cnews</span><meta itemprop='position' content='5' /></li>
     
 
     
@@ -14474,7 +14474,7 @@ optional arguments: -i N_ID, --id N_ID article ID (default: -1) -n N_NUM, --num 
     <div>
         <span class="editpage">
             <svg class="icon gdoc_code"><use xlink:href="#gdoc_code"></use></svg>
-            <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/website//content/stocks/discovery/latest/_index.md">
+            <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/website//content/stocks/discovery/cnews/_index.md">
                 Edit this page
             </a>
         </span>
@@ -14483,20 +14483,18 @@ optional arguments: -i N_ID, --id N_ID article ID (default: -1) -n N_NUM, --num 
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>Latest</h1>
-        <pre><code>usage: latest [-i N_ID] [-n N_NUM] [-d S_DATE] [--export {csv,json,xlsx}] [-h]
-</code></pre><p>Latest news articles. [Source: Seeking Alpha]</p>
+        <h1>Cnews</h1>
+        <pre><code>usage: cnews [-t {top-news,on-the-move,market-pulse,notable-calls,buybacks,commodities,crypto,issuance,global,guidance,ipos,spacs,politics,m-a,consumer,energy,financials,healthcare,mlps,reits,technology}] [-n N_NUM] [--export {csv,json,xlsx}] [-h]
+</code></pre><p>Customized news. [Source: Seeking Alpha]</p>
 <pre><code>optional arguments:
-  -i N_ID, --id N_ID    article ID (default: -1)
+  -t {top-news,on-the-move,market-pulse,notable-calls,buybacks,commodities,crypto,issuance,global,guidance,ipos,spacs,politics,m-a,consumer,energy,financials,healthcare,mlps,reits,technology}, --type {top-news,on-the-move,market-pulse,notable-calls,buybacks,commodities,crypto,issuance,global,guidance,ipos,spacs,politics,m-a,consumer,energy,financials,healthcare,mlps,reits,technology}
+                        number of news to display (default: Top-News)
   -n N_NUM, --num N_NUM
-                        number of articles being printed (default: 5)
-  -d S_DATE, --date S_DATE
-                        starting date of articles (default: 2021-09-16)
+                        number of news to display (default: 5)
   --export {csv,json,xlsx}
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
-</code></pre><img width="1208" alt="latest" src="https://user-images.githubusercontent.com/25267873/115089633-926c6a00-9f0a-11eb-9d0e-1eedfd8ba7ce.png">
-
+</code></pre>
     </article>
 
                 
