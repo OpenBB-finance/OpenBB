@@ -1,7 +1,7 @@
 """ Seeking Alpha Model """
 __docformat__ = "numpy"
 
-from typing import List
+from typing import List, Dict
 from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
@@ -239,7 +239,7 @@ def get_news_html(news_type: str = "Top-News") -> dict:
     return articles_html
 
 
-def get_news(news_type: str = "Top-News", num: int = 5) -> list:
+def get_news(news_type: str = "Top-News", num: int = 5) -> List:
     """Gets news. [Source: SeekingAlpha]
 
     Parameters
@@ -252,18 +252,18 @@ def get_news(news_type: str = "Top-News", num: int = 5) -> list:
 
     Returns
     -------
-    list[dict]
+    List[dict]
         List of dict news
     """
-    d_news = get_news_html(news_type)
-    l_news = list()
+    news_articles: Dict = get_news_html(news_type)
+    news_to_display = list()
 
-    if d_news:
-        for idx, news in enumerate(d_news["data"]):
+    if news_articles:
+        for idx, news in enumerate(news_articles["data"]):
             if idx > num:
                 break
 
-            l_news.append(
+            news_to_display.append(
                 {
                     "publishOn": news["attributes"]["publishOn"].replace("T", " ")[:-6],
                     "id": news["id"],
@@ -272,4 +272,4 @@ def get_news(news_type: str = "Top-News", num: int = 5) -> list:
                 }
             )
 
-    return l_news
+    return news_to_display

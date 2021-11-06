@@ -1,6 +1,7 @@
 """ Seeking Alpha View """
 __docformat__ = "numpy"
 
+from typing import List
 import os
 from datetime import datetime
 from tabulate import tabulate
@@ -164,20 +165,26 @@ def display_news(news_type: str = "Top-News", num: int = 5, export: str = ""):
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    l_news = seeking_alpha_model.get_news(news_type, num)
+    news_to_display: List = seeking_alpha_model.get_news(news_type, num)
 
-    if not l_news:
+    if not news:
         print("No news found.", "\n")
 
     else:
-        for d_news in l_news:
-            print(d_news["publishOn"] + " - " + d_news["id"] + " - " + d_news["title"])
-            print(d_news["url"])
+        for news_element in news_to_display:
+            print(
+                news_element["publishOn"]
+                + " - "
+                + news_element["id"]
+                + " - "
+                + news_element["title"]
+            )
+            print(news_element["url"])
             print("")
 
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "cnews : " + news_type,
-            pd.DataFrame(l_news),
+            pd.DataFrame(news_to_display),
         )
