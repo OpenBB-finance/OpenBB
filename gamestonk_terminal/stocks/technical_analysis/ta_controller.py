@@ -25,7 +25,6 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.technical_analysis import (
     finviz_view,
     finbrain_view,
-    finnhub_view,
     tradingview_view,
 )
 from gamestonk_terminal.common.technical_analysis import (
@@ -47,7 +46,6 @@ class TechnicalAnalysisController:
         "view",
         "summary",
         "recom",
-        "pr",
         "ema",
         "sma",
         "wma",
@@ -112,7 +110,6 @@ Technical Analysis:
     view        view historical data and trendlines [Finviz]
     summary     technical summary report [FinBrain API]
     recom       recommendation based on Technical Indicators [Tradingview API]
-    pr          pattern recognition [Finnhub]
 
 Overlap:
     ema         exponential moving average
@@ -286,46 +283,6 @@ Custom:
             screener=ns_parser.screener,
             exchange=ns_parser.exchange,
             interval=ns_parser.interval,
-            export=ns_parser.export,
-        )
-
-    @try_except
-    def call_pr(self, other_args: List[str]):
-        """Process pr command"""
-
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="pr",
-            description="""
-            Display pattern recognition signals on the data. [Source: Finnhub]""",
-        )
-        parser.add_argument(
-            "-r",
-            "--resolution",
-            action="store",
-            dest="resolution",
-            type=str,
-            default="D",
-            choices=["1", "5", "15", "30", "60", "D", "W", "M"],
-            help="Plot resolution to look for pattern signals",
-        )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        finnhub_view.plot_pattern_recognition(
-            ticker=self.ticker,
-            resolution=ns_parser.resolution,
             export=ns_parser.export,
         )
 

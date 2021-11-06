@@ -359,8 +359,6 @@ main:
             ref: "/common/technical_analysis/summary"
           - name: recom
             ref: "/common/technical_analysis/recom"
-          - name: pr
-            ref: "/common/technical_analysis/pr"
           - name: ema
             ref: "/common/technical_analysis/ema"
           - name: sma
