@@ -14,7 +14,7 @@ def is_ticker(ticker: str) -> bool:
 
     Returns
     ----------
-    answer : bool
+    bool
         Whether the string is a ticker
     """
     item = yf.Ticker(ticker)
@@ -31,7 +31,7 @@ def beta_word(beta: float) -> str:
 
     Returns
     ----------
-    text : str
+    str
         The description of the beta
     """
     if abs(1 - beta) > 3:
@@ -56,13 +56,15 @@ def clean_name(name: str) -> str:
 
     Returns
     ----------
-    text : str
+    str
         A cleaned value
     """
     return name.replace("beta_", "").upper()
 
 
-def get_fraction(numerator: float, denominator: float) -> str:
+def get_fraction(
+    numerator: float, denominator: float, allow_negative_denominator: bool = True
+) -> str:
     """Turn two numbers into a fraction
 
     Parameters
@@ -71,12 +73,16 @@ def get_fraction(numerator: float, denominator: float) -> str:
         The numerator
     denominator : float
         The denominator
+    allow_negative_denominator : bool
+        If false, a negative denominator will return "NA"
 
     Returns
     ----------
-    text : str
+    str
         A fraction as a string
     """
+    if allow_negative_denominator and denominator != 0:
+        return f"{(numerator/denominator):.2f}"
     if denominator > 0:
         return f"{(numerator/denominator):.2f}"
     return "N/A"

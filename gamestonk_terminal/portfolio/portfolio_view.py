@@ -325,7 +325,7 @@ class Report:
         sharpe = portfolio_helper.get_fraction(
             current_return - self.rf, np.std(self.returns["return"])
         )
-        treynor = portfolio_helper.get_fraction(current_return - self.rf, beta)
+        treynor = portfolio_helper.get_fraction(current_return - self.rf, beta, False)
         alpha = portfolio_helper.get_fraction(
             current_return - (self.rf + beta * (market_return - self.rf)), 1
         )
@@ -339,8 +339,9 @@ class Report:
             ["Information", information],
         ]
         reportlab_helpers.draw_table(report, "Performance", 540, 300, 30, perf)
-        perf_text = portfolio_model.get_perm_text()
-        reportlab_helpers.draw_paragraph(report, perf_text, 140, 290, 460, 200)
+        reportlab_helpers.draw_paragraph(
+            report, portfolio_model.performance_text, 140, 290, 460, 200
+        )
         report.showPage()
 
     def generate_pg2(self, report: canvas.Canvas) -> None:
