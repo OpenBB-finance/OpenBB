@@ -333,7 +333,7 @@ class Report:
         perf = [["Sharpe", srp], ["Treynor", tnr], ["Alpha", a], ["Information", ir]]
         reportlab_helpers.draw_table(report, "Performance", 540, 300, 30, perf)
         perf_t = portfolio_model.get_perm_text()
-        reportlab_helpers.draw_paragraph(report, perf_t, 140, 300, 460, 200)
+        reportlab_helpers.draw_paragraph(report, perf_t, 140, 290, 460, 200)
         report.showPage()
 
     def generate_pg2(self, report: canvas.Canvas) -> None:
