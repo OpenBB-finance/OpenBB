@@ -6,6 +6,7 @@ from datetime import datetime
 from io import BytesIO
 from os import path
 
+import numpy as np
 import pandas as pd
 from tabulate import tabulate
 from reportlab.lib.pagesizes import letter
@@ -18,7 +19,11 @@ from pypfopt import plotting
 
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.portfolio import portfolio_model, yfinance_model
+from gamestonk_terminal.portfolio import (
+    portfolio_helper,
+    portfolio_model,
+    yfinance_model,
+)
 from gamestonk_terminal.portfolio import reportlab_helpers
 from gamestonk_terminal.helper_funcs import get_rf
 from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_model
@@ -193,6 +198,7 @@ def plot_ef(
     stocks: List[str],
     variance: float,
     per_ret: float,
+    rf: float,
     period: str = "3mo",
     n_portfolios: int = 300,
     risk_free: bool = False,
@@ -207,6 +213,8 @@ def plot_ef(
         The variance for the portfolio
     per_ret : float
         The portfolio's return for the portfolio
+    rf : float
+        The risk free rate
     period : str
         The period to track
     n_portfolios : int
@@ -222,17 +230,16 @@ def plot_ef(
     ax.scatter(stds, rets, marker=".", c=sharpes, cmap="viridis_r")
     plotting.plot_efficient_frontier(ef, ax=ax, show_assets=True)
     # Find the tangency portfolio
-    rfrate = get_rf()
-    ret_sharpe, std_sharpe, _ = ef.portfolio_performance(risk_free_rate=rfrate)
+    ret_sharpe, std_sharpe, _ = ef.portfolio_performance(risk_free_rate=rf)
     ax.scatter(std_sharpe, ret_sharpe, marker="*", s=100, c="r", label="Max Sharpe")
     plt.plot(variance, per_ret, "ro", label="Portfolio")
     # Add risk free line
     if risk_free:
         y = ret_sharpe * 1.2
-        m = (ret_sharpe - rfrate) / std_sharpe
-        x2 = (y - rfrate) / m
+        m = (ret_sharpe - rf) / std_sharpe
+        x2 = (y - rf) / m
         x = [0, x2]
-        y = [rfrate, y]
+        y = [rf, y]
         line = Line2D(x, y, color="#FF0000", label="Capital Allocation Line")
         ax.set_xlim(xmin=min(stds) * 0.8)
         ax.add_line(line)
@@ -283,6 +290,10 @@ class Report:
         self.m_tick = m_tick
         self.df_m = yfinance_model.get_market(self.df.index[0], self.m_tick)
         self.returns, self.variance = portfolio_model.get_return(df, self.df_m, n)
+        self.rf = get_rf()
+        self.betas = portfolio_model.get_rolling_beta(
+            self.df, self.hist, self.df_m, 365
+        )
 
     def generate_report(self) -> None:
         d = path.dirname(path.abspath(__file__)).replace(
@@ -297,7 +308,7 @@ class Report:
         report = canvas.Canvas(loc, pagesize=letter)
         reportlab_helpers.base_format(report, "Overview")
         self.generate_pg1(report)
-        self.generate_pg2(report, self.df_m)
+        self.generate_pg2(report)
         report.save()
         print("File save in:\n", loc, "\n")
 
@@ -307,15 +318,27 @@ class Report:
         )
         main_t = portfolio_model.get_main_text(self.returns)
         reportlab_helpers.draw_paragraph(report, main_t, 30, 410, 550, 200)
+        rp = self.returns["return"][-1]
+        b = self.betas["total"][-1]
+        mar = self.returns[("Market", "Return")][-1]
+        srp = portfolio_helper.get_fraction(
+            rp - self.rf, np.std(self.returns["return"])
+        )
+        tnr = portfolio_helper.get_fraction(rp - self.rf, b)
+        a = portfolio_helper.get_fraction(rp - (self.rf + b * (mar - self.rf)), 1)
+        ir = portfolio_helper.get_fraction(
+            float(a), np.std(self.returns["return"] - mar)
+        )
+        perf = [["Sharpe", srp], ["Treynor", tnr], ["Alpha", a], ["Information", ir]]
+        reportlab_helpers.draw_table(report, "Performance", 540, 300, 30, perf)
+        perf_t = portfolio_model.get_perm_text()
+        reportlab_helpers.draw_paragraph(report, perf_t, 140, 300, 460, 200)
         report.showPage()
 
-    def generate_pg2(self, report: canvas.Canvas, df_m: pd.DataFrame) -> None:
+    def generate_pg2(self, report: canvas.Canvas) -> None:
         reportlab_helpers.base_format(report, "Portfolio Analysis")
         if "Holding" in self.df.columns:
-            rolling_beta = portfolio_model.get_rolling_beta(
-                self.df, self.hist, df_m, 365
-            )
-            report.drawImage(plot_rolling_beta(rolling_beta), 15, 400, 600, 300)
-            main_t = portfolio_model.get_beta_text(rolling_beta)
+            report.drawImage(plot_rolling_beta(self.betas), 15, 400, 600, 300)
+            main_t = portfolio_model.get_beta_text(self.betas)
             reportlab_helpers.draw_paragraph(report, main_t, 30, 410, 550, 200)
-            # report.drawImage(plot_ef(uniques, self.variance, self.returns["return"][-1]), 15, 65, 600, 300)
+            # report.drawImage(plot_ef(uniques, self.variance, self.returns["return"][-1], self.rf), 15, 65, 600, 300)

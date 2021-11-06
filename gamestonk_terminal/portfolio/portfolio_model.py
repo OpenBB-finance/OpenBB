@@ -429,3 +429,25 @@ def get_beta_text(df: pd.DataFrame) -> str:
         f" an ending beta of {df[high[-1]][-1] if df['total'][-1] > 1 else df[low[-1]][-1]:.2f}."
     )
     return string
+
+
+def get_perm_text() -> str:
+    """Get description for performance text
+
+    Returns
+    ----------
+    t : str
+        The description for performance ratios
+    """
+    # Sharpe (Rp - Rf) / ∑p: measures reward to total volatility
+    # Treynor (Rp - Rf) / Bp: uses systematic risk instead of total risk
+    # Alpha Rp - (Rf + Bp (RM - Rf)): average return above predicted CAPM return
+    # Information Ratio ap / ∑(ep): excess return on systematic risk
+    string = (
+        "The Sharpe ratio is a measure of reward to total volatility. A Sharpe ratio above one is"
+        " considered acceptable. The Treynor ratio is a measure of systematic risk to reward."
+        " Alpha is the average return above what CAPM predicts. This measure should be above zero"
+        ". The information ratio is the excess return on systematic risk. An information ratio of"
+        " 0.4 to 0.6 is considered good."
+    )
+    return string
