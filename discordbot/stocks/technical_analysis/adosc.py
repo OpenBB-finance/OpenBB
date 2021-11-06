@@ -63,8 +63,6 @@ async def adosc_command(
             "r" if x[1].Open < x[1].Close else "g" for x in df_stock.iterrows()
         ]
 
-        bar_width = timedelta(days=1)
-
         divisor = 1_000_000
         df_vol = df_stock["Volume"].dropna()
         df_vol = df_vol.values / divisor
