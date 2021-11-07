@@ -237,14 +237,16 @@ def display_last_uni_swaps(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = graph_model.get_last_uni_swaps().sort_values(by=sortby, ascending=descend)
+    df = graph_model.get_last_uni_swaps(limit=top).sort_values(
+        by=sortby, ascending=descend
+    )
     df["amountUSD"] = df["amountUSD"].apply(lambda x: very_long_number_formatter(x))
     df_data = df.copy()
 
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
-                df.head(top),
+                df,
                 headers=df.columns,
                 floatfmt=".2f",
                 showindex=False,

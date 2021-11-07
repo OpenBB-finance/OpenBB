@@ -37,7 +37,7 @@ def get_uni_tokens(skip: int = 0, limit: int = 100) -> pd.DataFrame:
 
     Parameters
     ----------
-    skip:
+    skip: int
         Skip n number of records.
     limit: int
         Show n number of records.
@@ -48,20 +48,18 @@ def get_uni_tokens(skip: int = 0, limit: int = 100) -> pd.DataFrame:
         Uniswap tokens with trading volume, transaction count, liquidity.
     """
 
-    query = """
-            {
-            tokens(first: %s, skip:%s) {
+    limit = min(limit, 1000)
+    query = f"""
+           {{
+            tokens(first: {limit}, skip:{skip}) {{
                 symbol
                 name
                 tradeVolumeUSD
                 totalLiquidity
                 txCount
-                }
-            }
-        """ % (
-        limit,
-        skip,
-    )
+                }}
+            }}
+        """
 
     data = query_graph(UNI_URL, query)
     if not data:
@@ -70,13 +68,22 @@ def get_uni_tokens(skip: int = 0, limit: int = 100) -> pd.DataFrame:
     return pd.DataFrame(data["tokens"]).reset_index()
 
 
-def get_uniswap_stats():
+def get_uniswap_stats() -> pd.DataFrame:
     """Get base statistics about Uniswap DEX. [Source: https://thegraph.com/en/]
+
+    uniswapFactory id: 0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f - ethereum address on which Uniswap Factory
+    smart contract was deployed. The factory contract is deployed once from the off-chain source code, and it contains
+    functions that make it possible to create exchange contracts for any ERC20 token that does not already have one.
+    It also functions as a registry of ERC20 tokens that have been added to the system, and the exchange with which they
+    are associated. More: https://docs.uniswap.org/protocol/V1/guides/connect-to-uniswap
+    We use 0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f address to fetch all smart contracts that were
+    created with usage of this factory.
+
 
     Returns
     -------
     pd.DataFrame
-        Uniswap DEX statistics like liquidity, volume, number of pairs...
+        Uniswap DEX statistics like liquidity, volume, number of pairs, number of transactions.
     """
 
     query = """
@@ -134,32 +141,29 @@ def get_uniswap_pool_recently_added(
     days = int(
         (datetime.datetime.now() - datetime.timedelta(days=last_days)).timestamp()
     )
-    query = """
-        {
+    query = f"""
+        {{
           pairs(first: 1000,
-          where: {createdAtTimestamp_gt: "%s", volumeUSD_gt: "%s", reserveUSD_gt: "%s", txCount_gt: "%s" },
-          orderBy: createdAtTimestamp, orderDirection: desc) {
-            token0 {
+          where: {{createdAtTimestamp_gt: "{days}", volumeUSD_gt: "{min_volume}", reserveUSD_gt: "{min_liquidity}",
+           txCount_gt: "{min_tx}" }},
+          orderBy: createdAtTimestamp, orderDirection: desc) {{
+            token0 {{
               symbol
               name
-            }
-            token1 {
+            }}
+            token1 {{
               symbol
               name
-            }
+            }}
             reserveUSD
             volumeUSD
             createdAtTimestamp
             totalSupply
             txCount
-          }
-        }
-    """ % (
-        days,
-        min_volume,
-        min_liquidity,
-        min_tx,
-    )
+          }}
+        }}
+    """
+
     data = query_graph(UNI_URL, query)
     if not data:
         return pd.DataFrame()
@@ -233,30 +237,36 @@ def get_uni_pools_by_volume() -> pd.DataFrame:
     ]
 
 
-def get_last_uni_swaps() -> pd.DataFrame:
-    """Get the last 100 swaps done on Uniswap
+def get_last_uni_swaps(limit: int = 100) -> pd.DataFrame:
+    """Get the last 100 swaps done on Uniswap [Source: https://thegraph.com/en/]
 
+    Parameters
+    -------
+    limit: int
+        Number of swaps to return. Maximum possible number: 1000.
     Returns
     -------
     pd.DataFrame
         Last 100 swaps on Uniswap
     """
 
-    query = """
-    {
-        swaps(first: 100, orderBy: timestamp, orderDirection: desc) {
+    limit = min(limit, 1000)
+
+    query = f"""
+    {{
+        swaps(first: {limit}, orderBy: timestamp, orderDirection: desc) {{
           timestamp
-          pair {
-            token0 {
+          pair {{
+            token0 {{
               symbol
-            }
-            token1 {
+            }}
+            token1 {{
               symbol
-            }
-          }
+            }}
+          }}
           amountUSD
-        }
-    }
+        }}
+    }}
     """
 
     data = query_graph(UNI_URL, query)
