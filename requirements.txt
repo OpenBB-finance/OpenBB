@@ -232,3 +232,6 @@ yarl==1.7.2; python_version >= "3.6"
 yfinance==0.1.64
 zipp==3.6.0; python_version < "3.8" and python_version >= "3.6"
 zope.interface==5.4.0; python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.5"
+discord==1.7.3
+discord-components==2.1.2
+pyimgur==0.6.0
