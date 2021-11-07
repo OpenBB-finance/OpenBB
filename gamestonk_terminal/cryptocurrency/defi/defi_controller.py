@@ -13,6 +13,8 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     try_except,
     system_clear,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
 )
 
 from gamestonk_terminal.cryptocurrency.defi import (
@@ -149,16 +151,9 @@ class DefiController:
             default=True,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
@@ -227,16 +222,9 @@ class DefiController:
             default=False,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
@@ -271,16 +259,9 @@ class DefiController:
             default=10,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
@@ -317,16 +298,9 @@ class DefiController:
             help="Show Current Funding Rates or Last 30 Days Average",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
@@ -365,16 +339,9 @@ class DefiController:
             help="Show Current Borrow Rates or Last 30 Days Average",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
@@ -413,16 +380,9 @@ class DefiController:
             help="Show Current Lending Rates or Last 30 Days Average",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
@@ -453,16 +413,9 @@ class DefiController:
             default=10,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
@@ -523,16 +476,9 @@ class DefiController:
             default=True,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
@@ -558,16 +504,9 @@ class DefiController:
              """,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
@@ -648,16 +587,9 @@ class DefiController:
             default=False,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
@@ -720,16 +652,9 @@ class DefiController:
             default=False,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
@@ -781,16 +706,9 @@ class DefiController:
             default=False,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
