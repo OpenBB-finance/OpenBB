@@ -21,10 +21,7 @@ async def recom_command(ctx, ticker=""):
             ticker, "america", "", ""
         )
 
-        cols = list(recom.columns)
-        a, b = cols.index("RECOMMENDATION"), cols.index("SELL")
-        cols[b], cols[a] = cols[a], cols[b]
-        recom = recom[cols]
+        recom = recom[["BUY", "NEUTRAL", "SELL", "RECOMMENDATION"]]
 
         report = "```" + recom.to_string() + "```"
         embed = discord.Embed(

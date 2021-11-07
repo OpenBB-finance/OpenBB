@@ -640,8 +640,22 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         cols_temp = []
         cols = []
 
+        if ticker == "":
+            embed = discord.Embed(
+                title="ERROR Stocks: Technical Analysis (TA) Menu",
+                colour=cfg.COLOR,
+                description="A stock ticker is required",
+            )
+            embed.set_author(
+                name=cfg.AUTHOR_NAME,
+                icon_url=cfg.AUTHOR_ICON_URL,
+            )
+
+            await ctx.send(embed=embed)
+            return
+
         stock = helpers.load(ticker, datetime.now() - timedelta(days=365))
-        if ticker == "" or stock.empty:
+        if stock.empty:
             embed = discord.Embed(
                 title="ERROR Stocks: Technical Analysis (TA) Menu",
                 colour=cfg.COLOR,
@@ -911,6 +925,16 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
                     ]
                 ]
                 await main_message.edit(components=components)
+                embed = discord.Embed(
+                    description="Error timeout - you snooze you lose! 😋",
+                    colour=cfg.COLOR,
+                    title="TIMEOUT Stocks: Technical Analysis (TA) Menu",
+                ).set_author(
+                    name=cfg.AUTHOR_NAME,
+                    icon_url=cfg.AUTHOR_ICON_URL,
+                )
+                await ctx.send(embed=embed)
+
                 for emoji in emoji_list:
                     await main_message.remove_reaction(emoji, ctx.bot.user)
                 break
