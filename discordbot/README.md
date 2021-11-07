@@ -52,6 +52,18 @@ https://discord.com/oauth2/authorize?client_id=CLIENTID&scope=bot, where **CLIEN
 
 **NOTE:** Registering is free for all open source projects and if your discord bot uses fewer than 1250 uploads per day.
 
+### HEROKU
+
+1. Add the following lines into requirements.txt
+    1. discord==1.7.3
+    2. discord-components==2.1.2
+    3. pyimgur==0.6.0
+2. Create a Heroku account at: https://signup.heroku.com/
+3. Click 'Create a new app'
+4. Go to the 'Settings' page, and then find Config Vars
+5. Add GT_DISCORD_BOT_TOKEN and GT_IMGUR_CLIENT_ID with their associated values
+4. On the 'Deploy' page select Github as the deployment method
+
 ## Discord Configs
 
 In order to config the discord bot you will need to edit the [config_discordbot.py](gamestonk_terminal/config_discordbot.py) file.
