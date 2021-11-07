@@ -1,4 +1,5 @@
-aiohttp==3.7.4.post0; python_version >= "3.6" and python_full_version >= "3.5.3"
+aiohttp==3.8.0; python_version >= "3.6"
+aiosignal==1.2.0; python_version >= "3.6"
 alabaster==0.7.12; python_full_version >= "3.6.8" and python_full_version < "4.0.0" and python_version >= "3.6"
 alpha-vantage==2.3.1
 ansiwrap==0.8.4; python_version >= "3.6"
@@ -7,7 +8,8 @@ appdirs==1.4.4; python_full_version >= "3.6.2" and python_version >= "3.6"
 appnope==0.1.2; platform_system == "Darwin" and python_version >= "3.7" and sys_platform == "darwin"
 argcomplete==1.12.3; python_version < "3.8.0" and python_version >= "3.7"
 argon2-cffi==21.1.0; python_version >= "3.6"
-async-timeout==3.0.1; python_full_version >= "3.5.3" and python_version >= "3.6"
+async-timeout==4.0.0; python_version >= "3.6"
+asynctest==0.13.0; python_version < "3.8" and python_version >= "3.6"
 attrs==21.2.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
 babel==2.9.1; python_full_version >= "3.6.8" and python_full_version < "4.0.0" and python_version >= "3.6" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6")
 backcall==0.2.0; python_version >= "3.7"
@@ -19,7 +21,6 @@ bs4==0.0.1
 bt==0.2.9; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
 certifi==2021.10.8; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 cffi==1.15.0; implementation_name == "pypy" and python_version >= "3.6"
-chardet==4.0.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
 charset-normalizer==2.0.1; python_full_version >= "3.5.0"
 click==8.0.3; python_full_version >= "3.6.2" and python_version >= "3.6"
 colorama==0.4.4; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
@@ -38,9 +39,6 @@ defusedxml==0.7.1; python_version >= "3.7" and python_full_version < "3.0.0" or 
 degiro-connector==2.0.3; python_full_version >= "3.6.2"
 deprecation==2.1.0
 detecta==0.0.5; python_version >= "3.6"
-discord-components==2.1.2; python_version >= "3.6"
-discord.py==1.7.3; python_full_version >= "3.5.3" and python_version >= "3.6"
-discord==1.7.3
 docutils==0.16; python_full_version >= "3.6.8" and python_full_version < "4.0.0" and python_version >= "3.6"
 ecos==2.0.7.post1; python_full_version >= "3.6.1" and python_full_version < "4.0.0" and python_version >= "3.6"
 entrypoints==0.3; python_version >= "3.7"
@@ -53,6 +51,7 @@ finvizfinance==0.9.10; python_version >= "3.5"
 fred==3.1
 fredapi==0.4.3
 frozendict==2.0.7; python_version >= "3.6"
+frozenlist==1.2.0; python_version >= "3.6"
 fundamentalanalysis==0.2.12
 future==0.18.2; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 gitdb==4.0.9; python_version >= "3.7"
@@ -138,7 +137,6 @@ pycoingecko==1.4.1
 pycparser==2.20; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6"
 pyex==0.5.0
 pygments==2.10.0; python_full_version >= "3.6.8" and python_full_version < "4.0.0" and python_version >= "3.7"
-pyimgur==0.6.0
 pymeeus==0.5.11; python_version >= "3.6"
 pyobjc-core==7.3; python_version >= "3.6" and sys_platform == "darwin"
 pyobjc-framework-cocoa==7.3; python_version >= "3.6" and sys_platform == "darwin"
