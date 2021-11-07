@@ -33,6 +33,7 @@ gst_imgur = pyimgur.Imgur(cfg.IMGUR_CLIENT_ID)
 gst_bot.load_extension("generic_commands")
 gst_bot.load_extension("economy.economy_menu")
 gst_bot.load_extension("stocks.dark_pool_shorts.dps_menu")
+gst_bot.load_extension("stocks.technical_analysis.ta_menu")
 
 # Get all command names
 all_cmds = gst_bot.all_commands.keys()
