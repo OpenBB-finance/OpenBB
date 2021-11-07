@@ -54,18 +54,14 @@ https://discord.com/oauth2/authorize?client_id=CLIENTID&scope=bot, where **CLIEN
 
 ### HEROKU
 
-1. Add the following lines into requirements.txt
-    1. discord==1.7.3
-    2. discord-components==2.1.2
-    3. pyimgur==0.6.0
-2. Create a Heroku account at: https://signup.heroku.com/
-3. Click 'Create a new app'
-4. Go to the 'Settings' page, and then find Config Vars
-5. Add GT_DISCORD_BOT_TOKEN and GT_IMGUR_CLIENT_ID with their associated values
-6. Go to the repository:https://github.com/GamestonkTerminal/GamestonkTerminal and fork it if you have not already done so
-7. On the 'Deploy' page select Github as the deployment method
-8. Select 'enable automatic deploys' if you would like for the server to update every time you update your fork
-9. Go to the 'Resources' tab and turn on the worker
+1. Create a Heroku account at: https://signup.heroku.com/
+2. Click 'Create a new app'
+3. Go to the 'Settings' page, and then find Config Vars
+4. Add GT_DISCORD_BOT_TOKEN and GT_IMGUR_CLIENT_ID with their associated values
+5. Go to the repository:https://github.com/GamestonkTerminal/GamestonkTerminal and fork it if you have not already done so
+6. On the 'Deploy' page select Github as the deployment method
+7. Select 'enable automatic deploys' if you would like for the server to update every time you update your fork
+8. Go to the 'Resources' tab and turn on the worker
 
 ## Discord Configs
 
