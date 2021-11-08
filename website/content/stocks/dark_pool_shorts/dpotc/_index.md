@@ -10,7 +10,7 @@ Alternative Trading Systems (ATS) are off-exchange venues operated by firms with
 
 The data released to the public as "transparency" is strategically delayed and does not offer direct accountability for the positions held by individual firms. The many loopholes that exist in reporting obligations create an environment favourable to malicious actors and predatory short sellers. The quality of reported data for public consumption may improve in the near future, however, pushback from proprietary trading firms is likely to delay or degrade any progressions towards fair and transparent markets.
 
-Use the command 'dpotc' to display a barchart comparing dark pool (ATS) and OTC (Non ATS) volume. The raw data sets are avaiable through the '--export' argument. Source: https://otctransparency.finra.org/otctransparency/
+Use the command 'dpotc' to display a barchart comparing dark pool (ATS) and OTC (Non ATS) volume. The raw data sets are available through the '--export' argument. Source: https://otctransparency.finra.org/otctransparency/
 
 ```
 optional arguments:
