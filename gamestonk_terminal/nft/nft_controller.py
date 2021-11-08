@@ -125,7 +125,7 @@ nftcalendar.io:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="today",
-            description="Today's NFT drops",
+            description="Today's NFT drops [Source: nftcalendar.io]",
         )
         parser.add_argument(
             "-n",
@@ -153,7 +153,7 @@ nftcalendar.io:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="upcoming",
-            description="Upcoming's NFT drops",
+            description="Upcoming's NFT drops [Source: nftcalendar.io]",
         )
         parser.add_argument(
             "-n",
@@ -181,7 +181,7 @@ nftcalendar.io:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="ongoing",
-            description="Ongoing's NFT drops",
+            description="Ongoing's NFT drops [Source: nftcalendar.io]",
         )
         parser.add_argument(
             "-n",
@@ -209,7 +209,7 @@ nftcalendar.io:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="newest",
-            description="Newest's NFT drops",
+            description="Newest's NFT drops [Source: nftcalendar.io]",
         )
         parser.add_argument(
             "-n",
