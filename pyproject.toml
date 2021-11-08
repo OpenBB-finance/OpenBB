@@ -81,6 +81,7 @@ reportlab = "^3.6.2"
 holidays = "^0.11.3"
 degiro-connector = "^2.0.3"
 python-binance = "^1.0.15"
+thepassiveinvestor = "^1.0.10"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"

@@ -40,7 +40,7 @@ def economy_calendar_events(country: str, num: int, impact: str, export: str):
 
         if df_econ_calendar.empty:
             print(
-                "No latet economy calendar events found in the specified country with this impact\n"
+                "No latest economy calendar events found in the specified country with this impact\n"
             )
             return
 

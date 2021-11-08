@@ -74,6 +74,28 @@ def load_df(name: str) -> pd.DataFrame:
         df["Name"] = df["Name"].str.lower()
         df["Type"] = df["Type"].str.lower()
         df["Date"] = pd.to_datetime(df["Date"], format="%Y/%m/%d")
+
+        for item in ["Quantity", "Price", "Fees", "Premium"]:
+            result = any(df[item] < 0)
+            if result:
+                print(
+                    f"The column '{item}' has a negative value. Ensure all values are positive."
+                )
+                return pd.DataFrame()
+
+        if len(df[~df["Type"].isin(["cash", "stock"])].index):
+            print("Warning: 'Type' other than 'cash' and 'stock' will be ignored.")
+
+        if len(
+            df[
+                ~df["Side"]
+                .str.lower()
+                .isin(["buy", "sell", "interest", "deposit", "withdrawal"])
+            ].index
+        ):
+            print("Warning: 'Side' must be buy, sell, interest, deposit, or withdrawal")
+            return pd.DataFrame()
+
         return df
     except FileNotFoundError:
         portfolio_view.load_info()
@@ -194,7 +216,7 @@ def merge_dataframes(
         A log of past transactions
     divs : pd.DataFrame
         The dividend history for stocks in portfolio
-    unqiues: List[str]
+    uniques: List[str]
         A list of stocks in the portfolio
 
     Returns
@@ -390,7 +412,7 @@ def get_main_text(df: pd.DataFrame) -> str:
         t_debt = (
             "Margin was not used this year. This reduces this risk of the portfolio."
         )
-    string = (
+    text = (
         f"Your portfolio's performance for the period was {df['return'][-1]:.2%}. This was"
         f" {'greater' if df['return'][-1] > df[('Market', 'Return')][-1] else 'less'} than"
         f" the market return of {df[('Market', 'Return')][-1]:.2%}. The variance for the"
@@ -399,7 +421,7 @@ def get_main_text(df: pd.DataFrame) -> str:
         f" various analytics from the portfolio. Read below to see the moving beta for a"
         f" stock."
     )
-    return string
+    return text
 
 
 def get_beta_text(df: pd.DataFrame) -> str:
@@ -418,7 +440,7 @@ def get_beta_text(df: pd.DataFrame) -> str:
     betas = df[list(filter(lambda score: "beta" in score, list(df.columns)))]
     high = betas.idxmax(axis=1)
     low = betas.idxmin(axis=1)
-    string = (
+    text = (
         "Beta is how strongly a portfolio's movements correlate with the market's movements."
         " A stock with a high beta is considered to be riskier. The beginning beta for the period"
         f" was {portfolio_helper.beta_word(df['total'][0])} at {df['total'][0]:.2f}. This went"
@@ -428,4 +450,13 @@ def get_beta_text(df: pd.DataFrame) -> str:
         f" {portfolio_helper.clean_name(high[-1] if df['total'][-1] > 1 else low[-1])}, which had"
         f" an ending beta of {df[high[-1]][-1] if df['total'][-1] > 1 else df[low[-1]][-1]:.2f}."
     )
-    return string
+    return text
+
+
+performance_text = (
+    "The Sharpe ratio is a measure of reward to total volatility. A Sharpe ratio above one is"
+    " considered acceptable. The Treynor ratio is a measure of systematic risk to reward."
+    " Alpha is the average return above what CAPM predicts. This measure should be above zero"
+    ". The information ratio is the excess return on systematic risk. An information ratio of"
+    " 0.4 to 0.6 is considered good."
+)

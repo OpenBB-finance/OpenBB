@@ -54,6 +54,7 @@ def get_fails_to_deliver(
                 skipfooter=2,
                 usecols=[0, 2, 3, 5],
                 dtype={"QUANTITY (FAILS)": "int"},
+                encoding="iso8859",
             )
             tmp_ftds = all_ftds[all_ftds["SYMBOL"] == ticker]
             del tmp_ftds["PRICE"]
@@ -108,6 +109,7 @@ def get_fails_to_deliver(
                 skipfooter=2,
                 usecols=[0, 2, 3, 5],
                 dtype={"QUANTITY (FAILS)": "int"},
+                encoding="iso8859",
             )
             tmp_ftds = all_ftds[all_ftds["SYMBOL"] == ticker]
             del tmp_ftds["PRICE"]

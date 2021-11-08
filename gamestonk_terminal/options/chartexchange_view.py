@@ -26,7 +26,7 @@ def display_raw(
     call : bool
         Whether the underlying asset should be a call or a put
     price : float
-        The stike of the expiration
+        The strike of the expiration
     num : int
         Number of rows to show
     """

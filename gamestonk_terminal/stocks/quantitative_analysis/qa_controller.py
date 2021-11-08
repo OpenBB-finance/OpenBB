@@ -699,7 +699,7 @@ Other:
             default="",
             type=str,
             dest="export",
-            help="Export dfframe df to csv,json,xlsx file",
+            help="Export data frame df to csv,json,xlsx file",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:

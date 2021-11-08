@@ -14,7 +14,7 @@ def is_ticker(ticker: str) -> bool:
 
     Returns
     ----------
-    answer : bool
+    bool
         Whether the string is a ticker
     """
     item = yf.Ticker(ticker)
@@ -31,7 +31,7 @@ def beta_word(beta: float) -> str:
 
     Returns
     ----------
-    text : str
+    str
         The description of the beta
     """
     if abs(1 - beta) > 3:
@@ -56,7 +56,7 @@ def clean_name(name: str) -> str:
 
     Returns
     ----------
-    text : str
+    str
         A cleaned value
     """
     return name.replace("beta_", "").upper()
