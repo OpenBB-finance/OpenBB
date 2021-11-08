@@ -21,7 +21,7 @@ from gamestonk_terminal.helper_funcs import (
     patch_pandas_text_adjustment,
     plot_autoscale,
 )
-from gamestonk_terminal.options import op_helpers, tradier_model
+from gamestonk_terminal.stocks.options import op_helpers, tradier_model
 
 column_map = {"mid_iv": "iv", "open_interest": "oi", "volume": "vol"}
 

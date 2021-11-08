@@ -427,7 +427,7 @@ def load(
         return [s_ticker, s_start, s_interval, df_stock]
 
 
-def display_candle(s_ticker: str, df_stock: pd.DataFrame, plotly: bool):
+def display_candle(s_ticker: str, df_stock: pd.DataFrame, use_matplotlib: bool):
     """Shows candle plot of loaded ticker. [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
 
     Parameters
@@ -436,15 +436,17 @@ def display_candle(s_ticker: str, df_stock: pd.DataFrame, plotly: bool):
         Stock dataframe
     s_ticker: str
         Ticker name
-    plotly: bool
-        Flag to show interactive plotly chart
+    use_matplotlib: bool
+        Flag to use matplotlib instead of interactive plotly chart
     """
     df_stock["ma20"] = df_stock["Close"].rolling(20).mean().fillna(method="bfill")
     df_stock["ma50"] = df_stock["Close"].rolling(50).mean().fillna(method="bfill")
 
-    df_stock = find_trendline(df_stock, "OC_High", "high")
-    df_stock = find_trendline(df_stock, "OC_Low", "low")
-    if not plotly:
+    if (df_stock.index[1] - df_stock.index[0]).total_seconds() >= 86400:
+        df_stock = find_trendline(df_stock, "OC_High", "high")
+        df_stock = find_trendline(df_stock, "OC_Low", "low")
+
+    if use_matplotlib:
         mc = mpf.make_marketcolors(
             up="green",
             down="red",

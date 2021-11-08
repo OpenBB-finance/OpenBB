@@ -5,7 +5,7 @@ import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 
-from gamestonk_terminal.options.op_helpers import convert
+from gamestonk_terminal.stocks.options.op_helpers import convert
 from gamestonk_terminal.helper_funcs import get_user_agent
 
 

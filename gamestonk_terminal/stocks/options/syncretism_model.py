@@ -8,7 +8,7 @@ import pandas as pd
 import requests
 import yfinance as yf
 
-from gamestonk_terminal.options import yfinance_model
+from gamestonk_terminal.stocks.options import yfinance_model
 
 
 def get_historical_greeks(

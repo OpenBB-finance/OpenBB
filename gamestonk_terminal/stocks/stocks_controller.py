@@ -122,8 +122,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
     candle      view a candle chart for a specific stock ticker
     news        latest news of the company [News API]
 {reset_style_if_no_ticker}
->>  options     go into options context {'with ' if self.ticker else ''}{self.ticker}
-
+>   options     options menu,  \t\t\t e.g.: chains, open interest, greeks, parity
 >   disc        discover trending stocks, \t e.g. map, sectors, high short interest
 >   dps         dark pool and short data, \t e.g. darkpool, short interest, ftd
 >   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
@@ -216,27 +215,12 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             description="Shows historic data for a stock",
         )
         parser.add_argument(
-            "-s",
-            "--start",
-            dest="s_start",
-            type=valid_date,
-            default=self.stock.index[0],
-            help="Start date for candle data",
-        )
-        parser.add_argument(
-            "-e",
-            "--end",
-            dest="s_end",
-            type=valid_date,
-            default=self.stock.index[-1],
-            help="End date for candle data",
-        )
-        parser.add_argument(
-            "--it",
-            dest="plotly",
+            "-m",
+            "--matplotlib",
+            dest="matplotlib",
             action="store_true",
             default=False,
-            help="Flag to show interactive plot using plotly.",
+            help="Flag to show matplotlib instead of interactive plot using plotly.",
         )
         parser.add_argument(
             "--export",
@@ -309,7 +293,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             display_candle(
                 s_ticker=self.ticker,
                 df_stock=df_stock,
-                plotly=ns_parser.plotly,
+                use_matplotlib=ns_parser.matplotlib,
             )
 
     @try_except
@@ -432,6 +416,16 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         from gamestonk_terminal.stocks.government import gov_controller
 
         ret = gov_controller.menu(self.ticker)
+        if ret is False:
+            self.print_help()
+        else:
+            return True
+
+    def call_options(self, _):
+        """Process options command"""
+        from gamestonk_terminal.stocks.options import options_controller
+
+        ret = options_controller.menu(self.ticker)
         if ret is False:
             self.print_help()
         else:
@@ -621,12 +615,6 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             self.print_help()
         else:
             return True
-
-    def call_options(self, _):
-        """Process options command"""
-        from gamestonk_terminal.options import options_controller
-
-        return options_controller.menu(self.ticker)
 
 
 def menu(ticker: str = ""):

@@ -10,7 +10,7 @@ from tabulate import tabulate
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
-from gamestonk_terminal.options import syncretism_model
+from gamestonk_terminal.stocks.options import syncretism_model
 
 
 def view_available_presets(preset: str, presets_path: str):

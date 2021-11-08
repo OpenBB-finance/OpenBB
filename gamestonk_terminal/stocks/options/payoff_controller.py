@@ -15,13 +15,14 @@ from gamestonk_terminal.helper_funcs import (
     system_clear,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.options.yfinance_model import get_option_chain, get_price
-from gamestonk_terminal.options.yfinance_view import plot_payoff
+from gamestonk_terminal.stocks.options.yfinance_model import get_option_chain, get_price
+from gamestonk_terminal.stocks.options.yfinance_view import plot_payoff
 
 
-class Payoff:
+class PayoffController:
+    """Payoff Controller class."""
 
-    CHOICES = ["cls", "?", "help", "q", "quit", "list"]
+    CHOICES = ["cls", "?", "help", "q", "quit"]
     CHOICES_COMMANDS = [
         "list",
         "add",
@@ -35,8 +36,8 @@ class Payoff:
     def __init__(self, ticker: str, expiration: str):
         """Construct Payoff"""
 
-        self.po_parser = argparse.ArgumentParser(add_help=False, prog="po")
-        self.po_parser.add_argument("cmd", choices=self.CHOICES)
+        self.payoff_parser = argparse.ArgumentParser(add_help=False, prog="po")
+        self.payoff_parser.add_argument("cmd", choices=self.CHOICES)
         self.chain = get_option_chain(ticker, expiration)
         self.calls = list(
             zip(
@@ -56,17 +57,25 @@ class Payoff:
         self.underlying = 0
         self.current_price = get_price(ticker)
 
-    @staticmethod
-    def print_help(underlying):
+    def print_help(self):
         """Print help"""
-        if underlying == 1:
+        if self.underlying == 1:
             text = "Long"
-        elif underlying == 0:
+        elif self.underlying == 0:
             text = "None"
-        elif underlying == -1:
+        elif self.underlying == -1:
             text = "Short"
 
         help_text = f"""
+What do you want to do?
+    cls           clear screen
+    ?/help        show this menu again
+    q             quit this menu, and shows back to main menu
+    quit          quit to abandon program
+
+Current Ticker: {self.ticker or None}
+Current Expiry: {self.expiration or None}
+
 Underlying Asset: {text}
 
     list          list available strike prices for calls and puts
@@ -95,11 +104,11 @@ Underlying Asset: {text}
             print("")
             return None
 
-        (known_args, other_args) = self.po_parser.parse_known_args(an_input.split())
+        (known_args, other_args) = self.payoff_parser.parse_known_args(an_input.split())
 
         # Help menu again
         if known_args.cmd == "?":
-            self.print_help(self.underlying)
+            self.print_help()
             return None
 
         # Clear screen
@@ -113,7 +122,7 @@ Underlying Asset: {text}
 
     def call_help(self, _):
         """Process Help command"""
-        self.print_help(self.underlying)
+        self.print_help()
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
@@ -176,7 +185,7 @@ Underlying Asset: {text}
         elif ns_parser.type == "short":
             self.underlying = -1
 
-        self.print_help(self.underlying)
+        self.print_help()
 
     @try_except
     def call_plot(self, other_args):
@@ -329,28 +338,28 @@ Underlying Asset: {text}
 
 
 def menu(ticker: str, expiration: str):
-    """Portfolio Optimization Menu"""
+    """Options Payoff Menu"""
     plt.close("all")
-    po_controller = Payoff(ticker, expiration)
-    po_controller.call_help(None)
+    payoff_controller = PayoffController(ticker, expiration)
+    payoff_controller.call_help(None)
 
     while True:
         # Get input command from user
         if session and gtff.USE_PROMPT_TOOLKIT:
             completer = NestedCompleter.from_nested_dict(
-                {c: None for c in po_controller.CHOICES}
+                {c: None for c in payoff_controller.CHOICES}
             )
             an_input = session.prompt(
-                f"{get_flair()} (options)>(payoff)> ",
+                f"{get_flair()} (stocks)>(options)>(payoff)> ",
                 completer=completer,
             )
         else:
-            an_input = input(f"{get_flair()} (options)>(payoff)> ")
+            an_input = input(f"{get_flair()} (stocks)>(options)>(payoff)> ")
 
         try:
             plt.close("all")
 
-            process_input = po_controller.switch(an_input)
+            process_input = payoff_controller.switch(an_input)
 
             if process_input is not None:
                 return process_input
