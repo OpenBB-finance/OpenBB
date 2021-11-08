@@ -2,7 +2,7 @@
 usage: blip [-n NUM] [-h]
 ```
 
-Print big latest insider purchases ($25k+) Source: https://openinsider.com
+Print big latest insider purchases ($25k+) Source: http://openinsider.com
 
 ```
 optional arguments:
