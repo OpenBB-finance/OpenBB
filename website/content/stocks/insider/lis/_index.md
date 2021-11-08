@@ -2,7 +2,7 @@
 usage: lis [-n NUM] [-h]
 ```
 
-The latest insider dispositions across the corporate landscape in America. Source: https://Openinsider.com
+The latest insider dispositions across the corporate landscape in America. Source: http://openinsider.com
 
 ```
 optional arguments:
