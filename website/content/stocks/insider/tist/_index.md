@@ -2,7 +2,7 @@
 usage: tist [-n NUM] [-h]
 ```
 
-Print top insider sales today [Source: OpenInsider]
+Today's top insider dispositions. Source: http://openinsider.com
 
 ```
 optional arguments:
@@ -10,4 +10,4 @@ optional arguments:
   -h, --help         show this help message (default: False)
 ```
 
-<img width="1213" alt="tist" src="https://user-images.githubusercontent.com/25267873/125373760-9c70fe00-e37d-11eb-97d0-f16e93a556b6.png">
+<img width="1400" alt="tist" src="https://user-images.githubusercontent.com/25267873/125373760-9c70fe00-e37d-11eb-97d0-f16e93a556b6.png">
