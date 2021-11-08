@@ -79,7 +79,8 @@ class CreateExcelFA:
         trypath = os.path.join(
             os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")),
             "exports",
-            "excel",
+            "stocks",
+            "fundamental_analysis",
             f"{self.ticker} {self.now}.xlsx",
         )
 

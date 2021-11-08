@@ -34,11 +34,12 @@ pip install python-dotenv
 
 1. Login into your discord account in https://discord.com/developers/applications
 2. On the "Applications" tab, select "New Application" and name it something like "GST Bot". This will create a new application.
-3. For creating a bot, we need to go into the "GST Bot" application previously created, and on the "Bot" tab select "Add Bot". Note: On this same page you can manage the bot permissions with regards to the server it will be added.
-4. Next we need to obtain the "Client ID". For that we choose the "OAuth2" tab and copy our "Client ID" under "Client".
-5. At this stage the bot is created and we are ready to invite it to one of our servers. To do so we need to access:
+3. For creating a bot, we need to go into the "GST Bot" application previously created, and on the "Bot" tab select "Add Bot".
+4. Allow privileged gateway intents by enabling MESSAGE CONTENT INTENT under the bot tab.
+5. Next we need to obtain the "Client ID". For that we choose the "OAuth2" tab and copy our "Client ID" under "Client".
+6. At this stage the bot is created and we are ready to invite it to one of our servers. To do so we need to access:
 https://discord.com/oauth2/authorize?client_id=CLIENTID&scope=bot, where **CLIENTID** is replaced by the value copied above.
-6. If everything went well, you should see a window popup where the Bot that was just created asks to which of your own servers do you want to add it to.
+7. If everything went well, you should see a window popup where the Bot that was just created asks to which of your own servers do you want to add it to.
 
 **NOTE:** If you haven't managed the bot permissions on the Bot tab previously you can do it via this link generator https://discordapi.com/permissions.html
 

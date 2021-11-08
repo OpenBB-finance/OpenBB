@@ -3,7 +3,8 @@
   "MD025": false,
   "MD013": {
     "line_length": 120,
-    "tables": false
+    "tables": false,
+    "code_blocks": false
   },
   "MD033": false,
   "MD036": false,

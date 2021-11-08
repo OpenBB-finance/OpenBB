@@ -7,10 +7,10 @@ Welcome to Gamestonk Terminal's documentation!
 ==============================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
-   code
+   code/gamestonk_terminal
 
 
 Indices and tables

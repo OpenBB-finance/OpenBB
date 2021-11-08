@@ -1,6 +1,5 @@
 # IMPORTATION STANDARD
 import argparse
-import os
 
 # IMPORTATION THIRDPARTY
 from prompt_toolkit.completion import NestedCompleter
@@ -12,6 +11,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers.degiro.degiro_view import DegiroView
@@ -360,7 +360,7 @@ class DegiroController:
 
             # Clear screen
             if known_args.cmd == "cls":
-                os.system("cls||clear")
+                system_clear()
                 return None
 
             return getattr(

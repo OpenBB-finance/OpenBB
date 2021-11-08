@@ -1,9 +1,11 @@
 # DUE DILIGENCE
 
-This menu aims to help in due-diligence of a pre-loaded coin, and the usage of the following commands along with an example will be exploited below.
-Based on chosen source of data [CoinPaprika, Binance, Coingecko] different commands will be available in menu.
+This menu aims to help in due-diligence of a pre-loaded coin, and the usage of the following commands along with an
+example will be exploited below. Based on chosen source of data [CoinPaprika, Binance, Coingecko] different commands
+will be available in menu.
 
 [CoinGecko](#CoinGecko)
+
 * [info](#info)
   * show coin base information
 * [market](#market)
@@ -24,6 +26,7 @@ Based on chosen source of data [CoinPaprika, Binance, Coingecko] different comma
   * show developers data for loaded coins
 
 [CoinPaprika](#CoinPaprika)
+
 * [basic](#basic)
   * show coin basic information
 * [ps](#ps)
@@ -38,13 +41,14 @@ Based on chosen source of data [CoinPaprika, Binance, Coingecko] different comma
   * show events related to loaded coin
 
 [Binance](#Binance)
+
 * [book](#book)
   * show order book
 * [balance](#book)
   * show coin balance
 
-
 ## chart <a name="chart">
+
 ```bash
 usage: chart [--vs] [-d --days] # binance additional parameters [-i --interval] [-l --limit]
 ```
@@ -57,70 +61,86 @@ for coin loaded with Binance, you can also specify `[-i --interval] [-l --limit]
 
 ## info <a name="info"></a>
 
-````
+```text
 usage: info
-````
+```
 
-Shows basic information about loaded coin like: id, name, symbol, asset_platform, description, contract_address, market_cap_rank, public_interest_score, total_supply, max_supply, price_change_percentage_24h, price_change_percentage_7d, price_change_percentage_30d, current_price_btc, current_price_eth, current_price_usd
+Shows basic information about loaded coin like: id, name, symbol, asset_platform, description, contract_address,
+market_cap_rank, public_interest_score, total_supply, max_supply, price_change_percentage_24h,
+price_change_percentage_7d, price_change_percentage_30d, current_price_btc, current_price_eth, current_price_usd.
 
 ![image](https://user-images.githubusercontent.com/275820/123523774-48e88a00-d6c6-11eb-97cf-71529fb209ca.png)
 
 ## market <a name="market"></a>
 
-````
+```text
 usage: market
-````
+```
 
-Market data for loaded coin. There you find metrics like: market_cap_rank, total_supply, max_supply, circulating_supply, price_change_percentage_24h, price_change_percentage_7d, price_change_percentage_30d, price_change_percentage_60d, price_change_percentage_1y, market_cap_change_24h, market_cap_btc, market_cap_eth, market_cap_usd, total_volume_btc, total_volume_eth, total_volume_usd, high_24h_btc, high_24h_eth, high_24h_usd, low_24h_btc, low_24h_eth, low_24h_usd
+Market data for loaded coin. There you find metrics like: market_cap_rank, total_supply, max_supply, circulating_supply,
+price_change_percentage_24h, price_change_percentage_7d, price_change_percentage_30d, price_change_percentage_60d,
+price_change_percentage_1y, market_cap_change_24h, market_cap_btc, market_cap_eth, market_cap_usd, total_volume_btc,
+total_volume_eth, total_volume_usd, high_24h_btc, high_24h_eth, high_24h_usd, low_24h_btc, low_24h_eth, low_24h_usd.
 
 ![image](https://user-images.githubusercontent.com/275820/123523943-708c2200-d6c7-11eb-97f4-6fb4f7e12c04.png)
 
 ## ath <a name="ath"></a>
 
-````
+```text
 usage: ath
-````
+```
 
-All time high data for loaded coin. You can find there most important metrics regarding ath of coin price like: current_price_btc, current_price_eth, current_price_usd, ath_btc, ath_eth, ath_usd, ath_date_btc, ath_date_eth, ath_date_usd, ath_change_percentage_btc, ath_change_percentage_btc, ath_change_percentage_eth, ath_change_percentage_usd
+All time high data for loaded coin. You can find there most important metrics regarding ath of coin price like:
+current_price_btc, current_price_eth, current_price_usd, ath_btc, ath_eth, ath_usd, ath_date_btc, ath_date_eth,
+ath_date_usd, ath_change_percentage_btc, ath_change_percentage_btc, ath_change_percentage_eth,
+ath_change_percentage_usd.
 
 ![image](https://user-images.githubusercontent.com/275820/123523988-b648ea80-d6c7-11eb-9b08-7d8afecf9231.png)
 
 ## atl <a name="atl"></a>
 
-````
+```text
 usage: atl
-````
+```
 
-All time low data for loaded coin. You can find there most important metrics regarding atl of coin price like: current_price_btc, current_price_eth, current_price_usd, atl_btc, atl_eth, atl_usd, atl_date_btc, atl_date_eth, atl_date_usd, atl_change_percentage_btc, atl_change_percentage_btc, atl_change_percentage_eth, atl_change_percentage_usd
+All time low data for loaded coin. You can find there most important metrics regarding atl of coin price like:
+current_price_btc, current_price_eth, current_price_usd, atl_btc, atl_eth, atl_usd, atl_date_btc, atl_date_eth,
+atl_date_usd, atl_change_percentage_btc, atl_change_percentage_btc, atl_change_percentage_eth,
+atl_change_percentage_usd.
 
 ![image](https://user-images.githubusercontent.com/275820/123523993-c4970680-d6c7-11eb-89ab-3637155e00a9.png)
 
 ## score <a name="score"></a>
 
-````
+```text
 usage: score
-````
+```
 
-In this view you can find different kind of scores for loaded coin. Those scores represents different rankings, sentiment metrics, some user stats and other, like:  coingecko_rank, coingecko_score, developer_score, community_score, liquidity_score, sentiment_votes_up_percentage, sentiment_votes_down_percentage, public_interest_score, facebook_likes, twitter_followers, reddit_average_posts_48h, reddit_average_comments_48h, reddit_subscribers, reddit_accounts_active_48h, telegram_channel_user_count, alexa_rank, bing_matches
+In this view you can find different kind of scores for loaded coin. Those scores represents different rankings,
+sentiment metrics, some user stats and other, like:  coingecko_rank, coingecko_score, developer_score, community_score,
+liquidity_score, sentiment_votes_up_percentage, sentiment_votes_down_percentage, public_interest_score, facebook_likes,
+twitter_followers, reddit_average_posts_48h, reddit_average_comments_48h, reddit_subscribers,
+reddit_accounts_active_48h, telegram_channel_user_count, alexa_rank, bing_matches.
 
 ![image](https://user-images.githubusercontent.com/275820/123524080-3707e680-d6c8-11eb-96e0-106b7a9c00c2.png)
 
 ## dev <a name="dev"></a>
 
-````
+```text
 usage: dev
-````
+```
 
-Developers data for loaded coin. If the development data is available you can see how the code development of given coin is going on.
-There are some statistics that shows number of stars, forks, subscribers, pull requests, commits, merges, contributors on github.
+Developers data for loaded coin. If the development data is available you can see how the code development of given
+coin is going on. There are some statistics that shows number of stars, forks, subscribers, pull requests, commits,
+merges, contributors on github.
 
 ![image](https://user-images.githubusercontent.com/275820/123524107-60c10d80-d6c8-11eb-8217-cc767f82d7d9.png)
 
 ## web <a name="web"></a>
 
-````
+```text
 usage: web
-````
+```
 
 Websites found for given Coin. You can find there urls to homepage, forum, announcement site and others.
 
@@ -128,57 +148,61 @@ Websites found for given Coin. You can find there urls to homepage, forum, annou
 
 ## social <a name="social"></a>
 
-````
+```text
 usage: social
-````
+```
 
-Display social media corresponding to loaded coin. You can find there name of telegram channel, urls to twitter, reddit, bitcointalk, facebook and discord.
+Display social media corresponding to loaded coin. You can find there name of telegram channel, urls to twitter, reddit,
+bitcointalk, facebook and discord.
 
 ![image](https://user-images.githubusercontent.com/275820/123524140-949c3300-d6c8-11eb-9fb7-1d7a3a084c88.png)
 
 ## bc <a name="bc"></a>
 
-````
+```text
 usage: bc
-````
+```
 
-Blockchain explorers URLs for loaded coin. Those are sites like etherescan.io or polkascan.io in which you can see all blockchain data e.g. all txs, all tokens, all contracts...
+Blockchain explorers URLs for loaded coin. Those are sites like etherescan.io or polkascan.io in which you can see all
+blockchain data e.g. all txs, all tokens, all contracts...
 
 ![image](https://user-images.githubusercontent.com/275820/123524154-b5fd1f00-d6c8-11eb-9ec0-1fd1803db422.png)
-
 
 # CoinPaprika <a name="CoinPaprika"></a>
 
 ## basic <a name="basic"></a>
 
-````
+```text
 usage: basic
-````
+```
 
-Shows basic information about loaded coin like: name, symbol, rank, type, description, platform, proof_type, contract, tags, parent
-
+Shows basic information about loaded coin like: name, symbol, rank, type, description, platform, proof_type, contract,
+tags, parent.
 
 ## ps <a name="ps"></a>
 
-````
+```text
 usage: ps [--vs]
-````
+```
 
 Price, supply related data for loaded coin. There you find metrics like:
 name, symbol, rank, supply, volume, ath, market cap, price change related metrics
 
-
-* --vs: The currency to look against. Available options are: `BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK`. Default: USD
+* --vs: The currency to look against. Available options are:
+  `BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK`.
+  Default: USD
 
 ## mkt <a name="mkt"></a>
 
-````
+```text
 usage: mkt [--vs] [-t --top] [-s --sort] [--descend] [-l --links]
-````
+```
 
 Get all markets found for given coin.
 
-* --vs: The currency to look against. Available options are: `BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK`. Default: USD
+* --vs: The currency to look against. Available options are:
+  `BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK`.
+  Default: USD
 * -t/--top - number of markets to display. To display top 10 markets: `mkt --top 10 --sort trust_score`
 * -s/--sort - sort by given column. You can chose on from `pct_volume_share, exchange, pair, trust_score, volume,price`.
 * --descend - flag to sort in descending order (lowest first)
@@ -186,9 +210,9 @@ Get all markets found for given coin.
 
 ## ex <a name="ex"></a>
 
-````
+```text
 usage: ex [-t --top] [-s --sort] [--descend]
-````
+```
 
 Get all exchanges found for given coin.
 
@@ -198,9 +222,9 @@ Get all exchanges found for given coin.
 
 ## twitter <a name="twitter"></a>
 
-````
+```text
 usage: twitter [-t --top] [-s --sort] [--descend]
-````
+```
 
 Show last tweets for given coin.
 
@@ -210,24 +234,25 @@ Show last tweets for given coin.
 
 ## events <a name="events"></a>
 
-````
+```text
 usage: events [-t --top] [-s --sort] [--descend] [-l --links]
-````
+```
 
 Show information about most important coins events.
 
 * -t/--top:  Number of events to display. To display top 10 events: `events --top 10 --sort date`
 * -s/--sort:  Sort by given column. You can chose on from `date, date_to, name, description, is_conference`.
 * --descend:  Flag to sort in descending order (lowest first)
-* -l/--links:  Flag to show urls. Using this flag will add additional column with urls e.g. `events --links`. If you will use this flag url column will be displayed.
-
+* -l/--links:  Flag to show urls. Using this flag will add additional column with urls e.g. `events --links`. If you
+  will use this flag url column will be displayed.
 
 # Binance <a name="Binance"></a>
 
 ## book  <a name="book"></a>
-````
+
+```text
 usage: book -l/--limit
-````
+```
 
 Gets and shows the order book for the given coin/currency.  Shows the cumulative amount of orders.
 
@@ -235,10 +260,10 @@ Gets and shows the order book for the given coin/currency.  Shows the cumulative
 
 ![orderbook](https://user-images.githubusercontent.com/25267873/116886857-84fcf280-ac21-11eb-9803-5baa8bceca05.png)
 
-
 ## balance  <a name="balance"></a>
-````
+
+```text
 usage: balance
-````
+```
 
 Shows the current holding balance in your account.

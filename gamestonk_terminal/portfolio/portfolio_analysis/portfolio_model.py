@@ -31,7 +31,7 @@ def load_portfolio(
     Returns
     -------
     pd.DataFrame
-        Dataframe conataining portfolio
+        Dataframe containing portfolio
     """
     if full_path.endswith(".csv"):
         df = pd.read_csv(full_path)

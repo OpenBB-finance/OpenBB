@@ -18,7 +18,7 @@ register_matplotlib_converters()
 def plot_ad(
     s_ticker: str, s_interval: str, df_stock: pd.DataFrame, use_open: bool, export: str
 ):
-    """Plot AD tecnhical inticator
+    """Plot AD technical indicator
 
     Parameters
     ----------
@@ -214,7 +214,7 @@ def plot_adosc(
 
 
 def plot_obv(s_ticker: str, s_interval: str, df_stock: pd.DataFrame, export: str):
-    """Plot OBV tecnhical inticator
+    """Plot OBV technical indicator
 
     Parameters
     ----------

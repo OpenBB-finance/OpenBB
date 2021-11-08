@@ -68,9 +68,7 @@ def get_today_hot_penny_stocks() -> DataFrame:
     text_soup_penny_stock_stocks = BeautifulSoup(
         requests.get(
             url_penny_stock_stocks,
-            headers={
-                "User-Agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:86.1) Gecko/20100101 Firefox/86.1"
-            },
+            headers={"User-Agent": get_user_agent()},
         ).text,
         "lxml",
     )

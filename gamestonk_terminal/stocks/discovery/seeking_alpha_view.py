@@ -1,6 +1,7 @@
 """ Seeking Alpha View """
 __docformat__ = "numpy"
 
+from typing import List
 import os
 from datetime import datetime
 from tabulate import tabulate
@@ -148,4 +149,42 @@ def news(news_type: str, article_id: int, num: int, start_date: datetime, export
             os.path.dirname(os.path.abspath(__file__)),
             news_type,
             df_articles,
+        )
+
+
+def display_news(news_type: str = "Top-News", num: int = 5, export: str = ""):
+    """Display news. [Source: SeekingAlpha]
+
+    Parameters
+    ----------
+    news_type : str
+        From: Top-News, On-The-Move, Market-Pulse, Notable-Calls, Buybacks, Commodities, Crypto, Issuance, Global,
+        Guidance, IPOs, SPACs, Politics, M-A, Consumer, Energy, Financials, Healthcare, MLPs, REITs, Technology
+    num : int
+        Number of news to display
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+    news_to_display: List = seeking_alpha_model.get_news(news_type, num)
+
+    if not news:
+        print("No news found.", "\n")
+
+    else:
+        for news_element in news_to_display:
+            print(
+                news_element["publishOn"]
+                + " - "
+                + news_element["id"]
+                + " - "
+                + news_element["title"]
+            )
+            print(news_element["url"])
+            print("")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "cnews : " + news_type,
+            pd.DataFrame(news_to_display),
         )

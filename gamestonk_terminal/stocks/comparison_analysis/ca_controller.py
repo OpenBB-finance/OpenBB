@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 import argparse
-import os
 import random
 from typing import List
 
@@ -17,6 +16,7 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     try_except,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
@@ -104,15 +104,11 @@ class ComparisonAnalysisController:
     def print_help(self):
         """Print help"""
         all_loaded = bool(not self.ticker or not self.similar)
-        s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.start:
-            stock_str = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            stock_str = f"Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            stock_str = f"{s_intraday} Stock: {self.ticker}"
+            stock_str = f"Stock: {self.ticker}"
         help_str = f"""
-{stock_str}
-Similar Companies: {', '.join(self.similar) or None}
-
 Comparison Analysis:
     cls           clear screen
     ?/help        show this menu again
@@ -122,6 +118,9 @@ Comparison Analysis:
     load          load new base ticker
     add           add more companies to current selected (max 10 total)
     select        reset and select similar companies
+
+{stock_str}
+Similar Companies: {', '.join(self.similar) or None}
 
 Get Similar:
     tsne          run TSNE on all SP500 stocks and returns 10 closest tickers
@@ -274,7 +273,7 @@ Finviz:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="getfinnhub",
-            description="""Get similar companies from finnhubto compare with.""",
+            description="""Get similar companies from finnhub to compare with.""",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
@@ -382,7 +381,7 @@ Finviz:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

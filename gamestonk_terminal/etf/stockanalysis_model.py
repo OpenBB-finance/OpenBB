@@ -6,6 +6,7 @@ from typing import List, Tuple
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup as bs
+from gamestonk_terminal.helper_funcs import get_user_agent
 
 
 def get_all_names_symbols() -> Tuple[List[str], List[str]]:
@@ -19,7 +20,7 @@ def get_all_names_symbols() -> Tuple[List[str], List[str]]:
         List of all available etf names
     """
     r = requests.get(
-        "https://api.stockanalysis.com/etf/", headers={"User-Agent": "Mozilla/5.0"}
+        "https://api.stockanalysis.com/etf/", headers={"User-Agent": get_user_agent()}
     )
     soup = bs(r.text, "html.parser").findAll("ul", {"class": "no-spacing"})
     all_links = soup[0].findAll("li")
@@ -47,7 +48,7 @@ def get_etf_overview(etf_symbol: str) -> pd.DataFrame:
     """
     r = requests.get(
         f"https://stockanalysis.com/etf/{etf_symbol}",
-        headers={"User-Agent": "Mozilla/5.0"},
+        headers={"User-Agent": get_user_agent()},
     )
     soup = bs(r.text, "html.parser")  # %%
     tables = soup.findAll("table")
@@ -80,7 +81,7 @@ def get_etf_holdings(symbol: str) -> pd.DataFrame:
     """
 
     link = f"https://api.stockanalysis.com/etf/{symbol}/holdings/"
-    r = requests.get(link, headers={"User-Agent": "Mozilla/5.0"})
+    r = requests.get(link, headers={"User-Agent": get_user_agent()})
     soup = bs(r.text, "html.parser")
     soup = soup.find("table")
     tds = soup.findAll("td")

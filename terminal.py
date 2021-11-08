@@ -3,7 +3,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import os
 import sys
 
 from prompt_toolkit.completion import NestedCompleter
@@ -12,6 +11,7 @@ from gamestonk_terminal import config_terminal
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
+    system_clear,
     MENU_RESET,
     MENU_GO_BACK,
     MENU_QUIT,
@@ -47,17 +47,17 @@ class TerminalController:
         "keys",
     ]
 
-    CHOICES_SHORTHAND_MENUS = ["s", "e", "c", "p", "f", "o", "rp", "rs"]
+    CHOICES_SHORTHAND_MENUS = ["s", "e", "c", "p", "f", "rp", "rs", "n"]
     CHOICES_MENUS = [
         "stocks",
         "economy",
         "crypto",
         "portfolio",
         "forex",
-        "options",
         "etf",
         "reports",
         "resources",
+        "nft",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -88,13 +88,13 @@ What do you want to do?
     about       about us
     q(uit)      to abandon the program
 
+>>  economy
+>>  etf
 >>  stocks
 >>  crypto
->>  economy
->>  options
->>  portfolio
->>  etf
+>>  nft
 >>  forex
+>>  portfolio
 >>  reports
 >>  resources
     """
@@ -125,7 +125,7 @@ What do you want to do?
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(
@@ -193,16 +193,6 @@ What do you want to do?
         """Process economy command"""
         return self.call_economy(_)
 
-    def call_options(self, _):
-        """Process options command"""
-        from gamestonk_terminal.options import options_controller
-
-        return options_controller.menu()
-
-    def call_o(self, _):
-        """Process options command"""
-        return self.call_options(_)
-
     def call_etf(self, _):
         """Process etf command"""
         from gamestonk_terminal.etf import etf_controller
@@ -248,6 +238,16 @@ What do you want to do?
     def call_p(self, _):
         """Process portfolio command"""
         return self.call_portfolio(_)
+
+    def call_nft(self, _):
+        """Process nft command"""
+        from gamestonk_terminal.nft import nft_controller
+
+        return nft_controller.menu()
+
+    def call_n(self, _):
+        """Process nft command"""
+        return self.call_nft(_)
 
 
 def terminal(menu_prior_to_reset=""):

@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import os
 import webbrowser
 
 from prompt_toolkit.completion import NestedCompleter
@@ -10,6 +9,7 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
+    system_clear,
     MENU_GO_BACK,
     MENU_QUIT,
     MENU_RESET,
@@ -54,8 +54,6 @@ class ResourceCollectionController:
     def print_help():
         """Print help"""
         help_str = """
-
->> RESOURCES <<
 What do you want to do?
    cls           clear screen
    ?/help        show this menu again
@@ -98,7 +96,7 @@ What do you want to do?
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         if other_args:

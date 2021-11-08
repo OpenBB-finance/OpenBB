@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import os
 from typing import List
 from datetime import datetime
 
@@ -24,6 +23,7 @@ from gamestonk_terminal.helper_funcs import (
     check_proportion_range,
     parse_known_args_and_warn,
     try_except,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.quantitative_analysis.factors_view import capm_view
@@ -91,7 +91,6 @@ class QaController:
         else:
             stock_str = f"{s_intraday} Stock: {self.ticker}"
         help_str = f"""
-
 Quantitative Analysis:
     cls         clear screen
     help        show this menu again
@@ -152,7 +151,7 @@ Other:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(
@@ -700,7 +699,7 @@ Other:
             default="",
             type=str,
             dest="export",
-            help="Export dfframe df to csv,json,xlsx file",
+            help="Export data frame df to csv,json,xlsx file",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:

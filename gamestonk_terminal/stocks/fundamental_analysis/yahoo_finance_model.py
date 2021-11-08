@@ -67,7 +67,7 @@ def get_shareholders(ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFr
     pd.DataFrame
         Major holders
     pd.DataFrame
-        Institutuional holders
+        Institutional holders
     pd.DataFrame
         Mutual Fund holders
     """
