@@ -442,8 +442,10 @@ def display_candle(s_ticker: str, df_stock: pd.DataFrame, use_matplotlib: bool):
     df_stock["ma20"] = df_stock["Close"].rolling(20).mean().fillna(method="bfill")
     df_stock["ma50"] = df_stock["Close"].rolling(50).mean().fillna(method="bfill")
 
-    df_stock = find_trendline(df_stock, "OC_High", "high")
-    df_stock = find_trendline(df_stock, "OC_Low", "low")
+    if (df_stock.index[1] - df_stock.index[0]).total_seconds() >= 86400:
+        df_stock = find_trendline(df_stock, "OC_High", "high")
+        df_stock = find_trendline(df_stock, "OC_Low", "low")
+
     if use_matplotlib:
         mc = mpf.make_marketcolors(
             up="green",
