@@ -3,7 +3,7 @@ usage: ford [-n N_NUM] [--export {csv,json,xlsx}] [-h]
 ```
 
 Orders by Fidelity customers. Information shown in the table below is based on the volume of orders entered on the "as of" date shown. Securities
-identified are not recommended or endorsed by Fidelity and are displayed for informational purposes only. [Source: Fidelity]
+identified are not recommended or endorsed by Fidelity and are displayed for informational purposes only. Source: https://eresearch.fidelity.com/eresearch/gotoBL/fidelityTopOrders.jhtml
 
 ```
 optional arguments:
@@ -13,5 +13,5 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
+<img width="1400" alt="Feature Screenshot - ford" src="https://user-images.githubusercontent.com/85772166/140247181-582bc077-f463-4a49-a3ab-7fb32af71982.png">
 
-<img width="945" alt="Captura de ecrã 2021-02-20, às 11 45 43" src="https://user-images.githubusercontent.com/25267873/108594318-45886f00-7371-11eb-919f-fd1bce6d4001.png">

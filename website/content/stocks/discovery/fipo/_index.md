@@ -2,7 +2,7 @@
 usage: fipo [-n NUM] [--export {csv,json,xlsx}] [-h]
 ```
 
-Future IPOs dates. [Source: https://finnhub.io]
+Scan future IPOs by date. Source: https://finnhub.io
 
 ```
 optional arguments:
@@ -11,5 +11,4 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
-
-<img width="1005" alt="Captura de ecrã 2021-05-03, às 12 54 44" src="https://user-images.githubusercontent.com/25267873/116873168-1e6ed900-ac0f-11eb-9d80-dddc8a754885.png">
+<img width="1400" alt="Feature Screenshot - fipo" src="https://user-images.githubusercontent.com/85772166/140244217-e4e9f489-d563-4739-9f04-9730557524b4.png">

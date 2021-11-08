@@ -2,8 +2,7 @@
 usage: load [-t S_TICKER] [-s S_START_DATE] [-i {1,5,15,30,60}] [--source {yf,av,iex}] [-p] [-h]
 ```
 
-Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available
-market in https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.
+See: [load](https://gamestonkterminal.github.io/GamestonkTerminal/stocks/load/)
 
 ```
 optional arguments:

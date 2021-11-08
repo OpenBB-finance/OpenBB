@@ -1,12 +1,9 @@
 ```
 usage: hotpenny [-n N_NUM] [--export {csv,json,xlsx}] [-h]
 ```
+Requests a list of the most active and trending OTC 'Penny Stocks', sorted by number of trades. Source: https://pennystockflow.com
 
-This site provides a list of todays most active and hottest penny stocks. While not for everyone, penny stocks can be exciting and rewarding investments
-in many ways. With penny stocks, you can get more bang for the buck. You can turn a few hundred dollars into thousands, just by getting in on the right
-penny stock at the right time. Penny stocks are increasing in popularity. More and more investors of all age groups and skill levels are getting
-involved, and the dollar amounts they are putting into these speculative investments are representing a bigger portion of their portfolios. [Source:
-www.pennystockflow.com]
+While some individuals swear by Penny Stocks, this is generally a field for the less scrupulous investor looking for big payouts. The risk/reward ratio here is high. 
 
 ```
 optional arguments:
@@ -16,3 +13,4 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
+<img width="1400" alt="Feature Screenshot - hotpenny" src="https://user-images.githubusercontent.com/85772166/140338116-2c9b3185-c295-4652-b79b-b2b1e0b71a7e.png">

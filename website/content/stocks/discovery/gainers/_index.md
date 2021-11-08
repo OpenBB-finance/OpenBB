@@ -2,7 +2,7 @@
 usage: gainers [-n NUM] [--export {csv,json,xlsx}] [-h]
 ```
 
-Print up to 25 top gainers. [Source: Yahoo Finance]
+Top Stock Gainers from Yfinance. Source: https://finance.yahoo.com/gainers/?offset=0&count=100
 
 ```
 optional arguments:
@@ -12,4 +12,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-<img width="935" alt="Captura de ecrã 2021-02-20, às 11 46 09" src="https://user-images.githubusercontent.com/25267873/108594319-46b99c00-7371-11eb-877e-ef75d3ba472b.png">
+<img width="1400" alt="Feature Screenshot - gainers" src="https://user-images.githubusercontent.com/85772166/140252133-b3311f16-d16a-4f22-8136-115329242f6f.png">

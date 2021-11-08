@@ -2,7 +2,7 @@
 usage: arkord [-n N_NUM] [--export {csv,json,xlsx}] [-h]
 ```
 
-Orders by ARK Investment Management LLC - https://ark-funds.com/. [Source: https://cathiesark.com]
+Track the orders by ARK Investment Management LLC with an exportable table - https://cathiesark.com/ark-funds-combined/complete-holdings
 
 ```
 optional arguments:
@@ -12,5 +12,4 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
-
-<img width="957" alt="Captura de ecrã 2021-03-10, às 21 36 38" src="https://user-images.githubusercontent.com/25267873/110701322-ef2c8480-81e8-11eb-85a2-7ebfa3fa0680.png">
+<img width="1398" alt="Feature Screenshot - Arkord" src="https://user-images.githubusercontent.com/85772166/140194017-83b5ee53-66e3-4fe4-92e2-b6e46184e7a3.png">

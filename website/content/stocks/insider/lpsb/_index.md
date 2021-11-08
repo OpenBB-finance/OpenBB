@@ -2,7 +2,7 @@
 usage: lpsb [-n NUM] [-h]
 ```
 
-Print latest penny stock buys [Source: OpenInsider]
+See the latest, penny stock, executive and director acquisitions. Source: http://openinsider.com
 
 ```
 optional arguments:

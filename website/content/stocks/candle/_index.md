@@ -2,7 +2,7 @@
 usage: candle [-s S_START] [--plotly] [-h] [--raw] [-e {csv, json, xlsx}] -s SORT] [-d]
 ```
 
-Displays candle chart of loaded ticker, or shows raw data with --raw
+Displays candle chart of loaded ticker, or shows raw data with --raw (Test change)
 
 ```
 optional arguments:
@@ -14,6 +14,6 @@ optional arguments:
   -s, --sort            Which column to sort the information by
   -d, --descending      Show the information in descending order
   -h, --help            show this help message (default: False)
-```
+``` 
 
 ![nio](https://user-images.githubusercontent.com/25267873/111053397-4d609e00-845b-11eb-9c94-89b8892a8e81.png)

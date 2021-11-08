@@ -2,7 +2,7 @@
 usage: toppw [-n NUM] [-h]
 ```
 
-Print top officer purchases past week [Source: OpenInsider]
+Corporate officers making acquisitions this week. Source: http://openinsider.com
 
 ```
 optional arguments:
@@ -10,4 +10,4 @@ optional arguments:
   -h, --help         show this help message (default: False)
 ```
 
-<img width="1218" alt="toopw" src="https://user-images.githubusercontent.com/25267873/125373754-9b3fd100-e37d-11eb-923f-b34b91c46418.png">
+<img width="1400" alt="toopw" src="https://user-images.githubusercontent.com/25267873/125373754-9b3fd100-e37d-11eb-923f-b34b91c46418.png">
