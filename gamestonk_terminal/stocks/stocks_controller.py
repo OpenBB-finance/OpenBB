@@ -215,26 +215,6 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             description="Shows historic data for a stock",
         )
         parser.add_argument(
-            "-s",
-            "--start",
-            dest="s_start",
-            type=valid_date,
-            default=self.stock.index[0]
-            if self.ticker
-            else (datetime.now() - timedelta(days=160)).strftime("%Y-%m-%d"),
-            help="Start date for candle data",
-        )
-        parser.add_argument(
-            "-e",
-            "--end",
-            dest="s_end",
-            type=valid_date,
-            default=self.stock.index[-1]
-            if self.ticker
-            else datetime.now().strftime("%Y-%m-%d"),
-            help="End date for candle data",
-        )
-        parser.add_argument(
             "-m",
             "--matplotlib",
             dest="matplotlib",
