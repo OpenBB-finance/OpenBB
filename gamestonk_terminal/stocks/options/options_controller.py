@@ -11,7 +11,6 @@ from typing import List
 import matplotlib.pyplot as plt
 from colorama import Style
 import pandas as pd
-from tabulate import tabulate
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
@@ -21,15 +20,12 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     get_flair,
     parse_known_args_and_warn,
-    MENU_GO_BACK,
-    MENU_QUIT,
-    MENU_RESET,
     try_except,
     valid_date,
     system_clear,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.options import (
+from gamestonk_terminal.stocks.options import (
     barchart_view,
     calculator_view,
     fdscanner_view,
@@ -39,9 +35,12 @@ from gamestonk_terminal.options import (
     yfinance_model,
     yfinance_view,
     alphaquery_view,
+    chartexchange_view,
+    payoff_controller,
+    pricing_controller,
 )
-from gamestonk_terminal.stocks import stocks_controller
-from gamestonk_terminal.options import payoff_controller, chartexchange_view
+
+# pylint: disable=R1710
 
 
 class OptionsController:
@@ -53,7 +52,6 @@ class OptionsController:
         "help",
         "q",
         "quit",
-        "reset",
     ]
 
     CHOICES_COMMANDS = [
@@ -73,17 +71,17 @@ class OptionsController:
         "chains",
         "grhist",
         "unu",
-        "stocks",
-        "payoff",
         "plot",
         "parity",
-        "add",
-        "rmv",
-        "show",
-        "rnval",
+    ]
+
+    CHOICES_MENUS = [
+        "payoff",
+        "pricing",
     ]
 
     CHOICES += CHOICES_COMMANDS
+    CHOICES += CHOICES_MENUS
 
     PRESET_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -111,7 +109,7 @@ class OptionsController:
 
         self.selected_date = ""
 
-        self.op_parser = argparse.ArgumentParser(add_help=False, prog="options")
+        self.op_parser = argparse.ArgumentParser(add_help=False, prog="payoff")
         self.op_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
@@ -121,20 +119,12 @@ class OptionsController:
     def print_help(self):
         """Print help."""
         colored = self.ticker and self.selected_date
-        help_text = """
+        help_text = f"""
 What do you want to do?
     cls           clear screen
     ?/help        show this menu again
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
-    reset         reset terminal and reload configs
-
-"""
-        help_text += ">>  stocks        go into stocks context"
-        if self.ticker:
-            help_text += f" with {self.ticker}"
-
-        help_text += f"""
 
 Explore:
     disp          display all preset screeners filters
@@ -160,13 +150,7 @@ Current Expiry: {self.selected_date or None}
     parity        shows whether options are above or below expected price [Yfinance]
 
 >   payoff        shows payoff diagram for a selection of options [Yfinance]
-
-Options Pricing:
-    add           add an expected price to the list
-    rmv           remove an expected price from the list
-    show          show the listed of expected prices
-    rnval         risk neutral valuation for an option:
-
+>   pricing       shows options pricing and risk neutral valuation [Yfinance]
 {Style.RESET_ALL if not colored else ''}"""
         print(help_text)
 
@@ -208,15 +192,11 @@ Options Pricing:
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
-        return MENU_GO_BACK
+        return False
 
     def call_quit(self, _):
         """Process Quit command - exit the program"""
-        return MENU_QUIT
-
-    def call_reset(self, _):
-        """Process Reset command - reset the program"""
-        return MENU_RESET
+        return True
 
     @try_except
     def call_calc(self, other_args: List[str]):
@@ -1020,7 +1000,6 @@ Options Pricing:
             self.print_help()
         else:
             return True
-        return False
 
     @try_except
     def call_oi(self, other_args: List[str]):
@@ -1179,10 +1158,6 @@ Options Pricing:
         )
         print("")
 
-    def call_stocks(self, _):
-        """Process stocks command"""
-        return stocks_controller.menu(self.ticker)
-
     @try_except
     def call_parity(self, other_args: List[str]):
         """Process parity command"""
@@ -1241,162 +1216,23 @@ Options Pricing:
         print("")
 
     @try_except
-    def call_add(self, other_args: List[str]):
-        """Process add command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="add",
-            description="Adds a price to the list",
-        )
-        parser.add_argument(
-            "-p",
-            "--price",
-            type=float,
-            required="-h" not in other_args,
-            dest="price",
-            help="Projected price of the stock at the expiration date",
-        )
-        parser.add_argument(
-            "-c",
-            "--chance",
-            type=float,
-            required="-h" not in other_args,
-            dest="chance",
-            help="Chance that the stock is at a given projected price",
-        )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if ns_parser.price in self.prices["Price"].to_list():
-            df = self.prices[(self.prices["Price"] != ns_parser.price)]
+    def call_pricing(self, _):
+        """Process pricing command"""
+        if not self.ticker or not self.selected_date:
+            print("Ticker and expiration required.\n")
+            return None
+        ret = pricing_controller.menu(self.ticker, self.selected_date, self.prices)
+        if ret is False:
+            self.print_help()
         else:
-            df = self.prices
-
-        new = {"Price": ns_parser.price, "Chance": ns_parser.chance}
-        df = df.append(new, ignore_index=True)
-        self.prices = df.sort_values("Price")
-
-    @try_except
-    def call_rmv(self, other_args: List[str]):
-        """Process rmv command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="rmv",
-            description="Removes a price from the list",
-        )
-        parser.add_argument(
-            "-p",
-            "--price",
-            type=float,
-            required="-h" not in other_args and "-a" not in other_args,
-            dest="price",
-            help="Price you want to remove from the list",
-        )
-        parser.add_argument(
-            "-a",
-            "--all",
-            action="store_true",
-            default=False,
-            dest="all",
-            help="Remove all prices from the list",
-        )
-        if other_args and "-" not in other_args[0]:
-            other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if ns_parser.all:
-            self.prices = pd.DataFrame(columns=["Price", "Chance"])
-            return
-
-        self.prices = self.prices[(self.prices["Price"] != ns_parser.price)]
-
-    @try_except
-    def call_show(self, _):
-        """Process show command"""
-        print(f"Estimated price(s) of {self.ticker} at {self.selected_date}")
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    self.prices,
-                    headers=self.prices.columns,
-                    floatfmt=".2f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            print(self.prices.to_string, "\n")
-            print("")
-
-    @try_except
-    def call_rnval(self, other_args: List[str]):
-        """Process rnval command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="rnval",
-            description="The risk neutral value of the options",
-        )
-        parser.add_argument(
-            "-p",
-            "--put",
-            action="store_true",
-            default=False,
-            help="Show puts instead of calls",
-        )
-        parser.add_argument(
-            "-m",
-            "--min",
-            type=float,
-            default=None,
-            dest="mini",
-            help="Minimum strike price shown",
-        )
-        parser.add_argument(
-            "-M",
-            "--max",
-            type=float,
-            default=None,
-            dest="maxi",
-            help="Maximum strike price shown",
-        )
-        parser.add_argument(
-            "-r",
-            "--risk",
-            type=float,
-            default=None,
-            dest="risk",
-            help="The risk-free rate to use",
-        )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if not self.ticker and not self.selected_date:
-            print("Ticker and expiration required. \n")
-            return
-        if sum(self.prices["Chance"]) != 1:
-            print("Total chances must equal one\n")
-            return
-
-        yfinance_view.risk_neutral_vals(
-            self.ticker,
-            self.selected_date,
-            ns_parser.put,
-            self.prices,
-            ns_parser.mini,
-            ns_parser.maxi,
-            ns_parser.risk,
-        )
+            return True
 
 
 def menu(ticker: str = ""):
     """Options Menu."""
     op_controller = OptionsController(ticker)
     op_controller.call_help(None)
+
     while True:
         # Get input command from user
         if session and gtff.USE_PROMPT_TOOLKIT:
@@ -1404,11 +1240,11 @@ def menu(ticker: str = ""):
                 {c: None for c in op_controller.CHOICES}
             )
             an_input = session.prompt(
-                f"{get_flair()} (options)> ",
+                f"{get_flair()} (stocks)>(options)> ",
                 completer=completer,
             )
         else:
-            an_input = input(f"{get_flair()} (options)> ")
+            an_input = input(f"{get_flair()} (stocks)>(options)> ")
 
         try:
             plt.close("all")

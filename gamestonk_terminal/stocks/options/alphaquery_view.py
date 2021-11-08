@@ -7,7 +7,7 @@ import os
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
-from gamestonk_terminal.options import alphaquery_model
+from gamestonk_terminal.stocks.options import alphaquery_model
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff

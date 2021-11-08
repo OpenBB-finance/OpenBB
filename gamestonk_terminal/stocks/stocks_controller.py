@@ -122,8 +122,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
     candle      view a candle chart for a specific stock ticker
     news        latest news of the company [News API]
 {reset_style_if_no_ticker}
->>  options     go into options context {'with ' if self.ticker else ''}{self.ticker}
-
+>   options     options menu,  \t\t\t e.g.: chains, open interest, greeks, parity
 >   disc        discover trending stocks, \t e.g. map, sectors, high short interest
 >   dps         dark pool and short data, \t e.g. darkpool, short interest, ftd
 >   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
@@ -442,6 +441,16 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         else:
             return True
 
+    def call_options(self, _):
+        """Process options command"""
+        from gamestonk_terminal.stocks.options import options_controller
+
+        ret = options_controller.menu(self.ticker)
+        if ret is False:
+            self.print_help()
+        else:
+            return True
+
     def call_res(self, _):
         """Process res command"""
         from gamestonk_terminal.stocks.research import res_controller
@@ -626,12 +635,6 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             self.print_help()
         else:
             return True
-
-    def call_options(self, _):
-        """Process options command"""
-        from gamestonk_terminal.options import options_controller
-
-        return options_controller.menu(self.ticker)
 
 
 def menu(ticker: str = ""):

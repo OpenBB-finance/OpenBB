@@ -17,8 +17,8 @@ from tabulate import tabulate
 import gamestonk_terminal.config_plot as cfp
 import gamestonk_terminal.feature_flags as gtff
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
-from gamestonk_terminal.options import op_helpers, yfinance_model
-from gamestonk_terminal.options.yfinance_model import (
+from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
+from gamestonk_terminal.stocks.options.yfinance_model import (
     generate_data,
     get_option_chain,
     get_price,

@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import plot_autoscale
-from gamestonk_terminal.options import calculator_model
+from gamestonk_terminal.stocks.options import calculator_model
 
 
 def view_calculator(
