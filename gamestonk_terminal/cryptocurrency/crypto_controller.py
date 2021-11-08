@@ -14,27 +14,21 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
     system_clear,
+    try_except,
     MENU_GO_BACK,
     MENU_QUIT,
     MENU_RESET,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.cryptocurrency.technical_analysis import ta_controller
-from gamestonk_terminal.cryptocurrency.overview import overview_controller
-from gamestonk_terminal.cryptocurrency.defi import defi_controller
+
 from gamestonk_terminal.cryptocurrency.due_diligence import (
-    dd_controller,
     coinpaprika_view,
     binance_view,
     pycoingecko_view,
-)
-from gamestonk_terminal.cryptocurrency.discovery import (
-    discovery_controller,
-)
-from gamestonk_terminal.cryptocurrency.due_diligence import (
     finbrain_crypto_view,
+    binance_model,
+    coinbase_model,
 )
-from gamestonk_terminal.cryptocurrency.due_diligence.finbrain_crypto_view import COINS
 
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
     load,
@@ -42,11 +36,11 @@ from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
     load_ta_data,
     plot_chart,
 )
-from gamestonk_terminal.cryptocurrency.due_diligence import binance_model
-from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
-from gamestonk_terminal.cryptocurrency.onchain import onchain_controller
+
+
 import gamestonk_terminal.config_terminal as cfg
-from gamestonk_terminal.helper_funcs import try_except
+
+# pylint: disable=import-outside-toplevel
 
 
 class CryptoController:
@@ -66,7 +60,7 @@ class CryptoController:
         "find",
     ]
 
-    CHOICES_MENUS = ["ta", "dd", "ov", "disc", "onchain", "defi"]
+    CHOICES_MENUS = ["ta", "dd", "ov", "disc", "onchain", "defi", "nft"]
 
     SOURCES = {
         "bin": "Binance",
@@ -122,12 +116,14 @@ What do you want to do?
     headlines   crypto sentiment from 15+ major news headlines [Finbrain]
 
 >   disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
->   ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
->   onchain     information on different blockchains,   e.g.: eth gas fees, active asset addresses, whale alerts
->   defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding{dim}
+>   ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables{dim}
 >   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
 >   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
-{Style.RESET_ALL if not self.current_coin else ""}"""
+{Style.RESET_ALL if not self.current_coin else ""}
+>   onchain     information on different blockchains,   e.g.: eth gas fees, active asset addresses, whale alerts
+>   defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
+>   nft         non-fungible tokens,                    e.g.: today drops
+"""
         print(help_text)
 
     def switch(self, an_input: str):
@@ -414,6 +410,8 @@ What do you want to do?
 
     def call_ta(self, other_args):
         """Process ta command"""
+        from gamestonk_terminal.cryptocurrency.technical_analysis import ta_controller
+
         # TODO: Play with this to get correct usage
         if self.current_coin:
             parser = argparse.ArgumentParser(
@@ -659,24 +657,31 @@ What do you want to do?
 
     def call_disc(self, _):
         """Process disc command"""
-        disc = discovery_controller.menu()
-        if disc is False:
+        from gamestonk_terminal.cryptocurrency.discovery import discovery_controller
+
+        ret = discovery_controller.menu()
+        if ret is False:
             self.print_help()
         else:
             return True
 
     def call_ov(self, _):
         """Process ov command"""
-        ov = overview_controller.menu()
-        if ov is False:
+        from gamestonk_terminal.cryptocurrency.overview import overview_controller
+
+        ret = overview_controller.menu()
+        if ret is False:
             self.print_help()
         else:
             return True
 
     def call_defi(self, _):
         """Process defi command"""
-        defi = defi_controller.menu()
-        if defi is False:
+        from gamestonk_terminal.cryptocurrency.defi import defi_controller
+
+        ret = defi_controller.menu()
+
+        if ret is False:
             self.print_help()
         else:
             return True
@@ -698,7 +703,7 @@ What do you want to do?
             type=str,
             dest="coin",
             help="Symbol of coin to load data for, ~100 symbols are available",
-            choices=COINS,
+            choices=finbrain_crypto_view.COINS,
         )
 
         parser.add_argument(
@@ -722,6 +727,8 @@ What do you want to do?
     def call_dd(self, _):
         """Process dd command"""
         if self.current_coin:
+            from gamestonk_terminal.cryptocurrency.due_diligence import dd_controller
+
             dd = dd_controller.menu(self.current_coin, self.source, self.symbol)
             if dd is False:
                 self.print_help()
@@ -734,7 +741,20 @@ What do you want to do?
 
     def call_onchain(self, _):
         """Process onchain command"""
+        from gamestonk_terminal.cryptocurrency.onchain import onchain_controller
+
         ret = onchain_controller.menu()
+
+        if ret is False:
+            self.print_help()
+        else:
+            return True
+
+    def call_nft(self, _):
+        """Process nft command"""
+        from gamestonk_terminal.cryptocurrency.nft import nft_controller
+
+        ret = nft_controller.menu()
 
         if ret is False:
             self.print_help()

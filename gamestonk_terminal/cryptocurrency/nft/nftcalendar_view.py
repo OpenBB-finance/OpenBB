@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import os
 from gamestonk_terminal.helper_funcs import export_data
-from gamestonk_terminal.nft import nftcalendar_model
+from gamestonk_terminal.cryptocurrency.nft import nftcalendar_model
 
 
 def display_nft_today_drops(num: int, export: str):
