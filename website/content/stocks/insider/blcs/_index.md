@@ -2,7 +2,7 @@
 usage: blcs [-n NUM] [-h]
 ```
 
-Print big latest CEO/CFO sales ($100k+) Source: https://openinsider.com
+Print big latest CEO/CFO sales ($100k+) Source: http://openinsider.com
 
 ```
 optional arguments:
