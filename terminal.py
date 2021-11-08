@@ -47,7 +47,7 @@ class TerminalController:
         "keys",
     ]
 
-    CHOICES_SHORTHAND_MENUS = ["s", "e", "c", "p", "f", "o", "rp", "rs"]
+    CHOICES_SHORTHAND_MENUS = ["s", "e", "c", "p", "f", "o", "rp", "rs", "n"]
     CHOICES_MENUS = [
         "stocks",
         "economy",
@@ -58,6 +58,7 @@ class TerminalController:
         "etf",
         "reports",
         "resources",
+        "nft",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -88,13 +89,14 @@ What do you want to do?
     about       about us
     q(uit)      to abandon the program
 
->>  stocks
->>  crypto
 >>  economy
->>  options
->>  portfolio
 >>  etf
+>>  stocks
+>>  options
+>>  crypto
+>>  nft
 >>  forex
+>>  portfolio
 >>  reports
 >>  resources
     """
@@ -248,6 +250,16 @@ What do you want to do?
     def call_p(self, _):
         """Process portfolio command"""
         return self.call_portfolio(_)
+
+    def call_nft(self, _):
+        """Process nft command"""
+        from gamestonk_terminal.nft import nft_controller
+
+        return nft_controller.menu()
+
+    def call_n(self, _):
+        """Process nft command"""
+        return self.call_nft(_)
 
 
 def terminal(menu_prior_to_reset=""):
