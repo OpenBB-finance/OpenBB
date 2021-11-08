@@ -2,7 +2,7 @@
 usage: toppw [-n NUM] [-h]
 ```
 
-Corporate officers making inside acquisitions this week. Source: http://openinsider.com
+Corporate officers making acquisitions this week. Source: http://openinsider.com
 
 ```
 optional arguments:
