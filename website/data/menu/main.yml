@@ -40,8 +40,6 @@ main:
             ref: "/stocks/discovery/arkord"
           - name: upcoming
             ref: "/stocks/discovery/upcoming"
-          - name: latest
-            ref: "/stocks/discovery/latest"
           - name: trending
             ref: "/stocks/discovery/trending"
           - name: lowfloat
