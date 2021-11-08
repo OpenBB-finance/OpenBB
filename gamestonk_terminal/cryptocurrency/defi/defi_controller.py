@@ -13,6 +13,8 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     try_except,
     system_clear,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
 )
 
 from gamestonk_terminal.cryptocurrency.defi import (
@@ -20,6 +22,7 @@ from gamestonk_terminal.cryptocurrency.defi import (
     defipulse_view,
     llama_view,
     substack_view,
+    graph_view,
 )
 
 
@@ -42,6 +45,11 @@ class DefiController:
         "borrow",
         "llama",
         "newsletter",
+        "tokens",
+        "pairs",
+        "pools",
+        "swaps",
+        "stats",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -79,7 +87,7 @@ class DefiController:
 
         # Help menu again
         if known_args.cmd == "?":
-            print_help()
+            self.print_help()
             return None
 
         # Clear screen
@@ -93,7 +101,7 @@ class DefiController:
 
     def call_help(self, *_):
         """Process Help command"""
-        print_help()
+        self.print_help()
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
@@ -143,16 +151,9 @@ class DefiController:
             default=True,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
@@ -221,16 +222,9 @@ class DefiController:
             default=False,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
@@ -265,16 +259,9 @@ class DefiController:
             default=10,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
@@ -311,16 +298,9 @@ class DefiController:
             help="Show Current Funding Rates or Last 30 Days Average",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
@@ -359,16 +339,9 @@ class DefiController:
             help="Show Current Borrow Rates or Last 30 Days Average",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
@@ -407,16 +380,9 @@ class DefiController:
             help="Show Current Lending Rates or Last 30 Days Average",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
@@ -447,39 +413,338 @@ class DefiController:
             default=10,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
 
         substack_view.display_newsletters(top=ns_parser.top, export=ns_parser.export)
 
+    @try_except
+    def call_tokens(self, other_args: List[str]):
+        """Process tokens command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tokens",
+            description="""
+                Display tokens trade-able on Uniswap DEX
+                [Source: https://thegraph.com/en/]
+            """,
+        )
 
-def print_help():
-    """Print help"""
-    print("\nDecentralized Finance:")
-    print("   cls           clear screen")
-    print("   ?/help        show this menu again")
-    print("   q             quit this menu, and shows back to main menu")
-    print("   quit          quit to abandon program")
-    print("")
-    print("   llama         DeFi protocols listed on DeFi Llama")
-    print("   tvl           Total value locked of DeFi protocols")
-    print("   newsletter    Recent DeFi related newsletters")
-    print("   dpi           DeFi protocols listed on DefiPulse")
-    print("   funding       Funding rates - current or last 30 days average")
-    print("   borrow        DeFi borrow rates - current or last 30 days average")
-    print("   lending       DeFi ending rates - current or last 30 days average")
-    print("")
+        parser.add_argument(
+            "--skip",
+            dest="skip",
+            type=check_positive,
+            help="Number of records to skip",
+            default=0,
+        )
+
+        parser.add_argument(
+            "--limit",
+            dest="limit",
+            type=check_positive,
+            help="Number of records to display",
+            default=20,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: index",
+            default="index",
+            choices=[
+                "index",
+                "symbol",
+                "name",
+                "tradeVolumeUSD",
+                "totalLiquidity",
+                "txCount",
+            ],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if not ns_parser:
+            return
+
+        graph_view.display_uni_tokens(
+            skip=ns_parser.skip,
+            limit=ns_parser.limit,
+            sortby=ns_parser.sortby,
+            descend=ns_parser.descend,
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_stats(self, other_args: List[str]):
+        """Process stats command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="stats",
+            description="""
+                 Display base statistics about Uniswap DEX.
+                 [Source: https://thegraph.com/en/]
+             """,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if not ns_parser:
+            return
+
+        graph_view.display_uni_stats(export=ns_parser.export)
+
+    @try_except
+    def call_pairs(self, other_args: List[str]):
+        """Process pairs command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="pairs",
+            description="""
+                Displays Lastly added pairs on Uniswap DEX.
+                [Source: https://thegraph.com/en/]
+            """,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="Number of records",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-v",
+            "--vol",
+            dest="vol",
+            type=check_positive,
+            help="Minimum trading volume",
+            default=100,
+        )
+
+        parser.add_argument(
+            "-tx",
+            "--tx",
+            dest="tx",
+            type=check_positive,
+            help="Minimum number of transactions",
+            default=100,
+        )
+
+        parser.add_argument(
+            "--days",
+            dest="days",
+            type=check_positive,
+            help="Number of days the pair has been active,",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: created",
+            default="created",
+            choices=[
+                "created",
+                "pair",
+                "token0",
+                "token1",
+                "volumeUSD",
+                "txCount",
+                "totalSupply",
+            ],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=False,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if not ns_parser:
+            return
+
+        graph_view.display_recently_added(
+            top=ns_parser.top,
+            days=ns_parser.days,
+            min_volume=ns_parser.vol,
+            min_tx=ns_parser.tx,
+            sortby=ns_parser.sortby,
+            descend=ns_parser.descend,
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_pools(self, other_args: List[str]):
+        """Process pools command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="pairs",
+            description="""
+                Display uniswap pools by volume.
+                [Source: https://thegraph.com/en/]
+            """,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="Number of records",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: volumeUSD",
+            default="volumeUSD",
+            choices=[
+                "volumeUSD",
+                "token0.name",
+                "token0.symbol",
+                "token1.name",
+                "token1.symbol",
+                "volumeUSD",
+                "txCount",
+            ],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=False,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if not ns_parser:
+            return
+
+        graph_view.display_uni_pools(
+            top=ns_parser.top,
+            sortby=ns_parser.sortby,
+            descend=ns_parser.descend,
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_swaps(self, other_args: List[str]):
+        """Process swaps command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="pairs",
+            description="""
+                Display last swaps done on Uniswap DEX.
+                [Source: https://thegraph.com/en/]
+            """,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="Number of records",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: timestamp",
+            default="timestamp",
+            choices=["timestamp", "token0", "token1", "amountUSD"],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=False,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if not ns_parser:
+            return
+
+        graph_view.display_last_uni_swaps(
+            top=ns_parser.top,
+            sortby=ns_parser.sortby,
+            descend=ns_parser.descend,
+            export=ns_parser.export,
+        )
+
+    def print_help(self):
+        """Print help"""
+        help_text = """
+Decentralized Finance:
+    cls         clear screen
+    ?/help      show this menu again
+    q           quit this menu, and shows back to main menu
+    quit        quit to abandon the program
+
+Overview:
+    llama         DeFi protocols listed on DeFi Llama
+    tvl           Total value locked of DeFi protocols
+    newsletter    Recent DeFi related newsletters
+    dpi           DeFi protocols listed on DefiPulse
+    funding       Funding reates - current or last 30 days average
+    borrow        DeFi borrow rates - current or last 30 days average
+    lending       DeFi ending rates - current or last 30 days average
+
+Uniswap:
+    tokens        Tokens trade-able on Uniswap
+    stats         Base statistics about Uniswap
+    pairs         Recently added pairs on Uniswap
+    pools         Pools by volume on Uniswap
+    swaps         Recent swaps done on Uniswap"""
+        print(help_text, "\n")
 
 
 def menu():
