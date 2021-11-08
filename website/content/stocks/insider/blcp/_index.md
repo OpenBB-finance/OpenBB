@@ -2,7 +2,7 @@
 usage: blcp [-n NUM] [-h]
 ```
 
-The latest excutive and director dispositions or acquisitions and the corporations they are associated with. Sourece: http://openinsider.com
+Search a SEC Form 4 database for the latest excutive and director dispositions or acquisitions and the corporations they are associated with. Sourece: http://openinsider.com
 
 ```
 optional arguments:
