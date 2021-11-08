@@ -2,7 +2,7 @@
 usage: tispw [-n NUM] [-h]
 ```
 
-Print top insider sales past week [Source: OpenInsider]
+This week's top insider dispositions. Source: http://openinsider.com
 
 ```
 optional arguments:
@@ -10,4 +10,4 @@ optional arguments:
   -h, --help         show this help message (default: False)
 ```
 
-<img width="1216" alt="tispw" src="https://user-images.githubusercontent.com/25267873/125373757-9b3fd100-e37d-11eb-87b2-8ef1bf22eeb9.png">
+<img width="1400" alt="tispw" src="https://user-images.githubusercontent.com/25267873/125373757-9b3fd100-e37d-11eb-87b2-8ef1bf22eeb9.png">
