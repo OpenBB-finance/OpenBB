@@ -5,7 +5,9 @@ import datetime
 import requests
 import pandas as pd
 
-from cryptocurrency.dataframe_helpers import very_long_number_formatter
+from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
+    very_long_number_formatter,
+)
 
 UNI_URL = "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2"
 
