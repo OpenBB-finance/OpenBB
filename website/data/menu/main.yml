@@ -915,3 +915,14 @@ main:
         ref: "/forex/candle"
   - name: resources
     ref: "/resources"
+  - name: nft
+    ref: "/nft"
+    sub:
+      - name: today
+        ref: "/nft/today"
+      - name: upcoming
+        ref: "/nft/upcoming"
+      - name: ongoing
+        ref: "/nft/ongoing"
+      - name: newest
+        ref: "/nft/newest"
