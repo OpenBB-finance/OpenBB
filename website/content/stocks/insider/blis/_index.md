@@ -2,7 +2,7 @@
 usage: blis [-n NUM] [-h]
 ```
 
-Print latest insider sales 100k Source: (https://openinsider.com)
+Print latest insider sales 100k Source: http://openinsider.com
 
 ```
 optional arguments:
