@@ -2,7 +2,7 @@
 usage: blop [-n NUM] [-h]
 ```
 
-Print big latest officer purchases ($25k+) Source:http://openinsider.com
+Print big latest officer purchases ($25k+) Source: https://openinsider.com
 
 ```
 optional arguments:
