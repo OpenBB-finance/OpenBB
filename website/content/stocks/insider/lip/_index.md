@@ -2,7 +2,7 @@
 usage: lip [-n NUM] [-h]
 ```
 
-Print the latest insider purchases recorded by the SEC. Source: https://Openinsider.com
+Print the latest insider purchases recorded by the SEC. Source: http://Openinsider.com
 
 ```
 optional arguments:
