@@ -10,7 +10,7 @@
 
 
 
-    <meta name="description" content="usage: lins [-n N_NUM] [--export {csv,json,xlsx}] [-h] Prints information about inside traders. The following fields are expected: Date, Relationship, Transaction, #Shares, Cost, Value ($), #Shares Total, Insider Trading, SEC Form 4. [Source: Finviz]
+    <meta name="description" content="usage: lins [-n N_NUM] [--export {csv,json,xlsx}] [-h] Prints information about insider acquisitions or dispositions with fields: Date, Relationship, Transaction, #Shares, Cost, Value ($), Total Shares, Insider Trader&rsquo;s Identity, SEC Form 4 Date. Source: https://finviz.com/insidertrading.ashx
 optional arguments: -n N_NUM, --num N_NUM number of latest inside traders. --export {csv,json,xlsx} Export dataframe data to csv,json,xlsx file -h, --help show this help message ">
 
 
@@ -293,9 +293,6 @@ optional arguments: -n N_NUM, --num N_NUM number of latest inside traders. --exp
             
 
             
-            <input type="checkbox" id="navtree-22accada" class="gdoc-nav__toggle" >
-            <label for="navtree-22accada" class="flex justify-between">
-            
             <span class="flex">
                 
                 <a href="/GamestonkTerminal/stocks/discovery/"
@@ -303,10 +300,6 @@ optional arguments: -n N_NUM, --num N_NUM number of latest inside traders. --exp
                     discovery
                 </a>
             </span>
-            
-            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
-            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
-            </label>
             
         
 
@@ -14649,14 +14642,15 @@ optional arguments: -n N_NUM, --num N_NUM number of latest inside traders. --exp
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Lins</h1>
         <pre><code>usage: lins [-n N_NUM] [--export {csv,json,xlsx}] [-h]
-</code></pre><p>Prints information about inside traders. The following fields are expected: Date, Relationship, Transaction, #Shares, Cost, Value ($), #Shares Total, Insider Trading, SEC Form 4. [Source: Finviz]</p>
+</code></pre><p>Prints information about insider acquisitions or dispositions with fields: Date, Relationship, Transaction, #Shares, Cost, Value ($), Total Shares, Insider Trader&rsquo;s Identity, SEC Form 4 Date. Source: <a class="gdoc-markdown__link" href="https://finviz.com/insidertrading.ashx">https://finviz.com/insidertrading.ashx</a></p>
 <pre><code>optional arguments:
   -n N_NUM, --num N_NUM
                         number of latest inside traders.
   --export {csv,json,xlsx}
                         Export dataframe data to csv,json,xlsx file
   -h, --help            show this help message
-</code></pre>
+</code></pre><img width="1400" alt="Feature Screenshot - ins lins" src="https://user-images.githubusercontent.com/85772166/140687758-03aa6660-1d1c-4cab-b1df-40dd4f501c6f.png">
+
     </article>
 
                 

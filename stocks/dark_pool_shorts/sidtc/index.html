@@ -10,7 +10,8 @@
 
 
 
-    <meta name="description" content="usage: sidtc [-n NUM] [-s {float,dtc,si}] [--export {csv,json,xlsx}] [-h] Print short interest and days to cover. [Source: Stockgrid]
+    <meta name="description" content="usage: sidtc [-n NUM] [-s {float,dtc,si}] [--export {csv,json,xlsx}] [-h] Request a list of shorted stocks, sorted by the optional arguments described below. Source: https://www.stockgrid.io/shortinterest
+Note: This data is delayed as per the short interest reporting schedule dictated by FINRA. https://www.nasdaqtrader.com/trader.aspx?id=shortintpubsch
 optional arguments: -n NUM, --number NUM Number of top tickers to show (default: 10) -s {float,dtc,si}, --sort {float,dtc,si} Field for which to sort by, where &#39;float&#39;: Float Short %, &#39;dtc&#39;: Days to Cover, &#39;si&#39;: Short Interest (default: float) --export {csv,json,xlsx} Export dataframe data to csv,json,xlsx file (default: ) -h, --help show this help message (default: False) ">
 
 
@@ -293,9 +294,6 @@ optional arguments: -n NUM, --number NUM Number of top tickers to show (default:
             
 
             
-            <input type="checkbox" id="navtree-22accada" class="gdoc-nav__toggle" >
-            <label for="navtree-22accada" class="flex justify-between">
-            
             <span class="flex">
                 
                 <a href="/GamestonkTerminal/stocks/discovery/"
@@ -303,10 +301,6 @@ optional arguments: -n NUM, --number NUM Number of top tickers to show (default:
                     discovery
                 </a>
             </span>
-            
-            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
-            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
-            </label>
             
         
 
@@ -14649,7 +14643,8 @@ optional arguments: -n NUM, --number NUM Number of top tickers to show (default:
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Sidtc</h1>
         <pre><code>usage: sidtc [-n NUM] [-s {float,dtc,si}] [--export {csv,json,xlsx}] [-h]
-</code></pre><p>Print short interest and days to cover. [Source: Stockgrid]</p>
+</code></pre><p>Request a list of shorted stocks, sorted by the optional arguments described below. Source: <a class="gdoc-markdown__link" href="https://www.stockgrid.io/shortinterest">https://www.stockgrid.io/shortinterest</a></p>
+<p>Note: This data is delayed as per the short interest reporting schedule dictated by FINRA. <a class="gdoc-markdown__link" href="https://www.nasdaqtrader.com/trader.aspx?id=shortintpubsch">https://www.nasdaqtrader.com/trader.aspx?id=shortintpubsch</a></p>
 <pre><code>optional arguments:
   -n NUM, --number NUM  Number of top tickers to show (default: 10)
   -s {float,dtc,si}, --sort {float,dtc,si}
@@ -14657,7 +14652,8 @@ optional arguments: -n NUM, --number NUM Number of top tickers to show (default:
   --export {csv,json,xlsx}
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
-</code></pre>
+</code></pre><img width ="1400" alt="Feature Screenshot - sidtc" src="https://user-images.githubusercontent.com/85772166/140654378-1fc8672c-221a-4ccd-8e14-b294a2c2fef8.png">
+
     </article>
 
                 
