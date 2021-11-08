@@ -220,7 +220,9 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             "--start",
             dest="s_start",
             type=valid_date,
-            default=self.stock.index[0],
+            default=self.stock.index[0]
+            if self.ticker
+            else (datetime.now() - timedelta(days=160)).strftime("%Y-%m-%d"),
             help="Start date for candle data",
         )
         parser.add_argument(
@@ -228,15 +230,18 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             "--end",
             dest="s_end",
             type=valid_date,
-            default=self.stock.index[-1],
+            default=self.stock.index[-1]
+            if self.ticker
+            else datetime.now().strftime("%Y-%m-%d"),
             help="End date for candle data",
         )
         parser.add_argument(
-            "--it",
-            dest="plotly",
+            "-m",
+            "--matplotlib",
+            dest="matplotlib",
             action="store_true",
             default=False,
-            help="Flag to show interactive plot using plotly.",
+            help="Flag to show matplotlib instead of interactive plot using plotly.",
         )
         parser.add_argument(
             "--export",
@@ -309,7 +314,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             display_candle(
                 s_ticker=self.ticker,
                 df_stock=df_stock,
-                plotly=ns_parser.plotly,
+                use_matplotlib=ns_parser.matplotlib,
             )
 
     @try_except
