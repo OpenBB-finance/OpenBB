@@ -350,6 +350,63 @@ main:
             ref: "/stocks/backtesting/ema_cross"
           - name: rsi
             ref: "/stocks/backtesting/rsi"
+      - name: options
+        ref: "/stocks/options"
+        sub:
+          - name: disp
+            ref: "/stocks/options/disp"
+          - name: scr
+            ref: "/stocks/options/scr"
+          - name: unu
+            ref: "/stocks/options/unu"
+          - name: calc
+            ref: "/stocks/options/calc"
+          - name: load
+            ref: "/stocks/options/load"
+          - name: exp
+            ref: "/stocks/options/exp"
+          - name: pcr
+            ref: "/stocks/options/pcr"
+          - name: info
+            ref: "/stocks/options/info"
+          - name: chains
+            ref: "/stocks/options/chains"
+          - name: oi
+            ref: "/stocks/options/oi"
+          - name: vol
+            ref: "/stocks/options/vol"
+          - name: voi
+            ref: "/stocks/options/voi"
+          - name: hist
+            ref: "/stocks/options/hist"
+          - name: grhist
+            ref: "/stocks/options/grhist"
+          - name: portfolio optimization
+            ref: "/portfolio/portfolio_optimization"
+          - name: parity
+            ref: "/stocks/options/parity"
+          - name: payoff
+            ref: "/stocks/options/payoff"
+            sub:
+              - name: add
+                ref: "/stocks/options/payoff/add"
+              - name: pick
+                ref: "/stocks/options/payoff/pick"
+              - name: plot
+                ref: "/stocks/options/payoff/plot"
+              - name: rmv
+                ref: "/stocks/options/payoff/rmv"
+          - name: pricing
+            ref: "/stocks/options/pricing"
+            sub:
+              - name: add
+                ref: "/stocks/options/pricing/add"
+              - name: rmv
+                ref: "/stocks/options/pricing/rmv"
+              - name: show
+                ref: "/stocks/options/pricing/show"
+              - name: rnval
+                ref: "/stocks/options/pricing/rnval"
       - name: technical analysis
         ref: "/common/technical_analysis"
         sub:
@@ -512,62 +569,7 @@ main:
             ref: "/common/prediction_techniques/conv1d"
           - name: mc
             ref: "/common/prediction_techniques/mc"
-  - name: options
-    ref: "/options"
-    sub:
-      - name: disp
-        ref: "/options/disp"
-      - name: scr
-        ref: "/options/scr"
-      - name: unu
-        ref: "/options/unu"
-      - name: calc
-        ref: "/options/calc"
-      - name: load
-        ref: "/options/load"
-      - name: exp
-        ref: "/options/exp"
-      - name: pcr
-        ref: "/options/pcr"
-      - name: info
-        ref: "/options/info"
-      - name: chains
-        ref: "/options/chains"
-      - name: oi
-        ref: "/options/oi"
-      - name: vol
-        ref: "/options/vol"
-      - name: voi
-        ref: "/options/voi"
-      - name: hist
-        ref: "/options/hist"
-      - name: grhist
-        ref: "/options/grhist"
-      - name: plot
-        ref: "/options/plot"
-      - name: portfolio optimization
-        ref: "/portfolio/portfolio_optimization"
-      - name: parity
-        ref: "/options/parity"
-      - name: add
-        ref: "/options/add"
-      - name: rmv
-        ref: "/options/rmv"
-      - name: show
-        ref: "/options/show"
-      - name: rnval
-        ref: "/options/rnval"
-      - name: payoff
-        ref: "/options/payoff"
-        sub:
-          - name: add
-            ref: "/options/payoff/add"
-          - name: pick
-            ref: "/options/payoff/pick"
-          - name: plot
-            ref: "/options/payoff/plot"
-          - name: rmv
-            ref: "/options/payoff/rmv"
+
   - name: cryptocurrency
     ref: "/cryptocurrency"
     sub:
@@ -713,6 +715,17 @@ main:
             ref: "/cryptocurrency/onchain/gwei"
           - name: active
             ref: "/cryptocurrency/onchain/active"
+      - name: nft
+        ref: "/cryptocurrency/nft"
+        sub:
+          - name: today
+            ref: "/cryptocurrency/nft/today"
+          - name: upcoming
+            ref: "/cryptocurrency/nft/upcoming"
+          - name: ongoing
+            ref: "/cryptocurrency/nft/ongoing"
+          - name: newest
+            ref: "/cryptocurrency/nft/newest"
       - name: technical analysis
         ref: "/cryptocurrency/technical_analysis"
         sub:
@@ -915,14 +928,3 @@ main:
         ref: "/forex/candle"
   - name: resources
     ref: "/resources"
-  - name: nft
-    ref: "/nft"
-    sub:
-      - name: today
-        ref: "/nft/today"
-      - name: upcoming
-        ref: "/nft/upcoming"
-      - name: ongoing
-        ref: "/nft/ongoing"
-      - name: newest
-        ref: "/nft/newest"
