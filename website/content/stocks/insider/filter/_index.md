@@ -2,7 +2,7 @@
 usage: filter [-n NUM] [-t TICKER] [-l] [-h]
 ```
 
-Print open insider filtered data using loaded preset, or selected ticker. Source: https://Openinsider.com
+Print open insider filtered data using loaded preset, or selected ticker. Source: http://openinsider.com
 
 ```
 optional arguments:
