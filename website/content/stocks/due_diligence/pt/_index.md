@@ -2,7 +2,7 @@
 usage: pt [--raw] [-n N_NUM] [--export {csv,json,xlsx}] [-h]
 ```
 
-Prints price target from analysts. [Source: Business Insider]
+Prints price target from analysts. Source: (https://markets.businessinsider.com)
 
 ```
 optional arguments:
@@ -14,6 +14,6 @@ optional arguments:
   -h, --help            show this help message
 ```
 
-![pt](https://user-images.githubusercontent.com/25267873/108609888-fec66380-73c8-11eb-8c2f-04ceaac6f3f5.png)
+<img width="1400" alt="pt" src="https://user-images.githubusercontent.com/25267873/108609888-fec66380-73c8-11eb-8c2f-04ceaac6f3f5.png">
 
-<img width="940" alt="pt2" src="https://user-images.githubusercontent.com/25267873/108609914-3af9c400-73c9-11eb-8820-0abfa9e57119.png">
+<img width="1400" alt="pt2" src="https://user-images.githubusercontent.com/25267873/108609914-3af9c400-73c9-11eb-8820-0abfa9e57119.png">
