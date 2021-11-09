@@ -2,7 +2,7 @@
 usage: rot [-n N_NUM] [--raw] [--export {csv,json,xlsx}] [-h]
 ```
 
-Plots ratings over time. [Source: Finnhub]
+Plots ratings over time for the loaded ticker. Source: https://finnhub.io/
 
 ```
 optional arguments:
@@ -14,4 +14,4 @@ optional arguments:
   -h, --help            show this help message
 ```
 
-![rot](https://user-images.githubusercontent.com/25267873/116864981-ad282980-ac00-11eb-9e86-7163782a8ef6.png)
+<img size="1400" alt="Feature Screenshot - rot" src="https://user-images.githubusercontent.com/85772166/140876252-a205e1f6-6698-4c3b-ad7a-9a004787d26b.png">
