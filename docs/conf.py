@@ -1,8 +1,10 @@
-# Configuration file for the Sphinx documentation builder.
-#
-# This file only contains a selection of the most common options. For a full
-# list see the documentation:
-# https://www.sphinx-doc.org/en/master/usage/configuration.html
+"""
+Configuration file for the Sphinx documentation builder.
+
+This file only contains a selection of the most common options. For a full
+list see the documentation:
+https://www.sphinx-doc.org/en/master/usage/configuration.html
+"""
 
 # -- Path setup --------------------------------------------------------------
 
@@ -16,11 +18,18 @@ import sys
 sys.path.insert(0, os.path.abspath("."))
 sys.path.insert(0, os.path.join(os.path.abspath("."), ".."))
 
+beacon = os.environ.get("BEACON")
+
+if beacon is not None:
+    with open(os.path.join(".", "_templates", "layout.html")) as f:
+        content = f.read()
+    with open(os.path.join(".", "_templates", "layout.html"), "w") as f:
+        f.write(content.replace("{{BEACON}}", beacon))
 
 # -- Project information -----------------------------------------------------
 
 project = "Gamestonk Terminal"
-copyright = "2021, Gamestonk Terminal Contributors"
+copyright = "2021, Gamestonk Terminal Contributors"  # pylint: disable=W0622
 author = "Gamestonk Terminal Contributors"
 
 
