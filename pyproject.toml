@@ -74,7 +74,6 @@ fred = "^3.1"
 openpyxl = "3.0.7"
 vcrpy = "^4.1.1"
 coverage = "^5.5"
-tensorflow = {version = "^2.6.0", optional = true}
 jsonschema = "3.2.0"
 financedatabase = "1.0.0"
 reportlab = "^3.6.2"
@@ -82,6 +81,7 @@ holidays = "^0.11.3"
 degiro-connector = "^2.0.3"
 python-binance = "^1.0.15"
 thepassiveinvestor = "^1.0.10"
+tensorflow = {version = "^2.6", optional = true}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
