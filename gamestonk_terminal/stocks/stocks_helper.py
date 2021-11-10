@@ -563,7 +563,7 @@ def display_candle(s_ticker: str, df_stock: pd.DataFrame, use_matplotlib: bool):
                 x=df_stock.index,
                 y=df_stock.Volume,
                 name="Volume",
-                marker_color="darkslategrey",
+                marker_color="#696969",
             ),
             row=2,
             col=1,
