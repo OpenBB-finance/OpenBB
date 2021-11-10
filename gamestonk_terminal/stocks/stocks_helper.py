@@ -540,7 +540,7 @@ def display_candle(s_ticker: str, df_stock: pd.DataFrame, use_matplotlib: bool):
                     y=df_stock["OC_High_trend"],
                     name="High Trend",
                     mode="lines",
-                    line=go.scatter.Line(color="red"),
+                    line=go.scatter.Line(color="green"),
                 ),
                 row=1,
                 col=1,
@@ -552,17 +552,18 @@ def display_candle(s_ticker: str, df_stock: pd.DataFrame, use_matplotlib: bool):
                     y=df_stock["OC_Low_trend"],
                     name="Low Trend",
                     mode="lines",
-                    line=go.scatter.Line(color="green"),
+                    line=go.scatter.Line(color="red"),
                 ),
                 row=1,
                 col=1,
             )
+
         fig.add_trace(
             go.Bar(
                 x=df_stock.index,
                 y=df_stock.Volume,
                 name="Volume",
-                marker_color="black",
+                marker_color="#696969",
             ),
             row=2,
             col=1,
