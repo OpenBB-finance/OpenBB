@@ -177,11 +177,17 @@ class EconomyCommands(discord.ext.commands.Cog):
                 await msg.remove_reaction(emoji, ctx.bot.user)
 
         except asyncio.TimeoutError:
-            text = text + "\n\nCOMMAND TIMEOUT."
-            embed = discord.Embed(title=title, description=text)
-            await msg.edit(embed=embed)
             for emoji in emoji_list:
                 await msg.remove_reaction(emoji, ctx.bot.user)
+            embed = discord.Embed(
+                description="Error timeout - you snooze you lose! 😋",
+                colour=cfg.COLOR,
+                title="TIMEOUT Economy Menu",
+            ).set_author(
+                name=cfg.AUTHOR_NAME,
+                icon_url=cfg.AUTHOR_ICON_URL,
+            )
+            await ctx.send(embed=embed)
 
 
 def setup(bot: discord.ext.commands.Bot):
