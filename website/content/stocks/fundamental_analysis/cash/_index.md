@@ -2,8 +2,7 @@
 usage: cash [-n N_NUM] [-q] [-h]
 ```
 
-Shows complete cash flow statements of the selected ticker over a chosen length of time, with the option to show quarterly or annual statements. Example shown below is for AAPL. Source: https://www.alphavantage.co/documentation/#intraday-extended
-
+Shows complete cash flow statements of the selected ticker over a chosen length of time, with the option to show quarterly or annual statements. Example shown below is for AAPL. Source: https://www.alphavantage.co/documentation/
 ```
 optional arguments:
   -n N_NUM, --num N_NUM
