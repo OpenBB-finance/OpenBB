@@ -82,6 +82,7 @@ degiro-connector = "^2.0.3"
 python-binance = "^1.0.15"
 thepassiveinvestor = "^1.0.10"
 tensorflow = {version = "^2.6", optional = true}
+pymongo = "3.11"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
