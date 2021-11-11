@@ -2,8 +2,8 @@
 usage: income [-n N_NUM] [-q] [-h]
 ```
 
-Prints a complete income statement over time. This can be either quarterly or annually. The following fields are expected: Accepted date, Cost and expenses, Cost of revenue, Depreciation and amortization, Ebitda, Ebitdaratio, Eps, Epsdiluted, Filling date, Final link, General and administrative expenses, Gross profit, Gross profit ratio, Income before tax, Income before tax ratio, Income tax expense, Interest expense, Link, Net income, Net income ratio, Operating expenses, Operating income, Operating income ratio, Other expenses, Period, Research and development expenses, Revenue, Selling and marketing expenses, Total other income expenses net, Weighted average shs out, Weighted average shs out dil [Source: Alpha Vantage]
-
+Show a complete income statement, selectable as quarterly or annualized, over a defined number of reporting periods. The example below is for AAPL. Source: 
+https://www.alphavantage.co/documentation/
 ```
 optional arguments:
   -n N_NUM, --num N_NUM
@@ -11,3 +11,4 @@ optional arguments:
   -q, --quarter         Quarter fundamental data flag. (default: False)
   -h, --help            show this help message (default: False)
 ```
+<img size="1400" alt="Feature Screenshot - income" src="https://user-images.githubusercontent.com/85772166/141366485-46506035-4f4d-4ba7-b30a-96f7d01468f6.png">
