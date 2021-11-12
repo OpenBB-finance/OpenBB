@@ -4,6 +4,8 @@ usage: mgmt [-h]
 
 Show the management team. Namely: Name, Title, Information from Google and Insider Activity. Source: https://businessinsider.com
 
+The loaded stock in the screenshot below is, GE.
+
 ```
 optional arguments:
   -h, --help  show this help message (default: False)
