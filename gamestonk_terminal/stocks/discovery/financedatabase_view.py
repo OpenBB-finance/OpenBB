@@ -1,5 +1,6 @@
 """Finance Database view"""
 __docformat__ = "numpy"
+# pylint:disable=too-many-arguments
 
 import financedatabase as fd
 import pandas as pd
@@ -13,6 +14,7 @@ def show_equities(
     industry: str,
     name: str,
     description: str,
+    marketcap: str,
     amount: int,
     include_exchanges: bool,
     options: str,
@@ -64,6 +66,14 @@ def show_equities(
         data = fd.search_products(data, query=" ".join(name), search="long_name")
     if description is not None:
         data = fd.search_products(data, query=" ".join(description), search="summary")
+    if marketcap is not None:
+        marketcap = " ".join(marketcap).title()
+        if marketcap not in ["Small Cap", "Mid Cap", "Large Cap"]:
+            raise ValueError(
+                f"Invalid choice ({marketcap}) for -mc/--marketcap. Choose from 'Small Cap', "
+                f"'Mid Cap' or 'Large Cap'."
+            )
+        data = fd.search_products(data, query=marketcap, search="market_cap")
 
     tabulate_data = pd.DataFrame(data).T[
         [
@@ -77,13 +87,10 @@ def show_equities(
         ]
     ]
 
-    tabulate_data_sorted = tabulate_data.sort_values(by="market_cap", ascending=False)
-    tabulate_data_sorted["market_cap"] = tabulate_data_sorted["market_cap"] / 1e6
-
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
-                tabulate_data_sorted.iloc[:amount],
+                tabulate_data.iloc[:amount],
                 showindex=True,
                 headers=[
                     "Name",
@@ -92,7 +99,7 @@ def show_equities(
                     "Country",
                     "City",
                     "Website",
-                    "Market Cap [M]",
+                    "Market Cap",
                 ],
                 floatfmt=".2f",
                 tablefmt="fancy_grid",
@@ -100,4 +107,4 @@ def show_equities(
             "\n",
         )
     else:
-        print(tabulate_data_sorted.iloc[:amount].to_string(), "\n")
+        print(tabulate_data.iloc[:amount].to_string(), "\n")

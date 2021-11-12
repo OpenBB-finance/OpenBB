@@ -955,6 +955,15 @@ Finance Database:
         )
 
         parser.add_argument(
+            "-mc",
+            "--marketcap",
+            default=["Large Cap"],
+            nargs="+",
+            dest="marketcap",
+            help="Specify the Equities selection based on Market Cap",
+        )
+
+        parser.add_argument(
             "-ie",
             "--include_exchanges",
             action="store_false",
@@ -991,6 +1000,7 @@ Finance Database:
             industry=ns_parser.industry,
             name=ns_parser.name,
             description=ns_parser.description,
+            marketcap=ns_parser.marketcap,
             include_exchanges=ns_parser.include_exchanges,
             amount=ns_parser.amount,
             options=ns_parser.options,
