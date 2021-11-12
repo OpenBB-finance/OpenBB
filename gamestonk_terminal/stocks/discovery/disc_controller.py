@@ -955,7 +955,7 @@ Finance Database:
         )
 
         parser.add_argument(
-            "-mc",
+            "-m",
             "--marketcap",
             default=["Large"],
             choices=["Small", "Mid", "Large"],
