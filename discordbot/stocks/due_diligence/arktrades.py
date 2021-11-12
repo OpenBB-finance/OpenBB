@@ -49,7 +49,7 @@ async def arktrades_command(ctx, ticker="", num=""):
         if len(ark_holdings_str) <= 4000:
             embed = discord.Embed(
                 title=f"Stocks: [cathiesark.com] {ticker} Trades by Ark",
-                description=ark_holdings_str,
+                description="```" + ark_holdings_str + "```",
                 colour=cfg.COLOR,
             )
             embed.set_author(
@@ -68,7 +68,7 @@ async def arktrades_command(ctx, ticker="", num=""):
                 columns.append(
                     discord.Embed(
                         title=f"Stocks: [cathiesark.com] {ticker} Trades by Ark",
-                        description=ark_holdings_str[str_start:str_end],
+                        description="```" + ark_holdings_str[str_start:str_end] + "```",
                         colour=cfg.COLOR,
                     ).set_author(
                         name=cfg.AUTHOR_NAME,
