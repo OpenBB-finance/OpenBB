@@ -29,9 +29,16 @@ def get_short_data_by_exchange(ticker: str) -> pd.DataFrame:
     exchanges = ["ARCA", "Amex", "Chicago", "National", "NYSE"]
     for exchange in exchanges:
         exch_collection = db[exchange]
-        df = pd.DataFrame(exch_collection.find_one({"index": ticker})["data"])
-        df["Exchange"] = exchange
-        short_data = pd.concat([short_data, df])
+        try:
+            df = pd.DataFrame(exch_collection.find_one({"index": ticker})["data"])
+            df["Exchange"] = exchange
+            short_data = pd.concat([short_data, df])
+        except Exception:
+            pass
+
+    if short_data.empty:
+        return pd.DataFrame()
+
     short_data.reset_index(drop=True, inplace=True)
     short_data["NetShort"] = (
         short_data["Short Exempt Volume"] + short_data["Short Volume"]

@@ -41,6 +41,11 @@ def display_short_by_exchange(
     volume_by_exchange = nyse_model.get_short_data_by_exchange(ticker).sort_values(
         by="Date"
     )
+    if volume_by_exchange.empty:
+        print(
+            "No short data found.  Ping @terp340 on discord if you believe this is an error."
+        )
+
     if sort:
         if sort in volume_by_exchange.columns:
             volume_by_exchange = volume_by_exchange.sort_values(by=sort, ascending=asc)
