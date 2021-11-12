@@ -957,9 +957,11 @@ Finance Database:
         parser.add_argument(
             "-mc",
             "--marketcap",
-            default=["Large Cap"],
+            default=["Large"],
+            choices=["Small", "Mid", "Large"],
             nargs="+",
             dest="marketcap",
+            type=str.title,
             help="Specify the Equities selection based on Market Cap",
         )
 
