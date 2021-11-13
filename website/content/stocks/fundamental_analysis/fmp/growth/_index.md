@@ -2,7 +2,8 @@
 usage: growth [-n N_NUM] [-q] [-h]
 ```
 
-Displays growth metrics such as dividend, shareholder equity, revenue per share growth, etc. Source: https://site.financialmodelingprep.com/developer/docs
+Displays growth metrics such as dividend, shareholder equity, revenue per share growth, etc. The loaded ticker in the sample below is, F.
+Source: https://site.financialmodelingprep.com/developer/docs
 
 ```
 optional arguments:
