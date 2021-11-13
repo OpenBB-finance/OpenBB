@@ -14,7 +14,7 @@ optional arguments:
                         Export or figure into png, jpg, pdf, svg (default: )
 ```
 
-Sample usage, which gets the index for 7 countries:
+Sample usage, which gets the index for 7 different countries:
 ```
 bigmac -c USA,EUR,MEX,CAN,UAE,RUS
 ```
