@@ -18,3 +18,5 @@ Sample usage, which gets the index for 7 countries:
 ```
 bigmac -c USA,EUR,MEX,CAN,UAE,RUS
 ```
+
+![BigMac](https://user-images.githubusercontent.com/18151143/141603738-ffa86906-4e1e-48b4-97b8-ed51f1806089.png)
