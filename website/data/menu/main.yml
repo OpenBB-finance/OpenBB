@@ -828,6 +828,8 @@ main:
         ref: "/economy/search"
       - name: series
         ref: "/economy/series"
+      - name: bigmac
+        ref: "/economy/bigmac"
   - name: etf
     ref: "/etf"
     sub:
