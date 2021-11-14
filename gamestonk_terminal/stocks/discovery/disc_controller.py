@@ -10,7 +10,7 @@ from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED, get_flair
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_non_negative,
@@ -30,6 +30,7 @@ from gamestonk_terminal.stocks.discovery import (
     finnhub_view,
     geekofwallstreet_view,
     financedatabase_view,
+    nasdaq_view,
 )
 
 
@@ -64,6 +65,7 @@ class DiscoveryController:
         "rtearn",
         "fds",
         "cnews",
+        "rtat",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -113,6 +115,8 @@ pennystockflow.com
     hotpenny       today's hot penny stocks
 Finance Database:
     fds            advanced Equities search based on country, sector, industry, name and/or description
+NASDAQ Data Link (Formerly Quandl):
+    rtat           top 10 retail traded stocks per day
 """
         print(help_text)
 
@@ -1007,6 +1011,35 @@ Finance Database:
             amount=ns_parser.amount,
             options=ns_parser.options,
         )
+
+    @try_except
+    def call_rtat(self, other_args: List[str]):
+        """Process fds command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rtat",
+            description="""
+                Tracking over $30B USD/day of individual investors trades,
+                RTAT gives a daily view into retail activity and sentiment for over 9,500 US traded stocks,
+                ADRs, and ETPs
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            dest="n_days",
+            help="Number of days to show",
+            default=3,
+            type=check_positive,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if not ns_parser:
+            return
+        nasdaq_view.display_top_retail(n_days=ns_parser.n_days, export=ns_parser.export)
 
 
 def menu():
