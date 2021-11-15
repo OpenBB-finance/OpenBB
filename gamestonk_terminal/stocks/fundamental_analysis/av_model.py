@@ -325,9 +325,6 @@ def get_fraud_ratios(ticker: str) -> Tuple[Dict[str, float], float]:
     df_cf = df_cf.set_index("fiscalDateEnding").iloc[:2]
     df_bs = df_bs.set_index("fiscalDateEnding").iloc[:2]
     df_is = df_is.set_index("fiscalDateEnding").iloc[:2]
-    pd.set_option("display.max_columns", None)
-    print(df_bs)
-    print(df_bs.columns)
 
     ar = df_bs["currentNetReceivables"].apply(lambda x: 0 if x else int(x)).values
     sales = df_is["totalRevenue"].apply(lambda x: 0 if x else int(x)).values
