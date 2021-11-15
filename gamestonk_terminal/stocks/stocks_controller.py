@@ -201,7 +201,6 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             prog="search",
             description="Show companies matching the search query.",
         )
-
         parser.add_argument(
             "-q",
             "--query",
@@ -211,7 +210,6 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             required="-h" not in other_args,
             help="The search term used to find company tickers.",
         )
-
         parser.add_argument(
             "-a",
             "--amount",
