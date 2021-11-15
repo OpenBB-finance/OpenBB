@@ -20,7 +20,7 @@ jobs:
         env:
           BEACON_TOKEN: ${{ secrets.HUGO_ANALYTICS }}
         run: |
-          sed -i -e "s/{{BEACON}}/$BEACON_TOKEN/g" themes/hugo-geekdoc/layouts/partials/foot.html
+          sed -i -e "s/{%BEACON%}/$BEACON_TOKEN/g" themes/hugo-geekdoc/layouts/partials/foot.html
           hugo
 
       - name: Deploy
