@@ -41,9 +41,7 @@ def get_active_addresses(
 
     if r.status_code == 200:
         df = pd.DataFrame(json.loads(r.text))
+        df["t"] = pd.to_datetime(df["t"], unit="s")
         df = df.set_index("t")
-        df.index = pd.to_datetime(df.index, unit="s")
-        df = df.loc[df.index > "2010-1-1"]
-        df.reset_index(inplace=True)
         return df
     return pd.DataFrame()

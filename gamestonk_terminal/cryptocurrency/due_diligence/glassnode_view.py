@@ -1,6 +1,5 @@
 import os
-from matplotlib import pyplot as plt
-
+from matplotlib import pyplot as plt, dates as mdates
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal import config_plot as cfgPlot
 from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
@@ -53,5 +52,9 @@ def plot_data(df, asset):
     main_ax.set_ylabel("Addresses")
     main_ax.set_xlabel("Date")
     plt.xlim([df.index[0], df.index[-1]])
+
+    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
+    plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+    plt.gcf().autofmt_xdate()
 
     plt.show()
