@@ -15,7 +15,9 @@ from gamestonk_terminal.economy import (
     finnhub_view,
     finviz_view,
     fred_view,
+    nasdaq_model,
     wsj_view,
+    nasdaq_view,
 )
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -93,6 +95,7 @@ class EconomyController:
         "tyld",
         "unemp",
         "industry",
+        "bigmac",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -148,6 +151,8 @@ Alpha Vantage:
 FRED:
     search        search FRED series notes
     series        plot series from https://fred.stlouisfed.org
+NASDAQ DataLink (formerly Quandl):
+    bigmac        the economists Big Mac index
 """
         print(help_text)
 
@@ -1168,6 +1173,44 @@ FRED:
         fred_view.notes(
             series_term=ns_parser.series_term,
             num=ns_parser.num,
+        )
+
+    @try_except
+    def call_bigmac(self, other_args: List[str]):
+        """Process bigmac command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="bigmac",
+            description="""
+                Get historical Big Mac Index [Nasdaq Data Link]
+            """,
+        )
+        parser.add_argument(
+            "-c",
+            "--countries",
+            help="Country codes to get data for.",
+            dest="countries",
+            default="USA",
+            type=nasdaq_model.check_country_code_type,
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            default=False,
+            help="Show raw data",
+            dest="raw",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if not ns_parser:
+            return
+
+        nasdaq_view.display_big_mac_index(
+            country_codes=ns_parser.countries,
+            raw=ns_parser.raw,
+            export=ns_parser.export,
         )
 
 
