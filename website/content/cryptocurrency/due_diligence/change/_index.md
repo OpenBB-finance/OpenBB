@@ -1,5 +1,5 @@
 ```
-usage: eb       [-e EXCHANGE]
+usage: change   [-e EXCHANGE]
                 [-s INITIAL_DATE]
                 [-u END_DATE]
                 [-i {1h, 24h, 10m, 1w, 1month}]
