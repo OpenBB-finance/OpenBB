@@ -2,7 +2,7 @@
 usage: earnings [-n N_NUM] [-q] [-h]
 ```
 
-Shows earnings for the loaded ticker, selectable as yearly or quarterly; includes Estimated, Reported, and Suprise EPS results. Source: https://www.alphavantage.co/documentation/
+Shows earnings for the loaded ticker, selectable as yearly or quarterly; includes Estimated, Reported, and Surprise EPS results. Source: https://www.alphavantage.co/documentation/
 
 ```
 optional arguments:
