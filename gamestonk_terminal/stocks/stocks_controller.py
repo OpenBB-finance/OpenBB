@@ -226,6 +226,9 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
+        if not ns_parser:
+            return
+
         search(query=ns_parser.query, amount=ns_parser.amount)
 
     @try_except
