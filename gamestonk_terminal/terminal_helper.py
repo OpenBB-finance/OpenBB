@@ -378,10 +378,7 @@ def bootup():
 
     if gtff.ENABLE_THOUGHTS_DAY:
         print("-------------------")
-        try:
-            thought.get_thought_of_the_day()
-        except Exception as e:
-            print(e)
+        thought.get_thought_of_the_day()
         print("")
 
 
