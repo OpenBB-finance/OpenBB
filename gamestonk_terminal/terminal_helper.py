@@ -23,6 +23,7 @@ from tabulate import tabulate
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import thought_of_the_day as thought
+from gamestonk_terminal.helper_funcs import try_except
 
 # import git
 
@@ -357,19 +358,17 @@ def about_us():
     )
 
 
+@try_except
 def bootup():
     # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
     if sys.platform == "win32":
         os.system("")  # nosec
 
-    try:
-        if os.name == "nt":
-            # pylint: disable=E1101
-            sys.stdin.reconfigure(encoding="utf-8")
-            # pylint: disable=E1101
-            sys.stdout.reconfigure(encoding="utf-8")
-    except Exception as e:
-        print(e, "\n")
+    if os.name == "nt":
+        # pylint: disable=E1101
+        sys.stdin.reconfigure(encoding="utf-8")
+        # pylint: disable=E1101
+        sys.stdout.reconfigure(encoding="utf-8")
 
     # Print first welcome message and help
     print("\nWelcome to Gamestonk Terminal Beta")
