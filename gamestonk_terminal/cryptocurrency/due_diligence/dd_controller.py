@@ -4,10 +4,10 @@ __docformat__ = "numpy"
 # pylint: disable=R0904, C0302, W0622
 import argparse
 from typing import List
+from datetime import datetime, timedelta
 import pandas as pd
 from binance.client import Client
 from prompt_toolkit.completion import NestedCompleter
-from datetime import datetime, timedelta
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.due_diligence import (
@@ -18,7 +18,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence import (
     coinbase_model,
     binance_model,
     coinbase_view,
-    glassnode_view
+    glassnode_view,
 )
 from gamestonk_terminal.helper_funcs import (
     get_flair,
@@ -26,14 +26,38 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     try_except,
     system_clear,
-    valid_date
+    valid_date,
 )
 
 from gamestonk_terminal.cryptocurrency.due_diligence.coinpaprika_view import CURRENCIES
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_chart
 import gamestonk_terminal.config_terminal as cfg
 
-GLASSNODE_SUPPORTED_EXCHANGES=["aggregated", "binance", "bittrex", "coinex", "gate.io", "gemini", "huobi", "kucoin", "poloniex", "bibox", "bigone", "bitfinex", "hitbtc", "kraken", "okex", "bithumb", "zb.com", "cobinhood", "bitmex", "bitstamp", "coinbase", "coincheck", "luno"]
+GLASSNODE_SUPPORTED_EXCHANGES = [
+    "aggregated",
+    "binance",
+    "bittrex",
+    "coinex",
+    "gate.io",
+    "gemini",
+    "huobi",
+    "kucoin",
+    "poloniex",
+    "bibox",
+    "bigone",
+    "bitfinex",
+    "hitbtc",
+    "kraken",
+    "okex",
+    "bithumb",
+    "zb.com",
+    "cobinhood",
+    "bitmex",
+    "bitstamp",
+    "coinbase",
+    "coincheck",
+    "luno",
+]
 
 GLASSNODE_SUPPORTED_ASSETS = [
     "BTC",
@@ -162,16 +186,12 @@ GLASSNODE_SUPPORTED_ASSETS = [
     "ZRX",
 ]
 
+
 class DueDiligenceController:
 
     CHOICES = ["?", "cls", "help", "q", "quit", "chart"]
 
-    CHOICES_COMMANDS = [
-        "oi",
-        "active",
-        "change",
-        "eb"
-    ]
+    CHOICES_COMMANDS = ["oi", "active", "change", "eb"]
 
     CHOICES += CHOICES_COMMANDS
 
@@ -234,7 +254,7 @@ Due Diligence:
 
 Glassnode:
    active          active addresses
-   change          30d change of supply held on exchange wallets 
+   change          30d change of supply held on exchange wallets
    eb              total balance held on exchanges (in percentage and units)
 
 Coinglass:
@@ -416,9 +436,8 @@ Coinbase:
                 type=str,
                 help="Exchange to check change. Default: aggregated",
                 default="aggregated",
-                choices=GLASSNODE_SUPPORTED_EXCHANGES
+                choices=GLASSNODE_SUPPORTED_EXCHANGES,
             )
-
 
             parser.add_argument(
                 "-i",
@@ -476,7 +495,7 @@ Coinbase:
                 print(e)
         else:
             print("Glassnode source does not support this symbol\n")
-    
+
     def call_eb(self, other_args: List[str]):
         """Process eb command"""
 
@@ -506,9 +525,8 @@ Coinbase:
                 type=str,
                 help="Exchange to check change. Default: aggregated",
                 default="aggregated",
-                choices=GLASSNODE_SUPPORTED_EXCHANGES
+                choices=GLASSNODE_SUPPORTED_EXCHANGES,
             )
-
 
             parser.add_argument(
                 "-i",
@@ -567,8 +585,6 @@ Coinbase:
                 print(e)
         else:
             print("Glassnode source does not support this symbol\n")
-
-
 
     def call_oi(self, other_args):
         """Process oi command"""

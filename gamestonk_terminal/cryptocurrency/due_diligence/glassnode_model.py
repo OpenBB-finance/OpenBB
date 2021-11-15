@@ -5,6 +5,7 @@ from gamestonk_terminal import config_terminal as cfg
 
 api_url = "https://api.glassnode.com/v1/metrics/"
 
+
 def get_active_addresses(
     asset: str, interval: str, since: int, until: int
 ) -> pd.DataFrame:
@@ -47,10 +48,11 @@ def get_active_addresses(
         return df
     return pd.DataFrame()
 
+
 def get_exchange_balances(
     asset: str, exchange: str, interval: str, since: int, until: int
 ) -> pd.DataFrame:
-    """Returns the total amount of coins held on exchange addresses in units and percentage. 
+    """Returns the total amount of coins held on exchange addresses in units and percentage.
     [Source: https://glassnode.com]
 
     Parameters
@@ -76,7 +78,6 @@ def get_exchange_balances(
     url2 = api_url + "distribution/balance_exchanges_relative"
     url3 = api_url + "market/price_usd_close"
 
-
     parameters = {
         "api_key": cfg.API_GLASSNODE_KEY,
         "a": asset,
@@ -86,12 +87,13 @@ def get_exchange_balances(
         "u": str(until),
     }
 
-    r = requests.get(url, params=parameters) # get balances
-    r2 = requests.get(url2, params=parameters) # get relative (percentage) balances 
-    r3 = requests.get(url3, params=parameters) # get price TODO: grab data from loaded symbol
+    r = requests.get(url, params=parameters)  # get balances
+    r2 = requests.get(url2, params=parameters)  # get relative (percentage) balances
+    r3 = requests.get(
+        url3, params=parameters
+    )  # get price TODO: grab data from loaded symbol
 
-
-    if r.status_code == 200 and r2.status_code == 200 and r3.status_code ==200:
+    if r.status_code == 200 and r2.status_code == 200 and r3.status_code == 200:
         df3 = pd.DataFrame(json.loads(r3.text))
         df2 = pd.DataFrame(json.loads(r2.text))
         df = pd.DataFrame(json.loads(r.text))
@@ -99,7 +101,7 @@ def get_exchange_balances(
         df.index = pd.to_datetime(df.index, unit="s")
         df["percentage"] = df2["v"].values
         df["price"] = df3["v"].values
-        df.rename(columns={'v':'stacked'}, inplace=True)
+        df.rename(columns={"v": "stacked"}, inplace=True)
         return df
 
     return pd.DataFrame()
@@ -150,4 +152,3 @@ def get_exchange_net_position_change(
         return df
 
     return pd.DataFrame()
-

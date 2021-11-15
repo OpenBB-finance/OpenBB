@@ -4,6 +4,8 @@ import pandas as pd
 import requests
 from gamestonk_terminal import config_terminal as cfg
 
+api_url = "https://open-api.coinglass.com/api/pro/v1/"
+
 
 def get_open_interest_per_exchange(symbol: str, interval: int) -> pd.DataFrame:
     """Returns open interest by exchange for a certain symbol
@@ -22,7 +24,10 @@ def get_open_interest_per_exchange(symbol: str, interval: int) -> pd.DataFrame:
         open interest by exchange and price
     """
 
-    url = f"https://open-api.coinglass.com/api/pro/v1/futures/openInterest/chart?&symbol={symbol.upper()}&interval={interval}"
+    url = (
+        api_url
+        + f"futures/openInterest/chart?&symbol={symbol.upper()}&interval={interval}"
+    )
 
     headers = {"coinglassSecret": cfg.API_COINGLASS_KEY}
 

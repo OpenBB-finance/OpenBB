@@ -5,7 +5,6 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
-from datetime import datetime, timedelta
 
 from prompt_toolkit.completion import NestedCompleter
 

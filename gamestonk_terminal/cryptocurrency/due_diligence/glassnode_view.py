@@ -6,8 +6,9 @@ from gamestonk_terminal import config_plot as cfgPlot
 from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
     get_active_addresses,
     get_exchange_balances,
-    get_exchange_net_position_change
+    get_exchange_net_position_change,
 )
+
 
 def display_active_addresses(
     asset: str, since: int, until: int, interval: str, export: str = ""
@@ -54,7 +55,7 @@ def display_exchange_net_position_change(
     Parameters
     ----------
     asset : str
-        Asset to search active addresses (e.g., BTC)    
+        Asset to search active addresses (e.g., BTC)
     exchange : str
         Exchange to check net position change (e.g., binance)
     since : int
@@ -67,18 +68,34 @@ def display_exchange_net_position_change(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df_addresses = get_exchange_net_position_change(asset, exchange, interval, since, until)
+    df_addresses = get_exchange_net_position_change(
+        asset, exchange, interval, since, until
+    )
 
     if df_addresses.empty:
         print("Error in glassnode request")
     else:
-        _,ax1 = plt.subplots(figsize=(25, 7))
+        _, ax1 = plt.subplots(figsize=(25, 7))
 
-        ax1.fill_between(df_addresses[df_addresses["v"] <0].index,  df_addresses[df_addresses["v"] <0]["v"].values/1e3, np.zeros(len(df_addresses[df_addresses["v"] <0])), facecolor='red')
-        ax1.fill_between(df_addresses[df_addresses["v"] >=0].index,  df_addresses[df_addresses["v"] >=0]["v"].values/1e3, np.zeros(len(df_addresses[df_addresses["v"] >=0])), facecolor='green')
+        ax1.fill_between(
+            df_addresses[df_addresses["v"] < 0].index,
+            df_addresses[df_addresses["v"] < 0]["v"].values / 1e3,
+            np.zeros(len(df_addresses[df_addresses["v"] < 0])),
+            facecolor="red",
+        )
+        ax1.fill_between(
+            df_addresses[df_addresses["v"] >= 0].index,
+            df_addresses[df_addresses["v"] >= 0]["v"].values / 1e3,
+            np.zeros(len(df_addresses[df_addresses["v"] >= 0])),
+            facecolor="green",
+        )
 
-        ax1.set_ylabel(f"30d change of {asset} supply held in exchange wallets [thousands]")
-        plt.title(f"{asset}: Exchange Net Position Change - {'all exchanges' if exchange == 'aggregated' else exchange}")
+        ax1.set_ylabel(
+            f"30d change of {asset} supply held in exchange wallets [thousands]"
+        )
+        plt.title(
+            f"{asset}: Exchange Net Position Change - {'all exchanges' if exchange == 'aggregated' else exchange}"
+        )
         plt.xlim([df_addresses.index[0], df_addresses.index[-1]])
         plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%m-%Y"))
         plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=3))
@@ -94,8 +111,15 @@ def display_exchange_net_position_change(
         df_addresses,
     )
 
+
 def display_exchange_balances(
-    asset: str, exchange: str, since: int, until: int, interval: str, percentage: bool, export: str = ""
+    asset: str,
+    exchange: str,
+    since: int,
+    until: int,
+    interval: str,
+    percentage: bool,
+    export: str = "",
 ) -> None:
     """Display total amount of coins held on exchange addresses in units and percentage.
     [Source: https://glassnode.org]
@@ -103,7 +127,7 @@ def display_exchange_balances(
     Parameters
     ----------
     asset : str
-        Asset to search active addresses (e.g., BTC)    
+        Asset to search active addresses (e.g., BTC)
     exchange : str
         Exchange to check net position change (e.g., binance)
     since : int
@@ -113,7 +137,7 @@ def display_exchange_balances(
     interval : str
         Interval frequency (e.g., 24h)
     percentage : bool
-        Show percentage instead of stacked value. 
+        Show percentage instead of stacked value.
     export : str
         Export dataframe data to csv,json,xlsx file
     """
@@ -123,11 +147,13 @@ def display_exchange_balances(
     if df_balance.empty:
         print("Error in glassnode request")
     else:
-        _,ax1 = plt.subplots(figsize=(25, 7))
+        _, ax1 = plt.subplots(figsize=(25, 7))
         if percentage:
-            plt.plot(df_balance.index, df_balance["percentage"]*100, c="k")
+            plt.plot(df_balance.index, df_balance["percentage"] * 100, c="k")
         else:
-            plt.plot(df_balance.index, df_balance["stacked"]/1000, c="k") # in thousands
+            plt.plot(
+                df_balance.index, df_balance["stacked"] / 1000, c="k"
+            )  # in thousands
 
         ax2 = ax1.twinx()
 
@@ -136,14 +162,16 @@ def display_exchange_balances(
 
         ax1.set_ylabel(f"{asset} units [{'%' if percentage else 'thousands'}]")
         ax2.set_ylabel(f"{asset} price [$]", c="orange")
-        plt.title(f"{asset}: Total Balance in {'all exchanges' if exchange == 'aggregated' else exchange}")
+        plt.title(
+            f"{asset}: Total Balance in {'all exchanges' if exchange == 'aggregated' else exchange}"
+        )
         plt.xlim([df_balance.index[0], df_balance.index[-1]])
         plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%m-%Y"))
         plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=3))
         plt.gcf().autofmt_xdate()
 
         plt.show()
-        
+
     print("")
 
     export_data(
