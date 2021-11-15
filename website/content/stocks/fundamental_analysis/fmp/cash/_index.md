@@ -1,7 +1,7 @@
 ```
 usage: cash [-n N_NUM] [-q] [-h]
 ```
-Shows a detailed cash statement of the loaded company over a selctable number of years. Source: https://site.financialmodelingprep.com/developer/
+Shows a detailed cash statement of the loaded company over a selectable number of years. Source: https://site.financialmodelingprep.com/developer/
 
 Note: Quarterly statements are not available under the free subscription API.
 
