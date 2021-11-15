@@ -12,4 +12,4 @@ optional arguments:
   -h, --help            show this help message
 ```
 
-<img size="1400" alt="Feature Sreenshot - sec" src="https://user-images.githubusercontent.com/85772166/140877885-538a7a00-a40d-46d2-88fe-7d13bd101ae8.png">
+<img size="1400" alt="Feature Screenshot - sec" src="https://user-images.githubusercontent.com/85772166/140877885-538a7a00-a40d-46d2-88fe-7d13bd101ae8.png">
