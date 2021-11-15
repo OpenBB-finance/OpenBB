@@ -596,7 +596,7 @@ Coinbase:
                 prog="oi",
                 description="""
                     Displays open interest by exchange for a certain asset
-                    [Source: https://coinglass.github.io/]
+                    [Source: https://coinglass.github.io/API-Reference/]
                 """,
             )
 

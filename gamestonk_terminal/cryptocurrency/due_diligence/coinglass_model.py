@@ -9,7 +9,7 @@ api_url = "https://open-api.coinglass.com/api/pro/v1/"
 
 def get_open_interest_per_exchange(symbol: str, interval: int) -> pd.DataFrame:
     """Returns open interest by exchange for a certain symbol
-    [Source: https://coinglass.github.io/]
+    [Source: https://coinglass.github.io/API-Reference/]
 
     Parameters
     ----------

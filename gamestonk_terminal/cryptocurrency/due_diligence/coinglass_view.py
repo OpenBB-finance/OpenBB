@@ -11,7 +11,7 @@ from gamestonk_terminal import config_plot as cfgPlot
 
 def display_open_interest(symbol: str, interval: int, export: str) -> None:
     """Displays open interest by exchange for a certain cryptocurrency
-    [Source: https://coinglass.github.io/]
+    [Source: https://coinglass.github.io/API-Reference/]
 
     Parameters
     ----------
