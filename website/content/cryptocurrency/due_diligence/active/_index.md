@@ -1,6 +1,5 @@
 ```
-usage: active   [-a ASSET]
-                [-s INITIAL_DATE]
+usage: active   [-s INITIAL_DATE]
                 [-u END_DATE]
                 [-i {1h, 24h, 10m, 1w, 1month}]
                 [--export {csv,json,xlsx}] [-h]
@@ -14,7 +13,6 @@ Supported assets: BTC, ETH, LTC, AAVE, ABT, AMPL, ANT, ARMOR, BADGER, BAL, BAND,
 
 ```
 optional arguments:
-  -a ASSET                      Asset to search for active addresses (default: BTC)
   -s DATE --since DATE          Start date (default: 1 year before, e.g., 2020-10-22)
   -u DATE --until DATE          End date (default: current day, e.g., 2021-10-22)
   -i INTERV --interval INTERV   Interval frequency (default: 24h)
