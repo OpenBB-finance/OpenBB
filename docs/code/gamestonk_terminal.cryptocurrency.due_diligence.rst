@@ -20,18 +20,18 @@ gamestonk\_terminal.cryptocurrency.due\_diligence.binance\_view module
    :undoc-members:
    :show-inheritance:
 
-gamestonk\_terminal.cryptocurrency.due\_diligence.bybt\_model module
+gamestonk\_terminal.cryptocurrency.due\_diligence.coinglass\_model module
 --------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.cryptocurrency.due_diligence.bybt_model
+.. automodule:: gamestonk_terminal.cryptocurrency.due_diligence.coinglass_model
    :members:
    :undoc-members:
    :show-inheritance:
 
-gamestonk\_terminal.cryptocurrency.due\_diligence.bybt\_view module
+gamestonk\_terminal.cryptocurrency.due\_diligence.coinglass\_view module
 -------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.cryptocurrency.due_diligence.bybt_view
+.. automodule:: gamestonk_terminal.cryptocurrency.due_diligence.coinglass_view
    :members:
    :undoc-members:
    :show-inheritance:

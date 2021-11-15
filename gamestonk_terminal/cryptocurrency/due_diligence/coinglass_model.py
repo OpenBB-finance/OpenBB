@@ -7,7 +7,7 @@ from gamestonk_terminal import config_terminal as cfg
 
 def get_open_interest_per_exchange(symbol: str, interval: int) -> pd.DataFrame:
     """Returns open interest by exchange for a certain symbol
-    [Source: https://bybt.gitbook.io]
+    [Source: https://coinglass.github.io/]
 
     Parameters
     ----------
@@ -22,9 +22,9 @@ def get_open_interest_per_exchange(symbol: str, interval: int) -> pd.DataFrame:
         open interest by exchange and price
     """
 
-    url = f"http://open-api.bybt.com/api/pro/v1/futures/openInterest/chart?&symbol={symbol.upper()}&interval={interval}"
+    url = f"https://open-api.coinglass.com/api/pro/v1/futures/openInterest/chart?&symbol={symbol.upper()}&interval={interval}"
 
-    headers = {"bybtSecret": cfg.API_BYBT_KEY}
+    headers = {"coinglassSecret": cfg.API_COINGLASS_KEY}
 
     response = requests.request("GET", url, headers=headers)
 

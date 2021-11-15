@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.due_diligence import (
-    bybt_view,
+    coinglass_view,
     pycoingecko_view,
     coinpaprika_view,
     binance_view,
@@ -235,7 +235,7 @@ Glassnode:
    change          30d change of supply held on exchange wallets 
    balance         total balance held on exchanges (in percentage and units)
 
-Bybt:
+Coinglass:
    oi              open interest per exchange
 """
         if self.source == "cp":
@@ -543,7 +543,7 @@ Coinbase:
                 prog="oi",
                 description="""
                     Displays open interest by exchange for a certain asset
-                    [Source: https://bybt.gitbook.io]
+                    [Source: https://coinglass.github.io/]
                 """,
             )
 
@@ -572,7 +572,7 @@ Coinbase:
                 if not ns_parser:
                     return
 
-                bybt_view.display_open_interest(
+                coinglass_view.display_open_interest(
                     symbol=self.symbol.upper(),
                     interval=ns_parser.interval,
                     export=ns_parser.export,
