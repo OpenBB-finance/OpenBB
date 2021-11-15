@@ -3,6 +3,8 @@ main:
   - name: stocks
     ref: "/stocks"
     sub:
+      - name: search
+        ref: "/stocks/search"
       - name: load
         ref: "/stocks/load"
       - name: candle

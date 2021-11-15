@@ -1,20 +1,23 @@
 """Main helper"""
 __docformat__ = "numpy"
 import argparse
+import json
+import warnings
 from datetime import datetime, timedelta
 from typing import List, Union
-import warnings
-from scipy import stats
+
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 import pandas as pd
+import plotly.graph_objects as go
 import pyEX
 import pytz
+import requests
 import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
 from numpy.core.fromnumeric import transpose
-import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+from scipy import stats
 from tabulate import tabulate
 
 from gamestonk_terminal import config_plot as cfgPlot
@@ -81,6 +84,60 @@ def clear(
     except SystemExit:
         print("")
         return s_ticker, s_start, s_interval, df_stock
+
+
+def search(
+    query: str,
+    amount: int,
+):
+    """Search selected query for tickers.
+
+    Parameters
+    ----------
+    query : str
+        The search term used to find company tickers.
+    amount : int
+        The amount of companies shown.
+
+    Returns
+    -------
+    tabulate
+        Companies that match the query.
+    """
+    equities_list = (
+        "https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/"
+        "Database/Equities/Equities List.json"
+    )
+    request = requests.get(equities_list)
+    equities = json.loads(request.text)
+
+    equities_query = {
+        key: value
+        for key, value in equities.items()
+        if (query in key.lower()) or (query in value.lower())
+    }
+
+    equities_dataframe = pd.DataFrame(
+        equities_query.items(),
+        index=equities_query.values(),
+        columns=["Company", "Ticker"],
+    )
+
+    if equities_dataframe.empty:
+        raise ValueError("No companies found. \n")
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                equities_dataframe.iloc[:amount],
+                showindex=False,
+                headers=["Company", "Ticker"],
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(equities_dataframe.iloc[:amount].to_string(), "\n")
 
 
 def load(
