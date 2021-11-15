@@ -2,7 +2,7 @@
 usage: toplobbying [-n NUM] [--raw] [--export {png,jpg,pdf,svg,csv,json,xlsx}] [-h]
 ```
 
-Top lobbying. [Source: www.quiverquant.com]
+Shows companies responsible for the most amount of US governement lobbying. [Source: www.quiverquant.com]
 
 ```
 optional arguments:
@@ -12,4 +12,4 @@ optional arguments:
                         Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx (default: )
   -h, --help            show this help message (default: False)
   ```
-![top_lobbying](https://user-images.githubusercontent.com/25267873/120707733-9e0ff200-c4b2-11eb-9430-552d92f3fc74.png)
+<img size="1400" alt="top_lobbying" src="https://user-images.githubusercontent.com/25267873/120707733-9e0ff200-c4b2-11eb-9430-552d92f3fc74.png">

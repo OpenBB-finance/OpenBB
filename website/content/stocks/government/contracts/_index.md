@@ -2,7 +2,7 @@
 usage: contracts [-p PAST_TRANSACTION_DAYS] [--raw] [-h] [--export {png,jpg,pdf,svg,csv,json,xlsx}]
 ```
 
-Contracts associated with ticker. [Source: www.quiverquant.com]
+Contracts associated with the loaded ticker. [Source: www.quiverquant.com]
 
 ```
 optional arguments:
@@ -14,4 +14,4 @@ optional arguments:
                         Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx (default: )
 ```
 
-![contracts](https://user-images.githubusercontent.com/25267873/119065405-59c22380-b9d5-11eb-9a34-9cad288b22de.png)
+<img size ="1400" alt="contracts" src="https://user-images.githubusercontent.com/25267873/119065405-59c22380-b9d5-11eb-9a34-9cad288b22de.png">

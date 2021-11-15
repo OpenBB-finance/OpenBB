@@ -1,18 +1,7 @@
 ```
-usage: load [-t S_TICKER] [-s S_START_DATE] [-i {1,5,15,30,60}] [--source {yf,av,iex}] [-p] [-h]
+usage: load [-t S_TICKER] [-s S_START_DATE] [-e S_END_DATE] [-i {1,5,15,30,60}] [--source {yf,av,iex}] [-p] [-h]
 ```
-```
-optional arguments:
-  -t S_TICKER, --ticker S_TICKER
-                        Stock ticker (default: None)
-  -s S_START_DATE, --start S_START_DATE
-                        The starting date (format YYYY-MM-DD) of the stock (default: 2020-09-14)
-  -i {1,5,15,30,60}, --interval {1,5,15,30,60}
-                        Intraday stock minutes (default: 1440)
-  --source {yf,av,iex}  Source of historical data. (default: yf)
-  -p, --prepost         Pre/After market hours. Only works for 'yf' source, and intraday data (default: False)
-  -h, --help            show this help message (default: False)
-```
+
 Load a symbol to perform analysis using the string above as a template. Optional arguments and their descriptions are listed above. 
 
 The default source is, yFinance (https://pypi.org/project/yfinance/). Alternatively, one may select either AlphaVantage (https://www.alphavantage.co/documentation/) or IEX Cloud (https://iexcloud.io/docs/api/) as the data source for the analysis. Please note that certain analytical features are exclusive to the source. 
@@ -27,6 +16,19 @@ Certain analytical features, such as VWAP, require the ticker to be loaded as in
 
 Certain features, such as the Prediction menu, require the symbol to be loaded as daily and not intraday.
 
-<img width="1390" alt="Feature Screenshot - Load" src="https://user-images.githubusercontent.com/85772166/139967994-82e42c75-3ff5-4a04-80a2-c9c9b870934c.png">
-
-
+```
+optional arguments:
+  -t S_TICKER, --ticker S_TICKER
+                        Stock ticker (default: None)
+  -s S_START_DATE, --start S_START_DATE
+                        The starting date (format YYYY-MM-DD) of the stock (default: 2020-11-07)
+  -e S_END_DATE, --end S_END_DATE
+                        The ending date (format YYYY-MM-DD) of the stock (default: 2021-11-08)
+  -i {1,5,15,30,60}, --interval {1,5,15,30,60}
+                        Intraday stock minutes (default: 1440)
+  --source {yf,av,iex}  Source of historical data. (default: yf)
+  -p, --prepost         Pre/After market hours. Only works for 'yf' source, and intraday data (default: False)
+  -h, --help            show this help message (default: False)
+```
+<img width="1400" alt="Feature Screenshot - Load" src="https://user-images.githubusercontent.com/85772166/139967994-82e42c75-3ff5-4a04-80a2-c9c9b870934c.png">
+<img width="1400" alt="Feature Screenshot - Load" src="https://user-images.githubusercontent.com/85772166/139967994-82e42c75-3ff5-4a04-80a2-c9c9b870934c.png">

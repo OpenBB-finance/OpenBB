@@ -2,7 +2,7 @@
 usage: lastcontracts [-p PAST_TRANSACTION_DAYS] [-n NUM] [-s] [--export {png,jpg,pdf,svg,csv,json,xlsx}] [-h]
 ```
 
-Last government contracts. [Source: www.quiverquant.com]
+Details US government spending. [Source: www.quiverquant.com]
 
 ```
 optional arguments:
@@ -14,3 +14,4 @@ optional arguments:
                         Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx (default: )
   -h, --help            show this help message (default: False)
   ```
+<img size="1400" alt="Feature Screenshot - lastcontracts" src="https://user-images.githubusercontent.com/85772166/141688946-573c50ff-dfcc-470f-bb69-0b5728ed1eff.png">

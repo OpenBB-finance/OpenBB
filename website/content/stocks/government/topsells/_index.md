@@ -2,7 +2,7 @@
 usage: top_sells [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_MONTHS] [-n NUM] [--raw]
                  [--export {png,jpg,pdf,svg,csv,json,xlsx}] [-h]
 ```
-Top sells for government trading. [Source: www.quiverquant.com]
+Companies experiencing the most stock sales by US governement representatives. [Source: www.quiverquant.com]
 
 ```
 optional arguments:
@@ -15,3 +15,4 @@ optional arguments:
                         Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx (default: )
   -h, --help            show this help message (default: False)
 ```
+<img size="1400" alt="Feature Screenshot - topsells" src="https://user-images.githubusercontent.com/85772166/141689505-724180df-98e1-4edc-899a-acabebaa685c.png">

@@ -2,7 +2,7 @@
 usage: supplier [--export {csv,json,xlsx}] [-h]
 ```
 
-List of suppliers from ticker provided. [Source: CSIMarket]
+List of suppliers from ticker provided. Source: https://CSImarket.com
 
 ```
 optional arguments:
@@ -11,4 +11,4 @@ optional arguments:
   -h, --help            show this help message
 ```
 
-<img width="974" alt="supplier" src="https://user-images.githubusercontent.com/25267873/124523361-b98e5580-ddee-11eb-94dc-08e4df1b17c0.png">
+<img width="1400" alt="supplier" src="https://user-images.githubusercontent.com/25267873/124523361-b98e5580-ddee-11eb-94dc-08e4df1b17c0.png">

@@ -2,7 +2,7 @@
 usage: earnings [-n N_NUM] [-q] [-h]
 ```
 
-Print earnings dates and reported EPS of the company. The following fields are expected: Fiscal Date Ending and Reported EPS. [Source: Alpha Vantage]
+Shows earnings for the loaded ticker, selectable as yearly or quarterly; includes Estimated, Reported, and Surprise EPS results. Source: https://www.alphavantage.co/documentation/
 
 ```
 optional arguments:
@@ -11,3 +11,4 @@ optional arguments:
                         Number of latest info (default: 5)
   -h, --help            show this help message (default: False)
 ```
+![Feature Screenshot - earnings](https://user-images.githubusercontent.com/85772166/141365214-7f1e54fd-3cf5-4005-8e8d-06c78891f1ee.png)

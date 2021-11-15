@@ -2,7 +2,7 @@
 usage: rating [-n N_NUM] [--export {csv,json,xlsx}] [-h]
 ```
 
-Based on specific ratios, prints information whether the company is a (strong) buy, neutral or a (strong) sell. The following fields are expected: P/B, ROA, DCF, P/E, ROE, and D/E. [Source: Financial Modeling Prep]
+Based on specific ratios, P/B, ROA, DCF, P/E, ROE, and D/E, 'rating' prints information whether the company is a (strong) buy, neutral or a (strong) sell. Source: https://site.financialmodelingprep.com/developer/docs
 
 ```
 optional arguments:
@@ -13,4 +13,4 @@ optional arguments:
   -h, --help            show this help message
 ```
 
-<img width="922" alt="rating" src="https://user-images.githubusercontent.com/25267873/108609444-d0935480-73c5-11eb-9f14-4fefa67f41ee.png">
+<img width="1400" alt="Feature Screenshot - rating" src="https://user-images.githubusercontent.com/85772166/140875696-ae9c451c-276f-454a-93c1-001cd88eff08.png">

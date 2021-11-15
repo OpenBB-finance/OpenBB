@@ -2,9 +2,9 @@
 usage: profile [-h]
 ```
 
-Prints information about, among other things, the industry, sector exchange and company description. The following fields are expected: Address, Beta, Ceo, Changes, Cik, City Company name, Country, Currency, Cusip, Dcf, Dcf diff, Default image, Description, Exchange, Exchange short name, Full time employees, Image, Industry, Ipo date, Isin, Last div, Mkt cap, Phone, Price, Range, Sector, State, Symbol, Vol avg, Website, Zip. [Source: Financial Modeling Prep]
-
+Displays a profile of the loaded company. Source: https://site.financialmodelingprep.com/developer/
 ```
 optional arguments:
   -h, --help  show this help message (default: False)
 ```
+<img size="1400" alt="Feature Screenshot - fmp-profile" src="https://user-images.githubusercontent.com/85772166/141521545-02d948c5-24e4-467a-b141-1939642c9057.png">
