@@ -33,6 +33,8 @@ from gamestonk_terminal.cryptocurrency.due_diligence.coinpaprika_view import CUR
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_chart
 import gamestonk_terminal.config_terminal as cfg
 
+GLASSNODE_SUPPORTED_EXCHANGES=["aggregated", "binance", "bittrex", "coinex", "gate.io", "gemini", "huobi", "kucoin", "poloniex", "bibox", "bigone", "bitfinex", "hitbtc", "kraken", "okex", "bithumb", "zb.com", "cobinhood", "bitmex", "bitstamp", "coinbase", "coincheck", "luno"]
+
 GLASSNODE_SUPPORTED_ASSETS = [
     "BTC",
     "ETH",
@@ -168,7 +170,7 @@ class DueDiligenceController:
         "oi",
         "active",
         "change",
-        "balance"
+        "eb"
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -233,7 +235,7 @@ Due Diligence:
 Glassnode:
    active          active addresses
    change          30d change of supply held on exchange wallets 
-   balance         total balance held on exchanges (in percentage and units)
+   eb              total balance held on exchanges (in percentage and units)
 
 Coinglass:
    oi              open interest per exchange
@@ -408,6 +410,17 @@ Coinbase:
             )
 
             parser.add_argument(
+                "-e",
+                "--exchange",
+                dest="exchange",
+                type=str,
+                help="Exchange to check change. Default: aggregated",
+                default="aggregated",
+                choices=GLASSNODE_SUPPORTED_EXCHANGES
+            )
+
+
+            parser.add_argument(
                 "-i",
                 "--interval",
                 dest="interval",
@@ -422,8 +435,8 @@ Coinbase:
                 "--since",
                 dest="since",
                 type=valid_date,
-                help="Initial date. Default: 2020-01-01",
-                default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
+                help="Initial date. Default: 2019-01-01",
+                default="2019-01-01",
             )
 
             parser.add_argument(
@@ -431,8 +444,8 @@ Coinbase:
                 "--until",
                 dest="until",
                 type=valid_date,
-                help="Final date. Default: 2021-01-01",
-                default=(datetime.now()).strftime("%Y-%m-%d"),
+                help="Final date. Default: 2020-01-01",
+                default="2020-01-01",
             )
 
             parser.add_argument(
@@ -450,9 +463,10 @@ Coinbase:
                 if not ns_parser:
                     return
 
-                glassnode_view.display_active_addresses(
+                glassnode_view.display_exchange_net_position_change(
                     asset=self.symbol.upper(),
                     interval=ns_parser.interval,
+                    exchange=ns_parser.exchange,
                     since=int(datetime.timestamp(ns_parser.since)),
                     until=int(datetime.timestamp(ns_parser.until)),
                     export=ns_parser.export,
@@ -463,19 +477,38 @@ Coinbase:
         else:
             print("Glassnode source does not support this symbol\n")
     
-    def call_balance(self, other_args: List[str]):
-        """Process balance command"""
+    def call_eb(self, other_args: List[str]):
+        """Process eb command"""
 
         if self.symbol.upper() in GLASSNODE_SUPPORTED_ASSETS:
             parser = argparse.ArgumentParser(
                 add_help=False,
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-                prog="active",
+                prog="eb",
                 description="""
                     Display active blockchain addresses over time
                     [Source: https://glassnode.org]
                 """,
             )
+
+            parser.add_argument(
+                "-p",
+                "--pct",
+                dest="percentage",
+                type=bool,
+                help="Show percentage instead of stacked value. Default: False",
+            )
+
+            parser.add_argument(
+                "-e",
+                "--exchange",
+                dest="exchange",
+                type=str,
+                help="Exchange to check change. Default: aggregated",
+                default="aggregated",
+                choices=GLASSNODE_SUPPORTED_EXCHANGES
+            )
+
 
             parser.add_argument(
                 "-i",
@@ -492,8 +525,8 @@ Coinbase:
                 "--since",
                 dest="since",
                 type=valid_date,
-                help="Initial date. Default: 2020-01-01",
-                default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
+                help="Initial date. Default: 2019-01-01",
+                default="2019-01-01",
             )
 
             parser.add_argument(
@@ -501,8 +534,8 @@ Coinbase:
                 "--until",
                 dest="until",
                 type=valid_date,
-                help="Final date. Default: 2021-01-01",
-                default=(datetime.now()).strftime("%Y-%m-%d"),
+                help="Final date. Default: 2020-01-01",
+                default="2020-01-01",
             )
 
             parser.add_argument(
@@ -520,11 +553,13 @@ Coinbase:
                 if not ns_parser:
                     return
 
-                glassnode_view.display_active_addresses(
+                glassnode_view.display_exchange_balances(
                     asset=self.symbol.upper(),
                     interval=ns_parser.interval,
+                    exchange=ns_parser.exchange,
                     since=int(datetime.timestamp(ns_parser.since)),
                     until=int(datetime.timestamp(ns_parser.until)),
+                    percentage=ns_parser.percentage,
                     export=ns_parser.export,
                 )
 
@@ -532,6 +567,8 @@ Coinbase:
                 print(e)
         else:
             print("Glassnode source does not support this symbol\n")
+
+
 
     def call_oi(self, other_args):
         """Process oi command"""
