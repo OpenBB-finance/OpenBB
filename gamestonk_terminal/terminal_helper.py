@@ -362,11 +362,14 @@ def bootup():
     if sys.platform == "win32":
         os.system("")  # nosec
 
-    if os.name == "nt":
-        # pylint: disable=E1101
-        sys.stdin.reconfigure(encoding="utf-8")
-        # pylint: disable=E1101
-        sys.stdout.reconfigure(encoding="utf-8")
+    try:
+        if os.name == "nt":
+            # pylint: disable=E1101
+            sys.stdin.reconfigure(encoding="utf-8")
+            # pylint: disable=E1101
+            sys.stdout.reconfigure(encoding="utf-8")
+    except Exception as e:
+        print(e, "\n")
 
     # Print first welcome message and help
     print("\nWelcome to Gamestonk Terminal Beta")
