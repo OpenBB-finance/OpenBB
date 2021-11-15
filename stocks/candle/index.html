@@ -10,8 +10,8 @@
 
 
 
-    <meta name="description" content="usage: candle [-s S_START] [--plotly] [-h] [--raw] [-e {csv, json, xlsx}] -s SORT] [-d] Displays candle chart of loaded ticker, or shows raw data with &ndash;raw (Test change)
-optional arguments: -s S_START, --start_date S_START Start date for candle data (default: 2021-03-19) --plotly Flag to show interactive plot using plotly. (default: False) --raw shows the raw data instead of a chart -e, --export The format to export the information into -s, --sort Which column to sort the information by -d, --descending Show the information in descending order -h, --help show this help message (default: False) ">
+    <meta name="description" content="usage: candle [-m] [--export {csv,json,xlsx}] [--sort {AdjClose,Open,Close,High,Low,Volume,Returns,LogRet}] [-d] [--raw] [-n NUM] [-h] Shows historic data for the loaded ticker in an interactive chart that loads in a web browser. Static charts are also available through the optional &lsquo;-m&rsquo; argument. There is also the ability to retrieve and sort raw data sets based on the intraday interval and date window selected through the load command.
+optional arguments: -m, --matplotlib Flag to show matplotlib instead of interactive plot using plotly.">
 
 
 
@@ -293,9 +293,6 @@ optional arguments: -s S_START, --start_date S_START Start date for candle data 
             
 
             
-            <input type="checkbox" id="navtree-22accada" class="gdoc-nav__toggle" >
-            <label for="navtree-22accada" class="flex justify-between">
-            
             <span class="flex">
                 
                 <a href="/GamestonkTerminal/stocks/discovery/"
@@ -303,10 +300,6 @@ optional arguments: -s S_START, --start_date S_START Start date for candle data 
                     discovery
                 </a>
             </span>
-            
-            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
-            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
-            </label>
             
         
 
@@ -14725,18 +14718,20 @@ optional arguments: -s S_START, --start_date S_START Start date for candle data 
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Candle</h1>
-        <pre><code>usage: candle [-s S_START] [--plotly] [-h] [--raw] [-e {csv, json, xlsx}] -s SORT] [-d]
-</code></pre><p>Displays candle chart of loaded ticker, or shows raw data with &ndash;raw (Test change)</p>
+        <pre><code>usage: candle [-m] [--export {csv,json,xlsx}] [--sort {AdjClose,Open,Close,High,Low,Volume,Returns,LogRet}] [-d] [--raw] [-n NUM] [-h]
+</code></pre><p>Shows historic data for the <a class="gdoc-markdown__link" href="https://gamestonkterminal.github.io/GamestonkTerminal/stocks/load/">loaded ticker</a> in an interactive chart that loads in a web browser. Static charts are also available through the optional &lsquo;-m&rsquo; argument. There is also the ability to retrieve and sort raw data sets based on the intraday interval and date window selected through the load command.</p>
 <pre><code>optional arguments:
-  -s S_START, --start_date S_START
-                        Start date for candle data (default: 2021-03-19)
-  --plotly              Flag to show interactive plot using plotly. (default: False)
-  --raw                 shows the raw data instead of a chart
-  -e, --export          The format to export the information into
-  -s, --sort            Which column to sort the information by
-  -d, --descending      Show the information in descending order
+  -m, --matplotlib      Flag to show matplotlib instead of interactive plot using plotly. (default: False)
+  --export {csv,json,xlsx}
+                        Export dataframe data to csv,json,xlsx file (default: )
+  --sort {AdjClose,Open,Close,High,Low,Volume,Returns,LogRet}
+                        Choose a column to sort by (default: )
+  -d, --descending      Sort selected column descending (default: True)
+  --raw                 Shows raw data instead of chart (default: False)
+  -n NUM, --num NUM     Number to show if raw selected (default: 20)
   -h, --help            show this help message (default: False)
-</code></pre><p><img src="https://user-images.githubusercontent.com/25267873/111053397-4d609e00-845b-11eb-9c94-89b8892a8e81.png" alt="nio"  /></p>
+</code></pre><img size="1400" alt="Feature Screenshot - candle it" src="https://user-images.githubusercontent.com/85772166/140820534-5d7b68d3-06b3-4afc-b299-9d3232ca2f79.png">
+<img size="1400" alt="Feature Screenshot - candle raw" src="https://user-images.githubusercontent.com/85772166/140823989-b1ef3cb8-54ec-44ab-9f29-c9b68c1dc248.png">
 
     </article>
 
@@ -23577,7 +23572,7 @@ optional arguments: -s S_START, --start_date S_START Start date for candle data 
 <script defer src="/GamestonkTerminal/js/clipboard-loader-f0b5fbd5f6.min.js"></script>
 
 
-<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "0be3143760d14470ba2a08d0d004ca39"}'></script>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "0be3143760d14470ba2a08d0d004ca39 "}'></script>
 
 </body>
 </html>
