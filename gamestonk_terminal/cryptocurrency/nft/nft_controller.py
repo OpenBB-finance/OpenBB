@@ -16,7 +16,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
 
-from gamestonk_terminal.nft import nftcalendar_view
+from gamestonk_terminal.cryptocurrency.nft import nftcalendar_view
 
 
 class NFTController:

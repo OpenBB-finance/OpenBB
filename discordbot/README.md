@@ -52,6 +52,20 @@ https://discord.com/oauth2/authorize?client_id=CLIENTID&scope=bot, where **CLIEN
 
 **NOTE:** Registering is free for all open source projects and if your discord bot uses fewer than 1250 uploads per day.
 
+### HEROKU
+
+1. Replace the general requirements.txt with the one in the discordbot folder.
+2. Create a Heroku account at: https://signup.heroku.com/.
+3. Click 'Create a new app'.
+4. Go to the 'Settings' page, and then find Config Vars.
+5. Add GT_DISCORD_BOT_TOKEN and GT_IMGUR_CLIENT_ID with their associated values.
+6. Go to the repository:https://github.com/GamestonkTerminal/GamestonkTerminal and fork it if you have not already done so.
+7. On the 'Deploy' page select Github as the deployment method.
+8. Select 'enable automatic deploys' if you would like for the server to update every time you update your fork.
+9. Go to the 'Resources' tab and turn on the worker by pressing the pencil to edit and then pressing the toggle button.
+
+**NOTE:** If you only want the bot to run in the cloud you are done, if you would like it to run on your local machine read below.
+
 ## Discord Configs
 
 In order to config the discord bot you will need to edit the [config_discordbot.py](gamestonk_terminal/config_discordbot.py) file.

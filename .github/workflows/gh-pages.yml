@@ -17,7 +17,11 @@ jobs:
         # remove --minify tag if you do not need it
         # docs: https://gohugo.io/hugo-pipes/minification/
         working-directory: ./website
-        run: hugo
+        env:
+          BEACON_TOKEN: ${{ secrets.HUGO_ANALYTICS }}
+        run: |
+          sed -i -e "s/{{BEACON}}/$BEACON_TOKEN/g" themes/hugo-geekdoc/layouts/partials/foot.html
+          hugo
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

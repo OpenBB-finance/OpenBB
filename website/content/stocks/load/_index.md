@@ -30,7 +30,5 @@ optional arguments:
   -p, --prepost         Pre/After market hours. Only works for 'yf' source, and intraday data (default: False)
   -h, --help            show this help message (default: False)
 ```
-
 <img width="1400" alt="Feature Screenshot - Load" src="https://user-images.githubusercontent.com/85772166/139967994-82e42c75-3ff5-4a04-80a2-c9c9b870934c.png">
-
-
+<img width="1400" alt="Feature Screenshot - Load" src="https://user-images.githubusercontent.com/85772166/139967994-82e42c75-3ff5-4a04-80a2-c9c9b870934c.png">
