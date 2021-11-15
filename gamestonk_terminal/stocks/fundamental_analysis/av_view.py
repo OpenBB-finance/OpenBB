@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import os
 
 from tabulate import tabulate
+import numpy as np
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import export_data
@@ -192,6 +193,10 @@ def display_fraud(ticker: str):
     else:
         chanceZ = "low"
 
+    if np.isnan(ratios["MSCORE"]) or np.isnan(zscore):
+        print("Data incomplete for this ticker. Unable to calculate risk")
+        return
+
     print("Mscore Sub Stats:")
     for rkey, value in ratios.items():
         if rkey != "MSCORE":
@@ -203,3 +208,4 @@ def display_fraud(ticker: str):
     )
 
     print("ZSCORE: ", f"{zscore:.2f} ({chanceZ} chance of bankruptcy)", "\n")
+    return

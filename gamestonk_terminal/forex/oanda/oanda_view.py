@@ -842,22 +842,16 @@ def load(other_args: List[str]):
         dest="instrument",
         help="Forex pair to use. ",
     )
+    if other_args:
+        if "-" not in other_args[0]:
+            other_args.insert(0, "-i")
 
-    try:
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-i")
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        print("")
-        return ns_parser.instrument.upper()
-
-    except Exception as e:
-        print(e, "\n")
-        return None
+    print("")
+    return ns_parser.instrument.upper()
 
 
 def book_plot(df, instrument, book_type):

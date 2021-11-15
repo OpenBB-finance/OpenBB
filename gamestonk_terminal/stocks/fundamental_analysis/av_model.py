@@ -326,22 +326,42 @@ def get_fraud_ratios(ticker: str) -> Tuple[Dict[str, float], float]:
     df_bs = df_bs.set_index("fiscalDateEnding").iloc[:2]
     df_is = df_is.set_index("fiscalDateEnding").iloc[:2]
 
-    ar = df_bs["currentNetReceivables"].apply(lambda x: int(x)).values
-    sales = df_is["totalRevenue"].apply(lambda x: int(x)).values
-    cogs = df_is["costofGoodsAndServicesSold"].apply(lambda x: int(x)).values
-    ni = df_is["netIncome"].apply(lambda x: int(x)).values
-    ca = df_bs["totalCurrentAssets"].apply(lambda x: int(x)).values
-    cl = df_bs["totalCurrentLiabilities"].apply(lambda x: int(x)).values
-    ppe = df_bs["propertyPlantEquipment"].apply(lambda x: int(x)).values
-    cash = df_bs["cashAndCashEquivalentsAtCarryingValue"].apply(lambda x: int(x)).values
-    cash_and_sec = df_bs["cashAndShortTermInvestments"].apply(lambda x: int(x)).values
+    ar = df_bs["currentNetReceivables"].apply(lambda x: 0 if x else int(x)).values
+    sales = df_is["totalRevenue"].apply(lambda x: 0 if x else int(x)).values
+    cogs = (
+        df_is["costofGoodsAndServicesSold"].apply(lambda x: 0 if x else int(x)).values
+    )
+    ni = df_is["netIncome"].apply(lambda x: 0 if x else int(x)).values
+    ca = df_bs["totalCurrentAssets"].apply(lambda x: 0 if x else int(x)).values
+    cl = df_bs["totalCurrentLiabilities"].apply(lambda x: 0 if x else int(x)).values
+    ppe = df_bs["propertyPlantEquipment"].apply(lambda x: 0 if x else int(x)).values
+    cash = (
+        df_bs["cashAndCashEquivalentsAtCarryingValue"]
+        .apply(lambda x: 0 if x else int(x))
+        .values
+    )
+    cash_and_sec = (
+        df_bs["cashAndShortTermInvestments"].apply(lambda x: 0 if x else int(x)).values
+    )
     sec = [y - x for (x, y) in zip(cash, cash_and_sec)]
-    ta = df_bs["totalAssets"].apply(lambda x: int(x)).values
-    dep = df_bs["accumulatedDepreciationAmortizationPPE"].apply(lambda x: int(x)).values
-    sga = df_is["sellingGeneralAndAdministrative"].apply(lambda x: int(x)).values
-    tl = df_bs["totalLiabilities"].apply(lambda x: int(x)).values
-    icfo = df_is["netIncomeFromContinuingOperations"].apply(lambda x: int(x)).values
-    cfo = df_cf["operatingCashflow"].apply(lambda x: int(x)).values
+    ta = df_bs["totalAssets"].apply(lambda x: 0 if x else int(x)).values
+    dep = (
+        df_bs["accumulatedDepreciationAmortizationPPE"]
+        .apply(lambda x: 0 if x else int(x))
+        .values
+    )
+    sga = (
+        df_is["sellingGeneralAndAdministrative"]
+        .apply(lambda x: 0 if x else int(x))
+        .values
+    )
+    tl = df_bs["totalLiabilities"].apply(lambda x: 0 if x else int(x)).values
+    icfo = (
+        df_is["netIncomeFromContinuingOperations"]
+        .apply(lambda x: 0 if x else int(x))
+        .values
+    )
+    cfo = df_cf["operatingCashflow"].apply(lambda x: 0 if x else int(x)).values
     ratios: Dict = {}
     ratios["DSRI"] = (ar[0] / sales[0]) / (ar[1] / sales[1])
     ratios["GMI"] = ((sales[1] - cogs[1]) / sales[1]) / (
