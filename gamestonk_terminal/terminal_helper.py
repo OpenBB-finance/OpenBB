@@ -23,7 +23,6 @@ from tabulate import tabulate
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import thought_of_the_day as thought
-from gamestonk_terminal.helper_funcs import try_except
 
 # import git
 
@@ -358,7 +357,6 @@ def about_us():
     )
 
 
-@try_except
 def bootup():
     # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
     if sys.platform == "win32":
@@ -378,7 +376,10 @@ def bootup():
 
     if gtff.ENABLE_THOUGHTS_DAY:
         print("-------------------")
-        thought.get_thought_of_the_day()
+        try:
+            thought.get_thought_of_the_day()
+        except Exception as e:
+            print(e)
         print("")
 
 
