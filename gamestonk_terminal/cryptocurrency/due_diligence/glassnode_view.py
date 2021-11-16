@@ -153,7 +153,7 @@ def display_exchange_balances(
         else:
             plt.plot(
                 df_balance.index, df_balance["stacked"] / 1000, c="k"
-            )  # in thousands
+            )
 
         ax2 = ax1.twinx()
 

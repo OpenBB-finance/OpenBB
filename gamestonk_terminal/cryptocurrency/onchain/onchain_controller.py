@@ -847,9 +847,6 @@ Onchain:
 Eth Gas Station:
     gwei              check current eth gas fees
 
-Glassnode:
-    active            check active addresses in a certain blockchain
-
 Whale Alert:
     whales            check crypto wales transactions
 """
