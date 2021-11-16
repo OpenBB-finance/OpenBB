@@ -249,7 +249,9 @@ def display_government_sells(
     df_gov["TransactionDate"] = pd.to_datetime(df_gov["TransactionDate"])
 
     df_gov = df_gov[df_gov["TransactionDate"] > start_date].dropna()
-
+    df_gov["Range"] = df_gov["Range"].apply(
+        lambda x: "$5,000,001-$5,000,001" if x == ">$5,000,000" else x
+    )
     df_gov["min"] = df_gov["Range"].apply(
         lambda x: x.split("-")[0]
         .strip("$")
@@ -288,7 +290,8 @@ def display_government_sells(
             df_gov.groupby("Ticker")["upper"]
             .sum()
             .div(1000)
-            .sort_values(ascending=False)
+            .sort_values(ascending=True)
+            .abs()
             .head(n=num)
         )
         if gtff.USE_TABULATE_DF:
@@ -301,7 +304,7 @@ def display_government_sells(
             print(df.to_string())
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-    df_gov.groupby("Ticker")["lower"].sum().div(1000).sort_values().abs().head(
+    df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values().abs().head(
         n=num
     ).plot(kind="bar", rot=0, ax=ax)
     ax.set_ylabel("Amount ($1k)")
