@@ -147,13 +147,15 @@ def display_government_buys(
         return
 
     df_gov = df_gov.sort_values("TransactionDate", ascending=False)
-
     start_date = datetime.now() - timedelta(days=past_transactions_months * 30)
 
     df_gov["TransactionDate"] = pd.to_datetime(df_gov["TransactionDate"])
 
     df_gov = df_gov[df_gov["TransactionDate"] > start_date].dropna()
-
+    # Catch bug where error shown for purchase of >5,000,000
+    df_gov["Range"] = df_gov["Range"].apply(
+        lambda x: "$5,000,001-$5,000,001" if x == ">$5,000,000" else x
+    )
     df_gov["min"] = df_gov["Range"].apply(
         lambda x: x.split("-")[0].strip("$").replace(",", "").strip()
     )
@@ -162,7 +164,6 @@ def display_government_buys(
         if "-" in x
         else x.strip("$").replace(",", "")
     )
-
     df_gov["lower"] = df_gov[["min", "max", "Transaction"]].apply(
         lambda x: float(x["min"])
         if x["Transaction"] == "Purchase"
