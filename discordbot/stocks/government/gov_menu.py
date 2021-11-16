@@ -291,5 +291,6 @@ class GovernmentCommands(discord.ext.commands.Cog):
             )
             await ctx.send(embed=embed)
 
+
 def setup(bot: discord.ext.commands.Bot):
     gst_bot.add_cog(GovernmentCommands(bot))
