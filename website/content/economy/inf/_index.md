@@ -2,7 +2,7 @@
 usage: inf [-s START] [--raw] [-h] [--export {png,jpg,pdf,svg}]
 ```
 
-Get historical Inflation for United States[Source: Alpha Vantage]
+Historical US inflation data. https://www.alphavantage.co/documentation/
 
 ```
 optional arguments:
@@ -13,3 +13,4 @@ optional arguments:
   --export {png,jpg,pdf,svg}
                         Export or figure into png, jpg, pdf, svg (default: )
 ```
+<img size="1400" alt="Feature Screenshot - inf" src="https://user-images.githubusercontent.com/85772166/141945435-94adccb5-cce1-4840-b09c-080126773ecb.png">
