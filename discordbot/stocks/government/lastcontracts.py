@@ -38,7 +38,6 @@ async def lastcontracts_command(ctx, past_transactions_days="", num=""):
         df_contracts["Date"] = pd.to_datetime(df_contracts["Date"])
 
         df_contracts.drop_duplicates(inplace=True)
-        df = df_contracts.copy()
         df_contracts = df_contracts[
             df_contracts["Date"].isin(
                 df_contracts["Date"].unique()[:past_transactions_days]
