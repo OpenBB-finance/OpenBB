@@ -35,7 +35,22 @@ def display_active_addresses(
     if df_addresses.empty:
         print("Error in glassnode request")
     else:
-        plot_data(df_addresses, asset)
+        _, main_ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+
+        main_ax.plot(df_addresses.index, df_addresses["v"] / 1_000, linewidth=1.5)
+        main_ax.grid(True)
+
+        main_ax.set_title(f"Active {asset} addresses over time")
+        main_ax.set_ylabel("Addresses [thousands]")
+        main_ax.set_xlabel("Date")
+        main_ax.set_xlim(df_addresses.index[0], df_addresses.index[-1])
+
+        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
+        plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+        plt.gcf().autofmt_xdate()
+
+        plt.show()
+
     print("")
 
     export_data(
@@ -77,6 +92,8 @@ def display_exchange_net_position_change(
     else:
         _, ax1 = plt.subplots(figsize=(25, 7))
 
+        ax1.grid()
+
         ax1.fill_between(
             df_addresses[df_addresses["v"] < 0].index,
             df_addresses[df_addresses["v"] < 0]["v"].values / 1e3,
@@ -93,10 +110,10 @@ def display_exchange_net_position_change(
         ax1.set_ylabel(
             f"30d change of {asset} supply held in exchange wallets [thousands]"
         )
-        plt.title(
+        ax1.set_title(
             f"{asset}: Exchange Net Position Change - {'all exchanges' if exchange == 'aggregated' else exchange}"
         )
-        plt.xlim([df_addresses.index[0], df_addresses.index[-1]])
+        ax1.set_xlim(df_addresses.index[0], df_addresses.index[-1])
         plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%m-%Y"))
         plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=3))
         plt.gcf().autofmt_xdate()
@@ -149,21 +166,21 @@ def display_exchange_balances(
     else:
         _, ax1 = plt.subplots(figsize=(25, 7))
         if percentage:
-            plt.plot(df_balance.index, df_balance["percentage"] * 100, c="k")
+            ax1.plot(df_balance.index, df_balance["percentage"] * 100, c="k")
         else:
-            plt.plot(df_balance.index, df_balance["stacked"] / 1000, c="k")
+            ax1.plot(df_balance.index, df_balance["stacked"] / 1000, c="k")
 
         ax2 = ax1.twinx()
 
-        plt.grid()
-        plt.plot(df_balance.index, df_balance["price"], c="orange")
+        ax1.grid()
+        ax2.plot(df_balance.index, df_balance["price"], c="orange")
 
         ax1.set_ylabel(f"{asset} units [{'%' if percentage else 'thousands'}]")
         ax2.set_ylabel(f"{asset} price [$]", c="orange")
-        plt.title(
+        ax1.set_title(
             f"{asset}: Total Balance in {'all exchanges' if exchange == 'aggregated' else exchange}"
         )
-        plt.xlim([df_balance.index[0], df_balance.index[-1]])
+        ax1.set_xlim(df_balance.index[0], df_balance.index[-1])
         plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%m-%Y"))
         plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=3))
         plt.gcf().autofmt_xdate()
@@ -178,21 +195,3 @@ def display_exchange_balances(
         "eb",
         df_balance,
     )
-
-
-def plot_data(df_addresses, asset):
-    _, main_ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-
-    main_ax.plot(df_addresses.index, df_addresses["v"], linewidth=1.5)
-    main_ax.grid(True)
-
-    main_ax.set_title(f"Active {asset} addresses over time")
-    main_ax.set_ylabel("Addresses")
-    main_ax.set_xlabel("Date")
-    plt.xlim([df_addresses.index[0], df_addresses.index[-1]])
-
-    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
-    plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=1))
-    plt.gcf().autofmt_xdate()
-
-    plt.show()
