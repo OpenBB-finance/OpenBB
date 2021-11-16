@@ -104,7 +104,6 @@ def get_key_metrics(ticker: str) -> pd.DataFrame:
             "PEG ratio",
             "Price to book ratio",
             "Return on equity TTM",
-            "Payout ratio",
             "Price to sales ratio TTM",
             "Dividend yield",
             "50 day moving average",
