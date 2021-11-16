@@ -2,7 +2,7 @@
 usage: inf [-s START] [--raw] [-h] [--export {png,jpg,pdf,svg}]
 ```
 
-Get historical CPI numbers for the United States. Source: https://www.alphavantage.co/documentation/
+Get historical inflation numbers for the United States. Source: https://www.alphavantage.co/documentation/
 
 ```
 optional arguments:
