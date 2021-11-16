@@ -9,6 +9,8 @@ The Big Mac PPP exchange rate between two countries is obtained by dividing the 
 
 Source: https://data.nasdaq.com/data/ECONOMIST-the-economist-big-mac-index
 
+List of country codes for this feature: https://static.quandl.com/ECONOMIST_Descriptions/economist_country_codes.csv
+
 ```
 optional arguments:
   -c COUNTRIES, --countries COUNTRIES
