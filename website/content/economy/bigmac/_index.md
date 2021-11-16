@@ -5,6 +5,8 @@ The notion that in the long run exchange rates should move towards the rate that
 
 Big Mac prices are from McDonald’s directly and from reporting around the world; exchange rates are from Thomson Reuters; GDP and population data used to calculate the euro area averages are from Eurostat and GDP per person data are from the IMF World Economic Outlook reports.
 
+The Big Mac PPP exchange rate between two countries is obtained by dividing the price of a Big Mac in one country (in its currency) by the price of a Big Mac in another country (in its currency).
+
 Source: https://data.nasdaq.com/data/ECONOMIST-the-economist-big-mac-index
 
 ```
