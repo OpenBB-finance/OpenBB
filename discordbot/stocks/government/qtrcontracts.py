@@ -95,7 +95,7 @@ async def qtrcontracts_command(ctx, num="", analysis=""):
             image_link = uploaded_image.link
             if cfg.DEBUG:
                 print(f"Image URL: {image_link}")
-            title = f"Stocks: [quiverquant.com] Government contracts"
+            title = "Stocks: [quiverquant.com] Government contracts"
             embed = discord.Embed(
                 title=title, description=description, colour=cfg.COLOR
             )
