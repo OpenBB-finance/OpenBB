@@ -151,9 +151,7 @@ def display_exchange_balances(
         if percentage:
             plt.plot(df_balance.index, df_balance["percentage"] * 100, c="k")
         else:
-            plt.plot(
-                df_balance.index, df_balance["stacked"] / 1000, c="k"
-            )
+            plt.plot(df_balance.index, df_balance["stacked"] / 1000, c="k")
 
         ax2 = ax1.twinx()
 
