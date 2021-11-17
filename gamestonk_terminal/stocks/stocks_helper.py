@@ -681,6 +681,9 @@ def quote(other_args: List[str], s_ticker: str):
     )
 
     if s_ticker:
+        #CB: Testing
+        print("if s_ticker logic")
+
         parser.add_argument(
             "-t",
             "--ticker",
@@ -690,6 +693,9 @@ def quote(other_args: List[str], s_ticker: str):
             help="Stock ticker",
         )
     else:
+        #CB: Testing
+        print("else logic")
+
         parser.add_argument(
             "-t",
             "--ticker",
@@ -761,6 +767,10 @@ def quote(other_args: List[str], s_ticker: str):
                 stralign="right",
             )
         )
+
+        #CB: Test grabbing one of the rows
+        print("testing quote_df Price",quote_df["Price"])
+
     except KeyError:
         print(f"Invalid stock ticker: {ns_parser.s_ticker}")
 
