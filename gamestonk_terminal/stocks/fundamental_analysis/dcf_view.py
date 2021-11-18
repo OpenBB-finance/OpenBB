@@ -116,9 +116,6 @@ class CreateExcelFA:
         table = soup.find(
             "table", attrs={"class": "FinancialTable_table_financial__1RhYq"}
         )
-        if table is None:
-            print("Invalid data returned.")
-            return pd.DataFrame()
         head = table.find("thead")
         columns = head.find_all("th")
 
