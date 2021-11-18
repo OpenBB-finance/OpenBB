@@ -21,7 +21,7 @@ async def lobbying_command(ctx, ticker="", num=""):
         else:
             if not num.lstrip("-").isnumeric():
                 raise Exception("Number has to be an integer")
-            num = float(num)
+            num = int(num)
 
         # Retrieve Data
         df_lobbying = quiverquant_model.get_government_trading(

@@ -22,7 +22,7 @@ async def qtrcontracts_command(ctx, num="", analysis=""):
         else:
             if not num.lstrip("-").isnumeric():
                 raise Exception("Number has to be an integer")
-            num = float(num)
+            num = int(num)
 
         possible_args = ["total", "upmom", "downmom"]
         if analysis == "":

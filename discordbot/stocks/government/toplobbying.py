@@ -22,7 +22,7 @@ async def toplobbying_command(ctx, num="", raw=""):
         else:
             if not num.lstrip("-").isnumeric():
                 raise Exception("Number has to be an integer")
-            num = float(num)
+            num = int(num)
 
         if raw == "false" or raw == "False" or raw == "FALSE" or raw == "":
             raw = False
@@ -69,7 +69,7 @@ async def toplobbying_command(ctx, num="", raw=""):
         embed.set_image(url=image_link)
         os.remove("ta_toplobbying.png")
 
-        await ctx.send(embed)
+        await ctx.send(embed=embed)
 
     except Exception as e:
         embed = discord.Embed(

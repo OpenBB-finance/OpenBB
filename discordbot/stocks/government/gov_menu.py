@@ -6,6 +6,7 @@ import config_discordbot as cfg
 from discordbot import gst_bot
 
 from stocks.government.lasttrades import lasttrades_command
+from stocks.government.topbuys import topbuys_command
 from stocks.government.topsells import topsells_command
 from stocks.government.lastcontracts import lastcontracts_command
 from stocks.government.qtrcontracts import qtrcontracts_command
@@ -42,6 +43,30 @@ class GovernmentCommands(discord.ext.commands.Cog):
             Enter name of a representative
         """
         await lasttrades_command(ctx, gov_type, past_transactions_days, representative)
+
+    @discord.ext.commands.command(name="stocks.gov.topbuys")
+    async def topbuys(
+        self,
+        ctx: discord.ext.commands.Context,
+        gov_type="",
+        past_transactions_months="",
+        num="",
+        raw="",
+    ):
+        """Displays most purchased stocks by the congress/senate/house [quiverquant.com]
+
+        Parameters
+        -----------
+        gov_type: str
+            Possible arguments: congress, senate & house
+        past_transactions_months: int
+            Positive number of past transaction months
+        num: int
+            Number of most sold stocks to retrieve
+        raw: boolean
+            True or false
+        """
+        await topbuys_command(ctx, gov_type, past_transactions_months, num, raw)
 
     @discord.ext.commands.command(name="stocks.gov.topsells")
     async def topsells(
@@ -195,19 +220,21 @@ class GovernmentCommands(discord.ext.commands.Cog):
         text = (
             "0️⃣ !stocks.gov.lasttrades <GOV_TYPE> <PAST_TRANSACTION_DAYS> "
             "<REPRESENTATIVE>\n"
-            "1️⃣ !stocks.gov.topsells <GOV_TYPE> <PAST_TRANSACTION_MONTHS>"
+            "1️⃣ !stocks.gov.topbuys <GOV_TYPE> <PAST_TRANSACTION_MONTHS>"
             "<NUM> <RAW>\n"
-            "2️⃣ !stocks.gov.lastcontracts <PAST_TRANSACTION_DAYS> <NUM>\n"
-            "3️⃣ !stocks.gov.qtrcontracts <ANALYSIS> <NUM>\n"
-            "4️⃣ !stocks.gov.toplobbying <NUM> <RAW>\n"
+            "2️⃣ !stocks.gov.topsells <GOV_TYPE> <PAST_TRANSACTION_MONTHS>"
+            "<NUM> <RAW>\n"
+            "3️⃣ !stocks.gov.lastcontracts <PAST_TRANSACTION_DAYS> <NUM>\n"
+            "4️⃣ !stocks.gov.qtrcontracts <ANALYSIS> <NUM>\n"
+            "5️⃣ !stocks.gov.toplobbying <NUM> <RAW>\n"
         )
         if ticker:
             text += (
-                f"5️⃣ !stocks.gov.gtrades {ticker} <GOV_TYPE> <PAST_TRANSACTION_MONTHS>"
+                f"6️⃣ !stocks.gov.gtrades {ticker} <GOV_TYPE> <PAST_TRANSACTION_MONTHS>"
                 f"<RAW>\n"
-                f"6️⃣ !stocks.gov.contracts {ticker} <PAST_TRANSACTION_DAYS> <RAW>\n"
-                f"7️⃣ !stocks.gov.histcont {ticker}\n"
-                f"8️⃣ !stocks.gov.lobbying {ticker} <NUM>\n"
+                f"7️⃣ !stocks.gov.contracts {ticker} <PAST_TRANSACTION_DAYS> <RAW>\n"
+                f"8️⃣ !stocks.gov.histcont {ticker}\n"
+                f"9️⃣ !stocks.gov.lobbying {ticker} <NUM>\n"
             )
         else:
             text += (
@@ -226,7 +253,7 @@ class GovernmentCommands(discord.ext.commands.Cog):
         emoji_list = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣"]
 
         if ticker:
-            emoji_list += ["5️⃣", "6️⃣", "7️⃣", "8️⃣"]
+            emoji_list += ["5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"]
 
         for emoji in emoji_list:
             await msg.add_reaction(emoji)
@@ -245,34 +272,38 @@ class GovernmentCommands(discord.ext.commands.Cog):
             elif reaction.emoji == "1️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 1")
-                await topsells_command(ctx)
+                await topbuys_command(ctx)
             elif reaction.emoji == "2️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 2")
-                await lastcontracts_command(ctx)
+                await topsells_command(ctx)
             elif reaction.emoji == "3️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 3")
-                await qtrcontracts_command(ctx)
+                await lastcontracts_command(ctx)
             elif reaction.emoji == "4️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 4")
-                await toplobbying_command(ctx, ticker)
+                await qtrcontracts_command(ctx)
             elif reaction.emoji == "5️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 5")
-                await gtrades_command(ctx, ticker)
+                await toplobbying_command(ctx, ticker)
             elif reaction.emoji == "6️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 6")
-                await contracts_command(ctx, ticker)
+                await gtrades_command(ctx, ticker)
             elif reaction.emoji == "7️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 7")
-                await histcont_command(ctx, ticker)
+                await contracts_command(ctx, ticker)
             elif reaction.emoji == "8️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 8")
+                await histcont_command(ctx, ticker)
+            elif reaction.emoji == "9️⃣":
+                if cfg.DEBUG:
+                    print("Reaction selected: 9")
                 await lobbying_command(ctx, ticker)
 
             for emoji in emoji_list:

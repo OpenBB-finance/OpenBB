@@ -11,15 +11,15 @@ from gamestonk_terminal.stocks.government import quiverquant_model
 from gamestonk_terminal.helper_funcs import plot_autoscale
 
 
-async def topsells_command(
+async def topbuys_command(
     ctx, gov_type="", past_transactions_months="", num="", raw=""
 ):
-    """Displays most sold stocks by the congress/senate/house [quiverquant.com]"""
+    """Displays most purchased stocks by the congress/senate/house [quiverquant.com]"""
     try:
         # Debug user input
         if cfg.DEBUG:
             print(
-                f"!stocks.gov.topsells {gov_type} {past_transactions_months} {num} {raw}"
+                f"!stocks.gov.topbuys {gov_type} {past_transactions_months} {num} {raw}"
             )
 
         if past_transactions_months == "":
@@ -54,41 +54,28 @@ async def topsells_command(
         # Retrieve Data
         df_gov = quiverquant_model.get_government_trading(gov_type)
 
-        # Output Data
         if df_gov.empty:
-            raise Exception(f"No {gov_type} trading data found\n")
+            print(f"No {gov_type} trading data found\n")
+            return
 
         df_gov = df_gov.sort_values("TransactionDate", ascending=False)
-
         start_date = datetime.now() - timedelta(days=past_transactions_months * 30)
 
         df_gov["TransactionDate"] = pd.to_datetime(df_gov["TransactionDate"])
 
         df_gov = df_gov[df_gov["TransactionDate"] > start_date].dropna()
-
+        # Catch bug where error shown for purchase of >5,000,000
         df_gov["Range"] = df_gov["Range"].apply(
             lambda x: "$5,000,001-$5,000,001" if x == ">$5,000,000" else x
         )
-
         df_gov["min"] = df_gov["Range"].apply(
-            lambda x: x.split("-")[0]
-            .strip("$")
-            .replace(",", "")
-            .strip()
-            .replace(">$", "")
-            .strip()
+            lambda x: x.split("-")[0].strip("$").replace(",", "").strip()
         )
         df_gov["max"] = df_gov["Range"].apply(
-            lambda x: x.split("-")[1]
-            .replace(",", "")
-            .strip()
-            .strip("$")
-            .replace(">$", "")
-            .strip()
+            lambda x: x.split("-")[1].replace(",", "").strip().strip("$")
             if "-" in x
-            else x.strip("$").replace(",", "").replace(">$", "").strip()
+            else x.strip("$").replace(",", "")
         )
-
         df_gov["lower"] = df_gov[["min", "max", "Transaction"]].apply(
             lambda x: float(x["min"])
             if x["Transaction"] == "Purchase"
@@ -108,12 +95,11 @@ async def topsells_command(
                 df_gov.groupby("Ticker")["upper"]
                 .sum()
                 .div(1000)
-                .sort_values(ascending=True)
-                .abs()
+                .sort_values(ascending=False)
                 .head(n=num)
             )
             embed = discord.Embed(
-                title=f"Stocks: [quiverquant.com] Top sells for {gov_type.upper()}",
+                title=f"Stocks: [quiverquant.com] Top purchases for {gov_type.upper()}",
                 description="```" + df.to_string() + "```",
                 colour=cfg.COLOR,
             )
@@ -124,36 +110,37 @@ async def topsells_command(
             await ctx.send(embed=embed)
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-        df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values().abs().head(
-            n=num
-        ).plot(kind="bar", rot=0, ax=ax)
-        ax.set_ylabel("Amount ($1k)")
+        df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values(
+            ascending=False
+        ).head(n=num).plot(kind="bar", rot=0, ax=ax)
+
+        ax.set_ylabel("Amount [1k $]")
         ax.set_title(
-            f"{num} most sold stocks over last {past_transactions_months} months"
-            f" (upper bound) for {gov_type}"
+            f"Top {num} purchased stocks over last {past_transactions_months} "
+            f"months (upper bound) for {gov_type.upper()}"
         )
         plt.gcf().axes[0].yaxis.get_major_formatter().set_scientific(False)
         fig.tight_layout()
 
-        plt.savefig("gov_topsells.png")
-        uploaded_image = gst_imgur.upload_image("gov_topsells.png", title="something")
+        plt.savefig("gov_topbuys.png")
+        uploaded_image = gst_imgur.upload_image("gov_topbuys.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
             print(f"Image URL: {image_link}")
-        title = f"Stocks: [quiverquant.com] Top sells for {gov_type.upper()}"
+        title = f"Stocks: [quiverquant.com] Top purchases for {gov_type.upper()}"
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
         )
         embed.set_image(url=image_link)
-        os.remove("gov_topsells.png")
+        os.remove("gov_topbuys.png")
 
         await ctx.send(embed=embed)
 
     except Exception as e:
         embed = discord.Embed(
-            title=f"ERROR Stocks: [quiverquant.com] Top sells for {gov_type.upper()}",
+            title=f"ERROR Stocks: [quiverquant.com] Top purchases for {gov_type.upper()}",
             colour=cfg.COLOR,
             description=e,
         )

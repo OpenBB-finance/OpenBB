@@ -25,7 +25,7 @@ async def lastcontracts_command(ctx, past_transactions_days="", num=""):
         else:
             if not num.lstrip("-").isnumeric():
                 raise Exception("Number has to be an integer")
-            num = float(num)
+            num = int(num)
 
         df_contracts = quiverquant_model.get_government_trading("contracts")
 

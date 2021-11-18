@@ -22,7 +22,7 @@ async def contracts_command(ctx, ticker="", past_transaction_days="", raw=""):
         else:
             if not past_transaction_days.lstrip("-").isnumeric():
                 raise Exception("Number has to be an integer")
-            past_transaction_days = float(past_transaction_days)
+            past_transaction_days = int(past_transaction_days)
 
         if raw == "false" or raw == "False" or raw == "FALSE" or raw == "":
             raw = False

@@ -21,7 +21,7 @@ async def lasttrades_command(
         else:
             if not past_transactions_days.lstrip("-").isnumeric():
                 raise Exception("Number has to be an integer")
-            past_days = float(past_transactions_days)
+            past_days = int(past_transactions_days)
 
         possible_args = ["congress", "senate", "house"]
         if gov_type == "":
