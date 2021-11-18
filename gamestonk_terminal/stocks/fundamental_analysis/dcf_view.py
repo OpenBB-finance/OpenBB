@@ -117,7 +117,8 @@ class CreateExcelFA:
             "table", attrs={"class": "FinancialTable_table_financial__1RhYq"}
         )
         if table is None:
-            raise ValueError("The ticker given did not have the proper table.")
+            print("Invalid data returned.")
+            return pd.DataFrame()
         head = table.find("thead")
         columns = head.find_all("th")
 
