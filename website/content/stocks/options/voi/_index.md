@@ -2,7 +2,7 @@
 usage: voi [-v MIN_VOL] [-m MIN_SP] [-M MAX_SP] [-s {tr,yf}] [--export {csv,json,xlsx}] [-h]
 ```
 
-Plots Volume + Open Interest of calls vs puts.
+Plots volume and open interest of calls vs puts for the selected expiration date.
 
 ```
 optional arguments:
@@ -18,3 +18,4 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
+<img size="1400" alt="Feature Screenshot - voi" src="https://user-images.githubusercontent.com/85772166/142511153-b0aa45ba-0692-45f5-8e52-447dbf08ef74.png">
