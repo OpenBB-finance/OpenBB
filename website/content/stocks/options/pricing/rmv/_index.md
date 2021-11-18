@@ -2,7 +2,7 @@
 usage: rmv [-p] [-c] [-h]
 ```
 
-remove a stock price from the list
+Removes one or all entries from the list.
 
 ```
 optional arguments:
