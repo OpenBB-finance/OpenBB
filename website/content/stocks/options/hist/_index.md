@@ -2,7 +2,7 @@
 usage: hist [-s STRIKE] [-p] [--chain CHAIN_ID] [-r,--raw] [--export {csv,json,xlsx}] [--source SOURCE] [-h]
 ```
 
-SHows the price history for a specified strike price from the loaded options chain.
+The price history for a specified strike price from the loaded options chain.
 
 ```
 optional arguments:
