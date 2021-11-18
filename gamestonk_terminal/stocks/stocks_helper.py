@@ -685,7 +685,7 @@ def quote(other_args: List[str], s_ticker: str):
 
     if s_ticker:
         #CB: Testing
-        print("if s_ticker logic")
+        #print("if s_ticker logic")
 
         parser.add_argument(
             "-t",
@@ -697,7 +697,7 @@ def quote(other_args: List[str], s_ticker: str):
         )
     else:
         #CB: Testing
-        print("else logic")
+        #print("else logic")
 
         parser.add_argument(
             "-t",
@@ -707,6 +707,18 @@ def quote(other_args: List[str], s_ticker: str):
             required=True,
             help="Stock ticker",
         )
+
+    # CB: Try new argument for price    
+    parser.add_argument(
+        "-p",
+        "--price",
+        action="store_true",
+        dest="price_only",
+        default=False,
+        help="Price only",
+    )
+
+
 
     try:
         # For the case where a user uses: 'quote BB'
@@ -721,6 +733,10 @@ def quote(other_args: List[str], s_ticker: str):
         return
 
     ticker = yf.Ticker(ns_parser.s_ticker)
+
+    # CB: If price only option, return immediate market price quote.
+    if ns_parser.price_only: 
+        return print("Price of",ns_parser.s_ticker,float(ticker.info["regularMarketPrice"]))
 
     try:
         quote_df = pd.DataFrame(
@@ -759,7 +775,7 @@ def quote(other_args: List[str], s_ticker: str):
         quote_df["Volume"] = quote_df["Volume"].apply(lambda x: f"{x:,}")
 
         #CB: Test grabbing one of the rows
-        print("testing ticker",float(ticker.info["regularMarketPrice"]))
+        #print("testing ticker",ns_parser.s_ticker,float(ticker.info["regularMarketPrice"]))
 
         quote_df = quote_df.set_index("Symbol")
 
