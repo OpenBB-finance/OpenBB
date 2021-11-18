@@ -2,7 +2,7 @@
 usage: parity [-p] [-a] [-m MINIMUM] [-M MAXIMUM] [-h]
 ```
 
-An advanced strategy that seeks arbitrage opportunites in put-call spreads, relative to the forward underlying asset price; put-call parity defines the relationship between calls, puts and the underlying futures contract.
+An advanced strategy that seeks arbitrage opportunites in put-call spreads relative to the forward underlying asset price; put-call parity defines the relationship between calls, puts and the underlying futures contract.
 
 This principle requires that the puts and calls are the same strike, same expiration and have the same underlying futures contract.  The put call relationship is highly correlated, so if put call parity is violated, an arbitrage opportunity exists.
 
