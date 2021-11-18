@@ -8,7 +8,7 @@ from tests.helpers import check_print
 
 
 class TestDCFView(unittest.TestCase):
-    @check_print(assert_in="Analysis ran for")
+    @check_print(assert_in="Analysis")
     @vcr.use_cassette(
         "tests/cassettes/test_fa/dcf_view.yaml",
         record_mode="new_episodes",
