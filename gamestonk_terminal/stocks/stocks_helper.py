@@ -467,9 +467,6 @@ def load(
             f"Loading {s_intraday} {ns_parser.s_ticker.upper()} stock "
             f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis.\n"
         )
-        # CB: Test df, s_ticker
-        print("DF",df_stock_candidate)
-        print("s_ticker",ns_parser.s_ticker)
 
         return [
             ns_parser.s_ticker.upper(),
@@ -684,8 +681,6 @@ def quote(other_args: List[str], s_ticker: str):
     )
 
     if s_ticker:
-        #CB: Testing
-        #print("if s_ticker logic")
 
         parser.add_argument(
             "-t",
@@ -696,8 +691,6 @@ def quote(other_args: List[str], s_ticker: str):
             help="Stock ticker",
         )
     else:
-        #CB: Testing
-        #print("else logic")
 
         parser.add_argument(
             "-t",
@@ -708,7 +701,7 @@ def quote(other_args: List[str], s_ticker: str):
             help="Stock ticker",
         )
 
-    # CB: Try new argument for price    
+    # Price only option.    
     parser.add_argument(
         "-p",
         "--price",
@@ -734,7 +727,7 @@ def quote(other_args: List[str], s_ticker: str):
 
     ticker = yf.Ticker(ns_parser.s_ticker)
 
-    # CB: If price only option, return immediate market price quote.
+    # If price only option, return immediate market price quote.
     if ns_parser.price_only: 
         return print("Price of",ns_parser.s_ticker,float(ticker.info["regularMarketPrice"]))
 
@@ -773,9 +766,6 @@ def quote(other_args: List[str], s_ticker: str):
         ]:
             quote_df[c] = quote_df[c].apply(lambda x: f"{x:.2f}")
         quote_df["Volume"] = quote_df["Volume"].apply(lambda x: f"{x:,}")
-
-        #CB: Test grabbing one of the rows
-        #print("testing ticker",ns_parser.s_ticker,float(ticker.info["regularMarketPrice"]))
 
         quote_df = quote_df.set_index("Symbol")
 
