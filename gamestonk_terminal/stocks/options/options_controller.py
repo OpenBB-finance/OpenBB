@@ -895,7 +895,7 @@ Current Expiry: {self.selected_date or None}
                 min_sp=ns_parser.min,
                 max_sp=ns_parser.max,
                 calls_only=ns_parser.calls,
-                puts_only=ns_parser.puts_only,
+                puts_only=ns_parser.puts,
                 export=ns_parser.export,
             )
         else:
