@@ -2,7 +2,7 @@ import os
 from matplotlib import pyplot as plt, dates as mdates
 import pandas as pd
 
-from gamestonk_terminal.cryptocurrency.due_diligence.bybt_model import (
+from gamestonk_terminal.cryptocurrency.due_diligence.coinglass_model import (
     get_open_interest_per_exchange,
 )
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
@@ -11,7 +11,7 @@ from gamestonk_terminal import config_plot as cfgPlot
 
 def display_open_interest(symbol: str, interval: int, export: str) -> None:
     """Displays open interest by exchange for a certain cryptocurrency
-    [Source: https://bybt.gitbook.io]
+    [Source: https://coinglass.github.io/API-Reference/]
 
     Parameters
     ----------
@@ -23,7 +23,7 @@ def display_open_interest(symbol: str, interval: int, export: str) -> None:
         Export dataframe data to csv,json,xlsx file"""
     df = get_open_interest_per_exchange(symbol, interval)
     if df.empty:
-        print("Error in glassnode request")
+        print("Error in coinglass request")
     else:
         plot_data(df, symbol)
     print("")

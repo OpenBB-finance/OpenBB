@@ -5,7 +5,10 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
+from gamestonk_terminal.helper_funcs import try_except
 
+
+@try_except
 def get_defipulse_index() -> pd.DataFrame:
     """Scrapes data from DeFi Pulse with all DeFi Pulse crypto protocols.
     [Source: https://defipulse.com/]
@@ -41,10 +44,7 @@ def get_defipulse_index() -> pd.DataFrame:
             "Change_1D",
         ],
     )
-    try:
-        df["Rank"] = df["Rank"].apply(lambda x: int(x.replace(".", "")))
-    except Exception as e:
-        print(e, "\n")
+    df["Rank"] = df["Rank"].apply(lambda x: int(x.replace(".", "")))
 
     df.drop("x", axis=1, inplace=True)
     return df

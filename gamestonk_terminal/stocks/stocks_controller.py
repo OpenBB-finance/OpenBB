@@ -18,6 +18,7 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.stocks_helper import (
     display_candle,
+    search,
     load,
     quote,
     process_candle,
@@ -52,6 +53,7 @@ class StocksController:
     ]
 
     CHOICES_COMMANDS = [
+        "search",
         "load",
         "quote",
         "candle",
@@ -113,6 +115,7 @@ What do you want to do?
     quit        quit to abandon the program
     reset       reset terminal and reload configs
 
+    search      search a specific stock ticker for analysis
     load        load a specific stock ticker for analysis
 
 {stock_text}
@@ -189,6 +192,44 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         return MENU_RESET
 
     # COMMANDS
+    @try_except
+    def call_search(self, other_args: List[str]):
+        """Process search command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="search",
+            description="Show companies matching the search query.",
+        )
+        parser.add_argument(
+            "-q",
+            "--query",
+            action="store",
+            dest="query",
+            type=str.lower,
+            required="-h" not in other_args,
+            help="The search term used to find company tickers.",
+        )
+        parser.add_argument(
+            "-a",
+            "--amount",
+            default=10,
+            type=int,
+            dest="amount",
+            help="Enter the number of Equities you wish to see in the Tabulate window.",
+        )
+
+        if other_args and "-q" not in other_args and "-h" not in other_args:
+            other_args.insert(0, "-q")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if not ns_parser:
+            return
+
+        search(query=ns_parser.query, amount=ns_parser.amount)
+
+    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         self.ticker, self.start, self.interval, self.stock = load(

@@ -16,6 +16,7 @@ from gamestonk_terminal.helper_funcs import (
     financials_colored_values,
     parse_known_args_and_warn,
     patch_pandas_text_adjustment,
+    try_except,
 )
 from gamestonk_terminal.stocks.fundamental_analysis import market_watch_model as mwm
 
@@ -23,6 +24,7 @@ from gamestonk_terminal.stocks.fundamental_analysis import market_watch_model as
 # pylint: disable=too-many-branches
 
 
+@try_except
 def income(other_args: List[str], ticker: str):
     """Market Watch ticker income statement
 
@@ -67,30 +69,27 @@ def income(other_args: List[str], ticker: str):
         help="Quarter fundamental data flag.",
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
 
-        df_financials = mwm.prepare_df_financials(ticker, "income", ns_parser.b_quarter)
+    df_financials = mwm.prepare_df_financials(ticker, "income", ns_parser.b_quarter)
 
-        if gtff.USE_COLOR:
-            df_financials = df_financials.applymap(financials_colored_values)
+    if gtff.USE_COLOR:
+        df_financials = df_financials.applymap(financials_colored_values)
 
-            patch_pandas_text_adjustment()
-            pd.set_option("display.max_colwidth", None)
-            pd.set_option("display.max_rows", None)
+        patch_pandas_text_adjustment()
+        pd.set_option("display.max_colwidth", None)
+        pd.set_option("display.max_rows", None)
 
-        if df_financials.empty:
-            print("Marketwatch does not yet provide financials for this ticker")
-        else:
-            print(df_financials.to_string(index=False))
-        print("")
-
-    except Exception as e:
-        print(e, "\n")
+    if df_financials.empty:
+        print("Marketwatch does not yet provide financials for this ticker")
+    else:
+        print(df_financials.to_string(index=False))
+    print("")
 
 
+@try_except
 def balance(other_args: List[str], ticker: str):
     """Market Watch ticker balance statement
 
@@ -147,32 +146,27 @@ def balance(other_args: List[str], ticker: str):
         help="Quarter fundamental data flag.",
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
 
-        df_financials = mwm.prepare_df_financials(
-            ticker, "balance", ns_parser.b_quarter
-        )
+    df_financials = mwm.prepare_df_financials(ticker, "balance", ns_parser.b_quarter)
 
-        if gtff.USE_COLOR:
-            df_financials = df_financials.applymap(financials_colored_values)
+    if gtff.USE_COLOR:
+        df_financials = df_financials.applymap(financials_colored_values)
 
-            patch_pandas_text_adjustment()
-            pd.set_option("display.max_colwidth", None)
-            pd.set_option("display.max_rows", None)
+        patch_pandas_text_adjustment()
+        pd.set_option("display.max_colwidth", None)
+        pd.set_option("display.max_rows", None)
 
-        if df_financials.empty:
-            print("Marketwatch does not yet provide financials for this ticker")
-        else:
-            print(df_financials.to_string(index=False))
-        print("")
-
-    except Exception as e:
-        print(e, "\n")
+    if df_financials.empty:
+        print("Marketwatch does not yet provide financials for this ticker")
+    else:
+        print(df_financials.to_string(index=False))
+    print("")
 
 
+@try_except
 def cash(other_args: List[str], ticker: str):
     """Market Watch ticker cash flow statement
 
@@ -225,30 +219,24 @@ def cash(other_args: List[str], ticker: str):
         help="Quarter fundamental data flag.",
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
 
-        df_financials = mwm.prepare_df_financials(
-            ticker, "cashflow", ns_parser.b_quarter
-        )
+    df_financials = mwm.prepare_df_financials(ticker, "cashflow", ns_parser.b_quarter)
 
-        if gtff.USE_COLOR:
-            df_financials = df_financials.applymap(financials_colored_values)
+    if gtff.USE_COLOR:
+        df_financials = df_financials.applymap(financials_colored_values)
 
-            patch_pandas_text_adjustment()
-            pd.set_option("display.max_colwidth", None)
-            pd.set_option("display.max_rows", None)
+        patch_pandas_text_adjustment()
+        pd.set_option("display.max_colwidth", None)
+        pd.set_option("display.max_rows", None)
 
-        if df_financials.empty:
-            print("Marketwatch does not yet provide financials for this ticker")
-        else:
-            print(df_financials.to_string(index=False))
-        print("")
-
-    except Exception as e:
-        print(e, "\n")
+    if df_financials.empty:
+        print("Marketwatch does not yet provide financials for this ticker")
+    else:
+        print(df_financials.to_string(index=False))
+    print("")
 
 
 def display_sean_seah_warnings(ticker: str, debug: bool = False):

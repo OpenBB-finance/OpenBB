@@ -3,13 +3,20 @@ __docformat__ = "numpy"
 
 # pylint: disable=R0904, C0302, W0622
 import argparse
+from typing import List
+from datetime import datetime, timedelta
 import pandas as pd
 from binance.client import Client
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
+    GLASSNODE_SUPPORTED_ASSETS,
+    GLASSNODE_SUPPORTED_EXCHANGES,
+)
 from gamestonk_terminal.cryptocurrency.due_diligence import (
-    bybt_view,
+    coinglass_view,
+    glassnode_view,
     pycoingecko_view,
     coinpaprika_view,
     binance_view,
@@ -23,6 +30,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     try_except,
     system_clear,
+    valid_date,
 )
 
 from gamestonk_terminal.cryptocurrency.due_diligence.coinpaprika_view import CURRENCIES
@@ -34,9 +42,7 @@ class DueDiligenceController:
 
     CHOICES = ["?", "cls", "help", "q", "quit", "chart"]
 
-    CHOICES_COMMANDS = [
-        "oi",
-    ]
+    CHOICES_COMMANDS = ["oi", "active", "change", "eb"]
 
     CHOICES += CHOICES_COMMANDS
 
@@ -97,7 +103,12 @@ Due Diligence:
     q           quit this menu, and shows back to main menu
     quit        quit to abandon the program
 
-Bybt:
+Glassnode:
+   active          active addresses
+   change          30d change of supply held on exchange wallets
+   eb              total balance held on exchanges (in percentage and units)
+
+Coinglass:
    oi              open interest per exchange
 """
         if self.source == "cp":
@@ -185,6 +196,247 @@ Coinbase:
         """Process Quit command - quit the program."""
         return True
 
+    def call_active(self, other_args: List[str]):
+        """Process active command"""
+
+        if self.symbol.upper() in GLASSNODE_SUPPORTED_ASSETS:
+            parser = argparse.ArgumentParser(
+                add_help=False,
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                prog="active",
+                description="""
+                    Display active blockchain addresses over time
+                    [Source: https://glassnode.org]
+                """,
+            )
+
+            parser.add_argument(
+                "-i",
+                "--interval",
+                dest="interval",
+                type=str,
+                help="Frequency interval. Default: 24h",
+                default="24h",
+                choices=["1h", "24h", "10m", "1w", "1month"],
+            )
+
+            parser.add_argument(
+                "-s",
+                "--since",
+                dest="since",
+                type=valid_date,
+                help="Initial date. Default: 2020-01-01",
+                default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
+            )
+
+            parser.add_argument(
+                "-u",
+                "--until",
+                dest="until",
+                type=valid_date,
+                help="Final date. Default: 2021-01-01",
+                default=(datetime.now()).strftime("%Y-%m-%d"),
+            )
+
+            parser.add_argument(
+                "--export",
+                choices=["csv", "json", "xlsx"],
+                default="",
+                type=str,
+                dest="export",
+                help="Export dataframe data to csv,json,xlsx file",
+            )
+
+            try:
+                ns_parser = parse_known_args_and_warn(parser, other_args)
+
+                if not ns_parser:
+                    return
+
+                glassnode_view.display_active_addresses(
+                    asset=self.symbol.upper(),
+                    interval=ns_parser.interval,
+                    since=int(datetime.timestamp(ns_parser.since)),
+                    until=int(datetime.timestamp(ns_parser.until)),
+                    export=ns_parser.export,
+                )
+
+            except Exception as e:
+                print(e)
+        else:
+            print("Glassnode source does not support this symbol\n")
+
+    def call_change(self, other_args: List[str]):
+        """Process change command"""
+
+        if self.symbol.upper() in GLASSNODE_SUPPORTED_ASSETS:
+            parser = argparse.ArgumentParser(
+                add_help=False,
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                prog="change",
+                description="""
+                    Display active blockchain addresses over time
+                    [Source: https://glassnode.org]
+                """,
+            )
+
+            parser.add_argument(
+                "-e",
+                "--exchange",
+                dest="exchange",
+                type=str,
+                help="Exchange to check change. Default: aggregated",
+                default="aggregated",
+                choices=GLASSNODE_SUPPORTED_EXCHANGES,
+            )
+
+            parser.add_argument(
+                "-i",
+                "--interval",
+                dest="interval",
+                type=str,
+                help="Frequency interval. Default: 24h",
+                default="24h",
+                choices=["1h", "24h", "10m", "1w", "1month"],
+            )
+
+            parser.add_argument(
+                "-s",
+                "--since",
+                dest="since",
+                type=valid_date,
+                help="Initial date. Default: 2019-01-01",
+                default="2019-01-01",
+            )
+
+            parser.add_argument(
+                "-u",
+                "--until",
+                dest="until",
+                type=valid_date,
+                help="Final date. Default: 2020-01-01",
+                default="2020-01-01",
+            )
+
+            parser.add_argument(
+                "--export",
+                choices=["csv", "json", "xlsx"],
+                default="",
+                type=str,
+                dest="export",
+                help="Export dataframe data to csv,json,xlsx file",
+            )
+
+            try:
+                ns_parser = parse_known_args_and_warn(parser, other_args)
+
+                if not ns_parser:
+                    return
+
+                glassnode_view.display_exchange_net_position_change(
+                    asset=self.symbol.upper(),
+                    interval=ns_parser.interval,
+                    exchange=ns_parser.exchange,
+                    since=int(datetime.timestamp(ns_parser.since)),
+                    until=int(datetime.timestamp(ns_parser.until)),
+                    export=ns_parser.export,
+                )
+
+            except Exception as e:
+                print(e)
+        else:
+            print("Glassnode source does not support this symbol\n")
+
+    def call_eb(self, other_args: List[str]):
+        """Process eb command"""
+
+        if self.symbol.upper() in GLASSNODE_SUPPORTED_ASSETS:
+            parser = argparse.ArgumentParser(
+                add_help=False,
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                prog="eb",
+                description="""
+                    Display active blockchain addresses over time
+                    [Source: https://glassnode.org]
+                """,
+            )
+
+            parser.add_argument(
+                "-p",
+                "--pct",
+                dest="percentage",
+                type=bool,
+                help="Show percentage instead of stacked value. Default: False",
+            )
+
+            parser.add_argument(
+                "-e",
+                "--exchange",
+                dest="exchange",
+                type=str,
+                help="Exchange to check change. Default: aggregated",
+                default="aggregated",
+                choices=GLASSNODE_SUPPORTED_EXCHANGES,
+            )
+
+            parser.add_argument(
+                "-i",
+                "--interval",
+                dest="interval",
+                type=str,
+                help="Frequency interval. Default: 24h",
+                default="24h",
+                choices=["1h", "24h", "10m", "1w", "1month"],
+            )
+
+            parser.add_argument(
+                "-s",
+                "--since",
+                dest="since",
+                type=valid_date,
+                help="Initial date. Default: 2019-01-01",
+                default="2019-01-01",
+            )
+
+            parser.add_argument(
+                "-u",
+                "--until",
+                dest="until",
+                type=valid_date,
+                help="Final date. Default: 2020-01-01",
+                default="2020-01-01",
+            )
+
+            parser.add_argument(
+                "--export",
+                choices=["csv", "json", "xlsx"],
+                default="",
+                type=str,
+                dest="export",
+                help="Export dataframe data to csv,json,xlsx file",
+            )
+
+            try:
+                ns_parser = parse_known_args_and_warn(parser, other_args)
+
+                if not ns_parser:
+                    return
+
+                glassnode_view.display_exchange_balances(
+                    asset=self.symbol.upper(),
+                    interval=ns_parser.interval,
+                    exchange=ns_parser.exchange,
+                    since=int(datetime.timestamp(ns_parser.since)),
+                    until=int(datetime.timestamp(ns_parser.until)),
+                    percentage=ns_parser.percentage,
+                    export=ns_parser.export,
+                )
+
+            except Exception as e:
+                print(e)
+        else:
+            print("Glassnode source does not support this symbol\n")
+
     def call_oi(self, other_args):
         """Process oi command"""
         if self.symbol:
@@ -195,7 +447,7 @@ Coinbase:
                 prog="oi",
                 description="""
                     Displays open interest by exchange for a certain asset
-                    [Source: https://bybt.gitbook.io]
+                    [Source: https://coinglass.github.io/API-Reference/]
                 """,
             )
 
@@ -224,7 +476,7 @@ Coinbase:
                 if not ns_parser:
                     return
 
-                bybt_view.display_open_interest(
+                coinglass_view.display_open_interest(
                     symbol=self.symbol.upper(),
                     interval=ns_parser.interval,
                     export=ns_parser.export,

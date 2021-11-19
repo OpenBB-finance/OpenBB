@@ -3,6 +3,8 @@ main:
   - name: stocks
     ref: "/stocks"
     sub:
+      - name: search
+        ref: "/stocks/search"
       - name: load
         ref: "/stocks/load"
       - name: candle
@@ -73,6 +75,8 @@ main:
             ref: "/stocks/dark_pool_shorts/spos"
           - name: psi
             ref: "/stocks/dark_pool_shorts/psi"
+          - name: volexch
+            ref: "/stocks/dark_pool_shorts/volexch"
       - name: screener
         ref: "/stocks/screener"
         sub:
@@ -668,6 +672,12 @@ main:
       - name: due diligence
         ref: "/cryptocurrency/due_diligence"
         sub:
+          - name: active
+            ref: "/cryptocurrency/due_diligence/active"
+          - name: change
+            ref: "/cryptocurrency/due_diligence/change"
+          - name: eb
+            ref: "/cryptocurrency/due_diligence/eb"
           - name: oi
             ref: "/cryptocurrency/due_diligence/oi"
           - name: info
@@ -715,8 +725,6 @@ main:
         sub:
           - name: gwei
             ref: "/cryptocurrency/onchain/gwei"
-          - name: active
-            ref: "/cryptocurrency/onchain/active"
       - name: nft
         ref: "/cryptocurrency/nft"
         sub:

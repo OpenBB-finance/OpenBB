@@ -12,6 +12,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     parse_known_args_and_warn,
     patch_pandas_text_adjustment,
+    try_except,
 )
 from gamestonk_terminal.stocks.insider.openinsider_model import (
     get_open_insider_link,
@@ -124,6 +125,7 @@ def green_highlight(values):
     return [f"{Fore.GREEN}{val}{Style.RESET_ALL}" for val in values]
 
 
+@try_except
 def print_insider_data(other_args: List[str], type_insider: str):
     """Print insider data
 
@@ -150,89 +152,80 @@ def print_insider_data(other_args: List[str], type_insider: str):
         help="Number of datarows to display",
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
 
-        response = requests.get(
-            f"http://openinsider.com/{d_open_insider[type_insider]}"
-        )
-        soup = BeautifulSoup(response.text, "html.parser")
-        table = soup.find("table", {"class": "tinytable"})
+    response = requests.get(f"http://openinsider.com/{d_open_insider[type_insider]}")
+    soup = BeautifulSoup(response.text, "html.parser")
+    table = soup.find("table", {"class": "tinytable"})
 
-        if not table:
-            print("No insider information found", "\n")
-            return
+    if not table:
+        print("No insider information found", "\n")
+        return
 
-        table_rows = table.find_all("tr")
+    table_rows = table.find_all("tr")
 
-        res = []
-        for tr in table_rows:
-            td = tr.find_all("td")
-            row = [tr.text.strip() for tr in td if tr.text.strip()]
-            res.append(row)
+    res = []
+    for tr in table_rows:
+        td = tr.find_all("td")
+        row = [tr.text.strip() for tr in td if tr.text.strip()]
+        res.append(row)
 
-        df = pd.DataFrame(res).dropna().head(n=ns_parser.num)
+    df = pd.DataFrame(res).dropna().head(n=ns_parser.num)
 
-        df.columns = [
-            "X",
-            "Filing Date",
-            "Trade Date",
-            "Ticker",
-            "Company Name",
-            "Industry" if type_insider == "lcb" else "Insider Name",
-            "Title",
-            "Trade Type",
-            "Price",
-            "Qty",
-            "Owned",
-            "Diff Own",
-            "Value",
-        ]
+    df.columns = [
+        "X",
+        "Filing Date",
+        "Trade Date",
+        "Ticker",
+        "Company Name",
+        "Industry" if type_insider == "lcb" else "Insider Name",
+        "Title",
+        "Trade Type",
+        "Price",
+        "Qty",
+        "Owned",
+        "Diff Own",
+        "Value",
+    ]
 
-        df["Filing Date"] = df["Filing Date"].apply(
-            lambda x: "\n".join(textwrap.wrap(x, width=10)) if isinstance(x, str) else x
-        )
-        df["Company Name"] = df["Company Name"].apply(
+    df["Filing Date"] = df["Filing Date"].apply(
+        lambda x: "\n".join(textwrap.wrap(x, width=10)) if isinstance(x, str) else x
+    )
+    df["Company Name"] = df["Company Name"].apply(
+        lambda x: "\n".join(textwrap.wrap(x, width=20)) if isinstance(x, str) else x
+    )
+    df["Title"] = df["Title"].apply(
+        lambda x: "\n".join(textwrap.wrap(x, width=10)) if isinstance(x, str) else x
+    )
+    if type_insider == "lcb":
+        df["Industry"] = df["Industry"].apply(
             lambda x: "\n".join(textwrap.wrap(x, width=20)) if isinstance(x, str) else x
         )
-        df["Title"] = df["Title"].apply(
-            lambda x: "\n".join(textwrap.wrap(x, width=10)) if isinstance(x, str) else x
+    else:
+        df["Insider Name"] = df["Insider Name"].apply(
+            lambda x: "\n".join(textwrap.wrap(x, width=20)) if isinstance(x, str) else x
         )
-        if type_insider == "lcb":
-            df["Industry"] = df["Industry"].apply(
-                lambda x: "\n".join(textwrap.wrap(x, width=20))
-                if isinstance(x, str)
-                else x
-            )
-        else:
-            df["Insider Name"] = df["Insider Name"].apply(
-                lambda x: "\n".join(textwrap.wrap(x, width=20))
-                if isinstance(x, str)
-                else x
-            )
 
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                tablefmt="fancy_grid",
-                stralign="right",
-                showindex=False,
-            )
+    print(
+        tabulate(
+            df,
+            headers=df.columns,
+            tablefmt="fancy_grid",
+            stralign="right",
+            showindex=False,
         )
-        l_chars = [list(chars) for chars in df["X"].values]
-        l_uchars = np.unique(list(itertools.chain(*l_chars)))
+    )
+    l_chars = [list(chars) for chars in df["X"].values]
+    l_uchars = np.unique(list(itertools.chain(*l_chars)))
 
-        for char in l_uchars:
-            print(d_notes[char])
-        print("")
-
-    except Exception as e:
-        print(e, "\n")
+    for char in l_uchars:
+        print(d_notes[char])
+    print("")
 
 
+@try_except
 def print_insider_filter(other_args: List[str], preset_loaded: str):
     """Print insider filter based on loaded preset
 
@@ -276,84 +269,80 @@ def print_insider_filter(other_args: List[str], preset_loaded: str):
         dest="links",
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
 
-        if ns_parser.ticker:
-            link = f"http://openinsider.com/screener?s={ns_parser.ticker}"
-        else:
-            link = get_open_insider_link(preset_loaded)
+    if ns_parser.ticker:
+        link = f"http://openinsider.com/screener?s={ns_parser.ticker}"
+    else:
+        link = get_open_insider_link(preset_loaded)
 
-        if not link:
-            print("")
-            return
+    if not link:
+        print("")
+        return
 
-        df_insider = get_open_insider_data(
-            link, has_company_name=bool(not ns_parser.ticker)
+    df_insider = get_open_insider_data(
+        link, has_company_name=bool(not ns_parser.ticker)
+    )
+    df_insider_orig = df_insider.copy()
+
+    if df_insider.empty:
+        print("")
+        return
+
+    if ns_parser.links:
+        df_insider = df_insider[["Ticker Link", "Insider Link", "Filing Link"]].head(
+            ns_parser.num
         )
-        df_insider_orig = df_insider.copy()
+    else:
+        df_insider = df_insider.drop(
+            columns=["Filing Link", "Ticker Link", "Insider Link"]
+        ).head(ns_parser.num)
 
-        if df_insider.empty:
-            print("")
-            return
+    if gtff.USE_COLOR and not ns_parser.links:
+        if not df_insider[df_insider["Trade Type"] == "S - Sale"].empty:
+            df_insider[df_insider["Trade Type"] == "S - Sale"] = df_insider[
+                df_insider["Trade Type"] == "S - Sale"
+            ].apply(red_highlight)
+        if not df_insider[df_insider["Trade Type"] == "S - Sale+OE"].empty:
+            df_insider[df_insider["Trade Type"] == "S - Sale+OE"] = df_insider[
+                df_insider["Trade Type"] == "S - Sale+OE"
+            ].apply(yellow_highlight)
+        if not df_insider[df_insider["Trade Type"] == "F - Tax"].empty:
+            df_insider[df_insider["Trade Type"] == "F - Tax"] = df_insider[
+                df_insider["Trade Type"] == "F - Tax"
+            ].apply(magenta_highlight)
+        if not df_insider[df_insider["Trade Type"] == "P - Purchase"].empty:
+            df_insider[df_insider["Trade Type"] == "P - Purchase"] = df_insider[
+                df_insider["Trade Type"] == "P - Purchase"
+            ].apply(green_highlight)
 
-        if ns_parser.links:
-            df_insider = df_insider[
-                ["Ticker Link", "Insider Link", "Filing Link"]
-            ].head(ns_parser.num)
-        else:
-            df_insider = df_insider.drop(
-                columns=["Filing Link", "Ticker Link", "Insider Link"]
-            ).head(ns_parser.num)
+        patch_pandas_text_adjustment()
+        pd.set_option("display.max_colwidth", 0)
+        pd.set_option("display.max_rows", None)
 
-        if gtff.USE_COLOR and not ns_parser.links:
-            if not df_insider[df_insider["Trade Type"] == "S - Sale"].empty:
-                df_insider[df_insider["Trade Type"] == "S - Sale"] = df_insider[
-                    df_insider["Trade Type"] == "S - Sale"
-                ].apply(red_highlight)
-            if not df_insider[df_insider["Trade Type"] == "S - Sale+OE"].empty:
-                df_insider[df_insider["Trade Type"] == "S - Sale+OE"] = df_insider[
-                    df_insider["Trade Type"] == "S - Sale+OE"
-                ].apply(yellow_highlight)
-            if not df_insider[df_insider["Trade Type"] == "F - Tax"].empty:
-                df_insider[df_insider["Trade Type"] == "F - Tax"] = df_insider[
-                    df_insider["Trade Type"] == "F - Tax"
-                ].apply(magenta_highlight)
-            if not df_insider[df_insider["Trade Type"] == "P - Purchase"].empty:
-                df_insider[df_insider["Trade Type"] == "P - Purchase"] = df_insider[
-                    df_insider["Trade Type"] == "P - Purchase"
-                ].apply(green_highlight)
+        # needs to be done because table is too large :(
+        df_insider = df_insider.drop(columns=["Filing Date", "Trade Type"])
 
-            patch_pandas_text_adjustment()
-            pd.set_option("display.max_colwidth", 0)
-            pd.set_option("display.max_rows", None)
+    else:
+        # needs to be done because table is too large :(
+        df_insider = df_insider.drop(columns=["Filing Date"])
 
-            # needs to be done because table is too large :(
-            df_insider = df_insider.drop(columns=["Filing Date", "Trade Type"])
+    print("")
+    print(df_insider.to_string(index=False))
 
-        else:
-            # needs to be done because table is too large :(
-            df_insider = df_insider.drop(columns=["Filing Date"])
-
+    if not ns_parser.links:
+        l_chars = [list(chars) for chars in df_insider_orig["X"].values]
+        l_uchars = np.unique(list(itertools.chain(*l_chars)))
         print("")
-        print(df_insider.to_string(index=False))
+        for char in l_uchars:
+            print(d_notes[char])
 
-        if not ns_parser.links:
-            l_chars = [list(chars) for chars in df_insider_orig["X"].values]
-            l_uchars = np.unique(list(itertools.chain(*l_chars)))
-            print("")
-            for char in l_uchars:
-                print(d_notes[char])
-
-            l_tradetype = df_insider_orig["Trade Type"].values
-            l_utradetype = np.unique(l_tradetype)
-            print("")
-            for tradetype in l_utradetype:
-                print(d_trade_types[tradetype])
-
+        l_tradetype = df_insider_orig["Trade Type"].values
+        l_utradetype = np.unique(l_tradetype)
         print("")
+        for tradetype in l_utradetype:
+            print(d_trade_types[tradetype])
 
-    except Exception as e:
-        print(e, "\n")
+    print("")

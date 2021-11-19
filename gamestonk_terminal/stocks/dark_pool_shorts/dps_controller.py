@@ -9,7 +9,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import EXPORT_BOTH_RAW_DATA_AND_FIGURES, get_flair
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
@@ -27,6 +27,7 @@ from gamestonk_terminal.stocks.dark_pool_shorts import (
     quandl_view,
     sec_view,
     finra_view,
+    nyse_view,
 )
 
 
@@ -51,12 +52,7 @@ class DarkPoolShortsController:
         "sidtc",
     ]
 
-    CHOICES_COMMANDS_WITH_TICKER = [
-        "psi",
-        "dpotc",
-        "ftd",
-        "spos",
-    ]
+    CHOICES_COMMANDS_WITH_TICKER = ["psi", "dpotc", "ftd", "spos", "volexch"]
 
     CHOICES += CHOICES_COMMANDS
     CHOICES += CHOICES_COMMANDS_WITH_TICKER
@@ -103,6 +99,8 @@ Stockgrid:
     spos           net short vs position
 Quandl/Stockgrid:
     psi            price vs short interest volume
+NYSE:
+    volexch        short volume for ARCA,Amex,Chicago,NYSE and national exchanges
 {Style.RESET_ALL if not self.ticker else ''}"""
         print(help_text)
 
@@ -590,6 +588,63 @@ Quandl/Stockgrid:
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )
+
+    @try_except
+    def call_volexch(self, other_args: List[str]):
+        """Process volexch command"""
+        parser = argparse.ArgumentParser(
+            prog="volexch",
+            add_help=False,
+            description="Displays short volume based on exchange.",
+        )
+        parser.add_argument(
+            "--raw",
+            help="Display raw data",
+            dest="raw",
+            action="store_true",
+            default=False,
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            help="Column to sort by",
+            dest="sort",
+            type=str,
+            default="",
+            choices=["", "NetShort", "Date", "TotalVolume", "PctShort"],
+        )
+        parser.add_argument(
+            "-a",
+            "--asc",
+            help="Sort in ascending order",
+            dest="asc",
+            action="store_true",
+            default=False,
+        )
+        parser.add_argument(
+            "-m",
+            "--mpl",
+            help="Display plot using matplotlb.",
+            dest="mpl",
+            action="store_true",
+            default=False,
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if not ns_parser:
+            return
+        if not self.ticker:
+            print("No ticker loaded.  Use `load ticker` first.")
+            return
+        nyse_view.display_short_by_exchange(
+            ticker=self.ticker,
+            raw=ns_parser.raw,
+            sort=ns_parser.sort,
+            asc=ns_parser.asc,
+            mpl=ns_parser.mpl,
+            export=ns_parser.export,
+        )
 
 
 def menu(ticker: str = "", start: str = "", stock: pd.DataFrame = pd.DataFrame()):

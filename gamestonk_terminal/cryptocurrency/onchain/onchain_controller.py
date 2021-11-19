@@ -5,7 +5,6 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
-from datetime import datetime, timedelta
 
 from prompt_toolkit.completion import NestedCompleter
 
@@ -16,14 +15,12 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
     check_int_range,
-    valid_date,
     try_except,
     system_clear,
 )
 
 from gamestonk_terminal.cryptocurrency.onchain import (
     ethgasstation_view,
-    glassnode_view,
     whale_alert_view,
     ethplorer_view,
 )
@@ -160,212 +157,6 @@ class OnchainController:
             return
 
         ethgasstation_view.display_gwei_fees(export=ns_parser.export)
-
-    def call_active(self, other_args: List[str]):
-        """Process active command"""
-
-        supported_assets = [
-            "BTC",
-            "ETH",
-            "LTC",
-            "AAVE",
-            "ABT",
-            "AMPL",
-            "ANT",
-            "ARMOR",
-            "BADGER",
-            "BAL",
-            "BAND",
-            "BAT",
-            "BIX",
-            "BNT",
-            "BOND",
-            "BRD",
-            "BUSD",
-            "BZRX",
-            "CELR",
-            "CHSB",
-            "CND",
-            "COMP",
-            "CREAM",
-            "CRO",
-            "CRV",
-            "CVC",
-            "CVP",
-            "DAI",
-            "DDX",
-            "DENT",
-            "DGX",
-            "DHT",
-            "DMG",
-            "DODO",
-            "DOUGH",
-            "DRGN",
-            "ELF",
-            "ENG",
-            "ENJ",
-            "EURS",
-            "FET",
-            "FTT",
-            "FUN",
-            "GNO",
-            "GUSD",
-            "HEGIC",
-            "HOT",
-            "HPT",
-            "HT",
-            "HUSD",
-            "INDEX",
-            "KCS",
-            "LAMB",
-            "LBA",
-            "LDO",
-            "LEO",
-            "LINK",
-            "LOOM",
-            "LRC",
-            "MANA",
-            "MATIC",
-            "MCB",
-            "MCO",
-            "MFT",
-            "MIR",
-            "MKR",
-            "MLN",
-            "MTA",
-            "MTL",
-            "MX",
-            "NDX",
-            "NEXO",
-            "NFTX",
-            "NMR",
-            "Nsure",
-            "OCEAN",
-            "OKB",
-            "OMG",
-            "PAX",
-            "PAY",
-            "PERP",
-            "PICKLE",
-            "PNK",
-            "PNT",
-            "POLY",
-            "POWR",
-            "PPT",
-            "QASH",
-            "QKC",
-            "QNT",
-            "RDN",
-            "REN",
-            "REP",
-            "RLC",
-            "ROOK",
-            "RPL",
-            "RSR",
-            "SAI",
-            "SAN",
-            "SNT",
-            "SNX",
-            "STAKE",
-            "STORJ",
-            "sUSD",
-            "SUSHI",
-            "TEL",
-            "TOP",
-            "UBT",
-            "UMA",
-            "UNI",
-            "USDC",
-            "USDK",
-            "USDT",
-            "UTK",
-            "VERI",
-            "WaBi",
-            "WAX",
-            "WBTC",
-            "WETH",
-            "wNMX",
-            "WTC",
-            "YAM",
-            "YFI",
-            "ZRX",
-        ]
-
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="active",
-            description="""
-                Display active blockchain addresses over time
-                [Source: https://glassnode.org]
-            """,
-        )
-
-        parser.add_argument(
-            "-a",
-            "--asset",
-            dest="asset",
-            type=str,
-            help="Asset symbol. Default: BTC",
-            default="BTC",
-            choices=supported_assets,
-        )
-
-        parser.add_argument(
-            "-i",
-            "--interval",
-            dest="interval",
-            type=str,
-            help="Frequency interval. Default: 24h",
-            default="24h",
-            choices=["1h", "24h", "10m", "1w", "1month"],
-        )
-
-        # max_timestamp = int(datetime.timestamp(datetime.now()))
-
-        parser.add_argument(
-            "-s",
-            "--since",
-            dest="since",
-            type=valid_date,
-            help="Initial date. Default: 2020-01-01",
-            default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
-        )
-
-        parser.add_argument(
-            "-u",
-            "--until",
-            dest="until",
-            type=valid_date,
-            help="Final date. Default: 2021-01-01",
-            default=(datetime.now()).strftime("%Y-%m-%d"),
-        )
-
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-
-            if not ns_parser:
-                return
-
-            glassnode_view.display_active_addresses(
-                asset=ns_parser.asset,
-                interval=ns_parser.interval,
-                since=int(datetime.timestamp(ns_parser.since)),
-                until=int(datetime.timestamp(ns_parser.until)),
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e)
 
     def call_whales(self, other_args: List[str]):
         """Process whales command"""
@@ -1055,9 +846,6 @@ Onchain:
 
 Eth Gas Station:
     gwei              check current eth gas fees
-
-Glassnode:
-    active            check active addresses in a certain blockchain
 
 Whale Alert:
     whales            check crypto wales transactions
