@@ -727,7 +727,7 @@ def quote(other_args: List[str], s_ticker: str):
 
     ticker = yf.Ticker(ns_parser.s_ticker)
 
-    # If price only option, return immediate market price quote.
+    # If price only option, return immediate market price for ticker.
     if ns_parser.price_only: 
         return print("Price of",ns_parser.s_ticker,float(ticker.info["regularMarketPrice"]))
 
