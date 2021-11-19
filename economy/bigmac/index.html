@@ -10,9 +10,7 @@
 
 
 
-    <meta name="description" content="usage: bigmac [-c COUNTRIES] [--raw] [-h] [--export {png,jpg,pdf,svg}] Get historical Big Mac Index [Nasdaq Data Link]
-optional arguments: -c COUNTRIES, --countries COUNTRIES Country codes to get data for. (default: USA) --raw Show raw data (default: False) -h, --help show this help message (default: False) --export {png,jpg,pdf,svg} Export or figure into png, jpg, pdf, svg (default: ) Sample usage, which gets the index for 7 different countries:
-bigmac -c USA,EUR,MEX,CAN,UAE,RUS ">
+    <meta name="description" content="usage: bigmac [-c COUNTRIES] [--raw] [-h] [--export {png,jpg,pdf,svg}] The notion that in the long run exchange rates should move towards the rate that would equalise the prices of an identical basket of goods and services (in this case, a burger) in any two countries. Burgernomics was never intended as a precise gauge of currency misalignment, merely a tool to make exchange-rate theory more digestible. Yet the Big Mac index has become a global standard, included in several economic textbooks and the subject of dozens of academic studies.">
 
 
 
@@ -14844,7 +14842,11 @@ bigmac -c USA,EUR,MEX,CAN,UAE,RUS ">
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Bigmac</h1>
         <pre><code>usage: bigmac [-c COUNTRIES] [--raw] [-h] [--export {png,jpg,pdf,svg}]
-</code></pre><p>Get historical Big Mac Index [Nasdaq Data Link]</p>
+</code></pre><p>The notion that in the long run exchange rates should move towards the rate that would equalise the prices of an identical basket of goods and services (in this case, a burger) in any two countries. Burgernomics was never intended as a precise gauge of currency misalignment, merely a tool to make exchange-rate theory more digestible. Yet the Big Mac index has become a global standard, included in several economic textbooks and the subject of dozens of academic studies.</p>
+<p>Big Mac prices are from McDonald’s directly and from reporting around the world; exchange rates are from Thomson Reuters; GDP and population data used to calculate the euro area averages are from Eurostat and GDP per person data are from the IMF World Economic Outlook reports.</p>
+<p>The Big Mac PPP exchange rate between two countries is obtained by dividing the price of a Big Mac in one country (in its currency) by the price of a Big Mac in another country (in its currency).</p>
+<p>Source: <a class="gdoc-markdown__link" href="https://data.nasdaq.com/data/ECONOMIST-the-economist-big-mac-index">https://data.nasdaq.com/data/ECONOMIST-the-economist-big-mac-index</a></p>
+<p>List of country codes for this feature: <a class="gdoc-markdown__link" href="https://static.quandl.com/ECONOMIST_Descriptions/economist_country_codes.csv">https://static.quandl.com/ECONOMIST_Descriptions/economist_country_codes.csv</a></p>
 <pre><code>optional arguments:
   -c COUNTRIES, --countries COUNTRIES
                         Country codes to get data for. (default: USA)
@@ -14854,7 +14856,7 @@ bigmac -c USA,EUR,MEX,CAN,UAE,RUS ">
                         Export or figure into png, jpg, pdf, svg (default: )
 </code></pre><p>Sample usage, which gets the index for 7 different countries:</p>
 <pre><code>bigmac -c USA,EUR,MEX,CAN,UAE,RUS
-</code></pre><p><img src="https://user-images.githubusercontent.com/18151143/141603738-ffa86906-4e1e-48b4-97b8-ed51f1806089.png" alt="BigMac"  /></p>
+</code></pre><img size="1400" alt="Big Mac Index" src="https://user-images.githubusercontent.com/18151143/141603738-ffa86906-4e1e-48b4-97b8-ed51f1806089.png">
 
     </article>
 

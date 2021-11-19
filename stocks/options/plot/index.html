@@ -10,8 +10,8 @@
 
 
 
-    <meta name="description" content="usage: plot [-p] [-x VARIABLE] [-y VARIABLE] [-h] plots an x and y variable defined by the user
-optional arguments: -x, --x selects the x variable for the graph (default: None) -y, --y selects the y variable for the graph (default: None) -c, --custom selects a predefined graph (default: None) -p, --put shows the chart for puts instead of calls (default: False) -h, --help show this help message (default: False) ">
+    <meta name="description" content="usage: plot [-p] [-x {ltd,s,lp,b,a,c,pc,v,oi,iv}] [-y {ltd,s,lp,b,a,c,pc,v,oi,iv}] [-c {smile}] [-h] Plots options data for the loaded options chain, with X/Y axis are selectable variables.
+optional arguments: -x, --x selects the x variable for the graph (default: None) -y, --y selects the y variable for the graph (default: None) -c, --custom selects a user preset (default: None) -p, --put shows the chart for puts instead of calls (default: False) -h, --help show this help message (default: False) ">
 
 
 
@@ -14850,15 +14850,16 @@ optional arguments: -x, --x selects the x variable for the graph (default: None)
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Plot</h1>
-        <pre><code>usage: plot [-p] [-x VARIABLE] [-y VARIABLE] [-h]
-</code></pre><p>plots an x and y variable defined by the user</p>
+        <pre><code>usage: plot [-p] [-x {ltd,s,lp,b,a,c,pc,v,oi,iv}] [-y {ltd,s,lp,b,a,c,pc,v,oi,iv}] [-c {smile}] [-h]
+</code></pre><p>Plots options data for the loaded options chain, with X/Y axis are selectable variables.</p>
 <pre><code>optional arguments:
   -x, --x               selects the x variable for the graph (default: None)
   -y, --y               selects the y variable for the graph (default: None)
-  -c, --custom          selects a predefined graph (default: None)
+  -c, --custom          selects a user preset (default: None)
   -p, --put             shows the chart for puts instead of calls (default: False)
   -h, --help            show this help message (default: False)
-</code></pre>
+</code></pre><img size="1400" alt="Feature Screenshot - plot" src="https://user-images.githubusercontent.com/85772166/142502979-0ba91743-63d9-4b33-8ff8-8994d479c818.png">
+
     </article>
 
                 
