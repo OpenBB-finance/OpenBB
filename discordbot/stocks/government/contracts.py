@@ -78,7 +78,7 @@ async def contracts_command(ctx, ticker="", past_transaction_days="", raw=""):
         embed.set_image(url=image_link)
         os.remove("gov_contracts.png")
 
-        await ctx.send(embed)
+        await ctx.send(embed=embed)
 
     except Exception as e:
         embed = discord.Embed(

@@ -98,16 +98,8 @@ async def topbuys_command(
                 .sort_values(ascending=False)
                 .head(n=num)
             )
-            embed = discord.Embed(
-                title=f"Stocks: [quiverquant.com] Top purchases for {gov_type.upper()}",
-                description="```" + df.to_string() + "```",
-                colour=cfg.COLOR,
-            )
-            embed.set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
-            )
-            await ctx.send(embed=embed)
+            description = "```" + df.to_string() + "```"
+
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values(
@@ -128,7 +120,12 @@ async def topbuys_command(
         if cfg.DEBUG:
             print(f"Image URL: {image_link}")
         title = f"Stocks: [quiverquant.com] Top purchases for {gov_type.upper()}"
-        embed = discord.Embed(title=title, colour=cfg.COLOR)
+        if raw:
+            embed = discord.Embed(
+                title=title, description=description, colour=cfg.COLOR
+            )
+        else:
+            embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
