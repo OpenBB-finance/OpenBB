@@ -681,7 +681,6 @@ def quote(other_args: List[str], s_ticker: str):
     )
 
     if s_ticker:
-
         parser.add_argument(
             "-t",
             "--ticker",
@@ -691,7 +690,6 @@ def quote(other_args: List[str], s_ticker: str):
             help="Stock ticker",
         )
     else:
-
         parser.add_argument(
             "-t",
             "--ticker",
@@ -710,8 +708,6 @@ def quote(other_args: List[str], s_ticker: str):
         default=False,
         help="Price only",
     )
-
-
 
     try:
         # For the case where a user uses: 'quote BB'
