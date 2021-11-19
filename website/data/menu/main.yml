@@ -181,8 +181,6 @@ main:
       - name: fundamental analysis
         ref: "/stocks/fundamental_analysis"
         sub:
-          - name: screener
-            ref: "/stocks/fundamental_analysis/screener"
           - name: mgmt
             ref: "/stocks/fundamental_analysis/mgmt"
           - name: analysis
