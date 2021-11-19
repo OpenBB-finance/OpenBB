@@ -56,9 +56,7 @@ def show_etfs(
         ["long_name", "family", "category", "total_assets"]
     ]
     tabulate_data_sorted = tabulate_data.sort_values(by="total_assets", ascending=False)
-    tabulate_data_sorted["total_assets"] = (
-        tabulate_data_sorted["total_assets [M]"] / 1e6
-    )
+    tabulate_data_sorted["total_assets"] = tabulate_data_sorted["total_assets"] / 1e6
 
     if gtff.USE_TABULATE_DF:
         print(
