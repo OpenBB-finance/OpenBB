@@ -1,4 +1,8 @@
+"""Stock Context Controller"""
+__docformat__ = "numpy"
+
 import argparse
+import os
 from typing import List
 
 from datetime import datetime, timedelta
@@ -12,8 +16,15 @@ from gamestonk_terminal.common import newsapi_view
 from gamestonk_terminal.helper_funcs import (
     b_is_stock_market_open,
     check_positive,
+    export_data,
     get_flair,
     parse_known_args_and_warn,
+    valid_date,
+    MENU_GO_BACK,
+    MENU_QUIT,
+    MENU_RESET,
+    try_except,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.stocks_helper import (
@@ -24,14 +35,6 @@ from gamestonk_terminal.stocks.stocks_helper import (
     process_candle,
 )
 
-from gamestonk_terminal.helper_funcs import (
-    valid_date,
-    MENU_GO_BACK,
-    MENU_QUIT,
-    MENU_RESET,
-    try_except,
-    system_clear,
-)
 from gamestonk_terminal.common.quantitative_analysis import qa_view
 
 # pylint: disable=R1710,import-outside-toplevel
@@ -319,10 +322,16 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             print("No ticker loaded. First use `load {ticker}`\n")
             return
 
+        export_data(
+            ns_parser.export,
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "raw_data"),
+            f"{self.ticker}",
+            self.stock,
+        )
+
         if ns_parser.raw:
             qa_view.display_raw(
                 df=self.stock,
-                export=ns_parser.export,
                 sort=ns_parser.sort,
                 des=ns_parser.descending,
                 num=ns_parser.num,
