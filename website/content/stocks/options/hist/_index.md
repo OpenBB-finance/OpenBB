@@ -2,7 +2,7 @@
 usage: hist [-s STRIKE] [-p] [--chain CHAIN_ID] [-r,--raw] [--export {csv,json,xlsx}] [--source SOURCE] [-h]
 ```
 
-Gets historical quotes for given option chain
+The price history for a specified strike price from the loaded options chain.
 
 ```
 optional arguments:
@@ -16,3 +16,4 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
+<img size="1400" alt="Feature Screenshot - hist" src="https://user-images.githubusercontent.com/85772166/142361873-74c9f7b3-4791-4101-90bd-7cbb51d71c46.png">

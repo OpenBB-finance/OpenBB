@@ -15,3 +15,4 @@ optional arguments:
                         Number of random entries to show. Default shows all (default: -1)
   -h, --help            show this help message (default: False)
 ```
+<img size="1400" alt="Feature Screenshot - scr" src="https://user-images.githubusercontent.com/85772166/142508620-7e1d6b11-df87-4216-9817-508a1dcc81ad.png">
