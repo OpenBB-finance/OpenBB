@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 
 import argparse
-import os
 from datetime import datetime
 from typing import List
 
@@ -11,7 +10,7 @@ from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED, get_flair
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_non_negative,
@@ -19,6 +18,7 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     check_int_range,
     try_except,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.discovery import (
@@ -30,6 +30,7 @@ from gamestonk_terminal.stocks.discovery import (
     finnhub_view,
     geekofwallstreet_view,
     financedatabase_view,
+    nasdaq_view,
 )
 
 
@@ -58,12 +59,13 @@ class DiscoveryController:
         "ford",
         "arkord",
         "upcoming",
-        "latest",
         "trending",
         "lowfloat",
         "hotpenny",
         "rtearn",
         "fds",
+        "cnews",
+        "rtat",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -85,6 +87,7 @@ Discovery:
     ?/help         show this menu again
     q              quit this menu, and shows back to main menu
     quit           quit to abandon program
+
 Geek of Wall St:
     rtearn         realtime earnings from and expected moves
 Finnhub:
@@ -104,14 +107,16 @@ cathiesark.com:
     arkord         orders by ARK Investment Management LLC
 Seeking Alpha:
     upcoming       upcoming earnings release dates
-    latest         latest news
     trending       trending news
+    cnews          customized news (buybacks, ipos, spacs, healthcare, politics)
 shortinterest.com
     lowfloat       low float stocks under 10M shares float
 pennystockflow.com
     hotpenny       today's hot penny stocks
 Finance Database:
     fds            advanced Equities search based on country, sector, industry, name and/or description
+NASDAQ Data Link (Formerly Quandl):
+    rtat           top 10 retail traded stocks per day
 """
         print(help_text)
 
@@ -138,7 +143,7 @@ Finance Database:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(
@@ -683,66 +688,6 @@ Finance Database:
         )
 
     @try_except
-    def call_latest(self, other_args: List[str]):
-        """Process latest command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="latest",
-            description="""Latest news articles. [Source: Seeking Alpha]""",
-        )
-        parser.add_argument(
-            "-i",
-            "--id",
-            action="store",
-            dest="n_id",
-            type=check_positive,
-            default=-1,
-            help="article ID",
-        )
-        parser.add_argument(
-            "-n",
-            "--num",
-            action="store",
-            dest="n_num",
-            type=check_positive,
-            default=5,
-            help="number of articles being printed",
-        )
-        parser.add_argument(
-            "-d",
-            "--date",
-            action="store",
-            dest="s_date",
-            type=valid_date,
-            default=datetime.now().strftime("%Y-%m-%d"),
-            help="starting date of articles",
-        )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-i")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        seeking_alpha_view.news(
-            news_type="latest",
-            article_id=ns_parser.n_id,
-            num=ns_parser.n_num,
-            start_date=ns_parser.s_date,
-            export=ns_parser.export,
-        )
-
-    @try_except
     def call_trending(self, other_args: List[str]):
         """Process trending command"""
         parser = argparse.ArgumentParser(
@@ -839,6 +784,78 @@ Finance Database:
             return
 
         shortinterest_view.low_float(
+            num=ns_parser.n_num,
+            export=ns_parser.export,
+        )
+
+    @try_except
+    def call_cnews(self, other_args: List[str]):
+        """Process cnews command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cnews",
+            description="""Customized news. [Source: Seeking Alpha]""",
+        )
+        l_news_type = [
+            "Top-News",
+            "On-The-Move",
+            "Market-Pulse",
+            "Notable-Calls",
+            "Buybacks",
+            "Commodities",
+            "Crypto",
+            "Issuance",
+            "Global",
+            "Guidance",
+            "IPOs",
+            "SPACs",
+            "Politics",
+            "M-A",
+            "Consumer",
+            "Energy",
+            "Financials",
+            "Healthcare",
+            "MLPs",
+            "REITs",
+            "Technology",
+        ]
+        parser.add_argument(
+            "-t",
+            "--type",
+            action="store",
+            dest="s_type",
+            choices=[tnews.lower() for tnews in l_news_type],
+            default="Top-News",
+            help="number of news to display",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=5,
+            help="number of news to display",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-t")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        seeking_alpha_view.display_news(
+            news_type=ns_parser.s_type,
             num=ns_parser.n_num,
             export=ns_parser.export,
         )
@@ -942,6 +959,17 @@ Finance Database:
         )
 
         parser.add_argument(
+            "-m",
+            "--marketcap",
+            default=["Large"],
+            choices=["Small", "Mid", "Large"],
+            nargs="+",
+            dest="marketcap",
+            type=str.title,
+            help="Specify the Equities selection based on Market Cap",
+        )
+
+        parser.add_argument(
             "-ie",
             "--include_exchanges",
             action="store_false",
@@ -978,10 +1006,40 @@ Finance Database:
             industry=ns_parser.industry,
             name=ns_parser.name,
             description=ns_parser.description,
+            marketcap=ns_parser.marketcap,
             include_exchanges=ns_parser.include_exchanges,
             amount=ns_parser.amount,
             options=ns_parser.options,
         )
+
+    @try_except
+    def call_rtat(self, other_args: List[str]):
+        """Process fds command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rtat",
+            description="""
+                Tracking over $30B USD/day of individual investors trades,
+                RTAT gives a daily view into retail activity and sentiment for over 9,500 US traded stocks,
+                ADRs, and ETPs
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            dest="n_days",
+            help="Number of days to show",
+            default=3,
+            type=check_positive,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if not ns_parser:
+            return
+        nasdaq_view.display_top_retail(n_days=ns_parser.n_days, export=ns_parser.export)
 
 
 def menu():

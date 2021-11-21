@@ -27,6 +27,7 @@ from gamestonk_terminal.helper_funcs import (
     check_non_negative,
     parse_known_args_and_warn,
     plot_autoscale,
+    try_except,
 )
 
 client = API(access_token=cfg.OANDA_TOKEN, environment=cfg.OANDA_ACCOUNT_TYPE)
@@ -823,6 +824,7 @@ def get_candles_dataframe(accountID, instrument, parameters):
 
 
 # pylint: disable=R1710
+@try_except
 def load(other_args: List[str]):
     """Load a forex instrument to use"""
     parser = argparse.ArgumentParser(
@@ -840,21 +842,16 @@ def load(other_args: List[str]):
         help="Forex pair to use. ",
     )
 
-    try:
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-i")
+    if other_args:
+        if "-" not in other_args[0]:
+            other_args.insert(0, "-i")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
 
-        print("")
-        return ns_parser.instrument.upper()
-
-    except Exception as e:
-        print(e, "\n")
-        return None
+    print("")
+    return ns_parser.instrument.upper()
 
 
 def book_plot(df, instrument, book_type):

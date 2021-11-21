@@ -141,7 +141,7 @@ def display_orders(limit: int, sortby: str, descend: bool, export: str = "") -> 
 
 
 def display_deposits(
-    limit: int, sortby: str, deposite_type: str, descend: bool, export: str = ""
+    limit: int, sortby: str, deposit_type: str, descend: bool, export: str = ""
 ) -> None:
     """Display deposits into account [Source: Coinbase]
 
@@ -153,13 +153,13 @@ def display_deposits(
         Key to sort by
     descend: bool
         Flag to sort descending
-    deposite_type: str
+    deposit_type: str
         internal_deposits (transfer between portfolios) or deposit
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = coinbase_model.get_deposits(deposit_type=deposite_type)
+    df = coinbase_model.get_deposits(deposit_type=deposit_type)
 
     if df.empty:
         print("No deposits found for your account\n")

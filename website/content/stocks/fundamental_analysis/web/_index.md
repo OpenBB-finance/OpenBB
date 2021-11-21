@@ -2,7 +2,7 @@
 usage: web [-h]
 ```
 
-Opens company's website. [Source: Yahoo Finance]
+Opens the company's website in your browser.
 
 ```
 optional arguments:

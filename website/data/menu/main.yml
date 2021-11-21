@@ -3,6 +3,8 @@ main:
   - name: stocks
     ref: "/stocks"
     sub:
+      - name: search
+        ref: "/stocks/search"
       - name: load
         ref: "/stocks/load"
       - name: candle
@@ -40,8 +42,8 @@ main:
             ref: "/stocks/discovery/arkord"
           - name: upcoming
             ref: "/stocks/discovery/upcoming"
-          - name: latest
-            ref: "/stocks/discovery/latest"
+          - name: cnews
+            ref: "/stocks/discovery/cnews"
           - name: trending
             ref: "/stocks/discovery/trending"
           - name: lowfloat
@@ -50,6 +52,8 @@ main:
             ref: "/stocks/discovery/hotpenny"
           - name: fds
             ref: "/stocks/discovery/fds"
+          - name: rtat
+            ref: "/stocks/discovery/rtat"
       - name: dark pool shorts
         ref: "/stocks/dark_pool_shorts"
         sub:
@@ -71,6 +75,8 @@ main:
             ref: "/stocks/dark_pool_shorts/spos"
           - name: psi
             ref: "/stocks/dark_pool_shorts/psi"
+          - name: volexch
+            ref: "/stocks/dark_pool_shorts/volexch"
       - name: screener
         ref: "/stocks/screener"
         sub:
@@ -175,8 +181,6 @@ main:
       - name: fundamental analysis
         ref: "/stocks/fundamental_analysis"
         sub:
-          - name: screener
-            ref: "/stocks/fundamental_analysis/screener"
           - name: mgmt
             ref: "/stocks/fundamental_analysis/mgmt"
           - name: analysis
@@ -350,6 +354,63 @@ main:
             ref: "/stocks/backtesting/ema_cross"
           - name: rsi
             ref: "/stocks/backtesting/rsi"
+      - name: options
+        ref: "/stocks/options"
+        sub:
+          - name: disp
+            ref: "/stocks/options/disp"
+          - name: scr
+            ref: "/stocks/options/scr"
+          - name: unu
+            ref: "/stocks/options/unu"
+          - name: calc
+            ref: "/stocks/options/calc"
+          - name: load
+            ref: "/stocks/options/load"
+          - name: exp
+            ref: "/stocks/options/exp"
+          - name: pcr
+            ref: "/stocks/options/pcr"
+          - name: info
+            ref: "/stocks/options/info"
+          - name: chains
+            ref: "/stocks/options/chains"
+          - name: oi
+            ref: "/stocks/options/oi"
+          - name: vol
+            ref: "/stocks/options/vol"
+          - name: voi
+            ref: "/stocks/options/voi"
+          - name: hist
+            ref: "/stocks/options/hist"
+          - name: grhist
+            ref: "/stocks/options/grhist"
+          - name: portfolio optimization
+            ref: "/portfolio/portfolio_optimization"
+          - name: parity
+            ref: "/stocks/options/parity"
+          - name: payoff
+            ref: "/stocks/options/payoff"
+            sub:
+              - name: add
+                ref: "/stocks/options/payoff/add"
+              - name: pick
+                ref: "/stocks/options/payoff/pick"
+              - name: plot
+                ref: "/stocks/options/payoff/plot"
+              - name: rmv
+                ref: "/stocks/options/payoff/rmv"
+          - name: pricing
+            ref: "/stocks/options/pricing"
+            sub:
+              - name: add
+                ref: "/stocks/options/pricing/add"
+              - name: rmv
+                ref: "/stocks/options/pricing/rmv"
+              - name: show
+                ref: "/stocks/options/pricing/show"
+              - name: rnval
+                ref: "/stocks/options/pricing/rnval"
       - name: technical analysis
         ref: "/common/technical_analysis"
         sub:
@@ -359,8 +420,6 @@ main:
             ref: "/common/technical_analysis/summary"
           - name: recom
             ref: "/common/technical_analysis/recom"
-          - name: pr
-            ref: "/common/technical_analysis/pr"
           - name: ema
             ref: "/common/technical_analysis/ema"
           - name: sma
@@ -514,54 +573,7 @@ main:
             ref: "/common/prediction_techniques/conv1d"
           - name: mc
             ref: "/common/prediction_techniques/mc"
-  - name: options
-    ref: "/options"
-    sub:
-      - name: disp
-        ref: "/options/disp"
-      - name: scr
-        ref: "/options/scr"
-      - name: unu
-        ref: "/options/unu"
-      - name: calc
-        ref: "/options/calc"
-      - name: load
-        ref: "/options/load"
-      - name: exp
-        ref: "/options/exp"
-      - name: pcr
-        ref: "/options/pcr"
-      - name: info
-        ref: "/options/info"
-      - name: chains
-        ref: "/options/chains"
-      - name: oi
-        ref: "/options/oi"
-      - name: vol
-        ref: "/options/vol"
-      - name: voi
-        ref: "/options/voi"
-      - name: hist
-        ref: "/options/hist"
-      - name: grhist
-        ref: "/options/grhist"
-      - name: plot
-        ref: "/options/plot"
-      - name: portfolio optimization
-        ref: "/portfolio/portfolio_optimization"
-      - name: parity
-        ref: "/options/parity"
-      - name: payoff
-        ref: "/options/payoff"
-        sub:
-          - name: add
-            ref: "/options/payoff/add"
-          - name: pick
-            ref: "/options/payoff/pick"
-          - name: plot
-            ref: "/options/payoff/plot"
-          - name: rmv
-            ref: "/options/payoff/rmv"
+
   - name: cryptocurrency
     ref: "/cryptocurrency"
     sub:
@@ -571,8 +583,8 @@ main:
         ref: "/cryptocurrency/chart"
       - name: find
         ref: "/cryptocurrency/find"
-      - name: finbrain
-        ref: "/cryptocurrency/finbrain"
+      - name: headlines
+        ref: "/cryptocurrency/headlines"
       - name: discovery
         ref: "/cryptocurrency/discovery"
         sub:
@@ -658,6 +670,12 @@ main:
       - name: due diligence
         ref: "/cryptocurrency/due_diligence"
         sub:
+          - name: active
+            ref: "/cryptocurrency/due_diligence/active"
+          - name: change
+            ref: "/cryptocurrency/due_diligence/change"
+          - name: eb
+            ref: "/cryptocurrency/due_diligence/eb"
           - name: oi
             ref: "/cryptocurrency/due_diligence/oi"
           - name: info
@@ -705,8 +723,17 @@ main:
         sub:
           - name: gwei
             ref: "/cryptocurrency/onchain/gwei"
-          - name: active
-            ref: "/cryptocurrency/onchain/active"
+      - name: nft
+        ref: "/cryptocurrency/nft"
+        sub:
+          - name: today
+            ref: "/cryptocurrency/nft/today"
+          - name: upcoming
+            ref: "/cryptocurrency/nft/upcoming"
+          - name: ongoing
+            ref: "/cryptocurrency/nft/ongoing"
+          - name: newest
+            ref: "/cryptocurrency/nft/newest"
       - name: technical analysis
         ref: "/cryptocurrency/technical_analysis"
         sub:
@@ -771,6 +798,16 @@ main:
         ref: "/economy/glbonds"
       - name: currencies
         ref: "/economy/currencies"
+      - name: energy
+        ref: "/economy/energy"
+      - name: metals
+        ref: "/economy/metals"
+      - name: meats
+        ref: "/economy/meats"
+      - name: grains
+        ref: "/economy/grains"
+      - name: softs
+        ref: "/economy/softs"
       - name: map
         ref: "/economy/map"
       - name: valuation
@@ -781,10 +818,24 @@ main:
         ref: "/economy/spectrum"
       - name: rtps
         ref: "/economy/rtps"
+      - name: gdp
+        ref: "/economy/gdp"
+      - name: gdpc
+        ref: "/economy/gdpc"
+      - name: inf
+        ref: "/economy/inf"
+      - name: cpi
+        ref: "/economy/cpi"
+      - name: tyld
+        ref: "/economy/tyld"
+      - name: unemp
+        ref: "/economy/unemp"
       - name: search
         ref: "/economy/search"
       - name: series
         ref: "/economy/series"
+      - name: bigmac
+        ref: "/economy/bigmac"
   - name: etf
     ref: "/etf"
     sub:
@@ -827,13 +878,6 @@ main:
                 ref: "/portfolio/brokers/ally/movers"
               - name: quote
                 ref: "/portfolio/brokers/ally/quote"
-          - name: alpaca
-            ref: "/portfolio/brokers/alpaca"
-            sub:
-              - name: history
-                ref: "/portfolio/brokers/alpaca/history"
-              - name: holdings
-                ref: "/portfolio/brokers/alpaca/holdings"
           - name: coinbase
             ref: "/portfolio/brokers/coinbase"
             sub:
@@ -885,5 +929,12 @@ main:
             ref: "/portfolio/portfolio_optimization/ef"
   - name: forex
     ref: "/forex"
+    sub:
+      - name: select
+        ref: "/forex/select"
+      - name: load
+        ref: "/forex/load"
+      - name: candle
+        ref: "/forex/candle"
   - name: resources
     ref: "/resources"

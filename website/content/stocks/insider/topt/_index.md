@@ -2,12 +2,11 @@
 usage: topt [-n NUM] [-h]
 ```
 
-Print top officer purchases of the day [Source: OpenInsider]
+Corporate officer acquisitions today. Source: http://openinsider.com
 
 ```
 optional arguments:
   -n NUM, --num NUM  Number of datarows to display (default: 20)
   -h, --help         show this help message (default: False)
 ```
-
-<img width="1216" alt="topt" src="https://user-images.githubusercontent.com/25267873/125373765-9d099480-e37d-11eb-9bc6-a2baaec90050.png">
+<img width="1400" alt="Feature Screenshot - ins topt" src="https://user-images.githubusercontent.com/85772166/140691885-7c994ddc-8a15-49bf-9bdb-e2c472b715ce.png">

@@ -2,7 +2,7 @@
 usage: toppm [-n NUM] [-h]
 ```
 
-Print top officer purchases past month [Source: OpenInsider]
+Top officer acquisitions this month Source: http://openinsider.com
 
 ```
 optional arguments:
@@ -10,4 +10,4 @@ optional arguments:
   -h, --help         show this help message (default: False)
 ```
 
-<img width="1220" alt="toppm" src="https://user-images.githubusercontent.com/25267873/125373742-99760d80-e37d-11eb-918e-b93209bb64bf.png">
+<img width="1400" alt="toppm" src="https://user-images.githubusercontent.com/25267873/125373742-99760d80-e37d-11eb-918e-b93209bb64bf.png">

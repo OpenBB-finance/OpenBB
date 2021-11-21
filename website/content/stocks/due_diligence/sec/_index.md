@@ -2,9 +2,7 @@
 usage: sec [-n N_NUM] [--export {csv,json,xlsx}] [-h]
 ```
 
-Prints SEC filings of the company. The following fields are expected: Filing Date, Document Date, Type, Category, Amended, and Link. [Source: Market
-Watch]
-
+The latest SEC filings collected by: https://www.marketwatch.com/
 ```
 optional arguments:
   -n N_NUM, --num N_NUM
@@ -14,4 +12,4 @@ optional arguments:
   -h, --help            show this help message
 ```
 
-<img width="967" alt="sec" src="https://user-images.githubusercontent.com/25267873/108609256-a8efbc80-73c4-11eb-97cc-3c819aebc795.png">
+<img size="1400" alt="Feature Screenshot - sec" src="https://user-images.githubusercontent.com/85772166/140877885-538a7a00-a40d-46d2-88fe-7d13bd101ae8.png">

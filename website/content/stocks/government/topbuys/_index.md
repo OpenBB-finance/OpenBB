@@ -2,7 +2,7 @@
 usage: topbuys [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_MONTHS] [-n NUM] [--raw]
                 [--export {png,jpg,pdf,svg,csv,json,xlsx}] [-h]
 ```
-Top buys for government trading. [Source: www.quiverquant.com]
+Top stock buys amongst US representatives. Source: https://www.quiverquant.com
 
 ```
 optional arguments:
@@ -15,3 +15,4 @@ optional arguments:
                         Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx (default: )
   -h, --help            show this help message (default: False)
 ```
+<img size="1400" alt="Feature Screenshot - topbuys" src="https://user-images.githubusercontent.com/85772166/142279690-1a80d4a0-5ede-4257-8ba5-ac6588b8ce76.png">

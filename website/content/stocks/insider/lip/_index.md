@@ -2,7 +2,7 @@
 usage: lip [-n NUM] [-h]
 ```
 
-Print latest insider purchases [Source: OpenInsider]
+Print the latest insider purchases recorded by the SEC. Source: http://Openinsider.com
 
 ```
 optional arguments:
@@ -10,4 +10,4 @@ optional arguments:
   -h, --help         show this help message (default: False)
 ```
 
-<img width="1216" alt="lip" src="https://user-images.githubusercontent.com/25267873/125373769-9e3ac180-e37d-11eb-9a98-ed652eed7fff.png">
+<img width="1400" alt="lip" src="https://user-images.githubusercontent.com/25267873/125373769-9e3ac180-e37d-11eb-9a98-ed652eed7fff.png">

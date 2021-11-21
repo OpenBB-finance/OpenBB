@@ -93,7 +93,7 @@ def get_maxsharpe_portfolio(
 def get_minvol_portfolio(
     stocks: List[str], period: str = "3mo"
 ) -> Tuple[Dict, EfficientFrontier]:
-    """Generate weights for minimum voltaility portfolio
+    """Generate weights for minimum volatility portfolio
 
     Parameters
     ----------
@@ -120,7 +120,7 @@ def get_maxquadutil_portfolio(
     risk_aversion: float = 1.0,
     market_neutral: bool = False,
 ) -> Tuple[Dict, EfficientFrontier]:
-    """Get portfolio maximizing quadratic ultility at a given risk aversion
+    """Get portfolio maximizing quadratic utility at a given risk aversion
 
     Parameters
     ----------

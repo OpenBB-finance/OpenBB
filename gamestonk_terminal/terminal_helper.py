@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 import hashlib
 import os
 import random
-import subprocess
+import subprocess  # nosec
 import sys
 from datetime import datetime
 
@@ -291,7 +291,7 @@ def print_goodbye():
     else:
         goodbye_msg_time = "Go get some rest soldier!"
 
-    print(
+    print(  # nosec
         goodbye_msg[random.randint(0, len(goodbye_msg) - 1)] + goodbye_msg_time + "\n"
     )
 
@@ -310,7 +310,7 @@ def update_terminal():
     """Updates the terminal by running git pull in the directory.  Runs poetry install if needed"""
     poetry_hash = sha256sum("poetry.lock")
 
-    completed_process = subprocess.run("git pull", shell=True, check=False)
+    completed_process = subprocess.run("git pull", shell=True, check=False)  # nosec
     if completed_process.returncode != 0:
         return completed_process.returncode
 
@@ -323,7 +323,9 @@ def update_terminal():
         "Seems like more modules have been added, grab a coke, this may take a while."
     )
 
-    completed_process = subprocess.run("poetry install", shell=True, check=False)
+    completed_process = subprocess.run(
+        "poetry install", shell=True, check=False
+    )  # nosec
     if completed_process.returncode != 0:
         return completed_process.returncode
 
@@ -358,7 +360,7 @@ def about_us():
 def bootup():
     # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
     if sys.platform == "win32":
-        os.system("")
+        os.system("")  # nosec
 
     try:
         if os.name == "nt":
@@ -390,7 +392,7 @@ def reset(menu_prior_to_reset=""):
     plt.close("all")
 
     arg = f" {menu_prior_to_reset}" if menu_prior_to_reset else ""
-    completed_process = subprocess.run(
+    completed_process = subprocess.run(  # nosec
         f"{sys.executable} terminal.py{arg}", shell=True, check=False
     )
     if completed_process.returncode != 0:

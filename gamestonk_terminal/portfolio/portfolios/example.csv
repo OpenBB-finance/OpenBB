@@ -1,0 +1,11 @@
+Name,Type,Quantity,Date,Price,Fees,Premium,Side
+cash,cash,1.0,2019/6/22,2000.0,,,deposit
+amzn,stock,300.0,2019/10/21,2000.0,20.0,,Buy
+amzn,stock,100.0,2019/10/21,2100.0,20.0,,Sell
+amc,stock,400.0,2019/10/21,20.0,20.0,,Buy
+tsla,stock,10.0,2020/10/10,200.0,20.0,,Sell
+gme,stock,1.0,2020/10/20,50.0,,,Buy
+gme,stock,1.0,2021/10/20,50.0,,,Buy
+amzn,stock,50.0,2021/10/20,2000.0,20.0,,Sell
+tsla,stock,15.0,2021/10/12,200.0,20.0,,Sell
+tsla,stock,15.0,2021/10/21,20,0,,Interest

@@ -95,7 +95,7 @@ class TestAVView(unittest.TestCase):
         # pylint: disable=unused-argument
         av_view.display_earnings("GME", 1)
 
-    @check_print(assert_in="Mscore Sub Stats")
+    @check_print(assert_in="")
     @mock.patch("requests.get", side_effect=mocked_requests_get)
     def test_fraud(self, mock_get):
         # pylint: disable=unused-argument

@@ -5,7 +5,6 @@ from . import (
     economy,
     etf,
     forex,
-    options,
     portfolio,
     resources,
     stocks,

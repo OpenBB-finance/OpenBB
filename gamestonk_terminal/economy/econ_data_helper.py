@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 import mplfinance as mpf
 
-from gamestonk_terminal.common.technical_analysis import trendline_api as trend
+from gamestonk_terminal.stocks import stocks_helper
 
 
 # pylint: disable=too-many-arguments
@@ -48,20 +48,20 @@ def draw_graph(
         if os.path.isfile(df_stock_cache):
             df_stock = pd.read_pickle(df_stock_cache)
         else:
-            df_stock = trend.load_ticker(
+            df_stock = stocks_helper.load_ticker(
                 ticker,
                 (datetime.now() - timedelta(days=time_delta)).strftime("%Y-%m-%d"),
             )
-            df_stock = trend.find_trendline(df_stock, "OC_High", "high")
-            df_stock = trend.find_trendline(df_stock, "OC_Low", "how")
+            df_stock = stocks_helper.find_trendline(df_stock, "OC_High", "high")
+            df_stock = stocks_helper.find_trendline(df_stock, "OC_Low", "how")
             df_stock.to_pickle(df_stock_cache)
 
     else:
-        df_stock = trend.load_ticker(
+        df_stock = stocks_helper.load_ticker(
             ticker, (datetime.now() - timedelta(days=time_delta)).strftime("%Y-%m-%d")
         )
-        df_stock = trend.find_trendline(df_stock, "OC_High", "high")
-        df_stock = trend.find_trendline(df_stock, "OC_Low", "how")
+        df_stock = stocks_helper.find_trendline(df_stock, "OC_High", "high")
+        df_stock = stocks_helper.find_trendline(df_stock, "OC_Low", "how")
 
     mc = mpf.make_marketcolors(
         up="green", down="red", edge="black", wick="black", volume="in", ohlc="i"

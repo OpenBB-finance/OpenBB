@@ -1,10 +1,7 @@
 ```text
 usage: inc [-n N_NUM] [-q] [-h]
 ```
-
-Prints a complete income statement over time. This can be either quarterly or annually. The following fields are expected: Accepted date, Cost and expenses, Cost of revenue, Depreciation and amortization, Ebitda, Ebitdaratio, Eps, Epsdiluted, Filling date, Final link, General and administrative expenses, Gross
-profit, Gross profit ratio, Income before tax, Income before tax ratio, Income tax expense, Interest expense, Link, Net income, Net income ratio, Operating expenses, Operating income, Operating income ratio, Other expenses, Period, Research and development expenses, Revenue, Selling and marketing expenses, Total
-other income expenses net, Weighted average shs out, Weighted average shs out dil [Source: Financial Modeling Prep]
+Displays the complete financial statements over a selectable period of time. The loaded ticker for the sample below is, F. Source: https://site.financialmodelingprep.com/developer/docs
 
 ```
 optional arguments:
@@ -13,3 +10,4 @@ optional arguments:
   -q, --quarter         Quarter fundamental data flag. (default: False)
   -h, --help            show this help message (default: False)
 ```
+<img size="1400" alt="Feature Screenshot - fmp-income" src="https://user-images.githubusercontent.com/85772166/141602342-432381ce-776b-4e69-b460-8a080ba35a1d.png">

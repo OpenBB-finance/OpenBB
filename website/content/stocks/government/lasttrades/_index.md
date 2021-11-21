@@ -3,7 +3,7 @@ usage: lasttrades [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_DAYS] [-r R
                    [--export {png,jpg,pdf,svg,csv,json,xlsx}]
 ```
 
-Last government trading trading. [Source: www.quiverquant.com]
+Latest government representative trading, searchable by representative. [Source: www.quiverquant.com]
 
 ```
 optional arguments:
@@ -16,3 +16,4 @@ optional arguments:
   --export {png,jpg,pdf,svg,csv,json,xlsx}
                         Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx (default: )
 ```
+<img size="1400" alt="Feature Screenshot - lasttrades" src="https://user-images.githubusercontent.com/85772166/141689036-49a7e6ac-a978-435e-a59f-953f476af5f1.png">

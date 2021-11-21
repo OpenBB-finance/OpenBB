@@ -4,7 +4,7 @@ usage: valuation
                  [--export {csv,json,xlsx}] [-h]
 ```
 
-View group (sectors, industry or country) valuation data. [Source: Finviz]
+View group (sectors, industry or country) valuation data. https://finviz.com
 
 ```
 optional arguments:
@@ -14,3 +14,4 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
+<img size="1400" alt="Feature Screenshot - valuation" src="https://user-images.githubusercontent.com/85772166/141939435-da83efac-525e-4417-af90-9c5d21fef39c.png">

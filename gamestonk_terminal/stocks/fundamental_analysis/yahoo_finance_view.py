@@ -114,7 +114,7 @@ def display_sustainability(ticker: str):
             )
         )
     else:
-        print(df_sustainability.to_sring(index=True))
+        print(df_sustainability.to_string(index=True))
     print("")
 
 

@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 
 import argparse
-import os
 from typing import List
 from datetime import datetime
 import textwrap
@@ -20,6 +19,7 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     check_positive,
     try_except,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.behavioural_analysis import (
@@ -80,9 +80,7 @@ class BehaviouralAnalysisController:
         dim = Style.DIM if not self.ticker else ""
         res = Style.RESET_ALL
         help_string = f"""
->>>Behavioural Analysis:<<<
-
-What would you like to do?
+Behavioural Analysis:
     cls           clear screen
     ?/help        show this menu again
     q             quit this menu, and shows back to main menu
@@ -147,7 +145,7 @@ SentimentInvestor:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(
@@ -687,21 +685,13 @@ SentimentInvestor:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="finbrain",
+            prog="headlines",
             description="""FinBrain collects the news headlines from 15+ major financial news
                         sources on a daily basis and analyzes them to generate sentiment scores
                         for more than 4500 US stocks.FinBrain Technologies develops deep learning
                         algorithms for financial analysis and prediction, which currently serves
                         traders from more than 150 countries all around the world.
                         [Source:  https://finbrain.tech]""",
-        )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -725,14 +715,6 @@ SentimentInvestor:
                 bullish vs bearish percentages, sector average bullish percentage, and sector average news score.
                 [Source: https://finnhub.io]
             """,
-        )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES

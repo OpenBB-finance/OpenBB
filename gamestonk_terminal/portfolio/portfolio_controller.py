@@ -20,10 +20,12 @@ from gamestonk_terminal.helper_funcs import (
     try_except,
     valid_date,
     check_positive_float,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers import bro_controller
-from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
+
+# from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
 from gamestonk_terminal.portfolio import (
     portfolio_view,
@@ -50,7 +52,7 @@ class PortfolioController:
 
     CHOICES_MENUS = [
         "bro",
-        "pa",
+        # "pa",
         "po",
         "load",
         "save",
@@ -89,8 +91,6 @@ class PortfolioController:
     def print_help(self):
         """Print help"""
         help_text = """
->> PORTFOLIO <<
-
 What do you want to do?
     cls         clear screen
     ?/help      show this menu again
@@ -98,8 +98,7 @@ What do you want to do?
     quit        quit to abandon the program
     reset       reset terminal and reload configs
 
->   bro         brokers holdings, \t\t supports: robinhood, alpaca, ally, degiro
->   pa          portfolio analysis, \t\t analyses your custom portfolio
+>   bro         brokers holdings, \t\t supports: robinhood, ally, degiro
 >   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt
 
 Portfolio:
@@ -142,7 +141,7 @@ Graphs:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(
@@ -174,13 +173,13 @@ Graphs:
         else:
             return True
 
-    def call_pa(self, _):
-        """Process pa command"""
-        ret = pa_controller.menu()
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+    # def call_pa(self, _):
+    #    """Process pa command"""
+    #    ret = pa_controller.menu()
+    #    if ret is False:
+    #        self.print_help()
+    #    else:
+    #        return True
 
     def call_po(self, _):
         """Process po command"""
@@ -280,7 +279,7 @@ Graphs:
             "-t",
             "--type",
             dest="type",
-            type=str,
+            type=lambda s: s.lower(),
             choices=["stock", "cash"],  # "bond", "option", "crypto",
             default="stock",
             help="Type of asset to add",
@@ -326,10 +325,10 @@ Graphs:
         parser.add_argument(
             "-a",
             "--action",
-            type=str,
+            type=lambda s: s.lower(),
             dest="action",
             choices=["buy", "sell", "interest", "deposit", "withdrawal"],
-            default="buy",
+            default="deposit" if "cash" in other_args else "buy",
             help="Select what you did in the transaction",
         )
         if other_args:
@@ -408,7 +407,7 @@ Graphs:
 
         val, hist = portfolio_model.convert_df(self.portfolio)
         if not val.empty:
-            portfolio_view.annual_report(val, hist, ns_parser.market)
+            portfolio_view.Report(val, hist, ns_parser.market, 365).generate_report()
 
     @try_except
     def call_rmr(self, other_args: List[str]):
@@ -439,7 +438,8 @@ Graphs:
         val, _ = portfolio_model.convert_df(self.portfolio)
         if not val.empty:
             df_m = yfinance_model.get_market(val.index[0], ns_parser.market)
-            portfolio_view.plot_overall_return(val, df_m, 365, ns_parser.market, True)
+            returns, _ = portfolio_model.get_return(val, df_m, 365)
+            portfolio_view.plot_overall_return(returns, ns_parser.market, True)
         else:
             print("Cannot generate a graph from an empty dataframe\n")
 

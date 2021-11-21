@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 # pylint:disable=R0904
 
 import argparse
-import os
 from typing import List
 from datetime import datetime
 
@@ -20,12 +19,12 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     try_except,
     valid_date,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.technical_analysis import (
     finviz_view,
     finbrain_view,
-    finnhub_view,
     tradingview_view,
 )
 from gamestonk_terminal.common.technical_analysis import (
@@ -47,7 +46,6 @@ class TechnicalAnalysisController:
         "view",
         "summary",
         "recom",
-        "pr",
         "ema",
         "sma",
         "wma",
@@ -101,18 +99,17 @@ class TechnicalAnalysisController:
             stock_str = f"\n{s_intraday} Stock: {self.ticker}"
 
         help_str = f"""
-{stock_str}
-
 Technical Analysis:
     cls         clear screen
     help        show this menu again
     q           quit this menu, and shows back to main menu
     quit        quit to abandon program
 
+{stock_str}
+
     view        view historical data and trendlines [Finviz]
     summary     technical summary report [FinBrain API]
     recom       recommendation based on Technical Indicators [Tradingview API]
-    pr          pattern recognition [Finnhub]
 
 Overlap:
     ema         exponential moving average
@@ -169,7 +166,7 @@ Custom:
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(
@@ -286,46 +283,6 @@ Custom:
             screener=ns_parser.screener,
             exchange=ns_parser.exchange,
             interval=ns_parser.interval,
-            export=ns_parser.export,
-        )
-
-    @try_except
-    def call_pr(self, other_args: List[str]):
-        """Process pr command"""
-
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="pr",
-            description="""
-            Display pattern recognition signals on the data. [Source: Finnhub]""",
-        )
-        parser.add_argument(
-            "-r",
-            "--resolution",
-            action="store",
-            dest="resolution",
-            type=str,
-            default="D",
-            choices=["1", "5", "15", "30", "60", "D", "W", "M"],
-            help="Plot resolution to look for pattern signals",
-        )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        finnhub_view.plot_pattern_recognition(
-            ticker=self.ticker,
-            resolution=ns_parser.resolution,
             export=ns_parser.export,
         )
 
@@ -1440,7 +1397,7 @@ Custom:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="adosc",
             description="""
-                 Acummulation/Distribution Oscillator, also known as the Chaikin Oscillator
+                 Accumulation/Distribution Oscillator, also known as the Chaikin Oscillator
                  is essentially a momentum indicator, but of the Accumulation-Distribution line
                  rather than merely price. It looks at both the strength of price moves and the
                  underlying buying and selling pressure during a given time period. The oscillator

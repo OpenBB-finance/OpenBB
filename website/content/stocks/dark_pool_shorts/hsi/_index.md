@@ -2,7 +2,7 @@
 usage: hsi [-n N_NUM] [--export {csv,json,xlsx}] [-h]
 ```
 
-Print top stocks being more heavily shorted. HighShortInterest.com provides a convenient sorted database of stocks which have a short interest of over 20 percent. Additional key data such as the float, number of outstanding shares, and company industry is displayed. Data is presented for the Nasdaq Stock Market, the New York Stock Exchange, and the American Stock Exchange. [Source: www.highshortinterest.com]
+Browse a sorted database of stocks which have a short interest of over 20 percent. Additional key data such as the float, number of outstanding shares, and company industry is displayed. Data is presented for the Nasdaq Stock Market, the New York Stock Exchange, and the American Stock Exchange. Source: https://www.highshortinterest.com
 
 ```
 optional arguments:

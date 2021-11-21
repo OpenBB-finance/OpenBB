@@ -49,20 +49,20 @@ def get_tradingview_recommendation(
     if not interval:
         df_recommendation = pd.DataFrame()
         index_recommendation = []
-        for interv in ["1M", "1W", "1d", "4h", "1h", "15m", "5m", "1m"]:
+        for an_interval in ["1M", "1W", "1d", "4h", "1h", "15m", "5m", "1m"]:
             # If the returned data was successful
             if result.status_code == 200:
                 stock_recommendation = TA_Handler(
                     symbol=ticker,
                     screener=screener,
                     exchange=exchange,
-                    interval=interv,
+                    interval=an_interval,
                 )
                 d_recommendation = stock_recommendation.get_analysis().summary
                 df_recommendation = df_recommendation.append(
                     d_recommendation, ignore_index=True
                 )
-                index_recommendation.append(INTERVALS[interv])
+                index_recommendation.append(INTERVALS[an_interval])
             df_recommendation.index = index_recommendation
             df_recommendation[["BUY", "NEUTRAL", "SELL"]] = df_recommendation[
                 ["BUY", "NEUTRAL", "SELL"]
@@ -76,6 +76,6 @@ def get_tradingview_recommendation(
         )
         d_recommendation = stock_recommendation.get_analysis().summary
         df_recommendation = pd.DataFrame.from_dict(d_recommendation, orient="index").T
-        df_recommendation.index = INTERVALS[interv]
+        df_recommendation.index = INTERVALS[interval]
 
     return df_recommendation

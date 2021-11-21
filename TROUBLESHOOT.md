@@ -41,8 +41,8 @@ programming skills.
 
 ### Microsoft Visual C++
 
-If your terminal has too many red error lines, it is likely that this is the issue. Go to this page and install the c++
-build tools:
+If your terminal has too many red error lines, it is likely that this is the issue.
+Go to this page and install the 2019 Build Tools (not the latest):
 <https://answers.microsoft.com/en-us/windows/forum/windows_other-windows_install/microsoft-visual-c-140/6f0726e2-6c32-4719-9fe5-aa68b5ad8e6d>
 
 ### Wheel
@@ -94,6 +94,19 @@ If you run into trouble with Poetry, and the advice above did not help, your bes
 5. Reboot your computer and try again
 
 6. Submit a ticket on GitHub
+
+#### JSONDecodeError during `poetry install`
+
+Sometimes poetry can throw a `JSONDecodeError` on random packages while running `poetry install`.
+This can be observed on macOS 10.14+ running python 3.8+.
+This is because of the use of an experimental installer that can be switched off to avoid the mentioned error.
+Run
+
+```bash
+poetry config experimental.new-installer false
+```
+
+as advised [here](https://github.com/python-poetry/poetry/issues/4210) and it should fix the installation process.
 
 ## ModuleNotFoundError Trouble
 

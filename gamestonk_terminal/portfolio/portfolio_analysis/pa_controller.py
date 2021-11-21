@@ -1,4 +1,4 @@
-"""Portffolio Analysis Controller"""
+"""Portfolio Analysis Controller"""
 __docformat__ = "numpy"
 
 import argparse
@@ -12,6 +12,7 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     try_except,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.portfolio_analysis import (
@@ -96,7 +97,7 @@ Portfolio: {self.portfolio_name or None}
 
         # Clear screen
         if known_args.cmd == "cls":
-            os.system("cls||clear")
+            system_clear()
             return None
 
         return getattr(

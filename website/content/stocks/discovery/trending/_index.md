@@ -2,7 +2,7 @@
 usage: trending [-i N_ID] [-n N_NUM] [-d S_DATE] [--export {csv,json,xlsx}] [-h]
 ```
 
-Trending news articles. [Source: Seeking Alpha]
+Trending news articles from [Seeking Alpha](https://seekingalpha.com/market-news/trending)
 
 ```
 optional arguments:
@@ -16,4 +16,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-<img width="1213" alt="trending" src="https://user-images.githubusercontent.com/25267873/115089640-96988780-9f0a-11eb-9ca7-70a245fa3960.png">
+<img width="1400" alt="Feature Screenshot - Trending" src="https://user-images.githubusercontent.com/85772166/140438957-2725540a-5b2d-412b-bed2-4fd56a956ffc.png">

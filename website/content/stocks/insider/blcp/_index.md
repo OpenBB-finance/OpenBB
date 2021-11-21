@@ -2,7 +2,7 @@
 usage: blcp [-n NUM] [-h]
 ```
 
-Print big latest CEO/CFO purchases ($25k+) [Source: OpenInsider]
+Search a SEC Form 4 database for the latest excutive and director dispositions or acquisitions and the corporations they are associated with. Sourece: http://openinsider.com
 
 ```
 optional arguments:
@@ -10,4 +10,5 @@ optional arguments:
   -h, --help         show this help message (default: False)
 ```
 
-<img width="1217" alt="blcp" src="https://user-images.githubusercontent.com/25267873/125373753-9aa73a80-e37d-11eb-83ba-1c072515be44.png">
+
+<img width="1400" alt="Feature Screenshot - ins blcp" src="https://user-images.githubusercontent.com/85772166/140666908-f06df9cb-3fff-4c90-b49a-66d1ded6052f.png">
