@@ -55,7 +55,7 @@ def display_news(
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
-                df,
+                df.head(top),
                 headers=df.columns,
                 floatfmt=".2f",
                 showindex=False,
@@ -69,6 +69,6 @@ def display_news(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "panic",
+        "news",
         df,
     )
