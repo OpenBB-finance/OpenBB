@@ -98,7 +98,7 @@ def _parse_post(post: dict) -> dict:
     }
 
 
-def get_posts(
+def get_news(
     limit: int = 60,
     post_kind: str = "news",
     filter_: Optional[str] = None,

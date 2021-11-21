@@ -110,4 +110,4 @@ API_COINGLASS_KEY = os.getenv("GT_API_COINGLASS_KEY") or "REPLACE_ME"
 API_ETHPLORER_KEY = os.getenv("GT_API_ETHPLORER_KEY") or "freekey"
 
 # https://cryptopanic.com/developers/api/
-API_CRYPTO_PANIC_KEY = os.getenv("GT_API_CRYPTO_PANIC_KEY")
+API_CRYPTO_PANIC_KEY = os.getenv("GT_API_CRYPTO_PANIC_KEY") or "REPLACE_ME"
