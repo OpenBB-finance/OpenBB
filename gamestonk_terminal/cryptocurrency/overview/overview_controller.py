@@ -1541,8 +1541,7 @@ CryptoPanic:
             prog="news",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="Display recent posts from CryptoPanic news aggregator platform. "
-            "[Source: https://cryptopanic.com/]",
+            description="Display recent news from CryptoPanic aggregator platform. [Source: https://cryptopanic.com/]",
         )
 
         parser.add_argument(
