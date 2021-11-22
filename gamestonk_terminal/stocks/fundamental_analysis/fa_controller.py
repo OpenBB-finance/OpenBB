@@ -4,6 +4,8 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
+from colorama import Style
+import pandas as pd
 
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
     fmp_controller,
@@ -27,6 +29,7 @@ from gamestonk_terminal.helper_funcs import (
     try_except,
     system_clear,
 )
+from gamestonk_terminal.stocks.stocks_helper import load
 from gamestonk_terminal.menu import session
 
 # pylint: disable=inconsistent-return-statements
@@ -35,13 +38,7 @@ from gamestonk_terminal.menu import session
 class FundamentalAnalysisController:
     """Fundamental Analysis Controller"""
 
-    CHOICES = [
-        "cls",
-        "?",
-        "help",
-        "q",
-        "quit",
-    ]
+    CHOICES = ["cls", "?", "help", "q", "quit", "load"]
 
     CHOICES_COMMANDS = [
         "analysis",
@@ -75,7 +72,7 @@ class FundamentalAnalysisController:
     CHOICES += CHOICES_COMMANDS
     CHOICES += CHOICES_MENUS
 
-    def __init__(self, ticker: str, start: str, interval: str):
+    def __init__(self, ticker: str, start: str, interval: str, suffix: str = ""):
         """Constructor
 
         Parameters
@@ -88,9 +85,10 @@ class FundamentalAnalysisController:
             Stock data interval
         """
 
-        self.ticker = ticker
+        self.ticker = f"{ticker}.{suffix}" if suffix else ticker
         self.start = start
         self.interval = interval
+        self.suffix = suffix
 
         self.fa_parser = argparse.ArgumentParser(add_help=False, prog="fa")
         self.fa_parser.add_argument(
@@ -100,6 +98,7 @@ class FundamentalAnalysisController:
 
     def print_help(self):
         """Print help"""
+        newline = "\n"
         help_text = f"""
 Fundamental Analysis:
     cls           clear screen
@@ -109,20 +108,20 @@ Fundamental Analysis:
     load          load a new ticker
 
 Ticker: {self.ticker}
-
+{f"Note that only Yahoo Finance currently supports foreign exchanges{Style.DIM}{newline}" if self.suffix else ""}
     data          fundamental and technical data of company [FinViz]
     mgmt          management team of the company [Business Insider]
     analysis      analyse SEC filings with the help of machine learning [Eclect.us]
     score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]
     warnings      company warnings according to Sean Seah book [Market Watch]
-    dcf           advanced Excel customizable discounted cash flow [stockanalysis]
+    dcf           advanced Excel customizable discounted cash flow [stockanalysis] {Style.RESET_ALL}
 Yahoo Finance:
     info          information scope of the company
     shrs          shareholders of the company
     sust          sustainability values of the company
     cal           calendar earnings and estimates of the company
     web           open web browser of the company
-    hq            open HQ location of the company
+    hq            open HQ location of the company {Style.DIM if self.suffix else ""}
 Alpha Vantage:
     overview      overview of the company
     key           company key metrics
@@ -132,7 +131,7 @@ Alpha Vantage:
     earnings      earnings dates and reported EPS
     fraud         key fraud ratios
 Other Sources:
->   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP
+>   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP{Style.RESET_ALL}
         """
         print(help_text)
         # No longer used, but keep for future:
@@ -185,6 +184,14 @@ Other Sources:
     def call_quit(self, _):
         """Process Quit command - quit the program"""
         return True
+
+    @try_except
+    def call_load(self, other_args: List[str]):
+        """Process load command"""
+        self.ticker, self.start, self.interval, _ = load(
+            other_args, self.ticker, self.start, self.interval, pd.DataFrame()
+        )
+        self.suffix = self.ticker.split(".")[1] if "." in self.ticker else ""
 
     @try_except
     def call_analysis(self, other_args: List[str]):
@@ -777,7 +784,7 @@ def key_metrics_explained(other_args: List[str]):
         print("")
 
 
-def menu(ticker: str, start: str, interval: str):
+def menu(ticker: str, start: str, interval: str, suffix: str = ""):
     """Fundamental Analysis menu
 
     Parameters
@@ -788,8 +795,10 @@ def menu(ticker: str, start: str, interval: str):
         Start date of the stock data
     interval : str
         Stock data interval
+    suffix : str
+        Suffix for exchange ID
     """
-    fa_controller = FundamentalAnalysisController(ticker, start, interval)
+    fa_controller = FundamentalAnalysisController(ticker, start, interval, suffix)
     fa_controller.call_help(None)
 
     while True:

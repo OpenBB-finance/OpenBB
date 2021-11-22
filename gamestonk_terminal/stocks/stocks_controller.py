@@ -543,11 +543,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
         from gamestonk_terminal.stocks.fundamental_analysis import fa_controller
 
-        ret = fa_controller.menu(
-            self.ticker,
-            self.start,
-            self.interval,
-        )
+        ret = fa_controller.menu(self.ticker, self.start, self.interval, self.suffix)
 
         if ret is False:
             self.print_help()
