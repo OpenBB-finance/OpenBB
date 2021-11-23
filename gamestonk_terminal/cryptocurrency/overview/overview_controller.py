@@ -11,7 +11,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     try_except,
     system_clear,
-    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.overview import (
@@ -1627,7 +1627,7 @@ CryptoPanic:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
         if not ns_parser:

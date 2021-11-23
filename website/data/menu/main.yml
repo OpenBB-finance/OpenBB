@@ -667,6 +667,8 @@ main:
             ref: "/cryptocurrency/overview/cpcontracts"
           - name: cbpairs
             ref: "/cryptocurrency/overview/cbpairs"
+          - name: news
+            ref: "/cryptocurrency/overview/news"
       - name: due diligence
         ref: "/cryptocurrency/due_diligence"
         sub:
