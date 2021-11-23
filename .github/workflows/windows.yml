@@ -16,7 +16,7 @@ on:
         description: 'Test scenario tags'
 jobs:
   windows-conda:
-    name: Windows-latest, Conda-latest,  Python 3.7
+    name: Windows-latest, Conda-latest,  Python 3.8
     runs-on: windows-latest
     steps:
       - name: Set git to use LF
@@ -41,7 +41,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/conda_pkgs_dir
-          key: conda-windows-3-7-${{ hashFiles('build/conda/conda-3-7-env-full.yaml') }}
+          key: conda-windows-3-8-${{ hashFiles('build/conda/conda-3-8-env-full.yaml') }}
 
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
@@ -51,7 +51,7 @@ jobs:
           channels: conda-forge,defaults
           show-channel-urls: true
           channel-priority: flexible
-          environment-file: build/conda/conda-3-7-env-full.yaml
+          environment-file: build/conda/conda-3-8-env-full.yaml
           activate-environment: testing
           # Needed for caching
           use-only-tar-bz2: true
@@ -72,7 +72,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
-          key: windows-3-7-pip-${{ hashFiles('requirements-full.txt') }}
+          key: windows-3-8-pip-${{ hashFiles('requirements-full.txt') }}
           restore-keys: |
             windows-pip-
 
