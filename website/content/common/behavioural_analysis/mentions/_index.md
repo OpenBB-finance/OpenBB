@@ -2,7 +2,7 @@
 usage: mentions [-s START] [-h]
 ```
 
-Plot weekly bars of stock's interest over time. other users watchlist. [Source: Google]
+Uses Google metrics to plot ticker mentions over time. 
 
 ```
 optional arguments:
@@ -11,4 +11,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-![gme](https://user-images.githubusercontent.com/25267873/108776894-e9813e80-755a-11eb-8b7e-654124c0ef8f.png)
+<img size="1400" alt="Feature Screenshot - mentions" src="https://user-images.githubusercontent.com/85772166/143049909-c389c7e9-ea07-4b6f-8b23-d449582ed735.png">
