@@ -701,7 +701,7 @@ def quote(other_args: List[str], s_ticker: str):
             help="Stock ticker",
         )
 
-    # Price only option.    
+    # Price only option.
     parser.add_argument(
         "-p",
         "--price",
