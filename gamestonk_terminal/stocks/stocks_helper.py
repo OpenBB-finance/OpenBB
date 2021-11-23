@@ -462,10 +462,12 @@ def load(
                 s_start = ns_parser.s_start_date
 
         s_intraday = (f"Intraday {s_interval}", "Daily")[ns_parser.n_interval == 1440]
-
+        
+        # CB: Extra line for testing
         print(
             f"Loading {s_intraday} {ns_parser.s_ticker.upper()} stock "
             f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis.\n"
+            f"{df_stock_candidate}"
         )
 
         return [
@@ -725,7 +727,8 @@ def quote(other_args: List[str], s_ticker: str):
 
     # If price only option, return immediate market price for ticker.
     if ns_parser.price_only: 
-        return print("Price of",ns_parser.s_ticker,float(ticker.info["regularMarketPrice"]))
+        print(f"Price of {ns_parser.s_ticker} {ticker.info['regularMarketPrice']}")
+        return
 
     try:
         quote_df = pd.DataFrame(
