@@ -707,7 +707,7 @@ def export_data(
     func_name : str
         Name of the command that invokes this function
     df : pd.Dataframe
-        Datframe containing the data
+        Dataframe of data to save
     """
     if export_type:
         export_dir = dir_path.replace("gamestonk_terminal", "exports")

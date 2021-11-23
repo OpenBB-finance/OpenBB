@@ -2,7 +2,7 @@
 usage: ema [-l LENGTH] [--spy] [--no_bench] [--export {csv,json,xlsx}] [-h]
 ```
 
-Strategy where stock is bought when Price > EMA(l)
+A simple investment strategy where stock is bought when Price > EMA(l)
 
 ```
 optional arguments:
@@ -14,5 +14,5 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-![ema](https://user-images.githubusercontent.com/25267873/116769584-1eb37c80-aa35-11eb-898b-efa36d4a8f5c.png)
-<img width="983" alt="ema2" src="https://user-images.githubusercontent.com/25267873/116769582-1d824f80-aa35-11eb-94bd-ecd4abe3b415.png">
+<img size="1400" alt="ema" src="https://user-images.githubusercontent.com/25267873/116769584-1eb37c80-aa35-11eb-898b-efa36d4a8f5c.png">
+<img width="1400" alt="ema2" src="https://user-images.githubusercontent.com/25267873/116769582-1d824f80-aa35-11eb-94bd-ecd4abe3b415.png">

@@ -26,7 +26,7 @@ def display_options(num: int, sort_column: pd.Timestamp, export: str, ascending:
     """
     data, last_update = fdscanner_model.unusual_options(num, sort_column, ascending)
 
-    print(f"Last Updated: {last_update}")
+    print(f"Last Updated: {last_update} (EST)")
     print(
         tabulate(
             data[:num], headers=data.columns, tablefmt="fancy_grid", showindex=False

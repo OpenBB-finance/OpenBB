@@ -75,6 +75,8 @@ main:
             ref: "/stocks/dark_pool_shorts/spos"
           - name: psi
             ref: "/stocks/dark_pool_shorts/psi"
+          - name: volexch
+            ref: "/stocks/dark_pool_shorts/volexch"
       - name: screener
         ref: "/stocks/screener"
         sub:
@@ -179,8 +181,6 @@ main:
       - name: fundamental analysis
         ref: "/stocks/fundamental_analysis"
         sub:
-          - name: screener
-            ref: "/stocks/fundamental_analysis/screener"
           - name: mgmt
             ref: "/stocks/fundamental_analysis/mgmt"
           - name: analysis
@@ -667,9 +667,17 @@ main:
             ref: "/cryptocurrency/overview/cpcontracts"
           - name: cbpairs
             ref: "/cryptocurrency/overview/cbpairs"
+          - name: news
+            ref: "/cryptocurrency/overview/news"
       - name: due diligence
         ref: "/cryptocurrency/due_diligence"
         sub:
+          - name: active
+            ref: "/cryptocurrency/due_diligence/active"
+          - name: change
+            ref: "/cryptocurrency/due_diligence/change"
+          - name: eb
+            ref: "/cryptocurrency/due_diligence/eb"
           - name: oi
             ref: "/cryptocurrency/due_diligence/oi"
           - name: info
@@ -717,8 +725,6 @@ main:
         sub:
           - name: gwei
             ref: "/cryptocurrency/onchain/gwei"
-          - name: active
-            ref: "/cryptocurrency/onchain/active"
       - name: nft
         ref: "/cryptocurrency/nft"
         sub:

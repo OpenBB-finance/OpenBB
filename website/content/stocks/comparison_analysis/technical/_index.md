@@ -2,7 +2,7 @@
 usage: technical [--export {csv,json,xlsx}] [-h]
 ```
 
-Prints screener data of similar companies. [Source: Finviz]
+Compares technical stock price data for the added companies. Source: https://finviz.com
 
 ```
 optional arguments:
@@ -10,5 +10,6 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
+<img size="1400" alt="Feature Screenshot - technical" src="https://user-images.githubusercontent.com/85772166/142950572-1ae854e7-bbbb-460f-83c9-0fac7411e932.png">
 
-<img width="1058" alt="technical" src="https://user-images.githubusercontent.com/25267873/114103696-7bea6100-98c1-11eb-93d9-66c732559c75.png">
+

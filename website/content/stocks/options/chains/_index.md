@@ -2,7 +2,7 @@
 usage: chains [-c] [-p] [-m MIN_SP] [-M MAX_SP] [-d TO_DISPLAY] [--export {csv,json,xlsx}] [-h]
 ```
 
-Display option chains
+Display the option chain for the selected expiration using the variables as described below.
 
 ```
 optional arguments:
@@ -19,3 +19,4 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
+<img size="1400" alt="Feature Screenshot - chains" src="https://user-images.githubusercontent.com/85772166/142356435-63650356-4d25-4f49-8a48-fdff389c1e2c.png">

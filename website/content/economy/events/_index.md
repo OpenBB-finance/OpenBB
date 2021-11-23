@@ -3,7 +3,7 @@
 usage: events [-c {NZ,AU,ERL,CA,EU,US,JP,CN,GB,CH}] [-n NUM] [-i {low,medium,high,all}] [--export {csv,json,xlsx}] [-h]
 ```
 
-Output economy impact calendar impact events. [Source: Finnhub]
+Output economy impact calendar impact events. Note that this is a premium feature from the Finnhub API.
 
 ```
 optional arguments:

@@ -2,7 +2,7 @@
 usage: gdp [-i {a,q}] [-s START] [--raw] [-h] [--export {png,jpg,pdf,svg}]
 ```
 
-Get real GDP for US on either annual or quarterly interval [Source: Alpha Vantage]
+US Real GDP, on either annual or quarterly intervals. https://www.alphavantage.co/documentation/
 
 ```
 optional arguments:
@@ -15,3 +15,5 @@ optional arguments:
   --export {png,jpg,pdf,svg}
                         Export or figure into png, jpg, pdf, svg (default: )
 ```
+
+<img size="1400" alt="Feature Screenshot - gdp" src="https://user-images.githubusercontent.com/85772166/141943253-2cca4fb9-82d1-4ac1-98c9-179128cc2d60.png">
