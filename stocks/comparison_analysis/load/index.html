@@ -10,8 +10,8 @@
 
 
 
-    <meta name="description" content="usage: load [-t S_TICKER] [-s S_START_DATE] [-i {1,5,15,30,60}] [--source {yf,av,iex}] [-p] [-h] Load stock ticker to perform analysis on. When the data source is &lsquo;yf&rsquo;, an Indian ticker can be loaded by using &lsquo;.NS&rsquo; at the end, e.g. &lsquo;SBIN.NS&rsquo;. See available market in https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.
-optional arguments: -t S_TICKER, --ticker S_TICKER Stock ticker (default: None) -s S_START_DATE, --start S_START_DATE The starting date (format YYYY-MM-DD) of the stock (default: 2020-09-15) -i {1,5,15,30,60}, --interval {1,5,15,30,60} Intraday stock minutes (default: 1440) --source {yf,av,iex} Source of historical data.">
+    <meta name="description" content="usage: load [-t S_TICKER] [-s S_START_DATE] [-i {1,5,15,30,60}] [--source {yf,av,iex}] [-p] [-h] Shortcut to the load feature.
+optional arguments: -t S_TICKER, --ticker S_TICKER Stock ticker (default: None) -s S_START_DATE, --start S_START_DATE The starting date (format YYYY-MM-DD) of the stock (default: 2020-09-15) -i {1,5,15,30,60}, --interval {1,5,15,30,60} Intraday stock minutes (default: 1440) --source {yf,av,iex} Source of historical data. (default: yf) -p, --prepost Pre/After market hours. Only works for &#39;yf&#39; source, and intraday data (default: False) -h, --help show this help message (default: False) ">
 
 
 
@@ -14851,8 +14851,7 @@ optional arguments: -t S_TICKER, --ticker S_TICKER Stock ticker (default: None) 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Load</h1>
         <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">usage: load [-t S_TICKER] [-s S_START_DATE] [-i {1,5,15,30,60}] [--source {yf,av,iex}] [-p] [-h]
-</code></pre></div><p>Load stock ticker to perform analysis on. When the data source is &lsquo;yf&rsquo;, an Indian ticker can be loaded by using &lsquo;.NS&rsquo; at the end, e.g. &lsquo;SBIN.NS&rsquo;. See
-available market in <a class="gdoc-markdown__link" href="https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html">https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html</a>.</p>
+</code></pre></div><p>Shortcut to the <a class="gdoc-markdown__link" href="https://gamestonkterminal.github.io/GamestonkTerminal/stocks/load/">load</a> feature.</p>
 <pre><code>optional arguments:
   -t S_TICKER, --ticker S_TICKER
                         Stock ticker (default: None)
