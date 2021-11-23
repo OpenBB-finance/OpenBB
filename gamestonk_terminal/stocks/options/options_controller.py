@@ -291,10 +291,12 @@ Current Expiry: {self.selected_date or None}
             help="Number of options to show.  Each scraped page gives 20 results.",
         )
         parser.add_argument(
+            "-s",
             "--sortby",
             dest="sortby",
+            nargs="+",
             default="Vol/OI",
-            choices=["Option", "Vol/OI", "Vol", "OI", "Bid", "Ask"],
+            choices=["Strike", "Vol/OI", "Vol", "OI", "Bid", "Ask", "Exp", "Ticker"],
             help="Column to sort by.  Vol/OI is the default and typical variable to be considered unusual.",
         )
         parser.add_argument(
@@ -306,6 +308,22 @@ Current Expiry: {self.selected_date or None}
             help="Flag to sort in ascending order",
         )
         parser.add_argument(
+            "-p",
+            "--puts_only",
+            dest="puts_only",
+            help="Flag to show puts only",
+            default=False,
+            action="store_true",
+        )
+        parser.add_argument(
+            "-c",
+            "--calls_only",
+            dest="calls_only",
+            help="Flag to show calls only",
+            default=False,
+            action="store_true",
+        )
+        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -315,11 +333,18 @@ Current Expiry: {self.selected_date or None}
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+        if ns_parser.calls_only and ns_parser.puts_only:
+            print(
+                "Cannot return puts only and calls only.  Either use one or neither\n."
+            )
+            return
         fdscanner_view.display_options(
             num=ns_parser.num,
             sort_column=ns_parser.sortby,
             export=ns_parser.export,
             ascending=ns_parser.ascend,
+            calls_only=ns_parser.calls_only,
+            puts_only=ns_parser.puts_only,
         )
 
     @try_except
