@@ -5,10 +5,9 @@ dependencies:
   - python=3.8
   - pip
   - poetry=1.1.11
-  - numpy=1.19.5
+  - numpy=1.21.4
   - cvxpy=1.1.17
-  - jupyter_client=6.1.12
   - pytest
   - black=21.7b0
   - sphinx=4.1.1
-  - charset-normalizer=2.0.1
+  - charset-normalizer=2.0.7
