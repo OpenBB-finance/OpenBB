@@ -4,7 +4,7 @@ usage: volexch [--raw] [-s {,NetShort,Date,TotalVolume,PctShort}] [-a] [-m] [-h]
 
 Displays short volume based on exchange.
 
-This data is pulled from https://ftp.nyse.com/ShortData/ daily.  When updating data, this command may not not be available.
+This data is pulled from the NYSE daily.  When updating data, this command may not not be available.
 
 ```
 optional arguments:
@@ -17,3 +17,5 @@ optional arguments:
   --export {png,jpg,pdf,svg}
                         Export or figure into png, jpg, pdf, svg
 ```
+<img size="1400" alt="Feature Screenshot - volexch" src="https://user-images.githubusercontent.com/85772166/142969080-6b6fdee9-068f-4f7b-9240-463c69056f97.png">
+
