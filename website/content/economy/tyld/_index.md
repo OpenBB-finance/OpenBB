@@ -1,7 +1,7 @@
 ```
 usage: tyld [-i {d,w,m}] [-m {3m,5y,10y,30y}] [-s START] [--raw] [-h] [--export {png,jpg,pdf,svg}]
 
-Get historical Treasury Yield [Source: Alpha Vantage]
+The historical Treasury Yield.
 
 optional arguments:
   -i {d,w,m}, --interval {d,w,m}
@@ -15,3 +15,4 @@ optional arguments:
   --export {png,jpg,pdf,svg}
                         Export or figure into png, jpg, pdf, svg (default: )
 ```
+<img size="1400" alt="Feature Screenshot - tyld" src="https://user-images.githubusercontent.com/85772166/141948117-cc007340-5c9d-4cb9-829a-209d591a1150.png">

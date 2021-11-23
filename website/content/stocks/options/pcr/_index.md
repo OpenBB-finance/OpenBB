@@ -2,7 +2,7 @@
 usage: pcr [-l {10,20,30,60,90,120,150,180}] [-s START] [-h] [--export {png,jpg,pdf,svg}]
 ```
 
-Display put to call ratio for ticker [AlphaQuery.com]
+Display the put/call ratio for the loaded stock. https://AlphaQuery.com
 
 ```
 optional arguments:
@@ -15,4 +15,4 @@ optional arguments:
                         Export or figure into png, jpg, pdf, svg (default: )
 ```
 
-![AAPL_PCR](https://user-images.githubusercontent.com/18151143/138947156-9bbee8e0-0ea2-4ff7-8c6b-dd1d24cd7693.png)
+<img size="1400" alt="Feature Screenshot - pcr" src="https://user-images.githubusercontent.com/18151143/138947156-9bbee8e0-0ea2-4ff7-8c6b-dd1d24cd7693.png">

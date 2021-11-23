@@ -2,7 +2,7 @@
 usage: oi [-m MIN] [-M MAX] [-c] [-p] [-s {tr,yf}] [--export {csv,json,xlsx}] [-h]
 ```
 
-Plot open interest. Open interest represents the number of contracts that exist.
+Plot of the open interest aross a selected chain. Open interest is the number of outstanding contracts, which typically represent one hundred shares. 
 
 ```
 optional arguments:
@@ -16,3 +16,4 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
+<img size="1400" alt="Feature Screenshot - oi" src="https://user-images.githubusercontent.com/85772166/142368338-403b2d8d-00ea-4052-a643-683f5ee79711.png">

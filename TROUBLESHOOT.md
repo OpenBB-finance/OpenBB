@@ -41,8 +41,8 @@ programming skills.
 
 ### Microsoft Visual C++
 
-If your terminal has too many red error lines, it is likely that this is the issue. Go to this page and install the c++
-build tools:
+If your terminal has too many red error lines, it is likely that this is the issue.
+Go to this page and install the 2019 Build Tools (not the latest):
 <https://answers.microsoft.com/en-us/windows/forum/windows_other-windows_install/microsoft-visual-c-140/6f0726e2-6c32-4719-9fe5-aa68b5ad8e6d>
 
 ### Wheel

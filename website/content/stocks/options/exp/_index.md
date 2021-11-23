@@ -4,7 +4,7 @@ usage: exp [-i {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18}]
            [-h]
 ```
 
-See and set expiration date
+See and set the expiration dates.
 
 ```
 optional arguments:
@@ -14,3 +14,4 @@ optional arguments:
                         Select date (YYYY-MM-DD) (default: )
   -h, --help            show this help message (default: False)
 ```
+<img size="1400" alt="Feature Screenshot - exp" src="https://user-images.githubusercontent.com/85772166/142280956-bb740616-b12e-4bd7-8cc1-d02584135b03.png">

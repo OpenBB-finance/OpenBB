@@ -56,7 +56,7 @@ def unusual_options(num: int, sort_column: str, ascending: bool):
     # Subtract an hour to align with NYSE timezone
     last_updated = pd.to_datetime(
         data_list[-1]["last_updated"], unit="s"
-    ) - pd.Timedelta(hours=1)
+    ) - pd.Timedelta(hours=5)
 
     df = pd.DataFrame(
         {
