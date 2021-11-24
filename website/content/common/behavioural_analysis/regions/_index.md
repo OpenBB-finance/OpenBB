@@ -2,7 +2,7 @@
 usage: regions [-n N_NUM] [-h]
 ```
 
-Plot bars of regions based on stock's interest. [Source: Google]
+Shows a bar graph of the interest in the stock by country using Google metrics.
 
 ```
 optional arguments:
@@ -11,4 +11,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-![regions](https://user-images.githubusercontent.com/25267873/108776889-e8e8a800-755a-11eb-8bcc-fcf7b6156f50.png)
+<img size="1400" alt="Feature Screenshot - regions" src="https://user-images.githubusercontent.com/25267873/108776889-e8e8a800-755a-11eb-8bcc-fcf7b6156f50.png">
