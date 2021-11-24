@@ -2,7 +2,7 @@
 usage: popular [-n N_TOP] [-l N_LIMIT] [-s S_SUBREDDIT] [-h]
 ```
 
-Print latest popular tickers. [Source: Reddit]
+The current popular tickers on [Reddit](https://Reddit.com)
 
 ```
 optional arguments:
@@ -16,4 +16,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-<img width="948" alt="popular" src="https://user-images.githubusercontent.com/25267873/108917846-4dbe0400-7628-11eb-821e-9fda97a6d9cd.png">
+<img width="1400" alt="popular" src="https://user-images.githubusercontent.com/25267873/108917846-4dbe0400-7628-11eb-821e-9fda97a6d9cd.png">
