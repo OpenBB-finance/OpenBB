@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 import argparse
+import difflib
 import random
 from typing import List
 
@@ -999,4 +1000,10 @@ def menu(ticker: str, start: str, interval: str, stock: pd.DataFrame):
 
         except SystemExit:
             print("The command selected doesn't exist\n")
+            similar_cmd = difflib.get_close_matches(
+                an_input, ca_controller.CHOICES, n=1, cutoff=0.7
+            )
+
+            if similar_cmd:
+                print(f"Did you mean '{similar_cmd[0]}'?\n")
             continue

@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
+import difflib
 import webbrowser
 from datetime import datetime
 from prompt_toolkit.completion import NestedCompleter
@@ -241,4 +242,10 @@ def menu(ticker: str, start: datetime, interval: str):
 
         except SystemExit:
             print("The command selected doesn't exist\n")
+            similar_cmd = difflib.get_close_matches(
+                an_input, res_controller.CHOICES, n=1, cutoff=0.7
+            )
+
+            if similar_cmd:
+                print(f"Did you mean '{similar_cmd[0]}'?\n")
             continue

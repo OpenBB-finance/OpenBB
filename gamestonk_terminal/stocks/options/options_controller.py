@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 
 
 import argparse
+import difflib
 import os
 from datetime import datetime, timedelta
 from typing import List
@@ -1300,4 +1301,10 @@ def menu(ticker: str = ""):
 
         except SystemExit:
             print("The command selected doesn't exist\n")
+            similar_cmd = difflib.get_close_matches(
+                an_input, op_controller.CHOICES, n=1, cutoff=0.7
+            )
+
+            if similar_cmd:
+                print(f"Did you mean '{similar_cmd[0]}'?\n")
             continue
