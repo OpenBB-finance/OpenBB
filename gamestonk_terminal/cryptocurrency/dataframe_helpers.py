@@ -113,8 +113,8 @@ def very_long_number_formatter(num: Union[str, int, float]) -> str:
             magnitude += 1
             num /= 1000.0
         num = round(num, 1)
-        return "{}{}".format(
-            f"{num:f}".rstrip("0").rstrip("."),
-            ["", "K", "M", "B", "T"][magnitude],
-        )
+        formatted_num = f"{num:f}".rstrip("0").rstrip(".")
+
+        return f'{formatted_num}{["", "K", "M", "B", "T"][magnitude]}'
+
     return num

@@ -375,12 +375,13 @@ def display_seasonal(
     print("Time-Series Level is " + str(round(data.mean(), 2)))
 
     Ft = max(0, 1 - np.var(result.resid)) / np.var(result.trend + result.resid)
-    print("Strength of Trend: %.4f" % Ft)
+    print(f"Strength of Trend: {Ft:.4f}")
+
     Fs = max(
         0,
         1 - np.var(result.resid) / np.var(result.seasonal + result.resid),
     )
-    print("Strength of Seasonality: %.4f" % Fs, "\n")
+    print(f"Strength of Seasonality: {Fs:.4f}\n")
 
     export_data(
         export,
