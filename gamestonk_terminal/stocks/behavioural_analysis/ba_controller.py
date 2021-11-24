@@ -65,6 +65,7 @@ class BehaviouralAnalysisController:
         "popularsi",
         "getdd",
     ]
+    CHOICES += CHOICES_COMMANDS
 
     def __init__(self, ticker: str, start: datetime):
         """Constructor"""
