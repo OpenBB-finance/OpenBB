@@ -203,6 +203,7 @@ class GovernmentCommands(discord.ext.commands.Cog):
         """
         await lobbying_command(ctx, ticker, num)
 
+    # pylint: disable=too-many-branches
     @discord.ext.commands.command(name="stocks.gov")
     async def government_menu(self, ctx: discord.ext.commands.Context, ticker=""):
         """Stocks Context - Shows Government Menu
