@@ -51,15 +51,15 @@ def get_screener_data(
 
     for section in ["General", "Descriptive", "Fundamental", "Technical"]:
         for key, val in {**preset_filter[section]}.items():
-            if key in d_check_screener.keys():
-                if val not in d_check_screener[key]:
-                    print(
-                        f"Invalid [{section}] {key}={val}. "
-                        f"Choose one of the following options:\n{', '.join(d_check_screener[key])}.\n"
-                    )
-                    return pd.DataFrame()
-            else:
+            if not key in d_check_screener:
                 print(f"The screener variable {section}.{key} shouldn't exist!\n")
+                return pd.DataFrame()
+
+            if val not in d_check_screener[key]:
+                print(
+                    f"Invalid [{section}] {key}={val}. "
+                    f"Choose one of the following options:\n{', '.join(d_check_screener[key])}.\n"
+                )
                 return pd.DataFrame()
 
     d_filters = {k: v for k, v in d_filters.items() if v}

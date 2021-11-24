@@ -132,7 +132,7 @@ Select one of the following reports:
         (known_args, other_args) = self.report_parser.parse_known_args(an_input.split())
 
         # Help menu again
-        if known_args.cmd == "?" or known_args.cmd == "help":
+        if known_args.cmd in ["?", "help"]:
             self.print_help()
             return None
 
