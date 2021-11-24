@@ -1,20 +1,38 @@
 # CONTRIBUTING
 
+- [CONTRIBUTING](#contributing)
+  - [Introduction](#introduction)
+  - [Code Structure](#code-structure)
+  - [Developer Journey](#developer-journey)
+    - [Adding a new context/category](#adding-a-new-contextcategory)
+    - [Adding a new command](#adding-a-new-command)
+    - [Selecting a command through a reaction in a menu bot message](#selecting-a-command-through-a-reaction-in-a-menu-bot-message)
+
 First off, thanks for taking the time to contribute (or at least read the Contributing Guidelines for the Discord Bot)! 🚀
 
 ## Introduction
 
-The following is a set of guidelines for contributing to Gamestonk Terminal. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
+The following is a set of guidelines for contributing to Gamestonk Terminal. These are mostly guidelines, not rules.
+Use your best judgment, and feel free to propose changes to this document in a pull request.
 
-The [Github Discord Bot board](https://github.com/GamestonkTerminal/GamestonkTerminal/projects/4) will display the tickets we're currently working on, or have planned to work on. As a first step towards contribution, you should look into what is there to implement or reach out to the community in discord and ask what they want/need. For more information reach out to @lardigalltomhistoria or @SexyYear on discord.
+The [Github Discord Bot board](https://github.com/GamestonkTerminal/GamestonkTerminal/projects/4) will display the
+tickets we're currently working on, or have planned to work on. As a first step towards contribution, you should look
+into what is there to implement or reach out to the community in discord and ask what they want/need. For more
+information reach out to @lardigalltomhistoria or @SexyYear on discord.
 
-The reader reading this document should read [CONTRIBUTING.md](CONTRIBUTING.md) document. This is because the contributing steps are identical with the difference of having a different coding structure, which is where this document will mainly focus.
+The reader reading this document should read [CONTRIBUTING.md](CONTRIBUTING.md) document. This is because the
+contributing steps are identical with the difference of having a different coding structure, which is where this
+document will mainly focus.
 
 ## Code Structure
 
-It is critical for our discord bot to go hand in hand with Gamestonk Terminal commands structure. As we want the community to learn the structure of the commands for GST and the GST bot, simultaneously. This is so that if I know that I can reach "Price vs Short Interest" command in Terminal through `(stocks)>(dps)>psi`, I know that the discord bot will invoke the same command with `!stocks.dps.psi`.
+It is critical for our discord bot to go hand in hand with Gamestonk Terminal commands structure. As we want the
+community to learn the structure of the commands for GST and the GST bot, simultaneously. This is so that if I know
+that I can reach "Price vs Short Interest" command in Terminal through `(stocks)>(dps)>psi`, I know that the discord
+bot will invoke the same command with `!stocks.dps.psi`.
 
 The code structure is as follows:
+
 ```text
 discordbot/discordbot.py
           /economy/economy_menu.py
@@ -27,19 +45,24 @@ discordbot/discordbot.py
                                   /spos.py
 ```
 
-The main difference between discord bot code structure and Gamestonk Terminal is in the fact that in Gamestonk Terminal the files are organized by data source whereas in the discord bot each files corresponds at a different bot command.
+The main difference between discord bot code structure and Gamestonk Terminal is in the fact that in Gamestonk Terminal
+the files are organized by data source whereas in the discord bot each files corresponds at a different bot command.
 
-The file that has the name of the context or category (e.g. `economy_menu` or `dps_menu`) will contain a collection of possible commands from the ones within that same directory. The user will be able to select these through an emoji reaction.
+The file that has the name of the context or category (e.g. `economy_menu` or `dps_menu`) will contain a collection of
+possible commands from the ones within that same directory. The user will be able to select these through an emoji reaction.
 
 ## Developer Journey
 
 When adding a new command to our discord bot this is the journey that the developer must follow.
 
-Does the appropriate `context/category` already exists for the command you are looking to implement? If it does, jump to [adding a new command](#adding-a-new-command), otherwise carry on.
+Does the appropriate `context/category` already exists for the command you are looking to implement? If it does,
+jump to [adding a new command](#adding-a-new-command), otherwise carry on.
 
 ### Adding a new context/category
 
-If you want to add a new context/category, you just need to create the corresponding `_menu` file in the correct location. E.g. let's suppose you want to create `stocks/dark_pool_shorts`, then you create a `dps_menu.py` file under that directory. Such `dps_menu.py` file will have a code along these lines:
+If you want to add a new context/category, you just need to create the corresponding `_menu` file in the correct
+location. E.g. let's suppose you want to create `stocks/dark_pool_shorts`, then you create a `dps_menu.py` file under
+that directory. Such `dps_menu.py` file will have a code along these lines:
 
 ```python
 import asyncio
@@ -63,7 +86,8 @@ def setup(bot: discord.ext.commands.Bot):
     gst_bot.add_cog(DarkPoolShortsCommands(bot))
 ```
 
-In order for the bot to know about this new `context/category` you need to go into [discordbot.py](discordbot/discordbot.py) and add it to the section before running the bot, using:
+In order for the bot to know about this new `context/category` you need to go into
+[discordbot.py](discordbot/discordbot.py) and add it to the section before running the bot, using:
 
 ```python
 gst_bot.load_extension("stocks.dark_pool_shorts.dps_menu")
@@ -71,7 +95,9 @@ gst_bot.load_extension("stocks.dark_pool_shorts.dps_menu")
 
 ### Adding a new command
 
-For adding a new command, you need to add the name of the command under the `context/category` it belongs to. Let's assume you want to add the `ftd` command (failure-to-deliver) on `stocks/dark_pool_shorts`, then you need to create an [ftd.py](discordbot/stocks/dark_pool_shorts/ftd.py).
+For adding a new command, you need to add the name of the command under the `context/category` it belongs to.
+Let's assume you want to add the `ftd` command (failure-to-deliver) on `stocks/dark_pool_shorts`, then you need to
+create an [ftd.py](discordbot/stocks/dark_pool_shorts/ftd.py).
 
 Such file will have the following format:
 
@@ -100,7 +126,7 @@ async def ftd_command(ctx, ticker="", start="", end=""):
         if cfg.DEBUG:
             print(f"\n!stocks.dps.ftd {ticker} {start} {end}")
 
-        # CHECK FOR ARGUMENT VALIDTY
+        # CHECK FOR ARGUMENT VALIDITY
         if ticker == "":
             raise Exception("Stock ticker is required")
         ticker = ticker.upper()
@@ -176,11 +202,15 @@ async def ftd_command(ctx, ticker="", start="", end=""):
 ```
 
 The main variation in each command occurs at the output level, where the bot reply could be either:
-* A simple **string**.
-* A **table**, which relies on a pandas dataframe output and pagination is used for the user to iterate through columns. See [shorted.py](discordbot/stocks/dark_pool_shorts/shorted.py)
-* An **image**, which relies on matplotlib output and IMGUR is used to upload this image to send to the user. See [ftd.py](discordbot/stocks/dark_pool_shorts/ftd.py).
 
-Once the command file has been added, one needs to make sure our bot is aware of it. Therefore we need to add it in the `dps_menu` file, same one that was created in [Adding a new context/category](#adding-a-new-context/category).
+- A simple **string**.
+- A **table**, which relies on a pandas dataframe output and pagination is used for the user to iterate through columns.
+  See [shorted.py](discordbot/stocks/dark_pool_shorts/shorted.py)
+- An **image**, which relies on matplotlib output and IMGUR is used to upload this image to send to the user. See
+  [ftd.py](discordbot/stocks/dark_pool_shorts/ftd.py).
+
+Once the command file has been added, one needs to make sure our bot is aware of it. Therefore we need to add it in
+the `dps_menu` file, same one that was created in [Adding a new context/category](#adding-a-new-context/category).
 
 This is achieved by adding the following method to `DarkPoolShortsCommands(discord.ext.commands.Cog)` class:
 
@@ -201,13 +231,17 @@ async def ftd(self, ctx: discord.ext.commands.Context, ticker="", start="", end=
     await ftd_command(ctx, ticker, start, end)
 ```
 
-Note that the docstring is *CRITICAL* to be added as this will allow the user to query about this command with `!help stocks.dps.ftd` and understand what the function outputs, what source it uses and ultimately, the expected arguments.
+Note that the docstring is *CRITICAL* to be added as this will allow the user to query about this command with
+`!help stocks.dps.ftd` and understand what the function outputs, what source it uses and ultimately, the expected arguments.
 
 ### Selecting a command through a reaction in a menu bot message
 
-Finally, it was important for us that the users had the same experience given by the terminal. Hence we set the code structure in a way so that the user could call a menu like `!stocks.dps` and be able to select multiple commands from the menu that popped-up through message reactions.
+Finally, it was important for us that the users had the same experience given by the terminal. Hence we set the code
+structure in a way so that the user could call a menu like `!stocks.dps` and be able to select multiple commands from
+the menu that popped-up through message reactions.
 
-Taking the `dps_menu` as example, this is done by adding the following method to `DarkPoolShortsCommands(discord.ext.commands.Cog)` class:
+Taking the `dps_menu` as example, this is done by adding the following method to
+`DarkPoolShortsCommands(discord.ext.commands.Cog)` class:
 
 ```python
 @discord.ext.commands.command(name="stocks.dps")
