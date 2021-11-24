@@ -94,7 +94,7 @@ jobs:
       - name: Lint Code Base
         uses: docker://avtodev/markdown-lint:v1
         with:
-          args: "./*.md ./changelogs/*.md ./gamestonk_terminal/**/*.md"
+          args: "./*.md ./changelogs/*.md ./gamestonk_terminal/**/*.md ./discordbot/**/*.md"
   tests-python:
     name: Vanilla Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
