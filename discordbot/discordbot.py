@@ -8,7 +8,7 @@ import config_discordbot as cfg
 
 
 activity = discord.Game(
-    name="Gametonk Terminal: https://github.com/GamestonkTerminal/GamestonkTerminal"
+    name="Gamestonk Terminal: https://github.com/GamestonkTerminal/GamestonkTerminal"
 )
 
 gst_bot = discord.ext.commands.Bot(
