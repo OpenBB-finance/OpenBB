@@ -352,7 +352,7 @@ Finviz:
         if not ns_parser:
             return
 
-        self.similar = ns_parser.l_similar
+        self.similar = list(set(ns_parser.l_similar))
         self.user = "Custom"
         print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
 

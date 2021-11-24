@@ -54,7 +54,7 @@ class CoinbaseRequestException(Exception):
         self.message = message
 
     def __str__(self) -> str:
-        return "CoinbaseRequestException: %s" % self.message
+        return f"CoinbaseRequestException: {self.message}"
 
 
 class CoinbaseApiException(Exception):
@@ -65,7 +65,7 @@ class CoinbaseApiException(Exception):
         self.message = message
 
     def __str__(self) -> str:
-        return "CoinbaseApiException: %s" % self.message
+        return f"CoinbaseApiException: {self.message}"
 
 
 def check_validity_of_product(product_id: str) -> str:
@@ -117,11 +117,11 @@ def make_coinbase_request(
     response = requests.get(url + endpoint, params=params, auth=auth)
 
     if not 200 <= response.status_code < 300:
-        raise CoinbaseApiException("Invalid Authentication: %s" % response.text)
+        raise CoinbaseApiException(f"Invalid Authentication: {response.text}")
     try:
         return response.json()
     except ValueError as e:
-        raise CoinbaseRequestException("Invalid Response: %s" % response.text) from e
+        raise CoinbaseRequestException(f"Invalid Response: {response.text}") from e
 
 
 def _get_account_coin_dict() -> dict:

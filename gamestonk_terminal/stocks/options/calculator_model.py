@@ -33,7 +33,7 @@ def pnl_calculator(
         Breakeven point
     """
 
-    if "x_min" in kwargs.keys() and "x_max" in kwargs.keys():
+    if "x_min" in kwargs and "x_max" in kwargs:
         price_at_expiry = np.linspace(kwargs["x_min"], kwargs["x_max"], 301)
     else:
         price_at_expiry = np.linspace(strike / 2, 1.5 * strike, 301)

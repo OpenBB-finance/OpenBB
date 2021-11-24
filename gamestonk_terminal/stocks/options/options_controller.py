@@ -55,6 +55,7 @@ class OptionsController:
     ]
 
     CHOICES_COMMANDS = [
+        "pres",
         "disp",
         "scr",
         "calc",
@@ -127,7 +128,8 @@ What do you want to do?
     quit          quit to abandon program
 
 Explore:
-    disp          display all preset screeners filters
+    pres          display available preset templates
+    disp          display filters for selected preset
     scr           output screener options [Syncretism.io]
     unu           show unusual options activity [fdscanner.com]
     calc          basic call/put PnL calculator
@@ -289,10 +291,12 @@ Current Expiry: {self.selected_date or None}
             help="Number of options to show.  Each scraped page gives 20 results.",
         )
         parser.add_argument(
+            "-s",
             "--sortby",
             dest="sortby",
+            nargs="+",
             default="Vol/OI",
-            choices=["Option", "Vol/OI", "Vol", "OI", "Bid", "Ask"],
+            choices=["Strike", "Vol/OI", "Vol", "OI", "Bid", "Ask", "Exp", "Ticker"],
             help="Column to sort by.  Vol/OI is the default and typical variable to be considered unusual.",
         )
         parser.add_argument(
@@ -304,6 +308,22 @@ Current Expiry: {self.selected_date or None}
             help="Flag to sort in ascending order",
         )
         parser.add_argument(
+            "-p",
+            "--puts_only",
+            dest="puts_only",
+            help="Flag to show puts only",
+            default=False,
+            action="store_true",
+        )
+        parser.add_argument(
+            "-c",
+            "--calls_only",
+            dest="calls_only",
+            help="Flag to show calls only",
+            default=False,
+            action="store_true",
+        )
+        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -313,11 +333,18 @@ Current Expiry: {self.selected_date or None}
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+        if ns_parser.calls_only and ns_parser.puts_only:
+            print(
+                "Cannot return puts only and calls only.  Either use one or neither\n."
+            )
+            return
         fdscanner_view.display_options(
             num=ns_parser.num,
             sort_column=ns_parser.sortby,
             export=ns_parser.export,
             ascending=ns_parser.ascend,
+            calls_only=ns_parser.calls_only,
+            puts_only=ns_parser.puts_only,
         )
 
     @try_except
@@ -388,13 +415,30 @@ Current Expiry: {self.selected_date or None}
         barchart_view.print_options_data(ticker=self.ticker, export=ns_parser.export)
 
     @try_except
+    def call_pres(self, other_args: List[str]):
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="pres",
+            description="""View available presets under presets folder.""",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        presets = [f for f in os.listdir(self.PRESET_PATH) if f.endswith(".ini")]
+
+        for preset in presets:
+            print(preset)
+        print("")
+
+    @try_except
     def call_disp(self, other_args: List[str]):
         """Process disp command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="disp",
-            description="""View available presets under presets folder.""",
+            description="""View filters for a selected preset.""",
         )
         parser.add_argument(
             "-p",
@@ -895,7 +939,7 @@ Current Expiry: {self.selected_date or None}
                 min_sp=ns_parser.min,
                 max_sp=ns_parser.max,
                 calls_only=ns_parser.calls,
-                puts_only=ns_parser.puts_only,
+                puts_only=ns_parser.puts,
                 export=ns_parser.export,
             )
         else:

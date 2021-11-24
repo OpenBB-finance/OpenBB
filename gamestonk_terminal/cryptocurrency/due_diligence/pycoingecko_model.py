@@ -468,6 +468,8 @@ class Coin:
         df.replace({0: ""}, inplace=True)
         df = df.fillna("")
         df.columns = ["Metric", "Value"]
+
+        # pylint: disable=unsupported-assignment-operation
         df["Metric"] = df["Metric"].apply(
             lambda x: replace_underscores_in_column_names(x)
             if isinstance(x, str)

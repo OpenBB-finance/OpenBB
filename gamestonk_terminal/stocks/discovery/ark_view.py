@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import os
-import pandas as pd
+
 from tabulate import tabulate
 from colorama import Fore, Style
 
@@ -35,13 +35,31 @@ def direction_color_red_green(val: str) -> str:
     return ret
 
 
-def ark_orders_view(num: int, export: str):
+def ark_orders_view(
+    num: int,
+    sort_col: str = "",
+    ascending: bool = False,
+    buys_only: bool = False,
+    sells_only: bool = False,
+    fund: str = "",
+    export: str = "",
+):
     """Prints a table of the last N ARK Orders
 
     Parameters
     ----------
     num: int
         Number of stocks to display
+    sort_col : str
+        Column to sort on
+    ascending : bool
+        Flag to sort in ascending order
+    buys_only : bool
+        Flag to filter on buys only
+    sells_only : bool
+        Flag to sort on sells only
+    fund : str
+        Optional filter by fund
     export : str
         Export dataframe data to csv,json,xlsx file
     """
@@ -50,10 +68,16 @@ def ark_orders_view(num: int, export: str):
     if df_orders.empty:
         print("The ARK orders aren't available at the moment.\n")
         return
-
-    pd.set_option("mode.chained_assignment", None)
+    if fund:
+        df_orders = df_orders[df_orders.fund == fund]
+    if buys_only:
+        df_orders = df_orders[df_orders.direction == "Buy"]
+    if sells_only:
+        df_orders = df_orders[df_orders.direction == "Sell"]
     df_orders = ark_model.add_order_total(df_orders.head(num))
 
+    if sort_col:
+        df_orders = df_orders.sort_values(by=sort_col, ascending=ascending)
     if gtff.USE_COLOR:
         df_orders["direction"] = df_orders["direction"].apply(direction_color_red_green)
 

@@ -41,25 +41,8 @@ def view_available_presets(preset: str, presets_path: str):
             print("")
 
     else:
-        presets = [
-            preset.split(".")[0]
-            for preset in os.listdir(presets_path)
-            if preset[-4:] == ".ini"
-        ]
-
-        for preset_i in presets:
-            with open(
-                os.path.join(presets_path, preset + ".ini"),
-                encoding="utf8",
-            ) as f:
-                description = ""
-                for line in f:
-                    if line.strip() == "[FILTER]":
-                        break
-                    description += line.strip()
-            print(f"\nPRESET: {preset_i}")
-            print(description.split("Description: ")[1].replace("#", ""))
-        print("")
+        print("Please provide a preset template.")
+    print("")
 
 
 def view_screener_output(preset: str, presets_path: str, n_show: int, export: str):
