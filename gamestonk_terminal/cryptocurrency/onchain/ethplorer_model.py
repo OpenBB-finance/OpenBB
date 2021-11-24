@@ -336,6 +336,7 @@ def get_token_info(address) -> pd.DataFrame:
 
     df = df.T.reset_index()
     df.columns = ["Metric", "Value"]
+    # pylint: disable=unsupported-assignment-operation
     df["Value"] = df["Value"].apply(
         lambda x: "\n".join(textwrap.wrap(x, width=70)) if isinstance(x, str) else x
     )
