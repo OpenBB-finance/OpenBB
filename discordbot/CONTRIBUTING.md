@@ -126,7 +126,7 @@ async def ftd_command(ctx, ticker="", start="", end=""):
         if cfg.DEBUG:
             print(f"\n!stocks.dps.ftd {ticker} {start} {end}")
 
-        # CHECK FOR ARGUMENT VALIDTY
+        # CHECK FOR ARGUMENT VALIDITY
         if ticker == "":
             raise Exception("Stock ticker is required")
         ticker = ticker.upper()
@@ -203,10 +203,10 @@ async def ftd_command(ctx, ticker="", start="", end=""):
 
 The main variation in each command occurs at the output level, where the bot reply could be either:
 
-* A simple **string**.
-* A **table**, which relies on a pandas dataframe output and pagination is used for the user to iterate through columns.
+- A simple **string**.
+- A **table**, which relies on a pandas dataframe output and pagination is used for the user to iterate through columns.
   See [shorted.py](discordbot/stocks/dark_pool_shorts/shorted.py)
-* An **image**, which relies on matplotlib output and IMGUR is used to upload this image to send to the user. See
+- An **image**, which relies on matplotlib output and IMGUR is used to upload this image to send to the user. See
   [ftd.py](discordbot/stocks/dark_pool_shorts/ftd.py).
 
 Once the command file has been added, one needs to make sure our bot is aware of it. Therefore we need to add it in
