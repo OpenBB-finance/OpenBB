@@ -2,7 +2,7 @@
 usage: watchlist [-l N_LIMIT] [-h]
 ```
 
-Print other users watchlist. [Source: Reddit]
+Searches [Reddit](https://reddit.com) for users' watchlists.
 
 ```
 optional arguments:
@@ -11,4 +11,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-<img width="941" alt="watchlist" src="https://user-images.githubusercontent.com/25267873/108920576-caeb7800-762c-11eb-937c-94ecbb65d119.png">
+<img width="1400" alt="Feature Screenshot - watchlist" src="https://user-images.githubusercontent.com/25267873/108920576-caeb7800-762c-11eb-937c-94ecbb65d119.png">
