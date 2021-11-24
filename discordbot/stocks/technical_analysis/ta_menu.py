@@ -467,9 +467,8 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await donchian_command(ctx, ticker, upper_length, lower_length, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.kc")
-
     # pylint: disable=too-many-arguments
+    @discord.ext.commands.command(name="stocks.ta.kc")
     async def kc(
         self,
         ctx: discord.ext.commands.Context,
@@ -627,8 +626,8 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await recom_command(ctx, ticker)
 
-    @discord.ext.commands.command(name="stocks.ta")
     # pylint: disable=too-many-statements
+    @discord.ext.commands.command(name="stocks.ta")
     async def ta(self, ctx: discord.ext.commands.Context, ticker=""):
         """Stocks Context - Shows Technical Analysis Menu
 
@@ -798,8 +797,8 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
                     embed=cols[current], components=components
                 )
 
-                @gst_bot.event
                 # pylint: disable=too-many-branches
+                @gst_bot.event
                 async def on_reaction_add(reaction, user):
                     if user == ctx.message.author and str(reaction.emoji) in emoji_list:
                         if reaction.emoji == "0️⃣":

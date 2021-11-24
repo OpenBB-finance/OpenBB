@@ -2,7 +2,6 @@ import asyncio
 import discord
 import discordbot.config_discordbot as cfg
 
-# pylint: disable=wrong-import-order,too-many-branches
 from discordbot.run_discordbot import gst_bot
 
 from discordbot.stocks.government.lasttrades import lasttrades_command
