@@ -1,24 +1,25 @@
-import discord
-import config_discordbot as cfg
-from discordbot import gst_imgur
-from datetime import datetime, timedelta
-from matplotlib import pyplot as plt
 import os
-import helpers
+from datetime import datetime, timedelta
+import discord
+from matplotlib import pyplot as plt
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur
+import discordbot.helpers
 
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.common.technical_analysis import volume_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 
-async def ad_command(ctx, ticker="", open="False", start="", end=""):
+async def ad_command(ctx, ticker="", is_open="False", start="", end=""):
     """Displays chart with accumulation/distribution line [Yahoo Finance]"""
 
     try:
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.ad {ticker} {open} {start} {end}")
+            print(f"!stocks.ta.ad {ticker} {is_open} {start} {end}")
 
         # Check for argument
         if ticker == "":
@@ -34,15 +35,17 @@ async def ad_command(ctx, ticker="", open="False", start="", end=""):
         else:
             end = datetime.strptime(end, cfg.DATE_FORMAT)
 
-        if open == "false" or open == "False" or open == "FALSE":
-            open = False
-        elif open == "true" or open == "True" or open == "TRUE":
-            open = True
-        else:
-            raise Exception("open argument has to be true or false")
+        if is_open in ["false", "False", "FALSE", ""]:
+            is_open = False
+
+        if is_open in ["true", "True", "TRUE"]:
+            is_open = True
+
+        if is_open not in [True, False]:
+            raise Exception("is_open argument has to be true or false")
 
         ticker = ticker.upper()
-        df_stock = helpers.load(ticker, start)
+        df_stock = discordbot.helpers.load(ticker, start)
         if df_stock.empty:
             raise Exception("Stock ticker is invalid")
 
@@ -56,7 +59,7 @@ async def ad_command(ctx, ticker="", open="False", start="", end=""):
         divisor = 1_000_000
         df_vol = df_stock["Volume"].dropna()
         df_vol = df_vol.values / divisor
-        df_ta = volume_model.ad(df_stock, open)
+        df_ta = volume_model.ad(df_stock, is_open)
         df_cal = df_ta.values
         df_cal = df_cal / divisor
 

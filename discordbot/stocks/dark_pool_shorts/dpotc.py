@@ -1,10 +1,10 @@
 import os
 import matplotlib.dates as mdates
 import discord
-import yfinance as yf
-import config_discordbot as cfg
 from matplotlib import pyplot as plt
-from discordbot import gst_imgur
+import yfinance as yf
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 from gamestonk_terminal.stocks.dark_pool_shorts import finra_model
@@ -45,7 +45,7 @@ async def dpotc_command(ctx, ticker=""):
         )
 
         if ats.empty and otc.empty:
-            embed = embed.set_description("No data found.")
+            embed = embed.set_description("No data found.")  # pylint: disable=no-member
         _, _ = plt.subplots(dpi=PLOT_DPI)
 
         plt.subplot(3, 1, (1, 2))

@@ -101,7 +101,7 @@ Other parameters that can be configured are:
 Just run the discord bot from this folder with:
 
 ```text
-python discordbot.py
+python discordbot/run_discordbot.py
 ```
 
 Now, you should be ready to invoke the discord bot from server using something like:

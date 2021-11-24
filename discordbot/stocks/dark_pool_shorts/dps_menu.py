@@ -1,19 +1,18 @@
 import asyncio
 import discord
-import config_discordbot as cfg
 import yfinance as yf
 
-# pylint: disable=wrong-import-order,too-many-branches
-from discordbot import gst_bot
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_bot
 
-from stocks.dark_pool_shorts.shorted import shorted_command
-from stocks.dark_pool_shorts.ftd import ftd_command
-from stocks.dark_pool_shorts.dpotc import dpotc_command
-from stocks.dark_pool_shorts.spos import spos_command
-from stocks.dark_pool_shorts.psi import psi_command
-from stocks.dark_pool_shorts.hsi import hsi_command
-from stocks.dark_pool_shorts.pos import pos_command
-from stocks.dark_pool_shorts.sidtc import sidtc_command
+from discordbot.stocks.dark_pool_shorts.shorted import shorted_command
+from discordbot.stocks.dark_pool_shorts.ftd import ftd_command
+from discordbot.stocks.dark_pool_shorts.dpotc import dpotc_command
+from discordbot.stocks.dark_pool_shorts.spos import spos_command
+from discordbot.stocks.dark_pool_shorts.psi import psi_command
+from discordbot.stocks.dark_pool_shorts.hsi import hsi_command
+from discordbot.stocks.dark_pool_shorts.pos import pos_command
+from discordbot.stocks.dark_pool_shorts.sidtc import sidtc_command
 
 
 class DarkPoolShortsCommands(discord.ext.commands.Cog):
@@ -122,6 +121,7 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         await psi_command(ctx, ticker)
 
     @discord.ext.commands.command(name="stocks.dps")
+    # pylint: disable=too-many-branches
     async def dark_pool_shorts_menu(self, ctx: discord.ext.commands.Context, ticker=""):
         """Stocks Context - Shows Dark Pool Shorts Menu
 

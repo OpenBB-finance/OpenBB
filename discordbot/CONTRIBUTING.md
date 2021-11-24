@@ -67,11 +67,11 @@ that directory. Such `dps_menu.py` file will have a code along these lines:
 ```python
 import asyncio
 import discord
-import config_discordbot as cfg
+import discordbot.config_discordbot as cfg
 import yfinance as yf
 
 # pylint: disable=wrong-import-order
-from discordbot import gst_bot
+from discordbot.run_discordbot import gst_bot
 
 
 class DarkPoolShortsCommands(discord.ext.commands.Cog):
@@ -107,11 +107,11 @@ import os
 from datetime import datetime, timedelta
 import discord
 import yfinance as yf
-import config_discordbot as cfg
-import helpers
+import discordbot.config_discordbot as cfg
+import discordbot.helpers
 from matplotlib import pyplot as plt
 import matplotlib.dates as mdates
-from discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur
 
 # IMPORT THE GST MODEL/VIEW THAT RETRIEVES DATA WANTED
 from gamestonk_terminal.stocks.dark_pool_shorts import sec_model
@@ -162,7 +162,7 @@ async def ftd_command(ctx, ticker="", start="", end=""):
         plt.gcf().autofmt_xdate()
         plt.xlabel("Days")
         _ = plt.gca().twinx()
-        stock = helpers.load(ticker, start)
+        stock= discordbot.helpers.load(ticker, start)
         stock_ftd = stock[stock.index > start]
         stock_ftd = stock_ftd[stock_ftd.index < end]
         plt.plot(stock_ftd.index, stock_ftd["Adj Close"], color="tab:orange")
