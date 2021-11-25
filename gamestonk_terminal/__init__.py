@@ -6,6 +6,7 @@ from . import (
     etf,
     forex,
     portfolio,
+    reports,
     resources,
     stocks,
 )
