@@ -31,7 +31,7 @@ repos:
     hooks:
        - id: pylint
          name: pylint
-         entry: pylint terminal.py gamestonk_terminal tests
+         entry: pylint terminal.py gamestonk_terminal tests discordbot
          language: system
          types: [python]
   - repo: https://github.com/Yelp/detect-secrets
