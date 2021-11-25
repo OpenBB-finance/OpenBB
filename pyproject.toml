@@ -91,6 +91,12 @@ coverage = ">=5.5"
 vcrpy = "^4.1.1"
 pytest-mock = "^3.6.1"
 pytest-recording = "^0.12.0"
+types-pytz = "^2021.3.1"
+types-requests = "^2.26.0"
+types-termcolor = "^1.1.2"
+types-tabulate = "^0.8.3"
+types-PyYAML = "^6.0.1"
+types-python-dateutil = "^2.8.3"
 
 [tool.poetry.extras]
 prediction = ["tensorflow"]

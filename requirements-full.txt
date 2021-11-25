@@ -115,7 +115,7 @@ mccabe==0.6.1; python_version >= "3.6" and python_version < "4.0" and (python_ve
 mdit-py-plugins==0.2.8; python_version >= "3.6" and python_version < "4.0"
 mistune==0.8.4; python_full_version >= "3.6.8" and python_full_version < "4.0.0" and python_version >= "3.7"
 mock==4.0.3; python_version >= "3.6"
-more-itertools==8.11.0; python_version >= "3.6"
+more-itertools==8.12.0; python_version >= "3.6"
 mplfinance==0.12.7a17
 multidict==5.2.0; python_version >= "3.6"
 multitasking==0.0.10
@@ -197,7 +197,7 @@ pywinpty==1.1.6; os_name == "nt" and python_version >= "3.6"
 pyyaml==6.0; python_version >= "3.6"
 pyzmq==22.3.0; python_full_version >= "3.6.1" and python_version >= "3.6"
 qdldl==0.1.5.post0; python_full_version >= "3.6.1" and python_full_version < "4.0.0" and python_version >= "3.6"
-qtconsole==5.2.0; python_version >= "3.6"
+qtconsole==5.2.1; python_version >= "3.6"
 qtpy==1.11.2; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6"
 quandl==3.7.0; python_version >= "3.6"
 rapidfuzz==1.8.3; python_version >= "2.7"
@@ -256,6 +256,12 @@ tornado==6.1; python_full_version >= "3.6.1" and python_version >= "3.7"
 tqdm==4.62.3; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6"
 tradingview-ta==3.2.9; python_version >= "3.6"
 traitlets==5.1.1; python_full_version >= "3.6.1" and python_version >= "3.7"
+types-python-dateutil==2.8.3
+types-pytz==2021.3.1
+types-pyyaml==6.0.1
+types-requests==2.26.0
+types-tabulate==0.8.3
+types-termcolor==1.1.2
 typing-extensions==4.0.0; python_version < "3.10" and python_version >= "3.7"
 tzdata==2021.5; platform_system == "Windows" and python_version >= "3.6" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6")
 tzlocal==4.1; python_version >= "3.6"
