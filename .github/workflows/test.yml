@@ -253,6 +253,7 @@ jobs:
           pylint terminal.py gamestonk_terminal discordbot tests
 
       - name: Run MyPy (Bash)
+        if: runner.os != 'Windows'
         shell: bash -l {0}
         run: mypy --ignore-missing-imports --exclude '/setup\.py$' .
 
