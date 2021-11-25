@@ -2,7 +2,7 @@
 usage: cdf [--export {csv,json,xlsx}] [-h]
 ```
 
-Cumulative distribution function
+Calculates the cumulative probability for a price value variable.
 
 ```
 optional arguments:
@@ -11,4 +11,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-![cdf](https://user-images.githubusercontent.com/25267873/112729910-75a1cf80-8f26-11eb-801a-2b44b193022b.png)
+<img size="1400" alt="Feature Screenshot - cdf" src="https://user-images.githubusercontent.com/25267873/112729910-75a1cf80-8f26-11eb-801a-2b44b193022b.png">
