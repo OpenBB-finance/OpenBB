@@ -1,5 +1,4 @@
-aiohttp==3.8.1; python_version >= "3.6"
-aiosignal==1.2.0; python_version >= "3.6"
+aiohttp==3.7.4.post0; python_version >= "3.6"
 alabaster==0.7.12; python_full_version >= "3.6.8" and python_full_version < "4.0.0" and python_version >= "3.6"
 alpha-vantage==2.3.1
 ansiwrap==0.8.4; python_version >= "3.6"
@@ -7,7 +6,7 @@ anyio==3.4.0; python_full_version >= "3.6.2" and python_version >= "3.6"
 appdirs==1.4.4; python_full_version >= "3.6.2" and python_version >= "3.6"
 appnope==0.1.2; platform_system == "Darwin" and python_version >= "3.7" and sys_platform == "darwin"
 argon2-cffi==21.1.0; python_version >= "3.6"
-async-timeout==4.0.1; python_version >= "3.6"
+async-timeout==3.0.1; python_full_version >= "3.5.3" and python_version >= "3.6"
 attrs==21.2.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
 babel==2.9.1; python_full_version >= "3.6.8" and python_full_version < "4.0.0" and python_version >= "3.6" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6")
 backcall==0.2.0; python_version >= "3.7"
@@ -20,7 +19,8 @@ bs4==0.0.1
 bt==0.2.9; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
 certifi==2021.10.8; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 cffi==1.15.0; implementation_name == "pypy" and python_version >= "3.6"
-charset-normalizer==2.0.7; python_full_version >= "3.6.0" and python_version >= "3.6"
+chardet==4.0.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
+charset-normalizer==2.0.7; python_full_version >= "3.6.0" and python_version >= "3"
 click==8.0.3; python_full_version >= "3.6.2" and python_version >= "3.6"
 colorama==0.4.4; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
 convertdate==2.3.2; python_version >= "3.6"
@@ -50,7 +50,6 @@ fonttools==4.28.2; python_version >= "3.7"
 fred==3.1
 fredapi==0.4.3
 frozendict==2.1.0; python_version >= "3.6"
-frozenlist==1.2.0; python_version >= "3.6"
 fundamentalanalysis==0.2.12
 future==0.18.2; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 gitdb==4.0.9; python_version >= "3.7"
