@@ -36,7 +36,7 @@ jobs:
       - run: shopt -s globstar && pyupgrade --py36-plus **/*.py
       - run: safety check
       - run: |
-          pylint terminal.py gamestonk_terminal tests
+          pylint terminal.py gamestonk_terminal discordbot tests
   test:
     name: Base Tests - Ubuntu-latest - Python 3.9
     needs: linting
@@ -250,7 +250,7 @@ jobs:
         shell: bash -l {0}
         run: |
           pip install pylint==2.11.1
-          pylint terminal.py gamestonk_terminal tests
+          pylint terminal.py gamestonk_terminal discordbot tests
 
       - name: Run tests (Bash)
         shell: bash -l {0}

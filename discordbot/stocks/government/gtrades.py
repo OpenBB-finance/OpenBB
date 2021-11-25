@@ -1,11 +1,12 @@
+import os
+from datetime import datetime, timedelta
 import discord
-import config_discordbot as cfg
-from discordbot import gst_imgur
 from matplotlib import pyplot as plt
 import matplotlib.dates as mdates
-from datetime import datetime, timedelta
-import os
 import pandas as pd
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur
 
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.stocks.government import quiverquant_model
@@ -30,11 +31,13 @@ async def gtrades_command(
                 raise Exception("Number has to be an integer")
             past_transactions_months = float(past_transactions_months)
 
-        if raw == "false" or raw == "False" or raw == "FALSE" or raw == "":
+        if raw in ["false", "False", "FALSE", ""]:
             raw = False
-        elif raw == "true" or raw == "True" or raw == "TRUE":
+
+        if raw in ["true", "True", "TRUE"]:
             raw = True
-        else:
+
+        if raw not in [True, False]:
             raise Exception("raw argument has to be true or false")
 
         if ticker == "":

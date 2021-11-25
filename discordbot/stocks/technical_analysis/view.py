@@ -1,10 +1,11 @@
-import io
-import matplotlib.pyplot as plt
-import discord
-import config_discordbot as cfg
-from discordbot import gst_imgur
-from PIL import Image
 import os
+import io
+import discord
+import matplotlib.pyplot as plt
+from PIL import Image
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur
 
 from gamestonk_terminal.helper_funcs import plot_autoscale
 

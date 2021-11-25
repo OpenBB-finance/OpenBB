@@ -1,6 +1,6 @@
 import discord
-import config_discordbot as cfg
-from helpers import pagination
+import discordbot.config_discordbot as cfg
+from discordbot.helpers import pagination
 
 from gamestonk_terminal.stocks.due_diligence import business_insider_model
 

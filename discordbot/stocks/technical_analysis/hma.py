@@ -1,11 +1,12 @@
-import discord
-import config_discordbot as cfg
-from discordbot import gst_imgur
+import os
 from datetime import datetime, timedelta
+import discord
 from matplotlib import pyplot as plt
 import pandas as pd
-import os
-import helpers
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur
+import discordbot.helpers
 
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.common.technical_analysis import overlap_model
@@ -58,7 +59,7 @@ async def hma_command(ctx, ticker="", window="", offset="", start="", end=""):
             offset = float(offset)
 
         ticker = ticker.upper()
-        stock = helpers.load(ticker, start)
+        stock = discordbot.helpers.load(ticker, start)
         if stock.empty:
             raise Exception("Stock ticker is invalid")
 
