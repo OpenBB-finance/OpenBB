@@ -60,7 +60,10 @@ def display_historical(
     )
     # To plot with ticker first
     df_similar = df_similar[ordered_tickers]
-
+    if np.any(df_similar.isna()):
+        nan_tickers = df_similar.columns[df_similar.isna().sum() >= 1].to_list()
+        print(f"NaN values found in: {', '.join(nan_tickers)}.  Replacing with zeros.")
+        df_similar = df_similar.fillna(0)
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     # This puts everything on 0-1 scale for visualizing
     if normalize:
@@ -170,7 +173,10 @@ def display_correlation(
     )
     # To plot with ticker first
     df_similar = df_similar[ordered_tickers]
-
+    if np.any(df_similar.isna()):
+        nan_tickers = df_similar.columns[df_similar.isna().sum() >= 1].to_list()
+        print(f"NaN values found in: {', '.join(nan_tickers)}.  Backfilling data")
+        df_similar = df_similar.fillna(method="bfill")
     mask = np.zeros((df_similar.shape[1], df_similar.shape[1]), dtype=bool)
     mask[np.triu_indices(len(mask))] = True
 
