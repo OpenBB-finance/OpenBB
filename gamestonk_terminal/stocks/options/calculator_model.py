@@ -8,7 +8,7 @@ import numpy as np
 
 def pnl_calculator(
     strike: float, premium: float, put: bool, sell: bool, **kwargs: Dict[str, int]
-) -> Tuple[np.array, np.array, float]:
+) -> Tuple[np.ndarray, np.ndarray, float]:
     """Calculate profit/loss for different option variables
 
     Parameters
@@ -25,20 +25,21 @@ def pnl_calculator(
 
     Returns
     -------
-    price_at_expiry : np.array
+    price_at_expiry : np.ndarray
         Array of prices
-    pnl: np.array
+    pnl: np.ndarray
         Array of calculated profit/loss
     break_even: float
         Breakeven point
     """
 
     if "x_min" in kwargs and "x_max" in kwargs:
-        price_at_expiry = np.linspace(kwargs["x_min"], kwargs["x_max"], 301)
+        price_at_expiry = np.linspace(kwargs["x_min"], kwargs["x_max"], 301)  # type: ignore
     else:
         price_at_expiry = np.linspace(strike / 2, 1.5 * strike, 301)
 
     sell_factor = [1, -1][sell]
+
     if put:
         break_even = strike - sell_factor * premium
         pnl = strike - premium - price_at_expiry
