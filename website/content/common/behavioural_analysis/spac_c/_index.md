@@ -11,4 +11,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-<img width="1400" alt="Feature Sreenshot - spac_c" src="https://user-images.githubusercontent.com/25267873/108920571-c8891e00-762c-11eb-8da8-e2b775bc7109.png">
+<img width="1400" alt="Feature Screenshot - spac_c" src="https://user-images.githubusercontent.com/25267873/108920571-c8891e00-762c-11eb-8da8-e2b775bc7109.png">
