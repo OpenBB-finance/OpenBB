@@ -3,6 +3,7 @@
 __docformat__ = "numpy"
 
 import argparse
+import difflib
 import sys
 
 from prompt_toolkit.completion import NestedCompleter
@@ -301,7 +302,12 @@ def terminal(menu_prior_to_reset=""):
 
             except SystemExit:
                 print("The command selected doesn't exist\n")
-                continue
+                similar_cmd = difflib.get_close_matches(
+                    an_input, t_controller.CHOICES, n=1, cutoff=0.7
+                )
+                if similar_cmd:
+                    print(f"Did you mean '{similar_cmd[0]}'?\n")
+                    continue
 
         if not gtff.ENABLE_QUICK_EXIT:
             # Check if the user wants to reset application

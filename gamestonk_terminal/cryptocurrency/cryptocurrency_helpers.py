@@ -768,7 +768,7 @@ def plot_chart(
             print("")
 
 
-def plot_order_book(bids: np.array, asks: np.array, coin: str) -> None:
+def plot_order_book(bids: np.ndarray, asks: np.ndarray, coin: str) -> None:
     """
     Plots Bid/Ask. Can be used for Coinbase and Binance
 

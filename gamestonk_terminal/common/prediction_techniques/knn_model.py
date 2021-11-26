@@ -20,7 +20,7 @@ def get_knn_model_data(
     test_size: float,
     end_date: str,
     no_shuffle: bool,
-) -> Tuple[pd.DataFrame, np.array, np.array, np.array, Any]:
+) -> Tuple[pd.DataFrame, np.ndarray, np.ndarray, np.ndarray, Any]:
     """Perform knn model fitting and predicting on data
 
     Parameters

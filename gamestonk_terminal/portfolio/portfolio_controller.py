@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
+import difflib
 import os
 from os import listdir
 from os.path import isfile, join
@@ -469,4 +470,10 @@ def menu():
 
         except SystemExit:
             print("The command selected doesn't exit\n")
+            similar_cmd = difflib.get_close_matches(
+                an_input, portfolio_controller.CHOICES, n=1, cutoff=0.7
+            )
+
+            if similar_cmd:
+                print(f"Did you mean '{similar_cmd[0]}'?\n")
             continue

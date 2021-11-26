@@ -756,7 +756,7 @@ def quote(other_args: List[str], s_ticker: str):
         print(
             tabulate(
                 quote_data,
-                headers=quote_data.columns,
+                headers=quote_data.columns,  # type: ignore
                 tablefmt="fancy_grid",
                 stralign="right",
             )

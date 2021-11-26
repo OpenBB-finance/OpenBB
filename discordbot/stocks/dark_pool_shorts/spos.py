@@ -1,9 +1,9 @@
 import os
-import config_discordbot as cfg
 import discord
 from matplotlib import pyplot as plt
 import yfinance as yf
-from discordbot import gst_imgur
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model

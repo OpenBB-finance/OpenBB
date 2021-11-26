@@ -27,11 +27,13 @@ repos:
     hooks:
       - id: mypy
         args: [ --ignore-missing-imports  ]
-  - repo: https://github.com/pre-commit/mirrors-pylint
-    rev: 'v3.0.0a4'
+  - repo: local
     hooks:
-      - id: pylint
-        entry: pylint terminal.py gamestonk_terminal tests
+       - id: pylint
+         name: pylint
+         entry: pylint terminal.py gamestonk_terminal tests discordbot
+         language: system
+         types: [python]
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.1.0
     hooks:

@@ -1,5 +1,5 @@
 import discord
-import config_discordbot as cfg
+import discordbot.config_discordbot as cfg
 
 from gamestonk_terminal.stocks.due_diligence import finviz_model
 

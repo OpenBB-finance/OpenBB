@@ -92,14 +92,15 @@ def get_historical(interval: str = "day", span: str = "3month") -> pd.DataFrame:
         close_eq.append(float(h["adjusted_close_equity"]))
         open_eq.append(float(h["adjusted_open_equity"]))
 
-    close_eq = np.asarray(close_eq)
-    open_eq = np.asarray(open_eq)
-    high = np.maximum(open_eq, close_eq)
-    low = np.minimum(open_eq, close_eq)
+    close_eq_array = np.asarray(close_eq)
+    open_eq_array = np.asarray(open_eq)
+    high = np.maximum(open_eq_array, close_eq_array)
+    low = np.minimum(open_eq_array, close_eq_array)
 
     df = pd.DataFrame(index=time)
     df["High"] = high
     df["Low"] = low
-    df["Open"] = open_eq
-    df["Close"] = close_eq
+    df["Open"] = open_eq_array
+    df["Close"] = close_eq_array
+
     return df

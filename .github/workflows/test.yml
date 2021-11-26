@@ -36,7 +36,7 @@ jobs:
       - run: shopt -s globstar && pyupgrade --py36-plus **/*.py
       - run: safety check
       - run: |
-          pylint terminal.py gamestonk_terminal tests
+          pylint terminal.py gamestonk_terminal discordbot tests
   test:
     name: Base Tests - Ubuntu-latest - Python 3.9
     needs: linting
@@ -94,7 +94,7 @@ jobs:
       - name: Lint Code Base
         uses: docker://avtodev/markdown-lint:v1
         with:
-          args: "./*.md ./changelogs/*.md ./gamestonk_terminal/**/*.md"
+          args: "./*.md ./changelogs/*.md ./gamestonk_terminal/**/*.md ./discordbot/**/*.md"
   tests-python:
     name: Vanilla Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
@@ -238,7 +238,7 @@ jobs:
       - name: Install dependencies (Bash)
         shell: bash -l {0}
         run: |
-          pip install --requirement requirements.txt
+          pip install --requirement requirements-full.txt
 
       - name: List installed packages (Bash)
         shell: bash -l {0}
@@ -250,7 +250,12 @@ jobs:
         shell: bash -l {0}
         run: |
           pip install pylint==2.11.1
-          pylint terminal.py gamestonk_terminal tests
+          pylint terminal.py gamestonk_terminal discordbot tests
+
+      - name: Run MyPy (Bash)
+        if: runner.os != 'Windows'
+        shell: bash -l {0}
+        run: mypy --ignore-missing-imports --exclude '/setup\.py$' .
 
       - name: Run tests (Bash)
         shell: bash -l {0}

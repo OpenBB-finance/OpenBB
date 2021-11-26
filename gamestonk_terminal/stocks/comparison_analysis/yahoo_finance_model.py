@@ -52,7 +52,7 @@ def get_historical(
     # where all tickers are columns.
     return yf.download(all_tickers, start=start, progress=False, threads=False)[
         d_candle_types[candle_type]
-    ].dropna(axis=1)
+    ]
 
 
 def get_1y_sp500() -> pd.DataFrame:
@@ -120,7 +120,7 @@ def get_sp500_comps_tsne(
             if company != ticker:
                 ax.annotate(company, (x, y), fontsize=9, alpha=0.75)
             else:
-                ax.scatter(x, y, s=20, c="r")
+                ax.scatter(x, y, s=50, c="r")
                 ax.annotate(company, (x, y), fontsize=9, alpha=1)
         fig.tight_layout()
         plt.show()
