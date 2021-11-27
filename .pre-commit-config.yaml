@@ -15,23 +15,23 @@ repos:
     rev: 3.9.2
     hooks:
       - id: flake8
-        entry: flake8 --max-line-length=122 --ignore=E203,W503
+        entry: flake8 --ignore=E203,W503 --max-line-length=122
   - repo: https://github.com/codespell-project/codespell
     rev: v2.1.0
     hooks:
       - id: codespell
         entry: codespell
-        args: [ '--ignore-words-list=pres,coo,navagation,ser,buil,operatio,mape,ba,hist,yeld,ether,hsi', '--quiet-level=2', '--skip=".git,*.html,*.yaml,*.json,./tests,*.csv"' ]
+        args: [ '--ignore-words-list=ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld', '--quiet-level=2', '--skip="./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml"' ]
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: 'v0.812'
     hooks:
       - id: mypy
-        args: [ --ignore-missing-imports  ]
+        args: [ '--ignore-missing-imports',  '--exclude "/setup\.py$"', '.']
   - repo: local
     hooks:
        - id: pylint
          name: pylint
-         entry: pylint terminal.py gamestonk_terminal tests discordbot
+         entry: pylint discordbot gamestonk_terminal terminal.py tests
          language: system
          types: [python]
   - repo: https://github.com/Yelp/detect-secrets
