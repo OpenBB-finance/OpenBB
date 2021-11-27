@@ -10,8 +10,10 @@
 
 
 
-    <meta name="description" content="usage: cdf [--export {csv,json,xlsx}] [-h] Cumulative distribution function
-optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,xlsx file (default: ) -h, --help show this help message (default: False) ">
+    <meta name="description" content="usage: cdf [--export {csv,json,xlsx}] [-h] Explanation excerpt from: https://www.probabilitycourse.com/chapter3/3_2_1_cdf.php
+The cumulative distribution function (CDF) of a random variable is another method to describe the distribution of random variables. The advantage of the CDF is that it can be defined for any kind of random variable (discrete, continuous, and mixed).
+The cumulative distribution function (CDF) of random variable X is defined as:
+ F X  ( x ) = P ( X &#x2264; x ) , &#xA0;for all&#xA0;  x &#x2208; R  .">
 
 
 
@@ -14851,12 +14853,42 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Cdf</h1>
         <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">usage: cdf [--export {csv,json,xlsx}] [-h]
-</code></pre></div><p>Cumulative distribution function</p>
+</code></pre></div><p>Explanation excerpt from: <a class="gdoc-markdown__link" href="https://www.probabilitycourse.com/chapter3/3_2_1_cdf.php">https://www.probabilitycourse.com/chapter3/3_2_1_cdf.php</a></p>
+<p>The cumulative distribution function (CDF) of a random variable is another method to describe the distribution of random variables. The advantage of the CDF is that it can be defined for any kind of random variable (discrete, continuous, and mixed).</p>
+<p>The cumulative distribution function (CDF) of random variable X is defined as:</p>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub>
+    <mi>F</mi>
+    <mi>X</mi>
+  </msub>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mi>P</mi>
+  <mo stretchy="false">(</mo>
+  <mi>X</mi>
+  <mo>&#x2264;<!-- ≤ --></mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>,</mo>
+  <mrow class="MJX-TeXAtom-ORD">
+    <mtext>&#xA0;for all&#xA0;</mtext>
+  </mrow>
+  <mi>x</mi>
+  <mo>&#x2208;<!-- ∈ --></mo>
+  <mrow class="MJX-TeXAtom-ORD">
+    <mi mathvariant="double-struck">R</mi>
+  </mrow>
+  <mo>.</mo>
+</math>
+<p>Contextual Example:</p>
+<p>I toss a coin twice. Let X be the number of observed heads. Find the CDF of X</p>
 <pre><code>optional arguments:
   --export {csv,json,xlsx}
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
-</code></pre><p><img src="https://user-images.githubusercontent.com/25267873/112729910-75a1cf80-8f26-11eb-801a-2b44b193022b.png" alt="cdf"  /></p>
+</code></pre><img size="1400" alt="Feature Screenshot - cdf" src="https://user-images.githubusercontent.com/25267873/112729910-75a1cf80-8f26-11eb-801a-2b44b193022b.png">
 
     </article>
 

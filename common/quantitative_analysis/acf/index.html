@@ -11,7 +11,9 @@
 
 
     <meta name="description" content="usage: acf [-l LAGS] [-h] Auto-Correlation and Partial Auto-Correlation Functions for diff and diff diff stock data
-optional arguments: -l LAGS, --lags LAGS maximum lags to display in plots (default: 15) -h, --help show this help message (default: False) ">
+http://sciencedirect.com/topics/chemistry/autocorrelation-function
+The autocorrelation function (ACF) defines how data points in a time series are related, on average, to the preceding data points (Box, Jenkins, &amp; Reinsel, 1994).
+A positive autocorrelation value for a particular lag τ can be interpreted as a measure of persistence of data points separated by this lag to stay above and/or below the mean value of the signal.">
 
 
 
@@ -14852,10 +14854,13 @@ optional arguments: -l LAGS, --lags LAGS maximum lags to display in plots (defau
         <h1>Acf</h1>
         <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">usage: acf [-l LAGS] [-h]
 </code></pre></div><p>Auto-Correlation and Partial Auto-Correlation Functions for diff and diff diff stock data</p>
+<p><a class="gdoc-markdown__link" href="http://sciencedirect.com/topics/chemistry/autocorrelation-function">http://sciencedirect.com/topics/chemistry/autocorrelation-function</a></p>
+<p>The autocorrelation function (ACF) defines how data points in a time series are related, on average, to the preceding data points (Box, Jenkins, &amp; Reinsel, 1994).</p>
+<p>A positive autocorrelation value for a particular lag τ can be interpreted as a measure of persistence of data points separated by this lag to stay above and/or below the mean value of the signal. A negative autocorrelation indicates that data points separated by this lag tend to alternate about the mean value. An important piece of information provided by the ACF is the maximum lag τmax that still has a significant value. This lag indicates the “memory” or temporal persistence of the fluctuation series. Data points separated by time lags greater than τmax are uncoupled. The ACF is often redundantly plotted for positive and negative values of τ, although by definition it is symmetric about τ = 0.</p>
 <pre><code>optional arguments:
   -l LAGS, --lags LAGS  maximum lags to display in plots (default: 15)
   -h, --help            show this help message (default: False)
-</code></pre><p><img src="https://user-images.githubusercontent.com/25267873/112733336-637c5d00-8f37-11eb-9aae-38e75dff9ad2.png" alt="acf"  /></p>
+</code></pre><img size="1400" alt="Feature Screenshot - acf" src="https://user-images.githubusercontent.com/25267873/112733336-637c5d00-8f37-11eb-9aae-38e75dff9ad2.png">
 
     </article>
 
