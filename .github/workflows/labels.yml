@@ -1,9 +1,9 @@
 name: Pull Request Labels
 "on":
-  pull_request: unlabeled
+  pull_request: 
     types: [opened, reopened, labeled, unlabeled, synchronize]
 jobs:
-  label: website
+  label: 
     runs-on: ubuntu-latest
     steps:
       - uses: mheap/github-action-required-labels@v1
