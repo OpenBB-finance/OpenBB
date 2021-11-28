@@ -75,7 +75,6 @@ def display_historical(
         )
     df_similar.plot(ax=ax)
     ax.set_title(f"Similar companies to {ticker}")
-    ax.plot(df_similar.index, df_similar[ticker].values)
     ax.set_xlabel("Time")
     ax.set_ylabel(f"{['','Normalized'][normalize]} Share Price {['($)',''][normalize]}")
     ax.grid(b=True, which="major", color="#666666", linestyle="-")
