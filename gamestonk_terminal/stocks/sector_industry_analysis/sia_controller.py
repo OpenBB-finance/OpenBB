@@ -256,7 +256,7 @@ Financials
 
         if ns_parser.name:
             if " ".join(ns_parser.name) in financedatabase_model.get_industries():
-                self.industry = ns_parser.name
+                self.industry = " ".join(ns_parser.name)
             else:
                 print(f"Industry '{' '.join(ns_parser.name)}' does not exist.")
 
@@ -314,7 +314,7 @@ Financials
 
         if ns_parser.name:
             if " ".join(ns_parser.name) in financedatabase_model.get_sectors():
-                self.sector = ns_parser.name
+                self.sector = " ".join(ns_parser.name)
             else:
                 print(f"Sector '{' '.join(ns_parser.name)}' does not exist.")
 
@@ -372,7 +372,7 @@ Financials
 
         if ns_parser.name:
             if " ".join(ns_parser.name) in financedatabase_model.get_countries():
-                self.country = ns_parser.name
+                self.country = " ".join(ns_parser.name)
             else:
                 print(f"Country '{' '.join(ns_parser.name)}' does not exist.")
 
@@ -460,7 +460,7 @@ Financials
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="clear",
-            description="Clear all parameters",
+            description="Clear all or a particular parameter",
         )
         parser.add_argument(
             "-p",
@@ -468,7 +468,6 @@ Financials
             type=str,
             dest="parameter",
             choices=["industry", "sector", "country", "mktcap"],
-            required="-h" not in other_args,
             help="parameter to clear",
         )
 
