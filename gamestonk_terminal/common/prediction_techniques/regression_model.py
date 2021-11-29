@@ -10,7 +10,9 @@ from sklearn import preprocessing
 # The tsxv dependence was removed so this fails.  Taking from didiers source
 
 
-def split_train(sequence: np.ndarray, numInputs: int, numOutputs: int, numJumps: int):
+def split_train(
+    sequence: np.ndarray, numInputs: int, numOutputs: int, numJumps: int
+) -> Tuple[List, List]:
     """Returns sets to train a model
         i.e. X[0] = sequence[0], ..., sequence[numInputs]
              y[0] = sequence[numInputs+1], ..., sequence[numInputs+numOutputs]
