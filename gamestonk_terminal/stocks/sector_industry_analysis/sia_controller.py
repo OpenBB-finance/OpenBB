@@ -25,7 +25,6 @@ from gamestonk_terminal.stocks.sector_industry_analysis import (
 # pylint: disable=inconsistent-return-statements,too-many-public-methods,C0302
 
 
-
 class SectorIndustryAnalysisController:
     """Sector Industry Analysis Controller class"""
 
