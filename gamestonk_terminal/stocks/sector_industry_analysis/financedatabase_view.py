@@ -94,9 +94,7 @@ def display_bars_financials(
             plt.ion()
 
         metric_data = dict(
-            OrderedDict(
-                sorted(metric_data.items(), key=lambda t: t[1], reverse=True)
-            )
+            OrderedDict(sorted(metric_data.items(), key=lambda t: t[1], reverse=True))
         )
 
         print(metric_data)
@@ -124,7 +122,9 @@ def display_bars_financials(
         plt.show()
 
     elif len(metric_data) == 1:
-            print(f"Only 1 company found {metric_data.keys()[0]}. No barchart will be depicted.")
+        print(
+            f"Only 1 company found {metric_data.keys()[0]}. No barchart will be depicted."
+        )
     else:
         print("No company found. No barchart will be depicted.")
     print("")
