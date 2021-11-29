@@ -488,6 +488,11 @@ Financials
             self.country = ""
         elif ns_parser.parameter == "mktcap":
             self.mktcap = ""
+        else:
+            self.industry = ""
+            self.sector = ""
+            self.country = ""
+            self.mktcap = ""
 
         self.exclude_exhanges = True
         self.ticker = ""

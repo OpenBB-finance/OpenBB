@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 
 import os
 from collections import OrderedDict
+import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 from matplotlib import colors as mcolors
@@ -85,41 +86,55 @@ def display_bars_financials(
             metric = stocks_data[symbol]["financialData"][finance_metric]
             stock_name = stocks_data[symbol]["quoteType"]["longName"]
             if metric:
-                metric_data[stock_name] = metric
+                metric_data[stock_name] = (metric, symbol)
 
     if len(metric_data) > 1:
 
-        fig, _ = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        fig.tight_layout()
+        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         if gtff.USE_ION:
             plt.ion()
 
         metric_data = dict(
-            OrderedDict(sorted(metric_data.items(), key=lambda t: t[1], reverse=True))
+            OrderedDict(
+                sorted(metric_data.items(), key=lambda t: t[1][0], reverse=True)
+            )
         )
-
-        print(metric_data)
 
         company_name = list()
         company_metric = list()
+        company_ticker = list()
+        company_metric_to_do_median = list()
         for idx, metric in enumerate(metric_data.items()):
-            company_name.append(metric[0])
-            company_metric.append(metric[1])
+            if idx < limit:
+                company_name.append(metric[0])
+                company_metric.append(metric[1][0])
+                company_ticker.append(metric[1][1])
 
-            if idx > limit:
-                print(f"Limiting the amount of companies displayed to {limit}.")
-                break
+            else:
+                company_metric_to_do_median.append(metric[1][0])
 
-        print(company_name)
+        company_metric_to_do_median += company_metric
 
-        for n, m in zip(company_name[::-1], company_metric[::-1]):
-            plt.barh(n, m)
+        if company_metric_to_do_median:
+            print(f"Limiting the amount of companies displayed to {limit}.")
+
+        for n, m, t in zip(
+            company_name[::-1], company_metric[::-1], company_ticker[::-1]
+        ):
+            plt.barh(n, m, label=t)
+
+        handles, _ = plt.gca().get_legend_handles_labels()
+        plt.legend(reversed(handles), reversed(company_ticker[::-1]), loc="lower right")
 
         metric_title = "".join(
             " " + char if char.isupper() else char.strip() for char in finance_metric
         ).strip()
 
-        plt.title(metric_title.capitalize())
+        benchmark = np.median(company_metric_to_do_median)
+        plt.axvline(x=benchmark, lw=3, ls="--", c="k")
+
+        plt.title(f"{metric_title.capitalize()} with benchmark of {benchmark}")
+        plt.tight_layout()
         plt.show()
 
     elif len(metric_data) == 1:
@@ -181,8 +196,7 @@ def display_companies_per_sector(country: str, mktcap: str = "", export: str = "
         "olive",
     ]
 
-    fig, _ = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    fig.tight_layout()
+    plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     if gtff.USE_ION:
         plt.ion()
     plt.pie(
@@ -242,8 +256,7 @@ def display_companies_per_industry(country: str, mktcap: str = "", export: str =
     else:
         legend, values = zip(*companies_per_industry.items())
 
-    fig, _ = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    fig.tight_layout()
+    plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     if gtff.USE_ION:
         plt.ion()
     plt.pie(
