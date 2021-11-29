@@ -72,6 +72,7 @@ class StocksController:
         "disc",
         "dps",
         "scr",
+        "sia",
         "ins",
         "gov",
         "res",
@@ -131,6 +132,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 {reset_style_if_no_ticker}
 >   options     options menu,  \t\t\t e.g.: chains, open interest, greeks, parity
 >   disc        discover trending stocks, \t e.g. map, sectors, high short interest
+>   sia         sector and industry analysis, \t e.g. blablabla
 >   dps         dark pool and short data, \t e.g. darkpool, short interest, ftd
 >   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
 >   ins         insider trading,         \t e.g.: latest penny stock buys, top officer purchases
@@ -442,6 +444,16 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         from gamestonk_terminal.stocks.screener import screener_controller
 
         ret = screener_controller.menu()
+        if ret is False:
+            self.print_help()
+        else:
+            return True
+
+    def call_sia(self, _):
+        """Process ins command"""
+        from gamestonk_terminal.stocks.sector_industry_analysis import sia_controller
+
+        ret = sia_controller.menu(self.ticker)
         if ret is False:
             self.print_help()
         else:
