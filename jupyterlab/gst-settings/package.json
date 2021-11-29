@@ -53,7 +53,8 @@
     "@jupyterlab/launcher": "^3.1.0",
     "@jupyterlab/mainmenu": "^3.1.7",
     "@jupyterlab/settingregistry": "^3.1.8",
-    "@jupyterlab/ui-components": "^3.1.0"
+    "@jupyterlab/ui-components": "^3.1.0",
+    "json-schema": "^0.4.0"
   },
   "devDependencies": {
     "@jupyterlab/builder": "^3.1.0",

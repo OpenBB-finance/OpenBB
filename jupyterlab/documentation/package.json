@@ -50,7 +50,8 @@
   "dependencies": {
     "@jupyterlab/application": "^3.1.0",
     "@jupyterlab/launcher": "^3.1.0",
-    "@jupyterlab/mainmenu": "^3.1.7"
+    "@jupyterlab/mainmenu": "^3.1.7",
+    "json-schema": "^0.4.0"
   },
   "devDependencies": {
     "@jupyterlab/builder": "^3.1.0",
