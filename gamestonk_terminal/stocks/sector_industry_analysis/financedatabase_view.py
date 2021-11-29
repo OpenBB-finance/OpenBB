@@ -89,7 +89,8 @@ def display_bars_financials(
 
     if len(metric_data) > 1:
 
-        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        fig, _ = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        fig.tight_layout()
         if gtff.USE_ION:
             plt.ion()
 
@@ -123,7 +124,7 @@ def display_bars_financials(
 
     elif len(metric_data) == 1:
         print(
-            f"Only 1 company found {metric_data.keys()[0]}. No barchart will be depicted."
+            f"Only 1 company found {list(metric_data.keys())[0]}. No barchart will be depicted."
         )
     else:
         print("No company found. No barchart will be depicted.")
@@ -180,7 +181,8 @@ def display_companies_per_sector(country: str, mktcap: str = "", export: str = "
         "olive",
     ]
 
-    plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, _ = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig.tight_layout()
     if gtff.USE_ION:
         plt.ion()
     plt.pie(
@@ -240,7 +242,8 @@ def display_companies_per_industry(country: str, mktcap: str = "", export: str =
     else:
         legend, values = zip(*companies_per_industry.items())
 
-    plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, _ = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig.tight_layout()
     if gtff.USE_ION:
         plt.ion()
     plt.pie(
