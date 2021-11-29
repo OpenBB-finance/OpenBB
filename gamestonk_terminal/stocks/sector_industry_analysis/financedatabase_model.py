@@ -59,7 +59,7 @@ def filter_stocks(
     sector: str,
     industry: str,
     marketcap: str = "",
-    exclude_exchanges: bool = "True",
+    exclude_exchanges: bool = True,
 ):
     """
     Filter stocks based on country, sector, industry, market cap and exclude exchanges. [Source: Finance Database]
@@ -144,7 +144,7 @@ def get_stocks_data(
     sector: str,
     industry: str,
     marketcap: str = "",
-    exclude_exchanges: bool = "True",
+    exclude_exchanges: bool = True,
 ):
     """
     Get stocks data based on country, sector, industry, market cap and exclude exchanges. [Source: Finance Database]
