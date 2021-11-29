@@ -52,7 +52,7 @@ def get_historical(
     # where all tickers are columns.
     return yf.download(all_tickers, start=start, progress=False, threads=False)[
         d_candle_types[candle_type]
-    ]
+    ][all_tickers]
 
 
 def get_1y_sp500() -> pd.DataFrame:
@@ -75,7 +75,7 @@ def get_1y_sp500() -> pd.DataFrame:
 
 
 def get_sp500_comps_tsne(
-    ticker: str, lr: int = 200, no_plot: bool = False
+    ticker: str, lr: int = 200, no_plot: bool = False, num_tickers: int = 10
 ) -> List[str]:
     """
     Runs TSNE on SP500 tickers (along with ticker if not in SP500).
@@ -91,6 +91,8 @@ def get_sp500_comps_tsne(
         Learning rate for TSNE
     no_plot : bool
         Flag to hold off on plotting
+    num_tickers : int
+        Number of tickers to return
 
     Returns
     -------
@@ -128,4 +130,4 @@ def get_sp500_comps_tsne(
     x0, y0 = data.loc[ticker]
     data["dist"] = (data.X - x0) ** 2 + (data.Y - y0) ** 2
     data = data.sort_values(by="dist")
-    return data.iloc[1:11].index.to_list()
+    return data.iloc[1 : num_tickers + 1].index.to_list()
