@@ -32,7 +32,8 @@ def split_train(
                       len(y[k]) = numOutputs
     """
 
-    X, y = list(), list()
+    X: List = []
+    y: List = []
 
     if numInputs + numOutputs > len(sequence):
         print(
