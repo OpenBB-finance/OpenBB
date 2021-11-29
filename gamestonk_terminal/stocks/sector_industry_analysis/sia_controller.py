@@ -8,6 +8,7 @@ import yfinance as yf
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     get_flair,
     parse_known_args_and_warn,
     try_except,
@@ -104,7 +105,7 @@ Sector and Industry Analysis:
     ?/help        show this menu again
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
-    load          load a ticker and get its industry, sector and country
+    load          load a ticker and get its industry, sector, country and market cap
 
     clear         clear all or one of industry, sector, country and market cap parameters
     industry      see existing industries, or set industry if arg specified
@@ -502,7 +503,9 @@ Financials
             prog="roa",
             description="Return on Assets",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
         if not ns_parser:
             return
 
@@ -513,6 +516,7 @@ Financials
             self.industry,
             self.mktcap,
             self.exclude_exhanges,
+            ns_parser.export,
         )
 
     @try_except
@@ -524,7 +528,9 @@ Financials
             prog="roe",
             description="Return on Equity",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
         if not ns_parser:
             return
 
@@ -535,6 +541,7 @@ Financials
             self.industry,
             self.mktcap,
             self.exclude_exhanges,
+            ns_parser.export,
         )
 
     @try_except
@@ -546,7 +553,9 @@ Financials
             prog="qr",
             description="Quick Ratio",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
         if not ns_parser:
             return
 
@@ -557,6 +566,7 @@ Financials
             self.industry,
             self.mktcap,
             self.exclude_exhanges,
+            ns_parser.export,
         )
 
     @try_except
@@ -568,7 +578,9 @@ Financials
             prog="rg",
             description="Revenue Growth",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
         if not ns_parser:
             return
 
@@ -579,6 +591,7 @@ Financials
             self.industry,
             self.mktcap,
             self.exclude_exhanges,
+            ns_parser.export,
         )
 
     @try_except
@@ -590,7 +603,9 @@ Financials
             prog="rec",
             description="Recommendation Mean",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
         if not ns_parser:
             return
 
@@ -601,6 +616,7 @@ Financials
             self.industry,
             self.mktcap,
             self.exclude_exhanges,
+            ns_parser.export,
         )
 
     @try_except
@@ -612,7 +628,9 @@ Financials
             prog="td",
             description="Total Debt",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
         if not ns_parser:
             return
 
@@ -623,6 +641,7 @@ Financials
             self.industry,
             self.mktcap,
             self.exclude_exhanges,
+            ns_parser.export,
         )
 
     @try_except
@@ -634,7 +653,9 @@ Financials
             prog="ebitda",
             description="earnings before interest, taxes, depreciation and amortization",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
         if not ns_parser:
             return
 
@@ -645,6 +666,7 @@ Financials
             self.industry,
             self.mktcap,
             self.exclude_exhanges,
+            ns_parser.export,
         )
 
     @try_except
@@ -656,11 +678,15 @@ Financials
             prog="cps",
             description="companies per sector in a country",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
         if not ns_parser:
             return
 
-        financedatabase_view.display_companies_per_sector(self.country, self.mktcap)
+        financedatabase_view.display_companies_per_sector(
+            self.country, self.mktcap, ns_parser.export
+        )
         print("")
 
     @try_except
@@ -672,13 +698,16 @@ Financials
             prog="cpi",
             description="companies per industry in a country",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
         if not ns_parser:
             return
 
         financedatabase_view.display_companies_per_industry(
             self.country,
             self.mktcap,
+            ns_parser.export,
         )
         print("")
 

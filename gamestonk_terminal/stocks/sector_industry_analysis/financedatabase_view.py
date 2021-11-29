@@ -2,13 +2,15 @@
 __docformat__ = "numpy"
 # pylint:disable=too-many-arguments
 
+import os
 from collections import OrderedDict
+import pandas as pd
 from matplotlib import pyplot as plt
 from matplotlib import colors as mcolors
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
 from gamestonk_terminal.stocks.sector_industry_analysis import financedatabase_model
 
 
@@ -43,6 +45,7 @@ def display_bars_financials(
     industry: str,
     marketcap: str = "",
     exclude_exchanges: bool = True,
+    export: str = "",
 ):
     """
     Display financials bars comparing sectors, industry, analysis, countries, market cap and excluding exchanges.
@@ -63,6 +66,8 @@ def display_bars_financials(
         Select stocks based on the market cap.
     exclude_exchanges: bool
         When you wish to include different exchanges use this boolean.
+    export: str
+        Format to export data as
     """
     stocks_data = financedatabase_model.get_stocks_data(
         country, sector, industry, marketcap, exclude_exchanges
@@ -89,8 +94,15 @@ def display_bars_financials(
     plt.show()
     print("")
 
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        finance_metric,
+        pd.DataFrame.from_dict(stocks_data),
+    )
 
-def display_companies_per_sector(country: str, mktcap: str = ""):
+
+def display_companies_per_sector(country: str, mktcap: str = "", export: str = ""):
     """
     Display number of companies per sector in a specific country (and market cap). [Source: Finance Database]
 
@@ -100,6 +112,8 @@ def display_companies_per_sector(country: str, mktcap: str = ""):
         Select country to get number of companies by each sector
     mktcap: str
         Select market cap of companies to consider from Small, Mid and Large
+    export: str
+        Format to export data as
     """
     companies_per_sector = financedatabase_model.get_companies_per_sector(
         country, mktcap
@@ -145,8 +159,15 @@ def display_companies_per_sector(country: str, mktcap: str = ""):
 
     plt.show()
 
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "cps",
+        pd.DataFrame.from_dict(companies_per_sector),
+    )
 
-def display_companies_per_industry(country: str, mktcap: str = ""):
+
+def display_companies_per_industry(country: str, mktcap: str = "", export: str = ""):
     """
     Display number of companies per industry in a specific country. [Source: Finance Database]
 
@@ -156,6 +177,8 @@ def display_companies_per_industry(country: str, mktcap: str = ""):
         Select country to get number of companies by each industry
     mktcap: str
         Select market cap of companies to consider from Small, Mid and Large
+    export: str
+        Format to export data as
     """
     companies_per_industry = financedatabase_model.get_companies_per_industry(
         country, mktcap
@@ -197,3 +220,10 @@ def display_companies_per_industry(country: str, mktcap: str = ""):
     plt.tight_layout()
 
     plt.show()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "cpi",
+        pd.DataFrame.from_dict(companies_per_industry),
+    )
