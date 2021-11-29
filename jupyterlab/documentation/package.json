@@ -66,6 +66,9 @@
     "rimraf": "^3.0.2",
     "typescript": "~4.1.3"
   },
+  "resolutions": {
+    "json-schema": "^0.4.0"
+  },
   "sideEffects": [
     "style/*.css",
     "style/*.svg",
