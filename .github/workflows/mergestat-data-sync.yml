@@ -1,3 +1,4 @@
+name: MergeStat Data Sync
 on:
   schedule:
     - cron:  '0 0 * * *' # at midnight (utc) every day
