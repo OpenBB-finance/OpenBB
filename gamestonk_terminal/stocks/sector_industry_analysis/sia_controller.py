@@ -5,6 +5,7 @@ import argparse
 import difflib
 from typing import List
 import yfinance as yf
+from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.helper_funcs import (
     get_flair,
@@ -49,6 +50,8 @@ class SectorIndustryAnalysisController:
         "rec",
         "td",
         "ebitda",
+        "cpi",
+        "cps",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -61,10 +64,10 @@ class SectorIndustryAnalysisController:
         ticker : str
             Ticker to be used to analyse sector and industry
         """
-        self.country = None
-        self.sector = None
-        self.industry = None
-        self.mktcap = None
+        self.country = ""
+        self.sector = ""
+        self.industry = ""
+        self.mktcap = ""
         self.exclude_exhanges = True
         self.ticker = ticker
 
@@ -110,12 +113,16 @@ Sector and Industry Analysis:
     mktcap        set mktcap between small, mid or large
     exchange      revert exclude exchanges flag
 
-Industry          : {self.industry if self.industry else ""}
-Sector            : {self.sector if self.sector else ""}
-Country           : {self.country if self.country else ""}
-Market Cap        : {self.mktcap if self.mktcap else ""}
+Industry          : {self.industry}
+Sector            : {self.sector}
+Country           : {self.country}
+Market Cap        : {self.mktcap}
 Exclude Exchanges : {self.exclude_exhanges}
-
+{Style.DIM if not self.country else ''}
+Country (and Market Cap)
+    cpi           companies per industry in country
+    cps           companies per sector in country{Style.RESET_ALL if not self.country else ''}
+{Style.DIM if not any([self.industry, self.sector, self.country]) else ''}
 Financials
     roa           return on assets
     roe           return on equity
@@ -124,6 +131,7 @@ Financials
     rec           recommendation mean
     td            total debt
     ebitda        earnings before interest, taxes, depreciation and amortization
+{Style.RESET_ALL if not any([self.industry, self.sector, self.country]) else ''}
 """
         print(help_text)
 
@@ -472,16 +480,16 @@ Financials
             return
 
         if ns_parser.parameter == "industry":
-            self.industry = None
+            self.industry = ""
         elif ns_parser.parameter == "sector":
-            self.sector = None
+            self.sector = ""
         elif ns_parser.parameter == "country":
-            self.country = None
+            self.country = ""
         elif ns_parser.parameter == "mktcap":
-            self.mktcap = None
+            self.mktcap = ""
 
         self.exclude_exhanges = True
-        self.ticker = None
+        self.ticker = ""
 
         print("")
 
@@ -638,6 +646,41 @@ Financials
             self.mktcap,
             self.exclude_exhanges,
         )
+
+    @try_except
+    def call_cps(self, other_args: List[str]):
+        """Process cps command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cps",
+            description="companies per sector in a country",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        financedatabase_view.display_companies_per_sector(self.country, self.mktcap)
+        print("")
+
+    @try_except
+    def call_cpi(self, other_args: List[str]):
+        """Process cpi command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cpi",
+            description="companies per industry in a country",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        financedatabase_view.display_companies_per_industry(
+            self.country,
+            self.mktcap,
+        )
+        print("")
 
 
 def menu(ticker: str):

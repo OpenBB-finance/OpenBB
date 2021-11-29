@@ -2,8 +2,11 @@
 __docformat__ = "numpy"
 # pylint:disable=too-many-arguments
 
-import matplotlib.pyplot as plt
+from collections import OrderedDict
+from matplotlib import pyplot as plt
+from matplotlib import colors as mcolors
 
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.stocks.sector_industry_analysis import financedatabase_model
@@ -39,7 +42,7 @@ def display_bars_financials(
     sector: str,
     industry: str,
     marketcap: str = "",
-    exclude_exchanges: bool = "True",
+    exclude_exchanges: bool = True,
 ):
     """
     Display financials bars comparing sectors, industry, analysis, countries, market cap and excluding exchanges.
@@ -66,14 +69,17 @@ def display_bars_financials(
     )
 
     plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    if gtff.USE_ION:
+        plt.ion()
     for symbol in list(stocks_data.keys()):
-        metric = stocks_data[symbol]["financialData"][finance_metric]
-        stock_name = stocks_data[symbol]["quoteType"]["longName"]
+        if (
+            "financialData" in stocks_data[symbol]
+            and "quoteType" in stocks_data[symbol]
+        ):
+            metric = stocks_data[symbol]["financialData"][finance_metric]
+            stock_name = stocks_data[symbol]["quoteType"]["longName"]
 
-        if metric is None:
-            continue
-
-        plt.barh(stock_name, metric)
+            plt.barh(stock_name, metric)
 
     metric_title = "".join(
         " " + char if char.isupper() else char.strip() for char in finance_metric
@@ -82,3 +88,112 @@ def display_bars_financials(
     plt.title(metric_title.capitalize())
     plt.show()
     print("")
+
+
+def display_companies_per_sector(country: str, mktcap: str = ""):
+    """
+    Display number of companies per sector in a specific country (and market cap). [Source: Finance Database]
+
+    Parameters
+    ----------
+    country: str
+        Select country to get number of companies by each sector
+    mktcap: str
+        Select market cap of companies to consider from Small, Mid and Large
+    """
+    companies_per_sector = financedatabase_model.get_companies_per_sector(
+        country, mktcap
+    )
+
+    companies_per_sector = dict(
+        OrderedDict(
+            sorted(companies_per_sector.items(), key=lambda t: t[1], reverse=True)
+        )
+    )
+
+    legend, values = zip(*companies_per_sector.items())
+
+    colors = [
+        "b",
+        "g",
+        "r",
+        "c",
+        "m",
+        "y",
+        "k",
+        "tab:blue",
+        "tab:orange",
+        "tab:gray",
+        "lightcoral",
+        "yellow",
+        "saddlebrown",
+        "lightblue",
+        "olive",
+    ]
+
+    plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    if gtff.USE_ION:
+        plt.ion()
+    plt.pie(
+        values,
+        labels=legend,
+        colors=colors,
+        wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
+    )
+    plt.title(f"{mktcap + ' cap c' if mktcap else 'C'}ompanies per sector in {country}")
+    plt.tight_layout()
+
+    plt.show()
+
+
+def display_companies_per_industry(country: str, mktcap: str = ""):
+    """
+    Display number of companies per industry in a specific country. [Source: Finance Database]
+
+    Parameters
+    ----------
+    country: str
+        Select country to get number of companies by each industry
+    mktcap: str
+        Select market cap of companies to consider from Small, Mid and Large
+    """
+    companies_per_industry = financedatabase_model.get_companies_per_industry(
+        country, mktcap
+    )
+
+    colors = list(mcolors.CSS4_COLORS.keys())[::6]
+
+    companies_per_industry = dict(
+        OrderedDict(
+            sorted(companies_per_industry.items(), key=lambda t: t[1], reverse=True)
+        )
+    )
+
+    # are there more industries than colors
+    if len(companies_per_industry) > len(colors):
+        companies_per_industry_sliced = dict(
+            list(companies_per_industry.items())[: len(colors) - 2]
+        )
+        companies_per_industry_sliced["Others"] = sum(
+            dict(list(companies_per_industry.items())[len(colors) - 2 :]).values()
+        )
+
+        legend, values = zip(*companies_per_industry_sliced.items())
+    else:
+        legend, values = zip(*companies_per_industry.items())
+
+    plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    if gtff.USE_ION:
+        plt.ion()
+    plt.pie(
+        values,
+        labels=legend,
+        colors=colors,
+        wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
+    )
+    plt.title(
+        f"{mktcap + ' cap c' if mktcap else 'C'}ompanies per industry in {country}"
+    )
+    plt.tight_layout()
+
+    plt.show()

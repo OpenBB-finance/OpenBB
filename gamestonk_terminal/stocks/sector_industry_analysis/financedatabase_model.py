@@ -176,3 +176,72 @@ def get_stocks_data(
         )
 
     return stocks_data
+
+
+def get_companies_per_sector(country: str, mktcap: str = ""):
+    """
+    Get number of companies per sector in a specific country (and specific market cap). [Source: Finance Database]
+
+    Parameters
+    ----------
+    country: str
+        Select country to get number of companies by each sector
+    mktcap: str
+        Select market cap of companies to consider from Small, Mid and Large
+
+    Returns
+    -------
+    dict
+        Dictionary of sectors and number of companies in a specific country
+    """
+    companies_per_sector = {}
+
+    for sector in get_sectors():
+        if sector:
+            try:
+                companies = fd.select_equities(country=country, sector=sector)
+                if mktcap:
+                    companies = fd.search_products(
+                        companies, query=mktcap + " Cap", search="market_cap"
+                    )
+
+                companies_per_sector[sector] = len(companies)
+            except ValueError:
+                pass
+
+    return companies_per_sector
+
+
+def get_companies_per_industry(country: str, mktcap: str = ""):
+    """
+    Get number of companies per industry in a specific country (and specific market cap). [Source: Finance Database]
+
+    Parameters
+    ----------
+    country: str
+        Select country to get number of companies by each industry
+    mktcap: str
+        Select market cap of companies to consider from Small, Mid and Large
+
+    Returns
+    -------
+    dict
+        Dictionary of industries and number of companies in a specific country
+    """
+    companies_per_industry = {}
+
+    for industry in get_industries():
+        if industry:
+            try:
+                companies = fd.select_equities(country=country, industry=industry)
+                if mktcap:
+                    companies = fd.search_products(
+                        companies, query=mktcap + " Cap", search="market_cap"
+                    )
+
+                companies_per_industry[industry] = len(companies)
+
+            except ValueError:
+                pass
+
+    return companies_per_industry
