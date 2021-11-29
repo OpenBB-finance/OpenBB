@@ -13,6 +13,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     try_except,
     system_clear,
+    check_positive,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
@@ -65,10 +66,10 @@ class SectorIndustryAnalysisController:
         ticker : str
             Ticker to be used to analyse sector and industry
         """
-        self.country = ""
+        self.country = "United States"
         self.sector = ""
         self.industry = ""
-        self.mktcap = ""
+        self.mktcap = "Large"
         self.exclude_exhanges = True
         self.ticker = ticker
 
@@ -502,6 +503,14 @@ Financials
             prog="roa",
             description="Return on Assets",
         )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            default=10,
+            help="Limit number of companies to display",
+            type=check_positive,
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -515,6 +524,7 @@ Financials
             self.industry,
             self.mktcap,
             self.exclude_exhanges,
+            ns_parser.limit,
             ns_parser.export,
         )
 
@@ -526,6 +536,14 @@ Financials
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="roe",
             description="Return on Equity",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            default=10,
+            help="Limit number of companies to display",
+            type=check_positive,
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -540,6 +558,7 @@ Financials
             self.industry,
             self.mktcap,
             self.exclude_exhanges,
+            ns_parser.limit,
             ns_parser.export,
         )
 
@@ -551,6 +570,14 @@ Financials
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="qr",
             description="Quick Ratio",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            default=10,
+            help="Limit number of companies to display",
+            type=check_positive,
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -565,6 +592,7 @@ Financials
             self.industry,
             self.mktcap,
             self.exclude_exhanges,
+            ns_parser.limit,
             ns_parser.export,
         )
 
@@ -576,6 +604,14 @@ Financials
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="rg",
             description="Revenue Growth",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            default=10,
+            help="Limit number of companies to display",
+            type=check_positive,
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -590,6 +626,7 @@ Financials
             self.industry,
             self.mktcap,
             self.exclude_exhanges,
+            ns_parser.limit,
             ns_parser.export,
         )
 
@@ -601,6 +638,14 @@ Financials
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="rec",
             description="Recommendation Mean",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            default=10,
+            help="Limit number of companies to display",
+            type=check_positive,
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -615,6 +660,7 @@ Financials
             self.industry,
             self.mktcap,
             self.exclude_exhanges,
+            ns_parser.limit,
             ns_parser.export,
         )
 
@@ -626,6 +672,14 @@ Financials
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="td",
             description="Total Debt",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            default=10,
+            help="Limit number of companies to display",
+            type=check_positive,
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -640,6 +694,7 @@ Financials
             self.industry,
             self.mktcap,
             self.exclude_exhanges,
+            ns_parser.limit,
             ns_parser.export,
         )
 
@@ -651,6 +706,14 @@ Financials
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="ebitda",
             description="earnings before interest, taxes, depreciation and amortization",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            default=10,
+            help="Limit number of companies to display",
+            type=check_positive,
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -665,6 +728,7 @@ Financials
             self.industry,
             self.mktcap,
             self.exclude_exhanges,
+            ns_parser.limit,
             ns_parser.export,
         )
 

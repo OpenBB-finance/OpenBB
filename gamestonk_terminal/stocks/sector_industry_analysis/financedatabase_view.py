@@ -45,6 +45,7 @@ def display_bars_financials(
     industry: str,
     marketcap: str = "",
     exclude_exchanges: bool = True,
+    limit: int = 10,
     export: str = "",
 ):
     """
@@ -66,6 +67,8 @@ def display_bars_financials(
         Select stocks based on the market cap.
     exclude_exchanges: bool
         When you wish to include different exchanges use this boolean.
+    limit: int
+        Limit amount of companies displayed
     export: str
         Format to export data as
     """
@@ -73,9 +76,7 @@ def display_bars_financials(
         country, sector, industry, marketcap, exclude_exchanges
     )
 
-    plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    if gtff.USE_ION:
-        plt.ion()
+    metric_data = {}
     for symbol in list(stocks_data.keys()):
         if (
             "financialData" in stocks_data[symbol]
@@ -83,15 +84,49 @@ def display_bars_financials(
         ):
             metric = stocks_data[symbol]["financialData"][finance_metric]
             stock_name = stocks_data[symbol]["quoteType"]["longName"]
+            if metric:
+                metric_data[stock_name] = metric
 
-            plt.barh(stock_name, metric)
+    if len(metric_data) > 1:
 
-    metric_title = "".join(
-        " " + char if char.isupper() else char.strip() for char in finance_metric
-    ).strip()
+        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        if gtff.USE_ION:
+            plt.ion()
 
-    plt.title(metric_title.capitalize())
-    plt.show()
+        metric_data = dict(
+            OrderedDict(
+                sorted(metric_data.items(), key=lambda t: t[1], reverse=True)
+            )
+        )
+
+        print(metric_data)
+
+        company_name = list()
+        company_metric = list()
+        for idx, metric in enumerate(metric_data.items()):
+            company_name.append(metric[0])
+            company_metric.append(metric[1])
+
+            if idx > limit:
+                print(f"Limiting the amount of companies displayed to {limit}.")
+                break
+
+        print(company_name)
+
+        for n, m in zip(company_name[::-1], company_metric[::-1]):
+            plt.barh(n, m)
+
+        metric_title = "".join(
+            " " + char if char.isupper() else char.strip() for char in finance_metric
+        ).strip()
+
+        plt.title(metric_title.capitalize())
+        plt.show()
+
+    elif len(metric_data) == 1:
+            print(f"Only 1 company found {metric_data.keys()[0]}. No barchart will be depicted.")
+    else:
+        print("No company found. No barchart will be depicted.")
     print("")
 
     export_data(
