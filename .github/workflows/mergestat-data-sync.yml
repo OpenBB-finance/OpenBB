@@ -1,0 +1,34 @@
+name: MergeStat Data Sync
+on:
+  schedule:
+    - cron:  '0 0 * * *' # at midnight (utc) every day
+jobs:
+  build:
+    name: Run MergeStat
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout MergeStat repo
+      uses: actions/checkout@v2
+      with:
+        repository: mergestat/mergestat
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Install libgit2
+      run: sudo ./scripts/install_libgit2.sh
+
+    - name: Build MergeStat
+      run: |
+        make
+        cp .build/mergestat /usr/local/bin/mergestat
+
+    - name: Sync tables
+      run: |
+        export PGSYNC=1
+        export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+        export GITHUB_PER_PAGE=50
+        export POSTGRES_CONNECTION=${{ secrets.POSTGRES_CONNECTION }}
+        mergestat pgsync pull_requests "SELECT * FROM github_repo_prs('GamestonkTerminal/GamestonkTerminal')"
+        mergestat pgsync issues "SELECT * FROM github_repo_issues('GamestonkTerminal/GamestonkTerminal')"
+        mergestat pgsync repos "SELECT * FROM github_org_repos('GamestonkTerminal')"
+        mergestat pgsync commit_stats "SELECT * FROM commits('https://github.com/GamestonkTerminal/GamestonkTerminal'), stats('https://github.com/GamestonkTerminal/GamestonkTerminal', commits.hash)"
+        mergestat pgsync stargazers "SELECT * FROM github_stargazers('GamestonkTerminal/GamestonkTerminal')"
