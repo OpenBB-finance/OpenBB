@@ -20,16 +20,22 @@ def split_train(
              X[k] = sequence[k*numJumps], ..., sequence[k*numJumps+numInputs]
              y[k] = sequence[k*numJumps+numInputs+1], ..., sequence[k*numJumps+numInputs+numOutputs]
 
-    Parameters:
-        sequence (array)  : Full training dataset
-        numInputs (int)   : Number of inputs X used at each training
-        numOutputs (int)  : Number of outputs y used at each training
-        numJumps (int)    : Number of sequence samples to be ignored between (X,y) sets
-    Returns:
-        X (2D array): Array of numInputs arrays.
-                      len(X[k]) = numInputs
-        y (2D array): Array of numOutputs arrays
-                      len(y[k]) = numOutputs
+    Parameters
+    ----------
+    sequence: np.ndarray
+        Full training dataset
+    numInputs : int
+        Number of inputs X used at each training
+    numOutputs : int
+        Number of outputs y used at each training
+    numJumps  : int
+        Number of sequence samples to be ignored between (X,y) sets
+    Returns
+    -------
+    List
+        List of numInputs arrays
+    List
+        List of numOutputs arrays
     """
 
     X: List = []
