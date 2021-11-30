@@ -49,9 +49,8 @@ def display_mc_forecast(
     if not time_res or time_res == "1D":
         future_index = get_next_stock_market_days(data.index[-1], n_next_days=n_future)  # type: ignore
     else:
-        future_index = future_index = pd.date_range(
-            data.index[-1], periods=n_future + 1, freq=time_res
-        )[1:]
+        future_index = pd.date_range(data.index[-1], periods=n_future + 1, freq=time_res)[1:]  # type: ignore
+
     dateFmt = mdates.DateFormatter("%m/%d/%Y")
 
     fig, ax = plt.subplots(1, 2, figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -65,7 +64,7 @@ def display_mc_forecast(
 
     sns.histplot(predicted_values[-1, :], ax=ax[1], kde=True)
     ax[1].set_xlabel("Price")
-    ax[1].axvline(x=data.values[-1], c="k", label="Last Value", lw=3, ls="-")
+    ax[1].axvline(x=data.values[-1], c="k", label="Last Value", lw=3, ls="-")  # type: ignore
     ax[1].set_title(f"Distribution of final values after {n_future} steps.")
     ax[1].set_xlim(np.min(predicted_values[-1, :]), np.max(predicted_values[-1, :]))
     ax[1].grid("on")
