@@ -41,10 +41,12 @@ from gamestonk_terminal import feature_flags as gtff
 
 
 def load_cg_coin_data(
-    coin: str, currency: str = "USD", days: int = 30, sampling: str = "1H"
+    coin: str, currency: str = "USD", days: int = 365, sampling: str = "1D"
 ) -> pd.DataFrame:
     """Load cryptocurrency data from CoinGecko
-    Timestamps from CoinGecko are not uniform, so the sampling is included to provide ohlc bars
+    Timestamps from CoinGecko are not uniform, so the sampling is included to provide ohlc bars.
+    Note that for days > 90, daily data is returned as prices only.  Less than 90 days returns hourly data
+    which can be consolidated into OHLC
 
     Parameters
     ----------
@@ -53,9 +55,9 @@ def load_cg_coin_data(
     currency : str, optional
         Conversion unit, by default "USD"
     days : int, optional
-        Number of days to get, by default 30
+        Number of days to get, by default 365
     sampling : str, optional
-        Time period to resample in the format in the format #U where U can be H (hour) or D(day), by default "1H"
+        Time period to resample in the format in the format #U where U can be H (hour) or D(day), by default "1D"
 
     Returns
     -------
@@ -66,8 +68,11 @@ def load_cg_coin_data(
     df = pd.DataFrame(data=prices["prices"], columns=["time", "price"])
     df["time"] = pd.to_datetime(df.time, unit="ms")
     df = df.set_index("time")
-    df = df.resample(sampling).ohlc()
-    df.columns = ["Open", "High", "Low", "Close"]
+    if days > 90:
+        df = df.resample(sampling).ohlc()
+        df.columns = ["Open", "High", "Low", "Close"]
+        return df
+    df.columns = ["Close"]
     return df
 
 

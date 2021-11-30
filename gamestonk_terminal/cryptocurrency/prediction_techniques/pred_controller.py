@@ -31,13 +31,14 @@ from gamestonk_terminal.common.prediction_techniques import (
     pred_helper,
     mc_view,
 )
+from gamestonk_terminal.cryptocurrency import cryptocurrency_helpers as c_help
 
 
 class PredictionTechniquesController:
     """Prediction Techniques Controller class"""
 
     # Command choices
-    CHOICES = ["cls", "?", "help", "q", "quit", "load", "pick", "resample"]
+    CHOICES = ["cls", "?", "help", "q", "quit", "load", "pick", "reload"]
 
     CHOICES_MODELS = [
         "ets",
@@ -66,8 +67,6 @@ class PredictionTechniquesController:
         self.data = data
         self.coin = coin
         self.target = "Close"
-        self.current_sampling = "1H"
-        self.days_of_data = 30
         self.pred_parser = argparse.ArgumentParser(add_help=False, prog="pred")
         self.pred_parser.add_argument(
             "cmd",
@@ -146,6 +145,62 @@ Models:
     def call_quit(self, _):
         """Process Quit command - quit the program"""
         return True
+
+    @try_except
+    def call_load(self, other_args: List[str]):
+        """Process load command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="load",
+            description="Load a new crypto dataframe",
+        )
+        parser.add_argument(
+            "-c",
+            "--coin",
+            help="Coin to get data for",
+            type=str,
+            default=self.coin,
+            dest="coin",
+        )
+        parser.add_argument(
+            "-v",
+            "--vs",
+            help="Currency to compare coin to.",
+            dest="currency",
+            default="USD",
+            type=str,
+        )
+        parser.add_argument(
+            "-d",
+            "--days",
+            dest="days",
+            type=check_positive,
+            default=365,
+            help="Number of days to get data for",
+        )
+        parser.add_argument(
+            "-r",
+            "--resolution",
+            default="1D",
+            type=str,
+            dest="resolution",
+            help="How often to resample data.",
+            choices=["1H", "3H", "6H", "1D"],
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        # TODO: improve loading from this submenu.  Currently would recommend using this menu after using main load
+
+        self.coin = ns_parser.coin
+        self.data = c_help.load_cg_coin_data(
+            ns_parser.coin, ns_parser.currency, ns_parser.days, ns_parser.resolution
+        )
+        res = ns_parser.resolution if ns_parser.days < 90 else "1D"
+        print(
+            f"{ns_parser.days} Days of {self.coin} vs {ns_parser.currency} loaded with {res} resolution.\n"
+        )
 
     @try_except
     def call_pick(self, other_args: List[str]):

@@ -756,7 +756,7 @@ What do you want to do?
 
             pred = pred_controller.menu(
                 self.current_coin,
-                c_help.load_cg_coin_data(self.current_coin, "USD", 30, "1H"),
+                c_help.load_cg_coin_data(self.current_coin, "USD", 365, "1D"),
             )
             if pred is False:
                 self.print_help()
