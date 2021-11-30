@@ -86,6 +86,7 @@ class SectorIndustryAnalysisController:
         self.mktcap = "Large"
         self.exclude_exhanges = True
         self.ticker = ticker
+        self.stocks_data = {}
 
         if ticker:
             data = yf.utils.get_json(f"https://finance.yahoo.com/quote/{ticker}")
@@ -140,7 +141,7 @@ Country (and Market Cap)
     cpi           companies per industry in country
     cps           companies per sector in country{Style.RESET_ALL if not self.country else ''}
 {Style.DIM if params else ''}
-Financials
+Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
     roa           return on assets
     roe           return on equity
     cr            current ratio
@@ -255,6 +256,7 @@ Financials
             else:
                 self.mktcap = "Mid"
 
+        self.stocks_data = {}
         print("")
 
     @try_except
@@ -313,6 +315,7 @@ Financials
         else:
             financedatabase_view.display_industries()
 
+        self.stocks_data = {}
         print("")
 
     @try_except
@@ -371,6 +374,7 @@ Financials
         else:
             financedatabase_view.display_sectors()
 
+        self.stocks_data = {}
         print("")
 
     @try_except
@@ -429,6 +433,7 @@ Financials
         else:
             financedatabase_view.display_countries()
 
+        self.stocks_data = {}
         print("")
 
     @try_except
@@ -463,6 +468,7 @@ Financials
         else:
             print("Select between market cap: Small, Mid and Large")
 
+        self.stocks_data = {}
         print("")
 
     @try_except
@@ -480,6 +486,7 @@ Financials
 
         self.exclude_exhanges = not self.exclude_exhanges
 
+        self.stocks_data = {}
         print("")
 
     @try_except
@@ -524,6 +531,7 @@ Financials
 
         self.exclude_exhanges = True
         self.ticker = ""
+        self.stocks_data = {}
 
         print("")
 
@@ -550,7 +558,7 @@ Financials
         if not ns_parser:
             return
 
-        financedatabase_view.display_bars_financials(
+        self.stocks_data = financedatabase_view.display_bars_financials(
             "returnOnAssets",
             self.country,
             self.sector,
@@ -559,6 +567,7 @@ Financials
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            self.stocks_data,
         )
 
     @try_except
@@ -584,7 +593,7 @@ Financials
         if not ns_parser:
             return
 
-        financedatabase_view.display_bars_financials(
+        self.stocks_data = financedatabase_view.display_bars_financials(
             "returnOnEquity",
             self.country,
             self.sector,
@@ -593,6 +602,7 @@ Financials
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            self.stocks_data,
         )
 
     @try_except
@@ -618,7 +628,7 @@ Financials
         if not ns_parser:
             return
 
-        financedatabase_view.display_bars_financials(
+        self.stocks_data = financedatabase_view.display_bars_financials(
             "quickRatio",
             self.country,
             self.sector,
@@ -627,6 +637,7 @@ Financials
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            self.stocks_data,
         )
 
     @try_except
@@ -652,7 +663,7 @@ Financials
         if not ns_parser:
             return
 
-        financedatabase_view.display_bars_financials(
+        self.stocks_data = financedatabase_view.display_bars_financials(
             "currentRatio",
             self.country,
             self.sector,
@@ -661,6 +672,7 @@ Financials
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            self.stocks_data,
         )
 
     @try_except
@@ -686,7 +698,7 @@ Financials
         if not ns_parser:
             return
 
-        financedatabase_view.display_bars_financials(
+        self.stocks_data = financedatabase_view.display_bars_financials(
             "revenueGrowth",
             self.country,
             self.sector,
@@ -695,6 +707,7 @@ Financials
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            self.stocks_data,
         )
 
     @try_except
@@ -720,7 +733,7 @@ Financials
         if not ns_parser:
             return
 
-        financedatabase_view.display_bars_financials(
+        self.stocks_data = financedatabase_view.display_bars_financials(
             "recommendationMean",
             self.country,
             self.sector,
@@ -729,6 +742,7 @@ Financials
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            self.stocks_data,
         )
 
     @try_except
@@ -754,7 +768,7 @@ Financials
         if not ns_parser:
             return
 
-        financedatabase_view.display_bars_financials(
+        self.stocks_data = financedatabase_view.display_bars_financials(
             "totalDebt",
             self.country,
             self.sector,
@@ -763,6 +777,7 @@ Financials
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            self.stocks_data,
         )
 
     @try_except
@@ -788,7 +803,7 @@ Financials
         if not ns_parser:
             return
 
-        financedatabase_view.display_bars_financials(
+        self.stocks_data = financedatabase_view.display_bars_financials(
             "ebitda",
             self.country,
             self.sector,
@@ -797,6 +812,7 @@ Financials
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            self.stocks_data,
         )
 
     @try_except
@@ -864,7 +880,7 @@ Financials
         if not ns_parser:
             return
 
-        financedatabase_view.display_bars_financials(
+        self.stocks_data = financedatabase_view.display_bars_financials(
             "debtToEquity",
             self.country,
             self.sector,
@@ -873,6 +889,7 @@ Financials
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            self.stocks_data,
         )
 
     @try_except
@@ -898,7 +915,7 @@ Financials
         if not ns_parser:
             return
 
-        financedatabase_view.display_bars_financials(
+        self.stocks_data = financedatabase_view.display_bars_financials(
             "totalCash",
             self.country,
             self.sector,
@@ -907,6 +924,7 @@ Financials
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            self.stocks_data,
         )
 
     @try_except
@@ -932,7 +950,7 @@ Financials
         if not ns_parser:
             return
 
-        financedatabase_view.display_bars_financials(
+        self.stocks_data = financedatabase_view.display_bars_financials(
             "totalCashPerShare",
             self.country,
             self.sector,
@@ -941,6 +959,7 @@ Financials
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            self.stocks_data,
         )
 
     @try_except
@@ -966,7 +985,7 @@ Financials
         if not ns_parser:
             return
 
-        financedatabase_view.display_bars_financials(
+        self.stocks_data = financedatabase_view.display_bars_financials(
             "totalRevenue",
             self.country,
             self.sector,
@@ -975,6 +994,7 @@ Financials
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            self.stocks_data,
         )
 
     @try_except
@@ -1000,7 +1020,7 @@ Financials
         if not ns_parser:
             return
 
-        financedatabase_view.display_bars_financials(
+        self.stocks_data = financedatabase_view.display_bars_financials(
             "revenuePerShare",
             self.country,
             self.sector,
@@ -1009,6 +1029,7 @@ Financials
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            self.stocks_data,
         )
 
     @try_except
@@ -1034,7 +1055,7 @@ Financials
         if not ns_parser:
             return
 
-        financedatabase_view.display_bars_financials(
+        self.stocks_data = financedatabase_view.display_bars_financials(
             "earningsGrowth",
             self.country,
             self.sector,
@@ -1043,6 +1064,7 @@ Financials
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            self.stocks_data,
         )
 
     @try_except
@@ -1068,7 +1090,7 @@ Financials
         if not ns_parser:
             return
 
-        financedatabase_view.display_bars_financials(
+        self.stocks_data = financedatabase_view.display_bars_financials(
             "profitMargins",
             self.country,
             self.sector,
@@ -1077,6 +1099,7 @@ Financials
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            self.stocks_data,
         )
 
     @try_except
@@ -1102,7 +1125,7 @@ Financials
         if not ns_parser:
             return
 
-        financedatabase_view.display_bars_financials(
+        self.stocks_data = financedatabase_view.display_bars_financials(
             "grossProfits",
             self.country,
             self.sector,
@@ -1111,6 +1134,7 @@ Financials
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            self.stocks_data,
         )
 
     @try_except
@@ -1136,7 +1160,7 @@ Financials
         if not ns_parser:
             return
 
-        financedatabase_view.display_bars_financials(
+        self.stocks_data = financedatabase_view.display_bars_financials(
             "grossMargins",
             self.country,
             self.sector,
@@ -1145,6 +1169,7 @@ Financials
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            self.stocks_data,
         )
 
     @try_except
@@ -1170,7 +1195,7 @@ Financials
         if not ns_parser:
             return
 
-        financedatabase_view.display_bars_financials(
+        self.stocks_data = financedatabase_view.display_bars_financials(
             "operatingCashflow",
             self.country,
             self.sector,
@@ -1179,6 +1204,7 @@ Financials
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            self.stocks_data,
         )
 
     @try_except
@@ -1204,7 +1230,7 @@ Financials
         if not ns_parser:
             return
 
-        financedatabase_view.display_bars_financials(
+        self.stocks_data = financedatabase_view.display_bars_financials(
             "operatingMargins",
             self.country,
             self.sector,
@@ -1213,6 +1239,7 @@ Financials
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            self.stocks_data,
         )
 
     @try_except
@@ -1238,7 +1265,7 @@ Financials
         if not ns_parser:
             return
 
-        financedatabase_view.display_bars_financials(
+        self.stocks_data = financedatabase_view.display_bars_financials(
             "freeCashflow",
             self.country,
             self.sector,
@@ -1247,6 +1274,7 @@ Financials
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            self.stocks_data,
         )
 
     @try_except
@@ -1272,7 +1300,7 @@ Financials
         if not ns_parser:
             return
 
-        financedatabase_view.display_bars_financials(
+        self.stocks_data = financedatabase_view.display_bars_financials(
             "ebitdaMargins",
             self.country,
             self.sector,
@@ -1281,6 +1309,7 @@ Financials
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            self.stocks_data,
         )
 
 

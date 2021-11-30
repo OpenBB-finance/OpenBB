@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 
 import os
 from collections import OrderedDict
+from typing import Dict
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -48,6 +49,7 @@ def display_bars_financials(
     exclude_exchanges: bool = True,
     limit: int = 10,
     export: str = "",
+    already_loaded_stocks_data: Dict = None,
 ):
     """
     Display financials bars comparing sectors, industry, analysis, countries, market cap and excluding exchanges.
@@ -72,10 +74,20 @@ def display_bars_financials(
         Limit amount of companies displayed
     export: str
         Format to export data as
+    already_loaded_stocks_data: Dict
+        Dictionary of filtered stocks data that has been loaded before
+
+    Returns
+    -------
+    dict
+        Dictionary of filtered stocks data
     """
-    stocks_data = financedatabase_model.get_stocks_data(
-        country, sector, industry, marketcap, exclude_exchanges
-    )
+    if already_loaded_stocks_data:
+        stocks_data = already_loaded_stocks_data
+    else:
+        stocks_data = financedatabase_model.get_stocks_data(
+            country, sector, industry, marketcap, exclude_exchanges
+        )
 
     metric_data = {}
     for symbol in list(stocks_data.keys()):
@@ -151,6 +163,8 @@ def display_bars_financials(
         finance_metric,
         pd.DataFrame.from_dict(stocks_data),
     )
+
+    return stocks_data
 
 
 def display_companies_per_sector(country: str, mktcap: str = "", export: str = ""):
