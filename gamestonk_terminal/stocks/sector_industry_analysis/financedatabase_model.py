@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 # pylint:disable=too-many-arguments
 
+from tqdm import tqdm
 import financedatabase as fd
 import yfinance as yf
 
@@ -170,7 +171,7 @@ def get_stocks_data(
     stocks = filter_stocks(country, sector, industry, marketcap, exclude_exchanges)
 
     stocks_data = {}
-    for symbol in stocks:
+    for symbol in tqdm(stocks):
         stocks_data[symbol] = yf.utils.get_json(
             f"https://finance.yahoo.com/quote/{symbol}"
         )
@@ -196,7 +197,7 @@ def get_companies_per_sector(country: str, mktcap: str = ""):
     """
     companies_per_sector = {}
 
-    for sector in get_sectors():
+    for sector in tqdm(get_sectors()):
         if sector:
             try:
                 companies = fd.select_equities(country=country, sector=sector)
@@ -230,7 +231,7 @@ def get_companies_per_industry(country: str, mktcap: str = ""):
     """
     companies_per_industry = {}
 
-    for industry in get_industries():
+    for industry in tqdm(get_industries()):
         if industry:
             try:
                 companies = fd.select_equities(country=country, industry=industry)
