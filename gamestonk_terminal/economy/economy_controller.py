@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 import argparse
+import difflib
 from datetime import datetime, timedelta
 import os
 from typing import List
@@ -696,6 +697,35 @@ NASDAQ DataLink (formerly Quandl):
             choices=list(self.d_GROUPS.keys()),
         )
         parser.add_argument(
+            "-s",
+            "--sortby",
+            dest="sort_col",
+            choices=[
+                "Name",
+                "Week",
+                "Month",
+                "3Month",
+                "6Month",
+                "1Year",
+                "YTD",
+                "Recom",
+                "AvgVolume",
+                "RelVolume",
+                "Change",
+                "Volume",
+            ],
+            default="Name",
+            help="Column to sort by",
+        )
+        parser.add_argument(
+            "-a",
+            "-ascend",
+            dest="ascend",
+            help="Flag to sort in ascending order",
+            action="store_true",
+            default=False,
+        )
+        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -703,10 +733,8 @@ NASDAQ DataLink (formerly Quandl):
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-g")
-            other_args = [other_args[0], " ".join(other_args[1:])]
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-g")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
@@ -715,6 +743,8 @@ NASDAQ DataLink (formerly Quandl):
         finviz_view.view_group_data(
             s_group=self.d_GROUPS[ns_parser.group],
             data_type="performance",
+            sort_col=ns_parser.sort_col,
+            ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
 
@@ -1242,4 +1272,10 @@ def menu():
 
         except SystemExit:
             print("The command selected doesn't exist\n")
+            similar_cmd = difflib.get_close_matches(
+                an_input, econ_controller.CHOICES, n=1, cutoff=0.7
+            )
+
+            if similar_cmd:
+                print(f"Did you mean '{similar_cmd[0]}'?\n")
             continue

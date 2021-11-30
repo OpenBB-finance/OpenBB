@@ -1,19 +1,19 @@
 import asyncio
 import discord
-import config_discordbot as cfg
 
-# pylint: disable=wrong-import-order
-from discordbot import gst_bot
+import discordbot.config_discordbot as cfg
 
-from economy.feargreed import feargreed_command
-from economy.overview import overview_command
-from economy.indices import indices_command
-from economy.futures import futures_command
-from economy.usbonds import usbonds_command
-from economy.glbonds import glbonds_command
-from economy.currencies import currencies_command
-from economy.valuation import valuation_command
-from economy.performance import performance_command
+from discordbot.economy.feargreed import feargreed_command
+from discordbot.economy.overview import overview_command
+from discordbot.economy.indices import indices_command
+from discordbot.economy.futures import futures_command
+from discordbot.economy.usbonds import usbonds_command
+from discordbot.economy.glbonds import glbonds_command
+from discordbot.economy.currencies import currencies_command
+from discordbot.economy.valuation import valuation_command
+from discordbot.economy.performance import performance_command
+
+from discordbot.run_discordbot import gst_bot
 
 
 class EconomyCommands(discord.ext.commands.Cog):

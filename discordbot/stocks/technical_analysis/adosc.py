@@ -1,10 +1,11 @@
-import discord
-import config_discordbot as cfg
-from discordbot import gst_imgur
-from datetime import datetime, timedelta
-from matplotlib import pyplot as plt
 import os
-import helpers
+from datetime import datetime, timedelta
+import discord
+from matplotlib import pyplot as plt
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur
+import discordbot.helpers
 
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.common.technical_analysis import volume_model
@@ -12,7 +13,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 
 
 async def adosc_command(
-    ctx, ticker="", open="False", fast="3", slow="10", start="", end=""
+    ctx, ticker="", is_open="False", fast="3", slow="10", start="", end=""
 ):
     """Displays chart with chaikin oscillator [Yahoo Finance]"""
 
@@ -20,7 +21,7 @@ async def adosc_command(
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.adosc {ticker} {open} {fast} {slow} {start} {end}")
+            print(f"!stocks.ta.adosc {ticker} {is_open} {fast} {slow} {start} {end}")
 
         # Check for argument
         if ticker == "":
@@ -43,15 +44,17 @@ async def adosc_command(
             raise Exception("Number has to be an integer")
         slow = float(slow)
 
-        if open == "false" or open == "False" or open == "FALSE":
-            open = False
-        elif open == "true" or open == "True" or open == "TRUE":
-            open = True
-        else:
-            raise Exception("open argument has to be true or false")
+        if is_open in ["false", "False", "FALSE", ""]:
+            is_open = False
+
+        if is_open in ["true", "True", "TRUE"]:
+            is_open = True
+
+        if is_open not in [True, False]:
+            raise Exception("raw argument has to be true or false")
 
         ticker = ticker.upper()
-        df_stock = helpers.load(ticker, start)
+        df_stock = discordbot.helpers.load(ticker, start)
         if df_stock.empty:
             raise Exception("Stock ticker is invalid")
 
@@ -66,7 +69,7 @@ async def adosc_command(
         divisor = 1_000_000
         df_vol = df_stock["Volume"].dropna()
         df_vol = df_vol.values / divisor
-        df_ta = volume_model.adosc(df_stock, open, fast, slow)
+        df_ta = volume_model.adosc(df_stock, is_open, fast, slow)
         df_cal = df_ta.values
         df_cal = df_cal / divisor
 

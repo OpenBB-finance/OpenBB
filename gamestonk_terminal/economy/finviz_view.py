@@ -34,7 +34,13 @@ def map_sp500_view(period: str, map_type: str):
     print("")
 
 
-def view_group_data(s_group: str, data_type: str, export: str):
+def view_group_data(
+    s_group: str,
+    data_type: str,
+    sort_col: str = "Name",
+    ascending: bool = False,
+    export: str = "",
+):
     """View group (sectors, industry or country) valuation/performance/spectrum data. [Source: Finviz]
 
     Parameters
@@ -43,19 +49,55 @@ def view_group_data(s_group: str, data_type: str, export: str):
         group between sectors, industry or country
     data_type : str
         select data type to see data between valuation, performance and spectrum
+    sort_col : str
+        Column to sort by
+    ascending : bool
+        Flag to sort in ascending order
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     """
     if data_type in ("valuation", "performance"):
         df_group = finviz_model.get_valuation_performance_data(s_group, data_type)
+        df_group = df_group.rename(
+            columns={
+                "Perf Week": "Week",
+                "Perf Month": "Month",
+                "Perf Quart": "3Month",
+                "Perf Half": "6Month",
+                "Perf Year": "1Year",
+                "Perf YTD": "YTD",
+                "Avg Volume": "AvgVolume",
+                "Rel Volume": "RelVolume",
+            }
+        )
+        df_group["Week"] = df_group["Week"].apply(lambda x: float(x.strip("%")) / 100)
+        df_group = df_group.sort_values(by=sort_col, ascending=ascending)
+        df_group["Volume"] = df_group["Volume"] / 1_000_000
+        df_group["AvgVolume"] = df_group["AvgVolume"] / 1_000_000
+        df_group = df_group.rename(
+            columns={"Volume": "Volume (1M)", "AvgVolume": "AvgVolume (1M)"}
+        )
         if gtff.USE_TABULATE_DF:
             print(
                 tabulate(
                     df_group.fillna(""),
                     showindex=False,
-                    floatfmt=".2f",
                     headers=df_group.columns,
                     tablefmt="fancy_grid",
+                    floatfmt=[
+                        "",
+                        ".3f",
+                        ".3f",
+                        ".3f",
+                        ".3f",
+                        ".3f",
+                        ".3f",
+                        ".2f",
+                        ".0f",
+                        ".2f",
+                        ".2f",
+                        ".0f",
+                    ],
                 )
             )
         else:

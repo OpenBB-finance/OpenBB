@@ -1,6 +1,6 @@
 import discord
-import config_discordbot as cfg
-from helpers import pagination
+import discordbot.config_discordbot as cfg
+from discordbot.helpers import pagination
 
 from gamestonk_terminal.stocks.government import quiverquant_model
 
@@ -84,18 +84,18 @@ async def lasttrades_command(
                     f" days. The following are available: "
                     f"{', '.join(df_gov['Representative'].str.split().str[0].unique())}"
                 )
-            else:
-                embed = discord.Embed(
-                    title=f"Stocks: [quiverquant.com] Trades by {representative}",
-                    description="```" + df_gov_rep.to_string(index=False) + "```",
-                    colour=cfg.COLOR,
-                )
-                embed.set_author(
-                    name=cfg.AUTHOR_NAME,
-                    icon_url=cfg.AUTHOR_ICON_URL,
-                )
 
-                await ctx.send(embed=embed)
+            embed = discord.Embed(
+                title=f"Stocks: [quiverquant.com] Trades by {representative}",
+                description="```" + df_gov_rep.to_string(index=False) + "```",
+                colour=cfg.COLOR,
+            )
+            embed.set_author(
+                name=cfg.AUTHOR_NAME,
+                icon_url=cfg.AUTHOR_ICON_URL,
+            )
+
+            await ctx.send(embed=embed)
         else:
             df_gov_str = df_gov.to_string(index=False)
             if len(df_gov_str) <= 4000:

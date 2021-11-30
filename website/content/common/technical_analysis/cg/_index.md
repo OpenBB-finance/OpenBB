@@ -13,3 +13,4 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
+<img width="1400" alt="Feature Screenshot - cg" src="https://user-images.githubusercontent.com/85772166/144015097-6029eca0-53ca-42bb-abe9-20571dd4f4e4.png">

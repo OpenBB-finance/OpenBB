@@ -1,34 +1,35 @@
+from datetime import datetime, timedelta
 import asyncio
 import discord
 import discord_components
-import config_discordbot as cfg
-import helpers
-from datetime import datetime, timedelta
 
-from stocks.technical_analysis.ema import ema_command
-from stocks.technical_analysis.sma import sma_command
-from stocks.technical_analysis.wma import wma_command
-from stocks.technical_analysis.hma import hma_command
-from stocks.technical_analysis.zlma import zlma_command
-from stocks.technical_analysis.cci import cci_command
-from stocks.technical_analysis.macd import macd_command
-from stocks.technical_analysis.rsi import rsi_command
-from stocks.technical_analysis.stoch import stoch_command
-from stocks.technical_analysis.fisher import fisher_command
-from stocks.technical_analysis.cg import cg_command
-from stocks.technical_analysis.adx import adx_command
-from stocks.technical_analysis.aroon import aroon_command
-from stocks.technical_analysis.bbands import bbands_command
-from stocks.technical_analysis.donchian import donchian_command
-from stocks.technical_analysis.kc import kc_command
-from stocks.technical_analysis.ad import ad_command
-from stocks.technical_analysis.adosc import adosc_command
-from stocks.technical_analysis.obv import obv_command
-from stocks.technical_analysis.fib import fib_command
-from stocks.technical_analysis.view import view_command
-from stocks.technical_analysis.summary import summary_command
-from stocks.technical_analysis.recom import recom_command
-from discordbot import gst_bot
+import discordbot.config_discordbot as cfg
+import discordbot.helpers
+
+from discordbot.stocks.technical_analysis.ema import ema_command
+from discordbot.stocks.technical_analysis.sma import sma_command
+from discordbot.stocks.technical_analysis.wma import wma_command
+from discordbot.stocks.technical_analysis.hma import hma_command
+from discordbot.stocks.technical_analysis.zlma import zlma_command
+from discordbot.stocks.technical_analysis.cci import cci_command
+from discordbot.stocks.technical_analysis.macd import macd_command
+from discordbot.stocks.technical_analysis.rsi import rsi_command
+from discordbot.stocks.technical_analysis.stoch import stoch_command
+from discordbot.stocks.technical_analysis.fisher import fisher_command
+from discordbot.stocks.technical_analysis.cg import cg_command
+from discordbot.stocks.technical_analysis.adx import adx_command
+from discordbot.stocks.technical_analysis.aroon import aroon_command
+from discordbot.stocks.technical_analysis.bbands import bbands_command
+from discordbot.stocks.technical_analysis.donchian import donchian_command
+from discordbot.stocks.technical_analysis.kc import kc_command
+from discordbot.stocks.technical_analysis.ad import ad_command
+from discordbot.stocks.technical_analysis.adosc import adosc_command
+from discordbot.stocks.technical_analysis.obv import obv_command
+from discordbot.stocks.technical_analysis.fib import fib_command
+from discordbot.stocks.technical_analysis.view import view_command
+from discordbot.stocks.technical_analysis.summary import summary_command
+from discordbot.stocks.technical_analysis.recom import recom_command
+from discordbot.run_discordbot import gst_bot
 
 
 class TechnicalAnalysisCommands(discord.ext.commands.Cog):
@@ -466,6 +467,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await donchian_command(ctx, ticker, upper_length, lower_length, start, end)
 
+    # pylint: disable=too-many-arguments
     @discord.ext.commands.command(name="stocks.ta.kc")
     async def kc(
         self,
@@ -505,7 +507,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         self,
         ctx: discord.ext.commands.Context,
         ticker="",
-        open="False",
+        is_open="False",
         start="",
         end="",
     ):
@@ -515,7 +517,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         -----------
         ticker: str
             ticker, -h or help
-        open: bool
+        is_open: bool
             whether open price is used. Default: False
         start:
             date (in date format for start date)
@@ -523,14 +525,14 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
             date (in date format for end date)
         """
 
-        await ad_command(ctx, ticker, open, start, end)
+        await ad_command(ctx, ticker, is_open, start, end)
 
     @discord.ext.commands.command(name="stocks.ta.adosc")
     async def adosc(
         self,
         ctx: discord.ext.commands.Context,
         ticker="",
-        open="False",
+        is_open="False",
         fast="3",
         slow="10",
         start="",
@@ -542,7 +544,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         -----------
         ticker: str
             ticker, -h or help
-        open: bool
+        is_open: bool
             whether open price is used. Default: False
         fast: int
             fast value. Default: 3
@@ -554,7 +556,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
             date (in date format for end date)
         """
 
-        await adosc_command(ctx, ticker, open, fast, slow, start, end)
+        await adosc_command(ctx, ticker, is_open, fast, slow, start, end)
 
     @discord.ext.commands.command(name="stocks.ta.obv")
     async def obv(self, ctx: discord.ext.commands.Context, ticker="", start="", end=""):
@@ -624,6 +626,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await recom_command(ctx, ticker)
 
+    # pylint: disable=too-many-statements
     @discord.ext.commands.command(name="stocks.ta")
     async def ta(self, ctx: discord.ext.commands.Context, ticker=""):
         """Stocks Context - Shows Technical Analysis Menu
@@ -654,7 +657,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
             await ctx.send(embed=embed)
             return
 
-        stock = helpers.load(ticker, datetime.now() - timedelta(days=365))
+        stock = discordbot.helpers.load(ticker, datetime.now() - timedelta(days=365))
         if stock.empty:
             embed = discord.Embed(
                 title="ERROR Stocks: Technical Analysis (TA) Menu",
@@ -668,50 +671,50 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
             await ctx.send(embed=embed)
             return
-        else:
-            text = (
-                f"0️⃣ !stocks.ta.view {ticker}\n"
-                f"1️⃣ !stocks.ta.summary {ticker}\n"
-                f"2️⃣ !stocks.ta.recom {ticker}\n"
-                f"3️⃣ !stocks.ta.ema {ticker} <WINDOW> <OFFSET> <START> <END>\n"
-                f"4️⃣ !stocks.ta.sma {ticker} <WINDOW> <OFFSET> <START> <END>\n"
-                f"5️⃣ !stocks.ta.wma {ticker} <WINDOW> <OFFSET> <START> <END>\n"
-                f"6️⃣ !stocks.ta.hma {ticker} <WINDOW> <OFFSET> <START> <END>\n"
-                f"7️⃣ !stocks.ta.zlma {ticker} <WINDOW> <OFFSET> <START> <END>\n"
-                f"8️⃣ !stocks.ta.cci {ticker} <LENGTH> <SCALAR> <START> <END>\n"
-                f"9️⃣ !stocks.ta.macd {ticker} <FAST> <SLOW> <SIGNAL> <START> <END>"
-            )
-            cols_temp.append(text)
-            text = (
-                f"0️⃣ !stocks.ta.rsi {ticker} <LENGTH> <SCALAR> <DRIFT> <START> <END>\n"
-                f"1️⃣ !stocks.ta.stoch {ticker} <FAST_K> <SLOW_D> <SLOW_K> <START> <END>\n"
-                f"2️⃣ !stocks.ta.fisher {ticker} <LENGTH> <START> <END>\n"
-                f"3️⃣ !stocks.ta.cg {ticker} <LENGTH> <START> <END>\n"
-                f"4️⃣ !stocks.ta.adx {ticker} <LENGTH> <SCALAR> <DRIFT> <START> <END>\n"
-                f"5️⃣ !stocks.ta.aroon {ticker} <LENGTH> <SCALAR> <START> <END>\n"
-                f"6️⃣ !stocks.ta.bbands {ticker} <LENGTH> <SCALAR> <MA_MODE> <START> <END>\n"
-                f"7️⃣ !stocks.ta.donchian {ticker} <LOWER_LENGTH> <UPPER_LENGTH> <START> <END>\n"
-                f"8️⃣ !stocks.ta.kc {ticker} <LENGTH> <SCALAR> <MA_MODE> <START> <END>\n"
-                f"9️⃣ !stocks.ta.ad {ticker} <OPEN> <START> <END>"
-            )
-            cols_temp.append(text)
-            text = (
-                f"0️⃣ !stocks.ta.adosc {ticker} <OPEN> <FAST> <SLOW> <START> <END>\n"
-                f"1️⃣ !stocks.ta.obv {ticker} <START> <END>\n"
-                f"2️⃣ !stocks.ta.fib {ticker} <START> <END>\n"
-            )
-            cols_temp.append(text)
-            for col in cols_temp:
-                cols.append(
-                    discord.Embed(
-                        description=col,
-                        colour=cfg.COLOR,
-                        title="Stocks: Technical Analysis (TA) Menu",
-                    ).set_author(
-                        name=cfg.AUTHOR_NAME,
-                        icon_url=cfg.AUTHOR_ICON_URL,
-                    )
+
+        text = (
+            f"0️⃣ !stocks.ta.view {ticker}\n"
+            f"1️⃣ !stocks.ta.summary {ticker}\n"
+            f"2️⃣ !stocks.ta.recom {ticker}\n"
+            f"3️⃣ !stocks.ta.ema {ticker} <WINDOW> <OFFSET> <START> <END>\n"
+            f"4️⃣ !stocks.ta.sma {ticker} <WINDOW> <OFFSET> <START> <END>\n"
+            f"5️⃣ !stocks.ta.wma {ticker} <WINDOW> <OFFSET> <START> <END>\n"
+            f"6️⃣ !stocks.ta.hma {ticker} <WINDOW> <OFFSET> <START> <END>\n"
+            f"7️⃣ !stocks.ta.zlma {ticker} <WINDOW> <OFFSET> <START> <END>\n"
+            f"8️⃣ !stocks.ta.cci {ticker} <LENGTH> <SCALAR> <START> <END>\n"
+            f"9️⃣ !stocks.ta.macd {ticker} <FAST> <SLOW> <SIGNAL> <START> <END>"
+        )
+        cols_temp.append(text)
+        text = (
+            f"0️⃣ !stocks.ta.rsi {ticker} <LENGTH> <SCALAR> <DRIFT> <START> <END>\n"
+            f"1️⃣ !stocks.ta.stoch {ticker} <FAST_K> <SLOW_D> <SLOW_K> <START> <END>\n"
+            f"2️⃣ !stocks.ta.fisher {ticker} <LENGTH> <START> <END>\n"
+            f"3️⃣ !stocks.ta.cg {ticker} <LENGTH> <START> <END>\n"
+            f"4️⃣ !stocks.ta.adx {ticker} <LENGTH> <SCALAR> <DRIFT> <START> <END>\n"
+            f"5️⃣ !stocks.ta.aroon {ticker} <LENGTH> <SCALAR> <START> <END>\n"
+            f"6️⃣ !stocks.ta.bbands {ticker} <LENGTH> <SCALAR> <MA_MODE> <START> <END>\n"
+            f"7️⃣ !stocks.ta.donchian {ticker} <LOWER_LENGTH> <UPPER_LENGTH> <START> <END>\n"
+            f"8️⃣ !stocks.ta.kc {ticker} <LENGTH> <SCALAR> <MA_MODE> <START> <END>\n"
+            f"9️⃣ !stocks.ta.ad {ticker} <OPEN> <START> <END>"
+        )
+        cols_temp.append(text)
+        text = (
+            f"0️⃣ !stocks.ta.adosc {ticker} <OPEN> <FAST> <SLOW> <START> <END>\n"
+            f"1️⃣ !stocks.ta.obv {ticker} <START> <END>\n"
+            f"2️⃣ !stocks.ta.fib {ticker} <START> <END>\n"
+        )
+        cols_temp.append(text)
+        for col in cols_temp:
+            cols.append(
+                discord.Embed(
+                    description=col,
+                    colour=cfg.COLOR,
+                    title="Stocks: Technical Analysis (TA) Menu",
+                ).set_author(
+                    name=cfg.AUTHOR_NAME,
+                    icon_url=cfg.AUTHOR_ICON_URL,
                 )
+            )
 
         emoji_list = [
             "0️⃣",
@@ -794,6 +797,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
                     embed=cols[current], components=components
                 )
 
+                # pylint: disable=too-many-branches
                 @gst_bot.event
                 async def on_reaction_add(reaction, user):
                     if user == ctx.message.author and str(reaction.emoji) in emoji_list:

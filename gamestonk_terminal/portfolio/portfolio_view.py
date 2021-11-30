@@ -119,11 +119,7 @@ def plot_overall_return(
     ax.axhline(0, ls="--", lw=1, color="black", zorder=2)
     fig.set_facecolor("white")
     ax.set_title(
-        "%s - %s"
-        % (
-            comb.index[:1][0].strftime("%Y/%m/%d"),
-            comb.index[-1:][0].strftime("%Y/%m/%d"),
-        ),
+        f'{comb.index[:1][0].strftime("%Y/%m/%d")} - {comb.index[-1:][0].strftime("%Y/%m/%d")}',
         fontsize=12,
         color="gray",
     )
@@ -178,9 +174,7 @@ def plot_rolling_beta(df: pd.DataFrame) -> ImageReader:
     ax.axhline(0, ls="--", lw=1, color="black", zorder=2)
     fig.set_facecolor("white")
     ax.set_title(
-        "%s - %s"
-        % (df.index[:1][0].strftime("%Y-%m-%d"), df.index[-1:][0].strftime("%Y-%m-%d")),
-        fontsize=12,
+        f'{df.index[:1][0].strftime("%Y-%m-%d")} - {df.index[-1:][0].strftime("%Y-%m-%d")}',
         color="gray",
     )
     ax.set_facecolor("white")

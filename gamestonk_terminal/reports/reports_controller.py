@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 # pylint: disable=R1732
 
 import argparse
+import difflib
 import os
 import subprocess
 import webbrowser
@@ -132,7 +133,7 @@ Select one of the following reports:
         (known_args, other_args) = self.report_parser.parse_known_args(an_input.split())
 
         # Help menu again
-        if known_args.cmd == "?" or known_args.cmd == "help":
+        if known_args.cmd in ["?", "help"]:
             self.print_help()
             return None
 
@@ -270,4 +271,10 @@ def menu():
 
         except SystemExit:
             print("The command selected doesn't exist\n")
+            similar_cmd = difflib.get_close_matches(
+                an_input, report_controller.CHOICES, n=1, cutoff=0.7
+            )
+
+            if similar_cmd:
+                print(f"Did you mean '{similar_cmd[0]}'?\n")
             continue
