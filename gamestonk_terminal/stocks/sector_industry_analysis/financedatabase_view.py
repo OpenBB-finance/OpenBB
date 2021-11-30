@@ -214,7 +214,7 @@ def display_companies_per_sector(country: str, mktcap: str = "", export: str = "
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "cps",
-        pd.DataFrame.from_dict(companies_per_sector),
+        pd.DataFrame([companies_per_sector]),
     )
 
 
@@ -276,5 +276,5 @@ def display_companies_per_industry(country: str, mktcap: str = "", export: str =
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "cpi",
-        pd.DataFrame.from_dict(companies_per_industry),
+        pd.DataFrame([companies_per_industry]),
     )
