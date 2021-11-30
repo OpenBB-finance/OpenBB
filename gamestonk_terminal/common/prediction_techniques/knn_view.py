@@ -14,6 +14,8 @@ from gamestonk_terminal.common.prediction_techniques import knn_model
 
 register_matplotlib_converters()
 
+# pylint:disable=too-many-arguments
+
 
 def display_k_nearest_neighbors(
     ticker: str,
@@ -24,6 +26,7 @@ def display_k_nearest_neighbors(
     test_size: float,
     end_date: str = "",
     no_shuffle: bool = True,
+    time_res: str = "",
 ):
     """Display predictions using knn
 
@@ -45,6 +48,8 @@ def display_k_nearest_neighbors(
         End date for backtesting, by default ""
     no_shuffle : bool, optional
         Flag to shuffle data randomly, by default True
+    time_res : str
+        Resolution for data, allowing for predicting outside of standard market days
     """
     (
         forecast_data_df,
@@ -55,10 +60,15 @@ def display_k_nearest_neighbors(
     ) = knn_model.get_knn_model_data(
         data, n_input_days, n_predict_days, n_neighbors, test_size, end_date, no_shuffle
     )
+
     if forecast_data_df.empty:
         print("Issue performing data prep and prediction")
         return
 
+    if time_res:
+        forecast_data_df.index = pd.date_range(
+            data.index[-1], periods=n_predict_days + 1, freq=time_res
+        )[1:]
     print_pretty_prediction(forecast_data_df[0], data.values[-1])
     plot_data_predictions(
         data,
@@ -69,5 +79,6 @@ def display_k_nearest_neighbors(
         f"KNN Model with {n_neighbors} Neighbors on {ticker}",
         forecast_data_df,
         1,
+        time_res,
     )
     print("")

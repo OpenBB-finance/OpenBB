@@ -38,7 +38,7 @@ class PredictionTechniquesController:
     """Prediction Techniques Controller class"""
 
     # Command choices
-    CHOICES = ["cls", "?", "help", "q", "quit", "load", "pick", "reload"]
+    CHOICES = ["cls", "?", "help", "q", "quit", "load", "pick"]
 
     CHOICES_MODELS = [
         "ets",
@@ -66,6 +66,7 @@ class PredictionTechniquesController:
 
         self.data = data
         self.coin = coin
+        self.resolution = "1D"
         self.target = "Close"
         self.pred_parser = argparse.ArgumentParser(add_help=False, prog="pred")
         self.pred_parser.add_argument(
@@ -188,6 +189,8 @@ Models:
             help="How often to resample data.",
             choices=["1H", "3H", "6H", "1D"],
         )
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-c")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
@@ -198,6 +201,7 @@ Models:
             ns_parser.coin, ns_parser.currency, ns_parser.days, ns_parser.resolution
         )
         res = ns_parser.resolution if ns_parser.days < 90 else "1D"
+        self.resolution = res
         print(
             f"{ns_parser.days} Days of {self.coin} vs {ns_parser.currency} loaded with {res} resolution.\n"
         )
@@ -329,6 +333,7 @@ Models:
             seasonal_periods=ns_parser.seasonal_periods,
             s_end_date=ns_parser.s_end_date,
             export=ns_parser.export,
+            time_res=self.resolution,
         )
 
     @try_except
@@ -417,6 +422,7 @@ Models:
             test_size=ns_parser.valid_split,
             end_date=ns_parser.s_end_date,
             no_shuffle=ns_parser.no_shuffle,
+            time_res=self.resolution,
         )
 
     @try_except
@@ -515,6 +521,7 @@ Models:
             n_jumps=ns_parser.n_jumps,
             s_end_date=ns_parser.s_end_date,
             export=ns_parser.export,
+            time_res=self.resolution,
         )
 
     @try_except
@@ -622,6 +629,7 @@ Models:
             results=ns_parser.b_results,
             s_end_date=ns_parser.s_end_date,
             export=ns_parser.export,
+            time_res=self.resolution,
         )
 
     @try_except
@@ -647,6 +655,7 @@ Models:
                 test_size=ns_parser.valid_split,
                 n_loops=ns_parser.n_loops,
                 no_shuffle=ns_parser.no_shuffle,
+                time_res=self.resolution,
             )
         except Exception as e:
             print(e, "\n")
@@ -676,6 +685,7 @@ Models:
                 test_size=ns_parser.valid_split,
                 n_loops=ns_parser.n_loops,
                 no_shuffle=ns_parser.no_shuffle,
+                time_res=self.resolution,
             )
 
         except Exception as e:
@@ -705,6 +715,7 @@ Models:
                 test_size=ns_parser.valid_split,
                 n_loops=ns_parser.n_loops,
                 no_shuffle=ns_parser.no_shuffle,
+                time_res=self.resolution,
             )
 
         except Exception as e:
@@ -735,6 +746,7 @@ Models:
                 test_size=ns_parser.valid_split,
                 n_loops=ns_parser.n_loops,
                 no_shuffle=ns_parser.no_shuffle,
+                time_res=self.resolution,
             )
 
         except Exception as e:
@@ -792,6 +804,7 @@ Models:
             n_sims=ns_parser.n_sims,
             use_log=ns_parser.dist == "lognormal",
             export=ns_parser.export,
+            time_res=self.resolution,
         )
 
 

@@ -69,10 +69,9 @@ def load_cg_coin_data(
     df["time"] = pd.to_datetime(df.time, unit="ms")
     df = df.set_index("time")
     if days > 90:
-        df = df.resample(sampling).ohlc()
-        df.columns = ["Open", "High", "Low", "Close"]
-        return df
-    df.columns = ["Close"]
+        sampling = "1D"
+    df = df.resample(sampling).ohlc()
+    df.columns = ["Open", "High", "Low", "Close"]
     return df
 
 
