@@ -36,9 +36,7 @@ def buy_sell_ratio_color_red_green(val: str) -> str:
     sells = int(buy_sell_match.group(2))
 
     if buys >= sells:
-        return "{}{}%{} Buys, {}% Sells".format(
-            Fore.GREEN, buys, Style.RESET_ALL, sells
-        )
+        return f"{Fore.GREEN}{buys}%{Style.RESET_ALL} Buys, {sells}% Sells"
 
     return f"{buys}% Buys, {Fore.RED}{sells}%{Style.RESET_ALL} Sells"
 

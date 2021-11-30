@@ -2,7 +2,7 @@
 usage: hist [-b N_BINS] [-h]
 ```
 
-Histogram with density and rug
+Histogram of proportional gains by entry point from a specified date, divisible into a specified number of distributed groups.
 
 ```
 optional arguments:
@@ -10,4 +10,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-![hist](https://user-images.githubusercontent.com/25267873/112729911-75a1cf80-8f26-11eb-925c-252a90657128.png)
+<img size="1400" alt="Feature Screenshot - dist" src="https://user-images.githubusercontent.com/85772166/143519569-9e67546d-5aef-4223-9b25-ede6a7c9cc23.png">

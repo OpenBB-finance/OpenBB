@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
+import difflib
 from typing import List
 from datetime import datetime, timedelta
 from colorama import Style
@@ -687,4 +688,10 @@ def menu(ticker: str = "", start: str = "", stock: pd.DataFrame = pd.DataFrame()
 
         except SystemExit:
             print("The command selected doesn't exist\n")
+            similar_cmd = difflib.get_close_matches(
+                an_input, dps_controller.CHOICES, n=1, cutoff=0.7
+            )
+
+            if similar_cmd:
+                print(f"Did you mean '{similar_cmd[0]}'?\n")
             continue

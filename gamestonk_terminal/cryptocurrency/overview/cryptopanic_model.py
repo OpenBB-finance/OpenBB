@@ -20,7 +20,7 @@ class ApiKeyException(Exception):
         self.message = message
 
     def __str__(self) -> str:
-        return "ApiKeyException: %s" % self.message
+        return f"ApiKeyException: {self.message}"
 
 
 def make_request(**kwargs: Any) -> dict:
@@ -65,12 +65,12 @@ def make_request(**kwargs: Any) -> dict:
     response = requests.get(url)
 
     if not 200 <= response.status_code < 300:
-        raise ApiKeyException("Invalid Authentication: %s" % response.text)
+        raise ApiKeyException(f"Invalid Authentication: {response.text}")
 
     try:
         return response.json()
     except Exception as e:
-        raise ValueError("Invalid Response: %s" % response.text) from e
+        raise ValueError(f"Invalid Response: {response.text}") from e
 
 
 def _parse_post(post: dict) -> dict:

@@ -491,8 +491,15 @@ class CreateExcelFA:
             r + 2, "Average return of the S&P 500 is 8% [Investopedia]", 2, f"{c3}"
         )
         dcf_model.set_cell(self.ws2, f"{c1}{r+3}", "Beta")
-        dcf_model.set_cell(self.ws2, f"{c2}{r+3}", float(self.info["beta"]))
-        self.custom_exp(r + 3, "Beta from yahoo finance", 2, f"{c3}")
+        if self.info["beta"] is None:
+            dcf_model.set_cell(self.ws2, f"{c2}{r+3}", float(1))
+            self.custom_exp(
+                r + 3, "Warning: Beta not found. Assumed a beta of one.", 2, f"{c3}"
+            )
+            self.info["beta"] = 1
+        else:
+            dcf_model.set_cell(self.ws2, f"{c2}{r+3}", float(self.info["beta"]))
+            self.custom_exp(r + 3, "Beta from yahoo finance", 2, f"{c3}")
         dcf_model.set_cell(self.ws2, f"{c1}{r+4}", "r (CAPM)")
         dcf_model.set_cell(
             self.ws2,

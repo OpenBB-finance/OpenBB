@@ -77,26 +77,28 @@ def get_fails_to_deliver(
 
         for y in range(start.year, end.year + 1):
             if y < end.year:
-                for m in range(start.month, 13):
-                    month = "%02d" % m
-                    if m == start.month and y == start.year:
+                for a_month in range(start.month, 13):
+                    formatted_month = f"{a_month:02d}"
+
+                    if a_month == start.month and y == start.year:
                         if start.day < 16:
-                            ftd_dates.append(str(y) + month + "a")
-                        ftd_dates.append(str(y) + month + "b")
+                            ftd_dates.append(str(y) + formatted_month + "a")
+                        ftd_dates.append(str(y) + formatted_month + "b")
                     else:
-                        ftd_dates.append(str(y) + month + "a")
-                        ftd_dates.append(str(y) + month + "b")
+                        ftd_dates.append(str(y) + formatted_month + "a")
+                        ftd_dates.append(str(y) + formatted_month + "b")
 
             else:
-                for m in range(1, end.month):
-                    month = "%02d" % m
-                    if m == end.month - 1:
-                        ftd_dates.append(str(y) + month + "a")
+                for a_month in range(1, end.month):
+                    formatted_month = f"{a_month:02d}"
+
+                    if a_month == end.month - 1:
+                        ftd_dates.append(str(y) + formatted_month + "a")
                         if end.day > 15:
-                            ftd_dates.append(str(y) + month + "b")
+                            ftd_dates.append(str(y) + formatted_month + "b")
                     else:
-                        ftd_dates.append(str(y) + month + "a")
-                        ftd_dates.append(str(y) + month + "b")
+                        ftd_dates.append(str(y) + formatted_month + "a")
+                        ftd_dates.append(str(y) + formatted_month + "b")
 
         ftd_urls = [base_url + ftd_date + ".zip" for ftd_date in ftd_dates]
 

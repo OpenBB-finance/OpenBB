@@ -1,5 +1,5 @@
 import discord
-import config_discordbot as cfg
+import discordbot.config_discordbot as cfg
 
 from gamestonk_terminal.stocks.technical_analysis import finbrain_model
 

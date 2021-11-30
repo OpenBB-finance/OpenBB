@@ -82,7 +82,7 @@ def get_management(ticker: str) -> pd.DataFrame:
         "a", {"onclick": "silentTrackPI()"}
     ):
         for s_name in df_management.index:
-            if fuzz.token_set_ratio(s_name, insider.text.strip()) > 70:
+            if fuzz.token_set_ratio(s_name, insider.text.strip()) > 70:  # type: ignore
                 df_management.loc[s_name]["Insider Activity"] = (
                     s_url_base + insider.attrs["href"]
                 )

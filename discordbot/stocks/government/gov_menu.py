@@ -1,20 +1,19 @@
 import asyncio
 import discord
-import config_discordbot as cfg
+import discordbot.config_discordbot as cfg
 
-# pylint: disable=wrong-import-order,too-many-branches
-from discordbot import gst_bot
+from discordbot.run_discordbot import gst_bot
 
-from stocks.government.lasttrades import lasttrades_command
-from stocks.government.topbuys import topbuys_command
-from stocks.government.topsells import topsells_command
-from stocks.government.lastcontracts import lastcontracts_command
-from stocks.government.qtrcontracts import qtrcontracts_command
-from stocks.government.toplobbying import toplobbying_command
-from stocks.government.gtrades import gtrades_command
-from stocks.government.contracts import contracts_command
-from stocks.government.histcont import histcont_command
-from stocks.government.lobbying import lobbying_command
+from discordbot.stocks.government.lasttrades import lasttrades_command
+from discordbot.stocks.government.topbuys import topbuys_command
+from discordbot.stocks.government.topsells import topsells_command
+from discordbot.stocks.government.lastcontracts import lastcontracts_command
+from discordbot.stocks.government.qtrcontracts import qtrcontracts_command
+from discordbot.stocks.government.toplobbying import toplobbying_command
+from discordbot.stocks.government.gtrades import gtrades_command
+from discordbot.stocks.government.contracts import contracts_command
+from discordbot.stocks.government.histcont import histcont_command
+from discordbot.stocks.government.lobbying import lobbying_command
 
 
 class GovernmentCommands(discord.ext.commands.Cog):
@@ -204,6 +203,7 @@ class GovernmentCommands(discord.ext.commands.Cog):
         """
         await lobbying_command(ctx, ticker, num)
 
+    # pylint: disable=too-many-branches
     @discord.ext.commands.command(name="stocks.gov")
     async def government_menu(self, ctx: discord.ext.commands.Context, ticker=""):
         """Stocks Context - Shows Government Menu
