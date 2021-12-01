@@ -8,8 +8,7 @@ import yfinance as yf
 
 
 def get_countries():
-    """
-    Get all countries in Yahoo Finance data. [Source: Finance Database]
+    """Get all countries in Yahoo Finance data. [Source: Finance Database]
 
     Returns
     -------
@@ -20,8 +19,7 @@ def get_countries():
 
 
 def get_sectors():
-    """
-    Get all sectors in Yahoo Finance data. [Source: Finance Database]
+    """Get all sectors in Yahoo Finance data. [Source: Finance Database]
 
     Returns
     -------
@@ -32,8 +30,7 @@ def get_sectors():
 
 
 def get_industries():
-    """
-    Get all industries in Yahoo Finance data. [Source: Finance Database]
+    """Get all industries in Yahoo Finance data. [Source: Finance Database]
 
     Returns
     -------
@@ -44,8 +41,7 @@ def get_industries():
 
 
 def get_marketcap():
-    """
-    Get all market cap division in Yahoo Finance data. [Source: Finance Database]
+    """Get all market cap division in Yahoo Finance data. [Source: Finance Database]
 
     Returns
     -------
@@ -62,8 +58,7 @@ def filter_stocks(
     marketcap: str = "",
     exclude_exchanges: bool = True,
 ):
-    """
-    Filter stocks based on country, sector, industry, market cap and exclude exchanges. [Source: Finance Database]
+    """Filter stocks based on country, sector, industry, market cap and exclude exchanges. [Source: Finance Database]
 
     Parameters
     ----------
@@ -147,8 +142,7 @@ def get_stocks_data(
     marketcap: str = "",
     exclude_exchanges: bool = True,
 ):
-    """
-    Get stocks data based on country, sector, industry, market cap and exclude exchanges. [Source: Finance Database]
+    """Get stocks data based on country, sector, industry, market cap and exclude exchanges. [Source: Finance Database]
 
     Parameters
     ----------
@@ -180,8 +174,7 @@ def get_stocks_data(
 
 
 def get_companies_per_sector(country: str, mktcap: str = ""):
-    """
-    Get number of companies per sector in a specific country (and specific market cap). [Source: Finance Database]
+    """Get number of companies per sector in a specific country (and specific market cap). [Source: Finance Database]
 
     Parameters
     ----------
@@ -214,8 +207,7 @@ def get_companies_per_sector(country: str, mktcap: str = ""):
 
 
 def get_companies_per_industry(country: str, mktcap: str = ""):
-    """
-    Get number of companies per industry in a specific country (and specific market cap). [Source: Finance Database]
+    """Get number of companies per industry in a specific country (and specific market cap). [Source: Finance Database]
 
     Parameters
     ----------
