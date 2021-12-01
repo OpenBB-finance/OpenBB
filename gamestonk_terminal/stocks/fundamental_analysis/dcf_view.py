@@ -690,86 +690,127 @@ class CreateExcelFA:
                     i[1][0]
                     .at["Cash & Cash Equivalents", i[1][0].columns[j + 1]]
                     .replace(",", "")
+                    .replace("-", "-0")
                 )
                 ar0 = float(
-                    i[1][0].at["Receivables", i[1][0].columns[j]].replace(",", "")
+                    i[1][0]
+                    .at["Receivables", i[1][0].columns[j]]
+                    .replace(",", "")
+                    .replace("-", "-0")
                 )
                 ar1 = float(
-                    i[1][0].at["Receivables", i[1][0].columns[j + 1]].replace(",", "")
+                    i[1][0]
+                    .at["Receivables", i[1][0].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
                 )
                 inv0 = float(
-                    i[1][0].at["Inventory", i[1][0].columns[j]].replace(",", "")
+                    i[1][0]
+                    .at["Inventory", i[1][0].columns[j]]
+                    .replace(",", "")
+                    .replace("-", "-0")
                 )
                 inv1 = float(
-                    i[1][0].at["Inventory", i[1][0].columns[j + 1]].replace(",", "")
+                    i[1][0]
+                    .at["Inventory", i[1][0].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
                 )
                 ca1 = float(
                     i[1][0]
                     .at["Total Current Assets", i[1][0].columns[j + 1]]
                     .replace(",", "")
+                    .replace("-", "-0")
                 )
                 ta0 = float(
-                    i[1][0].at["Total Assets", i[1][0].columns[j]].replace(",", "")
+                    i[1][0]
+                    .at["Total Assets", i[1][0].columns[j]]
+                    .replace(",", "")
+                    .replace("-", "-0")
                 )
                 ta1 = float(
-                    i[1][0].at["Total Assets", i[1][0].columns[j + 1]].replace(",", "")
+                    i[1][0]
+                    .at["Total Assets", i[1][0].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
                 )
                 ap0 = float(
-                    i[1][0].at["Accounts Payable", i[1][0].columns[j]].replace(",", "")
+                    i[1][0]
+                    .at["Accounts Payable", i[1][0].columns[j]]
+                    .replace(",", "")
+                    .replace("-", "-0")
                 )
                 ap1 = float(
                     i[1][0]
                     .at["Accounts Payable", i[1][0].columns[j + 1]]
                     .replace(",", "")
+                    .replace("-", "-0")
                 )
                 cl1 = float(
                     i[1][0]
                     .at["Total Current Liabilities", i[1][0].columns[j + 1]]
                     .replace(",", "")
+                    .replace("-", "-0")
                 )
                 tl1 = float(
                     i[1][0]
                     .at["Total Liabilities", i[1][0].columns[j + 1]]
                     .replace(",", "")
+                    .replace("-", "-0")
                 )
                 te0 = float(
                     i[1][0]
                     .at["Shareholders' Equity", i[1][0].columns[j]]
                     .replace(",", "")
+                    .replace("-", "-0")
                 )
                 te1 = float(
                     i[1][0]
                     .at["Shareholders' Equity", i[1][0].columns[j + 1]]
                     .replace(",", "")
+                    .replace("-", "-0")
                 )
                 sls1 = float(
-                    i[1][1].at["Revenue", i[1][1].columns[j + 1]].replace(",", "")
+                    i[1][1]
+                    .at["Revenue", i[1][1].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
                 )
                 cogs1 = float(
                     i[1][1]
                     .at["Cost of Revenue", i[1][1].columns[j + 1]]
                     .replace(",", "")
+                    .replace("-", "-0")
                 )
                 inte1 = float(
                     i[1][1]
                     .at["Interest Expense / Income", i[1][1].columns[j + 1]]
                     .replace(",", "")
+                    .replace("-", "-0")
                 )
                 tax1 = float(
-                    i[1][1].at["Income Tax", i[1][1].columns[j + 1]].replace(",", "")
+                    i[1][1]
+                    .at["Income Tax", i[1][1].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
                 )
                 ni1 = float(
-                    i[1][1].at["Net Income", i[1][1].columns[j + 1]].replace(",", "")
+                    i[1][1]
+                    .at["Net Income", i[1][1].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
                 )
                 pdiv1 = float(
                     i[1][1]
                     .at["Preferred Dividends", i[1][0].columns[j + 1]]
                     .replace(",", "")
+                    .replace("-", "-0")
                 )
                 opcf1 = float(
                     i[1][2]
                     .at["Operating Cash Flow", i[1][2].columns[j + 1]]
                     .replace(",", "")
+                    .replace("-", "-0")
                 )
 
                 dcf_model.set_cell(
