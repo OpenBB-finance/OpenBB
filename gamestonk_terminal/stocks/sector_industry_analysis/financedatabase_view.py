@@ -8,7 +8,6 @@ from typing import Dict
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
-from matplotlib import colors as mcolors
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -151,7 +150,7 @@ def display_bars_financials(
 
     elif len(metric_data) == 1:
         print(
-            f"Only 1 company found {list(metric_data.keys())[0]}. No barchart will be depicted."
+            f"Only 1 company found '{list(metric_data.keys())[0]}'. No barchart will be depicted."
         )
     else:
         print("No company found. No barchart will be depicted.")
@@ -184,14 +183,6 @@ def display_companies_per_sector(country: str, mktcap: str = "", export: str = "
         country, mktcap
     )
 
-    companies_per_sector = dict(
-        OrderedDict(
-            sorted(companies_per_sector.items(), key=lambda t: t[1], reverse=True)
-        )
-    )
-
-    legend, values = zip(*companies_per_sector.items())
-
     colors = [
         "b",
         "g",
@@ -210,19 +201,68 @@ def display_companies_per_sector(country: str, mktcap: str = "", export: str = "
         "olive",
     ]
 
-    plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    if gtff.USE_ION:
-        plt.ion()
-    plt.pie(
-        values,
-        labels=legend,
-        colors=colors,
-        wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
+    companies_per_sector = dict(
+        OrderedDict(
+            sorted(companies_per_sector.items(), key=lambda t: t[1], reverse=True)
+        )
     )
-    plt.title(f"{mktcap + ' cap c' if mktcap else 'C'}ompanies per sector in {country}")
-    plt.tight_layout()
 
-    plt.show()
+    if len(companies_per_sector) > 1:
+        max_companies_to_display = 15
+
+        total_num_companies = sum(companies_per_sector.values())
+        min_pct_threshold = 0.015
+        min_companies_to_represent = round(min_pct_threshold * total_num_companies)
+        filter_sectors_to_display = (
+            np.array(list(companies_per_sector.values())) > min_companies_to_represent
+        )
+
+        if not all(filter_sectors_to_display):
+            num_sectors_to_display = np.where(~filter_sectors_to_display)[0][0]
+
+            if num_sectors_to_display < max_companies_to_display:
+                max_companies_to_display = num_sectors_to_display
+
+        if len(companies_per_sector) > max_companies_to_display:
+
+            companies_per_sector_sliced = dict(
+                list(companies_per_sector.items())[: max_companies_to_display - 1]
+            )
+            companies_per_sector_sliced["Others"] = sum(
+                dict(
+                    list(companies_per_sector.items())[max_companies_to_display - 1 :]
+                ).values()
+            )
+
+            legend, values = zip(*companies_per_sector_sliced.items())
+
+        else:
+            legend, values = zip(*companies_per_sector.items())
+
+        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        if gtff.USE_ION:
+            plt.ion()
+        plt.pie(
+            values,
+            labels=legend,
+            colors=colors,
+            wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
+            labeldistance=1.05,
+            startangle=90,
+        )
+        plt.title(
+            f"{mktcap + ' cap c' if mktcap else 'C'}ompanies per sector in {country}"
+        )
+        plt.tight_layout()
+
+        plt.show()
+
+    elif len(companies_per_sector) == 1:
+        print(
+            f"Only 1 sector found '{list(companies_per_sector.keys())[0]}'. No pie chart will be depicted."
+        )
+    else:
+        print("No sector found. No pie chart will be depicted.")
 
     export_data(
         export,
@@ -249,7 +289,23 @@ def display_companies_per_industry(country: str, mktcap: str = "", export: str =
         country, mktcap
     )
 
-    colors = list(mcolors.CSS4_COLORS.keys())[::6]
+    colors = [
+        "b",
+        "g",
+        "r",
+        "c",
+        "m",
+        "y",
+        "k",
+        "tab:blue",
+        "tab:orange",
+        "tab:gray",
+        "lightcoral",
+        "yellow",
+        "saddlebrown",
+        "lightblue",
+        "olive",
+    ]
 
     companies_per_industry = dict(
         OrderedDict(
@@ -257,34 +313,64 @@ def display_companies_per_industry(country: str, mktcap: str = "", export: str =
         )
     )
 
-    # are there more industries than colors
-    if len(companies_per_industry) > len(colors):
-        companies_per_industry_sliced = dict(
-            list(companies_per_industry.items())[: len(colors) - 2]
-        )
-        companies_per_industry_sliced["Others"] = sum(
-            dict(list(companies_per_industry.items())[len(colors) - 2 :]).values()
+    if len(companies_per_industry) > 1:
+        max_companies_to_display = 15
+
+        total_num_companies = sum(companies_per_industry.values())
+        min_pct_threshold = 0.015
+        min_companies_to_represent = round(min_pct_threshold * total_num_companies)
+        filter_industries_to_display = (
+            np.array(list(companies_per_industry.values())) > min_companies_to_represent
         )
 
-        legend, values = zip(*companies_per_industry_sliced.items())
+        if not all(filter_industries_to_display):
+            num_industries_to_display = np.where(~filter_industries_to_display)[
+                0
+            ][0]
+
+            if num_industries_to_display < max_companies_to_display:
+                max_companies_to_display = num_industries_to_display
+
+        if len(companies_per_industry) > max_companies_to_display:
+
+            companies_per_industry_sliced = dict(
+                list(companies_per_industry.items())[: max_companies_to_display - 1]
+            )
+            companies_per_industry_sliced["Others"] = sum(
+                dict(
+                    list(companies_per_industry.items())[max_companies_to_display - 1 :]
+                ).values()
+            )
+
+            legend, values = zip(*companies_per_industry_sliced.items())
+
+        else:
+            legend, values = zip(*companies_per_industry.items())
+
+        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        if gtff.USE_ION:
+            plt.ion()
+        plt.pie(
+            values,
+            labels=legend,
+            colors=colors,
+            wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
+            labeldistance=1.05,
+            startangle=90,
+        )
+        plt.title(
+            f"{mktcap + ' cap c' if mktcap else 'C'}ompanies per industry in {country}"
+        )
+        plt.tight_layout()
+
+        plt.show()
+
+    elif len(companies_per_industry) == 1:
+        print(
+            f"Only 1 industry found '{list(companies_per_industry.keys())[0]}'. No pie chart will be depicted."
+        )
     else:
-        legend, values = zip(*companies_per_industry.items())
-
-    plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    if gtff.USE_ION:
-        plt.ion()
-    plt.pie(
-        values,
-        labels=legend,
-        colors=colors,
-        wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
-    )
-    plt.title(
-        f"{mktcap + ' cap c' if mktcap else 'C'}ompanies per industry in {country}"
-    )
-    plt.tight_layout()
-
-    plt.show()
+        print("No industry found. No pie chart will be depicted.")
 
     export_data(
         export,
