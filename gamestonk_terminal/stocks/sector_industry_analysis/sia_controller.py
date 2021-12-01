@@ -114,7 +114,7 @@ class SectorIndustryAnalysisController:
         self.stock = stock
 
         self.stocks_data: dict = {}
-        self.tickers = list()
+        self.tickers: List = list()
 
         if ticker:
             data = yf.utils.get_json(f"https://finance.yahoo.com/quote/{ticker}")
