@@ -16,7 +16,7 @@ class TestDiscoveryArkView(unittest.TestCase):
     @mock.patch("gamestonk_terminal.stocks.discovery.ark_model.add_order_total")
     @check_print(assert_in="direction")
     @vcr.use_cassette(
-        "tests/cassettes/test_discovery/test_discovery_ark_view/test_ark_order_view.yaml",
+        "tests/gamestonk_terminal/stocks/discovery/cassettes/test_ark_view/test_ark_order_view.yaml",
         record_mode="none",
     )
     def test_ark_orders_view(self, mock_add_order_total):
