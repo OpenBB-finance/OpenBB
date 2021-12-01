@@ -65,16 +65,21 @@ def get_coin_events_by_id(coin_id: str = "eth-ethereum") -> pd.DataFrame:
     """Get all events related to given coin like conferences, start date of futures trading etc. [Source: CoinPaprika]
 
     Example of response from API:
-    {
-        "id": "17398-cme-april-first-trade",
-        "date": "2018-04-02T00:00:00Z",
-        "date_to": "string",
-        "name": "CME: April First Trade",
-        "description": "First trade of Bitcoin futures contract for April 2018.",
-        "is_conference": false,
-        "link": "http://www.cmegroup.com/trading/equity-index/us-index/bitcoin_product_calendar_futures.html",
-        "proof_image_link": "https://static.coinpaprika.com/storage/cdn/event_images/16635.jpg"
-    }
+
+    .. code-block:: json
+
+        {
+            "id": "17398-cme-april-first-trade",
+            "date": "2018-04-02T00:00:00Z",
+            "date_to": "string",
+            "name": "CME: April First Trade",
+            "description": "First trade of Bitcoin futures contract for April 2018.",
+            "is_conference": false,
+            "link": "http://www.cmegroup.com/trading/equity-index/us-index/bitcoin_product_calendar_futures.html",
+            "proof_image_link": "https://static.coinpaprika.com/storage/cdn/event_images/16635.jpg"
+        }
+
+    .
 
     Parameters
     ----------
@@ -226,39 +231,42 @@ def get_tickers_info_for_coin(
     coin_id: str = "btc-bitcoin", quotes: str = "USD"
 ) -> pd.DataFrame:
     """Get all most important ticker related information for given coin id [Source: CoinPaprika]
-    {
-        "id": "btc-bitcoin",
-        "name": "Bitcoin",
-        "symbol": "BTC",
-        "rank": 1,
-        "circulating_supply": 17007062,
-        "total_supply": 17007062,
-        "max_supply": 21000000,
-        "beta_value": 0.735327,
-        "first_data_at": "2010-11-14T07:20:41Z",
-        "last_updated": "2018-11-14T07:20:41Z",
-        "quotes": {
-            "USD": {
-                "price": 5162.15941296,
-                "volume_24h": 7304207651.1585,
-                "volume_24h_change_24h": -2.5,
-                "market_cap": 91094433242,
-                "market_cap_change_24h": 1.6,
-                "percent_change_15m": 0,
-                "percent_change_30m": 0,
-                "percent_change_1h": 0,
-                "percent_change_6h": 0,
-                "percent_change_12h": -0.09,
-                "percent_change_24h": 1.59,
-                "percent_change_7d": 0.28,
-                "percent_change_30d": 27.39,
-                "percent_change_1y": -37.99,
-                "ath_price": 20089,
-                "ath_date": "2017-12-17T12:19:00Z",
-                "percent_from_price_ath": -74.3
+
+    .. code-block:: json
+
+        {
+            "id": "btc-bitcoin",
+            "name": "Bitcoin",
+            "symbol": "BTC",
+            "rank": 1,
+            "circulating_supply": 17007062,
+            "total_supply": 17007062,
+            "max_supply": 21000000,
+            "beta_value": 0.735327,
+            "first_data_at": "2010-11-14T07:20:41Z",
+            "last_updated": "2018-11-14T07:20:41Z",
+            "quotes": {
+                "USD": {
+                    "price": 5162.15941296,
+                    "volume_24h": 7304207651.1585,
+                    "volume_24h_change_24h": -2.5,
+                    "market_cap": 91094433242,
+                    "market_cap_change_24h": 1.6,
+                    "percent_change_15m": 0,
+                    "percent_change_30m": 0,
+                    "percent_change_1h": 0,
+                    "percent_change_6h": 0,
+                    "percent_change_12h": -0.09,
+                    "percent_change_24h": 1.59,
+                    "percent_change_7d": 0.28,
+                    "percent_change_30d": 27.39,
+                    "percent_change_1y": -37.99,
+                    "ath_price": 20089,
+                    "ath_date": "2017-12-17T12:19:00Z",
+                    "percent_from_price_ath": -74.3
+                }
             }
         }
-    }
 
     Parameters
     ----------

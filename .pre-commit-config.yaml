@@ -28,7 +28,8 @@ repos:
     rev: 'v0.910-1'
     hooks:
       - id: mypy
-        args: [ '--ignore-missing-imports',  '--exclude=/setup\.py$', '.']
+        args: ['--ignore-missing-imports', '--exclude=/setup\.py$']
+        additional_dependencies: [types-all]
   - repo: local
     hooks:
        - id: pylint

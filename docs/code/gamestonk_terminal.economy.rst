@@ -100,6 +100,22 @@ gamestonk\_terminal.economy.fred\_view module
    :undoc-members:
    :show-inheritance:
 
+gamestonk\_terminal.economy.nasdaq\_model module
+------------------------------------------------
+
+.. automodule:: gamestonk_terminal.economy.nasdaq_model
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gamestonk\_terminal.economy.nasdaq\_view module
+-----------------------------------------------
+
+.. automodule:: gamestonk_terminal.economy.nasdaq_view
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 gamestonk\_terminal.economy.wsj\_model module
 ---------------------------------------------
 

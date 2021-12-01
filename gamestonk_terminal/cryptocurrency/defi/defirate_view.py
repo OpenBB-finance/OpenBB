@@ -90,8 +90,10 @@ def display_lending_rates(top: int, current: bool = True, export: str = "") -> N
 
 
 def display_borrow_rates(top: int, current: bool = True, export: str = "") -> None:
-    """Displays DeFi borrow rates. By using smart contracts, borrowers are able to lock collateral
-     to protect against defaults while seamlessly adding to or closing their loans at any time.
+    """Displays DeFi borrow rates. By using smart contracts, borrowers are able to lock
+    collateral to protect against defaults while seamlessly adding to or closing their
+    loans at any time.
+
     [Source: https://defirate.com/]
 
     Parameters

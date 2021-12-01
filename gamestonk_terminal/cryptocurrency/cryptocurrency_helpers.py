@@ -59,8 +59,9 @@ def load_coinbase_map():
 
 
 def prepare_all_coins_df() -> pd.DataFrame:
-    """Helper method which loads coins from all sources: CoinGecko, CoinPaprika, Binance and
-    merge those coins on keys:
+    """Helper method which loads coins from all sources: CoinGecko, CoinPaprika, Binance
+    and merge those coins on keys:
+
         CoinGecko - > name < - CoinPaprika
         CoinGecko - > id <- Binance
 
@@ -210,9 +211,10 @@ def find(source: str, coin: str, key: str, top: int, export: str) -> None:
     you can use this command to display coins with similar name, symbol or id to your search query.
     Example of usage: coin name is something like "polka". So I can try: find -c polka -k name -t 25
     It will search for coin that has similar name to polka and display top 25 matches.
-      -c, --coin stands for coin - you provide here your search query
-      -k, --key it's a searching key. You can search by symbol, id or name of coin
-      -t, --top it displays top N number of records.
+
+        -c, --coin stands for coin - you provide here your search query
+        -k, --key it's a searching key. You can search by symbol, id or name of coin
+        -t, --top it displays top N number of records.
 
     Parameters
     ----------
@@ -323,8 +325,9 @@ def display_all_coins(
     you can use this command to display coins with similar name, symbol or id to your search query.
     Example of usage: coin name is something like "polka". So I can try: find -c polka -k name -t 25
     It will search for coin that has similar name to polka and display top 25 matches.
-      -c, --coin stands for coin - you provide here your search query
-      -t, --top it displays top N number of records.
+
+        -c, --coin stands for coin - you provide here your search query
+        -t, --top it displays top N number of records.
 
     Parameters
     ----------
