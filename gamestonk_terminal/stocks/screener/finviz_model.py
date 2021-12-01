@@ -14,99 +14,6 @@ presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets
 
 # pylint: disable=C0302
 
-
-def get_screener_data(
-    preset_loaded: str, data_type: str, signal: str, limit: int, ascend: bool
-):
-    """Screener Overview
-
-    Parameters
-    ----------
-    preset_loaded : str
-        Loaded preset filter
-    data_type : str
-        Data type between: overview, valuation, financial, ownership, performance, technical
-    signal : str
-        Signal to use to filter data
-    limit : int
-        Limit of stocks filtered with presets to print
-    ascend : bool
-        Ascended order of stocks filtered to print
-
-    Returns
-    ----------
-    pd.DataFrame
-        Dataframe with loaded filtered stocks
-    """
-    preset_filter = configparser.RawConfigParser()
-    preset_filter.optionxform = str  # type: ignore
-    preset_filter.read(presets_path + preset_loaded + ".ini")
-
-    d_general = preset_filter["General"]
-    d_filters = {
-        **preset_filter["Descriptive"],
-        **preset_filter["Fundamental"],
-        **preset_filter["Technical"],
-    }
-
-    for section in ["General", "Descriptive", "Fundamental", "Technical"]:
-        for key, val in {**preset_filter[section]}.items():
-            if key not in d_check_screener:
-                print(f"The screener variable {section}.{key} shouldn't exist!\n")
-                return pd.DataFrame()
-
-            if val not in d_check_screener[key]:
-                print(
-                    f"Invalid [{section}] {key}={val}. "
-                    f"Choose one of the following options:\n{', '.join(d_check_screener[key])}.\n"
-                )
-                return pd.DataFrame()
-
-    d_filters = {k: v for k, v in d_filters.items() if v}
-
-    if data_type == "overview":
-        screen = overview.Overview()
-    elif data_type == "valuation":
-        screen = valuation.Valuation()
-    elif data_type == "financial":
-        screen = financial.Financial()
-    elif data_type == "ownership":
-        screen = ownership.Ownership()
-    elif data_type == "performance":
-        screen = performance.Performance()
-    elif data_type == "technical":
-        screen = technical.Technical()
-    else:
-        print("Invalid selected screener type")
-        return pd.DataFrame()
-
-    if signal:
-        screen.set_filter(signal=d_signals[signal])
-    else:
-        if "Signal" in d_general:
-            screen.set_filter(filters_dict=d_filters, signal=d_general["Signal"])
-        else:
-            screen.set_filter(filters_dict=d_filters)
-
-    if "Order" in d_general:
-        if limit > 0:
-            df_screen = screen.ScreenerView(
-                order=d_general["Order"],
-                limit=limit,
-                ascend=ascend,
-            )
-        else:
-            df_screen = screen.ScreenerView(order=d_general["Order"], ascend=ascend)
-
-    else:
-        if limit > 0:
-            df_screen = screen.ScreenerView(limit=limit, ascend=ascend)
-        else:
-            df_screen = screen.ScreenerView(ascend=ascend)
-
-    return df_screen
-
-
 d_signals = {
     "top_gainers": "Top Gainers",
     "top_losers": "Top Losers",
@@ -142,6 +49,135 @@ d_signals = {
     "head_shoulders": "Head & Shoulders",
     "head_shoulders_inverse": "Head & Shoulders Inverse",
 }
+
+
+def get_screener_data(preset_loaded: str, data_type: str, limit: int, ascend: bool):
+    """Screener Overview
+
+    Parameters
+    ----------
+    preset_loaded : str
+        Loaded preset filter
+    data_type : str
+        Data type between: overview, valuation, financial, ownership, performance, technical
+    limit : int
+        Limit of stocks filtered with presets to print
+    ascend : bool
+        Ascended order of stocks filtered to print
+
+    Returns
+    ----------
+    pd.DataFrame
+        Dataframe with loaded filtered stocks
+    """
+    if data_type == "overview":
+        screen = overview.Overview()
+    elif data_type == "valuation":
+        screen = valuation.Valuation()
+    elif data_type == "financial":
+        screen = financial.Financial()
+    elif data_type == "ownership":
+        screen = ownership.Ownership()
+    elif data_type == "performance":
+        screen = performance.Performance()
+    elif data_type == "technical":
+        screen = technical.Technical()
+    else:
+        print("Invalid selected screener type")
+        return pd.DataFrame()
+
+    if preset_loaded in list(d_signals.keys()):
+        screen.set_filter(signal=d_signals[preset_loaded])
+
+        if limit > 0:
+            df_screen = screen.ScreenerView(limit=limit, ascend=ascend)
+        else:
+            df_screen = screen.ScreenerView(ascend=ascend)
+
+    else:
+        preset_filter = configparser.RawConfigParser()
+        preset_filter.optionxform = str  # type: ignore
+        preset_filter.read(presets_path + preset_loaded + ".ini")
+
+        d_general = preset_filter["General"]
+        d_filters = {
+            **preset_filter["Descriptive"],
+            **preset_filter["Fundamental"],
+            **preset_filter["Technical"],
+        }
+
+        for section in ["General", "Descriptive", "Fundamental", "Technical"]:
+            for key, val in {**preset_filter[section]}.items():
+                if key not in d_check_screener:
+                    print(f"The screener variable {section}.{key} shouldn't exist!\n")
+                    return pd.DataFrame()
+
+                if val not in d_check_screener[key]:
+                    print(
+                        f"Invalid [{section}] {key}={val}. "
+                        f"Choose one of the following options:\n{', '.join(d_check_screener[key])}.\n"
+                    )
+                    return pd.DataFrame()
+
+        d_filters = {k: v for k, v in d_filters.items() if v}
+
+        screen.set_filter(filters_dict=d_filters)
+
+        if "Order" in d_general:
+            if limit > 0:
+                df_screen = screen.ScreenerView(
+                    order=d_general["Order"],
+                    limit=limit,
+                    ascend=ascend,
+                )
+            else:
+                df_screen = screen.ScreenerView(order=d_general["Order"], ascend=ascend)
+
+        else:
+            if limit > 0:
+                df_screen = screen.ScreenerView(limit=limit, ascend=ascend)
+            else:
+                df_screen = screen.ScreenerView(ascend=ascend)
+
+    return df_screen
+
+
+d_signals_desc = {
+    "top_gainers": "stocks with the highest %% price gain today",
+    "top_losers": "stocks with the highest %% price loss today",
+    "new_high": "stocks making 52-week high today",
+    "new_low": "stocks making 52-week low today",
+    "most_volatile": "stocks with the highest widest high/low trading range today",
+    "most_active": "stocks with the highest trading volume today",
+    "unusual_volume": "stocks with unusually high volume today - the highest relative volume ratio",
+    "overbought": "stock is becoming overvalued and may experience a pullback.",
+    "oversold": "oversold stocks may represent a buying opportunity for investors",
+    "downgrades": "stocks downgraded by analysts today",
+    "upgrades": "stocks upgraded by analysts today",
+    "earnings_before": "companies reporting earnings today, before market open",
+    "earnings_after": "companies reporting earnings today, after market close",
+    "recent_insider_buying": "stocks with recent insider buying activity",
+    "recent_insider_selling": "stocks with recent insider selling activity",
+    "major_news": "stocks with the highest news coverage today",
+    "horizontal_sr": "horizontal channel of price range between support and resistance trendlines",
+    "tl_resistance": "once a rising trendline is broken",
+    "tl_support": "once a falling trendline is broken",
+    "wedge_up": "upward trendline support and upward trendline resistance (reversal)",
+    "wedge_down": "downward trendline support and downward trendline resistance (reversal)",
+    "wedge": "upward trendline support, downward trendline resistance (contiunation)",
+    "triangle_ascending": "upward trendline support and horizontal trendline resistance",
+    "triangle_descending": "horizontal trendline support and downward trendline resistance",
+    "channel_up": "both support and resistance trendlines slope upward",
+    "channel_down": "both support and resistance trendlines slope downward",
+    "channel": "both support and resistance trendlines are horizontal",
+    "double_top": "stock with 'M' shape that indicates a bearish reversal in trend",
+    "double_bottom": "stock with 'W' shape that indicates a bullish reversal in trend",
+    "multiple_top": "same as double_top hitting more highs",
+    "multiple_bottom": "same as double_bottom hitting more lows",
+    "head_shoulders": "chart formation that predicts a bullish-to-bearish trend reversal",
+    "head_shoulders_inverse": "chart formation that predicts a bearish-to-bullish trend reversal",
+}
+
 
 d_check_screener = {
     "Order": [
