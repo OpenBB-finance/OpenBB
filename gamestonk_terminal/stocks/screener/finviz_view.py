@@ -172,7 +172,7 @@ def screener(other_args: List[str], loaded_preset: str, data_type: str) -> List[
         action="store",
         dest="limit",
         type=check_positive,
-        default=0,
+        default=10,
         help="Limit of stocks to print",
     )
     parser.add_argument(
@@ -207,7 +207,7 @@ def screener(other_args: List[str], loaded_preset: str, data_type: str) -> List[
     df_screen = get_screener_data(
         ns_parser.preset,
         data_type,
-        ns_parser.limit,
+        0,
         ns_parser.ascend,
     )
 
@@ -250,7 +250,7 @@ def screener(other_args: List[str], loaded_preset: str, data_type: str) -> List[
         if gtff.USE_TABULATE_DF:
             print(
                 tabulate(
-                    df_screen,
+                    df_screen.head(n=ns_parser.limit),
                     headers=df_screen.columns,
                     floatfmt=".2f",
                     showindex=False,
@@ -258,7 +258,7 @@ def screener(other_args: List[str], loaded_preset: str, data_type: str) -> List[
                 ),
             )
         else:
-            print(df_screen.to_string())
+            print(df_screen.head(n=ns_parser.limit).to_string())
         print("")
 
         export_data(
@@ -268,7 +268,7 @@ def screener(other_args: List[str], loaded_preset: str, data_type: str) -> List[
             df_screen,
         )
 
-        return list(df_screen["Ticker"].values)
+        return list(df_screen.head(n=ns_parser.limit)["Ticker"].values)
 
     print("")
     return []
