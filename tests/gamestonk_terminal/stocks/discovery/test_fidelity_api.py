@@ -14,14 +14,14 @@ from tests.helpers import check_print
 class TestDiscoveryFidelityApi(unittest.TestCase):
     @check_print(assert_in="Symbol")
     @vcr.use_cassette(
-        "tests/cassettes/test_discovery/test_discovery_fidelity/test_orders.yaml",
+        "tests/gamestonk_terminal/stocks/discovery/cassettes/test_fidelity/test_orders.yaml",
         record_mode="new_episodes",
     )
     def test_orders(self):
         orders_view(5, "")
 
     @vcr.use_cassette(
-        "tests/cassettes/test_discovery/test_discovery_fidelity/test_buy_sell.yaml",
+        "tests/gamestonk_terminal/stocks/discovery/cassettes/test_fidelity/test_buy_sell.yaml",
         record_mode="new_episodes",
     )
     def test_buy_sell_ratio_color_red_green(self):
