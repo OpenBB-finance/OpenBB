@@ -324,9 +324,7 @@ def display_companies_per_industry(country: str, mktcap: str = "", export: str =
         )
 
         if not all(filter_industries_to_display):
-            num_industries_to_display = np.where(~filter_industries_to_display)[
-                0
-            ][0]
+            num_industries_to_display = np.where(~filter_industries_to_display)[0][0]
 
             if num_industries_to_display < max_companies_to_display:
                 max_companies_to_display = num_industries_to_display
