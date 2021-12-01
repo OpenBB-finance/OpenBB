@@ -124,10 +124,10 @@ def display_bars_financials(
             else:
                 company_metric_to_do_median.append(metric[1][0])
 
-        company_metric_to_do_median += company_metric
-
         if company_metric_to_do_median:
             print(f"Limiting the amount of companies displayed to {limit}.")
+
+        company_metric_to_do_median += company_metric
 
         for n, m, t in zip(
             company_name[::-1], company_metric[::-1], company_ticker[::-1]
