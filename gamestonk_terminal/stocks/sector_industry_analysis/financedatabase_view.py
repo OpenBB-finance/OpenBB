@@ -164,10 +164,10 @@ def display_bars_financials(
 
             magnitude = 0
             while max(company_metric) > 1_000 or abs(min(company_metric)) > 1_000:
-                company_metric = np.array(company_metric) / 1_000
+                company_metric = (np.array(company_metric) / 1_000).tolist()
                 company_metric_to_do_median = (
                     np.array(company_metric_to_do_median) / 1_000
-                )
+                ).tolist()
                 magnitude += 1
 
             # check if the value is a percentage
@@ -177,10 +177,10 @@ def display_bars_financials(
                 and all(np.array(company_metric) <= 1)
             ):
                 unit = "%"
-                company_metric = np.array(company_metric) * 100
+                company_metric = (np.array(company_metric) * 100).tolist()
                 company_metric_to_do_median = (
                     np.array(company_metric_to_do_median) * 100
-                )
+                ).tolist()
 
             else:
                 unit = " KMBTP"[magnitude]
