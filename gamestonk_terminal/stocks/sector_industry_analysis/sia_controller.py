@@ -14,6 +14,7 @@ from gamestonk_terminal.helper_funcs import (
     try_except,
     system_clear,
     check_positive,
+    check_proportion_range,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
@@ -824,6 +825,31 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             prog="cps",
             description="companies per sector in a country",
         )
+        parser.add_argument(
+            "-M",
+            "--max",
+            dest="max_sectors_to_display",
+            default=15,
+            help="Maximum number of sectors to display",
+            type=check_positive,
+        )
+        parser.add_argument(
+            "-m",
+            "--min",
+            action="store",
+            dest="min_pct_to_display_sector",
+            type=check_proportion_range,
+            default=0.015,
+            help="Minimum percentage to display sector",
+        )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -834,7 +860,12 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             print("The country parameter needs to be selected!")
         else:
             financedatabase_view.display_companies_per_sector(
-                self.country, self.mktcap, ns_parser.export
+                self.country,
+                self.mktcap,
+                ns_parser.export,
+                ns_parser.raw,
+                ns_parser.max_sectors_to_display,
+                ns_parser.min_pct_to_display_sector,
             )
         print("")
 
@@ -846,6 +877,31 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="cpi",
             description="companies per industry in a country",
+        )
+        parser.add_argument(
+            "-M",
+            "--max",
+            dest="max_sectors_to_display",
+            default=15,
+            help="Maximum number of sectors to display",
+            type=check_positive,
+        )
+        parser.add_argument(
+            "-m",
+            "--min",
+            action="store",
+            dest="min_pct_to_display_sector",
+            type=check_proportion_range,
+            default=0.015,
+            help="Minimum percentage to display sector",
+        )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -860,6 +916,9 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
                 self.country,
                 self.mktcap,
                 ns_parser.export,
+                ns_parser.raw,
+                ns_parser.max_sectors_to_display,
+                ns_parser.min_pct_to_display_sector,
             )
         print("")
 
