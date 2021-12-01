@@ -830,9 +830,12 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        financedatabase_view.display_companies_per_sector(
-            self.country, self.mktcap, ns_parser.export
-        )
+        if not self.country:
+            print("The country parameter needs to be selected!")
+        else:
+            financedatabase_view.display_companies_per_sector(
+                self.country, self.mktcap, ns_parser.export
+            )
         print("")
 
     @try_except
@@ -850,11 +853,14 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        financedatabase_view.display_companies_per_industry(
-            self.country,
-            self.mktcap,
-            ns_parser.export,
-        )
+        if not self.country:
+            print("The country parameter needs to be selected!")
+        else:
+            financedatabase_view.display_companies_per_industry(
+                self.country,
+                self.mktcap,
+                ns_parser.export,
+            )
         print("")
 
     @try_except
