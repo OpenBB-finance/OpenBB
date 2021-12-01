@@ -14,3 +14,4 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
+<img width="1400" alt="Feature Screenshot - zlma" src="https://user-images.githubusercontent.com/85772166/144017029-f16b3275-9525-4496-a726-247a08b3ee7d.png">

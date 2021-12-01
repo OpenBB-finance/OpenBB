@@ -11,11 +11,13 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     try_except,
     system_clear,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.overview import (
     pycoingecko_view,
     coinpaprika_view,
+    cryptopanic_view,
 )
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_view import CURRENCIES
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
@@ -55,6 +57,7 @@ class Controller:
         "cpplatforms",
         "cpcontracts",
         "cbpairs",
+        "news",
     ]
 
     def __init__(self):
@@ -98,6 +101,8 @@ CoinPaprika:
     cpcontracts       all smart contracts for given platform
 Coinbase:
     cbpairs           info about available trading pairs on Coinbase
+CryptoPanic:
+    news              recent crypto news from CryptoPanic aggregator
 """
 
         print(help_text)
@@ -1527,6 +1532,116 @@ Coinbase:
             export=ns_parser.export,
             sortby=ns_parser.sortby,
             descend=ns_parser.descend,
+        )
+
+    @try_except
+    def call_news(self, other_args):
+        """Process news command"""
+        parser = argparse.ArgumentParser(
+            prog="news",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="Display recent news from CryptoPanic aggregator platform. [Source: https://cryptopanic.com/]",
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=int,
+            help="top N number of news >=10",
+            default=20,
+        )
+
+        parser.add_argument(
+            "-k",
+            "--kind",
+            dest="kind",
+            type=str,
+            help="Filter by category of news. Available values: news or media.",
+            default="news",
+            choices=["news", "media"],
+        )
+
+        parser.add_argument(
+            "-f",
+            "--filter",
+            dest="filter",
+            type=str,
+            help="Filter by kind of news. One from list: rising|hot|bullish|bearish|important|saved|lol",
+            default=None,
+            required=False,
+            choices=[
+                "rising",
+                "hot",
+                "bullish",
+                "bearish",
+                "important",
+                "saved",
+                "lol",
+            ],
+        )
+
+        parser.add_argument(
+            "-r",
+            "--region",
+            dest="region",
+            type=str,
+            help="Filter news by regions. Available regions are: en (English), de (Deutsch), nl (Dutch), es (Español), "
+            "fr (Français), it (Italiano), pt (Português), ru (Русский)",
+            default="en",
+            choices=["en", "de", "es", "fr", "nl", "it", "pt", "ru"],
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: published_at",
+            default="published_at",
+            choices=[
+                "published_at",
+                "domain",
+                "title",
+                "negative_votes",
+                "positive_votes",
+            ],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--links",
+            dest="links",
+            action="store_true",
+            help="Flag to show urls. If you will use that flag you will additional column with urls",
+            default=False,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if not ns_parser:
+            return
+
+        cryptopanic_view.display_news(
+            top=ns_parser.top,
+            export=ns_parser.export,
+            sortby=ns_parser.sortby,
+            descend=ns_parser.descend,
+            links=ns_parser.links,
+            post_kind=ns_parser.kind,
+            filter_=ns_parser.filter,
+            region=ns_parser.region,
         )
 
 

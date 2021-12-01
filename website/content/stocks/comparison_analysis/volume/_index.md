@@ -2,7 +2,7 @@
 usage: volume [-s] [--export {csv,json,xlsx}] [-h]
 ```
 
-Historical volume comparison between similar companies.
+Charts historical volume of the added tickers.
 
 ```
 optional arguments:
@@ -11,5 +11,4 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
-
-<img width="1014" alt="Captura de ecrã 2021-03-20, às 09 10 53" src="https://user-images.githubusercontent.com/25267873/111865168-5373e480-895d-11eb-960f-b919e338ab83.png">
+<img size="1400" alt="Feature Screenshot - volume" src="https://user-images.githubusercontent.com/85772166/142951100-d08b68f3-b3b4-4da9-88a3-83d8c0e00f95.png">

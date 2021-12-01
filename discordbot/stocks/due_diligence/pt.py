@@ -1,10 +1,11 @@
-import discord
-import config_discordbot as cfg
-from discordbot import gst_imgur
-from matplotlib import pyplot as plt
-from datetime import datetime, timedelta
 import os
-import helpers
+from datetime import datetime, timedelta
+import discord
+from matplotlib import pyplot as plt
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur
+import discordbot.helpers
 
 from gamestonk_terminal.stocks.due_diligence import business_insider_model
 
@@ -27,15 +28,17 @@ async def pt_command(ctx, ticker="", raw="", start=""):
         else:
             start = datetime.strptime(start, cfg.DATE_FORMAT)
 
-        if raw == "false" or raw == "False" or raw == "FALSE" or raw == "":
+        if raw in ["false", "False", "FALSE", ""]:
             raw = False
-        elif raw == "true" or raw == "True" or raw == "TRUE":
+
+        if raw in ["true", "True", "TRUE"]:
             raw = True
-        else:
+
+        if raw not in [True, False]:
             raise Exception("raw argument has to be true or false")
 
         df_analyst_data = business_insider_model.get_price_target_from_analysts(ticker)
-        stock = helpers.load(ticker, start)
+        stock = discordbot.helpers.load(ticker, start)
 
         if df_analyst_data.empty or stock.empty:
             raise Exception("Enter valid ticker")

@@ -733,7 +733,7 @@ def quote(other_args: List[str], s_ticker: str):
 
         quote_df["Change"] = quote_df["Price"] - quote_df["Previous Close"]
         quote_df["Change %"] = quote_df.apply(
-            lambda x: "{:.2f}%".format((x["Change"] / x["Previous Close"]) * 100),
+            lambda x: f'{((x["Change"] / x["Previous Close"]) * 100):.2f}%',
             axis="columns",
         )
         for c in [
@@ -756,7 +756,7 @@ def quote(other_args: List[str], s_ticker: str):
         print(
             tabulate(
                 quote_data,
-                headers=quote_data.columns,
+                headers=quote_data.columns,  # type: ignore
                 tablefmt="fancy_grid",
                 stralign="right",
             )

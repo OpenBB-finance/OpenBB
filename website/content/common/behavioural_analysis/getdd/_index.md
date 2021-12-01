@@ -2,7 +2,7 @@
 usage: getdd [-l N_LIMIT] [-d N_DAYS] [-a] [-h]
 ```
 
-Print top stock's due diligence from other users. [Source: Reddit]
+Show the latest DD from other users on Reddit. Source: [Reddit](https://reddit.com)
 
 ```
 optional arguments:
@@ -16,4 +16,4 @@ optional arguments:
 ```
 
 
-<img width="948" alt="popular" src="https://user-images.githubusercontent.com/25267873/108917846-4dbe0400-7628-11eb-821e-9fda97a6d9cd.png">
+<img width="1400" alt="getdd" src="https://user-images.githubusercontent.com/25267873/108917846-4dbe0400-7628-11eb-821e-9fda97a6d9cd.png">

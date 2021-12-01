@@ -240,7 +240,7 @@ def prepare_scale_train_valid_test(
     X_train: np.ndarray
         Array of training data.  Shape (# samples, n_inputs, 1)
     X_test: np.ndarray
-        Array of validation data.  Shape (totoal sequences - #samples, n_inputs, 1)
+        Array of validation data.  Shape (total sequences - #samples, n_inputs, 1)
     y_train: np.ndarray
         Array of training outputs.  Shape (#samples, n_days)
     y_test: np.ndarray
@@ -324,10 +324,10 @@ def prepare_scale_train_valid_test(
             dates[idx + n_input_days : idx + n_input_days + n_predict_days]
         )
 
-    input_dates = np.asarray(input_dates)
-    input_prices = np.array(input_prices)
-    next_n_day_prices = np.array(next_n_day_prices)
-    next_n_day_dates = np.asarray(next_n_day_dates)
+    input_dates = np.asarray(input_dates)  # type: ignore
+    input_prices = np.array(input_prices)  # type: ignore
+    next_n_day_prices = np.array(next_n_day_prices)  # type: ignore
+    next_n_day_dates = np.asarray(next_n_day_dates)  # type: ignore
 
     (
         X_train,

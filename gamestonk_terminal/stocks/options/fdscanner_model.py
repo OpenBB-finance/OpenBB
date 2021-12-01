@@ -7,17 +7,13 @@ import requests
 from gamestonk_terminal.helper_funcs import get_user_agent
 
 
-def unusual_options(num: int, sort_column: str, ascending: bool):
+def unusual_options(num: int):
     """Get unusual option activity from fdscanner.com
 
     Parameters
     ----------
     num: int
         Number to show
-    sort_column: str
-        Column to sort data by
-    ascending: bool
-        Flag to sort by ascending
 
     Returns
     -------
@@ -41,12 +37,23 @@ def unusual_options(num: int, sort_column: str, ascending: bool):
 
         data_list.append(r.json())
 
-    ticker, expiry, option, ask, bid, oi, vol, voi = [], [], [], [], [], [], [], []
+    ticker, expiry, option_strike, option_type, ask, bid, oi, vol, voi = (
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+    )
     for data in data_list:
         for entry in data["data"]:
             ticker.append(entry["tk"])
             expiry.append(entry["expiry"])
-            option.append(str(entry["s"]) + " " + entry["t"])
+            option_strike.append(float(entry["s"]))
+            option_type.append("Put" if entry["t"] == "P" else "Call")
             ask.append(entry["a"])
             bid.append(entry["b"])
             oi.append(entry["oi"])
@@ -62,7 +69,8 @@ def unusual_options(num: int, sort_column: str, ascending: bool):
         {
             "Ticker": ticker,
             "Exp": expiry,
-            "Option": option,
+            "Strike": option_strike,
+            "Type": option_type,
             "Vol/OI": voi,
             "Vol": vol,
             "OI": oi,
@@ -70,6 +78,5 @@ def unusual_options(num: int, sort_column: str, ascending: bool):
             "Ask": ask,
         }
     )
-    df = df.sort_values(by=sort_column, ascending=ascending)
 
     return df, last_updated

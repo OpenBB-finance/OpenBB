@@ -21,7 +21,7 @@ from gamestonk_terminal import feature_flags as gtff
 
 
 def display_mc_forecast(
-    data: Union[pd.Series, np.array],
+    data: Union[pd.Series, np.ndarray],
     n_future: int,
     n_sims: int,
     use_log=True,
@@ -43,7 +43,7 @@ def display_mc_forecast(
         Format to export data
     """
     predicted_values = mc_model.get_mc_brownian(data, n_future, n_sims, use_log)
-    future_index = get_next_stock_market_days(data.index[-1], n_next_days=n_future)
+    future_index = get_next_stock_market_days(data.index[-1], n_next_days=n_future)  # type: ignore
     dateFmt = mdates.DateFormatter("%m/%d/%Y")
 
     fig, ax = plt.subplots(1, 2, figsize=plot_autoscale(), dpi=PLOT_DPI)

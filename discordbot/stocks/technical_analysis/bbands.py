@@ -1,10 +1,11 @@
-import discord
-import config_discordbot as cfg
-from discordbot import gst_imgur
-from datetime import datetime, timedelta
-from matplotlib import pyplot as plt
 import os
-import helpers
+from datetime import datetime, timedelta
+import discord
+from matplotlib import pyplot as plt
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur
+import discordbot.helpers
 
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.common.technical_analysis import volatility_model
@@ -67,7 +68,7 @@ async def bbands_command(
             raise Exception("Invalid ma entered")
 
         ticker = ticker.upper()
-        df_stock = helpers.load(ticker, start)
+        df_stock = discordbot.helpers.load(ticker, start)
         if df_stock.empty:
             raise Exception("Stock ticker is invalid")
 

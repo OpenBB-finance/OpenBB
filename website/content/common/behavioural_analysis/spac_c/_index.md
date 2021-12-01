@@ -2,8 +2,7 @@
 usage: spac_c [-l N_LIMIT] [-p] [-h]
 ```
 
-Print other users SPACs announcement under subreddit 'SPACs'. [Source: Reddit]
-
+Follow announcements under the subReddit, r/SPACs. [Reddit](https;//reddit.com)
 ```
 optional arguments:
   -l N_LIMIT, --limit N_LIMIT
@@ -12,4 +11,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-<img width="936" alt="spac_c" src="https://user-images.githubusercontent.com/25267873/108920571-c8891e00-762c-11eb-8da8-e2b775bc7109.png">
+<img width="1400" alt="Feature Screenshot - spac_c" src="https://user-images.githubusercontent.com/25267873/108920571-c8891e00-762c-11eb-8da8-e2b775bc7109.png">
