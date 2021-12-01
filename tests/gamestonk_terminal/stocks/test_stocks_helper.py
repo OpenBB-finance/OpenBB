@@ -23,7 +23,7 @@ class TestMainHelper(unittest.TestCase):
     start = datetime.now() - timedelta(days=200)
 
     # @vcr.use_cassette(
-    #     "tests/cassettes/test_main/test_main_helper/general1.yaml",
+    #     "tests/gamestonk_terminal/stocks/cassettes/test_stocks_helper/general1.yaml",
     #     record_mode="new_episodes",
     # )
     # @check_print(assert_in="Loading Daily GME")
@@ -45,7 +45,7 @@ class TestMainHelper(unittest.TestCase):
 
     # @check_print()
     # @vcr.use_cassette(
-    #     "tests/cassettes/test_main/test_main_helper/general1.yaml",
+    #     "tests/gamestonk_terminal/stocks/cassettes/test_stocks_helper/general1.yaml",
     #     record_mode="new_episodes",
     # )
     # @patch("matplotlib.pyplot.show")
@@ -55,7 +55,7 @@ class TestMainHelper(unittest.TestCase):
 
     @check_print(assert_in="Price")
     @vcr.use_cassette(
-        "tests/cassettes/test_main/test_main_helper/test_quote.yaml",
+        "tests/gamestonk_terminal/stocks/cassettes/test_stocks_helper/test_quote.yaml",
         record_mode="new_episodes",
     )
     def test_quote(self):
