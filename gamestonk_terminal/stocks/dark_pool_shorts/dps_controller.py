@@ -107,6 +107,7 @@ NYSE:
 
     def switch(self, an_input: str):
         """Process and dispatch input
+
         Returns
         -------
         True, False or None

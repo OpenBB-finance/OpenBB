@@ -9,7 +9,9 @@ The `requirements.txt` file that mentions `myst_parser` is needed for readthedoc
 
 Usage:
 
+In the `docs` folder execute:
+
 ```bash
-sphinx-apidoc ../gamestonk_terminal/ -o ./code
+rm -rf code && sphinx-apidoc ../gamestonk_terminal/ -o ./code
 make html
 ```
