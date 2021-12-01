@@ -120,7 +120,7 @@ What do you want to do?
 >   ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables{dim}
 >   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
 >   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
->   pred        prediction techniques
+>   pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
 {Style.RESET_ALL if not self.current_coin else ""}
 >   onchain     information on different blockchains,   e.g.: eth gas fees, active asset addresses, whale alerts
 >   defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
@@ -743,6 +743,12 @@ What do you want to do?
 
     def call_pred(self, _):
         """Process pred command"""
+        if not self.current_coin:
+            print(
+                "No coin loaded.  Please use `load <coin>` to access prediction menu\n."
+            )
+            return
+
         if self.source != "cg":
             print("Currently only supports CoinGecko source.\n")
             return
