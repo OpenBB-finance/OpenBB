@@ -767,7 +767,7 @@ Tickers: {', '.join(self.tickers)}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="rec",
-            description="Recommendation Mean",
+            description="Recommendation mean from multiple analysts",
         )
         parser.add_argument(
             "-l",
@@ -855,7 +855,7 @@ Tickers: {', '.join(self.tickers)}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="ebitda",
-            description="earnings before interest, taxes, depreciation and amortization",
+            description="Earnings before interest, taxes, depreciation and amortization",
         )
         parser.add_argument(
             "-l",
@@ -899,7 +899,7 @@ Tickers: {', '.join(self.tickers)}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="cps",
-            description="companies per sector in a country",
+            description="Companies per sector in a country",
         )
         parser.add_argument(
             "-M",
@@ -952,7 +952,7 @@ Tickers: {', '.join(self.tickers)}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="cpi",
-            description="companies per industry in a country",
+            description="Companies per industry in a country",
         )
         parser.add_argument(
             "-M",
@@ -1005,7 +1005,7 @@ Tickers: {', '.join(self.tickers)}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="de",
-            description="debt to equity",
+            description="Debt to equity",
         )
         parser.add_argument(
             "-l",
@@ -1029,7 +1029,7 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export,
+            ns_parser.export, ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1040,7 +1040,7 @@ Tickers: {', '.join(self.tickers)}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="tc",
-            description="total cash",
+            description="Total cash",
         )
         parser.add_argument(
             "-l",
@@ -1072,7 +1072,7 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export,
+            ns_parser.export, ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1083,7 +1083,7 @@ Tickers: {', '.join(self.tickers)}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="tcs",
-            description="total cash per share",
+            description="Total cash per share",
         )
         parser.add_argument(
             "-l",
@@ -1115,7 +1115,7 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export,
+            ns_parser.export, ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1126,7 +1126,7 @@ Tickers: {', '.join(self.tickers)}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="tr",
-            description="total revenue",
+            description="Total revenue",
         )
         parser.add_argument(
             "-l",
@@ -1158,7 +1158,7 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export,
+            ns_parser.export, ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1169,7 +1169,7 @@ Tickers: {', '.join(self.tickers)}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="rps",
-            description="revenue per share",
+            description="Revenue per share",
         )
         parser.add_argument(
             "-l",
@@ -1201,7 +1201,7 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export,
+            ns_parser.export, ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1212,7 +1212,7 @@ Tickers: {', '.join(self.tickers)}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="eg",
-            description="earnings growth",
+            description="Earnings growth",
         )
         parser.add_argument(
             "-l",
@@ -1244,7 +1244,7 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export,
+            ns_parser.export, ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1255,7 +1255,7 @@ Tickers: {', '.join(self.tickers)}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="pm",
-            description="profit margins",
+            description="Profit margins",
         )
         parser.add_argument(
             "-l",
@@ -1287,7 +1287,7 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export,
+            ns_parser.export, ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1298,7 +1298,7 @@ Tickers: {', '.join(self.tickers)}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="gp",
-            description="gross profits",
+            description="Gross profits",
         )
         parser.add_argument(
             "-l",
@@ -1330,7 +1330,7 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export,
+            ns_parser.export, ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1341,7 +1341,7 @@ Tickers: {', '.join(self.tickers)}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="gm",
-            description="gross margins",
+            description="Gross margins",
         )
         parser.add_argument(
             "-l",
@@ -1373,7 +1373,7 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export,
+            ns_parser.export, ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1384,7 +1384,7 @@ Tickers: {', '.join(self.tickers)}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="ocf",
-            description="operating cash flow",
+            description="Operating cash flow",
         )
         parser.add_argument(
             "-l",
@@ -1416,7 +1416,7 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export,
+            ns_parser.export, ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1427,7 +1427,7 @@ Tickers: {', '.join(self.tickers)}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="om",
-            description="operating margins",
+            description="Operating margins",
         )
         parser.add_argument(
             "-l",
@@ -1459,7 +1459,7 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export,
+            ns_parser.export, ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1470,7 +1470,7 @@ Tickers: {', '.join(self.tickers)}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="fcf",
-            description="operating margins",
+            description="Free cash flow",
         )
         parser.add_argument(
             "-l",
@@ -1502,7 +1502,7 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export,
+            ns_parser.export, ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1513,7 +1513,7 @@ Tickers: {', '.join(self.tickers)}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="ebitdam",
-            description="ebitda margins",
+            description="Ebitda margins",
         )
         parser.add_argument(
             "-l",
@@ -1545,7 +1545,7 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export,
+            ns_parser.export, ns_parser.raw,
             self.stocks_data,
         )
 
