@@ -88,6 +88,7 @@ class SectorIndustryAnalysisController:
         self.exclude_exhanges = True
         self.ticker = ticker
         self.stocks_data: dict = {}
+        self.tickers = list()
 
         if ticker:
             data = yf.utils.get_json(f"https://finance.yahoo.com/quote/{ticker}")
@@ -164,7 +165,10 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
     ebitda        earnings before interest, taxes, depreciation and amortization
     ebitdam       ebitda margins
     rec           recommendation mean{Style.RESET_ALL if params else ''}
-    """
+{Style.DIM if not self.tickers else ''}
+Tickers: {', '.join(self.tickers)}
+>   ca            take these tickers to comparison analysis menu
+{Style.RESET_ALL if not self.tickers else ''}"""
         print(help_text)
 
     def switch(self, an_input: str):
@@ -567,7 +571,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        self.stocks_data = financedatabase_view.display_bars_financials(
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
             "returnOnAssets",
             self.country,
             self.sector,
@@ -611,7 +615,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        self.stocks_data = financedatabase_view.display_bars_financials(
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
             "returnOnEquity",
             self.country,
             self.sector,
@@ -655,7 +659,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        self.stocks_data = financedatabase_view.display_bars_financials(
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
             "quickRatio",
             self.country,
             self.sector,
@@ -699,7 +703,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        self.stocks_data = financedatabase_view.display_bars_financials(
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
             "currentRatio",
             self.country,
             self.sector,
@@ -743,7 +747,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        self.stocks_data = financedatabase_view.display_bars_financials(
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
             "revenueGrowth",
             self.country,
             self.sector,
@@ -787,7 +791,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        self.stocks_data = financedatabase_view.display_bars_financials(
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
             "recommendationMean",
             self.country,
             self.sector,
@@ -831,7 +835,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        self.stocks_data = financedatabase_view.display_bars_financials(
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
             "totalDebt",
             self.country,
             self.sector,
@@ -875,7 +879,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        self.stocks_data = financedatabase_view.display_bars_financials(
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
             "ebitda",
             self.country,
             self.sector,
@@ -1017,7 +1021,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        self.stocks_data = financedatabase_view.display_bars_financials(
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
             "debtToEquity",
             self.country,
             self.sector,
@@ -1060,7 +1064,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        self.stocks_data = financedatabase_view.display_bars_financials(
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
             "totalCash",
             self.country,
             self.sector,
@@ -1103,7 +1107,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        self.stocks_data = financedatabase_view.display_bars_financials(
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
             "totalCashPerShare",
             self.country,
             self.sector,
@@ -1146,7 +1150,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        self.stocks_data = financedatabase_view.display_bars_financials(
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
             "totalRevenue",
             self.country,
             self.sector,
@@ -1189,7 +1193,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        self.stocks_data = financedatabase_view.display_bars_financials(
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
             "revenuePerShare",
             self.country,
             self.sector,
@@ -1232,7 +1236,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        self.stocks_data = financedatabase_view.display_bars_financials(
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
             "earningsGrowth",
             self.country,
             self.sector,
@@ -1275,7 +1279,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        self.stocks_data = financedatabase_view.display_bars_financials(
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
             "profitMargins",
             self.country,
             self.sector,
@@ -1318,7 +1322,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        self.stocks_data = financedatabase_view.display_bars_financials(
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
             "grossProfits",
             self.country,
             self.sector,
@@ -1361,7 +1365,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        self.stocks_data = financedatabase_view.display_bars_financials(
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
             "grossMargins",
             self.country,
             self.sector,
@@ -1404,7 +1408,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        self.stocks_data = financedatabase_view.display_bars_financials(
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
             "operatingCashflow",
             self.country,
             self.sector,
@@ -1447,7 +1451,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        self.stocks_data = financedatabase_view.display_bars_financials(
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
             "operatingMargins",
             self.country,
             self.sector,
@@ -1490,7 +1494,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        self.stocks_data = financedatabase_view.display_bars_financials(
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
             "freeCashflow",
             self.country,
             self.sector,
@@ -1533,7 +1537,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
         if not ns_parser:
             return
 
-        self.stocks_data = financedatabase_view.display_bars_financials(
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
             "ebitdaMargins",
             self.country,
             self.sector,

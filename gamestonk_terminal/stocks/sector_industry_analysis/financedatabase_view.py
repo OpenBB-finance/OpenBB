@@ -84,6 +84,8 @@ def display_bars_financials(
     -------
     dict
         Dictionary of filtered stocks data
+    list
+        List of tickers filtered
     """
     if already_loaded_stocks_data:
         stocks_data = already_loaded_stocks_data
@@ -160,6 +162,29 @@ def display_bars_financials(
 
             company_metric_to_do_median += company_metric
 
+            magnitude = 0
+            while max(company_metric) > 1_000 or abs(min(company_metric)) > 1_000:
+                company_metric = np.array(company_metric) / 1_000
+                company_metric_to_do_median = (
+                    np.array(company_metric_to_do_median) / 1_000
+                )
+                magnitude += 1
+
+            # check if the value is a percentage
+            if (
+                (magnitude == 0)
+                and all(np.array(company_metric) >= 0)
+                and all(np.array(company_metric) <= 1)
+            ):
+                unit = "%"
+                company_metric = np.array(company_metric) * 100
+                company_metric_to_do_median = (
+                    np.array(company_metric_to_do_median) * 100
+                )
+
+            else:
+                unit = " KMBTP"[magnitude]
+
             for n, m, t in zip(
                 company_name[::-1], company_metric[::-1], company_ticker[::-1]
             ):
@@ -182,7 +207,13 @@ def display_bars_financials(
             benchmark = np.median(company_metric_to_do_median)
             plt.axvline(x=benchmark, lw=3, ls="--", c="k")
 
-            plt.title(f"{metric_title.capitalize()} with benchmark of {benchmark}")
+            if unit != " ":
+                units = f"[{unit}]"
+            else:
+                units = ""
+            plt.title(
+                f"{metric_title.capitalize()} {units} with benchmark of {benchmark:.2f} {unit}"
+            )
             plt.tight_layout()
             plt.show()
 
@@ -201,7 +232,7 @@ def display_bars_financials(
         print("No company found. No barchart will be depicted.")
     print("")
 
-    return stocks_data
+    return stocks_data, company_ticker
 
 
 def display_companies_per_sector(
