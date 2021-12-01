@@ -553,6 +553,14 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             help="Limit number of companies to display",
             type=check_positive,
         )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -568,6 +576,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            ns_parser.raw,
             self.stocks_data,
         )
 
@@ -588,6 +597,14 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             help="Limit number of companies to display",
             type=check_positive,
         )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -603,6 +620,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            ns_parser.raw,
             self.stocks_data,
         )
 
@@ -623,6 +641,14 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             help="Limit number of companies to display",
             type=check_positive,
         )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -638,6 +664,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            ns_parser.raw,
             self.stocks_data,
         )
 
@@ -658,6 +685,14 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             help="Limit number of companies to display",
             type=check_positive,
         )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -673,6 +708,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            ns_parser.raw,
             self.stocks_data,
         )
 
@@ -693,6 +729,14 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             help="Limit number of companies to display",
             type=check_positive,
         )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -708,6 +752,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            ns_parser.raw,
             self.stocks_data,
         )
 
@@ -728,6 +773,14 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             help="Limit number of companies to display",
             type=check_positive,
         )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -743,6 +796,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            ns_parser.raw,
             self.stocks_data,
         )
 
@@ -763,6 +817,14 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             help="Limit number of companies to display",
             type=check_positive,
         )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -778,6 +840,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            ns_parser.raw,
             self.stocks_data,
         )
 
@@ -798,6 +861,14 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             help="Limit number of companies to display",
             type=check_positive,
         )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -813,6 +884,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             self.exclude_exhanges,
             ns_parser.limit,
             ns_parser.export,
+            ns_parser.raw,
             self.stocks_data,
         )
 
@@ -974,6 +1046,14 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             help="Limit number of companies to display",
             type=check_positive,
         )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -1008,6 +1088,14 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             default=10,
             help="Limit number of companies to display",
             type=check_positive,
+        )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -1044,6 +1132,14 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             help="Limit number of companies to display",
             type=check_positive,
         )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -1078,6 +1174,14 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             default=10,
             help="Limit number of companies to display",
             type=check_positive,
+        )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -1114,6 +1218,14 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             help="Limit number of companies to display",
             type=check_positive,
         )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -1148,6 +1260,14 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             default=10,
             help="Limit number of companies to display",
             type=check_positive,
+        )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -1184,6 +1304,14 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             help="Limit number of companies to display",
             type=check_positive,
         )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -1218,6 +1346,14 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             default=10,
             help="Limit number of companies to display",
             type=check_positive,
+        )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -1254,6 +1390,14 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             help="Limit number of companies to display",
             type=check_positive,
         )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -1288,6 +1432,14 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             default=10,
             help="Limit number of companies to display",
             type=check_positive,
+        )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -1324,6 +1476,14 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             help="Limit number of companies to display",
             type=check_positive,
         )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -1358,6 +1518,14 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
             default=10,
             help="Limit number of companies to display",
             type=check_positive,
+        )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES

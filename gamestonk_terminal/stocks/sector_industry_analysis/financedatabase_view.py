@@ -49,6 +49,7 @@ def display_bars_financials(
     exclude_exchanges: bool = True,
     limit: int = 10,
     export: str = "",
+    raw: bool = False,
     already_loaded_stocks_data: Dict = None,
 ):
     """
@@ -76,6 +77,8 @@ def display_bars_financials(
         Format to export data as
     already_loaded_stocks_data: Dict
         Dictionary of filtered stocks data that has been loaded before
+    raw: bool
+        Output all raw data
 
     Returns
     -------
@@ -102,10 +105,6 @@ def display_bars_financials(
 
     if len(metric_data) > 1:
 
-        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        if gtff.USE_ION:
-            plt.ion()
-
         metric_data = dict(
             OrderedDict(
                 sorted(metric_data.items(), key=lambda t: t[1][0], reverse=True)
@@ -125,29 +124,74 @@ def display_bars_financials(
             else:
                 company_metric_to_do_median.append(metric[1][0])
 
-        if company_metric_to_do_median:
-            print(f"Limiting the amount of companies displayed to {limit}.")
+        metric_finance_col = (
+            "".join(
+                " " + char if char.isupper() else char.strip()
+                for char in finance_metric
+            )
+            .strip()
+            .capitalize()
+        )
 
-        company_metric_to_do_median += company_metric
+        df = pd.DataFrame({"Company": company_name, metric_finance_col: company_metric})
 
-        for n, m, t in zip(
-            company_name[::-1], company_metric[::-1], company_ticker[::-1]
-        ):
-            plt.barh(n, m, label=t)
+        if raw:
+            print("")
+            if gtff.USE_TABULATE_DF:
+                print(
+                    tabulate(
+                        df,
+                        headers=df.columns,
+                        floatfmt=".2f",
+                        showindex=False,
+                        tablefmt="fancy_grid",
+                    ),
+                )
+            else:
+                print(df.to_string, "\n")
+        else:
 
-        handles, _ = plt.gca().get_legend_handles_labels()
-        plt.legend(reversed(handles), reversed(company_ticker[::-1]), loc="lower right")
+            plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            if gtff.USE_ION:
+                plt.ion()
 
-        metric_title = "".join(
-            " " + char if char.isupper() else char.strip() for char in finance_metric
-        ).strip()
+            if company_metric_to_do_median:
+                print(f"Limiting the amount of companies displayed to {limit}.")
 
-        benchmark = np.median(company_metric_to_do_median)
-        plt.axvline(x=benchmark, lw=3, ls="--", c="k")
+            company_metric_to_do_median += company_metric
 
-        plt.title(f"{metric_title.capitalize()} with benchmark of {benchmark}")
-        plt.tight_layout()
-        plt.show()
+            for n, m, t in zip(
+                company_name[::-1], company_metric[::-1], company_ticker[::-1]
+            ):
+                plt.barh(n, m, label=t)
+
+            handles, _ = plt.gca().get_legend_handles_labels()
+            plt.legend(
+                reversed(handles), reversed(company_ticker[::-1]), loc="lower right"
+            )
+
+            metric_title = (
+                "".join(
+                    " " + char if char.isupper() else char.strip()
+                    for char in finance_metric
+                )
+                .strip()
+                .capitalize()
+            )
+
+            benchmark = np.median(company_metric_to_do_median)
+            plt.axvline(x=benchmark, lw=3, ls="--", c="k")
+
+            plt.title(f"{metric_title.capitalize()} with benchmark of {benchmark}")
+            plt.tight_layout()
+            plt.show()
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            finance_metric,
+            df,
+        )
 
     elif len(metric_data) == 1:
         print(
@@ -156,13 +200,6 @@ def display_bars_financials(
     else:
         print("No company found. No barchart will be depicted.")
     print("")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        finance_metric,
-        pd.DataFrame.from_dict(stocks_data),
-    )
 
     return stocks_data
 
@@ -463,5 +500,5 @@ def display_companies_per_industry(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "cpi",
-        pd.DataFrame([companies_per_industry]),
+        df,
     )
