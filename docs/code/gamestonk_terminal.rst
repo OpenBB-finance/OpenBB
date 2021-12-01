@@ -12,7 +12,6 @@ Subpackages
    gamestonk_terminal.economy
    gamestonk_terminal.etf
    gamestonk_terminal.forex
-   gamestonk_terminal.options
    gamestonk_terminal.portfolio
    gamestonk_terminal.reports
    gamestonk_terminal.resources

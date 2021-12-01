@@ -36,22 +36,6 @@ gamestonk\_terminal.cryptocurrency.onchain.ethplorer\_view module
    :undoc-members:
    :show-inheritance:
 
-gamestonk\_terminal.cryptocurrency.onchain.glassnode\_model module
-------------------------------------------------------------------
-
-.. automodule:: gamestonk_terminal.cryptocurrency.onchain.glassnode_model
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-gamestonk\_terminal.cryptocurrency.onchain.glassnode\_view module
------------------------------------------------------------------
-
-.. automodule:: gamestonk_terminal.cryptocurrency.onchain.glassnode_view
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 gamestonk\_terminal.cryptocurrency.onchain.onchain\_controller module
 ---------------------------------------------------------------------
 
