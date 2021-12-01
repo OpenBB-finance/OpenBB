@@ -87,7 +87,7 @@ class SectorIndustryAnalysisController:
         self.mktcap = "Large"
         self.exclude_exhanges = True
         self.ticker = ticker
-        self.stocks_data = {}
+        self.stocks_data: dict = {}
 
         if ticker:
             data = yf.utils.get_json(f"https://finance.yahoo.com/quote/{ticker}")

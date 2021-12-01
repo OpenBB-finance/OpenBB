@@ -49,8 +49,8 @@ def display_bars_financials(
     exclude_exchanges: bool = True,
     limit: int = 10,
     export: str = "",
-    raw: bool = False,
     already_loaded_stocks_data: Dict = None,
+    raw: bool = False,
 ):
     """
     Display financials bars comparing sectors, industry, analysis, countries, market cap and excluding exchanges.
