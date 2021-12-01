@@ -10,7 +10,7 @@ class TestOptimizerView(TestCase):
     pass
     # @check_print(assert_in="TSLA")
     # @vcr.use_cassette(
-    #    "tests/cassettes/test_port_opt/test_opt_view/test_equal_weights.yaml",
+    #    "tests/gamestonk_terminal/portfolio/portfolio_optimization/cassettes/test_optimizer_view/test_equal_weights.yaml",
     #    record_mode="new_episodes",
     # )
     # def test_equal_weights(self):
@@ -18,7 +18,7 @@ class TestOptimizerView(TestCase):
 
     # @check_print(assert_in="TSLA")
     # @vcr.use_cassette(
-    #    "tests/cassettes/test_port_opt/test_opt_view/test_property_weights.yaml",
+    #    "tests/gamestonk_terminal/portfolio/portfolio_optimization/cassettes/test_optimizer_view/test_property_weights.yaml",
     #    record_mode="new_episodes",
     # )
     # def test_property_weighting(self):
@@ -28,7 +28,7 @@ class TestOptimizerView(TestCase):
 
     # @check_print(assert_in="TSLA")
     # @vcr.use_cassette(
-    #    "tests/cassettes/test_port_opt/test_opt_view/general1.yaml",
+    #    "tests/gamestonk_terminal/portfolio/portfolio_optimization/cassettes/test_optimizer_view/general1.yaml",
     #    record_mode="new_episodes",
     # )
     # def test_max_sharpe(self):
@@ -36,7 +36,7 @@ class TestOptimizerView(TestCase):
 
     # @check_print(assert_in="TSLA")
     # @vcr.use_cassette(
-    #    "tests/cassettes/test_port_opt/test_opt_view/general1.yaml",
+    #    "tests/gamestonk_terminal/portfolio/portfolio_optimization/cassettes/test_optimizer_view/general1.yaml",
     #    record_mode="new_episodes",
     # )
     # def test_min_volatility(self):
@@ -44,7 +44,7 @@ class TestOptimizerView(TestCase):
 
     # @check_print(assert_in="TSLA")
     # @vcr.use_cassette(
-    #    "tests/cassettes/test_port_opt/test_opt_view/general1.yaml",
+    #    "tests/gamestonk_terminal/portfolio/portfolio_optimization/cassettes/test_optimizer_view/general1.yaml",
     #    record_mode="new_episodes",
     # )
     # def test_max_quadratic_utility(self):
@@ -52,7 +52,7 @@ class TestOptimizerView(TestCase):
 
     # @check_print(assert_in="The minimum volatility")
     # @vcr.use_cassette(
-    #    "tests/cassettes/test_port_opt/test_opt_view/general1.yaml",
+    #    "tests/gamestonk_terminal/portfolio/portfolio_optimization/cassettes/test_optimizer_view/general1.yaml",
     #    record_mode="new_episodes",
     # )
     # def test_efficient_risk(self):
@@ -60,7 +60,7 @@ class TestOptimizerView(TestCase):
 
     # @check_print(assert_in="TSLA")
     # @vcr.use_cassette(
-    #     "tests/cassettes/test_port_opt/test_opt_view/general1.yaml",
+    #    "tests/gamestonk_terminal/portfolio/portfolio_optimization/cassettes/test_optimizer_view/general1.yaml",
     #     record_mode="new_episodes",
     # )
     # def test_efficiet_return(self):
@@ -68,7 +68,7 @@ class TestOptimizerView(TestCase):
 
     # @check_print(assert_in="\n")
     # @vcr.use_cassette(
-    #     "tests/cassettes/test_port_opt/test_opt_view/test_show_eff.yaml",
+    #    "tests/gamestonk_terminal/portfolio/portfolio_optimization/cassettes/test_optimizer_view/test_show_eff.yaml",
     #     record_mode="new_episodes",
     # )
     # @mock.patch("matplotlib.pyplot.show")
