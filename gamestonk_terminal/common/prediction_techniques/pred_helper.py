@@ -396,9 +396,21 @@ def forecast(
     return df_future
 
 
+# pylint:disable=too-many-arguments
+
+
 def plot_data_predictions(
-    data, preds, y_valid, y_dates_valid, scaler, title, forecast_data, n_loops
+    data,
+    preds,
+    y_valid,
+    y_dates_valid,
+    scaler,
+    title,
+    forecast_data,
+    n_loops,
+    time_str: str = "",
 ):
+    """Plots data predictions for the different ML techniques"""
 
     plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
     plt.plot(
@@ -461,15 +473,10 @@ def plot_data_predictions(
         color="k",
         alpha=0.2,
     )
-    plt.axvspan(
-        forecast_data.index[0] - timedelta(days=1),
-        forecast_data.index[-1],
-        facecolor="tab:orange",
-        alpha=0.2,
-    )
+
     _, _, ymin, ymax = plt.axis()
     plt.vlines(
-        forecast_data.index[0] - timedelta(days=1),
+        forecast_data.index[0],
         ymin,
         ymax,
         colors="k",
@@ -500,8 +507,26 @@ def plot_data_predictions(
             color="c",
             alpha=0.3,
         )
+    # Subtracting 1 day only works nicely for daily data.  For now if not daily, then start line on last point
+    if not time_str or time_str == "1D":
+        plt.axvspan(
+            forecast_data.index[0] - timedelta(days=1),
+            forecast_data.index[-1],
+            facecolor="tab:orange",
+            alpha=0.2,
+        )
+        plt.xlim(data.index[0], forecast_data.index[-1] + timedelta(days=1))
+
+    else:
+        plt.axvspan(
+            forecast_data.index[0],
+            forecast_data.index[-1],
+            facecolor="tab:orange",
+            alpha=0.2,
+        )
+        plt.xlim(data.index[0], forecast_data.index[-1])
+
     plt.legend(loc=0)
-    plt.xlim(data.index[0], forecast_data.index[-1] + timedelta(days=1))
     plt.xlabel("Time")
     plt.ylabel("Value")
     plt.grid(b=True, which="major", color="#666666", linestyle="-")

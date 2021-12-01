@@ -11,6 +11,7 @@ from binance.client import Client
 import matplotlib.pyplot as plt
 from tabulate import tabulate
 import mplfinance as mpf
+from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     export_data,
@@ -34,6 +35,44 @@ from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.feature_flags import USE_ION as ion
 from gamestonk_terminal import feature_flags as gtff
+
+# TODO: Improve implementation of coin loading
+# Currently adding this function to helpers for implementing prediction menu
+
+
+def load_cg_coin_data(
+    coin: str, currency: str = "USD", days: int = 365, sampling: str = "1D"
+) -> pd.DataFrame:
+    """Load cryptocurrency data from CoinGecko
+    Timestamps from CoinGecko are not uniform, so the sampling is included to provide ohlc bars.
+    Note that for days > 90, daily data is returned as prices only.  Less than 90 days returns hourly data
+    which can be consolidated into OHLC
+
+    Parameters
+    ----------
+    coin : str
+        Cryptocurrency to load
+    currency : str, optional
+        Conversion unit, by default "USD"
+    days : int, optional
+        Number of days to get, by default 365
+    sampling : str, optional
+        Time period to resample in the format in the format #U where U can be H (hour) or D(day), by default "1D"
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of OHLC
+    """
+    prices = CoinGeckoAPI().get_coin_market_chart_by_id(coin, currency, days)
+    df = pd.DataFrame(data=prices["prices"], columns=["time", "price"])
+    df["time"] = pd.to_datetime(df.time, unit="ms")
+    df = df.set_index("time")
+    if days > 90:
+        sampling = "1D"
+    df = df.resample(sampling).ohlc()
+    df.columns = ["Open", "High", "Low", "Close"]
+    return df
 
 
 def _load_coin_map(file_name: str) -> pd.DataFrame:
