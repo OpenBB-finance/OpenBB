@@ -232,7 +232,7 @@ class TestCoinbaseView(TestCase):  # pragma: allowlist secret
 
     @check_print(assert_in="base_currency")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coinbase/test_trading_pairs.yaml",
+        "tests/gamestonk_terminal/stocks/cryptocurrency/cassettes/test_coinbase_view/test_trading_pairs.yaml",
         record_mode="new_episodes",
     )
     def test_display_trading_pairs(self):
