@@ -26,6 +26,7 @@ def display_mc_forecast(
     n_sims: int,
     use_log=True,
     export: str = "",
+    time_res: str = "",
 ):
     """Display monte carlo forecasting
 
@@ -41,9 +42,15 @@ def display_mc_forecast(
         Flag to use lognormal, by default True
     export: str
         Format to export data
+    time_res : str
+        Resolution for data, allowing for predicting outside of standard market days
     """
     predicted_values = mc_model.get_mc_brownian(data, n_future, n_sims, use_log)
-    future_index = get_next_stock_market_days(data.index[-1], n_next_days=n_future)  # type: ignore
+    if not time_res or time_res == "1D":
+        future_index = get_next_stock_market_days(data.index[-1], n_next_days=n_future)  # type: ignore
+    else:
+        future_index = pd.date_range(data.index[-1], periods=n_future + 1, freq=time_res)[1:]  # type: ignore
+
     dateFmt = mdates.DateFormatter("%m/%d/%Y")
 
     fig, ax = plt.subplots(1, 2, figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -57,9 +64,11 @@ def display_mc_forecast(
 
     sns.histplot(predicted_values[-1, :], ax=ax[1], kde=True)
     ax[1].set_xlabel("Price")
-    ax[1].set_title(f"Distribution of data after {n_future} days.")
+    ax[1].axvline(x=data.values[-1], c="k", label="Last Value", lw=3, ls="-")  # type: ignore
+    ax[1].set_title(f"Distribution of final values after {n_future} steps.")
     ax[1].set_xlim(np.min(predicted_values[-1, :]), np.max(predicted_values[-1, :]))
     ax[1].grid("on")
+    ax[1].legend()
 
     fig.tight_layout(pad=2)
 

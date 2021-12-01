@@ -25,6 +25,7 @@ def display_mlp(
     test_size: float,
     n_loops: int,
     no_shuffle: bool,
+    time_res: str = "",
 ):
     """Display trained MLP model
 
@@ -50,6 +51,8 @@ def display_mlp(
         Number of loops to perform for model
     no_shuffle : bool
         Flag to not randomly shuffle data
+    time_res : str
+        Resolution for data, allowing for predicting outside of standard market days
     """
     (
         forecast_data_df,
@@ -69,6 +72,11 @@ def display_mlp(
         no_shuffle,
     )
 
+    if time_res:
+        forecast_data_df.index = pd.date_range(
+            data.index[-1], periods=n_predict_days + 1, freq=time_res
+        )[1:]
+
     if n_loops > 1:
         forecast_data_df["Median"] = forecast_data_df.median(axis=1)
         print_pretty_prediction(forecast_data_df["Median"], data.values[-1])
@@ -83,6 +91,7 @@ def display_mlp(
         f"MLP Model on {dataset}",
         forecast_data_df,
         n_loops,
+        time_res,
     )
     print("")
 
@@ -98,6 +107,7 @@ def display_rnn(
     test_size: float,
     n_loops: int,
     no_shuffle: bool,
+    time_res: str = "",
 ):
     """Display trained RNN model
 
@@ -123,6 +133,8 @@ def display_rnn(
         Number of loops to perform for model
     no_shuffle : bool
         Flag to not randomly shuffle data
+    time_res : str
+        Resolution for data, allowing for predicting outside of standard market days
     """
 
     (
@@ -142,7 +154,10 @@ def display_rnn(
         n_loops,
         no_shuffle,
     )
-
+    if time_res:
+        forecast_data_df.index = pd.date_range(
+            data.index[-1], periods=n_predict_days + 1, freq=time_res
+        )[1:]
     if n_loops > 1:
         forecast_data_df["Median"] = forecast_data_df.median(axis=1)
         print_pretty_prediction(forecast_data_df["Median"], data.values[-1])
@@ -157,6 +172,7 @@ def display_rnn(
         f"RNN Model on {dataset}",
         forecast_data_df,
         n_loops,
+        time_res,
     )
     print("")
 
@@ -172,6 +188,7 @@ def display_lstm(
     test_size: float,
     n_loops: int,
     no_shuffle: bool,
+    time_res: str = "",
 ):
     """Display trained LSTM model
 
@@ -197,6 +214,8 @@ def display_lstm(
         Number of loops to perform for model
     no_shuffle : bool
         Flag to not randomly shuffle data
+    time_res : str
+        Resolution for data, allowing for predicting outside of standard market days
     """
 
     (
@@ -216,7 +235,10 @@ def display_lstm(
         n_loops,
         no_shuffle,
     )
-
+    if time_res:
+        forecast_data_df.index = pd.date_range(
+            data.index[-1], periods=n_predict_days + 1, freq=time_res
+        )[1:]
     if n_loops > 1:
         forecast_data_df["Median"] = forecast_data_df.median(axis=1)
         print_pretty_prediction(forecast_data_df["Median"], data.values[-1])
@@ -231,6 +253,7 @@ def display_lstm(
         f"LSTM Model on {dataset}",
         forecast_data_df,
         n_loops,
+        time_res,
     )
     print("")
 
@@ -246,6 +269,7 @@ def display_conv1d(
     test_size: float,
     n_loops: int,
     no_shuffle: bool,
+    time_res: str = "",
 ):
     """Display trained Conv1D model
 
@@ -271,6 +295,8 @@ def display_conv1d(
         Number of loops to perform for model
     no_shuffle : bool
         Flag to not randomly shuffle data
+    time_res : str
+        Resolution for data, allowing for predicting outside of standard market days
     """
 
     (
@@ -290,7 +316,10 @@ def display_conv1d(
         n_loops,
         no_shuffle,
     )
-
+    if time_res:
+        forecast_data_df.index = pd.date_range(
+            data.index[-1], periods=n_predict_days + 1, freq=time_res
+        )[1:]
     if n_loops > 1:
         forecast_data_df["Median"] = forecast_data_df.median(axis=1)
         print_pretty_prediction(forecast_data_df["Median"], data.values[-1])
@@ -305,5 +334,6 @@ def display_conv1d(
         f"Conv1D Model on {dataset}",
         forecast_data_df,
         n_loops,
+        time_res,
     )
     print("")

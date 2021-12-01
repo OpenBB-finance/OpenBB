@@ -18,7 +18,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     valid_date,
 )
-from gamestonk_terminal.stocks.screener import finviz_view
+from gamestonk_terminal.stocks.screener import finviz_model
 
 register_matplotlib_converters()
 
@@ -76,40 +76,30 @@ def historical(other_args: List[str], preset_loaded: str) -> List[str]:
         default="a",  # in case it's adjusted close
         help=("type of candles: o-open, h-high, l-low, c-close, a-adjusted close."),
     )
-    parser.add_argument(
-        "-s",
-        "--signal",
-        action="store",
-        dest="signal",
-        type=str,
-        default=None,
-        help="Signal",
-        choices=list(finviz_view.d_signals.keys()),
-    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return list()
 
-        preset_filter = configparser.RawConfigParser()
-        preset_filter.optionxform = str  # type: ignore
-        preset_filter.read(presets_path + preset_loaded + ".ini")
-
-        d_general = preset_filter["General"]
-        d_filters = {
-            **preset_filter["Descriptive"],
-            **preset_filter["Fundamental"],
-            **preset_filter["Technical"],
-        }
-
-        d_filters = {k: v for k, v in d_filters.items() if v}
-
         screen = ticker.Ticker()
+        if preset_loaded in list(finviz_model.d_signals.keys()):
+            screen.set_filter(signal=finviz_model.d_signals[preset_loaded])
 
-        if ns_parser.signal:
-            screen.set_filter(signal=finviz_view.d_signals[ns_parser.signal])
         else:
+            preset_filter = configparser.RawConfigParser()
+            preset_filter.optionxform = str  # type: ignore
+            preset_filter.read(presets_path + preset_loaded + ".ini")
+
+            d_general = preset_filter["General"]
+            d_filters = {
+                **preset_filter["Descriptive"],
+                **preset_filter["Fundamental"],
+                **preset_filter["Technical"],
+            }
+
+            d_filters = {k: v for k, v in d_filters.items() if v}
+
             if d_general["Signal"]:
                 screen.set_filter(filters_dict=d_filters, signal=d_general["Signal"])
             else:
@@ -117,9 +107,8 @@ def historical(other_args: List[str], preset_loaded: str) -> List[str]:
 
         l_min = []
         l_leg = []
-        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
         l_stocks = screen.ScreenerView(verbose=0)
+        limit_random_stocks = False
 
         if len(l_stocks) > 10:
             print(
@@ -129,6 +118,9 @@ def historical(other_args: List[str], preset_loaded: str) -> List[str]:
             random.shuffle(l_stocks)
             l_stocks = sorted(l_stocks[:10])
             print(", ".join(l_stocks))
+            limit_random_stocks = True
+
+        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         while l_stocks:
             l_parsed_stocks = []
@@ -164,12 +156,12 @@ def historical(other_args: List[str], preset_loaded: str) -> List[str]:
             for parsed_stock in l_parsed_stocks:
                 l_stocks.remove(parsed_stock)
 
-        if ns_parser.signal:
+        if limit_random_stocks:
             plt.title(
-                f"Screener Historical Price using {finviz_view.d_signals[ns_parser.signal]} signal"
+                f"Screener Historical Price using {preset_loaded} on 10 of those stocks"
             )
         else:
-            plt.title(f"Screener Historical Price using {preset_loaded} preset")
+            plt.title(f"Screener Historical Price using {preset_loaded}")
 
         plt.xlabel("Time")
         plt.ylabel("Share Price ($)")
