@@ -74,6 +74,7 @@ class ComparisonAnalysisController:
         start: str,
         interval: str,
         stock: pd.DataFrame,
+        similar: List = None,
     ):
         """Constructor
 
@@ -87,13 +88,18 @@ class ComparisonAnalysisController:
             Time interval
         stock : pd.DataFrame
             Stock data
+        similar : List
+            Similar tickers
         """
         self.ticker = ticker
         self.start = start
         self.interval = interval
         self.stock = stock
 
-        self.similar: List[str] = []
+        if similar:
+            self.similar = similar
+        else:
+            self.similar = list()
         self.user = ""
 
         self.ca_parser = argparse.ArgumentParser(add_help=False, prog="ca")
@@ -959,7 +965,7 @@ Finviz:
         return po_controller.menu([self.ticker] + self.similar)
 
 
-def menu(ticker: str, start: str, interval: str, stock: pd.DataFrame):
+def menu(ticker: str, start: str, interval: str, stock: pd.DataFrame, similar: List):
     """Comparison Analysis Menu
 
     Parameters
@@ -972,9 +978,13 @@ def menu(ticker: str, start: str, interval: str, stock: pd.DataFrame):
         Time interval
     stock : pd.DataFrame
         Stock data
+    similar : List
+        Similar tickers
     """
 
-    ca_controller = ComparisonAnalysisController(ticker, start, interval, stock)
+    ca_controller = ComparisonAnalysisController(
+        ticker, start, interval, stock, similar
+    )
     ca_controller.call_help(None)
 
     while True:

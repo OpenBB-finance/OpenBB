@@ -453,7 +453,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         """Process ins command"""
         from gamestonk_terminal.stocks.sector_industry_analysis import sia_controller
 
-        ret = sia_controller.menu(self.ticker)
+        ret = sia_controller.menu(self.ticker, self.start, self.interval, self.stock)
         if ret is False:
             self.print_help()
         else:
@@ -541,7 +541,9 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
         from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 
-        ret = ca_controller.menu(self.ticker, self.start, self.interval, self.stock)
+        ret = ca_controller.menu(
+            self.ticker, self.start, self.interval, self.stock, list()
+        )
 
         if ret is False:
             self.print_help()

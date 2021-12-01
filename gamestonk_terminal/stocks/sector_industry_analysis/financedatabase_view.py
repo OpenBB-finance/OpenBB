@@ -223,16 +223,18 @@ def display_bars_financials(
             finance_metric,
             df,
         )
+        print("")
 
-    elif len(metric_data) == 1:
+        return stocks_data, company_ticker
+
+    if len(metric_data) == 1:
         print(
-            f"Only 1 company found '{list(metric_data.keys())[0]}'. No barchart will be depicted."
+            f"Only 1 company found '{list(metric_data.keys())[0]}'. No barchart will be depicted.\n"
         )
-    else:
-        print("No company found. No barchart will be depicted.")
-    print("")
+        return stocks_data, [list(metric_data.values())[0][1]]
 
-    return stocks_data, company_ticker
+    print("No company found. No barchart will be depicted.\n")
+    return dict(), list()
 
 
 def display_companies_per_sector(

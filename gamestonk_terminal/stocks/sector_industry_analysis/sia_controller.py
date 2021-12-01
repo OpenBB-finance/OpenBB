@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import difflib
 from typing import List
+import pandas as pd
 import yfinance as yf
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
@@ -16,14 +17,17 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     check_proportion_range,
 )
+from gamestonk_terminal.stocks.stocks_helper import load
 from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.stocks.sector_industry_analysis import (
     financedatabase_model,
     financedatabase_view,
 )
+from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 
-# pylint: disable=inconsistent-return-statements,too-many-public-methods,C0302
+
+# pylint: disable=inconsistent-return-statements,too-many-public-methods,C0302,R0902
 
 
 class SectorIndustryAnalysisController:
@@ -71,22 +75,44 @@ class SectorIndustryAnalysisController:
         "rec",
     ]
 
-    CHOICES += CHOICES_COMMANDS
+    CHOICES_MENUS = [
+        "ca",
+    ]
 
-    def __init__(self, ticker: str):
+    CHOICES += CHOICES_COMMANDS
+    CHOICES += CHOICES_MENUS
+
+    def __init__(
+        self,
+        ticker: str,
+        start: str,
+        interval: str,
+        stock: pd.DataFrame,
+    ):
         """Constructor
 
         Parameters
         ----------
         ticker : str
             Ticker to be used to analyse sector and industry
+        start : str
+            Start time
+        interval : str
+            Time interval
+        stock : pd.DataFrame
+            Stock data
         """
         self.country = "United States"
         self.sector = ""
         self.industry = ""
         self.mktcap = "Large"
         self.exclude_exhanges = True
+
         self.ticker = ticker
+        self.start = start
+        self.interval = interval
+        self.stock = stock
+
         self.stocks_data: dict = {}
         self.tickers = list()
 
@@ -95,8 +121,37 @@ class SectorIndustryAnalysisController:
 
             if "summaryProfile" in data:
                 self.country = data["summaryProfile"]["country"]
+                if self.country not in financedatabase_model.get_countries():
+                    similar_cmd = difflib.get_close_matches(
+                        self.country,
+                        financedatabase_model.get_countries(),
+                        n=1,
+                        cutoff=0.7,
+                    )
+                    if similar_cmd:
+                        self.country = similar_cmd[0]
+
                 self.sector = data["summaryProfile"]["sector"]
+                if self.sector not in financedatabase_model.get_sectors():
+                    similar_cmd = difflib.get_close_matches(
+                        self.sector,
+                        financedatabase_model.get_sectors(),
+                        n=1,
+                        cutoff=0.7,
+                    )
+                    if similar_cmd:
+                        self.sector = similar_cmd[0]
+
                 self.industry = data["summaryProfile"]["industry"]
+                if self.industry not in financedatabase_model.get_industries():
+                    similar_cmd = difflib.get_close_matches(
+                        self.industry,
+                        financedatabase_model.get_industries(),
+                        n=1,
+                        cutoff=0.7,
+                    )
+                    if similar_cmd:
+                        self.industry = similar_cmd[0]
 
             if "price" in data:
                 mktcap = data["price"]["marketCap"]
@@ -131,7 +186,7 @@ Sector and Industry Analysis:
     sector        see existing sectors, or set sector if arg specified
     country       see existing countries, or set country if arg specified
     mktcap        set mktcap between small, mid or large
-    exchange      revert exclude exchanges flag
+    exchange      revert exclude international exchanges flag
 
 Industry          : {self.industry}
 Sector            : {self.sector}
@@ -166,8 +221,8 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
     ebitdam       ebitda margins
     rec           recommendation mean{Style.RESET_ALL if params else ''}
 {Style.DIM if not self.tickers else ''}
-Tickers: {', '.join(self.tickers)}
->   ca            take these tickers to comparison analysis menu
+Returned tickers: {', '.join(self.tickers)}
+>   ca            take these to comparison analysis menu
 {Style.RESET_ALL if not self.tickers else ''}"""
         print(help_text)
 
@@ -220,49 +275,57 @@ Tickers: {', '.join(self.tickers)}
     @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="load",
-            description="Load stock ticker to perform sector and industry analysis on.",
+        self.ticker, self.start, self.interval, self.stock = load(
+            other_args, self.ticker, self.start, self.interval, self.stock
         )
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            action="store",
-            dest="ticker",
-            required="-h" not in other_args,
-            help="Stock ticker",
-        )
-        # For the case where a user uses: 'load BB'
-        if other_args and "-t" not in other_args and "-h" not in other_args:
-            other_args.insert(0, "-t")
+        if self.ticker:
+            data = yf.utils.get_json(f"https://finance.yahoo.com/quote/{self.ticker}")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+            if "summaryProfile" in data:
+                self.country = data["summaryProfile"]["country"]
+                if self.country not in financedatabase_model.get_countries():
+                    similar_cmd = difflib.get_close_matches(
+                        self.country,
+                        financedatabase_model.get_countries(),
+                        n=1,
+                        cutoff=0.7,
+                    )
+                    if similar_cmd:
+                        self.country = similar_cmd[0]
 
-        self.ticker = ns_parser.ticker
+                self.sector = data["summaryProfile"]["sector"]
+                if self.sector not in financedatabase_model.get_sectors():
+                    similar_cmd = difflib.get_close_matches(
+                        self.sector,
+                        financedatabase_model.get_sectors(),
+                        n=1,
+                        cutoff=0.7,
+                    )
+                    if similar_cmd:
+                        self.sector = similar_cmd[0]
 
-        data = yf.utils.get_json(f"https://finance.yahoo.com/quote/{self.ticker}")
+                self.industry = data["summaryProfile"]["industry"]
+                if self.industry not in financedatabase_model.get_industries():
+                    similar_cmd = difflib.get_close_matches(
+                        self.industry,
+                        financedatabase_model.get_industries(),
+                        n=1,
+                        cutoff=0.7,
+                    )
+                    if similar_cmd:
+                        self.industry = similar_cmd[0]
 
-        if "summaryProfile" in data:
-            self.country = data["summaryProfile"]["country"]
-            self.sector = data["summaryProfile"]["sector"]
-            self.industry = data["summaryProfile"]["industry"]
+            if "price" in data:
+                mktcap = data["price"]["marketCap"]
 
-        if "price" in data:
-            mktcap = data["price"]["marketCap"]
+                if mktcap < 2_000_000_000:
+                    self.mktcap = "Small"
+                elif mktcap > 10_000_000_000:
+                    self.mktcap = "Large"
+                else:
+                    self.mktcap = "Mid"
 
-            if mktcap < 2_000_000_000:
-                self.mktcap = "Small"
-            elif mktcap > 10_000_000_000:
-                self.mktcap = "Large"
-            else:
-                self.mktcap = "Mid"
-
-        self.stocks_data = {}
-        print("")
+            self.stocks_data = {}
 
     @try_except
     def call_industry(self, other_args: List[str]):
@@ -483,7 +546,7 @@ Tickers: {', '.join(self.tickers)}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="exchange",
-            description="Swap exclude exchanges flag",
+            description="Swap exclude international exchanges flag",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
@@ -1015,6 +1078,14 @@ Tickers: {', '.join(self.tickers)}
             help="Limit number of companies to display",
             type=check_positive,
         )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -1029,7 +1100,8 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export, ns_parser.raw,
+            ns_parser.export,
+            ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1072,7 +1144,8 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export, ns_parser.raw,
+            ns_parser.export,
+            ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1115,7 +1188,8 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export, ns_parser.raw,
+            ns_parser.export,
+            ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1158,7 +1232,8 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export, ns_parser.raw,
+            ns_parser.export,
+            ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1201,7 +1276,8 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export, ns_parser.raw,
+            ns_parser.export,
+            ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1244,7 +1320,8 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export, ns_parser.raw,
+            ns_parser.export,
+            ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1287,7 +1364,8 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export, ns_parser.raw,
+            ns_parser.export,
+            ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1330,7 +1408,8 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export, ns_parser.raw,
+            ns_parser.export,
+            ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1373,7 +1452,8 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export, ns_parser.raw,
+            ns_parser.export,
+            ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1416,7 +1496,8 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export, ns_parser.raw,
+            ns_parser.export,
+            ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1459,7 +1540,8 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export, ns_parser.raw,
+            ns_parser.export,
+            ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1502,7 +1584,8 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export, ns_parser.raw,
+            ns_parser.export,
+            ns_parser.raw,
             self.stocks_data,
         )
 
@@ -1545,14 +1628,31 @@ Tickers: {', '.join(self.tickers)}
             self.mktcap,
             self.exclude_exhanges,
             ns_parser.limit,
-            ns_parser.export, ns_parser.raw,
+            ns_parser.export,
+            ns_parser.raw,
             self.stocks_data,
         )
 
+    def call_ca(self, _):
+        """Call the comparison analysis menu with selected tickers"""
+        if self.ticker:
+            if self.ticker in self.tickers:
+                self.tickers.remove(self.ticker)
+            return ca_controller.menu(
+                self.ticker, self.start, self.interval, self.stock, self.tickers
+            )
 
-def menu(ticker: str):
+        print("No main ticker loaded to go into comparison analysis menu", "\n")
+
+
+def menu(
+    ticker: str,
+    start: str,
+    interval: str,
+    stock: pd.DataFrame,
+):
     """Sector and Industry Analysis Menu"""
-    sia_controller = SectorIndustryAnalysisController(ticker)
+    sia_controller = SectorIndustryAnalysisController(ticker, start, interval, stock)
     sia_controller.call_help(None)
 
     while True:
