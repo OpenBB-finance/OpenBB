@@ -20,6 +20,5 @@ optional arguments:
   -m, --mill            Run papermill on list
   -h, --help            show this help message
 ```
-![Screen Shot 2021-12-01 at 11 27 30 PM](https://user-images.githubusercontent.com/85772166/144377005-48b75318-f6af-4f4e-adaf-54261acf6240.png)
 
-<img width="1400" alt="Feature Screenshot - screener-performance" src="https://user-images.githubusercontent.com/85772166/144377005-48b75318-f6af-4f4e-adaf-54261acf6240.pn">
+<img width="1400" alt="Feature Screenshot - screener-performance" src="https://user-images.githubusercontent.com/85772166/144377265-d3845b50-9a17-44c4-8ac7-825db8b92dd4.png">
