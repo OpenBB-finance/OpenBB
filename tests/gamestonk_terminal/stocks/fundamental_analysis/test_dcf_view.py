@@ -9,7 +9,7 @@ from unittest import TestCase
 class TestExcelClass(TestCase):
     pass
     # @vcr.use_cassette(
-    #     "tests/cassettes/test_fa/test_fa_excel/test_covers_all_tickers.yaml",
+    #     "tests/gamestonk_terminal/stocks/fundamental_analysis/cassettes/test_dcf_view/test_covers_all_tickers.yaml",
     #     record_mode="new_episodes",
     # )
     # def test_covers_all_tickers(self):
