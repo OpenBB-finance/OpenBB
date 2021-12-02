@@ -19,7 +19,10 @@ from tests.helpers import check_print
 def get_bitcoin(mock_load):
     # pylint: disable=unused-argument
     print(os.getcwd())
-    with open("tests/data/btc_usd_test_data.json", encoding="utf8") as f:
+    with open(
+        "tests/gamestonk_terminal/cryptocurrency/due_diligence/json/test_pycoingecko_view/btc_usd_test_data.json",
+        encoding="utf8",
+    ) as f:
         sample_return = json.load(f)
     mock_load.return_value = sample_return
     coin, _, _ = load(coin="bitcoin", source="cg")
