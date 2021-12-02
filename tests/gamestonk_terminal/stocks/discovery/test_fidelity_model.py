@@ -17,7 +17,7 @@ class TestDiscoveryFidelityModel:
     @mock.patch("gamestonk_terminal.stocks.discovery.fidelity_model.requests")
     @parameterize_from_file(
         "test_get_orders",
-        "../tests/data/discovery_fidelity_model.yaml",
+        "../tests/gamestonk_terminal/stocks/discovery/yaml/test_fidelity_model/fidelity_model.yaml",
     )
     # pylint: disable=unused-argument
     def test_get_orders(
