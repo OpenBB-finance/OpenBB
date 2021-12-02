@@ -31,6 +31,7 @@ from gamestonk_terminal.helper_funcs import (
 register_matplotlib_converters()
 
 warnings.filterwarnings("ignore")
+# pylint:disable=too-many-arguments
 
 
 def display_exponential_smoothing(
@@ -42,23 +43,40 @@ def display_exponential_smoothing(
     seasonal_periods: int = 5,
     s_end_date: str = "",
     export: str = "",
+    time_res: str = "",
 ):
-    """Perform exponential smoothing forecasting
+    """Perform exponential smoothing
 
     Parameters
     ----------
-    other_args: List[str]
-        Argparse arguments
-    s_ticker: str
-        Loaded ticker
-    df: pd.DataFrame
-        Loaded stock dataframe
-
+    ticker : str
+        Dataset being smoothed
+    values : Union[pd.DataFrame, pd.Series]
+        Raw data
+    n_predict : int
+        Days to predict
+    trend : str, optional
+        Trend variable, by default "N"
+    seasonal : str, optional
+        Seasonal variable, by default "N"
+    seasonal_periods : int, optional
+        Number of seasonal periods, by default 5
+    s_end_date : str, optional
+        End date for backtesting, by default ""
+    export : str, optional
+        Format to export data, by default ""
+    time_res : str
+        Resolution for data, allowing for predicting outside of standard market days
     """
     if s_end_date:
-        future_index = get_next_stock_market_days(
-            last_stock_day=s_end_date, n_next_days=n_predict
-        )
+        if not time_res:
+            future_index = get_next_stock_market_days(
+                last_stock_day=s_end_date, n_next_days=n_predict
+            )
+        else:
+            future_index = pd.date_range(
+                s_end_date, periods=n_predict + 1, freq=time_res
+            )[1:]
 
         if future_index[-1] > datetime.datetime.now():
             print(
@@ -82,10 +100,16 @@ def display_exponential_smoothing(
         print("Model predicted NaN values.  Runtime Error.\n")
         return
 
-    l_pred_days = get_next_stock_market_days(
-        last_stock_day=values.index[-1],
-        n_next_days=n_predict,
-    )
+    if not time_res:
+        l_pred_days = get_next_stock_market_days(
+            last_stock_day=values.index[-1],
+            n_next_days=n_predict,
+        )
+    else:
+        l_pred_days = pd.date_range(
+            values.index[-1], periods=n_predict + 1, freq=time_res
+        )[1:]
+
     df_pred = pd.Series(forecast, index=l_pred_days, name="Price")
 
     print(f"\n{title}")
