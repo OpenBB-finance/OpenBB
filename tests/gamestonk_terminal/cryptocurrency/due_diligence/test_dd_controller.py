@@ -23,7 +23,7 @@ class TestDDController(unittest.TestCase):
         self.assertTrue(self.cont.call_quit(None))
 
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_dd_controller.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/due_diligence/cassettes/test_dd_controller/test_dd_controller.yaml",
         record_mode="new_episodes",
     )
     @check_print(assert_in="glassnode")
