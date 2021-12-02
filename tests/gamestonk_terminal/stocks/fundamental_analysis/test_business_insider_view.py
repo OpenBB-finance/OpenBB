@@ -12,7 +12,7 @@ from tests.helpers import check_print
 class TestFaBusinessInsiderApi(unittest.TestCase):
     @check_print(assert_in="PLTR")
     @vcr.use_cassette(
-        "tests/cassettes/test_fa/test_fa_business/test_management.yaml",
+        "tests/gamestonk_terminal/stocks/fundamental_analysis/cassettes/test_business_insider_view//test_management.yaml",
         record_mode="new_episodes",
     )
     def test_management(self):
