@@ -26,7 +26,7 @@ class TestFaYieldCurveModel:
     )
     @parameterize_from_file(
         "test_get_yield_curve",
-        "../tests/data/fa_yield_curve_model.yaml",
+        "../tests/gamestonk_terminal/stocks/fundamental_analysis/yaml/test_yield_curve_model/curve_model.yaml",
     )
     # pylint: disable=too-many-arguments
     def test_get_yield_curve(
@@ -59,7 +59,7 @@ class TestFaYieldCurveModel:
     )
     @parameterize_from_file(
         "test_get_yield_curve_year",
-        "../tests/data/fa_yield_curve_model.yaml",
+        "../tests/gamestonk_terminal/stocks/fundamental_analysis/yaml/test_yield_curve_model/curve_model.yaml",
     )
     def test_get_yield_curve_year(
         self, mock_request_get, year, mock_yield_curve_page, expected_result
