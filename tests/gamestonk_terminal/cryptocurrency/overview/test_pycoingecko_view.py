@@ -14,7 +14,7 @@ from tests.helpers import check_print
 class TestCoinGeckoAPI(TestCase):
     @check_print(assert_in="Total Bitcoin Holdings")
     @vcr.use_cassette(
-        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/test_coin_overview.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/overview.yaml",
         record_mode="new_episodes",
     )
     def test_coin_holdings_overview(self):
@@ -22,7 +22,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="═══════")
     @vcr.use_cassette(
-        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/test_coin_holding_companies.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/holding_companies.yaml",
         record_mode="new_episodes",
     )
     def test_coin_holdings_companies_list(self):
@@ -32,7 +32,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="═════════════")
     @vcr.use_cassette(
-        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/test_coin_news.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/news.yaml",
         record_mode="new_episodes",
     )
     def test_coin_news(self):
@@ -42,7 +42,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="Decentralized Finance")
     @vcr.use_cassette(
-        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/test_coin_categories.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/categories.yaml",
         record_mode="new_episodes",
     )
     def test_coin_categories(self):
@@ -52,7 +52,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="════")
     @vcr.use_cassette(
-        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/test_coin_stablecoins.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/stablecoins.yaml",
         record_mode="new_episodes",
     )
     def test_coin_stablecoins(self):
@@ -62,7 +62,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
-        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/test_coin_nft_market-status.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/nft_market-status.yaml",
         record_mode="new_episodes",
     )
     def test_coin_nft_market_status(self):
@@ -70,7 +70,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="═══════════")
     @vcr.use_cassette(
-        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/test_coin_exchanges.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/exchanges.yaml",
         record_mode="new_episodes",
     )
     def test_coin_exchanges(self):
@@ -80,7 +80,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="Rank")
     @vcr.use_cassette(
-        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/test_coin_platforms.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/platforms.yaml",
         record_mode="new_episodes",
     )
     def test_coin_platforms(self):
@@ -90,7 +90,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="Rank")
     @vcr.use_cassette(
-        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/test_coin_products.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/products.yaml",
         record_mode="new_episodes",
     )
     def test_coin_products(self):
@@ -100,7 +100,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="Rank")
     @vcr.use_cassette(
-        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/test_coin_indexes.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/indexes.yaml",
         record_mode="new_episodes",
     )
     def test_coin_indexes(self):
@@ -110,7 +110,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="═════════")
     @vcr.use_cassette(
-        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/test_coin_derivatives.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/derivatives.yaml",
         record_mode="new_episodes",
     )
     def test_coin_derivatives(self):
@@ -120,7 +120,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="Index")
     @vcr.use_cassette(
-        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/test_coin_exchange_rates.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/exchange_rates.yaml",
         record_mode="new_episodes",
     )
     def test_coin_exchange_rates(self):
@@ -130,7 +130,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
-        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/test_coin_global_market_info.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/global_market_info.yaml",
         record_mode="new_episodes",
     )
     def test_coin_global_market_info(self):
@@ -138,7 +138,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
-        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/test_coin_global_defo_info.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/global_defo_info.yaml",
         record_mode="new_episodes",
     )
     def test_coin_global_defi_info(self):
