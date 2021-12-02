@@ -21,7 +21,7 @@ class TestFaMarketWatchApiUnit:
     )
     @parameterize_from_file(
         "test_prepare_df_financials",
-        "../tests/data/fa_market_watch_model.yaml",
+        "../tests/gamestonk_terminal/stocks/fundamental_analysis/yaml/test_market_watch_model/watch_model.yaml",
     )
     # pylint: disable=too-many-arguments
     def test_prepare_df_financials(
