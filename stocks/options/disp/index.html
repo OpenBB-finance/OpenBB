@@ -10,8 +10,9 @@
 
 
 
-    <meta name="description" content="usage: disp [-p {template,high_IV}] [-h] View available presets under presets folder.
-optional arguments: -p {template,high_IV}, --preset {template,high_IV} View specific preset (default: ) -h, --help show this help message (default: False) ">
+    <meta name="description" content="usage: disp [-p {template,high_IV}] [-h] Shows the settings for a particular preset.
+optional arguments: -p {template,high_IV}, --preset {template,high_IV} View specific preset (default: ) -h, --help show this help message (default: False) Sample Output:
+ - FILTER - itm : false otm : true max-ask-bid: 0.05 max-exp : 14 calls : true puts : true min-iv : 0.80 max-iv : 1.0 min-volume : 100 ">
 
 
 
@@ -14851,11 +14852,22 @@ optional arguments: -p {template,high_IV}, --preset {template,high_IV} View spec
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Disp</h1>
         <pre><code>usage: disp [-p {template,high_IV}] [-h]
-</code></pre><p>View available presets under presets folder.</p>
+</code></pre><p>Shows the settings for a particular preset.</p>
 <pre><code>optional arguments:
   -p {template,high_IV}, --preset {template,high_IV}
                         View specific preset (default: )
   -h, --help            show this help message (default: False)
+</code></pre><p>Sample Output:</p>
+<pre><code> - FILTER -
+itm        : false
+otm        : true
+max-ask-bid: 0.05
+max-exp    : 14
+calls      : true
+puts       : true
+min-iv     : 0.80
+max-iv     : 1.0
+min-volume : 100
 </code></pre>
     </article>
 
