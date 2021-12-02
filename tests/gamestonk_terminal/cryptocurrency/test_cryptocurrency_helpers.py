@@ -66,7 +66,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print()
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_get_coins.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/cassettes/test_cryptocurrency_helpers/test_get_coins.yaml",
         record_mode="new_episodes",
     )
     def test_get_coins(self):

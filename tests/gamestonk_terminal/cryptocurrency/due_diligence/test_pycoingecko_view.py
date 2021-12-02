@@ -33,7 +33,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="Market Cap Rank")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_info.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/due_diligence/cassettes/test_pycoingecko_view/test_coin_info.yaml",
         record_mode="new_episodes",
     )
     def test_coin_info(self):
@@ -41,7 +41,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="Homepage")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_web.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/due_diligence/cassettes/test_pycoingecko_view/test_coin_web.yaml",
         record_mode="new_episodes",
     )
     def test_coin_web(self):
@@ -49,7 +49,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_social.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/due_diligence/cassettes/test_pycoingecko_view/test_coin_social.yaml",
         record_mode="new_episodes",
     )
     def test_coin_social(self):
@@ -57,7 +57,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_dev.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/due_diligence/cassettes/test_pycoingecko_view/test_coin_dev.yaml",
         record_mode="new_episodes",
     )
     def test_coin_dev(self):
@@ -65,7 +65,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_ath.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/due_diligence/cassettes/test_pycoingecko_view/test_coin_ath.yaml",
         record_mode="new_episodes",
     )
     def test_coin_ath(self):
@@ -73,7 +73,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_atl.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/due_diligence/cassettes/test_pycoingecko_view/test_coin_atl.yaml",
         record_mode="new_episodes",
     )
     def test_coin_atl(self):
@@ -81,7 +81,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_score.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/due_diligence/cassettes/test_pycoingecko_view/test_coin_score.yaml",
         record_mode="new_episodes",
     )
     def test_coin_score(self):
@@ -89,7 +89,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_bc.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/due_diligence/cassettes/test_pycoingecko_view/test_coin_bc.yaml",
         record_mode="new_episodes",
     )
     def test_coin_bc(self):
@@ -97,7 +97,7 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_market.yaml",
+        "tests/gamestonk_terminal/cryptocurrency/due_diligence/cassettes/test_pycoingecko_view/test_coin_market.yaml",
         record_mode="new_episodes",
     )
     def test_coin_market(self):
