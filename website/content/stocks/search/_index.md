@@ -9,7 +9,24 @@ optional arguments:
                         Enter the number of Equities you wish to see in the Tabulate window (default: 10)
   -h, --help            show this help message (default: False)
 ```
-Search for company tickers based on a given query. This makes it easier to work fully from within the terminal
-instead of needing to rely on Google to find specific company tickers.
+Search for a company's stock ticker symbol with keywords.
 
-![image](https://user-images.githubusercontent.com/46355364/141761027-cef64364-e04b-4b18-84f3-2ffca4accbaf.png)
+```
+╒════════════════════════════════╤══════════╕
+│ Company                        │ Ticker   │
+╞════════════════════════════════╪══════════╡
+│ Apple Inc.                     │ AAPL     │
+├────────────────────────────────┼──────────┤
+│ APPLE GREEN HOLDING INC        │ AGPL     │
+├────────────────────────────────┼──────────┤
+│ Apple Hospitality REIT, Inc.   │ APLE     │
+├────────────────────────────────┼──────────┤
+│ APPLE RUSH COMPANY INC         │ APRU     │
+├────────────────────────────────┼──────────┤
+│ GOLDEN APPLE OIL & GAS INC     │ GAPJ     │
+├────────────────────────────────┼──────────┤
+│ Maui Land & Pineapple Company, │ MLP      │
+├────────────────────────────────┼──────────┤
+│ PINEAPPLE EXPRESS INC          │ PNPL     │
+╘════════════════════════════════╧══════════╛ 
+```
