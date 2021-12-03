@@ -111,3 +111,6 @@ API_ETHPLORER_KEY = os.getenv("GT_API_ETHPLORER_KEY") or "freekey"
 
 # https://cryptopanic.com/developers/api/
 API_CRYPTO_PANIC_KEY = os.getenv("GT_API_CRYPTO_PANIC_KEY") or "REPLACE_ME"
+
+# https://bitquery.io/pricing
+API_BITQUERY_KEY = os.getenv("GT_API_BITQUERY_KEY") or "REPLACE_ME"
