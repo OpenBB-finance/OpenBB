@@ -216,6 +216,11 @@ Finviz:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+
+        if not self.ticker:
+            print("You need to 'set' a ticker to get similar companies from first!")
+            return
+
         self.similar = yahoo_finance_model.get_sp500_comps_tsne(
             self.ticker,
             lr=ns_parser.lr,
@@ -246,6 +251,11 @@ Finviz:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+
+        if not self.ticker:
+            print("You need to 'set' a ticker to get similar companies from first!")
+            return
+
         if ns_parser.b_no_country:
             compare_list = ["Sector", "Industry"]
         else:
@@ -291,6 +301,11 @@ Finviz:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+
+        if not self.ticker:
+            print("You need to 'set' a ticker to get similar companies from first!")
+            return
+
         self.similar, self.user = polygon_model.get_similar_companies(
             self.ticker, ns_parser.us_only
         )
@@ -321,6 +336,10 @@ Finviz:
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
+            return
+
+        if not self.ticker:
+            print("You need to 'set' a ticker to get similar companies from first!")
             return
 
         self.similar, self.user = finnhub_model.get_similar_companies(self.ticker)
