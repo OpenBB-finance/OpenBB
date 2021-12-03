@@ -126,14 +126,14 @@ def query_graph(url: str, query: str) -> dict:
     if not 200 <= response.status_code < 300:
         raise BitQueryApiKeyException(
             f"Invalid Authentication: {response.status_code}. "
-            f"Please visit https://bitquery.io/pricing and generate you free api key"
+            f"Please visit https://bitquery.io/pricing and generate you free api key\n"
         )
     try:
         data = response.json()
         if "error" in data:
-            raise ValueError(f"Invalid Response: {data['error']}")
+            raise ValueError(f"Invalid Response: {data['error']}\n")
     except Exception as e:
-        raise ValueError(f"Invalid Response: {response.text}") from e
+        raise ValueError(f"Invalid Response: {response.text}\n") from e
     return data["data"]
 
 
@@ -298,7 +298,8 @@ def get_dex_trades_monthly(
     df["date"] = df.apply(
         lambda x: datetime.date(int(x["date.year"]), int(x["date.month"]), 1), axis=1
     )
-    return df[["date", "count", "tradeAmount"]]
+    df.rename(columns={"count": "trades"}, inplace=True)
+    return df[["date", "trades", "tradeAmount"]]
 
 
 def get_daily_dex_volume_for_given_pair(

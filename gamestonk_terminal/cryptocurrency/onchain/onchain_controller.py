@@ -23,6 +23,8 @@ from gamestonk_terminal.cryptocurrency.onchain import (
     ethgasstation_view,
     whale_alert_view,
     ethplorer_view,
+    bitquery_view,
+    bitquery_model,
 )
 
 
@@ -64,6 +66,7 @@ class OnchainController:
         "prices",
         "address",
         "active",
+        "trades",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -829,6 +832,101 @@ class OnchainController:
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
                 address=self.address,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e)
+
+    def call_trades(self, other_args: List[str]):
+        """Process trades command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="trades",
+            description="""
+                      Display Trades on Decentralized Exchanges aggregated by DEX or Month
+                      [Source: https://graphql.bitquery.io/]
+                  """,
+        )
+
+        parser.add_argument(
+            "-k",
+            "--kind",
+            dest="kind",
+            type=str,
+            help="Aggregate trades by dex or time Default: dex",
+            default="dex",
+            choices=["dex", "time"],
+        )
+
+        parser.add_argument(
+            "-vs",
+            "--vs",
+            dest="vs",
+            type=str,
+            help="Currency of displayed trade amount. Default: USD",
+            default="USD",
+            choices=bitquery_model.CURRENCIES,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number records",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-d",
+            "--days",
+            dest="days",
+            type=check_positive,
+            help="Number of days to display data for.",
+            default=90,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: tradeAmount. For monthly trades date.",
+            default="tradeAmount",
+            choices=["trades", "tradeAmount", "exchange"],
+        )
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            bitquery_view.display_dex_trades(
+                kind=ns_parser.kind,
+                trade_amount_currency=ns_parser.vs,
+                top=ns_parser.top,
+                days=ns_parser.days,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
                 export=ns_parser.export,
             )
 
