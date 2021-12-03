@@ -1,0 +1,22 @@
+
+Welcome to Gamestonk Terminal Beta
+
+What do you want to do?
+    cls         clear screen
+    ?/help      show this menu again
+    update      update terminal from remote
+    keys        check for defined api keys
+    reset       reset terminal and reload configs
+    about       about us
+    q(uit)      to abandon the program
+
+>>  stocks
+>>  crypto
+>>  etf
+>>  economy
+>>  forex
+>>  portfolio
+>>  reports
+>>  resources
+    
+Quick exit enabled

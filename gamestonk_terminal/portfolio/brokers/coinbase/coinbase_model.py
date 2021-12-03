@@ -14,14 +14,20 @@ def get_accounts(add_current_price: bool = True, currency: str = "USD") -> pd.Da
     """Get list of all your trading accounts. [Source: Coinbase]
 
     Single account information:
-    {
-        "id": "71452118-efc7-4cc4-8780-a5e22d4baa53",
-        "currency": "BTC",
-        "balance": "0.0000000000000000",
-        "available": "0.0000000000000000",
-        "hold": "0.0000000000000000",
-        "profile_id": "75da88c5-05bf-4f54-bc85-5c775bd68254"
-    }
+
+    .. code-block:: json
+
+        {
+            "id": "71452118-efc7-4cc4-8780-a5e22d4baa53",
+            "currency": "BTC",
+            "balance": "0.0000000000000000",
+            "available": "0.0000000000000000",
+            "hold": "0.0000000000000000",
+            "profile_id": "75da88c5-05bf-4f54-bc85-5c775bd68254"
+        }
+
+    .
+
     Parameters
     -------
     add_current_price: bool
@@ -73,6 +79,9 @@ def get_account_history(account: str) -> pd.DataFrame:
     """Get your account history. Account activity either increases or decreases your account balance. [Source: Coinbase]
 
     Example api response:
+
+    .. code-block:: json
+
         {
             "id": "100",
             "created_at": "2014-11-07T08:19:27.028459Z",
@@ -86,6 +95,7 @@ def get_account_history(account: str) -> pd.DataFrame:
             }
         }
 
+    .
 
     Parameters
     ----------
@@ -125,23 +135,27 @@ def get_orders() -> pd.DataFrame:
 
     Example response from API:
 
-    {
-        "id": "d0c5340b-6d6c-49d9-b567-48c4bfca13d2",
-        "price": "0.10000000",
-        "size": "0.01000000",
-        "product_id": "BTC-USD",
-        "side": "buy",
-        "stp": "dc",
-        "type": "limit",
-        "time_in_force": "GTC",
-        "post_only": false,
-        "created_at": "2016-12-08T20:02:28.53864Z",
-        "fill_fees": "0.0000000000000000",
-        "filled_size": "0.00000000",
-        "executed_value": "0.0000000000000000",
-        "status": "open",
-        "settled": false
-    }
+    .. code-block:: json
+
+        {
+            "id": "d0c5340b-6d6c-49d9-b567-48c4bfca13d2",
+            "price": "0.10000000",
+            "size": "0.01000000",
+            "product_id": "BTC-USD",
+            "side": "buy",
+            "stp": "dc",
+            "type": "limit",
+            "time_in_force": "GTC",
+            "post_only": false,
+            "created_at": "2016-12-08T20:02:28.53864Z",
+            "fill_fees": "0.0000000000000000",
+            "filled_size": "0.00000000",
+            "executed_value": "0.0000000000000000",
+            "status": "open",
+            "settled": false
+        }
+
+    .
 
     Returns
     -------

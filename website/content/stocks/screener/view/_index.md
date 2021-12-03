@@ -13,4 +13,4 @@ optional arguments:
   -h, --help            show this help message
 ```
 
-<img width="1203" alt="Captura de ecrã 2021-05-06, às 20 46 41" src="https://user-images.githubusercontent.com/25267873/117356901-30b97300-aeac-11eb-91fe-ed6495db6614.png">
+<img width="1400" alt="Feature Screenshot - screener-view" src="https://user-images.githubusercontent.com/25267873/117356901-30b97300-aeac-11eb-91fe-ed6495db6614.png">

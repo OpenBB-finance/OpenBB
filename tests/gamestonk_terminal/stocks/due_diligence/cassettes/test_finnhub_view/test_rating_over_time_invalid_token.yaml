@@ -1,0 +1,55 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://finnhub.io/api/v1/stock/recommendation?symbol=TSLA&token=MOCK_TOKEN
+  response:
+    body:
+      string: '{"error":"Invalid API key"}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6b6afbb41e3c3ad1-CDG
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '27'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 01 Dec 2021 08:35:38 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=Yqro3iDdxTGfbbD3Vj96GBGrc2XUc0neqWyc3OCg2A%2BoItIUvyMcqY5Lhkk%2FFYHD8sQu4ALGc68bLAjuHxV8c3K13B%2FYtjgVKiU2iYw8%2B4ki6WMhnsUfWBfvMA9M"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin
+      access-control-allow-methods:
+      - POST, GET, OPTIONS, PUT, DELETE
+      access-control-allow-origin:
+      - '*'
+      access-control-expose-headers:
+      - Content-Length
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400, h3-28=":443"; ma=86400, h3-27=":443";
+        ma=86400
+    status:
+      code: 401
+      message: Unauthorized
+version: 1

@@ -58,7 +58,9 @@ class ReportController:
     reports_opts = ""
     for k, report_to_run in d_id_to_report_name.items():
         # Crawl data to look into what
-        notebook_file = os.path.join("gamestonk_terminal", "reports", report_to_run)
+        notebook_file = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), report_to_run
+        )
         notebook_content = open(notebook_file + ".ipynb").read()
         metadata_cell = """"metadata": {\n    "tags": [\n     "parameters"\n    ]\n   },\n   "outputs":"""
         notebook_metadata_content = notebook_content[

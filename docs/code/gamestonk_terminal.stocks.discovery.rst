@@ -100,6 +100,22 @@ gamestonk\_terminal.stocks.discovery.marketbeat\_view module
    :undoc-members:
    :show-inheritance:
 
+gamestonk\_terminal.stocks.discovery.nasdaq\_model module
+---------------------------------------------------------
+
+.. automodule:: gamestonk_terminal.stocks.discovery.nasdaq_model
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gamestonk\_terminal.stocks.discovery.nasdaq\_view module
+--------------------------------------------------------
+
+.. automodule:: gamestonk_terminal.stocks.discovery.nasdaq_view
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 gamestonk\_terminal.stocks.discovery.seeking\_alpha\_model module
 -----------------------------------------------------------------
 

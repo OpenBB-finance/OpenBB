@@ -17,7 +17,11 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
-from gamestonk_terminal.stocks.screener import finviz_view, yahoofinance_view
+from gamestonk_terminal.stocks.screener import (
+    finviz_view,
+    yahoofinance_view,
+    finviz_model,
+)
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -43,13 +47,12 @@ class ScreenerController:
         "ownership",
         "performance",
         "technical",
-        "signals",
         "po",
     ]
 
     def __init__(self):
         """Constructor"""
-        self.preset = "template"
+        self.preset = "top_gainers"
         self.screen_tickers = []
         self.scr_parser = argparse.ArgumentParser(add_help=False, prog="scr")
         self.scr_parser.add_argument(
@@ -65,7 +68,7 @@ class ScreenerController:
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print("")
-        print("   view          view available presets")
+        print("   view          view available presets (defaults and customs)")
         print("   set           set one of the available presets")
         print("")
         print(f"PRESET: {self.preset}")
@@ -77,8 +80,6 @@ class ScreenerController:
         print("   ownership      ownership (e.g. Float, Insider Own, Short Ratio)")
         print("   performance    performance (e.g. Perf Week, Perf YTD, Volatility M)")
         print("   technical      technical (e.g. Beta, SMA50, 52W Low, RSI, Change)")
-        print("")
-        print("   signals        view filter signals (e.g. -s top_gainers)")
         print("")
         if self.screen_tickers:
             print(f"Last screened tickers: {', '.join(self.screen_tickers)}")
@@ -142,6 +143,7 @@ class ScreenerController:
                     if preset[-4:] == ".ini"
                 ]
 
+                print("\nCustom Presets:")
                 for preset in presets:
                     with open(
                         presets_path + preset + ".ini",
@@ -152,8 +154,13 @@ class ScreenerController:
                             if line.strip() == "[General]":
                                 break
                             description += line.strip()
-                    print(f"\nPRESET: {preset}")
-                    print(description.split("Description: ")[1].replace("#", ""))
+                    print(
+                        f"   {preset}{(50-len(preset)) * ' '}{description.split('Description: ')[1].replace('#', '')}"
+                    )
+
+                print("\nDefault Presets:")
+                for signame, sigdesc in finviz_model.d_signals_desc.items():
+                    print(f"   {signame}{(50-len(signame)) * ' '}{sigdesc}")
                 print("")
 
         except Exception as e:
@@ -178,7 +185,8 @@ class ScreenerController:
                 preset.split(".")[0]
                 for preset in os.listdir(presets_path)
                 if preset[-4:] == ".ini"
-            ],
+            ]
+            + list(finviz_model.d_signals.keys()),
         )
 
         try:
@@ -279,10 +287,6 @@ class ScreenerController:
     def call_technical(self, other_args: List[str]):
         """Process technical command"""
         self.screen_tickers = finviz_view.screener(other_args, self.preset, "technical")
-
-    def call_signals(self, other_args: List[str]):
-        """Process signals command"""
-        finviz_view.view_signals(other_args)
 
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""

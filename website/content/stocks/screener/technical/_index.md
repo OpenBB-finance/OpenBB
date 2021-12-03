@@ -5,8 +5,7 @@ usage: screener
                 [-l LIMIT] [-a] [-e] [-m] [-h]
 ```
 
-Prints screener data of the companies that meet the pre-set filtering. The following information fields are expected: overview, valuation, financial,
-ownership, performance, technical. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
+Screens stocks according to the chosen preset or signal, sorting by technical factors.
 
 ```
 optional arguments:
@@ -22,4 +21,4 @@ optional arguments:
   -h, --help            show this help message
 ```
 
-<img width="934" alt="overview" src="https://user-images.githubusercontent.com/25267873/113618972-4854d000-9650-11eb-9482-d1054a7d0451.png">
+<img width="1400" alt="overview" src="https://user-images.githubusercontent.com/85772166/144378966-33a808e0-bb5b-4009-8eb9-b8c5a53fab90.png">

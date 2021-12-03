@@ -36,6 +36,22 @@ gamestonk\_terminal.cryptocurrency.overview.coinpaprika\_view module
    :undoc-members:
    :show-inheritance:
 
+gamestonk\_terminal.cryptocurrency.overview.cryptopanic\_model module
+---------------------------------------------------------------------
+
+.. automodule:: gamestonk_terminal.cryptocurrency.overview.cryptopanic_model
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gamestonk\_terminal.cryptocurrency.overview.cryptopanic\_view module
+--------------------------------------------------------------------
+
+.. automodule:: gamestonk_terminal.cryptocurrency.overview.cryptopanic_view
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 gamestonk\_terminal.cryptocurrency.overview.overview\_controller module
 -----------------------------------------------------------------------
 
