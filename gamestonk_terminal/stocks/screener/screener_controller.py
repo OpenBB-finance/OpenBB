@@ -18,6 +18,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
+from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 from gamestonk_terminal.stocks.screener import (
     finviz_view,
     yahoofinance_view,
@@ -49,6 +50,7 @@ class ScreenerController:
         "performance",
         "technical",
         "po",
+        "ca",
     ]
 
     def __init__(self):
@@ -84,6 +86,7 @@ Screener:
     technical      technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
     {Style.NORMAL if self.screen_tickers else Style.DIM}
 Last screened tickers: {', '.join(self.screen_tickers)}
+>   ca             take these to comparison analysis menu
 >   po             take these to portoflio optimization menu{Style.RESET_ALL}
         """
         print(help_text)
@@ -296,6 +299,14 @@ Last screened tickers: {', '.join(self.screen_tickers)}
             return None
 
         return po_controller.menu(self.screen_tickers)
+
+    def call_ca(self, _):
+        """Call the comparison analysis menu with selected tickers"""
+        if not self.screen_tickers:
+            print("Some tickers must be screened first through one of the presets!\n")
+            return None
+
+        return ca_controller.menu(self.screen_tickers)
 
 
 def menu():
