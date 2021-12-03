@@ -529,8 +529,8 @@ Finviz:
         if not ns_parser:
             return
 
-        if not self.similar:
-            print("Please make sure there are similar tickers selected. \n")
+        if not self.similar or len(self.similar) == 1:
+            print("Please make sure there are more than 1 similar tickers selected. \n")
             return
 
         yahoo_finance_view.display_historical(
@@ -575,7 +575,7 @@ Finviz:
         if not ns_parser:
             return
 
-        if not self.similar:
+        if not self.similar or len(self.similar) == 1:
             print("Please make sure there are similar tickers selected. \n")
             return
 
@@ -662,7 +662,7 @@ Finviz:
         if not ns_parser:
             return
 
-        if not self.similar:
+        if not self.similar or len(self.similar) == 1:
             print("Please make sure there are similar tickers selected. \n")
             return
 
@@ -834,9 +834,10 @@ Finviz:
         if not ns_parser:
             return
 
-        if not self.similar:
+        if not self.similar or len(self.similar) == 1:
             print("Please make sure there are similar tickers selected. \n")
             return
+
         finbrain_view.display_sentiment_correlation(
             similar=self.similar,
             raw=ns_parser.raw,
