@@ -208,11 +208,11 @@ def display_bars_financials(
             plt.axvline(x=benchmark, lw=3, ls="--", c="k")
 
             if unit != " ":
-                units = f"[{unit}]"
+                units = f" [{unit}] "
             else:
-                units = ""
+                units = " "
             plt.title(
-                f"{metric_title.capitalize()} {units} with benchmark of {benchmark:.2f} {unit}"
+                f"{metric_title.capitalize()}{units}with benchmark of {benchmark:.2f} {unit}"
             )
             plt.tight_layout()
             plt.show()
