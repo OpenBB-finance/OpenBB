@@ -45,11 +45,11 @@ class ComparisonAnalysisController:
     CHOICES = ["?", "cls", "help", "q", "quit"]
 
     CHOICES_COMMANDS = [
-        "set",
+        "ticker",
         "getpoly",
         "getfinnhub",
         "getfinviz",
-        "select",
+        "set",
         "add",
         "rmv",
         "historical",
@@ -109,21 +109,20 @@ Comparison Analysis:
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
 
-    set           set ticker to get similar companies from
+    ticker        set ticker to get similar companies from{Style.NORMAL if self.ticker else Style.DIM}
 
-Ticker to get similar companies from: {self.ticker}{Style.NORMAL if self.ticker else Style.DIM}
-
+Ticker to get similar companies from: {self.ticker}
     tsne          run TSNE on all SP500 stocks and returns closest tickers
     getpoly       get similar stocks from polygon API
     getfinnhub    get similar stocks from finnhub API
     getfinviz     get similar stocks from finviz API{Style.RESET_ALL}
 
-    select        reset and select similar companies
+    set           reset and set similar companies
     add           add more similar companies
     rmv           remove similar companies individually or all
-
+{Style.NORMAL if self.similar and len(self.similar)>1 else Style.DIM}
 Similar Companies: {', '.join(self.similar) if self.similar else ''}
-{Style.NORMAL if self.similar else Style.DIM}
+
 Yahoo Finance:
     historical    historical price data comparison
     hcorr         historical price correlation
@@ -148,12 +147,12 @@ Finviz:
         print(help_str)
 
     @try_except
-    def call_set(self, other_args: List[str]):
-        """Process set command"""
+    def call_ticker(self, other_args: List[str]):
+        """Process ticker command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="set",
+            prog="ticker",
             description="""Set ticker to extract similars from""",
         )
         parser.add_argument(
@@ -439,12 +438,12 @@ Finviz:
         self.user = "Custom"
 
     @try_except
-    def call_select(self, other_args: List[str]):
-        """Process select command"""
+    def call_set(self, other_args: List[str]):
+        """Process set command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="select",
+            prog="set",
             description="""Select similar companies to compare with.""",
         )
         parser.add_argument(
@@ -828,6 +827,10 @@ Finviz:
         if not ns_parser:
             return
 
+        if not self.similar or len(self.similar) == 1:
+            print("Please make sure there are more than 1 similar tickers selected. \n")
+            return
+
         finbrain_view.display_sentiment_compare(
             similar=self.similar,
             raw=ns_parser.raw,
@@ -898,6 +901,10 @@ Finviz:
         if not ns_parser:
             return
 
+        if not self.similar or len(self.similar) == 1:
+            print("Please make sure there are more than 1 similar tickers selected. \n")
+            return
+
         finviz_compare_view.screener(
             similar=self.similar,
             data_type="overview",
@@ -925,6 +932,10 @@ Finviz:
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
+            return
+
+        if not self.similar or len(self.similar) == 1:
+            print("Please make sure there are more than 1 similar tickers selected. \n")
             return
 
         finviz_compare_view.screener(
@@ -956,6 +967,10 @@ Finviz:
         if not ns_parser:
             return
 
+        if not self.similar or len(self.similar) == 1:
+            print("Please make sure there are more than 1 similar tickers selected. \n")
+            return
+
         finviz_compare_view.screener(
             similar=self.similar,
             data_type="financial",
@@ -983,6 +998,10 @@ Finviz:
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
+            return
+
+        if not self.similar or len(self.similar) == 1:
+            print("Please make sure there are more than 1 similar tickers selected. \n")
             return
 
         finviz_compare_view.screener(
@@ -1014,6 +1033,10 @@ Finviz:
         if not ns_parser:
             return
 
+        if not self.similar or len(self.similar) == 1:
+            print("Please make sure there are more than 1 similar tickers selected. \n")
+            return
+
         finviz_compare_view.screener(
             similar=self.similar,
             data_type="performance",
@@ -1043,6 +1066,10 @@ Finviz:
         if not ns_parser:
             return
 
+        if not self.similar or len(self.similar) == 1:
+            print("Please make sure there are more than 1 similar tickers selected. \n")
+            return
+
         finviz_compare_view.screener(
             similar=self.similar,
             data_type="technical",
@@ -1051,6 +1078,10 @@ Finviz:
 
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
+        if not self.similar or len(self.similar) == 1:
+            print("Please make sure there are more than 1 similar tickers selected. \n")
+            return None
+
         return po_controller.menu(self.similar)
 
 
