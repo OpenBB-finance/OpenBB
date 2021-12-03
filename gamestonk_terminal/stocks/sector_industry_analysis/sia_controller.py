@@ -1635,12 +1635,8 @@ Returned tickers: {', '.join(self.tickers)}
 
     def call_ca(self, _):
         """Call the comparison analysis menu with selected tickers"""
-        if self.ticker:
-            if self.ticker in self.tickers:
-                self.tickers.remove(self.ticker)
-            return ca_controller.menu(
-                self.ticker, self.start, self.interval, self.stock, self.tickers
-            )
+        if self.tickers:
+            return ca_controller.menu(self.tickers)
 
         print("No main ticker loaded to go into comparison analysis menu", "\n")
 
