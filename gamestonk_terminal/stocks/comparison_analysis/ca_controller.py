@@ -108,17 +108,19 @@ Comparison Analysis:
     ?/help        show this menu again
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
-    set           set ticker to get similars from
 
-Get similar: {self.ticker}{Style.NORMAL if self.ticker else Style.DIM}
+    set           set ticker to get similar companies from
+
+Ticker to get similar companies from: {self.ticker}{Style.NORMAL if self.ticker else Style.DIM}
+
     tsne          run TSNE on all SP500 stocks and returns closest tickers
     getpoly       get similar stocks from polygon API
     getfinnhub    get similar stocks from finnhub API
     getfinviz     get similar stocks from finviz API{Style.RESET_ALL}
 
     select        reset and select similar companies
-    add           add more companies to current selected
-    rmv           remove companies to currently selected
+    add           add more similar companies
+    rmv           remove similar companies individually or all
 
 Similar Companies: {', '.join(self.similar) if self.similar else ''}
 {Style.NORMAL if self.similar else Style.DIM}
@@ -417,14 +419,24 @@ Finviz:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
-        # Add sets to avoid duplicates
-        for symbol in ns_parser.l_similar:
-            if symbol in self.similar:
-                self.similar.remove(symbol)
-            else:
-                print(f"Ticker {symbol} does not exist in similar list to be removed")
+
+        if ns_parser.l_similar:
+            # Add sets to avoid duplicates
+            for symbol in ns_parser.l_similar:
+                if symbol in self.similar:
+                    self.similar.remove(symbol)
+                else:
+                    print(
+                        f"Ticker {symbol} does not exist in similar list to be removed"
+                    )
+
+            print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}")
+
+        else:
+            self.similar = []
+
+        print("")
         self.user = "Custom"
-        print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
 
     @try_except
     def call_select(self, other_args: List[str]):
