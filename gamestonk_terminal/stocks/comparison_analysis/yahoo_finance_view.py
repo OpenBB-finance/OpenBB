@@ -68,7 +68,7 @@ def display_historical(
             index=df_similar.index,
         )
     df_similar.plot(ax=ax)
-    ax.set_title(f"Historical price of {', '.join(similar_tickers)}")
+    ax.set_title("Historical price of similar companies")
     ax.set_xlabel("Time")
     ax.set_ylabel(f"{['','Normalized'][normalize]} Share Price {['($)',''][normalize]}")
     ax.grid(b=True, which="major", color="#666666", linestyle="-")
@@ -108,7 +108,7 @@ def display_volume(
     df_similar = df_similar.div(1_000_000)
 
     df_similar.plot(ax=ax)
-    ax.set_title(f"Historical volume of {', '.join(similar_tickers)}")
+    ax.set_title("Historical volume of similar companies")
     # ax.plot(df_similar.index, df_similar[ticker].values/1_000_000)
     ax.set_xlabel("Date")
     ax.set_ylabel("Volume [M]")
@@ -162,6 +162,6 @@ def display_correlation(
         vmax=1,
         mask=mask,
     )
-    plt.title(f"Correlation Heatmap of {', '.join(similar_tickers)}")
+    plt.title("Correlation Heatmap of similar companies")
     plt.show()
     print("")
