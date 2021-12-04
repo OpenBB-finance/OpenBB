@@ -310,6 +310,7 @@ These are the ones where a key is necessary:
 - Whale Alert API: <https://docs.whale-alert.io/>
 - Ethplorer API: <https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API>
 - Cryptopanic API: <https://cryptopanic.com/developers/api/>
+- BitQuery API: <https://bitquery.io/pricing>
 
 When these are obtained, don't forget to update [config_terminal.py](/gamestonk_terminal/config_terminal.py).
 
@@ -336,6 +337,7 @@ Alternatively, you can also set them to the following environment variables:
 | [Whale Alert](https://docs.whale-alert.io/) | GT_API_WHALE_ALERT_KEY |
 | [Ethplorer](https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API) | GT_API_ETHPLORER_KEY |
 | [Cryptopanic](https://cryptopanic.com/developers/api/) | GT_API_CRYPTO_PANIC_KEY |
+| [BitQuery](https://bitquery.io/pricing) | GT_API_BITQUERY_KEY |
 
 Example:
 

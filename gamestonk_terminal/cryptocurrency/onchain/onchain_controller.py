@@ -1124,7 +1124,7 @@ class OnchainController:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="volt",
+            prog="senders",
             description="""
                       Display number of unique ethereum addresses which made a transaction in given time interval,
                       [Source: https://graphql.bitquery.io/]
