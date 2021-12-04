@@ -167,4 +167,4 @@ def get_closing(ticker: str) -> pd.Series:
         A list of closing prices for a ticker
     """
     tick = yf.Ticker(ticker)
-    return tick.history()["Close"]
+    return tick.history(period="1y")["Close"]
