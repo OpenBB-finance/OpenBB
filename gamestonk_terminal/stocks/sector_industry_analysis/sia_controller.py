@@ -50,8 +50,11 @@ class SectorIndustryAnalysisController:
         "country",
         "mktcap",
         "exchange",
-        "cpi",
         "cps",
+        "cpic",
+        "cpis",
+        "cpcs",
+        "cpci",
         "roa",
         "roe",
         "cr",
@@ -198,11 +201,12 @@ Country           : {self.country}
 Market Cap        : {self.mktcap}
 Exclude Exchanges : {self.exclude_exhanges}
 
-Statistics{c}
-    cpi           companies per industry in Country{m} and Market Cap{r}
-    cps           companies per sector in Country{m} and Market Cap{r}{r}{s}
-    cpcs          companies per country in a Sector{m} and Market Cap{r}{r}{i}
-    cpci          companies per country in a Industry{m} and Market Cap{r}
+Companies landscape statistics{c}
+    cps           companies per Sectors based on Country{m} and Market Cap{r}{c}
+    cpic          companies per Industry based on Country{m} and Market Cap{r}{s}
+    cpis          companies per Industry based on Sector{m} and Market Cap{r}{s}
+    cpcs          companies per Country based on Sector{m} and Market Cap{r}{i}
+    cpci          companies per Country based on Industry{m} and Market Cap{r}
 {r}{Style.DIM if params else ''}
 Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
     roa           return on assets
@@ -968,7 +972,7 @@ Returned tickers: {', '.join(self.tickers)}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="cps",
-            description="Companies per sector in a country",
+            description="Companies per Sectors based on Country and Market Cap",
         )
         parser.add_argument(
             "-M",
@@ -1004,7 +1008,7 @@ Returned tickers: {', '.join(self.tickers)}
         if not self.country:
             print("The country parameter needs to be selected!")
         else:
-            financedatabase_view.display_companies_per_sector(
+            financedatabase_view.display_companies_per_sector_based_country(
                 self.country,
                 self.mktcap,
                 ns_parser.export,
@@ -1012,33 +1016,32 @@ Returned tickers: {', '.join(self.tickers)}
                 ns_parser.max_sectors_to_display,
                 ns_parser.min_pct_to_display_sector,
             )
-        print("")
 
     @try_except
-    def call_cpi(self, other_args: List[str]):
-        """Process cpi command"""
+    def call_cpic(self, other_args: List[str]):
+        """Process cpic command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="cpi",
-            description="Companies per industry in a country",
+            prog="cpic",
+            description="Companies per Industry based on Country and Market Cap",
         )
         parser.add_argument(
             "-M",
             "--max",
-            dest="max_sectors_to_display",
+            dest="max_industries_to_display",
             default=15,
-            help="Maximum number of sectors to display",
+            help="Maximum number of industries to display",
             type=check_positive,
         )
         parser.add_argument(
             "-m",
             "--min",
             action="store",
-            dest="min_pct_to_display_sector",
+            dest="min_pct_to_display_industry",
             type=check_proportion_range,
             default=0.015,
-            help="Minimum percentage to display sector",
+            help="Minimum percentage to display industry",
         )
         parser.add_argument(
             "-r",
@@ -1057,7 +1060,7 @@ Returned tickers: {', '.join(self.tickers)}
         if not self.country:
             print("The country parameter needs to be selected!")
         else:
-            financedatabase_view.display_companies_per_industry(
+            financedatabase_view.display_companies_per_industry_based_country(
                 self.country,
                 self.mktcap,
                 ns_parser.export,
@@ -1065,7 +1068,141 @@ Returned tickers: {', '.join(self.tickers)}
                 ns_parser.max_sectors_to_display,
                 ns_parser.min_pct_to_display_sector,
             )
-        print("")
+
+    @try_except
+    def call_cpis(self, other_args: List[str]):
+        """Process cpis command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cpis",
+            description="Companies per Industry based on Sector and Market Cap",
+        )
+        parser.add_argument(
+            "-M",
+            "--max",
+            dest="max_industries_to_display",
+            default=15,
+            help="Maximum number of industries to display",
+            type=check_positive,
+        )
+        parser.add_argument(
+            "-m",
+            "--min",
+            action="store",
+            dest="min_pct_to_display_industry",
+            type=check_proportion_range,
+            default=0.015,
+            help="Minimum percentage to display industry",
+        )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if not ns_parser:
+            return
+
+        if not self.sector:
+            print("The sector parameter needs to be selected!")
+        else:
+            print("TODO")
+
+    @try_except
+    def call_cpcs(self, other_args: List[str]):
+        """Process cpcs command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cpcs",
+            description="Companies per Country based on Sector and Market Cap",
+        )
+        parser.add_argument(
+            "-M",
+            "--max",
+            dest="max_countries_to_display",
+            default=15,
+            help="Maximum number of countries to display",
+            type=check_positive,
+        )
+        parser.add_argument(
+            "-m",
+            "--min",
+            action="store",
+            dest="min_pct_to_display_country",
+            type=check_proportion_range,
+            default=0.015,
+            help="Minimum percentage to display country",
+        )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if not ns_parser:
+            return
+
+        if not self.sector:
+            print("The sector parameter needs to be selected!")
+        else:
+            print("TODO")
+
+    @try_except
+    def call_cpci(self, other_args: List[str]):
+        """Process cpci command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cpci",
+            description="Companies per Country based on Industry and Market Cap",
+        )
+        parser.add_argument(
+            "-M",
+            "--max",
+            dest="max_countries_to_display",
+            default=15,
+            help="Maximum number of countries to display",
+            type=check_positive,
+        )
+        parser.add_argument(
+            "-m",
+            "--min",
+            action="store",
+            dest="min_pct_to_display_country",
+            type=check_proportion_range,
+            default=0.015,
+            help="Minimum percentage to display country",
+        )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if not ns_parser:
+            return
+
+        if not self.industry:
+            print("The industry parameter needs to be selected!")
+        else:
+            print("TODO")
 
     @try_except
     def call_de(self, other_args: List[str]):

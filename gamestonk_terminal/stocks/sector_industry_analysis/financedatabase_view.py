@@ -237,7 +237,7 @@ def display_bars_financials(
     return dict(), list()
 
 
-def display_companies_per_sector(
+def display_companies_per_sector_based_country(
     country: str,
     mktcap: str = "",
     export: str = "",
@@ -376,6 +376,7 @@ def display_companies_per_sector(
             )
         else:
             print("No sector found. No pie chart will be depicted.")
+    print("")
 
     export_data(
         export,
@@ -385,7 +386,7 @@ def display_companies_per_sector(
     )
 
 
-def display_companies_per_industry(
+def display_companies_per_industry_based_country(
     country: str,
     mktcap: str = "",
     export: str = "",
@@ -528,6 +529,7 @@ def display_companies_per_industry(
         )
     else:
         print("No industry found. No pie chart will be depicted.")
+    print("")
 
     export_data(
         export,
