@@ -44,6 +44,22 @@ gamestonk\_terminal.cryptocurrency.defi.defirate\_view module
    :undoc-members:
    :show-inheritance:
 
+gamestonk\_terminal.cryptocurrency.defi.graph\_model module
+-----------------------------------------------------------
+
+.. automodule:: gamestonk_terminal.cryptocurrency.defi.graph_model
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gamestonk\_terminal.cryptocurrency.defi.graph\_view module
+----------------------------------------------------------
+
+.. automodule:: gamestonk_terminal.cryptocurrency.defi.graph_view
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 gamestonk\_terminal.cryptocurrency.defi.llama\_model module
 -----------------------------------------------------------
 

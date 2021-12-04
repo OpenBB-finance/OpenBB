@@ -16,6 +16,7 @@
 [![Bugs Closed][bugs-closed-shield]][bugs-closed-url]
 
 [![Build Status](https://github.com/GamestonkTerminal/GamestonkTerminal/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/GamestonkTerminal/GamestonkTerminal/actions)
+[![Documentation Status](https://readthedocs.org/projects/gamestonk-terminal/badge/?version=latest)](https://gamestonk-terminal.readthedocs.io/?badge=latest)
 [![GitHub release](https://img.shields.io/github/release/GamestonkTerminal/GamestonkTerminal.svg?maxAge=3600)](https://github.com/GamestonkTerminal/GamestonkTerminal/releases)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![TODOs](https://badgen.net/https/api.tickgit.com/badgen/github.com/GamestonkTerminal/GamestonkTerminal/main)](https://www.tickgit.com/browse?repo=github.com/GamestonkTerminal/GamestonkTerminal&branch=main)

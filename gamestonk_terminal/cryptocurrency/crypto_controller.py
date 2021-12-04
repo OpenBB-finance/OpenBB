@@ -61,7 +61,7 @@ class CryptoController:
         "find",
     ]
 
-    CHOICES_MENUS = ["ta", "dd", "ov", "disc", "onchain", "defi", "nft"]
+    CHOICES_MENUS = ["ta", "dd", "ov", "disc", "onchain", "defi", "nft", "pred"]
 
     SOURCES = {
         "bin": "Binance",
@@ -120,6 +120,7 @@ What do you want to do?
 >   ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables{dim}
 >   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
 >   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
+>   pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
 {Style.RESET_ALL if not self.current_coin else ""}
 >   onchain     information on different blockchains,   e.g.: eth gas fees, active asset addresses, whale alerts
 >   defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
@@ -732,6 +733,38 @@ What do you want to do?
 
             dd = dd_controller.menu(self.current_coin, self.source, self.symbol)
             if dd is False:
+                self.print_help()
+            else:
+                return True
+        else:
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
+
+    def call_pred(self, _):
+        """Process pred command"""
+        if not self.current_coin:
+            print(
+                "No coin loaded.  Please use `load <coin>` to access prediction menu\n."
+            )
+            return
+
+        if self.source != "cg":
+            print("Currently only supports CoinGecko source.\n")
+            return
+        if self.current_coin:
+            from gamestonk_terminal.cryptocurrency.prediction_techniques import (
+                pred_controller,
+            )
+            from gamestonk_terminal.cryptocurrency import (
+                cryptocurrency_helpers as c_help,
+            )
+
+            pred = pred_controller.menu(
+                self.current_coin,
+                c_help.load_cg_coin_data(self.current_coin, "USD", 365, "1D"),
+            )
+            if pred is False:
                 self.print_help()
             else:
                 return True

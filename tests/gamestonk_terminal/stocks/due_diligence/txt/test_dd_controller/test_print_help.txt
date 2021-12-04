@@ -1,0 +1,27 @@
+
+Due Diligence:
+    cls           clear screen
+    ?/help        show this menu again
+    q             quit this menu, and shows back to main menu
+    quit          quit to abandon program
+    load          load new ticker
+
+Ticker: 
+
+Finviz:
+    analyst       analyst prices and ratings of the company
+FMP:
+    rating        rating over time (daily)
+Finnhub:
+    rot           number of analysts ratings over time (monthly)
+Business Insider:
+    pt            price targets over time
+    est           quarter and year analysts earnings estimates
+Market Watch:
+    sec           SEC filings
+csimarket:
+    supplier      list of suppliers
+    customer      list of customers
+cathiesark.com
+    arktrades     get ARK trades for ticker
+        

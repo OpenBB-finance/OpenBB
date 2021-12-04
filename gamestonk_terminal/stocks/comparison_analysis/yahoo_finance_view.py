@@ -30,7 +30,6 @@ d_candle_types = {
 
 
 def display_historical(
-    ticker: str,
     similar_tickers: List[str],
     start: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
     candle_type: str = "a",
@@ -41,8 +40,6 @@ def display_historical(
 
     Parameters
     ----------
-    ticker : str
-        Base ticker
     similar_tickers : List[str]
         List of similar tickers
     start : str, optional
@@ -54,12 +51,9 @@ def display_historical(
     export : str, optional
         Format to export historical prices, by default ""
     """
-    ordered_tickers = [ticker, *similar_tickers]
-    df_similar = yahoo_finance_model.get_historical(
-        ticker, similar_tickers, start, candle_type
-    )
-    # To plot with ticker first
-    df_similar = df_similar[ordered_tickers]
+    df_similar = yahoo_finance_model.get_historical(similar_tickers, start, candle_type)
+    df_similar = df_similar[similar_tickers]
+
     if np.any(df_similar.isna()):
         nan_tickers = df_similar.columns[df_similar.isna().sum() >= 1].to_list()
         print(f"NaN values found in: {', '.join(nan_tickers)}.  Replacing with zeros.")
@@ -74,7 +68,7 @@ def display_historical(
             index=df_similar.index,
         )
     df_similar.plot(ax=ax)
-    ax.set_title(f"Similar companies to {ticker}")
+    ax.set_title("Historical price of similar companies")
     ax.set_xlabel("Time")
     ax.set_ylabel(f"{['','Normalized'][normalize]} Share Price {['($)',''][normalize]}")
     ax.grid(b=True, which="major", color="#666666", linestyle="-")
@@ -90,18 +84,14 @@ def display_historical(
 
 
 def display_volume(
-    ticker: str,
     similar_tickers: List[str],
     start: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
-    normalize: bool = True,
     export: str = "",
 ):
     """Display volume stock prices. [Source: Yahoo Finance]
 
     Parameters
     ----------
-    ticker : str
-        Base ticker
     similar_tickers : List[str]
         List of similar tickers
     start : str, optional
@@ -111,28 +101,17 @@ def display_volume(
     export : str, optional
         Format to export historical prices, by default ""
     """
-    ordered_tickers = [ticker, *similar_tickers]
-    df_similar = yahoo_finance_model.get_historical(ticker, similar_tickers, start, "v")
-    # To plot with ticker first
-    df_similar = df_similar[ordered_tickers]
+    df_similar = yahoo_finance_model.get_historical(similar_tickers, start, "v")
+    df_similar = df_similar[similar_tickers]
 
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    # This puts everything on 0-1 scale for visualizing
-    if normalize:
-        mm_scale = MinMaxScaler()
-        df_similar = pd.DataFrame(
-            mm_scale.fit_transform(df_similar),
-            columns=df_similar.columns,
-            index=df_similar.index,
-        )
-    else:
-        df_similar = df_similar.div(1_000_000)
+    df_similar = df_similar.div(1_000_000)
 
     df_similar.plot(ax=ax)
-    ax.set_title("Volume over time")
+    ax.set_title("Historical volume of similar companies")
     # ax.plot(df_similar.index, df_similar[ticker].values/1_000_000)
     ax.set_xlabel("Date")
-    ax.set_ylabel(f"{['','Normalized'][normalize]} Volume {['[K]',''][normalize]}")
+    ax.set_ylabel("Volume [M]")
     ax.grid(b=True, which="major", color="#666666", linestyle="-")
     # ensures that the historical data starts from same datapoint
     ax.set_xlim([df_similar.index[0], df_similar.index[-1]])
@@ -146,7 +125,6 @@ def display_volume(
 
 
 def display_correlation(
-    ticker: str,
     similar_tickers: List[str],
     start: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
     candle_type: str = "a",
@@ -157,8 +135,6 @@ def display_correlation(
 
     Parameters
     ----------
-    ticker : str
-        Base ticker
     similar_tickers : List[str]
         List of similar tickers
     start : str, optional
@@ -166,12 +142,9 @@ def display_correlation(
     candle_type : str, optional
         OHLCA column to use, by default "a" for Adjusted Close
     """
-    ordered_tickers = [ticker, *similar_tickers]
-    df_similar = yahoo_finance_model.get_historical(
-        ticker, similar_tickers, start, candle_type
-    )
-    # To plot with ticker first
-    df_similar = df_similar[ordered_tickers]
+    df_similar = yahoo_finance_model.get_historical(similar_tickers, start, candle_type)
+    df_similar = df_similar[similar_tickers]
+
     if np.any(df_similar.isna()):
         nan_tickers = df_similar.columns[df_similar.isna().sum() >= 1].to_list()
         print(f"NaN values found in: {', '.join(nan_tickers)}.  Backfilling data")
@@ -189,6 +162,6 @@ def display_correlation(
         vmax=1,
         mask=mask,
     )
-    plt.title("Correlation Heatmap")
+    plt.title("Correlation Heatmap of similar companies")
     plt.show()
     print("")
