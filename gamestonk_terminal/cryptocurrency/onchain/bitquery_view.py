@@ -3,6 +3,10 @@ __docformat__ = "numpy"
 
 import os
 from tabulate import tabulate
+
+from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
+    very_long_number_formatter,
+)
 from gamestonk_terminal.cryptocurrency.onchain import bitquery_model
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal import feature_flags as gtff
@@ -46,6 +50,10 @@ def display_dex_trades(
         df = df.sort_values(by=sortby, ascending=descend)
 
     df_data = df.copy()
+
+    df[["tradeAmount", "trades"]] = df[["tradeAmount", "trades"]].applymap(
+        lambda x: very_long_number_formatter(x)
+    )
 
     if gtff.USE_TABULATE_DF:
         print(
@@ -105,7 +113,12 @@ def display_daily_volume_for_given_pair(
         vs=vs,
         limit=top,
     ).sort_values(by=sortby, ascending=descend)
+
     df_data = df.copy()
+
+    df[["tradeAmountUSD", "trades"]] = df[["tradeAmountUSD", "trades"]].applymap(
+        lambda x: very_long_number_formatter(x)
+    )
 
     if gtff.USE_TABULATE_DF:
         print(
@@ -163,7 +176,11 @@ def display_dex_volume_for_token(
         token=token,
         trade_amount_currency=trade_amount_currency,
     ).sort_values(by=sortby, ascending=descend)
+
     df_data = df.copy()
+    df[["tradeAmount", "trades"]] = df[["tradeAmount", "trades"]].applymap(
+        lambda x: very_long_number_formatter(x)
+    )
 
     if gtff.USE_TABULATE_DF:
         print(
@@ -222,6 +239,11 @@ def display_ethereum_unique_senders(
         by=sortby, ascending=descend
     )
 
+    df[["uniqueSenders", "transactions", "maxGasPrice"]] = df[
+        ["uniqueSenders", "transactions", "maxGasPrice"]
+    ].applymap(lambda x: very_long_number_formatter(x))
+    df_data = df.copy()
+
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
@@ -240,7 +262,7 @@ def display_ethereum_unique_senders(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "senders",
-        df,
+        df_data,
     )
 
 
@@ -276,6 +298,10 @@ def display_most_traded_pairs(
     df = bitquery_model.get_most_traded_pairs(
         exchange=exchange, limit=days
     ).sort_values(by=sortby, ascending=descend)
+    df_data = df.copy()
+    df[["tradeAmount", "trades"]] = df[["tradeAmount", "trades"]].applymap(
+        lambda x: very_long_number_formatter(x)
+    )
 
     if gtff.USE_TABULATE_DF:
         print(
@@ -294,8 +320,8 @@ def display_most_traded_pairs(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "top",
-        df,
+        "mt",
+        df_data,
     )
 
 

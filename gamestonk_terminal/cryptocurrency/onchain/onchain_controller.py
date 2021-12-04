@@ -17,6 +17,7 @@ from gamestonk_terminal.helper_funcs import (
     check_int_range,
     try_except,
     system_clear,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
 
 from gamestonk_terminal.cryptocurrency.onchain import (
@@ -213,6 +214,7 @@ class OnchainController:
                 "to",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -374,6 +376,7 @@ class OnchainController:
                 "tokenSymbol",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -439,6 +442,7 @@ class OnchainController:
             default="timestamp",
             choices=["timestamp", "transactionHash", "token", "value"],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -507,6 +511,7 @@ class OnchainController:
                 "share",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -690,6 +695,7 @@ class OnchainController:
                 "value",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -809,6 +815,7 @@ class OnchainController:
                 "low",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -902,6 +909,7 @@ class OnchainController:
             default="tradeAmount",
             choices=["trades", "tradeAmount", "exchange"],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -910,17 +918,10 @@ class OnchainController:
             default=False,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-
         try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            )
 
             if not ns_parser:
                 return
@@ -1002,6 +1003,7 @@ class OnchainController:
                 "trades",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -1010,17 +1012,14 @@ class OnchainController:
             default=False,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-
         try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if other_args:
+                if not other_args[0][0] == "-":
+                    other_args.insert(0, "-c")
+
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            )
 
             if not ns_parser:
                 return
@@ -1096,17 +1095,14 @@ class OnchainController:
             default=False,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-
         try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if other_args:
+                if not other_args[0][0] == "-":
+                    other_args.insert(0, "-c")
+
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            )
 
             if not ns_parser:
                 return
@@ -1183,17 +1179,10 @@ class OnchainController:
             default=False,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-
         try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            )
 
             if not ns_parser:
                 return
@@ -1239,6 +1228,7 @@ class OnchainController:
             default="Uniswap",
             choices=bitquery_model.DECENTRALIZED_EXCHANGES,
         )
+
         parser.add_argument(
             "-d",
             "--days",
@@ -1266,17 +1256,10 @@ class OnchainController:
             default=False,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-
         try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            )
 
             if not ns_parser:
                 return
@@ -1362,17 +1345,14 @@ class OnchainController:
             default=False,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-
         try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if other_args:
+                if not other_args[0][0] == "-":
+                    other_args.insert(0, "-c")
+
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            )
 
             if not ns_parser:
                 return
@@ -1404,7 +1384,7 @@ Eth Gas Station:
 Whale Alert:
     whales            check crypto wales transactions
 
-BitQuery:
+BitQuery (note: some commands execution can take > 10 seconds):
     trades            last trades by dex or month
     volp              daily volume for crypto pair
     volt              token volume on DEXes
