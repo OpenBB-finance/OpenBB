@@ -22,10 +22,11 @@ def get_sentiments(tickers: List[str]) -> pd.DataFrame:
 
     df_sentiment = pd.DataFrame()
     dates_sentiment = []
+    tickers_to_remove = list()
     for ticker in tickers:
         result = requests.get(f"https://api.finbrain.tech/v0/sentiments/{ticker}")
         if result.status_code == 200:
-            if "sentimentAnalysis" in result.json():
+            if "ticker" in result.json() and "sentimentAnalysis" in result.json():
                 df_sentiment[ticker] = [
                     float(val)
                     for val in list(result.json()["sentimentAnalysis"].values())
@@ -33,11 +34,14 @@ def get_sentiments(tickers: List[str]) -> pd.DataFrame:
                 dates_sentiment = list(result.json()["sentimentAnalysis"].keys())
             else:
                 print(f"Unexpected data format from FinBrain API for {ticker}")
-                tickers.remove(ticker)
+                tickers_to_remove.append(ticker)
 
         else:
             print(f"Request error in retrieving {ticker} sentiment from FinBrain API")
-            tickers.remove(ticker)
+            tickers_to_remove.append(ticker)
+
+    for ticker in tickers_to_remove:
+        tickers.remove(ticker)
 
     if not df_sentiment.empty:
         df_sentiment.index = dates_sentiment

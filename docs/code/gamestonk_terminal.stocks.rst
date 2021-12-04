@@ -16,6 +16,7 @@ Subpackages
    gamestonk_terminal.stocks.fundamental_analysis
    gamestonk_terminal.stocks.government
    gamestonk_terminal.stocks.insider
+   gamestonk_terminal.stocks.options
    gamestonk_terminal.stocks.prediction_techniques
    gamestonk_terminal.stocks.quantitative_analysis
    gamestonk_terminal.stocks.research

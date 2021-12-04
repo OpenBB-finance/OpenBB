@@ -11,13 +11,11 @@ from gamestonk_terminal.stocks.comparison_analysis import finviz_compare_model
 from gamestonk_terminal import feature_flags as gtff
 
 
-def screener(data_type: str, ticker: str, similar: List[str], export: str = ""):
+def screener(similar: List[str], data_type: str, export: str = ""):
     """Screener
 
     Parameters
     ----------
-    ticker : str
-        Main ticker to compare income
     similar : List[str]
         Similar companies to compare income with
     data_type : str
@@ -25,8 +23,7 @@ def screener(data_type: str, ticker: str, similar: List[str], export: str = ""):
     export : str
         Format to export data
     """
-    all_tickers = [ticker, *similar]
-    df_screen = finviz_compare_model.get_comparison_data(data_type, all_tickers)
+    df_screen = finviz_compare_model.get_comparison_data(data_type, similar)
 
     if df_screen.empty:
         print("No screened data found.")

@@ -72,6 +72,7 @@ class StocksController:
         "disc",
         "dps",
         "scr",
+        "sia",
         "ins",
         "gov",
         "res",
@@ -131,15 +132,16 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 {reset_style_if_no_ticker}
 >   options     options menu,  \t\t\t e.g.: chains, open interest, greeks, parity
 >   disc        discover trending stocks, \t e.g. map, sectors, high short interest
+>   sia         sector and industry analysis, \t e.g. companies per sector, quick ratio per industry and country
 >   dps         dark pool and short data, \t e.g. darkpool, short interest, ftd
 >   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
 >   ins         insider trading,         \t e.g.: latest penny stock buys, top officer purchases
 >   gov         government menu, \t\t e.g. house trading, contracts, corporate lobbying
->   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google{dim_if_no_ticker}
+>   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google
+>   ca          comparison analysis,     \t e.g.: get similar, historical, correlation, financials{dim_if_no_ticker}
 >   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings
 >   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool
 >   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
->   ca          comparison analysis,     \t e.g.: historical, correlation, financials
 >   bt          strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies
 >   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
 >   qa          quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis
@@ -447,6 +449,16 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         else:
             return True
 
+    def call_sia(self, _):
+        """Process ins command"""
+        from gamestonk_terminal.stocks.sector_industry_analysis import sia_controller
+
+        ret = sia_controller.menu(self.ticker, self.start, self.interval, self.stock)
+        if ret is False:
+            self.print_help()
+        else:
+            return True
+
     def call_ins(self, _):
         """Process ins command"""
         from gamestonk_terminal.stocks.insider import insider_controller
@@ -523,13 +535,10 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_ca(self, _):
         """Process ca command"""
-        if not self.ticker:
-            print("Use 'load <ticker>' prior to this command!", "\n")
-            return
 
         from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 
-        ret = ca_controller.menu(self.ticker, self.start, self.interval, self.stock)
+        ret = ca_controller.menu([self.ticker] if self.ticker else "")
 
         if ret is False:
             self.print_help()
