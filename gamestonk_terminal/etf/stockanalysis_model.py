@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 from typing import List, Tuple
+import json
 
 import pandas as pd
 import requests
@@ -20,16 +21,13 @@ def get_all_names_symbols() -> Tuple[List[str], List[str]]:
         List of all available etf names
     """
     r = requests.get(
-        "https://api.stockanalysis.com/etf/", headers={"User-Agent": get_user_agent()}
+        "https://stockanalysis.com/etf/", headers={"User-Agent": get_user_agent()}
     )
-    soup = bs(r.text, "html.parser").findAll("ul", {"class": "no-spacing"})
-    all_links = soup[0].findAll("li")
-    etf_symbols = []
-    etf_names = []
-    for link in all_links:
-        etf_symbols.append(link.text.split("-")[0].strip(" "))
-        etf_names.append(link.text.split("-")[1][1:])
-
+    soup2 = bs(r.text, "html.parser")
+    script = soup2.find("script", {"id": "__NEXT_DATA__"})
+    etfs = pd.DataFrame(json.loads(script.text)["props"]["pageProps"]["stocks"])
+    etf_symbols = etfs.s.to_list()
+    etf_names = etfs.n.to_list()
     return etf_symbols, etf_names
 
 
@@ -80,7 +78,7 @@ def get_etf_holdings(symbol: str) -> pd.DataFrame:
         Dataframe of holdings
     """
 
-    link = f"https://api.stockanalysis.com/etf/{symbol}/holdings/"
+    link = f"https://stockanalysis.com/etf/{symbol}/holdings/"
     r = requests.get(link, headers={"User-Agent": get_user_agent()})
     soup = bs(r.text, "html.parser")
     soup = soup.find("table")
