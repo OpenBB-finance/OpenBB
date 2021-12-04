@@ -172,7 +172,11 @@ class SectorIndustryAnalysisController:
     def print_help(self):
         """Print help"""
         params = not any([self.industry, self.sector, self.country])
-
+        s = Style.DIM if not self.sector else ""
+        i = Style.DIM if not self.industry else ""
+        c = Style.DIM if not self.country else ""
+        m = Style.DIM if not self.mktcap else ""
+        r = Style.RESET_ALL
         help_text = f"""
 Sector and Industry Analysis:
     cls           clear screen
@@ -193,11 +197,13 @@ Sector            : {self.sector}
 Country           : {self.country}
 Market Cap        : {self.mktcap}
 Exclude Exchanges : {self.exclude_exhanges}
-{Style.DIM if not self.country else ''}
-Country (and Market Cap)
-    cpi           companies per industry in country
-    cps           companies per sector in country{Style.RESET_ALL if not self.country else ''}
-{Style.DIM if params else ''}
+
+Statistics{c}
+    cpi           companies per industry in Country{m} and Market Cap{r}
+    cps           companies per sector in Country{m} and Market Cap{r}{r}{s}
+    cpcs          companies per country in a Sector{m} and Market Cap{r}{r}{i}
+    cpci          companies per country in a Industry{m} and Market Cap{r}
+{r}{Style.DIM if params else ''}
 Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
     roa           return on assets
     roe           return on equity
@@ -219,11 +225,11 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
     td            total debt
     ebitda        earnings before interest, taxes, depreciation and amortization
     ebitdam       ebitda margins
-    rec           recommendation mean{Style.RESET_ALL if params else ''}
+    rec           recommendation mean{r if params else ''}
 {Style.DIM if not self.tickers else ''}
 Returned tickers: {', '.join(self.tickers)}
 >   ca            take these to comparison analysis menu
-{Style.RESET_ALL if not self.tickers else ''}"""
+{r if not self.tickers else ''}"""
         print(help_text)
 
     def switch(self, an_input: str):
