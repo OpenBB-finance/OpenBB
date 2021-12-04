@@ -67,6 +67,11 @@ class OnchainController:
         "address",
         "active",
         "trades",
+        "volp",
+        "volt",
+        "mt",
+        "senders",
+        "spreads",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -865,7 +870,7 @@ class OnchainController:
             "--vs",
             dest="vs",
             type=str,
-            help="Currency of displayed trade amount. Default: USD",
+            help="Currency of displayed trade amount.",
             default="USD",
             choices=bitquery_model.CURRENCIES,
         )
@@ -902,7 +907,7 @@ class OnchainController:
             action="store_false",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
-            default=True,
+            default=False,
         )
 
         parser.add_argument(
@@ -933,6 +938,457 @@ class OnchainController:
         except Exception as e:
             print(e)
 
+    def call_volp(self, other_args: List[str]):
+        """Process volp command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="volp",
+            description="""
+                      Display daily volume for given crypto pair
+                      [Source: https://graphql.bitquery.io/]
+                  """,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--coin",
+            dest="coin",
+            type=str,
+            help="ERC20 token symbol or address.",
+            default="ETH",
+            required="-h" not in other_args,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number records",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-vs", "--vs", dest="vs", type=str, help="Quote currency", default="USDT"
+        )
+
+        parser.add_argument(
+            "-d",
+            "--days",
+            dest="days",
+            type=check_positive,
+            help="Number of days to display data for.",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column.",
+            default="date",
+            choices=[
+                "date",
+                "exchange",
+                "base",
+                "quote",
+                "open",
+                "high",
+                "low",
+                "close",
+                "tradeAmountUSD",
+                "trades",
+            ],
+        )
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=False,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            bitquery_view.display_daily_volume_for_given_pair(
+                token=ns_parser.coin,
+                vs=ns_parser.vs,
+                top=ns_parser.days,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e)
+
+    def call_volt(self, other_args: List[str]):
+        """Process volt command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="volt",
+            description="""
+                      Display token volume on different Decentralized Exchanges.
+                      [Source: https://graphql.bitquery.io/]
+                  """,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--coin",
+            dest="coin",
+            type=str,
+            help="ERC20 token symbol or address.",
+            default="ETH",
+            required="-h" not in other_args,
+        )
+
+        parser.add_argument(
+            "-vs",
+            "--vs",
+            dest="vs",
+            type=str,
+            help="Currency of displayed trade amount.",
+            default="USD",
+            choices=bitquery_model.CURRENCIES,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number records",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column.",
+            default="trades",
+            choices=["exchange", "coin", "tradeAmount", "trades"],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=False,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            bitquery_view.display_dex_volume_for_token(
+                token=ns_parser.coin,
+                trade_amount_currency=ns_parser.vs,
+                top=ns_parser.top,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e)
+
+    def call_senders(self, other_args: List[str]):
+        """Process senders command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="volt",
+            description="""
+                      Display number of unique ethereum addresses which made a transaction in given time interval,
+                      [Source: https://graphql.bitquery.io/]
+                  """,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number records. (Maximum available time period is 90 days."
+            "Depending on chosen time period, top N records will be recalculated. E.g."
+            "For interval: month, and top: 10, period of calculation equals to 300, "
+            "but because of max days limit: 90, it will only return last 3 months (3 records). ",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column.",
+            default="date",
+            choices=[
+                "date",
+                "uniqueSenders",
+                "transactions",
+                "avgGasPrice",
+                "medGasPrice",
+                "maxGasPrice",
+            ],
+        )
+
+        parser.add_argument(
+            "-i",
+            "--interval",
+            dest="interval",
+            type=str,
+            help="Time interval in which ethereum address made transaction. month, week or day. "
+            "Maximum time period is 90 days (3 months, 14 weeks)",
+            default="day",
+            choices=["day", "month", "week"],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=False,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            bitquery_view.display_ethereum_unique_senders(
+                interval=ns_parser.interval,
+                limit=ns_parser.top,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e)
+
+    def call_mt(self, other_args: List[str]):
+        """Process mt command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="mt",
+            description="""
+                      Display most traded crypto pairs on given decentralized exchange in chosen time period.
+                      [Source: https://graphql.bitquery.io/]
+                  """,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number records",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-e",
+            "--exchange",
+            dest="exchange",
+            type=str,
+            help="Decentralized exchange name.",
+            default="Uniswap",
+            choices=bitquery_model.DECENTRALIZED_EXCHANGES,
+        )
+        parser.add_argument(
+            "-d",
+            "--days",
+            dest="days",
+            type=check_positive,
+            help="Number of days to display data for.",
+            default=90,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column.",
+            default="tradeAmount",
+            choices=["base", "quoted", "trades", "tradeAmount"],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=False,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            bitquery_view.display_most_traded_pairs(
+                days=ns_parser.days,
+                top=ns_parser.top,
+                exchange=ns_parser.exchange,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e)
+
+    def call_spreads(self, other_args: List[str]):
+        """Process spreads command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="spreads",
+            description="""
+                      Display average bid, ask prices, spread for given crypto pair for chosen time period
+                      [Source: https://graphql.bitquery.io/]
+                  """,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--coin",
+            dest="coin",
+            type=str,
+            help="ERC20 token symbol or address.",
+            default="ETH",
+            required="-h" not in other_args,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number records",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-vs", "--vs", dest="vs", type=str, help="Quote currency", default="USDT"
+        )
+
+        parser.add_argument(
+            "-d",
+            "--days",
+            dest="days",
+            type=check_positive,
+            help="Number of days to display data for.",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column.",
+            default="date",
+            choices=[
+                "date",
+                "baseCurrency",
+                "quoteCurrency",
+                "dailySpread",
+                "averageBidPrice",
+                "averageAskPrice",
+            ],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=False,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            bitquery_view.display_spread_for_crypto_pair(
+                token=ns_parser.coin,
+                vs=ns_parser.vs,
+                days=ns_parser.days,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e)
+
     def print_help(self):
         """Print help"""
         help_text = """
@@ -947,6 +1403,14 @@ Eth Gas Station:
 
 Whale Alert:
     whales            check crypto wales transactions
+
+BitQuery:
+    trades            last trades by dex or month
+    volp              daily volume for crypto pair
+    volt              token volume on DEXes
+    senders           unique ethereum addresses which made a transaction
+    mt                top traded crypto pairs on given decentralized exchange
+    spreads           bid, ask prices, average spread for given crypto pair
 """
         help_text += f"\nEthereum address: {self.address if self.address else '?'}"
         help_text += (

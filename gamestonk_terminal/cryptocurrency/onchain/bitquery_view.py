@@ -77,6 +77,29 @@ def display_daily_volume_for_given_pair(
     descend: bool = False,
     export: str = "",
 ) -> None:
+    """Display daily volume for given pair
+    [Source: https://graphql.bitquery.io/]
+
+    Parameters
+    ----------
+    token: str
+        ERC20 token symbol or address
+    vs: str
+        Quote currency.
+    top: int
+        Number of records to display
+    sortby: str
+        Key by which to sort data
+    descend: bool
+        Flag to sort data descending
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    Returns
+    -------
+    pd.DataFrame
+        Token volume on different decentralized exchanges
+    """
+
     df = bitquery_model.get_daily_dex_volume_for_given_pair(
         token=token,
         vs=vs,
@@ -271,7 +294,7 @@ def display_most_traded_pairs(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "mtrade",
+        "top",
         df,
     )
 

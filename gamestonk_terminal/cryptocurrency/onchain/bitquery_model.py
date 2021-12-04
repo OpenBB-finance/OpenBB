@@ -28,29 +28,22 @@ BQ_URL = "https://graphql.bitquery.io"
 CURRENCIES = ["ETH", "USD", "BTC", "USDT"]
 DECENTRALIZED_EXCHANGES = [
     "1inch",
-    "1inch Liquidity Protocol",
     "AfroDex",
-    "Air Swap",
     "AirSwap",
     "Amplbitcratic",
     "Balancer",
-    "Bamboo Relay",
-    "Bancor Network",
     "BestSwap",
     "Bitox",
-    "CRO DeFi Swap",
     "CellSwap",
     "Cellswap",
     "Cofix",
     "Coinchangex",
-    "Cream Pool Token",
     "Curve",
     "DDEX",
     "DUBIex",
     "DecentrEx",
     "DeversiFi",
     "Dodo",
-    "ERC dEX",
     "ETHERCExchange",
     "EtherBlockchain",
     "EtherDelta",
@@ -62,34 +55,28 @@ DECENTRALIZED_EXCHANGES = [
     "GUDecks",
     "GUDeks",
     "HiSwap",
-    "Hydro Hybrid Exchange",
     "IDEX",
-    "Kyber Network",
     "LedgerDex",
     "Matcha",
     "Miniswap",
     "Mooniswap",
     "Oasis",
     "OpenRelay",
-    "Radar Relay",
     "S.Finance",
     "SakeSwap",
     "SeedDex",
-    "Shark Relay",
     "SingularX",
     "StarBitEx",
     "SushiSwap",
     "SwapX",
     "SwitchDex",
     "TacoSwap",
-    "The Ocean",
     "TokenJar",
     "TokenStore",
     "TokenTrove",
     "Tokenlon",
     "TradexOne",
     "Uniswap",
-    "Zerox Exchange",
     "ZeusSwap",
     "dYdX",
     "dex.blue",
@@ -316,7 +303,7 @@ def get_daily_dex_volume_for_given_pair(
     token: str
         ERC20 token symbol
     vs: str
-        Quoted currency.
+        Quote currency.
 
     Returns
     -------
@@ -369,7 +356,11 @@ def get_daily_dex_volume_for_given_pair(
     if not data:
         return pd.DataFrame()
 
-    df = pd.json_normalize(data["ethereum"]["dexTrades"])
+    dex_trades = data["ethereum"]["dexTrades"]
+    if not dex_trades:
+        raise ValueError(f"List of dex trades is empty {data['ethereum']}")
+
+    df = pd.json_normalize(dex_trades)
     df.columns = [
         "trades",
         "tradeAmountUSD",
@@ -566,7 +557,8 @@ def get_most_traded_pairs(
 
     df = pd.json_normalize(data["ethereum"]["dexTrades"])
     df.columns = ["trades", "tradeAmount", "base", "quoted"]
-    return df[["base", "quoted", "trades", "tradeAmount"]]
+    df["exchange"] = exchange
+    return df[["exchange", "base", "quoted", "trades", "tradeAmount"]]
 
 
 def get_spread_for_crypto_pair(
