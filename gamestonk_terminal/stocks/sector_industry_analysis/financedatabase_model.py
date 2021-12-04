@@ -1,42 +1,83 @@
 """Finance Database Model"""
 __docformat__ = "numpy"
-# pylint:disable=too-many-arguments
+# pylint:disable=too-many-arguments,unexpected-keyword-arg
 
 from tqdm import tqdm
 import financedatabase as fd
 import yfinance as yf
 
 
-def get_countries():
-    """Get all countries in Yahoo Finance data. [Source: Finance Database]
+def get_countries(industry: str = "", sector: str = ""):
+    """Get all countries in Yahoo Finance data based on sector or industry. [Source: Finance Database]
+
+    Parameters
+    ----------
+    industry : str
+        Filter retrieved countries by industry
+    sector : str
+        Filter retrieved countries by sector
 
     Returns
     -------
     list
         List of possible countries
     """
+    # industry takes priority since there's 1 sector per industry, but multiple industries per sector
+    if industry:
+        return fd.show_options("equities", industry=True)[industry]["Countries"]
+    if sector:
+        return fd.show_options("equities", sector=sector)["Countries"]
     return fd.show_options("equities", "countries")
 
 
-def get_sectors():
-    """Get all sectors in Yahoo Finance data. [Source: Finance Database]
+def get_sectors(industry: str = "", country: str = ""):
+    """Get all sectors in Yahoo Finance data based on country or industry. [Source: Finance Database]
+
+    Parameters
+    ----------
+    industry : str
+        Filter retrieved sectors by industry
+    country : str
+        Filter retrieved sectors by country
 
     Returns
     -------
     list
         List of possible sectors
     """
+    # industry takes priority since there's 1 sector per industry, but multiple industries per country
+    if industry:
+        return [fd.show_options("equities", industry=True)[industry]["Sector"]]
+    if country:
+        return fd.show_options("equities", country=country)["Sectors"]
+
     return fd.show_options("equities", "sectors")
 
 
-def get_industries():
-    """Get all industries in Yahoo Finance data. [Source: Finance Database]
+def get_industries(country: str = "", sector: str = ""):
+    """Get all industries in Yahoo Finance data based on country or sector. [Source: Finance Database]
+
+    Parameters
+    ----------
+    country : str
+        Filter retrieved industries by country
+    sector : str
+        Filter retrieved industries by sector
 
     Returns
     -------
     list
         List of possible industries
     """
+    if country and sector:
+        return fd.show_options("equities", country=country, sector=sector)
+
+    if country:
+        return fd.show_options("equities", country=country)["Industries"]
+
+    if sector:
+        return fd.show_options("equities", sector=sector)["Industries"]
+
     return fd.show_options("equities", "industries")
 
 

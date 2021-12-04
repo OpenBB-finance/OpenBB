@@ -16,30 +16,6 @@ from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
 from gamestonk_terminal.stocks.sector_industry_analysis import financedatabase_model
 
 
-def display_countries():
-    """
-    Display all countries in Yahoo Finance data. [Source: Finance Database]
-    """
-    for country in financedatabase_model.get_countries():
-        print(country)
-
-
-def display_sectors():
-    """
-    Display all sectors in Yahoo Finance data. [Source: Finance Database]
-    """
-    for sector in financedatabase_model.get_sectors():
-        print(sector)
-
-
-def display_industries():
-    """
-    Display all industries in Yahoo Finance data. [Source: Finance Database]
-    """
-    for industry in financedatabase_model.get_industries():
-        print(industry)
-
-
 def display_bars_financials(
     finance_metric: str,
     country: str,

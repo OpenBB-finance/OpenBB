@@ -201,8 +201,8 @@ Country           : {self.country}
 Market Cap        : {self.mktcap}
 Exclude Exchanges : {self.exclude_exhanges}
 
-Companies landscape statistics{c}
-    cps           companies per Sectors based on Country{m} and Market Cap{r}{c}
+Statistics{c}
+    cps           companies per Sector based on Country{m} and Market Cap{r}{c}
     cpic          companies per Industry based on Country{m} and Market Cap{r}{s}
     cpis          companies per Industry based on Sector{m} and Market Cap{r}{s}
     cpcs          companies per Country based on Sector{m} and Market Cap{r}{i}
@@ -363,15 +363,24 @@ Returned tickers: {', '.join(self.tickers)}
         if not ns_parser:
             return
 
+        possible_industries = financedatabase_model.get_industries(
+            country=self.country,
+            sector=self.sector,
+        )
+
         if ns_parser.name:
-            if " ".join(ns_parser.name) in financedatabase_model.get_industries():
+            if " ".join(ns_parser.name) in possible_industries:
                 self.industry = " ".join(ns_parser.name)
+                # if we get the industry, then we also automatically know the sector
+                self.sector = financedatabase_model.get_sectors(industry=self.industry)[
+                    0
+                ]
             else:
                 print(f"Industry '{' '.join(ns_parser.name)}' does not exist.")
 
                 similar_cmd = difflib.get_close_matches(
                     " ".join(ns_parser.name),
-                    financedatabase_model.get_industries(),
+                    possible_industries,
                     n=1,
                     cutoff=0.75,
                 )
@@ -379,11 +388,15 @@ Returned tickers: {', '.join(self.tickers)}
                 if similar_cmd:
                     print(f"Replacing by '{similar_cmd[0]}'")
                     self.industry = similar_cmd[0]
+                    # if we get the industry, then we also automatically know the sector
+                    self.sector = financedatabase_model.get_sectors(
+                        industry=self.industry
+                    )[0]
 
                 else:
                     similar_cmd = difflib.get_close_matches(
                         " ".join(ns_parser.name),
-                        financedatabase_model.get_industries(),
+                        possible_industries,
                         n=1,
                         cutoff=0.5,
                     )
@@ -391,7 +404,8 @@ Returned tickers: {', '.join(self.tickers)}
                         print(f"Did you mean '{similar_cmd[0]}'?")
 
         else:
-            financedatabase_view.display_industries()
+            for industry in possible_industries:
+                print(industry)
 
         self.stocks_data = {}
         print("")
@@ -422,15 +436,19 @@ Returned tickers: {', '.join(self.tickers)}
         if not ns_parser:
             return
 
+        possible_sectors = financedatabase_model.get_sectors(
+            self.industry, self.country
+        )
+
         if ns_parser.name:
-            if " ".join(ns_parser.name) in financedatabase_model.get_sectors():
+            if " ".join(ns_parser.name) in possible_sectors:
                 self.sector = " ".join(ns_parser.name)
             else:
                 print(f"Sector '{' '.join(ns_parser.name)}' does not exist.")
 
                 similar_cmd = difflib.get_close_matches(
                     " ".join(ns_parser.name),
-                    financedatabase_model.get_sectors(),
+                    possible_sectors,
                     n=1,
                     cutoff=0.75,
                 )
@@ -442,7 +460,7 @@ Returned tickers: {', '.join(self.tickers)}
                 else:
                     similar_cmd = difflib.get_close_matches(
                         " ".join(ns_parser.name),
-                        financedatabase_model.get_sectors(),
+                        possible_sectors,
                         n=1,
                         cutoff=0.5,
                     )
@@ -450,7 +468,8 @@ Returned tickers: {', '.join(self.tickers)}
                         print(f"Did you mean '{similar_cmd[0]}'?")
 
         else:
-            financedatabase_view.display_sectors()
+            for sector in possible_sectors:
+                print(sector)
 
         self.stocks_data = {}
         print("")
@@ -481,15 +500,19 @@ Returned tickers: {', '.join(self.tickers)}
         if not ns_parser:
             return
 
+        possible_countries = financedatabase_model.get_countries(
+            industry=self.industry, sector=self.sector
+        )
+
         if ns_parser.name:
-            if " ".join(ns_parser.name) in financedatabase_model.get_countries():
+            if " ".join(ns_parser.name) in possible_countries:
                 self.country = " ".join(ns_parser.name)
             else:
                 print(f"Country '{' '.join(ns_parser.name)}' does not exist.")
 
                 similar_cmd = difflib.get_close_matches(
                     " ".join(ns_parser.name),
-                    financedatabase_model.get_countries(),
+                    possible_countries,
                     n=1,
                     cutoff=0.75,
                 )
@@ -501,7 +524,7 @@ Returned tickers: {', '.join(self.tickers)}
                 else:
                     similar_cmd = difflib.get_close_matches(
                         " ".join(ns_parser.name),
-                        financedatabase_model.get_countries(),
+                        possible_countries,
                         n=1,
                         cutoff=0.5,
                     )
@@ -509,7 +532,8 @@ Returned tickers: {', '.join(self.tickers)}
                         print(f"Did you mean '{similar_cmd[0]}'?")
 
         else:
-            financedatabase_view.display_countries()
+            for country in possible_countries:
+                print(country)
 
         self.stocks_data = {}
         print("")
@@ -1006,7 +1030,7 @@ Returned tickers: {', '.join(self.tickers)}
             return
 
         if not self.country:
-            print("The country parameter needs to be selected!")
+            print("The country parameter needs to be selected!\n")
         else:
             financedatabase_view.display_companies_per_sector_based_country(
                 self.country,
@@ -1058,15 +1082,15 @@ Returned tickers: {', '.join(self.tickers)}
             return
 
         if not self.country:
-            print("The country parameter needs to be selected!")
+            print("The country parameter needs to be selected!\n")
         else:
             financedatabase_view.display_companies_per_industry_based_country(
                 self.country,
                 self.mktcap,
                 ns_parser.export,
                 ns_parser.raw,
-                ns_parser.max_sectors_to_display,
-                ns_parser.min_pct_to_display_sector,
+                ns_parser.max_industries_to_display,
+                ns_parser.min_pct_to_display_industry,
             )
 
     @try_except
@@ -1110,7 +1134,7 @@ Returned tickers: {', '.join(self.tickers)}
             return
 
         if not self.sector:
-            print("The sector parameter needs to be selected!")
+            print("The sector parameter needs to be selected!\n")
         else:
             print("TODO")
 
@@ -1155,7 +1179,7 @@ Returned tickers: {', '.join(self.tickers)}
             return
 
         if not self.sector:
-            print("The sector parameter needs to be selected!")
+            print("The sector parameter needs to be selected!\n")
         else:
             print("TODO")
 
@@ -1200,7 +1224,7 @@ Returned tickers: {', '.join(self.tickers)}
             return
 
         if not self.industry:
-            print("The industry parameter needs to be selected!")
+            print("The industry parameter needs to be selected!\n")
         else:
             print("TODO")
 
