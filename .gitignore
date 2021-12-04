@@ -8,6 +8,7 @@ __pycache__/
 env/
 venv/
 !notebooks/reports/.gitkeep
+!jupyterlab/dashboards/Graph.ipynb
 .python-version
 exports/*
 .idea
