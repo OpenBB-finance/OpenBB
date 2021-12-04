@@ -75,6 +75,7 @@ class OptionsController:
         "unu",
         "plot",
         "parity",
+        "binom",
     ]
 
     CHOICES_MENUS = [
@@ -151,6 +152,7 @@ Current Expiry: {self.selected_date or None}
     grhist        plot option greek history [Syncretism.io]
     plot          plot variables provided by the user [Yfinance]
     parity        shows whether options are above or below expected price [Yfinance]
+    binom         shows the value of an option using binomial options pricing [Yfinance]
 
 >   payoff        shows payoff diagram for a selection of options [Yfinance]
 >   pricing       shows options pricing and risk neutral valuation [Yfinance]
@@ -1259,6 +1261,32 @@ Current Expiry: {self.selected_date or None}
             ns_parser.maxi,
         )
         print("")
+
+    @try_except
+    def call_binom(self, other_args: List[str]):
+        """Process binom command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="parity",
+            description="Shows whether options are over or under valued",
+        )
+        parser.add_argument(
+            "-s",
+            "--strike",
+            type=float,
+            default=0,
+            dest="strike",
+            help="Strike price for optiom shown",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not self.ticker and not self.selected_date:
+            print("Ticker and expiration required. \n")
+            return
+
+        yfinance_view.show_binom(self.ticker, self.selected_date, ns_parser.strike)
 
     @try_except
     def call_pricing(self, _):

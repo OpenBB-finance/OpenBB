@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import os
+import math
 from bisect import bisect_left
 from typing import List, Dict, Any
 from datetime import datetime, date, timedelta
@@ -662,3 +663,41 @@ def risk_neutral_vals(
     else:
         print(new_df.to_string(index=False))
     print("")
+
+
+def show_binom(ticker: str, expiration: str, strike: float):
+    """Get binomial pricing for option
+
+    Parameters
+    ----------
+    ticker : str
+        The ticker of the option's underlying asset
+    expiration : str
+        The expiration for the option
+    strike : float
+        The strike price for the option
+    """
+    # Base variables to calculate values
+    info = yfinance_model.get_info(ticker)
+    price = info["regularMarketPrice"]
+    closings = yfinance_model.get_closing(ticker)
+    vol = np.log(closings / closings.shift()).std()
+    div_yield = info["trailingAnnualDividendYield"]
+    delta_t = 1 / 365
+    rf = get_rf()
+
+    # Binomial pricing specific variables
+    up = math.exp(vol * (delta_t ** 0.5))
+    down = 1 / up
+    prob_up = (math.exp((rf - div_yield) * delta_t) - down) / (up - down)
+    prob_down = 1 - prob_up
+    discount = math.exp(delta_t * rf)
+
+    und_vals = [[price]]
+
+    und_vals.append([price * up, price * down])
+    print(und_vals)
+    print(prob_down)
+    print(discount)
+    print(expiration)
+    print(strike)
