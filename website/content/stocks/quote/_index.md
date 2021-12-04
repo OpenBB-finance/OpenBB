@@ -8,8 +8,7 @@ Retrieves a current quote from the currently [loaded ticker](https://gamestonkte
 optional arguments:
   -t S_TICKER, --ticker S_TICKER
                         Stock ticker (default: AAPL)
-  -p, --price
-			Price only option (returns one line)
+  -p, --price		Return only the current price (default: False)
   -h, --help            show this help message (default: False)
 ```
 
