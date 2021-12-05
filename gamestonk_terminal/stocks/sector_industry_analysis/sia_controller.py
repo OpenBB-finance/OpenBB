@@ -1032,7 +1032,7 @@ Returned tickers: {', '.join(self.tickers)}
         if not self.country:
             print("The country parameter needs to be selected!\n")
         else:
-            financedatabase_view.display_companies_per_sector_based_country(
+            financedatabase_view.display_companies_per_sector_in_country(
                 self.country,
                 self.mktcap,
                 ns_parser.export,
@@ -1084,7 +1084,7 @@ Returned tickers: {', '.join(self.tickers)}
         if not self.country:
             print("The country parameter needs to be selected!\n")
         else:
-            financedatabase_view.display_companies_per_industry_based_country(
+            financedatabase_view.display_companies_per_industry_in_country(
                 self.country,
                 self.mktcap,
                 ns_parser.export,
@@ -1136,7 +1136,14 @@ Returned tickers: {', '.join(self.tickers)}
         if not self.sector:
             print("The sector parameter needs to be selected!\n")
         else:
-            print("TODO")
+            financedatabase_view.display_companies_per_industry_in_sector(
+                self.sector,
+                self.mktcap,
+                ns_parser.export,
+                ns_parser.raw,
+                ns_parser.max_industries_to_display,
+                ns_parser.min_pct_to_display_industry,
+            )
 
     @try_except
     def call_cpcs(self, other_args: List[str]):

@@ -213,7 +213,7 @@ def display_bars_financials(
     return dict(), list()
 
 
-def display_companies_per_sector_based_country(
+def display_companies_per_sector_in_country(
     country: str,
     mktcap: str = "",
     export: str = "",
@@ -239,7 +239,7 @@ def display_companies_per_sector_based_country(
     min_pct_to_display_sector: float
         Minimum percentage to display sector
     """
-    companies_per_sector = financedatabase_model.get_companies_per_sector(
+    companies_per_sector = financedatabase_model.get_companies_per_sector_in_country(
         country, mktcap
     )
 
@@ -252,6 +252,10 @@ def display_companies_per_sector_based_country(
     for key, value in companies_per_sector.copy().items():
         if value == 0:
             del companies_per_sector[key]
+
+    if not companies_per_sector:
+        print("No companies found with these parameters!\n")
+        return
 
     df = pd.DataFrame.from_dict(companies_per_sector, orient="index")
     df.index.name = "Sector"
@@ -362,7 +366,7 @@ def display_companies_per_sector_based_country(
     )
 
 
-def display_companies_per_industry_based_country(
+def display_companies_per_industry_in_country(
     country: str,
     mktcap: str = "",
     export: str = "",
@@ -388,8 +392,8 @@ def display_companies_per_industry_based_country(
     min_pct_to_display_industry: float
         Minimum percentage to display industry
     """
-    companies_per_industry = financedatabase_model.get_companies_per_industry(
-        country, mktcap
+    companies_per_industry = (
+        financedatabase_model.get_companies_per_industry_in_country(country, mktcap)
     )
 
     companies_per_industry = dict(
@@ -401,6 +405,10 @@ def display_companies_per_industry_based_country(
     for key, value in companies_per_industry.copy().items():
         if value == 0:
             del companies_per_industry[key]
+
+    if not companies_per_industry:
+        print("No companies found with these parameters!\n")
+        return
 
     df = pd.DataFrame.from_dict(companies_per_industry, orient="index")
     df.index.name = "Industry"
@@ -513,6 +521,166 @@ def display_companies_per_industry_based_country(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "cpi",
+        "cpic",
+        df,
+    )
+
+
+def display_companies_per_industry_in_sector(
+    sector: str,
+    mktcap: str = "",
+    export: str = "",
+    raw: bool = False,
+    max_industries_to_display: int = 15,
+    min_pct_to_display_industry: float = 0.015,
+):
+    """
+    Display number of companies per industry in a specific sector. [Source: Finance Database]
+
+    Parameters
+    ----------
+    sector: str
+        Select sector to get number of companies by each industry
+    mktcap: str
+        Select market cap of companies to consider from Small, Mid and Large
+    export: str
+        Format to export data as
+    raw: bool
+        Output all raw data
+    max_industries_to_display: int
+        Maximum number of industries to display
+    min_pct_to_display_industry: float
+        Minimum percentage to display industry
+    """
+    companies_per_industry = financedatabase_model.get_companies_per_industry_in_sector(
+        sector, mktcap
+    )
+
+    companies_per_industry = dict(
+        OrderedDict(
+            sorted(companies_per_industry.items(), key=lambda t: t[1], reverse=True)
+        )
+    )
+
+    for key, value in companies_per_industry.copy().items():
+        if value == 0:
+            del companies_per_industry[key]
+
+    if not companies_per_industry:
+        print("No companies found with these parameters!\n")
+        return
+
+    df = pd.DataFrame.from_dict(companies_per_industry, orient="index")
+    df.index.name = "Industry"
+    df.columns = ["Number of companies"]
+    df["Number of companies"] = df["Number of companies"].astype(int)
+
+    if raw:
+        print("")
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df,
+                    headers=["Industry"] + df.columns,
+                    showindex=True,
+                    tablefmt="fancy_grid",
+                ),
+            )
+        else:
+            print(df.to_string, "\n")
+    else:
+        colors = [
+            "b",
+            "g",
+            "r",
+            "c",
+            "m",
+            "y",
+            "k",
+            "tab:blue",
+            "tab:orange",
+            "tab:gray",
+            "lightcoral",
+            "yellow",
+            "saddlebrown",
+            "lightblue",
+            "olive",
+        ]
+
+        if len(companies_per_industry) > 1:
+            total_num_companies = sum(companies_per_industry.values())
+            min_companies_to_represent = round(
+                min_pct_to_display_industry * total_num_companies
+            )
+            filter_industries_to_display = (
+                np.array(list(companies_per_industry.values()))
+                > min_companies_to_represent
+            )
+
+            if any(filter_industries_to_display):
+
+                if not all(filter_industries_to_display):
+                    num_industries_to_display = np.where(~filter_industries_to_display)[
+                        0
+                    ][0]
+
+                    if num_industries_to_display < max_industries_to_display:
+                        max_industries_to_display = num_industries_to_display
+
+            else:
+                print(
+                    "The minimum threshold percentage specified is too high, thus it will be ignored."
+                )
+
+            if len(companies_per_industry) > max_industries_to_display:
+
+                companies_per_industry_sliced = dict(
+                    list(companies_per_industry.items())[
+                        : max_industries_to_display - 1
+                    ]
+                )
+                companies_per_industry_sliced["Others"] = sum(
+                    dict(
+                        list(companies_per_industry.items())[
+                            max_industries_to_display - 1 :
+                        ]
+                    ).values()
+                )
+
+                legend, values = zip(*companies_per_industry_sliced.items())
+
+            else:
+                legend, values = zip(*companies_per_industry.items())
+
+            plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            if gtff.USE_ION:
+                plt.ion()
+            plt.pie(
+                values,
+                labels=legend,
+                colors=colors,
+                wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
+                labeldistance=1.05,
+                startangle=90,
+            )
+            plt.title(
+                f"{mktcap + ' cap c' if mktcap else 'C'}ompanies per industry in {sector} sector"
+            )
+            plt.tight_layout()
+
+            plt.show()
+
+        elif len(companies_per_industry) == 1:
+            print(
+                f"Only 1 industry found '{list(companies_per_industry.keys())[0]}'. No pie chart will be depicted."
+            )
+        else:
+            print("No industry found. No pie chart will be depicted.")
+    print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "cpis",
         df,
     )

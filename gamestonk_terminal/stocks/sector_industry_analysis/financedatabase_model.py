@@ -214,7 +214,7 @@ def get_stocks_data(
     return stocks_data
 
 
-def get_companies_per_sector(country: str, mktcap: str = ""):
+def get_companies_per_sector_in_country(country: str, mktcap: str = ""):
     """Get number of companies per sector in a specific country (and specific market cap). [Source: Finance Database]
 
     Parameters
@@ -231,7 +231,7 @@ def get_companies_per_sector(country: str, mktcap: str = ""):
     """
     companies_per_sector = {}
 
-    for sector in tqdm(get_sectors()):
+    for sector in tqdm(get_sectors(country=country)):
         if sector:
             try:
                 companies = fd.select_equities(country=country, sector=sector)
@@ -247,7 +247,7 @@ def get_companies_per_sector(country: str, mktcap: str = ""):
     return companies_per_sector
 
 
-def get_companies_per_industry(country: str, mktcap: str = ""):
+def get_companies_per_industry_in_country(country: str, mktcap: str = ""):
     """Get number of companies per industry in a specific country (and specific market cap). [Source: Finance Database]
 
     Parameters
@@ -264,10 +264,43 @@ def get_companies_per_industry(country: str, mktcap: str = ""):
     """
     companies_per_industry = {}
 
-    for industry in tqdm(get_industries()):
+    for industry in tqdm(get_industries(country=country)):
         if industry:
             try:
                 companies = fd.select_equities(country=country, industry=industry)
+                if mktcap:
+                    companies = fd.search_products(
+                        companies, query=mktcap + " Cap", search="market_cap"
+                    )
+
+                companies_per_industry[industry] = len(companies)
+
+            except ValueError:
+                pass
+
+    return companies_per_industry
+
+
+def get_companies_per_industry_in_sector(sector: str, mktcap: str = ""):
+    """Get number of companies per industry in a specific sector (and specific market cap). [Source: Finance Database]
+
+    Parameters
+    ----------
+    sector: str
+        Select sector to get number of companies by each industry
+    mktcap: str
+        Select market cap of companies to consider from Small, Mid and Large
+
+    Returns
+    -------
+    dict
+        Dictionary of industries and number of companies in a specific country
+    """
+    companies_per_industry = {}
+    for industry in tqdm(get_industries(sector=sector)):
+        if industry:
+            try:
+                companies = fd.select_equities(sector=sector, industry=industry)
                 if mktcap:
                     companies = fd.search_products(
                         companies, query=mktcap + " Cap", search="market_cap"
