@@ -86,8 +86,7 @@ class SectorIndustryAnalysisController:
         "fs",
         "peg",
         "ev",
-        "yield",
-        "ldv",
+        "fpe",
     ]
 
     CHOICES_MENUS = [
@@ -317,8 +316,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
     fs            float shares
     peg           peg ratio
     ev            enterprise value
-    yield         yield
-    ldv           last dividend value
+    fpe           forward P/E
 {r if params else ''}{Style.DIM if not self.tickers else ''}
 Returned tickers: {', '.join(self.tickers)}
 >   ca            take these to comparison analysis menu
@@ -979,21 +977,14 @@ Returned tickers: {', '.join(self.tickers)}
         )
 
     @try_except
-    def call_yield(self, other_args: List[str]):
-        """Process yield command"""
-        self.display_metric_financials(
-            other_args, "yield", "Yield", "defaultKeyStatistics", "yield"
-        )
-
-    @try_except
-    def call_ldv(self, other_args: List[str]):
-        """Process ldv command"""
+    def call_fpe(self, other_args: List[str]):
+        """Process fpe command"""
         self.display_metric_financials(
             other_args,
-            "ldv",
-            "Last Dividend Value",
+            "fpe",
+            "Forward P/E",
             "defaultKeyStatistics",
-            "lastDividendValue",
+            "forwardPE",
         )
 
     @try_except

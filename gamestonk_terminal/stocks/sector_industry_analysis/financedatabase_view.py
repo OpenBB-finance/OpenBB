@@ -75,7 +75,7 @@ def display_bars_financials(
         if finance_key in stocks_data[symbol] and "quoteType" in stocks_data[symbol]:
             metric = stocks_data[symbol][finance_key][finance_metric]
             stock_name = stocks_data[symbol]["quoteType"]["longName"]
-            if metric:
+            if metric and stock_name:
                 metric_data[stock_name] = (metric, symbol)
 
     if len(metric_data) > 1:
