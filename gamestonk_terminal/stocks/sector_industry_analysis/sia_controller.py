@@ -55,7 +55,7 @@ class SectorIndustryAnalysisController:
         "cpis",
         "cpcs",
         "cpci",
-        "sam",
+        "sama",
         "metric",
     ]
 
@@ -261,7 +261,7 @@ Statistics{c}
     cpci          companies per Country based on Industry{m} and Market Cap{r}
 {r}{Style.DIM if params else ''}
 Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
-    sam           see all metrics available
+    sama          see all metrics available
     metric        visualise financial metric across filters selected
 {r if params else ''}{Style.DIM if not self.tickers else ''}
 Returned tickers: {', '.join(self.tickers)}
@@ -671,13 +671,13 @@ Returned tickers: {', '.join(self.tickers)}
         print("")
 
     @try_except
-    def call_sam(self, other_args: List[str]):
-        """Process sam command"""
+    def call_sama(self, other_args: List[str]):
+        """Process sama command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="sam",
-            description="See all financial metrics available",
+            prog="sama",
+            description="See all metrics available",
         )
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
