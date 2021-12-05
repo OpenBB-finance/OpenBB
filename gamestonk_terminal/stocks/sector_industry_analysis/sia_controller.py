@@ -55,6 +55,18 @@ class SectorIndustryAnalysisController:
         "cpis",
         "cpcs",
         "cpci",
+        "sam",
+        "metric",
+    ]
+
+    CHOICES_MENUS = [
+        "ca",
+    ]
+
+    CHOICES += CHOICES_COMMANDS
+    CHOICES += CHOICES_MENUS
+
+    possible_metrics = [
         "roa",
         "roe",
         "cr",
@@ -89,12 +101,41 @@ class SectorIndustryAnalysisController:
         "fpe",
     ]
 
-    CHOICES_MENUS = [
-        "ca",
-    ]
-
-    CHOICES += CHOICES_COMMANDS
-    CHOICES += CHOICES_MENUS
+    metric_yf_keys = {
+        "roa": ("financialData", "returnOnAssets"),
+        "roe": ("financialData", "returnOnEquity"),
+        "cr": ("financialData", "currentRatio"),
+        "qr": ("financialData", "quickRatio"),
+        "de": ("financialData", "debtToEquity"),
+        "tc": ("financialData", "totalCash"),
+        "tcs": ("financialData", "totalCashPerShare"),
+        "tr": ("financialData", "totalRevenue"),
+        "rps": ("financialData", "revenuePerShare"),
+        "rg": ("financialData", "revenueGrowth"),
+        "eg": ("financialData", "earningsGrowth"),
+        "pm": ("financialData", "profitMargins"),
+        "gp": ("financialData", "grossProfits"),
+        "gm": ("financialData", "grossMargins"),
+        "ocf": ("financialData", "operatingCashflow"),
+        "om": ("financialData", "operatingMargins"),
+        "fcf": ("financialData", "freeCashflow"),
+        "td": ("financialData", "totalDebt"),
+        "ebitda": ("financialData", "ebitda"),
+        "ebitdam": ("financialData", "ebitdaMargins"),
+        "rec": ("financialData", "recommendationMean"),
+        "mc": ("price", "marketCap"),
+        "fte": ("summaryProfile", "fullTimeEmployees"),
+        "er": ("defaultKeyStatistics", "enterpriseToRevenue"),
+        "bv": ("defaultKeyStatistics", "bookValue"),
+        "ss": ("defaultKeyStatistics", "sharesShort"),
+        "pb": ("defaultKeyStatistics", "priceToBook"),
+        "beta": ("defaultKeyStatistics", "beta"),
+        "fs": ("defaultKeyStatistics", "floatShares"),
+        "sr": ("defaultKeyStatistics", "shortRatio"),
+        "peg": ("defaultKeyStatistics", "pegRatio"),
+        "ev": ("defaultKeyStatistics", "enterpriseValue"),
+        "fpe": ("defaultKeyStatistics", "forwardPE"),
+    }
 
     def __init__(
         self,
@@ -183,71 +224,6 @@ class SectorIndustryAnalysisController:
             choices=self.CHOICES,
         )
 
-    def display_metric_financials(
-        self,
-        other_args: List[str],
-        cmd: str,
-        cmd_desc: str,
-        finance_key: str,
-        finance_metric: str,
-    ):
-        """Get metric financials
-
-        Parameters
-        ----------
-        other_args: List[str]
-            List of arguments given by user
-        cmd: str
-            Command name
-        cmd_desc: str
-            Command description
-        finance_key: str
-            Select finance key from Yahoo Finance(e.g. financialData, defaultKeyStatistics, summaryProfile)
-        finance_metric: str
-            Select finance metric from Yahoo Finance (e.g. operatingCashflow, revenueGrowth, ebitda, freeCashflow)
-        """
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog=cmd,
-            description=cmd_desc,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
-            finance_key,
-            finance_metric,
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
-        )
-
     def print_help(self):
         """Print help"""
         params = not any([self.industry, self.sector, self.country])
@@ -285,38 +261,8 @@ Statistics{c}
     cpci          companies per Country based on Industry{m} and Market Cap{r}
 {r}{Style.DIM if params else ''}
 Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
-    roa           return on assets
-    roe           return on equity
-    cr            current ratio
-    qr            quick ratio
-    de            debt to equity
-    tc            total cash
-    tcs           total cash per share
-    tr            total revenue
-    rps           revenue per share
-    rg            revenue growth
-    eg            earnings growth
-    pm            profit margins
-    gp            gross profits
-    gm            gross margins
-    ocf           operating cash flow
-    om            operating margins
-    fcf           free cash flow
-    td            total debt
-    ebitda        earnings before interest, taxes, depreciation and amortization
-    ebitdam       ebitda margins
-    rec           recommendation mean
-    mc            market cap
-    fte           full time employees
-    er            enterprise to revenue
-    bv            book value
-    ss            shares short
-    pb            price to book
-    beta          beta
-    fs            float shares
-    peg           peg ratio
-    ev            enterprise value
-    fpe           forward P/E
+    sam           see all metrics available
+    metric        visualise financial metric across filters selected
 {r if params else ''}{Style.DIM if not self.tickers else ''}
 Returned tickers: {', '.join(self.tickers)}
 >   ca            take these to comparison analysis menu
@@ -725,266 +671,113 @@ Returned tickers: {', '.join(self.tickers)}
         print("")
 
     @try_except
-    def call_roa(self, other_args: List[str]):
-        """Process roa command"""
-        self.display_metric_financials(
-            other_args, "roa", "Return on Assets", "financialData", "returnOnAssets"
+    def call_sam(self, other_args: List[str]):
+        """Process sam command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="sam",
+            description="See all financial metrics available",
         )
 
-    @try_except
-    def call_roe(self, other_args: List[str]):
-        """Process roe command"""
-        self.display_metric_financials(
-            other_args, "roe", "Return on Equity", "financialData", "returnOnEquity"
-        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        help_text = """
+    roa           return on assets
+    roe           return on equity
+    cr            current ratio
+    qr            quick ratio
+    de            debt to equity
+    tc            total cash
+    tcs           total cash per share
+    tr            total revenue
+    rps           revenue per share
+    rg            revenue growth
+    eg            earnings growth
+    pm            profit margins
+    gp            gross profits
+    gm            gross margins
+    ocf           operating cash flow
+    om            operating margins
+    fcf           free cash flow
+    td            total debt
+    ebitda        earnings before interest, taxes, depreciation and amortization
+    ebitdam       ebitda margins
+    rec           recommendation mean
+    mc            market cap
+    fte           full time employees
+    er            enterprise to revenue
+    bv            book value
+    ss            shares short
+    pb            price to book
+    beta          beta
+    fs            float shares
+    sr            short ratio
+    peg           peg ratio
+    ev            enterprise value
+    fpe           forward P/E
+        """
+        print(help_text)
 
     @try_except
-    def call_qr(self, other_args: List[str]):
-        """Process qr command"""
-        self.display_metric_financials(
-            other_args, "qr", "Quick Ratio", "financialData", "quickRatio"
+    def call_metric(self, other_args: List[str]):
+        """Process metric command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="metric",
+            description="Visualise a particular metric with the filters selected",
+        )
+        parser.add_argument(
+            "-m",
+            "--metric",
+            dest="metric",
+            required="-h" not in other_args,
+            help="Metric to visualize",
+            choices=self.possible_metrics,
         )
 
-    @try_except
-    def call_cr(self, other_args: List[str]):
-        """Process cr command"""
-        self.display_metric_financials(
-            other_args, "cr", "Current Ratio", "financialData", "currentRatio"
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            default=10,
+            help="Limit number of companies to display",
+            type=check_positive,
+        )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
         )
 
-    @try_except
-    def call_rg(self, other_args: List[str]):
-        """Process rg command"""
-        self.display_metric_financials(
-            other_args, "rg", "Revenue Growth", "financialData", "revenueGrowth"
-        )
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-m")
 
-    @try_except
-    def call_rec(self, other_args: List[str]):
-        """Process rec command"""
-        self.display_metric_financials(
-            other_args,
-            "rec",
-            "Recommendation mean from multiple analysts",
-            "financialData",
-            "recommendationMean",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
+        if not ns_parser:
+            return
 
-    @try_except
-    def call_td(self, other_args: List[str]):
-        """Process td command"""
-        self.display_metric_financials(
-            other_args, "td", "Total Debt", "financialData", "totalDebt"
-        )
-
-    @try_except
-    def call_ebitda(self, other_args: List[str]):
-        """Process ebitda command"""
-        self.display_metric_financials(
-            other_args,
-            "ebitda",
-            "Earnings before interest, taxes, depreciation and amortization",
-            "financialData",
-            "ebitda",
-        )
-
-    @try_except
-    def call_de(self, other_args: List[str]):
-        """Process de command"""
-        self.display_metric_financials(
-            other_args, "de", "Debt to Equity", "financialData", "debtToEquity"
-        )
-
-    @try_except
-    def call_tc(self, other_args: List[str]):
-        """Process tc command"""
-        self.display_metric_financials(
-            other_args, "tc", "Total Cash", "financialData", "totalCash"
-        )
-
-    @try_except
-    def call_tcs(self, other_args: List[str]):
-        """Process tcs command"""
-        self.display_metric_financials(
-            other_args,
-            "tcs",
-            "Total Cash per Share",
-            "financialData",
-            "totalCashPerShare",
-        )
-
-    @try_except
-    def call_tr(self, other_args: List[str]):
-        """Process tr command"""
-        self.display_metric_financials(
-            other_args, "tr", "Total Revenue", "financialData", "totalRevenue"
-        )
-
-    @try_except
-    def call_rps(self, other_args: List[str]):
-        """Process rps command"""
-        self.display_metric_financials(
-            other_args, "rps", "Revenue per Share", "financialData", "revenuePerShare"
-        )
-
-    @try_except
-    def call_eg(self, other_args: List[str]):
-        """Process eg command"""
-        self.display_metric_financials(
-            other_args, "eg", "Earnings growth", "financialData", "earningsGrowth"
-        )
-
-    @try_except
-    def call_pm(self, other_args: List[str]):
-        """Process pm command"""
-        self.display_metric_financials(
-            other_args, "pm", "Profit margins", "financialData", "profitMargins"
-        )
-
-    @try_except
-    def call_gp(self, other_args: List[str]):
-        """Process gp command"""
-        self.display_metric_financials(
-            other_args, "gp", "Gross profits", "financialData", "grossProfits"
-        )
-
-    @try_except
-    def call_gm(self, other_args: List[str]):
-        """Process gm command"""
-        self.display_metric_financials(
-            other_args, "gm", "Gross margins", "financialData", "grossMargins"
-        )
-
-    @try_except
-    def call_ocf(self, other_args: List[str]):
-        """Process ocf command"""
-        self.display_metric_financials(
-            other_args,
-            "ocf",
-            "Operating cash flow",
-            "financialData",
-            "operatingCashflow",
-        )
-
-    @try_except
-    def call_om(self, other_args: List[str]):
-        """Process om command"""
-        self.display_metric_financials(
-            other_args, "om", "Operating margins", "financialData", "operatingMargins"
-        )
-
-    @try_except
-    def call_fcf(self, other_args: List[str]):
-        """Process fcf command"""
-        self.display_metric_financials(
-            other_args, "fcf", "Free Cash Flow", "financialData", "freeCashflow"
-        )
-
-    @try_except
-    def call_ebitdam(self, other_args: List[str]):
-        """Process ebitdam command"""
-        self.display_metric_financials(
-            other_args, "ebitdam", "EBITDA margins", "financialData", "ebitdaMargins"
-        )
-
-    @try_except
-    def call_mc(self, other_args: List[str]):
-        """Process mc command"""
-        self.display_metric_financials(
-            other_args, "mc", "Market Cap", "price", "marketCap"
-        )
-
-    @try_except
-    def call_fte(self, other_args: List[str]):
-        """Process fte command"""
-        self.display_metric_financials(
-            other_args,
-            "fte",
-            "Full Time Employees",
-            "summaryProfile",
-            "fullTimeEmployees",
-        )
-
-    @try_except
-    def call_er(self, other_args: List[str]):
-        """Process er command"""
-        self.display_metric_financials(
-            other_args,
-            "er",
-            "Enterprise to Revenue",
-            "defaultKeyStatistics",
-            "enterpriseToRevenue",
-        )
-
-    @try_except
-    def call_bv(self, other_args: List[str]):
-        """Process bv command"""
-        self.display_metric_financials(
-            other_args, "bv", "Book value", "defaultKeyStatistics", "bookValue"
-        )
-
-    @try_except
-    def call_ss(self, other_args: List[str]):
-        """Process ss command"""
-        self.display_metric_financials(
-            other_args, "ss", "Shares Short", "defaultKeyStatistics", "sharesShort"
-        )
-
-    @try_except
-    def call_pb(self, other_args: List[str]):
-        """Process pb command"""
-        self.display_metric_financials(
-            other_args, "pb", "Price to Book", "defaultKeyStatistics", "priceToBook"
-        )
-
-    @try_except
-    def call_beta(self, other_args: List[str]):
-        """Process beta command"""
-        self.display_metric_financials(
-            other_args, "beta", "Beta", "defaultKeyStatistics", "beta"
-        )
-
-    @try_except
-    def call_fs(self, other_args: List[str]):
-        """Process fs command"""
-        self.display_metric_financials(
-            other_args, "fs", "Float Shares", "defaultKeyStatistics", "floatShares"
-        )
-
-    @try_except
-    def call_sr(self, other_args: List[str]):
-        """Process sr command"""
-        self.display_metric_financials(
-            other_args, "sr", "Short Ratio", "defaultKeyStatistics", "shortRatio"
-        )
-
-    @try_except
-    def call_peg(self, other_args: List[str]):
-        """Process peg command"""
-        self.display_metric_financials(
-            other_args, "peg", "PEG Ratio", "defaultKeyStatistics", "pegRatio"
-        )
-
-    @try_except
-    def call_ev(self, other_args: List[str]):
-        """Process ev command"""
-        self.display_metric_financials(
-            other_args,
-            "ev",
-            "Enterprise Value",
-            "defaultKeyStatistics",
-            "enterpriseValue",
-        )
-
-    @try_except
-    def call_fpe(self, other_args: List[str]):
-        """Process fpe command"""
-        self.display_metric_financials(
-            other_args,
-            "fpe",
-            "Forward P/E",
-            "defaultKeyStatistics",
-            "forwardPE",
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
+            self.metric_yf_keys[ns_parser.metric][0],
+            self.metric_yf_keys[ns_parser.metric][1],
+            self.country,
+            self.sector,
+            self.industry,
+            self.mktcap,
+            self.exclude_exhanges,
+            ns_parser.limit,
+            ns_parser.export,
+            ns_parser.raw,
+            self.stocks_data,
         )
 
     @try_except
