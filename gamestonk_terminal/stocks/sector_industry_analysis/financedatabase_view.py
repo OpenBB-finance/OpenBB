@@ -184,9 +184,20 @@ def display_bars_financials(
                 units = f" [{unit}] "
             else:
                 units = " "
-            plt.title(
-                f"{metric_title.capitalize()}{units}with benchmark of {benchmark:.2f} {unit}"
+
+            title = f"{metric_title.capitalize()}{units}with benchmark of {benchmark:.2f} {unit}\n"
+            title += marketcap + " cap companies " if marketcap else "Companies "
+            if industry:
+                title += f"in {industry} industry "
+            elif sector:
+                title += f"in {sector} sector "
+            if country:
+                title += f"in {country} "
+            title += (
+                " excluding exchanges" if exclude_exchanges else " including exchanges"
             )
+
+            plt.title(title)
             plt.tight_layout()
             plt.show()
 

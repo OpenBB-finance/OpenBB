@@ -76,6 +76,18 @@ class SectorIndustryAnalysisController:
         "ebitda",
         "ebitdam",
         "rec",
+        "mc",
+        "fte",
+        "er",
+        "bv",
+        "ss",
+        "pb",
+        "beta",
+        "fs",
+        "peg",
+        "ev",
+        "yield",
+        "ldv",
     ]
 
     CHOICES_MENUS = [
@@ -295,8 +307,19 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
     ebitda        earnings before interest, taxes, depreciation and amortization
     ebitdam       ebitda margins
     rec           recommendation mean
-    {r if params else ''}
-{Style.DIM if not self.tickers else ''}
+    mc            market cap
+    fte           full time employees
+    er            enterprise to revenue
+    bv            book value
+    ss            shares short
+    pb            price to book
+    beta          beta
+    fs            float shares
+    peg           peg ratio
+    ev            enterprise value
+    yield         yield
+    ldv           last dividend value
+{r if params else ''}{Style.DIM if not self.tickers else ''}
 Returned tickers: {', '.join(self.tickers)}
 >   ca            take these to comparison analysis menu
 {r if not self.tickers else ''}"""
@@ -864,6 +887,113 @@ Returned tickers: {', '.join(self.tickers)}
         """Process ebitdam command"""
         self.display_metric_financials(
             other_args, "ebitdam", "EBITDA margins", "financialData", "ebitdaMargins"
+        )
+
+    @try_except
+    def call_mc(self, other_args: List[str]):
+        """Process mc command"""
+        self.display_metric_financials(
+            other_args, "mc", "Market Cap", "price", "marketCap"
+        )
+
+    @try_except
+    def call_fte(self, other_args: List[str]):
+        """Process fte command"""
+        self.display_metric_financials(
+            other_args,
+            "fte",
+            "Full Time Employees",
+            "summaryProfile",
+            "fullTimeEmployees",
+        )
+
+    @try_except
+    def call_er(self, other_args: List[str]):
+        """Process er command"""
+        self.display_metric_financials(
+            other_args,
+            "er",
+            "Enterprise to Revenue",
+            "defaultKeyStatistics",
+            "enterpriseToRevenue",
+        )
+
+    @try_except
+    def call_bv(self, other_args: List[str]):
+        """Process bv command"""
+        self.display_metric_financials(
+            other_args, "bv", "Book value", "defaultKeyStatistics", "bookValue"
+        )
+
+    @try_except
+    def call_ss(self, other_args: List[str]):
+        """Process ss command"""
+        self.display_metric_financials(
+            other_args, "ss", "Shares Short", "defaultKeyStatistics", "sharesShort"
+        )
+
+    @try_except
+    def call_pb(self, other_args: List[str]):
+        """Process pb command"""
+        self.display_metric_financials(
+            other_args, "pb", "Price to Book", "defaultKeyStatistics", "priceToBook"
+        )
+
+    @try_except
+    def call_beta(self, other_args: List[str]):
+        """Process beta command"""
+        self.display_metric_financials(
+            other_args, "beta", "Beta", "defaultKeyStatistics", "beta"
+        )
+
+    @try_except
+    def call_fs(self, other_args: List[str]):
+        """Process fs command"""
+        self.display_metric_financials(
+            other_args, "fs", "Float Shares", "defaultKeyStatistics", "floatShares"
+        )
+
+    @try_except
+    def call_sr(self, other_args: List[str]):
+        """Process sr command"""
+        self.display_metric_financials(
+            other_args, "sr", "Short Ratio", "defaultKeyStatistics", "shortRatio"
+        )
+
+    @try_except
+    def call_peg(self, other_args: List[str]):
+        """Process peg command"""
+        self.display_metric_financials(
+            other_args, "peg", "PEG Ratio", "defaultKeyStatistics", "pegRatio"
+        )
+
+    @try_except
+    def call_ev(self, other_args: List[str]):
+        """Process ev command"""
+        self.display_metric_financials(
+            other_args,
+            "ev",
+            "Enterprise Value",
+            "defaultKeyStatistics",
+            "enterpriseValue",
+        )
+
+    @try_except
+    def call_yield(self, other_args: List[str]):
+        """Process yield command"""
+        self.display_metric_financials(
+            other_args, "yield", "Yield", "defaultKeyStatistics", "yield"
+        )
+
+    @try_except
+    def call_ldv(self, other_args: List[str]):
+        """Process ldv command"""
+        self.display_metric_financials(
+            other_args,
+            "ldv",
+            "Last Dividend Value",
+            "defaultKeyStatistics",
+            "lastDividendValue",
         )
 
     @try_except
