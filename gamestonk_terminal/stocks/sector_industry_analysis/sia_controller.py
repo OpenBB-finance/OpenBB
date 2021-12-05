@@ -1191,7 +1191,15 @@ Returned tickers: {', '.join(self.tickers)}
         if not self.sector:
             print("The sector parameter needs to be selected!\n")
         else:
-            print("TODO")
+            financedatabase_view.display_companies_per_country_in_sector(
+                self.sector,
+                self.mktcap,
+                self.exclude_exhanges,
+                ns_parser.export,
+                ns_parser.raw,
+                ns_parser.max_countries_to_display,
+                ns_parser.min_pct_to_display_country,
+            )
 
     @try_except
     def call_cpci(self, other_args: List[str]):

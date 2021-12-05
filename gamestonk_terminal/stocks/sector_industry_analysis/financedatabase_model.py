@@ -312,7 +312,7 @@ def get_companies_per_industry_in_sector(
     Returns
     -------
     dict
-        Dictionary of industries and number of companies in a specific country
+        Dictionary of industries and number of companies in a specific sector
     """
     companies_per_industry = {}
     for industry in tqdm(get_industries(sector=sector)):
@@ -334,3 +334,44 @@ def get_companies_per_industry_in_sector(
                 pass
 
     return companies_per_industry
+
+
+def get_companies_per_country_in_sector(
+    sector: str, mktcap: str = "", exclude_exchanges: bool = True
+):
+    """Get number of companies per country in a specific sector (and specific market cap). [Source: Finance Database]
+
+    Parameters
+    ----------
+    sector: str
+        Select sector to get number of companies by each industry
+    mktcap: str
+        Select market cap of companies to consider from Small, Mid and Large
+    exclude_exchanges : bool
+        Exclude international exchanges
+
+    Returns
+    -------
+    dict
+        Dictionary of countries and number of companies in a specific sector
+    """
+    companies_per_country = {}
+    for country in tqdm(get_countries(sector=sector)):
+        if country:
+            try:
+                companies = fd.select_equities(
+                    sector=sector,
+                    country=country,
+                    exclude_exchanges=exclude_exchanges,
+                )
+                if mktcap:
+                    companies = fd.search_products(
+                        companies, query=mktcap + " Cap", search="market_cap"
+                    )
+
+                companies_per_country[country] = len(companies)
+
+            except ValueError:
+                pass
+
+    return companies_per_country
