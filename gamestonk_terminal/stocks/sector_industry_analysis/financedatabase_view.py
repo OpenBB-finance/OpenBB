@@ -86,18 +86,13 @@ def display_bars_financials(
             )
         )
 
-        company_name = list()
-        company_metric = list()
-        company_ticker = list()
-        company_metric_to_do_median = list()
-        for idx, metric in enumerate(metric_data.items()):
-            if idx < limit:
-                company_name.append(metric[0])
-                company_metric.append(metric[1][0])
-                company_ticker.append(metric[1][1])
-
-            else:
-                company_metric_to_do_median.append(metric[1][0])
+        company_names = list()
+        company_metrics = list()
+        company_tickers = list()
+        for name, metric in metric_data.items():
+            company_names.append(name)
+            company_metrics.append(metric[0])
+            company_tickers.append(metric[1])
 
         metric_finance_col = (
             "".join(
@@ -108,7 +103,18 @@ def display_bars_financials(
             .capitalize()
         )
 
-        df = pd.DataFrame({"Company": company_name, metric_finance_col: company_metric})
+        df_all = pd.DataFrame(
+            {"Company": company_names, metric_finance_col: company_metrics}
+        )
+
+        if len(df_all) > limit:
+            print(f"Limiting the amount of companies displayed to {limit}.")
+
+        company_name = np.array(company_names)[:limit]
+        company_metric = np.array(company_metrics)[:limit]
+        company_ticker = np.array(company_tickers)[:limit]
+
+        df = df_all.head(limit)
 
         if raw:
             print("")
@@ -130,30 +136,19 @@ def display_bars_financials(
             if gtff.USE_ION:
                 plt.ion()
 
-            if company_metric_to_do_median:
-                print(f"Limiting the amount of companies displayed to {limit}.")
-
-            company_metric_to_do_median += company_metric
-
             magnitude = 0
             while max(company_metric) > 1_000 or abs(min(company_metric)) > 1_000:
-                company_metric = (np.array(company_metric) / 1_000).tolist()
-                company_metric_to_do_median = (
-                    np.array(company_metric_to_do_median) / 1_000
-                ).tolist()
+                company_metric = company_metric.div(1_000)
                 magnitude += 1
 
             # check if the value is a percentage
             if (
                 (magnitude == 0)
-                and all(np.array(company_metric) >= 0)
-                and all(np.array(company_metric) <= 1)
+                and all(company_metric >= 0)
+                and all(company_metric <= 1)
             ):
                 unit = "%"
-                company_metric = (np.array(company_metric) * 100).tolist()
-                company_metric_to_do_median = (
-                    np.array(company_metric_to_do_median) * 100
-                ).tolist()
+                company_metric = company_metric * 100
 
             else:
                 unit = " KMBTP"[magnitude]
@@ -177,7 +172,7 @@ def display_bars_financials(
                 .capitalize()
             )
 
-            benchmark = np.median(company_metric_to_do_median)
+            benchmark = np.median(company_metric)
             plt.axvline(x=benchmark, lw=3, ls="--", c="k")
 
             if unit != " ":
@@ -194,7 +189,7 @@ def display_bars_financials(
             if country:
                 title += f"in {country} "
             title += (
-                " excluding exchanges" if exclude_exchanges else " including exchanges"
+                "excluding exchanges" if exclude_exchanges else " including exchanges"
             )
 
             plt.title(title)
@@ -205,7 +200,7 @@ def display_bars_financials(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             finance_metric,
-            df,
+            df_all,
         )
         print("")
 
