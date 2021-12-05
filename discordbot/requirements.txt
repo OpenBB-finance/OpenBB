@@ -54,7 +54,7 @@ entrypoints==0.3; python_full_version >= "3.6.1" and python_version >= "3.7"
 et-xmlfile==1.1.0; python_version >= "3.6"
 fear-greed-index==0.1.3; python_full_version >= "3.6.8" and python_full_version < "4.0.0"
 ffn==0.3.6; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
-financedatabase==1.0.0
+financedatabase==1.0.2
 finviz==1.4.2
 finvizfinance==0.9.10; python_version >= "3.5"
 flake8==3.9.2; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")

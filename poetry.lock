@@ -670,7 +670,7 @@ dev = ["black (>=20.8b1)", "codecov", "coverage", "flake8", "flake8-black", "fut
 
 [[package]]
 name = "financedatabase"
-version = "1.0.0"
+version = "1.0.2"
 description = "This is a database of 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets."
 category = "main"
 optional = false
@@ -4031,8 +4031,8 @@ ffn = [
     {file = "ffn-0.3.6.tar.gz", hash = "sha256:4a79e72e06ff328e333ffe97010b1ce110bcd694fcd03be7351bf5065cd273e8"},
 ]
 financedatabase = [
-    {file = "financedatabase-1.0.0-py3-none-any.whl", hash = "sha256:d7620be1863645d9281bcf6f00f202dbd3196cf2d23373ffe334769c9181696c"},
-    {file = "financedatabase-1.0.0.tar.gz", hash = "sha256:b301644426bea89fe240326cf5bb6872761e90f1afc41caf1808b46012fade9c"},
+    {file = "financedatabase-1.0.2-py3-none-any.whl", hash = "sha256:2fbe8acea1a12d2e3371c81b075f357f61f34cae5e6d94de9b3afd68ff3c3a19"},
+    {file = "financedatabase-1.0.2.tar.gz", hash = "sha256:7b03d37ef5eef8433380d92122f2fd24bad741971518eaf1bd4a9c6f30763e23"},
 ]
 finviz = [
     {file = "finviz-1.4.2.tar.gz", hash = "sha256:f921a2674ea16f5ee9320834ab80554872fdb32a2bc9e0fdf23542ea33094d24"},
