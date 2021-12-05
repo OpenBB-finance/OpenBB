@@ -216,6 +216,7 @@ def display_bars_financials(
 def display_companies_per_sector_in_country(
     country: str,
     mktcap: str = "",
+    exclude_exchanges: bool = True,
     export: str = "",
     raw: bool = False,
     max_sectors_to_display: int = 15,
@@ -230,6 +231,8 @@ def display_companies_per_sector_in_country(
         Select country to get number of companies by each sector
     mktcap: str
         Select market cap of companies to consider from Small, Mid and Large
+    exclude_exchanges : bool
+        Exclude international exchanges
     export: str
         Format to export data as
     raw: bool
@@ -240,7 +243,7 @@ def display_companies_per_sector_in_country(
         Minimum percentage to display sector
     """
     companies_per_sector = financedatabase_model.get_companies_per_sector_in_country(
-        country, mktcap
+        country, mktcap, exclude_exchanges
     )
 
     companies_per_sector = dict(
@@ -262,8 +265,12 @@ def display_companies_per_sector_in_country(
     df.columns = ["Number of companies"]
     df["Number of companies"] = df["Number of companies"].astype(int)
 
+    title = mktcap + " cap companies" if mktcap else "Companies"
+    title += f"per sector in {country}"
+    title += " excluding exchanges" if exclude_exchanges else " including exchanges"
+
     if raw:
-        print("")
+        print(f"\n{title}")
         if gtff.USE_TABULATE_DF:
             print(
                 tabulate(
@@ -343,9 +350,7 @@ def display_companies_per_sector_in_country(
                 labeldistance=1.05,
                 startangle=90,
             )
-            plt.title(
-                f"{mktcap + ' cap c' if mktcap else 'C'}ompanies per sector in {country}"
-            )
+            plt.title(title)
             plt.tight_layout()
 
             plt.show()
@@ -369,6 +374,7 @@ def display_companies_per_sector_in_country(
 def display_companies_per_industry_in_country(
     country: str,
     mktcap: str = "",
+    exclude_exchanges: bool = True,
     export: str = "",
     raw: bool = False,
     max_industries_to_display: int = 15,
@@ -383,6 +389,8 @@ def display_companies_per_industry_in_country(
         Select country to get number of companies by each industry
     mktcap: str
         Select market cap of companies to consider from Small, Mid and Large
+    exclude_exchanges : bool
+        Exclude international exchanges
     export: str
         Format to export data as
     raw: bool
@@ -393,7 +401,9 @@ def display_companies_per_industry_in_country(
         Minimum percentage to display industry
     """
     companies_per_industry = (
-        financedatabase_model.get_companies_per_industry_in_country(country, mktcap)
+        financedatabase_model.get_companies_per_industry_in_country(
+            country, mktcap, exclude_exchanges
+        )
     )
 
     companies_per_industry = dict(
@@ -415,8 +425,12 @@ def display_companies_per_industry_in_country(
     df.columns = ["Number of companies"]
     df["Number of companies"] = df["Number of companies"].astype(int)
 
+    title = mktcap + " cap companies" if mktcap else "Companies"
+    title += f"per industry in {country}"
+    title += " excluding exchanges" if exclude_exchanges else " including exchanges"
+
     if raw:
-        print("")
+        print(f"\n{title}")
         if gtff.USE_TABULATE_DF:
             print(
                 tabulate(
@@ -503,9 +517,7 @@ def display_companies_per_industry_in_country(
                 labeldistance=1.05,
                 startangle=90,
             )
-            plt.title(
-                f"{mktcap + ' cap c' if mktcap else 'C'}ompanies per industry in {country}"
-            )
+            plt.title(title)
             plt.tight_layout()
 
             plt.show()
@@ -529,6 +541,7 @@ def display_companies_per_industry_in_country(
 def display_companies_per_industry_in_sector(
     sector: str,
     mktcap: str = "",
+    exclude_exchanges: bool = True,
     export: str = "",
     raw: bool = False,
     max_industries_to_display: int = 15,
@@ -543,6 +556,8 @@ def display_companies_per_industry_in_sector(
         Select sector to get number of companies by each industry
     mktcap: str
         Select market cap of companies to consider from Small, Mid and Large
+    exclude_exchanges : bool
+        Exclude international exchanges
     export: str
         Format to export data as
     raw: bool
@@ -553,7 +568,7 @@ def display_companies_per_industry_in_sector(
         Minimum percentage to display industry
     """
     companies_per_industry = financedatabase_model.get_companies_per_industry_in_sector(
-        sector, mktcap
+        sector, mktcap, exclude_exchanges
     )
 
     companies_per_industry = dict(
@@ -575,8 +590,12 @@ def display_companies_per_industry_in_sector(
     df.columns = ["Number of companies"]
     df["Number of companies"] = df["Number of companies"].astype(int)
 
+    title = mktcap + " cap companies" if mktcap else "Companies"
+    title += f"per industry in {sector} sector"
+    title += " excluding exchanges" if exclude_exchanges else " including exchanges"
+
     if raw:
-        print("")
+        print(f"\n{title}")
         if gtff.USE_TABULATE_DF:
             print(
                 tabulate(
@@ -663,9 +682,7 @@ def display_companies_per_industry_in_sector(
                 labeldistance=1.05,
                 startangle=90,
             )
-            plt.title(
-                f"{mktcap + ' cap c' if mktcap else 'C'}ompanies per industry in {sector} sector"
-            )
+            plt.title(title)
             plt.tight_layout()
 
             plt.show()

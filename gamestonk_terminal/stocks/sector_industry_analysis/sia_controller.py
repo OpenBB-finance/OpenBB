@@ -1035,6 +1035,7 @@ Returned tickers: {', '.join(self.tickers)}
             financedatabase_view.display_companies_per_sector_in_country(
                 self.country,
                 self.mktcap,
+                self.exclude_exhanges,
                 ns_parser.export,
                 ns_parser.raw,
                 ns_parser.max_sectors_to_display,
@@ -1087,6 +1088,7 @@ Returned tickers: {', '.join(self.tickers)}
             financedatabase_view.display_companies_per_industry_in_country(
                 self.country,
                 self.mktcap,
+                self.exclude_exhanges,
                 ns_parser.export,
                 ns_parser.raw,
                 ns_parser.max_industries_to_display,
@@ -1139,6 +1141,7 @@ Returned tickers: {', '.join(self.tickers)}
             financedatabase_view.display_companies_per_industry_in_sector(
                 self.sector,
                 self.mktcap,
+                self.exclude_exhanges,
                 ns_parser.export,
                 ns_parser.raw,
                 ns_parser.max_industries_to_display,
