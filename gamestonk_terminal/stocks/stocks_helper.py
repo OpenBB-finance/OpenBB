@@ -724,7 +724,7 @@ def quote(other_args: List[str], s_ticker: str):
 
     # If price only option, return immediate market price for ticker.
     if ns_parser.price_only:
-        print(f"Price of {ns_parser.s_ticker} {ticker.info['regularMarketPrice']}")
+        print(f"Price of {ns_parser.s_ticker} {ticker.info['regularMarketPrice']} \n")
         return
 
     try:
