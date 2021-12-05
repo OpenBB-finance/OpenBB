@@ -172,6 +172,71 @@ class SectorIndustryAnalysisController:
             choices=self.CHOICES,
         )
 
+    def display_metric_financials(
+        self,
+        other_args: List[str],
+        cmd: str,
+        cmd_desc: str,
+        finance_key: str,
+        finance_metric: str,
+    ):
+        """Get metric financials
+
+        Parameters
+        ----------
+        other_args: List[str]
+            List of arguments given by user
+        cmd: str
+            Command name
+        cmd_desc: str
+            Command description
+        finance_key: str
+            Select finance key from Yahoo Finance(e.g. financialData, defaultKeyStatistics, summaryProfile)
+        finance_metric: str
+            Select finance metric from Yahoo Finance (e.g. operatingCashflow, revenueGrowth, ebitda, freeCashflow)
+        """
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog=cmd,
+            description=cmd_desc,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            default=10,
+            help="Limit number of companies to display",
+            type=check_positive,
+        )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if not ns_parser:
+            return
+
+        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
+            finance_key,
+            finance_metric,
+            self.country,
+            self.sector,
+            self.industry,
+            self.mktcap,
+            self.exclude_exhanges,
+            ns_parser.limit,
+            ns_parser.export,
+            ns_parser.raw,
+            self.stocks_data,
+        )
+
     def print_help(self):
         """Print help"""
         params = not any([self.industry, self.sector, self.country])
@@ -229,7 +294,8 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
     td            total debt
     ebitda        earnings before interest, taxes, depreciation and amortization
     ebitdam       ebitda margins
-    rec           recommendation mean{r if params else ''}
+    rec           recommendation mean
+    {r if params else ''}
 {Style.DIM if not self.tickers else ''}
 Returned tickers: {', '.join(self.tickers)}
 >   ca            take these to comparison analysis menu
@@ -640,353 +706,164 @@ Returned tickers: {', '.join(self.tickers)}
     @try_except
     def call_roa(self, other_args: List[str]):
         """Process roa command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="roa",
-            description="Return on Assets",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
-            "returnOnAssets",
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
+        self.display_metric_financials(
+            other_args, "roa", "Return on Assets", "financialData", "returnOnAssets"
         )
 
     @try_except
     def call_roe(self, other_args: List[str]):
         """Process roe command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="roe",
-            description="Return on Equity",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
-            "returnOnEquity",
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
+        self.display_metric_financials(
+            other_args, "roe", "Return on Equity", "financialData", "returnOnEquity"
         )
 
     @try_except
     def call_qr(self, other_args: List[str]):
         """Process qr command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="qr",
-            description="Quick Ratio",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
-            "quickRatio",
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
+        self.display_metric_financials(
+            other_args, "qr", "Quick Ratio", "financialData", "quickRatio"
         )
 
     @try_except
     def call_cr(self, other_args: List[str]):
         """Process cr command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="cr",
-            description="Current Ratio",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
-            "currentRatio",
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
+        self.display_metric_financials(
+            other_args, "cr", "Current Ratio", "financialData", "currentRatio"
         )
 
     @try_except
     def call_rg(self, other_args: List[str]):
         """Process rg command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="rg",
-            description="Revenue Growth",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
-            "revenueGrowth",
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
+        self.display_metric_financials(
+            other_args, "rg", "Revenue Growth", "financialData", "revenueGrowth"
         )
 
     @try_except
     def call_rec(self, other_args: List[str]):
         """Process rec command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="rec",
-            description="Recommendation mean from multiple analysts",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
+        self.display_metric_financials(
+            other_args,
+            "rec",
+            "Recommendation mean from multiple analysts",
+            "financialData",
             "recommendationMean",
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
         )
 
     @try_except
     def call_td(self, other_args: List[str]):
         """Process td command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="td",
-            description="Total Debt",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
-            "totalDebt",
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
+        self.display_metric_financials(
+            other_args, "td", "Total Debt", "financialData", "totalDebt"
         )
 
     @try_except
     def call_ebitda(self, other_args: List[str]):
         """Process ebitda command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ebitda",
-            description="Earnings before interest, taxes, depreciation and amortization",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
+        self.display_metric_financials(
+            other_args,
             "ebitda",
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
+            "Earnings before interest, taxes, depreciation and amortization",
+            "financialData",
+            "ebitda",
+        )
+
+    @try_except
+    def call_de(self, other_args: List[str]):
+        """Process de command"""
+        self.display_metric_financials(
+            other_args, "de", "Debt to Equity", "financialData", "debtToEquity"
+        )
+
+    @try_except
+    def call_tc(self, other_args: List[str]):
+        """Process tc command"""
+        self.display_metric_financials(
+            other_args, "tc", "Total Cash", "financialData", "totalCash"
+        )
+
+    @try_except
+    def call_tcs(self, other_args: List[str]):
+        """Process tcs command"""
+        self.display_metric_financials(
+            other_args,
+            "tcs",
+            "Total Cash per Share",
+            "financialData",
+            "totalCashPerShare",
+        )
+
+    @try_except
+    def call_tr(self, other_args: List[str]):
+        """Process tr command"""
+        self.display_metric_financials(
+            other_args, "tr", "Total Revenue", "financialData", "totalRevenue"
+        )
+
+    @try_except
+    def call_rps(self, other_args: List[str]):
+        """Process rps command"""
+        self.display_metric_financials(
+            other_args, "rps", "Revenue per Share", "financialData", "revenuePerShare"
+        )
+
+    @try_except
+    def call_eg(self, other_args: List[str]):
+        """Process eg command"""
+        self.display_metric_financials(
+            other_args, "eg", "Earnings growth", "financialData", "earningsGrowth"
+        )
+
+    @try_except
+    def call_pm(self, other_args: List[str]):
+        """Process pm command"""
+        self.display_metric_financials(
+            other_args, "pm", "Profit margins", "financialData", "profitMargins"
+        )
+
+    @try_except
+    def call_gp(self, other_args: List[str]):
+        """Process gp command"""
+        self.display_metric_financials(
+            other_args, "gp", "Gross profits", "financialData", "grossProfits"
+        )
+
+    @try_except
+    def call_gm(self, other_args: List[str]):
+        """Process gm command"""
+        self.display_metric_financials(
+            other_args, "gm", "Gross margins", "financialData", "grossMargins"
+        )
+
+    @try_except
+    def call_ocf(self, other_args: List[str]):
+        """Process ocf command"""
+        self.display_metric_financials(
+            other_args,
+            "ocf",
+            "Operating cash flow",
+            "financialData",
+            "operatingCashflow",
+        )
+
+    @try_except
+    def call_om(self, other_args: List[str]):
+        """Process om command"""
+        self.display_metric_financials(
+            other_args, "om", "Operating margins", "financialData", "operatingMargins"
+        )
+
+    @try_except
+    def call_fcf(self, other_args: List[str]):
+        """Process fcf command"""
+        self.display_metric_financials(
+            other_args, "fcf", "Free Cash Flow", "financialData", "freeCashflow"
+        )
+
+    @try_except
+    def call_ebitdam(self, other_args: List[str]):
+        """Process ebitdam command"""
+        self.display_metric_financials(
+            other_args, "ebitdam", "EBITDA margins", "financialData", "ebitdaMargins"
         )
 
     @try_except
@@ -1253,578 +1130,6 @@ Returned tickers: {', '.join(self.tickers)}
                 ns_parser.max_countries_to_display,
                 ns_parser.min_pct_to_display_country,
             )
-
-    @try_except
-    def call_de(self, other_args: List[str]):
-        """Process de command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="de",
-            description="Debt to equity",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
-            "debtToEquity",
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
-        )
-
-    @try_except
-    def call_tc(self, other_args: List[str]):
-        """Process tc command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="tc",
-            description="Total cash",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
-            "totalCash",
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
-        )
-
-    @try_except
-    def call_tcs(self, other_args: List[str]):
-        """Process tcs command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="tcs",
-            description="Total cash per share",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
-            "totalCashPerShare",
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
-        )
-
-    @try_except
-    def call_tr(self, other_args: List[str]):
-        """Process tr command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="tr",
-            description="Total revenue",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
-            "totalRevenue",
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
-        )
-
-    @try_except
-    def call_rps(self, other_args: List[str]):
-        """Process rps command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="rps",
-            description="Revenue per share",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
-            "revenuePerShare",
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
-        )
-
-    @try_except
-    def call_eg(self, other_args: List[str]):
-        """Process eg command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="eg",
-            description="Earnings growth",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
-            "earningsGrowth",
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
-        )
-
-    @try_except
-    def call_pm(self, other_args: List[str]):
-        """Process pm command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="pm",
-            description="Profit margins",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
-            "profitMargins",
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
-        )
-
-    @try_except
-    def call_gp(self, other_args: List[str]):
-        """Process gp command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="gp",
-            description="Gross profits",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
-            "grossProfits",
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
-        )
-
-    @try_except
-    def call_gm(self, other_args: List[str]):
-        """Process gm command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="gm",
-            description="Gross margins",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
-            "grossMargins",
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
-        )
-
-    @try_except
-    def call_ocf(self, other_args: List[str]):
-        """Process ocf command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ocf",
-            description="Operating cash flow",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
-            "operatingCashflow",
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
-        )
-
-    @try_except
-    def call_om(self, other_args: List[str]):
-        """Process om command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="om",
-            description="Operating margins",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
-            "operatingMargins",
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
-        )
-
-    @try_except
-    def call_fcf(self, other_args: List[str]):
-        """Process fcf command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="fcf",
-            description="Free cash flow",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
-            "freeCashflow",
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
-        )
-
-    @try_except
-    def call_ebitdam(self, other_args: List[str]):
-        """Process ebitdam command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ebitdam",
-            description="Ebitda margins",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if not ns_parser:
-            return
-
-        self.stocks_data, self.tickers = financedatabase_view.display_bars_financials(
-            "ebitdaMargins",
-            self.country,
-            self.sector,
-            self.industry,
-            self.mktcap,
-            self.exclude_exhanges,
-            ns_parser.limit,
-            ns_parser.export,
-            ns_parser.raw,
-            self.stocks_data,
-        )
 
     def call_ca(self, _):
         """Call the comparison analysis menu with selected tickers"""

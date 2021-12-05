@@ -17,6 +17,7 @@ from gamestonk_terminal.stocks.sector_industry_analysis import financedatabase_m
 
 
 def display_bars_financials(
+    finance_key: str,
     finance_metric: str,
     country: str,
     sector: str,
@@ -32,10 +33,10 @@ def display_bars_financials(
 
     Parameters
     ----------
+    finance_key: str
+        Select finance key from Yahoo Finance(e.g. financialData, defaultKeyStatistics, summaryProfile)
     finance_metric: str
-        Select between operatingCashflow, revenueGrowth, ebitda, grossProfits, freeCashflow, earningsGrowth,
-        returnOnAssets, debtToEquity, returnOnEquity, totalCash, totalDebt, totalRevenue, quickRatio,
-        recommendationMean, ebitdaMargins, profitMargins, grossMargins, operatingMargins, totalCashPerShare
+        Select finance metric from Yahoo Finance (e.g. operatingCashflow, revenueGrowth, ebitda, freeCashflow)
     country: str
         Search by country to find stocks matching the criteria.
     sector : str
@@ -71,11 +72,8 @@ def display_bars_financials(
 
     metric_data = {}
     for symbol in list(stocks_data.keys()):
-        if (
-            "financialData" in stocks_data[symbol]
-            and "quoteType" in stocks_data[symbol]
-        ):
-            metric = stocks_data[symbol]["financialData"][finance_metric]
+        if finance_key in stocks_data[symbol] and "quoteType" in stocks_data[symbol]:
+            metric = stocks_data[symbol][finance_key][finance_metric]
             stock_name = stocks_data[symbol]["quoteType"]["longName"]
             if metric:
                 metric_data[stock_name] = (metric, symbol)
