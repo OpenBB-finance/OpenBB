@@ -119,61 +119,64 @@ def filter_stocks(
     list
         List of filtered stocks
     """
+    try:
+        if country:
+            if sector:
+                if industry:
+                    data = fd.select_equities(
+                        country=country,
+                        sector=sector,
+                        industry=industry,
+                        exclude_exchanges=exclude_exchanges,
+                    )
+                else:  # no industry
+                    data = fd.select_equities(
+                        country=country,
+                        sector=sector,
+                        exclude_exchanges=exclude_exchanges,
+                    )
+            else:  # no sector
+                if industry:
+                    data = fd.select_equities(
+                        country=country,
+                        industry=industry,
+                        exclude_exchanges=exclude_exchanges,
+                    )
+                else:  # no industry
+                    data = fd.select_equities(
+                        country=country,
+                        exclude_exchanges=exclude_exchanges,
+                    )
 
-    if country:
-        if sector:
-            if industry:
-                data = fd.select_equities(
-                    country=country,
-                    sector=sector,
-                    industry=industry,
-                    exclude_exchanges=exclude_exchanges,
-                )
-            else:  # no industry
-                data = fd.select_equities(
-                    country=country,
-                    sector=sector,
-                    exclude_exchanges=exclude_exchanges,
-                )
-        else:  # no sector
-            if industry:
-                data = fd.select_equities(
-                    country=country,
-                    industry=industry,
-                    exclude_exchanges=exclude_exchanges,
-                )
-            else:  # no industry
-                data = fd.select_equities(
-                    country=country,
-                    exclude_exchanges=exclude_exchanges,
-                )
+        else:  # no country
+            if sector:
+                if industry:
+                    data = fd.select_equities(
+                        sector=sector,
+                        industry=industry,
+                        exclude_exchanges=exclude_exchanges,
+                    )
+                else:  # no industry
+                    data = fd.select_equities(
+                        sector=sector,
+                        exclude_exchanges=exclude_exchanges,
+                    )
+            else:  # no sector
+                if industry:
+                    data = fd.select_equities(
+                        industry=industry,
+                        exclude_exchanges=exclude_exchanges,
+                    )
+                else:  # no industry
+                    data = {}
 
-    else:  # no country
-        if sector:
-            if industry:
-                data = fd.select_equities(
-                    sector=sector,
-                    industry=industry,
-                    exclude_exchanges=exclude_exchanges,
-                )
-            else:  # no industry
-                data = fd.select_equities(
-                    sector=sector,
-                    exclude_exchanges=exclude_exchanges,
-                )
-        else:  # no sector
-            if industry:
-                data = fd.select_equities(
-                    industry=industry,
-                    exclude_exchanges=exclude_exchanges,
-                )
-            else:  # no industry
-                data = {}
+        if marketcap:
+            data = fd.search_products(data, query=marketcap, search="market_cap")
 
-    if marketcap:
-        data = fd.search_products(data, query=marketcap, search="market_cap")
+        return list(data.keys())
 
-    return list(data.keys())
+    except ValueError:
+        return list()
 
 
 def get_stocks_data(
