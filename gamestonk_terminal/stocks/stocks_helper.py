@@ -284,7 +284,6 @@ def load(
                 df_stock_candidate = yf.download(
                     ns_parser.s_ticker,
                     start=ns_parser.s_start_date,
-                    end=ns_parser.s_end_date,
                     progress=False,
                 )
 
@@ -699,6 +698,16 @@ def quote(other_args: List[str], s_ticker: str):
             help="Stock ticker",
         )
 
+    # Price only option.
+    parser.add_argument(
+        "-p",
+        "--price",
+        action="store_true",
+        dest="price_only",
+        default=False,
+        help="Price only",
+    )
+
     try:
         # For the case where a user uses: 'quote BB'
         if other_args and "-" not in other_args[0]:
@@ -712,6 +721,11 @@ def quote(other_args: List[str], s_ticker: str):
         return
 
     ticker = yf.Ticker(ns_parser.s_ticker)
+
+    # If price only option, return immediate market price for ticker.
+    if ns_parser.price_only:
+        print(f"Price of {ns_parser.s_ticker} {ticker.info['regularMarketPrice']}")
+        return
 
     try:
         quote_df = pd.DataFrame(
@@ -761,6 +775,7 @@ def quote(other_args: List[str], s_ticker: str):
                 stralign="right",
             )
         )
+
     except KeyError:
         print(f"Invalid stock ticker: {ns_parser.s_ticker}")
 
