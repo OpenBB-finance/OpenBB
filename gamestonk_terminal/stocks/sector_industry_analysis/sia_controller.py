@@ -117,8 +117,8 @@ class SectorIndustryAnalysisController:
             Stock data
         """
         self.country = "United States"
-        self.sector = ""
-        self.industry = ""
+        self.sector = "Financial Services"
+        self.industry = "Financial Data & Stock Exchanges"
         self.mktcap = "Large"
         self.exclude_exhanges = True
 
