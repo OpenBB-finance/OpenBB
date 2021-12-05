@@ -1066,13 +1066,34 @@ def menu(
     while True:
         # Get input command from user
         if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in sia_controller.CHOICES}
-            )
+            choices: dict = {c: {} for c in sia_controller.CHOICES}
+
+            choices["industry"] = {
+                i: None
+                for i in financedatabase_model.get_industries(
+                    country=sia_controller.country, sector=sia_controller.sector
+                )
+            }
+            choices["sector"] = {
+                s: None
+                for s in financedatabase_model.get_sectors(
+                    industry=sia_controller.industry, country=sia_controller.country
+                )
+            }
+            choices["country"] = {
+                c: None
+                for c in financedatabase_model.get_countries(
+                    industry=sia_controller.industry, sector=sia_controller.sector
+                )
+            }
+
+            completer = NestedCompleter.from_nested_dict(choices)
             an_input = session.prompt(
                 f"{get_flair()} (stocks)>(sia)> ",
                 completer=completer,
+                search_ignore_case=True,
             )
+
         else:
             an_input = input(f"{get_flair()} (stocks)>(sia)> ")
 
