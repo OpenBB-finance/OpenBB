@@ -1,6 +1,6 @@
 """Finance Database View"""
 __docformat__ = "numpy"
-# pylint:disable=too-many-arguments
+# pylint:disable=too-many-arguments,too-many-lines
 
 import os
 from collections import OrderedDict
@@ -28,8 +28,7 @@ def display_bars_financials(
     raw: bool = False,
     already_loaded_stocks_data: Dict = None,
 ):
-    """
-    Display financials bars comparing sectors, industry, analysis, countries, market cap and excluding exchanges.
+    """Display financials bars comparing sectors, industry, analysis, countries, market cap and excluding exchanges.
 
     Parameters
     ----------
@@ -222,8 +221,7 @@ def display_companies_per_sector_in_country(
     max_sectors_to_display: int = 15,
     min_pct_to_display_sector: float = 0.015,
 ):
-    """
-    Display number of companies per sector in a specific country (and market cap). [Source: Finance Database]
+    """Display number of companies per sector in a specific country (and market cap). [Source: Finance Database]
 
     Parameters
     ----------
@@ -275,7 +273,7 @@ def display_companies_per_sector_in_country(
             print(
                 tabulate(
                     df,
-                    headers=["Sector"] + df.columns,
+                    headers=df.columns,
                     showindex=True,
                     tablefmt="fancy_grid",
                 ),
@@ -380,8 +378,7 @@ def display_companies_per_industry_in_country(
     max_industries_to_display: int = 15,
     min_pct_to_display_industry: float = 0.015,
 ):
-    """
-    Display number of companies per industry in a specific country. [Source: Finance Database]
+    """Display number of companies per industry in a specific country. [Source: Finance Database]
 
     Parameters
     ----------
@@ -435,7 +432,7 @@ def display_companies_per_industry_in_country(
             print(
                 tabulate(
                     df,
-                    headers=["Industry"] + df.columns,
+                    headers=df.columns,
                     showindex=True,
                     tablefmt="fancy_grid",
                 ),
@@ -547,8 +544,7 @@ def display_companies_per_industry_in_sector(
     max_industries_to_display: int = 15,
     min_pct_to_display_industry: float = 0.015,
 ):
-    """
-    Display number of companies per industry in a specific sector. [Source: Finance Database]
+    """Display number of companies per industry in a specific sector. [Source: Finance Database]
 
     Parameters
     ----------
@@ -600,7 +596,7 @@ def display_companies_per_industry_in_sector(
             print(
                 tabulate(
                     df,
-                    headers=["Industry"] + df.columns,
+                    headers=df.columns,
                     showindex=True,
                     tablefmt="fancy_grid",
                 ),
@@ -712,8 +708,7 @@ def display_companies_per_country_in_sector(
     max_countries_to_display: int = 15,
     min_pct_to_display_country: float = 0.015,
 ):
-    """
-    Display number of companies per country in a specific sector. [Source: Finance Database]
+    """Display number of companies per country in a specific sector. [Source: Finance Database]
 
     Parameters
     ----------
@@ -765,7 +760,7 @@ def display_companies_per_country_in_sector(
             print(
                 tabulate(
                     df,
-                    headers=["Country"] + df.columns,
+                    headers=df.columns,
                     showindex=True,
                     tablefmt="fancy_grid",
                 ),
@@ -852,15 +847,177 @@ def display_companies_per_country_in_sector(
 
         elif len(companies_per_country) == 1:
             print(
-                f"Only 1 industry found '{list(companies_per_country.keys())[0]}'. No pie chart will be depicted."
+                f"Only 1 country found '{list(companies_per_country.keys())[0]}'. No pie chart will be depicted."
             )
         else:
-            print("No industry found. No pie chart will be depicted.")
+            print("No country found. No pie chart will be depicted.")
     print("")
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "cpcs",
+        df,
+    )
+
+
+def display_companies_per_country_in_industry(
+    industry: str,
+    mktcap: str = "",
+    exclude_exchanges: bool = True,
+    export: str = "",
+    raw: bool = False,
+    max_countries_to_display: int = 15,
+    min_pct_to_display_country: float = 0.015,
+):
+    """Display number of companies per country in a specific industry. [Source: Finance Database]
+
+    Parameters
+    ----------
+    country: str
+        Select country to get number of companies by each country
+    mktcap: str
+        Select market cap of companies to consider from Small, Mid and Large
+    exclude_exchanges : bool
+        Exclude international exchanges
+    export: str
+        Format to export data as
+    raw: bool
+        Output all raw data
+    max_countries_to_display: int
+        Maximum number of countries to display
+    min_pct_to_display_country: float
+        Minimum percentage to display country
+    """
+    companies_per_country = financedatabase_model.get_companies_per_country_in_industry(
+        industry, mktcap, exclude_exchanges
+    )
+
+    companies_per_country = dict(
+        OrderedDict(
+            sorted(companies_per_country.items(), key=lambda t: t[1], reverse=True)
+        )
+    )
+
+    for key, value in companies_per_country.copy().items():
+        if value == 0:
+            del companies_per_country[key]
+
+    if not companies_per_country:
+        print("No companies found with these parameters!\n")
+        return
+
+    df = pd.DataFrame.from_dict(companies_per_country, orient="index")
+    df.index.name = "Country"
+    df.columns = ["Number of companies"]
+    df["Number of companies"] = df["Number of companies"].astype(int)
+
+    title = mktcap + " cap companies " if mktcap else "Companies "
+    title += f"per country in {industry} industry"
+    title += " excluding exchanges" if exclude_exchanges else " including exchanges"
+
+    if raw:
+        print(f"\n{title}")
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df,
+                    headers=df.columns,
+                    showindex=True,
+                    tablefmt="fancy_grid",
+                ),
+            )
+        else:
+            print(df.to_string, "\n")
+    else:
+        colors = [
+            "b",
+            "g",
+            "r",
+            "c",
+            "m",
+            "y",
+            "k",
+            "tab:blue",
+            "tab:orange",
+            "tab:gray",
+            "lightcoral",
+            "yellow",
+            "saddlebrown",
+            "lightblue",
+            "olive",
+        ]
+
+        if len(companies_per_country) > 1:
+            total_num_companies = sum(companies_per_country.values())
+            min_companies_to_represent = round(
+                min_pct_to_display_country * total_num_companies
+            )
+            filter_countries_to_display = (
+                np.array(list(companies_per_country.values()))
+                > min_companies_to_represent
+            )
+
+            if any(filter_countries_to_display):
+
+                if not all(filter_countries_to_display):
+                    num_countries_to_display = np.where(~filter_countries_to_display)[
+                        0
+                    ][0]
+
+                    if num_countries_to_display < max_countries_to_display:
+                        max_countries_to_display = num_countries_to_display
+
+            else:
+                print(
+                    "The minimum threshold percentage specified is too high, thus it will be ignored."
+                )
+
+            if len(companies_per_country) > max_countries_to_display:
+
+                companies_per_country_sliced = dict(
+                    list(companies_per_country.items())[: max_countries_to_display - 1]
+                )
+                companies_per_country_sliced["Others"] = sum(
+                    dict(
+                        list(companies_per_country.items())[
+                            max_countries_to_display - 1 :
+                        ]
+                    ).values()
+                )
+
+                legend, values = zip(*companies_per_country_sliced.items())
+
+            else:
+                legend, values = zip(*companies_per_country.items())
+
+            plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            if gtff.USE_ION:
+                plt.ion()
+            plt.pie(
+                values,
+                labels=legend,
+                colors=colors,
+                wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
+                labeldistance=1.05,
+                startangle=90,
+            )
+            plt.title(title)
+            plt.tight_layout()
+
+            plt.show()
+
+        elif len(companies_per_country) == 1:
+            print(
+                f"Only 1 country found '{list(companies_per_country.keys())[0]}'. No pie chart will be depicted."
+            )
+        else:
+            print("No country found. No pie chart will be depicted.")
+    print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "cpci",
         df,
     )

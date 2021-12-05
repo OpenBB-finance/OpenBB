@@ -1244,7 +1244,15 @@ Returned tickers: {', '.join(self.tickers)}
         if not self.industry:
             print("The industry parameter needs to be selected!\n")
         else:
-            print("TODO")
+            financedatabase_view.display_companies_per_country_in_industry(
+                self.industry,
+                self.mktcap,
+                self.exclude_exhanges,
+                ns_parser.export,
+                ns_parser.raw,
+                ns_parser.max_countries_to_display,
+                ns_parser.min_pct_to_display_country,
+            )
 
     @try_except
     def call_de(self, other_args: List[str]):
