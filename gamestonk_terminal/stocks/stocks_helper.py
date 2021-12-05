@@ -284,6 +284,7 @@ def load(
                 df_stock_candidate = yf.download(
                     ns_parser.s_ticker,
                     start=ns_parser.s_start_date,
+                    end=ns_parser.s_end_date,
                     progress=False,
                 )
 
