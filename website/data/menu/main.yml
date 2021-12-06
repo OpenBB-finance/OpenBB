@@ -203,6 +203,8 @@ main:
             ref: "/stocks/fundamental_analysis/web"
           - name: hq
             ref: "/stocks/fundamental_analysis/hq"
+          - name: divs
+            ref: "/stocks/fundamental_analysis/divs"
           - name: overview
             ref: "/stocks/fundamental_analysis/overview"
           - name: key
