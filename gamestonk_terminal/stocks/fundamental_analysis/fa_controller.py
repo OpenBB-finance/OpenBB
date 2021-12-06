@@ -414,6 +414,7 @@ Other Sources:
             "-n",
             "--num",
             dest="num",
+            type=check_positive,
             default=12,
             help="Number of previous dividends to show",
         )
