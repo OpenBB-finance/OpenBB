@@ -112,7 +112,11 @@ def display_daily_volume_for_given_pair(
         token=token,
         vs=vs,
         limit=top,
-    ).sort_values(by=sortby, ascending=descend)
+    )
+
+    if df.empty:
+        return
+    df = df.sort_values(by=sortby, ascending=descend)
 
     df_data = df.copy()
 

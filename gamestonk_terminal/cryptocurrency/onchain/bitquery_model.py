@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import datetime
 import json
+import os
 from typing import Optional
 
 from requests.exceptions import HTTPError
@@ -102,7 +103,7 @@ def query_graph(url: str, query: str) -> dict:
     """
 
     session = requests.Session()
-    session.mount("http://", HTTPAdapter(max_retries=5))
+    session.mount("https://", HTTPAdapter(max_retries=5))
     headers = {"x-api-key": cfg.API_BITQUERY_KEY}
 
     response = session.post(url, json={"query": query}, headers=headers)
@@ -133,8 +134,10 @@ def get_erc20_tokens() -> pd.DataFrame:
     pd.DataFrame
         ERC20 tokens with address, symbol and name
     """
-
-    with open("../data/erc20_coins.json") as f:
+    file_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "..", "data", "erc20_coins.json"
+    )
+    with open(file_path) as f:
         data = json.load(f)
     df = pd.json_normalize(data)
     df.columns = ["count", "address", "symbol", "name"]
@@ -317,7 +320,7 @@ def get_daily_dex_volume_for_given_pair(
 
     base, quote = find_token_address(token), find_token_address(vs)
     if not base or not quote:
-        return pd.DataFrame()
+        raise ValueError("Provided coin or quote currency doesn't exist\n")
 
     query = f"""
          {{
@@ -413,6 +416,8 @@ def get_token_volume_on_dexes(
         trade_amount_currency = "USD"
 
     token_address = find_token_address(token)
+    if token_address is None:
+        raise ValueError(f"Couldn't find token with symbol {token}\n")
     query = f"""
         {{
            ethereum {{
@@ -439,7 +444,11 @@ def get_token_volume_on_dexes(
     if not data:
         return pd.DataFrame()
 
-    df = pd.json_normalize(data["ethereum"]["dexTrades"])[
+    dex_trades = data["ethereum"]["dexTrades"]
+    if not dex_trades:
+        raise ValueError(f"List of dex trades is empty {data['ethereum']}")
+
+    df = pd.json_normalize(dex_trades)[
         ["exchange.fullName", "baseCurrency.symbol", "tradeAmount", "count"]
     ]
     df.columns = ["exchange", "coin", "tradeAmount", "trades"]
@@ -586,7 +595,7 @@ def get_spread_for_crypto_pair(
     base, quote = find_token_address(token), find_token_address(vs)
 
     if not base or not quote:
-        return pd.DataFrame()
+        raise ValueError("Provided coin or quote currency doesn't exist\n")
 
     query = f"""
         {{
