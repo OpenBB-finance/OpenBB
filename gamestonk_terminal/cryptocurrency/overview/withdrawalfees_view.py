@@ -2,9 +2,13 @@
 import os
 
 from tabulate import tabulate
-from gamestonk_terminal.cryptocurrency.overview.withdrawalfees_model import get_crypto_withdrawal_fees, get_crypto_withdrawal_fees_stats, get_overall_exchange_withdrawal_fees, get_overall_withdrawal_fees
+from gamestonk_terminal.cryptocurrency.overview.withdrawalfees_model import (
+    get_crypto_withdrawal_fees,
+    get_crypto_withdrawal_fees_stats,
+    get_overall_exchange_withdrawal_fees,
+    get_overall_withdrawal_fees,
+)
 from gamestonk_terminal.helper_funcs import export_data
-from gamestonk_terminal.cryptocurrency.onchain.ethgasstation_model import get_gwei_fees
 from gamestonk_terminal import feature_flags as gtff
 
 
@@ -87,6 +91,7 @@ def display_overall_exchange_withdrawal_fees(export: str) -> None:
             df_fees,
         )
 
+
 def display_crypto_withdrawal_fees(export: str, symbol: str) -> None:
     """Coin withdrawal fees per exchange
     [Source: https://withdrawalfees.com/]
@@ -104,7 +109,7 @@ def display_crypto_withdrawal_fees(export: str, symbol: str) -> None:
     if df_fees.empty:
         print("\nError in withdrawal fees request\n")
     else:
-        print(f'\nWithdrawal fees for {symbol}:')
+        print(f"\nWithdrawal fees for {symbol}:")
 
         if gtff.USE_TABULATE_DF:
             print(
@@ -145,7 +150,7 @@ def display_crypto_withdrawal_fees_stats(export: str, symbol: str) -> None:
     if df_fees.empty:
         print("\nError in withdrawal fees request\n")
     else:
-        print(f'\nWithdrawal fees statistics for {symbol}:')
+        print(f"\nWithdrawal fees statistics for {symbol}:")
 
         if gtff.USE_TABULATE_DF:
             print(

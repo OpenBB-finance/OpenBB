@@ -63,7 +63,7 @@ class Controller:
         "wf",
         "wfe",
         "wfc",
-        "wfcstats"
+        "wfcstats",
     ]
 
     def __init__(self):
@@ -200,7 +200,9 @@ WithdrawalFees:
         if not ns_parser:
             return
 
-        withdrawalfees_view.display_overall_withdrawal_fees(export=ns_parser.export, top=ns_parser.top)
+        withdrawalfees_view.display_overall_withdrawal_fees(
+            export=ns_parser.export, top=ns_parser.top
+        )
 
     @try_except
     def call_wfe(self, other_args: List[str]):
@@ -229,8 +231,9 @@ WithdrawalFees:
         if not ns_parser:
             return
 
-        withdrawalfees_view.display_overall_exchange_withdrawal_fees(export=ns_parser.export)
-
+        withdrawalfees_view.display_overall_exchange_withdrawal_fees(
+            export=ns_parser.export
+        )
 
     @try_except
     def call_wfc(self, other_args: List[str]):
@@ -268,8 +271,9 @@ WithdrawalFees:
         if not ns_parser:
             return
 
-        withdrawalfees_view.display_crypto_withdrawal_fees(export=ns_parser.export, symbol=ns_parser.coin)
-
+        withdrawalfees_view.display_crypto_withdrawal_fees(
+            export=ns_parser.export, symbol=ns_parser.coin
+        )
 
     @try_except
     def call_wfcstats(self, other_args: List[str]):
@@ -307,7 +311,9 @@ WithdrawalFees:
         if not ns_parser:
             return
 
-        withdrawalfees_view.display_crypto_withdrawal_fees_stats(export=ns_parser.export, symbol=ns_parser.coin)
+        withdrawalfees_view.display_crypto_withdrawal_fees_stats(
+            export=ns_parser.export, symbol=ns_parser.coin
+        )
 
     @try_except
     def call_cghold(self, other_args):

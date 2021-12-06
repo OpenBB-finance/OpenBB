@@ -1,10 +1,12 @@
 """Withdrawal Fees model"""
+from typing import List
+import math
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-import math
 
 from gamestonk_terminal.helper_funcs import get_user_agent
+
 
 def get_overall_withdrawal_fees(top: int = 100) -> pd.DataFrame:
     """Scrapes top coins withdrawal fees
@@ -17,7 +19,7 @@ def get_overall_withdrawal_fees(top: int = 100) -> pd.DataFrame:
     Returns
     -------
     pandas.DataFrame:
-        Coin, Lowest, Average, Median, Highest, Exchanges Compared 
+        Coin, Lowest, Average, Median, Highest, Exchanges Compared
     """
 
     COINS_PER_PAGE = 100
@@ -28,24 +30,36 @@ def get_overall_withdrawal_fees(top: int = 100) -> pd.DataFrame:
         ).text,
         "lxml",
     )
-    table = withdrawal_fees_homepage.find_all('table')
+    table = withdrawal_fees_homepage.find_all("table")
+    if table is None:
+        return pd.DataFrame()
     df = pd.read_html(str(table))[0]
-    df["Highest"] = df["Highest"].apply(lambda x: f'{x[:x.index(".")+3]} ({x[x.index(".")+3:]})' if '.' in x and isinstance(x, str) else x)
+    df["Highest"] = df["Highest"].apply(
+        lambda x: f'{x[:x.index(".")+3]} ({x[x.index(".")+3:]})'
+        if "." in x and isinstance(x, str)
+        else x
+    )
     num_pages = int(math.ceil(top / COINS_PER_PAGE))
-    if(num_pages > 1):
+    if num_pages > 1:
         for idx in range(2, num_pages + 1):
             withdrawal_fees_homepage = BeautifulSoup(
                 requests.get(
-                    f'https://withdrawalfees.com/coins/page/{idx}',
+                    f"https://withdrawalfees.com/coins/page/{idx}",
                     headers={"User-Agent": get_user_agent()},
                 ).text,
                 "lxml",
             )
-            table = withdrawal_fees_homepage.find_all('table')
-            new_df = pd.read_html(str(table))[0]
-            new_df["Highest"] = new_df["Highest"].apply(lambda x: f'{x[:x.index(".")+3]} ({x[x.index(".")+3:]})' if '.' in x else x)
-            df = df.append(new_df)
+            table = withdrawal_fees_homepage.find_all("table")
+            if table is not None:
+                new_df = pd.read_html(str(table))[0]
+                new_df["Highest"] = new_df["Highest"].apply(
+                    lambda x: f'{x[:x.index(".")+3]} ({x[x.index(".")+3:]})'
+                    if "." in x
+                    else x
+                )
+                df = df.append(new_df)
     return df
+
 
 def get_overall_exchange_withdrawal_fees() -> pd.DataFrame:
     """Scrapes exchange withdrawal fees
@@ -53,7 +67,7 @@ def get_overall_exchange_withdrawal_fees() -> pd.DataFrame:
 
     Parameters
     ----------
-    
+
     Returns
     -------
     pandas.DataFrame:
@@ -66,7 +80,9 @@ def get_overall_exchange_withdrawal_fees() -> pd.DataFrame:
         ).text,
         "lxml",
     )
-    table = exchange_withdrawal_fees.find_all('table')
+    table = exchange_withdrawal_fees.find_all("table")
+    if table is None:
+        return pd.DataFrame()
     df = pd.read_html(str(table))[0]
     return df
 
@@ -86,18 +102,30 @@ def get_crypto_withdrawal_fees(symbol: str) -> pd.DataFrame:
     """
     crypto_withdrawal_fees = BeautifulSoup(
         requests.get(
-            f'https://withdrawalfees.com/coins/{symbol}',
+            f"https://withdrawalfees.com/coins/{symbol}",
             headers={"User-Agent": get_user_agent()},
         ).text,
         "lxml",
     )
-    table = crypto_withdrawal_fees.find_all('table')
+    if crypto_withdrawal_fees is None:
+        return pd.DataFrame()
+    table = crypto_withdrawal_fees.find_all("table")
+    if len(table) == 0:
+        return pd.DataFrame()
     df = pd.read_html(str(table))[0]
-    df["Withdrawal Fee"] = df["Withdrawal Fee"].apply(lambda x: f'{x[:x.index(".")+3]} ({x[x.index(".")+3:]})' if '.' in x and isinstance(x, str) else x)
-    df["Minimum Withdrawal Amount"] = df["Minimum Withdrawal Amount"].apply(lambda x: f'{x[:x.index(".")+3]} ({x[x.index(".")+3:]})' if isinstance(x, str) and '.' in x else x)
+    df["Withdrawal Fee"] = df["Withdrawal Fee"].apply(
+        lambda x: f'{x[:x.index(".")+3]} ({x[x.index(".")+3:]})'
+        if "." in x and isinstance(x, str)
+        else x
+    )
+    df["Minimum Withdrawal Amount"] = df["Minimum Withdrawal Amount"].apply(
+        lambda x: f'{x[:x.index(".")+3]} ({x[x.index(".")+3:]})'
+        if isinstance(x, str) and "." in x
+        else x
+    )
     return df
-    
-    
+
+
 def get_crypto_withdrawal_fees_stats(symbol: str) -> pd.DataFrame:
     """Scrapes coin withdrawal fees statistics
     [Source: https://withdrawalfees.com/]
@@ -110,18 +138,20 @@ def get_crypto_withdrawal_fees_stats(symbol: str) -> pd.DataFrame:
     -------
     pandas.DataFrame:
         Exchanges, Lowest, Average, Median
-    """    
+    """
     crypto_withdrawal_fees = BeautifulSoup(
         requests.get(
-            f'https://withdrawalfees.com/coins/{symbol}',
+            f"https://withdrawalfees.com/coins/{symbol}",
             headers={"User-Agent": get_user_agent()},
         ).text,
         "lxml",
     )
-    html_stats = crypto_withdrawal_fees.find("div", { "class" : "details" }).find_all("div", recursive=False)
-    stats = [[]]
-    for stat in html_stats:
+    html_stats = crypto_withdrawal_fees.find("div", {"class": "details"})
+    if html_stats is None:
+        return pd.DataFrame()
+    stats: List[List[str]] = [[]]
+    for stat in html_stats.find_all("div", recursive=False):
         stats[0].append(stat.find("div", {"class": "value"}).text)
-        
-    df = pd.DataFrame(stats, columns = ['Exchanges', 'Lowest', 'Average', 'Median'])
+
+    df = pd.DataFrame(stats, columns=["Exchanges", "Lowest", "Average", "Median"])
     return df
