@@ -1,5 +1,5 @@
 ```
-usage: wfc  [-c COIN]
+usage: wfpe [-c COIN]
             [--export {png,jpg,pdf,svg}]
 ```
 

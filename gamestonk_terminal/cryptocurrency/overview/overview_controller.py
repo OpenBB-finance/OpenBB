@@ -61,8 +61,8 @@ class Controller:
         "cbpairs",
         "news",
         "wf",
-        "wfe",
-        "wfc",
+        "ewf",
+        "wfpe",
     ]
 
     def __init__(self):
@@ -110,8 +110,8 @@ CryptoPanic:
     news              recent crypto news from CryptoPanic aggregator
 WithdrawalFees:
     wf                overall withdrawal fees
-    wfe               overall exchange withdrawal fees
-    wfc               crypto withdrawal fees per exchange
+    ewf               overall exchange withdrawal fees
+    wfpe              crypto withdrawal fees per exchange
 """
 
         print(help_text)
@@ -181,7 +181,7 @@ WithdrawalFees:
             type=int,
             help="Top coins to check withdrawal fees. Default 100",
             dest="top",
-            default=100,
+            default=10,
         )
 
         parser.add_argument(
@@ -203,12 +203,12 @@ WithdrawalFees:
         )
 
     @try_except
-    def call_wfe(self, other_args: List[str]):
-        """Process wfe command"""
+    def call_ewf(self, other_args: List[str]):
+        """Process ewf command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="wf",
+            prog="ewf",
             description="""
                 Display exchange withdrawal fees
                 [Source: https://withdrawalfees.com/]
@@ -234,12 +234,12 @@ WithdrawalFees:
         )
 
     @try_except
-    def call_wfc(self, other_args: List[str]):
-        """Process wfc command"""
+    def call_wfpe(self, other_args: List[str]):
+        """Process wfpe command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="wfc",
+            prog="wfpe",
             description="""
                 Coin withdrawal fees per exchange
                 [Source: https://withdrawalfees.com/]

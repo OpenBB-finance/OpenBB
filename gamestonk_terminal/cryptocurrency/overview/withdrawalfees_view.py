@@ -33,7 +33,7 @@ def display_overall_withdrawal_fees(export: str, top: int) -> None:
         if gtff.USE_TABULATE_DF:
             print(
                 tabulate(
-                    df_fees,
+                    df_fees.head(top),
                     headers=df_fees.columns,
                     floatfmt=".1f",
                     showindex=False,

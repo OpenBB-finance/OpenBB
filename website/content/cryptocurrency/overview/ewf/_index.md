@@ -1,5 +1,5 @@
 ```
-usage: wfe  [-t TOP]
+usage: ewf  [-t TOP]
             [--export {png,jpg,pdf,svg}]
 ```
 

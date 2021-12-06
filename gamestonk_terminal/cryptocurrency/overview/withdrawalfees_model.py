@@ -31,14 +31,18 @@ def get_overall_withdrawal_fees(top: int = 100) -> pd.DataFrame:
         "lxml",
     )
     table = withdrawal_fees_homepage.find_all("table")
-    if table is None:
+    tickers_html = withdrawal_fees_homepage.find_all("div", {"class": "name"})
+    if table is None or tickers_html is None:
         return pd.DataFrame()
     df = pd.read_html(str(table))[0]
+
+    df["Coin"] = [ticker.text for ticker in tickers_html]
     df["Highest"] = df["Highest"].apply(
         lambda x: f'{x[:x.index(".")+3]} ({x[x.index(".")+3:]})'
         if "." in x and isinstance(x, str)
         else x
     )
+
     num_pages = int(math.ceil(top / COINS_PER_PAGE))
     if num_pages > 1:
         for idx in range(2, num_pages + 1):
@@ -50,14 +54,17 @@ def get_overall_withdrawal_fees(top: int = 100) -> pd.DataFrame:
                 "lxml",
             )
             table = withdrawal_fees_homepage.find_all("table")
-            if table is not None:
+            tickers_html = withdrawal_fees_homepage.find_all("div", {"class": "name"})
+            if table is not None and tickers_html is not None:
                 new_df = pd.read_html(str(table))[0]
                 new_df["Highest"] = new_df["Highest"].apply(
                     lambda x: f'{x[:x.index(".")+3]} ({x[x.index(".")+3:]})'
                     if "." in x
                     else x
                 )
+                new_df["Coin"] = [ticker.text for ticker in tickers_html]
                 df = df.append(new_df)
+    df = df.fillna("")
     return df
 
 
@@ -84,6 +91,7 @@ def get_overall_exchange_withdrawal_fees() -> pd.DataFrame:
     if table is None:
         return pd.DataFrame()
     df = pd.read_html(str(table))[0]
+    df = df.fillna("")
     return df
 
 
@@ -128,6 +136,7 @@ def get_crypto_withdrawal_fees(
         if isinstance(x, str) and "." in x
         else x
     )
+    df = df.fillna("")
 
     stats = html_stats.find_all("div", recursive=False)
     exchanges = stats[0].find("div", {"class": "value"}).text

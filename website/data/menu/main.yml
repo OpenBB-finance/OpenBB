@@ -673,10 +673,10 @@ main:
             ref: "/cryptocurrency/overview/news"
           - name: wf
             ref: "/cryptocurrency/overview/wf"
-          - name: wfe
-            ref: "/cryptocurrency/overview/wfe"
-          - name: wfc
-            ref: "/cryptocurrency/overview/wfc"
+          - name: ewf
+            ref: "/cryptocurrency/overview/ewf"
+          - name: wfpe
+            ref: "/cryptocurrency/overview/wfpe"
       - name: due diligence
         ref: "/cryptocurrency/due_diligence"
         sub:
