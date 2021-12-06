@@ -1269,7 +1269,7 @@ Current Expiry: {self.selected_date or None}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="parity",
-            description="Shows whether options are over or under valued",
+            description="Gives the option value using binomial option valuation",
         )
         parser.add_argument(
             "-s",
@@ -1277,7 +1277,7 @@ Current Expiry: {self.selected_date or None}
             type=float,
             default=0,
             dest="strike",
-            help="Strike price for optiom shown",
+            help="Strike price for option shown",
         )
         parser.add_argument(
             "-p",
@@ -1303,7 +1303,6 @@ Current Expiry: {self.selected_date or None}
             help="Export an excel spreadsheet with binomial pricing data",
         )
         parser.add_argument(
-            "-P",
             "--plot",
             action="store_true",
             default=False,

@@ -684,15 +684,17 @@ def plot_expected_prices(
     expiration : str
         The expiration for the option
     """
-    ups = list(range(len(und_vals[-1])))
-    ups.reverse()
-    probs = [binom.pmf(r, len(ups), p) for r in ups]
+    up_moves = list(range(len(und_vals[-1])))
+    up_moves.reverse()
+    probs = [binom.pmf(r, len(up_moves), p) for r in up_moves]
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     ax.set_title(f"Probabilities for ending prices of {ticker} on {expiration}")
     ax.xaxis.set_major_formatter("${x:1.2f}")
     ax.yaxis.set_major_formatter(mtick.PercentFormatter())
     plt.plot(und_vals[-1], probs)
     fig.tight_layout()
+    if gtff.USE_ION:
+        plt.ion()
     plt.show()
 
 

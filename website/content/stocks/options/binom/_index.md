@@ -2,7 +2,7 @@
 usage: binom [-s STRIKE] [-p] [-e] [-E] [-P] [-v VOLATILITY] [-h]
 ```
 
-Shows the value of an option using binomial option pricing. Can also show raw data and provide a graph with predicted underlying asset ending values.
+Shows the value of an option using binomial option pricing. Can also show raw data and provide a graph with predicted underlying asset ending values. The binomial options model calculates how big an up step or down step in the next time period will likely be. Then it creates a tree doing this at each period. The end results of this is a tree with possible asset values at each "step". For our calculations we use a day as our "step" time period. We then take all of the expected values at the finishing date and use this to begin a tree of option values at each step. The ending results is the value of the option today.
 
 ```
 optional arguments:
@@ -15,4 +15,3 @@ optional arguments:
   -v, --volatility      sets the volatility for the underlying asset(default: None)
   -h, --help            show this help message (default: False)
 ```
-<img size="1400" alt="Feature Screenshot - oi" src="https://user-images.githubusercontent.com/85772166/142368338-403b2d8d-00ea-4052-a643-683f5ee79711.png">
