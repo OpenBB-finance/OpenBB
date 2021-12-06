@@ -263,10 +263,10 @@ Statistics{c}
 Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
     sama          see all metrics available
     metric        visualise financial metric across filters selected
-{r if params else ''}{Style.DIM if not self.tickers else ''}
+{r if params else ''}{Style.DIM if len(self.tickers) == 0 else ''}
 Returned tickers: {', '.join(self.tickers)}
 >   ca            take these to comparison analysis menu
-{r if not self.tickers else ''}"""
+{r if len(self.tickers) == 0 else ''}"""
         print(help_text)
 
     def switch(self, an_input: str):
