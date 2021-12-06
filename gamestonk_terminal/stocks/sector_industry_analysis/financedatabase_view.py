@@ -138,7 +138,7 @@ def display_bars_financials(
 
             magnitude = 0
             while max(company_metric) > 1_000 or abs(min(company_metric)) > 1_000:
-                company_metric = company_metric.div(1_000)
+                company_metric = np.divide(company_metric, 1_000)
                 magnitude += 1
 
             # check if the value is a percentage
