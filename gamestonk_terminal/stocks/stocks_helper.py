@@ -484,7 +484,9 @@ def load(
         return [s_ticker, s_start, s_interval, df_stock]
 
 
-def display_candle(s_ticker: str, df_stock: pd.DataFrame, use_matplotlib: bool):
+def display_candle(
+    s_ticker: str, df_stock: pd.DataFrame, use_matplotlib: bool, intraday: bool = False
+):
     """Shows candle plot of loaded ticker. [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
 
     Parameters
@@ -495,6 +497,8 @@ def display_candle(s_ticker: str, df_stock: pd.DataFrame, use_matplotlib: bool):
         Ticker name
     use_matplotlib: bool
         Flag to use matplotlib instead of interactive plotly chart
+    intraday: bool
+        Flag for intraday data for plotly range breaks
     """
     df_stock["ma20"] = df_stock["Close"].rolling(20).mean().fillna(method="bfill")
     df_stock["ma50"] = df_stock["Close"].rolling(50).mean().fillna(method="bfill")
@@ -658,6 +662,13 @@ def display_candle(s_ticker: str, df_stock: pd.DataFrame, use_matplotlib: bool):
                 type="date",
             ),
         )
+        if intraday:
+            fig.update_xaxes(
+                rangebreaks=[
+                    dict(bounds=["sat", "mon"]),
+                    dict(bounds=[16, 9.5], pattern="hour"),
+                ]
+            )
 
         fig.show()
     print("")
