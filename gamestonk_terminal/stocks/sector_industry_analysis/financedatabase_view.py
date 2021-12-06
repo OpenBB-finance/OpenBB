@@ -73,8 +73,13 @@ def display_bars_financials(
     metric_data = {}
     for symbol in list(stocks_data.keys()):
         if finance_key in stocks_data[symbol] and "quoteType" in stocks_data[symbol]:
-            metric = stocks_data[symbol][finance_key][finance_metric]
             stock_name = stocks_data[symbol]["quoteType"]["longName"]
+            metric = (
+                stocks_data[symbol][finance_key][finance_metric]
+                if stocks_data[symbol][finance_key] is not None
+                and finance_metric in stocks_data[symbol][finance_key]
+                else None
+            )
             if metric and stock_name:
                 metric_data[stock_name] = (metric, symbol)
 
