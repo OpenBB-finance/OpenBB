@@ -186,12 +186,15 @@ def display_bars_financials(
                 title += f"in {industry} industry\n"
             elif sector:
                 title += f"in {sector} sector\n"
+
             if country:
-                title += f"in {country} "
+                title += f"in {country}"
+                title += " " if (industry or sector) else "\n"
+
             title += (
-                ", excluding data from international exchanges"
+                "(excluding data from international exchanges)"
                 if exclude_exchanges
-                else ", including data from international exchanges"
+                else "(including data from international exchanges)"
             )
 
             plt.title(title)
@@ -204,7 +207,9 @@ def display_bars_financials(
             finance_metric,
             df_all,
         )
-        print("")
+
+        if not export:
+            print("")
 
         return stocks_data, company_ticker
 
