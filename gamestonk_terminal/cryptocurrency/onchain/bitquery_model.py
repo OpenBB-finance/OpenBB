@@ -25,6 +25,10 @@ class BitQueryApiKeyException(Exception):
         return f"BitQueryApiKeyException: {self.message}"
 
 
+class BitQueryTimeoutException(Exception):
+    """BitQuery Timeout Exception class"""
+
+
 BQ_URL = "https://graphql.bitquery.io"
 CURRENCIES = ["ETH", "USD", "BTC", "USDT"]
 DECENTRALIZED_EXCHANGES = [
@@ -82,8 +86,30 @@ DECENTRALIZED_EXCHANGES = [
     "dYdX",
     "dex.blue",
 ]
+DECENTRALIZED_EXCHANGES_MAP = {e.lower(): e for e in DECENTRALIZED_EXCHANGES}
 NETWORKS = ["bsc", "ethereum", "matic"]
 ERC20_TOKENS = None
+
+
+def _extract_dex_trades(data: dict) -> pd.DataFrame:
+    """Helper method that extracts from bitquery api response data from nested dictionary:
+    response = {'ethereum' : {'dexTrades' : <data>}}. If 'dexTrades' is None, raises Exception.
+
+    Parameters
+    ----------
+    data: dict
+        response data from bitquery api.
+
+    Returns
+    -------
+    pd.DataFrame
+        normalized pandas data frame with data
+    """
+
+    dex_trades = data["ethereum"]["dexTrades"]
+    if not dex_trades:
+        raise ValueError(f"List of dex trades is empty {data['ethereum']}")
+    return pd.json_normalize(dex_trades)
 
 
 def query_graph(url: str, query: str) -> dict:
@@ -105,8 +131,16 @@ def query_graph(url: str, query: str) -> dict:
     session = requests.Session()
     session.mount("https://", HTTPAdapter(max_retries=5))
     headers = {"x-api-key": cfg.API_BITQUERY_KEY}
+    timeout = 30
 
-    response = session.post(url, json={"query": query}, headers=headers)
+    try:
+        response = session.post(
+            url, json={"query": query}, headers=headers, timeout=timeout
+        )
+    except requests.Timeout as e:
+        raise BitQueryTimeoutException(
+            f"BitQuery API didn't respond within {timeout} seconds.\n"
+        ) from e
 
     if response.status_code == 500:
         raise HTTPError(f"Internal sever error {response.reason}")
@@ -223,10 +257,7 @@ def get_dex_trades_by_exchange(
 
     data = query_graph(BQ_URL, query)
 
-    dex_trades = data["ethereum"]["dexTrades"]
-    if not dex_trades:
-        raise ValueError(f"List of dex trades is empty {data['ethereum']}")
-    df = pd.json_normalize(dex_trades)
+    df = _extract_dex_trades(data)
     df.columns = ["trades", "tradeAmount", "exchange"]
     return df[["exchange", "trades", "tradeAmount"]].sort_values(
         by="tradeAmount", ascending=True
@@ -281,10 +312,7 @@ def get_dex_trades_monthly(
     if not data:
         return pd.DataFrame()
 
-    dex_trades = data["ethereum"]["dexTrades"]
-    if not dex_trades:
-        raise ValueError(f"List of dex trades is empty {data['ethereum']}")
-    df = pd.json_normalize(dex_trades)
+    df = _extract_dex_trades(data)
     df["date"] = df.apply(
         lambda x: datetime.date(int(x["date.year"]), int(x["date.month"]), 1), axis=1
     )
@@ -359,11 +387,7 @@ def get_daily_dex_volume_for_given_pair(
     if not data:
         return pd.DataFrame()
 
-    dex_trades = data["ethereum"]["dexTrades"]
-    if not dex_trades:
-        raise ValueError(f"List of dex trades is empty {data['ethereum']}")
-
-    df = pd.json_normalize(dex_trades)
+    df = _extract_dex_trades(data)
     df.columns = [
         "trades",
         "tradeAmountUSD",
@@ -444,11 +468,7 @@ def get_token_volume_on_dexes(
     if not data:
         return pd.DataFrame()
 
-    dex_trades = data["ethereum"]["dexTrades"]
-    if not dex_trades:
-        raise ValueError(f"List of dex trades is empty {data['ethereum']}")
-
-    df = pd.json_normalize(dex_trades)[
+    df = _extract_dex_trades(data)[
         ["exchange.fullName", "baseCurrency.symbol", "tradeAmount", "count"]
     ]
     df.columns = ["exchange", "coin", "tradeAmount", "trades"]
@@ -542,6 +562,7 @@ def get_most_traded_pairs(
     """
 
     dt = (datetime.date.today() - datetime.timedelta(limit)).strftime("%Y-%m-%d")
+    exchange = DECENTRALIZED_EXCHANGES_MAP.get(exchange, "Uniswap")
     query = f"""
     {{
     ethereum(network: {network}){{
@@ -564,7 +585,7 @@ def get_most_traded_pairs(
     if not data:
         return pd.DataFrame()
 
-    df = pd.json_normalize(data["ethereum"]["dexTrades"])
+    df = _extract_dex_trades(data)
     df.columns = ["trades", "tradeAmount", "base", "quoted"]
     df["exchange"] = exchange
     return df[["exchange", "base", "quoted", "trades", "tradeAmount"]]
@@ -622,8 +643,7 @@ def get_spread_for_crypto_pair(
     if not data:
         return pd.DataFrame()
 
-    df = pd.json_normalize(data["ethereum"]["dexTrades"])
-
+    df = _extract_dex_trades(data)
     columns = ["quotePrice", "date.date", "baseCurrency.symbol", "quoteCurrency.symbol"]
     bids = df.query("side == 'SELL'")[columns]
     asks = df.query("side == 'BUY'")[columns]

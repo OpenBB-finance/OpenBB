@@ -1223,10 +1223,10 @@ class OnchainController:
             "-e",
             "--exchange",
             dest="exchange",
-            type=str,
+            type=str.lower,
             help="Decentralized exchange name.",
             default="Uniswap",
-            choices=bitquery_model.DECENTRALIZED_EXCHANGES,
+            choices=list(bitquery_model.DECENTRALIZED_EXCHANGES_MAP.keys()),
         )
 
         parser.add_argument(
@@ -1235,7 +1235,7 @@ class OnchainController:
             dest="days",
             type=check_positive,
             help="Number of days to display data for.",
-            default=90,
+            default=30,
         )
 
         parser.add_argument(
