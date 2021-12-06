@@ -158,10 +158,12 @@ def display_bars_financials(
             else:
                 unit = " KMBTP"[magnitude]
 
-            for n, m, t in zip(
+            for name, metric, ticker in zip(
                 company_name[::-1], company_metric[::-1], company_ticker[::-1]
             ):
-                plt.barh(n, m, label=t)
+                if len(name.split(" ")) > 6 and len(name) > 40:
+                    name = f'{" ".join(name.split(" ")[:4])}\n{" ".join(name.split(" ")[4:])}'
+                plt.barh(name, metric, label=ticker)
 
             handles, _ = plt.gca().get_legend_handles_labels()
             plt.legend(
