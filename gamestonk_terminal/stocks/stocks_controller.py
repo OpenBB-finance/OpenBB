@@ -347,6 +347,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
                 s_ticker=self.ticker,
                 df_stock=df_stock,
                 use_matplotlib=ns_parser.matplotlib,
+                intraday=self.interval != "1440min",
             )
 
     @try_except
