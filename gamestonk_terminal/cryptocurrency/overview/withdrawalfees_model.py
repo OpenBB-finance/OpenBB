@@ -1,5 +1,5 @@
 """Withdrawal Fees model"""
-from typing import List
+from typing import Any, List
 import math
 import requests
 from bs4 import BeautifulSoup
@@ -87,7 +87,9 @@ def get_overall_exchange_withdrawal_fees() -> pd.DataFrame:
     return df
 
 
-def get_crypto_withdrawal_fees(symbol: str) -> pd.DataFrame:
+def get_crypto_withdrawal_fees(
+    symbol: str,
+) -> List[Any]:
     """Scrapes coin withdrawal fees per exchange
     [Source: https://withdrawalfees.com/]
 
@@ -97,8 +99,9 @@ def get_crypto_withdrawal_fees(symbol: str) -> pd.DataFrame:
         Coin to check withdrawal fees. By default bitcoin
     Returns
     -------
-    pandas.DataFrame:
-        Exchange, Withdrawal Fee, Minimum Withdrawal Amount
+    List:
+        - str:              Overall statistics (exchanges, lowest, average and median)
+        - pandas.DataFrame: Exchange, Withdrawal Fee, Minimum Withdrawal Amount
     """
     crypto_withdrawal_fees = BeautifulSoup(
         requests.get(
@@ -108,10 +111,12 @@ def get_crypto_withdrawal_fees(symbol: str) -> pd.DataFrame:
         "lxml",
     )
     if crypto_withdrawal_fees is None:
-        return pd.DataFrame()
+        return ["", pd.DataFrame()]
     table = crypto_withdrawal_fees.find_all("table")
-    if len(table) == 0:
-        return pd.DataFrame()
+    html_stats = crypto_withdrawal_fees.find("div", {"class": "details"})
+
+    if len(table) == 0 or html_stats is None:
+        return ["", pd.DataFrame()]
     df = pd.read_html(str(table))[0]
     df["Withdrawal Fee"] = df["Withdrawal Fee"].apply(
         lambda x: f'{x[:x.index(".")+3]} ({x[x.index(".")+3:]})'
@@ -123,35 +128,14 @@ def get_crypto_withdrawal_fees(symbol: str) -> pd.DataFrame:
         if isinstance(x, str) and "." in x
         else x
     )
-    return df
 
-
-def get_crypto_withdrawal_fees_stats(symbol: str) -> pd.DataFrame:
-    """Scrapes coin withdrawal fees statistics
-    [Source: https://withdrawalfees.com/]
-
-    Parameters
-    ----------
-    symbol: str
-        Coin to check withdrawal fees. By default bitcoin
-    Returns
-    -------
-    pandas.DataFrame:
-        Exchanges, Lowest, Average, Median
-    """
-    crypto_withdrawal_fees = BeautifulSoup(
-        requests.get(
-            f"https://withdrawalfees.com/coins/{symbol}",
-            headers={"User-Agent": get_user_agent()},
-        ).text,
-        "lxml",
+    stats = html_stats.find_all("div", recursive=False)
+    exchanges = stats[0].find("div", {"class": "value"}).text
+    lowest = stats[1].find("div", {"class": "value"}).text
+    average = stats[2].find("div", {"class": "value"}).text
+    median = stats[3].find("div", {"class": "value"}).text
+    stats_string = (
+        f"{symbol} is available on {exchanges} exchanges with alowest fee of "
     )
-    html_stats = crypto_withdrawal_fees.find("div", {"class": "details"})
-    if html_stats is None:
-        return pd.DataFrame()
-    stats: List[List[str]] = [[]]
-    for stat in html_stats.find_all("div", recursive=False):
-        stats[0].append(stat.find("div", {"class": "value"}).text)
-
-    df = pd.DataFrame(stats, columns=["Exchanges", "Lowest", "Average", "Median"])
-    return df
+    stats_string += f"{lowest}, average of {average} and median of {median}"
+    return [stats_string, df]

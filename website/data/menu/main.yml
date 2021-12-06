@@ -677,8 +677,6 @@ main:
             ref: "/cryptocurrency/overview/wfe"
           - name: wfc
             ref: "/cryptocurrency/overview/wfc"
-          - name: wfcstats
-            ref: "/cryptocurrency/overview/wfcstats"
       - name: due diligence
         ref: "/cryptocurrency/due_diligence"
         sub:

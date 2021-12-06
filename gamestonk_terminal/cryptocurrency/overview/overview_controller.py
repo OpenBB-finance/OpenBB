@@ -63,7 +63,6 @@ class Controller:
         "wf",
         "wfe",
         "wfc",
-        "wfcstats",
     ]
 
     def __init__(self):
@@ -113,7 +112,6 @@ WithdrawalFees:
     wf                overall withdrawal fees
     wfe               overall exchange withdrawal fees
     wfc               crypto withdrawal fees per exchange
-    wfcstats          crypto withdrawal fees stats
 """
 
         print(help_text)
@@ -272,46 +270,6 @@ WithdrawalFees:
             return
 
         withdrawalfees_view.display_crypto_withdrawal_fees(
-            export=ns_parser.export, symbol=ns_parser.coin
-        )
-
-    @try_except
-    def call_wfcstats(self, other_args: List[str]):
-        """Process wfcstats command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="wfcstats",
-            description="""
-                Coin withdrawal fees statistics
-                [Source: https://withdrawalfees.com/]
-            """,
-        )
-
-        parser.add_argument(
-            "-c",
-            "--coin",
-            default="bitcoin",
-            type=str,
-            dest="coin",
-            help="Coin to check withdrawal fees in long format (e.g., bitcoin, ethereum)",
-        )
-
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-
-        if not ns_parser:
-            return
-
-        withdrawalfees_view.display_crypto_withdrawal_fees_stats(
             export=ns_parser.export, symbol=ns_parser.coin
         )
 
