@@ -671,6 +671,14 @@ main:
             ref: "/cryptocurrency/overview/cbpairs"
           - name: news
             ref: "/cryptocurrency/overview/news"
+          - name: wf
+            ref: "/cryptocurrency/overview/wf"
+          - name: wfe
+            ref: "/cryptocurrency/overview/wfe"
+          - name: wfc
+            ref: "/cryptocurrency/overview/wfc"
+          - name: wfcstats
+            ref: "/cryptocurrency/overview/wfcstats"
       - name: due diligence
         ref: "/cryptocurrency/due_diligence"
         sub:

@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 # pylint: disable=R0904, C0302, W0622
 import argparse
+from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -18,6 +19,7 @@ from gamestonk_terminal.cryptocurrency.overview import (
     pycoingecko_view,
     coinpaprika_view,
     cryptopanic_view,
+    withdrawalfees_view,
 )
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_view import CURRENCIES
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
@@ -58,6 +60,10 @@ class Controller:
         "cpcontracts",
         "cbpairs",
         "news",
+        "wf",
+        "wfe",
+        "wfc",
+        "wfcstats"
     ]
 
     def __init__(self):
@@ -103,6 +109,11 @@ Coinbase:
     cbpairs           info about available trading pairs on Coinbase
 CryptoPanic:
     news              recent crypto news from CryptoPanic aggregator
+WithdrawalFees:
+    wf                overall withdrawal fees
+    wfe               overall exchange withdrawal fees
+    wfc               crypto withdrawal fees per exchange
+    wfcstats          crypto withdrawal fees stats
 """
 
         print(help_text)
@@ -152,6 +163,151 @@ CryptoPanic:
     def call_quit(self, _):
         """Process Quit command - quit the program."""
         return True
+
+    @try_except
+    def call_wf(self, other_args: List[str]):
+        """Process wf command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="wf",
+            description="""
+                Display top coins withdrawal fees
+                [Source: https://withdrawalfees.com/]
+            """,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            type=int,
+            help="Top coins to check withdrawal fees. Default 100",
+            dest="top",
+            default=100,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if not ns_parser:
+            return
+
+        withdrawalfees_view.display_overall_withdrawal_fees(export=ns_parser.export, top=ns_parser.top)
+
+    @try_except
+    def call_wfe(self, other_args: List[str]):
+        """Process wfe command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="wf",
+            description="""
+                Display exchange withdrawal fees
+                [Source: https://withdrawalfees.com/]
+            """,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if not ns_parser:
+            return
+
+        withdrawalfees_view.display_overall_exchange_withdrawal_fees(export=ns_parser.export)
+
+
+    @try_except
+    def call_wfc(self, other_args: List[str]):
+        """Process wfc command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="wfc",
+            description="""
+                Coin withdrawal fees per exchange
+                [Source: https://withdrawalfees.com/]
+            """,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--coin",
+            default="bitcoin",
+            type=str,
+            dest="coin",
+            help="Coin to check withdrawal fees in long format (e.g., bitcoin, ethereum)",
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if not ns_parser:
+            return
+
+        withdrawalfees_view.display_crypto_withdrawal_fees(export=ns_parser.export, symbol=ns_parser.coin)
+
+
+    @try_except
+    def call_wfcstats(self, other_args: List[str]):
+        """Process wfcstats command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="wfcstats",
+            description="""
+                Coin withdrawal fees statistics
+                [Source: https://withdrawalfees.com/]
+            """,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--coin",
+            default="bitcoin",
+            type=str,
+            dest="coin",
+            help="Coin to check withdrawal fees in long format (e.g., bitcoin, ethereum)",
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if not ns_parser:
+            return
+
+        withdrawalfees_view.display_crypto_withdrawal_fees_stats(export=ns_parser.export, symbol=ns_parser.coin)
 
     @try_except
     def call_cghold(self, other_args):
