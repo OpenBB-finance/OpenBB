@@ -1086,6 +1086,7 @@ def menu(
                     industry=sia_controller.industry, sector=sia_controller.sector
                 )
             }
+            choices["metric"] = {c: None for c in sia_controller.possible_metrics}
 
             completer = NestedCompleter.from_nested_dict(choices)
             an_input = session.prompt(
