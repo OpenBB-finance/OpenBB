@@ -86,7 +86,7 @@ def get_screener_data(preset_loaded: str, data_type: str, limit: int, ascend: bo
         print("Invalid selected screener type")
         return pd.DataFrame()
 
-    if preset_loaded in list(d_signals.keys()):
+    if preset_loaded in d_signals:
         screen.set_filter(signal=d_signals[preset_loaded])
 
         if limit > 0:
