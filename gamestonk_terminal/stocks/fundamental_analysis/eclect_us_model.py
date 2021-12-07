@@ -1,8 +1,8 @@
 """Eclect.us model"""
 __docformat__ = "numpy"
 
-import requests
 from collections import OrderedDict
+import requests
 from colorama import Style
 
 # pylint: disable=R1718
