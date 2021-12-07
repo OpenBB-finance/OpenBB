@@ -30,12 +30,18 @@ def get_filings_analysis(ticker: str) -> str:
         response_dict = response.json()
 
         rf_highlights = f"{Style.BRIGHT}\n\tRISK FACTORS:{Style.RESET_ALL}\n"
-        rf_highlights_list = [sentence["sentence"] for sentence in response_dict[0]["rf_highlights"]]
+        rf_highlights_list = [
+            sentence["sentence"] for sentence in response_dict[0]["rf_highlights"]
+        ]
         rf_highlights_list = list(OrderedDict.fromkeys(rf_highlights_list))
         rf_highlights_txt = "\n\n".join(rf_highlights_list)
 
-        daa_highlights = (f"{Style.BRIGHT}\n\tDISCUSSION AND ANALYSIS:{Style.RESET_ALL}\n")
-        daa_highlights_list = [sentence["sentence"] for sentence in response_dict[0]["daa_highlights"]]
+        daa_highlights = (
+            f"{Style.BRIGHT}\n\tDISCUSSION AND ANALYSIS:{Style.RESET_ALL}\n"
+        )
+        daa_highlights_list = [
+            sentence["sentence"] for sentence in response_dict[0]["daa_highlights"]
+        ]
         daa_highlights_list = list(OrderedDict.fromkeys(daa_highlights_list))
         daa_highlights += "\n\n".join(daa_highlights_list)
 
