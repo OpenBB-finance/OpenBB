@@ -294,11 +294,13 @@ class Record:
     @property
     def record_changed(self) -> bool:
         if self.__recorded is None:
-            return True
+            changed = True
         elif self.__recorded != self.__captured:
-            return True
+            changed = True
         else:
-            return False
+            changed = False
+        
+        return changed
 
     @property
     def record_exists(self) -> bool:
