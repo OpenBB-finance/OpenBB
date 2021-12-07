@@ -283,7 +283,9 @@ def load(
 
             df_stock_candidate = yf.download(
                 ticker,
-                start=s_date_start if s_start_dt > start else start,
+                start=s_date_start
+                if s_start_dt > start
+                else start.strftime("%Y-%m-%d"),
                 progress=False,
                 interval=s_int,
                 prepost=prepost,
