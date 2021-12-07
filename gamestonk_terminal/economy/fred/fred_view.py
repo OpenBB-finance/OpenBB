@@ -2,7 +2,8 @@
 __docformat__ = "numpy"
 
 import os
-
+import textwrap
+from typing import Dict
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
@@ -10,7 +11,7 @@ from tabulate import tabulate
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.economy import fred_model
+from gamestonk_terminal.economy.fred import fred_model
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 
 register_matplotlib_converters()
@@ -18,7 +19,6 @@ register_matplotlib_converters()
 
 def notes(series_term: str, num: int):
     """Print Series notes. [Source: FRED]
-
     Parameters
     ----------
     series_term : str
@@ -26,12 +26,71 @@ def notes(series_term: str, num: int):
     num : int
         Maximum number of series notes to display
     """
-    print(fred_model.get_series_notes(series_term, num))
+    df_search = fred_model.get_series_notes(series_term)
+    if df_search.empty:
+        print("No matches found. \n")
+        return
+    df_search["notes"] = df_search["notes"].apply(
+        lambda x: "\n".join(textwrap.wrap(x, width=100)) if isinstance(x, str) else x
+    )
+    df_search["title"] = df_search["title"].apply(
+        lambda x: "\n".join(textwrap.wrap(x, width=50)) if isinstance(x, str) else x
+    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df_search[["id", "title", "notes"]].head(num),
+                tablefmt="fancy_grid",
+                headers=["Series ID", "Title", "Description"],
+                showindex=False,
+            )
+        )
+    else:
+        print(df_search[["id", "title", "notes"]].head(num).to_string(index=False))
+    print("")
+
+
+def display_series_2(
+    series: Dict, start_date: str, raw: bool = False, export: str = ""
+):
+    """Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
+    Parameters
+    ----------
+    series : str
+        FRED Series ID from https://fred.stlouisfed.org. For multiple series use: series1,series2,series3
+    start_date : str
+        Starting date (YYYY-MM-DD) of data
+    raw : bool
+        Output only raw data
+    export : str
+        Export data to csv,json,xlsx or png,jpg,pdf,svg file
+    """
+    series_ids = series.keys()
+    data = pd.DataFrame(columns=series_ids)
+
+    for s_id in series_ids:
+        data[s_id] = fred_model.get_series_data(s_id, start_date)
+
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    data.plot(ax=ax)
+    ax.legend(bbox_to_anchor=(1, 1))
+    fig.tight_layout()
+    if gtff.USE_ION:
+        plt.ion()
+
+    plt.show()
+    if raw:
+        pass
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "series",
+        data,
+    )
 
 
 def display_series(series: str, start_date: str, raw: bool, export: str):
     """Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
-
     Parameters
     ----------
     series : str

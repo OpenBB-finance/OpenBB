@@ -5,7 +5,7 @@ import io
 
 import pandas as pd
 
-from gamestonk_terminal.economy.fred_view import display_series
+from gamestonk_terminal.economy.fred.fred_view import display_series
 from tests.helpers import check_print
 
 fred_data_mock = """
