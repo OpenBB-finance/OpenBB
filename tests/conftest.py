@@ -1,9 +1,11 @@
 # IMPORTATION STANDARD
+import json
 import os
 import pathlib
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 # IMPORTATION THIRDPARTY
+import pandas as pd
 import pytest
 
 # from pytest_recording._vcr import merge_kwargs
@@ -29,7 +31,8 @@ def default_csv_path(request):
     path += ".csv"
 
     # CREATE FOLDER
-    if not os.path.exists(path):
+    dir_name = os.path.dirname(path)
+    if not os.path.exists(dir_name):
         dir_name = os.path.dirname(path)
         pathlib.Path(dir_name).mkdir(parents=True, exist_ok=True)
 
@@ -48,7 +51,8 @@ def default_txt_path(request):
     path += ".txt"
 
     # CREATE FOLDER
-    if not os.path.exists(path):
+    dir_name = os.path.dirname(path)
+    if not os.path.exists(dir_name):
         dir_name = os.path.dirname(path)
         pathlib.Path(dir_name).mkdir(parents=True, exist_ok=True)
 
@@ -67,7 +71,8 @@ def default_json_path(request):
     path += ".json"
 
     # CREATE FOLDER
-    if not os.path.exists(path):
+    dir_name = os.path.dirname(path)
+    if not os.path.exists(dir_name):
         dir_name = os.path.dirname(path)
         pathlib.Path(dir_name).mkdir(parents=True, exist_ok=True)
 
@@ -233,3 +238,213 @@ def record_stdout(
         )
     else:
         yield None
+
+
+@pytest.fixture
+def recorder(disable_recording: bool, record_mode: str, request: SubRequest):
+    marker_record_stdout = request.node.get_closest_marker("record_stdout")
+    module = request.node.fspath
+    module_dir = module.dirname
+    module_name = module.purebasename
+    test_name = request.node.name
+    path_template = PathTemplate(
+        module_dir=module_dir,
+        module_name=module_name,
+        test_name=test_name,
+    )
+    if disable_recording:
+        yield None
+    elif marker_record_stdout:
+        raise Exception(
+            "You can't combine both of these fixtures : `record_stdout marker`, `recorder`."
+        )
+    else:
+        recorder = Recorder(path_template, record_mode)
+        yield recorder
+        recorder.persist()
+        recorder.assert_equal()
+
+
+class Record:
+    @staticmethod
+    def extract_string(data: Any) -> str:
+        if isinstance(data, str):
+            string_value = data
+        elif isinstance(data, pd.DataFrame):
+            string_value = data.to_csv(encoding="utf-8", line_terminator="\n")
+        elif isinstance(data, (dict, list, tuple)):
+            string_value = json.dumps(data)
+        else:
+            raise AttributeError(f"Unsupported type : {type(data)}")
+
+        return string_value
+
+    @staticmethod
+    def load_string(path: str) -> Optional[str]:
+        if os.path.exists(path):
+            with open(file=path, encoding="utf-8") as f:
+                return f.read()
+        else:
+            return None
+
+    @property
+    def captured(self) -> str:
+        return self.__captured
+
+    @property
+    def record_changed(self) -> bool:
+        if self.__recorded is None:
+            return True
+        elif self.__recorded != self.__captured:
+            return True
+        else:
+            return False
+
+    @property
+    def record_exists(self) -> bool:
+        return self.__recorded is not None
+
+    @property
+    def record_path(self) -> str:
+        return self.__record_path
+
+    @property
+    def recorded(self) -> Optional[str]:
+        return self.__recorded
+
+    def recorded_reload(self):
+        record_path = self.__record_path
+        self.__recorded = self.load_string(path=record_path)
+
+    def __init__(self, captured: Any, record_path: str) -> None:
+        self.__captured = self.extract_string(data=captured)
+        self.__record_path = record_path
+
+        self.__recorded = self.load_string(path=record_path)
+
+    def persist(self):
+        record_path = self.__record_path
+        captured = self.__captured
+        record_dir_name = os.path.dirname(record_path)
+
+        # CREATE FOLDER
+        if not os.path.exists(record_dir_name):
+            pathlib.Path(record_dir_name).mkdir(parents=True, exist_ok=True)
+
+        # SAVE FILE
+        with open(file=record_path, mode="w", encoding="utf-8") as f:
+            f.write(captured)
+
+        # RELOAD RECORDED CONTENT
+        self.recorded_reload()
+
+
+class PathTemplate:
+    EXTENSIONS_ALLOWED = ["csv", "json", "txt"]
+    EXTENSIONS_MATCHING = {
+        pd.DataFrame: "csv",
+        str: "txt",
+        tuple: "json",
+        list: "json",
+        dict: "json",
+    }
+
+    @classmethod
+    def find_extension(cls, data: Any):
+        for data_type, extension in cls.EXTENSIONS_MATCHING.items():
+            if isinstance(data, data_type):
+                return extension
+        raise Exception(f"No extension found for this type : {type(data)}")
+
+    def __init__(self, module_dir: str, module_name: str, test_name: str) -> None:
+        self.__module_dir = module_dir
+        self.__module_name = module_name
+        self.__test_name = test_name
+
+    def build_path_by_extension(self, extension: str, index: int = 0):
+        if extension not in self.EXTENSIONS_ALLOWED:
+            raise Exception(f"Unsupported extension : {extension}")
+
+        path = os.path.join(
+            self.__module_dir,
+            extension,
+            self.__module_name,
+            self.__test_name,
+        )
+        if index:
+            path += "_" + str(index)
+        path += "."
+        path += extension
+
+        return path
+
+    def build_path_by_data(self, data: Any, index: int = 0):
+        extension = self.find_extension(data=data)
+        return self.build_path_by_extension(extension=extension, index=index)
+
+
+class Recorder:
+    @property
+    def path_template(self) -> PathTemplate:
+        return self.__path_template
+
+    @property
+    def record_mode(self) -> str:
+        return self.__record_mode
+
+    @record_mode.setter
+    def record_mode(self, record_mode: str):
+        self.__record_mode = record_mode
+
+    def __init__(
+        self,
+        path_template: PathTemplate,
+        record_mode: str,
+    ) -> None:
+        self.__path_template = path_template
+        self.__record_mode = record_mode
+
+        self.__record_list: List[Record] = list()
+
+    def capture(self, captured: List[Any]):
+        record_list = self.__record_list
+        record_path = self.__path_template.build_path_by_data(
+            data=captured,
+            index=len(record_list),
+        )
+        record = Record(captured=captured, record_path=record_path)
+        self.__record_list.append(record)
+
+    def capture_list(self, captured_list: List[Any]):
+        for captured in captured_list:
+            self.capture(captured=captured)
+
+    def assert_equal(self):
+        record_list = self.__record_list
+
+        for record in record_list:
+            assert not record.record_changed
+
+    def persist(self):
+        record_list = self.__record_list
+        record_mode = self.__record_mode
+
+        for record in record_list:
+            if record_mode == "all":
+                save = True
+            elif record_mode == "new_episodes":
+                save = record.record_changed
+            elif record_mode == "none":
+                if not record.record_exists:
+                    raise Exception("You are using `record-mode=none`.")
+
+                save = False
+            elif record_mode == "once":
+                save = not record.record_exists
+            elif record_mode == "rewrite":
+                save = True
+            else:
+                raise Exception(f"Unknown `record-mode` : {record_mode}")
+
+            if save:
+                record.persist()
