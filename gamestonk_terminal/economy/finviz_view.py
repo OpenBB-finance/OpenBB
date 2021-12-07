@@ -39,7 +39,7 @@ def display_performance(
     ascending: bool = True,
     export: str = "",
 ):
-    """View group (sectors, industry or country) valuation/performance/spectrum data. [Source: Finviz]
+    """View group (sectors, industry or country) data. [Source: Finviz]
 
     Parameters
     ----------
@@ -113,7 +113,7 @@ def display_valuation(
     ascending: bool = True,
     export: str = "",
 ):
-    """View group (sectors, industry or country) valuation/performance/spectrum data. [Source: Finviz]
+    """View group (sectors, industry or country) data. [Source: Finviz]
 
     Parameters
     ----------
@@ -160,7 +160,7 @@ def display_spectrum(s_group: str, export: str = ""):
     Parameters
     ----------
     s_group: str
-        group between sectors, industry or countrt
+        group between sectors, industry or country
     export: str
         Format to export data
     """
@@ -178,13 +178,22 @@ def display_spectrum(s_group: str, export: str = ""):
     img.show()
 
 
-def display_future(future_type: str = "Indices", export: str = ""):
+def display_future(
+    future_type: str = "Indices",
+    sort_col: str = "ticker",
+    ascending: bool = False,
+    export: str = "",
+):
     """Display table of a particular future type. [Source: Finviz]
 
     Parameters
     ----------
     future_type : str
         From the following: Indices, Energy, Metals, Meats, Grains, Softs, Bonds, Currencies
+    sort_col : str
+        Column to sort by
+    ascending : bool
+        Flag to sort in ascending order
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     """
@@ -192,14 +201,14 @@ def display_future(future_type: str = "Indices", export: str = ""):
 
     df = pd.DataFrame(d_futures[future_type])
     df = df.set_index("label")
-
+    df = df.sort_values(by=sort_col, ascending=ascending)
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
                 df[["prevClose", "last", "change"]].fillna(""),
                 showindex=True,
                 floatfmt=".2f",
-                headers=df.columns,
+                headers=["prevClose", "last", "change (%)"],
                 tablefmt="fancy_grid",
             )
         )

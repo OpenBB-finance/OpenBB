@@ -469,6 +469,22 @@ NASDAQ DataLink (formerly Quandl):
             description="Energy future overview. [Source: Finviz]",
         )
         parser.add_argument(
+            "-s",
+            "--sortby",
+            dest="sort_col",
+            type=str,
+            choices=["ticker", "last", "change", "prevClose"],
+            default="ticker",
+        )
+        parser.add_argument(
+            "-a",
+            "-ascend",
+            dest="ascend",
+            help="Flag to sort in ascending order",
+            action="store_true",
+            default=False,
+        )
+        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -482,6 +498,8 @@ NASDAQ DataLink (formerly Quandl):
 
         finviz_view.display_future(
             future_type="Energy",
+            sort_col=ns_parser.sort_col,
+            ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
 
@@ -493,6 +511,22 @@ NASDAQ DataLink (formerly Quandl):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="metals",
             description="Metals future overview. [Source: Finviz]",
+        )
+        parser.add_argument(
+            "-s",
+            "--sortby",
+            dest="sort_col",
+            type=str,
+            choices=["ticker", "last", "change", "prevClose"],
+            default="ticker",
+        )
+        parser.add_argument(
+            "-a",
+            "-ascend",
+            dest="ascend",
+            help="Flag to sort in ascending order",
+            action="store_true",
+            default=False,
         )
         parser.add_argument(
             "--export",
@@ -508,6 +542,8 @@ NASDAQ DataLink (formerly Quandl):
 
         finviz_view.display_future(
             future_type="Metals",
+            sort_col=ns_parser.sort_col,
+            ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
 
@@ -519,6 +555,22 @@ NASDAQ DataLink (formerly Quandl):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="meats",
             description="Meats future overview. [Source: Finviz]",
+        )
+        parser.add_argument(
+            "-s",
+            "--sortby",
+            dest="sort_col",
+            type=str,
+            choices=["ticker", "last", "change", "prevClose"],
+            default="ticker",
+        )
+        parser.add_argument(
+            "-a",
+            "-ascend",
+            dest="ascend",
+            help="Flag to sort in ascending order",
+            action="store_true",
+            default=False,
         )
         parser.add_argument(
             "--export",
@@ -534,6 +586,8 @@ NASDAQ DataLink (formerly Quandl):
 
         finviz_view.display_future(
             future_type="Meats",
+            sort_col=ns_parser.sort_col,
+            ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
 
@@ -545,6 +599,22 @@ NASDAQ DataLink (formerly Quandl):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="grains",
             description="Grains future overview. [Source: Finviz]",
+        )
+        parser.add_argument(
+            "-s",
+            "--sortby",
+            dest="sort_col",
+            type=str,
+            choices=["ticker", "last", "change", "prevClose"],
+            default="ticker",
+        )
+        parser.add_argument(
+            "-a",
+            "-ascend",
+            dest="ascend",
+            help="Flag to sort in ascending order",
+            action="store_true",
+            default=False,
         )
         parser.add_argument(
             "--export",
@@ -560,6 +630,8 @@ NASDAQ DataLink (formerly Quandl):
 
         finviz_view.display_future(
             future_type="Grains",
+            sort_col=ns_parser.sort_col,
+            ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
 
@@ -571,6 +643,22 @@ NASDAQ DataLink (formerly Quandl):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="softs",
             description="Softs future overview. [Source: Finviz]",
+        )
+        parser.add_argument(
+            "-s",
+            "--sortby",
+            dest="sort_col",
+            type=str,
+            choices=["ticker", "last", "change", "prevClose"],
+            default="ticker",
+        )
+        parser.add_argument(
+            "-a",
+            "-ascend",
+            dest="ascend",
+            help="Flag to sort in ascending order",
+            action="store_true",
+            default=False,
         )
         parser.add_argument(
             "--export",
@@ -586,6 +674,8 @@ NASDAQ DataLink (formerly Quandl):
 
         finviz_view.display_future(
             future_type="Softs",
+            sort_col=ns_parser.sort_col,
+            ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
 
