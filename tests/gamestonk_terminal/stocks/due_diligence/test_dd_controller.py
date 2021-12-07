@@ -127,16 +127,6 @@ def test_call_quit():
 
 
 @pytest.mark.block_network
-def test_call_load_no_args(capsys):
-    dd = dd_controller.DueDiligenceController(
-        ticker="TSLA", start="10/25/2021", interval="1440min", stock=pd.DataFrame()
-    )
-    other_args = list()
-    dd.call_load(other_args)
-    capsys.readouterr()
-
-
-@pytest.mark.block_network
 @pytest.mark.parametrize(
     "tested_func, mocked_func, other_args, called_with",
     [
