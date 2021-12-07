@@ -1,7 +1,6 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
-import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
@@ -41,16 +40,9 @@ def test_price_target_from_analysts_plt(capsys, interval, mocker, start):
     mock_show = mocker.Mock()
     mocker.patch(target="matplotlib.pyplot.show", new=mock_show)
 
-    other_args = ["TSLA"]
     ticker = "TSLA"
-    stock = pd.DataFrame()
-    _ticker, _start, _interval, stock = load(
-        other_args=other_args,
-        s_ticker=ticker,
-        s_start=start,
-        s_interval=interval,
-        df_stock=stock,
-    )
+    stock = load(ticker=ticker, start=start, interval=interval)
+
     business_insider_view.price_target_from_analysts(
         ticker=ticker,
         start=start,
