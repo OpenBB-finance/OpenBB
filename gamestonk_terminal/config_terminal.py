@@ -9,7 +9,7 @@ if env_files:
 # Choose one of: stocks, options, crypto, economy, etf, portfolio, forex
 DEFAULT_CONTEXT = ""
 
-# Choose one of: developer, user
+# Set to True to see full stack traces for debugging/error reporting
 DEBUG_MODE = False
 
 # By default the jupyter notebook will be run on port 8888

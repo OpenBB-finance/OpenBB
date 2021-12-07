@@ -265,7 +265,7 @@ def display_sean_seah_warnings(ticker: str, debug: bool = False):
             )
         )
     else:
-        print(financials.to_string(()))
+        print(financials.to_string())
 
     if not warnings:
         print("No warnings found.  Good stonk")
