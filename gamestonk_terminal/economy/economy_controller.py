@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 import os
 from typing import List
 
+import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
@@ -1178,6 +1179,8 @@ NASDAQ DataLink (formerly Quandl):
             default=False,
         )
 
+        if other_args and "-m" not in other_args[0]:
+            other_args.insert(0, "-m")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -1341,6 +1344,13 @@ NASDAQ DataLink (formerly Quandl):
             """,
         )
         parser.add_argument(
+            "--codes",
+            help="Flag to show all country codes",
+            dest="codes",
+            action="store_true",
+            default=False,
+        )
+        parser.add_argument(
             "-c",
             "--countries",
             help="Country codes to get data for.",
@@ -1359,6 +1369,11 @@ NASDAQ DataLink (formerly Quandl):
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if not ns_parser:
+            return
+
+        if ns_parser.codes:
+            file = os.path.join(os.path.dirname(__file__), "NASDAQ_CountryCodes.csv")
+            print(pd.read_csv(file, index_col=0).to_string(index=False), "\n")
             return
 
         nasdaq_view.display_big_mac_index(
