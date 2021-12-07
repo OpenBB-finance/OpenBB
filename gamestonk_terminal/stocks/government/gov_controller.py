@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import difflib
+from datetime import datetime, timedelta
 from typing import List
 from colorama import Style
 from matplotlib import pyplot as plt
@@ -16,6 +17,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     try_except,
     system_clear,
+    valid_date,
 )
 from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.helper_funcs import (
@@ -148,6 +150,14 @@ Ticker: {self.ticker or None}{dim_no_ticker}
             dest="ticker",
             required="-h" not in other_args,
             help="Stock ticker",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the stock",
         )
 
         # For the case where a user uses: 'load BB'
