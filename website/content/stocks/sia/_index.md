@@ -19,38 +19,22 @@ Sector and Industry Analysis:
     mktcap        set mktcap between small, mid or large
     exchange      revert exclude international exchanges flag
 
-Industry          : 
-Sector            : 
+Industry          : Financial Data & Stock Exchanges
+Sector            : Financial Services
 Country           : United States
 Market Cap        : Large
 Exclude Exchanges : True
 
-Country (and Market Cap)
-    cpi           companies per industry in country
-    cps           companies per sector in country
+Statistics
+    cps           companies per Sector based on Country and Market Cap
+    cpic          companies per Industry based on Country and Market Cap
+    cpis          companies per Industry based on Sector and Market Cap
+    cpcs          companies per Country based on Sector and Market Cap
+    cpci          companies per Country based on Industry and Market Cap
 
 Financials 
-    roa           return on assets
-    roe           return on equity
-    cr            current ratio
-    qr            quick ratio
-    de            debt to equity
-    tc            total cash
-    tcs           total cash per share
-    tr            total revenue
-    rps           revenue per share
-    rg            revenue growth
-    eg            earnings growth
-    pm            profit margins
-    gp            gross profits
-    gm            gross margins
-    ocf           operating cash flow
-    om            operating margins
-    fcf           free cash flow
-    td            total debt
-    ebitda        earnings before interest, taxes, depreciation and amortization
-    ebitdam       ebitda margins
-    rec           recommendation mean
+    sama          see all metrics available
+    metric        visualise financial metric across filters selected
 
 Returned tickers: 
 >   ca            take these to comparison analysis menu
