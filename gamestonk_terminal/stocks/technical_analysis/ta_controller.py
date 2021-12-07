@@ -108,6 +108,7 @@ Technical Analysis:
     help        show this menu again
     q           quit this menu, and shows back to main menu
     quit        quit to abandon program
+    load        load new ticker
 
 {stock_str}
 
