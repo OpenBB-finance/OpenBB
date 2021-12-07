@@ -54,6 +54,37 @@ main:
             ref: "/stocks/discovery/fds"
           - name: rtat
             ref: "/stocks/discovery/rtat"
+      - name: Sector and Industry Analysis (SIA)
+        ref: "/stocks/sia"
+        sub:
+          - name: load
+            ref: "/stocks/sia/load"
+          - name: clear
+            ref: "/stocks/sia/clear"
+          - name: industry
+            ref: "/stocks/sia/industry"
+          - name: sector
+            ref: "/stocks/sia/sector"
+          - name: country
+            ref: "/stocks/sia/country"
+          - name: mktcap
+            ref: "/stocks/sia/mktcap"
+          - name: exchange
+            ref: "/stocks/sia/exchange"
+          - name: cps
+            ref: "/stocks/sia/cps"
+          - name: cpic
+            ref: "/stocks/sia/cpic"
+          - name: cpis
+            ref: "/stocks/sia/cpis"
+          - name: cpcs
+            ref: "/stocks/sia/cpcs"
+          - name: cpci
+            ref: "/stocks/sia/cpci"
+          - name: sama
+            ref: "/stocks/sia/sama"
+          - name: metric
+            ref: "/stocks/sia/metric"            
       - name: dark pool shorts
         ref: "/stocks/dark_pool_shorts"
         sub:
