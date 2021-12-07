@@ -1,6 +1,6 @@
 ```
-usage: senders [-t TOP]
-            [-s {date,uniqueSenders,transactions,avgGasPrice,medGasPrice,maxGasPrice}]
+usage: ueat [-t TOP]
+            [-s {date,uniqueSenders,transactions,averageGasPrice,mediumGasPrice,maximumGasPrice}]
             [-i {day,month,week}] [--descend] [-h] [--export {csv,json,xlsx}]
 ```
 
@@ -15,7 +15,7 @@ optional arguments:
                         and top: 10, period of calculation equals to 300, but
                         because of max days limit: 90, it will only return
                         last 3 months (3 records). (default: 10)
-  -s {date,uniqueSenders,transactions,avgGasPrice,medGasPrice,maxGasPrice}, --sort {date,uniqueSenders,transactions,avgGasPrice,medGasPrice,maxGasPrice}
+  -s {date,uniqueSenders,transactions,averageGasPrice,mediumGasPrice,maximumGasPrice}, --sort {date,uniqueSenders,transactions,averageGasPrice,mediumGasPrice,maximumGasPrice}
                         Sort by given column. (default: date)
   -i {day,month,week}, --interval {day,month,week}
                         Time interval in which ethereum address made
@@ -26,4 +26,5 @@ optional arguments:
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )
+
 ```

@@ -1,18 +1,19 @@
 ```
-usage: volp [-c COIN] [-t TOP] [-vs VS] [-d DAYS]
-            [-s {date,exchange,base,quote,open,high,low,close,tradeAmountUSD,trades}]
+usage: baas [-c COIN] [-t TOP] [-vs VS] [-d DAYS]
+            [-s {date,baseCurrency,quoteCurrency,dailySpread,averageBidPrice,averageAskPrice}]
             [--descend] [-h] [--export {csv,json,xlsx}]
 ```
 
-Display daily volume for given crypto pair [Source: https://graphql.bitquery.io/]
+Display average bid, ask prices, spread for given crypto pair for chosen time
+period [Source: https://graphql.bitquery.io/]
 
 ```
 optional arguments:
-  -c COIN, --coin COIN  ERC20 token symbol or address. (default: ETH)
+  -c COIN, --coin COIN  ERC20 token symbol or address. (default: None)
   -t TOP, --top TOP     top N number records (default: 10)
   -vs VS, --vs VS       Quote currency (default: USDT)
   -d DAYS, --days DAYS  Number of days to display data for. (default: 10)
-  -s {date,exchange,base,quote,open,high,low,close,tradeAmountUSD,trades}, --sort {date,exchange,base,quote,open,high,low,close,tradeAmountUSD,trades}
+  -s {date,baseCurrency,quoteCurrency,dailySpread,averageBidPrice,averageAskPrice}, --sort {date,baseCurrency,quoteCurrency,dailySpread,averageBidPrice,averageAskPrice}
                         Sort by given column. (default: date)
   --descend             Flag to sort in descending order (lowest first)
                         (default: False)

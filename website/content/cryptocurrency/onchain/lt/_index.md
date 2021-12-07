@@ -1,7 +1,7 @@
 ```
-usage: trades [-k {dex,time}] [-vs {ETH,USD,BTC,USDT}] [-t TOP] [-d DAYS]
-              [-s {trades,tradeAmount,exchange}] [--descend] [-h]
-              [--export {csv,json,xlsx}]
+usage: lt [-k {dex,time}] [-vs {ETH,USD,BTC,USDT}] [-t TOP] [-d DAYS]
+          [-s {trades,tradeAmount,exchange}] [--descend] [-h]
+          [--export {csv,json,xlsx}]
 ```
 
 Display Trades on Decentralized Exchanges aggregated by DEX or Month [Source: https://graphql.bitquery.io/]
@@ -23,5 +23,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )
-
 ```

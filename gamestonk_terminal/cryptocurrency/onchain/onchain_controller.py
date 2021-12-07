@@ -1117,7 +1117,7 @@ class OnchainController:
         except Exception as e:
             print(e)
 
-    def ueat(self, other_args: List[str]):
+    def call_ueat(self, other_args: List[str]):
         """Process ueat command"""
         parser = argparse.ArgumentParser(
             add_help=False,
