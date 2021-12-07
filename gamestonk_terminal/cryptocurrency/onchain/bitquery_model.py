@@ -6,6 +6,7 @@ import json
 import os
 from typing import Optional
 
+import numpy as np
 from requests.exceptions import HTTPError
 from requests.adapters import HTTPAdapter
 
@@ -108,7 +109,7 @@ def _extract_dex_trades(data: dict) -> pd.DataFrame:
 
     dex_trades = data["ethereum"]["dexTrades"]
     if not dex_trades:
-        raise ValueError(f"List of dex trades is empty {data['ethereum']}")
+        raise ValueError("No data was returned in request response\n")
     return pd.json_normalize(dex_trades)
 
 
@@ -259,6 +260,7 @@ def get_dex_trades_by_exchange(
 
     df = _extract_dex_trades(data)
     df.columns = ["trades", "tradeAmount", "exchange"]
+    df = df[~df["exchange"].isin([None, np.NaN, ""])]
     return df[["exchange", "trades", "tradeAmount"]].sort_values(
         by="tradeAmount", ascending=True
     )
@@ -390,7 +392,7 @@ def get_daily_dex_volume_for_given_pair(
     df = _extract_dex_trades(data)
     df.columns = [
         "trades",
-        "tradeAmountUSD",
+        "tradeAmount",
         "price",
         "high",
         "low",
@@ -411,7 +413,7 @@ def get_daily_dex_volume_for_given_pair(
             "high",
             "low",
             "close",
-            "tradeAmountUSD",
+            "tradeAmount",
             "trades",
         ]
     ].sort_values(by="date", ascending=False)
@@ -468,10 +470,8 @@ def get_token_volume_on_dexes(
     if not data:
         return pd.DataFrame()
 
-    df = _extract_dex_trades(data)[
-        ["exchange.fullName", "baseCurrency.symbol", "tradeAmount", "count"]
-    ]
-    df.columns = ["exchange", "coin", "tradeAmount", "trades"]
+    df = _extract_dex_trades(data)[["exchange.fullName", "tradeAmount", "count"]]
+    df.columns = ["exchange", "tradeAmount", "trades"]
     return df[~df["exchange"].str.startswith("<")].sort_values(
         by="tradeAmount", ascending=False
     )
@@ -514,9 +514,9 @@ def get_ethereum_unique_senders(interval: str = "day", limit: int = 90) -> pd.Da
               date {{
                 date:startOfInterval(unit: {interval})
               }}
-                avgGasPrice: gasPrice(calculate: average)
-                  medGasPrice: gasPrice(calculate: median)
-                  maxGasPrice: gasPrice(calculate: maximum)
+                averageGasPrice: gasPrice(calculate: average)
+                  mediumGasPrice: gasPrice(calculate: median)
+                  maximumGasPrice: gasPrice(calculate: maximum)
                   transactions: count
             }}
           }}
@@ -534,9 +534,9 @@ def get_ethereum_unique_senders(interval: str = "day", limit: int = 90) -> pd.Da
             "date",
             "uniqueSenders",
             "transactions",
-            "avgGasPrice",
-            "medGasPrice",
-            "maxGasPrice",
+            "averageGasPrice",
+            "mediumGasPrice",
+            "maximumGasPrice",
         ]
     ]
 
@@ -587,8 +587,7 @@ def get_most_traded_pairs(
 
     df = _extract_dex_trades(data)
     df.columns = ["trades", "tradeAmount", "base", "quoted"]
-    df["exchange"] = exchange
-    return df[["exchange", "base", "quoted", "trades", "tradeAmount"]]
+    return df[["base", "quoted", "trades", "tradeAmount"]]
 
 
 def get_spread_for_crypto_pair(

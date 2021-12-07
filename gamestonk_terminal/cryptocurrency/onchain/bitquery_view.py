@@ -6,6 +6,7 @@ from tabulate import tabulate
 
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     very_long_number_formatter,
+    prettify_column_names,
 )
 from gamestonk_terminal.cryptocurrency.onchain import bitquery_model
 from gamestonk_terminal.helper_funcs import export_data
@@ -55,6 +56,8 @@ def display_dex_trades(
         lambda x: very_long_number_formatter(x)
     )
 
+    df.columns = prettify_column_names(df.columns)
+
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
@@ -72,7 +75,7 @@ def display_dex_trades(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "trades",
+        "lt",
         df_data,
     )
 
@@ -120,9 +123,10 @@ def display_daily_volume_for_given_pair(
 
     df_data = df.copy()
 
-    df[["tradeAmountUSD", "trades"]] = df[["tradeAmountUSD", "trades"]].applymap(
+    df[["tradeAmount", "trades"]] = df[["tradeAmount", "trades"]].applymap(
         lambda x: very_long_number_formatter(x)
     )
+    df.columns = prettify_column_names(df.columns)
 
     if gtff.USE_TABULATE_DF:
         print(
@@ -141,7 +145,7 @@ def display_daily_volume_for_given_pair(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "volp",
+        "dvcp",
         df_data,
     )
 
@@ -186,6 +190,8 @@ def display_dex_volume_for_token(
         lambda x: very_long_number_formatter(x)
     )
 
+    df.columns = prettify_column_names(df.columns)
+
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
@@ -203,7 +209,7 @@ def display_dex_volume_for_token(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "volt",
+        "tv",
         df_data,
     )
 
@@ -243,10 +249,12 @@ def display_ethereum_unique_senders(
         by=sortby, ascending=descend
     )
 
-    df[["uniqueSenders", "transactions", "maxGasPrice"]] = df[
-        ["uniqueSenders", "transactions", "maxGasPrice"]
+    df[["uniqueSenders", "transactions", "maximumGasPrice"]] = df[
+        ["uniqueSenders", "transactions", "maximumGasPrice"]
     ].applymap(lambda x: very_long_number_formatter(x))
+
     df_data = df.copy()
+    df.columns = prettify_column_names(df.columns)
 
     if gtff.USE_TABULATE_DF:
         print(
@@ -265,7 +273,7 @@ def display_ethereum_unique_senders(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "senders",
+        "ueat",
         df_data,
     )
 
@@ -306,6 +314,7 @@ def display_most_traded_pairs(
     df[["tradeAmount", "trades"]] = df[["tradeAmount", "trades"]].applymap(
         lambda x: very_long_number_formatter(x)
     )
+    df.columns = prettify_column_names(df.columns)
 
     if gtff.USE_TABULATE_DF:
         print(
@@ -324,7 +333,7 @@ def display_most_traded_pairs(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "mt",
+        "ttcp",
         df_data,
     )
 
@@ -365,6 +374,8 @@ def display_spread_for_crypto_pair(
         token=token, vs=vs, limit=days
     ).sort_values(by=sortby, ascending=descend)
 
+    df.columns = prettify_column_names(df.columns)
+
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
@@ -382,6 +393,6 @@ def display_spread_for_crypto_pair(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "spread",
+        "baas",
         df,
     )

@@ -67,12 +67,12 @@ class OnchainController:
         "prices",
         "address",
         "active",
-        "trades",
-        "volp",
-        "volt",
-        "mt",
-        "senders",
-        "spreads",
+        "lt",
+        "dvcp",
+        "tv",
+        "ueat",
+        "ttcp",
+        "baas",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -850,12 +850,12 @@ class OnchainController:
         except Exception as e:
             print(e)
 
-    def call_trades(self, other_args: List[str]):
-        """Process trades command"""
+    def call_lt(self, other_args: List[str]):
+        """Process lt command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="trades",
+            prog="lt",
             description="""
                       Display Trades on Decentralized Exchanges aggregated by DEX or Month
                       [Source: https://graphql.bitquery.io/]
@@ -939,12 +939,12 @@ class OnchainController:
         except Exception as e:
             print(e)
 
-    def call_volp(self, other_args: List[str]):
-        """Process volp command"""
+    def call_dvcp(self, other_args: List[str]):
+        """Process dvcp command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="volp",
+            prog="dvcp",
             description="""
                       Display daily volume for given crypto pair
                       [Source: https://graphql.bitquery.io/]
@@ -957,7 +957,6 @@ class OnchainController:
             dest="coin",
             type=str,
             help="ERC20 token symbol or address.",
-            default="ETH",
             required="-h" not in other_args,
         )
 
@@ -999,7 +998,7 @@ class OnchainController:
                 "high",
                 "low",
                 "close",
-                "tradeAmountUSD",
+                "tradeAmount",
                 "trades",
             ],
         )
@@ -1036,12 +1035,12 @@ class OnchainController:
         except Exception as e:
             print(e)
 
-    def call_volt(self, other_args: List[str]):
-        """Process volt command"""
+    def call_tv(self, other_args: List[str]):
+        """Process tv command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="volt",
+            prog="tv",
             description="""
                       Display token volume on different Decentralized Exchanges.
                       [Source: https://graphql.bitquery.io/]
@@ -1054,7 +1053,6 @@ class OnchainController:
             dest="coin",
             type=str,
             help="ERC20 token symbol or address.",
-            default="ETH",
             required="-h" not in other_args,
         )
 
@@ -1084,7 +1082,7 @@ class OnchainController:
             type=str,
             help="Sort by given column.",
             default="trades",
-            choices=["exchange", "coin", "tradeAmount", "trades"],
+            choices=["exchange", "tradeAmount", "trades"],
         )
 
         parser.add_argument(
@@ -1119,12 +1117,12 @@ class OnchainController:
         except Exception as e:
             print(e)
 
-    def call_senders(self, other_args: List[str]):
-        """Process senders command"""
+    def ueat(self, other_args: List[str]):
+        """Process ueat command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="senders",
+            prog="ueat",
             description="""
                       Display number of unique ethereum addresses which made a transaction in given time interval,
                       [Source: https://graphql.bitquery.io/]
@@ -1154,9 +1152,9 @@ class OnchainController:
                 "date",
                 "uniqueSenders",
                 "transactions",
-                "avgGasPrice",
-                "medGasPrice",
-                "maxGasPrice",
+                "averageGasPrice",
+                "mediumGasPrice",
+                "maximumGasPrice",
             ],
         )
 
@@ -1198,12 +1196,12 @@ class OnchainController:
         except Exception as e:
             print(e)
 
-    def call_mt(self, other_args: List[str]):
-        """Process mt command"""
+    def call_ttcp(self, other_args: List[str]):
+        """Process ttcp command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="mt",
+            prog="ttcp",
             description="""
                       Display most traded crypto pairs on given decentralized exchange in chosen time period.
                       [Source: https://graphql.bitquery.io/]
@@ -1276,12 +1274,12 @@ class OnchainController:
         except Exception as e:
             print(e)
 
-    def call_spreads(self, other_args: List[str]):
-        """Process spreads command"""
+    def call_baas(self, other_args: List[str]):
+        """Process baas command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="spreads",
+            prog="baas",
             description="""
                       Display average bid, ask prices, spread for given crypto pair for chosen time period
                       [Source: https://graphql.bitquery.io/]
@@ -1294,7 +1292,6 @@ class OnchainController:
             dest="coin",
             type=str,
             help="ERC20 token symbol or address.",
-            default="ETH",
             required="-h" not in other_args,
         )
 
@@ -1384,13 +1381,13 @@ Eth Gas Station:
 Whale Alert:
     whales            check crypto wales transactions
 
-BitQuery (note: some commands execution can take > 10 seconds):
-    trades            last trades by dex or month
-    volp              daily volume for crypto pair
-    volt              token volume on DEXes
-    senders           unique ethereum addresses which made a transaction
-    mt                top traded crypto pairs on given decentralized exchange
-    spreads           bid, ask prices, average spread for given crypto pair
+BitQuery:
+    lt                last trades by dex or month
+    dvcp              daily volume for crypto pair
+    tv                token volume on DEXes
+    ueat              unique ethereum addresses which made a transaction
+    ttcp              top traded crypto pairs on given decentralized exchange
+    baas              bid, ask prices, average spread for given crypto pair
 """
         help_text += f"\nEthereum address: {self.address if self.address else '?'}"
         help_text += (
