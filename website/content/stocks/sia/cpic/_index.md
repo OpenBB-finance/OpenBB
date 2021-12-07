@@ -1,15 +1,15 @@
 ```text
-usage: cpi [-M MAX_SECTORS_TO_DISPLAY] [-m MIN_PCT_TO_DISPLAY_SECTOR] [-r] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
+usage: cpic [-M MAX_INDUSTRIES_TO_DISPLAY] [-m MIN_PCT_TO_DISPLAY_INDUSTRY] [-r] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 ```
 
-Companies per industry in the selected country. Raw data output is available. 
+Companies per Industry based on Country and Market Cap
 
 ```
 optional arguments:
-  -M MAX_SECTORS_TO_DISPLAY, --max MAX_SECTORS_TO_DISPLAY
-                        Maximum number of sectors to display (default: 15)
-  -m MIN_PCT_TO_DISPLAY_SECTOR, --min MIN_PCT_TO_DISPLAY_SECTOR
-                        Minimum percentage to display sector (default: 0.015)
+  -M MAX_INDUSTRIES_TO_DISPLAY, --max MAX_INDUSTRIES_TO_DISPLAY
+                        Maximum number of industries to display (default: 15)
+  -m MIN_PCT_TO_DISPLAY_INDUSTRY, --min MIN_PCT_TO_DISPLAY_INDUSTRY
+                        Minimum percentage to display industry (default: 0.015)
   -r, --raw             Output all raw data (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx,png,jpg,pdf,svg}
