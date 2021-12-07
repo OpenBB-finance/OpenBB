@@ -323,7 +323,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
                 self.suffix = ""
 
             self.start = ns_parser.start
-            self.interval = str(ns_parser.interval) + "min"
+            self.interval = f"{ns_parser.interval}min"
 
     def call_quote(self, other_args: List[str]):
         """Process quote command"""

@@ -336,7 +336,7 @@ Returned tickers: {', '.join(self.tickers)}
 
         if not df_stock_candidate.empty:
             if "." in ns_parser.ticker:
-                self.ticker = self.ticker.upper().split(".")[0]
+                self.ticker = ns_parser.ticker.upper().split(".")[0]
             else:
                 self.ticker = ns_parser.ticker.upper()
 
