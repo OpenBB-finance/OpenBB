@@ -137,11 +137,11 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 >   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
 >   ins         insider trading,         \t e.g.: latest penny stock buys, top officer purchases
 >   gov         government menu, \t\t e.g. house trading, contracts, corporate lobbying
->   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google{dim_if_no_ticker}
+>   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google
+>   ca          comparison analysis,     \t e.g.: get similar, historical, correlation, financials{dim_if_no_ticker}
 >   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings
 >   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool
 >   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
->   ca          comparison analysis,     \t e.g.: historical, correlation, financials
 >   bt          strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies
 >   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
 >   qa          quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis
@@ -347,6 +347,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
                 s_ticker=self.ticker,
                 df_stock=df_stock,
                 use_matplotlib=ns_parser.matplotlib,
+                intraday=self.interval != "1440min",
             )
 
     @try_except
@@ -535,15 +536,10 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_ca(self, _):
         """Process ca command"""
-        if not self.ticker:
-            print("Use 'load <ticker>' prior to this command!", "\n")
-            return
 
         from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 
-        ret = ca_controller.menu(
-            self.ticker, self.start, self.interval, self.stock, list()
-        )
+        ret = ca_controller.menu([self.ticker] if self.ticker else "")
 
         if ret is False:
             self.print_help()

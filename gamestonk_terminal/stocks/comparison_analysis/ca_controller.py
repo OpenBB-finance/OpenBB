@@ -6,18 +6,21 @@ import difflib
 import random
 from typing import List
 
+from datetime import datetime, timedelta
+import yfinance as yf
 from colorama import Style
-import pandas as pd
 from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     check_non_negative,
+    check_positive,
     get_flair,
     parse_known_args_and_warn,
     try_except,
     system_clear,
+    valid_date,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
@@ -31,7 +34,6 @@ from gamestonk_terminal.stocks.comparison_analysis import (
     yahoo_finance_view,
     yahoo_finance_model,
 )
-from gamestonk_terminal.stocks.stocks_helper import load
 
 # pylint: disable=E1121
 
@@ -43,12 +45,13 @@ class ComparisonAnalysisController:
     CHOICES = ["?", "cls", "help", "q", "quit"]
 
     CHOICES_COMMANDS = [
-        "load",
+        "ticker",
         "getpoly",
         "getfinnhub",
         "getfinviz",
-        "select",
+        "set",
         "add",
+        "rmv",
         "historical",
         "hcorr",
         "volume",
@@ -70,36 +73,25 @@ class ComparisonAnalysisController:
 
     def __init__(
         self,
-        ticker: str,
-        start: str,
-        interval: str,
-        stock: pd.DataFrame,
-        similar: List = None,
+        similar: List[str] = None,
     ):
         """Constructor
 
         Parameters
         ----------
-        ticker : str
-            Stock ticker
-        start : str
-            Start time
-        interval : str
-            Time interval
-        stock : pd.DataFrame
-            Stock data
         similar : List
             Similar tickers
         """
-        self.ticker = ticker
-        self.start = start
-        self.interval = interval
-        self.stock = stock
-
         if similar:
             self.similar = similar
         else:
-            self.similar = list()
+            self.similar = []
+
+        if similar and len(similar) == 1:
+            self.ticker = self.similar[0].upper()
+        else:
+            self.ticker = ""
+
         self.user = ""
 
         self.ca_parser = argparse.ArgumentParser(add_help=False, prog="ca")
@@ -110,11 +102,6 @@ class ComparisonAnalysisController:
 
     def print_help(self):
         """Print help"""
-        all_loaded = bool(not self.ticker or not self.similar)
-        if self.start:
-            stock_str = f"Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-        else:
-            stock_str = f"Stock: {self.ticker}"
         help_str = f"""
 Comparison Analysis:
     cls           clear screen
@@ -122,29 +109,31 @@ Comparison Analysis:
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
 
-    load          load new base ticker
-    add           add more companies to current selected (max 10 total)
-    select        reset and select similar companies
+    ticker        set ticker to get similar companies from{Style.NORMAL if self.ticker else Style.DIM}
 
-{stock_str}
-Similar Companies: {', '.join(self.similar) or None}
-
-Get Similar:
-    tsne          run TSNE on all SP500 stocks and returns 10 closest tickers
+Ticker to get similar companies from: {self.ticker}
+    tsne          run TSNE on all SP500 stocks and returns closest tickers
     getpoly       get similar stocks from polygon API
     getfinnhub    get similar stocks from finnhub API
-    getfinviz     get similar stocks from finviz API
-{Style.DIM if all_loaded else Style.NORMAL}Yahoo Finance:
+    getfinviz     get similar stocks from finviz API{Style.RESET_ALL}
+
+    set           reset and set similar companies
+    add           add more similar companies
+    rmv           remove similar companies individually or all
+{Style.NORMAL if self.similar and len(self.similar)>1 else Style.DIM}
+Similar Companies: {', '.join(self.similar) if self.similar else ''}
+
+Yahoo Finance:
     historical    historical price data comparison
     hcorr         historical price correlation
-    volume        historical volume data comparison {Style.RESET_ALL}
+    volume        historical volume data comparison
 Market Watch:
     income        income financials comparison
     balance       balance financials comparison
     cashflow      cashflow comparison
 Finbrain:
-    sentiment     sentiment analysis comparison {Style.DIM if all_loaded else Style.NORMAL}
-    scorr         sentiment correlation{Style.RESET_ALL}
+    sentiment     sentiment analysis comparison
+    scorr         sentiment correlation
 Finviz:
     overview      brief overview comparison
     valuation     brief valuation comparison
@@ -153,17 +142,48 @@ Finviz:
     performance   brief performance comparison
     technical     brief technical comparison
 
->   po            portfolio optimization for selected tickers
+>   po            portfolio optimization for selected tickers{Style.RESET_ALL}
         """
         print(help_str)
 
-    def call_load(self, other_args: List[str]):
-        """Process load command"""
-        self.ticker, self.start, self.interval, self.stock = load(
-            other_args, self.ticker, self.start, self.interval, self.stock
+    @try_except
+    def call_ticker(self, other_args: List[str]):
+        """Process ticker command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ticker",
+            description="""Set ticker to extract similars from""",
         )
-        if "." in self.ticker:
-            self.ticker = self.ticker.split(".")[0]
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            type=str,
+            required=True,
+            help="Ticker get similar tickers from",
+        )
+
+        # For the case where a user uses: 'add NIO,XPEV,LI'
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-t")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        if "," in ns_parser.ticker:
+            print("Only one ticker must be selected!")
+        else:
+            stock_data = yf.download(
+                ns_parser.ticker,
+                progress=False,
+            )
+            if stock_data.empty:
+                print(f"The ticker '{ns_parser.ticker}' provided does not exist!")
+            else:
+                self.ticker = ns_parser.ticker.upper()
+        print("")
 
     @try_except
     def call_tsne(self, other_args: List[str]):
@@ -175,12 +195,20 @@ Finviz:
             description="""Get similar companies to compare with using sklearn TSNE.""",
         )
         parser.add_argument(
-            "-l",
+            "-r",
             "--learnrate",
             default=200,
             dest="lr",
             type=check_non_negative,
             help="TSNE Learning rate.  Typical values are between 50 and 200",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            default=10,
+            dest="limit",
+            type=check_positive,
+            help="Limit of stocks to retrieve. The subsample will occur randomly.",
         )
         parser.add_argument(
             "-p", "--no_plot", action="store_true", default=False, dest="no_plot"
@@ -189,9 +217,20 @@ Finviz:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+
+        if not self.ticker:
+            print("You need to 'set' a ticker to get similar companies from first!")
+            return
+
         self.similar = yahoo_finance_model.get_sp500_comps_tsne(
-            self.ticker, lr=ns_parser.lr, no_plot=ns_parser.no_plot
+            self.ticker,
+            lr=ns_parser.lr,
+            no_plot=ns_parser.no_plot,
+            num_tickers=ns_parser.limit,
         )
+
+        self.similar = [self.ticker] + self.similar
+
         print(f"[ML] Similar Companies: {', '.join(self.similar)}", "\n")
 
     @try_except
@@ -213,6 +252,11 @@ Finviz:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+
+        if not self.ticker:
+            print("You need to 'set' a ticker to get similar companies from first!")
+            return
+
         if ns_parser.b_no_country:
             compare_list = ["Sector", "Industry"]
         else:
@@ -233,6 +277,8 @@ Finviz:
             )
 
         if self.similar:
+            self.similar = [self.ticker] + self.similar
+
             print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
 
     @try_except
@@ -256,6 +302,11 @@ Finviz:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+
+        if not self.ticker:
+            print("You need to 'set' a ticker to get similar companies from first!")
+            return
+
         self.similar, self.user = polygon_model.get_similar_companies(
             self.ticker, ns_parser.us_only
         )
@@ -269,6 +320,8 @@ Finviz:
             print(
                 "The limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed.\n",
             )
+
+        self.similar = [self.ticker] + self.similar
 
         if self.similar:
             print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
@@ -286,6 +339,10 @@ Finviz:
         if not ns_parser:
             return
 
+        if not self.ticker:
+            print("You need to 'set' a ticker to get similar companies from first!")
+            return
+
         self.similar, self.user = finnhub_model.get_similar_companies(self.ticker)
 
         if self.ticker.upper() in self.similar:
@@ -298,6 +355,8 @@ Finviz:
                 "The limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed.\n",
             )
 
+        self.similar = [self.ticker] + self.similar
+
         if self.similar:
             print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
 
@@ -308,7 +367,7 @@ Finviz:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="add",
-            description="""Add similar companies to compare with.""",
+            description="""Add similar tickers to compare with.""",
         )
         parser.add_argument(
             "-s",
@@ -316,7 +375,7 @@ Finviz:
             dest="l_similar",
             type=lambda s: [str(item).upper() for item in s.split(",")],
             default=[],
-            help="similar companies to compare with.",
+            help="Tickers to add to similar list",
         )
 
         # For the case where a user uses: 'add NIO,XPEV,LI'
@@ -327,19 +386,64 @@ Finviz:
         if not ns_parser:
             return
         # Add sets to avoid duplicates
-        self.similar = list(set(self.similar + ns_parser.l_similar))
-        if len(self.similar) > 10:
-            self.similar = list(random.sample(set(self.similar), 10))
+        if self.similar:
+            self.similar = list(set(self.similar + ns_parser.l_similar))
+        else:
+            self.similar = ns_parser.l_similar
         self.user = "Custom"
         print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
 
     @try_except
-    def call_select(self, other_args: List[str]):
-        """Process select command"""
+    def call_rmv(self, other_args: List[str]):
+        """Process rmv command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="select",
+            prog="rmv",
+            description="""Remove similar tickers to compare with.""",
+        )
+        parser.add_argument(
+            "-s",
+            "--similar",
+            dest="l_similar",
+            type=lambda s: [str(item).upper() for item in s.split(",")],
+            default=[],
+            help="Tickers to remove from similar list",
+        )
+
+        # For the case where a user uses: 'add NIO,XPEV,LI'
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-s")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        if ns_parser.l_similar:
+            # Add sets to avoid duplicates
+            for symbol in ns_parser.l_similar:
+                if symbol in self.similar:
+                    self.similar.remove(symbol)
+                else:
+                    print(
+                        f"Ticker {symbol} does not exist in similar list to be removed"
+                    )
+
+            print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}")
+
+        else:
+            self.similar = []
+
+        print("")
+        self.user = "Custom"
+
+    @try_except
+    def call_set(self, other_args: List[str]):
+        """Process set command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="set",
             description="""Select similar companies to compare with.""",
         )
         parser.add_argument(
@@ -432,8 +536,16 @@ Finviz:
             "--no-scale",
             action="store_false",
             dest="no_scale",
-            default=True,
+            default=False,
             help="Flag to not put all prices on same 0-1 scale",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the stock",
         )
         parser.add_argument(
             "--export",
@@ -443,29 +555,21 @@ Finviz:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        if self.interval != "1440min":
-            print("Intraday historical data analysis comparison is not yet available.")
-            # Alpha Vantage only supports 5 calls per minute, we need another API to get intraday data
-        else:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        if not self.similar or len(self.similar) == 1:
+            print("Please make sure there are more than 1 similar tickers selected. \n")
+            return
 
-            if not self.similar or not self.ticker:
-                print(
-                    "Please make sure there are both a loaded ticker and similar tickers selected. \n"
-                )
-                return
-
-            yahoo_finance_view.display_historical(
-                ticker=self.ticker,
-                similar_tickers=self.similar,
-                start=self.start,
-                candle_type=ns_parser.type_candle,
-                normalize=ns_parser.no_scale,
-                export=ns_parser.export,
-            )
+        yahoo_finance_view.display_historical(
+            similar_tickers=self.similar,
+            start=ns_parser.start,
+            candle_type=ns_parser.type_candle,
+            normalize=not ns_parser.no_scale,
+            export=ns_parser.export,
+        )
 
     @try_except
     def call_hcorr(self, other_args: List[str]):
@@ -488,21 +592,26 @@ Finviz:
             default="a",  # in case it's adjusted close
             help="Candle data to use: o-open, h-high, l-low, c-close, a-adjusted close.",
         )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the stock",
+        )
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        if not self.similar or not self.ticker:
-            print(
-                "Please make sure there are both a loaded ticker and similar tickers selected. \n"
-            )
+        if not self.similar or len(self.similar) == 1:
+            print("Please make sure there are similar tickers selected. \n")
             return
 
         yahoo_finance_view.display_correlation(
-            ticker=self.ticker,
             similar_tickers=self.similar,
-            start=self.start,
+            start=ns_parser.start,
             candle_type=ns_parser.type_candle,
         )
 
@@ -548,7 +657,6 @@ Finviz:
             return
 
         marketwatch_view.display_income_comparison(
-            ticker=self.ticker,
             similar=self.similar,
             timeframe=ns_parser.s_timeframe,
             quarter=ns_parser.b_quarter,
@@ -566,11 +674,11 @@ Finviz:
         )
         parser.add_argument(
             "-s",
-            "--scale",
-            action="store_true",
-            dest="scale",
-            default=False,
-            help="Flag to not put all prices on same 0-1 scale",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the stock",
         )
         parser.add_argument(
             "--export",
@@ -580,28 +688,19 @@ Finviz:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        if self.interval != "1440min":
-            print("Intraday historical data analysis comparison is not yet available.")
-            # Alpha Vantage only supports 5 calls per minute, we need another API to get intraday data
-        else:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        if not self.similar or len(self.similar) == 1:
+            print("Please make sure there are similar tickers selected. \n")
+            return
 
-            if not self.similar or not self.ticker:
-                print(
-                    "Please make sure there are both a loaded ticker and similar tickers selected. \n"
-                )
-                return
-
-            yahoo_finance_view.display_volume(
-                ticker=self.ticker,
-                similar_tickers=self.similar,
-                start=self.start,
-                normalize=ns_parser.scale,
-                export=ns_parser.export,
-            )
+        yahoo_finance_view.display_volume(
+            similar_tickers=self.similar,
+            start=ns_parser.start,
+            export=ns_parser.export,
+        )
 
     @try_except
     def call_balance(self, other_args: List[str]):
@@ -645,7 +744,6 @@ Finviz:
             return
 
         marketwatch_view.display_balance_comparison(
-            ticker=self.ticker,
             similar=self.similar,
             timeframe=ns_parser.s_timeframe,
             quarter=ns_parser.b_quarter,
@@ -693,7 +791,6 @@ Finviz:
             return
 
         marketwatch_view.display_cashflow_comparison(
-            ticker=self.ticker,
             similar=self.similar,
             timeframe=ns_parser.s_timeframe,
             quarter=ns_parser.b_quarter,
@@ -730,8 +827,11 @@ Finviz:
         if not ns_parser:
             return
 
+        if not self.similar or len(self.similar) == 1:
+            print("Please make sure there are more than 1 similar tickers selected. \n")
+            return
+
         finbrain_view.display_sentiment_compare(
-            ticker=self.ticker,
             similar=self.similar,
             raw=ns_parser.raw,
             export=ns_parser.export,
@@ -768,13 +868,11 @@ Finviz:
         if not ns_parser:
             return
 
-        if not self.similar or not self.ticker:
-            print(
-                "Please make sure there are both a loaded ticker and similar tickers selected. \n"
-            )
+        if not self.similar or len(self.similar) == 1:
+            print("Please make sure there are similar tickers selected. \n")
             return
+
         finbrain_view.display_sentiment_correlation(
-            ticker=self.ticker,
             similar=self.similar,
             raw=ns_parser.raw,
             export=ns_parser.export,
@@ -803,8 +901,11 @@ Finviz:
         if not ns_parser:
             return
 
+        if not self.similar or len(self.similar) == 1:
+            print("Please make sure there are more than 1 similar tickers selected. \n")
+            return
+
         finviz_compare_view.screener(
-            ticker=self.ticker,
             similar=self.similar,
             data_type="overview",
             export=ns_parser.export,
@@ -833,8 +934,11 @@ Finviz:
         if not ns_parser:
             return
 
+        if not self.similar or len(self.similar) == 1:
+            print("Please make sure there are more than 1 similar tickers selected. \n")
+            return
+
         finviz_compare_view.screener(
-            ticker=self.ticker,
             similar=self.similar,
             data_type="valuation",
             export=ns_parser.export,
@@ -863,8 +967,11 @@ Finviz:
         if not ns_parser:
             return
 
+        if not self.similar or len(self.similar) == 1:
+            print("Please make sure there are more than 1 similar tickers selected. \n")
+            return
+
         finviz_compare_view.screener(
-            ticker=self.ticker,
             similar=self.similar,
             data_type="financial",
             export=ns_parser.export,
@@ -893,8 +1000,11 @@ Finviz:
         if not ns_parser:
             return
 
+        if not self.similar or len(self.similar) == 1:
+            print("Please make sure there are more than 1 similar tickers selected. \n")
+            return
+
         finviz_compare_view.screener(
-            ticker=self.ticker,
             similar=self.similar,
             data_type="ownership",
             export=ns_parser.export,
@@ -923,8 +1033,11 @@ Finviz:
         if not ns_parser:
             return
 
+        if not self.similar or len(self.similar) == 1:
+            print("Please make sure there are more than 1 similar tickers selected. \n")
+            return
+
         finviz_compare_view.screener(
-            ticker=self.ticker,
             similar=self.similar,
             data_type="performance",
             export=ns_parser.export,
@@ -953,8 +1066,11 @@ Finviz:
         if not ns_parser:
             return
 
+        if not self.similar or len(self.similar) == 1:
+            print("Please make sure there are more than 1 similar tickers selected. \n")
+            return
+
         finviz_compare_view.screener(
-            ticker=self.ticker,
             similar=self.similar,
             data_type="technical",
             export=ns_parser.export,
@@ -962,29 +1078,23 @@ Finviz:
 
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
-        return po_controller.menu([self.ticker] + self.similar)
+        if not self.similar or len(self.similar) == 1:
+            print("Please make sure there are more than 1 similar tickers selected. \n")
+            return None
+
+        return po_controller.menu(self.similar)
 
 
-def menu(ticker: str, start: str, interval: str, stock: pd.DataFrame, similar: List):
+def menu(similar: List):
     """Comparison Analysis Menu
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
-    start : str
-        Time start
-    interval : str
-        Time interval
-    stock : pd.DataFrame
-        Stock data
     similar : List
         Similar tickers
     """
 
-    ca_controller = ComparisonAnalysisController(
-        ticker, start, interval, stock, similar
-    )
+    ca_controller = ComparisonAnalysisController(similar)
     ca_controller.call_help(None)
 
     while True:

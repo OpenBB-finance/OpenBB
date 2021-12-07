@@ -670,7 +670,7 @@ dev = ["black (>=20.8b1)", "codecov", "coverage", "flake8", "flake8-black", "fut
 
 [[package]]
 name = "financedatabase"
-version = "1.0.0"
+version = "1.0.2"
 description = "This is a database of 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets."
 category = "main"
 optional = false
@@ -971,7 +971,7 @@ python-versions = "*"
 
 [[package]]
 name = "ipykernel"
-version = "6.5.1"
+version = "6.6.0"
 description = "IPython Kernel for Jupyter"
 category = "main"
 optional = false
@@ -987,7 +987,7 @@ tornado = ">=4.2,<7.0"
 traitlets = ">=5.1.0,<6.0"
 
 [package.extras]
-test = ["pytest (!=5.3.4)", "pytest-cov", "flaky", "nose", "ipyparallel"]
+test = ["pytest (!=5.3.4)", "pytest-cov", "flaky", "ipyparallel"]
 
 [[package]]
 name = "ipython"
@@ -1659,7 +1659,7 @@ test = ["check-manifest", "fastjsonschema", "testpath", "pytest", "pytest-cov"]
 
 [[package]]
 name = "nest-asyncio"
-version = "1.5.1"
+version = "1.5.4"
 description = "Patch asyncio to allow nested event loops"
 category = "main"
 optional = false
@@ -1880,7 +1880,7 @@ test = ["boto3", "botocore", "codecov", "coverage", "google-compute-engine", "ip
 
 [[package]]
 name = "parso"
-version = "0.8.2"
+version = "0.8.3"
 description = "A Python Parser"
 category = "main"
 optional = false
@@ -2267,7 +2267,7 @@ zstd = ["zstandard"]
 
 [[package]]
 name = "pyobjc-core"
-version = "8.0"
+version = "8.1"
 description = "Python<->ObjC Interoperability Module"
 category = "main"
 optional = false
@@ -2275,14 +2275,14 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "pyobjc-framework-cocoa"
-version = "8.0"
+version = "8.1"
 description = "Wrappers for the Cocoa frameworks on macOS"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-pyobjc-core = ">=8.0"
+pyobjc-core = ">=8.1"
 
 [[package]]
 name = "pyotp"
@@ -3303,7 +3303,7 @@ python-versions = "*"
 
 [[package]]
 name = "typing-extensions"
-version = "4.0.0"
+version = "4.0.1"
 description = "Backported and Experimental Type Hints for Python 3.6+"
 category = "main"
 optional = false
@@ -4031,8 +4031,8 @@ ffn = [
     {file = "ffn-0.3.6.tar.gz", hash = "sha256:4a79e72e06ff328e333ffe97010b1ce110bcd694fcd03be7351bf5065cd273e8"},
 ]
 financedatabase = [
-    {file = "financedatabase-1.0.0-py3-none-any.whl", hash = "sha256:d7620be1863645d9281bcf6f00f202dbd3196cf2d23373ffe334769c9181696c"},
-    {file = "financedatabase-1.0.0.tar.gz", hash = "sha256:b301644426bea89fe240326cf5bb6872761e90f1afc41caf1808b46012fade9c"},
+    {file = "financedatabase-1.0.2-py3-none-any.whl", hash = "sha256:2fbe8acea1a12d2e3371c81b075f357f61f34cae5e6d94de9b3afd68ff3c3a19"},
+    {file = "financedatabase-1.0.2.tar.gz", hash = "sha256:7b03d37ef5eef8433380d92122f2fd24bad741971518eaf1bd4a9c6f30763e23"},
 ]
 finviz = [
     {file = "finviz-1.4.2.tar.gz", hash = "sha256:f921a2674ea16f5ee9320834ab80554872fdb32a2bc9e0fdf23542ea33094d24"},
@@ -4189,8 +4189,8 @@ iniconfig = [
     {file = "iniconfig-1.1.1.tar.gz", hash = "sha256:bc3af051d7d14b2ee5ef9969666def0cd1a000e121eaea580d4a313df4b37f32"},
 ]
 ipykernel = [
-    {file = "ipykernel-6.5.1-py3-none-any.whl", hash = "sha256:ff0cb4a67326d2f903b7d7a2e63719d082434b46f00536410bd4e3ad2b98f3b7"},
-    {file = "ipykernel-6.5.1.tar.gz", hash = "sha256:dd27172bccbbcfef952991e49372e4c6fd1c14eed0df05ebd5b4335cb27a81a2"},
+    {file = "ipykernel-6.6.0-py3-none-any.whl", hash = "sha256:82ded8919fa7f5483be2b6219c3b13380d93faab1fc49cc2cfcd10e9e24cc158"},
+    {file = "ipykernel-6.6.0.tar.gz", hash = "sha256:3a227788216b43982d9ac28195949467627b0d16e6b8af9741d95dcaa8c41a89"},
 ]
 ipython = [
     {file = "ipython-7.30.0-py3-none-any.whl", hash = "sha256:c8f3e07aefb9cf9e067f39686f035ce09b27a1ee602116a3030b91b6fc138ee4"},
@@ -4694,8 +4694,8 @@ nbformat = [
     {file = "nbformat-5.1.3.tar.gz", hash = "sha256:b516788ad70771c6250977c1374fcca6edebe6126fd2adb5a69aa5c2356fd1c8"},
 ]
 nest-asyncio = [
-    {file = "nest_asyncio-1.5.1-py3-none-any.whl", hash = "sha256:76d6e972265063fe92a90b9cc4fb82616e07d586b346ed9d2c89a4187acea39c"},
-    {file = "nest_asyncio-1.5.1.tar.gz", hash = "sha256:afc5a1c515210a23c461932765691ad39e8eba6551c055ac8d5546e69250d0aa"},
+    {file = "nest_asyncio-1.5.4-py3-none-any.whl", hash = "sha256:3fdd0d6061a2bb16f21fe8a9c6a7945be83521d81a0d15cff52e9edee50101d6"},
+    {file = "nest_asyncio-1.5.4.tar.gz", hash = "sha256:f969f6013a16fadb4adcf09d11a68a4f617c6049d7af7ac2c676110169a63abd"},
 ]
 notebook = [
     {file = "notebook-6.4.6-py3-none-any.whl", hash = "sha256:5cad068fa82cd4fb98d341c052100ed50cd69fbfb4118cb9b8ab5a346ef27551"},
@@ -4845,8 +4845,8 @@ papermill = [
     {file = "papermill-2.3.3.tar.gz", hash = "sha256:349aecd526c15c39f73a08df836467e2fead877c474d82c7df349f27ad272525"},
 ]
 parso = [
-    {file = "parso-0.8.2-py2.py3-none-any.whl", hash = "sha256:a8c4922db71e4fdb90e0d0bc6e50f9b273d3397925e5e60a717e719201778d22"},
-    {file = "parso-0.8.2.tar.gz", hash = "sha256:12b83492c6239ce32ff5eed6d3639d6a536170723c6f3f1506869f1ace413398"},
+    {file = "parso-0.8.3-py2.py3-none-any.whl", hash = "sha256:c001d4636cd3aecdaf33cbb40aebb59b094be2a74c556778ef5576c175e19e75"},
+    {file = "parso-0.8.3.tar.gz", hash = "sha256:8c07be290bb59f03588915921e29e8a50002acaf2cdc5fa0e0114f91709fafa0"},
 ]
 pathspec = [
     {file = "pathspec-0.9.0-py2.py3-none-any.whl", hash = "sha256:7d15c4ddb0b5c802d161efc417ec1a2558ea2653c2e8ad9c19098201dc1c993a"},
@@ -5125,20 +5125,20 @@ pymongo = [
     {file = "pymongo-3.11.0.tar.gz", hash = "sha256:076a7f2f7c251635cf6116ac8e45eefac77758ee5a77ab7bd2f63999e957613b"},
 ]
 pyobjc-core = [
-    {file = "pyobjc-core-8.0.tar.gz", hash = "sha256:4cd0735cdb7a7b959def0fe1769df74e0ab6de5ea1ca40f1464d2ac78b85326f"},
-    {file = "pyobjc_core-8.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:d517f1dffddb30d1a9d4c5109a46ffc37eb461720558a54d57586459014b2d0b"},
-    {file = "pyobjc_core-8.0-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:7e710f7329a7dbca27639c7ce60a50b2003d5492d55f66fec2ab8c375f134812"},
-    {file = "pyobjc_core-8.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:0e1d2f3e1216e92428e0107a651b074d44f2856b98aac93fef5b27bfb4355232"},
-    {file = "pyobjc_core-8.0-cp38-cp38-macosx_11_0_universal2.whl", hash = "sha256:d56c69d9267723326c9254e268838a5d67120c34e0667ef9c947c8336a755dec"},
-    {file = "pyobjc_core-8.0-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:e19d3fd51cc993e31f51e32f62463e81da79dbd22042e7a18cf6ee141db9d539"},
+    {file = "pyobjc-core-8.1.tar.gz", hash = "sha256:920914a1a4cd4f8a54babe93f0b4e4cd93b51d11ae38d8ef17f5edb603b7a949"},
+    {file = "pyobjc_core-8.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:ddd9b964df292fa0bbd0d0694befe4c524977780e3f11221ac7e8683d5e9590f"},
+    {file = "pyobjc_core-8.1-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:b6662805d288cd1bfd257565ddc07541d0162b3167af15e39f7a654b94f6667b"},
+    {file = "pyobjc_core-8.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:43f251881fe36dcb9ca9f7946ab13ddb4aa2499bde3c8bf2dc8144b5fe884629"},
+    {file = "pyobjc_core-8.1-cp38-cp38-macosx_11_0_universal2.whl", hash = "sha256:781cfa7a3f72ce7213b4c341b5c552cd63b6664b3b444a23fcb1d5fdd417aa8b"},
+    {file = "pyobjc_core-8.1-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:951e716ad30bea52190f5e82604ee2c7f3dc6c04722cf0a3311ad7e4e6af5134"},
 ]
 pyobjc-framework-cocoa = [
-    {file = "pyobjc-framework-Cocoa-8.0.tar.gz", hash = "sha256:233fe4cf6ddd5804d76b68fac3f0601b78cc0c307703eb5f2dcb9a1ef62a7904"},
-    {file = "pyobjc_framework_Cocoa-8.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:f6b4e8708d574b26a72366f11b0a3afb59e6cd8569f6aabf42450ac39d69c115"},
-    {file = "pyobjc_framework_Cocoa-8.0-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:49ceaae8bf993b42e6afa1a91aa6fda44628ac8944b5a631fdc844b9b8da4b27"},
-    {file = "pyobjc_framework_Cocoa-8.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:4fd7b0627681841c12a47e77fd06ec518b41f0037e12cd1d1e035de5d2b4a333"},
-    {file = "pyobjc_framework_Cocoa-8.0-cp38-cp38-macosx_11_0_universal2.whl", hash = "sha256:fab76fd835228c37280fdf4db71b740c3c8a60a0a304373c9a162134fba58fd3"},
-    {file = "pyobjc_framework_Cocoa-8.0-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:0766f4adbfca41815529c639da1e4c9959bed86c961956c564f3163dc3e56c74"},
+    {file = "pyobjc-framework-Cocoa-8.1.tar.gz", hash = "sha256:9de42dc3e0911d6e30cf41bb4baf9aaf2723a27053f7edbd8ad7d758cf41b81d"},
+    {file = "pyobjc_framework_Cocoa-8.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:b588a3ed9adcdbfafcbfa77bbd72844afb8d987a70cce7a4f3a35a9474271a11"},
+    {file = "pyobjc_framework_Cocoa-8.1-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:626f6d084a537b365c0786674036643695e7829ebaf7889aa9b327f3b897a800"},
+    {file = "pyobjc_framework_Cocoa-8.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:8075f6cf8cac804d9ed05355c68a8a0cd3ce31a310469279c6c7e49dad47b010"},
+    {file = "pyobjc_framework_Cocoa-8.1-cp38-cp38-macosx_11_0_universal2.whl", hash = "sha256:9e47a2709b8458422752efccaa89f4b52cc8e01345ec71c43c713a891f084bb6"},
+    {file = "pyobjc_framework_Cocoa-8.1-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:0b0aee74f6c32103338e3735f308052f4cc534c25762130303638aaa6d62d851"},
 ]
 pyotp = [
     {file = "pyotp-2.6.0-py2.py3-none-any.whl", hash = "sha256:9d144de0f8a601d6869abe1409f4a3f75f097c37b50a36a3bf165810a6e23f28"},
@@ -5879,8 +5879,8 @@ types-termcolor = [
     {file = "types_termcolor-1.1.2-py3-none-any.whl", hash = "sha256:51d2043039efa6b5e2fdf661f2002c900d864da19384fdc3bfa898513306a70e"},
 ]
 typing-extensions = [
-    {file = "typing_extensions-4.0.0-py3-none-any.whl", hash = "sha256:829704698b22e13ec9eaf959122315eabb370b0884400e9818334d8b677023d9"},
-    {file = "typing_extensions-4.0.0.tar.gz", hash = "sha256:2cdf80e4e04866a9b3689a51869016d36db0814d84b8d8a568d22781d45d27ed"},
+    {file = "typing_extensions-4.0.1-py3-none-any.whl", hash = "sha256:7f001e5ac290a0c0401508864c7ec868be4e701886d5b573a9528ed3973d9d3b"},
+    {file = "typing_extensions-4.0.1.tar.gz", hash = "sha256:4ca091dea149f945ec56afb48dae714f21e8692ef22a395223bcd328961b6a0e"},
 ]
 tzdata = [
     {file = "tzdata-2021.5-py2.py3-none-any.whl", hash = "sha256:3eee491e22ebfe1e5cfcc97a4137cd70f092ce59144d81f8924a844de05ba8f5"},

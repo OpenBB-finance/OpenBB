@@ -24,7 +24,6 @@ d_candle_types = {
 
 
 def get_historical(
-    ticker: str,
     similar_tickers: List[str],
     start: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
     candle_type: str = "a",
@@ -33,8 +32,6 @@ def get_historical(
 
     Parameters
     ----------
-    ticker : str
-        Base ticker
     similar_tickers : List[str]
         List of similar tickers
     start : str, optional
@@ -47,12 +44,11 @@ def get_historical(
     pd.DataFrame
         Dataframe containing candle type variable for each ticker
     """
-    all_tickers = [ticker, *similar_tickers]
     # To avoid having to recursively append, just do a single yfinance call.  This will give dataframe
     # where all tickers are columns.
-    return yf.download(all_tickers, start=start, progress=False, threads=False)[
+    return yf.download(similar_tickers, start=start, progress=False, threads=False)[
         d_candle_types[candle_type]
-    ][all_tickers]
+    ][similar_tickers]
 
 
 def get_1y_sp500() -> pd.DataFrame:

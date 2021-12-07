@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import os
+from typing import List, Any
 from colorama import Fore, Style
 from tabulate import tabulate
 from gamestonk_terminal.stocks.due_diligence import finviz_model
@@ -39,20 +40,20 @@ def news(ticker: str, num: int):
     ----------
     ticker : str
         Stock ticker
-    num : int
+    fnews : int
         Number of latest news being printed
     """
-    d_finviz_news = finviz_model.get_news(ticker)
-    i = 0
-    for s_news_title, s_news_link in {*d_finviz_news}:
-        print(f"-> {s_news_title}")
-        print(f"{s_news_link}\n")
-        i += 1
+    fnews: List[Any] = finviz_model.get_news(ticker)
 
-        if i > (num - 1):
-            break
+    if fnews:
+        fnews = sorted(fnews, reverse=True)[:num]
 
-    print("")
+        for news_date, news_title, news_link, _ in fnews:
+            print(f"{news_date} - {news_title}")
+            print(f"{news_link}\n")
+
+    else:
+        print("No news found for this ticker")
 
 
 def analyst(ticker: str, export: str = ""):

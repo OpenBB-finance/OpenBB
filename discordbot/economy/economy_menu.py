@@ -3,6 +3,8 @@ import discord
 
 import discordbot.config_discordbot as cfg
 
+from discordbot.run_discordbot import gst_bot
+
 from discordbot.economy.feargreed import feargreed_command
 from discordbot.economy.overview import overview_command
 from discordbot.economy.indices import indices_command
@@ -12,8 +14,6 @@ from discordbot.economy.glbonds import glbonds_command
 from discordbot.economy.currencies import currencies_command
 from discordbot.economy.valuation import valuation_command
 from discordbot.economy.performance import performance_command
-
-from discordbot.run_discordbot import gst_bot
 
 
 class EconomyCommands(discord.ext.commands.Cog):

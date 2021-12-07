@@ -162,7 +162,7 @@ Select one of the following reports:
             return MENU_RESET
 
         if known_args.cmd:
-            if known_args.cmd in list(self.d_id_to_report_name.keys()):
+            if known_args.cmd in self.d_id_to_report_name:
                 report_to_run = self.d_id_to_report_name[known_args.cmd]
             else:
                 report_to_run = known_args.cmd

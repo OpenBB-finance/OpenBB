@@ -64,6 +64,7 @@ class FundamentalAnalysisController:
         "cash",
         "earnings",
         "warnings",
+        "divs",
     ]
 
     CHOICES_MENUS = [
@@ -122,7 +123,8 @@ Yahoo Finance:
     sust          sustainability values of the company
     cal           calendar earnings and estimates of the company
     web           open web browser of the company
-    hq            open HQ location of the company {Style.DIM if self.suffix else ""}
+    hq            open HQ location of the company
+    divs          show historical dividends for company {Style.DIM if self.suffix else ""}
 Alpha Vantage:
     overview      overview of the company
     key           company key metrics
@@ -398,6 +400,32 @@ Other Sources:
         if not ns_parser:
             return
         yahoo_finance_view.open_headquarters_map(self.ticker)
+
+    @try_except
+    def call_divs(self, other_args: List[str]):
+        """Process divs command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="divs",
+            description="Get historical dividends for company",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            dest="num",
+            type=check_positive,
+            default=12,
+            help="Number of previous dividends to show",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if not ns_parser:
+            return
+        yahoo_finance_view.display_dividends(
+            ticker=self.ticker, num=ns_parser.num, export=ns_parser.export
+        )
 
     @try_except
     def call_overview(self, other_args: List[str]):
