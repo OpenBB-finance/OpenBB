@@ -69,7 +69,6 @@ class EconomyController:
 
     CHOICES_COMMANDS = [
         "feargreed",
-        "events",
         "overview",
         "indices",
         "futures",
@@ -122,8 +121,6 @@ What do you want to do?
 
 CNN:
     feargreed     CNN Fear and Greed Index
-Finnhub:
-    events        economic impact events
 Wall St. Journal:
     overview      market data overview
     indices       US indices overview
@@ -648,10 +645,42 @@ NASDAQ DataLink (formerly Quandl):
             "-g",
             "--group",
             type=str,
-            default="Sector",
+            default="sector",
+            nargs="+",
             dest="group",
             help="Data group (sector, industry or country)",
-            choices=list(self.d_GROUPS.keys()),
+        )
+        parser.add_argument(
+            "-s",
+            "--sortby",
+            dest="sort_col",
+            type=str,
+            choices=[
+                "Name",
+                "MarketCap",
+                "P/E",
+                "FwdP/E",
+                "PEG",
+                "P/S",
+                "P/B",
+                "P/C",
+                "P/FCF",
+                "EPSpast5Y",
+                "EPSnext5Y",
+                "Salespast5Y",
+                "Change",
+                "Volume",
+            ],
+            default="Name",
+            help="Column to sort by",
+        )
+        parser.add_argument(
+            "-a",
+            "-ascend",
+            dest="ascend",
+            help="Flag to sort in ascending order",
+            action="store_true",
+            default=False,
         )
         parser.add_argument(
             "--export",
@@ -661,18 +690,22 @@ NASDAQ DataLink (formerly Quandl):
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-g")
-            other_args = [other_args[0], " ".join(other_args[1:])]
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-g")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        finviz_view.view_group_data(
-            s_group=self.d_GROUPS[ns_parser.group],
-            data_type="valuation",
+        group = (
+            " ".join(ns_parser.group)
+            if isinstance(ns_parser.group, list)
+            else ns_parser.group
+        )
+        finviz_view.display_valuation(
+            s_group=self.d_GROUPS[group],
+            sort_col=ns_parser.sort_col,
+            ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
 
@@ -691,10 +724,10 @@ NASDAQ DataLink (formerly Quandl):
             "-g",
             "--group",
             type=str,
-            default="Sector",
+            default="sector",
+            nargs="+",
             dest="group",
             help="Data group (sector, industry or country)",
-            choices=list(self.d_GROUPS.keys()),
         )
         parser.add_argument(
             "-s",
@@ -735,14 +768,16 @@ NASDAQ DataLink (formerly Quandl):
         )
         if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-g")
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
-
-        finviz_view.view_group_data(
-            s_group=self.d_GROUPS[ns_parser.group],
-            data_type="performance",
+        group = (
+            " ".join(ns_parser.group)
+            if isinstance(ns_parser.group, list)
+            else ns_parser.group
+        )
+        finviz_view.display_performance(
+            s_group=self.d_GROUPS[group],
             sort_col=ns_parser.sort_col,
             ascending=ns_parser.ascend,
             export=ns_parser.export,
@@ -764,9 +799,9 @@ NASDAQ DataLink (formerly Quandl):
             "--group",
             type=str,
             default="sector",
+            nargs="+",
             dest="group",
             help="Data group (sector, industry or country)",
-            choices=list(self.d_GROUPS.keys()),
         )
         parser.add_argument(
             "--export",
@@ -776,23 +811,22 @@ NASDAQ DataLink (formerly Quandl):
             dest="export",
             help="Export plot to png,jpg,pdf,svg file",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-g")
-            other_args = [other_args[0], " ".join(other_args[1:])]
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-g")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
-
-        finviz_view.view_group_data(
-            s_group=self.d_GROUPS[ns_parser.group],
-            data_type="spectrum",
-            export="",
+        group = (
+            " ".join(ns_parser.group)
+            if isinstance(ns_parser.group, list)
+            else ns_parser.group
         )
+        finviz_view.display_spectrum(s_group=self.d_GROUPS[group])
+
         # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
         # after saving it and displaying it to the user
-        os.remove(ns_parser.group + ".jpg")
+        os.remove(self.d_GROUPS[group] + ".jpg")
 
     @try_except
     def call_rtps(self, other_args: List[str]):
