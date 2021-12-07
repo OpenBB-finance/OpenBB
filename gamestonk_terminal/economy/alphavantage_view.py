@@ -241,7 +241,7 @@ def display_cpi(
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     ax.plot(cpi.date, cpi.CPI, marker="o", c="dodgerblue")
     ax.set_xlabel("Date")
-    ax.set_title(f"{int_string} CPI from {year_str}")
+    ax.set_title(f"{int_string} Consumer Price Index from {year_str}")
     ax.set_ylabel("CPI ")
     ax.grid("on")
     fig.tight_layout()
