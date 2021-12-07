@@ -123,12 +123,12 @@ def load(
     ----------
     ticker: str
         Ticker to get data
-    start: str
-        Start date to get data from with format YYYY-MM-DD
+    start: datetime
+        Start date to get data from with
     interval: int
         Interval (in minutes) to get data 1, 5, 15, 30, 60 or 1440
-    end: str
-        End date to get data from with format YYYY-MM-DD
+    end: datetime
+        End date to get data from with
     prepost: bool
         Pre and After hours data
     source: str
@@ -230,7 +230,7 @@ def load(
         else:
             s_start = start
 
-        s_interval = str(interval) + "min"
+        s_interval = f"{interval}min"
 
     else:
         if source == "av":
@@ -239,7 +239,7 @@ def load(
             df_stock_candidate, _ = ts.get_intraday(
                 symbol=ticker,
                 outputsize="full",
-                interval=str(interval) + "min",
+                interval=f"{interval}min",
             )
 
             df_stock_candidate.columns = [
