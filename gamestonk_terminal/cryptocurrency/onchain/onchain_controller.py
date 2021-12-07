@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 # pylint: disable=C0302
 
 import argparse
+import difflib
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
@@ -1221,10 +1222,8 @@ class OnchainController:
             "-e",
             "--exchange",
             dest="exchange",
-            type=str.lower,
+            type=str,
             help="Decentralized exchange name.",
-            default="Uniswap",
-            choices=list(bitquery_model.DECENTRALIZED_EXCHANGES_MAP.keys()),
         )
 
         parser.add_argument(
@@ -1254,6 +1253,10 @@ class OnchainController:
             default=False,
         )
 
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-e")
+
         try:
             ns_parser = parse_known_args_and_warn(
                 parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -1262,10 +1265,44 @@ class OnchainController:
             if not ns_parser:
                 return
 
+            exchange = "Uniswap"
+            if ns_parser.exchange:
+                if ns_parser.exchange in bitquery_model.DECENTRALIZED_EXCHANGES:
+                    exchange = ns_parser.exchange
+                else:
+                    similar_cmd = difflib.get_close_matches(
+                        ns_parser.exchange,
+                        bitquery_model.DECENTRALIZED_EXCHANGES,
+                        n=1,
+                        cutoff=0.75,
+                    )
+
+                    if similar_cmd:
+                        print(f"Replacing by '{similar_cmd[0]}'")
+                        exchange = similar_cmd[0]
+
+                    else:
+                        similar_cmd = difflib.get_close_matches(
+                            ns_parser.exchange,
+                            bitquery_model.DECENTRALIZED_EXCHANGES,
+                            n=1,
+                            cutoff=0.5,
+                        )
+                        if similar_cmd:
+                            print(f"Did you mean '{similar_cmd[0]}'?")
+                            return
+                        print(
+                            f"Couldn't find any exchange with provided name: {ns_parser.exchange}. "
+                            f"Please choose one from list: {bitquery_model.DECENTRALIZED_EXCHANGES}\n"
+                        )
+                        return
+            else:
+                print("Exchange not provided setting default to Uniswap.\n")
+
             bitquery_view.display_most_traded_pairs(
                 days=ns_parser.days,
                 top=ns_parser.top,
-                exchange=ns_parser.exchange,
+                exchange=exchange,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
                 export=ns_parser.export,
@@ -1426,9 +1463,10 @@ def menu():
     while True:
         # Get input command from user
         if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in onchain_controller.CHOICES}
-            )
+            choices: dict = {c: {} for c in onchain_controller.CHOICES}
+            choices["ttcp"] = {c: None for c in bitquery_model.DECENTRALIZED_EXCHANGES}
+
+            completer = NestedCompleter.from_nested_dict(choices)
             an_input = session.prompt(
                 f"{get_flair()} (crypto)>(onchain)> ",
                 completer=completer,
@@ -1447,3 +1485,6 @@ def menu():
 
         if process_input is True:
             return True
+
+
+menu()
