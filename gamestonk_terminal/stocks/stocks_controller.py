@@ -317,7 +317,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         if not df_stock_candidate.empty:
             self.stock = df_stock_candidate
             if "." in ns_parser.ticker:
-                self.ticker, self.suffix = self.ticker.upper().split(".")
+                self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
             else:
                 self.ticker = ns_parser.ticker.upper()
                 self.suffix = ""
