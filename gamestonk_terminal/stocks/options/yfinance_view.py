@@ -764,13 +764,13 @@ def export_binomial_calcs(
     wb = Workbook()
     ws = wb.active
 
-    ws["A1"] = "U"
+    ws["A1"] = "Up Move"
     ws["B1"] = up
-    ws["A2"] = "D"
+    ws["A2"] = "Down Move"
     ws["B2"] = 1 / up
-    ws["D1"] = "q"
+    ws["D1"] = "Prob Up"
     ws["E1"] = prob_up
-    ws["D2"] = "1-q"
+    ws["D2"] = "Prob Down"
     ws["E2"] = 1 - prob_up
     ws["D3"] = "Discount"
     ws["E3"] = discount
