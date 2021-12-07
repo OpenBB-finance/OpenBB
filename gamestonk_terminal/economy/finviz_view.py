@@ -39,7 +39,7 @@ def display_performance(
     ascending: bool = True,
     export: str = "",
 ):
-    """View group (sectors, industry or country) data. [Source: Finviz]
+    """View group (sectors, industry or country) performance data. [Source: Finviz]
 
     Parameters
     ----------
@@ -113,7 +113,7 @@ def display_valuation(
     ascending: bool = True,
     export: str = "",
 ):
-    """View group (sectors, industry or country) data. [Source: Finviz]
+    """View group (sectors, industry or country) valuation data. [Source: Finviz]
 
     Parameters
     ----------
@@ -155,7 +155,7 @@ def display_valuation(
 
 
 def display_spectrum(s_group: str, export: str = ""):
-    """Display finviz spectrum in system viewer
+    """Display finviz spectrum in system viewer [Source: Finviz]
 
     Parameters
     ----------

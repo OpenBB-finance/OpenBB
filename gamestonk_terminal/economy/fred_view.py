@@ -37,14 +37,17 @@ def notes(series_term: str, num: int):
     df_search["title"] = df_search["title"].apply(
         lambda x: "\n".join(textwrap.wrap(x, width=50)) if isinstance(x, str) else x
     )
-    print(
-        tabulate(
-            df_search[["id", "title", "notes"]].head(num),
-            tablefmt="fancy_grid",
-            headers=["Series ID", "Title", "Description"],
-            showindex=False,
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df_search[["id", "title", "notes"]].head(num),
+                tablefmt="fancy_grid",
+                headers=["Series ID", "Title", "Description"],
+                showindex=False,
+            )
         )
-    )
+    else:
+        print(df_search[["id", "title", "notes"]].head(num).to_string(index=False))
     print("")
 
 
