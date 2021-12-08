@@ -3,9 +3,9 @@ __docformat__ = "numpy"
 
 import argparse
 import difflib
-
 from typing import List
 
+from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
@@ -56,8 +56,8 @@ What do you want to do?
     rmv           remove series ID from list
 
 Current Series IDs:
-{id_string}
-    plot          plot selected series
+{id_string}{Style.DIM if not self.current_series else ""}
+    plot          plot selected series {Style.RESET_ALL}
         """
         print(help_text)
 
