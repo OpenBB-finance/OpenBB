@@ -422,6 +422,8 @@ main:
             ref: "/portfolio/portfolio_optimization"
           - name: parity
             ref: "/stocks/options/parity"
+          - name: binom
+            ref: "/stocks/options/binom"
           - name: payoff
             ref: "/stocks/options/payoff"
             sub:
