@@ -339,20 +339,29 @@ def record_stdout(
             module_name=module_name,
             test_name=formatted_kwargs["record_name"],
         )
-        recorder = Recorder(path_template=path_template, record_mode=formatted_kwargs["record_mode"])
+        recorder = Recorder(
+            path_template=path_template, record_mode=formatted_kwargs["record_mode"]
+        )
 
         # CAPTURE STDOUT
         capture = request.config.getoption("--capture")
         if capture == "no":
-            global_capturing = MultiCapture(in_=SysCapture(0), out=SysCapture(1), err=SysCapture(2))
+            global_capturing = MultiCapture(
+                in_=SysCapture(0), out=SysCapture(1), err=SysCapture(2)
+            )
             global_capturing.start_capturing()
             yield
-            recorder.capture(captured=global_capturing.readouterr().out, strip=formatted_kwargs["strip"])
+            recorder.capture(
+                captured=global_capturing.readouterr().out,
+                strip=formatted_kwargs["strip"],
+            )
             global_capturing.stop_capturing()
         else:
             capsys = request.getfixturevalue("capsys")
             yield
-            recorder.capture(captured=capsys.readouterr().out, strip=formatted_kwargs["strip"])
+            recorder.capture(
+                captured=capsys.readouterr().out, strip=formatted_kwargs["strip"]
+            )
 
         # SAVE/CHECK RECORD
         if formatted_kwargs["save_record"]:
