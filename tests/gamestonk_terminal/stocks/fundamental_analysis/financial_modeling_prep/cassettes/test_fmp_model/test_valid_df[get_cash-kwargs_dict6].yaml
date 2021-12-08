@@ -1,0 +1,370 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - financialmodelingprep.com
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/cash-flow-statement/PM?apikey=MOCK_API_KEY&limit=0&period=annual
+  response:
+    body:
+      string: "[ {\n  \"date\" : \"2020-12-31\",\n  \"symbol\" : \"PM\",\n  \"reportedCurrency\"
+        : \"USD\",\n  \"cik\" : \"0001413329\",\n  \"fillingDate\" : \"2021-02-09\",\n
+        \ \"acceptedDate\" : \"2021-02-09 16:20:37\",\n  \"calendarYear\" : \"2020\",\n
+        \ \"period\" : \"FY\",\n  \"netIncome\" : 8592000000,\n  \"depreciationAndAmortization\"
+        : 981000000,\n  \"deferredIncomeTax\" : -143000000,\n  \"stockBasedCompensation\"
+        : 0.0,\n  \"changeInWorkingCapital\" : 128000000,\n  \"accountsReceivables\"
+        : 0.0,\n  \"inventory\" : -165000000,\n  \"accountsPayables\" : 406000000,\n
+        \ \"otherWorkingCapital\" : -139000000,\n  \"otherNonCashItems\" : 254000000,\n
+        \ \"netCashProvidedByOperatingActivities\" : 9812000000,\n  \"investmentsInPropertyPlantAndEquipment\"
+        : 0.0,\n  \"acquisitionsNet\" : -47000000,\n  \"purchasesOfInvestments\" :
+        0.0,\n  \"salesMaturitiesOfInvestments\" : 0.0,\n  \"otherInvestingActivites\"
+        : -1107000000,\n  \"netCashUsedForInvestingActivites\" : -1154000000,\n  \"debtRepayment\"
+        : -4114000000,\n  \"commonStockIssued\" : 0.0,\n  \"commonStockRepurchased\"
+        : 0.0,\n  \"dividendsPaid\" : -7364000000,\n  \"otherFinancingActivites\"
+        : 2982000000,\n  \"netCashUsedProvidedByFinancingActivities\" : -8496000000,\n
+        \ \"effectOfForexChangesOnCash\" : 258000000,\n  \"netChangeInCash\" : 420000000,\n
+        \ \"cashAtEndOfPeriod\" : 7285000000,\n  \"cashAtBeginningOfPeriod\" : 6865000000,\n
+        \ \"operatingCashFlow\" : 9812000000,\n  \"capitalExpenditure\" : -602000000,\n
+        \ \"freeCashFlow\" : 9210000000,\n  \"link\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000141332921000007/0001413329-21-000007-index.htm\",\n
+        \ \"finalLink\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000141332921000007/pm-20201231.htm\"\n},
+        {\n  \"date\" : \"2019-12-31\",\n  \"symbol\" : \"PM\",\n  \"reportedCurrency\"
+        : \"USD\",\n  \"cik\" : \"0001413329\",\n  \"fillingDate\" : \"2020-02-07\",\n
+        \ \"acceptedDate\" : \"2020-02-07 06:47:13\",\n  \"calendarYear\" : \"2019\",\n
+        \ \"period\" : \"FY\",\n  \"netIncome\" : 7185000000,\n  \"depreciationAndAmortization\"
+        : 964000000,\n  \"deferredIncomeTax\" : -141000000,\n  \"stockBasedCompensation\"
+        : 0.0,\n  \"changeInWorkingCapital\" : -570000000,\n  \"accountsReceivables\"
+        : -331000000,\n  \"inventory\" : -548000000,\n  \"accountsPayables\" : 451000000,\n
+        \ \"otherWorkingCapital\" : 1681000000,\n  \"otherNonCashItems\" : 2652000000,\n
+        \ \"netCashProvidedByOperatingActivities\" : 10090000000,\n  \"investmentsInPropertyPlantAndEquipment\"
+        : -852000000,\n  \"acquisitionsNet\" : -1346000000,\n  \"purchasesOfInvestments\"
+        : 0.0,\n  \"salesMaturitiesOfInvestments\" : 0.0,\n  \"otherInvestingActivites\"
+        : 387000000,\n  \"netCashUsedForInvestingActivites\" : -1811000000,\n  \"debtRepayment\"
+        : -5351000000,\n  \"commonStockIssued\" : 0.0,\n  \"commonStockRepurchased\"
+        : 0.0,\n  \"dividendsPaid\" : -7161000000,\n  \"otherFinancingActivites\"
+        : 4451000000,\n  \"netCashUsedProvidedByFinancingActivities\" : -8061000000,\n
+        \ \"effectOfForexChangesOnCash\" : 27000000,\n  \"netChangeInCash\" : 245000000,\n
+        \ \"cashAtEndOfPeriod\" : 6865000000,\n  \"cashAtBeginningOfPeriod\" : 6620000000,\n
+        \ \"operatingCashFlow\" : 10090000000,\n  \"capitalExpenditure\" : -852000000,\n
+        \ \"freeCashFlow\" : 9238000000,\n  \"link\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000141332920000007/0001413329-20-000007-index.htm\",\n
+        \ \"finalLink\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000141332920000007/pm123119form10kwrapinc.htm\"\n},
+        {\n  \"date\" : \"2018-12-31\",\n  \"symbol\" : \"PM\",\n  \"reportedCurrency\"
+        : \"USD\",\n  \"cik\" : \"0001413329\",\n  \"fillingDate\" : \"2019-02-07\",\n
+        \ \"acceptedDate\" : \"2019-02-07 15:09:20\",\n  \"calendarYear\" : \"2018\",\n
+        \ \"period\" : \"FY\",\n  \"netIncome\" : 7911000000,\n  \"depreciationAndAmortization\"
+        : 989000000,\n  \"deferredIncomeTax\" : -100000000,\n  \"stockBasedCompensation\"
+        : 0.0,\n  \"changeInWorkingCapital\" : -3381000000,\n  \"accountsReceivables\"
+        : 53000000,\n  \"inventory\" : -613000000,\n  \"accountsPayables\" : -51000000,\n
+        \ \"otherWorkingCapital\" : 2251000000,\n  \"otherNonCashItems\" : 4059000000,\n
+        \ \"netCashProvidedByOperatingActivities\" : 9478000000,\n  \"investmentsInPropertyPlantAndEquipment\"
+        : -1436000000,\n  \"acquisitionsNet\" : 0.0,\n  \"purchasesOfInvestments\"
+        : 0.0,\n  \"salesMaturitiesOfInvestments\" : 0.0,\n  \"otherInvestingActivites\"
+        : 438000000,\n  \"netCashUsedForInvestingActivites\" : -998000000,\n  \"debtRepayment\"
+        : -2484000000,\n  \"commonStockIssued\" : 0.0,\n  \"commonStockRepurchased\"
+        : 0.0,\n  \"dividendsPaid\" : -6885000000,\n  \"otherFinancingActivites\"
+        : -282000000,\n  \"netCashUsedProvidedByFinancingActivities\" : -9651000000,\n
+        \ \"effectOfForexChangesOnCash\" : -685000000,\n  \"netChangeInCash\" : -1856000000,\n
+        \ \"cashAtEndOfPeriod\" : 6620000000,\n  \"cashAtBeginningOfPeriod\" : 8476000000,\n
+        \ \"operatingCashFlow\" : 9478000000,\n  \"capitalExpenditure\" : -1436000000,\n
+        \ \"freeCashFlow\" : 8042000000,\n  \"link\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000141332919000007/0001413329-19-000007-index.htm\",\n
+        \ \"finalLink\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000141332919000007/pm123118form10kwrapinclfsm.htm\"\n},
+        {\n  \"date\" : \"2017-12-31\",\n  \"symbol\" : \"PM\",\n  \"reportedCurrency\"
+        : \"USD\",\n  \"cik\" : \"0001413329\",\n  \"fillingDate\" : \"2018-02-13\",\n
+        \ \"acceptedDate\" : \"2018-02-13 08:07:16\",\n  \"calendarYear\" : \"2017\",\n
+        \ \"period\" : \"FY\",\n  \"netIncome\" : 6035000000,\n  \"depreciationAndAmortization\"
+        : 875000000,\n  \"deferredIncomeTax\" : -501000000,\n  \"stockBasedCompensation\"
+        : 0.0,\n  \"changeInWorkingCapital\" : 4491000000,\n  \"accountsReceivables\"
+        : -92000000,\n  \"inventory\" : 730000000,\n  \"accountsPayables\" : 425000000,\n
+        \ \"otherWorkingCapital\" : 5632000000,\n  \"otherNonCashItems\" : -1988000000,\n
+        \ \"netCashProvidedByOperatingActivities\" : 8912000000,\n  \"investmentsInPropertyPlantAndEquipment\"
+        : -1548000000,\n  \"acquisitionsNet\" : 0.0,\n  \"purchasesOfInvestments\"
+        : 0.0,\n  \"salesMaturitiesOfInvestments\" : 0.0,\n  \"otherInvestingActivites\"
+        : -1466000000,\n  \"netCashUsedForInvestingActivites\" : -3014000000,\n  \"debtRepayment\"
+        : -4312000000,\n  \"commonStockIssued\" : 0.0,\n  \"commonStockRepurchased\"
+        : 0.0,\n  \"dividendsPaid\" : -6520000000,\n  \"otherFinancingActivites\"
+        : 8063000000,\n  \"netCashUsedProvidedByFinancingActivities\" : -2769000000,\n
+        \ \"effectOfForexChangesOnCash\" : 1079000000,\n  \"netChangeInCash\" : 4208000000,\n
+        \ \"cashAtEndOfPeriod\" : 8447000000,\n  \"cashAtBeginningOfPeriod\" : 4239000000,\n
+        \ \"operatingCashFlow\" : 8912000000,\n  \"capitalExpenditure\" : -1548000000,\n
+        \ \"freeCashFlow\" : 7364000000,\n  \"link\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000141332918000007/0001413329-18-000007-index.htm\",\n
+        \ \"finalLink\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000141332918000007/pm123117form10kwrapinclfsm.htm\"\n},
+        {\n  \"date\" : \"2016-12-31\",\n  \"symbol\" : \"PM\",\n  \"reportedCurrency\"
+        : \"USD\",\n  \"cik\" : \"0001413329\",\n  \"fillingDate\" : \"2017-02-14\",\n
+        \ \"acceptedDate\" : \"2017-02-14 08:22:52\",\n  \"calendarYear\" : \"2016\",\n
+        \ \"period\" : \"FY\",\n  \"netIncome\" : 6967000000,\n  \"depreciationAndAmortization\"
+        : 743000000,\n  \"deferredIncomeTax\" : 182000000,\n  \"stockBasedCompensation\"
+        : 0.0,\n  \"changeInWorkingCapital\" : 723000000,\n  \"accountsReceivables\"
+        : -1009000000,\n  \"inventory\" : -695000000,\n  \"accountsPayables\" : 373000000,\n
+        \ \"otherWorkingCapital\" : 1141000000,\n  \"otherNonCashItems\" : -538000000,\n
+        \ \"netCashProvidedByOperatingActivities\" : 8077000000,\n  \"investmentsInPropertyPlantAndEquipment\"
+        : -1172000000,\n  \"acquisitionsNet\" : 0.0,\n  \"purchasesOfInvestments\"
+        : 0.0,\n  \"salesMaturitiesOfInvestments\" : 0.0,\n  \"otherInvestingActivites\"
+        : 204000000,\n  \"netCashUsedForInvestingActivites\" : -968000000,\n  \"debtRepayment\"
+        : -2405000000,\n  \"commonStockIssued\" : 0.0,\n  \"commonStockRepurchased\"
+        : 0.0,\n  \"dividendsPaid\" : -6378000000,\n  \"otherFinancingActivites\"
+        : 3370000000,\n  \"netCashUsedProvidedByFinancingActivities\" : -5413000000,\n
+        \ \"effectOfForexChangesOnCash\" : -874000000,\n  \"netChangeInCash\" : 822000000,\n
+        \ \"cashAtEndOfPeriod\" : 4239000000,\n  \"cashAtBeginningOfPeriod\" : 3417000000,\n
+        \ \"operatingCashFlow\" : 8077000000,\n  \"capitalExpenditure\" : -1172000000,\n
+        \ \"freeCashFlow\" : 6905000000,\n  \"link\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000141332917000014/0001413329-17-000014-index.htm\",\n
+        \ \"finalLink\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000141332917000014/pm123116form10kwrapinclfsm.htm\"\n},
+        {\n  \"date\" : \"2015-12-31\",\n  \"symbol\" : \"PM\",\n  \"reportedCurrency\"
+        : \"USD\",\n  \"cik\" : \"0001413329\",\n  \"fillingDate\" : \"2016-02-17\",\n
+        \ \"acceptedDate\" : \"2016-02-17 10:25:14\",\n  \"calendarYear\" : \"2015\",\n
+        \ \"period\" : \"FY\",\n  \"netIncome\" : 6873000000,\n  \"depreciationAndAmortization\"
+        : 754000000,\n  \"deferredIncomeTax\" : -18000000,\n  \"stockBasedCompensation\"
+        : 0.0,\n  \"changeInWorkingCapital\" : 46000000,\n  \"accountsReceivables\"
+        : 647000000,\n  \"inventory\" : -841000000,\n  \"accountsPayables\" : 310000000,\n
+        \ \"otherWorkingCapital\" : 418000000,\n  \"otherNonCashItems\" : 210000000,\n
+        \ \"netCashProvidedByOperatingActivities\" : 7865000000,\n  \"investmentsInPropertyPlantAndEquipment\"
+        : -960000000,\n  \"acquisitionsNet\" : 0.0,\n  \"purchasesOfInvestments\"
+        : 0.0,\n  \"salesMaturitiesOfInvestments\" : 0.0,\n  \"otherInvestingActivites\"
+        : 252000000,\n  \"netCashUsedForInvestingActivites\" : -708000000,\n  \"debtRepayment\"
+        : -1495000000,\n  \"commonStockIssued\" : 0.0,\n  \"commonStockRepurchased\"
+        : -48000000,\n  \"dividendsPaid\" : -6250000000,\n  \"otherFinancingActivites\"
+        : 3057000000,\n  \"netCashUsedProvidedByFinancingActivities\" : -4736000000,\n
+        \ \"effectOfForexChangesOnCash\" : -686000000,\n  \"netChangeInCash\" : 1735000000,\n
+        \ \"cashAtEndOfPeriod\" : 3417000000,\n  \"cashAtBeginningOfPeriod\" : 1682000000,\n
+        \ \"operatingCashFlow\" : 7865000000,\n  \"capitalExpenditure\" : -960000000,\n
+        \ \"freeCashFlow\" : 6905000000,\n  \"link\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000141332916000076/0001413329-16-000076-index.htm\",\n
+        \ \"finalLink\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000141332916000076/pm123115form10kwrapinclfsm.htm\"\n},
+        {\n  \"date\" : \"2014-12-31\",\n  \"symbol\" : \"PM\",\n  \"reportedCurrency\"
+        : \"USD\",\n  \"cik\" : \"0001413329\",\n  \"fillingDate\" : \"2015-02-20\",\n
+        \ \"acceptedDate\" : \"2015-02-20 08:39:54\",\n  \"calendarYear\" : \"2014\",\n
+        \ \"period\" : \"FY\",\n  \"netIncome\" : 7493000000,\n  \"depreciationAndAmortization\"
+        : 889000000,\n  \"deferredIncomeTax\" : -62000000,\n  \"stockBasedCompensation\"
+        : 0.0,\n  \"changeInWorkingCapital\" : 586000000,\n  \"accountsReceivables\"
+        : -463000000,\n  \"inventory\" : 105000000,\n  \"accountsPayables\" : 177000000,\n
+        \ \"otherWorkingCapital\" : 372000000,\n  \"otherNonCashItems\" : -1167000000,\n
+        \ \"netCashProvidedByOperatingActivities\" : 7739000000,\n  \"investmentsInPropertyPlantAndEquipment\"
+        : -1153000000,\n  \"acquisitionsNet\" : -110000000,\n  \"purchasesOfInvestments\"
+        : 0.0,\n  \"salesMaturitiesOfInvestments\" : 0.0,\n  \"otherInvestingActivites\"
+        : 267000000,\n  \"netCashUsedForInvestingActivites\" : -996000000,\n  \"debtRepayment\"
+        : -3327000000,\n  \"commonStockIssued\" : 0.0,\n  \"commonStockRepurchased\"
+        : -3833000000,\n  \"dividendsPaid\" : -6035000000,\n  \"otherFinancingActivites\"
+        : 6356000000,\n  \"netCashUsedProvidedByFinancingActivities\" : -6839000000,\n
+        \ \"effectOfForexChangesOnCash\" : -376000000,\n  \"netChangeInCash\" : -472000000,\n
+        \ \"cashAtEndOfPeriod\" : 1682000000,\n  \"cashAtBeginningOfPeriod\" : 2154000000,\n
+        \ \"operatingCashFlow\" : 7739000000,\n  \"capitalExpenditure\" : -1153000000,\n
+        \ \"freeCashFlow\" : 6586000000,\n  \"link\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000141332915000016/0001413329-15-000016-index.htm\",\n
+        \ \"finalLink\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000141332915000016/pm12312014form10kwrapinclf.htm\"\n},
+        {\n  \"date\" : \"2013-12-31\",\n  \"symbol\" : \"PM\",\n  \"reportedCurrency\"
+        : \"USD\",\n  \"cik\" : \"0001413329\",\n  \"fillingDate\" : \"2014-02-21\",\n
+        \ \"acceptedDate\" : \"2014-02-21 08:40:56\",\n  \"calendarYear\" : \"2013\",\n
+        \ \"period\" : \"FY\",\n  \"netIncome\" : 8576000000,\n  \"depreciationAndAmortization\"
+        : 882000000,\n  \"deferredIncomeTax\" : -28000000,\n  \"stockBasedCompensation\"
+        : 0.0,\n  \"changeInWorkingCapital\" : 212000000,\n  \"accountsReceivables\"
+        : -449000000,\n  \"inventory\" : -1413000000,\n  \"accountsPayables\" : 103000000,\n
+        \ \"otherWorkingCapital\" : -214000000,\n  \"otherNonCashItems\" : 493000000,\n
+        \ \"netCashProvidedByOperatingActivities\" : 10135000000,\n  \"investmentsInPropertyPlantAndEquipment\"
+        : -1200000000,\n  \"acquisitionsNet\" : 0.0,\n  \"purchasesOfInvestments\"
+        : 0.0,\n  \"salesMaturitiesOfInvestments\" : 0.0,\n  \"otherInvestingActivites\"
+        : -1480000000,\n  \"netCashUsedForInvestingActivites\" : -2680000000,\n  \"debtRepayment\"
+        : -4686000000,\n  \"commonStockIssued\" : 0.0,\n  \"commonStockRepurchased\"
+        : -5963000000,\n  \"dividendsPaid\" : -5720000000,\n  \"otherFinancingActivites\"
+        : 8154000000,\n  \"netCashUsedProvidedByFinancingActivities\" : -8215000000,\n
+        \ \"effectOfForexChangesOnCash\" : -69000000,\n  \"netChangeInCash\" : -829000000,\n
+        \ \"cashAtEndOfPeriod\" : 2154000000,\n  \"cashAtBeginningOfPeriod\" : 2983000000,\n
+        \ \"operatingCashFlow\" : 10135000000,\n  \"capitalExpenditure\" : -1200000000,\n
+        \ \"freeCashFlow\" : 8935000000,\n  \"link\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000141332914000012/0001413329-14-000012-index.htm\",\n
+        \ \"finalLink\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000141332914000012/pm1231201310-k.htm\"\n},
+        {\n  \"date\" : \"2012-12-31\",\n  \"symbol\" : \"PM\",\n  \"reportedCurrency\"
+        : \"USD\",\n  \"cik\" : \"0001413329\",\n  \"fillingDate\" : \"2013-02-22\",\n
+        \ \"acceptedDate\" : \"2013-02-22 12:13:08\",\n  \"calendarYear\" : \"2012\",\n
+        \ \"period\" : \"FY\",\n  \"netIncome\" : 8800000000,\n  \"depreciationAndAmortization\"
+        : 898000000,\n  \"deferredIncomeTax\" : -248000000,\n  \"stockBasedCompensation\"
+        : 0.0,\n  \"changeInWorkingCapital\" : -491000000,\n  \"accountsReceivables\"
+        : -398000000,\n  \"inventory\" : -728000000,\n  \"accountsPayables\" : 10000000,\n
+        \ \"otherWorkingCapital\" : -426000000,\n  \"otherNonCashItems\" : 462000000,\n
+        \ \"netCashProvidedByOperatingActivities\" : 9421000000,\n  \"investmentsInPropertyPlantAndEquipment\"
+        : -1056000000,\n  \"acquisitionsNet\" : 0.0,\n  \"purchasesOfInvestments\"
+        : 0.0,\n  \"salesMaturitiesOfInvestments\" : 0.0,\n  \"otherInvestingActivites\"
+        : 64000000,\n  \"netCashUsedForInvestingActivites\" : -992000000,\n  \"debtRepayment\"
+        : -3457000000,\n  \"commonStockIssued\" : 1000000.0,\n  \"commonStockRepurchased\"
+        : -6525000000,\n  \"dividendsPaid\" : -5404000000,\n  \"otherFinancingActivites\"
+        : 7285000000,\n  \"netCashUsedProvidedByFinancingActivities\" : -8100000000,\n
+        \ \"effectOfForexChangesOnCash\" : 104000000,\n  \"netChangeInCash\" : 433000000,\n
+        \ \"cashAtEndOfPeriod\" : 2983000000,\n  \"cashAtBeginningOfPeriod\" : 2550000000,\n
+        \ \"operatingCashFlow\" : 9421000000,\n  \"capitalExpenditure\" : -1056000000,\n
+        \ \"freeCashFlow\" : 8365000000,\n  \"link\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000141332913000019/0001413329-13-000019-index.htm\",\n
+        \ \"finalLink\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000141332913000019/pm1231201210-k.htm\"\n},
+        {\n  \"date\" : \"2011-12-31\",\n  \"symbol\" : \"PM\",\n  \"reportedCurrency\"
+        : \"USD\",\n  \"cik\" : \"0001413329\",\n  \"fillingDate\" : \"2012-02-24\",\n
+        \ \"acceptedDate\" : \"2012-02-24 09:29:03\",\n  \"calendarYear\" : \"2011\",\n
+        \ \"period\" : \"FY\",\n  \"netIncome\" : 8591000000,\n  \"depreciationAndAmortization\"
+        : 993000000,\n  \"deferredIncomeTax\" : 15000000,\n  \"stockBasedCompensation\"
+        : 0.0,\n  \"changeInWorkingCapital\" : -887000000,\n  \"accountsReceivables\"
+        : 0.0,\n  \"inventory\" : -36000000,\n  \"accountsPayables\" : 199000000,\n
+        \ \"otherWorkingCapital\" : 65000000,\n  \"otherNonCashItems\" : 1817000000,\n
+        \ \"netCashProvidedByOperatingActivities\" : 10529000000,\n  \"investmentsInPropertyPlantAndEquipment\"
+        : -897000000,\n  \"acquisitionsNet\" : -80000000,\n  \"purchasesOfInvestments\"
+        : 0.0,\n  \"salesMaturitiesOfInvestments\" : 0.0,\n  \"otherInvestingActivites\"
+        : -55000000,\n  \"netCashUsedForInvestingActivites\" : -1032000000,\n  \"debtRepayment\"
+        : -2630000000,\n  \"commonStockIssued\" : 75000000,\n  \"commonStockRepurchased\"
+        : -5372000000,\n  \"dividendsPaid\" : -4788000000,\n  \"otherFinancingActivites\"
+        : 4377000000,\n  \"netCashUsedProvidedByFinancingActivities\" : -8338000000,\n
+        \ \"effectOfForexChangesOnCash\" : -312000000,\n  \"netChangeInCash\" : 847000000,\n
+        \ \"cashAtEndOfPeriod\" : 2550000000,\n  \"cashAtBeginningOfPeriod\" : 1703000000,\n
+        \ \"operatingCashFlow\" : 10529000000,\n  \"capitalExpenditure\" : -897000000,\n
+        \ \"freeCashFlow\" : 9632000000,\n  \"link\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000119312512076983/0001193125-12-076983-index.htm\",\n
+        \ \"finalLink\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000119312512076983/d258717d10k.htm\"\n},
+        {\n  \"date\" : \"2010-12-31\",\n  \"symbol\" : \"PM\",\n  \"reportedCurrency\"
+        : \"USD\",\n  \"cik\" : \"0001413329\",\n  \"fillingDate\" : \"2011-02-25\",\n
+        \ \"acceptedDate\" : \"2011-02-25 12:11:25\",\n  \"calendarYear\" : \"2010\",\n
+        \ \"period\" : \"FY\",\n  \"netIncome\" : 7259000000,\n  \"depreciationAndAmortization\"
+        : 932000000,\n  \"deferredIncomeTax\" : 101000000,\n  \"stockBasedCompensation\"
+        : 0.0,\n  \"changeInWorkingCapital\" : -2552000000,\n  \"accountsReceivables\"
+        : 0.0,\n  \"inventory\" : 1071000000,\n  \"accountsPayables\" : -72000000,\n
+        \ \"otherWorkingCapital\" : 952000000,\n  \"otherNonCashItems\" : 3697000000,\n
+        \ \"netCashProvidedByOperatingActivities\" : 9437000000,\n  \"investmentsInPropertyPlantAndEquipment\"
+        : -713000000,\n  \"acquisitionsNet\" : -83000000,\n  \"purchasesOfInvestments\"
+        : 0.0,\n  \"salesMaturitiesOfInvestments\" : 0.0,\n  \"otherInvestingActivites\"
+        : 86000000,\n  \"netCashUsedForInvestingActivites\" : -710000000,\n  \"debtRepayment\"
+        : -183000000,\n  \"commonStockIssued\" : 229000000,\n  \"commonStockRepurchased\"
+        : -5030000000,\n  \"dividendsPaid\" : -4423000000,\n  \"otherFinancingActivites\"
+        : 829000000,\n  \"netCashUsedProvidedByFinancingActivities\" : -8578000000,\n
+        \ \"effectOfForexChangesOnCash\" : 14000000,\n  \"netChangeInCash\" : 163000000,\n
+        \ \"cashAtEndOfPeriod\" : 1703000000,\n  \"cashAtBeginningOfPeriod\" : 1540000000,\n
+        \ \"operatingCashFlow\" : 9437000000,\n  \"capitalExpenditure\" : -713000000,\n
+        \ \"freeCashFlow\" : 8724000000,\n  \"link\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000119312511046772/0001193125-11-046772-index.htm\",\n
+        \ \"finalLink\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000119312511046772/d10k.htm\"\n},
+        {\n  \"date\" : \"2009-12-31\",\n  \"symbol\" : \"PM\",\n  \"reportedCurrency\"
+        : \"USD\",\n  \"cik\" : \"0001413329\",\n  \"fillingDate\" : \"2010-02-26\",\n
+        \ \"acceptedDate\" : \"2010-02-26 08:23:45\",\n  \"calendarYear\" : \"2009\",\n
+        \ \"period\" : \"FY\",\n  \"netIncome\" : 6342000000,\n  \"depreciationAndAmortization\"
+        : 853000000,\n  \"deferredIncomeTax\" : 129000000,\n  \"stockBasedCompensation\"
+        : 0.0,\n  \"changeInWorkingCapital\" : -1291000000,\n  \"accountsReceivables\"
+        : 0.0,\n  \"inventory\" : 660000000,\n  \"accountsPayables\" : -116000000,\n
+        \ \"otherWorkingCapital\" : 3504000000,\n  \"otherNonCashItems\" : 1851000000,\n
+        \ \"netCashProvidedByOperatingActivities\" : 7884000000,\n  \"investmentsInPropertyPlantAndEquipment\"
+        : -715000000,\n  \"acquisitionsNet\" : -429000000,\n  \"purchasesOfInvestments\"
+        : 0.0,\n  \"salesMaturitiesOfInvestments\" : 0.0,\n  \"otherInvestingActivites\"
+        : 46000000,\n  \"netCashUsedForInvestingActivites\" : -1098000000,\n  \"debtRepayment\"
+        : -101000000,\n  \"commonStockIssued\" : 177000000,\n  \"commonStockRepurchased\"
+        : -5625000000,\n  \"dividendsPaid\" : -4327000000,\n  \"otherFinancingActivites\"
+        : 2965000000,\n  \"netCashUsedProvidedByFinancingActivities\" : -6911000000,\n
+        \ \"effectOfForexChangesOnCash\" : 134000000,\n  \"netChangeInCash\" : 9000000.0,\n
+        \ \"cashAtEndOfPeriod\" : 1540000000,\n  \"cashAtBeginningOfPeriod\" : 1531000000,\n
+        \ \"operatingCashFlow\" : 7884000000,\n  \"capitalExpenditure\" : -715000000,\n
+        \ \"freeCashFlow\" : 7169000000,\n  \"link\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000119312510041735/0001193125-10-041735-index.htm\",\n
+        \ \"finalLink\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000119312510041735/d10k.htm\"\n},
+        {\n  \"date\" : \"2008-12-31\",\n  \"symbol\" : \"PM\",\n  \"reportedCurrency\"
+        : \"USD\",\n  \"cik\" : \"0001413329\",\n  \"fillingDate\" : \"2009-02-26\",\n
+        \ \"acceptedDate\" : \"2009-02-26 13:41:47\",\n  \"calendarYear\" : \"2008\",\n
+        \ \"period\" : \"FY\",\n  \"netIncome\" : 6890000000,\n  \"depreciationAndAmortization\"
+        : 842000000,\n  \"deferredIncomeTax\" : 5000000.0,\n  \"stockBasedCompensation\"
+        : 0.0,\n  \"changeInWorkingCapital\" : -1706000000,\n  \"accountsReceivables\"
+        : 0.0,\n  \"inventory\" : -914000000,\n  \"accountsPayables\" : -90000000,\n
+        \ \"otherWorkingCapital\" : 4795000000,\n  \"otherNonCashItems\" : 1904000000,\n
+        \ \"netCashProvidedByOperatingActivities\" : 7935000000,\n  \"investmentsInPropertyPlantAndEquipment\"
+        : -1099000000,\n  \"acquisitionsNet\" : -1663000000,\n  \"purchasesOfInvestments\"
+        : 0.0,\n  \"salesMaturitiesOfInvestments\" : 0.0,\n  \"otherInvestingActivites\"
+        : -399000000,\n  \"netCashUsedForInvestingActivites\" : -3161000000,\n  \"debtRepayment\"
+        : -5736000000,\n  \"commonStockIssued\" : 118000000,\n  \"commonStockRepurchased\"
+        : -5256000000,\n  \"dividendsPaid\" : -5079000000,\n  \"otherFinancingActivites\"
+        : 11775000000,\n  \"netCashUsedProvidedByFinancingActivities\" : -4178000000,\n
+        \ \"effectOfForexChangesOnCash\" : -566000000,\n  \"netChangeInCash\" : 30000000,\n
+        \ \"cashAtEndOfPeriod\" : 1531000000,\n  \"cashAtBeginningOfPeriod\" : 1501000000,\n
+        \ \"operatingCashFlow\" : 7935000000,\n  \"capitalExpenditure\" : -1099000000,\n
+        \ \"freeCashFlow\" : 6836000000,\n  \"link\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000119312509038765/0001193125-09-038765-index.htm\",\n
+        \ \"finalLink\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000119312509038765/d10k.htm\"\n},
+        {\n  \"date\" : \"2007-12-31\",\n  \"symbol\" : \"PM\",\n  \"reportedCurrency\"
+        : \"USD\",\n  \"cik\" : \"0001413329\",\n  \"fillingDate\" : \"2007-12-31\",\n
+        \ \"acceptedDate\" : \"2007-12-31\",\n  \"calendarYear\" : \"2007\",\n  \"period\"
+        : \"FY\",\n  \"netIncome\" : 6026000000,\n  \"depreciationAndAmortization\"
+        : 748000000,\n  \"deferredIncomeTax\" : -21000000,\n  \"stockBasedCompensation\"
+        : 0.0,\n  \"changeInWorkingCapital\" : 1565000000,\n  \"accountsReceivables\"
+        : 0.0,\n  \"inventory\" : -1264000000,\n  \"accountsPayables\" : 38000000,\n
+        \ \"otherWorkingCapital\" : 6501000000,\n  \"otherNonCashItems\" : -2729000000,\n
+        \ \"netCashProvidedByOperatingActivities\" : 5589000000,\n  \"investmentsInPropertyPlantAndEquipment\"
+        : -1072000000,\n  \"acquisitionsNet\" : -1432000000,\n  \"purchasesOfInvestments\"
+        : 0.0,\n  \"salesMaturitiesOfInvestments\" : 0.0,\n  \"otherInvestingActivites\"
+        : -82000000,\n  \"netCashUsedForInvestingActivites\" : -2586000000,\n  \"debtRepayment\"
+        : -3381000000,\n  \"commonStockIssued\" : 0.0,\n  \"commonStockRepurchased\"
+        : 0.0,\n  \"dividendsPaid\" : -6560000000,\n  \"otherFinancingActivites\"
+        : 6572000000,\n  \"netCashUsedProvidedByFinancingActivities\" : -3369000000,\n
+        \ \"effectOfForexChangesOnCash\" : 346000000,\n  \"netChangeInCash\" : -20000000,\n
+        \ \"cashAtEndOfPeriod\" : 1656000000,\n  \"cashAtBeginningOfPeriod\" : 1676000000,\n
+        \ \"operatingCashFlow\" : 5589000000,\n  \"capitalExpenditure\" : -1072000000,\n
+        \ \"freeCashFlow\" : 4517000000,\n  \"link\" : \"\",\n  \"finalLink\" : \"\"\n},
+        {\n  \"date\" : \"2006-12-31\",\n  \"symbol\" : \"PM\",\n  \"reportedCurrency\"
+        : \"USD\",\n  \"cik\" : \"0001413329\",\n  \"fillingDate\" : \"2006-12-31\",\n
+        \ \"acceptedDate\" : \"2006-12-31\",\n  \"calendarYear\" : \"2006\",\n  \"period\"
+        : \"FY\",\n  \"netIncome\" : 6146000000,\n  \"depreciationAndAmortization\"
+        : 658000000,\n  \"deferredIncomeTax\" : 226000000,\n  \"stockBasedCompensation\"
+        : 0.0,\n  \"changeInWorkingCapital\" : 1245000000,\n  \"accountsReceivables\"
+        : 0.0,\n  \"inventory\" : -1077000000,\n  \"accountsPayables\" : 0.0,\n  \"otherWorkingCapital\"
+        : 4936000000,\n  \"otherNonCashItems\" : -2039000000,\n  \"netCashProvidedByOperatingActivities\"
+        : 6236000000,\n  \"investmentsInPropertyPlantAndEquipment\" : -886000000,\n
+        \ \"acquisitionsNet\" : 0.0,\n  \"purchasesOfInvestments\" : 0.0,\n  \"salesMaturitiesOfInvestments\"
+        : 0.0,\n  \"otherInvestingActivites\" : 447000000,\n  \"netCashUsedForInvestingActivites\"
+        : -439000000,\n  \"debtRepayment\" : 0.0,\n  \"commonStockIssued\" : 0.0,\n
+        \ \"commonStockRepurchased\" : 0.0,\n  \"dividendsPaid\" : -2780000000,\n
+        \ \"otherFinancingActivites\" : -2637000000,\n  \"netCashUsedProvidedByFinancingActivities\"
+        : -5417000000,\n  \"effectOfForexChangesOnCash\" : 87000000,\n  \"netChangeInCash\"
+        : 467000000,\n  \"cashAtEndOfPeriod\" : 1676000000,\n  \"cashAtBeginningOfPeriod\"
+        : 1209000000,\n  \"operatingCashFlow\" : 6236000000,\n  \"capitalExpenditure\"
+        : -886000000,\n  \"freeCashFlow\" : 5350000000,\n  \"link\" : \"\",\n  \"finalLink\"
+        : \"\"\n}, {\n  \"date\" : \"2005-12-31\",\n  \"symbol\" : \"PM\",\n  \"reportedCurrency\"
+        : \"USD\",\n  \"cik\" : \"0001413329\",\n  \"fillingDate\" : \"2005-12-31\",\n
+        \ \"acceptedDate\" : \"2005-12-31\",\n  \"calendarYear\" : \"2005\",\n  \"period\"
+        : \"FY\",\n  \"netIncome\" : 5620000000,\n  \"depreciationAndAmortization\"
+        : 527000000,\n  \"deferredIncomeTax\" : -746000000,\n  \"stockBasedCompensation\"
+        : 0.0,\n  \"changeInWorkingCapital\" : -7362000000,\n  \"accountsReceivables\"
+        : 0.0,\n  \"inventory\" : -441000000,\n  \"accountsPayables\" : 0.0,\n  \"otherWorkingCapital\"
+        : 3691000000,\n  \"otherNonCashItems\" : 7119000000,\n  \"netCashProvidedByOperatingActivities\"
+        : 5158000000,\n  \"investmentsInPropertyPlantAndEquipment\" : -736000000,\n
+        \ \"acquisitionsNet\" : 0.0,\n  \"purchasesOfInvestments\" : 0.0,\n  \"salesMaturitiesOfInvestments\"
+        : 0.0,\n  \"otherInvestingActivites\" : -4886000000,\n  \"netCashUsedForInvestingActivites\"
+        : -5622000000,\n  \"debtRepayment\" : 0.0,\n  \"commonStockIssued\" : 0.0,\n
+        \ \"commonStockRepurchased\" : 0.0,\n  \"dividendsPaid\" : -7682000000,\n
+        \ \"otherFinancingActivites\" : 4718000000,\n  \"netCashUsedProvidedByFinancingActivities\"
+        : -2964000000,\n  \"effectOfForexChangesOnCash\" : -359000000,\n  \"netChangeInCash\"
+        : -3787000000,\n  \"cashAtEndOfPeriod\" : 1209000000,\n  \"cashAtBeginningOfPeriod\"
+        : 4996000000,\n  \"operatingCashFlow\" : 5158000000,\n  \"capitalExpenditure\"
+        : -736000000,\n  \"freeCashFlow\" : 4422000000,\n  \"link\" : \"\",\n  \"finalLink\"
+        : \"\"\n}, {\n  \"date\" : \"2003-12-31\",\n  \"symbol\" : \"PM\",\n  \"reportedCurrency\"
+        : \"USD\",\n  \"cik\" : \"0001413329\",\n  \"fillingDate\" : \"2003-12-31\",\n
+        \ \"acceptedDate\" : \"2003-12-31\",\n  \"calendarYear\" : \"2003\",\n  \"period\"
+        : \"FY\",\n  \"netIncome\" : 3975000000,\n  \"depreciationAndAmortization\"
+        : 370000000,\n  \"deferredIncomeTax\" : 0.0,\n  \"stockBasedCompensation\"
+        : 0.0,\n  \"changeInWorkingCapital\" : 0.0,\n  \"accountsReceivables\" : 0.0,\n
+        \ \"inventory\" : 0.0,\n  \"accountsPayables\" : 0.0,\n  \"otherWorkingCapital\"
+        : 11053000000,\n  \"otherNonCashItems\" : 285000000,\n  \"netCashProvidedByOperatingActivities\"
+        : 4630000000,\n  \"investmentsInPropertyPlantAndEquipment\" : 0.0,\n  \"acquisitionsNet\"
+        : 0.0,\n  \"purchasesOfInvestments\" : 0.0,\n  \"salesMaturitiesOfInvestments\"
+        : 0.0,\n  \"otherInvestingActivites\" : -1509000000,\n  \"netCashUsedForInvestingActivites\"
+        : -1509000000,\n  \"debtRepayment\" : 0.0,\n  \"commonStockIssued\" : 0.0,\n
+        \ \"commonStockRepurchased\" : 0.0,\n  \"dividendsPaid\" : 0.0,\n  \"otherFinancingActivites\"
+        : -2601000000,\n  \"netCashUsedProvidedByFinancingActivities\" : -2601000000,\n
+        \ \"effectOfForexChangesOnCash\" : 0.0,\n  \"netChangeInCash\" : 0.0,\n  \"cashAtEndOfPeriod\"
+        : 0.0,\n  \"cashAtBeginningOfPeriod\" : 0.0,\n  \"operatingCashFlow\" : 4630000000,\n
+        \ \"capitalExpenditure\" : -586000000,\n  \"freeCashFlow\" : 4044000000,\n
+        \ \"link\" : \"\",\n  \"finalLink\" : \"\"\n} ]"
+    headers:
+      Access-Control-Allow-Headers:
+      - origin, content-type, accept, Authorization, authorization
+      Access-Control-Allow-Methods:
+      - GET, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - close
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Sat, 04 Dec 2021 12:08:11 GMT
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: ''
+version: 1

@@ -2,10 +2,12 @@
 
 # IMPORTATION THIRDPARTY
 import pytest
+import numpy as np
+import pandas as pd
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
-    fmp_view,
+    fmp_model,
 )
 
 
@@ -20,62 +22,58 @@ def vcr_config():
 
 
 @pytest.mark.vcr
-@pytest.mark.record_stdout
-def test_valinvest_score():
-    fmp_view.valinvest_score(ticker="PM")
+def test_get_score():
+    result = fmp_model.get_score(ticker="PM")
+    assert isinstance(result, np.number)
 
 
 @pytest.mark.vcr
-@pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "func, kwargs_dict",
     [
         (
-            "display_profile",
+            "get_profile",
             {"ticker": "PM"},
         ),
         (
-            "display_quote",
+            "get_quote",
             {"ticker": "PM"},
         ),
         (
-            "display_enterprise",
+            "get_enterprise",
             {"ticker": "PM", "number": 5, "quarterly": False},
         ),
         (
-            "display_discounted_cash_flow",
+            "get_dcf",
             {"ticker": "PM", "number": 5, "quarterly": False},
         ),
         (
-            "display_income_statement",
+            "get_income",
             {"ticker": "PM", "number": 5, "quarterly": False},
         ),
         (
-            "display_balance_sheet",
+            "get_balance",
             {"ticker": "PM", "number": 5, "quarterly": False},
         ),
         (
-            "display_cash_flow",
+            "get_cash",
             {"ticker": "PM", "number": 5, "quarterly": False},
         ),
         (
-            "display_key_metrics",
+            "get_key_metrics",
             {"ticker": "PM", "number": 5, "quarterly": False},
         ),
         (
-            "display_financial_ratios",
+            "get_key_ratios",
             {"ticker": "PM", "number": 5, "quarterly": False},
         ),
         (
-            "display_financial_statement_growth",
+            "get_financial_growth",
             {"ticker": "PM", "number": 5, "quarterly": False},
         ),
     ],
 )
-@pytest.mark.parametrize(
-    "use_tab",
-    [True, False],
-)
-def test_check_output(func, kwargs_dict, monkeypatch, use_tab):
-    monkeypatch.setattr(fmp_view.gtff, "USE_TABULATE_DF", use_tab)
-    getattr(fmp_view, func)(**kwargs_dict)
+def test_valid_df(func, kwargs_dict):
+    result_df = getattr(fmp_model, func)(**kwargs_dict)
+    assert isinstance(result_df, pd.DataFrame)
+    assert not result_df.empty
