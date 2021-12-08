@@ -1,0 +1,37 @@
+
+Major Holders:
+
+     0                                         1
+19.18%  Percentage of Shares Held by All Insider
+42.39% Percentage of Shares Held by Institutions
+52.45%  Percentage of Float Held by Institutions
+  2819     Number of Institutions Holding Shares
+
+Institutuinal Holders:
+
+                           Holder   Shares Date Reported  Stake    Value
+       Vanguard Group, Inc. (The) 61.992 M    2021-09-29 6.17 % 48.074 B
+                   Blackrock Inc. 52.829 M    2021-09-29 5.26 % 40.968 B
+          Capital World Investors 37.427 M    2021-09-29 3.73 % 29.024 B
+         State Street Corporation 31.230 M    2021-09-29 3.11 % 24.218 B
+      Baillie Gifford and Company 13.853 M    2021-09-29 1.38 % 10.743 B
+    Geode Capital Management, LLC 13.170 M    2021-09-29 1.31 % 10.213 B
+          Jennison Associates LLC 10.630 M    2021-09-29 1.06 %  8.244 B
+                         FMR, LLC  9.921 M    2021-09-29 0.99 %  7.694 B
+       Northern Trust Corporation  8.635 M    2021-09-29 0.86 %  6.696 B
+Norges Bank Investment Management  7.790 M    2020-12-30 0.78 %  5.497 B
+
+Mutual Fund Holders:
+
+                                                    Holder   Shares Date Reported  Stake    Value
+                    Vanguard Total Stock Market Index Fund 21.766 M    2021-06-29 2.17 % 14.795 B
+                                Growth Fund Of America Inc 20.756 M    2021-09-29 2.07 % 16.096 B
+                                   Vanguard 500 Index Fund 16.006 M    2021-06-29 1.59 % 10.879 B
+               Invesco ETF Tr-Invesco QQQ Tr, Series 1 ETF 10.651 M    2021-09-29 1.06 %  8.260 B
+                                  New Perspective Fund Inc 10.651 M    2021-09-29 1.06 %  8.260 B
+                                    SPDR S&P 500 ETF Trust  8.106 M    2021-08-30 0.81 %  5.964 B
+                                   Fidelity 500 Index Fund  7.763 M    2021-09-29 0.77 %  6.020 B
+                                  iShares Core S&P 500 ETF  6.353 M    2021-09-29 0.63 %  4.927 B
+Vanguard Institutional Index Fund-Institutional Index Fund  6.091 M    2021-06-29 0.61 %  4.140 B
+                                Vanguard Growth Index Fund  5.947 M    2021-06-29 0.59 %  4.042 B
+
