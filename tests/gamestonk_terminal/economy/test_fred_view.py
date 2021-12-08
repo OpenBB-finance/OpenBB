@@ -2,7 +2,7 @@
 import unittest
 from unittest import mock
 import io
-
+import pytest
 import pandas as pd
 
 from gamestonk_terminal.economy.fred.fred_view import display_fred_series
@@ -27,6 +27,7 @@ Date
 """
 
 
+@pytest.mark.skip
 class TestFredFredView(unittest.TestCase):
     @check_print(assert_in="gdp")
     @mock.patch("gamestonk_terminal.economy.fred.fred_model.get_series_data")
