@@ -1,5 +1,5 @@
 ```
-usage: wf   [-t TOP]
+usage: wf   [-l LIMIT]
             [--export {png,jpg,pdf,svg}]
 ```
 
@@ -8,7 +8,7 @@ Display withdrawal fees of cryptocurrencies ordered by market cap
 
 ```
 optional arguments:
-  -t TOP, --top TOP     top N number of coins (default: 10)
+  -l N, --limit N     show N number of coins (default: 10)
   --export {png,jpg,pdf,svg}
-                        Export or figure into png, jpg, pdf, svg (default: )
+                      Export or figure into png, jpg, pdf, svg (default: )
 ```

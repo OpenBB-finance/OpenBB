@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 # pylint: disable=R0904, C0302, W0622
 import argparse
+import difflib
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
@@ -19,6 +20,7 @@ from gamestonk_terminal.cryptocurrency.overview import (
     pycoingecko_view,
     coinpaprika_view,
     cryptopanic_view,
+    withdrawalfees_model,
     withdrawalfees_view,
 )
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_view import CURRENCIES
@@ -176,11 +178,11 @@ WithdrawalFees:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
+            "-l",
+            "--limit",
             type=int,
-            help="Top coins to check withdrawal fees. Default 100",
-            dest="top",
+            help="Limit number of coins to display withdrawal fees. Default 10",
+            dest="limit",
             default=10,
         )
 
@@ -199,7 +201,7 @@ WithdrawalFees:
             return
 
         withdrawalfees_view.display_overall_withdrawal_fees(
-            export=ns_parser.export, top=ns_parser.top
+            export=ns_parser.export, top=ns_parser.limit
         )
 
     @try_except
@@ -269,9 +271,37 @@ WithdrawalFees:
         if not ns_parser:
             return
 
-        withdrawalfees_view.display_crypto_withdrawal_fees(
-            export=ns_parser.export, symbol=ns_parser.coin
-        )
+        if ns_parser.coin:
+            if ns_parser.coin in withdrawalfees_model.POSSIBLE_CRYPTOS:
+                withdrawalfees_view.display_crypto_withdrawal_fees(
+                    export=ns_parser.export, symbol=ns_parser.coin
+                )
+            else:
+                print(f"Coin '{ns_parser.coin}' does not exist.")
+
+                similar_cmd = difflib.get_close_matches(
+                    ns_parser.coin,
+                    withdrawalfees_model.POSSIBLE_CRYPTOS,
+                    n=1,
+                    cutoff=0.75,
+                )
+                if similar_cmd:
+                    print(f"Replacing by '{similar_cmd[0]}'")
+                    withdrawalfees_view.display_crypto_withdrawal_fees(
+                        export=ns_parser.export, symbol=similar_cmd[0]
+                    )
+                else:
+                    similar_cmd = difflib.get_close_matches(
+                        ns_parser.coin,
+                        withdrawalfees_model.POSSIBLE_CRYPTOS,
+                        n=1,
+                        cutoff=0.5,
+                    )
+                    if similar_cmd:
+                        print(f"Did you mean '{similar_cmd[0]}'?")
+        else:
+            for coin in withdrawalfees_model.POSSIBLE_CRYPTOS:
+                print(coin)
 
     @try_except
     def call_cghold(self, other_args):
@@ -1772,9 +1802,16 @@ def menu():
     while True:
         # Get input command from user
         if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in overview_controller.CHOICES}
-            )
+            choices: dict = {c: {} for c in overview_controller.CHOICES}
+
+            choices["wfpe"]["-c"] = {
+                c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS
+            }
+            choices["wfpe"]["--coin"] = {
+                c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS
+            }
+
+            completer = NestedCompleter.from_nested_dict(choices)
             an_input = session.prompt(
                 f"{get_flair()} (crypto)>(ov)> ",
                 completer=completer,
