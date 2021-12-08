@@ -5,11 +5,10 @@ __docformat__ = "numpy"
 import argparse
 import difflib
 from typing import List
-from datetime import datetime
+from datetime import datetime, timedelta
 import textwrap
 from prompt_toolkit.completion import NestedCompleter
 from colorama import Style
-import pandas as pd
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -32,7 +31,7 @@ from gamestonk_terminal.common.behavioural_analysis import (
     sentimentinvestor_view,
     twitter_view,
 )
-from gamestonk_terminal.stocks.stocks_helper import load
+from gamestonk_terminal.stocks import stocks_helper
 
 
 class BehaviouralAnalysisController:
@@ -175,11 +174,49 @@ SentimentInvestor:
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
-        self.ticker, self.start, _, _ = load(
-            other_args, self.ticker, "", "1440min", pd.DataFrame()
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
+            " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
+            " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
         )
-        if "." in self.ticker:
-            self.ticker = self.ticker.split(".")[0]
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="ticker",
+            required="-h" not in other_args,
+            help="Stock ticker",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the stock",
+        )
+        # For the case where a user uses: 'load BB'
+        if other_args and "-t" not in other_args and "-h" not in other_args:
+            other_args.insert(0, "-t")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df_stock_candidate = stocks_helper.load(
+            ns_parser.ticker,
+            ns_parser.start,
+        )
+
+        if not df_stock_candidate.empty:
+            self.start = ns_parser.start
+            if "." in ns_parser.ticker:
+                self.ticker = ns_parser.ticker.upper().split(".")[0]
+            else:
+                self.ticker = ns_parser.ticker.upper()
 
     @try_except
     def call_watchlist(self, other_args: List[str]):
