@@ -25,7 +25,7 @@ from gamestonk_terminal.menu import session
 class FredController:
     CHOICES = ["cls", "?", "help", "q", "quit"]
 
-    CHOICES_COMMANDS = ["search", "add", "rmv", "plot", "titles"]
+    CHOICES_COMMANDS = ["search", "add", "rmv", "plot"]
 
     CHOICES += CHOICES_COMMANDS
 
@@ -40,6 +40,9 @@ class FredController:
 
     def print_help(self):
         """Print help"""
+        id_string = ""
+        for s_id, title in self.current_series.items():
+            id_string += f"{s_id}: {title}\n"
         help_text = f"""
 What do you want to do?
     cls           clear screen
@@ -47,11 +50,11 @@ What do you want to do?
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
 
-Current Series IDs: {",".join(self.current_series.keys()) or None}
+Current Series IDs:
+{id_string}
     search        search FRED series notes
     add           add series ID to list
     rmv           remove series ID from list
-    titles        show titles for loaded series
 
     plot          plot selected series
         """
@@ -213,25 +216,11 @@ Current Series IDs: {",".join(self.current_series.keys()) or None}
 
         if ns_parser.all:
             self.current_series = {}
+            print("")
             return
 
         self.current_series.pop(ns_parser.series_id)
-        print(f"Current Series: {', '.join(self.current_series.keys()) or None}\n")
-
-    @try_except
-    def call_titles(self, other_args):
-        """Process titles commands"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            prog="titles",
-            description="Display titles of added datasets",
-        )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        print("")
-        for s_id, title in self.current_series.items():
-            print(f"Series ID: {s_id},\nTitle: {title}\n")
+        print(f"Current Series Ids: {', '.join(self.current_series.keys()) or None}\n")
 
     @try_except
     def call_plot(self, other_args):
@@ -245,8 +234,15 @@ Current Series IDs: {",".join(self.current_series.keys()) or None}
             "-s",
             dest="start_date",
             type=valid_date,
-            default="2019-01-01",
+            default="2020-01-01",
             help="Starting date (YYYY-MM-DD) of data",
+        )
+        parser.add_argument(
+            "--raw",
+            help="Flag to show raw data",
+            dest="raw",
+            action="store_true",
+            default=False,
         )
 
         ns_parser = parse_known_args_and_warn(
@@ -255,7 +251,9 @@ Current Series IDs: {",".join(self.current_series.keys()) or None}
         if not ns_parser:
             return
 
-        fred_view.display_series_2(self.current_series, ns_parser.start_date)
+        fred_view.display_fred_series(
+            self.current_series, ns_parser.start_date, ns_parser.raw, ns_parser.export
+        )
 
 
 def menu():

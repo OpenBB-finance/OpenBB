@@ -6,6 +6,7 @@ import textwrap
 from typing import Dict
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 from pandas.plotting import register_matplotlib_converters
 from tabulate import tabulate
 
@@ -50,8 +51,8 @@ def notes(series_term: str, num: int):
     print("")
 
 
-def display_series_2(
-    series: Dict, start_date: str, raw: bool = False, export: str = ""
+def display_fred_series(
+    d_series: Dict, start_date: str, raw: bool = False, export: str = ""
 ):
     """Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
     Parameters
@@ -65,30 +66,56 @@ def display_series_2(
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     """
-    series_ids = series.keys()
-    data = pd.DataFrame(columns=series_ids)
+    series_ids = d_series.keys()
+    data = pd.DataFrame()
 
     for s_id in series_ids:
-        data[s_id] = fred_model.get_series_data(s_id, start_date)
+        data = pd.concat(
+            [
+                data,
+                pd.DataFrame(
+                    fred_model.get_series_data(s_id, start_date), columns=[s_id]
+                ),
+            ],
+            axis=1,
+        )
 
+    # Try to get everything onto the same 0-10 scale.
+    # To do so, think in scientific notation.  Divide the data by whatever the E would be
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    data.plot(ax=ax)
-    ax.legend(bbox_to_anchor=(1, 1))
-    fig.tight_layout()
+
+    for s_id, title in d_series.items():
+        data_to_plot = data[s_id].dropna()
+        exponent = int(np.log10(data_to_plot.max()))
+        data_to_plot /= 10 ** exponent
+        multiplier = f"(x{str(10**exponent)})" if exponent > 0 else ""
+        ax.plot(data_to_plot.index, data_to_plot, label=f"{title} {multiplier}")
+
+    ax.legend(prop={"size": 10}, bbox_to_anchor=(0.1, 1), loc="lower left")
+    ax.grid()
+    ax.set_xlim(data.index[0], data.index[-1])
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
     if gtff.USE_ION:
         plt.ion()
-
+    plt.gcf().autofmt_xdate()
+    fig.tight_layout()
     plt.show()
     if raw:
-        pass
+        if gtff.USE_TABULATE_DF:
+            print(tabulate(data.tail(20), headers=data.columns, tablefmt="fancy_grid"))
+        else:
+            print(data.tail(20).to_string())
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "series",
+        "plot",
         data,
     )
+    print("")
 
 
+# Leave for tests
 def display_series(series: str, start_date: str, raw: bool, export: str):
     """Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
     Parameters
