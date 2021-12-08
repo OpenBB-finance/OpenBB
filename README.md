@@ -6,6 +6,7 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
+
 [![Stargazers][stars-shield]][stars-url]
 [![Forks][forks-shield]][forks-url]
 [![Contributors][contributors-shield]][contributors-url]
@@ -95,11 +96,11 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
 
 ## Getting Started
 
-### Docker Installation - *new and improved*
+### Docker Installation - _new and improved_
 
-1. First step is to make sure docker desktop is installed.  Install links can be found [here](https://www.docker.com/products/docker-desktop).
-  To confirm that your docker desktop is downloaded and running, open a command prompt or terminal and enter
-`docker info`.  If you get the following you are not running the docker desktop:
+1. First step is to make sure docker desktop is installed. Install links can be found [here](https://www.docker.com/products/docker-desktop).
+   To confirm that your docker desktop is downloaded and running, open a command prompt or terminal and enter
+   `docker info`. If you get the following you are not running the docker desktop:
 
    ```text
    Server:
@@ -116,11 +117,11 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
    ```
 
    Upon running this the first time, you should see the various layers downloading (note the random series of letters
-   numbers will vary).  The first time this is run, it will take a few minutes.  Subsequent updates will be much faster,
+   numbers will vary). The first time this is run, it will take a few minutes. Subsequent updates will be much faster,
    as the changes will be in the MB instead of GB.
    ![Screen Shot 2021-09-08 at 10 41 08 AM](https://user-images.githubusercontent.com/18151143/132531075-7d7f7e71-4fcb-435c-9bb3-466d7077eba4.png)
 
-   Once the download is complete, confirm that the image has been created by doing `docker images`.  You should see
+   Once the download is complete, confirm that the image has been created by doing `docker images`. You should see
    something similar to
 
    ```text
@@ -132,9 +133,9 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
 
    You are now ready to run the terminal.
 
-   ```docker run -it --rm ghcr.io/gamestonkterminal/gst-poetry:latest```
+   `docker run -it --rm ghcr.io/gamestonkterminal/gst-poetry:latest`
 
-   This will open up the terminal in your command prompt or terminal.  Note that this has provided now environment file,
+   This will open up the terminal in your command prompt or terminal. Note that this has provided now environment file,
    so you will not be able to view plots or use keys at this stage.
 
    To read more on adding the environment keys and how to configure your X-server to show plots, hop over to the
@@ -147,7 +148,7 @@ If you'd like to see a video recording of the installation process, @JohnnyDanks
 This project supports Python 3.7, 3.8 and 3.9.
 
 Our current recommendation is to use this project with Anaconda's Python distribution - either full
-[__Anaconda3 Latest__](https://repo.anaconda.com/archive/) or [__Miniconda3 Latest__](https://repo.anaconda.com/archive/).
+[**Anaconda3 Latest**](https://repo.anaconda.com/archive/) or [**Miniconda3 Latest**](https://repo.anaconda.com/archive/).
 Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional.
 If you decided to add Machine Learning features at a later point, you will likely have better user experience with
 Anaconda's Python distribution.
@@ -166,12 +167,12 @@ Anaconda's Python distribution.
 
    ```bash
    conda install -c anaconda git
-   ````
+   ```
 
 3. Clone the Project
 
    - Via HTTPS: `git clone https://github.com/GamestonkTerminal/GamestonkTerminal.git`
-   - via SSH:  `git clone git@github.com:GamestonkTerminal/GamestonkTerminal.git`
+   - via SSH: `git clone git@github.com:GamestonkTerminal/GamestonkTerminal.git`
 
 4. Navigate into the project's folder
 
@@ -187,7 +188,7 @@ Anaconda's Python distribution.
 
    ```bash
    conda env create -n gst --file build/conda/conda-3-8-env.yaml
-   ````
+   ```
 
 6. Activate the virtual environment
 
@@ -230,7 +231,7 @@ Anaconda's Python distribution.
 **NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst`
 before you call `python terminal.py` again.
 
-**TROUBLESHOOT:** If you are having troubles to install, check our *newest*
+**TROUBLESHOOT:** If you are having troubles to install, check our _newest_
 <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/blob/master/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>
 
 ### Advanced User Install - Machine Learning
@@ -245,7 +246,7 @@ the purpose of this project, however, these may be older versions. Hence, it is 
 a virtual python environment prior to installing these. This allows to keep dependencies required by different projects
 in separate places.
 
-*If you would like to use optional Machine Learning features:*
+_If you would like to use optional Machine Learning features:_
 
 - Update your [feature_flags.py](/gamestonk_terminal/feature_flags.py) with:
 
@@ -276,7 +277,7 @@ If this fails due to the fact that you had modified some python files, and there
 git stash
 ```
 
-Then, re-run `poetry install` or  `pip install -r requirements.txt` to get any new dependencies.
+Then, re-run `poetry install` or `pip install -r requirements.txt` to get any new dependencies.
 
 Once installation is finished, you're ready to gamestonk.
 
@@ -311,32 +312,36 @@ These are the ones where a key is necessary:
 - Whale Alert API: <https://docs.whale-alert.io/>
 - Ethplorer API: <https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API>
 - Cryptopanic API: <https://cryptopanic.com/developers/api/>
+- Glassnode API: <https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key>
+- Coinglass API: <https://coinglass.github.io/API-Reference/#api-key>
 
 When these are obtained, don't forget to update [config_terminal.py](/gamestonk_terminal/config_terminal.py).
 
 Alternatively, you can also set them to the following environment variables:
 
-| Website | Variables |
-| :--- | :--- |
-| [Alpha Vantage](https://www.alphavantage.co) | GT_API_KEY_ALPHAVANTAGE |
-| [Binance](https://binance.com) | GT_API_BINANCE_KEY <br/> GT_API_BINANCE_SECRET |
-| [CoinMarketCap](https://coinmarketcap.com) | GT_CMC_API_KEY <br/> GT_CMC_API_KEY |
-| [DEGIRO](https://www.degiro.fr) | GT_DG_USERNAME <br/> GT_DG_PASSWORD <br/> GT_DG_TOTP_SECRET |
-| [FRED](https://fred.stlouisfed.org) | GT_API_FRED_KEY |
-| [Financial Modeling Prep](https://financialmodelingprep.com) | GT_API_KEY_FINANCIALMODELINGPREP |
-| [Finhub](https://finnhub.io) | GT_API_FINNHUB_KEY |
-| [News](https://newsapi.org) | GT_API_NEWS_TOKEN |
-| [Oanda](https://developer.oanda.com) | GT_OANDA_TOKEN <br/> GT_OANDA_ACCOUNT |
-| [Polygon](https://polygon.io) | GT_API_POLYGON_KEY |
-| [Quandl](https://www.quandl.com) | GT_API_KEY_QUANDL |
-| [Reddit](https://www.reddit.com) | GT_API_REDDIT_CLIENT_ID <br> GT_API_REDDIT_CLIENT_SECRET <br/> GT_API_REDDIT_USERNAME <br/> GT_API_REDDIT_USER_AGENT <br/> GT_API_REDDIT_PASSWORD|
-| [SentimentInvestor](https://sentimentinvestor.com) | GT_API_SENTIMENTINVESTOR_TOKEN <br> GT_API_SENTIMENTINVESTOR_KEY |
-| [Tradier](https://developer.tradier.com) | GT_TRADIER_TOKEN |
-| [Twitter](https://developer.twitter.com) | GT_API_TWITTER_KEY <br/> GT_API_TWITTER_SECRET_KEY <br/> GT_API_TWITTER_BEARER_TOKEN |
-| [Coinbase](https://docs.pro.coinbase.com/) | GT_API_COINBASE_KEY <br/> GT_API_COINBASE_SECRET <br/> GT_API_COINBASE_PASS_PHRASE |
-| [Whale Alert](https://docs.whale-alert.io/) | GT_API_WHALE_ALERT_KEY |
-| [Ethplorer](https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API) | GT_API_ETHPLORER_KEY |
-| [Cryptopanic](https://cryptopanic.com/developers/api/) | GT_API_CRYPTO_PANIC_KEY |
+| Website                                                                         | Variables                                                                                                                                         |
+| :------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [Alpha Vantage](https://www.alphavantage.co)                                    | GT_API_KEY_ALPHAVANTAGE                                                                                                                           |
+| [Binance](https://binance.com)                                                  | GT_API_BINANCE_KEY <br/> GT_API_BINANCE_SECRET                                                                                                    |
+| [CoinMarketCap](https://coinmarketcap.com)                                      | GT_CMC_API_KEY <br/> GT_CMC_API_KEY                                                                                                               |
+| [DEGIRO](https://www.degiro.fr)                                                 | GT_DG_USERNAME <br/> GT_DG_PASSWORD <br/> GT_DG_TOTP_SECRET                                                                                       |
+| [FRED](https://fred.stlouisfed.org)                                             | GT_API_FRED_KEY                                                                                                                                   |
+| [Financial Modeling Prep](https://financialmodelingprep.com)                    | GT_API_KEY_FINANCIALMODELINGPREP                                                                                                                  |
+| [Finhub](https://finnhub.io)                                                    | GT_API_FINNHUB_KEY                                                                                                                                |
+| [News](https://newsapi.org)                                                     | GT_API_NEWS_TOKEN                                                                                                                                 |
+| [Oanda](https://developer.oanda.com)                                            | GT_OANDA_TOKEN <br/> GT_OANDA_ACCOUNT                                                                                                             |
+| [Polygon](https://polygon.io)                                                   | GT_API_POLYGON_KEY                                                                                                                                |
+| [Quandl](https://www.quandl.com)                                                | GT_API_KEY_QUANDL                                                                                                                                 |
+| [Reddit](https://www.reddit.com)                                                | GT_API_REDDIT_CLIENT_ID <br> GT_API_REDDIT_CLIENT_SECRET <br/> GT_API_REDDIT_USERNAME <br/> GT_API_REDDIT_USER_AGENT <br/> GT_API_REDDIT_PASSWORD |
+| [SentimentInvestor](https://sentimentinvestor.com)                              | GT_API_SENTIMENTINVESTOR_TOKEN <br> GT_API_SENTIMENTINVESTOR_KEY                                                                                  |
+| [Tradier](https://developer.tradier.com)                                        | GT_TRADIER_TOKEN                                                                                                                                  |
+| [Twitter](https://developer.twitter.com)                                        | GT_API_TWITTER_KEY <br/> GT_API_TWITTER_SECRET_KEY <br/> GT_API_TWITTER_BEARER_TOKEN                                                              |
+| [Coinbase](https://docs.pro.coinbase.com/)                                      | GT_API_COINBASE_KEY <br/> GT_API_COINBASE_SECRET <br/> GT_API_COINBASE_PASS_PHRASE                                                                |
+| [Whale Alert](https://docs.whale-alert.io/)                                     | GT_API_WHALE_ALERT_KEY                                                                                                                            |
+| [Ethplorer](https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API)           | GT_API_ETHPLORER_KEY                                                                                                                              |
+| [Cryptopanic](https://cryptopanic.com/developers/api/)                          | GT_API_CRYPTO_PANIC_KEY                                                                                                                           |
+| [Glassnode](https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key) | GT_API_GLASSNODE_KEY                                                                                                                              |
+| [Coinglass](https://coinglass.github.io/API-Reference/#api-key)                 | GT_API_COINGLASS_KEY                                                                                                                              |
 
 Example:
 
@@ -356,7 +361,7 @@ Note that it is not necessary to have a valid Alpha Vantage key to get daily OHL
 
 ### Usage
 
-Start by selecting a context that you would like to work with.  If you want to research stocks, you would start with
+Start by selecting a context that you would like to work with. If you want to research stocks, you would start with
 
 ```bash
 stocks
@@ -418,10 +423,11 @@ Example:
 
 <img src='/images/usage.gif' width="1000">
 
-To return to the stocks menu to perform more research in a different menu, just use the `q` command.  From the stocks
+To return to the stocks menu to perform more research in a different menu, just use the `q` command. From the stocks
 menu, using `q` again will return you to the main menu where you can enter a different context (crypto for example).
 
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
 There are 3 main ways of contributing to this project.
@@ -436,7 +442,7 @@ go up.
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
 3. Install the pre-commit hooks by running:
-      ```pre-commit install```.
+   `pre-commit install`.
    Any time you commit a change, linters will be run automatically. On changes, you will have to re-commit.
 4. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 5. Push to your Branch (`git push origin feature/AmazingFeature`)
@@ -517,6 +523,7 @@ Feel free to share loss porn, memes or any questions at:
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/GamestonkTerminal/GamestonkTerminal.svg?style=for-the-badge
 [contributors-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/GamestonkTerminal/GamestonkTerminal.svg?style=for-the-badge
