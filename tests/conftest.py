@@ -46,7 +46,7 @@ class Record:
         return self.__captured
 
     @property
-    def strip(self) -> str:
+    def strip(self) -> bool:
         return self.__strip
 
     @property
@@ -174,7 +174,7 @@ class Recorder:
 
         self.__record_list: List[Record] = list()
 
-    def capture(self, captured: List[Any], strip: bool = False):
+    def capture(self, captured: Any, strip: bool = False):
         record_list = self.__record_list
         record_path = self.__path_template.build_path_by_data(
             data=captured,
