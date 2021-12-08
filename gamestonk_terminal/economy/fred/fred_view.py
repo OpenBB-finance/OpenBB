@@ -18,6 +18,22 @@ from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 register_matplotlib_converters()
 
 
+def format_units(num: int) -> str:
+    """Helper to format number into string with K,M,B,T.  Number will be in form of 10^n"""
+    number_zeros = int(np.log10(num))
+    if number_zeros < 3:
+        return str(num)
+    if number_zeros < 6:
+        return f"{int(num/1000)}k"
+    if number_zeros < 9:
+        return f"{int(num/1_000_000)}M"
+    if number_zeros < 12:
+        return f"{int(num/1_000_000_000)}B"
+    if number_zeros < 15:
+        return f"{int(num/1_000_000_000_000)}T"
+    return f"10^{number_zeros}"
+
+
 def notes(series_term: str, num: int):
     """Print Series notes. [Source: FRED]
     Parameters
@@ -52,9 +68,13 @@ def notes(series_term: str, num: int):
 
 
 def display_fred_series(
-    d_series: Dict, start_date: str, raw: bool = False, export: str = ""
+    d_series: Dict[str, Dict[str, str]],
+    start_date: str,
+    raw: bool = False,
+    export: str = "",
 ):
     """Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
+
     Parameters
     ----------
     series : str
@@ -66,7 +86,7 @@ def display_fred_series(
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     """
-    series_ids = d_series.keys()
+    series_ids = list(d_series.keys())
     data = pd.DataFrame()
 
     for s_id in series_ids:
@@ -83,15 +103,25 @@ def display_fred_series(
     # Try to get everything onto the same 0-10 scale.
     # To do so, think in scientific notation.  Divide the data by whatever the E would be
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    if len(series_ids) == 1:
+        s_id = series_ids[0]
+        sub_dict: Dict = d_series[s_id]
+        title = f"{sub_dict['title']} ({sub_dict['units']})"
+        ax.plot(data.index, data, label="\n".join(textwrap.wrap(title, 80)))
+    else:
+        for s_id, sub_dict in d_series.items():
+            data_to_plot = data[s_id].dropna()
+            exponent = int(np.log10(data_to_plot.max()))
+            data_to_plot /= 10 ** exponent
+            multiplier = f"x{format_units(10**exponent)}" if exponent > 0 else ""
+            title = f"{sub_dict['title']} ({sub_dict['units']}) {'['+multiplier+']' if multiplier else ''}"
+            ax.plot(
+                data_to_plot.index,
+                data_to_plot,
+                label="\n".join(textwrap.wrap(title, 80)),
+            )
 
-    for s_id, title in d_series.items():
-        data_to_plot = data[s_id].dropna()
-        exponent = int(np.log10(data_to_plot.max()))
-        data_to_plot /= 10 ** exponent
-        multiplier = f"(x{str(10**exponent)})" if exponent > 0 else ""
-        ax.plot(data_to_plot.index, data_to_plot, label=f"{title} {multiplier}")
-
-    ax.legend(prop={"size": 10}, bbox_to_anchor=(0.1, 1), loc="lower left")
+    ax.legend(prop={"size": 10}, bbox_to_anchor=(0, 1), loc="lower left")
     ax.grid()
     ax.set_xlim(data.index[0], data.index[-1])
     ax.spines["top"].set_visible(False)

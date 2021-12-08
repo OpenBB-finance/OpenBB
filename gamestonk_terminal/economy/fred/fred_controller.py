@@ -37,12 +37,13 @@ class FredController:
             choices=self.CHOICES,
         )
         self.current_series = dict()
+        self.current_long_id = 0
 
     def print_help(self):
         """Print help"""
         id_string = ""
-        for s_id, title in self.current_series.items():
-            id_string += f"{s_id}: {title}\n"
+        for s_id, sub_dict in self.current_series.items():
+            id_string += f"    {s_id.upper()}{(self.current_long_id-len(s_id)) * ' '} : {sub_dict['title']}\n"
         help_text = f"""
 What do you want to do?
     cls           clear screen
@@ -50,12 +51,12 @@ What do you want to do?
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
 
-Current Series IDs:
-{id_string}
     search        search FRED series notes
     add           add series ID to list
     rmv           remove series ID from list
 
+Current Series IDs:
+{id_string}
     plot          plot selected series
         """
         print(help_text)
@@ -169,9 +170,15 @@ Current Series IDs:
         for s_id in ns_parser.series_id.split(","):
             exists, information = fred_model.check_series_id(s_id)
             if exists:
-                self.current_series[s_id] = information["seriess"][0]["title"]
+                self.current_series[s_id] = {
+                    "title": information["seriess"][0]["title"],
+                    "units": information["seriess"][0]["units_short"],
+                }
+                self.current_long_id = max(self.current_long_id, len(s_id))
 
-        print(f"Current Series: {', '.join(self.current_series.keys()) or None}\n")
+        print(
+            f"Current Series: {', '.join(self.current_series.keys()) .upper() or None}\n"
+        )
 
     @try_except
     def call_rmv(self, other_args: List[str]):
@@ -216,6 +223,7 @@ Current Series IDs:
 
         if ns_parser.all:
             self.current_series = {}
+            self.current_long_id = 0
             print("")
             return
 
