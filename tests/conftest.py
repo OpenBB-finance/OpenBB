@@ -326,7 +326,7 @@ def record_stdout(
         module_name = request.node.fspath.purebasename
         test_name = request.node.name
 
-        # FORMAT MARKERS KEYWORD ARGUMENTS
+        # FORMAT MARKER'S KEYWORD ARGUMENTS
         formatted_kwargs = record_stdout_format_kwargs(
             test_name=test_name,
             record_mode=record_mode,
