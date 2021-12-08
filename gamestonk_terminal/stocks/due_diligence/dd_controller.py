@@ -204,7 +204,7 @@ cathiesark.com
             self.stock = df_stock_candidate
             self.start = ns_parser.start
             if "." in ns_parser.ticker:
-                self.ticker = self.ticker.upper().split(".")[0]
+                self.ticker = ns_parser.ticker.upper().split(".")[0]
             else:
                 self.ticker = ns_parser.ticker.upper()
 

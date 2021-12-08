@@ -6,7 +6,7 @@ __docformat__ = "numpy"
 import argparse
 import difflib
 from typing import List
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -37,6 +37,8 @@ from gamestonk_terminal.common.technical_analysis import (
     volume_view,
 )
 
+from gamestonk_terminal.stocks import stocks_helper
+
 
 class TechnicalAnalysisController:
     """Technical Analysis Controller class"""
@@ -44,6 +46,7 @@ class TechnicalAnalysisController:
     # Command choices
     CHOICES = ["cls", "?", "help", "q", "quit"]
     CHOICES_COMMANDS = [
+        "load",
         "view",
         "summary",
         "recom",
@@ -105,6 +108,7 @@ Technical Analysis:
     help        show this menu again
     q           quit this menu, and shows back to main menu
     quit        quit to abandon program
+    load        load new ticker
 
 {stock_str}
 
@@ -185,6 +189,95 @@ Custom:
     def call_quit(self, _):
         """Process Quit command - quit the program"""
         return True
+
+    @try_except
+    def call_load(self, other_args: List[str]):
+        """Process load command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
+            " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
+            " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="ticker",
+            required="-h" not in other_args,
+            help="Stock ticker",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the stock",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            dest="end",
+            help="The ending date (format YYYY-MM-DD) of the stock",
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            action="store",
+            dest="interval",
+            type=int,
+            default=1440,
+            choices=[1, 5, 15, 30, 60],
+            help="Intraday stock minutes",
+        )
+        parser.add_argument(
+            "--source",
+            action="store",
+            dest="source",
+            choices=["yf", "av", "iex"],
+            default="yf",
+            help="Source of historical data.",
+        )
+        parser.add_argument(
+            "-p",
+            "--prepost",
+            action="store_true",
+            default=False,
+            dest="prepost",
+            help="Pre/After market hours. Only works for 'yf' source, and intraday data",
+        )
+
+        # For the case where a user uses: 'load BB'
+        if other_args and "-t" not in other_args and "-h" not in other_args:
+            other_args.insert(0, "-t")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df_stock_candidate = stocks_helper.load(
+            ns_parser.ticker,
+            ns_parser.start,
+            ns_parser.interval,
+            ns_parser.end,
+            ns_parser.prepost,
+            ns_parser.source,
+        )
+
+        if not df_stock_candidate.empty:
+            self.stock = df_stock_candidate
+            if "." in ns_parser.ticker:
+                self.ticker = ns_parser.ticker.upper().split(".")[0]
+            else:
+                self.ticker = ns_parser.ticker.upper()
+
+            self.start = ns_parser.start
+            self.interval = f"{ns_parser.interval}min"
 
     # SPECIFIC
     @try_except

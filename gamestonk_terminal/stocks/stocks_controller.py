@@ -317,13 +317,13 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         if not df_stock_candidate.empty:
             self.stock = df_stock_candidate
             if "." in ns_parser.ticker:
-                self.ticker, self.suffix = self.ticker.upper().split(".")
+                self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
             else:
                 self.ticker = ns_parser.ticker.upper()
                 self.suffix = ""
 
             self.start = ns_parser.start
-            self.interval = str(ns_parser.interval) + "min"
+            self.interval = f"{ns_parser.interval}min"
 
     def call_quote(self, other_args: List[str]):
         """Process quote command"""
