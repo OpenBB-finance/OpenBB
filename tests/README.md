@@ -186,9 +186,21 @@ More information about `monkeypatch` are available here :
 
 You can find the available helpers inside the following package/module :
 - `tests/helpers/`
-- `tests/conftest.py`
 
-## 3.6. Which `markers` are available ?
+See also the `pytest fixtures` which are autoloaded helpers.
+
+## 3.6. Which `fixtures` are available ?
+
+You can list all the available `pytest fixtures` using the following command :
+
+```
+pytest --fixtures
+```
+
+More on custom fixtures here :
+ - [FIXTURES](FIXTURES.md)
+
+## 3.7. Which `markers` are available ?
 
 You can list the available markers using this command :
 
@@ -200,7 +212,7 @@ More information on markers location are available in pytest documentation :
 - https://docs.pytest.org/en/6.2.x/mark.html#mark
 
 
-## 3.7. Known `issue` / `solution`
+## 3.8. Known `issue` / `solution`
 
 **YFINANCE**
 
@@ -224,7 +236,7 @@ def vcr_config():
 You can also refactor this method to let access to `stard/end` dates.
 
 
-## 3.8. List of useful `vscode` tools for `unit tests`
+## 3.9. List of useful `vscode` tools for `unit tests`
 
 **VSCODE TESTING**
 
@@ -235,7 +247,7 @@ It's a convenient way to see what's inside your `test` while running.
 More information on this tool are available here :
 - https://code.visualstudio.com/docs/python/testing
 
-## 3.9. How to handle `dev-dependencies` ?
+## 3.10. How to handle `dev-dependencies` ?
 
 **UPDATE PYPROJECT**
 
