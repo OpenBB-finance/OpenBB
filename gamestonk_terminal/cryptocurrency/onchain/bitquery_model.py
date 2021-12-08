@@ -89,7 +89,6 @@ DECENTRALIZED_EXCHANGES = [
 ]
 DECENTRALIZED_EXCHANGES_MAP = {e.lower(): e for e in DECENTRALIZED_EXCHANGES}
 NETWORKS = ["bsc", "ethereum", "matic"]
-ERC20_TOKENS = None
 
 
 def _extract_dex_trades(data: dict) -> pd.DataFrame:
@@ -176,6 +175,7 @@ def get_erc20_tokens() -> pd.DataFrame:
         data = json.load(f)
     df = pd.json_normalize(data)
     df.columns = ["count", "address", "symbol", "name"]
+    df = df[~df["symbol"].isin(["", None, np.NaN])]
     return df[["name", "symbol", "address", "count"]]
 
 
@@ -197,14 +197,12 @@ def find_token_address(token: str) -> Optional[str]:
 
     if token.startswith("0x") and len(token) >= 38:
         return token
-    token = token.upper()
 
     if token == "ETH":
         return token
 
     token = "WBTC" if token == "BTC" else token
-
-    tokens_map: pd.DataFrame = ERC20_TOKENS or get_erc20_tokens()
+    tokens_map: pd.DataFrame = get_erc20_tokens()
 
     found_token = tokens_map.loc[tokens_map["symbol"] == token]
     if found_token.empty:
@@ -664,3 +662,6 @@ def get_spread_for_crypto_pair(
             "averageAskPrice",
         ]
     ].sort_values(by="date", ascending=True)
+
+
+POSSIBLE_CRYPTOS = list(get_erc20_tokens()["symbol"].unique())

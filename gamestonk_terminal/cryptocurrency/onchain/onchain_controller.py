@@ -1329,16 +1329,6 @@ class OnchainController:
             dest="coin",
             type=str,
             help="ERC20 token symbol or address.",
-            required="-h" not in other_args,
-        )
-
-        parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
-            type=check_positive,
-            help="top N number records",
-            default=10,
         )
 
         parser.add_argument(
@@ -1391,15 +1381,52 @@ class OnchainController:
             if not ns_parser:
                 return
 
-            bitquery_view.display_spread_for_crypto_pair(
-                token=ns_parser.coin,
-                vs=ns_parser.vs,
-                days=ns_parser.days,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                export=ns_parser.export,
-            )
+            if ns_parser.coin:
+                if ns_parser.coin in bitquery_model.POSSIBLE_CRYPTOS:
+                    bitquery_view.display_spread_for_crypto_pair(
+                        token=ns_parser.coin,
+                        vs=ns_parser.vs,
+                        days=ns_parser.days,
+                        sortby=ns_parser.sortby,
+                        descend=ns_parser.descend,
+                        export=ns_parser.export,
+                    )
 
+                else:
+                    print(f"Coin '{ns_parser.coin}' does not exist.")
+                    if ns_parser.coin.upper() == "BTC":
+                        token = "WBTC"
+                    else:
+                        similar_cmd = difflib.get_close_matches(
+                            ns_parser.coin,
+                            bitquery_model.POSSIBLE_CRYPTOS,
+                            n=1,
+                            cutoff=0.75,
+                        )
+                        token = similar_cmd[0]
+                    if similar_cmd[0]:
+                        print(f"Replacing by '{token}'")
+                        bitquery_view.display_spread_for_crypto_pair(
+                            token=token,
+                            vs=ns_parser.vs,
+                            days=ns_parser.days,
+                            sortby=ns_parser.sortby,
+                            descend=ns_parser.descend,
+                            export=ns_parser.export,
+                        )
+                    else:
+                        similar_cmd = difflib.get_close_matches(
+                            ns_parser.coin,
+                            bitquery_model.POSSIBLE_CRYPTOS,
+                            n=1,
+                            cutoff=0.5,
+                        )
+                        if similar_cmd:
+                            print(f"Did you mean '{similar_cmd[0]}'?")
+
+            else:
+                print("You didn't provide coin symbol.\n")
+                return
         except Exception as e:
             print(e)
 
@@ -1465,6 +1492,11 @@ def menu():
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in onchain_controller.CHOICES}
             choices["ttcp"] = {c: None for c in bitquery_model.DECENTRALIZED_EXCHANGES}
+
+            choices["baas"]["-c"] = {c: None for c in bitquery_model.POSSIBLE_CRYPTOS}
+            choices["baas"]["--coin"] = {
+                c: None for c in bitquery_model.POSSIBLE_CRYPTOS
+            }
 
             completer = NestedCompleter.from_nested_dict(choices)
             an_input = session.prompt(
