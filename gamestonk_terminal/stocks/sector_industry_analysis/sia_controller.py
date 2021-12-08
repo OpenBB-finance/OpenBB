@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import argparse
 import difflib
 from typing import List
-import pandas as pd
 import yfinance as yf
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
@@ -17,7 +16,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     check_proportion_range,
 )
-from gamestonk_terminal.stocks.stocks_helper import load
+from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.stocks.sector_industry_analysis import (
@@ -140,9 +139,6 @@ class SectorIndustryAnalysisController:
     def __init__(
         self,
         ticker: str,
-        start: str,
-        interval: str,
-        stock: pd.DataFrame,
     ):
         """Constructor
 
@@ -150,12 +146,6 @@ class SectorIndustryAnalysisController:
         ----------
         ticker : str
             Ticker to be used to analyse sector and industry
-        start : str
-            Start time
-        interval : str
-            Time interval
-        stock : pd.DataFrame
-            Stock data
         """
         self.country = "United States"
         self.sector = "Financial Services"
@@ -164,9 +154,6 @@ class SectorIndustryAnalysisController:
         self.exclude_exhanges = True
 
         self.ticker = ticker
-        self.start = start
-        self.interval = interval
-        self.stock = stock
 
         self.stocks_data: dict = {}
         self.tickers: List = list()
@@ -318,10 +305,41 @@ Returned tickers: {', '.join(self.tickers)}
     @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
-        self.ticker, self.start, self.interval, self.stock = load(
-            other_args, self.ticker, self.start, self.interval, self.stock
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
+            " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
+            " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
         )
-        if self.ticker:
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="ticker",
+            required="-h" not in other_args,
+            help="Stock ticker",
+        )
+
+        # For the case where a user uses: 'load BB'
+        if other_args and "-t" not in other_args and "-h" not in other_args:
+            other_args.insert(0, "-t")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df_stock_candidate = stocks_helper.load(
+            ns_parser.ticker,
+        )
+
+        if not df_stock_candidate.empty:
+            if "." in ns_parser.ticker:
+                self.ticker = ns_parser.ticker.upper().split(".")[0]
+            else:
+                self.ticker = ns_parser.ticker.upper()
+
             data = yf.utils.get_json(f"https://finance.yahoo.com/quote/{self.ticker}")
 
             if "summaryProfile" in data:
@@ -1055,12 +1073,9 @@ Returned tickers: {', '.join(self.tickers)}
 
 def menu(
     ticker: str,
-    start: str,
-    interval: str,
-    stock: pd.DataFrame,
 ):
     """Sector and Industry Analysis Menu"""
-    sia_controller = SectorIndustryAnalysisController(ticker, start, interval, stock)
+    sia_controller = SectorIndustryAnalysisController(ticker)
     sia_controller.call_help(None)
 
     while True:

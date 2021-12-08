@@ -238,13 +238,92 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
     @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
-        self.ticker, self.start, self.interval, self.stock = load(
-            other_args, self.ticker, self.start, self.interval, self.stock
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
+            " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
+            " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
         )
-        if "." in self.ticker:
-            self.ticker, self.suffix = self.ticker.split(".")
-        else:
-            self.suffix = ""
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="ticker",
+            required="-h" not in other_args,
+            help="Stock ticker",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the stock",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            dest="end",
+            help="The ending date (format YYYY-MM-DD) of the stock",
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            action="store",
+            dest="interval",
+            type=int,
+            default=1440,
+            choices=[1, 5, 15, 30, 60],
+            help="Intraday stock minutes",
+        )
+        parser.add_argument(
+            "--source",
+            action="store",
+            dest="source",
+            choices=["yf", "av", "iex"],
+            default="yf",
+            help="Source of historical data.",
+        )
+        parser.add_argument(
+            "-p",
+            "--prepost",
+            action="store_true",
+            default=False,
+            dest="prepost",
+            help="Pre/After market hours. Only works for 'yf' source, and intraday data",
+        )
+
+        # For the case where a user uses: 'load BB'
+        if other_args and "-t" not in other_args and "-h" not in other_args:
+            other_args.insert(0, "-t")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df_stock_candidate = load(
+            ns_parser.ticker,
+            ns_parser.start,
+            ns_parser.interval,
+            ns_parser.end,
+            ns_parser.prepost,
+            ns_parser.source,
+        )
+
+        if not df_stock_candidate.empty:
+            self.stock = df_stock_candidate
+            if "." in ns_parser.ticker:
+                self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
+            else:
+                self.ticker = ns_parser.ticker.upper()
+                self.suffix = ""
+
+            self.start = ns_parser.start
+            self.interval = f"{ns_parser.interval}min"
 
     def call_quote(self, other_args: List[str]):
         """Process quote command"""
@@ -341,11 +420,11 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             )
 
         else:
-            df_stock = process_candle(self.stock)
+            data = process_candle(self.stock)
 
             display_candle(
                 s_ticker=self.ticker,
-                df_stock=df_stock,
+                df_stock=data,
                 use_matplotlib=ns_parser.matplotlib,
                 intraday=self.interval != "1440min",
             )
@@ -454,7 +533,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         """Process ins command"""
         from gamestonk_terminal.stocks.sector_industry_analysis import sia_controller
 
-        ret = sia_controller.menu(self.ticker, self.start, self.interval, self.stock)
+        ret = sia_controller.menu(self.ticker)
         if ret is False:
             self.print_help()
         else:

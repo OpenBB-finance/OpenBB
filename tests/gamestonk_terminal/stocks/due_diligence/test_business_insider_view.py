@@ -1,7 +1,7 @@
 # IMPORTATION STANDARD
+from datetime import datetime
 
 # IMPORTATION THIRDPARTY
-import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
@@ -35,22 +35,16 @@ def test_price_target_from_analysts_raw():
 
 @pytest.mark.default_cassette("test_price_target_from_analysts_TSLA")
 @pytest.mark.vcr
-@pytest.mark.parametrize("start", ["14/07/2020", None])
-@pytest.mark.parametrize("interval", ["1440min", "60"])
-def test_price_target_from_analysts_plt(capsys, interval, mocker, start):
+@pytest.mark.parametrize("start", [datetime.strptime("05/12/2021", "%d/%m/%Y")])
+@pytest.mark.parametrize("interval", [1440])
+def test_price_target_from_analysts_plt(capsys, interval, mocker, start, monkeypatch):
     mock_show = mocker.Mock()
     mocker.patch(target="matplotlib.pyplot.show", new=mock_show)
+    monkeypatch.setattr(business_insider_view.gtff, "USE_ION", False)
 
-    other_args = ["TSLA"]
     ticker = "TSLA"
-    stock = pd.DataFrame()
-    _ticker, _start, _interval, stock = load(
-        other_args=other_args,
-        s_ticker=ticker,
-        s_start=start,
-        s_interval=interval,
-        df_stock=stock,
-    )
+    stock = load(ticker=ticker, start=start, interval=interval)
+
     business_insider_view.price_target_from_analysts(
         ticker=ticker,
         start=start,

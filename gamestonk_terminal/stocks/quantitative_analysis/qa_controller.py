@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import difflib
 from typing import List
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import numpy as np
 import pandas as pd
@@ -16,7 +16,7 @@ from gamestonk_terminal.common.quantitative_analysis import (
     rolling_view,
 )
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.stocks.stocks_helper import load
+from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     get_flair,
@@ -25,6 +25,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     try_except,
     system_clear,
+    valid_date,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.quantitative_analysis.factors_view import capm_view
@@ -161,20 +162,98 @@ Other:
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
-        self.ticker, self.start, self.interval, stock = load(
-            other_args, self.ticker, self.start, self.interval, self.stock
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
+            " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
+            " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
         )
-        if "." in self.ticker:
-            self.ticker = self.ticker.split(".")[0]
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="ticker",
+            required="-h" not in other_args,
+            help="Stock ticker",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the stock",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            dest="end",
+            help="The ending date (format YYYY-MM-DD) of the stock",
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            action="store",
+            dest="interval",
+            type=int,
+            default=1440,
+            choices=[1, 5, 15, 30, 60],
+            help="Intraday stock minutes",
+        )
+        parser.add_argument(
+            "--source",
+            action="store",
+            dest="source",
+            choices=["yf", "av", "iex"],
+            default="yf",
+            help="Source of historical data.",
+        )
+        parser.add_argument(
+            "-p",
+            "--prepost",
+            action="store_true",
+            default=False,
+            dest="prepost",
+            help="Pre/After market hours. Only works for 'yf' source, and intraday data",
+        )
 
-        if "-h" not in other_args:
-            stock["Returns"] = stock["Adj Close"].pct_change()
-            stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(
-                stock["Adj Close"].shift(1)
+        # For the case where a user uses: 'load BB'
+        if other_args and "-t" not in other_args and "-h" not in other_args:
+            other_args.insert(0, "-t")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df_stock_candidate = stocks_helper.load(
+            ns_parser.ticker,
+            ns_parser.start,
+            ns_parser.interval,
+            ns_parser.end,
+            ns_parser.prepost,
+            ns_parser.source,
+        )
+
+        if not df_stock_candidate.empty:
+            self.stock = df_stock_candidate
+            if "." in ns_parser.ticker:
+                self.ticker = ns_parser.ticker.upper().split(".")[0]
+            else:
+                self.ticker = ns_parser.ticker.upper()
+
+            self.start = ns_parser.start
+            self.interval = str(ns_parser.interval) + "min"
+
+            self.stock["Returns"] = self.stock["Adj Close"].pct_change()
+            self.stock["LogRet"] = np.log(self.stock["Adj Close"]) - np.log(
+                self.stock["Adj Close"].shift(1)
             )
-            stock = stock.rename(columns={"Adj Close": "AdjClose"})
-            stock = stock.dropna()
-            self.stock = stock
+            self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
+            self.stock = self.stock.dropna()
 
     def call_help(self, _):
         """Process Help command"""
