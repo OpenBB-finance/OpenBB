@@ -19,252 +19,6 @@ from _pytest.mark.structures import Mark
 # pylint: disable=redefined-outer-name
 
 
-@pytest.fixture
-def default_csv_path(request):
-    module = request.node.fspath
-    path = os.path.join(
-        module.dirname,
-        "csv",
-        module.purebasename,
-        request.node.name,
-    )
-    path += ".csv"
-
-    # CREATE FOLDER
-    dir_name = os.path.dirname(path)
-    if not os.path.exists(dir_name):
-        dir_name = os.path.dirname(path)
-        pathlib.Path(dir_name).mkdir(parents=True, exist_ok=True)
-
-    return path
-
-
-@pytest.fixture
-def default_txt_path(request):
-    module = request.node.fspath
-    path = os.path.join(
-        module.dirname,
-        "txt",
-        module.purebasename,
-        request.node.name,
-    )
-    path += ".txt"
-
-    # CREATE FOLDER
-    dir_name = os.path.dirname(path)
-    if not os.path.exists(dir_name):
-        dir_name = os.path.dirname(path)
-        pathlib.Path(dir_name).mkdir(parents=True, exist_ok=True)
-
-    return path
-
-
-@pytest.fixture
-def default_json_path(request):
-    module = request.node.fspath
-    path = os.path.join(
-        module.dirname,
-        "json",
-        module.purebasename,
-        request.node.name,
-    )
-    path += ".json"
-
-    # CREATE FOLDER
-    dir_name = os.path.dirname(path)
-    if not os.path.exists(dir_name):
-        dir_name = os.path.dirname(path)
-        pathlib.Path(dir_name).mkdir(parents=True, exist_ok=True)
-
-    return path
-
-
-def pytest_configure(config: Config) -> None:
-    config.addinivalue_line("markers", "record_stdout: Mark the test as text record.")
-
-
-@pytest.fixture
-def record_stdout_markers(request: SubRequest) -> List[Mark]:
-    """All markers applied to the certain test together with cassette names associated with each marker."""
-    return list(request.node.iter_markers(name="record_stdout"))
-
-
-def merge_markers_kwargs(markers: List[Mark]) -> Dict[str, Any]:
-    """Merge all kwargs into a single dictionary to pass to `vcr.use_cassette`."""
-    kwargs: Dict[str, Any] = dict()
-    for marker in reversed(markers):
-        kwargs.update(marker.kwargs)
-    return kwargs
-
-
-def record_stdout_cmp_content(
-    assert_in_list: List[str],
-    captured_content: str,
-    record_path: str,
-    strip: bool,
-):
-    # COMPARE RECORD
-    if os.path.exists(record_path):
-        with open(file=record_path, encoding="utf-8") as f:
-            record_content = f.read()
-        if strip:
-            assert captured_content.strip() == record_content.strip()
-        else:
-            assert captured_content == record_content
-
-    # COMPARE ASSERT IN LIST
-    for assert_in in assert_in_list:
-        assert assert_in in captured_content
-
-
-def record_stdout_save(
-    captured_content: str,
-    record_path: str,
-    record_mode: str,
-    save_record: bool,
-):
-    record_exists = os.path.exists(record_path)
-
-    if record_exists:
-        with open(file=record_path, encoding="utf-8") as f:
-            record_content = f.read()
-        unchanged = captured_content == record_content
-    else:
-        unchanged = False
-
-    if not save_record:
-        save = False
-    elif record_mode == "all":
-        save = True
-    elif record_mode == "new_episodes":
-        save = not record_exists or not unchanged
-    elif record_mode == "none":
-        save = False
-        if not record_exists:
-            raise Exception("You are using `record-mode=none`.")
-    elif record_mode == "once":
-        save = not record_exists
-    elif record_mode == "rewrite":
-        save = True
-    else:
-        raise Exception("Unknown `record-mode`.")
-
-    if save:
-        dir_name = os.path.dirname(record_path)
-        pathlib.Path(dir_name).mkdir(parents=True, exist_ok=True)
-
-        with open(file=record_path, mode="w", encoding="utf-8") as f:
-            f.write(captured_content)
-
-
-def record_stdout_format_kwargs(
-    default_txt_path: str,
-    record_mode: str,
-    record_stdout_markers: List[Mark],
-) -> Dict[str, Any]:
-    kwargs = merge_markers_kwargs(record_stdout_markers)
-
-    formatted_fields = dict()
-    formatted_fields["assert_in_list"] = kwargs.get("assert_in_list", list())
-    formatted_fields["record_mode"] = kwargs.get("record_mode", record_mode)
-    formatted_fields["record_path"] = kwargs.get("record_path", default_txt_path)
-    formatted_fields["save_record"] = kwargs.get("save_record", True)
-    formatted_fields["strip"] = kwargs.get("strip", True)
-
-    # MERGE `RECORD_NAME`
-    if "record_name" in kwargs:
-        if "record_path" in kwargs:
-            raise Exception("You can't use both `record_name` and `record_path`.")
-
-        dir_name = os.path.dirname(default_txt_path)
-        formatted_fields["record_path"] = os.path.join(dir_name, kwargs["record_name"])
-
-    # FORMAT `RECORD_PATH` EXTENSION
-    if not formatted_fields["record_path"].endswith(".txt"):
-        formatted_fields["record_path"] += ".txt"
-
-    return formatted_fields
-
-
-@pytest.fixture(autouse=True)
-def record_stdout(
-    default_txt_path: str,
-    disable_recording: bool,
-    record_stdout_markers: List[Mark],
-    record_mode: str,
-    request: SubRequest,
-):
-    marker = request.node.get_closest_marker("record_stdout")
-
-    if disable_recording:
-        yield None
-    elif marker:
-        # FORMAT MARKERS KEYWORD ARGUMENTS
-        formatted_kwargs = record_stdout_format_kwargs(
-            default_txt_path=default_txt_path,
-            record_mode=record_mode,
-            record_stdout_markers=record_stdout_markers,
-        )
-
-        # CAPTURE STDOUT
-        capture = request.config.getoption("--capture")
-        if capture == "no":
-            global_capturing = MultiCapture(
-                in_=SysCapture(0), out=SysCapture(1), err=SysCapture(2)
-            )
-            global_capturing.start_capturing()
-            yield
-            captured_content = global_capturing.readouterr().out
-            global_capturing.stop_capturing()
-        else:
-            capsys = request.getfixturevalue("capsys")
-            yield
-            captured_content = capsys.readouterr().out
-
-        # SAVE RECORD
-        record_stdout_save(
-            captured_content=captured_content,
-            record_path=formatted_kwargs["record_path"],
-            record_mode=formatted_kwargs["record_mode"],
-            save_record=formatted_kwargs["save_record"],
-        )
-
-        # ASSERT CONTENT
-        record_stdout_cmp_content(
-            assert_in_list=formatted_kwargs["assert_in_list"],
-            captured_content=captured_content,
-            record_path=formatted_kwargs["record_path"],
-            strip=formatted_kwargs["strip"],
-        )
-    else:
-        yield None
-
-
-@pytest.fixture
-def recorder(disable_recording: bool, record_mode: str, request: SubRequest):
-    marker_record_stdout = request.node.get_closest_marker("record_stdout")
-    module = request.node.fspath
-    module_dir = module.dirname
-    module_name = module.purebasename
-    test_name = request.node.name
-    path_template = PathTemplate(
-        module_dir=module_dir,
-        module_name=module_name,
-        test_name=test_name,
-    )
-    if disable_recording:
-        yield None
-    elif marker_record_stdout:
-        raise Exception(
-            "You can't combine both of these fixtures : `record_stdout marker`, `recorder`."
-        )
-    else:
-        recorder = Recorder(path_template, record_mode)
-        yield recorder
-        recorder.persist()
-        recorder.assert_equal()
-
-
 class Record:
     @staticmethod
     def extract_string(data: Any) -> str:
@@ -292,14 +46,20 @@ class Record:
         return self.__captured
 
     @property
+    def strip(self) -> str:
+        return self.__strip
+
+    @property
     def record_changed(self) -> bool:
         if self.__recorded is None:
             changed = True
-        elif self.__recorded != self.__captured:
+        elif self.__strip and self.__recorded.strip() != self.__captured.strip():
+            changed = True
+        elif not self.__strip and self.__recorded != self.__captured:
             changed = True
         else:
             changed = False
-        
+
         return changed
 
     @property
@@ -318,9 +78,15 @@ class Record:
         record_path = self.__record_path
         self.__recorded = self.load_string(path=record_path)
 
-    def __init__(self, captured: Any, record_path: str) -> None:
+    def __init__(
+        self,
+        captured: Any,
+        record_path: str,
+        strip: bool = False,
+    ) -> None:
         self.__captured = self.extract_string(data=captured)
         self.__record_path = record_path
+        self.__strip = strip
 
         self.__recorded = self.load_string(path=record_path)
 
@@ -408,24 +174,35 @@ class Recorder:
 
         self.__record_list: List[Record] = list()
 
-    def capture(self, captured: List[Any]):
+    def capture(self, captured: List[Any], strip: bool = False):
         record_list = self.__record_list
         record_path = self.__path_template.build_path_by_data(
             data=captured,
             index=len(record_list),
         )
-        record = Record(captured=captured, record_path=record_path)
+        record = Record(
+            captured=captured,
+            record_path=record_path,
+            strip=strip,
+        )
         self.__record_list.append(record)
 
-    def capture_list(self, captured_list: List[Any]):
+    def capture_list(self, captured_list: List[Any], strip: bool = False):
         for captured in captured_list:
-            self.capture(captured=captured)
+            self.capture(captured=captured, strip=strip)
 
     def assert_equal(self):
         record_list = self.__record_list
 
         for record in record_list:
             assert not record.record_changed
+
+    def assert_in_list(self, in_list: List[str]):
+        record_list = self.__record_list
+
+        for record in record_list:
+            for string_value in in_list:
+                assert string_value in record.captured
 
     def persist(self):
         record_list = self.__record_list
@@ -450,3 +227,167 @@ class Recorder:
 
             if save:
                 record.persist()
+
+
+def build_path_by_extension(
+    request: SubRequest,
+    extension: str,
+    create_folder: bool = False,
+) -> str:
+    # SETUP PATH TEMPLATE
+    module_dir = request.node.fspath.dirname
+    module_name = request.node.fspath.purebasename
+    test_name = request.node.name
+    path_template = PathTemplate(
+        module_dir=module_dir,
+        module_name=module_name,
+        test_name=test_name,
+    )
+
+    # BUILD PATH
+    path = path_template.build_path_by_extension(extension)
+
+    # CREATE FOLDER
+    if create_folder:
+        dir_name = os.path.dirname(path)
+        if not os.path.exists(dir_name):
+            dir_name = os.path.dirname(path)
+            pathlib.Path(dir_name).mkdir(parents=True, exist_ok=True)
+
+    return path
+
+
+def pytest_configure(config: Config) -> None:
+    config.addinivalue_line("markers", "record_stdout: Mark the test as text record.")
+
+
+@pytest.fixture
+def default_csv_path(request: SubRequest) -> str:
+    return build_path_by_extension(request=request, extension="csv", create_folder=True)
+
+
+@pytest.fixture
+def default_txt_path(request: SubRequest) -> str:
+    return build_path_by_extension(request=request, extension="txt", create_folder=True)
+
+
+@pytest.fixture
+def default_json_path(request: SubRequest) -> str:
+    return build_path_by_extension(
+        request=request, extension="json", create_folder=True
+    )
+
+
+@pytest.fixture
+def record_stdout_markers(request: SubRequest) -> List[Mark]:
+    """All markers applied to the certain test together with cassette names associated with each marker."""
+    return list(request.node.iter_markers(name="record_stdout"))
+
+
+def merge_markers_kwargs(markers: List[Mark]) -> Dict[str, Any]:
+    """Merge all kwargs into a single dictionary to pass to `vcr.use_cassette`."""
+    kwargs: Dict[str, Any] = dict()
+    for marker in reversed(markers):
+        kwargs.update(marker.kwargs)
+    return kwargs
+
+
+def record_stdout_format_kwargs(
+    test_name: str,
+    record_mode: str,
+    record_stdout_markers: List[Mark],
+) -> Dict[str, Any]:
+    kwargs = merge_markers_kwargs(record_stdout_markers)
+
+    formatted_fields = dict()
+    formatted_fields["assert_in_list"] = kwargs.get("assert_in_list", list())
+    formatted_fields["record_mode"] = kwargs.get("record_mode", record_mode)
+    formatted_fields["record_name"] = kwargs.get("record_name", test_name)
+    formatted_fields["save_record"] = kwargs.get("save_record", True)
+    formatted_fields["strip"] = kwargs.get("strip", True)
+
+    return formatted_fields
+
+
+@pytest.fixture(autouse=True)
+def record_stdout(
+    disable_recording: bool,
+    record_stdout_markers: List[Mark],
+    record_mode: str,
+    request: SubRequest,
+):
+    marker = request.node.get_closest_marker("record_stdout")
+
+    if disable_recording:
+        yield None
+    elif marker:
+        # SETUP TEST DETAILS
+        module_dir = request.node.fspath.dirname
+        module_name = request.node.fspath.purebasename
+        test_name = request.node.name
+
+        # FORMAT MARKERS KEYWORD ARGUMENTS
+        formatted_kwargs = record_stdout_format_kwargs(
+            test_name=test_name,
+            record_mode=record_mode,
+            record_stdout_markers=record_stdout_markers,
+        )
+
+        # SETUP RECORDER
+        path_template = PathTemplate(
+            module_dir=module_dir,
+            module_name=module_name,
+            test_name=formatted_kwargs["record_name"],
+        )
+        recorder = Recorder(path_template=path_template, record_mode=formatted_kwargs["record_mode"])
+
+        # CAPTURE STDOUT
+        capture = request.config.getoption("--capture")
+        if capture == "no":
+            global_capturing = MultiCapture(in_=SysCapture(0), out=SysCapture(1), err=SysCapture(2))
+            global_capturing.start_capturing()
+            yield
+            recorder.capture(captured=global_capturing.readouterr().out, strip=formatted_kwargs["strip"])
+            global_capturing.stop_capturing()
+        else:
+            capsys = request.getfixturevalue("capsys")
+            yield
+            recorder.capture(captured=capsys.readouterr().out, strip=formatted_kwargs["strip"])
+
+        # SAVE/CHECK RECORD
+        if formatted_kwargs["save_record"]:
+            recorder.persist()
+            recorder.assert_equal()
+            recorder.assert_in_list(in_list=formatted_kwargs["assert_in_list"])
+        else:
+            recorder.assert_in_list(in_list=formatted_kwargs["assert_in_list"])
+    else:
+        yield None
+
+
+@pytest.fixture
+def recorder(
+    disable_recording: bool,
+    record_mode: str,
+    request: SubRequest,
+):
+    marker_record_stdout = request.node.get_closest_marker("record_stdout")
+    module_dir = request.node.fspath.dirname
+    module_name = request.node.fspath.purebasename
+    test_name = request.node.name
+    path_template = PathTemplate(
+        module_dir=module_dir,
+        module_name=module_name,
+        test_name=test_name,
+    )
+    if disable_recording:
+        yield None
+    elif marker_record_stdout:
+        raise Exception(
+            "You can't combine both of these fixtures : `record_stdout marker`, `recorder`."
+        )
+    else:
+        recorder = Recorder(path_template, record_mode)
+        yield recorder
+        recorder.persist()
+        recorder.assert_equal()
