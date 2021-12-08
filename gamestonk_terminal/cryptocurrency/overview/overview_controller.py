@@ -266,6 +266,10 @@ WithdrawalFees:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-c")
+
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
@@ -1804,6 +1808,7 @@ def menu():
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in overview_controller.CHOICES}
 
+            choices["wfpe"] = {c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS}
             choices["wfpe"]["-c"] = {
                 c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS
             }
