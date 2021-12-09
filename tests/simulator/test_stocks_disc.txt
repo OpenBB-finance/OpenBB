@@ -1,0 +1,6 @@
+stocks
+r
+disc
+h
+ugs -n 3
+exit

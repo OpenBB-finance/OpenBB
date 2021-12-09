@@ -2,6 +2,7 @@
 """Main Terminal Module"""
 __docformat__ = "numpy"
 
+import os
 import argparse
 import difflib
 import sys
@@ -80,13 +81,14 @@ class TerminalController:
             self.completer = None
 
         self.queue: List[str] = list()
+
         if jobs_cmds:
             # close the eyes if the user forgets the initial `/`
             if len(jobs_cmds) > 0:
-                if jobs_cmds[1][0] != "/":
-                    jobs_cmds[1] = f"/{jobs_cmds[1]}"
+                if jobs_cmds[0][0] != "/":
+                    jobs_cmds[0] = f"/{jobs_cmds[0]}"
 
-            self.queue = " ".join(jobs_cmds).split("/")[1:]
+            self.queue = " ".join(jobs_cmds).split("/")
 
         self.update_succcess = False
 
@@ -341,6 +343,17 @@ def terminal(jobs_cmds: List[str] = None):
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        terminal(sys.argv)
+        if "." in sys.argv[1]:
+            if os.path.isfile(sys.argv[1]):
+                with open(sys.argv[1]) as fp:
+                    simulate_argv = f"/{'/'.join([line.rstrip() for line in fp])}"
+                    terminal(simulate_argv.split())
+            else:
+                print(
+                    f"The file '{sys.argv[1]}' doesn't exist. Launching terminal without any configuration.\n"
+                )
+                terminal()
+        else:
+            terminal(sys.argv[1:])
     else:
         terminal()
