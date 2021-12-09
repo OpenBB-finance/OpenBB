@@ -47,7 +47,7 @@ def test_call_func(func, monkeypatch, use_tab):
     [
         ("display_sustainability", "get_sustainability"),
         ("display_calendar_earnings", "get_calendar_earnings"),
-        ("display_dividends", "get_dividends")
+        ("display_dividends", "get_dividends"),
     ],
 )
 def test_call_func_empty_df(func, mocker, mocked_func):
