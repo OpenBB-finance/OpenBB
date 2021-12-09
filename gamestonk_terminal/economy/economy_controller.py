@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 import os
 from typing import List
 
+import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
@@ -69,7 +70,6 @@ class EconomyController:
 
     CHOICES_COMMANDS = [
         "feargreed",
-        "events",
         "overview",
         "indices",
         "futures",
@@ -122,8 +122,6 @@ What do you want to do?
 
 CNN:
     feargreed     CNN Fear and Greed Index
-Finnhub:
-    events        economic impact events
 Wall St. Journal:
     overview      market data overview
     indices       US indices overview
@@ -472,6 +470,22 @@ NASDAQ DataLink (formerly Quandl):
             description="Energy future overview. [Source: Finviz]",
         )
         parser.add_argument(
+            "-s",
+            "--sortby",
+            dest="sort_col",
+            type=str,
+            choices=["ticker", "last", "change", "prevClose"],
+            default="ticker",
+        )
+        parser.add_argument(
+            "-a",
+            "-ascend",
+            dest="ascend",
+            help="Flag to sort in ascending order",
+            action="store_true",
+            default=False,
+        )
+        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -485,6 +499,8 @@ NASDAQ DataLink (formerly Quandl):
 
         finviz_view.display_future(
             future_type="Energy",
+            sort_col=ns_parser.sort_col,
+            ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
 
@@ -496,6 +512,22 @@ NASDAQ DataLink (formerly Quandl):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="metals",
             description="Metals future overview. [Source: Finviz]",
+        )
+        parser.add_argument(
+            "-s",
+            "--sortby",
+            dest="sort_col",
+            type=str,
+            choices=["ticker", "last", "change", "prevClose"],
+            default="ticker",
+        )
+        parser.add_argument(
+            "-a",
+            "-ascend",
+            dest="ascend",
+            help="Flag to sort in ascending order",
+            action="store_true",
+            default=False,
         )
         parser.add_argument(
             "--export",
@@ -511,6 +543,8 @@ NASDAQ DataLink (formerly Quandl):
 
         finviz_view.display_future(
             future_type="Metals",
+            sort_col=ns_parser.sort_col,
+            ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
 
@@ -522,6 +556,22 @@ NASDAQ DataLink (formerly Quandl):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="meats",
             description="Meats future overview. [Source: Finviz]",
+        )
+        parser.add_argument(
+            "-s",
+            "--sortby",
+            dest="sort_col",
+            type=str,
+            choices=["ticker", "last", "change", "prevClose"],
+            default="ticker",
+        )
+        parser.add_argument(
+            "-a",
+            "-ascend",
+            dest="ascend",
+            help="Flag to sort in ascending order",
+            action="store_true",
+            default=False,
         )
         parser.add_argument(
             "--export",
@@ -537,6 +587,8 @@ NASDAQ DataLink (formerly Quandl):
 
         finviz_view.display_future(
             future_type="Meats",
+            sort_col=ns_parser.sort_col,
+            ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
 
@@ -548,6 +600,22 @@ NASDAQ DataLink (formerly Quandl):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="grains",
             description="Grains future overview. [Source: Finviz]",
+        )
+        parser.add_argument(
+            "-s",
+            "--sortby",
+            dest="sort_col",
+            type=str,
+            choices=["ticker", "last", "change", "prevClose"],
+            default="ticker",
+        )
+        parser.add_argument(
+            "-a",
+            "-ascend",
+            dest="ascend",
+            help="Flag to sort in ascending order",
+            action="store_true",
+            default=False,
         )
         parser.add_argument(
             "--export",
@@ -563,6 +631,8 @@ NASDAQ DataLink (formerly Quandl):
 
         finviz_view.display_future(
             future_type="Grains",
+            sort_col=ns_parser.sort_col,
+            ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
 
@@ -574,6 +644,22 @@ NASDAQ DataLink (formerly Quandl):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="softs",
             description="Softs future overview. [Source: Finviz]",
+        )
+        parser.add_argument(
+            "-s",
+            "--sortby",
+            dest="sort_col",
+            type=str,
+            choices=["ticker", "last", "change", "prevClose"],
+            default="ticker",
+        )
+        parser.add_argument(
+            "-a",
+            "-ascend",
+            dest="ascend",
+            help="Flag to sort in ascending order",
+            action="store_true",
+            default=False,
         )
         parser.add_argument(
             "--export",
@@ -589,6 +675,8 @@ NASDAQ DataLink (formerly Quandl):
 
         finviz_view.display_future(
             future_type="Softs",
+            sort_col=ns_parser.sort_col,
+            ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
 
@@ -648,10 +736,42 @@ NASDAQ DataLink (formerly Quandl):
             "-g",
             "--group",
             type=str,
-            default="Sector",
+            default="sector",
+            nargs="+",
             dest="group",
             help="Data group (sector, industry or country)",
-            choices=list(self.d_GROUPS.keys()),
+        )
+        parser.add_argument(
+            "-s",
+            "--sortby",
+            dest="sort_col",
+            type=str,
+            choices=[
+                "Name",
+                "MarketCap",
+                "P/E",
+                "FwdP/E",
+                "PEG",
+                "P/S",
+                "P/B",
+                "P/C",
+                "P/FCF",
+                "EPSpast5Y",
+                "EPSnext5Y",
+                "Salespast5Y",
+                "Change",
+                "Volume",
+            ],
+            default="Name",
+            help="Column to sort by",
+        )
+        parser.add_argument(
+            "-a",
+            "-ascend",
+            dest="ascend",
+            help="Flag to sort in ascending order",
+            action="store_true",
+            default=False,
         )
         parser.add_argument(
             "--export",
@@ -661,18 +781,22 @@ NASDAQ DataLink (formerly Quandl):
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-g")
-            other_args = [other_args[0], " ".join(other_args[1:])]
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-g")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        finviz_view.view_group_data(
-            s_group=self.d_GROUPS[ns_parser.group],
-            data_type="valuation",
+        group = (
+            " ".join(ns_parser.group)
+            if isinstance(ns_parser.group, list)
+            else ns_parser.group
+        )
+        finviz_view.display_valuation(
+            s_group=self.d_GROUPS[group],
+            sort_col=ns_parser.sort_col,
+            ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
 
@@ -691,10 +815,10 @@ NASDAQ DataLink (formerly Quandl):
             "-g",
             "--group",
             type=str,
-            default="Sector",
+            default="sector",
+            nargs="+",
             dest="group",
             help="Data group (sector, industry or country)",
-            choices=list(self.d_GROUPS.keys()),
         )
         parser.add_argument(
             "-s",
@@ -735,14 +859,16 @@ NASDAQ DataLink (formerly Quandl):
         )
         if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-g")
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
-
-        finviz_view.view_group_data(
-            s_group=self.d_GROUPS[ns_parser.group],
-            data_type="performance",
+        group = (
+            " ".join(ns_parser.group)
+            if isinstance(ns_parser.group, list)
+            else ns_parser.group
+        )
+        finviz_view.display_performance(
+            s_group=self.d_GROUPS[group],
             sort_col=ns_parser.sort_col,
             ascending=ns_parser.ascend,
             export=ns_parser.export,
@@ -764,9 +890,9 @@ NASDAQ DataLink (formerly Quandl):
             "--group",
             type=str,
             default="sector",
+            nargs="+",
             dest="group",
             help="Data group (sector, industry or country)",
-            choices=list(self.d_GROUPS.keys()),
         )
         parser.add_argument(
             "--export",
@@ -776,23 +902,22 @@ NASDAQ DataLink (formerly Quandl):
             dest="export",
             help="Export plot to png,jpg,pdf,svg file",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-g")
-            other_args = [other_args[0], " ".join(other_args[1:])]
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-g")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
-
-        finviz_view.view_group_data(
-            s_group=self.d_GROUPS[ns_parser.group],
-            data_type="spectrum",
-            export="",
+        group = (
+            " ".join(ns_parser.group)
+            if isinstance(ns_parser.group, list)
+            else ns_parser.group
         )
+        finviz_view.display_spectrum(s_group=self.d_GROUPS[group])
+
         # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
         # after saving it and displaying it to the user
-        os.remove(ns_parser.group + ".jpg")
+        os.remove(self.d_GROUPS[group] + ".jpg")
 
     @try_except
     def call_rtps(self, other_args: List[str]):
@@ -1054,6 +1179,8 @@ NASDAQ DataLink (formerly Quandl):
             default=False,
         )
 
+        if other_args and "-m" not in other_args[0]:
+            other_args.insert(0, "-m")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -1217,6 +1344,13 @@ NASDAQ DataLink (formerly Quandl):
             """,
         )
         parser.add_argument(
+            "--codes",
+            help="Flag to show all country codes",
+            dest="codes",
+            action="store_true",
+            default=False,
+        )
+        parser.add_argument(
             "-c",
             "--countries",
             help="Country codes to get data for.",
@@ -1235,6 +1369,11 @@ NASDAQ DataLink (formerly Quandl):
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if not ns_parser:
+            return
+
+        if ns_parser.codes:
+            file = os.path.join(os.path.dirname(__file__), "NASDAQ_CountryCodes.csv")
+            print(pd.read_csv(file, index_col=0).to_string(index=False), "\n")
             return
 
         nasdaq_view.display_big_mac_index(

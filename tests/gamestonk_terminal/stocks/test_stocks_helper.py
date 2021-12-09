@@ -35,14 +35,6 @@ class TestMainHelper(unittest.TestCase):
     #     self.assertNotEqual(values[1], None)
     #     self.assertEqual(values[2], "1440min")
 
-    @check_print()
-    def test_load_clear(self):
-        stocks_helper.load(["GME"], "GME", self.start, "1440min", pd.DataFrame())
-        values = stocks_helper.clear([], "GME", self.start, "1440min", pd.DataFrame())
-        self.assertEqual(values[0], "")
-        self.assertEqual(values[1], "")
-        self.assertEqual(values[2], "")
-
     # @check_print()
     # @vcr.use_cassette(
     #     "tests/gamestonk_terminal/stocks/cassettes/test_stocks_helper/general1.yaml",

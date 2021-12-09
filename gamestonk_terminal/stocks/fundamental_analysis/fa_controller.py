@@ -3,10 +3,10 @@ __docformat__ = "numpy"
 
 import argparse
 import difflib
+from datetime import datetime, timedelta
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from colorama import Style
-import pandas as pd
 
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
     fmp_controller,
@@ -29,8 +29,9 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     try_except,
     system_clear,
+    valid_date,
 )
-from gamestonk_terminal.stocks.stocks_helper import load
+from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.menu import session
 
 # pylint: disable=inconsistent-return-statements
@@ -64,6 +65,7 @@ class FundamentalAnalysisController:
         "cash",
         "earnings",
         "warnings",
+        "divs",
     ]
 
     CHOICES_MENUS = [
@@ -122,7 +124,8 @@ Yahoo Finance:
     sust          sustainability values of the company
     cal           calendar earnings and estimates of the company
     web           open web browser of the company
-    hq            open HQ location of the company {Style.DIM if self.suffix else ""}
+    hq            open HQ location of the company
+    divs          show historical dividends for company {Style.DIM if self.suffix else ""}
 Alpha Vantage:
     overview      overview of the company
     key           company key metrics
@@ -189,10 +192,61 @@ Other Sources:
     @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
-        self.ticker, self.start, self.interval, _ = load(
-            other_args, self.ticker, self.start, self.interval, pd.DataFrame()
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
+            " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
+            " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
         )
-        self.suffix = self.ticker.split(".")[1] if "." in self.ticker else ""
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="ticker",
+            required="-h" not in other_args,
+            help="Stock ticker",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the stock",
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            action="store",
+            dest="interval",
+            type=int,
+            default=1440,
+            choices=[1, 5, 15, 30, 60],
+            help="Intraday stock minutes",
+        )
+        # For the case where a user uses: 'load BB'
+        if other_args and "-t" not in other_args and "-h" not in other_args:
+            other_args.insert(0, "-t")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df_stock_candidate = stocks_helper.load(
+            ns_parser.ticker,
+            ns_parser.start,
+            ns_parser.interval,
+        )
+
+        if not df_stock_candidate.empty:
+            self.start = ns_parser.start
+            self.interval = str(ns_parser.interval) + "min"
+            if "." in ns_parser.ticker:
+                self.ticker = ns_parser.ticker.upper().split(".")[0]
+            else:
+                self.ticker = ns_parser.ticker.upper()
 
     @try_except
     def call_analysis(self, other_args: List[str]):
@@ -398,6 +452,32 @@ Other Sources:
         if not ns_parser:
             return
         yahoo_finance_view.open_headquarters_map(self.ticker)
+
+    @try_except
+    def call_divs(self, other_args: List[str]):
+        """Process divs command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="divs",
+            description="Get historical dividends for company",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            dest="num",
+            type=check_positive,
+            default=12,
+            help="Number of previous dividends to show",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if not ns_parser:
+            return
+        yahoo_finance_view.display_dividends(
+            ticker=self.ticker, num=ns_parser.num, export=ns_parser.export
+        )
 
     @try_except
     def call_overview(self, other_args: List[str]):

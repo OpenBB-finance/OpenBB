@@ -7,6 +7,7 @@ import configparser
 import os
 from typing import List
 
+from colorama import Style
 import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
@@ -17,6 +18,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
+from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 from gamestonk_terminal.stocks.screener import (
     finviz_view,
     yahoofinance_view,
@@ -48,6 +50,7 @@ class ScreenerController:
         "performance",
         "technical",
         "po",
+        "ca",
     ]
 
     def __init__(self):
@@ -62,30 +65,31 @@ class ScreenerController:
 
     def print_help(self):
         """Print help"""
-        print("\nScreener:")
-        print("   cls           clear screen")
-        print("   ?/help        show this menu again")
-        print("   q             quit this menu, and shows back to main menu")
-        print("   quit          quit to abandon program")
-        print("")
-        print("   view          view available presets (defaults and customs)")
-        print("   set           set one of the available presets")
-        print("")
-        print(f"PRESET: {self.preset}")
-        print("")
-        print("   historical     view historical price")
-        print("   overview       overview (e.g. Sector, Industry, Market Cap, Volume)")
-        print("   valuation      valuation (e.g. P/E, PEG, P/S, P/B, EPS this Y)")
-        print("   financial      financial (e.g. Dividend, ROA, ROE, ROI, Earnings)")
-        print("   ownership      ownership (e.g. Float, Insider Own, Short Ratio)")
-        print("   performance    performance (e.g. Perf Week, Perf YTD, Volatility M)")
-        print("   technical      technical (e.g. Beta, SMA50, 52W Low, RSI, Change)")
-        print("")
-        if self.screen_tickers:
-            print(f"Last screened tickers: {', '.join(self.screen_tickers)}")
-            print("")
-            print("   > po           portfolio optimization for last screened tickers")
-            print("")
+        help_text = f"""
+Screener:
+    cls           clear screen
+    ?/help        show this menu again
+    q             quit this menu, and shows back to main menu
+    quit          quit to abandon program
+
+    view          view available presets (defaults and customs)
+    set           set one of the available presets
+
+    PRESET: {self.preset}
+
+    historical     view historical price
+    overview       overview (e.g. Sector, Industry, Market Cap, Volume)
+    valuation      valuation (e.g. P/E, PEG, P/S, P/B, EPS this Y)
+    financial      financial (e.g. Dividend, ROA, ROE, ROI, Earnings)
+    ownership      ownership (e.g. Float, Insider Own, Short Ratio)
+    performance    performance (e.g. Perf Week, Perf YTD, Volatility M)
+    technical      technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
+    {Style.NORMAL if self.screen_tickers else Style.DIM}
+Last screened tickers: {', '.join(self.screen_tickers)}
+>   ca             take these to comparison analysis menu
+>   po             take these to portoflio optimization menu{Style.RESET_ALL}
+        """
+        print(help_text)
 
     @staticmethod
     def view_available_presets(other_args: List[str]):
@@ -290,7 +294,19 @@ class ScreenerController:
 
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
+        if not self.screen_tickers:
+            print("Some tickers must be screened first through one of the presets!\n")
+            return None
+
         return po_controller.menu(self.screen_tickers)
+
+    def call_ca(self, _):
+        """Call the comparison analysis menu with selected tickers"""
+        if not self.screen_tickers:
+            print("Some tickers must be screened first through one of the presets!\n")
+            return None
+
+        return ca_controller.menu(self.screen_tickers)
 
 
 def menu():

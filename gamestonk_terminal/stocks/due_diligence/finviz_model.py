@@ -1,13 +1,13 @@
 """ Finviz Model """
 __docformat__ = "numpy"
 
-from typing import Dict
+from typing import List, Any
 import finviz
 import pandas as pd
 from pandas.core.frame import DataFrame
 
 
-def get_news(ticker: str) -> Dict:
+def get_news(ticker: str) -> List[Any]:
     """Get news from Finviz
 
     Parameters
@@ -17,7 +17,7 @@ def get_news(ticker: str) -> Dict:
 
     Returns
     -------
-    Dict
+    List[Any]
         News
     """
     return finviz.get_news(ticker)

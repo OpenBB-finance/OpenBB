@@ -83,7 +83,7 @@ def historical(other_args: List[str], preset_loaded: str) -> List[str]:
             return list()
 
         screen = ticker.Ticker()
-        if preset_loaded in list(finviz_model.d_signals.keys()):
+        if preset_loaded in finviz_model.d_signals:
             screen.set_filter(signal=finviz_model.d_signals[preset_loaded])
 
         else:
