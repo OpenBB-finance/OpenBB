@@ -31,7 +31,8 @@ async def overview_command(ctx):
             colour=cfg.COLOR,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)
@@ -43,7 +44,8 @@ async def overview_command(ctx):
             description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

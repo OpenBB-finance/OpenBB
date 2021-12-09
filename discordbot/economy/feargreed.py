@@ -57,7 +57,8 @@ async def feargreed_command(ctx, indicator=""):
             colour=cfg.COLOR,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         if os.path.exists(image_path):
@@ -74,10 +75,13 @@ async def feargreed_command(ctx, indicator=""):
 
     except Exception as e:
         embed = discord.Embed(
-            title="ERROR Economy: [CNN] Feargreed", colour=cfg.COLOR, description=e,
+            title="ERROR Economy: [CNN] Feargreed",
+            colour=cfg.COLOR,
+            description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

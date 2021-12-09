@@ -38,7 +38,12 @@ async def technical_command(
             raise Exception("ascend argument has to be true or false")
 
         # Output Data
-        df_screen = get_screener_data(preset, "technical", limit, ascend,)
+        df_screen = get_screener_data(
+            preset,
+            "technical",
+            limit,
+            ascend,
+        )
 
         d_cols_to_sort = {
             "technical": [
@@ -70,16 +75,23 @@ async def technical_command(
             if sort:
                 if " ".join(sort) in d_cols_to_sort["technical"]:
                     df_screen = df_screen.sort_values(
-                        by=[" ".join(sort)], ascending=ascend, na_position="last",
+                        by=[" ".join(sort)],
+                        ascending=ascend,
+                        na_position="last",
                     )
                 else:
                     similar_cmd = difflib.get_close_matches(
-                        " ".join(sort), d_cols_to_sort["technical"], n=1, cutoff=0.7,
+                        " ".join(sort),
+                        d_cols_to_sort["technical"],
+                        n=1,
+                        cutoff=0.7,
                     )
                     if similar_cmd:
                         description = f"Replacing '{' '.join(sort)}' by '{similar_cmd[0]}' so table can be sorted.\n"
                         df_screen = df_screen.sort_values(
-                            by=[similar_cmd[0]], ascending=ascend, na_position="last",
+                            by=[similar_cmd[0]],
+                            ascending=ascend,
+                            na_position="last",
                         )
                     else:
                         raise ValueError(
@@ -98,7 +110,8 @@ async def technical_command(
                     colour=cfg.COLOR,
                 )
                 embed.set_author(
-                    name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+                    name=cfg.AUTHOR_NAME,
+                    icon_url=cfg.AUTHOR_ICON_URL,
                 )
 
                 await ctx.send(embed=embed)
@@ -117,7 +130,8 @@ async def technical_command(
                             + "```",
                             colour=cfg.COLOR,
                         ).set_author(
-                            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+                            name=cfg.AUTHOR_NAME,
+                            icon_url=cfg.AUTHOR_ICON_URL,
                         )
                     )
                     str_end = str_start
@@ -133,7 +147,8 @@ async def technical_command(
             description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

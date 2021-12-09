@@ -56,13 +56,15 @@ async def est_command(ctx, ticker=""):
                 description=initial_text,
                 colour=cfg.COLOR,
             ).set_author(
-                name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+                name=cfg.AUTHOR_NAME,
+                icon_url=cfg.AUTHOR_ICON_URL,
             )
         )
         for text in cols:
             columns.append(
                 discord.Embed(description=text, colour=cfg.COLOR,).set_author(
-                    name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+                    name=cfg.AUTHOR_NAME,
+                    icon_url=cfg.AUTHOR_ICON_URL,
                 )
             )
 
@@ -74,7 +76,8 @@ async def est_command(ctx, ticker=""):
             description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

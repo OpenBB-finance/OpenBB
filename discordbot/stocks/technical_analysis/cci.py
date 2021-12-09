@@ -84,7 +84,8 @@ async def cci_command(ctx, ticker="", length="14", scalar="0.015", start="", end
         title = "Stocks: Commodity-Channel-Index " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
         embed.set_image(url=image_link)
         os.remove("ta_cci.png")
@@ -98,7 +99,8 @@ async def cci_command(ctx, ticker="", length="14", scalar="0.015", start="", end
             description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

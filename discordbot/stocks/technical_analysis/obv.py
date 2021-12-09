@@ -77,7 +77,11 @@ async def obv_command(ctx, ticker="", start="", end=""):
         ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
         ax2.set_ylabel("Volume [M]")
         ax2.bar(
-            df_stock.index, df_vol, color=bar_colors, alpha=0.8, width=bar_width,
+            df_stock.index,
+            df_vol,
+            color=bar_colors,
+            alpha=0.8,
+            width=bar_width,
         )
         ax3 = axes[2]
         ax3.set_ylabel("OBV [M]")
@@ -99,7 +103,8 @@ async def obv_command(ctx, ticker="", start="", end=""):
         title = "Stocks: On-Balance-Volume " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
         embed.set_image(url=image_link)
         os.remove("ta_obv.png")
@@ -108,10 +113,13 @@ async def obv_command(ctx, ticker="", start="", end=""):
 
     except Exception as e:
         embed = discord.Embed(
-            title="ERROR Stocks: On-Balance-Volume", colour=cfg.COLOR, description=e,
+            title="ERROR Stocks: On-Balance-Volume",
+            colour=cfg.COLOR,
+            description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

@@ -86,7 +86,8 @@ async def fib_command(ctx, ticker="", start="", end=""):
         str_df_fib = "```" + df_fib.to_string(index=False) + "```"
         embed = discord.Embed(title=title, colour=cfg.COLOR, description=str_df_fib)
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
         embed.set_image(url=image_link)
         os.remove("ta_fib.png")
@@ -100,7 +101,8 @@ async def fib_command(ctx, ticker="", start="", end=""):
             description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

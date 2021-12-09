@@ -73,7 +73,12 @@ async def adosc_command(
         df_cal = df_ta.values
         df_cal = df_cal / divisor
 
-        fig, axes = plt.subplots(3, 1, figsize=plot_autoscale(), dpi=PLOT_DPI,)
+        fig, axes = plt.subplots(
+            3,
+            1,
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+        )
         ax = axes[0]
         ax.set_title(f"{ticker} AD Oscillator")
         ax.plot(df_stock.index, df_stock["Adj Close"].values, "fuchsia", lw=1)
@@ -85,7 +90,11 @@ async def adosc_command(
         ax1.set_ylabel("Volume [M]")
 
         ax1.bar(
-            df_stock.index, df_vol, color=bar_colors, alpha=0.8, width=0.3,
+            df_stock.index,
+            df_vol,
+            color=bar_colors,
+            alpha=0.8,
+            width=0.3,
         )
         ax1.set_xlim(df_stock.index[0], df_stock.index[-1])
 
@@ -108,7 +117,8 @@ async def adosc_command(
         title = "Stocks: Accumulation/Distribution Oscillator " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
         embed.set_image(url=image_link)
         os.remove("ta_adosc.png")
@@ -122,7 +132,8 @@ async def adosc_command(
             description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

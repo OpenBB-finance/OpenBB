@@ -70,7 +70,8 @@ async def performance_command(ctx, economy_group="sector"):
                 description=initial_str,
                 colour=cfg.COLOR,
             ).set_author(
-                name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+                name=cfg.AUTHOR_NAME,
+                icon_url=cfg.AUTHOR_ICON_URL,
             )
         )
         for column in df_group.columns.values:
@@ -79,7 +80,8 @@ async def performance_command(ctx, economy_group="sector"):
                     description="```" + df_group[column].fillna("").to_string() + "```",
                     colour=cfg.COLOR,
                 ).set_author(
-                    name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+                    name=cfg.AUTHOR_NAME,
+                    icon_url=cfg.AUTHOR_ICON_URL,
                 )
             )
 
@@ -92,7 +94,8 @@ async def performance_command(ctx, economy_group="sector"):
             description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

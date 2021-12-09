@@ -49,7 +49,8 @@ async def ftd_command(ctx, ticker="", start="", end=""):
 
         # Output data
         plt.bar(
-            ftds_data["SETTLEMENT DATE"], ftds_data["QUANTITY (FAILS)"] / 1000,
+            ftds_data["SETTLEMENT DATE"],
+            ftds_data["QUANTITY (FAILS)"] / 1000,
         )
         plt.ylabel("Shares [K]")
         plt.title(f"Fails-to-deliver Data for {ticker}")
@@ -72,7 +73,8 @@ async def ftd_command(ctx, ticker="", start="", end=""):
         title = "Stocks: [SEC] Failure-to-deliver " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
         embed.set_image(url=image_link)
 
@@ -87,7 +89,8 @@ async def ftd_command(ctx, ticker="", start="", end=""):
             description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

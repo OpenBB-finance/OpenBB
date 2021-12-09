@@ -31,17 +31,21 @@ async def indices_command(ctx):
             colour=cfg.COLOR,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)
 
     except Exception as e:
         embed = discord.Embed(
-            title="ERROR Economy: [WSJ] US Indices", colour=cfg.COLOR, description=e,
+            title="ERROR Economy: [WSJ] US Indices",
+            colour=cfg.COLOR,
+            description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

@@ -60,10 +60,18 @@ async def fisher_command(ctx, ticker="", length="14", start="", end=""):
 
         ax2 = axes[1]
         ax2.plot(
-            df_ta.index, df_ta.iloc[:, 0].values, "b", lw=2, label="Fisher",
+            df_ta.index,
+            df_ta.iloc[:, 0].values,
+            "b",
+            lw=2,
+            label="Fisher",
         )
         ax2.plot(
-            df_ta.index, df_ta.iloc[:, 1].values, "fuchsia", lw=2, label="Signal",
+            df_ta.index,
+            df_ta.iloc[:, 1].values,
+            "fuchsia",
+            lw=2,
+            label="Signal",
         )
         ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
         ax2.axhspan(2, plt.gca().get_ylim()[1], facecolor="r", alpha=0.2)
@@ -93,7 +101,8 @@ async def fisher_command(ctx, ticker="", length="14", start="", end=""):
         title = "Stocks: Fisher-Transform " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
         embed.set_image(url=image_link)
         os.remove("ta_fisher.png")
@@ -102,10 +111,13 @@ async def fisher_command(ctx, ticker="", length="14", start="", end=""):
 
     except Exception as e:
         embed = discord.Embed(
-            title="ERROR Stocks: Fisher-Transform", colour=cfg.COLOR, description=e,
+            title="ERROR Stocks: Fisher-Transform",
+            colour=cfg.COLOR,
+            description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

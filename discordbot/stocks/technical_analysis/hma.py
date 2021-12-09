@@ -107,7 +107,8 @@ async def hma_command(ctx, ticker="", window="", offset="", start="", end=""):
         title = "Stocks: Hull-Moving-Average " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
         embed.set_image(url=image_link)
         os.remove("ta_hma.png")
@@ -116,10 +117,13 @@ async def hma_command(ctx, ticker="", window="", offset="", start="", end=""):
 
     except Exception as e:
         embed = discord.Embed(
-            title="ERROR Stocks: Hull-Moving-Average", colour=cfg.COLOR, description=e,
+            title="ERROR Stocks: Hull-Moving-Average",
+            colour=cfg.COLOR,
+            description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

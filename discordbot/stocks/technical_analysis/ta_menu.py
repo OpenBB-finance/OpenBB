@@ -650,7 +650,8 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
                 description="A stock ticker is required",
             )
             embed.set_author(
-                name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+                name=cfg.AUTHOR_NAME,
+                icon_url=cfg.AUTHOR_ICON_URL,
             )
 
             await ctx.send(embed=embed)
@@ -664,7 +665,8 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
                 description="Enter a valid stock ticker",
             )
             embed.set_author(
-                name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+                name=cfg.AUTHOR_NAME,
+                icon_url=cfg.AUTHOR_ICON_URL,
             )
 
             await ctx.send(embed=embed)
@@ -709,7 +711,8 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
                     colour=cfg.COLOR,
                     title="Stocks: Technical Analysis (TA) Menu",
                 ).set_author(
-                    name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+                    name=cfg.AUTHOR_NAME,
+                    icon_url=cfg.AUTHOR_ICON_URL,
                 )
             )
 
@@ -930,7 +933,10 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
                     description="Error timeout - you snooze you lose! 😋",
                     colour=cfg.COLOR,
                     title="TIMEOUT Stocks: Technical Analysis (TA) Menu",
-                ).set_author(name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,)
+                ).set_author(
+                    name=cfg.AUTHOR_NAME,
+                    icon_url=cfg.AUTHOR_ICON_URL,
+                )
                 await ctx.send(embed=embed)
 
                 for emoji in emoji_list:

@@ -39,11 +39,15 @@ async def psi_command(ctx, ticker=""):
         title = f"Stocks: [Stockgrid] Price vs Short Interest Volume {ticker}"
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         _, axes = plt.subplots(
-            2, 1, dpi=PLOT_DPI, gridspec_kw={"height_ratios": [2, 1]},
+            2,
+            1,
+            dpi=PLOT_DPI,
+            gridspec_kw={"height_ratios": [2, 1]},
         )
 
         axes[0].bar(
@@ -109,7 +113,8 @@ async def psi_command(ctx, ticker=""):
             description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

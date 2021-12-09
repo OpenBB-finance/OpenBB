@@ -54,7 +54,8 @@ async def arktrades_command(ctx, ticker="", num=""):
                 colour=cfg.COLOR,
             )
             embed.set_author(
-                name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+                name=cfg.AUTHOR_NAME,
+                icon_url=cfg.AUTHOR_ICON_URL,
             )
 
             await ctx.send(embed=embed)
@@ -71,7 +72,8 @@ async def arktrades_command(ctx, ticker="", num=""):
                         description="```" + ark_holdings_str[str_start:str_end] + "```",
                         colour=cfg.COLOR,
                     ).set_author(
-                        name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+                        name=cfg.AUTHOR_NAME,
+                        icon_url=cfg.AUTHOR_ICON_URL,
                     )
                 )
                 str_end = str_start
@@ -87,7 +89,8 @@ async def arktrades_command(ctx, ticker="", num=""):
             description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)
