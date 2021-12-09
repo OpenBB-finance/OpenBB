@@ -49,7 +49,9 @@ class StocksController:
         "cls",
         "cd",
         "h",
+        "?",
         "q",
+        "..",
         "e",
         "r",
     ]
@@ -86,6 +88,20 @@ class StocksController:
 
     def __init__(self, ticker, queue: List[str] = None):
         """Constructor"""
+        self.stocks_parser = argparse.ArgumentParser(add_help=False, prog="stocks")
+        self.stocks_parser.add_argument(
+            "cmd",
+            choices=self.CHOICES,
+        )
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            choices["cd"] = {c: None for c in cd_CHOICES}
+
+            self.completer = NestedCompleter.from_nested_dict(choices)
+        else:
+            self.completer = None
+
         self.stock = pd.DataFrame()
         self.ticker = ticker
         self.start = ""
@@ -94,15 +110,6 @@ class StocksController:
             self.queue = queue
         else:
             self.queue = list()
-
-        self.stocks_parser = argparse.ArgumentParser(add_help=False, prog="stocks")
-        self.stocks_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-        self.completer = NestedCompleter.from_nested_dict(
-            {c: None for c in self.CHOICES}
-        )
 
     def print_help(self):
         """Print help"""
@@ -125,22 +132,23 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
     candle      view a candle chart for a specific stock ticker
     news        latest news of the company [News API]
 {reset_style_if_no_ticker}
->   options     options menu,  \t\t\t e.g.: chains, open interest, greeks, parity
->   disc        discover trending stocks, \t e.g. map, sectors, high short interest
->   sia         sector and industry analysis, \t e.g. companies per sector, quick ratio per industry and country
->   dps         dark pool and short data, \t e.g. darkpool, short interest, ftd
->   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
->   ins         insider trading,         \t e.g.: latest penny stock buys, top officer purchases
->   gov         government menu, \t\t e.g. house trading, contracts, corporate lobbying
->   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google
->   ca          comparison analysis,     \t e.g.: get similar, historical, correlation, financials{dim_if_no_ticker}
->   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings
->   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool
->   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
->   bt          strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies
->   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
->   qa          quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis
->   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm
+Stocks Menus:
+    /options    options menu,  \t\t\t e.g.: chains, open interest, greeks, parity
+    /disc       discover trending stocks, \t e.g. map, sectors, high short interest
+    /sia        sector and industry analysis, \t e.g. companies per sector, quick ratio per industry and country
+    /dps        dark pool and short data, \t e.g. darkpool, short interest, ftd
+    /scr        screener stocks, \t\t e.g. overview/performance, using preset filters
+    /ins        insider trading,         \t e.g.: latest penny stock buys, top officer purchases
+    /gov        government menu, \t\t e.g. house trading, contracts, corporate lobbying
+    /ba         behavioural analysis,    \t from: reddit, stocktwits, twitter, google
+    /ca         comparison analysis,     \t e.g.: get similar, historical, correlation, financials{dim_if_no_ticker}
+    /fa         fundamental analysis,    \t e.g.: income, balance, cash, earnings
+    /res        research web page,       \t e.g.: macroaxis, yahoo finance, fool
+    /dd         in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
+    /bt         strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies
+    /ta         technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
+    /qa         quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis
+    /pred       prediction techniques,   \t e.g.: regression, arima, rnn, lstm
 {reset_style_if_no_ticker}"""
         print(help_text)
 
@@ -158,7 +166,19 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             print("")
             return self.queue if len(self.queue) > 0 else []
 
+        if "/" in an_input:
+            actions = an_input.split("/")
+            an_input = actions[0]
+            for cmd in actions[1:][::-1]:
+                self.queue.insert(0, cmd)
+
         (known_args, other_args) = self.stocks_parser.parse_known_args(an_input.split())
+
+        if known_args.cmd:
+            if known_args.cmd == "..":
+                known_args.cmd = "q"
+            elif known_args.cmd == "?":
+                known_args.cmd = "h"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "command not recognized!"
@@ -341,6 +361,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             self.start = ns_parser.start
             self.interval = f"{ns_parser.interval}min"
 
+        return self.queue if len(self.queue) > 0 else []
+
     def call_quote(self, other_args: List[str]):
         """Process quote command"""
         quote(
@@ -414,36 +436,38 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         )
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if not self.ticker:
-            print("No ticker loaded. First use `load {ticker}`\n")
-            return
+        if ns_parser:
+            if self.ticker:
+                export_data(
+                    ns_parser.export,
+                    os.path.join(
+                        os.path.dirname(os.path.abspath(__file__)), "raw_data"
+                    ),
+                    f"{self.ticker}",
+                    self.stock,
+                )
 
-        export_data(
-            ns_parser.export,
-            os.path.join(os.path.dirname(os.path.abspath(__file__)), "raw_data"),
-            f"{self.ticker}",
-            self.stock,
-        )
+                if ns_parser.raw:
+                    qa_view.display_raw(
+                        df=self.stock,
+                        sort=ns_parser.sort,
+                        des=ns_parser.descending,
+                        num=ns_parser.num,
+                    )
 
-        if ns_parser.raw:
-            qa_view.display_raw(
-                df=self.stock,
-                sort=ns_parser.sort,
-                des=ns_parser.descending,
-                num=ns_parser.num,
-            )
+                else:
+                    data = process_candle(self.stock)
 
-        else:
-            data = process_candle(self.stock)
+                    display_candle(
+                        s_ticker=self.ticker,
+                        df_stock=data,
+                        use_matplotlib=ns_parser.matplotlib,
+                        intraday=self.interval != "1440min",
+                    )
+            else:
+                print("No ticker loaded. First use `load {ticker}`\n")
 
-            display_candle(
-                s_ticker=self.ticker,
-                df_stock=data,
-                use_matplotlib=ns_parser.matplotlib,
-                intraday=self.interval != "1440min",
-            )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_news(self, other_args: List[str]):
@@ -768,12 +792,11 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 def menu(ticker: str = "", queue: List[str] = None):
     """Stocks Menu"""
     stocks_controller = StocksController(ticker, queue)
-    stocks_controller.print_help()
 
     while True:
         # There is a command in the queue
         if stocks_controller.queue and len(stocks_controller.queue) > 0:
-            if stocks_controller.queue[0] == "q":
+            if stocks_controller.queue[0] in ("q", ".."):
                 if len(stocks_controller.queue) > 1:
                     return stocks_controller.queue[1:]
                 return []
@@ -781,21 +804,17 @@ def menu(ticker: str = "", queue: List[str] = None):
             an_input = stocks_controller.queue[0]
             stocks_controller.queue = stocks_controller.queue[1:]
             if an_input:
-                print(f"{get_flair()} /stocks/ $ {an_input}")
+                print(f"{get_flair()} /stocks/ $ {an_input}\n")
 
         # Get input command from user
         else:
-            if session and gtff.USE_PROMPT_TOOLKIT:
-
-                choices: dict = {c: {} for c in stocks_controller.CHOICES}
-                choices["cd"] = {c: None for c in cd_CHOICES}
-
-                completer = NestedCompleter.from_nested_dict(choices)
+            if session and gtff.USE_PROMPT_TOOLKIT and stocks_controller.completer:
                 an_input = session.prompt(
                     f"{get_flair()} /stocks/ $ ",
-                    completer=completer,
+                    completer=stocks_controller.completer,
                     search_ignore_case=True,
                 )
+
             else:
                 an_input = input(f"{get_flair()} /stocks/ $ ")
 

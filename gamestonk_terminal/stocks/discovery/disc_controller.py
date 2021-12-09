@@ -42,13 +42,14 @@ class DiscoveryController:
 
     # Command choices
     CHOICES = [
-        "?",
         "cls",
+        "cd",
         "h",
+        "?",
         "q",
+        "..",
         "e",
         "r",
-        "cd",
     ]
 
     CHOICES_COMMANDS = [
@@ -118,16 +119,33 @@ class DiscoveryController:
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
-
         self.disc_parser = argparse.ArgumentParser(add_help=False, prog="disc")
         self.disc_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+
+            choices: dict = {c: {} for c in self.CHOICES}
+            choices["cd"] = {c: None for c in cd_CHOICES}
+            choices["arkord"]["-s"] = {c: None for c in self.arkord_sortby_choices}
+            choices["arkord"]["--sortby"] = {
+                c: None for c in self.arkord_sortby_choices
+            }
+            choices["arkord"]["-f"] = {c: None for c in self.arkord_fund_choices}
+            choices["arkord"]["--fund"] = {c: None for c in self.arkord_fund_choices}
+            choices["cnews"]["-t"] = {c: None for c in self.cnews_type_choices}
+            choices["cnews"]["--type"] = {c: None for c in self.cnews_type_choices}
+
+            self.completer = NestedCompleter.from_nested_dict(choices)
+        else:
+            self.completer = None
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
 
     @staticmethod
     def print_help():
@@ -178,7 +196,19 @@ NASDAQ Data Link (Formerly Quandl):
             print("")
             return self.queue if len(self.queue) > 0 else []
 
+        if "/" in an_input:
+            actions = an_input.split("/")
+            an_input = actions[0]
+            for cmd in actions[1:][::-1]:
+                self.queue.insert(0, cmd)
+
         (known_args, other_args) = self.disc_parser.parse_known_args(an_input.split())
+
+        if known_args.cmd:
+            if known_args.cmd == "..":
+                known_args.cmd = "q"
+            elif known_args.cmd == "?":
+                known_args.cmd = "h"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -1036,12 +1066,11 @@ NASDAQ Data Link (Formerly Quandl):
 def menu(queue: List[str] = None):
     """Discovery Menu"""
     disc_controller = DiscoveryController(queue)
-    disc_controller.print_help()
 
     while True:
         # There is a command in the queue
         if disc_controller.queue and len(disc_controller.queue) > 0:
-            if disc_controller.queue[0] == "q":
+            if disc_controller.queue[0] in ("q", ".."):
                 if len(disc_controller.queue) > 1:
                     return disc_controller.queue[1:]
                 return []
@@ -1049,37 +1078,15 @@ def menu(queue: List[str] = None):
             an_input = disc_controller.queue[0]
             disc_controller.queue = disc_controller.queue[1:]
             if an_input:
-                print(f"{get_flair()} /stocks/disc/ $ {an_input}")
+                print(f"{get_flair()} /stocks/disc/ $ {an_input}\n")
 
         # Get input command from user
         else:
-            if session and gtff.USE_PROMPT_TOOLKIT:
+            if session and gtff.USE_PROMPT_TOOLKIT and disc_controller.completer:
 
-                choices: dict = {c: {} for c in disc_controller.CHOICES}
-                choices["cd"] = {c: None for c in cd_CHOICES}
-                choices["arkord"]["-s"] = {
-                    c: None for c in disc_controller.arkord_sortby_choices
-                }
-                choices["arkord"]["--sortby"] = {
-                    c: None for c in disc_controller.arkord_sortby_choices
-                }
-                choices["arkord"]["-f"] = {
-                    c: None for c in disc_controller.arkord_fund_choices
-                }
-                choices["arkord"]["--fund"] = {
-                    c: None for c in disc_controller.arkord_fund_choices
-                }
-                choices["cnews"]["-t"] = {
-                    c: None for c in disc_controller.cnews_type_choices
-                }
-                choices["cnews"]["--type"] = {
-                    c: None for c in disc_controller.cnews_type_choices
-                }
-
-                completer = NestedCompleter.from_nested_dict(choices)
                 an_input = session.prompt(
                     f"{get_flair()} /stocks/disc/ $ ",
-                    completer=completer,
+                    completer=disc_controller.completer,
                     search_ignore_case=True,
                 )
 

@@ -32,12 +32,12 @@ class TerminalController:
     """Terminal Controller class"""
 
     CHOICES = [
-        "cd",
         "cls",
         "cd",
-        "?",
         "h",
+        "?",
         "q",
+        "..",
         "e",
         "r",
     ]
@@ -64,32 +64,24 @@ class TerminalController:
 
     def __init__(self, jobs_cmds: List[str] = None):
         """Constructor"""
-
-        self.queue: List[str] = list()
-        command: List[str] = list()
-
-        if jobs_cmds:
-            for arg in jobs_cmds[1:]:
-                if arg[0] == ".":
-                    if command:
-                        self.queue.append(" ".join(command))
-                    command = list()
-                    command.append(arg[1:])
-                else:
-                    command.append(arg)
-
-            self.queue.append(" ".join(command))
-
-        self.update_succcess = False
-
         self.t_parser = argparse.ArgumentParser(add_help=False, prog="terminal")
         self.t_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
-        self.completer = NestedCompleter.from_nested_dict(
-            {c: None for c in self.CHOICES}
-        )
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: None for c in self.CHOICES}
+            choices["cd"] = {c: None for c in cd_CHOICES}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+        else:
+            self.completer = None
+
+        self.queue: List[str] = list()
+        if jobs_cmds:
+            self.queue = " ".join(jobs_cmds).split("/")[1:]
+
+        self.update_succcess = False
 
     def print_help(self):
         """Print help"""
@@ -98,14 +90,15 @@ class TerminalController:
     update      update terminal automatically
     keys        check for status of API keys
 
->>  stocks
->>  crypto
->>  etf
->>  economy
->>  forex
->>  portfolio
->>  reports
->>  resources"""
+Menus:
+    /stocks
+    /crypto
+    /etf
+    /economy
+    /forex
+    /portfolio
+    /reports
+    /resources"""
         print(help_text)
 
     def switch(self, an_input: str):
@@ -113,28 +106,27 @@ class TerminalController:
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
-
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue if len(self.queue) > 0 else []
+
+        if "/" in an_input:
+            actions = an_input.split("/")
+            an_input = actions[0]
+            for cmd in actions[1:][::-1]:
+                self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.t_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+        if known_args.cmd:
+            if known_args.cmd == "..":
+                known_args.cmd = "q"
+            elif known_args.cmd == "?":
+                known_args.cmd = "h"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -267,26 +259,22 @@ In order to improve the speed of execution of the most experienced users, these 
 
         # There is a command in the queue
         if t_controller.queue and len(t_controller.queue) > 0:
-            if t_controller.queue[0] == "q":
+            if t_controller.queue[0] in ("q", ".."):
                 if len(t_controller.queue) > 1:
                     return t_controller.queue[1:]
                 return []
 
             an_input = t_controller.queue[0]
             t_controller.queue = t_controller.queue[1:]
-            if an_input:
-                print(f"{get_flair()} / $ {an_input}")
+            if an_input and an_input != "r":
+                print(f"{get_flair()} / $ {an_input}\n")
 
         # Get input command from user
         else:
             if session and gtff.USE_PROMPT_TOOLKIT:
-                choices: dict = {c: {} for c in t_controller.CHOICES}
-                choices["cd"] = {c: None for c in cd_CHOICES}
-
-                completer = NestedCompleter.from_nested_dict(choices)
                 an_input = session.prompt(
                     f"{get_flair()} / $ ",
-                    completer=completer,
+                    completer=t_controller.completer,
                     search_ignore_case=True,
                 )
 
