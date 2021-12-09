@@ -11,7 +11,6 @@ from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED, get_flair
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_non_negative,
@@ -20,6 +19,8 @@ from gamestonk_terminal.helper_funcs import (
     check_int_range,
     try_except,
     system_clear,
+    get_flair,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.discovery import (
@@ -68,6 +69,47 @@ class DiscoveryController:
         "fds",
         "cnews",
         "rtat",
+    ]
+
+    arkord_sortby_choices = [
+        "date",
+        "volume",
+        "open",
+        "high",
+        "close",
+        "low",
+        "total",
+        "weight",
+        "shares",
+    ]
+
+    arkord_fund_choices = ["ARKK", "ARKF", "ARKW", "ARKQ", "ARKG", "ARKX", ""]
+
+    cnews_type_choices = [
+        nt.lower()
+        for nt in [
+            "Top-News",
+            "On-The-Move",
+            "Market-Pulse",
+            "Notable-Calls",
+            "Buybacks",
+            "Commodities",
+            "Crypto",
+            "Issuance",
+            "Global",
+            "Guidance",
+            "IPOs",
+            "SPACs",
+            "Politics",
+            "M-A",
+            "Consumer",
+            "Energy",
+            "Financials",
+            "Healthcare",
+            "MLPs",
+            "REITs",
+            "Technology",
+        ]
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -126,10 +168,8 @@ NASDAQ Data Link (Formerly Quandl):
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
         # Empty command
         if not an_input:
@@ -138,19 +178,14 @@ NASDAQ Data Link (Formerly Quandl):
 
         (known_args, other_args) = self.disc_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return self.queue if len(self.queue) > 0 else []
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return self.queue if len(self.queue) > 0 else []
-
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
         )(other_args)
+
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue if len(self.queue) > 0 else []
 
     def call_h(self, _):
         """Process help command"""
@@ -195,15 +230,9 @@ NASDAQ Data Link (Formerly Quandl):
                 Realtime earnings data and expected moves. [Source: https://thegeekofwallstreet.com]
             """,
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             geekofwallstreet_view.display_realtime_earnings(ns_parser.export)
 
@@ -229,19 +258,13 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="Number of past days to look for IPOs.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
         if other_args:
             if "-" not in other_args[0]:
                 other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
         if ns_parser:
             finnhub_view.past_ipo(
                 num_days_behind=ns_parser.num,
@@ -270,18 +293,12 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="Number of future days to look for IPOs.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
         if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
         if ns_parser:
             finnhub_view.future_ipo(
                 num_days_ahead=ns_parser.num,
@@ -308,19 +325,13 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="Number of stocks to display.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
         if other_args:
             if "-" not in other_args[0]:
                 other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
         if ns_parser:
             yahoofinance_view.display_gainers(
                 num_stocks=ns_parser.num,
@@ -347,19 +358,13 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="Number of stocks to display.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
         if other_args:
             if "-" not in other_args[0]:
                 other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
         if ns_parser:
             yahoofinance_view.display_losers(
                 num_stocks=ns_parser.num,
@@ -389,19 +394,13 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="Number of stocks to display.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
         if other_args:
             if "-" not in other_args[0]:
                 other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
         if ns_parser:
             yahoofinance_view.display_ugs(
                 num_stocks=ns_parser.num,
@@ -430,19 +429,13 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="Number of stocks to display.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
         if other_args:
             if "-" not in other_args[0]:
                 other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
         if ns_parser:
             yahoofinance_view.display_gtech(
                 num_stocks=ns_parser.num,
@@ -471,19 +464,13 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="Number of stocks to display.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
         if other_args:
             if "-" not in other_args[0]:
                 other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
         if ns_parser:
             yahoofinance_view.display_active(
                 num_stocks=ns_parser.num,
@@ -510,19 +497,13 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="Number of the stocks to display.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
         if other_args:
             if "-" not in other_args[0]:
                 other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
         if ns_parser:
             yahoofinance_view.display_ulc(
                 num_stocks=ns_parser.num,
@@ -549,19 +530,13 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="Number of the stocks to display.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
         if other_args:
             if "-" not in other_args[0]:
                 other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
         if ns_parser:
             yahoofinance_view.display_asc(
                 num_stocks=ns_parser.num,
@@ -593,19 +568,13 @@ NASDAQ Data Link (Formerly Quandl):
             default=10,
             help="Number of top ordered stocks to be printed.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
         if other_args:
             if "-" not in other_args[0]:
                 other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
         if ns_parser:
             fidelity_view.orders_view(
                 num=ns_parser.n_num,
@@ -636,17 +605,7 @@ NASDAQ Data Link (Formerly Quandl):
             "-s",
             "--sortby",
             dest="sort_col",
-            choices=[
-                "date",
-                "volume",
-                "open",
-                "high",
-                "close",
-                "low",
-                "total",
-                "weight",
-                "shares",
-            ],
+            choices=self.arkord_sortby_choices,
             nargs="+",
             help="Colume to sort by",
             default="",
@@ -682,20 +641,14 @@ NASDAQ Data Link (Formerly Quandl):
             default="",
             help="Filter by fund",
             dest="fund",
-            choices=["ARKK", "ARKF", "ARKW", "ARKQ", "ARKG", "ARKX", ""],
-        )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+            choices=self.arkord_fund_choices,
         )
         if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
         if ns_parser:
             ark_view.ark_orders_view(
                 num=ns_parser.n_num,
@@ -737,19 +690,13 @@ NASDAQ Data Link (Formerly Quandl):
             default=1,
             help="Number of upcoming earnings release dates to display",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
         if other_args:
             if "-" not in other_args[0]:
                 other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
         if ns_parser:
             seeking_alpha_view.upcoming_earning_release_dates(
                 num_pages=ns_parser.n_pages,
@@ -795,19 +742,13 @@ NASDAQ Data Link (Formerly Quandl):
             default=datetime.now().strftime("%Y-%m-%d"),
             help="starting date of articles",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
         if other_args:
             if "-" not in other_args[0]:
                 other_args.insert(0, "-i")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
         if ns_parser:
             seeking_alpha_view.news(
                 news_type="trending",
@@ -843,15 +784,9 @@ NASDAQ Data Link (Formerly Quandl):
             default=10,
             help="Number of top stocks to print.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             shortinterest_view.low_float(
                 num=ns_parser.n_num,
@@ -869,35 +804,12 @@ NASDAQ Data Link (Formerly Quandl):
             prog="cnews",
             description="""Customized news. [Source: Seeking Alpha]""",
         )
-        l_news_type = [
-            "Top-News",
-            "On-The-Move",
-            "Market-Pulse",
-            "Notable-Calls",
-            "Buybacks",
-            "Commodities",
-            "Crypto",
-            "Issuance",
-            "Global",
-            "Guidance",
-            "IPOs",
-            "SPACs",
-            "Politics",
-            "M-A",
-            "Consumer",
-            "Energy",
-            "Financials",
-            "Healthcare",
-            "MLPs",
-            "REITs",
-            "Technology",
-        ]
         parser.add_argument(
             "-t",
             "--type",
             action="store",
             dest="s_type",
-            choices=[tnews.lower() for tnews in l_news_type],
+            choices=self.cnews_type_choices,
             default="Top-News",
             help="number of news to display",
         )
@@ -910,19 +822,13 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="number of news to display",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
         if other_args:
             if "-" not in other_args[0]:
                 other_args.insert(0, "-t")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
         if ns_parser:
             seeking_alpha_view.display_news(
                 news_type=ns_parser.s_type,
@@ -958,19 +864,13 @@ NASDAQ Data Link (Formerly Quandl):
             default=10,
             help="Number of top stocks to print.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
         if other_args:
             if "-" not in other_args[0]:
                 other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
         if ns_parser:
             shortinterest_view.hot_penny_stocks(
                 num=ns_parser.n_num,
@@ -1136,14 +1036,34 @@ def menu(queue: List[str] = None):
         # Get input command from user
         else:
             if session and gtff.USE_PROMPT_TOOLKIT:
-                completer = NestedCompleter.from_nested_dict(
-                    {c: None for c in disc_controller.CHOICES}
-                )
 
+                choices: dict = {c: {} for c in disc_controller.CHOICES}
+                choices["arkord"]["-s"] = {
+                    c: None for c in disc_controller.arkord_sortby_choices
+                }
+                choices["arkord"]["--sortby"] = {
+                    c: None for c in disc_controller.arkord_sortby_choices
+                }
+                choices["arkord"]["-f"] = {
+                    c: None for c in disc_controller.arkord_fund_choices
+                }
+                choices["arkord"]["--fund"] = {
+                    c: None for c in disc_controller.arkord_fund_choices
+                }
+                choices["cnews"]["-t"] = {
+                    c: None for c in disc_controller.cnews_type_choices
+                }
+                choices["cnews"]["--type"] = {
+                    c: None for c in disc_controller.cnews_type_choices
+                }
+
+                completer = NestedCompleter.from_nested_dict(choices)
                 an_input = session.prompt(
                     f"{get_flair()} /stocks/disc/ $ ",
                     completer=completer,
+                    search_ignore_case=True,
                 )
+
             else:
                 an_input = input(f"{get_flair()} /stocks/disc/ $ ")
 

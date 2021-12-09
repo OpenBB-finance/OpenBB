@@ -147,10 +147,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
         Returns
         -------
-        MENU_GO_BACK, MENU_QUIT, MENU_RESET
-            MENU_GO_BACK - Show main context menu again
-            MENU_QUIT - Quit terminal
-            MENU_RESET - Reset terminal and go back to same previous menu
+        List[str]
+            List of commands in the queue to execute
         """
 
         # Empty command
@@ -160,19 +158,14 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
         (known_args, other_args) = self.stocks_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
-
         return getattr(
             self, "call_" + known_args.cmd, lambda: "command not recognized!"
         )(other_args)
+
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue if len(self.queue) > 0 else []
 
     def call_h(self, _):
         """Process help command"""
