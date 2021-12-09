@@ -1,5 +1,5 @@
 import discord
-import config_discordbot as cfg
+import discordbot.config_discordbot as cfg
 
 
 class GenericCommands(discord.ext.commands.Cog):

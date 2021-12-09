@@ -1,7 +1,7 @@
-import discord_components
 import asyncio
-from discordbot import gst_bot
+import discord_components
 import yfinance as yf
+from discordbot.run_discordbot import gst_bot
 
 
 def load(ticker, start_date):

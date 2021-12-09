@@ -273,33 +273,6 @@ def get_earnings(ticker: str, quarterly: bool = False) -> pd.DataFrame:
     return pd.DataFrame()
 
 
-def clean_fundamentals_df(df_fa: pd.DataFrame, num: int) -> pd.DataFrame:
-    """Clean fundamentals dataframe
-
-    Parameters
-    ----------
-    df_fa : pd.DataFrame
-        Fundamentals dataframe
-    num : int
-        Number of data rows to display
-
-    Returns
-    ----------
-    pd.DataFrame
-        Clean dataframe to output
-    """
-    # pylint: disable=no-member
-    df_fa = df_fa.set_index("fiscalDateEnding")
-    df_fa = df_fa.head(n=num).T
-    df_fa = df_fa.mask(df_fa.astype(object).eq(num * ["None"])).dropna()
-    df_fa = df_fa.mask(df_fa.astype(object).eq(num * ["0"])).dropna()
-    df_fa = df_fa.applymap(lambda x: long_number_format(x))
-    clean_df_index(df_fa)
-    df_fa.columns.name = "Fiscal Date Ending"
-
-    return df_fa
-
-
 def get_fraud_ratios(ticker: str) -> Tuple[Dict[str, float], float]:
     """Get fraud ratios based on fundamentals
 

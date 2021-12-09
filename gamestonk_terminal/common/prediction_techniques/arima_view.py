@@ -42,6 +42,7 @@ def display_arima(
     results: bool,
     s_end_date: str = "",
     export: str = "",
+    time_res: str = "",
 ):
     """View fit ARIMA model
 
@@ -65,14 +66,21 @@ def display_arima(
         Specified end date for backtesting comparisons
     export : str, optional
         Format to export image
+    time_res : str
+        Resolution for data, allowing for predicting outside of standard market days
     """
 
     if arima_order:
         t_order = tuple(int(ord) for ord in arima_order.split(","))
     if s_end_date:
-        future_index = get_next_stock_market_days(
-            last_stock_day=s_end_date, n_next_days=n_predict
-        )
+        if not time_res:
+            future_index = get_next_stock_market_days(
+                last_stock_day=s_end_date, n_next_days=n_predict
+            )
+        else:
+            future_index = pd.date_range(
+                s_end_date, periods=n_predict + 1, freq=time_res
+            )[1:]
 
         if future_index[-1] > datetime.datetime.now():
             print(
@@ -88,10 +96,16 @@ def display_arima(
     )
 
     # Prediction data
-    l_pred_days = get_next_stock_market_days(
-        last_stock_day=values.index[-1],
-        n_next_days=n_predict,
-    )
+    if not time_res:
+        l_pred_days = get_next_stock_market_days(
+            last_stock_day=values.index[-1],
+            n_next_days=n_predict,
+        )
+    else:
+        l_pred_days = pd.date_range(
+            values.index[-1], periods=n_predict + 1, freq=time_res
+        )[1:]
+
     df_pred = pd.Series(l_predictions, index=l_pred_days, name="Price")
 
     if results:
@@ -108,21 +122,21 @@ def display_arima(
         # BACKTESTING
         if s_end_date:
             ax.set_title(
-                f"BACKTESTING: ARIMA {str(t_order)} on {dataset} - {n_predict} days prediction"
+                f"BACKTESTING: ARIMA {str(t_order)} on {dataset} - {n_predict} step prediction"
             )
         else:
             ax.set_title(
-                f"ARIMA {str(t_order)} on {dataset} - {n_predict} days prediction"
+                f"ARIMA {str(t_order)} on {dataset} - {n_predict} step prediction"
             )
     else:
         # BACKTESTING
         if s_end_date:
             ax.set_title(
-                f"BACKTESTING: ARIMA {model.order} on {dataset} - {n_predict} days prediction"
+                f"BACKTESTING: ARIMA {model.order} on {dataset} - {n_predict} step prediction"
             )
         else:
-            plt.title(f"ARIMA {model.order} on {dataset} - {n_predict} days prediction")
-    ax.set_xlim(values.index[0], get_next_stock_market_days(df_pred.index[-1], 1)[-1])
+            plt.title(f"ARIMA {model.order} on {dataset} - {n_predict} step prediction")
+    ax.set_xlim(values.index[0], l_pred_days[-1])
     ax.set_xlabel("Time")
     ax.set_ylabel("Value")
     ax.grid(b=True, which="major", color="#666666", linestyle="-")

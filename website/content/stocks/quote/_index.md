@@ -1,5 +1,5 @@
 ```
-usage: quote [-t S_TICKER] [-h]
+usage: quote [-t S_TICKER] [-p] [-h]
 ```
 
 Retrieves a current quote from the currently [loaded ticker](https://gamestonkterminal.github.io/GamestonkTerminal/stocks/load/). To view a quote from a different symbol than what is currently loaded, add the '-t' argument to the command string. 
@@ -8,6 +8,7 @@ Retrieves a current quote from the currently [loaded ticker](https://gamestonkte
 optional arguments:
   -t S_TICKER, --ticker S_TICKER
                         Stock ticker (default: AAPL)
+  -p, --price		Return only the current price (default: False)
   -h, --help            show this help message (default: False)
 ```
 

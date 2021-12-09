@@ -46,7 +46,7 @@ def get_trading_pair_info(product_id: str) -> pd.DataFrame:
     return df
 
 
-def get_order_book(product_id: str) -> Tuple[np.array, np.array, str, dict]:
+def get_order_book(product_id: str) -> Tuple[np.ndarray, np.ndarray, str, dict]:
     """Get orders book for chosen trading pair. [Source: Coinbase]
 
     Parameters

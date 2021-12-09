@@ -2,7 +2,7 @@
 usage: ownership [--export {csv,json,xlsx}] [-h]
 ```
 
-Prints screener data of similar companies. [Source: Finviz]
+Compare the outstanding shares, market cap, short interest and more. Source: https://finviz.com
 
 ```
 optional arguments:
@@ -10,5 +10,5 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
+<img size="1400" alt="Feature Screenshot - ownership" src="https://user-images.githubusercontent.com/85772166/142948543-c4378a8c-e467-4514-a859-f4c1b09a0685.png">
 
-<img width="1064" alt="ownership" src="https://user-images.githubusercontent.com/25267873/114103694-7bea6100-98c1-11eb-8261-49cca9b8a34c.png">

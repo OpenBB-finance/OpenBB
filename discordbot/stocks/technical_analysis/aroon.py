@@ -1,10 +1,11 @@
-import discord
-import config_discordbot as cfg
-from discordbot import gst_imgur
-from datetime import datetime, timedelta
-from matplotlib import pyplot as plt
 import os
-import helpers
+from datetime import datetime, timedelta
+import discord
+from matplotlib import pyplot as plt
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur
+import discordbot.helpers
 
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.common.technical_analysis import trend_indicators_model
@@ -42,7 +43,7 @@ async def aroon_command(ctx, ticker="", length="25", scalar="100", start="", end
         scalar = float(scalar)
 
         ticker = ticker.upper()
-        df_stock = helpers.load(ticker, start)
+        df_stock = discordbot.helpers.load(ticker, start)
         if df_stock.empty:
             raise Exception("Stock ticker is invalid")
 

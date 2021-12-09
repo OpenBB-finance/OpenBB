@@ -145,7 +145,7 @@ def mlp_model(
     test_size: float,
     n_loops: int,
     no_shuffle: bool,
-) -> Tuple[pd.DataFrame, np.array, np.array, np.array, Any]:
+) -> Tuple[pd.DataFrame, np.ndarray, np.ndarray, np.ndarray, Any]:
     """Train MLP model on data based on config params
 
     Parameters
@@ -265,7 +265,7 @@ def rnn_model(
     test_size: float,
     n_loops: int,
     no_shuffle: bool,
-) -> Tuple[pd.DataFrame, np.array, np.array, np.array, Any]:
+) -> Tuple[pd.DataFrame, np.ndarray, np.ndarray, np.ndarray, Any]:
     """Train RNN model on data based on config params
 
     Parameters
@@ -378,7 +378,7 @@ def lstm_model(
     test_size: float,
     n_loops: int,
     no_shuffle: bool,
-) -> Tuple[pd.DataFrame, np.array, np.array, np.array, Any]:
+) -> Tuple[pd.DataFrame, np.ndarray, np.ndarray, np.ndarray, Any]:
     """Train LSTM model on data based on config params
 
     Parameters
@@ -491,7 +491,7 @@ def conv1d_model(
     test_size: float,
     n_loops: int,
     no_shuffle: bool,
-) -> Tuple[pd.DataFrame, np.array, np.array, np.array, Any]:
+) -> Tuple[pd.DataFrame, np.ndarray, np.ndarray, np.ndarray, Any]:
     """Train Conv1D model on data based on config params
 
     Parameters

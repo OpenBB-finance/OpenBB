@@ -1,0 +1,110 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:86.1) Gecko/20100101 Firefox/86.1
+    method: GET
+    uri: https://cathiesark.com/ark-combined-holdings-of-INVALID_TICKER
+  response:
+    body:
+      string: !!binary |
+        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
+        /wMANzdgv2YzAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Mon, 15 Nov 2021 04:27:10 GMT
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-origin:
+      - '*'
+      age:
+      - '0'
+      cache-control:
+      - public, max-age=0, must-revalidate
+      content-disposition:
+      - inline
+      etag:
+      - W/"ba680ec792799a61f0c6e1c656479498d95222950c96bd17a07497d67a45bd15"
+      server:
+      - Vercel
+      strict-transport-security:
+      - max-age=63072000
+      x-vercel-cache:
+      - PRERENDER
+      x-vercel-id:
+      - cdg1::ldk66-1636950429603-5b697f39b08a
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,15 +1,16 @@
-import discord
-from discordbot import gst_bot
-import config_discordbot as cfg
 import asyncio
+import discord
 
-from stocks.due_diligence.analyst import analyst_command
-from stocks.due_diligence.pt import pt_command
-from stocks.due_diligence.est import est_command
-from stocks.due_diligence.sec import sec_command
-from stocks.due_diligence.supplier import supplier_command
-from stocks.due_diligence.customer import customer_command
-from stocks.due_diligence.arktrades import arktrades_command
+from discordbot.run_discordbot import gst_bot
+import discordbot.config_discordbot as cfg
+
+from discordbot.stocks.due_diligence.analyst import analyst_command
+from discordbot.stocks.due_diligence.pt import pt_command
+from discordbot.stocks.due_diligence.est import est_command
+from discordbot.stocks.due_diligence.sec import sec_command
+from discordbot.stocks.due_diligence.supplier import supplier_command
+from discordbot.stocks.due_diligence.customer import customer_command
+from discordbot.stocks.due_diligence.arktrades import arktrades_command
 
 
 class DueDiligenceCommands(discord.ext.commands.Cog):

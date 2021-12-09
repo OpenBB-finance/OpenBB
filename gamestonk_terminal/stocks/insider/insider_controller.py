@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import os
 import argparse
+import difflib
 import configparser
 from typing import List
 import pandas as pd
@@ -17,7 +18,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.stocks.stocks_helper import load
+from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.stocks.insider import (
     openinsider_view,
     businessinsider_view,
@@ -315,9 +316,39 @@ Ticker: {self.ticker}
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
-        self.ticker, _, _, _ = load(
-            other_args, self.ticker, self.start, "1440min", self.stock
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
+            " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
+            " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
         )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="ticker",
+            required="-h" not in other_args,
+            help="Stock ticker",
+        )
+        # For the case where a user uses: 'load BB'
+        if other_args and "-t" not in other_args and "-h" not in other_args:
+            other_args.insert(0, "-t")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df_stock_candidate = stocks_helper.load(
+            ns_parser.ticker,
+        )
+
+        if not df_stock_candidate.empty:
+            if "." in ns_parser.ticker:
+                self.ticker = ns_parser.ticker.upper().split(".")[0]
+            else:
+                self.ticker = ns_parser.ticker.upper()
 
     def call_view(self, other_args: List[str]):
         """Process view command"""
@@ -534,4 +565,10 @@ def menu(ticker: str, start: str, interval: str, stock: pd.DataFrame):
 
         except SystemExit:
             print("The command selected doesn't exist\n")
+            similar_cmd = difflib.get_close_matches(
+                an_input, ins_controller.CHOICES, n=1, cutoff=0.7
+            )
+
+            if similar_cmd:
+                print(f"Did you mean '{similar_cmd[0]}'?\n")
             continue

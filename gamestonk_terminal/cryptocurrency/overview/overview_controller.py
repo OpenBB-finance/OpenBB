@@ -3,6 +3,8 @@ __docformat__ = "numpy"
 
 # pylint: disable=R0904, C0302, W0622
 import argparse
+import difflib
+from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -11,11 +13,15 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     try_except,
     system_clear,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.overview import (
     pycoingecko_view,
     coinpaprika_view,
+    cryptopanic_view,
+    withdrawalfees_model,
+    withdrawalfees_view,
 )
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_view import CURRENCIES
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
@@ -55,6 +61,10 @@ class Controller:
         "cpplatforms",
         "cpcontracts",
         "cbpairs",
+        "news",
+        "wf",
+        "ewf",
+        "wfpe",
     ]
 
     def __init__(self):
@@ -98,6 +108,12 @@ CoinPaprika:
     cpcontracts       all smart contracts for given platform
 Coinbase:
     cbpairs           info about available trading pairs on Coinbase
+CryptoPanic:
+    news              recent crypto news from CryptoPanic aggregator
+WithdrawalFees:
+    wf                overall withdrawal fees
+    ewf               overall exchange withdrawal fees
+    wfpe              crypto withdrawal fees per exchange
 """
 
         print(help_text)
@@ -147,6 +163,149 @@ Coinbase:
     def call_quit(self, _):
         """Process Quit command - quit the program."""
         return True
+
+    @try_except
+    def call_wf(self, other_args: List[str]):
+        """Process wf command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="wf",
+            description="""
+                Display top coins withdrawal fees
+                [Source: https://withdrawalfees.com/]
+            """,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--limit",
+            type=int,
+            help="Limit number of coins to display withdrawal fees. Default 10",
+            dest="limit",
+            default=10,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if not ns_parser:
+            return
+
+        withdrawalfees_view.display_overall_withdrawal_fees(
+            export=ns_parser.export, top=ns_parser.limit
+        )
+
+    @try_except
+    def call_ewf(self, other_args: List[str]):
+        """Process ewf command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ewf",
+            description="""
+                Display exchange withdrawal fees
+                [Source: https://withdrawalfees.com/]
+            """,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if not ns_parser:
+            return
+
+        withdrawalfees_view.display_overall_exchange_withdrawal_fees(
+            export=ns_parser.export
+        )
+
+    @try_except
+    def call_wfpe(self, other_args: List[str]):
+        """Process wfpe command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="wfpe",
+            description="""
+                Coin withdrawal fees per exchange
+                [Source: https://withdrawalfees.com/]
+            """,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--coin",
+            default="bitcoin",
+            type=str,
+            dest="coin",
+            help="Coin to check withdrawal fees in long format (e.g., bitcoin, ethereum)",
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-c")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if not ns_parser:
+            return
+
+        if ns_parser.coin:
+            if ns_parser.coin in withdrawalfees_model.POSSIBLE_CRYPTOS:
+                withdrawalfees_view.display_crypto_withdrawal_fees(
+                    export=ns_parser.export, symbol=ns_parser.coin
+                )
+            else:
+                print(f"Coin '{ns_parser.coin}' does not exist.")
+
+                similar_cmd = difflib.get_close_matches(
+                    ns_parser.coin,
+                    withdrawalfees_model.POSSIBLE_CRYPTOS,
+                    n=1,
+                    cutoff=0.75,
+                )
+                if similar_cmd:
+                    print(f"Replacing by '{similar_cmd[0]}'")
+                    withdrawalfees_view.display_crypto_withdrawal_fees(
+                        export=ns_parser.export, symbol=similar_cmd[0]
+                    )
+                else:
+                    similar_cmd = difflib.get_close_matches(
+                        ns_parser.coin,
+                        withdrawalfees_model.POSSIBLE_CRYPTOS,
+                        n=1,
+                        cutoff=0.5,
+                    )
+                    if similar_cmd:
+                        print(f"Did you mean '{similar_cmd[0]}'?")
+        else:
+            for coin in withdrawalfees_model.POSSIBLE_CRYPTOS:
+                print(coin)
 
     @try_except
     def call_cghold(self, other_args):
@@ -1529,6 +1688,116 @@ Coinbase:
             descend=ns_parser.descend,
         )
 
+    @try_except
+    def call_news(self, other_args):
+        """Process news command"""
+        parser = argparse.ArgumentParser(
+            prog="news",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="Display recent news from CryptoPanic aggregator platform. [Source: https://cryptopanic.com/]",
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=int,
+            help="top N number of news >=10",
+            default=20,
+        )
+
+        parser.add_argument(
+            "-k",
+            "--kind",
+            dest="kind",
+            type=str,
+            help="Filter by category of news. Available values: news or media.",
+            default="news",
+            choices=["news", "media"],
+        )
+
+        parser.add_argument(
+            "-f",
+            "--filter",
+            dest="filter",
+            type=str,
+            help="Filter by kind of news. One from list: rising|hot|bullish|bearish|important|saved|lol",
+            default=None,
+            required=False,
+            choices=[
+                "rising",
+                "hot",
+                "bullish",
+                "bearish",
+                "important",
+                "saved",
+                "lol",
+            ],
+        )
+
+        parser.add_argument(
+            "-r",
+            "--region",
+            dest="region",
+            type=str,
+            help="Filter news by regions. Available regions are: en (English), de (Deutsch), nl (Dutch), es (Español), "
+            "fr (Français), it (Italiano), pt (Português), ru (Русский)",
+            default="en",
+            choices=["en", "de", "es", "fr", "nl", "it", "pt", "ru"],
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: published_at",
+            default="published_at",
+            choices=[
+                "published_at",
+                "domain",
+                "title",
+                "negative_votes",
+                "positive_votes",
+            ],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--links",
+            dest="links",
+            action="store_true",
+            help="Flag to show urls. If you will use that flag you will additional column with urls",
+            default=False,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if not ns_parser:
+            return
+
+        cryptopanic_view.display_news(
+            top=ns_parser.top,
+            export=ns_parser.export,
+            sortby=ns_parser.sortby,
+            descend=ns_parser.descend,
+            links=ns_parser.links,
+            post_kind=ns_parser.kind,
+            filter_=ns_parser.filter,
+            region=ns_parser.region,
+        )
+
 
 def menu():
     overview_controller = Controller()
@@ -1537,9 +1806,17 @@ def menu():
     while True:
         # Get input command from user
         if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in overview_controller.CHOICES}
-            )
+            choices: dict = {c: {} for c in overview_controller.CHOICES}
+
+            choices["wfpe"] = {c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS}
+            choices["wfpe"]["-c"] = {
+                c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS
+            }
+            choices["wfpe"]["--coin"] = {
+                c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS
+            }
+
+            completer = NestedCompleter.from_nested_dict(choices)
             an_input = session.prompt(
                 f"{get_flair()} (crypto)>(ov)> ",
                 completer=completer,

@@ -29,3 +29,4 @@ optional arguments:
   --no_shuffle          Specify if shuffling validation inputs.
   -h, --help            show this help message
 ```
+<img size="1400" alt="Feature Screenshot - conv1d" src="https://user-images.githubusercontent.com/85772166/144000429-2c5f4515-4660-450c-80dc-f35cb7291f20.png">
