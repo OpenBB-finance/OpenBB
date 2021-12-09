@@ -1,6 +1,21 @@
 stocks
-r
 disc
-h
-ugs -n 3
+rtearn
+pipo
+fipo
+gainers
+losers
+ugs -l 3
+gtech
+active
+ulc
+asc
+ford
+arkord
+upcoming
+trending
+cnews
+lowfloat
+hotpenny
+rtat
 exit
