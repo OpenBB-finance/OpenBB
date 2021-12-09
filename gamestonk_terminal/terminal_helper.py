@@ -240,7 +240,27 @@ def check_api_keys():
         key_dict["BINANCE"] = "Not defined"
     else:
         key_dict["BINANCE"] = "defined, not tested"
-
+    # BitQuery keys
+    bitquery = cfg.API_BITQUERY_KEY
+    if "REPLACE_ME" in bitquery:
+        key_dict["BITQUERY"] = "Not defined"
+    else:
+        headers = {"x-api-key": cfg.API_BITQUERY_KEY}
+        query = """
+        {
+        ethereum {
+        dexTrades(options: {limit: 10, desc: "count"}) {
+            count
+            protocol
+        }}}
+        """
+        r = requests.post(
+            "https://graphql.bitquery.io", json={"query": query}, headers=headers
+        )
+        if r.status_code == 200:
+            key_dict["BITQUERY"] = "defined, test passed"
+        else:
+            key_dict["BITQUERY"] = "defined, test failed"
     # SentimentInvestor keys
     si_keys = [cfg.API_SENTIMENTINVESTOR_KEY, cfg.API_SENTIMENTINVESTOR_TOKEN]
     if "REPLACE_ME" in si_keys:

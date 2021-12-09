@@ -766,6 +766,38 @@ main:
         sub:
           - name: gwei
             ref: "/cryptocurrency/onchain/gwei"
+          - name: address
+            ref: "/cryptocurrency/onchain/address"
+          - name: balance
+            ref: "/cryptocurrency/onchain/balance"
+          - name: hist
+            ref: "/cryptocurrency/onchain/hist"
+          - name: holders
+            ref: "/cryptocurrency/onchain/holders"
+          - name: info
+            ref: "/cryptocurrency/onchain/info"
+          - name: ttcp
+            ref: "/cryptocurrency/onchain/ttcp"
+          - name: prices
+            ref: "/cryptocurrency/onchain/prices"
+          - name: ueat
+            ref: "/cryptocurrency/onchain/ueat"
+          - name: baas
+            ref: "/cryptocurrency/onchain/baas"
+          - name: th
+            ref: "/cryptocurrency/onchain/th"
+          - name: top
+            ref: "/cryptocurrency/onchain/top"
+          - name: lt
+            ref: "/cryptocurrency/onchain/lt"
+          - name: tx
+            ref: "/cryptocurrency/onchain/tx"
+          - name: dvcp
+            ref: "/cryptocurrency/onchain/dvcp"
+          - name: tv
+            ref: "/cryptocurrency/onchain/tv"
+          - name: whales
+            ref: "/cryptocurrency/onchain/whales"
       - name: nft
         ref: "/cryptocurrency/nft"
         sub:
