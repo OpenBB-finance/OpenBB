@@ -33,7 +33,9 @@ def test_quote():
     [True, False],
 )
 def test_search(mocker, use_tab):
-    mocker.patch.object(target=stocks_helper.gtff, attribute="USE_TABULATE_DF", new=use_tab)
+    mocker.patch.object(
+        target=stocks_helper.gtff, attribute="USE_TABULATE_DF", new=use_tab
+    )
     stocks_helper.search(query="pharma", amount=5)
 
 
