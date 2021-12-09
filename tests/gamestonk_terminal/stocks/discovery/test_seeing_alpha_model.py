@@ -19,7 +19,7 @@ class TestDiscoverySeekingAlphaModel:
     )
     @parameterize_from_file(
         "test_get_next_earnings",
-        "../tests/gamestonk_terminal/stocks/discovery/yaml/test_seeing_alpha_model/alpha_model.yaml",
+        "../../tests/gamestonk_terminal/stocks/discovery/yaml/test_seeing_alpha_model/alpha_model.yaml",
     )
     # pylint: disable=unused-argument
     def test_get_next_earnings(
