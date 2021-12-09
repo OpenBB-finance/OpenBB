@@ -803,7 +803,7 @@ def menu(ticker: str = "", queue: List[str] = None):
 
             an_input = stocks_controller.queue[0]
             stocks_controller.queue = stocks_controller.queue[1:]
-            if an_input and an_input != "r" and len(stocks_controller.queue) == 0:
+            if an_input and an_input in stocks_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /stocks/ $ {an_input}")
 
         # Get input command from user

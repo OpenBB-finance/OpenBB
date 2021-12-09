@@ -222,7 +222,7 @@ NASDAQ Data Link (Formerly Quandl):
 
     def call_cd(self, other_args):
         """Process cd command"""
-        if other_args:
+        if other_args and "-" not in other_args[0]:
             args = other_args[0].split("/")
             if len(args) > 0:
                 for m in args[::-1]:
@@ -234,7 +234,7 @@ NASDAQ Data Link (Formerly Quandl):
         self.queue.insert(0, "q")
         self.queue.insert(0, "q")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_h(self, _):
         """Process help command"""
@@ -299,24 +299,22 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="num",
+            dest="limit",
             type=check_non_negative,
             default=5,
-            help="Number of past days to look for IPOs.",
+            help="Limit of past days to look for IPOs.",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
-
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             finnhub_view.past_ipo(
-                num_days_behind=ns_parser.num,
+                num_days_behind=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -334,23 +332,22 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="num",
+            dest="limit",
             type=check_non_negative,
             default=5,
-            help="Number of future days to look for IPOs.",
+            help="Limit of future days to look for IPOs.",
         )
         if other_args and "-" not in other_args[0]:
-            other_args.insert(0, "-n")
-
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             finnhub_view.future_ipo(
-                num_days_ahead=ns_parser.num,
+                num_days_ahead=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -366,24 +363,22 @@ NASDAQ Data Link (Formerly Quandl):
             description="Print up to 25 top gainers. [Source: Yahoo Finance]",
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="num",
+            dest="limit",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of stocks to display.",
+            help="Limit of stocks to display.",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
-
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             yahoofinance_view.display_gainers(
-                num_stocks=ns_parser.num,
+                num_stocks=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -399,24 +394,22 @@ NASDAQ Data Link (Formerly Quandl):
             description="Print up to 25 top losers. [Source: Yahoo Finance]",
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="num",
+            dest="limit",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of stocks to display.",
+            help="Limit of stocks to display.",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
-
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             yahoofinance_view.display_losers(
-                num_stocks=ns_parser.num,
+                num_stocks=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -435,24 +428,22 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="num",
+            dest="limit",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of stocks to display.",
+            help="Limit of stocks to display.",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
-
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             yahoofinance_view.display_ugs(
-                num_stocks=ns_parser.num,
+                num_stocks=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -470,24 +461,22 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="num",
+            dest="limit",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of stocks to display.",
+            help="Limit of stocks to display.",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
-
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             yahoofinance_view.display_gtech(
-                num_stocks=ns_parser.num,
+                num_stocks=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -505,26 +494,26 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="num",
+            dest="limit",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of stocks to display.",
+            help="Limit of stocks to display.",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
-
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             yahoofinance_view.display_active(
-                num_stocks=ns_parser.num,
+                num_stocks=ns_parser.limit,
                 export=ns_parser.export,
             )
+
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_ulc(self, other_args: List[str]):
@@ -538,26 +527,26 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="num",
+            dest="limit",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of the stocks to display.",
+            help="Limit of stocks to display.",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
-
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             yahoofinance_view.display_ulc(
-                num_stocks=ns_parser.num,
+                num_stocks=ns_parser.limit,
                 export=ns_parser.export,
             )
+
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_asc(self, other_args: List[str]):
@@ -571,24 +560,22 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="num",
+            dest="limit",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of the stocks to display.",
+            help="Limit of stocks to display.",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
-
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             yahoofinance_view.display_asc(
-                num_stocks=ns_parser.num,
+                num_stocks=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -609,26 +596,26 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
-            type=check_positive,
-            default=10,
-            help="Number of top ordered stocks to be printed.",
+            dest="limit",
+            type=check_int_range(1, 25),
+            default=5,
+            help="Limit of stocks to display.",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
-
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             fidelity_view.orders_view(
-                num=ns_parser.n_num,
+                num=ns_parser.limit,
                 export=ns_parser.export,
             )
+
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_arkord(self, other_args: List[str]):
@@ -642,13 +629,13 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=10,
-            help="Last N ARK orders.",
+            help="Limit of stocks to display.",
         )
         parser.add_argument(
             "-s",
@@ -693,14 +680,13 @@ NASDAQ Data Link (Formerly Quandl):
             choices=self.arkord_fund_choices,
         )
         if other_args and "-" not in other_args[0]:
-            other_args.insert(0, "-n")
-
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             ark_view.ark_orders_view(
-                num=ns_parser.n_num,
+                num=ns_parser.limit,
                 sort_col=ns_parser.sort_col,
                 ascending=ns_parser.ascend,
                 buys_only=ns_parser.buys_only,
@@ -722,6 +708,15 @@ NASDAQ Data Link (Formerly Quandl):
             description="""Upcoming earnings release dates. [Source: Seeking Alpha]""",
         )
         parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=1,
+            help="Limit of upcoming earnings release dates to display.",
+        )
+        parser.add_argument(
             "-p",
             "--pages",
             action="store",
@@ -730,26 +725,15 @@ NASDAQ Data Link (Formerly Quandl):
             default=10,
             help="Number of pages to read upcoming earnings from in Seeking Alpha website.",
         )
-        parser.add_argument(
-            "-n",
-            "--num",
-            action="store",
-            dest="n_num",
-            type=check_positive,
-            default=1,
-            help="Number of upcoming earnings release dates to display",
-        )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
-
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             seeking_alpha_view.upcoming_earning_release_dates(
                 num_pages=ns_parser.n_pages,
-                num_earnings=ns_parser.n_num,
+                num_earnings=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -774,13 +758,13 @@ NASDAQ Data Link (Formerly Quandl):
             help="article ID",
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=5,
-            help="number of articles being printed",
+            help="limit of articles being printed",
         )
         parser.add_argument(
             "-d",
@@ -791,10 +775,8 @@ NASDAQ Data Link (Formerly Quandl):
             default=datetime.now().strftime("%Y-%m-%d"),
             help="starting date of articles",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-i")
-
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -802,7 +784,7 @@ NASDAQ Data Link (Formerly Quandl):
             seeking_alpha_view.news(
                 news_type="trending",
                 article_id=ns_parser.n_id,
-                num=ns_parser.n_num,
+                num=ns_parser.limit,
                 start_date=ns_parser.s_date,
                 export=ns_parser.export,
             )
@@ -825,20 +807,22 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
-            default=10,
-            help="Number of top stocks to print.",
+            default=5,
+            help="limit of stocks to display",
         )
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             shortinterest_view.low_float(
-                num=ns_parser.n_num,
+                num=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -863,17 +847,16 @@ NASDAQ Data Link (Formerly Quandl):
             help="number of news to display",
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=5,
-            help="number of news to display",
+            help="limit of news to display",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-t")
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-t")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -881,7 +864,7 @@ NASDAQ Data Link (Formerly Quandl):
         if ns_parser:
             seeking_alpha_view.display_news(
                 news_type=ns_parser.s_type,
-                num=ns_parser.n_num,
+                num=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -905,24 +888,23 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
-            default=10,
-            help="Number of top stocks to print.",
+            default=5,
+            help="limit of stocks to display",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-l")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             shortinterest_view.hot_penny_stocks(
-                num=ns_parser.n_num,
+                num=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -1010,7 +992,6 @@ NASDAQ Data Link (Formerly Quandl):
             dest="options",
             help="Obtain the available options for country, sector and industry",
         )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
@@ -1042,23 +1023,22 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
-            dest="n_days",
-            help="Number of days to show",
-            default=3,
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
             type=check_positive,
+            default=3,
+            help="limit of days to display",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
-
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             nasdaq_view.display_top_retail(
-                n_days=ns_parser.n_days, export=ns_parser.export
+                n_days=ns_parser.limit, export=ns_parser.export
             )
 
         return self.queue if len(self.queue) > 0 else []
@@ -1078,7 +1058,7 @@ def menu(queue: List[str] = None):
 
             an_input = disc_controller.queue[0]
             disc_controller.queue = disc_controller.queue[1:]
-            if an_input and an_input != "r" and len(disc_controller.queue) == 0:
+            if an_input and an_input in disc_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /stocks/disc/ $ {an_input}")
 
         # Get input command from user

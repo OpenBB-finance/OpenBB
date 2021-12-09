@@ -282,7 +282,7 @@ def terminal(jobs_cmds: List[str] = None):
 
             an_input = t_controller.queue[0]
             t_controller.queue = t_controller.queue[1:]
-            if an_input and an_input != "r" and len(t_controller.queue) == 0:
+            if an_input and an_input in t_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} / $ {an_input}")
 
         # Get input command from user
