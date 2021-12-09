@@ -22,6 +22,7 @@ from gamestonk_terminal.terminal_helper import (
     print_goodbye,
     reset,
     update_terminal,
+    usage_instructions,
 )
 from gamestonk_terminal.paths import cd_CHOICES
 
@@ -46,6 +47,7 @@ class TerminalController:
         "update",
         "about",
         "keys",
+        "usage",
     ]
 
     CHOICES_MENUS = [
@@ -87,6 +89,7 @@ class TerminalController:
         """Print help"""
         help_text = """
     about       about us
+    usage       usage instructions
     update      update terminal automatically
     keys        check for status of API keys
 
@@ -190,6 +193,10 @@ Menus:
         """Process about command"""
         about_us()
 
+    def call_usage(self, _):
+        """Process usage command"""
+        usage_instructions()
+
     # MENUS
     def call_stocks(self, _):
         """Process stocks command"""
@@ -248,16 +255,7 @@ def terminal(jobs_cmds: List[str] = None):
     t_controller = TerminalController(jobs_cmds)
     t_controller.print_help()
 
-    navigate_text = """
-In order to improve the speed of execution of the most experienced users, these are our new navigation keys:
-    cls  clear the screen
-    cd   jump into a menu or execute an action from a different section (e.g. cd stocks/disc/ugs -n 3)
-    h    help menu
-    q    quit this menu and go one menu above
-    e    exit the terminal
-    r    reset the terminal and reload configs from the current location
-"""
-    print(navigate_text)
+    usage_instructions()
 
     while ret_code:
         if gtff.ENABLE_QUICK_EXIT:
