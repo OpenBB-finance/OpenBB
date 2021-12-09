@@ -298,7 +298,7 @@ def terminal(jobs_cmds: List[str] = None):
         try:
             t_controller.queue = t_controller.switch(an_input)
 
-            if an_input in ("q", "e"):
+            if an_input in ("q", "..", "exit"):
                 print_goodbye()
                 break
 
