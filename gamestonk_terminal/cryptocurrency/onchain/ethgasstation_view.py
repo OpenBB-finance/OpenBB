@@ -1,3 +1,4 @@
+"""ETH Gas Station view"""
 import os
 
 from tabulate import tabulate

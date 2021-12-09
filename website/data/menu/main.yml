@@ -422,6 +422,8 @@ main:
             ref: "/portfolio/portfolio_optimization"
           - name: parity
             ref: "/stocks/options/parity"
+          - name: binom
+            ref: "/stocks/options/binom"
           - name: payoff
             ref: "/stocks/options/payoff"
             sub:
@@ -702,6 +704,12 @@ main:
             ref: "/cryptocurrency/overview/cbpairs"
           - name: news
             ref: "/cryptocurrency/overview/news"
+          - name: wf
+            ref: "/cryptocurrency/overview/wf"
+          - name: ewf
+            ref: "/cryptocurrency/overview/ewf"
+          - name: wfpe
+            ref: "/cryptocurrency/overview/wfpe"
       - name: due diligence
         ref: "/cryptocurrency/due_diligence"
         sub:
