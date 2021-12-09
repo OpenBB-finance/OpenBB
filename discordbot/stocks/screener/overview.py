@@ -4,7 +4,7 @@ from discordbot.helpers import pagination
 import difflib
 import pandas as pd
 
-from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data,
+from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 
 
 async def overview_command(ctx, preset="template", sort="", limit="25", ascend="False"):
