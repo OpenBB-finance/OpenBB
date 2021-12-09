@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 
 
 import argparse
+import difflib
 import os
 from datetime import datetime, timedelta
 from typing import List
@@ -74,6 +75,7 @@ class OptionsController:
         "unu",
         "plot",
         "parity",
+        "binom",
     ]
 
     CHOICES_MENUS = [
@@ -150,6 +152,7 @@ Current Expiry: {self.selected_date or None}
     grhist        plot option greek history [Syncretism.io]
     plot          plot variables provided by the user [Yfinance]
     parity        shows whether options are above or below expected price [Yfinance]
+    binom         shows the value of an option using binomial options pricing [Yfinance]
 
 >   payoff        shows payoff diagram for a selection of options [Yfinance]
 >   pricing       shows options pricing and risk neutral valuation [Yfinance]
@@ -291,10 +294,12 @@ Current Expiry: {self.selected_date or None}
             help="Number of options to show.  Each scraped page gives 20 results.",
         )
         parser.add_argument(
+            "-s",
             "--sortby",
             dest="sortby",
+            nargs="+",
             default="Vol/OI",
-            choices=["Option", "Vol/OI", "Vol", "OI", "Bid", "Ask"],
+            choices=["Strike", "Vol/OI", "Vol", "OI", "Bid", "Ask", "Exp", "Ticker"],
             help="Column to sort by.  Vol/OI is the default and typical variable to be considered unusual.",
         )
         parser.add_argument(
@@ -306,6 +311,22 @@ Current Expiry: {self.selected_date or None}
             help="Flag to sort in ascending order",
         )
         parser.add_argument(
+            "-p",
+            "--puts_only",
+            dest="puts_only",
+            help="Flag to show puts only",
+            default=False,
+            action="store_true",
+        )
+        parser.add_argument(
+            "-c",
+            "--calls_only",
+            dest="calls_only",
+            help="Flag to show calls only",
+            default=False,
+            action="store_true",
+        )
+        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -315,11 +336,18 @@ Current Expiry: {self.selected_date or None}
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+        if ns_parser.calls_only and ns_parser.puts_only:
+            print(
+                "Cannot return puts only and calls only.  Either use one or neither\n."
+            )
+            return
         fdscanner_view.display_options(
             num=ns_parser.num,
             sort_column=ns_parser.sortby,
             export=ns_parser.export,
             ascending=ns_parser.ascend,
+            calls_only=ns_parser.calls_only,
+            puts_only=ns_parser.puts_only,
         )
 
     @try_except
@@ -1235,6 +1263,79 @@ Current Expiry: {self.selected_date or None}
         print("")
 
     @try_except
+    def call_binom(self, other_args: List[str]):
+        """Process binom command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="parity",
+            description="Gives the option value using binomial option valuation",
+        )
+        parser.add_argument(
+            "-s",
+            "--strike",
+            type=float,
+            default=0,
+            dest="strike",
+            help="Strike price for option shown",
+        )
+        parser.add_argument(
+            "-p",
+            "--put",
+            action="store_true",
+            default=False,
+            dest="put",
+            help="Value a put instead of a call",
+        )
+        parser.add_argument(
+            "-e",
+            "--european",
+            action="store_true",
+            default=False,
+            dest="europe",
+            help="Value a European option instead of an American one",
+        )
+        parser.add_argument(
+            "--export",
+            action="store_true",
+            default=False,
+            dest="export",
+            help="Export an excel spreadsheet with binomial pricing data",
+        )
+        parser.add_argument(
+            "--plot",
+            action="store_true",
+            default=False,
+            dest="plot",
+            help="Plot expected ending values",
+        )
+        parser.add_argument(
+            "-v",
+            "--volatility",
+            type=float,
+            default=None,
+            dest="volatility",
+            help="Underlying asset annualized volatility",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not self.ticker or not self.selected_date:
+            print("Ticker and expiration required. \n")
+            return
+
+        yfinance_view.show_binom(
+            self.ticker,
+            self.selected_date,
+            ns_parser.strike,
+            ns_parser.put,
+            ns_parser.europe,
+            ns_parser.export,
+            ns_parser.plot,
+            ns_parser.volatility,
+        )
+
+    @try_except
     def call_pricing(self, _):
         """Process pricing command"""
         if not self.ticker or not self.selected_date:
@@ -1275,4 +1376,10 @@ def menu(ticker: str = ""):
 
         except SystemExit:
             print("The command selected doesn't exist\n")
+            similar_cmd = difflib.get_close_matches(
+                an_input, op_controller.CHOICES, n=1, cutoff=0.7
+            )
+
+            if similar_cmd:
+                print(f"Did you mean '{similar_cmd[0]}'?\n")
             continue

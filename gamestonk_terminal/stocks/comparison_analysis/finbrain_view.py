@@ -21,15 +21,11 @@ from gamestonk_terminal.stocks.comparison_analysis import finbrain_model
 register_matplotlib_converters()
 
 
-def display_sentiment_compare(
-    ticker: str, similar: List[str], raw: bool = False, export: str = ""
-):
-    """Display sentiment for all ticker
+def display_sentiment_compare(similar: List[str], raw: bool = False, export: str = ""):
+    """Display sentiment for all ticker. [Source: FinBrain]
 
     Parameters
     ----------
-    ticker : str
-        Base ticker for comparison
     similar : List[str]
         Similar companies to compare income with
     raw : bool, optional
@@ -37,15 +33,14 @@ def display_sentiment_compare(
     export : str, optional
         Format to export data
     """
-    all_tickers = [ticker, *similar]
-    df_sentiment = finbrain_model.get_sentiments(all_tickers)
+    df_sentiment = finbrain_model.get_sentiments(similar)
     if df_sentiment.empty:
         print("No sentiments found.")
 
     else:
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-        for idx, tick in enumerate(all_tickers):
+        for idx, tick in enumerate(similar):
             offset = 2 * idx
             ax.axhline(y=offset, color="k", linestyle="--", lw=2)
             ax.axhline(y=offset + 1, color="k", linestyle="--", lw=1)
@@ -78,8 +73,8 @@ def display_sentiment_compare(
         ax.grid(b=True, which="major", color="#666666", linestyle="-")
         ax.minorticks_on()
         ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        ax.set_yticks(np.arange(len(all_tickers)) * 2)
-        ax.set_yticklabels(all_tickers)
+        ax.set_yticks(np.arange(len(similar)) * 2)
+        ax.set_yticklabels(similar)
         ax.set_title(f"FinBrain's Sentiment Analysis since {df_sentiment.index[0]}")
         plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=1))
         plt.gcf().autofmt_xdate()
@@ -110,14 +105,12 @@ def display_sentiment_compare(
 
 
 def display_sentiment_correlation(
-    ticker: str, similar: List[str], raw: bool = False, export: str = ""
+    similar: List[str], raw: bool = False, export: str = ""
 ):
-    """Plot correlation sentiments heatmap across similar companies
+    """Plot correlation sentiments heatmap across similar companies. [Source: FinBrain]
 
     Parameters
     ----------
-    ticker : str
-        Main ticker to compare income
     similar : List[str]
         Similar companies to compare income with
     raw : bool, optional
@@ -125,8 +118,7 @@ def display_sentiment_correlation(
     export : str, optional
         Format to export data
     """
-    all_tickers = [ticker, *similar]
-    df_sentiment = finbrain_model.get_sentiments(all_tickers)
+    df_sentiment = finbrain_model.get_sentiments(similar)
     corrs = df_sentiment.corr()
     if df_sentiment.empty:
         print("No sentiments found.")
@@ -134,7 +126,7 @@ def display_sentiment_correlation(
     else:
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-        mask = np.zeros((len(all_tickers), len(all_tickers)), dtype=bool)
+        mask = np.zeros((len(similar), len(similar)), dtype=bool)
         mask[np.triu_indices(len(mask))] = True
 
         sns.heatmap(

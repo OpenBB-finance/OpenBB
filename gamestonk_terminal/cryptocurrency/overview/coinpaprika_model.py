@@ -296,7 +296,10 @@ def get_all_contract_platforms() -> pd.DataFrame:
     contract_platforms = session.make_request(session.ENDPOINTS["contract_platforms"])
     df = pd.DataFrame(contract_platforms).reset_index()
     df.columns = ["index", "platform_id"]
+
+    # pylint: disable=unsupported-assignment-operation
     df["index"] = df["index"] + 1
+
     return df
 
 

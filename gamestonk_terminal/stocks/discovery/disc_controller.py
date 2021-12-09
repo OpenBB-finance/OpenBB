@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 
 import argparse
+import difflib
 from datetime import datetime
 from typing import List
 
@@ -122,6 +123,7 @@ NASDAQ Data Link (Formerly Quandl):
 
     def switch(self, an_input: str):
         """Process and dispatch input
+
         Returns
         -------
         True, False or None
@@ -617,6 +619,58 @@ NASDAQ Data Link (Formerly Quandl):
             help="Last N ARK orders.",
         )
         parser.add_argument(
+            "-s",
+            "--sortby",
+            dest="sort_col",
+            choices=[
+                "date",
+                "volume",
+                "open",
+                "high",
+                "close",
+                "low",
+                "total",
+                "weight",
+                "shares",
+            ],
+            nargs="+",
+            help="Colume to sort by",
+            default="",
+        )
+        parser.add_argument(
+            "-a",
+            "-ascend",
+            dest="ascend",
+            help="Flag to sort in ascending order",
+            action="store_true",
+            default=False,
+        )
+        parser.add_argument(
+            "-b",
+            "--buy_only",
+            dest="buys_only",
+            help="Flag to look at buys only",
+            action="store_true",
+            default=False,
+        )
+        parser.add_argument(
+            "-c",
+            "--sell_only",
+            dest="sells_only",
+            help="Flag to look at sells only",
+            action="store_true",
+            default=False,
+        )
+        parser.add_argument(
+            "-f",
+            "--fund",
+            type=str,
+            default="",
+            help="Filter by fund",
+            dest="fund",
+            choices=["ARKK", "ARKF", "ARKW", "ARKQ", "ARKG", "ARKX", ""],
+        )
+        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -624,9 +678,8 @@ NASDAQ Data Link (Formerly Quandl):
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
@@ -634,6 +687,11 @@ NASDAQ Data Link (Formerly Quandl):
 
         ark_view.ark_orders_view(
             num=ns_parser.n_num,
+            sort_col=ns_parser.sort_col,
+            ascending=ns_parser.ascend,
+            buys_only=ns_parser.buys_only,
+            sells_only=ns_parser.sells_only,
+            fund=ns_parser.fund,
             export=ns_parser.export,
         )
 
@@ -1073,4 +1131,10 @@ def menu():
 
         except SystemExit:
             print("The command selected doesn't exist\n")
+            similar_cmd = difflib.get_close_matches(
+                an_input, disc_controller.CHOICES, n=1, cutoff=0.7
+            )
+
+            if similar_cmd:
+                print(f"Did you mean '{similar_cmd[0]}'?\n")
             continue

@@ -9,7 +9,7 @@ if env_files:
 # Choose one of: stocks, options, crypto, economy, etf, portfolio, forex
 DEFAULT_CONTEXT = ""
 
-# Choose one of: developer, user
+# Set to True to see full stack traces for debugging/error reporting
 DEBUG_MODE = False
 
 # By default the jupyter notebook will be run on port 8888
@@ -108,3 +108,6 @@ API_COINGLASS_KEY = os.getenv("GT_API_COINGLASS_KEY") or "REPLACE_ME"
 
 # https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API
 API_ETHPLORER_KEY = os.getenv("GT_API_ETHPLORER_KEY") or "freekey"
+
+# https://cryptopanic.com/developers/api/
+API_CRYPTO_PANIC_KEY = os.getenv("GT_API_CRYPTO_PANIC_KEY") or "REPLACE_ME"

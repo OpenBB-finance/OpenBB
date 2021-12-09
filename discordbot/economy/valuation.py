@@ -1,6 +1,6 @@
 import discord
-import config_discordbot as cfg
-from helpers import pagination
+import discordbot.config_discordbot as cfg
+from discordbot.helpers import pagination
 
 from gamestonk_terminal.economy import finviz_model
 

@@ -2,7 +2,7 @@
 usage: add [-s L_SIMILAR] [-h]
 ```
 
-Add similar companies to compare with.
+Add tickers to compare against the loaded stock. Add multiple tickers with a comma-separated list. 
 
 ```
 optional arguments:
@@ -11,4 +11,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-<img width="1005" alt="Captura de ecrã 2021-05-06, às 23 09 22" src="https://user-images.githubusercontent.com/25267873/117372489-864c4a80-aec1-11eb-87ec-ccd1a5a0a0e7.png">
+<img size="1400" alt="Feature Screenshot - add" src="https://user-images.githubusercontent.com/85772166/142893897-cd7e924e-1a4e-4b44-848f-2b51e8b709bd.png">

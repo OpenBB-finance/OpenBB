@@ -28,6 +28,22 @@ gamestonk\_terminal.stocks.dark\_pool\_shorts.finra\_view module
    :undoc-members:
    :show-inheritance:
 
+gamestonk\_terminal.stocks.dark\_pool\_shorts.nyse\_model module
+----------------------------------------------------------------
+
+.. automodule:: gamestonk_terminal.stocks.dark_pool_shorts.nyse_model
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gamestonk\_terminal.stocks.dark\_pool\_shorts.nyse\_view module
+---------------------------------------------------------------
+
+.. automodule:: gamestonk_terminal.stocks.dark_pool_shorts.nyse_view
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 gamestonk\_terminal.stocks.dark\_pool\_shorts.quandl\_model module
 ------------------------------------------------------------------
 

@@ -2,10 +2,10 @@ import os
 import datetime
 import matplotlib.pyplot as plt
 import discord
-import config_discordbot as cfg
-from discordbot import gst_imgur
 
 from gamestonk_terminal.economy import cnn_view, cnn_model
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur
 
 
 async def feargreed_command(ctx, indicator=""):

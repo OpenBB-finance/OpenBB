@@ -8,13 +8,13 @@ from scipy.stats import norm
 
 
 def get_mc_brownian(
-    data: Union[pd.Series, np.array], n_future: int, n_sims: int, use_log=True
-) -> np.array:
+    data: Union[pd.Series, np.ndarray], n_future: int, n_sims: int, use_log=True
+) -> np.ndarray:
     """Performs monte carlo forecasting for brownian motion with drift
 
     Parameters
     ----------
-    data : Union[pd.Series, np.array]
+    data : Union[pd.Series, np.ndarray]
         Input data.
     n_future : int
         Number of future steps
@@ -25,10 +25,12 @@ def get_mc_brownian(
 
     Returns
     -------
-    np.array
+    np.ndarray
         Array of predictions.  Has shape (n_future, n_sims)
     """
-    changes = data.pct_change().dropna()
+
+    changes = data.pct_change().dropna()  # type: ignore
+
     if use_log:
         changes = np.log(1 + changes)
 
@@ -40,8 +42,9 @@ def get_mc_brownian(
     random_steps = norm.ppf(np.random.rand(n_future, n_sims))
     predicted_change = np.exp(dist_drift + dist_std * random_steps)
     possible_paths = np.zeros_like(predicted_change)
-    possible_paths[0] = data.values[-1]
+    possible_paths[0] = data.values[-1]  # type: ignore
 
     for t in range(1, n_future):
         possible_paths[t] = possible_paths[t - 1] * predicted_change[t]
+
     return possible_paths

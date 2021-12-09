@@ -1,0 +1,70 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://finnhub.io/api/v1/stock/recommendation?symbol=TSLA&token=MOCK_TOKEN
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//tJY9T8MwEIb/y82udOevONlgZisbYqlaAVIgqIGhQvx3RASkifHhBN9Y
+        RX2ey2v7jW/eYPd6goZQwX3X7qEho+D5cHzo9tCARk0bog0SKOgPbQuNV9C/HLunu8vhf+b753Z4
+        ahX0p8dd10ID19urC3hXX4b6R2AjAQoLsD4XOFZgMgQ+EgRGQMsFLhJUjABLROSZNcgWhPQuQncu
+        qNiIcgRxRDb9BvVyfpyQKcCvmPl1SX4d4ZlT7Kd4yohHT/m4Ic2sLy7PJxZwNUT/DQjZFpoFhCvw
+        0w4qjw+y+KoA3qYOF87qZ1zOQeCmApcU6FRD46x+xg352xu4NQFZ2fyNLF7L4kkOT/WsesrjhadH
+        Ubxk73zigyy+ksV7WbyTxVtZvJHFy57aIp1jE/dZCrPSCes+WCOfIj6l+X75BzHmY4H5fZrP9U6Y
+        8vWafKbFw86fc93EiM80T5U7P8f3RflxPq4A3zLz2/R9/8/9c/sBAAD//wMAc9ETJHgQAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6af95a90db7f40f3-CDG
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 17 Nov 2021 13:37:27 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=aeNh6uuBgp%2FNpz2n7X8cy4JIK%2FuOOVnQtL9zSTP6MhYeqSbuZyqbE9%2BbtZnIFRYvK5XF5JEWu6gN2pM6TzvkeIW63A3A9vsTpNk%2Bl%2FlM5nvD5oR%2B%2F94CfC0eKRaf"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin
+      access-control-allow-methods:
+      - POST, GET, OPTIONS, PUT, DELETE
+      access-control-allow-origin:
+      - '*'
+      access-control-expose-headers:
+      - Content-Length
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400, h3-28=":443"; ma=86400, h3-27=":443";
+        ma=86400
+      x-ratelimit-limit:
+      - '60'
+      x-ratelimit-remaining:
+      - '58'
+      x-ratelimit-reset:
+      - '1637156306'
+    status:
+      code: 200
+      message: OK
+version: 1

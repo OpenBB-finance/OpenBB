@@ -2,7 +2,7 @@
 usage: overview [--export {csv,json,xlsx}] [-h]
 ```
 
-Prints screener data of similar companies. [Source: Finviz]
+Displays the broad overview for each company added. Source: https://finviz.com
 
 ```
 optional arguments:
@@ -10,5 +10,6 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
+<img size="1400" alt="Feature Screenshot - overview" src="https://user-images.githubusercontent.com/85772166/142948267-23a2388c-7210-45d9-92d8-e17738008dc6.png">
 
-<img width="1060" alt="overview" src="https://user-images.githubusercontent.com/25267873/114103686-7a209d80-98c1-11eb-9d6a-592f42dccbf1.png">
+

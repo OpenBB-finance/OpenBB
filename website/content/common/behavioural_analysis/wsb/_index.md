@@ -2,7 +2,7 @@
 usage: wsb [-l N_LIMIT] [-n] [-h]
 ```
 
-Print what WSB gang are up to in subreddit wallstreetbets. [Source: Reddit]
+Get some inspiration for trade ideas from the infamous subReddit, WSB. 
 
 ```
 optional arguments:
@@ -12,4 +12,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-<img width="947" alt="wsb" src="https://user-images.githubusercontent.com/25267873/108612074-d5afce00-73dc-11eb-80ca-8ecfad12020c.png">
+<img width="1400" alt="Feature Screenshot - wsb" src="https://user-images.githubusercontent.com/25267873/108612074-d5afce00-73dc-11eb-80ca-8ecfad12020c.png">

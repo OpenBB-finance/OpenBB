@@ -203,3 +203,19 @@ def get_hq(ticker: str) -> str:
                 + ","
             )
     return maps[:-1]
+
+
+def get_dividends(ticker: str) -> pd.DataFrame:
+    """Get historical dividend for ticker
+
+    Parameters
+    ----------
+    ticker: str
+        Ticker to get dividend for
+
+    Returns
+    -------
+    pd.DataFrame:
+        Dataframe of dividends and dates
+    """
+    return pd.DataFrame(yf.Ticker(ticker).dividends)

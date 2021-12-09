@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 # pylint: disable=R1732
 
 import argparse
+import difflib
 import os
 import subprocess
 import webbrowser
@@ -57,7 +58,9 @@ class ReportController:
     reports_opts = ""
     for k, report_to_run in d_id_to_report_name.items():
         # Crawl data to look into what
-        notebook_file = os.path.join("gamestonk_terminal", "reports", report_to_run)
+        notebook_file = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), report_to_run
+        )
         notebook_content = open(notebook_file + ".ipynb").read()
         metadata_cell = """"metadata": {\n    "tags": [\n     "parameters"\n    ]\n   },\n   "outputs":"""
         notebook_metadata_content = notebook_content[
@@ -132,7 +135,7 @@ Select one of the following reports:
         (known_args, other_args) = self.report_parser.parse_known_args(an_input.split())
 
         # Help menu again
-        if known_args.cmd == "?" or known_args.cmd == "help":
+        if known_args.cmd in ["?", "help"]:
             self.print_help()
             return None
 
@@ -159,7 +162,7 @@ Select one of the following reports:
             return MENU_RESET
 
         if known_args.cmd:
-            if known_args.cmd in list(self.d_id_to_report_name.keys()):
+            if known_args.cmd in self.d_id_to_report_name:
                 report_to_run = self.d_id_to_report_name[known_args.cmd]
             else:
                 report_to_run = known_args.cmd
@@ -270,4 +273,10 @@ def menu():
 
         except SystemExit:
             print("The command selected doesn't exist\n")
+            similar_cmd = difflib.get_close_matches(
+                an_input, report_controller.CHOICES, n=1, cutoff=0.7
+            )
+
+            if similar_cmd:
+                print(f"Did you mean '{similar_cmd[0]}'?\n")
             continue

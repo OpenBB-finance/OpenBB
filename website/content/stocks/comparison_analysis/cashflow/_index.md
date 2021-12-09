@@ -2,7 +2,7 @@
 usage: cashflow [-q] [-t S_TIMEFRAME] [--export {csv,json,xlsx}] [-h]
 ```
 
-Prints either yearly or quarterly cashflow statement the company, and compares it against similar companies.
+Compares the cashflow statements of the selected companies. 
 
 ```
 optional arguments:
@@ -13,5 +13,4 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
-
-<img width="1010" alt="Captura de ecrã 2021-03-20, às 09 12 59" src="https://user-images.githubusercontent.com/25267873/111865169-54a51180-895d-11eb-8d31-b499ab74854e.png">
+<img size="1400" alt="Feature Screenshot - cashflow" src="https://user-images.githubusercontent.com/85772166/142947133-c98386e1-917a-4330-b098-722c24b0620e.png">

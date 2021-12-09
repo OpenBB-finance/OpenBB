@@ -2,7 +2,7 @@
 usage: summary [--export {csv,json,xlsx}] [-h]
 ```
 
-Summary statistics
+Summary of statistics derived from the target variable. 
 
 ```
 optional arguments:
@@ -11,4 +11,5 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-<img width="983" alt="summary" src="https://user-images.githubusercontent.com/25267873/112729900-6cb0fe00-8f26-11eb-8a6b-0dda0a9113d9.png">
+<img size="1400" alt="Feature Screenshot - summary" src="https://user-images.githubusercontent.com/85772166/143387478-39b59b2e-2dd7-424c-90b4-5e7640597a31.png">
+

@@ -1,6 +1,7 @@
 """Option helper functions"""
 __docformat__ = "numpy"
 
+from typing import Union
 import numpy as np
 import pandas as pd
 
@@ -33,7 +34,7 @@ def get_loss_at_strike(strike: float, chain: pd.DataFrame) -> float:
     return loss
 
 
-def calculate_max_pain(chain: pd.DataFrame) -> int:
+def calculate_max_pain(chain: pd.DataFrame) -> Union[int, float]:
     """Returns the max pain for a given call/put dataframe
 
     Parameters

@@ -60,7 +60,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
-          key: macos-3-8-pip-${{ hashFiles('**/requirements.txt') }}
+          key: macos-3-8-pip-${{ hashFiles('**/requirements-full.txt') }}
           restore-keys: |
             macos-pip-
 

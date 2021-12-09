@@ -16,18 +16,15 @@ from gamestonk_terminal.stocks.comparison_analysis import marketwatch_model
 
 
 def display_income_comparison(
-    ticker: str,
     similar: List[str],
     timeframe: str,
     quarter: bool = False,
     export: str = "",
 ):
-    """Display income data from Marketwatch
+    """Display income data. [Source: Marketwatch]
 
     Parameters
     ----------
-    ticker : str
-        Base ticker
     similar : List[str]
         List of tickers to compare
     timeframe : str
@@ -37,9 +34,8 @@ def display_income_comparison(
     export : str, optional
         Format to export data
     """
-    all_stocks = [ticker, *similar]
     df_financials_compared = marketwatch_model.get_financial_comparisons(
-        all_stocks, "income", timeframe, quarter
+        similar, "income", timeframe, quarter
     )
     # Export data before the color
     export_data(
@@ -73,18 +69,15 @@ def display_income_comparison(
 
 
 def display_balance_comparison(
-    ticker: str,
     similar: List[str],
     timeframe: str,
     quarter: bool = False,
     export: str = "",
 ):
-    """Compare balance between companies
+    """Compare balance between companies. [Source: Marketwatch]
 
     Parameters
     ----------
-    ticker : str
-        Main ticker to compare income
     similar : List[str]
         Similar companies to compare income with
     timeframe : str
@@ -94,9 +87,8 @@ def display_balance_comparison(
     export : str, optional
         Format to export data
     """
-    all_stocks = [ticker, *similar]
     df_financials_compared = marketwatch_model.get_financial_comparisons(
-        all_stocks, "balance", timeframe, quarter
+        similar, "balance", timeframe, quarter
     )
     # Export data before the color
     export_data(
@@ -130,13 +122,12 @@ def display_balance_comparison(
 
 
 def display_cashflow_comparison(
-    ticker: str,
     similar: List[str],
     timeframe: str,
     quarter: bool = False,
     export: str = "",
 ):
-    """Compare cashflow between companies
+    """Compare cashflow between companies. [Source: Marketwatch]
 
     Parameters
     ----------
@@ -151,9 +142,8 @@ def display_cashflow_comparison(
     export : str, optional
         Format to export data
     """
-    all_stocks = [ticker, *similar]
     df_financials_compared = marketwatch_model.get_financial_comparisons(
-        all_stocks, "cashflow", timeframe, quarter
+        similar, "cashflow", timeframe, quarter
     )
 
     # Export data before the color
