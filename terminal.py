@@ -23,6 +23,7 @@ from gamestonk_terminal.terminal_helper import (
     reset,
     update_terminal,
 )
+from gamestonk_terminal.paths import cd_CHOICES
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel
 
@@ -31,7 +32,9 @@ class TerminalController:
     """Terminal Controller class"""
 
     CHOICES = [
+        "cd",
         "cls",
+        "cd",
         "?",
         "h",
         "q",
@@ -137,17 +140,28 @@ class TerminalController:
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
         )(other_args)
 
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue if len(self.queue) > 0 else []
+
+    def call_cd(self, other_args):
+        """Process cd command"""
+        if other_args:
+            args = other_args[0].split("/")
+        if len(self.queue) > 0:
+            for m in args[::-1]:
+                self.queue.insert(0, m)
+            return self.queue
+
+        if len(args) == 0:
+            return []
+        return args
+
     def call_h(self, _):
         """Process help command"""
         self.print_help()
         return self.queue if len(self.queue) > 0 else []
-
-    def call_q(self, _):
-        """Process quit menu command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "q")
-            return self.queue
-        return ["q"]
 
     def call_e(self, _):
         """Process exit terminal command"""
@@ -164,10 +178,6 @@ class TerminalController:
         return []
 
     # COMMANDS
-    def call_reset(self, _):
-        """Process reset command"""
-        return self.queue if len(self.queue) > 0 else []
-
     def call_update(self, _):
         """Process update command"""
         self.update_succcess = not update_terminal()
@@ -242,7 +252,7 @@ def terminal(jobs_cmds: List[str] = None):
     navigate_text = """
 In order to improve the speed of execution of the most experienced users, these are our new navigation keys:
     cls  clear the screen
-    cd   jump directly into a particular menu (e.g. cd stocks/disc)
+    cd   jump into a menu or execute an action from a different section (e.g. cd stocks/disc/ugs -n 3)
     h    help menu
     q    quit this menu and go one menu above
     e    exit the terminal
@@ -270,8 +280,14 @@ In order to improve the speed of execution of the most experienced users, these 
         # Get input command from user
         else:
             if session and gtff.USE_PROMPT_TOOLKIT:
+                choices: dict = {c: {} for c in t_controller.CHOICES}
+                choices["cd"] = {c: None for c in cd_CHOICES}
+
+                completer = NestedCompleter.from_nested_dict(choices)
                 an_input = session.prompt(
-                    f"{get_flair()} / $ ", completer=t_controller.completer
+                    f"{get_flair()} / $ ",
+                    completer=completer,
+                    search_ignore_case=True,
                 )
 
             else:

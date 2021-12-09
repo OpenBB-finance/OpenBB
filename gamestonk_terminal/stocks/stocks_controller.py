@@ -32,6 +32,7 @@ from gamestonk_terminal.stocks.stocks_helper import (
     quote,
     process_candle,
 )
+from gamestonk_terminal.paths import cd_CHOICES
 
 from gamestonk_terminal.common.quantitative_analysis import qa_view
 
@@ -46,6 +47,7 @@ class StocksController:
 
     CHOICES = [
         "cls",
+        "cd",
         "h",
         "q",
         "e",
@@ -167,6 +169,21 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         system_clear()
         return self.queue if len(self.queue) > 0 else []
 
+    def call_cd(self, other_args):
+        """Process cd command"""
+        if other_args:
+            args = other_args[0].split("/")
+        if len(self.queue) > 0:
+            for m in args[::-1]:
+                self.queue.insert(0, m)
+            self.queue.insert(0, "q")
+            return self.queue
+
+        if len(args) == 0:
+            return ["q"]
+
+        return ["q"] + args
+
     def call_h(self, _):
         """Process help command"""
         self.print_help()
@@ -241,7 +258,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
+            description="Load stock ticker to perform analysis on. When the data source is syf', an Indian ticker can be"
             " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
             " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
         )
@@ -769,12 +786,15 @@ def menu(ticker: str = "", queue: List[str] = None):
         # Get input command from user
         else:
             if session and gtff.USE_PROMPT_TOOLKIT:
-                completer = NestedCompleter.from_nested_dict(
-                    {c: None for c in stocks_controller.CHOICES}
-                )
+
+                choices: dict = {c: {} for c in stocks_controller.CHOICES}
+                choices["cd"] = {c: None for c in cd_CHOICES}
+
+                completer = NestedCompleter.from_nested_dict(choices)
                 an_input = session.prompt(
                     f"{get_flair()} /stocks/ $ ",
                     completer=completer,
+                    search_ignore_case=True,
                 )
             else:
                 an_input = input(f"{get_flair()} /stocks/ $ ")

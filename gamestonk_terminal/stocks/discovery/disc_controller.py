@@ -34,6 +34,7 @@ from gamestonk_terminal.stocks.discovery import (
     financedatabase_view,
     nasdaq_view,
 )
+from gamestonk_terminal.paths import cd_CHOICES
 
 
 class DiscoveryController:
@@ -47,6 +48,7 @@ class DiscoveryController:
         "q",
         "e",
         "r",
+        "cd",
     ]
 
     CHOICES_COMMANDS = [
@@ -186,6 +188,22 @@ NASDAQ Data Link (Formerly Quandl):
         """Process cls command"""
         system_clear()
         return self.queue if len(self.queue) > 0 else []
+
+    def call_cd(self, other_args):
+        """Process cd command"""
+        if other_args:
+            args = other_args[0].split("/")
+        if len(self.queue) > 0:
+            for m in args[::-1]:
+                self.queue.insert(0, m)
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            return self.queue
+
+        if len(args) == 0:
+            return ["q", "q"]
+
+        return ["q", "q"] + args
 
     def call_h(self, _):
         """Process help command"""
@@ -1038,6 +1056,7 @@ def menu(queue: List[str] = None):
             if session and gtff.USE_PROMPT_TOOLKIT:
 
                 choices: dict = {c: {} for c in disc_controller.CHOICES}
+                choices["cd"] = {c: None for c in cd_CHOICES}
                 choices["arkord"]["-s"] = {
                     c: None for c in disc_controller.arkord_sortby_choices
                 }
