@@ -155,6 +155,13 @@ Menus:
         self.print_help()
         return self.queue if len(self.queue) > 0 else []
 
+    def call_q(self, _):
+        """Process quit menu command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q"]
+
     def call_e(self, _):
         """Process exit terminal command"""
         if len(self.queue) > 0:
