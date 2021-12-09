@@ -113,8 +113,6 @@ class StocksController:
         dim_if_no_ticker = Style.DIM if not self.ticker else ""
         reset_style_if_no_ticker = Style.RESET_ALL if not self.ticker else ""
         help_text = f"""
-Stocks:
-
     search      search a specific stock ticker for analysis
     load        load a specific stock ticker for analysis
 
@@ -792,11 +790,21 @@ def menu(ticker: str = "", queue: List[str] = None):
             stocks_controller.queue = stocks_controller.switch(an_input)
 
         except SystemExit:
-            print(f"The command '{an_input}' doesn't exist\n")
+            print(f"The command '{an_input}' doesn't exist.", end="")
             similar_cmd = difflib.get_close_matches(
-                an_input, stocks_controller.CHOICES, n=1, cutoff=0.7
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                stocks_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
             )
 
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
+                if " " in an_input:
+                    an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                else:
+                    an_input = similar_cmd[0]
+                print(f" Replacing by '{an_input}'.")
+                stocks_controller.queue.insert(0, an_input)
+            print("")
+
             continue

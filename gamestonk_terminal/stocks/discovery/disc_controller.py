@@ -89,8 +89,6 @@ class DiscoveryController:
     def print_help():
         """Print help"""
         help_text = """
-Discovery:
-
 Geek of Wall St:
     rtearn         realtime earnings from and expected moves
 Finnhub:
@@ -1168,7 +1166,7 @@ def menu(queue: List[str] = None):
                     an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
                 else:
                     an_input = similar_cmd[0]
-                print(f" Replacing by '{an_input}'")
+                print(f" Replacing by '{an_input}'.")
                 disc_controller.queue.insert(0, an_input)
             print("")
 

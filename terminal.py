@@ -246,7 +246,8 @@ In order to improve the speed of execution of the most experienced users, these 
     h    help menu
     q    quit this menu and go one menu above
     e    exit the terminal
-    r    reset the terminal and reload configs from the current location"""
+    r    reset the terminal and reload configs from the current location
+"""
     print(navigate_text)
 
     while ret_code:
@@ -300,13 +301,22 @@ In order to improve the speed of execution of the most experienced users, these 
                     break
 
         except SystemExit:
-            print(f"The command '{an_input}' doesn't exist\n")
+            print(f"The command '{an_input}' doesn't exist.", end="")
             similar_cmd = difflib.get_close_matches(
-                an_input, t_controller.CHOICES, n=1, cutoff=0.7
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                t_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
             )
+
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
-                continue
+                if " " in an_input:
+                    an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                else:
+                    an_input = similar_cmd[0]
+                print(f" Replacing by '{an_input}'.")
+                t_controller.queue.insert(0, an_input)
+            print("")
 
 
 if __name__ == "__main__":
