@@ -31,7 +31,6 @@ from gamestonk_terminal.stocks.discovery import (
     yahoofinance_view,
     finnhub_view,
     geekofwallstreet_view,
-    financedatabase_view,
     nasdaq_view,
 )
 from gamestonk_terminal.paths import cd_CHOICES
@@ -69,7 +68,6 @@ class DiscoveryController:
         "lowfloat",
         "hotpenny",
         "rtearn",
-        "fds",
         "cnews",
         "rtat",
     ]
@@ -176,8 +174,6 @@ shortinterest.com
     lowfloat       low float stocks under 10M shares float
 pennystockflow.com
     hotpenny       today's hot penny stocks
-Finance Database:
-    fds            advanced Equities search based on country, sector, industry, name and/or description
 NASDAQ Data Link (Formerly Quandl):
     rtat           top 10 retail traded stocks per day
 """
@@ -906,105 +902,6 @@ NASDAQ Data Link (Formerly Quandl):
             shortinterest_view.hot_penny_stocks(
                 num=ns_parser.limit,
                 export=ns_parser.export,
-            )
-
-        return self.queue if len(self.queue) > 0 else []
-
-    @try_except
-    def call_fds(self, other_args: List[str]):
-        """Process fds command"""
-        parser = argparse.ArgumentParser(
-            description="Display a selection of Equities based on country, sector, industry, name and/or description "
-            "filtered by market cap. If no arguments are given, return the equities with the highest "
-            "market cap. [Source: Finance Database]",
-            add_help=False,
-        )
-        parser.add_argument(
-            "-c",
-            "--country",
-            default=None,
-            nargs="+",
-            dest="country",
-            help="Specify the Equities selection based on a country",
-        )
-        parser.add_argument(
-            "-s",
-            "--sector",
-            default=None,
-            nargs="+",
-            dest="sector",
-            help="Specify the Equities selection based on a sector",
-        )
-        parser.add_argument(
-            "-i",
-            "--industry",
-            default=None,
-            nargs="+",
-            dest="industry",
-            help="Specify the Equities selection based on an industry",
-        )
-        parser.add_argument(
-            "-n",
-            "--name",
-            default=None,
-            nargs="+",
-            dest="name",
-            help="Specify the Equities selection based on the name",
-        )
-        parser.add_argument(
-            "-d",
-            "--description",
-            default=None,
-            nargs="+",
-            dest="description",
-            help="Specify the Equities selection based on the description (not shown in table)",
-        )
-        parser.add_argument(
-            "-m",
-            "--marketcap",
-            default=["Large"],
-            choices=["Small", "Mid", "Large"],
-            nargs="+",
-            dest="marketcap",
-            type=str.title,
-            help="Specify the Equities selection based on Market Cap",
-        )
-        parser.add_argument(
-            "-ie",
-            "--include_exchanges",
-            action="store_false",
-            help="When used, data from different exchanges is also included. This leads to a much larger "
-            "pool of data due to the same company being listed on multiple exchanges",
-        )
-        parser.add_argument(
-            "-a",
-            "--amount",
-            default=10,
-            type=int,
-            dest="amount",
-            help="Enter the number of Equities you wish to see in the Tabulate window",
-        )
-        parser.add_argument(
-            "-o",
-            "--options ",
-            choices=["countries", "sectors", "industries"],
-            default=None,
-            dest="options",
-            help="Obtain the available options for country, sector and industry",
-        )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-
-        if ns_parser:
-            financedatabase_view.show_equities(
-                country=ns_parser.country,
-                sector=ns_parser.sector,
-                industry=ns_parser.industry,
-                name=ns_parser.name,
-                description=ns_parser.description,
-                marketcap=ns_parser.marketcap,
-                include_exchanges=ns_parser.include_exchanges,
-                amount=ns_parser.amount,
-                options=ns_parser.options,
             )
 
         return self.queue if len(self.queue) > 0 else []
