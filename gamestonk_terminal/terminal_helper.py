@@ -367,7 +367,7 @@ The main commands you should be aware when navigating through the terminal are:
     cls      clear the screen
     h / ?    help menu
     q / ..   quit this menu and go one menu above
-    e        exit the terminal
+    exit     exit the terminal
     r        reset the terminal and reload configs from the current location
     cd       jump into a menu in an absolute way (e.g. if in crypto I can do 'cd stocks/disc/')
 

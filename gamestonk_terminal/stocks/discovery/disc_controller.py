@@ -48,7 +48,7 @@ class DiscoveryController:
         "?",
         "q",
         "..",
-        "e",
+        "exit",
         "r",
     ]
 
@@ -223,17 +223,17 @@ NASDAQ Data Link (Formerly Quandl):
         """Process cd command"""
         if other_args:
             args = other_args[0].split("/")
-        if len(self.queue) > 0:
-            for m in args[::-1]:
-                self.queue.insert(0, m)
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
-            return self.queue
+            if len(args) > 0:
+                for m in args[::-1]:
+                    if m:
+                        self.queue.insert(0, m)
+            else:
+                self.queue.insert(0, args[0])
 
-        if len(args) == 0:
-            return ["q", "q"]
+        self.queue.insert(0, "q")
+        self.queue.insert(0, "q")
 
-        return ["q", "q"] + args
+        return self.queue if len(self.queue) > 0 else []
 
     def call_h(self, _):
         """Process help command"""
@@ -247,7 +247,7 @@ NASDAQ Data Link (Formerly Quandl):
             return self.queue
         return ["q"]
 
-    def call_e(self, _):
+    def call_exit(self, _):
         """Process exit terminal command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "q")

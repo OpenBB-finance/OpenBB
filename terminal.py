@@ -39,7 +39,7 @@ class TerminalController:
         "?",
         "q",
         "..",
-        "e",
+        "exit",
         "r",
     ]
 
@@ -144,14 +144,14 @@ Menus:
         """Process cd command"""
         if other_args:
             args = other_args[0].split("/")
-        if len(self.queue) > 0:
-            for m in args[::-1]:
-                self.queue.insert(0, m)
-            return self.queue
+            if len(args) > 0:
+                for m in args[::-1]:
+                    if m:
+                        self.queue.insert(0, m)
+            else:
+                self.queue.insert(0, args[0])
 
-        if len(args) == 0:
-            return []
-        return args
+        return self.queue if len(self.queue) > 0 else []
 
     def call_h(self, _):
         """Process help command"""
@@ -165,7 +165,7 @@ Menus:
             return self.queue
         return ["q"]
 
-    def call_e(self, _):
+    def call_exit(self, _):
         """Process exit terminal command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "q")
@@ -175,7 +175,7 @@ Menus:
     def call_r(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
-            self.queue = [f".{arg}" for arg in self.queue]
+            self.queue = [f"/{arg}" for arg in self.queue]
             return self.queue
         return []
 
@@ -183,19 +183,22 @@ Menus:
     def call_update(self, _):
         """Process update command"""
         self.update_succcess = not update_terminal()
-        return True
+        return self.queue if len(self.queue) > 0 else []
 
     def call_keys(self, _):
         """Process keys command"""
         check_api_keys()
+        return self.queue if len(self.queue) > 0 else []
 
     def call_about(self, _):
         """Process about command"""
         about_us()
+        return self.queue if len(self.queue) > 0 else []
 
     def call_usage(self, _):
         """Process usage command"""
         usage_instructions()
+        return self.queue if len(self.queue) > 0 else []
 
     # MENUS
     def call_stocks(self, _):
