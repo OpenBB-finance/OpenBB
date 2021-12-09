@@ -21,9 +21,6 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     valid_date,
-    MENU_GO_BACK,
-    MENU_QUIT,
-    MENU_RESET,
     try_except,
     system_clear,
 )
@@ -49,11 +46,10 @@ class StocksController:
 
     CHOICES = [
         "cls",
-        "?",
-        "help",
+        "h",
         "q",
-        "quit",
-        "reset",
+        "e",
+        "r",
     ]
 
     CHOICES_COMMANDS = [
@@ -86,12 +82,16 @@ class StocksController:
     CHOICES += CHOICES_COMMANDS
     CHOICES += CHOICES_MENUS
 
-    def __init__(self, ticker):
+    def __init__(self, ticker, queue: List[str] = None):
         """Constructor"""
         self.stock = pd.DataFrame()
         self.ticker = ticker
         self.start = ""
         self.interval = "1440min"
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
 
         self.stocks_parser = argparse.ArgumentParser(add_help=False, prog="stocks")
         self.stocks_parser.add_argument(
@@ -113,12 +113,7 @@ class StocksController:
         dim_if_no_ticker = Style.DIM if not self.ticker else ""
         reset_style_if_no_ticker = Style.RESET_ALL if not self.ticker else ""
         help_text = f"""
-What do you want to do?
-    cls         clear screen
-    ?/help      show this menu again
-    q           quit this menu, and shows back to main menu
-    quit        quit to abandon the program
-    reset       reset terminal and reload configs
+Stocks:
 
     search      search a specific stock ticker for analysis
     load        load a specific stock ticker for analysis
@@ -163,7 +158,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue if len(self.queue) > 0 else []
 
         (known_args, other_args) = self.stocks_parser.parse_known_args(an_input.split())
 
@@ -181,21 +176,34 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             self, "call_" + known_args.cmd, lambda: "command not recognized!"
         )(other_args)
 
-    def call_help(self, _):
-        """Process Help Command"""
+    def call_h(self, _):
+        """Process help command"""
         self.print_help()
+        return self.queue if len(self.queue) > 0 else []
 
     def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return MENU_GO_BACK
+        """Process quit menu command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q"]
 
-    def call_quit(self, _):
-        """Process Quit command - exit the program"""
-        return MENU_QUIT
+    def call_e(self, _):
+        """Process exit terminal command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q", "q"]
 
-    def call_reset(self, _):
-        """Process Reset command - reset the program"""
-        return MENU_RESET
+    def call_r(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "stocks")
+            self.queue.insert(0, "r")
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q", "r", "stocks"]
 
     # COMMANDS
     @try_except
@@ -503,11 +511,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         """Process disc command"""
         from gamestonk_terminal.stocks.discovery import disc_controller
 
-        ret = disc_controller.menu()
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return disc_controller.menu(self.queue)
 
     def call_dps(self, _):
         """Process dps command"""
@@ -753,36 +757,46 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             return True
 
 
-def menu(ticker: str = ""):
+def menu(ticker: str = "", queue: List[str] = None):
     """Stocks Menu"""
-    stocks_controller = StocksController(ticker)
-    stocks_controller.call_help(None)
-    while True:
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in stocks_controller.CHOICES}
-            )
+    stocks_controller = StocksController(ticker, queue)
+    stocks_controller.print_help()
 
-            an_input = session.prompt(
-                f"{get_flair()} (stocks)> ",
-                completer=completer,
-            )
+    while True:
+        # There is a command in the queue
+        if stocks_controller.queue and len(stocks_controller.queue) > 0:
+            if stocks_controller.queue[0] == "q":
+                if len(stocks_controller.queue) > 1:
+                    return stocks_controller.queue[1:]
+                return []
+
+            an_input = stocks_controller.queue[0]
+            stocks_controller.queue = stocks_controller.queue[1:]
+            if an_input:
+                print(f"{get_flair()} /stocks/ $ {an_input}")
+
+        # Get input command from user
         else:
-            an_input = input(f"{get_flair()} (stocks)> ")
+            if session and gtff.USE_PROMPT_TOOLKIT:
+                completer = NestedCompleter.from_nested_dict(
+                    {c: None for c in stocks_controller.CHOICES}
+                )
+                an_input = session.prompt(
+                    f"{get_flair()} /stocks/ $ ",
+                    completer=completer,
+                )
+            else:
+                an_input = input(f"{get_flair()} /stocks/ $ ")
 
         try:
-            process_input = stocks_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            stocks_controller.queue = stocks_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exit\n")
+            print(f"The command '{an_input}' doesn't exist\n")
             similar_cmd = difflib.get_close_matches(
                 an_input, stocks_controller.CHOICES, n=1, cutoff=0.7
             )
 
             if similar_cmd:
                 print(f"Did you mean '{similar_cmd[0]}'?\n")
-
             continue

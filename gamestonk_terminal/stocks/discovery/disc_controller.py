@@ -42,9 +42,10 @@ class DiscoveryController:
     CHOICES = [
         "?",
         "cls",
-        "help",
+        "h",
         "q",
-        "quit",
+        "e",
+        "r",
     ]
 
     CHOICES_COMMANDS = [
@@ -71,8 +72,13 @@ class DiscoveryController:
 
     CHOICES += CHOICES_COMMANDS
 
-    def __init__(self):
+    def __init__(self, queue: List[str] = None):
         """Constructor"""
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
+
         self.disc_parser = argparse.ArgumentParser(add_help=False, prog="disc")
         self.disc_parser.add_argument(
             "cmd",
@@ -84,10 +90,6 @@ class DiscoveryController:
         """Print help"""
         help_text = """
 Discovery:
-    cls            clear screen
-    ?/help         show this menu again
-    q              quit this menu, and shows back to main menu
-    quit           quit to abandon program
 
 Geek of Wall St:
     rtearn         realtime earnings from and expected moves
@@ -134,35 +136,55 @@ NASDAQ Data Link (Formerly Quandl):
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue if len(self.queue) > 0 else []
 
         (known_args, other_args) = self.disc_parser.parse_known_args(an_input.split())
 
         # Help menu again
         if known_args.cmd == "?":
             self.print_help()
-            return None
+            return self.queue if len(self.queue) > 0 else []
 
         # Clear screen
         if known_args.cmd == "cls":
             system_clear()
-            return None
+            return self.queue if len(self.queue) > 0 else []
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
         )(other_args)
 
-    def call_help(self, _):
-        """Process Help command"""
+    def call_h(self, _):
+        """Process help command"""
         self.print_help()
+        return self.queue if len(self.queue) > 0 else []
 
     def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return False
+        """Process quit menu command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q"]
 
-    def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+    def call_e(self, _):
+        """Process exit terminal command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q", "q", "q"]
+
+    def call_r(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "disc")
+            self.queue.insert(0, "stocks")
+            self.queue.insert(0, "r")
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q", "q", "r", "stocks", "disc"]
 
     @try_except
     def call_rtearn(self, other_args: List[str]):
@@ -184,10 +206,10 @@ NASDAQ Data Link (Formerly Quandl):
             help="Export dataframe data to csv,json,xlsx file",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            geekofwallstreet_view.display_realtime_earnings(ns_parser.export)
 
-        geekofwallstreet_view.display_realtime_earnings(ns_parser.export)
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_pipo(self, other_args: List[str]):
@@ -222,13 +244,13 @@ NASDAQ Data Link (Formerly Quandl):
                 other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            finnhub_view.past_ipo(
+                num_days_behind=ns_parser.num,
+                export=ns_parser.export,
+            )
 
-        finnhub_view.past_ipo(
-            num_days_behind=ns_parser.num,
-            export=ns_parser.export,
-        )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_fipo(self, other_args: List[str]):
@@ -262,13 +284,13 @@ NASDAQ Data Link (Formerly Quandl):
             other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            finnhub_view.future_ipo(
+                num_days_ahead=ns_parser.num,
+                export=ns_parser.export,
+            )
 
-        finnhub_view.future_ipo(
-            num_days_ahead=ns_parser.num,
-            export=ns_parser.export,
-        )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_gainers(self, other_args: List[str]):
@@ -301,13 +323,13 @@ NASDAQ Data Link (Formerly Quandl):
                 other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            yahoofinance_view.display_gainers(
+                num_stocks=ns_parser.num,
+                export=ns_parser.export,
+            )
 
-        yahoofinance_view.display_gainers(
-            num_stocks=ns_parser.num,
-            export=ns_parser.export,
-        )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_losers(self, other_args: List[str]):
@@ -340,13 +362,13 @@ NASDAQ Data Link (Formerly Quandl):
                 other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            yahoofinance_view.display_losers(
+                num_stocks=ns_parser.num,
+                export=ns_parser.export,
+            )
 
-        yahoofinance_view.display_losers(
-            num_stocks=ns_parser.num,
-            export=ns_parser.export,
-        )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_ugs(self, other_args: List[str]):
@@ -382,13 +404,13 @@ NASDAQ Data Link (Formerly Quandl):
                 other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            yahoofinance_view.display_ugs(
+                num_stocks=ns_parser.num,
+                export=ns_parser.export,
+            )
 
-        yahoofinance_view.display_ugs(
-            num_stocks=ns_parser.num,
-            export=ns_parser.export,
-        )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_gtech(self, other_args: List[str]):
@@ -423,13 +445,13 @@ NASDAQ Data Link (Formerly Quandl):
                 other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            yahoofinance_view.display_gtech(
+                num_stocks=ns_parser.num,
+                export=ns_parser.export,
+            )
 
-        yahoofinance_view.display_gtech(
-            num_stocks=ns_parser.num,
-            export=ns_parser.export,
-        )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_active(self, other_args: List[str]):
@@ -464,13 +486,11 @@ NASDAQ Data Link (Formerly Quandl):
                 other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        yahoofinance_view.display_active(
-            num_stocks=ns_parser.num,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            yahoofinance_view.display_active(
+                num_stocks=ns_parser.num,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_ulc(self, other_args: List[str]):
@@ -505,13 +525,11 @@ NASDAQ Data Link (Formerly Quandl):
                 other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        yahoofinance_view.display_ulc(
-            num_stocks=ns_parser.num,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            yahoofinance_view.display_ulc(
+                num_stocks=ns_parser.num,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_asc(self, other_args: List[str]):
@@ -546,13 +564,13 @@ NASDAQ Data Link (Formerly Quandl):
                 other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            yahoofinance_view.display_asc(
+                num_stocks=ns_parser.num,
+                export=ns_parser.export,
+            )
 
-        yahoofinance_view.display_asc(
-            num_stocks=ns_parser.num,
-            export=ns_parser.export,
-        )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_ford(self, other_args: List[str]):
@@ -590,13 +608,11 @@ NASDAQ Data Link (Formerly Quandl):
                 other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        fidelity_view.orders_view(
-            num=ns_parser.n_num,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            fidelity_view.orders_view(
+                num=ns_parser.n_num,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_arkord(self, other_args: List[str]):
@@ -682,18 +698,18 @@ NASDAQ Data Link (Formerly Quandl):
             other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            ark_view.ark_orders_view(
+                num=ns_parser.n_num,
+                sort_col=ns_parser.sort_col,
+                ascending=ns_parser.ascend,
+                buys_only=ns_parser.buys_only,
+                sells_only=ns_parser.sells_only,
+                fund=ns_parser.fund,
+                export=ns_parser.export,
+            )
 
-        ark_view.ark_orders_view(
-            num=ns_parser.n_num,
-            sort_col=ns_parser.sort_col,
-            ascending=ns_parser.ascend,
-            buys_only=ns_parser.buys_only,
-            sells_only=ns_parser.sells_only,
-            fund=ns_parser.fund,
-            export=ns_parser.export,
-        )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_upcoming(self, other_args: List[str]):
@@ -736,14 +752,14 @@ NASDAQ Data Link (Formerly Quandl):
                 other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            seeking_alpha_view.upcoming_earning_release_dates(
+                num_pages=ns_parser.n_pages,
+                num_earnings=ns_parser.n_num,
+                export=ns_parser.export,
+            )
 
-        seeking_alpha_view.upcoming_earning_release_dates(
-            num_pages=ns_parser.n_pages,
-            num_earnings=ns_parser.n_num,
-            export=ns_parser.export,
-        )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_trending(self, other_args: List[str]):
@@ -794,16 +810,16 @@ NASDAQ Data Link (Formerly Quandl):
                 other_args.insert(0, "-i")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            seeking_alpha_view.news(
+                news_type="trending",
+                article_id=ns_parser.n_id,
+                num=ns_parser.n_num,
+                start_date=ns_parser.s_date,
+                export=ns_parser.export,
+            )
 
-        seeking_alpha_view.news(
-            news_type="trending",
-            article_id=ns_parser.n_id,
-            num=ns_parser.n_num,
-            start_date=ns_parser.s_date,
-            export=ns_parser.export,
-        )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_lowfloat(self, other_args: List[str]):
@@ -838,13 +854,13 @@ NASDAQ Data Link (Formerly Quandl):
             help="Export dataframe data to csv,json,xlsx file",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            shortinterest_view.low_float(
+                num=ns_parser.n_num,
+                export=ns_parser.export,
+            )
 
-        shortinterest_view.low_float(
-            num=ns_parser.n_num,
-            export=ns_parser.export,
-        )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_cnews(self, other_args: List[str]):
@@ -909,14 +925,14 @@ NASDAQ Data Link (Formerly Quandl):
                 other_args.insert(0, "-t")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            seeking_alpha_view.display_news(
+                news_type=ns_parser.s_type,
+                num=ns_parser.n_num,
+                export=ns_parser.export,
+            )
 
-        seeking_alpha_view.display_news(
-            news_type=ns_parser.s_type,
-            num=ns_parser.n_num,
-            export=ns_parser.export,
-        )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_hotpenny(self, other_args: List[str]):
@@ -952,14 +968,18 @@ NASDAQ Data Link (Formerly Quandl):
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-n")
 
-        shortinterest_view.hot_penny_stocks(
-            num=ns_parser.n_num,
-            export=ns_parser.export,
-        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            shortinterest_view.hot_penny_stocks(
+                num=ns_parser.n_num,
+                export=ns_parser.export,
+            )
+
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_fds(self, other_args: List[str]):
@@ -970,7 +990,6 @@ NASDAQ Data Link (Formerly Quandl):
             "market cap. [Source: Finance Database]",
             add_help=False,
         )
-
         parser.add_argument(
             "-c",
             "--country",
@@ -979,7 +998,6 @@ NASDAQ Data Link (Formerly Quandl):
             dest="country",
             help="Specify the Equities selection based on a country",
         )
-
         parser.add_argument(
             "-s",
             "--sector",
@@ -988,7 +1006,6 @@ NASDAQ Data Link (Formerly Quandl):
             dest="sector",
             help="Specify the Equities selection based on a sector",
         )
-
         parser.add_argument(
             "-i",
             "--industry",
@@ -997,7 +1014,6 @@ NASDAQ Data Link (Formerly Quandl):
             dest="industry",
             help="Specify the Equities selection based on an industry",
         )
-
         parser.add_argument(
             "-n",
             "--name",
@@ -1006,7 +1022,6 @@ NASDAQ Data Link (Formerly Quandl):
             dest="name",
             help="Specify the Equities selection based on the name",
         )
-
         parser.add_argument(
             "-d",
             "--description",
@@ -1015,7 +1030,6 @@ NASDAQ Data Link (Formerly Quandl):
             dest="description",
             help="Specify the Equities selection based on the description (not shown in table)",
         )
-
         parser.add_argument(
             "-m",
             "--marketcap",
@@ -1026,7 +1040,6 @@ NASDAQ Data Link (Formerly Quandl):
             type=str.title,
             help="Specify the Equities selection based on Market Cap",
         )
-
         parser.add_argument(
             "-ie",
             "--include_exchanges",
@@ -1034,7 +1047,6 @@ NASDAQ Data Link (Formerly Quandl):
             help="When used, data from different exchanges is also included. This leads to a much larger "
             "pool of data due to the same company being listed on multiple exchanges",
         )
-
         parser.add_argument(
             "-a",
             "--amount",
@@ -1043,7 +1055,6 @@ NASDAQ Data Link (Formerly Quandl):
             dest="amount",
             help="Enter the number of Equities you wish to see in the Tabulate window",
         )
-
         parser.add_argument(
             "-o",
             "--options ",
@@ -1055,20 +1066,20 @@ NASDAQ Data Link (Formerly Quandl):
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
-        if not ns_parser:
-            return
+        if ns_parser:
+            financedatabase_view.show_equities(
+                country=ns_parser.country,
+                sector=ns_parser.sector,
+                industry=ns_parser.industry,
+                name=ns_parser.name,
+                description=ns_parser.description,
+                marketcap=ns_parser.marketcap,
+                include_exchanges=ns_parser.include_exchanges,
+                amount=ns_parser.amount,
+                options=ns_parser.options,
+            )
 
-        financedatabase_view.show_equities(
-            country=ns_parser.country,
-            sector=ns_parser.sector,
-            industry=ns_parser.industry,
-            name=ns_parser.name,
-            description=ns_parser.description,
-            marketcap=ns_parser.marketcap,
-            include_exchanges=ns_parser.include_exchanges,
-            amount=ns_parser.amount,
-            options=ns_parser.options,
-        )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_rtat(self, other_args: List[str]):
@@ -1091,50 +1102,74 @@ NASDAQ Data Link (Formerly Quandl):
             default=3,
             type=check_positive,
         )
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-        nasdaq_view.display_top_retail(n_days=ns_parser.n_days, export=ns_parser.export)
+        if ns_parser:
+            nasdaq_view.display_top_retail(
+                n_days=ns_parser.n_days, export=ns_parser.export
+            )
+
+        return self.queue if len(self.queue) > 0 else []
 
 
-def menu():
+def menu(queue: List[str] = None):
     """Discovery Menu"""
+    disc_controller = DiscoveryController(queue)
+    disc_controller.print_help()
 
-    disc_controller = DiscoveryController()
-    disc_controller.call_help(None)
-
-    # Loop forever and ever
     while True:
-        # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in disc_controller.CHOICES}
-            )
+        # There is a command in the queue
+        if disc_controller.queue and len(disc_controller.queue) > 0:
+            if disc_controller.queue[0] == "q":
+                if len(disc_controller.queue) > 1:
+                    return disc_controller.queue[1:]
+                return []
 
-            an_input = session.prompt(
-                f"{get_flair()} (stocks)>(disc)> ",
-                completer=completer,
-            )
+            an_input = disc_controller.queue[0]
+            disc_controller.queue = disc_controller.queue[1:]
+            if an_input:
+                print(f"{get_flair()} /stocks/disc/ $ {an_input}")
+
+        # Get input command from user
         else:
-            an_input = input(f"{get_flair()} (stocks)>(disc)> ")
+            if session and gtff.USE_PROMPT_TOOLKIT:
+                completer = NestedCompleter.from_nested_dict(
+                    {c: None for c in disc_controller.CHOICES}
+                )
+
+                an_input = session.prompt(
+                    f"{get_flair()} /stocks/disc/ $ ",
+                    completer=completer,
+                )
+            else:
+                an_input = input(f"{get_flair()} /stocks/disc/ $ ")
 
         try:
             plt.close("all")
 
-            process_input = disc_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            disc_controller.queue = disc_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
+            print(f"The command '{an_input}' doesn't exist.", end="")
             similar_cmd = difflib.get_close_matches(
-                an_input, disc_controller.CHOICES, n=1, cutoff=0.7
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                disc_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
             )
 
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
+                if " " in an_input:
+                    an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                else:
+                    an_input = similar_cmd[0]
+                print(f" Replacing by '{an_input}'")
+                disc_controller.queue.insert(0, an_input)
+            print("")
+
             continue

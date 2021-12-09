@@ -6,6 +6,7 @@ import random
 import subprocess  # nosec
 import sys
 from datetime import datetime
+from typing import List
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -386,15 +387,21 @@ def bootup():
         print("")
 
 
-def reset(menu_prior_to_reset=""):
+def reset(queue: List[str] = None):
     """Resets the terminal.  Allows for checking code or keys without quitting"""
     print("resetting...")
     plt.close("all")
 
-    arg = f" {menu_prior_to_reset}" if menu_prior_to_reset else ""
-    completed_process = subprocess.run(  # nosec
-        f"{sys.executable} terminal.py{arg}", shell=True, check=False
-    )
+    if queue and len(queue) > 0:
+        completed_process = subprocess.run(  # nosec
+            f"{sys.executable} terminal.py {' '.join(queue) if len(queue) > 0 else ''}",
+            shell=True,
+            check=False,
+        )
+    else:
+        completed_process = subprocess.run(  # nosec
+            f"{sys.executable} terminal.py", shell=True, check=False
+        )
     if completed_process.returncode != 0:
         print("Unfortunately, resetting wasn't possible!\n")
 

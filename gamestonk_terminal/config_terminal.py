@@ -6,9 +6,6 @@ env_files = [f for f in os.listdir() if f.endswith(".env")]
 if env_files:
     load_dotenv(env_files[0])
 
-# Choose one of: stocks, options, crypto, economy, etf, portfolio, forex
-DEFAULT_CONTEXT = ""
-
 # Set to True to see full stack traces for debugging/error reporting
 DEBUG_MODE = False
 
