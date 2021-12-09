@@ -81,6 +81,11 @@ class TerminalController:
 
         self.queue: List[str] = list()
         if jobs_cmds:
+            # close the eyes if the user forgets the initial `/`
+            if len(jobs_cmds) > 0:
+                if jobs_cmds[1][0] != "/":
+                    jobs_cmds[1] = f"/{jobs_cmds[1]}"
+
             self.queue = " ".join(jobs_cmds).split("/")[1:]
 
         self.update_succcess = False
