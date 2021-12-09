@@ -4,11 +4,7 @@ from discordbot.helpers import pagination
 import difflib
 import pandas as pd
 
-from gamestonk_terminal.stocks.screener.finviz_model import (
-    d_signals,
-    presets_path,
-    get_screener_data,
-)
+from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data,
 
 
 async def ownership_command(
@@ -105,7 +101,7 @@ async def ownership_command(
 
             if len(df_screen_str) <= 4000:
                 embed = discord.Embed(
-                    title=f"Stocks: [Finviz] Ownership Screener",
+                    title="Stocks: [Finviz] Ownership Screener",
                     description="```" + df_screen_str + "```",
                     colour=cfg.COLOR,
                 )
@@ -124,7 +120,7 @@ async def ownership_command(
                 while i <= len(df_screen_str) / 4000:
                     columns.append(
                         discord.Embed(
-                            title=f"Stocks: [Finviz] Ownership Screener",
+                            title="Stocks: [Finviz] Ownership Screener",
                             description="```"
                             + df_screen_str[str_start:str_end]
                             + "```",
@@ -142,7 +138,7 @@ async def ownership_command(
 
     except Exception as e:
         embed = discord.Embed(
-            title=f"ERROR Stocks: [Finviz] Ownership Screener",
+            title="ERROR Stocks: [Finviz] Ownership Screener",
             colour=cfg.COLOR,
             description=e,
         )

@@ -4,11 +4,7 @@ from discordbot.helpers import pagination
 import difflib
 import pandas as pd
 
-from gamestonk_terminal.stocks.screener.finviz_model import (
-    d_signals,
-    presets_path,
-    get_screener_data,
-)
+from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data,
 
 
 async def overview_command(ctx, preset="template", sort="", limit="25", ascend="False"):
@@ -99,7 +95,7 @@ async def overview_command(ctx, preset="template", sort="", limit="25", ascend="
 
             if len(df_screen_str) <= 4000:
                 embed = discord.Embed(
-                    title=f"Stocks: [Finviz] Overview Screener",
+                    title="Stocks: [Finviz] Overview Screener",
                     description="```" + df_screen_str + "```",
                     colour=cfg.COLOR,
                 )
@@ -118,7 +114,7 @@ async def overview_command(ctx, preset="template", sort="", limit="25", ascend="
                 while i <= len(df_screen_str) / 4000:
                     columns.append(
                         discord.Embed(
-                            title=f"Stocks: [Finviz] Overview Screener",
+                            title="Stocks: [Finviz] Overview Screener",
                             description="```"
                             + df_screen_str[str_start:str_end]
                             + "```",
@@ -136,7 +132,7 @@ async def overview_command(ctx, preset="template", sort="", limit="25", ascend="
 
     except Exception as e:
         embed = discord.Embed(
-            title=f"ERROR Stocks: [Finviz] Overview Screener",
+            title="ERROR Stocks: [Finviz] Overview Screener",
             colour=cfg.COLOR,
             description=e,
         )
