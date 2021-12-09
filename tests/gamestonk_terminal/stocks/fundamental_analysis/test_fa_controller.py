@@ -147,19 +147,6 @@ def test_call_quit():
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_call_load_no_args(capsys):
-    dd = fa_controller.FundamentalAnalysisController(
-        ticker="TSLA",
-        start="10/25/2021",
-        interval="1440min",
-        suffix="",
-    )
-    other_args = list()
-    dd.call_load(other_args)
-    capsys.readouterr()
-
-
-@pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "tested_func, mocked_func, other_args, called_with",
     [
