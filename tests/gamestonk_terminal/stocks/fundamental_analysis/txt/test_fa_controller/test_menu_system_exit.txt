@@ -20,7 +20,8 @@ Yahoo Finance:
     sust          sustainability values of the company
     cal           calendar earnings and estimates of the company
     web           open web browser of the company
-    hq            open HQ location of the company 
+    hq            open HQ location of the company
+    divs          show historical dividends for company 
 Alpha Vantage:
     overview      overview of the company
     key           company key metrics
