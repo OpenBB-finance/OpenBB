@@ -23,7 +23,6 @@ def test_category_color_red_green(val, expected):
     assert result == expected
 
 
-@pytest.mark.skip(reason="Broken function and unused yet.")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_news(mocker):
