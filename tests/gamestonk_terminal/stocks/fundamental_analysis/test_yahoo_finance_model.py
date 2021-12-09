@@ -27,6 +27,7 @@ def vcr_config():
         "get_calendar_earnings",
         "get_website",
         "get_hq",
+        "get_dividends",
     ],
 )
 def test_call_func(func, recorder):

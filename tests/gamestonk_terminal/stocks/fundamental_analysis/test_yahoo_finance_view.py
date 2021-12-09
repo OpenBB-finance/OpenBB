@@ -28,6 +28,7 @@ def vcr_config():
         "display_shareholders",
         "display_sustainability",
         "display_calendar_earnings",
+        "display_dividends",
     ],
 )
 @pytest.mark.parametrize(
@@ -36,7 +37,7 @@ def vcr_config():
 )
 def test_call_func(func, monkeypatch, use_tab):
     monkeypatch.setattr(yahoo_finance_view.gtff, "USE_TABULATE_DF", use_tab)
-    getattr(yahoo_finance_view, func)(ticker="TSLA")
+    getattr(yahoo_finance_view, func)(ticker="PM")
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -46,6 +47,7 @@ def test_call_func(func, monkeypatch, use_tab):
     [
         ("display_sustainability", "get_sustainability"),
         ("display_calendar_earnings", "get_calendar_earnings"),
+        ("display_dividends", "get_dividends")
     ],
 )
 def test_call_func_empty_df(func, mocker, mocked_func):
@@ -54,4 +56,4 @@ def test_call_func_empty_df(func, mocker, mocked_func):
         + mocked_func,
         return_value=pd.DataFrame(),
     )
-    getattr(yahoo_finance_view, func)(ticker="TSLA")
+    getattr(yahoo_finance_view, func)(ticker="PM")
