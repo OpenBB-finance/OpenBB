@@ -1,14 +1,9 @@
 
 Welcome to Gamestonk Terminal Beta
 
-What do you want to do?
-    cls         clear screen
-    ?/help      show this menu again
-    update      update terminal from remote
-    keys        check for defined api keys
-    reset       reset terminal and reload configs
     about       about us
-    q(uit)      to abandon the program
+    update      update terminal automatically
+    keys        check for status of API keys
 
 >>  stocks
 >>  crypto
@@ -18,5 +13,13 @@ What do you want to do?
 >>  portfolio
 >>  reports
 >>  resources
-    
+
+In order to improve the speed of execution of the most experienced users, these are our new navigation keys:
+    cls  clear the screen
+    cd   jump into a menu or execute an action from a different section (e.g. cd stocks/disc/ugs -n 3)
+    h    help menu
+    q    quit this menu and go one menu above
+    e    exit the terminal
+    r    reset the terminal and reload configs from the current location
+
 Quick exit enabled
