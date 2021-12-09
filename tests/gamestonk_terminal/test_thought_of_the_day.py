@@ -3,7 +3,7 @@ import unittest
 from unittest import mock
 
 # pylint: disable=unused-import
-from gamestonk_terminal.test_helper import (  # noqa: F401
+from tests.helpers.tools import (  # noqa: F401
     parameterize_from_file,
     pytest_generate_tests,
 )

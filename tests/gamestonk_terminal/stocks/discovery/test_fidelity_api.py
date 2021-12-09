@@ -8,7 +8,7 @@ from gamestonk_terminal.stocks.discovery.fidelity_view import (
     orders_view,
     price_change_color_red_green,
 )
-from tests.helpers import check_print
+from tests.helpers.helpers import check_print
 
 
 class TestDiscoveryFidelityApi(unittest.TestCase):

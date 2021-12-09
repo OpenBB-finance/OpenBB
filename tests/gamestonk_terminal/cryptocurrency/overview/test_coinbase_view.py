@@ -7,7 +7,7 @@ from gamestonk_terminal.portfolio.brokers.coinbase import (
     coinbase_view as bro_coinbase_view,
 )
 from gamestonk_terminal.cryptocurrency.overview import coinbase_view as ov_coinbase_view
-from tests.helpers import check_print
+from tests.helpers.helpers import check_print
 
 
 # pylint: disable=unused-import

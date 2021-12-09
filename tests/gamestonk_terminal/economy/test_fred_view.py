@@ -6,7 +6,7 @@ import pytest
 import pandas as pd
 
 from gamestonk_terminal.economy.fred.fred_view import display_fred_series
-from tests.helpers import check_print
+from tests.helpers.helpers import check_print
 
 fred_data_mock = """
 For 'gdp', series IDs found: GDP, GDPC1, M2V, GFDEGDQ188S, PAYEMS.

@@ -5,7 +5,7 @@ from unittest import mock
 from gamestonk_terminal.stocks.discovery.fidelity_model import get_orders
 
 # pylint: disable=unused-import
-from gamestonk_terminal.test_helper import (  # noqa: F401
+from tests.helpers.tools import (  # noqa: F401
     parameterize_from_file,
     pytest_generate_tests,
 )

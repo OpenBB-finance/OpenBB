@@ -6,7 +6,7 @@ from unittest import mock
 from gamestonk_terminal.stocks.discovery.shortinterest_model import get_low_float
 
 # pylint: disable=unused-import
-from gamestonk_terminal.test_helper import (  # noqa: F401
+from tests.helpers.tools import (  # noqa: F401
     parameterize_from_file,
     pytest_generate_tests,
 )

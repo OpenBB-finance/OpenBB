@@ -4,7 +4,7 @@ import unittest
 import vcr
 
 from gamestonk_terminal.cryptocurrency.due_diligence import dd_controller
-from tests.helpers import check_print
+from tests.helpers.helpers import check_print
 
 
 class TestDDController(unittest.TestCase):
