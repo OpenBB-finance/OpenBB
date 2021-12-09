@@ -24,7 +24,7 @@ class TestDDController(unittest.TestCase):
 
     @vcr.use_cassette(
         "tests/gamestonk_terminal/cryptocurrency/due_diligence/cassettes/test_dd_controller/test_dd_controller.yaml",
-        record_mode="new_episodes",
+        record_mode="once",
     )
     @check_print(assert_in="glassnode")
     def test_active(self):
