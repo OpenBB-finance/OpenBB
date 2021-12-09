@@ -873,12 +873,19 @@ main:
         ref: "/economy/tyld"
       - name: unemp
         ref: "/economy/unemp"
-      - name: search
-        ref: "/economy/search"
-      - name: series
-        ref: "/economy/series"
       - name: bigmac
         ref: "/economy/bigmac"
+      - name: fred
+        ref: "/economy/fred"
+        sub:
+          - name: search
+            ref : "/economy/fred/search"
+          - name: add
+            ref: "/economy/fred/add"
+          - name: rmv
+            ref: "/economy/fred/rmv"
+          - name: plot
+            ref: "/economy/fred/plot"
   - name: etf
     ref: "/etf"
     sub:
