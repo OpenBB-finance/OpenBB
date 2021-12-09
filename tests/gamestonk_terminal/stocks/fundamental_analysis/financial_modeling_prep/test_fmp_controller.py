@@ -47,17 +47,18 @@ def test_menu_system_exit(mocker):
                 raise SystemExit()
             return True
 
+    financial_modeling_prep = "gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep"
     mock_switch = mocker.Mock(side_effect=SystemExitSideEffect())
     mocker.patch("builtins.input", return_value="quit")
     mocker.patch(
-        "gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_controller.session"
+        financial_modeling_prep + ".fmp_controller.session"
     )
     mocker.patch(
-        "gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_controller.session.prompt",
+        financial_modeling_prep + ".fmp_controller.session.prompt",
         return_value="quit",
     )
     mocker.patch(
-        "gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_controller.FinancialModelingPrepController.switch",
+        financial_modeling_prep + ".fmp_controller.FinancialModelingPrepController.switch",
         new=mock_switch,
     )
 
