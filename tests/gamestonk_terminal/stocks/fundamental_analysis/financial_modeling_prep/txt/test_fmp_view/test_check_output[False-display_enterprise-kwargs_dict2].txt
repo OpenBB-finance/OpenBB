@@ -1,0 +1,9 @@
+Fiscal Date Ending                    2017       2018       2019       2020      2021
+Symbol                                  PM         PM         PM         PM        PM
+Stock price                        107.940     74.480     84.330     79.650    97.450
+Number of shares                   1.552 B    1.555 B    1.555 B    1.557 B         0
+Market capitalization            167.523 B  115.816 B  131.133 B  124.015 B         0
+Minus cash and cash equivalents    8.447 B    6.593 B    6.861 B    7.280 B   4.491 B
+Add total debt                    34.339 B   31.759 B   31.045 B   31.536 B   3.337 B
+Enterprise value                 193.415 B  140.982 B  155.317 B  148.271 B  -1.154 B
+

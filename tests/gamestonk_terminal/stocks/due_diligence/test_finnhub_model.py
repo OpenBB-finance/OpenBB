@@ -1,7 +1,6 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
-import pandas as pd
 import pytest
 import requests
 
@@ -15,13 +14,10 @@ def vcr_config():
 
 
 @pytest.mark.vcr
-def test_get_rating_over_time(default_csv_path):
+def test_get_rating_over_time(recorder):
     result_df = finnhub_model.get_rating_over_time(ticker="TSLA")
 
-    # result_df.to_csv(default_csv_path, index=False)
-    expected_df = pd.read_csv(default_csv_path)
-
-    pd.testing.assert_frame_equal(result_df, expected_df)
+    recorder.capture(result_df)
 
 
 @pytest.mark.vcr

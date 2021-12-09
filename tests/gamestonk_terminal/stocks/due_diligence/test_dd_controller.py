@@ -11,10 +11,8 @@ from gamestonk_terminal.stocks.due_diligence import dd_controller
 # pylint: disable=E1101
 # pylint: disable=W0603
 
-first_call = True
 
-
-@pytest.mark.block_network
+@pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_menu_quick_exit(mocker):
     mocker.patch("builtins.input", return_value="quit")
@@ -25,26 +23,27 @@ def test_menu_quick_exit(mocker):
     )
 
     stock = pd.DataFrame()
-    dd_controller.menu(
+    result_menu = dd_controller.menu(
         ticker="TSLA", start="10/25/2021", interval="1440min", stock=stock
     )
 
+    assert result_menu
 
-@pytest.mark.block_network
+
+@pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_menu_system_exit(mocker):
-    global first_call
-    first_call = True
+    class SystemExitSideEffect:
+        def __init__(self):
+            self.first_call = True
 
-    def side_effect(arg):
-        global first_call
-        if first_call:
-            first_call = False
-            raise SystemExit()
+        def __call__(self, *args, **kwargs):
+            if self.first_call:
+                self.first_call = False
+                raise SystemExit()
+            return True
 
-        return arg
-
-    m = mocker.Mock(return_value="quit", side_effect=side_effect)
+    mock_switch = mocker.Mock(side_effect=SystemExitSideEffect())
     mocker.patch("builtins.input", return_value="quit")
     mocker.patch("gamestonk_terminal.stocks.due_diligence.dd_controller.session")
     mocker.patch(
@@ -53,7 +52,7 @@ def test_menu_system_exit(mocker):
     )
     mocker.patch(
         "gamestonk_terminal.stocks.due_diligence.dd_controller.DueDiligenceController.switch",
-        new=m,
+        new=mock_switch,
     )
 
     stock = pd.DataFrame()
@@ -62,7 +61,7 @@ def test_menu_system_exit(mocker):
     )
 
 
-@pytest.mark.block_network
+@pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_print_help():
     dd = dd_controller.DueDiligenceController(
@@ -71,7 +70,7 @@ def test_print_help():
     dd.print_help()
 
 
-@pytest.mark.block_network
+@pytest.mark.vcr(record_mode="none")
 def test_switch_empty():
     dd = dd_controller.DueDiligenceController(
         ticker="", start="", interval="", stock=pd.DataFrame()
@@ -81,7 +80,7 @@ def test_switch_empty():
     assert result is None
 
 
-@pytest.mark.block_network
+@pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_switch_help():
     dd = dd_controller.DueDiligenceController(
@@ -92,7 +91,7 @@ def test_switch_help():
     assert result is None
 
 
-@pytest.mark.block_network
+@pytest.mark.vcr(record_mode="none")
 def test_switch_cls(mocker):
     mocker.patch("os.system")
     dd = dd_controller.DueDiligenceController(
@@ -104,7 +103,7 @@ def test_switch_cls(mocker):
     os.system.assert_called_once_with("cls||clear")
 
 
-@pytest.mark.block_network
+@pytest.mark.vcr(record_mode="none")
 def test_call_q():
     dd = dd_controller.DueDiligenceController(
         ticker="", start="", interval="", stock=pd.DataFrame()
@@ -115,7 +114,7 @@ def test_call_q():
     assert result is False
 
 
-@pytest.mark.block_network
+@pytest.mark.vcr(record_mode="none")
 def test_call_quit():
     dd = dd_controller.DueDiligenceController(
         ticker="", start="", interval="", stock=pd.DataFrame()
@@ -126,37 +125,37 @@ def test_call_quit():
     assert result is True
 
 
-@pytest.mark.block_network
+@pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "tested_func, mocked_func, other_args, called_with",
     [
         (
             "call_analyst",
-            "gamestonk_terminal.stocks.due_diligence.dd_controller.finviz_view.analyst",
+            "finviz_view.analyst",
             [],
             {"ticker": "TSLA", "export": ""},
         ),
         (
             "call_analyst",
-            "gamestonk_terminal.stocks.due_diligence.dd_controller.finviz_view.analyst",
+            "finviz_view.analyst",
             ["--export=csv"],
             {"ticker": "TSLA", "export": "csv"},
         ),
         (
             "call_analyst",
-            "gamestonk_terminal.stocks.due_diligence.dd_controller.finviz_view.analyst",
+            "finviz_view.analyst",
             ["--export=json"],
             {"ticker": "TSLA", "export": "json"},
         ),
         (
             "call_analyst",
-            "gamestonk_terminal.stocks.due_diligence.dd_controller.finviz_view.analyst",
+            "finviz_view.analyst",
             ["--export=xlsx"],
             {"ticker": "TSLA", "export": "xlsx"},
         ),
         (
             "call_pt",
-            "gamestonk_terminal.stocks.due_diligence.dd_controller.business_insider_view.price_target_from_analysts",
+            "business_insider_view.price_target_from_analysts",
             ["--num=10"],
             {
                 "ticker": "TSLA",
@@ -170,7 +169,7 @@ def test_call_quit():
         ),
         (
             "call_est",
-            "gamestonk_terminal.stocks.due_diligence.dd_controller.business_insider_view.estimates",
+            "business_insider_view.estimates",
             [],
             {
                 "ticker": "TSLA",
@@ -179,7 +178,7 @@ def test_call_quit():
         ),
         (
             "call_rot",
-            "gamestonk_terminal.stocks.due_diligence.dd_controller.finnhub_view.rating_over_time",
+            "finnhub_view.rating_over_time",
             ["--num=10"],
             {
                 "ticker": "TSLA",
@@ -190,7 +189,7 @@ def test_call_quit():
         ),
         (
             "call_rating",
-            "gamestonk_terminal.stocks.due_diligence.dd_controller.fmp_view.rating",
+            "fmp_view.rating",
             ["--num=10"],
             {
                 "ticker": "TSLA",
@@ -200,7 +199,7 @@ def test_call_quit():
         ),
         (
             "call_sec",
-            "gamestonk_terminal.stocks.due_diligence.dd_controller.marketwatch_view.sec_filings",
+            "marketwatch_view.sec_filings",
             ["--num=10"],
             {
                 "ticker": "TSLA",
@@ -210,7 +209,7 @@ def test_call_quit():
         ),
         (
             "call_supplier",
-            "gamestonk_terminal.stocks.due_diligence.dd_controller.csimarket_view.suppliers",
+            "csimarket_view.suppliers",
             [],
             {
                 "ticker": "TSLA",
@@ -219,8 +218,8 @@ def test_call_quit():
         ),
         (
             "call_arktrades",
-            "gamestonk_terminal.stocks.due_diligence.dd_controller.ark_view.display_ark_trades",
-            ["--num=10", "-s"],
+            "ark_view.display_ark_trades",
+            ["--num=10", "--show_ticker"],
             {
                 "ticker": "TSLA",
                 "num": 10,
@@ -232,7 +231,10 @@ def test_call_quit():
 )
 def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
     mock = mocker.Mock()
-    mocker.patch(mocked_func, new=mock)
+    mocker.patch(
+        "gamestonk_terminal.stocks.due_diligence.dd_controller." + mocked_func,
+        new=mock,
+    )
     dd = dd_controller.DueDiligenceController(
         ticker="TSLA",
         start="10/25/2021",
@@ -241,13 +243,15 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
     )
     getattr(dd, tested_func)(other_args=other_args)
 
-    if called_with:
+    if isinstance(called_with, dict):
+        mock.assert_called_once_with(**called_with)
+    elif isinstance(called_with, list):
         mock.assert_called_once_with(**called_with)
     else:
         mock.assert_called_once()
 
 
-@pytest.mark.block_network
+@pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "func",
     [

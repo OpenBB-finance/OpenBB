@@ -1,0 +1,1 @@
+Issue getting key metrics from alpha vantage.
