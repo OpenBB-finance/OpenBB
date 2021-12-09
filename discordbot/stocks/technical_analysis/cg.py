@@ -80,8 +80,7 @@ async def cg_command(ctx, ticker="", length="14", start="", end=""):
         title = "Stocks: Center-of-Gravity " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
         embed.set_image(url=image_link)
         os.remove("ta_cg.png")
@@ -90,13 +89,10 @@ async def cg_command(ctx, ticker="", length="14", start="", end=""):
 
     except Exception as e:
         embed = discord.Embed(
-            title="ERROR Stocks: Center-of-Gravity",
-            colour=cfg.COLOR,
-            description=e,
+            title="ERROR Stocks: Center-of-Gravity", colour=cfg.COLOR, description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

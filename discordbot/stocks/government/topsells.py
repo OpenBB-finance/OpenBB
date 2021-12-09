@@ -143,8 +143,7 @@ async def topsells_command(
         else:
             embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
         embed.set_image(url=image_link)
         os.remove("gov_topsells.png")
@@ -158,8 +157,7 @@ async def topsells_command(
             description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

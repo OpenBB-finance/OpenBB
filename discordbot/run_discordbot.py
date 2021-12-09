@@ -15,10 +15,10 @@ gst_bot = discord.ext.commands.Bot(
     command_prefix=cfg.COMMAND_PREFIX, intents=discord.Intents.all(), activity=activity
 )
 discord_components.DiscordComponents(gst_bot)
-
+print(cfg.DISCORD_BOT_TOKEN)
 if cfg.IMGUR_CLIENT_ID == "REPLACE_ME" or cfg.DISCORD_BOT_TOKEN == "REPLACE_ME":
     print(
-        f"Update IMGUR_CLIENT_ID or DISCORD_BOT_TOKEN or both in { os.path.join('discordbot', 'config_discordot') } \n"
+        f"Update IMGUR_CLIENT_ID or DISCORD_BOT_TOKEN or both in { os.path.join('discordbot', 'config_discordbot') } \n"
     )
     sys.exit()
 

@@ -64,13 +64,7 @@ async def lasttrades_command(
             )
         else:
             df_gov = df_gov[
-                [
-                    "TransactionDate",
-                    "Ticker",
-                    "Representative",
-                    "Transaction",
-                    "Range",
-                ]
+                ["TransactionDate", "Ticker", "Representative", "Transaction", "Range",]
             ].rename(columns={"TransactionDate": "Transaction Date"})
 
         if representative:
@@ -91,8 +85,7 @@ async def lasttrades_command(
                 colour=cfg.COLOR,
             )
             embed.set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
+                name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
             )
 
             await ctx.send(embed=embed)
@@ -105,8 +98,7 @@ async def lasttrades_command(
                     colour=cfg.COLOR,
                 )
                 embed.set_author(
-                    name=cfg.AUTHOR_NAME,
-                    icon_url=cfg.AUTHOR_ICON_URL,
+                    name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
                 )
                 await ctx.send(embed=embed)
             else:
@@ -121,8 +113,7 @@ async def lasttrades_command(
                             description="```" + gov_type[str_start:str_end] + "```",
                             colour=cfg.COLOR,
                         ).set_author(
-                            name=cfg.AUTHOR_NAME,
-                            icon_url=cfg.AUTHOR_ICON_URL,
+                            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
                         )
                     )
                     str_end = str_start
@@ -138,8 +129,7 @@ async def lasttrades_command(
             description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

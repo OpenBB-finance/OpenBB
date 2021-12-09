@@ -93,16 +93,17 @@ async def historical_command(ctx, signal="", start=""):
 
                     l_parsed_stocks.append(symbol)
                 except Exception as e:
-                    error = (f"{e}\nDisregard previous error, which is due to API Rate limits from Yahoo Finance. "
-                             f"Because we like '{symbol}', and we won't leave without getting data from it.")
+                    error = (
+                        f"{e}\nDisregard previous error, which is due to API Rate limits from Yahoo Finance. "
+                        f"Because we like '{symbol}', and we won't leave without getting data from it."
+                    )
                     embed = discord.Embed(
                         title="ERROR Stocks: [Yahoo Finance] Historical Screener",
                         colour=cfg.COLOR,
                         description=error,
                     )
                     embed.set_author(
-                        name=cfg.AUTHOR_NAME,
-                        icon_url=cfg.AUTHOR_ICON_URL,
+                        name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
                     )
 
                     await ctx.send(embed=embed)
@@ -134,8 +135,7 @@ async def historical_command(ctx, signal="", start=""):
         title = "Stocks: [Yahoo Finance] Historical Screener"
         embed = discord.Embed(title=title, description=description, colour=cfg.COLOR)
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
         embed.set_image(url=image_link)
         os.remove("scr_historical.png")
@@ -149,8 +149,7 @@ async def historical_command(ctx, signal="", start=""):
             description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

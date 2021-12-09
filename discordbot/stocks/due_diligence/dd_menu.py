@@ -122,8 +122,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
                 description="A stock ticker is required",
             )
             embed.set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
+                name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
             )
 
         text = (
@@ -139,8 +138,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         title = "Stocks: Due Diligence (DD) Menu"
         embed = discord.Embed(title=title, description=text, colour=cfg.COLOR)
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
         msg = await ctx.send(embed=embed)
 
@@ -195,10 +193,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
                 description="Error timeout - you snooze you lose! 😋",
                 colour=cfg.COLOR,
                 title="TIMEOUT Stocks: Due Diligence (DD) Menu",
-            ).set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
-            )
+            ).set_author(name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,)
             await ctx.send(embed=embed)
 
 

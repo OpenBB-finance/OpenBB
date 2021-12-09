@@ -98,8 +98,7 @@ async def kc_command(
         title = "Stocks: Keltner-Channel " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
         embed.set_image(url=image_link)
         os.remove("ta_kc.png")
@@ -108,13 +107,10 @@ async def kc_command(
 
     except Exception as e:
         embed = discord.Embed(
-            title="ERROR Stocks: Keltner-Channel",
-            colour=cfg.COLOR,
-            description=e,
+            title="ERROR Stocks: Keltner-Channel", colour=cfg.COLOR, description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

@@ -103,10 +103,7 @@ async def gtrades_command(
         )
 
         ax.set_xlim(
-            [
-                df_gov["TransactionDate"].values[0],
-                df_gov["TransactionDate"].values[-1],
-            ]
+            [df_gov["TransactionDate"].values[0], df_gov["TransactionDate"].values[-1],]
         )
         ax.grid()
         ax.set_title(f"{gov_type.capitalize()} trading on {ticker}")
@@ -130,8 +127,7 @@ async def gtrades_command(
         else:
             embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
         embed.set_image(url=image_link)
         os.remove("gov_gtrades.png")
@@ -145,8 +141,7 @@ async def gtrades_command(
             description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

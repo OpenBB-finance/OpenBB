@@ -92,8 +92,7 @@ async def aroon_command(ctx, ticker="", length="25", scalar="100", start="", end
         title = "Stocks: Aroon-Indicator " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
         embed.set_image(url=image_link)
         os.remove("ta_aroon.png")
@@ -102,13 +101,10 @@ async def aroon_command(ctx, ticker="", length="25", scalar="100", start="", end
 
     except Exception as e:
         embed = discord.Embed(
-            title="ERROR Stocks: Aroon-Indicator",
-            colour=cfg.COLOR,
-            description=e,
+            title="ERROR Stocks: Aroon-Indicator", colour=cfg.COLOR, description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

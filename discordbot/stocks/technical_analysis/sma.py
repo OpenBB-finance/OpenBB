@@ -107,8 +107,7 @@ async def sma_command(ctx, ticker="", window="", offset="", start="", end=""):
         title = "Stocks: Simple-Moving-Average " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
         embed.set_image(url=image_link)
         os.remove("ta_sma.png")
@@ -122,8 +121,7 @@ async def sma_command(ctx, ticker="", window="", offset="", start="", end=""):
             description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

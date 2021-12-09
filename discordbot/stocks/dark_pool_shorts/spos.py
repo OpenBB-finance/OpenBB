@@ -38,8 +38,7 @@ async def spos_command(ctx, ticker=""):
         title = f"Stocks: [Stockgrid] Net Short vs Position {ticker}"
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         fig = plt.figure(dpi=PLOT_DPI)
@@ -87,8 +86,7 @@ async def spos_command(ctx, ticker=""):
             description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

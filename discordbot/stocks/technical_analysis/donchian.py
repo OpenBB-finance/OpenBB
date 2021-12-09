@@ -90,8 +90,7 @@ async def donchian_command(
         title = "Stocks: Donchian-Channels " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
         embed.set_image(url=image_link)
         os.remove("ta_donchian.png")
@@ -100,13 +99,10 @@ async def donchian_command(
 
     except Exception as e:
         embed = discord.Embed(
-            title="ERROR Stocks: Donchian-Channels",
-            colour=cfg.COLOR,
-            description=e,
+            title="ERROR Stocks: Donchian-Channels", colour=cfg.COLOR, description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

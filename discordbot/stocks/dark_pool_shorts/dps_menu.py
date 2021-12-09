@@ -143,8 +143,7 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
                     description="Stock ticker is invalid",
                 )
                 embed.set_author(
-                    name=cfg.AUTHOR_NAME,
-                    icon_url=cfg.AUTHOR_ICON_URL,
+                    name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
                 )
 
                 await ctx.send(embed=embed)
@@ -172,8 +171,7 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         title = "Stocks: Dark Pool Shorts (DPS) Menu"
         embed = discord.Embed(title=title, description=text, colour=cfg.COLOR)
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
         msg = await ctx.send(embed=embed)
 
@@ -235,10 +233,7 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
                 description="Error timeout - you snooze you lose! 😋",
                 colour=cfg.COLOR,
                 title="TIMEOUT Stocks: Dark Pool Shorts (DPS) Menu",
-            ).set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
-            )
+            ).set_author(name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,)
             await ctx.send(embed=embed)
 
 

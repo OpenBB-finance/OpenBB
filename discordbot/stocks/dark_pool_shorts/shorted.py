@@ -51,8 +51,7 @@ async def shorted_command(ctx, num="10"):
                 description=initial_str,
                 colour=cfg.COLOR,
             ).set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
+                name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
             )
         )
         for column in df.columns.values:
@@ -61,8 +60,7 @@ async def shorted_command(ctx, num="10"):
                     description="```" + df[column].fillna("").to_string() + "```",
                     colour=cfg.COLOR,
                 ).set_author(
-                    name=cfg.AUTHOR_NAME,
-                    icon_url=cfg.AUTHOR_ICON_URL,
+                    name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
                 )
             )
 
@@ -75,8 +73,7 @@ async def shorted_command(ctx, num="10"):
             description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

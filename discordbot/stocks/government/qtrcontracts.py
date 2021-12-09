@@ -101,8 +101,7 @@ async def qtrcontracts_command(ctx, num="", analysis=""):
                 title=title, description=description, colour=cfg.COLOR
             )
             embed.set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
+                name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
             )
             embed.set_image(url=image_link)
             os.remove("gov_qtrcontracts.png")
@@ -117,8 +116,7 @@ async def qtrcontracts_command(ctx, num="", analysis=""):
                 colour=cfg.COLOR,
             )
             embed.set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
+                name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
             )
 
             await ctx.send(embed=embed)
@@ -130,8 +128,7 @@ async def qtrcontracts_command(ctx, num="", analysis=""):
             description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

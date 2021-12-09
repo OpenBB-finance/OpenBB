@@ -80,11 +80,7 @@ async def ad_command(ctx, ticker="", is_open="False", start="", end=""):
         ax2 = axes[1]
         ax2.set_ylabel("Volume [M]")
         ax2.bar(
-            df_stock.index,
-            df_vol,
-            color=bar_colors,
-            alpha=0.8,
-            width=0.3,
+            df_stock.index, df_vol, color=bar_colors, alpha=0.8, width=0.3,
         )
         ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
 
@@ -107,8 +103,7 @@ async def ad_command(ctx, ticker="", is_open="False", start="", end=""):
         title = "Stocks: Accumulation/Distribution Line " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
         embed.set_image(url=image_link)
         os.remove("ta_ad.png")
@@ -122,8 +117,7 @@ async def ad_command(ctx, ticker="", is_open="False", start="", end=""):
             description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)

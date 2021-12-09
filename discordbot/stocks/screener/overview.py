@@ -1,6 +1,6 @@
 import discord
-import config_discordbot as cfg
-from helpers import pagination
+import discordbot.config_discordbot as cfg
+from discordbot.helpers import pagination
 import difflib
 import pandas as pd
 
@@ -36,12 +36,7 @@ async def overview_command(ctx, preset="template", sort="", limit="25", ascend="
             raise Exception("ascend argument has to be true or false")
 
         # Output Data
-        df_screen = get_screener_data(
-            preset,
-            "overview",
-            limit,
-            ascend,
-        )
+        df_screen = get_screener_data(preset, "overview", limit, ascend,)
 
         d_cols_to_sort = {
             "overview": [
@@ -69,25 +64,16 @@ async def overview_command(ctx, preset="template", sort="", limit="25", ascend="
             if sort:
                 if " ".join(sort) in d_cols_to_sort["overview"]:
                     df_screen = df_screen.sort_values(
-                        by=[" ".join(sort)],
-                        ascending=ascend,
-                        na_position="last",
+                        by=[" ".join(sort)], ascending=ascend, na_position="last",
                     )
                 else:
                     similar_cmd = difflib.get_close_matches(
-                        " ".join(sort),
-                        d_cols_to_sort["overview"],
-                        n=1,
-                        cutoff=0.7,
+                        " ".join(sort), d_cols_to_sort["overview"], n=1, cutoff=0.7,
                     )
                     if similar_cmd:
-                        description = (
-                            f"Replacing '{' '.join(sort)}' by '{similar_cmd[0]}' so table can be sorted.\n"
-                        )
+                        description = f"Replacing '{' '.join(sort)}' by '{similar_cmd[0]}' so table can be sorted.\n"
                         df_screen = df_screen.sort_values(
-                            by=[similar_cmd[0]],
-                            ascending=ascend,
-                            na_position="last",
+                            by=[similar_cmd[0]], ascending=ascend, na_position="last",
                         )
                     else:
                         raise ValueError(
@@ -106,8 +92,7 @@ async def overview_command(ctx, preset="template", sort="", limit="25", ascend="
                     colour=cfg.COLOR,
                 )
                 embed.set_author(
-                    name=cfg.AUTHOR_NAME,
-                    icon_url=cfg.AUTHOR_ICON_URL,
+                    name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
                 )
 
                 await ctx.send(embed=embed)
@@ -121,11 +106,12 @@ async def overview_command(ctx, preset="template", sort="", limit="25", ascend="
                     columns.append(
                         discord.Embed(
                             title=f"Stocks: [Finviz] Overview Screener",
-                            description="```" + df_screen_str[str_start:str_end] + "```",
+                            description="```"
+                            + df_screen_str[str_start:str_end]
+                            + "```",
                             colour=cfg.COLOR,
                         ).set_author(
-                            name=cfg.AUTHOR_NAME,
-                            icon_url=cfg.AUTHOR_ICON_URL,
+                            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
                         )
                     )
                     str_end = str_start
@@ -141,8 +127,7 @@ async def overview_command(ctx, preset="template", sort="", limit="25", ascend="
             description=e,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=cfg.AUTHOR_NAME, icon_url=cfg.AUTHOR_ICON_URL,
         )
 
         await ctx.send(embed=embed)
