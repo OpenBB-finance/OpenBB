@@ -200,7 +200,8 @@ NASDAQ Data Link (Formerly Quandl):
             actions = an_input.split("/")
             an_input = actions[0]
             for cmd in actions[1:][::-1]:
-                self.queue.insert(0, cmd)
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.disc_parser.parse_known_args(an_input.split())
 
@@ -1077,13 +1078,14 @@ def menu(queue: List[str] = None):
 
             an_input = disc_controller.queue[0]
             disc_controller.queue = disc_controller.queue[1:]
-            if an_input:
-                print(f"{get_flair()} /stocks/disc/ $ {an_input}\n")
+            if an_input and an_input != "r" and len(disc_controller.queue) == 0:
+                print(f"{get_flair()} /stocks/disc/ $ {an_input}")
 
         # Get input command from user
         else:
-            if session and gtff.USE_PROMPT_TOOLKIT and disc_controller.completer:
+            disc_controller.print_help()
 
+            if session and gtff.USE_PROMPT_TOOLKIT and disc_controller.completer:
                 an_input = session.prompt(
                     f"{get_flair()} /stocks/disc/ $ ",
                     completer=disc_controller.completer,
@@ -1099,7 +1101,7 @@ def menu(queue: List[str] = None):
             disc_controller.queue = disc_controller.switch(an_input)
 
         except SystemExit:
-            print(f"The command '{an_input}' doesn't exist.", end="")
+            print(f"\nThe command '{an_input}' doesn't exist.", end="")
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 disc_controller.CHOICES,
@@ -1114,6 +1116,4 @@ def menu(queue: List[str] = None):
                     an_input = similar_cmd[0]
                 print(f" Replacing by '{an_input}'.")
                 disc_controller.queue.insert(0, an_input)
-            print("")
-
-            continue
+            print("\n")

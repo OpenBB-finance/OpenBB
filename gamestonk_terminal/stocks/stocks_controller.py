@@ -803,11 +803,13 @@ def menu(ticker: str = "", queue: List[str] = None):
 
             an_input = stocks_controller.queue[0]
             stocks_controller.queue = stocks_controller.queue[1:]
-            if an_input:
-                print(f"{get_flair()} /stocks/ $ {an_input}\n")
+            if an_input and an_input != "r" and len(stocks_controller.queue) == 0:
+                print(f"{get_flair()} /stocks/ $ {an_input}")
 
         # Get input command from user
         else:
+            stocks_controller.print_help()
+
             if session and gtff.USE_PROMPT_TOOLKIT and stocks_controller.completer:
                 an_input = session.prompt(
                     f"{get_flair()} /stocks/ $ ",
@@ -822,7 +824,7 @@ def menu(ticker: str = "", queue: List[str] = None):
             stocks_controller.queue = stocks_controller.switch(an_input)
 
         except SystemExit:
-            print(f"The command '{an_input}' doesn't exist.", end="")
+            print(f"\nThe command '{an_input}' doesn't exist.", end="")
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 stocks_controller.CHOICES,
@@ -837,6 +839,4 @@ def menu(ticker: str = "", queue: List[str] = None):
                     an_input = similar_cmd[0]
                 print(f" Replacing by '{an_input}'.")
                 stocks_controller.queue.insert(0, an_input)
-            print("")
-
-            continue
+            print("\n")

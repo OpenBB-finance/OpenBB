@@ -101,7 +101,8 @@ Menus:
     /forex
     /portfolio
     /reports
-    /resources"""
+    /resources
+    """
         print(help_text)
 
     def switch(self, an_input: str):
@@ -253,12 +254,12 @@ Menus:
 def terminal(jobs_cmds: List[str] = None):
     """Terminal Menu"""
 
-    bootup()
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
-    t_controller.print_help()
 
-    usage_instructions()
+    if not jobs_cmds:
+        bootup()
+        usage_instructions()
 
     while ret_code:
         if gtff.ENABLE_QUICK_EXIT:
@@ -274,11 +275,13 @@ def terminal(jobs_cmds: List[str] = None):
 
             an_input = t_controller.queue[0]
             t_controller.queue = t_controller.queue[1:]
-            if an_input and an_input != "r":
-                print(f"{get_flair()} / $ {an_input}\n")
+            if an_input and an_input != "r" and len(t_controller.queue) == 0:
+                print(f"{get_flair()} / $ {an_input}")
 
         # Get input command from user
         else:
+            t_controller.print_help()
+
             if session and gtff.USE_PROMPT_TOOLKIT:
                 an_input = session.prompt(
                     f"{get_flair()} / $ ",
@@ -313,7 +316,7 @@ def terminal(jobs_cmds: List[str] = None):
                     break
 
         except SystemExit:
-            print(f"The command '{an_input}' doesn't exist.", end="")
+            print(f"\nThe command '{an_input}' doesn't exist.", end="")
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 t_controller.CHOICES,
@@ -328,7 +331,7 @@ def terminal(jobs_cmds: List[str] = None):
                     an_input = similar_cmd[0]
                 print(f" Replacing by '{an_input}'.")
                 t_controller.queue.insert(0, an_input)
-            print("")
+            print("\n")
 
 
 if __name__ == "__main__":

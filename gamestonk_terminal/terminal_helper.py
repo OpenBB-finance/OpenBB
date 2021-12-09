@@ -336,7 +336,7 @@ def update_terminal():
 def about_us():
     """Prints an about us section"""
     print(
-        f"\n{Fore.GREEN}Thanks for using Gamestonk Terminal. This is our way!{Style.RESET_ALL}\n"
+        f"{Fore.GREEN}Thanks for using Gamestonk Terminal. This is our way!{Style.RESET_ALL}\n"
         "\n"
         f"{Fore.CYAN}Join our community on discord: {Style.RESET_ALL}https://discord.gg/Up2QGbMKHY\n"
         f"{Fore.CYAN}Follow our twitter for updates: {Style.RESET_ALL}https://twitter.com/gamestonkt\n"
@@ -353,15 +353,13 @@ def about_us():
         "markets, carefully consider your investment objectives, level of experience, and risk appetite, and seek "
         "professional advice where needed. The data contained in Gamestonk Terminal (GST) is not necessarily accurate. "
         "GST and any provider of the data contained in this website will not accept liability for any loss or damage "
-        "as a result of your trading, or your reliance on the information displayed."
-        f"\n{Style.RESET_ALL}"
+        f"as a result of your trading, or your reliance on the information displayed.{Style.RESET_ALL}"
     )
 
 
 def usage_instructions():
     """Prints an usage instructions section"""
-    help_text = """
-USAGE INSTRUCTIONS
+    help_text = """USAGE INSTRUCTIONS
 
 The main commands you should be aware when navigating through the terminal are:
     cls      clear the screen
@@ -395,7 +393,7 @@ def bootup():
         print(e, "\n")
 
     # Print first welcome message and help
-    print("\nWelcome to Gamestonk Terminal Beta")
+    print("\nWelcome to Gamestonk Terminal Beta\n")
 
     # The commit has was commented out because the terminal was crashing due to git import for multiple users
     # ({str(git.Repo('.').head.commit)[:7]})
