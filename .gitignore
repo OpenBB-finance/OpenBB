@@ -10,6 +10,7 @@ venv/
 !notebooks/reports/.gitkeep
 !jupyterlab/dashboards/*
 .python-version
+iframe_figures/
 exports/*
 .idea
 .coverage
