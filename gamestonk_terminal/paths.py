@@ -4,9 +4,5 @@ cd_CHOICES = [
     "/stocks/ta",
     "/stocks/dd",
     "/forex",
-    "/forex/select",
-    "/forex/quote",
-    "/forex/load",
-    "/forex/candle",
     "/forex/oanda",
 ]
