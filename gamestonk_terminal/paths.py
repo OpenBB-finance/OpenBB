@@ -3,4 +3,13 @@ cd_CHOICES = [
     "stocks/disc/",
     "stocks/ta/",
     "stocs/dd/",
+    "crypto/",
+    "crypto/ta",
+    "crypto/dd",
+    "crypto/ov",
+    "crypto/disc",
+    "crypto/onchain",
+    "crypto/defi",
+    "crypto/nft",
+    "crypto/pred",
 ]

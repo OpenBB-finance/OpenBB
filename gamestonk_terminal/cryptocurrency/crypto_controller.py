@@ -1,14 +1,15 @@
-"""Cryptocurrency Controller"""
+"""Cryptocurrency Context Controller"""
 __docformat__ = "numpy"
 # pylint: disable=R0904, C0302, R1710, W0622
 
 import argparse
 import difflib
-import matplotlib.pyplot as plt
+from typing import List, Union
 import pandas as pd
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 from binance.client import Client
+
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
@@ -16,12 +17,8 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     system_clear,
     try_except,
-    MENU_GO_BACK,
-    MENU_QUIT,
-    MENU_RESET,
 )
 from gamestonk_terminal.menu import session
-
 from gamestonk_terminal.cryptocurrency.due_diligence import (
     coinpaprika_view,
     binance_view,
@@ -30,15 +27,13 @@ from gamestonk_terminal.cryptocurrency.due_diligence import (
     binance_model,
     coinbase_model,
 )
-
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
     load,
     find,
     load_ta_data,
     plot_chart,
 )
-
-
+from gamestonk_terminal.paths import cd_CHOICES
 import gamestonk_terminal.config_terminal as cfg
 
 # pylint: disable=import-outside-toplevel
@@ -46,15 +41,17 @@ import gamestonk_terminal.config_terminal as cfg
 
 class CryptoController:
     CHOICES = [
-        "?",
         "cls",
-        "help",
+        "cd",
+        "h",
+        "?",
         "q",
-        "quit",
-        "reset",
+        "..",
+        "exit",
+        "r",
     ]
 
-    CHOICES_COMMAND = [
+    CHOICES_COMMANDS = [
         "headlines",
         "chart",
         "load",
@@ -76,10 +73,10 @@ class CryptoController:
         "bin": binance_view,
     }
 
-    CHOICES += CHOICES_COMMAND
+    CHOICES += CHOICES_COMMANDS
     CHOICES += CHOICES_MENUS
 
-    def __init__(self):
+    def __init__(self, queue: List[str] = None):
         """CONSTRUCTOR"""
 
         self.crypto_parser = argparse.ArgumentParser(add_help=False, prog="crypto")
@@ -91,16 +88,26 @@ class CryptoController:
         self.current_currency = ""
         self.source = ""
 
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            choices["cd"] = {c: None for c in cd_CHOICES}
+
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
+
     def print_help(self):
         """Print help"""
         help_text = """
-What do you want to do?
-    cls         clear screen
-    ?/help      show this menu again
-    q           quit this menu, and shows back to main menu
-    quit        quit to abandon the program
-    reset       reset terminal and reload configs
-"""
+    load        load a specific cryptocurrency for analysis
+    chart       view a candle chart for a specific cryptocurrency
+    find        alternate way to search for coins
+    headlines   crypto sentiment from 15+ major news headlines [Finbrain]"""
         help_text += (
             f"\nCoin: {self.current_coin}" if self.current_coin != "" else "\nCoin: ?"
         )
@@ -110,21 +117,17 @@ What do you want to do?
             else "\nSource: ?\n"
         )
         dim = Style.DIM if not self.current_coin else ""
-        help_text += f"""
-    load        load a specific cryptocurrency for analysis
-    chart       view a candle chart for a specific cryptocurrency
-    find        alternate way to search for coins
-    headlines   crypto sentiment from 15+ major news headlines [Finbrain]
-
->   disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
->   ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables{dim}
->   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
->   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
->   pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
+        help_text = f"""
+Crypto Menus:
+    /disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
+    /ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables{dim}
+    /dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
+    /ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
+    /pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
 {Style.RESET_ALL if not self.current_coin else ""}
->   onchain     information on different blockchains,   e.g.: eth gas fees, active asset addresses, whale alerts
->   defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
->   nft         non-fungible tokens,                    e.g.: today drops
+    /onchain     information on different blockchains,   e.g.: eth gas fees, active asset addresses, whale alerts
+    /defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
+    /nft         non-fungible tokens,                    e.g.: today drops
 """
         print(help_text)
 
@@ -142,39 +145,74 @@ What do you want to do?
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue if len(self.queue) > 0 else []
+
+        if "/" in an_input:
+            actions = an_input.split("/")
+            an_input = actions[0]
+            for cmd in actions[1:][::-1]:
+                self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.crypto_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+        if known_args.cmd:
+            if known_args.cmd == "..":
+                known_args.cmd = "q"
+            elif known_args.cmd == "?":
+                known_args.cmd = "h"
 
         return getattr(
-            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
+            self, "call_" + known_args.cmd, lambda: "command not recognized!"
         )(other_args)
 
-    def call_help(self, _):
-        """Process Help command"""
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue if len(self.queue) > 0 else []
+
+    def call_cd(self, other_args):
+        """Process cd command"""
+        if other_args:
+            args = other_args[0].split("/")
+            if len(args) > 0:
+                for m in args[::-1]:
+                    if m:
+                        self.queue.insert(0, m)
+            else:
+                self.queue.insert(0, args[0])
+
+        self.queue.insert(0, "q")
+
+        return self.queue if len(self.queue) > 0 else []
+
+    def call_h(self, _):
+        """Process help command"""
         self.print_help()
+        return self.queue if len(self.queue) > 0 else []
 
     def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return MENU_GO_BACK
+        """Process quit menu command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q"]
 
-    def call_quit(self, _):
-        """Process Quit command - exit the program"""
-        return MENU_QUIT
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q", "q"]
 
-    def call_reset(self, _):
-        """Process Reset command - exit the program"""
-        return MENU_RESET
+    def call_r(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "crypto")
+            self.queue.insert(0, "r")
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q", "r", "crypto"]
 
     def call_load(self, other_args):
         """Process load command"""
@@ -876,35 +914,55 @@ What do you want to do?
         )
 
 
-def menu():
-    crypto_controller = CryptoController()
-    crypto_controller.call_help(None)
-    plt.close("all")
+def menu(queue: List[str] = None):
+    crypto_controller = CryptoController(queue)
+    an_input = "first"
+
     while True:
+        # There is a command in the queue
+        if crypto_controller.queue and len(crypto_controller.queue) > 0:
+            if crypto_controller.queue[0] in ("q", ".."):
+                if len(crypto_controller.queue) > 1:
+                    return crypto_controller.queue[1:]
+                return []
+
+            an_input = crypto_controller.queue[0]
+            crypto_controller.queue = crypto_controller.queue[1:]
+            if an_input and an_input in crypto_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /crypto/ $ {an_input}")
+
         # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in crypto_controller.CHOICES}
-            )
-            an_input = session.prompt(
-                f"{get_flair()} (crypto)> ",
-                completer=completer,
-            )
         else:
-            an_input = input(f"{get_flair()} (crypto)> ")
+            if an_input == "first" or an_input in crypto_controller.CHOICES:
+                crypto_controller.print_help()
+
+            if session and gtff.USE_PROMPT_TOOLKIT and crypto_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /crypto/ $ ",
+                    completer=crypto_controller.completer,
+                    search_ignore_case=True,
+                )
+
+            else:
+                an_input = input(f"{get_flair()} /crypto/ $ ")
 
         try:
-            process_input = crypto_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            crypto_controller.queue = crypto_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
+            print(f"\nThe command '{an_input}' doesn't exist.", end="")
             similar_cmd = difflib.get_close_matches(
-                an_input, crypto_controller.CHOICES, n=1, cutoff=0.7
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                crypto_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
             )
 
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
-            continue
+                if " " in an_input:
+                    an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                else:
+                    an_input = similar_cmd[0]
+                print(f" Replacing by '{an_input}'.")
+                crypto_controller.queue.insert(0, an_input)
+            print("\n")
