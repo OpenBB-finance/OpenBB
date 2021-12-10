@@ -1,8 +1,8 @@
 import asyncio
 import discord
+
 import discordbot.config_discordbot as cfg
 
-# pylint: disable=wrong-import-order,too-many-branches
 from discordbot.run_discordbot import gst_bot
 
 from discordbot.stocks.screener.historical import historical_command
@@ -24,7 +24,7 @@ class ScreenerCommands(discord.ext.commands.Cog):
     async def historical(
         self,
         ctx: discord.ext.commands.Context,
-        signal="",
+        signal="most_volatile",
         start="",
     ):
         """Displays trades made by the congress/senate/house [quiverquant.com]
@@ -32,7 +32,7 @@ class ScreenerCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         signal: str
-            Signals
+            Signal. Default: most_volatile
         start:
             date (in date format for start date)
         """
@@ -44,6 +44,7 @@ class ScreenerCommands(discord.ext.commands.Cog):
         ctx: discord.ext.commands.Context,
         preset="template",
         sort="",
+        signal="",
         limit="25",
         ascend="False",
     ):
@@ -55,19 +56,22 @@ class ScreenerCommands(discord.ext.commands.Cog):
             screener preset
         sort: str
             column to sort by
+        signal: str
+            Signal
         limit: int
             number of stocks to display
         ascend: boolean
             whether it's sorted by ascending order or not. Default: False
         """
-        await overview_command(ctx, preset, sort, limit, ascend)
+        await overview_command(ctx, preset, sort, signal, limit, ascend)
 
     @discord.ext.commands.command(name="stocks.scr.valuation")
     async def valuation(
         self,
         ctx: discord.ext.commands.Context,
-        preset="",
+        preset="template",
         sort="",
+        signal="",
         limit="25",
         ascend="False",
     ):
@@ -79,19 +83,22 @@ class ScreenerCommands(discord.ext.commands.Cog):
             screener preset
         sort: str
             column to sort by
+        signal: str
+            Signal
         limit: int
             number of stocks to display
         ascend: boolean
             whether it's sorted by ascending order or not. Default: False
         """
-        await valuation_command(ctx, preset, sort, limit, ascend)
+        await valuation_command(ctx, preset, sort, signal, limit, ascend)
 
     @discord.ext.commands.command(name="stocks.scr.financial")
     async def financial(
         self,
         ctx: discord.ext.commands.Context,
-        preset="",
+        preset="template",
         sort="",
+        signal="",
         limit="25",
         ascend="False",
     ):
@@ -103,19 +110,22 @@ class ScreenerCommands(discord.ext.commands.Cog):
             screener preset
         sort: str
             column to sort by
+        signal: str
+            Signal
         limit: int
             number of stocks to display
         ascend: boolean
             whether it's sorted by ascending order or not. Default: False
         """
-        await financial_command(ctx, preset, sort, limit, ascend)
+        await financial_command(ctx, preset, sort, signal, limit, ascend)
 
     @discord.ext.commands.command(name="stocks.scr.ownership")
     async def ownership(
         self,
         ctx: discord.ext.commands.Context,
-        preset="",
+        preset="template",
         sort="",
+        signal="",
         limit="25",
         ascend="False",
     ):
@@ -127,19 +137,22 @@ class ScreenerCommands(discord.ext.commands.Cog):
             screener preset
         sort: str
             column to sort by
+        signal: str
+            Signal
         limit: int
             number of stocks to display
         ascend: boolean
             whether it's sorted by ascending order or not. Default: False
         """
-        await ownership_command(ctx, preset, sort, limit, ascend)
+        await ownership_command(ctx, preset, sort, signal, limit, ascend)
 
     @discord.ext.commands.command(name="stocks.scr.performance")
     async def performance(
         self,
         ctx: discord.ext.commands.Context,
-        preset="",
+        preset="template",
         sort="",
+        signal="",
         limit="25",
         ascend="False",
     ):
@@ -151,12 +164,14 @@ class ScreenerCommands(discord.ext.commands.Cog):
             screener preset
         sort: str
             column to sort by
+        signal: str
+            Signal
         limit: int
             number of stocks to display
         ascend: boolean
             whether it's sorted by ascending order or not. Default: False
         """
-        await performance_command(ctx, preset, sort, limit, ascend)
+        await performance_command(ctx, preset, sort, signal, limit, ascend)
 
     @discord.ext.commands.command(name="stocks.scr.technical")
     async def technical(
@@ -164,6 +179,7 @@ class ScreenerCommands(discord.ext.commands.Cog):
         ctx: discord.ext.commands.Context,
         preset="template",
         sort="",
+        signal="",
         limit="25",
         ascend="False",
     ):
@@ -175,12 +191,14 @@ class ScreenerCommands(discord.ext.commands.Cog):
             screener preset
         sort: str
             column to sort by
+        signal: str
+            Signal
         limit: int
             number of stocks to display
         ascend: boolean
             whether it's sorted by ascending order or not. Default: False
         """
-        await technical_command(ctx, preset, sort, limit, ascend)
+        await technical_command(ctx, preset, sort, signal, limit, ascend)
 
     @discord.ext.commands.command(name="stocks.scr")
     async def scr(self, ctx: discord.ext.commands.Context):
@@ -197,12 +215,12 @@ class ScreenerCommands(discord.ext.commands.Cog):
 
         text = (
             "0️⃣ !stocks.scr.historical <SIGNAL> <START>\n"
-            "1️⃣ !stocks.scr.overview <PRESET> <SORT> <LIMIT> <ASCEND>\n"
-            "2️⃣ !stocks.scr.valuation <PRESET> <SORT> <LIMIT> <ASCEND>\n"
-            "3️⃣ !stocks.scr.financial <PRESET> <SORT> <LIMIT> <ASCEND>\n"
-            "4️⃣ !stocks.scr.ownership <PRESET> <SORT> <LIMIT> <ASCEND>\n"
-            "5️⃣ !stocks.scr.performance <PRESET> <SORT> <LIMIT> <ASCEND>\n"
-            "6️⃣ !stocks.scr.technical <PRESET> <SORT> <LIMIT> <ASCEND>"
+            "1️⃣ !stocks.scr.overview <PRESET> <SORT> <SIGNAL> <LIMIT> <ASCEND>\n"
+            "2️⃣ !stocks.scr.valuation <PRESET> <SORT> <SIGNAL> <LIMIT> <ASCEND>\n"
+            "3️⃣ !stocks.scr.financial <PRESET> <SORT> <SIGNAL> <LIMIT> <ASCEND>\n"
+            "4️⃣ !stocks.scr.ownership <PRESET> <SORT> <SIGNAL> <LIMIT> <ASCEND>\n"
+            "5️⃣ !stocks.scr.performance <PRESET> <SORT> <SIGNAL> <LIMIT> <ASCEND>\n"
+            "6️⃣ !stocks.scr.technical <PRESET> <SORT> <SIGNAL> <LIMIT> <ASCEND>"
         )
 
         title = "Screener Menu"

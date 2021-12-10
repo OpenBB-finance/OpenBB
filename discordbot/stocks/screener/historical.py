@@ -1,6 +1,9 @@
 import discord
-import config_discordbot as cfg
-from run_discordbot import gst_imgur
+
+import discordbot.config_discordbot as cfg
+
+from discordbot.run_discordbot import gst_imgur
+
 from matplotlib import pyplot as plt
 from datetime import datetime, timedelta
 import os
@@ -16,7 +19,7 @@ from gamestonk_terminal.helper_funcs import plot_autoscale
 from finvizfinance.screener import ticker
 
 
-async def historical_command(ctx, signal="", start=""):
+async def historical_command(ctx, signal="most_volatile", start=""):
     """Displays historical price comparison between similar companies [Yahoo Finance]"""
     try:
         # Debug user input

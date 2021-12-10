@@ -4,7 +4,7 @@ import difflib
 import discord
 import discord_components
 import pyimgur
-import discordbot.config_discordbot as cfg
+import config_discordbot as cfg
 
 
 activity = discord.Game(
