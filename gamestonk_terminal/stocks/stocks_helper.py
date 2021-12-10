@@ -93,7 +93,7 @@ def load(
     end: datetime = datetime.now(),
     prepost: bool = False,
     source: str = "yf",
-    iexrange: str = "tyd",
+    iexrange: str = "ytd",
 ):
     """
     Load a symbol to perform analysis using the string above as a template. Optional arguments and their
