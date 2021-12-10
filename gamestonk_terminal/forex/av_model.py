@@ -1,12 +1,18 @@
 """AlphaVantage FX Model"""
 
 import argparse
-from typing import Dict
+from typing import Dict, List
 import os
 import pandas as pd
 import requests
 from gamestonk_terminal import config_terminal as cfg
 
+
+def get_currency_list() -> List:
+    path = os.path.join(os.path.dirname(__file__), "av_forex_currencies.csv")
+    return list(pd.read_csv(path)["currency code"])
+
+CURRENCY_LIST = get_currency_list()
 
 def check_valid_forex_currency(fx_symbol: str) -> str:
     """Check if given symbol is supported on alphavantage
@@ -26,8 +32,7 @@ def check_valid_forex_currency(fx_symbol: str) -> str:
     argparse.ArgumentTypeError
         Symbol not valid on alphavantage
     """
-    path = os.path.join(os.path.dirname(__file__), "av_forex_currencies.csv")
-    if fx_symbol.upper() in list(pd.read_csv(path)["currency code"]):
+    if fx_symbol.upper() in CURRENCY_LIST:
         return fx_symbol.upper()
 
     raise argparse.ArgumentTypeError(
