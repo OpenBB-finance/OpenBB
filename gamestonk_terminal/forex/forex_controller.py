@@ -33,6 +33,7 @@ class ForexController:
         "cls",
         "cd",
         "h",
+        "help",
         "?",
         "q",
         "..",
@@ -116,7 +117,7 @@ Forex brokerages:
         if known_args.cmd:
             if known_args.cmd == "..":
                 known_args.cmd = "q"
-            elif known_args.cmd == "?":
+            elif known_args.cmd in ["?", "help", "h"]:
                 known_args.cmd = "h"
 
         return getattr(
