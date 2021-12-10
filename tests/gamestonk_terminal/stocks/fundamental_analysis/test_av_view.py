@@ -1,117 +1,139 @@
-""" fundamental_analysis/av_view.py tests """
-import json
-import sys
-import unittest
+# IMPORTATION STANDARD
 
-# Not testing these tests further. I do not have a fmp key
-from contextlib import contextmanager
-from unittest import mock
+# IMPORTATION THIRDPARTY
+import numpy as np
+import pandas as pd
+import pytest
 
-from gamestonk_terminal import config_terminal as cfg
-
-# pylint: disable=unused-import
+# IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.fundamental_analysis import av_view
-from tests.helpers import check_print
 
 
-@contextmanager
-def replace_stdin(target):
-    orig = sys.stdin
-    sys.stdin = target
-    yield
-    sys.stdin = orig
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [
+            ("apikey", "MOCK_API_KEY"),
+        ],
+    }
 
 
-def mocked_requests_get(*args, **kwargs):
-    # pylint: disable=unused-argument
-    class MockResponse:
-        def __init__(self, json_data, status_code):
-            self.json_data = json_data
-            self.status_code = status_code
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "func, kwargs_dict",
+    [
+        (
+            "display_overview",
+            {"ticker": "TSLA"},
+        ),
+        (
+            "display_key",
+            {"ticker": "TSLA"},
+        ),
+        (
+            "display_income_statement",
+            {"ticker": "TSLA", "number": 5, "quarterly": True},
+        ),
+        (
+            "display_income_statement",
+            {"ticker": "TSLA", "number": 5, "quarterly": False},
+        ),
+        (
+            "display_balance_sheet",
+            {"ticker": "TSLA", "number": 5, "quarterly": True},
+        ),
+        (
+            "display_balance_sheet",
+            {"ticker": "TSLA", "number": 5, "quarterly": False},
+        ),
+        (
+            "display_cash_flow",
+            {"ticker": "TSLA", "number": 5, "quarterly": True},
+        ),
+        (
+            "display_cash_flow",
+            {"ticker": "TSLA", "number": 5, "quarterly": False},
+        ),
+        (
+            "display_earnings",
+            {"ticker": "TSLA", "number": 5, "quarterly": True},
+        ),
+        (
+            "display_earnings",
+            {"ticker": "TSLA", "number": 5, "quarterly": False},
+        ),
+    ],
+)
+@pytest.mark.parametrize(
+    "use_tab",
+    [True, False],
+)
+def test_check_output(func, kwargs_dict, monkeypatch, use_tab):
+    monkeypatch.setattr(av_view.gtff, "USE_TABULATE_DF", use_tab)
+    getattr(av_view, func)(**kwargs_dict)
 
-        def json(self):
-            return self.json_data
 
-    base = "https://www.alphavantage.co/query?function="
-    if args[0] == f"{base}OVERVIEW&symbol=GME&apikey={cfg.API_KEY_ALPHAVANTAGE}":
-        with open(
-            "tests/gamestonk_terminal/stocks/fundamental_analysis/json/test_av_view/fa_av_overview.json",
-            encoding="utf8",
-        ) as f:
-            data = json.load(f)
-        return MockResponse(data, 200)
-
-    if (
-        args[0]
-        == f"{base}INCOME_STATEMENT&symbol=GME&apikey={cfg.API_KEY_ALPHAVANTAGE}"
-    ):
-        with open(
-            "tests/gamestonk_terminal/stocks/fundamental_analysis/json/test_av_view/fa_av_income.json",
-            encoding="utf8",
-        ) as f:
-            data = json.load(f)
-        return MockResponse(data, 200)
-
-    if args[0] == f"{base}BALANCE_SHEET&symbol=GME&apikey={cfg.API_KEY_ALPHAVANTAGE}":
-        with open(
-            "tests/gamestonk_terminal/stocks/fundamental_analysis/json/test_av_view/fa_av_balance.json",
-            encoding="utf8",
-        ) as f:
-            data = json.load(f)
-        return MockResponse(data, 200)
-
-    if args[0] == f"{base}CASH_FLOW&symbol=GME&apikey={cfg.API_KEY_ALPHAVANTAGE}":
-        with open(
-            "tests/gamestonk_terminal/stocks/fundamental_analysis/json/test_av_view/fa_av_cash.json",
-            encoding="utf8",
-        ) as f:
-            data = json.load(f)
-        return MockResponse(data, 200)
-
-    if args[0] == f"{base}EARNINGS&symbol=GME&apikey={cfg.API_KEY_ALPHAVANTAGE}":
-        with open(
-            "tests/gamestonk_terminal/stocks/fundamental_analysis/json/test_av_view/fa_av_earnings.json",
-            encoding="utf8",
-        ) as f:
-            data = json.load(f)
-        return MockResponse(data, 200)
-
-    return MockResponse(None, 404)
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "func, mocked_func, kwargs_dict",
+    [
+        (
+            "display_overview",
+            "get_overview",
+            {"ticker": "TSLA"},
+        ),
+        (
+            "display_key",
+            "get_key_metrics",
+            {"ticker": "TSLA"},
+        ),
+        (
+            "display_earnings",
+            "get_earnings",
+            {"ticker": "TSLA", "number": 5, "quarterly": False},
+        ),
+    ],
+)
+def test_check_empty_df(func, kwargs_dict, mocked_func, mocker):
+    mocker.patch(
+        "gamestonk_terminal.stocks.fundamental_analysis.av_view.av_model."
+        + mocked_func,
+        return_value=pd.DataFrame(),
+    )
+    getattr(av_view, func)(**kwargs_dict)
 
 
-class TestAVView(unittest.TestCase):
-    @check_print(assert_in="Price to sales ratio")
-    @mock.patch("requests.get", side_effect=mocked_requests_get)
-    def test_av_overview(self, mock_get):
-        # pylint: disable=unused-argument
-        av_view.display_overview("GME")
-
-    @check_print(assert_in="Market capitalization")
-    @mock.patch("requests.get", side_effect=mocked_requests_get)
-    def test_av_key(self, mock_get):
-        # pylint: disable=unused-argument
-        av_view.display_key("GME")
-
-    @check_print(assert_in="netIncome")
-    @mock.patch("requests.get", side_effect=mocked_requests_get)
-    def test_income_statement(self, mock_get):
-        # pylint: disable=unused-argument
-        av_view.display_income_statement("GME", 1)
-
-    @check_print(assert_in="commonStockSharesOutstanding")
-    @mock.patch("requests.get", side_effect=mocked_requests_get)
-    def test_balance_sheet(self, mock_get):
-        # pylint: disable=unused-argument
-        av_view.display_balance_sheet("GME", 1)
-
-    @check_print(assert_in="Reported EPS")
-    @mock.patch("requests.get", side_effect=mocked_requests_get)
-    def test_earnings(self, mock_get):
-        # pylint: disable=unused-argument
-        av_view.display_earnings("GME", 1)
-
-    @check_print(assert_in="")
-    @mock.patch("requests.get", side_effect=mocked_requests_get)
-    def test_fraud(self, mock_get):
-        # pylint: disable=unused-argument
-        av_view.display_fraud("GME")
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "ratios, zscore",
+    [
+        (
+            {
+                "DSRI": np.nan,
+                "GMI": np.nan,
+                "AQI": np.nan,
+                "SGI": np.nan,
+                "DEPI": np.nan,
+                "SGAI": np.nan,
+                "LVGI": np.nan,
+                "TATA": np.nan,
+                "MSCORE": np.nan,
+            },
+            np.nan,
+        ),
+        ({"MSCORE": -1}, 0.1),
+        ({"AQI": 1, "MSCORE": -2}, 0.1),
+        ({"MSCORE": -3}, 1),
+    ],
+)
+def test_display_fraud(mocker, ratios, zscore):
+    mocker.patch(
+        "gamestonk_terminal.stocks.fundamental_analysis.av_view.av_model.get_fraud_ratios",
+        return_value=(ratios, zscore),
+    )
+    av_view.display_fraud(ticker="TSLA")

@@ -5,7 +5,7 @@ from gamestonk_terminal.cryptocurrency.overview import (
     pycoingecko_view as ov_pycoingecko_view,
 )
 
-from tests.helpers import check_print
+from tests.helpers.helpers import check_print
 
 # pylint: disable=unused-import
 

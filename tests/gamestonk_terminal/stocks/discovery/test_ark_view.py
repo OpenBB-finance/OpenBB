@@ -5,7 +5,7 @@ from unittest import mock
 import vcr
 
 from gamestonk_terminal.stocks.discovery.ark_view import ark_orders_view
-from tests.helpers import check_print
+from tests.helpers.helpers import check_print
 
 
 def mock_add_order_total_noop(value):

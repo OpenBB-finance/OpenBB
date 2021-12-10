@@ -312,6 +312,7 @@ These are the ones where a key is necessary:
 - Whale Alert API: <https://docs.whale-alert.io/>
 - Ethplorer API: <https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API>
 - Cryptopanic API: <https://cryptopanic.com/developers/api/>
+- BitQuery API: <https://bitquery.io/pricing>
 - Glassnode API: <https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key>
 - Coinglass API: <https://coinglass.github.io/API-Reference/#api-key>
 
@@ -342,6 +343,7 @@ Alternatively, you can also set them to the following environment variables:
 | [Cryptopanic](https://cryptopanic.com/developers/api/)                          | GT_API_CRYPTO_PANIC_KEY                                                                                                                           |
 | [Glassnode](https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key) | GT_API_GLASSNODE_KEY                                                                                                                              |
 | [Coinglass](https://coinglass.github.io/API-Reference/#api-key)                 | GT_API_COINGLASS_KEY                                                                                                                              |
+| [BitQuery](https://bitquery.io/pricing)                                         | GT_API_BITQUERY_KEY                                                                                                                               |
 
 Example:
 

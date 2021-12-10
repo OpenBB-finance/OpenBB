@@ -6,7 +6,7 @@ from unittest import mock
 from gamestonk_terminal.stocks.discovery.shortinterest_model import get_low_float
 
 # pylint: disable=unused-import
-from gamestonk_terminal.test_helper import (  # noqa: F401
+from tests.helpers.tools import (  # noqa: F401
     parameterize_from_file,
     pytest_generate_tests,
 )
@@ -40,7 +40,7 @@ class TestDiscoveryShortInterestApi:
     @mock.patch("gamestonk_terminal.stocks.discovery.shortinterest_model.requests")
     @parameterize_from_file(
         "test_get_low_float",
-        "../tests/gamestonk_terminal/stocks/discovery/yaml/test_short_interest_model/model.yaml",
+        "../../tests/gamestonk_terminal/stocks/discovery/yaml/test_short_interest_model/model.yaml",
     )
     # pylint: disable=unused-argument
     def test_get_low_float(self, mock_request_get, mock_low_float, expected_result):

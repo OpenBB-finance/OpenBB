@@ -186,6 +186,7 @@ More information about `monkeypatch` are available here :
 
 You can find the available helpers inside the following package/module :
 - `tests/helpers/`
+- `tests/conftest.py`
 
 See also the `pytest fixtures` which are autoloaded helpers.
 
@@ -234,6 +235,21 @@ def vcr_config():
 ```
 
 You can also refactor this method to let access to `stard/end` dates.
+
+
+**USER-AGENT**
+
+Some function uses a random `User-Agent` on the `HTTP HEADER` when fetching data from an `API`.
+
+Here is how to filter this random `User-Agent`.
+
+```python
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("User-Agent", None)],
+    }
+```
 
 
 ## 3.9. List of useful `vscode` tools for `unit tests`

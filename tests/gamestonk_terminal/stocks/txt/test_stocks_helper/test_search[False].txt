@@ -1,0 +1,7 @@
+                             Company Ticker
+ABIO            ARCA biopharma, Inc.   ABIO
+ABUS   Arbutus Biopharma Corporation   ABUS
+ABVC              ABVC BIOPHARMA INC   ABVC
+ACAD     ACADIA Pharmaceuticals Inc.   ACAD
+ACPGF        ACACIA PHARMA GROUP PLC  ACPGF 
+

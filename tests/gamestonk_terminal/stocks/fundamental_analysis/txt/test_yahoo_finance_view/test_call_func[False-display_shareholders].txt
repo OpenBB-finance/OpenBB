@@ -1,0 +1,37 @@
+
+Major Holders:
+
+     0                                         1
+ 0.19%  Percentage of Shares Held by All Insider
+76.02% Percentage of Shares Held by Institutions
+76.17%  Percentage of Float Held by Institutions
+  2307     Number of Institutions Holding Shares
+
+Institutuinal Holders:
+
+                           Holder    Shares Date Reported  Stake    Value
+       Vanguard Group, Inc. (The) 125.443 M    2021-09-29 8.06 % 11.891 B
+                   Blackrock Inc.  91.929 M    2021-09-29 5.90 %  8.714 B
+          Capital World Investors  82.761 M    2021-09-29 5.32 %  7.845 B
+  Capital International Investors  74.091 M    2021-09-29 4.76 %  7.023 B
+Capital Research Global Investors  57.783 M    2021-09-29 3.71 %  5.477 B
+         State Street Corporation  54.513 M    2021-09-29 3.50 %  5.167 B
+                   Morgan Stanley  45.512 M    2021-09-29 2.92 %  4.314 B
+    Geode Capital Management, LLC  27.119 M    2021-09-29 1.74 %  2.571 B
+        JP Morgan Chase & Company  25.618 M    2021-09-29 1.65 %  2.428 B
+ Wellington Management Group, LLP  24.769 M    2021-09-29 1.59 %  2.348 B
+
+Mutual Fund Holders:
+
+                                Holder   Shares Date Reported  Stake   Value
+Vanguard Total Stock Market Index Fund 44.038 M    2021-09-29 2.83 % 4.174 B
+                American Balanced Fund 39.212 M    2021-09-29 2.52 % 3.717 B
+               Vanguard 500 Index Fund 32.730 M    2021-09-29 2.10 % 3.102 B
+            Income Fund of America Inc 32.519 M    2021-09-29 2.09 % 3.083 B
+          Capital Income Builder, Inc. 27.852 M    2021-09-29 1.79 % 2.640 B
+         Investment Company Of America 27.817 M    2021-09-29 1.79 % 2.637 B
+             Fundamental Investors Inc 24.179 M    2021-09-29 1.55 % 2.292 B
+  Capital World Growth and Income Fund 17.801 M    2021-09-29 1.14 % 1.687 B
+                SPDR S&P 500 ETF Trust 16.480 M    2021-09-29 1.06 % 1.562 B
+               Fidelity 500 Index Fund 15.103 M    2021-10-30 0.97 % 1.428 B
+

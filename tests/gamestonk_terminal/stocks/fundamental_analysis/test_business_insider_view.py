@@ -1,19 +1,25 @@
-""" fundamental_analysis/business_insider_api.py tests """
-import unittest
+# IMPORTATION STANDARD
 
-import vcr
+# IMPORTATION THIRDPARTY
+import pytest
 
-from gamestonk_terminal.stocks.fundamental_analysis.business_insider_view import (
-    display_management,
+# IMPORTATION INTERNAL
+from gamestonk_terminal.stocks.fundamental_analysis import business_insider_view
+
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("User-Agent", None)],
+    }
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "use_tab",
+    [True, False],
 )
-from tests.helpers import check_print
-
-
-class TestFaBusinessInsiderApi(unittest.TestCase):
-    @check_print(assert_in="PLTR")
-    @vcr.use_cassette(
-        "tests/gamestonk_terminal/stocks/fundamental_analysis/cassettes/test_business_insider_view//test_management.yaml",
-        record_mode="new_episodes",
-    )
-    def test_management(self):
-        display_management("PLTR")
+def test_display_management(monkeypatch, use_tab):
+    monkeypatch.setattr(business_insider_view.gtff, "USE_TABULATE_DF", use_tab)
+    business_insider_view.display_management(ticker="TSLA", export="")

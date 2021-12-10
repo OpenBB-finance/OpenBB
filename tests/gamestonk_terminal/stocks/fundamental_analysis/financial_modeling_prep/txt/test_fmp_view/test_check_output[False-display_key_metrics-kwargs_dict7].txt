@@ -1,0 +1,60 @@
+Fiscal Date Ending                                2016       2017       2018       2019       2020
+Period                                              FY         FY         FY         FY         FY
+Revenue per share                               17.205     18.523     19.051     19.167     18.429
+Net income per share                             4.492      3.889      5.087      4.621      5.174
+Operating cash flow per share                    5.208      5.742      6.095      6.489      6.302
+Free cash flow per share                         4.452      4.745      5.172      5.941      5.915
+Cash per share                                   2.733      5.443      4.240      4.412      4.676
+Book value per share                            -8.181     -7.787     -8.012     -7.445     -8.071
+Tangible book value per share                  -13.342    -13.098    -12.994    -11.299    -11.955
+Shareholders equity per share                   -8.181     -7.787     -8.012     -7.445     -8.071
+Interest debt per share                         19.430     22.832     20.974     20.477     20.722
+Market cap                                   148.834 B  167.523 B  115.816 B  131.133 B  124.015 B
+Enterprise value                             173.662 B  193.415 B  140.982 B  155.317 B  148.271 B
+Pe ratio                                        21.363     27.759     14.640     18.251     15.394
+Price to sales ratio                             5.577      5.827      3.909      4.400      4.322
+Pocfratio                                       18.427     18.797     12.219     12.996     12.639
+Pfcf ratio                                      21.555     22.749     14.401     14.195     13.465
+Pb ratio                                       -11.730    -13.861     -9.296    -11.327     -9.868
+Ptb ratio                                      -11.730    -13.861     -9.296    -11.327     -9.868
+Ev to sales                                      6.508      6.728      4.759      5.211      5.167
+Enterprise value over EBITDA                    15.965     16.781     12.484     15.021     12.211
+Ev to operating cash flow                       21.501     21.703     14.875     15.393     15.111
+Ev to free cash flow                            25.150     26.265     17.531     16.813     16.099
+Earnings yield                                   0.047      0.036      0.068      0.055      0.065
+Free cash flow yield                             0.046      0.044      0.069      0.070      0.074
+Debt to equity                                  -2.037     -2.593     -2.165     -2.302     -2.241
+Debt to assets                                   1.296      1.238      1.270      1.224      1.237
+Net debt to EBITDA                               2.282      2.246      2.228      2.339      1.998
+Current ratio                                    1.069      1.353      1.131      1.089      1.096
+Interest coverage                               10.117     10.495     13.258     13.118     15.894
+Income quality                                   1.159      1.477      1.198      1.404      1.218
+Dividend yield                                   0.043      0.039      0.059      0.055      0.059
+Payout ratio                                     0.915      1.080      0.870      0.997      0.914
+Sales general and administrative to revenue      0.240      0.234      0.251      0.295      0.003
+Research and ddevelopement to revenue                0          0          0          0          0
+Intangibles to total assets                      0.266      0.235      0.238      0.186      0.178
+Capex to operating cash flow                    -0.145     -0.174     -0.152     -0.084     -0.061
+Capex to revenue                                -0.044     -0.054     -0.048     -0.029     -0.021
+Capex to depreciation                           -1.577     -1.769     -1.452     -0.884     -0.614
+Stock based compensation to revenue                  0          0          0          0          0
+Graham number                                   28.754     26.102     30.284     27.821     30.653
+Roic                                             0.531      0.426      0.501      0.434      0.459
+Return on tangible assets                        0.257      0.184      0.261      0.206      0.219
+Graham net net                                 -23.455    -24.191    -23.712    -24.571    -26.044
+Working capital                                1.141 B    5.632 B    2.251 B    1.681 B    1.877 B
+Tangible asset value                         -20.694 B  -20.328 B  -20.206 B  -17.570 B  -18.614 B
+Net current asset value                      -30.143 B  -31.604 B  -31.098 B  -31.960 B  -33.954 B
+Invested capital                                -2.291     -2.841     -2.549     -2.682     -2.509
+Average receivables                            3.608 B    3.728 B    3.640 B    3.717 B    3.739 B
+Average payables                               1.982 B    2.271 B    2.183 B    2.299 B    2.539 B
+Average inventory                              9.126 B    9.021 B    9.020 B    9.235 B    9.413 B
+Days sales outstanding                          47.860     47.460     43.911     45.519     47.842
+Days payables outstanding                       64.752     78.444     70.164     79.819    106.040
+Days of inventory on hand                      350.464    308.109    298.704    320.629    365.839
+Receivables turnover                             7.626      7.691      8.312      8.019      7.629
+Payables turnover                                5.637      4.653      5.202      4.573      3.442
+Inventory turnover                               1.041      1.185      1.222      1.138      0.998
+Roe                                             -0.549     -0.499     -0.635     -0.621     -0.641
+Capex per share                                 -0.756     -0.997     -0.923     -0.548     -0.387
+

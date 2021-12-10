@@ -128,12 +128,15 @@ def test_function(default_json_path):
 
 Example of usage :
 ```python
+import pytest
+
 @pytest.mark.record_stdout
 def test_function():
     print("Something")
 ```
 
 This will generate a text file to store the `printed` output.
+
 The content of this file will be compared to the `test_function` output at each execution of the test.
 
 **RECORD ONCE**
@@ -162,6 +165,7 @@ pytest --record-mode=rewrite
 You can combine `record_stdout` and `vcr` fixtures, like this :
 
 ```python
+import pytest
 import requests
 
 @pytest.mark.vcr
@@ -178,6 +182,8 @@ def test_function():
 You are not forced to save a text file, you can use a list of texts instead like this :
 
 ```python
+import pytest
+
 @pytest.mark.record_stdout(
     assert_in_list=["Some text", "Another text"],
     save_record=False,
@@ -197,6 +203,7 @@ If your `test_function` output a random number of blank before or after you can 
 
 Example :
 ```python
+import pytest
 import random
 
 @pytest.mark.record_stdout(strip=True)
@@ -210,7 +217,22 @@ def test_function():
     print(some_text)
 ```
 
-## 3.1. How to use the `recorder fixture` ?
+**RECORD MODE**
+
+It is possible to programmatically change the `record_mode` on a `test`.
+
+Example :
+```python
+import pytest
+
+@pytest.mark.record_stdout(record_mode="rewrite")
+def test_function():
+    some_text = "Some text output"
+
+    print(some_text)
+```
+
+## 3.2. How to use the `recorder fixture` ?
 
 **BEWARE**
 
@@ -222,6 +244,8 @@ You can't combine these two fixtures :
 
 Example of usage :
 ```python
+import pytest
+
 @pytest.mark.record_stdout
 def test_function(recorder):
     some_dict = {1, 2, 3}
@@ -235,8 +259,8 @@ def test_function(recorder):
     recorder.capture(some_tuple)
 ```
 
+This will generate one or multiple text file(s) to store the `captured` variables.
 
-This will generate one or multiple text file(s) to store the `printed` output.
 The content of the file(s) will be compared to the `test_function` output at each execution of the test.
 
 
@@ -293,4 +317,17 @@ def test_function(recorder):
         text += " "
 
     recorder.capture(some_text, strip=True)
+```
+
+**RECORD MODE**
+
+It is possible to programmatically change the `record_mode` on a `test`.
+
+Example :
+```python
+def test_function(recorder):
+    some_text = "Some text output"
+
+    recorder.record_mode = "rewrite"
+    recorder.capture(some_text)
 ```

@@ -1,0 +1,65 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - financialmodelingprep.com
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/profile/PM?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: "[ {\n  \"symbol\" : \"PM\",\n  \"price\" : 89.38,\n  \"beta\" : 0.858701,\n
+        \ \"volAvg\" : 4520317,\n  \"mktCap\" : 139149459456,\n  \"lastDiv\" : 4.8500000000000005,\n
+        \ \"range\" : \"78.34-106.51\",\n  \"changes\" : 1.5400009,\n  \"companyName\"
+        : \"Philip Morris International Inc.\",\n  \"currency\" : \"USD\",\n  \"cik\"
+        : \"0001413329\",\n  \"isin\" : \"US7181721090\",\n  \"cusip\" : \"718172109\",\n
+        \ \"exchange\" : \"New York Stock Exchange\",\n  \"exchangeShortName\" : \"NYSE\",\n
+        \ \"industry\" : \"Tobacco\",\n  \"website\" : \"http://www.pmi.com\",\n  \"description\"
+        : \"Philip Morris International Inc., through its subsidiaries, manufactures
+        and sells cigarettes, other nicotine-containing products, smoke-free products,
+        and related electronic devices and accessories. The company offers IQOS smoke-free
+        products, including heated tobacco and nicotine-containing vapor products
+        under the HEETS, HEETS Marlboro, and HEETS FROM MARLBORO brands, as well as
+        the Marlboro HeatSticks and Parliament HeatSticks brands. It also sells its
+        products under the Marlboro, Parliament, Bond Street, Chesterfield, L&M, Lark,
+        and Philip Morris brands. In addition, the company owns various cigarette
+        brands, such as Dji Sam Soe, Sampoerna A, and Sampoerna U in Indonesia; and
+        Fortune and Jackpot in the Philippines. It markets and sells its products
+        in the European Union, Eastern Europe, the Middle East, Africa, South and
+        Southeast Asia, East Asia, Australia, Latin America, and Canada. Philip Morris
+        International Inc. was incorporated in 1987 and is headquartered in New York,
+        New York.\",\n  \"ceo\" : \"Mr. Andre Calantzopoulos\",\n  \"sector\" : \"Consumer
+        Defensive\",\n  \"country\" : \"US\",\n  \"fullTimeEmployees\" : \"71000\",\n
+        \ \"phone\" : \"19176632000\",\n  \"address\" : \"120 Park Ave\",\n  \"city\"
+        : \"New York City\",\n  \"state\" : \"NEW YORK\",\n  \"zip\" : \"10017-5592\",\n
+        \ \"dcfDiff\" : 2.12,\n  \"dcf\" : 94.0527,\n  \"image\" : \"https://financialmodelingprep.com/image-stock/PM.png\",\n
+        \ \"ipoDate\" : \"2008-03-17\",\n  \"defaultImage\" : false,\n  \"isEtf\"
+        : false,\n  \"isActivelyTrading\" : true,\n  \"isAdr\" : false,\n  \"isFund\"
+        : false\n} ]"
+    headers:
+      Access-Control-Allow-Headers:
+      - origin, content-type, accept, Authorization, authorization
+      Access-Control-Allow-Methods:
+      - GET, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - close
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Sat, 04 Dec 2021 12:25:47 GMT
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: ''
+version: 1
