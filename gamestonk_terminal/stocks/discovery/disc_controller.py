@@ -1,4 +1,4 @@
-""" Disc Controller """
+""" Discovery Controller Module """
 __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 
@@ -37,20 +37,21 @@ from gamestonk_terminal.paths import cd_CHOICES
 
 
 class DiscoveryController:
-    """Discovery Controller"""
+    """Discovery Controller class"""
 
-    # Command choices
     CHOICES = [
         "cls",
         "cd",
         "h",
         "?",
+        "help",
         "q",
+        "quit",
         "..",
         "exit",
         "r",
+        "reset",
     ]
-
     CHOICES_COMMANDS = [
         "pipo",
         "fipo",
@@ -71,6 +72,7 @@ class DiscoveryController:
         "cnews",
         "rtat",
     ]
+    CHOICES += CHOICES_COMMANDS
 
     arkord_sortby_choices = [
         "date",
@@ -83,9 +85,7 @@ class DiscoveryController:
         "weight",
         "shares",
     ]
-
     arkord_fund_choices = ["ARKK", "ARKF", "ARKW", "ARKQ", "ARKG", "ARKX", ""]
-
     cnews_type_choices = [
         nt.lower()
         for nt in [
@@ -112,8 +112,6 @@ class DiscoveryController:
             "Technology",
         ]
     ]
-
-    CHOICES += CHOICES_COMMANDS
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -202,10 +200,12 @@ NASDAQ Data Link (Formerly Quandl):
         (known_args, other_args) = self.disc_parser.parse_known_args(an_input.split())
 
         if known_args.cmd:
-            if known_args.cmd == "..":
-                known_args.cmd = "q"
-            elif known_args.cmd == "?":
-                known_args.cmd = "h"
+            if known_args.cmd == ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd in "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -232,12 +232,12 @@ NASDAQ Data Link (Formerly Quandl):
 
         return self.queue
 
-    def call_h(self, _):
+    def call_help(self, _):
         """Process help command"""
         self.print_help()
         return self.queue if len(self.queue) > 0 else []
 
-    def call_q(self, _):
+    def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "q")
@@ -253,7 +253,7 @@ NASDAQ Data Link (Formerly Quandl):
             return self.queue
         return ["q", "q", "q"]
 
-    def call_r(self, _):
+    def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "disc")
@@ -944,7 +944,7 @@ NASDAQ Data Link (Formerly Quandl):
 def menu(queue: List[str] = None):
     """Discovery Menu"""
     disc_controller = DiscoveryController(queue)
-    an_input = "first"
+    an_input = "HELP_ME"
 
     while True:
         # There is a command in the queue
@@ -961,7 +961,7 @@ def menu(queue: List[str] = None):
 
         # Get input command from user
         else:
-            if an_input == "first" or an_input in disc_controller.CHOICES:
+            if an_input == "HELP_ME" or an_input in disc_controller.CHOICES:
                 disc_controller.print_help()
 
             if session and gtff.USE_PROMPT_TOOLKIT and disc_controller.completer:

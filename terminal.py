@@ -38,19 +38,20 @@ class TerminalController:
         "cd",
         "h",
         "?",
+        "help",
         "q",
+        "quit",
         "..",
         "exit",
         "r",
+        "reset",
     ]
-
     CHOICES_COMMANDS = [
         "update",
         "about",
         "keys",
         "usage",
     ]
-
     CHOICES_MENUS = [
         "stocks",
         "economy",
@@ -61,7 +62,6 @@ class TerminalController:
         "reports",
         "resources",
     ]
-
     CHOICES += CHOICES_COMMANDS
     CHOICES += CHOICES_MENUS
 
@@ -135,10 +135,12 @@ Menus:
         (known_args, other_args) = self.t_parser.parse_known_args(an_input.split())
 
         if known_args.cmd:
-            if known_args.cmd == "..":
-                known_args.cmd = "q"
-            elif known_args.cmd == "?":
-                known_args.cmd = "h"
+            if known_args.cmd == ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd in "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -162,12 +164,12 @@ Menus:
 
         return self.queue if len(self.queue) > 0 else []
 
-    def call_h(self, _):
+    def call_help(self, _):
         """Process help command"""
         self.print_help()
         return self.queue if len(self.queue) > 0 else []
 
-    def call_q(self, _):
+    def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "q")
@@ -181,14 +183,13 @@ Menus:
             return self.queue
         return ["q"]
 
-    def call_r(self, _):
+    def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue = [f"/{arg}" for arg in self.queue]
             return self.queue
         return []
 
-    # COMMANDS
     def call_update(self, _):
         """Process update command"""
         self.update_succcess = not update_terminal()
