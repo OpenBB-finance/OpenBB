@@ -16,7 +16,6 @@ from gamestonk_terminal.economy import (
     cnn_view,
     finnhub_view,
     finviz_view,
-    fred_view,
     nasdaq_model,
     wsj_view,
     nasdaq_view,
@@ -35,7 +34,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 
-# pylint: disable=R1710,R0904
+# pylint: disable=R1710,R0904,C0415
 
 
 class EconomyController:
@@ -67,6 +66,7 @@ class EconomyController:
         "quit",
         "reset",
     ]
+    CHOICES_MENUS = ["fred"]
 
     CHOICES_COMMANDS = [
         "feargreed",
@@ -82,8 +82,6 @@ class EconomyController:
         "meats",
         "grains",
         "softs",
-        "search",
-        "series",
         "valuation",
         "performance",
         "spectrum",
@@ -99,7 +97,7 @@ class EconomyController:
         "bigmac",
     ]
 
-    CHOICES += CHOICES_COMMANDS
+    CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
 
     def __init__(self):
         """Constructor"""
@@ -147,11 +145,10 @@ Alpha Vantage:
     cpi           consumer price index for United States
     tyld          treasury yields for United States
     unemp         United States unemployment rates
-FRED:
-    search        search FRED series notes
-    series        plot series from https://fred.stlouisfed.org
 NASDAQ DataLink (formerly Quandl):
     bigmac        the economists Big Mac index
+
+>   fred          Federal Reserve Economic Data submenu
 """
         print(help_text)
 
@@ -1237,102 +1234,6 @@ NASDAQ DataLink (formerly Quandl):
         )
 
     @try_except
-    def call_series(self, other_args: List[str]):
-        """Process series command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            prog="series",
-            description="""
-                Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
-            """,
-        )
-        parser.add_argument(
-            "-i",
-            "--id",
-            dest="series_id",
-            required="-h" not in other_args,
-            type=str,
-            help="FRED Series from https://fred.stlouisfed.org. For multiple series use: series1,series2,series3",
-        )
-        parser.add_argument(
-            "-s",
-            dest="start_date",
-            type=valid_date,
-            default="2019-01-01",
-            help="Starting date (YYYY-MM-DD) of data",
-        )
-        parser.add_argument(
-            "--raw",
-            action="store_true",
-            dest="raw",
-            help="Only output raw data",
-        )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"]
-            if "--raw" in other_args
-            else ["png", "jpg", "pdf", "svg"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export data to csv,json,xlsx or png,jpg,pdf,svg file",
-        )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-i")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        fred_view.display_series(
-            series=ns_parser.series_id,
-            start_date=ns_parser.start_date,
-            raw=ns_parser.raw,
-            export=ns_parser.export,
-        )
-
-    @try_except
-    def call_search(self, other_args: List[str]):
-        """Process search command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="search",
-            description="Print series notes when searching for series. [Source: FRED]",
-        )
-        parser.add_argument(
-            "-s",
-            "--series",
-            action="store",
-            dest="series_term",
-            type=str,
-            required="-h" not in other_args,
-            help="Search for this series term.",
-        )
-        parser.add_argument(
-            "-n",
-            "--num",
-            action="store",
-            dest="num",
-            type=check_positive,
-            default=5,
-            help="Maximum number of series notes to display.",
-        )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-s")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        fred_view.notes(
-            series_term=ns_parser.series_term,
-            num=ns_parser.num,
-        )
-
-    @try_except
     def call_bigmac(self, other_args: List[str]):
         """Process bigmac command"""
         parser = argparse.ArgumentParser(
@@ -1381,6 +1282,17 @@ NASDAQ DataLink (formerly Quandl):
             raw=ns_parser.raw,
             export=ns_parser.export,
         )
+
+    def call_fred(self, _):
+        """Process fred command"""
+        from gamestonk_terminal.economy.fred import fred_controller
+
+        ret = fred_controller.menu()
+
+        if ret is False:
+            self.print_help()
+        else:
+            return True
 
 
 def menu():

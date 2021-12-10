@@ -5,7 +5,7 @@ from unittest import mock
 from gamestonk_terminal.stocks.discovery.seeking_alpha_model import get_next_earnings
 
 # pylint: disable=unused-import
-from gamestonk_terminal.test_helper import (  # noqa: F401
+from tests.helpers.tools import (  # noqa: F401
     parameterize_from_file,
     pytest_generate_tests,
 )
@@ -19,7 +19,7 @@ class TestDiscoverySeekingAlphaModel:
     )
     @parameterize_from_file(
         "test_get_next_earnings",
-        "../tests/gamestonk_terminal/stocks/discovery/yaml/test_seeing_alpha_model/alpha_model.yaml",
+        "../../tests/gamestonk_terminal/stocks/discovery/yaml/test_seeing_alpha_model/alpha_model.yaml",
     )
     # pylint: disable=unused-argument
     def test_get_next_earnings(

@@ -23,21 +23,17 @@ def vcr_config():
 
 @pytest.mark.default_cassette("test_get_ark_trades_by_ticker_TSLA")
 @pytest.mark.vcr
-def test_get_ark_trades_by_ticker(default_csv_path):
+def test_get_ark_trades_by_ticker(recorder):
     result_df = ark_model.get_ark_trades_by_ticker(ticker="TSLA")
 
-    # result_df.to_csv(default_csv_path, index=True)
-    expected_df = pd.read_csv(default_csv_path, index_col="Date", parse_dates=["Date"])
-
-    assert not result_df.empty
-    pd.testing.assert_frame_equal(result_df, expected_df)
+    recorder.capture(result_df)
 
 
-@pytest.mark.xfail(raises=vcr.errors.CannotOverwriteExistingCassetteException)
 @pytest.mark.default_cassette("test_get_ark_trades_by_ticker_AAPL")
 @pytest.mark.vcr(record_mode="none")
 def test_get_ark_trades_by_ticker_not_recorded():
-    ark_model.get_ark_trades_by_ticker(ticker="AAPL")
+    with pytest.raises(vcr.errors.CannotOverwriteExistingCassetteException):
+        ark_model.get_ark_trades_by_ticker(ticker="AAPL")
 
 
 @pytest.mark.default_cassette("test_get_ark_trades_by_ticker_INVALID_TICKER")

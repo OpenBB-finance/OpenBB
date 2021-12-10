@@ -1,0 +1,665 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eclect.us/symbol/aapl?page=1
+  response:
+    body:
+      string: "[{\"symbol\":\"AAPL\",\"industry\":\"Consumer Electronics\",\"country\":\"United
+        States\",\"marketcap\":\"1 Trillion\",\"shortname\":\"Apple Inc.\",\"name\":\"0000320193-21-000105.txt\",\"date\":\"2021-10-28\",\"file_type\":\"10-K\",\"cik\":\"0000320193\",\"daa_highlights\":[{\"kmeans_i\":79,\"sentence_i\":19,\"sentence\":\"Services
+        net sales also include amortization of the deferred value of services bundled
+        in the sales price of certain products. iPhoneiPhone net sales increased during
+        2021 compared to 2020 due primarily to higher net sales from the Company\u2019
+        s new iPhone models launched in the first quarter and fourth quarter of 2021
+        and a favorable mix of iPhone sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":18,\"sentence_i\":33,\"sentence\":\"The
+        movement of foreign currencies in Europe relative to the U. S. dollar had
+        a net favorable impact on Europe net sales during 2021.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":18,\"sentence_i\":35,\"sentence\":\"The
+        strength of the Chinese renminbi relative to the U. S. dollar had a favorable
+        impact on Greater China net sales during 2021.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":18,\"sentence_i\":38,\"sentence\":\"The
+        movement of foreign currencies in the Rest of Asia Pacific relative to the
+        U. S. dollar had a favorable impact on Rest of Asia Pacific net sales during
+        2021.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":18,\"sentence_i\":76,\"sentence\":\"Uncertain
+        Tax PositionsThe Company is subject to income taxes in the U. S. and numerous
+        foreign jurisdictions.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":50,\"sentence_i\":66,\"sentence\":\"Other
+        Purchase ObligationsThe Company\u2019 s other purchase obligations primarily
+        consist of noncancelable obligations to acquire capital assets, including
+        product tooling and manufacturing process equipment, and noncancelable obligations
+        related to advertising, content creation and Internet and telecommunications
+        services.\",\"good_or_bad\":\"bad\"}],\"rf_highlights\":[{\"kmeans_i\":68,\"sentence_i\":75,\"sentence\":\"Apple
+        Inc. | 2021 Form 10-K | 8 The Company depends on component and product manufacturing
+        and logistical services provided by outsourcing partners, many of which are
+        located outside of the U. S. Substantially all of the Company\u2019 s manufacturing
+        is performed in whole or in part by outsourcing partners located primarily
+        in Asia.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":68,\"sentence_i\":246,\"sentence\":\"Apple
+        Inc. | 2021 Form 10-K | 14 The Company\u2019 s business is subject to a variety
+        of U. S. and international laws, rules, policies and other obligations regarding
+        data protection.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":68,\"sentence_i\":301,\"sentence\":\"Apple
+        Inc. | 2021 Form 10-K | 16 General RisksThe price of the Company\u2019 s stock
+        is subject to volatility.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":17,\"sentence\":\"To
+        the extent the COVID-19 pandemic adversely affects the Company\u2019 s business,
+        results of operations, financial condition and stock price, it may also have
+        the effect of heightening many of the other risks described in this Part I,
+        Item 1A of this Form 10-K. Macroeconomic and Industry RisksThe Company\u2019
+        s operations and performance depend significantly on global and regional economic
+        conditions and adverse economic conditions can materially adversely affect
+        the Company\u2019 s business, results of operations and financial condition.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":22,\"sentence\":\"Apple
+        Inc. | 2021 Form 10-K | 6 In addition to an adverse impact on demand for the
+        Company\u2019 s products, uncertainty about, or a decline in, global or regional
+        economic conditions can have a significant impact on the Company\u2019 s suppliers,
+        contract manufacturers, logistics providers, distributors, cellular network
+        carriers and other channel partners.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":49,\"sentence\":\"Apple
+        Inc. | 2021 Form 10-K | 7 Global markets for the Company\u2019 s products
+        and services are highly competitive and subject to rapid technological change,
+        and the Company may be unable to compete effectively in these markets.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":100,\"sentence\":\"Apple
+        Inc. | 2021 Form 10-K | 9 The Company\u2019 s products and services may be
+        affected from time to time by design and manufacturing defects that could
+        materially adversely affect the Company\u2019 s business and result in harm
+        to the Company\u2019 s reputation.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":134,\"sentence\":\"Apple
+        Inc. | 2021 Form 10-K | 10 The Company\u2019 s minority market share in the
+        global smartphone, personal computer and tablet markets can make developers
+        less inclined to develop or upgrade software for the Company\u2019 s products
+        and more inclined to devote their resources to developing and upgrading software
+        for competitors\u2019 products with larger market share.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":170,\"sentence\":\"Apple
+        Inc. | 2021 Form 10-K | 11 The Company has invested and will continue to invest
+        in programs to enhance reseller sales, including staffing selected resellers\u2019
+        stores with Company employees and contractors, and improving product placement
+        displays.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":274,\"sentence\":\"Apple
+        Inc. | 2021 Form 10-K | 15 The weakening of foreign currencies relative to
+        the U. S. dollar adversely affects the U. S. dollar value of the Company\u2019
+        s foreign currency\u2013denominated sales and earnings, and generally leads
+        the Company to raise international pricing, potentially reducing demand for
+        the Company\u2019 s products.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":44,\"sentence_i\":222,\"sentence\":\"Apple
+        Inc. | 2021 Form 10-K | 13 The outcome of litigation or government investigations
+        is inherently uncertain.\",\"good_or_bad\":\"good\"}],\"price_change_5_days\":null,\"price_change_10_days\":null,\"price_change_20_days\":null,\"price_change_40_days\":null,\"original_filing_link\":\"https://www.sec.gov/Archives/edgar/data/320193/0000320193-21-000105/0000320193-21-000105-index.htm\",\"financials_link\":\"https://www.sec.gov/cgi-bin/viewer?action=view&cik=320193&accession_number=0000320193-21-000105&xbrl_type=v#\"},{\"symbol\":\"AAPL\",\"industry\":\"Consumer
+        Electronics\",\"country\":\"United States\",\"marketcap\":\"1 Trillion\",\"shortname\":\"Apple
+        Inc.\",\"name\":\"0000320193-21-000065.txt\",\"date\":\"2021-07-27\",\"file_type\":\"10-Q\",\"cik\":\"0000320193\",\"daa_highlights\":[{\"kmeans_i\":49,\"sentence_i\":35,\"sentence\":\"MacMac
+        net sales increased during the third quarter of 2021 compared to the third
+        quarter of 2020 due primarily to higher net sales of MacBook Air \xAE and
+        iMac.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":36,\"sentence\":\"Year-over-year
+        Mac net sales increased during the first nine months of 2021 due primarily
+        to higher net sales of MacBook Air and MacBook Pro \xAE.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":39,\"sentence\":\"ServicesServices
+        net sales increased during the third quarter of 2021 compared to the third
+        quarter of 2020 due primarily to higher net sales from advertising, the App
+        Store and AppleCare.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":40,\"sentence\":\"Year-over-year
+        Services net sales increased during the first nine months of 2021 due primarily
+        to higher net sales from advertising, the App Store and cloud services.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":50,\"sentence\":\"Year-over-year
+        Americas net sales increased during the first nine months of 2021 due primarily
+        to higher net sales of iPhone, Services and Mac.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":51,\"sentence\":\"EuropeEurope
+        net sales increased during the third quarter of 2021 compared to the third
+        quarter of 2020 due primarily to higher net sales of iPhone, Services and
+        Wearables, Home and Accessories.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":52,\"sentence\":\"Year-over-year
+        Europe net sales increased during the first nine months of 2021 due primarily
+        to higher net sales of iPhone, iPad and Mac.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":54,\"sentence\":\"Greater
+        ChinaGreater China net sales increased during the third quarter of 2021 compared
+        to the third quarter of 2020 due primarily to higher net sales of iPhone and
+        Services.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":58,\"sentence\":\"Year-over-year
+        Japan net sales increased during the first nine months of 2021 due primarily
+        to higher net sales of iPhone and Services.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":65,\"sentence\":\"Services
+        Gross MarginServices gross margin increased during the third quarter and first
+        nine months of 2021 compared to the same periods in 2020 due primarily to
+        higher Services net sales, a different Services mix and the strength in foreign
+        currencies relative to the U. S. dollar.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":66,\"sentence\":\"Year-over-year
+        Services gross margin percentage increased during the third quarter and first
+        nine months of 2021 due primarily to a different Services mix and improved
+        leverage, partially offset by higher Services costs.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":75,\"sentence\":\"Year-over-year
+        OI & E increased during the first nine months of 2021 due primarily to smaller
+        impairments of securities, lower interest expense and favorable carrying value
+        adjustments of non-marketable securities, partially offset by lower interest
+        income.\",\"good_or_bad\":\"good\"}],\"rf_highlights\":[],\"price_change_5_days\":null,\"price_change_10_days\":null,\"price_change_20_days\":null,\"price_change_40_days\":null,\"original_filing_link\":\"https://www.sec.gov/Archives/edgar/data/320193/0000320193-21-000065/0000320193-21-000065-index.htm\",\"financials_link\":\"https://www.sec.gov/cgi-bin/viewer?action=view&cik=320193&accession_number=0000320193-21-000065&xbrl_type=v#\"},{\"symbol\":\"AAPL\",\"industry\":\"Consumer
+        Electronics\",\"country\":\"United States\",\"marketcap\":\"1 Trillion\",\"shortname\":\"Apple
+        Inc.\",\"name\":\"0000320193-21-000010.txt\",\"date\":\"2021-01-27\",\"file_type\":\"10-Q\",\"cik\":\"0000320193\",\"daa_highlights\":[{\"kmeans_i\":49,\"sentence_i\":34,\"sentence\":\"MacMac
+        net sales increased during the first quarter of 2021 compared to the same
+        quarter in 2020 due primarily to higher net sales of MacBook Air and MacBook
+        Pro.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":35,\"sentence\":\"iPadiPad
+        net sales increased during the first quarter of 2021 compared to the same
+        quarter in 2020 due primarily to higher net sales of iPad Air and iPad Pro
+        \xAE.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":36,\"sentence\":\"Apple
+        Inc. | Q 1 2021 Form 10-Q | 23 Wearables, Home and AccessoriesWearables, Home
+        and Accessories net sales increased during the first quarter of 2021 compared
+        to the same quarter in 2020 due primarily to higher net sales of Apple Watch,
+        accessories and AirPods. ServicesServices net sales increased during the first
+        quarter of 2021 compared to the same quarter in 2020 due primarily to higher
+        net sales from the App Store, advertising and cloud services.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":46,\"sentence\":\"EuropeEurope
+        net sales increased during the first quarter of 2021 compared to the same
+        quarter in 2020 due primarily to higher net sales of Wearables, Home and Accessories,
+        iPhone and iPad. Greater ChinaGreater China net sales increased during the
+        first quarter of 2021 compared to the same quarter in 2020 due primarily to
+        higher net sales of iPhone, iPad and Wearables, Home and Accessories.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":48,\"sentence\":\"JapanJapan
+        net sales increased during the first quarter of 2021 compared to the same
+        quarter in 2020 due primarily to higher net sales of iPhone, Services and
+        iPad.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":53,\"sentence\":\"Products
+        gross margin percentage increased during the first quarter of 2021 compared
+        to the same quarter in 2020 due primarily to higher leverage.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":54,\"sentence\":\"Services
+        Gross MarginServices gross margin increased during the first quarter of 2021
+        compared to the same quarter in 2020 due primarily to higher Services net
+        sales and a different Services mix.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":55,\"sentence\":\"Services
+        gross margin percentage increased during the first quarter of 2021 compared
+        to the same quarter in 2020 due primarily to a different Services mix and
+        higher leverage, partially offset by higher Services costs.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":61,\"sentence\":\"Other
+        Income/(Expense), NetOther income/(expense), net (\u201C OI & E\u201D) for
+        the three months ended December 26, 2020 and December 28, 2019 was as follows
+        (dollars in millions): OI & E decreased during the first quarter of 2021 compared
+        to the same quarter in 2020 due primarily to lower interest income and an
+        adjustment to the carrying value of a non-marketable security, partially offset
+        by lower interest expense.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":79,\"sentence_i\":14,\"sentence\":\"Quarterly
+        HighlightsBusiness Seasonality and Product IntroductionsThe Company has historically
+        experienced higher net sales in its first quarter compared to other quarters
+        in its fiscal year due in part to seasonal holiday demand.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":18,\"sentence_i\":37,\"sentence\":\"Segment
+        Operating PerformanceThe Company manages its business primarily on a geographic
+        basis.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":85,\"sentence_i\":70,\"sentence\":\"The
+        Company\u2019 s investment policy generally requires securities to be investment
+        grade and limits the amount of credit exposure to any one issuer.\",\"good_or_bad\":\"bad\"}],\"rf_highlights\":[],\"price_change_5_days\":-0.05856567,\"price_change_10_days\":-0.04695198,\"price_change_20_days\":-0.14831761,\"price_change_40_days\":null,\"original_filing_link\":\"https://www.sec.gov/Archives/edgar/data/320193/0000320193-21-000010/0000320193-21-000010-index.htm\",\"financials_link\":\"https://www.sec.gov/cgi-bin/viewer?action=view&cik=320193&accession_number=0000320193-21-000010&xbrl_type=v#\"},{\"symbol\":\"AAPL\",\"industry\":\"Consumer
+        Electronics\",\"country\":\"United States\",\"marketcap\":\"1 Trillion\",\"shortname\":\"Apple
+        Inc.\",\"name\":\"0000320193-20-000096.txt\",\"date\":\"2020-10-29\",\"file_type\":\"10-K\",\"cik\":\"0000320193\",\"daa_highlights\":[{\"kmeans_i\":49,\"sentence_i\":21,\"sentence\":\"Services
+        net sales also include amortization of the deferred value of Maps, Siri, and
+        free iCloud \xAE storage and Apple TV + services, which are bundled in the
+        sales price of certain products. iPhoneiPhone net sales decreased during 2020
+        compared to 2019 due primarily to the absence of new iPhone models in the
+        fourth quarter of 2020 and the weakness in foreign currencies relative to
+        the U. S. dollar, partially offset by the introduction of iPhone SE in the
+        third quarter of 2020.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":37,\"sentence\":\"Greater
+        ChinaGreater China net sales decreased during 2020 compared to 2019 due primarily
+        to lower net sales of iPhone, partially offset by higher net sales of Services
+        and iPad.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":39,\"sentence\":\"JapanJapan
+        net sales were flat during 2020 compared to 2019 due primarily to lower net
+        sales of iPhone, offset by higher net sales of Services and Wearables, Home
+        and Accessories.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":18,\"sentence_i\":13,\"sentence\":\"The
+        weakness in foreign currencies had an unfavorable impact on net sales during
+        2020.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":18,\"sentence_i\":34,\"sentence\":\"The
+        weakness in foreign currencies relative to the U. S. dollar had an unfavorable
+        impact on Americas net sales during 2020.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":18,\"sentence_i\":36,\"sentence\":\"The
+        weakness in foreign currencies relative to the U. S. dollar had an unfavorable
+        impact on Europe net sales during 2020.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":18,\"sentence_i\":38,\"sentence\":\"The
+        weakness in foreign currencies relative to the U. S. dollar had an unfavorable
+        impact on Greater China net sales during 2020.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":18,\"sentence_i\":40,\"sentence\":\"The
+        strength of the Japanese yen relative to the U. S. dollar had a favorable
+        impact on Japan net sales during 2020.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":18,\"sentence_i\":42,\"sentence\":\"The
+        weakness in foreign currencies relative to the U. S. dollar had an unfavorable
+        impact on Rest of Asia Pacific net sales during 2020.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":85,\"sentence_i\":67,\"sentence\":\"The
+        Company\u2019 s investment policy generally requires securities to be investment
+        grade and limits the amount of credit exposure to any one issuer.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":18,\"sentence_i\":99,\"sentence\":\"The
+        Company plans to pay the deemed repatriation tax payable in installments in
+        accordance with the Act.\",\"good_or_bad\":\"good\"}],\"rf_highlights\":[{\"kmeans_i\":68,\"sentence_i\":69,\"sentence\":\"Apple
+        Inc. | 2020 Form 10-K | 7 Future operating results depend upon the Company\u2019
+        s ability to obtain components in sufficient quantities on commercially reasonable
+        terms.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":68,\"sentence_i\":125,\"sentence\":\"Apple
+        Inc. | 2020 Form 10-K | 9 The Company relies on the continued availability
+        and development of compelling and innovative software applications for its
+        products.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":68,\"sentence_i\":204,\"sentence\":\"Apple
+        Inc. | 2020 Form 10-K | 12 The Company\u2019 s business is subject to a variety
+        of U. S. and international laws, rules, policies and other obligations regarding
+        data protection.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":68,\"sentence_i\":236,\"sentence\":\"Apple
+        Inc. | 2020 Form 10-K | 13 The Company\u2019 s operations are also subject
+        to the risks of industrial accidents at its suppliers and contract manufacturers.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":22,\"sentence\":\"Apple
+        Inc. | 2020 Form 10-K | 5 In addition to an adverse impact on demand for the
+        Company\u2019 s products, uncertainty about, or a decline in, global or regional
+        economic conditions could have a significant impact on the Company\u2019 s
+        suppliers, contract manufacturers, logistics providers, distributors, cellular
+        network carriers and other channel partners.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":48,\"sentence\":\"Apple
+        Inc. | 2020 Form 10-K | 6 To remain competitive and stimulate customer demand,
+        the Company must successfully manage frequent introductions and transitions
+        of products and services.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":93,\"sentence\":\"Apple
+        Inc. | 2020 Form 10-K | 8 The Company\u2019 s products and services may be
+        affected from time to time by design and manufacturing defects that could
+        materially adversely affect the Company\u2019 s business and result in harm
+        to the Company\u2019 s reputation.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":156,\"sentence\":\"Apple
+        Inc. | 2020 Form 10-K | 10 The Company is subject to complex and changing
+        laws and regulations worldwide, which exposes the Company to potential liabilities,
+        increased costs and other adverse effects on the Company\u2019 s business.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":180,\"sentence\":\"Apple
+        Inc. | 2020 Form 10-K | 11 The Company\u2019 s business and reputation may
+        be impacted by information technology system failures or network disruptions.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":262,\"sentence\":\"Apple
+        Inc. | 2020 Form 10-K | 14 Conversely, a strengthening of foreign currencies
+        relative to the U. S. dollar, while generally beneficial to the Company\u2019
+        s foreign currency\u2013denominated sales and earnings, could cause the Company
+        to reduce international pricing and incur losses on its foreign currency derivative
+        instruments, thereby limiting the benefit.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":88,\"sentence_i\":252,\"sentence\":\"Price
+        volatility over a given period may cause the average price at which the Company
+        repurchases its stock to exceed the stock\u2019 s price at a given point in
+        time.\",\"good_or_bad\":\"good\"}],\"price_change_5_days\":0.03217134,\"price_change_10_days\":0.03373222,\"price_change_20_days\":0.0110128,\"price_change_40_days\":0.18531046,\"original_filing_link\":\"https://www.sec.gov/Archives/edgar/data/320193/0000320193-20-000096/0000320193-20-000096-index.htm\",\"financials_link\":\"https://www.sec.gov/cgi-bin/viewer?action=view&cik=320193&accession_number=0000320193-20-000096&xbrl_type=v#\"},{\"symbol\":\"AAPL\",\"industry\":\"Consumer
+        Electronics\",\"country\":\"United States\",\"marketcap\":\"1 Trillion\",\"shortname\":\"Apple
+        Inc.\",\"name\":\"0000320193-20-000062.txt\",\"date\":\"2020-07-30\",\"file_type\":\"10-Q\",\"cik\":\"0000320193\",\"daa_highlights\":[{\"kmeans_i\":49,\"sentence_i\":38,\"sentence\":\"Services
+        net sales also include amortization of the deferred value of Maps, Siri, and
+        free iCloud storage and Apple TV + services, which are bundled in the sales
+        price of certain products. iPhoneiPhone net sales increased during the third
+        quarter of 2020 compared to the third quarter of 2019 due primarily to net
+        sales of the new iPhone SE released during the third quarter of 2020.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":39,\"sentence\":\"Year-over-year
+        iPhone net sales increased during the first nine months of 2020 due primarily
+        to higher net sales of iPhone 11, 11 Pro and 11 Pro Max.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":40,\"sentence\":\"MacMac
+        net sales increased during the third quarter of 2020 compared to the third
+        quarter of 2019 due to higher net sales of MacBook Pro and MacBook Air \xAE.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":41,\"sentence\":\"Year-over-year
+        Mac net sales increased during the first nine months of 2020 due to higher
+        net sales of MacBook Pro. iPadiPad net sales increased during the third quarter
+        of 2020 compared to the third quarter of 2019 due primarily to higher net
+        sales of iPad Pro \xAE.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":44,\"sentence\":\"Year-over-year
+        Services net sales increased during the first nine months of 2020 due primarily
+        to higher net sales from the App Store, Advertising and AppleCare.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":56,\"sentence\":\"Year-over-year
+        Americas net sales increased during the first nine months of 2020 due primarily
+        to higher net sales of Services and Wearables, Home and Accessories.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":57,\"sentence\":\"EuropeEurope
+        net sales increased during the third quarter of 2020 compared to the third
+        quarter of 2019 due primarily to higher net sales of iPhone, iPad and Wearables,
+        Home and Accessories.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":58,\"sentence\":\"Year-over-year
+        Europe net sales increased during the first nine months of 2020 due primarily
+        to higher net sales of iPhone and Wearables, Home and Accessories.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":60,\"sentence\":\"Greater
+        ChinaGreater China net sales increased during the third quarter of 2020 compared
+        to the third quarter of 2019 due primarily to higher net sales of iPad and
+        Services, partially offset by lower net sales of iPhone.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":61,\"sentence\":\"Year-over-year
+        Greater China net sales decreased during the first nine months of 2020 due
+        primarily to lower net sales of iPhone, partially offset by higher net sales
+        of Services and Wearables, Home and Accessories.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":63,\"sentence\":\"Apple
+        Inc. | Q 3 2020 Form 10-Q | 27 JapanJapan net sales increased during the third
+        quarter of 2020 compared to the third quarter of 2019 due primarily to higher
+        net sales of Services, iPad and Mac.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":64,\"sentence\":\"Year-over-year
+        Japan net sales decreased during the first nine months of 2020 due primarily
+        to lower net sales of iPhone, partially offset by higher net sales of Services
+        and Wearables, Home and Accessories.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":66,\"sentence\":\"Rest
+        of Asia PacificRest of Asia Pacific net sales increased during the third quarter
+        of 2020 compared to the third quarter of 2019 due primarily to higher net
+        sales of iPhone, iPad and Mac.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":70,\"sentence\":\"Year-over-year
+        Products gross margin percentage decreased during the third quarter of 2020
+        due primarily to a different Products mix and the weakness in foreign currencies
+        relative to the U. S. dollar, partially offset by material cost savings and
+        higher leverage.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":72,\"sentence\":\"Year-over-year
+        Products gross margin percentage decreased during the first nine months of
+        2020 due primarily to the weakness in foreign currencies relative to the U.
+        S. dollar and a different Products mix, partially offset by higher leverage.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":73,\"sentence\":\"Services
+        Gross MarginServices gross margin increased during the third quarter and first
+        nine months of 2020 compared to the same periods in 2019 due primarily to
+        higher Services net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":74,\"sentence\":\"Services
+        gross margin percentage increased during the third quarter and first nine
+        months of 2020 compared to the same periods in 2019 due primarily to a different
+        Services mix and higher leverage, partially offset by higher Services costs.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":83,\"sentence\":\"The
+        Company\u2019 s effective tax rate for the third quarter of 2020 was lower
+        compared to the third quarter of 2019 due primarily to higher tax benefits
+        from share-based compensation.\",\"good_or_bad\":\"good\"}],\"rf_highlights\":[],\"price_change_5_days\":0.18200956,\"price_change_10_days\":0.19565443,\"price_change_20_days\":-0.67509617,\"price_change_40_days\":-0.70818173,\"original_filing_link\":\"https://www.sec.gov/Archives/edgar/data/320193/0000320193-20-000062/0000320193-20-000062-index.htm\",\"financials_link\":\"https://www.sec.gov/cgi-bin/viewer?action=view&cik=320193&accession_number=0000320193-20-000062&xbrl_type=v#\"},{\"symbol\":\"AAPL\",\"industry\":\"Consumer
+        Electronics\",\"country\":\"United States\",\"marketcap\":\"1 Trillion\",\"shortname\":\"Apple
+        Inc.\",\"name\":\"0000320193-20-000052.txt\",\"date\":\"2020-04-30\",\"file_type\":\"10-q\",\"cik\":\"0000320193\",\"daa_highlights\":[{\"kmeans_i\":49,\"sentence_i\":32,\"sentence\":\"Second
+        Quarter Fiscal 2020 HighlightsTotal net sales increased 1% or $298 million
+        during the second quarter of 2020 compared to the same quarter in 2019, primarily
+        driven by higher Services and Wearables, Home and Accessories net sales, partially
+        offset by lower iPhone net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":37,\"sentence\":\"Products
+        and Services PerformanceThe following table shows net sales by category for
+        the three-and six-month periods ended March 28, 2020 and March 30, 2019 (dollars
+        in millions): iPhoneiPhone net sales decreased during the second quarter of
+        2020 compared to the second quarter of 2019 due primarily to the unfavorable
+        impact of the COVID-19 pandemic.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":39,\"sentence\":\"MacMac
+        net sales decreased during the second quarter and first six months of 2020
+        compared to the same periods in 2019 due primarily to lower net sales of Mac
+        portable computers and the impact of the COVID-19 pandemic.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":42,\"sentence\":\"Year-over-year
+        Services net sales increased during the first six months of 2020 due primarily
+        to higher net sales from the App Store, licensing and AppleCare. Segment Operating
+        PerformanceThe Company manages its business primarily on a geographic basis.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":53,\"sentence\":\"EuropeEurope
+        net sales increased during the second quarter and first six months of 2020
+        compared to the same periods in 2019, despite the impact of the COVID-19 pandemic,
+        due primarily to higher iPhone and Wearables, Home and Accessories net sales,
+        partially offset by lower iPad net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":55,\"sentence\":\"Apple
+        Inc. | Q 2 2020 Form 10-Q | 27 Greater ChinaGreater China net sales decreased
+        during the second quarter and first six months of 2020 compared to the same
+        periods in 2019 due primarily to lower iPhone net sales as a result of the
+        COVID-19 pandemic, partially offset by higher Services net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":57,\"sentence\":\"JapanJapan
+        net sales decreased during the second quarter and first six months of 2020
+        compared to the same periods in 2019 due primarily to lower iPhone net sales
+        attributable to lower carrier subsidies and as a result of the COVID-19 pandemic,
+        partially offset by higher Services net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":59,\"sentence\":\"Rest
+        of Asia PacificRest of Asia Pacific net sales increased during the second
+        quarter of 2020 compared to the second quarter of 2019, despite the impact
+        of the COVID-19 pandemic, due primarily to higher Wearables, Home and Accessories
+        and iPhone net sales, partially offset by lower iPad net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":64,\"sentence\":\"Year-over-year
+        Products gross margin percentage decreased during the first six months of
+        2020 due primarily to the weakness in foreign currencies relative to the U.
+        S. dollar and the impact of the COVID-19 pandemic, partially offset by higher
+        leverage.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":65,\"sentence\":\"Services
+        Gross MarginServices gross margin increased during the second quarter and
+        first six months of 2020 compared to the same periods in 2019 due primarily
+        to higher Services net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":66,\"sentence\":\"Services
+        gross margin percentage increased during the second quarter and first six
+        months of 2020 compared to the same periods in 2019 due primarily to a favorable
+        Services mix and higher leverage, partially offset by higher Services costs.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":75,\"sentence\":\"The
+        Company\u2019 s effective tax rate for the second quarter of 2020 was lower
+        compared to the second quarter of 2019 due to lower taxes on foreign earnings,
+        including the impact of tax settlements.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":93,\"sentence\":\"In
+        the second quarter of 2020, the Company entered into an agreement to sell
+        certain of its marketable securities with a promise to repurchase the securities
+        at a specified time and amount (\u201C Repo\u201D).\",\"good_or_bad\":\"good\"}],\"rf_highlights\":[{\"kmeans_i\":84,\"sentence_i\":18,\"sentence\":\"To
+        the extent the COVID-19 pandemic adversely affects the Company\u2019 s business,
+        results of operations, financial condition and stock price, it may also have
+        the effect of heightening many of the other risks described in Part I, Item
+        1A of the 2019 Form 10-K under the heading\u201C Risk Factors.\u201D\",\"good_or_bad\":\"good\"},{\"kmeans_i\":44,\"sentence_i\":19,\"sentence\":\"Apple
+        Inc. | Q 2 2020 Form 10-Q | 34\",\"good_or_bad\":\"good\"},{\"kmeans_i\":14,\"sentence_i\":13,\"sentence\":\"As
+        a result, the Company also experienced weakened demand for its products and
+        services outside of China during the last three weeks of the quarter.\",\"good_or_bad\":\"bad\"}],\"price_change_5_days\":0.03383248,\"price_change_10_days\":0.05642589,\"price_change_20_days\":0.08509415,\"price_change_40_days\":0.20690019,\"original_filing_link\":\"https://www.sec.gov/Archives/edgar/data/320193/0000320193-20-000052/0000320193-20-000052-index.htm\",\"financials_link\":\"https://www.sec.gov/cgi-bin/viewer?action=view&cik=320193&accession_number=0000320193-20-000052&xbrl_type=v#\"},{\"symbol\":\"AAPL\",\"industry\":\"Consumer
+        Electronics\",\"country\":\"United States\",\"marketcap\":\"1 Trillion\",\"shortname\":\"Apple
+        Inc.\",\"name\":\"0000320193-20-000010.txt\",\"date\":\"2020-01-28\",\"file_type\":\"10-q\",\"cik\":\"0000320193\",\"daa_highlights\":[{\"kmeans_i\":49,\"sentence_i\":20,\"sentence\":\"First
+        Quarter Fiscal 2020 HighlightsTotal net sales increased 9% or $7.5 billion
+        during the first quarter of 2020 compared to the same quarter in 2019, primarily
+        driven by higher iPhone and Wearables, Home and Accessories net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":26,\"sentence\":\"MacMac
+        net sales decreased during the first quarter of 2020 compared to the same
+        quarter in 2019 due primarily to the timing of the MacBook Air \xAE launch
+        in the first quarter of 2019.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":27,\"sentence\":\"iPadiPad
+        net sales decreased during the first quarter of 2020 compared to the same
+        quarter in 2019 due primarily to the timing of the iPad Pro \xAE launch in
+        the first quarter of 2019.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":29,\"sentence\":\"ServicesServices
+        net sales increased during the first quarter of 2020 compared to the same
+        quarter in 2019 due primarily to higher net sales from AppleCare, the App
+        Store and licensing.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":39,\"sentence\":\"EuropeEurope
+        net sales increased during the first quarter of 2020 compared to the same
+        quarter in 2019 due primarily to higher iPhone and Wearables, Home and Accessories
+        net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":41,\"sentence\":\"Greater
+        ChinaGreater China net sales increased during the first quarter of 2020 compared
+        to the same quarter in 2019 due primarily to higher Wearables, Home and Accessories
+        net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":43,\"sentence\":\"JapanJapan
+        net sales decreased during the first quarter of 2020 compared to the same
+        quarter in 2019 due primarily to lower iPhone net sales, partially offset
+        by higher Services net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":45,\"sentence\":\"Rest
+        of Asia PacificRest of Asia Pacific net sales increased during the first quarter
+        of 2020 compared to the same quarter in 2019 due primarily to higher Wearables,
+        Home and Accessories and Services net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":49,\"sentence\":\"Services
+        Gross MarginServices gross margin and Services gross margin percentage increased
+        during the first quarter of 2020 compared to the same quarter in 2019 due
+        primarily to a favorable Services mix and higher leverage, partially offset
+        by higher Services costs.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":79,\"sentence_i\":16,\"sentence\":\"Quarterly
+        HighlightsBusiness Seasonality and Product IntroductionsThe Company has historically
+        experienced higher net sales in its first quarter compared to other quarters
+        in its fiscal year due in part to seasonal holiday demand.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":85,\"sentence_i\":65,\"sentence\":\"The
+        Company\u2019 s investment policy generally requires securities to be investment
+        grade and limits the amount of credit exposure to any one issuer.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":18,\"sentence_i\":95,\"sentence\":\"The
+        Company plans to pay the deemed repatriation tax payable in installments in
+        accordance with the Act.\",\"good_or_bad\":\"good\"}],\"rf_highlights\":[],\"price_change_5_days\":-0.00891028,\"price_change_10_days\":0.01121221,\"price_change_20_days\":-0.15468596,\"price_change_40_days\":-0.20129069,\"original_filing_link\":\"https://www.sec.gov/Archives/edgar/data/320193/0000320193-20-000010/0000320193-20-000010-index.htm\",\"financials_link\":\"https://www.sec.gov/cgi-bin/viewer?action=view&cik=320193&accession_number=0000320193-20-000010&xbrl_type=v#\"},{\"symbol\":\"AAPL\",\"industry\":\"Consumer
+        Electronics\",\"country\":\"United States\",\"marketcap\":\"1 Trillion\",\"shortname\":\"Apple
+        Inc.\",\"name\":\"0000320193-19-000119.txt\",\"date\":\"2019-10-30\",\"file_type\":\"10-k\",\"cik\":\"0000320193\",\"daa_highlights\":[{\"kmeans_i\":49,\"sentence_i\":13,\"sentence\":\"Fiscal
+        2019 HighlightsTotal net sales decreased 2% or $5.4 billion during 2019 compared
+        to 2018, driven by lower net sales of iPhone, partially offset by higher net
+        sales of Wearables, Home and Accessories and Services in all geographic operating
+        segments.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":20,\"sentence\":\"The
+        following table shows net sales by category for 2019, 2018 and 2017 (dollars
+        in millions): iPhoneiPhone net sales decreased during 2019 compared to 2018
+        due primarily to lower iPhone unit sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":24,\"sentence\":\"ServicesServices
+        net sales increased during 2019 compared to 2018 due primarily to higher net
+        sales from the App Store, licensing and AppleCare. Apple Inc. | 2019 Form
+        10-K | 19 Segment Operating PerformanceThe Company manages its business primarily
+        on a geographic basis.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":34,\"sentence\":\"EuropeEurope
+        net sales decreased during 2019 compared to 2018 due to lower iPhone net sales,
+        partially offset by higher Wearables, Home and Accessories and Services net
+        sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":36,\"sentence\":\"Greater
+        ChinaGreater China net sales decreased during 2019 compared to 2018 due primarily
+        to lower iPhone net sales, partially offset by higher Wearables, Home and
+        Accessories and Services net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":38,\"sentence\":\"JapanJapan
+        net sales decreased during 2019 compared to 2018 due to lower iPhone net sales,
+        partially offset by higher Services and Wearables, Home and Accessories net
+        sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":18,\"sentence_i\":14,\"sentence\":\"The
+        weakness in foreign currencies had a significant unfavorable impact on net
+        sales during 2019.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":18,\"sentence_i\":19,\"sentence\":\"As
+        a result, Products and Services net sales for 2018 and 2017 were reclassified
+        to conform to the 2019 presentation.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":18,\"sentence_i\":33,\"sentence\":\"The
+        weakness in foreign currencies relative to the U. S. dollar had an unfavorable
+        impact on Americas net sales during 2019.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":18,\"sentence_i\":35,\"sentence\":\"The
+        weakness in foreign currencies relative to the U. S. dollar had a significant
+        unfavorable impact on Europe net sales during 2019.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":18,\"sentence_i\":37,\"sentence\":\"The
+        weakness in foreign currencies relative to the U. S. dollar had an unfavorable
+        impact on Greater China net sales during 2019.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":18,\"sentence_i\":39,\"sentence\":\"The
+        value of the Japanese Yen relative to the U. S. dollar had a favorable impact
+        on Japan net sales during 2019.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":18,\"sentence_i\":41,\"sentence\":\"The
+        weakness in foreign currencies relative to the U. S. dollar had a significant
+        unfavorable impact on Rest of Asia Pacific net sales during 2019.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":18,\"sentence_i\":44,\"sentence\":\"Year-over-year
+        Products gross margin percentage decreased during 2018 due primarily to higher
+        product cost structures, partially offset by the strength in foreign currencies
+        relative to the U. S. dollar.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":85,\"sentence_i\":78,\"sentence\":\"The
+        Company\u2019 s investment policy generally requires securities to be investment
+        grade and limits the amount of credit exposure to any one issuer.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":18,\"sentence_i\":106,\"sentence\":\"The
+        Company plans to pay the deemed repatriation tax payable in installments in
+        accordance with the Act.\",\"good_or_bad\":\"good\"}],\"rf_highlights\":[{\"kmeans_i\":68,\"sentence_i\":21,\"sentence\":\"Apple
+        Inc. | 2019 Form 10-K | 5 The Company has a minority market share in the global
+        smartphone, personal computer and tablet markets.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":68,\"sentence_i\":47,\"sentence\":\"Apple
+        Inc. | 2019 Form 10-K | 6 The Company is exposed to the risk of write-downs
+        on the value of its inventory and other assets, in addition to purchase commitment
+        cancellation risk.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":68,\"sentence_i\":196,\"sentence\":\"Apple
+        Inc. | 2019 Form 10-K | 11 The Company\u2019 s success depends largely on
+        the continued service and availability of key personnel.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":110,\"sentence\":\"Apple
+        Inc. | 2019 Form 10-K | 8 The Company\u2019 s minority market share in the
+        global smartphone, personal computer and tablet markets could make developers
+        less inclined to develop or upgrade software for the Company\u2019 s products
+        and more inclined to devote their resources to developing and upgrading software
+        for competitors\u2019 products with larger market share.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":141,\"sentence\":\"Apple
+        Inc. | 2019 Form 10-K | 9 The Company is subject to complex and changing laws
+        and regulations worldwide, which exposes the Company to potential liabilities,
+        increased costs and other adverse effects on the Company\u2019 s business.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":248,\"sentence\":\"Apple
+        Inc. | 2019 Form 10-K | 13 The Company is exposed to credit risk on its trade
+        accounts receivable, vendor non-trade receivables and prepayments related
+        to long-term supply agreements, and this risk is heightened during periods
+        when economic conditions worsen.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":73,\"sentence_i\":167,\"sentence\":\"Apple
+        Inc. | 2019 Form 10-K | 10 There may be losses or unauthorized access to or
+        releases of confidential information, including personally identifiable information,
+        that could subject the Company to significant reputational, financial, legal
+        and operational consequences.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":73,\"sentence_i\":223,\"sentence\":\"Apple
+        Inc. | 2019 Form 10-K | 12 The Company has historically experienced higher
+        net sales in its first quarter compared to other quarters in its fiscal year
+        due in part to seasonal holiday demand.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":88,\"sentence_i\":230,\"sentence\":\"Price
+        volatility over a given period may cause the average price at which the Company
+        repurchases its stock to exceed the stock\u2019 s price at a given point in
+        time.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":9,\"sentence_i\":42,\"sentence\":\"Some
+        carriers providing cellular network service for iPhone offer financing, installment
+        payment plans or subsidies for users\u2019 purchases of the device.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":85,\"sentence_i\":151,\"sentence\":\"The
+        Company\u2019 s retail stores have required substantial investment in equipment
+        and leasehold improvements, information systems, inventory and personnel.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":85,\"sentence_i\":219,\"sentence\":\"The
+        Company\u2019 s profit margins vary across its products, services, geographic
+        segments and distribution channels.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":85,\"sentence_i\":220,\"sentence\":\"For
+        example, gross margins on the Company\u2019 s hardware products vary across
+        product lines and can change over time.\",\"good_or_bad\":\"good\"}],\"price_change_5_days\":0.04602368,\"price_change_10_days\":0.05896655,\"price_change_20_days\":0.07755411,\"price_change_40_days\":0.17541089,\"original_filing_link\":\"https://www.sec.gov/Archives/edgar/data/320193/0000320193-19-000119/0000320193-19-000119-index.htm\",\"financials_link\":\"https://www.sec.gov/cgi-bin/viewer?action=view&cik=320193&accession_number=0000320193-19-000119&xbrl_type=v#\"},{\"symbol\":\"AAPL\",\"industry\":\"Consumer
+        Electronics\",\"country\":\"United States\",\"marketcap\":\"1 Trillion\",\"shortname\":\"Apple
+        Inc.\",\"name\":\"0000320193-19-000076.txt\",\"date\":\"2019-07-31\",\"file_type\":\"10-q\",\"cik\":\"0000320193\",\"daa_highlights\":[{\"kmeans_i\":49,\"sentence_i\":22,\"sentence\":\"Third
+        Quarter Fiscal 2019 HighlightsTotal net sales increased 1% or $544 million
+        during the third quarter of 2019 compared to the same quarter in 2018, primarily
+        driven by higher Wearables, Home and Accessories and Services net sales, partially
+        offset by lower iPhone net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":29,\"sentence\":\"As
+        a result, products and services net sales information for the third quarter
+        and first nine months of 2018 was reclassified to conform to the 2019 presentation.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":31,\"sentence\":\"MacMac
+        net sales increased during the third quarter of 2019 compared to the same
+        quarter in 2018 due primarily to higher net sales of MacBook Air \xAE.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":32,\"sentence\":\"Year-over-year
+        Mac net sales increased during the first nine months of 2019 due primarily
+        to higher net sales of MacBook Air, partially offset by lower net sales of
+        MacBook \xAE.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":33,\"sentence\":\"iPadiPad
+        net sales increased during the third quarter and first nine months of 2019
+        compared to the same periods in 2018 due primarily to higher net sales of
+        iPad Pro \xAE.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":35,\"sentence\":\"ServicesServices
+        net sales increased during the third quarter and first nine months of 2019
+        compared to the same periods in 2018 due primarily to the App Store, licensing
+        and AppleCare. Apple Inc. | Q 3 2019 Form 10-Q | 26 Segment Operating PerformanceThe
+        Company manages its business primarily on a geographic basis.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":45,\"sentence\":\"EuropeEurope
+        net sales decreased during the third quarter and first nine months of 2019
+        compared to the same periods in 2018 due primarily to lower iPhone net sales,
+        partially offset by higher Wearables, Home and Accessories and Services net
+        sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":47,\"sentence\":\"Greater
+        ChinaGreater China net sales decreased during the third quarter and first
+        nine months of 2019 compared to the same periods in 2018 due primarily to
+        lower iPhone net sales, partially offset by higher Wearables, Home and Accessories
+        and Services net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":49,\"sentence\":\"JapanJapan
+        net sales increased during the third quarter of 2019 compared to the same
+        quarter in 2018 due primarily to higher Services and Wearables, Home and Accessories
+        net sales, partially offset by lower iPhone net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":50,\"sentence\":\"Year-over-year
+        Japan net sales during the first nine months of 2019 were relatively flat
+        as lower iPhone net sales were offset primarily by higher Services and Wearables,
+        Home and Accessories net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":52,\"sentence\":\"Rest
+        of Asia PacificRest of Asia Pacific net sales increased during the third quarter
+        of 2019 compared to the same quarter in 2018 due primarily to higher Wearables,
+        Home and Accessories, iPad and Services net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":53,\"sentence\":\"Year-over-year
+        Rest of Asia Pacific net sales during the first nine months of 2019 increased
+        due primarily to higher Wearables, Home and Accessories, iPad and Services
+        net sales, partially offset by lower iPhone net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":56,\"sentence\":\"Products
+        gross margin decreased during the first nine months of 2019 compared to the
+        same period in 2018 due primarily to lower iPhone unit sales and the weakness
+        in foreign currencies relative to the U. S. dollar.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":57,\"sentence\":\"Year-over-year
+        products gross margin percentage decreased during the third quarter and first
+        nine months of 2019 due primarily to the weakness in foreign currencies relative
+        to the U. S. dollar and the impact of lower iPhone unit sales on the Company\u2019
+        s products fixed cost structure.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":58,\"sentence\":\"Services
+        Gross MarginServices gross margin increased during the third quarter and first
+        nine months of 2019 compared to the same periods in 2018 due primarily to
+        higher services net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":59,\"sentence\":\"Year-over-year
+        services gross margin percentage increased during the third quarter and first
+        nine months of 2019 due primarily to leverage of the Company\u2019 s services
+        fixed cost structure from higher services net sales and a different services
+        mix.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":68,\"sentence\":\"Other
+        Income/(Expense), NetOther income/(expense), net for the three-and nine-month
+        periods ended June 29, 2019 and June 30, 2018 was as follows (dollars in millions):
+        The decrease in other income/(expense), net during the third quarter of 2019
+        compared to the same quarter in 2018 was due to lower interest income and
+        the impact of foreign exchange\u2013related items.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":72,\"sentence\":\"The
+        Company\u2019 s effective tax rate for the third quarter of 2019 was higher
+        compared to the same quarter in 2018 due primarily to higher taxes on foreign
+        earnings, partially offset by a lower statutory federal income tax rate in
+        2019.\",\"good_or_bad\":\"good\"}],\"rf_highlights\":[{\"kmeans_i\":68,\"sentence_i\":69,\"sentence\":\"Apple
+        Inc. | Q 3 2019 Form 10-Q | 37 The Company depends on component and product
+        manufacturing and logistical services provided by outsourcing partners, many
+        of which are located outside of the U. S. Substantially all of the Company\u2019
+        s manufacturing is performed in whole or in part by outsourcing partners located
+        primarily in Asia.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":68,\"sentence_i\":105,\"sentence\":\"Apple
+        Inc. | Q 3 2019 Form 10-Q | 38 The Company\u2019 s future performance depends
+        in part on support from third-party software developers.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":0,\"sentence\":\"The
+        following description of risk factors includes any material changes to, and
+        supersedes the description of, risk factors associated with the Company\u2019
+        s business previously disclosed in Part I, Item 1A of the 2018 Form 10-K and
+        in Part II, Item 1A of the Forms 10-Q for the quarters ended December 29,
+        2018 and March 30, 2019, in each case under the heading\u201C Risk Factors.\u201D\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":14,\"sentence\":\"Apple
+        Inc. | Q 3 2019 Form 10-Q | 35 Global markets for the Company\u2019 s products
+        and services are highly competitive and subject to rapid technological change,
+        and the Company may be unable to compete effectively in these markets.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":160,\"sentence\":\"Apple
+        Inc. | Q 3 2019 Form 10-Q | 40 The Company\u2019 s retail stores have required
+        and will continue to require a substantial investment and commitment of resources
+        and are subject to numerous risks and uncertainties.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":186,\"sentence\":\"Apple
+        Inc. | Q 3 2019 Form 10-Q | 41 The Company has implemented systems and processes
+        intended to secure its information technology systems and prevent unauthorized
+        access to or loss of sensitive data, including through the use of encryption
+        and authentication technologies.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":217,\"sentence\":\"Apple
+        Inc. | Q 3 2019 Form 10-Q | 42 Many of the Company\u2019 s operations and
+        facilities as well as critical business operations of the Company\u2019 s
+        suppliers and contract manufacturers are in locations that are prone to earthquakes
+        and other natural disasters.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":247,\"sentence\":\"Apple
+        Inc. | Q 3 2019 Form 10-Q | 43 Conversely, a strengthening of foreign currencies
+        relative to the U. S. dollar, while generally beneficial to the Company\u2019
+        s foreign currency\u2013denominated sales and earnings, could cause the Company
+        to reduce international pricing and incur losses on its foreign currency derivative
+        instruments, thereby limiting the benefit.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":44,\"sentence_i\":40,\"sentence\":\"Apple
+        Inc. | Q 3 2019 Form 10-Q | 36 The Company depends on the performance of carriers,
+        wholesalers, retailers and other resellers.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":44,\"sentence_i\":272,\"sentence\":\"Apple
+        Inc. | Q 3 2019 Form 10-Q | 44\",\"good_or_bad\":\"good\"},{\"kmeans_i\":73,\"sentence_i\":135,\"sentence\":\"Apple
+        Inc. | Q 3 2019 Form 10-Q | 39 Except as described in Part I, Item 1 of this
+        Form 10-Q in the Notes to Condensed Consolidated Financial Statements in Note
+        10,\u201C Commitments and Contingencies\u201D under the heading\u201C Contingencies,\u201D
+        in the opinion of management, there was not at least a reasonable possibility
+        the Company may have incurred a material loss, or a material loss in excess
+        of a recorded accrual, with respect to loss contingencies for asserted legal
+        and other claims, including matters related to infringement of intellectual
+        property rights.\",\"good_or_bad\":\"good\"}],\"price_change_5_days\":-0.02398884,\"price_change_10_days\":-0.02841953,\"price_change_20_days\":0.00659277,\"price_change_40_days\":0.05383785,\"original_filing_link\":\"https://www.sec.gov/Archives/edgar/data/320193/0000320193-19-000076/0000320193-19-000076-index.htm\",\"financials_link\":\"https://www.sec.gov/cgi-bin/viewer?action=view&cik=320193&accession_number=0000320193-19-000076&xbrl_type=v#\"},{\"symbol\":\"AAPL\",\"industry\":\"Consumer
+        Electronics\",\"country\":\"United States\",\"marketcap\":\"1 Trillion\",\"shortname\":\"Apple
+        Inc.\",\"name\":\"0000320193-19-000066.txt\",\"date\":\"2019-05-01\",\"file_type\":\"10-q\",\"cik\":\"0000320193\",\"daa_highlights\":[{\"kmeans_i\":49,\"sentence_i\":22,\"sentence\":\"Second
+        Quarter Fiscal 2019 HighlightsTotal net sales decreased 5% or $3.1 billion
+        during the second quarter of 2019 compared to the same quarter in 2018, driven
+        by lower iPhone net sales, partially offset by higher Services and Wearables,
+        Home and Accessories net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":27,\"sentence\":\"As
+        a result, products and services net sales information for the second quarter
+        and first six months of 2018 was reclassified to conform to the 2019 presentation.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":29,\"sentence\":\"MacMac
+        net sales decreased during the second quarter of 2019 compared to the same
+        quarter in 2018 due primarily to lower net sales of iMac.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":30,\"sentence\":\"Year-over-year
+        Mac net sales increased during the first six months of 2019 due primarily
+        to higher net sales of MacBook Air, partially offset by lower net sales of
+        iMac. iPadiPad net sales increased during the second quarter and first six
+        months of 2019 compared to the same periods in 2018 due primarily to higher
+        net sales of iPad Pro \xAE.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":41,\"sentence\":\"EuropeEurope
+        net sales decreased during the second quarter and first six months of 2019
+        compared to the same periods in 2018 due primarily to lower iPhone net sales,
+        partially offset by higher Wearables, Home and Accessories and Services net
+        sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":43,\"sentence\":\"Greater
+        ChinaGreater China net sales decreased during the second quarter and first
+        six months of 2019 compared to the same periods in 2018, driven by lower iPhone
+        net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":45,\"sentence\":\"JapanJapan
+        net sales during the second quarter of 2019 were relatively flat compared
+        to the same quarter in 2018, as higher Services and iPad net sales were primarily
+        offset by lower iPhone net sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":46,\"sentence\":\"Year-over-year
+        Japan net sales decreased during the first six months of 2019 due primarily
+        to lower iPhone net sales, partially offset by higher Services and iPad net
+        sales.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":51,\"sentence\":\"Year-over-year
+        products gross margin percentage decreased during the second quarter and first
+        six months of 2019 due primarily to the impact of lower iPhone unit sales
+        on the Company\u2019 s products fixed cost structure and the weakness in foreign
+        currencies relative to the U. S. dollar.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":52,\"sentence\":\"Services
+        Gross MarginServices gross margin increased during the second quarter and
+        first six months of 2019 compared to the same periods in 2018 due primarily
+        to a different services mix.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":53,\"sentence\":\"Year-over-year
+        services gross margin percentage increased during the second quarter and first
+        six months of 2019 due primarily to a different services mix and leverage
+        of the Company\u2019 s services fixed cost structure from higher services
+        net sales, partially offset by the weakness in foreign currencies relative
+        to the U. S. dollar.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":62,\"sentence\":\"Other
+        Income/(Expense), NetOther income/(expense), net for the three-and six-month
+        periods ended March 30, 2019 and March 31, 2018 was as follows (dollars in
+        millions): The increase in other income/(expense), net during the second quarter
+        of 2019 compared to the same quarter in 2018 was due primarily to the impact
+        of foreign exchange\u2013related items, partially offset by higher interest
+        expense and lower interest income.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":49,\"sentence_i\":67,\"sentence\":\"The
+        Company\u2019 s effective tax rate for the second quarter of 2019 was higher
+        compared to the same quarter in 2018 due primarily to higher taxes on foreign
+        earnings, partially offset by a lower statutory federal income tax rate in
+        2019.\",\"good_or_bad\":\"good\"}],\"rf_highlights\":[{\"kmeans_i\":68,\"sentence_i\":69,\"sentence\":\"Apple
+        Inc. | Q 2 2019 Form 10-Q | 37 The Company depends on component and product
+        manufacturing and logistical services provided by outsourcing partners, many
+        of which are located outside of the U. S. Substantially all of the Company\u2019
+        s manufacturing is performed in whole or in part by outsourcing partners located
+        primarily in Asia.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":68,\"sentence_i\":105,\"sentence\":\"Apple
+        Inc. | Q 2 2019 Form 10-Q | 38 The Company\u2019 s future performance depends
+        in part on support from third-party software developers.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":0,\"sentence\":\"The
+        following description of risk factors includes any material changes to, and
+        supersedes the description of, risk factors associated with the Company\u2019
+        s business previously disclosed in Part I, Item 1A of the 2018 Form 10-K and
+        in Part II, Item 1A of the Form 10-Q for the quarter ended December 29, 2018,
+        in each case under the heading\u201C Risk Factors.\u201D\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":14,\"sentence\":\"Apple
+        Inc. | Q 2 2019 Form 10-Q | 35 Global markets for the Company\u2019 s products
+        and services are highly competitive and subject to rapid technological change,
+        and the Company may be unable to compete effectively in these markets.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":160,\"sentence\":\"Apple
+        Inc. | Q 2 2019 Form 10-Q | 40 The Company\u2019 s retail stores have required
+        and will continue to require a substantial investment and commitment of resources
+        and are subject to numerous risks and uncertainties.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":186,\"sentence\":\"Apple
+        Inc. | Q 2 2019 Form 10-Q | 41 The Company has implemented systems and processes
+        intended to secure its information technology systems and prevent unauthorized
+        access to or loss of sensitive data, including through the use of encryption
+        and authentication technologies.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":217,\"sentence\":\"Apple
+        Inc. | Q 2 2019 Form 10-Q | 42 Many of the Company\u2019 s operations and
+        facilities as well as critical business operations of the Company\u2019 s
+        suppliers and contract manufacturers are in locations that are prone to earthquakes
+        and other natural disasters.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":84,\"sentence_i\":247,\"sentence\":\"Apple
+        Inc. | Q 2 2019 Form 10-Q | 43 Conversely, a strengthening of foreign currencies
+        relative to the U. S. dollar, while generally beneficial to the Company\u2019
+        s foreign currency\u2013denominated sales and earnings, could cause the Company
+        to reduce international pricing and incur losses on its foreign currency derivative
+        instruments, thereby limiting the benefit.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":44,\"sentence_i\":40,\"sentence\":\"Apple
+        Inc. | Q 2 2019 Form 10-Q | 36 The Company depends on the performance of carriers,
+        wholesalers, retailers and other resellers.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":44,\"sentence_i\":272,\"sentence\":\"Apple
+        Inc. | Q 2 2019 Form 10-Q | 44\",\"good_or_bad\":\"good\"},{\"kmeans_i\":73,\"sentence_i\":135,\"sentence\":\"Apple
+        Inc. | Q 2 2019 Form 10-Q | 39 Except as described in Part I, Item 1 of this
+        Form 10-Q in the Notes to Condensed Consolidated Financial Statements in Note
+        10,\u201C Commitments and Contingencies\u201D under the heading\u201C Contingencies,\u201D
+        in the opinion of management, there was not at least a reasonable possibility
+        the Company may have incurred a material loss, or a material loss in excess
+        of a recorded accrual, with respect to loss contingencies for asserted legal
+        and other claims, including matters related to infringement of intellectual
+        property rights.\",\"good_or_bad\":\"good\"}],\"price_change_5_days\":-0.04030604,\"price_change_10_days\":-0.08767866,\"price_change_20_days\":-0.15972172,\"price_change_40_days\":-0.05004937,\"original_filing_link\":\"https://www.sec.gov/Archives/edgar/data/320193/0000320193-19-000066/0000320193-19-000066-index.htm\",\"financials_link\":\"https://www.sec.gov/cgi-bin/viewer?action=view&cik=320193&accession_number=0000320193-19-000066&xbrl_type=v#\"}]"
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '60833'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 06 Dec 2021 13:12:36 GMT
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+    status:
+      code: 200
+      message: OK
+version: 1

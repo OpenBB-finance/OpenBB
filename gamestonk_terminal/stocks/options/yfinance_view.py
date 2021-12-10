@@ -2,17 +2,21 @@
 __docformat__ = "numpy"
 
 import os
+import math
 from bisect import bisect_left
 from typing import List, Dict, Any
 from datetime import datetime, date, timedelta
 
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import matplotlib.ticker as mtick
+from scipy.stats import binom
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import yfinance as yf
 from tabulate import tabulate
+from openpyxl import Workbook
 
 import gamestonk_terminal.config_plot as cfp
 import gamestonk_terminal.feature_flags as gtff
@@ -662,3 +666,238 @@ def risk_neutral_vals(
     else:
         print(new_df.to_string(index=False))
     print("")
+
+
+def plot_expected_prices(
+    und_vals: List[List[float]], p: float, ticker: str, expiration: str
+) -> None:
+    """Plot expected prices of the underlying asset at expiration
+
+    Parameters
+    ----------
+    und_vals : List[List[float]]
+        The expected underlying values at the expiration date
+    p : float
+        The probability of the stock price moving upward each round
+    ticker : str
+        The ticker of the option's underlying asset
+    expiration : str
+        The expiration for the option
+    """
+    up_moves = list(range(len(und_vals[-1])))
+    up_moves.reverse()
+    probs = [binom.pmf(r, len(up_moves), p) for r in up_moves]
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    ax.set_title(f"Probabilities for ending prices of {ticker} on {expiration}")
+    ax.xaxis.set_major_formatter("${x:1.2f}")
+    ax.yaxis.set_major_formatter(mtick.PercentFormatter())
+    plt.plot(und_vals[-1], probs)
+    fig.tight_layout()
+    if gtff.USE_ION:
+        plt.ion()
+    plt.show()
+
+
+def export_binomial_calcs(
+    up: float,
+    prob_up: float,
+    discount: float,
+    und_vals: List[List[float]],
+    opt_vals: List[List[float]],
+    days: int,
+    ticker: str,
+) -> None:
+    """Create an excel spreadsheet with binomial tables for underlying asset value and option value
+
+    Parameters
+    ----------
+    up : float
+        The stock's increase on an upward move
+    prob_up : float
+        The probability of an upward move
+    discount : float
+        The daily discount rate
+    und_vals : List[List[float]]
+        The underlying asset values at each step
+    opt_vals : List[List[float]]
+        The values for the option at each step
+    days : int
+        The number of days until the option expires
+    ticker : str
+        The ticker for the company
+    """
+    letters = [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+    ]
+    letters += [
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z",
+    ]
+    opts = (
+        [f"{x}" for x in letters]
+        + [f"{x}{y}" for x in letters for y in letters]
+        + [f"{x}{y}{z}" for x in letters for y in letters for z in letters]
+    )
+    wb = Workbook()
+    ws = wb.active
+
+    ws["A1"] = "Up Move"
+    ws["B1"] = up
+    ws["A2"] = "Down Move"
+    ws["B2"] = 1 / up
+    ws["D1"] = "Prob Up"
+    ws["E1"] = prob_up
+    ws["D2"] = "Prob Down"
+    ws["E2"] = 1 - prob_up
+    ws["D3"] = "Discount"
+    ws["E3"] = discount
+    ws["A4"] = "Binomial Tree for Underlying Values"
+    for i, _ in enumerate(und_vals):
+        for j, _ in enumerate(und_vals[i]):
+            ws[f"{opts[i]}{j+5}"] = und_vals[i][j]
+
+    ws[f"A{days+7}"] = "Binomial Tree for Option Values"
+    for i, _ in enumerate(opt_vals):
+        for j, _ in enumerate(opt_vals[i]):
+            ws[f"{opts[i]}{j+8+days}"] = opt_vals[i][j]
+
+    trypath = os.path.join(
+        os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")),
+        "exports",
+        "stocks",
+        "options",
+        f"{ticker} {datetime.now()}.xlsx",
+    )
+    wb.save(trypath)
+    print(f"Analysis ran for {ticker}\nPlease look in {trypath} for the file.\n")
+
+
+def show_binom(
+    ticker: str,
+    expiration: str,
+    strike: float,
+    put: bool,
+    europe: bool,
+    export: bool,
+    plot: bool,
+    vol: float,
+) -> None:
+    """Get binomial pricing for option
+
+    Parameters
+    ----------
+    ticker : str
+        The ticker of the option's underlying asset
+    expiration : str
+        The expiration for the option
+    strike : float
+        The strike price for the option
+    put : bool
+        Value a put instead of a call
+    europe : bool
+        Value a European option instead of an American option
+    export : bool
+        Export the options data to an excel spreadsheet
+    plot : bool
+        Show a graph of expected ending prices
+    vol : float
+        The annualized volatility for the underlying asset
+    """
+    # Base variables to calculate values
+    info = yfinance_model.get_info(ticker)
+    price = info["regularMarketPrice"]
+    if vol is None:
+        closings = yfinance_model.get_closing(ticker)
+        vol = (closings / closings.shift()).std() * (252 ** 0.5)
+    div_yield = (
+        info["trailingAnnualDividendYield"]
+        if info["trailingAnnualDividendYield"] is not None
+        else 0
+    )
+    delta_t = 1 / 252
+    rf = get_rf()
+    exp_date = datetime.strptime(expiration, "%Y-%m-%d").date()
+    today = date.today()
+    days = (exp_date - today).days
+
+    # Binomial pricing specific variables
+    up = math.exp(vol * (delta_t ** 0.5))
+    down = 1 / up
+    prob_up = (math.exp((rf - div_yield) * delta_t) - down) / (up - down)
+    prob_down = 1 - prob_up
+    discount = math.exp(delta_t * rf)
+
+    und_vals: List[List[float]] = [[price]]
+
+    # Binomial tree for underlying values
+    for i in range(days):
+        cur_date = today + timedelta(days=i + 1)
+        if cur_date.weekday() < 5:
+            last = und_vals[-1]
+            new = [x * up for x in last]
+            new.append(last[-1] * down)
+            und_vals.append(new)
+
+    # Binomial tree for option values
+    if put:
+        opt_vals = [[max(strike - x, 0) for x in und_vals[-1]]]
+    else:
+        opt_vals = [[max(x - strike, 0) for x in und_vals[-1]]]
+
+    j = 2
+    while len(opt_vals[0]) > 1:
+        new_vals = []
+        for i in range(len(opt_vals[0]) - 1):
+            if europe:
+                value = (
+                    opt_vals[0][i] * prob_up + opt_vals[0][i + 1] * prob_down
+                ) / discount
+            else:
+                if put:
+                    value = max(
+                        (opt_vals[0][i] * prob_up + opt_vals[0][i + 1] * prob_down)
+                        / discount,
+                        strike - und_vals[-j][i],
+                    )
+                else:
+                    value = max(
+                        (opt_vals[0][i] * prob_up + opt_vals[0][i + 1] * prob_down)
+                        / discount,
+                        und_vals[-j][i] - strike,
+                    )
+            new_vals.append(value)
+        opt_vals.insert(0, new_vals)
+        j += 1
+
+    if export:
+        export_binomial_calcs(up, prob_up, discount, und_vals, opt_vals, days, ticker)
+
+    if plot:
+        plot_expected_prices(und_vals, prob_up, ticker, expiration)
+
+    print(
+        f"{ticker} {'put' if put else 'call'} at ${strike:.2f} expiring on {expiration} is worth ${opt_vals[0][0]:.2f}\n"
+    )

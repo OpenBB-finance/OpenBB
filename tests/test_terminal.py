@@ -4,10 +4,11 @@ import terminal
 
 @pytest.skip(allow_module_level=True)
 @pytest.mark.block_network
+@pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_terminal_quick_exit(mocker, monkeypatch):
     monkeypatch.setattr(terminal.gtff, "ENABLE_QUICK_EXIT", True)
-    monkeypatch.setattr(terminal.gtff, "USE_ION", True)
+    monkeypatch.setattr(terminal.gtff, "USE_ION", False)
     monkeypatch.setattr(terminal.gtff, "USE_PROMPT_TOOLKIT", True)
 
     mocker.patch("sys.stdin")
@@ -15,11 +16,11 @@ def test_terminal_quick_exit(mocker, monkeypatch):
     terminal.terminal()
 
 
-@pytest.mark.block_network
+@pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_terminal_quit(mocker, monkeypatch):
     monkeypatch.setattr(terminal.gtff, "ENABLE_QUICK_EXIT", False)
-    monkeypatch.setattr(terminal.gtff, "USE_ION", True)
+    monkeypatch.setattr(terminal.gtff, "USE_ION", False)
     monkeypatch.setattr(terminal.gtff, "USE_PROMPT_TOOLKIT", True)
 
     mocker.patch("sys.stdin")

@@ -75,6 +75,7 @@ class OptionsController:
         "unu",
         "plot",
         "parity",
+        "binom",
     ]
 
     CHOICES_MENUS = [
@@ -151,6 +152,7 @@ Current Expiry: {self.selected_date or None}
     grhist        plot option greek history [Syncretism.io]
     plot          plot variables provided by the user [Yfinance]
     parity        shows whether options are above or below expected price [Yfinance]
+    binom         shows the value of an option using binomial options pricing [Yfinance]
 
 >   payoff        shows payoff diagram for a selection of options [Yfinance]
 >   pricing       shows options pricing and risk neutral valuation [Yfinance]
@@ -1259,6 +1261,79 @@ Current Expiry: {self.selected_date or None}
             ns_parser.maxi,
         )
         print("")
+
+    @try_except
+    def call_binom(self, other_args: List[str]):
+        """Process binom command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="parity",
+            description="Gives the option value using binomial option valuation",
+        )
+        parser.add_argument(
+            "-s",
+            "--strike",
+            type=float,
+            default=0,
+            dest="strike",
+            help="Strike price for option shown",
+        )
+        parser.add_argument(
+            "-p",
+            "--put",
+            action="store_true",
+            default=False,
+            dest="put",
+            help="Value a put instead of a call",
+        )
+        parser.add_argument(
+            "-e",
+            "--european",
+            action="store_true",
+            default=False,
+            dest="europe",
+            help="Value a European option instead of an American one",
+        )
+        parser.add_argument(
+            "--export",
+            action="store_true",
+            default=False,
+            dest="export",
+            help="Export an excel spreadsheet with binomial pricing data",
+        )
+        parser.add_argument(
+            "--plot",
+            action="store_true",
+            default=False,
+            dest="plot",
+            help="Plot expected ending values",
+        )
+        parser.add_argument(
+            "-v",
+            "--volatility",
+            type=float,
+            default=None,
+            dest="volatility",
+            help="Underlying asset annualized volatility",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not self.ticker or not self.selected_date:
+            print("Ticker and expiration required. \n")
+            return
+
+        yfinance_view.show_binom(
+            self.ticker,
+            self.selected_date,
+            ns_parser.strike,
+            ns_parser.put,
+            ns_parser.europe,
+            ns_parser.export,
+            ns_parser.plot,
+            ns_parser.volatility,
+        )
 
     @try_except
     def call_pricing(self, _):

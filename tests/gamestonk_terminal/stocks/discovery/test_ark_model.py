@@ -4,7 +4,7 @@ import unittest
 import vcr
 
 from gamestonk_terminal.stocks.discovery.ark_model import get_ark_orders
-from tests.helpers import check_print
+from tests.helpers.helpers import check_print
 
 
 class TestDiscoveryArkModel(unittest.TestCase):

@@ -6,7 +6,7 @@ from unittest.mock import patch
 import vcr
 
 from gamestonk_terminal import terminal_helper
-from tests.helpers import check_print
+from tests.helpers.helpers import check_print
 
 
 def return_val(x, shell, check):
