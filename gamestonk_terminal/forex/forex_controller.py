@@ -323,6 +323,7 @@ Forex brokerages:
             return
 
         av_view.display_quote(self.to_symbol, self.from_symbol)
+        return self.queue if len(self.queue) > 0 else []
 
     # MENUS
     def call_oanda(self, _):
@@ -331,7 +332,6 @@ Forex brokerages:
         return oanda_controller.menu(self.queue)
 
     # TODO: Add news and reddit commands back
-
     # def call_eda(self, _):
     #    try:
     #        df = fx_view.get_candles_dataframe(account, self.instrument, None)
@@ -371,15 +371,6 @@ def menu(queue: List[str] = None):
             if an_input and an_input in fx_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /forex/ $ {an_input}")
 
-        # if session and gtff.USE_PROMPT_TOOLKIT:
-        #     completer = NestedCompleter.from_nested_dict(
-        #         {c: None for c in fx_controller.CHOICES}
-        #     )
-
-        #     an_input = session.prompt(
-        #         f"{get_flair()} (forex)> ",
-        #         completer=completer,
-        #     )
         else:
             if an_input == "HELP_ME" or an_input in fx_controller.CHOICES:
                 fx_controller.print_help()
