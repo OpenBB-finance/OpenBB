@@ -76,7 +76,7 @@ def display_candle(data: pd.DataFrame, to_symbol: str, from_symbol: str):
         update_width_config=dict(
             candle_linewidth=0.7,
             candle_width=0.8,
-        )
+        ),
     )
 
     print("")
