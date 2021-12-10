@@ -1,10 +1,7 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
-import requests
-import pandas as pd
 import pytest
-import vcr
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.discovery import ark_model
