@@ -1,13 +1,10 @@
-""" Disc Controller """
+""" Discovery Controller Module """
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines
 
 import argparse
 import difflib
 from datetime import datetime
 from typing import List, Union
-
-from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
@@ -36,21 +33,25 @@ from gamestonk_terminal.stocks.discovery import (
 from gamestonk_terminal.paths import cd_CHOICES
 
 
-class DiscoveryController:
-    """Discovery Controller"""
+# pylint:disable=too-many-lines
 
-    # Command choices
+
+class DiscoveryController:
+    """Discovery Controller class"""
+
     CHOICES = [
         "cls",
         "cd",
         "h",
         "?",
+        "help",
         "q",
+        "quit",
         "..",
         "exit",
         "r",
+        "reset",
     ]
-
     CHOICES_COMMANDS = [
         "pipo",
         "fipo",
@@ -71,6 +72,7 @@ class DiscoveryController:
         "cnews",
         "rtat",
     ]
+    CHOICES += CHOICES_COMMANDS
 
     arkord_sortby_choices = [
         "date",
@@ -83,9 +85,7 @@ class DiscoveryController:
         "weight",
         "shares",
     ]
-
     arkord_fund_choices = ["ARKK", "ARKF", "ARKW", "ARKQ", "ARKG", "ARKX", ""]
-
     cnews_type_choices = [
         nt.lower()
         for nt in [
@@ -112,8 +112,6 @@ class DiscoveryController:
             "Technology",
         ]
     ]
-
-    CHOICES += CHOICES_COMMANDS
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -145,8 +143,7 @@ class DiscoveryController:
         else:
             self.queue = list()
 
-    @staticmethod
-    def print_help():
+    def print_help(self):
         """Print help"""
         help_text = """
 Geek of Wall St:
@@ -202,10 +199,12 @@ NASDAQ Data Link (Formerly Quandl):
         (known_args, other_args) = self.disc_parser.parse_known_args(an_input.split())
 
         if known_args.cmd:
-            if known_args.cmd == "..":
-                known_args.cmd = "q"
-            elif known_args.cmd == "?":
-                known_args.cmd = "h"
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -232,12 +231,12 @@ NASDAQ Data Link (Formerly Quandl):
 
         return self.queue
 
-    def call_h(self, _):
+    def call_help(self, _):
         """Process help command"""
         self.print_help()
         return self.queue if len(self.queue) > 0 else []
 
-    def call_q(self, _):
+    def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "q")
@@ -253,7 +252,7 @@ NASDAQ Data Link (Formerly Quandl):
             return self.queue
         return ["q", "q", "q"]
 
-    def call_r(self, _):
+    def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "disc")
@@ -944,12 +943,12 @@ NASDAQ Data Link (Formerly Quandl):
 def menu(queue: List[str] = None):
     """Discovery Menu"""
     disc_controller = DiscoveryController(queue)
-    an_input = "first"
+    an_input = "HELP_ME"
 
     while True:
         # There is a command in the queue
         if disc_controller.queue and len(disc_controller.queue) > 0:
-            if disc_controller.queue[0] in ("q", ".."):
+            if disc_controller.queue[0] in ("q", "..", "quit"):
                 if len(disc_controller.queue) > 1:
                     return disc_controller.queue[1:]
                 return []
@@ -961,7 +960,7 @@ def menu(queue: List[str] = None):
 
         # Get input command from user
         else:
-            if an_input == "first" or an_input in disc_controller.CHOICES:
+            if an_input == "HELP_ME" or an_input in disc_controller.CHOICES:
                 disc_controller.print_help()
 
             if session and gtff.USE_PROMPT_TOOLKIT and disc_controller.completer:
@@ -975,8 +974,6 @@ def menu(queue: List[str] = None):
                 an_input = input(f"{get_flair()} /stocks/disc/ $ ")
 
         try:
-            plt.close("all")
-
             disc_controller.queue = disc_controller.switch(an_input)
 
         except SystemExit:
@@ -987,7 +984,6 @@ def menu(queue: List[str] = None):
                 n=1,
                 cutoff=0.7,
             )
-
             if similar_cmd:
                 if " " in an_input:
                     an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"

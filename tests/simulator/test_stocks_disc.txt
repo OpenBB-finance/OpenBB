@@ -1,5 +1,16 @@
 stocks
 disc
+reset
+r
+q
+disc
+..
+disc
+quit
+disc
+help
+h
+?
 rtearn
 pipo
 fipo

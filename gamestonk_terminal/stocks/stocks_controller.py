@@ -50,12 +50,14 @@ class StocksController:
         "cd",
         "h",
         "?",
+        "help",
         "q",
+        "quit",
         "..",
         "exit",
         "r",
+        "reset",
     ]
-
     CHOICES_COMMANDS = [
         "search",
         "load",
@@ -63,7 +65,6 @@ class StocksController:
         "candle",
         "news",
     ]
-
     CHOICES_MENUS = [
         "ta",
         "ba",
@@ -82,7 +83,6 @@ class StocksController:
         "ca",
         "options",
     ]
-
     CHOICES += CHOICES_COMMANDS
     CHOICES += CHOICES_MENUS
 
@@ -175,10 +175,12 @@ Stocks Menus:
         (known_args, other_args) = self.stocks_parser.parse_known_args(an_input.split())
 
         if known_args.cmd:
-            if known_args.cmd == "..":
-                known_args.cmd = "q"
-            elif known_args.cmd == "?":
-                known_args.cmd = "h"
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "command not recognized!"
@@ -204,12 +206,12 @@ Stocks Menus:
 
         return self.queue if len(self.queue) > 0 else []
 
-    def call_h(self, _):
+    def call_help(self, _):
         """Process help command"""
         self.print_help()
         return self.queue if len(self.queue) > 0 else []
 
-    def call_q(self, _):
+    def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "q")
@@ -224,7 +226,7 @@ Stocks Menus:
             return self.queue
         return ["q", "q"]
 
-    def call_r(self, _):
+    def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "stocks")
@@ -569,11 +571,7 @@ Stocks Menus:
         """Process ins command"""
         from gamestonk_terminal.stocks.sector_industry_analysis import sia_controller
 
-        ret = sia_controller.menu(self.ticker)
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return sia_controller.menu(self.ticker, self.queue)
 
     def call_ins(self, _):
         """Process ins command"""
@@ -792,12 +790,12 @@ Stocks Menus:
 def menu(ticker: str = "", queue: List[str] = None):
     """Stocks Menu"""
     stocks_controller = StocksController(ticker, queue)
-    an_input = "first"
+    an_input = "HELP_ME"
 
     while True:
         # There is a command in the queue
         if stocks_controller.queue and len(stocks_controller.queue) > 0:
-            if stocks_controller.queue[0] in ("q", ".."):
+            if stocks_controller.queue[0] in ("q", "..", "quit"):
                 if len(stocks_controller.queue) > 1:
                     return stocks_controller.queue[1:]
                 return []
@@ -809,7 +807,7 @@ def menu(ticker: str = "", queue: List[str] = None):
 
         # Get input command from user
         else:
-            if an_input == "first" or an_input in stocks_controller.CHOICES:
+            if an_input == "HELP_ME" or an_input in stocks_controller.CHOICES:
                 stocks_controller.print_help()
 
             if session and gtff.USE_PROMPT_TOOLKIT and stocks_controller.completer:
@@ -833,7 +831,6 @@ def menu(ticker: str = "", queue: List[str] = None):
                 n=1,
                 cutoff=0.7,
             )
-
             if similar_cmd:
                 if " " in an_input:
                     an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
