@@ -294,7 +294,7 @@ Forex brokerages:
 
         if not self.to_symbol or not self.from_symbol:
             print(
-                "Make sure both a to symbol and a from symbol are supplied using <select> \n"
+                "\nMake sure both a to symbol and a from symbol are supplied\n"
             )
             return self.queue if len(self.queue) > 0 else []
 
