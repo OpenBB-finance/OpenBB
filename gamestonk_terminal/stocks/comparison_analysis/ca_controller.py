@@ -1,11 +1,10 @@
 """Comparison Analysis Controller Module"""
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines
+
 import argparse
 import difflib
 import random
 from typing import List
-
 from datetime import datetime, timedelta
 import yfinance as yf
 from colorama import Style
@@ -35,15 +34,26 @@ from gamestonk_terminal.stocks.comparison_analysis import (
     yahoo_finance_model,
 )
 
-# pylint: disable=E1121
+
+# pylint: disable=E1121,C0302
 
 
 class ComparisonAnalysisController:
     """Comparison Analysis Controller class"""
 
-    # Command choices
-    CHOICES = ["?", "cls", "help", "q", "quit"]
-
+    CHOICES = [
+        "cls",
+        "cd",
+        "h",
+        "?",
+        "help",
+        "q",
+        "quit",
+        "..",
+        "exit",
+        "r",
+        "reset",
+    ]
     CHOICES_COMMANDS = [
         "ticker",
         "getpoly",

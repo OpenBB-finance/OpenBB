@@ -1,12 +1,10 @@
 """ Discovery Controller Module """
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines
 
 import argparse
 import difflib
 from datetime import datetime
 from typing import List, Union
-
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
@@ -33,6 +31,9 @@ from gamestonk_terminal.stocks.discovery import (
     nasdaq_view,
 )
 from gamestonk_terminal.paths import cd_CHOICES
+
+
+# pylint:disable=too-many-lines
 
 
 class DiscoveryController:

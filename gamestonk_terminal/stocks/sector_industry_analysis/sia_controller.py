@@ -1,4 +1,4 @@
-""" Sector and Industry Analysis Controller Module """
+"""Sector and Industry Analysis Controller Module"""
 __docformat__ = "numpy"
 
 import argparse
@@ -64,10 +64,9 @@ class SectorIndustryAnalysisController:
     CHOICES_MENUS = [
         "ca",
     ]
-    CHOICES += CHOICES_COMMANDS
-    CHOICES += CHOICES_MENUS
+    CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
 
-    possible_metrics = [
+    metric_choices = [
         "roa",
         "roe",
         "cr",
@@ -136,6 +135,8 @@ class SectorIndustryAnalysisController:
         "ev": ("defaultKeyStatistics", "enterpriseValue"),
         "fpe": ("defaultKeyStatistics", "forwardPE"),
     }
+    mktcap_choices = ["Small", "Mid", "Large", "small", "mid", "large"]
+    clear_choices = ["industry", "sector", "country", "mktcap"]
 
     def __init__(
         self,
@@ -152,19 +153,10 @@ class SectorIndustryAnalysisController:
         self.completer: Union[None, NestedCompleter] = None
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-
             self.choices: dict = {c: {} for c in self.CHOICES}
-            """
-            choices["cd"] = {c: None for c in cd_CHOICES}
-            choices["arkord"]["-s"] = {c: None for c in self.arkord_sortby_choices}
-            choices["arkord"]["--sortby"] = {
-                c: None for c in self.arkord_sortby_choices
-            }
-            choices["arkord"]["-f"] = {c: None for c in self.arkord_fund_choices}
-            choices["arkord"]["--fund"] = {c: None for c in self.arkord_fund_choices}
-            choices["cnews"]["-t"] = {c: None for c in self.cnews_type_choices}
-            choices["cnews"]["--type"] = {c: None for c in self.cnews_type_choices}
-            """
+            self.choices["mktcap"] = {c: None for c in self.mktcap_choices}
+            self.choices["clear"] = {c: None for c in self.clear_choices}
+            self.choices["metric"] = {c: None for c in self.metric_choices}
 
         if queue:
             self.queue = queue
@@ -523,7 +515,6 @@ Returned tickers: {', '.join(self.tickers)}
             nargs="+",
             help="sector to select",
         )
-
         if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-n")
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -638,10 +629,9 @@ Returned tickers: {', '.join(self.tickers)}
             "--name",
             type=str,
             dest="name",
-            choices=["Small", "Mid", "Large", "small", "mid", "large"],
+            choices=self.mktcap_choices,
             help="market cap to select",
         )
-
         if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-n")
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -666,10 +656,12 @@ Returned tickers: {', '.join(self.tickers)}
             description="Swap exclude international exchanges flag",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        self.exclude_exhanges = not self.exclude_exhanges
+        if ns_parser:
+            self.exclude_exhanges = not self.exclude_exhanges
+            print(
+                f"Internationa exchanges {'excluded' if self.exclude_exhanges else 'included'}",
+                "\n",
+            )
 
         self.stocks_data = {}
         print("")
@@ -687,10 +679,10 @@ Returned tickers: {', '.join(self.tickers)}
         )
         parser.add_argument(
             "-p",
-            "--parameter",
+            "--param",
             type=str,
             dest="parameter",
-            choices=["industry", "sector", "country", "mktcap"],
+            choices=self.clear_choices,
             help="parameter to clear",
         )
         if other_args and "-" not in other_args[0]:
@@ -784,7 +776,7 @@ Returned tickers: {', '.join(self.tickers)}
             dest="metric",
             required="-h" not in other_args,
             help="Metric to visualize",
-            choices=self.possible_metrics,
+            choices=self.metric_choices,
         )
         parser.add_argument(
             "-l",
@@ -1149,10 +1141,6 @@ def menu(
                         industry=sia_controller.industry, sector=sia_controller.sector
                     )
                 }
-                sia_controller.choices["metric"] = {
-                    c: None for c in sia_controller.possible_metrics
-                }
-
                 completer = NestedCompleter.from_nested_dict(sia_controller.choices)
                 an_input = session.prompt(
                     f"{get_flair()} /stocks/sia/ $ ",
