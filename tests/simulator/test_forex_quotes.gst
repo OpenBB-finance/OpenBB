@@ -1,9 +1,10 @@
 forex
-select EUR
+load
+to EUR
 quote
 load
 candle
-select ILS
+from ILS
 quote
 load
 candle
