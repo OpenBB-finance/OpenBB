@@ -1,33 +1,36 @@
-""" discovery/seeking_alpha_model.py tests """
-import unittest
-from unittest import mock
+# IMPORTATION STANDARD
+from datetime import datetime
 
-from gamestonk_terminal.stocks.discovery.seeking_alpha_model import get_next_earnings
+# IMPORTATION THIRDPARTY
+import pytest
 
-# pylint: disable=unused-import
-from tests.helpers.tools import (  # noqa: F401
-    parameterize_from_file,
-    pytest_generate_tests,
-)
+# IMPORTATION INTERNAL
+from gamestonk_terminal.stocks.discovery import seeking_alpha_model
 
-assertions = unittest.TestCase("__init__")
+@pytest.mark.vcr()
+def test_get_next_earnings(recorder):
+    df_earnings = seeking_alpha_model.get_next_earnings(1)
+    recorder.capture(df_earnings)
+
+@pytest.mark.skip("Broken ?")
+@pytest.mark.vcr()
+def test_get_article_list():
+    start_date = datetime.strptime("2020-12-10", "%Y-%m-%d")
+    seeking_alpha_model.get_article_list(start_date=start_date, num=2)
 
 
-class TestDiscoverySeekingAlphaModel:
-    @mock.patch(
-        "gamestonk_terminal.stocks.discovery.seeking_alpha_model.get_earnings_html"
-    )
-    @parameterize_from_file(
-        "test_get_next_earnings",
-        "../../tests/gamestonk_terminal/stocks/discovery/yaml/test_seeing_alpha_model/alpha_model.yaml",
-    )
-    # pylint: disable=unused-argument
-    def test_get_next_earnings(
-        self, mock_get_earnings_html, pages, mock_next_earnings_rets, expected_result
-    ):
-        mock_get_earnings_html.side_effect = mock_next_earnings_rets
-        ret = get_next_earnings(pages)
+@pytest.mark.vcr()
+def test_get_trending_list(recorder):
+    trending_list = seeking_alpha_model.get_trending_list(num=2)
+    recorder.capture(trending_list)
 
-        assertions.assertEqual(
-            ret.to_csv().replace("\r\n", "\n"), expected_result.replace("\r\n", "\n")
-        )
+
+@pytest.mark.skip("Broken ?")
+@pytest.mark.vcr()
+def test_get_news_html():
+    seeking_alpha_model.get_news_html()
+
+@pytest.mark.skip("Broken ?")
+@pytest.mark.vcr()
+def test_get_news():
+    seeking_alpha_model.get_news()
