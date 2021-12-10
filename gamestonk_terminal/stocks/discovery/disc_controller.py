@@ -944,7 +944,7 @@ NASDAQ Data Link (Formerly Quandl):
 def menu(queue: List[str] = None):
     """Discovery Menu"""
     disc_controller = DiscoveryController(queue)
-    an_input = ""
+    an_input = "first"
 
     while True:
         # There is a command in the queue
@@ -961,7 +961,7 @@ def menu(queue: List[str] = None):
 
         # Get input command from user
         else:
-            if not an_input:
+            if an_input == "first" or an_input in disc_controller.CHOICES:
                 disc_controller.print_help()
 
             if session and gtff.USE_PROMPT_TOOLKIT and disc_controller.completer:

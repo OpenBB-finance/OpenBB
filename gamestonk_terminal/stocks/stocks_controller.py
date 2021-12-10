@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import difflib
 import os
-from typing import List
+from typing import List, Union
 
 from datetime import datetime, timedelta
 import yfinance as yf
@@ -94,13 +94,13 @@ class StocksController:
             choices=self.CHOICES,
         )
 
+        self.completer: Union[None, NestedCompleter] = None
+
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
             choices["cd"] = {c: None for c in cd_CHOICES}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
-        else:
-            self.completer = None
 
         self.stock = pd.DataFrame()
         self.ticker = ticker
@@ -792,6 +792,7 @@ Stocks Menus:
 def menu(ticker: str = "", queue: List[str] = None):
     """Stocks Menu"""
     stocks_controller = StocksController(ticker, queue)
+    an_input = "first"
 
     while True:
         # There is a command in the queue
@@ -808,7 +809,8 @@ def menu(ticker: str = "", queue: List[str] = None):
 
         # Get input command from user
         else:
-            stocks_controller.print_help()
+            if an_input == "first" or an_input in stocks_controller.CHOICES:
+                stocks_controller.print_help()
 
             if session and gtff.USE_PROMPT_TOOLKIT and stocks_controller.completer:
                 an_input = session.prompt(

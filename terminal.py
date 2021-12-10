@@ -6,7 +6,7 @@ import os
 import argparse
 import difflib
 import sys
-from typing import List
+from typing import List, Union
 
 from prompt_toolkit.completion import NestedCompleter
 
@@ -73,12 +73,13 @@ class TerminalController:
             choices=self.CHOICES,
         )
 
+        self.completer: Union[None, NestedCompleter] = None
+
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: None for c in self.CHOICES}
             choices["cd"] = {c: None for c in cd_CHOICES}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
-        else:
-            self.completer = None
 
         self.queue: List[str] = list()
 
@@ -263,6 +264,7 @@ def terminal(jobs_cmds: List[str] = None):
 
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
+    an_input = ""
 
     if not jobs_cmds:
         bootup()
@@ -287,7 +289,8 @@ def terminal(jobs_cmds: List[str] = None):
 
         # Get input command from user
         else:
-            t_controller.print_help()
+            if not an_input:
+                t_controller.print_help()
 
             if session and gtff.USE_PROMPT_TOOLKIT:
                 an_input = session.prompt(
