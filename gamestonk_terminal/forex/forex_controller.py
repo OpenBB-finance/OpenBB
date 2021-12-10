@@ -36,9 +36,11 @@ class ForexController:
         "help",
         "?",
         "q",
+        "quit",
         "..",
         "exit",
         "r",
+        "reset",
     ]
 
     CHOICES_COMMANDS = ["select", "load", "quote", "candle"]
@@ -146,12 +148,12 @@ Forex brokerages:
 
         return self.queue if len(self.queue) > 0 else []
 
-    def call_h(self, _):
+    def call_help(self, _):
         """Process Help Command"""
         self.print_help()
         return self.queue if len(self.queue) > 0 else []
 
-    def call_q(self, _):
+    def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "q")
@@ -261,13 +263,13 @@ Forex brokerages:
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return
+            return self.queue if len(self.queue) > 0 else []
 
         if not self.to_symbol or not self.from_symbol:
             print(
                 "Make sure both a to symbol and a from symbol are supplied using <select> \n"
             )
-            return
+            return self.queue if len(self.queue) > 0 else []
 
         self.data = av_model.get_historical(
             to_symbol=self.to_symbol,
@@ -299,10 +301,10 @@ Forex brokerages:
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return
+            return self.queue if len(self.queue) > 0 else []
         if self.data.empty:
             print("No forex historical data loaded.  Load first using <load>.")
-            return
+            return self.queue if len(self.queue) > 0 else []
 
         av_view.display_candle(self.data, self.to_symbol, self.from_symbol)
         return self.queue if len(self.queue) > 0 else []
@@ -319,13 +321,13 @@ Forex brokerages:
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return
+            return self.queue if len(self.queue) > 0 else []
 
         if not self.to_symbol or not self.from_symbol:
             print(
                 "Make sure both a to symbol and a from symbol are supplied using <select> \n"
             )
-            return
+            return self.queue if len(self.queue) > 0 else []
 
         av_view.display_quote(self.to_symbol, self.from_symbol)
         return self.queue if len(self.queue) > 0 else []
