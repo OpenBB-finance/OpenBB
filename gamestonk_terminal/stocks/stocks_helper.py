@@ -219,7 +219,7 @@ def load(
             )
 
             df_stock_candidate.sort_index(ascending=True, inplace=True)
-            s_start = df_stock_candidate.index[0]
+        s_start = df_stock_candidate.index[0]
         s_interval = f"{interval}min"
 
     else:
