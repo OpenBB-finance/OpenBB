@@ -135,11 +135,11 @@ Menus:
         (known_args, other_args) = self.t_parser.parse_known_args(an_input.split())
 
         if known_args.cmd:
-            if known_args.cmd == ("..", "q"):
+            if known_args.cmd in ("..", "q"):
                 known_args.cmd = "quit"
             elif known_args.cmd in ("?", "h"):
                 known_args.cmd = "help"
-            elif known_args.cmd in "r":
+            elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
         return getattr(
@@ -278,7 +278,7 @@ def terminal(jobs_cmds: List[str] = None):
 
         # There is a command in the queue
         if t_controller.queue and len(t_controller.queue) > 0:
-            if t_controller.queue[0] in ("q", ".."):
+            if t_controller.queue[0] in ("q", "..", "quit"):
                 if len(t_controller.queue) > 1:
                     return t_controller.queue[1:]
                 return []

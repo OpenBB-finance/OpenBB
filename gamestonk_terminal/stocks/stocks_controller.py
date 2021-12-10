@@ -175,18 +175,12 @@ Stocks Menus:
         (known_args, other_args) = self.stocks_parser.parse_known_args(an_input.split())
 
         if known_args.cmd:
-            if known_args.cmd == ("..", "q"):
+            if known_args.cmd in ("..", "q"):
                 known_args.cmd = "quit"
             elif known_args.cmd in ("?", "h"):
                 known_args.cmd = "help"
-            elif known_args.cmd in "r":
+            elif known_args.cmd == "r":
                 known_args.cmd = "reset"
-
-        if known_args.cmd:
-            if known_args.cmd == "..":
-                known_args.cmd = "q"
-            elif known_args.cmd == "?":
-                known_args.cmd = "h"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "command not recognized!"
@@ -577,11 +571,7 @@ Stocks Menus:
         """Process ins command"""
         from gamestonk_terminal.stocks.sector_industry_analysis import sia_controller
 
-        ret = sia_controller.menu(self.ticker)
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return sia_controller.menu(self.ticker, self.queue)
 
     def call_ins(self, _):
         """Process ins command"""
@@ -805,7 +795,7 @@ def menu(ticker: str = "", queue: List[str] = None):
     while True:
         # There is a command in the queue
         if stocks_controller.queue and len(stocks_controller.queue) > 0:
-            if stocks_controller.queue[0] in ("q", ".."):
+            if stocks_controller.queue[0] in ("q", "..", "quit"):
                 if len(stocks_controller.queue) > 1:
                     return stocks_controller.queue[1:]
                 return []
@@ -841,7 +831,6 @@ def menu(ticker: str = "", queue: List[str] = None):
                 n=1,
                 cutoff=0.7,
             )
-
             if similar_cmd:
                 if " " in an_input:
                     an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"

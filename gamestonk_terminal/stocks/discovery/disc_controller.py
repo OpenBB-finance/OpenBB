@@ -7,7 +7,6 @@ import difflib
 from datetime import datetime
 from typing import List, Union
 
-from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
@@ -143,8 +142,7 @@ class DiscoveryController:
         else:
             self.queue = list()
 
-    @staticmethod
-    def print_help():
+    def print_help(self):
         """Print help"""
         help_text = """
 Geek of Wall St:
@@ -200,11 +198,11 @@ NASDAQ Data Link (Formerly Quandl):
         (known_args, other_args) = self.disc_parser.parse_known_args(an_input.split())
 
         if known_args.cmd:
-            if known_args.cmd == ("..", "q"):
+            if known_args.cmd in ("..", "q"):
                 known_args.cmd = "quit"
             elif known_args.cmd in ("?", "h"):
                 known_args.cmd = "help"
-            elif known_args.cmd in "r":
+            elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
         return getattr(
@@ -949,7 +947,7 @@ def menu(queue: List[str] = None):
     while True:
         # There is a command in the queue
         if disc_controller.queue and len(disc_controller.queue) > 0:
-            if disc_controller.queue[0] in ("q", ".."):
+            if disc_controller.queue[0] in ("q", "..", "quit"):
                 if len(disc_controller.queue) > 1:
                     return disc_controller.queue[1:]
                 return []
@@ -975,7 +973,6 @@ def menu(queue: List[str] = None):
                 an_input = input(f"{get_flair()} /stocks/disc/ $ ")
 
         try:
-            plt.close("all")
 
             disc_controller.queue = disc_controller.switch(an_input)
 
@@ -987,7 +984,6 @@ def menu(queue: List[str] = None):
                 n=1,
                 cutoff=0.7,
             )
-
             if similar_cmd:
                 if " " in an_input:
                     an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
