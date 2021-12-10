@@ -12,7 +12,9 @@ def get_currency_list() -> List:
     path = os.path.join(os.path.dirname(__file__), "av_forex_currencies.csv")
     return list(pd.read_csv(path)["currency code"])
 
+
 CURRENCY_LIST = get_currency_list()
+
 
 def check_valid_forex_currency(fx_symbol: str) -> str:
     """Check if given symbol is supported on alphavantage

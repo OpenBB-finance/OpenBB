@@ -293,9 +293,7 @@ Forex brokerages:
             return self.queue if len(self.queue) > 0 else []
 
         if not self.to_symbol or not self.from_symbol:
-            print(
-                "\nMake sure both a to symbol and a from symbol are supplied\n"
-            )
+            print("\nMake sure both a to symbol and a from symbol are supplied\n")
             return self.queue if len(self.queue) > 0 else []
 
         self.data = av_model.get_historical(
