@@ -220,7 +220,7 @@ Menus:
         """Process crypto command"""
         from gamestonk_terminal.cryptocurrency import crypto_controller
 
-        return crypto_controller.menu()
+        return crypto_controller.menu(queue=self.queue)
 
     def call_economy(self, _):
         """Process economy command"""

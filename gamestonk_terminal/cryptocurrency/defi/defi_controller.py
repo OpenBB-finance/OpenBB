@@ -2,7 +2,9 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List
+import difflib
+
+from typing import List, Union
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
@@ -25,16 +27,24 @@ from gamestonk_terminal.cryptocurrency.defi import (
     graph_view,
 )
 
+from gamestonk_terminal.paths import cd_CHOICES
+
 
 class DefiController:
     """Defi Controller class"""
 
     CHOICES = [
         "cls",
+        "cd",
+        "h",
         "?",
         "help",
         "q",
         "quit",
+        "..",
+        "exit",
+        "r",
+        "reset",
     ]
 
     CHOICES_COMMANDS = [
@@ -54,13 +64,25 @@ class DefiController:
 
     CHOICES += CHOICES_COMMANDS
 
-    def __init__(self):
+    def __init__(self, queue: List[str] = None):
         """Constructor"""
         self.defi_parser = argparse.ArgumentParser(add_help=False, prog="defi")
         self.defi_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
+        self.completer: Union[None, NestedCompleter] = None
+        if session and gtff.USE_PROMPT_TOOLKIT:
+
+            choices: dict = {c: {} for c in self.CHOICES}
+            choices["cd"] = {c: None for c in cd_CHOICES}
+
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -72,44 +94,88 @@ class DefiController:
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
 
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue if len(self.queue) > 0 else []
+
+        if "/" in an_input:
+            actions = an_input.split("/")
+            an_input = actions[0]
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.defi_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
         )(other_args)
 
-    def call_help(self, *_):
-        """Process Help command"""
-        self.print_help()
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue if len(self.queue) > 0 else []
 
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return False
+    def call_cd(self, other_args):
+        """Process cd command"""
+        if other_args and "-" not in other_args[0]:
+            args = other_args[0].split("/")
+            if len(args) > 0:
+                for m in args[::-1]:
+                    if m:
+                        self.queue.insert(0, m)
+            else:
+                self.queue.insert(0, args[0])
+
+        self.queue.insert(0, "q")
+        self.queue.insert(0, "q")
+
+        return self.queue
+
+    def call_help(self, _):
+        """Process help command"""
+        self.print_help()
+        return self.queue if len(self.queue) > 0 else []
 
     def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+        """Process quit menu command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q"]
+
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q", "q", "q"]
+
+    def call_reset(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "defi")
+            self.queue.insert(0, "crypto")
+            self.queue.insert(0, "r")
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q", "q", "r", "crypto", "defi"]
 
     @try_except
     def call_dpi(self, other_args: List[str]):
@@ -743,36 +809,60 @@ Uniswap:
     stats         Base statistics about Uniswap
     pairs         Recently added pairs on Uniswap
     pools         Pools by volume on Uniswap
-    swaps         Recent swaps done on Uniswap"""
-        print(help_text, "\n")
+    swaps         Recent swaps done on Uniswap
+"""
+        print(help_text)
 
 
-def menu():
+def menu(queue: List[str] = None):
     """Defi Menu"""
-    defi_controller = DefiController()
-    defi_controller.call_help(None)
+    defi_controller = DefiController(queue=queue)
+    an_input = "HELP_ME"
 
     while True:
+        # There is a command in the queue
+        if defi_controller.queue and len(defi_controller.queue) > 0:
+            if defi_controller.queue[0] in ("q", "..", "quit"):
+                if len(defi_controller.queue) > 1:
+                    return defi_controller.queue[1:]
+                return []
+
+            an_input = defi_controller.queue[0]
+            defi_controller.queue = defi_controller.queue[1:]
+            if an_input and an_input in defi_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /crypto/defi/ $ {an_input}")
+
         # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in defi_controller.CHOICES}
-            )
-            an_input = session.prompt(
-                f"{get_flair()} (crypto)>(defi)> ",
-                completer=completer,
-            )
         else:
-            an_input = input(f"{get_flair()} (crypto)>(defi)> ")
+            if an_input == "HELP_ME" or an_input in defi_controller.CHOICES:
+                defi_controller.print_help()
+
+            if session and gtff.USE_PROMPT_TOOLKIT and defi_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /crypto/defi/ $ ",
+                    completer=defi_controller.completer,
+                    search_ignore_case=True,
+                )
+
+            else:
+                an_input = input(f"{get_flair()} /crypto/defi/ $ ")
 
         try:
-            process_input = defi_controller.switch(an_input)
+            defi_controller.queue = defi_controller.switch(an_input)
+
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            continue
-
-        if process_input is False:
-            return False
-
-        if process_input is True:
-            return True
+            print(f"\nThe command '{an_input}' doesn't exist.", end="")
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                defi_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
+            if similar_cmd:
+                if " " in an_input:
+                    an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                else:
+                    an_input = similar_cmd[0]
+                print(f" Replacing by '{an_input}'.")
+                defi_controller.queue.insert(0, an_input)
+            print("\n")

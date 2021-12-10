@@ -136,10 +136,8 @@ Crypto Menus:
 
         Returns
         -------
-        MENU_GO_BACK, MENU_QUIT, MENU_RESET
-            MENU_GO_BACK - Show main context menu again
-            MENU_QUIT - Quit terminal
-            MENU_RESET - Reset terminal and go back to same previous menu
+        List[str]
+            List of commands in the queue to execute
         """
 
         # Empty command
@@ -719,12 +717,7 @@ Crypto Menus:
         """Process defi command"""
         from gamestonk_terminal.cryptocurrency.defi import defi_controller
 
-        ret = defi_controller.menu()
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return defi_controller.menu(queue=self.queue)
 
     @try_except
     def call_headlines(self, other_args):
