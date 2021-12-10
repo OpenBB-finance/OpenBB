@@ -4,28 +4,26 @@ __docformat__ = "numpy"
 import argparse
 import difflib
 from datetime import timedelta, datetime
-from typing import List
+from typing import List, Union
 
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
 from colorama import Style
+from prompt_toolkit.completion import NestedCompleter
+
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.forex.oanda import oanda_controller
 from gamestonk_terminal.forex import av_view, av_model
 
-
-# from gamestonk_terminal.forex.exploratory_data_analysis import eda_controller
 from gamestonk_terminal.helper_funcs import (
     get_flair,
-    system_clear,
-    MENU_GO_BACK,
-    MENU_QUIT,
-    MENU_RESET,
     parse_known_args_and_warn,
-    try_except,
     valid_date,
+    try_except,
+    system_clear,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.paths import cd_CHOICES
+
+# pylint: disable=R1710,import-outside-toplevel
 
 
 class ForexController:
@@ -33,41 +31,51 @@ class ForexController:
 
     CHOICES = [
         "cls",
+        "cd",
+        "h",
         "?",
-        "help",
         "q",
-        "quit",
-        "reset",
+        "..",
+        "exit",
+        "r",
     ]
 
     CHOICES_COMMANDS = ["select", "load", "quote", "candle"]
+
     CHOICES_MENUS = ["oanda"]
 
     CHOICES += CHOICES_COMMANDS
     CHOICES += CHOICES_MENUS
 
-    def __init__(self):
+    def __init__(self, queue: List[str] = None):
         """Construct Data"""
         self.fx_parser = argparse.ArgumentParser(add_help=False, prog="forex")
         self.fx_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
+
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            choices["cd"] = {c: None for c in cd_CHOICES}
+
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
         self.from_symbol = "USD"
         self.to_symbol = ""
         self.data = pd.DataFrame()
 
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
+
     def print_help(self):
         """Print help"""
         dim_bool = self.from_symbol and self.to_symbol
-        help_str = f"""
-What would you like to do?
-    cls           clear screen
-    ?/help        show this menu again
-    q             quit this menu and goes back to main menu
-    quit          quit to abandon program
-    reset         reset terminal and reload configs
-
+        help_text = f"""
     select        select fx pair
 
 From: {None or self.from_symbol}
@@ -78,59 +86,93 @@ AlphaVantage:
     load          get historical data
     candle        show candle plot for loaded data
 {Style.RESET_ALL}
-Brokerages:
->   oanda         access oanda menu
+Forex brokerages:
+    /oanda         Oanda menu
  """
-        print(help_str)
+        print(help_text)
 
     def switch(self, an_input: str):
         """Process and dispatch input
 
         Returns
         -------
-        MENU_GO_BACK, MENU_QUIT, MENU_RESET
-            MENU_GO_BACK - Show main context menu again
-            MENU_QUIT - Quit terminal
-            MENU_RESET - Reset terminal and go back to same previous menu
+        List[str]
+            List of commands in the queue to execute
         """
 
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue if len(self.queue) > 0 else []
+
+        if "/" in an_input:
+            actions = an_input.split("/")
+            an_input = actions[0]
+            for cmd in actions[1:][::-1]:
+                self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.fx_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+        if known_args.cmd:
+            if known_args.cmd == "..":
+                known_args.cmd = "q"
+            elif known_args.cmd == "?":
+                known_args.cmd = "h"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "command not recognized!"
         )(other_args)
 
-    def call_help(self, _):
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue if len(self.queue) > 0 else []
+
+    def call_cd(self, other_args):
+        """Process cd command"""
+        if other_args:
+            args = other_args[0].split("/")
+            if len(args) > 0:
+                for m in args[::-1]:
+                    if m:
+                        self.queue.insert(0, m)
+            else:
+                self.queue.insert(0, args[0])
+
+        self.queue.insert(0, "q")
+
+        return self.queue if len(self.queue) > 0 else []
+
+    def call_h(self, _):
         """Process Help Command"""
         self.print_help()
+        return self.queue if len(self.queue) > 0 else []
 
     def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return MENU_GO_BACK
+        """Process quit menu command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q"]
 
-    def call_quit(self, _):
-        """Process Quit command - exit the program"""
-        return MENU_QUIT
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q", "q"]
 
-    def call_reset(self, _):
-        """Process Reset command - reset the program"""
-        return MENU_RESET
+    def call_r(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "forex")
+            self.queue.insert(0, "r")
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q", "r", "forex"]
 
+    # COMMANDS
     @try_except
     def call_select(self, other_args: List[str]):
         """Process select command"""
@@ -168,10 +210,12 @@ Brokerages:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+
         self.to_symbol = ns_parser.to_symbol
         if ns_parser.from_symbol:
             self.from_symbol = ns_parser.from_symbol
-        print("")
+
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -207,6 +251,10 @@ Brokerages:
             dest="start_date",
         )
 
+        # For the case where a user uses: 'load BB'
+        if other_args and "-t" not in other_args and "-h" not in other_args:
+            other_args.insert(0, "-t")
+
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
@@ -235,6 +283,15 @@ Brokerages:
             prog="candle",
             description="Show candle for loaded fx data",
         )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
@@ -243,6 +300,7 @@ Brokerages:
             return
 
         av_view.display_candle(self.data, self.to_symbol, self.from_symbol)
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_quote(self, other_args: List[str]):
@@ -266,12 +324,11 @@ Brokerages:
 
         av_view.display_quote(self.to_symbol, self.from_symbol)
 
-    # pylint: disable=inconsistent-return-statements
+    # MENUS
     def call_oanda(self, _):
-        ret = oanda_controller.menu()
-        if ret:
-            return True
-        self.print_help()
+        from gamestonk_terminal.forex.oanda import oanda_controller
+
+        return oanda_controller.menu(self.queue)
 
     # TODO: Add news and reddit commands back
 
@@ -296,35 +353,64 @@ Brokerages:
     #        print("No data found, do you have your oanda API keys set?")
 
 
-def menu():
+def menu(queue: List[str] = None):
     """Forex Menu"""
-    fx_controller = ForexController()
-    fx_controller.call_help(None)
-    while True:
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in fx_controller.CHOICES}
-            )
+    fx_controller = ForexController(queue)
+    an_input = "HELP_ME"
 
-            an_input = session.prompt(
-                f"{get_flair()} (forex)> ",
-                completer=completer,
-            )
+    while True:
+        # There is a command in the queue
+        if fx_controller.queue and len(fx_controller.queue) > 0:
+            if fx_controller.queue[0] in ("q", ".."):
+                if len(fx_controller.queue) > 1:
+                    return fx_controller.queue[1:]
+                return []
+
+            an_input = fx_controller.queue[0]
+            fx_controller.queue = fx_controller.queue[1:]
+            if an_input and an_input in fx_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /forex/ $ {an_input}")
+
+        # if session and gtff.USE_PROMPT_TOOLKIT:
+        #     completer = NestedCompleter.from_nested_dict(
+        #         {c: None for c in fx_controller.CHOICES}
+        #     )
+
+        #     an_input = session.prompt(
+        #         f"{get_flair()} (forex)> ",
+        #         completer=completer,
+        #     )
         else:
-            an_input = input(f"{get_flair()} (forex)> ")
+            if an_input == "HELP_ME" or an_input in fx_controller.CHOICES:
+                fx_controller.print_help()
+
+            if session and gtff.USE_PROMPT_TOOLKIT and fx_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /forex/ $ ",
+                    completer=fx_controller.completer,
+                    search_ignore_case=True,
+                )
+
+            else:
+                an_input = input(f"{get_flair()} /forex/ $ ")
 
         try:
-            process_input = fx_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            fx_controller.queue = fx_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exit\n")
+            print(f"\nThe command '{an_input}' doesn't exist.", end="")
             similar_cmd = difflib.get_close_matches(
-                an_input, fx_controller.CHOICES, n=1, cutoff=0.7
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                fx_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
             )
 
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
-            continue
+                if " " in an_input:
+                    an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                else:
+                    an_input = similar_cmd[0]
+                print(f" Replacing by '{an_input}'.")
+                fx_controller.queue.insert(0, an_input)
+            print("\n")

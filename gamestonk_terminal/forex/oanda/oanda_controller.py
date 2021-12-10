@@ -54,7 +54,7 @@ class OandaController:
     ]
     CHOICES += CHOICES_COMMANDS
 
-    def __init__(self):
+    def __init__(self, queue: List[str] = None):
         """Construct Data"""
         self.fx_parser = argparse.ArgumentParser(add_help=False, prog="oanda")
         self.fx_parser.add_argument(
