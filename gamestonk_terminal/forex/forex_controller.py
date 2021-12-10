@@ -406,7 +406,7 @@ def menu(queue: List[str] = None):
                 print(f"{get_flair()} /forex/ $ {an_input}")
 
         else:
-            if an_input == "HELP_ME" or an_input in fx_controller.CHOICES:
+            if an_input == "HELP_ME" or an_input not in fx_controller.CHOICES:
                 fx_controller.print_help()
 
             if session and gtff.USE_PROMPT_TOOLKIT and fx_controller.completer:
