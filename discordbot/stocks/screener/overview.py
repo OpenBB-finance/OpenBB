@@ -1,8 +1,9 @@
+import difflib
 import discord
+import pandas as pd
+
 import discordbot.config_discordbot as cfg
 from discordbot.helpers import pagination
-import difflib
-import pandas as pd
 
 from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 
@@ -26,9 +27,9 @@ async def overview_command(
         if limit < 0:
             raise Exception("Number has to be above 0")
 
-        if ascend == "false" or ascend == "False" or ascend == "FALSE":
+        if ascend.lower() == "false":
             ascend = False
-        elif ascend == "true" or ascend == "True" or ascend == "TRUE":
+        elif ascend.lower() == "true":
             ascend = True
         else:
             raise Exception("ascend argument has to be true or false")

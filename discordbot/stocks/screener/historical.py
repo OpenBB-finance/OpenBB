@@ -1,22 +1,20 @@
+import os
+import random
+from datetime import datetime, timedelta
+import configparser
 import discord
-
+from matplotlib import pyplot as plt
+import yfinance as yf
+from pandas.plotting import register_matplotlib_converters
+from finvizfinance.screener import ticker
 import discordbot.config_discordbot as cfg
 
 from discordbot.run_discordbot import gst_imgur
-
-from matplotlib import pyplot as plt
-from datetime import datetime, timedelta
-import os
-import yfinance as yf
-import random
-import configparser
-from pandas.plotting import register_matplotlib_converters
 
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.stocks.screener import finviz_view
 from gamestonk_terminal.stocks.screener import finviz_model
 from gamestonk_terminal.helper_funcs import plot_autoscale
-from finvizfinance.screener import ticker
 
 
 async def historical_command(ctx, signal="most_volatile", start=""):
