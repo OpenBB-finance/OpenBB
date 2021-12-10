@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 import argparse
 import difflib
 from datetime import datetime
-from typing import List
+from typing import List, Union
 
 from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
@@ -123,6 +123,8 @@ class DiscoveryController:
             choices=self.CHOICES,
         )
 
+        self.completer: Union[None, NestedCompleter] = None
+
         if session and gtff.USE_PROMPT_TOOLKIT:
 
             choices: dict = {c: {} for c in self.CHOICES}
@@ -137,8 +139,6 @@ class DiscoveryController:
             choices["cnews"]["--type"] = {c: None for c in self.cnews_type_choices}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
-        else:
-            self.completer = None
 
         if queue:
             self.queue = queue
@@ -944,6 +944,7 @@ NASDAQ Data Link (Formerly Quandl):
 def menu(queue: List[str] = None):
     """Discovery Menu"""
     disc_controller = DiscoveryController(queue)
+    an_input = ""
 
     while True:
         # There is a command in the queue
@@ -960,7 +961,8 @@ def menu(queue: List[str] = None):
 
         # Get input command from user
         else:
-            disc_controller.print_help()
+            if not an_input:
+                disc_controller.print_help()
 
             if session and gtff.USE_PROMPT_TOOLKIT and disc_controller.completer:
                 an_input = session.prompt(
