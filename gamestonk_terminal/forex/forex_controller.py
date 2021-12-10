@@ -43,7 +43,7 @@ class ForexController:
         "reset",
     ]
 
-    CHOICES_COMMANDS = ["select", "load", "quote", "candle"]
+    CHOICES_COMMANDS = ["to", "from", "load", "quote", "candle"]
 
     CHOICES_MENUS = ["oanda"]
 
@@ -64,6 +64,9 @@ class ForexController:
             choices: dict = {c: {} for c in self.CHOICES}
             choices["cd"] = {c: None for c in cd_CHOICES}
 
+            choices["to"] = {c: None for c in av_model.CURRENCY_LIST}
+            choices["from"] = {c: None for c in av_model.CURRENCY_LIST}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         self.from_symbol = "USD"
@@ -79,7 +82,8 @@ class ForexController:
         """Print help"""
         dim_bool = self.from_symbol and self.to_symbol
         help_text = f"""
-    select        select fx pair
+    from      select the "from" currency in a forex pair
+    to        select the "to" currency in a forex pair
 
 From: {None or self.from_symbol}
 To:   {None or self.to_symbol}
@@ -179,46 +183,69 @@ Forex brokerages:
 
     # COMMANDS
     @try_except
-    def call_select(self, other_args: List[str]):
-        """Process select command"""
+    def call_to(self, other_args: List[str]):
+        """Process 'to' command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="select",
-            description="Select Forex pair in the form of TO -f FROM",
+            prog="to",
+            description='Select the "to" currency symbol in a forex pair',
         )
         parser.add_argument(
-            "-t",
-            "--to",
+            "-n",
+            "--name",
             help="To currency",
             type=av_model.check_valid_forex_currency,
             dest="to_symbol",
         )
+
+        if (
+            other_args
+            and "-n" not in other_args[0]
+            and "--name" not in other_args[0]
+            and "-h" not in other_args
+        ):
+            other_args.insert(0, "-n")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return self.queue if len(self.queue) > 0 else []
+
+        self.to_symbol = ns_parser.to_symbol
+
+        print(f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n")
+        return self.queue if len(self.queue) > 0 else []
+
+    @try_except
+    def call_from(self, other_args: List[str]):
+        """Process 'from' command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="to",
+            description='Select the "from" currency symbol in a forex pair',
+        )
         parser.add_argument(
-            "-f",
-            "--from",
+            "-n",
+            "--name",
             help="From currency",
             type=av_model.check_valid_forex_currency,
             dest="from_symbol",
-            default=None,
         )
 
         if (
             other_args
-            and "-f" not in other_args[0]
-            and "--from" not in other_args[0]
-            and "-t" not in other_args
+            and "-n" not in other_args[0]
+            and "--name" not in other_args[0]
             and "-h" not in other_args
         ):
-            other_args.insert(0, "-t")
+            other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return
+            return self.queue if len(self.queue) > 0 else []
 
-        self.to_symbol = ns_parser.to_symbol
-        if ns_parser.from_symbol:
-            self.from_symbol = ns_parser.from_symbol
+        self.from_symbol = ns_parser.from_symbol
 
         print(f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n")
         return self.queue if len(self.queue) > 0 else []
