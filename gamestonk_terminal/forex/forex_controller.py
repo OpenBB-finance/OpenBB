@@ -215,6 +215,7 @@ Forex brokerages:
         if ns_parser.from_symbol:
             self.from_symbol = ns_parser.from_symbol
 
+        print(f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n")
         return self.queue if len(self.queue) > 0 else []
 
     @try_except
@@ -272,7 +273,8 @@ Forex brokerages:
             interval=ns_parser.interval,
             start_date=ns_parser.start_date.strftime("%Y-%m-%d"),
         )
-        print("")
+        print(f"Loaded historic data from {self.from_symbol} to {self.to_symbol}")
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_candle(self, other_args: List[str]):
