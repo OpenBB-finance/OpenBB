@@ -2,6 +2,7 @@ import pytest
 import terminal
 
 
+@pytest.skip(allow_module_level=True)
 @pytest.mark.block_network
 @pytest.mark.record_stdout
 def test_terminal_quick_exit(mocker, monkeypatch):
