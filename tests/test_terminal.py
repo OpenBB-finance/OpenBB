@@ -16,6 +16,7 @@ def test_terminal_quick_exit(mocker, monkeypatch):
     terminal.terminal()
 
 
+@pytest.skip(allow_module_level=True)
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_terminal_quit(mocker, monkeypatch):
