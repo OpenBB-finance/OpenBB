@@ -117,9 +117,54 @@ def generate_data(
     return x_vals, before, []
 
 
-def get_price(ticker) -> float:
-    """Get current price for a given ticker"""
+def get_price(ticker: str) -> float:
+    """Get current price for a given ticker
+
+    Parameters
+    ----------
+    ticker : str
+        The ticker to get the price for
+
+    Returns
+    ----------
+    price : float
+        The price of the ticker
+    """
     ticker_yahoo = yf.Ticker(ticker)
     data = ticker_yahoo.history()
     last_quote = data.tail(1)["Close"].iloc[0]
     return last_quote
+
+
+def get_info(ticker: str):
+    """Get info for a given ticker
+
+    Parameters
+    ----------
+    ticker : str
+        The ticker to get the price for
+
+    Returns
+    ----------
+    price : float
+        The info for a given ticker
+    """
+    tick = yf.Ticker(ticker)
+    return tick.info
+
+
+def get_closing(ticker: str) -> pd.Series:
+    """Get closing prices for a given ticker
+
+    Parameters
+    ----------
+    ticker : str
+        The ticker to get the price for
+
+    Returns
+    ----------
+    price : List[float]
+        A list of closing prices for a ticker
+    """
+    tick = yf.Ticker(ticker)
+    return tick.history(period="1y")["Close"]

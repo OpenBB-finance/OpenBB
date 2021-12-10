@@ -8,14 +8,14 @@ from gamestonk_terminal.stocks.discovery.fidelity_view import (
     orders_view,
     price_change_color_red_green,
 )
-from tests.helpers import check_print
+from tests.helpers.helpers import check_print
 
 
 class TestDiscoveryFidelityApi(unittest.TestCase):
     @check_print(assert_in="Symbol")
     @vcr.use_cassette(
         "tests/gamestonk_terminal/stocks/discovery/cassettes/test_fidelity/test_orders.yaml",
-        record_mode="new_episodes",
+        record_mode="once",
     )
     def test_orders(self):
         orders_view(5, "")

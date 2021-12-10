@@ -1,3 +1,4 @@
+"""ETH Gas Station model"""
 import pandas as pd
 import requests
 

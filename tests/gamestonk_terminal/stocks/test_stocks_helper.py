@@ -1,60 +1,117 @@
-import sys
-import unittest
-from contextlib import contextmanager
-from datetime import datetime, timedelta
-from unittest.mock import patch
+# IMPORTATION STANDARD
+from datetime import datetime
 
-import pandas as pd
-import vcr
+# IMPORTATION THIRDPARTY
+import pytest
 
+# IMPORTATION INTERNAL
 from gamestonk_terminal.stocks import stocks_helper
-from tests.helpers import check_print
 
 
-@contextmanager
-def replace_stdin(target):
-    orig = sys.stdin
-    sys.stdin = target
-    yield
-    sys.stdin = orig
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_query_parameters": [
+            ("period1", "1605481200"),
+            ("period2", "1637103600"),
+            ("token", "MOCK_TOKEN"),
+            ("apikey", "MOCK_API_KEY"),
+        ]
+    }
 
 
-class TestMainHelper(unittest.TestCase):
-    start = datetime.now() - timedelta(days=200)
+@pytest.mark.vcr
+def test_quote():
+    stocks_helper.quote(["GME"], "GME")
 
-    # @vcr.use_cassette(
-    #     "tests/gamestonk_terminal/stocks/cassettes/test_stocks_helper/general1.yaml",
-    #     record_mode="new_episodes",
-    # )
-    # @check_print(assert_in="Loading Daily GME")
-    # def test_load(self):
-    #     values = stocks_helper.load(
-    #         ["GME"], "GME", self.start, "1440min", pd.DataFrame()
-    #     )
-    #     self.assertEqual(values[0], "GME")
-    #     self.assertNotEqual(values[1], None)
-    #     self.assertEqual(values[2], "1440min")
 
-    # @check_print()
-    # @vcr.use_cassette(
-    #     "tests/gamestonk_terminal/stocks/cassettes/test_stocks_helper/general1.yaml",
-    #     record_mode="new_episodes",
-    # )
-    # @patch("matplotlib.pyplot.show")
-    # def test_candle(self, mock):
-    #     # pylint: disable=unused-argument
-    #     stocks_helper.candle("GME", [])
-
-    @check_print(assert_in="Price")
-    @vcr.use_cassette(
-        "tests/gamestonk_terminal/stocks/cassettes/test_stocks_helper/test_quote.yaml",
-        record_mode="new_episodes",
+@pytest.mark.default_cassette("test_search")
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "use_tab",
+    [True, False],
+)
+def test_search(mocker, use_tab):
+    mocker.patch.object(
+        target=stocks_helper.gtff, attribute="USE_TABULATE_DF", new=use_tab
     )
-    def test_quote(self):
-        stocks_helper.quote(["GME"], "GME")
+    stocks_helper.search(query="pharma", amount=5)
 
-    @check_print()
-    @patch("matplotlib.pyplot.show")
-    def test_view(self, mock):
-        # pylint: disable=unused-argument
-        stocks_helper.view(["GME"], "GME", "1440min", pd.DataFrame())
+
+@pytest.mark.vcr
+@pytest.mark.parametrize(
+    "interval, source",
+    [
+        (1440, "av"),
+        # (5, "av"),
+        (1440, "iex"),
+        # (5, "iex"),
+        (1440, "yf"),
+        (60, "yf"),
+    ],
+)
+def test_load(interval, recorder, source):
+    ticker = "GME"
+    start = datetime.strptime("2021-12-01", "%Y-%m-%d")
+    end = datetime.strptime("2021-12-02", "%Y-%m-%d")
+    prepost = False
+    result_df = stocks_helper.load(
+        ticker=ticker,
+        start=start,
+        interval=interval,
+        end=end,
+        prepost=prepost,
+        source=source,
+    )
+    recorder.capture(result_df)
+
+
+@pytest.mark.default_cassette("test_display_candle")
+@pytest.mark.vcr
+@pytest.mark.parametrize(
+    "use_matplotlib",
+    [True, False],
+)
+def test_display_candle(mocker, use_matplotlib):
+    mocker.patch.object(target=stocks_helper.gtff, attribute="USE_ION", new=False)
+    mocker.patch("matplotlib.pyplot.show")
+    mocker.patch("plotly.basedatatypes.BaseFigure.show")
+
+    # LOAD DATA
+    ticker = "GME"
+    start = datetime.strptime("2020-12-01", "%Y-%m-%d")
+    interval = 1440
+    end = datetime.strptime("2020-12-08", "%Y-%m-%d")
+    prepost = False
+    source = "yf"
+    df_stock = stocks_helper.load(
+        ticker=ticker,
+        start=start,
+        interval=interval,
+        end=end,
+        prepost=prepost,
+        source=source,
+    )
+
+    # PROCESS DATA
+    df_stock = stocks_helper.process_candle(df_data=df_stock)
+
+    # DISPLAY CANDLE
+    s_ticker = "GME"
+    intraday = False
+    stocks_helper.display_candle(
+        s_ticker=s_ticker,
+        df_stock=df_stock,
+        use_matplotlib=use_matplotlib,
+        intraday=intraday,
+    )
+
+
+@pytest.mark.vcr
+def test_load_ticker(recorder):
+    ticker = "PM"
+    start = datetime.strptime("2020-12-01", "%Y-%m-%d")
+    end = datetime.strptime("2020-12-02", "%Y-%m-%d")
+    result_df = stocks_helper.load_ticker(ticker=ticker, start_date=start, end_date=end)
+    recorder.capture(result_df)

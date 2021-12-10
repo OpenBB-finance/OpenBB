@@ -1,0 +1,101 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://cloud.iexapis.com/v1/stock/GME/chart/1m?sort=desc&token=MOCK_TOKEN
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA62a224bRxKGX8XgtdTo8yF3C2+wDpBdB0mQm8ViYTtUbES2AttyEAR59/w91VXd
+        0zPDG0oXiSm2frLqYx2b//3z9Ob+4dP59JVJTsVwc3r77pe3eJS1sr6Um9P9w+/1SaNKvDk9/Hb+
+        UB9FhQef/nj/+uH+9NXpX//++nRz+vJw//geQjYaYwqU3v2M515888OPL7//5vk/vv3/d/jf1z/g
+        5K/nP+SvPj2+pof4/c+vPuPvT1Zbc2vsrc743eNv9bdQMtEVbYItRmt9c3rz9tWHX84vv5w//viu
+        vip+9f7Vx1/Pn59vn3h8Ob7tx+drgx9fTBY/fjua/PjTbNfdSu5ukrub5e5WcncbuftXr8/Vi/88
+        v3mWb55ZA6vJusUq+ud3549vzh8+4zd/3QzIksqmIwOjLMC0CniKgQVl8NQBMVOSdU9CLE3EcrE5
+        WwDbI6Z0fdVoncvaRZtKTIcQd88KV7KugyW3CFjyC2MlxwhWMV6wklrnSmrCldSYKqkJVVEbqaaJ
+        qlcmlOEHZs+UYa8fScekjBXSCFXnmXR0Cs800PFCXFqbo8PzV8dlnCnnbHxxu5RvtdIuRe3xn2hK
+        dMlq5Ib9WD04zJyrcQK5eYQhN5c0yOSTHrpsOjOuSgK4KTHgptQAk1KPWlYa+caJ763RKuaRMGJv
+        IlxNjdqsotkqh4TLCdip4phxKEoH3eO5Rv1BMHtdYsx4wasxuxlzyKHofIhZJxtCSR6cYwq51otj
+        zDuHGXM1rscyOUVimbzSMItbhLRYz6SrWA9lEpNQJrFGWsQEtoiNsN0EOygbB9QZsbgNZmfCSDob
+        FeAdJp2UF9L49GnkgxbOGaFywNnqnFAKn4Cz3XC2Mbr9cMan1ocQjCvR4/VzrO9wn/LuUWGMPxPG
+        zR3CmPzB+Zoc0mOZ7RbCkBLCTUoIkxQna5LqwcxSI1878S3KpFrA2o8Bty3f4OwqkovKyM/EF+VP
+        mZrzWieV1BDIpSgcPELs4Gr3FJ1U7SnGTirXj3audu10UkjYIfro0WxpW4oP+EgfIt4eZcRkWg9k
+        8kmDLE5hyuSVTplNZ8qk1iOZ1BpnUWPQpNZBs9oI2myytkpmlbSRjHeyti6rWC5RWenBrEZK8UHa
+        5pqHKZSXt3hI2tQGzOPPrkva5tbpmbSLBjXrgLQBXxN9wUfB26LtYcrGm98ebaSbaUK6eURIs0sa
+        6uqT3n2x4Y1z0xLOTUs4s1YDXbV678VaTPk/D1+eOT1hNlG5MaBrZG4DuoyVGWGwxCzHc1IFj5Zw
+        ru+3IIIZ8nEwG6Nz9nj+WsS2zIgteqt8MBYpzE0OGczEgi4Nn81LiLdHBTHeOANmdwhg8gfhZYd0
+        wmy3EIYU82Up4UtSRJelOmCWGgHbsinIaRXFKK1bvrbEMWEjuyRkuQbYGDzqsy+exHNMOCt9YZKy
+        LtiE+n015LnHTiWVgKl8P2MbNIe2hKRLikYbmHyUsLcnBTFZ1sOYfMKUxSktjMkrHTNbLphJrkcy
+        yTFpkWuRTHIdNcutUG8abavsqs/eNl+1zzbGDbBtfWkgbLAtUgo0JJ57xjZJ2eP+yzhd3PV9trm1
+        fornlHVAtB6gttitYFQ23sTo0ajh/R6x3jnKsJttEtLNJwxbnMJBvcrZbDmjbmIS1E2MUYsYh/Uq
+        abPYCrSfkzYScOxNmNZb0Ms8Nc7M1oCsYA74qDBjY9F+9ybMere0awddmHMBOfTquRmg54EqYRbG
+        yHQEGmk7Z52KR/Yu+dJyxG6PMuhmWwe9OIU5k1caZHGLBLWYzqSbWie9qDFoUmuURU1iWtRWqOd5
+        yqLTGEn73fq8Ks8+qYBTLaB9URE0qTxbZJ2q0LK308qD5AFp7CgKPkNPkL3nkSqhshY03fvZ2+ND
+        EAEYm9PknLuwBdueZM7NMuHcfMKgm1MaafZKH5vZcgbd5AR0k2PSTa6hZrk+OLPcivQ8Wbm6cB5R
+        741WJqRV8rZZDbm7LBuT1ollpGs79GKY3C5Edd1I2avHZyyq53YsueTrZL7PGpEasBQNBaNGcMVd
+        KNU7R6VWk21Cm7wi2ZvcIrm7+aWHNdsutZrkhDbJSf4mOcneTa7HNcuNtM3clt2arNI2lmt9TiGt
+        6nMdNnozhnUs+luhjFiXcMae7VKF1jqk+pLXNmNmvohI2KRiajpAbAHf4qoi+BxwcXKB8Pak1Gey
+        rKdt8ok0Y+wUZrx4pTdjbLlUaJLreZvkpBljOWa8yPVmjOVWgOe7igo41q5FfrZ77Uo7m7H1hgs6
+        6qTwJy2aQZxbbkxshznb1Ia7xvnVkOe7C2QHbVB79+PYovvDXZTRuLewWHpe6MI2JyWKF8MGxr0w
+        o6WCK5gufNHZssESvIvKgLYXZFJhqFDpSFllhXS+qACuuRjvR7DWK6YatxU9S9dOoHNF0q8xy2yx
+        2EasHxRkYw2WKU/QepnNOGWgbI4KssFlRi7Bo/cy9ToT7/eox945OiTpalsfm8krEsPkFmbc/DIM
+        VM32IUlXuT46k5zEMMkx7CY3DFRNbgV8Z6DCkmD42Q7Py0DlVo22pvLRp2f4q0WxUREFmmGjzz7u
+        vgwuDnyt31dHcpgHKm2xHjlaaNvV3ZSpC94j2DtHBTbZ1mG3Cv1iuVyuM2dN0MtVMGrD4pWOmi0X
+        1CTWUbf6vBJj0iTWQbPYCnSYBypVxitI7Bb2tiTrVWdd1gxbsKDqUERL7YI70j4413PHnVdBxqz7
+        s6sxz012TMkFf2EPll3AhwB30tX0C3Mzxr35qGAm0zrmxSWyCSOfEGZcBS9OEcxsuFAmrU550ZJV
+        GGkRZdYSyqy1gjw32LdYg7sxmrdT83Lj6lbtl/bK9fZLY43DLTamUNxcD4NzLY1HqbsOrvXo1Zjn
+        uwusPLzHVwb26zK+m8LXzEjdMV/ovnaOCmYY1hmTQwQyeYQhs0uG5qtZLpwh1iGTmFAmMabMYkPr
+        1cRWoOerC+w2VlkbwLYrT7O6bMa+DS36sNKWQQqX9EOLXWP5QoFetjfQuZryfG8RUffxNaIjyujL
+        EgZ7jwHShIuQNyfHUB7KMxy4eEQwp2W2ZMyLT4YmrNk9xvJQnFlMMJMYY17Ehl6sia0Yz/cWt+jR
+        sZTuP3XlsXM9ZcP66mL5qlbfdfpx1+lVvZBo1dlewJxxCVgz5rWY9TwsR+gu3+javYg0GZ017sXw
+        SbC4oqpfTzsqzTtHGXQ1rAfz4g+ZlJ0ih3BlJo90zmw4c65aPZYXLRmTWYsLM2l1zKw1Yp6nZNxX
+        6xHydoSqCTvZv/73NxPBKIu6JwAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Request-Source
+      Access-Control-Allow-Methods:
+      - GET, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 09 Dec 2021 15:58:04 GMT
+      Server:
+      - nginx
+      Set-Cookie:
+      - ctoken=9aa60a0f0e0342a6bb5679f2fc37fb6a; Max-Age=43200; Path=/; Expires=Fri,
+        10 Dec 2021 03:58:04 GMT
+      Strict-Transport-Security:
+      - max-age=15768000
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      iexcloud-credits-used:
+      - '211'
+      iexcloud-messages-used:
+      - '211'
+      iexcloud-premium-credits-used:
+      - '0'
+      iexcloud-premium-messages-used:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

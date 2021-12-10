@@ -1,0 +1,52 @@
+╒══════════════════════════╤══════════════════════════╤════════════════════════════════╤════════════════════════════════╕
+│ Name                     │ Title                    │ Info                           │ Insider Activity               │
+╞══════════════════════════╪══════════════════════════╪════════════════════════════════╪════════════════════════════════╡
+│ Robyn M. Denholm         │ Chairman                 │ http://www.google.com/search?q │ -                              │
+│                          │                          │ =Robyn%20M.%20Denholm%20TSLA   │                                │
+├──────────────────────────┼──────────────────────────┼────────────────────────────────┼────────────────────────────────┤
+│ Vaibhav Taneja           │ Chief Accounting Officer │ http://www.google.com/search?q │ -                              │
+│                          │                          │ =Vaibhav%20Taneja%20TSLA       │                                │
+├──────────────────────────┼──────────────────────────┼────────────────────────────────┼────────────────────────────────┤
+│ Kimbal Musk              │ Director                 │ http://www.google.com/search?q │ -                              │
+│                          │                          │ =Kimbal%20Musk%20TSLA          │                                │
+├──────────────────────────┼──────────────────────────┼────────────────────────────────┼────────────────────────────────┤
+│ Peter Badenfleth-Hansen  │ Director-EMEA Business   │ http://www.google.com/search?q │ -                              │
+│                          │ Development              │ =Peter%20Badenfleth-           │                                │
+│                          │                          │ Hansen%20TSLA                  │                                │
+├──────────────────────────┼──────────────────────────┼────────────────────────────────┼────────────────────────────────┤
+│ Hiromichi Mizuno         │ Independent Director     │ http://www.google.com/search?q │ -                              │
+│                          │                          │ =Hiromichi%20Mizuno%20TSLA     │                                │
+├──────────────────────────┼──────────────────────────┼────────────────────────────────┼────────────────────────────────┤
+│ Ira M. Ehrenpreis        │ Independent Director     │ http://www.google.com/search?q │ -                              │
+│                          │                          │ =Ira%20M.%20Ehrenpreis%20TSLA  │                                │
+├──────────────────────────┼──────────────────────────┼────────────────────────────────┼────────────────────────────────┤
+│ James Rupert Murdoch     │ Independent Director     │ http://www.google.com/search?q │ -                              │
+│                          │                          │ =James%20Rupert%20Murdoch%20TS │                                │
+│                          │                          │ LA                             │                                │
+├──────────────────────────┼──────────────────────────┼────────────────────────────────┼────────────────────────────────┤
+│ Kathleen Wilson-Thompson │ Independent Director     │ http://www.google.com/search?q │ -                              │
+│                          │                          │ =Kathleen%20Wilson-            │                                │
+│                          │                          │ Thompson%20TSLA                │                                │
+├──────────────────────────┼──────────────────────────┼────────────────────────────────┼────────────────────────────────┤
+│ Lawrence Joseph Ellison  │ Independent Director     │ http://www.google.com/search?q │ -                              │
+│                          │                          │ =Lawrence%20Joseph%20Ellison%2 │                                │
+│                          │                          │ 0TSLA                          │                                │
+├──────────────────────────┼──────────────────────────┼────────────────────────────────┼────────────────────────────────┤
+│ Zachary J. Kirkhorn      │ Master of Coin           │ http://www.google.com/search?q │ -                              │
+│                          │                          │ =Zachary%20J.%20Kirkhorn%20TSL │                                │
+│                          │                          │ A                              │                                │
+├──────────────────────────┼──────────────────────────┼────────────────────────────────┼────────────────────────────────┤
+│ Andrew Baglino           │ SVP-Powertrain & Energy  │ http://www.google.com/search?q │ -                              │
+│                          │ Engineering              │ =Andrew%20Baglino%20TSLA       │                                │
+├──────────────────────────┼──────────────────────────┼────────────────────────────────┼────────────────────────────────┤
+│ Martin Viecha            │ Senior Director-Investor │ http://www.google.com/search?q │ -                              │
+│                          │ Relations                │ =Martin%20Viecha%20TSLA        │                                │
+├──────────────────────────┼──────────────────────────┼────────────────────────────────┼────────────────────────────────┤
+│ Elon Reeve Musk          │ Technoking of Tesla      │ http://www.google.com/search?q │ https://markets.businessinside │
+│                          │                          │ =Elon%20Reeve%20Musk%20TSLA    │ r.com/stocks/insideractivitytr │
+│                          │                          │                                │ ader/musk-elon-831665          │
+├──────────────────────────┼──────────────────────────┼────────────────────────────────┼────────────────────────────────┤
+│ Yaron Klein              │ Treasurer                │ http://www.google.com/search?q │ -                              │
+│                          │                          │ =Yaron%20Klein%20TSLA          │                                │
+╘══════════════════════════╧══════════════════════════╧════════════════════════════════╧════════════════════════════════╛
+
