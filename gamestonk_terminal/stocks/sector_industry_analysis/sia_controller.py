@@ -46,6 +46,7 @@ class SectorIndustryAnalysisController:
         "reset",
     ]
     CHOICES_COMMANDS = [
+        "load",
         "clear",
         "industry",
         "sector",
@@ -141,15 +142,9 @@ class SectorIndustryAnalysisController:
         ticker: str,
         queue: List[str] = None,
     ):
-        """Constructor
-
-        Parameters
-        ----------
-        ticker : str
-            Ticker to be used to analyse sector and industry
-        """
-        self.insider_parser = argparse.ArgumentParser(add_help=False, prog="sia")
-        self.insider_parser.add_argument(
+        """Constructor"""
+        self.sia_parser = argparse.ArgumentParser(add_help=False, prog="sia")
+        self.sia_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
@@ -280,30 +275,30 @@ Returned tickers: {', '.join(self.tickers)}
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
-
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue if len(self.queue) > 0 else []
 
-        (known_args, other_args) = self.insider_parser.parse_known_args(
-            an_input.split()
-        )
+        if "/" in an_input:
+            actions = an_input.split("/")
+            an_input = actions[0]
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
+        (known_args, other_args) = self.sia_parser.parse_known_args(an_input.split())
 
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -1119,7 +1114,7 @@ def menu(
     while True:
         # There is a command in the queue
         if sia_controller.queue and len(sia_controller.queue) > 0:
-            if sia_controller.queue[0] in ("q", ".."):
+            if sia_controller.queue[0] in ("q", "..", "quit"):
                 if len(sia_controller.queue) > 1:
                     return sia_controller.queue[1:]
                 return []
@@ -1134,7 +1129,7 @@ def menu(
             if an_input == "HELP_ME" or an_input in sia_controller.CHOICES:
                 sia_controller.print_help()
 
-            if session and gtff.USE_PROMPT_TOOLKIT and sia_controller.completer:
+            if session and gtff.USE_PROMPT_TOOLKIT and sia_controller.choices:
 
                 sia_controller.choices["industry"] = {
                     i: None
@@ -1170,6 +1165,7 @@ def menu(
 
         try:
             sia_controller.queue = sia_controller.switch(an_input)
+
         except SystemExit:
             print(f"\nThe command '{an_input}' doesn't exist.", end="")
             similar_cmd = difflib.get_close_matches(

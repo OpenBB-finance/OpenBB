@@ -973,7 +973,6 @@ def menu(queue: List[str] = None):
                 an_input = input(f"{get_flair()} /stocks/disc/ $ ")
 
         try:
-
             disc_controller.queue = disc_controller.switch(an_input)
 
         except SystemExit:
