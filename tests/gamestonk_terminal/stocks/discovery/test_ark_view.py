@@ -29,7 +29,6 @@ def test_direction_color_red_green(val, recorder):
     recorder.capture(result_txt)
 
 
-
 @pytest.mark.skip("Feature seems slow to run for some reason.")
 @pytest.mark.skip
 @pytest.mark.default_cassette("test_ark_orders_view")
@@ -38,18 +37,17 @@ def test_direction_color_red_green(val, recorder):
 @pytest.mark.parametrize(
     "kwargs_dict, use_color",
     [
-        ({"num":2}, True),
-        ({"num":2}, False),
-        ({"num":2, "sort_col":"open"}, False),
-        ({"num":2, "buys_only":True}, False),
-        ({"num":2, "sells_only":True}, False),
-        ({"num":2, "fund":"ARKK"}, False),
+        ({"num": 2}, True),
+        ({"num": 2}, False),
+        ({"num": 2, "sort_col": "open"}, False),
+        ({"num": 2, "buys_only": True}, False),
+        ({"num": 2, "sells_only": True}, False),
+        ({"num": 2, "fund": "ARKK"}, False),
     ],
 )
 def test_ark_orders_view(kwargs_dict, mocker, use_color):
     mocker.patch.object(target=ark_view.gtff, attribute="USE_COLOR", new=use_color)
     ark_view.ark_orders_view(**kwargs_dict)
-
 
 
 @pytest.mark.vcr(record_mode="none")

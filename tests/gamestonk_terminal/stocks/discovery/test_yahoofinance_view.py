@@ -31,7 +31,7 @@ def vcr_config():
         "display_active",
         "display_ulc",
         "display_asc",
-    ]
+    ],
 )
 def test_call_func(func):
     getattr(yahoofinance_view, func)(num_stocks=2, export="")
@@ -49,7 +49,7 @@ def test_call_func(func):
         ("display_active", "get_active"),
         ("display_ulc", "get_ulc"),
         ("display_asc", "get_asc"),
-    ]
+    ],
 )
 def test_func_empty_df(func, mocked_func, mocker):
     view = "gamestonk_terminal.stocks.discovery.yahoofinance_view.yahoofinance_model."

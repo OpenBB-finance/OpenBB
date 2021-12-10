@@ -134,14 +134,21 @@ def test_call_quit():
         (
             "call_asc",
             "yahoofinance_view.display_asc",
-            ["--num=5", "--export=csv",],
+            [
+                "--num=5",
+                "--export=csv",
+            ],
             {"num_stocks": 5, "export": "csv"},
         ),
         (
             "call_cnews",
             "seeking_alpha_view.display_news",
-            ["--type=technology", "--num=5", "--export=csv",],
-            {"news_type": "technology","num": 5, "export": "csv"},
+            [
+                "--type=technology",
+                "--num=5",
+                "--export=csv",
+            ],
+            {"news_type": "technology", "num": 5, "export": "csv"},
         ),
         (
             "call_fds",
@@ -158,7 +165,7 @@ def test_call_quit():
                 "--options=countries",
             ],
             {
-                "country":[ "MOCK_COUNTRY"],
+                "country": ["MOCK_COUNTRY"],
                 "sector": ["MOCK_SECTOR"],
                 "industry": ["MOCK_INDUSTRY"],
                 "name": ["MOCK_NAME"],
@@ -172,13 +179,19 @@ def test_call_quit():
         (
             "call_fipo",
             "finnhub_view.future_ipo",
-            ["--num=5", "--export=csv",],
+            [
+                "--num=5",
+                "--export=csv",
+            ],
             {"num_days_ahead": 5, "export": "csv"},
         ),
         (
             "call_ford",
             "fidelity_view.orders_view",
-            ["--num=5", "--export=csv",],
+            [
+                "--num=5",
+                "--export=csv",
+            ],
             {"num": 5, "export": "csv"},
         ),
         (
@@ -262,7 +275,7 @@ def test_call_quit():
             "call_upcoming",
             "seeking_alpha_view.upcoming_earning_release_dates",
             ["--n_pages=10", "--num=5", "--export=csv"],
-            {"num_pages": 10, "num_earnings": 5,"export": "csv"},
+            {"num_pages": 10, "num_earnings": 5, "export": "csv"},
         ),
     ],
 )

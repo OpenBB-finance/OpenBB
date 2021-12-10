@@ -2,7 +2,6 @@
 
 # IMPORTATION THIRDPARTY
 import pytest
-import requests
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.discovery import yahoofinance_model
@@ -30,7 +29,7 @@ def vcr_config():
         "get_active",
         "get_ulc",
         "get_asc",
-    ]
+    ],
 )
 def test_call_func(func, recorder):
     result_df = getattr(yahoofinance_model, func)()

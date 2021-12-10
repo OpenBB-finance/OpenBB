@@ -13,23 +13,39 @@ from gamestonk_terminal.stocks.discovery import financedatabase_view
 @pytest.mark.parametrize(
     "kwargs_dict, use_tab",
     [
-        ({"country":["France"], "sector":["Healthcare"], "industry": ["Biotechnology"]}, True),
-        ({"country":["France"], "sector":["Healthcare"], "industry": ["Biotechnology"]}, False),
+        (
+            {
+                "country": ["France"],
+                "sector": ["Healthcare"],
+                "industry": ["Biotechnology"],
+            },
+            True,
+        ),
+        (
+            {
+                "country": ["France"],
+                "sector": ["Healthcare"],
+                "industry": ["Biotechnology"],
+            },
+            False,
+        ),
     ],
 )
 def test_show_equities(kwargs_dict, mocker, use_tab):
-    mocker.patch.object(target=financedatabase_view.gtff, attribute="USE_TABULATE_DF", new=use_tab)
+    mocker.patch.object(
+        target=financedatabase_view.gtff, attribute="USE_TABULATE_DF", new=use_tab
+    )
 
     kwargs_dict_none = {
-        "country":None,
-        "sector":None,
-        "industry":None,
-        "name":None,
-        "description":None,
-        "marketcap":None,
-        "amount":None,
-        "include_exchanges":None,
-        "options":None,
+        "country": None,
+        "sector": None,
+        "industry": None,
+        "name": None,
+        "description": None,
+        "marketcap": None,
+        "amount": None,
+        "include_exchanges": None,
+        "options": None,
     }
 
     kwargs_dict = {**kwargs_dict_none, **kwargs_dict}

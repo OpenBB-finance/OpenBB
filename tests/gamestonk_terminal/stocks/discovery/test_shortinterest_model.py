@@ -13,6 +13,7 @@ def vcr_config():
         "filter_headers": [("User-Agent", None)],
     }
 
+
 @pytest.mark.vcr()
 def test_get_low_float(recorder):
     df_low_float = shortinterest_model.get_low_float()

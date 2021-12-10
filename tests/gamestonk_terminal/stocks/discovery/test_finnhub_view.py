@@ -21,10 +21,7 @@ def vcr_config():
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-@pytest.mark.parametrize(
-    "func",
-    ["past_ipo", "future_ipo"]
-)
+@pytest.mark.parametrize("func", ["past_ipo", "future_ipo"])
 def test_past_ipo(func, mocker):
     ipo_df = finnhub_model.get_ipo_calendar(
         from_date="2021-12-01",
@@ -41,10 +38,7 @@ def test_past_ipo(func, mocker):
 
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
-@pytest.mark.parametrize(
-    "func",
-    ["past_ipo", "future_ipo"]
-)
+@pytest.mark.parametrize("func", ["past_ipo", "future_ipo"])
 def test_func_empty_df(func, mocker):
     mocker.patch(
         "gamestonk_terminal.stocks.discovery.finnhub_view.finnhub_model.get_ipo_calendar",

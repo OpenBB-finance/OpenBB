@@ -7,6 +7,7 @@ import requests
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.discovery import nasdaq_model
 
+
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
@@ -14,6 +15,7 @@ def vcr_config():
             ("api_key", "MOCK_API"),
         ]
     }
+
 
 @pytest.mark.vcr
 def test_get_retail_tickers(recorder):

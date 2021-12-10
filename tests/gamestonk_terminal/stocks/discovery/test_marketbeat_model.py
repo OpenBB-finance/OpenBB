@@ -13,6 +13,7 @@ def vcr_config():
         "filter_headers": [("User-Agent", None)],
     }
 
+
 @pytest.mark.vcr
 def test_get_ratings(recorder):
     ratings = marketbeat_model.get_ratings()
