@@ -7,6 +7,14 @@ import pytest
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.discovery import seeking_alpha_model
 
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("User-Agent", None)],
+    }
+
+
 @pytest.mark.vcr()
 def test_get_next_earnings(recorder):
     df_earnings = seeking_alpha_model.get_next_earnings(1)
