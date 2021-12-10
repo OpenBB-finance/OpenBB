@@ -78,7 +78,6 @@ class DefiController:
             choices["cd"] = {c: None for c in cd_CHOICES}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
-
         if queue:
             self.queue = queue
         else:
@@ -113,12 +112,12 @@ class DefiController:
         (known_args, other_args) = self.defi_parser.parse_known_args(an_input.split())
 
         if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
+            if known_args.cmd == "..":
+                known_args.cmd = "q"
+            elif known_args.cmd == "?":
+                known_args.cmd = "h"
+            elif known_args.cmd == "reset":
+                known_args.cmd = "r"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -145,12 +144,12 @@ class DefiController:
 
         return self.queue
 
-    def call_help(self, _):
+    def call_h(self, _):
         """Process help command"""
         self.print_help()
         return self.queue if len(self.queue) > 0 else []
 
-    def call_quit(self, _):
+    def call_q(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "q")
@@ -166,7 +165,7 @@ class DefiController:
             return self.queue
         return ["q", "q", "q"]
 
-    def call_reset(self, _):
+    def call_r(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "defi")
@@ -222,7 +221,7 @@ class DefiController:
         )
 
         if not ns_parser:
-            return
+            return self.queue if len(self.queue) > 0 else []
 
         defipulse_view.display_defipulse(
             top=ns_parser.top,
@@ -230,6 +229,7 @@ class DefiController:
             descend=ns_parser.descend,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_llama(self, other_args: List[str]):
@@ -293,7 +293,7 @@ class DefiController:
         )
 
         if not ns_parser:
-            return
+            return self.queue if len(self.queue) > 0 else []
 
         llama_view.display_defi_protocols(
             top=ns_parser.top,
@@ -302,6 +302,7 @@ class DefiController:
             description=ns_parser.description,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_tvl(self, other_args: List[str]):
@@ -330,9 +331,10 @@ class DefiController:
         )
 
         if not ns_parser:
-            return
+            return self.queue if len(self.queue) > 0 else []
 
         llama_view.display_defi_tvl(top=ns_parser.top, export=ns_parser.export)
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_funding(self, other_args: List[str]):
@@ -369,11 +371,12 @@ class DefiController:
         )
 
         if not ns_parser:
-            return
+            return self.queue if len(self.queue) > 0 else []
 
         defirate_view.display_funding_rates(
             top=ns_parser.top, current=ns_parser.current, export=ns_parser.export
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_borrow(self, other_args: List[str]):
@@ -410,11 +413,12 @@ class DefiController:
         )
 
         if not ns_parser:
-            return
+            return self.queue if len(self.queue) > 0 else []
 
         defirate_view.display_borrow_rates(
             top=ns_parser.top, current=ns_parser.current, export=ns_parser.export
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_lending(self, other_args: List[str]):
@@ -451,11 +455,12 @@ class DefiController:
         )
 
         if not ns_parser:
-            return
+            return self.queue if len(self.queue) > 0 else []
 
         defirate_view.display_lending_rates(
             top=ns_parser.top, current=ns_parser.current, export=ns_parser.export
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_newsletter(self, other_args: List[str]):
@@ -484,9 +489,10 @@ class DefiController:
         )
 
         if not ns_parser:
-            return
+            return self.queue if len(self.queue) > 0 else []
 
         substack_view.display_newsletters(top=ns_parser.top, export=ns_parser.export)
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_tokens(self, other_args: List[str]):
@@ -547,7 +553,7 @@ class DefiController:
         )
 
         if not ns_parser:
-            return
+            return self.queue if len(self.queue) > 0 else []
 
         graph_view.display_uni_tokens(
             skip=ns_parser.skip,
@@ -556,6 +562,7 @@ class DefiController:
             descend=ns_parser.descend,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_stats(self, other_args: List[str]):
@@ -575,9 +582,10 @@ class DefiController:
         )
 
         if not ns_parser:
-            return
+            return self.queue if len(self.queue) > 0 else []
 
         graph_view.display_uni_stats(export=ns_parser.export)
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_pairs(self, other_args: List[str]):
@@ -658,7 +666,7 @@ class DefiController:
         )
 
         if not ns_parser:
-            return
+            return self.queue if len(self.queue) > 0 else []
 
         graph_view.display_recently_added(
             top=ns_parser.top,
@@ -669,6 +677,7 @@ class DefiController:
             descend=ns_parser.descend,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_pools(self, other_args: List[str]):
@@ -723,7 +732,7 @@ class DefiController:
         )
 
         if not ns_parser:
-            return
+            return self.queue if len(self.queue) > 0 else []
 
         graph_view.display_uni_pools(
             top=ns_parser.top,
@@ -731,6 +740,7 @@ class DefiController:
             descend=ns_parser.descend,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_swaps(self, other_args: List[str]):
@@ -777,7 +787,7 @@ class DefiController:
         )
 
         if not ns_parser:
-            return
+            return self.queue if len(self.queue) > 0 else []
 
         graph_view.display_last_uni_swaps(
             top=ns_parser.top,
@@ -785,6 +795,7 @@ class DefiController:
             descend=ns_parser.descend,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     def print_help(self):
         """Print help"""
@@ -822,7 +833,7 @@ def menu(queue: List[str] = None):
     while True:
         # There is a command in the queue
         if defi_controller.queue and len(defi_controller.queue) > 0:
-            if defi_controller.queue[0] in ("q", "..", "quit"):
+            if defi_controller.queue[0] in ("q", ".."):
                 if len(defi_controller.queue) > 1:
                     return defi_controller.queue[1:]
                 return []

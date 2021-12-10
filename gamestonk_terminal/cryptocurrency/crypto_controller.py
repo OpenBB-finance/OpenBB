@@ -263,6 +263,7 @@ Crypto Menus:
                 self.current_coin, self.source, self.symbol = load(
                     coin=ns_parser.coin, source=ns_parser.source
                 )
+                return self.queue if len(self.queue) > 0 else []
 
             except Exception as e:
                 print(e, "\n")
@@ -437,6 +438,7 @@ Crypto Menus:
                     currency=ns_parser.vs,
                     source=self.source,
                 )
+                return self.queue if len(self.queue) > 0 else []
 
             except Exception as e:
                 print(e, "\n")
@@ -756,6 +758,7 @@ Crypto Menus:
         finbrain_crypto_view.display_crypto_sentiment_analysis(
             coin=ns_parser.coin, export=ns_parser.export
         )
+        return self.queue if len(self.queue) > 0 else []
 
     def call_dd(self, _):
         """Process dd command"""
@@ -905,6 +908,7 @@ Crypto Menus:
             top=ns_parser.top,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
 
 def menu(queue: List[str] = None):
