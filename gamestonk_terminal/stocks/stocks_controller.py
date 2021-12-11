@@ -170,7 +170,11 @@ Stocks Menus:
             actions = an_input.split("/")
             an_input = actions[0]
             for cmd in actions[1:][::-1]:
-                self.queue.insert(0, cmd)
+                if cmd:
+                    self.queue.insert(0, cmd)
+            if not an_input:
+                an_input = "quit"
+                self.queue.insert(0, "quit")
 
         (known_args, other_args) = self.stocks_parser.parse_known_args(an_input.split())
 
@@ -202,7 +206,7 @@ Stocks Menus:
             else:
                 self.queue.insert(0, args[0])
 
-        self.queue.insert(0, "q")
+        self.queue.insert(0, "quit")
 
         return self.queue if len(self.queue) > 0 else []
 
@@ -214,26 +218,26 @@ Stocks Menus:
     def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q"]
+        return ["quit"]
 
     def call_exit(self, _):
         """Process exit terminal command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q"]
+        return ["quit", "quit"]
 
     def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "stocks")
             self.queue.insert(0, "r")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "r", "stocks"]
+        return ["quit", "r", "stocks"]
 
     # COMMANDS
     @try_except
@@ -807,7 +811,9 @@ def menu(ticker: str = "", queue: List[str] = None):
 
         # Get input command from user
         else:
-            if an_input == "HELP_ME" or an_input in stocks_controller.CHOICES:
+            if an_input not in ("h", "?", "help") and (
+                an_input == "HELP_ME" or an_input in stocks_controller.CHOICES
+            ):
                 stocks_controller.print_help()
 
             if session and gtff.USE_PROMPT_TOOLKIT and stocks_controller.completer:

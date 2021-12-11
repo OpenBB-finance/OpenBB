@@ -281,6 +281,9 @@ Returned tickers: {', '.join(self.tickers)}
             for cmd in actions[1:][::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
+            if not an_input:
+                an_input = "quit"
+                self.queue.insert(0, "quit")
 
         (known_args, other_args) = self.sia_parser.parse_known_args(an_input.split())
 
@@ -312,8 +315,8 @@ Returned tickers: {', '.join(self.tickers)}
             else:
                 self.queue.insert(0, args[0])
 
-        self.queue.insert(0, "q")
-        self.queue.insert(0, "q")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
         return self.queue
 
@@ -325,18 +328,18 @@ Returned tickers: {', '.join(self.tickers)}
     def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q"]
+        return ["quit"]
 
     def call_exit(self, _):
         """Process exit terminal command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q", "q"]
+        return ["quit", "quit", "quit"]
 
     def call_reset(self, _):
         """Process reset command"""
@@ -344,10 +347,10 @@ Returned tickers: {', '.join(self.tickers)}
             self.queue.insert(0, "sia")
             self.queue.insert(0, "stocks")
             self.queue.insert(0, "r")
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q", "r", "stocks", "sia"]
+        return ["quit", "quit", "r", "stocks", "sia"]
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -1118,7 +1121,9 @@ def menu(
 
         # Get input command from user
         else:
-            if an_input == "HELP_ME" or an_input in sia_controller.CHOICES:
+            if an_input not in ("h", "?", "help") and (
+                an_input == "HELP_ME" or an_input in sia_controller.CHOICES
+            ):
                 sia_controller.print_help()
 
             if session and gtff.USE_PROMPT_TOOLKIT and sia_controller.choices:

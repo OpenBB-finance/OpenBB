@@ -130,7 +130,11 @@ Menus:
             actions = an_input.split("/")
             an_input = actions[0]
             for cmd in actions[1:][::-1]:
-                self.queue.insert(0, cmd)
+                if cmd:
+                    self.queue.insert(0, cmd)
+            if not an_input:
+                an_input = "quit"
+                self.queue.insert(0, "quit")
 
         (known_args, other_args) = self.t_parser.parse_known_args(an_input.split())
 
@@ -172,16 +176,16 @@ Menus:
     def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q"]
+        return ["quit"]
 
     def call_exit(self, _):
         """Process exit terminal command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q"]
+        return ["quit"]
 
     def call_reset(self, _):
         """Process reset command"""
