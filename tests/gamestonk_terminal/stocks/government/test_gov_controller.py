@@ -15,9 +15,7 @@ from gamestonk_terminal.stocks.government import gov_controller
 @pytest.mark.record_stdout
 def test_menu_quick_exit(mocker):
     mocker.patch("builtins.input", return_value="quit")
-    mocker.patch(
-        "gamestonk_terminal.stocks.government.gov_controller.session"
-    )
+    mocker.patch("gamestonk_terminal.stocks.government.gov_controller.session")
     mocker.patch(
         "gamestonk_terminal.stocks.government.gov_controller.session.prompt",
         return_value="quit",
@@ -43,9 +41,7 @@ def test_menu_system_exit(mocker):
 
     mock_switch = mocker.Mock(side_effect=SystemExitSideEffect())
     mocker.patch("builtins.input", return_value="quit")
-    mocker.patch(
-        "gamestonk_terminal.stocks.government.gov_controller.session"
-    )
+    mocker.patch("gamestonk_terminal.stocks.government.gov_controller.session")
     mocker.patch(
         "gamestonk_terminal.stocks.government.gov_controller.session.prompt",
         return_value="quit",
