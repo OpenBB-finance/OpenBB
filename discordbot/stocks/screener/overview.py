@@ -8,9 +8,7 @@ from discordbot.helpers import pagination
 from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 
 
-async def overview_command(
-    ctx, preset="template", sort="", limit="25", ascend="False"
-):
+async def overview_command(ctx, preset="template", sort="", limit="25", ascend="False"):
     """Displays stocks with overview data such as Sector and Industry [Finviz]"""
     try:
 
