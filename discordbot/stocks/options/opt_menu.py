@@ -24,21 +24,19 @@ class OptionsCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
         """
         await iv_command(ctx, ticker)
 
     
     @discord.ext.commands.command(name="unu")
-    async def unu(self, ctx: discord.ext.commands.Context, num):
+    async def unu(self, ctx: discord.ext.commands.Context, num=""):
      async with ctx.typing():
         await asyncio.sleep(0.2)        
         """Unusual Options
 
         Parameters
         -----------
-        ticker: str
-            ticker, -h or help
+        num: int
         """
         await unu_command(ctx, num)
     
