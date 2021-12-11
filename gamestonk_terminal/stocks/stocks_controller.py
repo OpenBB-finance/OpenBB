@@ -284,7 +284,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             "--source",
             action="store",
             dest="source",
-            choices=["yf", "av", "iex"],
+            choices=["yf", "av", "iex"] if "-i" not in other_args else ["yf"],
             default="yf",
             help="Source of historical data.",
         )
@@ -295,6 +295,15 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             default=False,
             dest="prepost",
             help="Pre/After market hours. Only works for 'yf' source, and intraday data",
+        )
+        parser.add_argument(
+            "-r",
+            "--iexrange",
+            dest="iexrange",
+            help="Range for using the iexcloud api.  Note that longer range requires more tokens in account",
+            choices=["ytd", "1y", "2y", "5y", "6m"],
+            type=str,
+            default="ytd",
         )
 
         # For the case where a user uses: 'load BB'
@@ -312,6 +321,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             ns_parser.end,
             ns_parser.prepost,
             ns_parser.source,
+            ns_parser.iexrange,
         )
 
         if not df_stock_candidate.empty:
@@ -322,7 +332,10 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
                 self.ticker = ns_parser.ticker.upper()
                 self.suffix = ""
 
-            self.start = ns_parser.start
+            if ns_parser.source == "iex":
+                self.start = self.stock.index[0].strftime("%Y-%m-%d")
+            else:
+                self.start = ns_parser.start
             self.interval = f"{ns_parser.interval}min"
 
     def call_quote(self, other_args: List[str]):

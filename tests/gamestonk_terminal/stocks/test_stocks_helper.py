@@ -44,9 +44,7 @@ def test_search(mocker, use_tab):
     "interval, source",
     [
         (1440, "av"),
-        # (5, "av"),
-        (1440, "iex"),
-        # (5, "iex"),
+        # (1440, "iex"),
         (1440, "yf"),
         (60, "yf"),
     ],

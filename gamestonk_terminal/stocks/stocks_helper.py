@@ -19,7 +19,6 @@ from plotly.subplots import make_subplots
 from scipy import stats
 from tabulate import tabulate
 
-from gamestonk_terminal import config_plot as cfgPlot
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -94,6 +93,7 @@ def load(
     end: datetime = datetime.now(),
     prepost: bool = False,
     source: str = "yf",
+    iexrange: str = "ytd",
 ):
     """
     Load a symbol to perform analysis using the string above as a template. Optional arguments and their
@@ -133,6 +133,8 @@ def load(
         Pre and After hours data
     source: str
         Source of data extracted
+    iexrange: str
+        Timeframe to get IEX data.
 
     Returns
     -------
@@ -196,158 +198,59 @@ def load(
         elif source == "iex":
             client = pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
 
-            df_stock_candidate = client.chartDF(ticker)
+            df_stock_candidate = client.chartDF(ticker, timeframe=iexrange)
 
             # Check that loading a stock was not successful
             if df_stock_candidate.empty:
                 return pd.DataFrame()
 
             df_stock_candidate = df_stock_candidate[
-                ["uClose", "uHigh", "uLow", "uOpen", "fClose", "volume"]
+                ["close", "fHigh", "fLow", "fOpen", "fClose", "volume"]
             ]
             df_stock_candidate = df_stock_candidate.rename(
                 columns={
-                    "uClose": "Close",
-                    "uHigh": "High",
-                    "uLow": "Low",
-                    "uOpen": "Open",
+                    "close": "Close",
+                    "fHigh": "High",
+                    "fLow": "Low",
+                    "fOpen": "Open",
                     "fClose": "Adj Close",
                     "volume": "Volume",
                 }
             )
 
             df_stock_candidate.sort_index(ascending=True, inplace=True)
-
-            # Slice dataframe from the starting date YYYY-MM-DD selected
-            df_stock_candidate = df_stock_candidate[
-                (df_stock_candidate.index >= start.strftime("%Y-%m-%d"))
-                & (df_stock_candidate.index <= end.strftime("%Y-%m-%d"))
-            ]
-
-        # Check if start time from dataframe is more recent than specified
-        if df_stock_candidate.index[0] > pd.to_datetime(start):
-            s_start = df_stock_candidate.index[0]
-        else:
-            s_start = start
-
+        s_start = df_stock_candidate.index[0]
         s_interval = f"{interval}min"
 
     else:
-        if source == "av":
-            ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
-            # pylint: disable=unbalanced-tuple-unpacking
-            df_stock_candidate, _ = ts.get_intraday(
-                symbol=ticker,
-                outputsize="full",
-                interval=f"{interval}min",
-            )
 
-            df_stock_candidate.columns = [
-                val.split(". ")[1].capitalize() for val in df_stock_candidate.columns
-            ]
+        s_int = str(interval) + "m"
+        s_interval = s_int + "in"
+        d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
 
-            df_stock_candidate = df_stock_candidate.rename(
-                columns={
-                    "Adjusted close": "Adj Close",
-                }
-            )
+        s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
+        s_date_start = s_start_dt.strftime("%Y-%m-%d")
 
-            s_interval = str(interval) + "min"
-            # Check that loading a stock was not successful
-            # pylint: disable=no-member
-            if df_stock_candidate.empty:
-                return pd.DataFrame()
+        df_stock_candidate = yf.download(
+            ticker,
+            start=s_date_start if s_start_dt > start else start.strftime("%Y-%m-%d"),
+            progress=False,
+            interval=s_int,
+            prepost=prepost,
+        )
 
-            # pylint: disable=no-member
-            df_stock_candidate.sort_index(ascending=True, inplace=True)
+        # Check that loading a stock was not successful
+        if df_stock_candidate.empty:
+            return pd.DataFrame()
 
-            # Slice dataframe from the starting date YYYY-MM-DD selected
-            df_stock_candidate = df_stock_candidate[
-                (df_stock_candidate.index >= start.strftime("%Y-%m-%d"))
-                & (df_stock_candidate.index <= end.strftime("%Y-%m-%d"))
-            ]
+        df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
 
-            # Check if start time from dataframe is more recent than specified
-            if df_stock_candidate.index[0] > pd.to_datetime(start):
-                s_start = df_stock_candidate.index[0]
-            else:
-                s_start = start
+        if s_start_dt > start:
+            s_start = pytz.utc.localize(s_start_dt)
+        else:
+            s_start = start
 
-        elif source == "yf":
-            s_int = str(interval) + "m"
-            s_interval = s_int + "in"
-            d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
-
-            s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
-            s_date_start = s_start_dt.strftime("%Y-%m-%d")
-
-            df_stock_candidate = yf.download(
-                ticker,
-                start=s_date_start
-                if s_start_dt > start
-                else start.strftime("%Y-%m-%d"),
-                progress=False,
-                interval=s_int,
-                prepost=prepost,
-            )
-
-            # Check that loading a stock was not successful
-            if df_stock_candidate.empty:
-                return pd.DataFrame()
-
-            df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
-
-            if s_start_dt > start:
-                s_start = pytz.utc.localize(s_start_dt)
-            else:
-                s_start = start
-
-            df_stock_candidate.index.name = "date"
-
-        elif source == "iex":
-
-            s_interval = str(interval) + "min"
-            client = pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
-
-            df_stock_candidate = client.chartDF(ticker)
-
-            df_stock_candidate = client.intradayDF(ticker).iloc[0::interval]
-
-            df_stock_candidate = df_stock_candidate[
-                ["close", "high", "low", "open", "volume", "close"]
-            ]
-            df_stock_candidate.columns = [
-                x.capitalize() for x in df_stock_candidate.columns
-            ]
-
-            df_stock_candidate.columns = list(df_stock_candidate.columns[:-1]) + [
-                "Adj Close"
-            ]
-
-            df_stock_candidate.sort_index(ascending=True, inplace=True)
-
-            new_index = []
-            for idx in range(len(df_stock_candidate)):
-                dt_time = datetime.strptime(df_stock_candidate.index[idx][1], "%H:%M")
-                new_index.append(
-                    df_stock_candidate.index[idx][0]
-                    + timedelta(hours=dt_time.hour, minutes=dt_time.minute)
-                )
-
-            df_stock_candidate.index = pd.DatetimeIndex(new_index)
-            df_stock_candidate.index.name = "date"
-
-            # Slice dataframe from the starting date YYYY-MM-DD selected
-            df_stock_candidate = df_stock_candidate[
-                (df_stock_candidate.index >= start.strftime("%Y-%m-%d"))
-                & (df_stock_candidate.index <= end.strftime("%Y-%m-%d"))
-            ]
-
-            # Check if start time from dataframe is more recent than specified
-            if df_stock_candidate.index[0] > pd.to_datetime(start):
-                s_start = df_stock_candidate.index[0]
-            else:
-                s_start = start
+        df_stock_candidate.index.name = "date"
 
     s_intraday = (f"Intraday {s_interval}", "Daily")[interval == 1440]
 
@@ -665,128 +568,6 @@ def quote(other_args: List[str], s_ticker: str):
 
     print("")
     return
-
-
-def view(other_args: List[str], s_ticker: str, s_interval: str, df_stock: pd.DataFrame):
-    """Plot loaded ticker
-
-    Parameters
-    ----------
-    other_args : List[str]
-        Argparse arguments
-    s_ticker : str
-        Ticker to load
-    s_interval : str
-        Interval tto get data for
-    df_stock : pd.Dataframe
-        Preloaded dataframe to plot
-    """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="view",
-        description="Visualize historical data of a stock.",
-    )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if not s_ticker:
-            print("No ticker loaded.  First use `load {ticker}`", "\n")
-            return
-
-        # Plot view of the stock
-        plot_view_stock(df_stock, s_ticker, s_interval)
-
-    except Exception as e:
-        print("Error in plotting:")
-        print(e, "\n")
-
-    except SystemExit:
-        print("")
-        return
-
-
-def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
-    """
-    Plot the loaded stock dataframe
-    Parameters
-    ----------
-    df: Dataframe
-        Dataframe of prices and volumnes
-    symbol: str
-        Symbol of ticker
-    interval: str
-        Stock data resolution for plotting purposes
-
-    """
-    df.sort_index(ascending=True, inplace=True)
-    bar_colors = ["r" if x[1].Open < x[1].Close else "g" for x in df.iterrows()]
-
-    try:
-        fig, ax = plt.subplots(
-            2,
-            1,
-            gridspec_kw={"height_ratios": [3, 1]},
-            figsize=plot_autoscale(),
-            dpi=cfgPlot.PLOT_DPI,
-        )
-    except Exception as e:
-        print(e)
-        print(
-            "Encountered an error trying to open a chart window. Check your X server configuration."
-        )
-        return
-
-    # In order to make nice Volume plot, make the bar width = interval
-    if interval == "1440min":
-        bar_width = timedelta(days=1)
-        title_string = "Daily"
-    else:
-        bar_width = timedelta(minutes=int(interval.split("m")[0]))
-        title_string = f"{int(interval.split('m')[0])} min"
-
-    ax[0].yaxis.tick_right()
-    if "Adj Close" in df.columns:
-        ax[0].plot(df.index, df["Adj Close"], c=cfgPlot.VIEW_COLOR)
-    else:
-        ax[0].plot(df.index, df["Close"], c=cfgPlot.VIEW_COLOR)
-    ax[0].set_xlim(df.index[0], df.index[-1])
-    ax[0].set_xticks([])
-    ax[0].yaxis.set_label_position("right")
-    ax[0].set_ylabel("Share Price ($)")
-    ax[0].grid(axis="y", color="gainsboro", linestyle="-", linewidth=0.5)
-
-    ax[0].spines["top"].set_visible(False)
-    ax[0].spines["left"].set_visible(False)
-    ax[1].bar(
-        df.index, df.Volume / 1_000_000, color=bar_colors, alpha=0.8, width=bar_width
-    )
-    ax[1].set_xlim(df.index[0], df.index[-1])
-    ax[1].yaxis.tick_right()
-    ax[1].yaxis.set_label_position("right")
-    ax[1].set_ylabel("Volume (1M)")
-    ax[1].grid(axis="y", color="gainsboro", linestyle="-", linewidth=0.5)
-    ax[1].spines["top"].set_visible(False)
-    ax[1].spines["left"].set_visible(False)
-    ax[1].set_xlabel("Time")
-    fig.suptitle(
-        symbol + " " + title_string,
-        size=20,
-        x=0.15,
-        y=0.95,
-        fontfamily="serif",
-        fontstyle="italic",
-    )
-    if gtff.USE_ION:
-        plt.ion()
-    fig.tight_layout(pad=2)
-    plt.setp(ax[1].get_xticklabels(), rotation=20, horizontalalignment="right")
-
-    plt.show()
-    print("")
 
 
 def load_ticker(
