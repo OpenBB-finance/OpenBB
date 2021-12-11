@@ -1091,10 +1091,9 @@ Returned tickers: {', '.join(self.tickers)}
     def call_ca(self, _):
         """Call the comparison analysis menu with selected tickers"""
         if self.tickers:
-            return ca_controller.menu(self.tickers)
+            return ca_controller.menu(self.tickers, self.queue)
 
         print("No main ticker loaded to go into comparison analysis menu", "\n")
-
         return self.queue if len(self.queue) > 0 else []
 
 
@@ -1174,4 +1173,6 @@ def menu(
                     an_input = similar_cmd[0]
                 print(f" Replacing by '{an_input}'.")
                 sia_controller.queue.insert(0, an_input)
+            else:
+                break
             print("\n")

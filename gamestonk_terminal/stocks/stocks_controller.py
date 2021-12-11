@@ -656,12 +656,7 @@ Stocks Menus:
 
         from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 
-        ret = ca_controller.menu([self.ticker] if self.ticker else "")
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return ca_controller.menu([self.ticker] if self.ticker else "", self.queue)
 
     def call_fa(self, _):
         """Process fa command"""
