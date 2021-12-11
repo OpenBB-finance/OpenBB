@@ -9,14 +9,14 @@ from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 
 
 async def ownership_command(
-    ctx, preset="template", sort="", signal="", limit="25", ascend="False"
+    ctx, preset="template", sort="", limit="25", ascend="False"
 ):
     """Displays stocks based on own share float and ownership data [Finviz]"""
     try:
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.scr.ownership {preset} {sort} {signal} {limit} {ascend}")
+            print(f"!stocks.scr.ownership {preset} {sort} {limit} {ascend}")
 
         # Check for argument
         if not limit.lstrip("-").isnumeric():
@@ -36,11 +36,10 @@ async def ownership_command(
 
         # Output Data
         df_screen = get_screener_data(
-            preset_loaded=preset,
-            data_type="overview",
-            limit=limit,
-            ascend=ascend,
-            signal=signal,
+            preset,
+            "overview",
+            limit,
+            ascend,
         )
 
         d_cols_to_sort = {
