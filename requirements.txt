@@ -6,7 +6,7 @@ anyio==3.4.0; python_full_version >= "3.6.2" and python_version >= "3.6"
 appdirs==1.4.4; python_full_version >= "3.6.2" and python_version >= "3.6"
 appnope==0.1.2; platform_system == "Darwin" and python_version >= "3.7" and sys_platform == "darwin"
 argon2-cffi-bindings==21.2.0; python_version >= "3.6"
-argon2-cffi==21.2.0; python_version >= "3.6"
+argon2-cffi==21.3.0; python_version >= "3.6"
 async-timeout==3.0.1; python_full_version >= "3.5.3" and python_version >= "3.6"
 attrs==21.2.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
 babel==2.9.1; python_full_version >= "3.6.8" and python_full_version < "4.0.0" and python_version >= "3.6" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6")
@@ -87,7 +87,7 @@ lxml==4.6.4; python_full_version >= "3.6.8" and python_version >= "3.5" and pyth
 m2r2==0.2.8; python_full_version >= "3.6.8" and python_full_version < "4.0.0"
 markupsafe==2.0.1; python_version >= "3.6"
 matplotlib-inline==0.1.3; python_version >= "3.7"
-matplotlib==3.5.0; python_version >= "3.7"
+matplotlib==3.5.1; python_version >= "3.7"
 mistune==0.8.4; python_full_version >= "3.6.8" and python_full_version < "4.0.0" and python_version >= "3.7"
 more-itertools==8.12.0; python_version >= "3.6"
 mplfinance==0.12.7a17
