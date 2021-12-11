@@ -29,9 +29,6 @@ def test_direction_color_red_green(val, recorder):
     recorder.capture(result_txt)
 
 
-@pytest.mark.skip("Feature seems slow to run for some reason.")
-@pytest.mark.skip
-@pytest.mark.default_cassette("test_ark_orders_view")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -46,6 +43,14 @@ def test_direction_color_red_green(val, recorder):
     ],
 )
 def test_ark_orders_view(kwargs_dict, mocker, use_color):
+    yf_download = ark_view.ark_model.yf.download
+
+    def mock_yf_download(*args, **kwargs):
+        kwargs["threads"] = False
+        return yf_download(*args, **kwargs)
+
+    mocker.patch("yfinance.download", side_effect=mock_yf_download)
+
     mocker.patch.object(target=ark_view.gtff, attribute="USE_COLOR", new=use_color)
     ark_view.ark_orders_view(**kwargs_dict)
 

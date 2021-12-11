@@ -24,9 +24,15 @@ def test_get_ark_orders(recorder):
     recorder.capture(result_df)
 
 
-@pytest.mark.skip("Feature seems slow to run for some reason.")
 @pytest.mark.vcr
-def test_add_order_total(recorder):
+def test_add_order_total(recorder, mocker):
+    yf_download = ark_model.yf.download
+
+    def mock_yf_download(*args, **kwargs):
+        kwargs["threads"] = False
+        return yf_download(*args, **kwargs)
+
+    mocker.patch("yfinance.download", side_effect=mock_yf_download)
     df_orders = ark_model.get_ark_orders()
     result_df = ark_model.add_order_total(df_orders=df_orders.head(2))
     recorder.capture(result_df)
