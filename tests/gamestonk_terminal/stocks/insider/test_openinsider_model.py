@@ -112,8 +112,11 @@ def test_check_int_in_list(l_possible_vals, val, recorder):
     ],
 )
 def test_check_open_insider_company_totals(d_company_totals, recorder):
-    error_text = openinsider_model.check_open_insider_company_totals(d_company_totals=d_company_totals)
+    error_text = openinsider_model.check_open_insider_company_totals(
+        d_company_totals=d_company_totals
+    )
     recorder.capture(error_text)
+
 
 @pytest.mark.vcr(record_mode="none")
 def test_get_open_insider_link(recorder):

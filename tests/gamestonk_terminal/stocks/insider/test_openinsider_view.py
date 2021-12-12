@@ -9,9 +9,6 @@ from gamestonk_terminal.stocks.insider import openinsider_view
 # pylint: disable=E1101
 
 
-
-
-
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "func, text_list",
@@ -20,7 +17,7 @@ from gamestonk_terminal.stocks.insider import openinsider_view
         ("yellow_highlight", ["MOCK_TEXT_1", "MOCK_TEXT_2"]),
         ("magenta_highlight", ["MOCK_TEXT_1", "MOCK_TEXT_2"]),
         ("green_highlight", ["MOCK_TEXT_1", "MOCK_TEXT_2"]),
-    ]
+    ],
 )
 def test_format_list_func(func, recorder, text_list):
     text_list_formatted = getattr(openinsider_view, func)(values=text_list)
@@ -62,12 +59,10 @@ def test_print_insider_filter():
         preset_loaded="template",
     )
 
+
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-@pytest.mark.parametrize(
-    "type_insider",
-    ["topt", "lcb"]
-)
+@pytest.mark.parametrize("type_insider", ["topt", "lcb"])
 def test_print_insider_data(type_insider):
     other_args = list()
     openinsider_view.print_insider_data(

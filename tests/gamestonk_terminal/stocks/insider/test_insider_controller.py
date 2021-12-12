@@ -366,6 +366,7 @@ def test_call_func_empty_df(func):
     )
     getattr(controller, func)(other_args=list())
 
+
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
