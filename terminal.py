@@ -353,6 +353,8 @@ def terminal(jobs_cmds: List[str] = None):
 
                 print(f" Replacing by '{an_input}'.")
                 t_controller.queue.insert(0, an_input)
+            else:
+                print("\n")
 
 
 if __name__ == "__main__":

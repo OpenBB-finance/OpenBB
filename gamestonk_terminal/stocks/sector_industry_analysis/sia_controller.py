@@ -1120,9 +1120,7 @@ def menu(
 
         # Get input command from user
         else:
-            if an_input not in ("h", "?", "help") and (
-                an_input == "HELP_ME" or an_input in sia_controller.CHOICES
-            ):
+            if an_input == "HELP_ME" or an_input in sia_controller.CHOICES_MENUS:
                 sia_controller.print_help()
 
             if session and gtff.USE_PROMPT_TOOLKIT and sia_controller.choices:
@@ -1181,3 +1179,5 @@ def menu(
 
                 print(f" Replacing by '{an_input}'.")
                 sia_controller.queue.insert(0, an_input)
+            else:
+                print("\n")

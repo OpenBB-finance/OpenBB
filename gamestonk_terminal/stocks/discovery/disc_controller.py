@@ -184,7 +184,6 @@ NASDAQ Data Link (Formerly Quandl):
         List[str]
             List of commands in the queue to execute
         """
-        # Empty command
         if not an_input:
             print("")
             return self.queue if len(self.queue) > 0 else []
@@ -963,9 +962,7 @@ def menu(queue: List[str] = None):
 
         # Get input command from user
         else:
-            if an_input not in ("h", "?", "help") and (
-                an_input == "HELP_ME" or an_input in disc_controller.CHOICES
-            ):
+            if an_input == "HELP_ME":
                 disc_controller.print_help()
 
             if session and gtff.USE_PROMPT_TOOLKIT and disc_controller.completer:
@@ -1004,3 +1001,5 @@ def menu(queue: List[str] = None):
 
                 print(f" Replacing by '{an_input}'.")
                 disc_controller.queue.insert(0, an_input)
+            else:
+                print("\n")

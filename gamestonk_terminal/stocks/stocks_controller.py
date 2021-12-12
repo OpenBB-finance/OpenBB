@@ -555,11 +555,7 @@ Stocks Menus:
         """Process dps command"""
         from gamestonk_terminal.stocks.dark_pool_shorts import dps_controller
 
-        ret = dps_controller.menu(self.ticker, self.start, self.stock)
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return dps_controller.menu(self.ticker, self.start, self.stock, self.queue)
 
     def call_scr(self, _):
         """Process scr command"""
@@ -806,9 +802,7 @@ def menu(ticker: str = "", queue: List[str] = None):
 
         # Get input command from user
         else:
-            if an_input not in ("h", "?", "help") and (
-                an_input == "HELP_ME" or an_input in stocks_controller.CHOICES
-            ):
+            if an_input == "HELP_ME" or an_input in stocks_controller.CHOICES_MENUS:
                 stocks_controller.print_help()
 
             if session and gtff.USE_PROMPT_TOOLKIT and stocks_controller.completer:
@@ -847,3 +841,5 @@ def menu(ticker: str = "", queue: List[str] = None):
 
                 print(f" Replacing by '{an_input}'.")
                 stocks_controller.queue.insert(0, an_input)
+            else:
+                print("\n")
