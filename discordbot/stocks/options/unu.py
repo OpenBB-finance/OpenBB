@@ -19,9 +19,9 @@ async def unu_command(ctx, num=""):
         if cfg.DEBUG:
             print(f"!unu {num}")
        
-        # Check for argument
         if num == "":
-            raise Exception("Number to show is required")
+            num= "10"
+          
         num = int(num)
         pages = np.arange(0, num // 20 + 1)
         data_list = []
