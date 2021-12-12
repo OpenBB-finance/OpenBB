@@ -143,7 +143,7 @@ def display_calendar_earnings(ticker: str):
     print("")
 
 
-def display_dividends(ticker: str, num: int = 10, plot: bool = False, export: str = ""):
+def display_dividends(ticker: str, num: int = 12, plot: bool = False, export: str = ""):
     """Display historical dividends
     Parameters
     ----------

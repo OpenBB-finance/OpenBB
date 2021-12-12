@@ -464,14 +464,14 @@ Other Sources:
             "--num",
             dest="num",
             type=check_positive,
-            default=10,
+            default=16,
             help="Number of previous dividends to show",
         )
         parser.add_argument(
             "-p",
             "--plot",
             dest="plot",
-            default=True,
+            default=False,
             action="store_true",
             help="Plots changes in dividend over time",
         )
