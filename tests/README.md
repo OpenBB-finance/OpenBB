@@ -43,9 +43,7 @@ If you dont want to install the `dev-dependencies` you will have to add the opti
 poetry install --no-dev
 ```
 
-## 2.2. How to run tests ?
-
-## 2.3. How to run `tests` : by `module` ?
+## 2.2. How to run `tests` : by `module` ?
 
 You can run tests on a specific package/module by specifying the path of this package/module, like this :
 
@@ -54,7 +52,7 @@ pytest tests/gamestonk_terminal/some_package
 pytest tests/gamestonk_terminal/some_package/some_module.py
 ```
 
-## 2.4. How to run `tests` : by `name` ?
+## 2.3. How to run `tests` : by `name` ?
 
 You can run tests by their name :
 
@@ -63,7 +61,7 @@ pytest -k "test_function1"
 ```
 
 
-## 2.5. How to run `tests` : by `markers` ?
+## 2.4. How to run `tests` : by `markers` ?
 
 You can run tests only on specific markers, like this :
 
@@ -77,6 +75,31 @@ You can list the available markers using this command :
 
 ```
 pytest --markers
+```
+
+## 2.5. How to skip tests function ?
+
+```python
+import pytest
+
+@pytest.skip
+def test_some_function(mocker):
+    pass
+
+@pytest.skip("This time with a comment")
+def test_another_function(mocker):
+    pass
+```
+
+## 2.6. How to skip tests modules ?
+
+```python
+import pytest
+
+pytest.skip(reaason="Some optional comment.", allow_module_level=True)
+
+def test_some_function(mocker):
+    pass
 ```
 
 # 3. Build `unit tests`
