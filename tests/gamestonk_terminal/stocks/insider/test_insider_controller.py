@@ -341,7 +341,7 @@ def test_call_func_no_parser(func, mocker):
     )
     controller = insider_controller.InsiderController(
         ticker="MOCK_TICKER",
-        start="10/25/2021",
+        start="2021-10-25",
         interval="1440min",
         stock=pd.DataFrame(),
     )
