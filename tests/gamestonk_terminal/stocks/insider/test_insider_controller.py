@@ -27,7 +27,7 @@ def test_menu_quick_exit(mocker):
 
     result_menu = insider_controller.menu(
         ticker="TSLA",
-        start="10/25/2021",
+        start="2021-10-25",
         interval="1440min",
         stock=pd.DataFrame(),
     )
@@ -62,7 +62,7 @@ def test_menu_system_exit(mocker):
 
     insider_controller.menu(
         ticker="TSLA",
-        start="10/25/2021",
+        start="2021-10-25",
         interval="1440min",
         stock=pd.DataFrame(),
     )
@@ -73,7 +73,7 @@ def test_menu_system_exit(mocker):
 def test_print_help():
     controller = insider_controller.InsiderController(
         ticker="TSLA",
-        start="10/25/2021",
+        start="2021-10-25",
         interval="1440min",
         stock=pd.DataFrame(),
     )
@@ -84,7 +84,7 @@ def test_print_help():
 def test_switch_empty():
     controller = insider_controller.InsiderController(
         ticker="TSLA",
-        start="10/25/2021",
+        start="2021-10-25",
         interval="1440min",
         stock=pd.DataFrame(),
     )
@@ -98,7 +98,7 @@ def test_switch_empty():
 def test_switch_help():
     controller = insider_controller.InsiderController(
         ticker="TSLA",
-        start="10/25/2021",
+        start="2021-10-25",
         interval="1440min",
         stock=pd.DataFrame(),
     )
@@ -112,7 +112,7 @@ def test_switch_cls(mocker):
     mocker.patch("os.system")
     controller = insider_controller.InsiderController(
         ticker="TSLA",
-        start="10/25/2021",
+        start="2021-10-25",
         interval="1440min",
         stock=pd.DataFrame(),
     )
@@ -126,7 +126,7 @@ def test_switch_cls(mocker):
 def test_call_q():
     controller = insider_controller.InsiderController(
         ticker="TSLA",
-        start="10/25/2021",
+        start="2021-10-25",
         interval="1440min",
         stock=pd.DataFrame(),
     )
@@ -140,7 +140,7 @@ def test_call_q():
 def test_call_quit():
     controller = insider_controller.InsiderController(
         ticker="TSLA",
-        start="10/25/2021",
+        start="2021-10-25",
         interval="1440min",
         stock=pd.DataFrame(),
     )
@@ -360,7 +360,7 @@ def test_call_func_no_parser(func, mocker):
 def test_call_func_empty_df(func):
     controller = insider_controller.InsiderController(
         ticker=None,
-        start="10/25/2021",
+        start="2021-10-25",
         interval="1440min",
         stock=pd.DataFrame(),
     )
@@ -371,13 +371,52 @@ def test_call_func_empty_df(func):
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "func",
-    ["call_act", "call_lins", "view_available_presets"],
+    ["call_act", "call_lins"],
 )
 def test_call_func_empty_ticker(func):
     controller = insider_controller.InsiderController(
         ticker=None,
-        start="10/25/2021",
+        start="2021-10-25",
         interval="1440min",
         stock=pd.DataFrame(),
     )
     getattr(controller, func)(other_args=list())
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "func, mocked_func",
+    [
+        ("call_view", "view_available_presets"),
+        ("call_set", "set_preset"),
+    ],
+)
+def test_call_method(func, mocked_func, mocker):
+    controller_path = (
+        "gamestonk_terminal.stocks.insider.insider_controller.InsiderController."
+    )
+    mocker.patch(controller_path + mocked_func)
+    controller = insider_controller.InsiderController(
+        ticker=None,
+        start="2021-10-25",
+        interval="1440min",
+        stock=pd.DataFrame(),
+    )
+    getattr(controller, func)(other_args=list())
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "func",
+    ["view_available_presets", "set_preset"],
+)
+def test_call_staticmethod(func):
+    controller = insider_controller.InsiderController(
+        ticker="MOCK_TICKER",
+        start="2021-10-25",
+        interval="1440min",
+        stock=pd.DataFrame(),
+    )
+    other_args = ["--preset=template"]
+    getattr(controller, func)(other_args=other_args)
