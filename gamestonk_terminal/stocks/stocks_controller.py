@@ -834,9 +834,16 @@ def menu(ticker: str = "", queue: List[str] = None):
             )
             if similar_cmd:
                 if " " in an_input:
-                    an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        print("\n")
+                        continue
+                    an_input = candidate_input
                 else:
                     an_input = similar_cmd[0]
+
                 print(f" Replacing by '{an_input}'.")
                 stocks_controller.queue.insert(0, an_input)
-            print("\n")
