@@ -274,6 +274,38 @@ def vcr_config():
     }
 ```
 
+**YFINANCE**
+
+If you do something like this with `yfinance` library.
+
+```python
+import yfinance as yf
+
+yf.download(tickers="VCYT QSI")
+```
+
+Chances are you requests will be multi-threaded.
+
+Issues : as for now `vcrpy` seems to be incompatible with multi-threading.
+
+The library `vcrpy` is used to record `cassettes` (`network` calls into `yaml` files).
+
+Here is a solution to still combine `yfinance` and `vcrpy` :
+```python
+import pytest
+import yfinance
+
+yf_download = yf.download
+def mock_yf_download(*args, **kwargs):
+    kwargs["threads"] = False
+    return yf_download(*args, **kwargs)
+
+@pytest.mark.vcr
+def test_ark_orders_view(kwargs_dict, mocker, use_color):
+    mocker.patch("yfinance.download", side_effect=mock_yf_download)
+    
+    yf.download(tickers="VCYT QSI")
+```
 
 ## 3.9. List of useful `vscode` tools for `unit tests`
 
@@ -306,8 +338,8 @@ flake8 = "^3.9.0"
 
 After updating the `pyproject.toml` you will have to export the `requirements` files using the following commands :
 ```bash
-poetry export -f requirements.txt  -o requirements.txt --without-hashes
-poetry export -f requirements.txt  -o requirements-full.txt --extras prediction --without-hashes
+poetry export -f requirements.txt  -o requirements.txt --without-hashes --dev
+poetry export -f requirements.txt  -o requirements-full.txt --extras prediction --without-hashes --dev
 ```
 
 # 4. Maintain `unit tests`
