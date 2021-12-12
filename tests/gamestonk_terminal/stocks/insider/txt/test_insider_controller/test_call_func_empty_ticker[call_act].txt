@@ -1,0 +1,2 @@
+No ticker loaded.  First use `load {ticker}` 
+

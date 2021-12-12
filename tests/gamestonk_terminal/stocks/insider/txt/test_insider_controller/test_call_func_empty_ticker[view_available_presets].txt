@@ -1,0 +1,7 @@
+
+PRESET: template
+The user that adds the preset can add a description for what type of insiders this is meant.
+
+PRESET: whales
+Tries to catch whales that have traded a minimum of 100M$ with a stock with a minimum share price of 20$ in the past 2 weeks.
+
