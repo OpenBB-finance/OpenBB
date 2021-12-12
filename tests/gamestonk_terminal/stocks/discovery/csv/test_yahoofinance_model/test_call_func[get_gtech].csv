@@ -1,0 +1,26 @@
+,Symbol,Name,Price (Intraday),Change,% Change,Volume,Avg Vol (3 month),Market Cap,PE Ratio (TTM)
+0,AAPL,Apple Inc.,176.75,2.19,+1.25%,56.19M,84.53M,2.9T,31.51
+1,AFRM,"Affirm Holdings, Inc.",113.5,-5.63,-4.73%,3.512M,14.768M,31.894B,
+2,AMD,"Advanced Micro Devices, Inc.",137.38,-0.72,-0.52%,26.297M,52.585M,165.901B,42.38
+3,NVDA,NVIDIA Corporation,301.27,-3.63,-1.19%,28.649M,36.193M,750.765B,92.9
+4,MU,"Micron Technology, Inc.",84.7,-0.23,-0.27%,6.117M,18.48M,94.878B,16.48
+5,ZM,"Zoom Video Communications, Inc.",185.82,-2.45,-1.30%,957771,4.407M,55.373B,49.38
+6,ON,ON Semiconductor Corporation,64.18,0.88,+1.39%,2.116M,5.906M,27.651B,41.89
+7,AMAT,"Applied Materials, Inc.",151.95,-0.7,-0.46%,2.586M,7.437M,137.2B,23.74
+8,SQ,"Square, Inc.",180.59,-6.16,-3.30%,3.774M,7.513M,83.302B,181.13
+9,DM,"Desktop Metal, Inc.",5.8,-0.1,-1.69%,2.115M,6.439M,1.804B,
+10,NET,"Cloudflare, Inc.",145.69,-4.51,-3.00%,2.323M,4.068M,46.875B,
+11,LSPD,Lightspeed Commerce Inc.,44.12,-1.68,-3.67%,546556,1.765M,6.571B,
+12,DDOG,"Datadog, Inc.",175.55,0.14,+0.08%,1.455M,2.985M,54.774B,
+13,CRWD,"CrowdStrike Holdings, Inc.",198.12,-3.15,-1.57%,1.686M,3.501M,45.437B,
+14,COIN,"Coinbase Global, Inc.",250.91,-13.0,-4.93%,2.684M,5.1M,65.713B,18.88
+15,BILL,"Bill.com Holdings, Inc.",252.74,-1.78,-0.70%,765901,1.705M,25.919B,
+16,RNG,"RingCentral, Inc.",182.41,-3.8,-2.04%,687018,1.32M,17.045B,
+17,HIMX,"Himax Technologies, Inc.",11.4,0.34,+3.03%,1.892M,2.963M,1.984B,6.05
+18,WIT,Wipro Limited,8.69,-0.02,-0.17%,772414,1.879M,47.507B,30.09
+19,AI,"C3.ai, Inc.",33.21,1.12,+3.49%,13.64M,3.085M,3.488B,
+20,ZS,"Zscaler, Inc.",302.84,-0.2,-0.07%,901981,2.004M,42.414B,
+21,SWKS,"Skyworks Solutions, Inc.",161.76,0.74,+0.46%,696278,1.701M,26.753B,18.03
+22,DQ,Daqo New Energy Corp.,43.19,-0.88,-2.01%,614012,1.641M,3.175B,4.8
+23,TEAM,Atlassian Corporation Plc,370.02,-5.42,-1.44%,312993,1.074M,93.522B,
+24,STX,Seagate Technology Holdings plc,102.57,-0.36,-0.34%,506346,2.439M,22.837B,15.1
