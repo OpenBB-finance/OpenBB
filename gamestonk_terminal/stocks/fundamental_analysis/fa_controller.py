@@ -464,7 +464,7 @@ Other Sources:
             "--num",
             dest="num",
             type=check_positive,
-            default=20,
+            default=10,
             help="Number of previous dividends to show",
         )
         parser.add_argument(
