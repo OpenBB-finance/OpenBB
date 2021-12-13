@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/TSLA?events=div%2Csplits&includePrePost=False&interval=1d&period1=1598220000&period2=1635980400
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1639170003,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":1017.03,"chartPreviousClose":1014.97,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1639146600,"start":1639126800,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1639170000,"start":1639146600,"gmtoffset":-18000},"post":{"timezone":"EST","end":1639184400,"start":1639170000,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1638801000,1638887400,1638973800,1639060200,1639146600],"indicators":{"quote":[{"volume":[27221037,18694857,13968790,19446486,19229185],"high":[1021.6400146484375,1057.6739501953125,1072.3800048828125,1062.489990234375,1020.9796752929688],"low":[950.5,1026.81005859375,1033.0001220703125,1002.3599853515625,982.530029296875],"open":[1001.510009765625,1044.199951171875,1052.7099609375,1060.6400146484375,1008.75],"close":[1009.010009765625,1051.75,1068.9599609375,1003.7999877929688,1017.030029296875]}],"adjclose":[{"adjclose":[1009.010009765625,1051.75,1068.9599609375,1003.7999877929688,1017.030029296875]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1341'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Mon, 13 Dec 2021 00:47:59 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '4'
+      x-request-id:
+      - 0d22111a-dbba-4153-a846-358eaed81b51
+      x-yahoo-request-id:
+      - asuf6thgrd61v
+      y-rid:
+      - asuf6thgrd61v
+    status:
+      code: 200
+      message: OK
+version: 1
