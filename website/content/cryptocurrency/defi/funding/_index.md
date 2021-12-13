@@ -6,7 +6,7 @@ Display Funding rates. [Source: https://defirate.com/]
 
 ```
 optional arguments:
-  -t TOP, --top TOP     top N number records (default: 10)
+  -l TOP, --limit TOP   display N number records (default: 10)
   --current             Show Current Funding Rates or Last 30 Days Average
                         (default: True)
   --export {csv,json,xlsx}

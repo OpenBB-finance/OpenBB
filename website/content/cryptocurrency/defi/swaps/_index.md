@@ -1,12 +1,13 @@
 ```
-usage: pairs [-t TOP] [-s {timestamp,token0,token1,amountUSD}] [--descend]
+usage: pairs [-l TOP] [-s {timestamp,token0,token1,amountUSD}] [--descend]
              [--export {csv,json,xlsx}] [-h]
 ```
+
 Display last swaps done on Uniswap DEX. [Source: https://thegraph.com/en/]
 
 ```
 optional arguments:
-  -t TOP, --top TOP     Number of records (default: 10)
+  -l TOP, --limit TOP   display N number records (default: 10)
   -s {timestamp,token0,token1,amountUSD}, --sort {timestamp,token0,token1,amountUSD}
                         Sort by given column. Default: timestamp (default:
                         timestamp)

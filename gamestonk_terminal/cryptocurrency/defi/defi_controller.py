@@ -190,11 +190,11 @@ class DefiController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="Number of records to display",
             default=15,
         )
 
@@ -224,7 +224,7 @@ class DefiController:
             return self.queue if len(self.queue) > 0 else []
 
         defipulse_view.display_defipulse(
-            top=ns_parser.top,
+            top=ns_parser.limit,
             sortby=ns_parser.sortby,
             descend=ns_parser.descend,
             export=ns_parser.export,
@@ -245,11 +245,11 @@ class DefiController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="Number of records to display",
             default=10,
         )
 
@@ -296,7 +296,7 @@ class DefiController:
             return self.queue if len(self.queue) > 0 else []
 
         llama_view.display_defi_protocols(
-            top=ns_parser.top,
+            top=ns_parser.limit,
             sortby=ns_parser.sortby,
             descend=ns_parser.descend,
             description=ns_parser.description,
@@ -318,11 +318,11 @@ class DefiController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="Number of records to display",
             default=10,
         )
 
@@ -333,7 +333,7 @@ class DefiController:
         if not ns_parser:
             return self.queue if len(self.queue) > 0 else []
 
-        llama_view.display_defi_tvl(top=ns_parser.top, export=ns_parser.export)
+        llama_view.display_defi_tvl(top=ns_parser.limit, export=ns_parser.export)
         return self.queue if len(self.queue) > 0 else []
 
     @try_except
@@ -350,11 +350,11 @@ class DefiController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="Number of records to display",
             default=10,
         )
 
@@ -374,7 +374,7 @@ class DefiController:
             return self.queue if len(self.queue) > 0 else []
 
         defirate_view.display_funding_rates(
-            top=ns_parser.top, current=ns_parser.current, export=ns_parser.export
+            top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
         )
         return self.queue if len(self.queue) > 0 else []
 
@@ -392,11 +392,11 @@ class DefiController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="Number of records to display",
             default=10,
         )
 
@@ -416,7 +416,7 @@ class DefiController:
             return self.queue if len(self.queue) > 0 else []
 
         defirate_view.display_borrow_rates(
-            top=ns_parser.top, current=ns_parser.current, export=ns_parser.export
+            top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
         )
         return self.queue if len(self.queue) > 0 else []
 
@@ -434,11 +434,11 @@ class DefiController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="Number of records to display",
             default=15,
         )
 
@@ -458,7 +458,7 @@ class DefiController:
             return self.queue if len(self.queue) > 0 else []
 
         defirate_view.display_lending_rates(
-            top=ns_parser.top, current=ns_parser.current, export=ns_parser.export
+            top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
         )
         return self.queue if len(self.queue) > 0 else []
 
@@ -476,11 +476,11 @@ class DefiController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="Number of records to display",
             default=10,
         )
 
@@ -491,7 +491,7 @@ class DefiController:
         if not ns_parser:
             return self.queue if len(self.queue) > 0 else []
 
-        substack_view.display_newsletters(top=ns_parser.top, export=ns_parser.export)
+        substack_view.display_newsletters(top=ns_parser.limit, export=ns_parser.export)
         return self.queue if len(self.queue) > 0 else []
 
     @try_except
@@ -601,11 +601,11 @@ class DefiController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="Number of records",
+            help="Number of records to display",
             default=10,
         )
 
@@ -669,7 +669,7 @@ class DefiController:
             return self.queue if len(self.queue) > 0 else []
 
         graph_view.display_recently_added(
-            top=ns_parser.top,
+            top=ns_parser.limit,
             days=ns_parser.days,
             min_volume=ns_parser.vol,
             min_tx=ns_parser.tx,
@@ -693,11 +693,11 @@ class DefiController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="Number of records",
+            help="Number of records to display",
             default=10,
         )
 
@@ -735,7 +735,7 @@ class DefiController:
             return self.queue if len(self.queue) > 0 else []
 
         graph_view.display_uni_pools(
-            top=ns_parser.top,
+            top=ns_parser.limit,
             sortby=ns_parser.sortby,
             descend=ns_parser.descend,
             export=ns_parser.export,
@@ -756,11 +756,11 @@ class DefiController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="Number of records",
+            help="Number of records to display",
             default=10,
         )
 
@@ -790,7 +790,7 @@ class DefiController:
             return self.queue if len(self.queue) > 0 else []
 
         graph_view.display_last_uni_swaps(
-            top=ns_parser.top,
+            top=ns_parser.limit,
             sortby=ns_parser.sortby,
             descend=ns_parser.descend,
             export=ns_parser.export,

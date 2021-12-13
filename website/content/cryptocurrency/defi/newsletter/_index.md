@@ -6,7 +6,7 @@ Display DeFi related substack newsletters. [Source: substack.com]
 
 ```
 optional arguments:
-  -t TOP, --top TOP     top N number records (default: 10)
+  -l TOP, --limit TOP   display N number records (default: 10)
   --export {csv,json,xlsx}
                         Export dataframe data to csv,json,xlsx file (default:
                         )

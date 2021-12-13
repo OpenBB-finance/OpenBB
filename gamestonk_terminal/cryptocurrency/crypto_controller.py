@@ -844,7 +844,7 @@ Crypto Menus:
             It will search for coin that has similar name to polka and display top 25 matches.
             -c, --coin stands for coin - you provide here your search query
             -k, --key it's a searching key. You can search by symbol, id or name of coin
-            -t, --top it displays top N number of records.""",
+            -l, --limit it displays top N number of records.""",
         )
 
         parser.add_argument(
@@ -867,11 +867,11 @@ Crypto Menus:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
+            "-l",
+            "--limit",
             default=10,
-            dest="top",
-            help="Limit of records",
+            dest="limit",
+            help="Number of records to display",
             type=check_positive,
         )
 
@@ -899,13 +899,13 @@ Crypto Menus:
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return
+            return self.queue if len(self.queue) > 0 else []
 
         find(
             coin=ns_parser.coin,
             source=ns_parser.source,
             key=ns_parser.key,
-            top=ns_parser.top,
+            top=ns_parser.limit,
             export=ns_parser.export,
         )
         return self.queue if len(self.queue) > 0 else []
