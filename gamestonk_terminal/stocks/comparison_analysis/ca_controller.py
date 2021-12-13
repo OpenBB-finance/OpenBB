@@ -1108,6 +1108,7 @@ Finviz:
 def menu(
     similar: List,
     queue: List[str] = None,
+    from_submenu: bool = False,
 ):
     """Comparison Analysis Menu"""
     ca_controller = ComparisonAnalysisController(similar, queue)
@@ -1117,6 +1118,10 @@ def menu(
         # There is a command in the queue
         if ca_controller.queue and len(ca_controller.queue) > 0:
             if ca_controller.queue[0] in ("q", "..", "quit"):
+                if from_submenu:
+                    ca_controller.queue.insert(0, "quit")
+                    from_submenu = False
+
                 if len(ca_controller.queue) > 1:
                     return ca_controller.queue[1:]
                 return []
@@ -1142,6 +1147,12 @@ def menu(
                 an_input = input(f"{get_flair()} /stocks/ca/ $ ")
 
         try:
+            if from_submenu:
+                if an_input in ("q", "..", "quit"):
+                    pass
+                    # print("here")
+                    # ca_controller.queue.insert(0, "quit")
+                    # from_submenu = False
             ca_controller.queue = ca_controller.switch(an_input)
 
         except SystemExit:
