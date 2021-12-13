@@ -639,7 +639,7 @@ NASDAQ Data Link (Formerly Quandl):
         )
         parser.add_argument(
             "-a",
-            "-ascend",
+            "--ascend",
             dest="ascend",
             help="Flag to sort in ascending order",
             action="store_true",
