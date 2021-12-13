@@ -1237,12 +1237,7 @@ NASDAQ DataLink (formerly Quandl):
         """Process fred command"""
         from gamestonk_terminal.economy.fred import fred_controller
 
-        ret = fred_controller.menu()
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return fred_controller.menu(self.queue)
 
 
 def menu(queue: List[str] = None):
