@@ -237,7 +237,7 @@ def test_call_quit():
             ["--start=2020-12-02", "--export=csv"],
             dict(
                 ticker="MOCK_TICKER",
-                start= datetime.strptime("2020-12-01", "%Y-%m-%d"),
+                start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
                 export="csv",
             ),
         ),
