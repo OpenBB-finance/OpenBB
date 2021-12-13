@@ -103,12 +103,7 @@ class CryptoController:
 
     def print_help(self):
         """Print help"""
-        help_text = """
-    load        load a specific cryptocurrency for analysis
-    chart       view a candle chart for a specific cryptocurrency
-    find        alternate way to search for coins
-    headlines   crypto sentiment from 15+ major news headlines [Finbrain]"""
-        help_text += (
+        help_text = (
             f"\nCoin: {self.current_coin}" if self.current_coin != "" else "\nCoin: ?"
         )
         help_text += (
@@ -116,8 +111,14 @@ class CryptoController:
             if self.source != ""
             else "\nSource: ?\n"
         )
+        help_text += """
+    load        load a specific cryptocurrency for analysis
+    chart       view a candle chart for a specific cryptocurrency
+    find        alternate way to search for coins
+    headlines   crypto sentiment from 15+ major news headlines [Finbrain]
+    """
         dim = Style.DIM if not self.current_coin else ""
-        help_text = f"""
+        help_text += f"""
 Crypto Menus:
     /disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
     /ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables{dim}
@@ -699,11 +700,7 @@ Crypto Menus:
         """Process disc command"""
         from gamestonk_terminal.cryptocurrency.discovery import discovery_controller
 
-        ret = discovery_controller.menu()
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return discovery_controller.menu(queue=self.queue)
 
     def call_ov(self, _):
         """Process ov command"""

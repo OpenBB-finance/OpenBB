@@ -1,12 +1,12 @@
 ```
-usage: cmctop [-t TOP] [-s {Symbol,CMC_Rank,LastPrice,DayPctChange,MarketCap}] [--descend] [--export {csv,json,xlsx}] [-h]
+usage: cmctop [-l N] [-s {Symbol,CMC_Rank,LastPrice,DayPctChange,MarketCap}] [--descend] [--export {csv,json,xlsx}] [-h]
 ```
 
 This gets the top ranked coins from coinmarketcap.com
 
 ```
 optional arguments:
-  -t TOP, --top TOP     Limit of records (default: 15)
+  -l N, --limit N       display N records (default: 15)
   -s {Symbol,CMC_Rank,LastPrice,DayPctChange,MarketCap}, --sort {Symbol,CMC_Rank,LastPrice,DayPctChange,MarketCap}
                         column to sort data by. (default: CMC_Rank)
   --descend             Flag to sort in descending order (lowest first) (default: True)

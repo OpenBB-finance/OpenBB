@@ -1,5 +1,5 @@
 ```
-usage: tvl [-l TOP] [--export {csv,json,xlsx}] [-h]
+usage: tvl [-l N] [--export {csv,json,xlsx}] [-h]
 ```
 
 Displays historical values of the total sum of TVLs from all listed protocols.
@@ -7,7 +7,7 @@ Displays historical values of the total sum of TVLs from all listed protocols.
 
 ```
 optional arguments:
-  -l TOP, --limit TOP   display N number records (default: 10)
+  -l N, --limit N       display N records (default: 10)
   --export {csv,json,xlsx}
                         Export dataframe data to csv,json,xlsx file (default:
                         )

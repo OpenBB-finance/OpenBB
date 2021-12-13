@@ -1,5 +1,5 @@
 ```
-usage: coins [-c COIN] [-s SKIP] [-l TOP] [--source SOURCE] [--export {csv,json,xlsx}] [-h]
+usage: coins [-c COIN] [-s SKIP] [-l N] [--source SOURCE] [--export {csv,json,xlsx}] [-h]
 ```
 
 Shows list of coins available on CoinGecko, CoinPaprika and Binance.If you provide name of coin then in result you will see ids of coins with best
@@ -12,7 +12,7 @@ given source then use --source flag. E.g. if you want to find coin with name uni
 optional arguments:
   -c COIN, --coin COIN  Coin you search for (default: None)
   -s SKIP, --skip SKIP  Skip n of records (default: 0)
-  -l TOP, --limit TOP   Limit of records (default: 10)
+  -l N, --limit N       display N records (default: 10)
   --source SOURCE       Source of data. (default: None)
   --export {csv,json,xlsx}
                         Export dataframe data to csv,json,xlsx file (default: )

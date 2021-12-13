@@ -1,5 +1,5 @@
 ```
-usage: llama [-l TOP]
+usage: llama [-l N]
              [-s {tvl,symbol,category,chains,change_1h,change_1d,change_7d,tvl}]
              [--descend] [--desc] [--export {csv,json,xlsx}] [-h]
 ```
@@ -8,7 +8,7 @@ Display information about listed DeFi Protocols on DeFi Llama. [Source:https://d
 
 ```
 optional arguments:
-  -l TOP, --limit TOP   display N number records (default: 10)
+  -l N, --limit N       display N records (default: 10)
   -s {tvl,symbol,category,chains,change_1h,change_1d,change_7d,tvl}, --sort {tvl,symbol,category,chains,change_1h,change_1d,change_7d,tvl}
                         Sort by given column. Default: tvl (default: tvl)
   --descend             Flag to sort in descending order (lowest first)

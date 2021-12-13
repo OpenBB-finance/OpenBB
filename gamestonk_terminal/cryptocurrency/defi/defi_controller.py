@@ -220,15 +220,13 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
-
-        defipulse_view.display_defipulse(
-            top=ns_parser.limit,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            defipulse_view.display_defipulse(
+                top=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
         return self.queue if len(self.queue) > 0 else []
 
     @try_except
@@ -292,16 +290,14 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
-
-        llama_view.display_defi_protocols(
-            top=ns_parser.limit,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-            description=ns_parser.description,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            llama_view.display_defi_protocols(
+                top=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                description=ns_parser.description,
+                export=ns_parser.export,
+            )
         return self.queue if len(self.queue) > 0 else []
 
     @try_except
@@ -330,10 +326,8 @@ class DefiController:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
-        if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
-
-        llama_view.display_defi_tvl(top=ns_parser.limit, export=ns_parser.export)
+        if ns_parser:
+            llama_view.display_defi_tvl(top=ns_parser.limit, export=ns_parser.export)
         return self.queue if len(self.queue) > 0 else []
 
     @try_except
@@ -370,12 +364,10 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
-
-        defirate_view.display_funding_rates(
-            top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
-        )
+        if ns_parser:
+            defirate_view.display_funding_rates(
+                top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
+            )
         return self.queue if len(self.queue) > 0 else []
 
     @try_except
@@ -412,12 +404,10 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
-
-        defirate_view.display_borrow_rates(
-            top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
-        )
+        if ns_parser:
+            defirate_view.display_borrow_rates(
+                top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
+            )
         return self.queue if len(self.queue) > 0 else []
 
     @try_except
@@ -454,12 +444,10 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
-
-        defirate_view.display_lending_rates(
-            top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
-        )
+        if ns_parser:
+            defirate_view.display_lending_rates(
+                top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
+            )
         return self.queue if len(self.queue) > 0 else []
 
     @try_except
@@ -488,10 +476,10 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
-
-        substack_view.display_newsletters(top=ns_parser.limit, export=ns_parser.export)
+        if ns_parser:
+            substack_view.display_newsletters(
+                top=ns_parser.limit, export=ns_parser.export
+            )
         return self.queue if len(self.queue) > 0 else []
 
     @try_except
@@ -552,16 +540,14 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
-
-        graph_view.display_uni_tokens(
-            skip=ns_parser.skip,
-            limit=ns_parser.limit,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            graph_view.display_uni_tokens(
+                skip=ns_parser.skip,
+                limit=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
         return self.queue if len(self.queue) > 0 else []
 
     @try_except
@@ -581,10 +567,8 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
-
-        graph_view.display_uni_stats(export=ns_parser.export)
+        if ns_parser:
+            graph_view.display_uni_stats(export=ns_parser.export)
         return self.queue if len(self.queue) > 0 else []
 
     @try_except
@@ -665,18 +649,16 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
-
-        graph_view.display_recently_added(
-            top=ns_parser.limit,
-            days=ns_parser.days,
-            min_volume=ns_parser.vol,
-            min_tx=ns_parser.tx,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            graph_view.display_recently_added(
+                top=ns_parser.limit,
+                days=ns_parser.days,
+                min_volume=ns_parser.vol,
+                min_tx=ns_parser.tx,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
         return self.queue if len(self.queue) > 0 else []
 
     @try_except
@@ -731,15 +713,13 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
-
-        graph_view.display_uni_pools(
-            top=ns_parser.limit,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            graph_view.display_uni_pools(
+                top=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
         return self.queue if len(self.queue) > 0 else []
 
     @try_except
@@ -786,26 +766,18 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
-
-        graph_view.display_last_uni_swaps(
-            top=ns_parser.limit,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            graph_view.display_last_uni_swaps(
+                top=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
         return self.queue if len(self.queue) > 0 else []
 
     def print_help(self):
         """Print help"""
         help_text = """
-Decentralized Finance:
-    cls         clear screen
-    ?/help      show this menu again
-    q           quit this menu, and shows back to main menu
-    quit        quit to abandon the program
-
 Overview:
     llama         DeFi protocols listed on DeFi Llama
     tvl           Total value locked of DeFi protocols
