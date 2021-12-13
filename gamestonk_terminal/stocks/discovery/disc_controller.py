@@ -33,7 +33,7 @@ from gamestonk_terminal.stocks.discovery import (
 from gamestonk_terminal.paths import cd_CHOICES
 
 
-# pylint:disable=too-many-lines
+# pylint:disable=C0302
 
 
 class DiscoveryController:
@@ -184,7 +184,6 @@ NASDAQ Data Link (Formerly Quandl):
         List[str]
             List of commands in the queue to execute
         """
-        # Empty command
         if not an_input:
             print("")
             return self.queue if len(self.queue) > 0 else []
@@ -195,6 +194,9 @@ NASDAQ Data Link (Formerly Quandl):
             for cmd in actions[1:][::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
+            if not an_input:
+                an_input = "quit"
+                self.queue.insert(0, "quit")
 
         (known_args, other_args) = self.disc_parser.parse_known_args(an_input.split())
 
@@ -226,8 +228,8 @@ NASDAQ Data Link (Formerly Quandl):
             else:
                 self.queue.insert(0, args[0])
 
-        self.queue.insert(0, "q")
-        self.queue.insert(0, "q")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
         return self.queue
 
@@ -239,18 +241,18 @@ NASDAQ Data Link (Formerly Quandl):
     def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q"]
+        return ["quit"]
 
     def call_exit(self, _):
         """Process exit terminal command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q", "q"]
+        return ["quit", "quit", "quit"]
 
     def call_reset(self, _):
         """Process reset command"""
@@ -258,10 +260,10 @@ NASDAQ Data Link (Formerly Quandl):
             self.queue.insert(0, "disc")
             self.queue.insert(0, "stocks")
             self.queue.insert(0, "r")
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q", "r", "stocks", "disc"]
+        return ["quit", "quit", "r", "stocks", "disc"]
 
     @try_except
     def call_rtearn(self, other_args: List[str]):
@@ -960,7 +962,7 @@ def menu(queue: List[str] = None):
 
         # Get input command from user
         else:
-            if an_input == "HELP_ME" or an_input in disc_controller.CHOICES:
+            if an_input == "HELP_ME":
                 disc_controller.print_help()
 
             if session and gtff.USE_PROMPT_TOOLKIT and disc_controller.completer:
@@ -986,9 +988,18 @@ def menu(queue: List[str] = None):
             )
             if similar_cmd:
                 if " " in an_input:
-                    an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        print("\n")
+                        continue
+                    an_input = candidate_input
                 else:
                     an_input = similar_cmd[0]
+
                 print(f" Replacing by '{an_input}'.")
                 disc_controller.queue.insert(0, an_input)
-            print("\n")
+            else:
+                print("\n")

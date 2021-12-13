@@ -170,7 +170,11 @@ Stocks Menus:
             actions = an_input.split("/")
             an_input = actions[0]
             for cmd in actions[1:][::-1]:
-                self.queue.insert(0, cmd)
+                if cmd:
+                    self.queue.insert(0, cmd)
+            if not an_input:
+                an_input = "quit"
+                self.queue.insert(0, "quit")
 
         (known_args, other_args) = self.stocks_parser.parse_known_args(an_input.split())
 
@@ -202,7 +206,7 @@ Stocks Menus:
             else:
                 self.queue.insert(0, args[0])
 
-        self.queue.insert(0, "q")
+        self.queue.insert(0, "quit")
 
         return self.queue if len(self.queue) > 0 else []
 
@@ -214,26 +218,26 @@ Stocks Menus:
     def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q"]
+        return ["quit"]
 
     def call_exit(self, _):
         """Process exit terminal command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q"]
+        return ["quit", "quit"]
 
     def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "stocks")
             self.queue.insert(0, "r")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "r", "stocks"]
+        return ["quit", "r", "stocks"]
 
     # COMMANDS
     @try_except
@@ -551,11 +555,7 @@ Stocks Menus:
         """Process dps command"""
         from gamestonk_terminal.stocks.dark_pool_shorts import dps_controller
 
-        ret = dps_controller.menu(self.ticker, self.start, self.stock)
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return dps_controller.menu(self.ticker, self.start, self.stock, self.queue)
 
     def call_scr(self, _):
         """Process scr command"""
@@ -652,12 +652,7 @@ Stocks Menus:
 
         from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 
-        ret = ca_controller.menu([self.ticker] if self.ticker else "")
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return ca_controller.menu([self.ticker] if self.ticker else "", self.queue)
 
     def call_fa(self, _):
         """Process fa command"""
@@ -807,7 +802,7 @@ def menu(ticker: str = "", queue: List[str] = None):
 
         # Get input command from user
         else:
-            if an_input == "HELP_ME" or an_input in stocks_controller.CHOICES:
+            if an_input == "HELP_ME" or an_input in stocks_controller.CHOICES_MENUS:
                 stocks_controller.print_help()
 
             if session and gtff.USE_PROMPT_TOOLKIT and stocks_controller.completer:
@@ -833,9 +828,18 @@ def menu(ticker: str = "", queue: List[str] = None):
             )
             if similar_cmd:
                 if " " in an_input:
-                    an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        print("\n")
+                        continue
+                    an_input = candidate_input
                 else:
                     an_input = similar_cmd[0]
+
                 print(f" Replacing by '{an_input}'.")
                 stocks_controller.queue.insert(0, an_input)
-            print("\n")
+            else:
+                print("\n")

@@ -281,6 +281,9 @@ Returned tickers: {', '.join(self.tickers)}
             for cmd in actions[1:][::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
+            if not an_input:
+                an_input = "quit"
+                self.queue.insert(0, "quit")
 
         (known_args, other_args) = self.sia_parser.parse_known_args(an_input.split())
 
@@ -312,8 +315,8 @@ Returned tickers: {', '.join(self.tickers)}
             else:
                 self.queue.insert(0, args[0])
 
-        self.queue.insert(0, "q")
-        self.queue.insert(0, "q")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
         return self.queue
 
@@ -325,18 +328,18 @@ Returned tickers: {', '.join(self.tickers)}
     def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q"]
+        return ["quit"]
 
     def call_exit(self, _):
         """Process exit terminal command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q", "q"]
+        return ["quit", "quit", "quit"]
 
     def call_reset(self, _):
         """Process reset command"""
@@ -344,10 +347,10 @@ Returned tickers: {', '.join(self.tickers)}
             self.queue.insert(0, "sia")
             self.queue.insert(0, "stocks")
             self.queue.insert(0, "r")
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q", "r", "stocks", "sia"]
+        return ["quit", "quit", "r", "stocks", "sia"]
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -1088,10 +1091,9 @@ Returned tickers: {', '.join(self.tickers)}
     def call_ca(self, _):
         """Call the comparison analysis menu with selected tickers"""
         if self.tickers:
-            return ca_controller.menu(self.tickers)
+            return ca_controller.menu(self.tickers, self.queue)
 
         print("No main ticker loaded to go into comparison analysis menu", "\n")
-
         return self.queue if len(self.queue) > 0 else []
 
 
@@ -1118,7 +1120,7 @@ def menu(
 
         # Get input command from user
         else:
-            if an_input == "HELP_ME" or an_input in sia_controller.CHOICES:
+            if an_input == "HELP_ME" or an_input in sia_controller.CHOICES_MENUS:
                 sia_controller.print_help()
 
             if session and gtff.USE_PROMPT_TOOLKIT and sia_controller.choices:
@@ -1164,9 +1166,18 @@ def menu(
             )
             if similar_cmd:
                 if " " in an_input:
-                    an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        print("\n")
+                        continue
+                    an_input = candidate_input
                 else:
                     an_input = similar_cmd[0]
+
                 print(f" Replacing by '{an_input}'.")
                 sia_controller.queue.insert(0, an_input)
-            print("\n")
+            else:
+                print("\n")

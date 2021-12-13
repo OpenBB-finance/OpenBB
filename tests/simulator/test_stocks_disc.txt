@@ -1,7 +1,5 @@
 stocks
 disc
-reset
-r
 q
 disc
 ..
@@ -29,4 +27,6 @@ cnews
 lowfloat
 hotpenny
 rtat
+reset
+r
 exit

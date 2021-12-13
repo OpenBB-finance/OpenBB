@@ -1,16 +1,14 @@
-""" Dark Pool Shorts Controller """
+""" Dark Pool and Shorts Controller Module"""
 __docformat__ = "numpy"
 
 import argparse
 import difflib
-from typing import List
+from typing import List, Union
 from datetime import datetime, timedelta
 from colorama import Style
 import pandas as pd
-from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import EXPORT_BOTH_RAW_DATA_AND_FIGURES, get_flair
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
@@ -19,6 +17,9 @@ from gamestonk_terminal.helper_funcs import (
     check_int_range,
     try_except,
     system_clear,
+    get_flair,
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
 from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.stocks.dark_pool_shorts import (
@@ -33,42 +34,60 @@ from gamestonk_terminal.stocks.dark_pool_shorts import (
 
 
 class DarkPoolShortsController:
-    """Dark Pool Shorts Controller"""
+    """Dark Pool Shorts Controller class"""
 
-    # Command choices
     CHOICES = [
-        "?",
         "cls",
+        "cd",
+        "h",
+        "?",
         "help",
         "q",
         "quit",
-        "load",
+        "..",
+        "exit",
+        "r",
+        "reset",
     ]
-
     CHOICES_COMMANDS = [
+        "load",
         "shorted",
         "hsi",
         "prom",
         "pos",
         "sidtc",
+        "psi",
+        "dpotc",
+        "ftd",
+        "spos",
+        "volexch",
     ]
-
-    CHOICES_COMMANDS_WITH_TICKER = ["psi", "dpotc", "ftd", "spos", "volexch"]
-
     CHOICES += CHOICES_COMMANDS
-    CHOICES += CHOICES_COMMANDS_WITH_TICKER
 
-    def __init__(self, ticker: str, start: str, stock: pd.DataFrame):
+    def __init__(
+        self, ticker: str, start: str, stock: pd.DataFrame, queue: List[str] = None
+    ):
         """Constructor"""
-        self.ticker = ticker
-        self.start = start
-        self.stock = stock
-
-        self.disc_parser = argparse.ArgumentParser(add_help=False, prog="dps")
-        self.disc_parser.add_argument(
+        self.dps_parser = argparse.ArgumentParser(add_help=False, prog="dps")
+        self.dps_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
+
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
+
+        self.ticker = ticker
+        self.start = start
+        self.stock = stock
 
     def print_help(self):
         """Print help"""
@@ -110,44 +129,91 @@ NYSE:
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
-        # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue if len(self.queue) > 0 else []
 
-        (known_args, other_args) = self.disc_parser.parse_known_args(an_input.split())
+        if "/" in an_input:
+            actions = an_input.split("/")
+            an_input = actions[0]
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
+            if not an_input:
+                an_input = "quit"
+                self.queue.insert(0, "quit")
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
+        (known_args, other_args) = self.dps_parser.parse_known_args(an_input.split())
 
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
         )(other_args)
 
-    def call_help(self, _):
-        """Process Help command"""
-        self.print_help()
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue if len(self.queue) > 0 else []
 
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return False
+    def call_cd(self, other_args):
+        """Process cd command"""
+        if other_args and "-" not in other_args[0]:
+            args = other_args[0].split("/")
+            if len(args) > 0:
+                for m in args[::-1]:
+                    if m:
+                        self.queue.insert(0, m)
+            else:
+                self.queue.insert(0, args[0])
+
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+
+        return self.queue
+
+    def call_help(self, _):
+        """Process help command"""
+        self.print_help()
+        return self.queue if len(self.queue) > 0 else []
 
     def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+        """Process quit menu command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit"]
 
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "quit"]
+
+    def call_reset(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "disc")
+            self.queue.insert(0, "stocks")
+            self.queue.insert(0, "r")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "r", "stocks", "disc"]
+
+    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -174,26 +240,24 @@ NYSE:
             dest="start",
             help="The starting date (format YYYY-MM-DD) of the stock",
         )
-        # For the case where a user uses: 'load BB'
-        if other_args and "-t" not in other_args and "-h" not in other_args:
+        if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-t")
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            df_stock_candidate = stocks_helper.load(
+                ns_parser.ticker,
+                ns_parser.start,
+            )
 
-        df_stock_candidate = stocks_helper.load(
-            ns_parser.ticker,
-            ns_parser.start,
-        )
+            if not df_stock_candidate.empty:
+                self.stock = df_stock_candidate
+                self.start = ns_parser.start
+                if "." in ns_parser.ticker:
+                    self.ticker = ns_parser.ticker.upper().split(".")[0]
+                else:
+                    self.ticker = ns_parser.ticker.upper()
 
-        if not df_stock_candidate.empty:
-            self.stock = df_stock_candidate
-            self.start = ns_parser.start
-            if "." in ns_parser.ticker:
-                self.ticker = ns_parser.ticker.upper().split(".")[0]
-            else:
-                self.ticker = ns_parser.ticker.upper()
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_shorted(self, other_args: List[str]):
@@ -205,34 +269,26 @@ NYSE:
             description="Print up to 25 top ticker most shorted. [Source: Yahoo Finance]",
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="num",
+            dest="limit",
             type=check_int_range(1, 25),
-            default=5,
-            help="Number of the most shorted stocks to retrieve.",
+            default=10,
+            help="Limit of the most shorted stocks to retrieve.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
+        if ns_parser:
+            yahoofinance_view.display_most_shorted(
+                num_stocks=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        yahoofinance_view.display_most_shorted(
-            num_stocks=ns_parser.num,
-            export=ns_parser.export,
-        )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_hsi(self, other_args: List[str]):
@@ -250,30 +306,24 @@ NYSE:
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
-            type=check_positive,
+            dest="limit",
+            type=check_int_range(1, 25),
             default=10,
-            help="Number of top stocks to print.",
+            help="Limit of the top heavily shorted stocks to retrieve.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            shortinterest_view.high_short_interest(
+                num=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
-        shortinterest_view.high_short_interest(
-            num=ns_parser.n_num,
-            export=ns_parser.export,
-        )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_prom(self, other_args: List[str]):
@@ -282,7 +332,7 @@ NYSE:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="prom",
-            description="Display dark pool (ATS) data of tickers with growing trades activity",
+            description="Display dark pool (ATS) data of tickers with growing trades activity using linear regression.",
         )
         parser.add_argument(
             "-n",
@@ -294,13 +344,13 @@ NYSE:
             help="Number of tickers to filter from entire ATS data based on the sum of the total weekly shares quantity.",
         )
         parser.add_argument(
-            "-t",
-            "--top",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_top",
+            dest="limit",
             type=check_positive,
-            default=5,
-            help="List of tickers from most promising with better linear regression slope.",
+            default=10,
+            help="Limit of most promising tickers to display.",
         )
         parser.add_argument(
             "--tier",
@@ -311,23 +361,20 @@ NYSE:
             default="",
             help="Tier to process data from.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            finra_view.darkpool_otc(
+                num=ns_parser.n_num,
+                promising=ns_parser.limit,
+                tier=ns_parser.tier,
+                export=ns_parser.export,
+            )
 
-        finra_view.darkpool_otc(
-            num=ns_parser.n_num,
-            promising=ns_parser.n_top,
-            tier=ns_parser.tier,
-            export=ns_parser.export,
-        )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_pos(self, other_args: List[str]):
@@ -339,12 +386,13 @@ NYSE:
             description="Get dark pool short positions. [Source: Stockgrid]",
         )
         parser.add_argument(
-            "-n",
-            "--number",
-            help="Number of top tickers to show",
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
             type=check_positive,
             default=10,
-            dest="num",
+            help="Limit of tickers to display.",
         )
         parser.add_argument(
             "-s",
@@ -365,23 +413,18 @@ NYSE:
             dest="ascending",
             help="Data in ascending order",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            stockgrid_view.dark_pool_short_positions(
+                num=ns_parser.limit,
+                sort_field=ns_parser.sort_field,
+                ascending=ns_parser.ascending,
+                export=ns_parser.export,
+            )
 
-        stockgrid_view.dark_pool_short_positions(
-            num=ns_parser.num,
-            sort_field=ns_parser.sort_field,
-            ascending=ns_parser.ascending,
-            export=ns_parser.export,
-        )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_sidtc(self, other_args: List[str]):
@@ -393,12 +436,13 @@ NYSE:
             description="Print short interest and days to cover. [Source: Stockgrid]",
         )
         parser.add_argument(
-            "-n",
-            "--number",
-            help="Number of top tickers to show",
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
             type=check_positive,
             default=10,
-            dest="num",
+            help="Limit of tickers to display.",
         )
         parser.add_argument(
             "-s",
@@ -409,22 +453,17 @@ NYSE:
             default="float",
             dest="sort_field",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            stockgrid_view.short_interest_days_to_cover(
+                num=ns_parser.limit,
+                sort_field=ns_parser.sort_field,
+                export=ns_parser.export,
+            )
 
-        stockgrid_view.short_interest_days_to_cover(
-            num=ns_parser.num,
-            sort_field=ns_parser.sort_field,
-            export=ns_parser.export,
-        )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_dpotc(self, other_args: List[str]):
@@ -435,24 +474,19 @@ NYSE:
             prog="dpotc",
             description="Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if not self.ticker:
-            print("No ticker loaded.\n")
-            return
+        if ns_parser:
+            if self.ticker:
+                finra_view.darkpool_ats_otc(
+                    ticker=self.ticker,
+                    export=ns_parser.export,
+                )
+            else:
+                print("No ticker loaded.\n")
 
-        finra_view.darkpool_ats_otc(
-            ticker=self.ticker,
-            export=ns_parser.export,
-        )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_ftd(self, other_args: List[str]):
@@ -496,30 +530,24 @@ NYSE:
             dest="raw",
             help="Print raw data.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            if self.ticker:
+                sec_view.fails_to_deliver(
+                    ticker=self.ticker,
+                    stock=self.stock,
+                    start=ns_parser.start,
+                    end=ns_parser.end,
+                    num=ns_parser.n_num,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
+            else:
+                print("No ticker loaded.\n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if not self.ticker:
-            print("No ticker loaded.\n")
-            return
-
-        sec_view.fails_to_deliver(
-            ticker=self.ticker,
-            stock=self.stock,
-            start=ns_parser.start,
-            end=ns_parser.end,
-            num=ns_parser.n_num,
-            raw=ns_parser.raw,
-            export=ns_parser.export,
-        )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_spos(self, other_args: List[str]):
@@ -539,31 +567,27 @@ NYSE:
         )
         parser.add_argument(
             "-r",
+            "--raw",
             action="store_true",
             default=False,
             help="Flag to print raw data instead",
             dest="raw",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if not self.ticker:
-            print("No ticker loaded.\n")
-            return
+        if ns_parser:
+            if self.ticker:
+                stockgrid_view.net_short_position(
+                    ticker=self.ticker,
+                    num=ns_parser.num,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
+            else:
+                print("No ticker loaded.\n")
 
-        stockgrid_view.net_short_position(
-            ticker=self.ticker,
-            num=ns_parser.num,
-            raw=ns_parser.raw,
-            export=ns_parser.export,
-        )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_psi(self, other_args: List[str]):
@@ -580,13 +604,14 @@ NYSE:
             dest="stockgrid",
             help="Source of short interest volume",
         )
-        parser.add_argument(
-            "--nyse",
-            action="store_true",
-            default=False,
-            dest="b_nyse",
-            help="ONLY QUANDL SOURCE. Data from NYSE flag. Otherwise comes from NASDAQ.",
-        )
+        if "quandl" in other_args:
+            parser.add_argument(
+                "--nyse",
+                action="store_true",
+                default=False,
+                dest="b_nyse",
+                help="Data from NYSE flag. Otherwise comes from NASDAQ.",
+            )
         parser.add_argument(
             "-n",
             "--number",
@@ -597,40 +622,36 @@ NYSE:
         )
         parser.add_argument(
             "-r",
+            "--raw",
             action="store_true",
             default=False,
             help="Flag to print raw data instead",
             dest="raw",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if not self.ticker:
-            print("No ticker loaded.\n")
-            return
+        if ns_parser:
+            if self.ticker:
+                if "quandl" in other_args:
+                    quandl_view.short_interest(
+                        ticker=self.ticker,
+                        nyse=ns_parser.b_nyse,
+                        days=ns_parser.num,
+                        raw=ns_parser.raw,
+                        export=ns_parser.export,
+                    )
+                else:
+                    stockgrid_view.short_interest_volume(
+                        ticker=self.ticker,
+                        num=ns_parser.num,
+                        raw=ns_parser.raw,
+                        export=ns_parser.export,
+                    )
+            else:
+                print("No ticker loaded.\n")
 
-        if "quandl" in other_args:
-            quandl_view.short_interest(
-                ticker=self.ticker,
-                nyse=ns_parser.b_nyse,
-                days=ns_parser.num,
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-            )
-        else:
-            stockgrid_view.short_interest_volume(
-                ticker=self.ticker,
-                num=ns_parser.num,
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-            )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_volexch(self, other_args: List[str]):
@@ -641,6 +662,7 @@ NYSE:
             description="Displays short volume based on exchange.",
         )
         parser.add_argument(
+            "-r",
             "--raw",
             help="Display raw data",
             dest="raw",
@@ -675,65 +697,85 @@ NYSE:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        if not ns_parser:
-            return
-        if not self.ticker:
-            print("No ticker loaded.  Use `load ticker` first.")
-            return
-        nyse_view.display_short_by_exchange(
-            ticker=self.ticker,
-            raw=ns_parser.raw,
-            sort=ns_parser.sort,
-            asc=ns_parser.asc,
-            mpl=ns_parser.mpl,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            if self.ticker:
+                nyse_view.display_short_by_exchange(
+                    ticker=self.ticker,
+                    raw=ns_parser.raw,
+                    sort=ns_parser.sort,
+                    asc=ns_parser.asc,
+                    mpl=ns_parser.mpl,
+                    export=ns_parser.export,
+                )
+            else:
+                print("No ticker loaded.  Use `load ticker` first.")
+
+        return self.queue if len(self.queue) > 0 else []
 
 
-def menu(ticker: str = "", start: str = "", stock: pd.DataFrame = pd.DataFrame()):
-    """Dark Pool Shorts Menu
+def menu(
+    ticker: str = "",
+    start: str = "",
+    stock: pd.DataFrame = pd.DataFrame(),
+    queue: List[str] = None,
+):
+    """Dark Pool Shorts Menu"""
+    dps_controller = DarkPoolShortsController(ticker, start, stock, queue)
+    an_input = "HELP_ME"
 
-    Parameters
-    ----------
-    stock : DataFrame
-        Due diligence stock dataframe
-    ticker : str
-        Due diligence ticker symbol
-    start : str
-        Start date of the stock data
-    """
-    dps_controller = DarkPoolShortsController(ticker, start, stock)
-    dps_controller.call_help(None)
-
-    # Loop forever and ever
     while True:
-        # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in dps_controller.CHOICES}
-            )
+        # There is a command in the queue
+        if dps_controller.queue and len(dps_controller.queue) > 0:
+            if dps_controller.queue[0] in ("q", "..", "quit"):
+                if len(dps_controller.queue) > 1:
+                    return dps_controller.queue[1:]
+                return []
 
-            an_input = session.prompt(
-                f"{get_flair()} (stocks)>(dps)> ",
-                completer=completer,
-            )
+            an_input = dps_controller.queue[0]
+            dps_controller.queue = dps_controller.queue[1:]
+            if an_input and an_input in dps_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /stocks/dps/ $ {an_input}")
+
+        # Get input command from user
         else:
-            an_input = input(f"{get_flair()} (stocks)>(dps)> ")
+            if an_input == "HELP_ME":
+                dps_controller.print_help()
+
+            if session and gtff.USE_PROMPT_TOOLKIT and dps_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /stocks/dps/ $ ",
+                    completer=dps_controller.completer,
+                    search_ignore_case=True,
+                )
+
+            else:
+                an_input = input(f"{get_flair()} /stocks/dps/ $ ")
 
         try:
-            plt.close("all")
-
-            process_input = dps_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            dps_controller.queue = dps_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
+            print(f"\nThe command '{an_input}' doesn't exist.", end="")
             similar_cmd = difflib.get_close_matches(
-                an_input, dps_controller.CHOICES, n=1, cutoff=0.7
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                dps_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
             )
-
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
-            continue
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        print("\n")
+                        continue
+                    an_input = candidate_input
+                else:
+                    an_input = similar_cmd[0]
+
+                print(f" Replacing by '{an_input}'.")
+                dps_controller.queue.insert(0, an_input)
+            else:
+                print("\n")
