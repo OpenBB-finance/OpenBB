@@ -5,7 +5,6 @@ from datetime import datetime
 import pytest
 
 # IMPORTATION INTERNAL
-import bt
 from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.stocks.backtesting import bt_view
 
