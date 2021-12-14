@@ -813,12 +813,7 @@ Crypto Menus:
         """Process nft command"""
         from gamestonk_terminal.cryptocurrency.nft import nft_controller
 
-        ret = nft_controller.menu()
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return nft_controller.menu(queue=self.queue)
 
     @try_except
     def call_find(self, other_args):
