@@ -143,7 +143,7 @@ class OnchainController:
         )
 
         if known_args.cmd:
-            if known_args.cmd == "..":
+            if known_args.cmd in ("..", "quit"):
                 known_args.cmd = "q"
             elif known_args.cmd == "?":
                 known_args.cmd = "h"
@@ -1382,18 +1382,18 @@ class OnchainController:
         """Print help"""
         help_text = """
 Eth Gas Station:
-    gwei              check current eth gas fees
+    gwei             check current eth gas fees
 
 Whale Alert:
-    whales            check crypto wales transactions
+    whales           check crypto wales transactions
 
 BitQuery:
-    lt                last trades by dex or month
-    dvcp              daily volume for crypto pair
-    tv                token volume on DEXes
-    ueat              unique ethereum addresses which made a transaction
-    ttcp              top traded crypto pairs on given decentralized exchange
-    baas              bid, ask prices, average spread for given crypto pair
+    lt               last trades by dex or month
+    dvcp             daily volume for crypto pair
+    tv               token volume on DEXes
+    ueat             unique ethereum addresses which made a transaction
+    ttcp             top traded crypto pairs on given decentralized exchange
+    baas             bid, ask prices, average spread for given crypto pair
 """
         help_text += f"\nEthereum address: {self.address if self.address else '?'}"
         help_text += (
@@ -1402,24 +1402,24 @@ BitQuery:
 
         help_text += """
 Ethereum [Ethplorer]:
-    address           load ethereum address of token, account or transaction
-    top               top ERC20 tokens"""
+    address         load ethereum address of token, account or transaction
+    top             top ERC20 tokens"""
 
         # if self.address_type == "account":
         help_text += f"""{Style.DIM if self.address_type != "account" else ""}
-    balance           check ethereum balance balance
-    hist              ethereum balance history (transactions){Style.RESET_ALL if self.address_type != "account" else ""}"""
+    balance         check ethereum balance
+    hist            ethereum balance history (transactions){Style.RESET_ALL if self.address_type != "account" else ""}"""
 
         # if self.address_type == "token":
         help_text += f"""{Style.DIM if self.address_type != "token" else ""}
-    info              ERC20 token info
-    holders           top ERC20 token holders
-    th                ERC20 token history
-    prices            ERC20 token historical prices{Style.RESET_ALL if self.address_type != "token" else ""}"""
+    info            ERC20 token info
+    holders         top ERC20 token holders
+    th              ERC20 token history
+    prices          ERC20 token historical prices{Style.RESET_ALL if self.address_type != "token" else ""}"""
 
         # if self.address_type == "tx":
         help_text += f"""{Style.DIM if self.address_type != "tx" else ""}
-    tx                ethereum blockchain transaction info{Style.RESET_ALL if self.address_type != "tx" else ""}"""
+    tx              ethereum blockchain transaction info{Style.RESET_ALL if self.address_type != "tx" else ""}"""
 
         print(help_text)
 

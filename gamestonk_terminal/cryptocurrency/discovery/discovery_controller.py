@@ -133,7 +133,7 @@ CoinMarketCap:
         )
 
         if known_args.cmd:
-            if known_args.cmd == "..":
+            if known_args.cmd in ("..", "quit"):
                 known_args.cmd = "q"
             elif known_args.cmd == "?":
                 known_args.cmd = "h"

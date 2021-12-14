@@ -200,7 +200,7 @@ Coinbase:
         (known_args, other_args) = self.dd_parser.parse_known_args(an_input.split())
 
         if known_args.cmd:
-            if known_args.cmd == "..":
+            if known_args.cmd in ("..", "quit"):
                 known_args.cmd = "q"
             elif known_args.cmd == "?":
                 known_args.cmd = "h"

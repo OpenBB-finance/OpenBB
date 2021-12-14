@@ -153,7 +153,7 @@ Crypto Menus:
         (known_args, other_args) = self.crypto_parser.parse_known_args(an_input.split())
 
         if known_args.cmd:
-            if known_args.cmd == "..":
+            if known_args.cmd in ("..", "quit"):
                 known_args.cmd = "q"
             elif known_args.cmd == "?":
                 known_args.cmd = "h"
@@ -704,11 +704,7 @@ Crypto Menus:
         """Process ov command"""
         from gamestonk_terminal.cryptocurrency.overview import overview_controller
 
-        ret = overview_controller.menu()
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return overview_controller.menu(queue=self.queue)
 
     def call_defi(self, _):
         """Process defi command"""
