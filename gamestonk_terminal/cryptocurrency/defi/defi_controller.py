@@ -27,8 +27,6 @@ from gamestonk_terminal.cryptocurrency.defi import (
     graph_view,
 )
 
-from gamestonk_terminal.paths import cd_CHOICES
-
 
 class DefiController:
     """Defi Controller class"""
@@ -73,11 +71,9 @@ class DefiController:
         )
         self.completer: Union[None, NestedCompleter] = None
         if session and gtff.USE_PROMPT_TOOLKIT:
-
             choices: dict = {c: {} for c in self.CHOICES}
-            choices["cd"] = {c: None for c in cd_CHOICES}
-
             self.completer = NestedCompleter.from_nested_dict(choices)
+
         if queue:
             self.queue = queue
         else:

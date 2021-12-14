@@ -33,7 +33,6 @@ from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
     load_ta_data,
     plot_chart,
 )
-from gamestonk_terminal.paths import cd_CHOICES
 import gamestonk_terminal.config_terminal as cfg
 
 # pylint: disable=import-outside-toplevel
@@ -92,7 +91,6 @@ class CryptoController:
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
-            choices["cd"] = {c: None for c in cd_CHOICES}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -762,15 +760,11 @@ Crypto Menus:
         if self.current_coin:
             from gamestonk_terminal.cryptocurrency.due_diligence import dd_controller
 
-            dd = dd_controller.menu(self.current_coin, self.source, self.symbol)
-            if dd is False:
-                self.print_help()
-            else:
-                return True
-        else:
-            print(
-                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            return dd_controller.menu(
+                self.current_coin, self.source, self.symbol, queue=self.queue
             )
+        print("No coin selected. Use 'load' to load the coin you want to look at.\n")
+        return self.queue
 
     def call_pred(self, _):
         """Process pred command"""

@@ -8,7 +8,6 @@ from datetime import datetime
 from colorama import Style
 
 import pandas as pd
-import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
@@ -1209,8 +1208,6 @@ def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):
             an_input = input(f"{get_flair()} (crypto)>(ta)> ")
 
         try:
-            plt.close("all")
-
             process_input = ta_controller.switch(an_input)
 
             if process_input is not None:

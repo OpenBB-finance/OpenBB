@@ -22,10 +22,10 @@ from gamestonk_terminal.cryptocurrency.discovery import (
     coinmarketcap_view,
 )
 from gamestonk_terminal.cryptocurrency import cryptocurrency_helpers
-from gamestonk_terminal.paths import cd_CHOICES
 
 
 class DiscoveryController:
+    """Discovery Controller class"""
 
     CHOICES = [
         "cls",
@@ -69,10 +69,7 @@ class DiscoveryController:
         self.completer: Union[None, NestedCompleter] = None
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-
             choices: dict = {c: {} for c in self.CHOICES}
-            choices["cd"] = {c: None for c in cd_CHOICES}
-
             self.completer = NestedCompleter.from_nested_dict(choices)
         if queue:
             self.queue = queue

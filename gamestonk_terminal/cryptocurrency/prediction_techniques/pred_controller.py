@@ -7,7 +7,6 @@ from typing import List
 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
@@ -828,8 +827,6 @@ def menu(coin: str, data: pd.DataFrame):
             an_input = input(f"{get_flair()} (crypto)>(pred)> ")
 
         try:
-            plt.close("all")
-
             process_input = pred_controller.switch(an_input)
 
             if process_input is not None:

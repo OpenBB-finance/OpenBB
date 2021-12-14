@@ -1,5 +1,5 @@
 import argparse
-from typing import List
+from typing import List, Union
 
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
@@ -21,10 +21,16 @@ class NFTController:
 
     CHOICES = [
         "cls",
+        "cd",
+        "h",
         "?",
         "help",
         "q",
         "quit",
+        "..",
+        "exit",
+        "r",
+        "reset",
     ]
 
     CHOICES_COMMANDS = [
@@ -36,33 +42,33 @@ class NFTController:
 
     CHOICES += CHOICES_COMMANDS
 
-    def __init__(self):
+    def __init__(self, queue: List[str] = None):
         """Constructor"""
         self.nft_parser = argparse.ArgumentParser(add_help=False, prog="nft")
         self.nft_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
-        self.completer = NestedCompleter.from_nested_dict(
-            {c: None for c in self.CHOICES}
-        )
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
 
     def print_help(self):
         """Print help"""
 
         help_text = """
-What do you want to do?
-    cls         clear screen
-    ?/help      show this menu again
-    q           quit this menu, and shows back to main menu
-    quit        quit to abandon the program
-
 nftcalendar.io:
     today       today's NFT drops
     upcoming    upcoming NFT drops
     ongoing     Ongoing NFT drops
     newest      Recently NFTs added
-    """
+"""
         print(help_text)
 
     def switch(self, an_input: str):
