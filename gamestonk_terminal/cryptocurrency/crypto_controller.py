@@ -784,11 +784,8 @@ Crypto Menus:
                 c_help.load_cg_coin_data(self.current_coin, "USD", 365, "1D"),
                 self.queue,
             )
-        else:
-            print(
-                "No coin selected. Use 'load' to load the coin you want to look at.\n"
-            )
-            return self.queue
+        print("No coin selected. Use 'load' to load the coin you want to look at.\n")
+        return self.queue
 
     def call_onchain(self, _):
         """Process onchain command"""

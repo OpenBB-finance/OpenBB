@@ -51,7 +51,7 @@ class PredictionTechniquesController:
         "reset",
     ]
 
-    CHOICES_MODELS = [
+    CHOICES_COMMANDS = [
         "ets",
         "knn",
         "regression",
@@ -62,7 +62,7 @@ class PredictionTechniquesController:
         "conv1d",
         "mc",
     ]
-    CHOICES += CHOICES_MODELS
+    CHOICES += CHOICES_COMMANDS
     sampling_map = {"H": "Hour", "D": "Day"}
 
     def __init__(
@@ -720,7 +720,7 @@ Models:
 
         finally:
             pred_helper.restore_env()
-            return self.queue if len(self.queue) > 0 else []
+        return self.queue if len(self.queue) > 0 else []
 
     def call_rnn(self, other_args: List[str]):
         """Process rnn command"""
@@ -750,7 +750,7 @@ Models:
             return self.queue if len(self.queue) > 0 else []
         finally:
             pred_helper.restore_env()
-            return self.queue if len(self.queue) > 0 else []
+        return self.queue if len(self.queue) > 0 else []
 
     def call_lstm(self, other_args: List[str]):
         """Process lstm command"""
@@ -780,7 +780,7 @@ Models:
             return self.queue if len(self.queue) > 0 else []
         finally:
             pred_helper.restore_env()
-            return self.queue if len(self.queue) > 0 else []
+        return self.queue if len(self.queue) > 0 else []
 
     def call_conv1d(self, other_args: List[str]):
         """Process conv1d command"""
@@ -811,7 +811,7 @@ Models:
 
         finally:
             pred_helper.restore_env()
-            return self.queue if len(self.queue) > 0 else []
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_mc(self, other_args: List[str]):
