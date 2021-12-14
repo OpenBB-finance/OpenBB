@@ -273,7 +273,7 @@ Returned tickers: {', '.join(self.tickers)}
         # Empty command
         if not an_input:
             print("")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
         if "/" in an_input:
             actions = an_input.split("/")
@@ -302,7 +302,7 @@ Returned tickers: {', '.join(self.tickers)}
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_cd(self, other_args):
         """Process cd command"""
@@ -323,7 +323,7 @@ Returned tickers: {', '.join(self.tickers)}
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
@@ -434,7 +434,7 @@ Returned tickers: {', '.join(self.tickers)}
 
                 self.stocks_data = {}
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_industry(self, other_args: List[str]):
@@ -499,7 +499,7 @@ Returned tickers: {', '.join(self.tickers)}
             self.stocks_data = {}
             print("")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_sector(self, other_args: List[str]):
@@ -559,7 +559,7 @@ Returned tickers: {', '.join(self.tickers)}
             self.stocks_data = {}
             print("")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_country(self, other_args: List[str]):
@@ -616,7 +616,7 @@ Returned tickers: {', '.join(self.tickers)}
             self.stocks_data = {}
             print("")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_mktcap(self, other_args: List[str]):
@@ -647,7 +647,7 @@ Returned tickers: {', '.join(self.tickers)}
             self.stocks_data = {}
             print("")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_exchange(self, other_args: List[str]):
@@ -669,7 +669,7 @@ Returned tickers: {', '.join(self.tickers)}
         self.stocks_data = {}
         print("")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_clear(self, other_args: List[str]):
@@ -712,7 +712,7 @@ Returned tickers: {', '.join(self.tickers)}
             self.stocks_data = {}
             print("")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_sama(self, other_args: List[str]):
@@ -762,7 +762,7 @@ Returned tickers: {', '.join(self.tickers)}
             """
             print(help_text)
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_metric(self, other_args: List[str]):
@@ -821,7 +821,7 @@ Returned tickers: {', '.join(self.tickers)}
                 self.stocks_data,
             )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_cps(self, other_args: List[str]):
@@ -874,7 +874,7 @@ Returned tickers: {', '.join(self.tickers)}
                     ns_parser.min_pct_to_display_sector,
                 )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_cpic(self, other_args: List[str]):
@@ -927,7 +927,7 @@ Returned tickers: {', '.join(self.tickers)}
                     ns_parser.min_pct_to_display_industry,
                 )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_cpis(self, other_args: List[str]):
@@ -980,7 +980,7 @@ Returned tickers: {', '.join(self.tickers)}
                     ns_parser.min_pct_to_display_industry,
                 )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_cpcs(self, other_args: List[str]):
@@ -1033,7 +1033,7 @@ Returned tickers: {', '.join(self.tickers)}
                     ns_parser.min_pct_to_display_country,
                 )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_cpci(self, other_args: List[str]):
@@ -1086,7 +1086,7 @@ Returned tickers: {', '.join(self.tickers)}
                     ns_parser.min_pct_to_display_country,
                 )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_ca(self, _):
         """Call the comparison analysis menu with selected tickers"""
@@ -1094,7 +1094,7 @@ Returned tickers: {', '.join(self.tickers)}
             return ca_controller.menu(self.tickers, self.queue, from_submenu=True)
 
         print("No main ticker loaded to go into comparison analysis menu", "\n")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
 
 def menu(

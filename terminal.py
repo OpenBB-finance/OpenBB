@@ -25,7 +25,6 @@ from gamestonk_terminal.terminal_helper import (
     update_terminal,
     usage_instructions,
 )
-from gamestonk_terminal.paths import cd_CHOICES
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel
 
@@ -77,7 +76,6 @@ class TerminalController:
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: None for c in self.CHOICES}
-            choices["cd"] = {c: None for c in cd_CHOICES}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -124,7 +122,7 @@ Menus:
         # Empty command
         if not an_input:
             print("")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
         if "/" in an_input:
             actions = an_input.split("/")
@@ -153,7 +151,7 @@ Menus:
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_cd(self, other_args):
         """Process cd command"""
@@ -166,12 +164,12 @@ Menus:
             else:
                 self.queue.insert(0, args[0])
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
@@ -197,22 +195,22 @@ Menus:
     def call_update(self, _):
         """Process update command"""
         self.update_succcess = not update_terminal()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_keys(self, _):
         """Process keys command"""
         check_api_keys()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_about(self, _):
         """Process about command"""
         about_us()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_usage(self, _):
         """Process usage command"""
         usage_instructions()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     # MENUS
     def call_stocks(self, _):
@@ -359,11 +357,11 @@ def terminal(jobs_cmds: List[str] = None):
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        if "." in sys.argv[1]:
+        if ".gst" in sys.argv[1]:
             if os.path.isfile(sys.argv[1]):
                 with open(sys.argv[1]) as fp:
                     simulate_argv = f"/{'/'.join([line.rstrip() for line in fp])}"
-                    terminal(simulate_argv.split())
+                    terminal(simulate_argv.replace("//", "/cd/").split())
             else:
                 print(
                     f"The file '{sys.argv[1]}' doesn't exist. Launching terminal without any configuration.\n"

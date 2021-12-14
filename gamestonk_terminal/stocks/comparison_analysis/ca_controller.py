@@ -169,7 +169,7 @@ Finviz:
         # Empty command
         if not an_input:
             print("")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
         if "/" in an_input:
             actions = an_input.split("/")
@@ -198,7 +198,7 @@ Finviz:
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_cd(self, other_args):
         """Process cd command"""
@@ -219,7 +219,7 @@ Finviz:
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
@@ -284,7 +284,7 @@ Finviz:
                     self.ticker = ns_parser.ticker.upper()
             print("")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_tsne(self, other_args: List[str]):
@@ -332,7 +332,7 @@ Finviz:
             else:
                 print("You need to 'set' a ticker to get similar companies from first!")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_getfinviz(self, other_args: List[str]):
@@ -393,7 +393,7 @@ Finviz:
             else:
                 print("You need to 'set' a ticker to get similar companies from first!")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_getpoly(self, other_args: List[str]):
@@ -450,7 +450,7 @@ Finviz:
             else:
                 print("You need to 'set' a ticker to get similar companies from first!")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_getfinnhub(self, other_args: List[str]):
@@ -499,7 +499,7 @@ Finviz:
             else:
                 print("You need to 'set' a ticker to get similar companies from first!")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_add(self, other_args: List[str]):
@@ -530,7 +530,7 @@ Finviz:
 
             print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_rmv(self, other_args: List[str]):
@@ -570,7 +570,7 @@ Finviz:
             print("")
             self.user = "Custom"
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_set(self, other_args: List[str]):
@@ -597,7 +597,7 @@ Finviz:
             self.user = "Custom"
             print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_historical(self, other_args: List[str]):
@@ -654,7 +654,7 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_hcorr(self, other_args: List[str]):
@@ -698,7 +698,7 @@ Finviz:
             else:
                 print("Please make sure there are similar tickers selected. \n")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_income(self, other_args: List[str]):
@@ -740,7 +740,7 @@ Finviz:
                 quarter=ns_parser.b_quarter,
             )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_volume(self, other_args: List[str]):
@@ -776,7 +776,7 @@ Finviz:
             else:
                 print("Please make sure there are similar tickers selected. \n")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_balance(self, other_args: List[str]):
@@ -816,7 +816,7 @@ Finviz:
                 quarter=ns_parser.b_quarter,
             )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_cashflow(self, other_args: List[str]):
@@ -856,7 +856,7 @@ Finviz:
                 quarter=ns_parser.b_quarter,
             )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_sentiment(self, other_args: List[str]):
@@ -892,7 +892,7 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_scorr(self, other_args: List[str]):
@@ -926,7 +926,7 @@ Finviz:
             else:
                 print("Please make sure there are similar tickers selected. \n")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_overview(self, other_args: List[str]):
@@ -954,7 +954,7 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_valuation(self, other_args: List[str]):
@@ -982,7 +982,7 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_financial(self, other_args: List[str]):
@@ -1010,7 +1010,7 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_ownership(self, other_args: List[str]):
@@ -1038,7 +1038,7 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_performance(self, other_args: List[str]):
@@ -1066,7 +1066,7 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_technical(self, other_args: List[str]):
@@ -1094,7 +1094,7 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
@@ -1102,7 +1102,7 @@ Finviz:
             return po_controller.menu(self.similar, self.queue)
 
         print("Please make sure there are more than 1 similar tickers selected. \n")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
 
 def menu(

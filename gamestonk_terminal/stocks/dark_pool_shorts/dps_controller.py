@@ -134,7 +134,7 @@ NYSE:
         """
         if not an_input:
             print("")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
         if "/" in an_input:
             actions = an_input.split("/")
@@ -163,7 +163,7 @@ NYSE:
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_cd(self, other_args):
         """Process cd command"""
@@ -184,7 +184,7 @@ NYSE:
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
@@ -257,7 +257,7 @@ NYSE:
                 else:
                     self.ticker = ns_parser.ticker.upper()
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_shorted(self, other_args: List[str]):
@@ -288,7 +288,7 @@ NYSE:
                 export=ns_parser.export,
             )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_hsi(self, other_args: List[str]):
@@ -323,7 +323,7 @@ NYSE:
                 export=ns_parser.export,
             )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_prom(self, other_args: List[str]):
@@ -374,7 +374,7 @@ NYSE:
                 export=ns_parser.export,
             )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_pos(self, other_args: List[str]):
@@ -424,7 +424,7 @@ NYSE:
                 export=ns_parser.export,
             )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_sidtc(self, other_args: List[str]):
@@ -463,7 +463,7 @@ NYSE:
                 export=ns_parser.export,
             )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_dpotc(self, other_args: List[str]):
@@ -486,7 +486,7 @@ NYSE:
             else:
                 print("No ticker loaded.\n")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_ftd(self, other_args: List[str]):
@@ -547,7 +547,7 @@ NYSE:
             else:
                 print("No ticker loaded.\n")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_spos(self, other_args: List[str]):
@@ -587,7 +587,7 @@ NYSE:
             else:
                 print("No ticker loaded.\n")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_psi(self, other_args: List[str]):
@@ -651,7 +651,7 @@ NYSE:
             else:
                 print("No ticker loaded.\n")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_volexch(self, other_args: List[str]):
@@ -710,7 +710,7 @@ NYSE:
             else:
                 print("No ticker loaded.  Use `load ticker` first.")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
 
 def menu(

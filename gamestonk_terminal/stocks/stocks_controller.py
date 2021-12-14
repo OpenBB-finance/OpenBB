@@ -162,7 +162,7 @@ Stocks Menus:
         # Empty command
         if not an_input:
             print("")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
         if "/" in an_input:
             actions = an_input.split("/")
@@ -192,7 +192,7 @@ Stocks Menus:
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_cd(self, other_args):
         """Process cd command"""
@@ -207,12 +207,12 @@ Stocks Menus:
 
         self.queue.insert(0, "quit")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
@@ -366,7 +366,7 @@ Stocks Menus:
             self.start = ns_parser.start
             self.interval = f"{ns_parser.interval}min"
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_quote(self, other_args: List[str]):
         """Process quote command"""
@@ -472,7 +472,7 @@ Stocks Menus:
             else:
                 print("No ticker loaded. First use `load {ticker}`\n")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_news(self, other_args: List[str]):
