@@ -186,20 +186,20 @@ def display_dividends(ticker: str, num: int = 12, plot: bool = False, export: st
             plt.ion()
         fig.tight_layout()
         plt.show()
-
-    div_history.index = pd.to_datetime(div_history.index, format="%Y%m%d").strftime(
-        "%Y-%m-%d"
-    )
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                div_history.head(num),
-                tablefmt="fancy_grid",
-                headers=["Amount Paid ($)", "Change"],
-                floatfmt=".2f",
-            )
-        )
     else:
-        print(div_history.to_string())
+        div_history.index = pd.to_datetime(div_history.index, format="%Y%m%d").strftime(
+            "%Y-%m-%d"
+        )
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    div_history.head(num),
+                    tablefmt="fancy_grid",
+                    headers=["Amount Paid ($)", "Change"],
+                    floatfmt=".2f",
+                )
+            )
+        else:
+            print(div_history.to_string())
     print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "divs", div_history)
