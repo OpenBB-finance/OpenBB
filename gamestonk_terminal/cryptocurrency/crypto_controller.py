@@ -765,11 +765,12 @@ Crypto Menus:
             print(
                 "No coin loaded.  Please use `load <coin>` to access prediction menu\n."
             )
-            return
+            return self.queue
 
         if self.source != "cg":
             print("Currently only supports CoinGecko source.\n")
-            return
+            return self.queue
+
         if self.current_coin:
             from gamestonk_terminal.cryptocurrency.prediction_techniques import (
                 pred_controller,
@@ -778,18 +779,16 @@ Crypto Menus:
                 cryptocurrency_helpers as c_help,
             )
 
-            pred = pred_controller.menu(
+            return pred_controller.menu(
                 self.current_coin,
                 c_help.load_cg_coin_data(self.current_coin, "USD", 365, "1D"),
+                self.queue,
             )
-            if pred is False:
-                self.print_help()
-            else:
-                return True
         else:
             print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
             )
+            return self.queue
 
     def call_onchain(self, _):
         """Process onchain command"""
