@@ -1,5 +1,4 @@
 # IMPORTATION STANDARD
-from datetime import datetime
 
 # IMPORTATION THIRDPARTY
 import pytest
@@ -29,10 +28,8 @@ def test_upcoming_earning_release_dates():
 @pytest.mark.record_stdout
 def test_news():
     seeking_alpha_view.news(
-        news_type="trending",
         article_id=-1,
         num=2,
-        start_date=datetime.strptime("2020-12-10", "%Y-%m-%d"),
         export="",
     )
 

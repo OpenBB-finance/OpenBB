@@ -1,5 +1,4 @@
 # IMPORTATION STANDARD
-from datetime import datetime
 
 # IMPORTATION THIRDPARTY
 import pytest
@@ -19,13 +18,6 @@ def vcr_config():
 def test_get_next_earnings(recorder):
     df_earnings = seeking_alpha_model.get_next_earnings(1)
     recorder.capture(df_earnings)
-
-
-@pytest.mark.skip("Broken ?")
-@pytest.mark.vcr
-def test_get_article_list():
-    start_date = datetime.strptime("2020-12-10", "%Y-%m-%d")
-    seeking_alpha_model.get_article_list(start_date=start_date, num=2)
 
 
 @pytest.mark.vcr
