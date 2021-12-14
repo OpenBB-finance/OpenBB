@@ -30,7 +30,6 @@ from gamestonk_terminal.stocks.discovery import (
     geekofwallstreet_view,
     nasdaq_view,
 )
-from gamestonk_terminal.paths import cd_CHOICES
 
 
 # pylint:disable=C0302
@@ -126,7 +125,6 @@ class DiscoveryController:
         if session and gtff.USE_PROMPT_TOOLKIT:
 
             choices: dict = {c: {} for c in self.CHOICES}
-            choices["cd"] = {c: None for c in cd_CHOICES}
             choices["arkord"]["-s"] = {c: None for c in self.arkord_sortby_choices}
             choices["arkord"]["--sortby"] = {
                 c: None for c in self.arkord_sortby_choices

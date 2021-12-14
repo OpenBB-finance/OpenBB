@@ -32,7 +32,6 @@ from gamestonk_terminal.stocks.stocks_helper import (
     quote,
     process_candle,
 )
-from gamestonk_terminal.paths import cd_CHOICES
 
 from gamestonk_terminal.common.quantitative_analysis import qa_view
 
@@ -98,7 +97,6 @@ class StocksController:
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
-            choices["cd"] = {c: None for c in cd_CHOICES}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -171,6 +169,7 @@ Stocks Menus:
             an_input = actions[0]
             for cmd in actions[1:][::-1]:
                 if cmd:
+                    print(cmd)
                     self.queue.insert(0, cmd)
             if not an_input:
                 an_input = "quit"
