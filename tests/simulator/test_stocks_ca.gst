@@ -19,5 +19,5 @@ technical
 ticker -t tsla
 tsne
 getpoly
-finnhub
+getfinnhub
 getfinviz
