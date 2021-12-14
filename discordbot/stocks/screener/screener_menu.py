@@ -5,6 +5,7 @@ import discordbot.config_discordbot as cfg
 
 from discordbot.run_discordbot import gst_bot
 
+from discordbot.stocks.screener.presets import presets_command
 from discordbot.stocks.screener.historical import historical_command
 from discordbot.stocks.screener.overview import overview_command
 from discordbot.stocks.screener.valuation import valuation_command
@@ -19,6 +20,11 @@ class ScreenerCommands(discord.ext.commands.Cog):
 
     def __init__(self, bot: discord.ext.commands.Bot):
         self.bot = bot
+
+    @discord.ext.commands.command(name="stocks.scr.presets")
+    async def presets(self, ctx: discord.ext.commands.Context):
+        """Displays every available preset"""
+        await presets_command(ctx)
 
     @discord.ext.commands.command(name="stocks.scr.historical")
     async def historical(
@@ -196,13 +202,14 @@ class ScreenerCommands(discord.ext.commands.Cog):
             print("!stocks.scr")
 
         text = (
-            "0️⃣ !stocks.scr.historical <SIGNAL> <START>\n"
-            "1️⃣ !stocks.scr.overview <PRESET> <SORT> <LIMIT> <ASCEND>\n"
-            "2️⃣ !stocks.scr.valuation <PRESET> <SORT> <LIMIT> <ASCEND>\n"
-            "3️⃣ !stocks.scr.financial <PRESET> <SORT> <LIMIT> <ASCEND>\n"
-            "4️⃣ !stocks.scr.ownership <PRESET> <SORT> <LIMIT> <ASCEND>\n"
-            "5️⃣ !stocks.scr.performance <PRESET> <SORT> <LIMIT> <ASCEND>\n"
-            "6️⃣ !stocks.scr.technical <PRESET> <SORT> <LIMIT> <ASCEND>"
+            "0️⃣ !stocks.scr.presets\n"
+            "1️⃣ !stocks.scr.historical <SIGNAL> <START>\n"
+            "2️⃣ !stocks.scr.overview <PRESET> <SORT> <LIMIT> <ASCEND>\n"
+            "3️⃣ !stocks.scr.valuation <PRESET> <SORT> <LIMIT> <ASCEND>\n"
+            "4️⃣ !stocks.scr.financial <PRESET> <SORT> <LIMIT> <ASCEND>\n"
+            "5️⃣ !stocks.scr.ownership <PRESET> <SORT> <LIMIT> <ASCEND>\n"
+            "6️⃣ !stocks.scr.performance <PRESET> <SORT> <LIMIT> <ASCEND>\n"
+            "7️⃣ !stocks.scr.technical <PRESET> <SORT> <LIMIT> <ASCEND>"
         )
 
         title = "Screener Menu"
@@ -213,7 +220,7 @@ class ScreenerCommands(discord.ext.commands.Cog):
         )
         msg = await ctx.send(embed=embed)
 
-        emoji_list = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣"]
+        emoji_list = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣"]
 
         for emoji in emoji_list:
             await msg.add_reaction(emoji)
@@ -228,30 +235,34 @@ class ScreenerCommands(discord.ext.commands.Cog):
             if reaction.emoji == "0️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 0")
-                await overview_command(ctx)
+                await presets_command(ctx)
             elif reaction.emoji == "1️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 1")
-                await overview_command(ctx)
+                await historical_command(ctx)
             elif reaction.emoji == "2️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 2")
-                await valuation_command(ctx)
+                await overview_command(ctx)
             elif reaction.emoji == "3️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 3")
-                await financial_command(ctx)
+                await valuation_command(ctx)
             elif reaction.emoji == "4️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 4")
-                await ownership_command(ctx)
+                await financial_command(ctx)
             elif reaction.emoji == "5️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 5")
-                await performance_command(ctx)
+                await ownership_command(ctx)
             elif reaction.emoji == "6️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 6")
+                await performance_command(ctx)
+            elif reaction.emoji == "7️⃣":
+                if cfg.DEBUG:
+                    print("Reaction selected: 7")
                 await technical_command(ctx)
 
             for emoji in emoji_list:

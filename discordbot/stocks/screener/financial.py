@@ -87,7 +87,7 @@ async def financial_command(
                         cutoff=0.7,
                     )
                     if similar_cmd:
-                        description = f"Replacing '{' '.join(sort)}' by '{similar_cmd[0]}' so table can be sorted.\n"
+                        description = f"Replacing '{' '.join(sort)}' by '{similar_cmd[0]}' so table can be sorted.\n\n"
                         df_screen = df_screen.sort_values(
                             by=[similar_cmd[0]],
                             ascending=ascend,
@@ -99,46 +99,42 @@ async def financial_command(
                         )
 
             df_screen = df_screen.fillna("")
-            df_screen = df_screen.head(n=limit).to_string()
+            future_column_name = df_screen["Ticker"]
+            df_screen = df_screen.head(n=limit).transpose()
+            df_screen.columns = future_column_name
+            df_screen.drop("Ticker")
 
-            df_screen_str = description + df_screen
-
-            if len(df_screen_str) <= 4000:
-                embed = discord.Embed(
+            columns = []
+            initial_str = description + "Page 0: Overview"
+            i = 1
+            for column in df_screen.columns.values:
+                initial_str = initial_str + "\nPage " + str(i) + ": " + column
+                i += 1
+            columns.append(
+                discord.Embed(
                     title="Stocks: [Finviz] Financial Screener",
-                    description="```" + df_screen_str + "```",
+                    description=initial_str,
                     colour=cfg.COLOR,
-                )
-                embed.set_author(
+                ).set_author(
                     name=cfg.AUTHOR_NAME,
                     icon_url=cfg.AUTHOR_ICON_URL,
                 )
-
-                await ctx.send(embed=embed)
-
-            else:
-                i = 0
-                str_start = 0
-                str_end = 4000
-                columns = []
-                while i <= len(df_screen_str) / 4000:
-                    columns.append(
-                        discord.Embed(
-                            title="Stocks: [Finviz] Financial Screener",
-                            description="```"
-                            + df_screen_str[str_start:str_end]
-                            + "```",
-                            colour=cfg.COLOR,
-                        ).set_author(
-                            name=cfg.AUTHOR_NAME,
-                            icon_url=cfg.AUTHOR_ICON_URL,
-                        )
+            )
+            for column in df_screen.columns.values:
+                columns.append(
+                    discord.Embed(
+                        title="Stocks: [Finviz] Financial Screener",
+                        description="```"
+                        + df_screen[column].fillna("").to_string()
+                        + "```",
+                        colour=cfg.COLOR,
+                    ).set_author(
+                        name=cfg.AUTHOR_NAME,
+                        icon_url=cfg.AUTHOR_ICON_URL,
                     )
-                    str_end = str_start
-                    str_start += 4000
-                    i += 1
+                )
 
-                await pagination(columns, ctx)
+            await pagination(columns, ctx)
 
     except Exception as e:
         embed = discord.Embed(
