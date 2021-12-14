@@ -12,6 +12,7 @@ from binance.client import Client
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     get_flair,
     parse_known_args_and_warn,
     check_positive,
@@ -249,27 +250,26 @@ Crypto Menus:
 
                 ns_parser = parse_known_args_and_warn(parser, other_args)
 
-                if not ns_parser:
-                    self.current_coin, self.source = self.current_coin, None
-                    return
+                if ns_parser:
+                    source = ns_parser.source
 
-                source = ns_parser.source
+                    for arg in ["--source", source]:
+                        if arg in other_args:
+                            other_args.remove(arg)
 
-                for arg in ["--source", source]:
-                    if arg in other_args:
-                        other_args.remove(arg)
-
-                self.current_coin, self.source, self.symbol = load(
-                    coin=ns_parser.coin, source=ns_parser.source
-                )
+                    self.current_coin, self.source, self.symbol = load(
+                        coin=ns_parser.coin, source=ns_parser.source
+                    )
                 return self.queue if len(self.queue) > 0 else []
 
             except Exception as e:
                 print(e, "\n")
                 self.current_coin, self.source = self.current_coin, None
+                return self.queue
 
         except TypeError:
             print("Couldn't load data\n")
+            return self.queue
 
     def call_chart(self, other_args):
         """Process chart command"""
@@ -417,35 +417,35 @@ Crypto Menus:
             try:
                 ns_parser = parse_known_args_and_warn(parser, other_args)
 
-                if not ns_parser:
-                    return
+                if ns_parser:
+                    if self.source in ["bin", "cb"]:
+                        limit = ns_parser.limit
+                        interval = ns_parser.interval
+                        days = 0
+                    else:
+                        limit = 0
+                        interval = "1day"
+                        days = ns_parser.days
 
-                if self.source in ["bin", "cb"]:
-                    limit = ns_parser.limit
-                    interval = ns_parser.interval
-                    days = 0
-                else:
-                    limit = 0
-                    interval = "1day"
-                    days = ns_parser.days
-
-                plot_chart(
-                    coin=self.current_coin,
-                    limit=limit,
-                    interval=interval,
-                    days=days,
-                    currency=ns_parser.vs,
-                    source=self.source,
-                )
+                    plot_chart(
+                        coin=self.current_coin,
+                        limit=limit,
+                        interval=interval,
+                        days=days,
+                        currency=ns_parser.vs,
+                        source=self.source,
+                    )
                 return self.queue if len(self.queue) > 0 else []
 
             except Exception as e:
                 print(e, "\n")
+                return self.queue
 
         else:
             print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
             )
+            return self.queue
 
     @try_except
     def call_ta(self, other_args):
@@ -729,23 +729,17 @@ Crypto Menus:
             choices=finbrain_crypto_view.COINS,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-c")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-
-        if not ns_parser:
-            return
-
-        finbrain_crypto_view.display_crypto_sentiment_analysis(
-            coin=ns_parser.coin, export=ns_parser.export
-        )
+        if ns_parser:
+            finbrain_crypto_view.display_crypto_sentiment_analysis(
+                coin=ns_parser.coin, export=ns_parser.export
+            )
         return self.queue if len(self.queue) > 0 else []
 
     def call_dd(self, _):
@@ -854,30 +848,21 @@ Crypto Menus:
             type=str,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-
         if other_args:
             if not other_args[0][0] == "-":
                 other_args.insert(0, "-c")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
-
-        find(
-            coin=ns_parser.coin,
-            source=ns_parser.source,
-            key=ns_parser.key,
-            top=ns_parser.limit,
-            export=ns_parser.export,
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            find(
+                coin=ns_parser.coin,
+                source=ns_parser.source,
+                key=ns_parser.key,
+                top=ns_parser.limit,
+                export=ns_parser.export,
+            )
         return self.queue if len(self.queue) > 0 else []
 
 
