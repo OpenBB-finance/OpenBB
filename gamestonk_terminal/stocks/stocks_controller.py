@@ -46,7 +46,7 @@ class StocksController:
 
     CHOICES = [
         "cls",
-        "cd",
+        "home",
         "h",
         "?",
         "help",
@@ -158,25 +158,30 @@ Stocks Menus:
         List[str]
             List of commands in the queue to execute
         """
-
         # Empty command
         if not an_input:
             print("")
             return self.queue
 
+        # Navigation slash is being used
         if "/" in an_input:
             actions = an_input.split("/")
-            an_input = actions[0]
-            for cmd in actions[1:][::-1]:
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[::-1]:
                 if cmd:
-                    print(cmd)
                     self.queue.insert(0, cmd)
-            if not an_input:
-                an_input = "quit"
-                self.queue.insert(0, "quit")
 
         (known_args, other_args) = self.stocks_parser.parse_known_args(an_input.split())
 
+        # Redirect commands to their correct functions
         if known_args.cmd:
             if known_args.cmd in ("..", "q"):
                 known_args.cmd = "quit"
@@ -194,19 +199,9 @@ Stocks Menus:
         system_clear()
         return self.queue
 
-    def call_cd(self, other_args):
-        """Process cd command"""
-        if other_args:
-            args = other_args[0].split("/")
-            if len(args) > 0:
-                for m in args[::-1]:
-                    if m:
-                        self.queue.insert(0, m)
-            else:
-                self.queue.insert(0, args[0])
-
+    def call_home(self, _):
+        """Process home command"""
         self.queue.insert(0, "quit")
-
         return self.queue
 
     def call_help(self, _):
@@ -233,12 +228,11 @@ Stocks Menus:
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "stocks")
-            self.queue.insert(0, "r")
+            self.queue.insert(0, "reset")
             self.queue.insert(0, "quit")
             return self.queue
         return ["quit", "r", "stocks"]
 
-    # COMMANDS
     @try_except
     def call_search(self, other_args: List[str]):
         """Process search command"""
@@ -789,21 +783,27 @@ def menu(ticker: str = "", queue: List[str] = None):
     while True:
         # There is a command in the queue
         if stocks_controller.queue and len(stocks_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
             if stocks_controller.queue[0] in ("q", "..", "quit"):
                 if len(stocks_controller.queue) > 1:
                     return stocks_controller.queue[1:]
                 return []
 
+            # Consume 1 element from the queue
             an_input = stocks_controller.queue[0]
             stocks_controller.queue = stocks_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input in stocks_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /stocks/ $ {an_input}")
 
         # Get input command from user
         else:
-            if an_input == "HELP_ME" or an_input in stocks_controller.CHOICES_MENUS:
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
                 stocks_controller.print_help()
 
+            # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and stocks_controller.completer:
                 an_input = session.prompt(
                     f"{get_flair()} /stocks/ $ ",
@@ -811,14 +811,18 @@ def menu(ticker: str = "", queue: List[str] = None):
                     search_ignore_case=True,
                 )
 
+            # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /stocks/ $ ")
 
         try:
+            # Process the input command
             stocks_controller.queue = stocks_controller.switch(an_input)
 
         except SystemExit:
-            print(f"\nThe command '{an_input}' doesn't exist.", end="")
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks menu.", end=""
+            )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 stocks_controller.CHOICES,

@@ -227,7 +227,6 @@ NASDAQ Data Link (Formerly Quandl):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-
         return self.queue
 
     def call_help(self, _):
@@ -256,11 +255,11 @@ NASDAQ Data Link (Formerly Quandl):
         if len(self.queue) > 0:
             self.queue.insert(0, "disc")
             self.queue.insert(0, "stocks")
-            self.queue.insert(0, "r")
+            self.queue.insert(0, "reset")
             self.queue.insert(0, "quit")
             self.queue.insert(0, "quit")
             return self.queue
-        return ["quit", "quit", "r", "stocks", "disc"]
+        return ["quit", "quit", "reset", "stocks", "disc"]
 
     @try_except
     def call_rtearn(self, other_args: List[str]):

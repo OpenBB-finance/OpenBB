@@ -34,7 +34,6 @@ class TerminalController:
 
     CHOICES = [
         "cls",
-        "cd",
         "h",
         "?",
         "help",
@@ -124,15 +123,21 @@ Menus:
             print("")
             return self.queue
 
+        # Navigation slash is being used
         if "/" in an_input:
             actions = an_input.split("/")
-            an_input = actions[0]
-            for cmd in actions[1:][::-1]:
+
+            # Absolute path is specified. Since we are already in home we can pick up the first instruction
+            if not actions[0]:
+                an_input = actions[1]
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
-            if not an_input:
-                an_input = "quit"
-                self.queue.insert(0, "quit")
 
         (known_args, other_args) = self.t_parser.parse_known_args(an_input.split())
 
@@ -151,19 +156,6 @@ Menus:
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
-
-    def call_cd(self, other_args):
-        """Process cd command"""
-        if other_args:
-            args = other_args[0].split("/")
-            if len(args) > 0:
-                for m in args[::-1]:
-                    if m:
-                        self.queue.insert(0, m)
-            else:
-                self.queue.insert(0, args[0])
-
         return self.queue
 
     def call_help(self, _):
@@ -264,7 +256,6 @@ Menus:
 
 def terminal(jobs_cmds: List[str] = None):
     """Terminal Menu"""
-
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
     an_input = ""
@@ -280,38 +271,39 @@ def terminal(jobs_cmds: List[str] = None):
 
         # There is a command in the queue
         if t_controller.queue and len(t_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
             if t_controller.queue[0] in ("q", "..", "quit"):
                 if len(t_controller.queue) > 1:
                     return t_controller.queue[1:]
                 return []
 
+            # Consume 1 element from the queue
             an_input = t_controller.queue[0]
             t_controller.queue = t_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input in t_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} / $ {an_input}")
 
         # Get input command from user
         else:
+            # Display help menu when entering on this menu from a level above
             if not an_input:
                 t_controller.print_help()
 
+            # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT:
                 an_input = session.prompt(
                     f"{get_flair()} / $ ",
                     completer=t_controller.completer,
                     search_ignore_case=True,
                 )
-
+            # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} / $ ")
 
-        # Is command empty
-        if not an_input:
-            print("")
-            continue
-
-        # Process list of commands selected by user
         try:
+            # Process the input command
             t_controller.queue = t_controller.switch(an_input)
 
             if an_input in ("q", "..", "exit"):
@@ -329,7 +321,7 @@ def terminal(jobs_cmds: List[str] = None):
                     break
 
         except SystemExit:
-            print(f"\nThe command '{an_input}' doesn't exist.", end="")
+            print(f"\nThe command '{an_input}' doesn't exist on the / menu", end="")
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 t_controller.CHOICES,
@@ -361,7 +353,7 @@ if __name__ == "__main__":
             if os.path.isfile(sys.argv[1]):
                 with open(sys.argv[1]) as fp:
                     simulate_argv = f"/{'/'.join([line.rstrip() for line in fp])}"
-                    terminal(simulate_argv.replace("//", "/cd/").split())
+                    terminal(simulate_argv.replace("//", "/home/").split())
             else:
                 print(
                     f"The file '{sys.argv[1]}' doesn't exist. Launching terminal without any configuration.\n"

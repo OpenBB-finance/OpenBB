@@ -43,7 +43,7 @@ class ComparisonAnalysisController:
 
     CHOICES = [
         "cls",
-        "cd",
+        "home",
         "h",
         "?",
         "help",
@@ -171,18 +171,25 @@ Finviz:
             print("")
             return self.queue
 
+        # Navigation slash is being used
         if "/" in an_input:
             actions = an_input.split("/")
-            an_input = actions[0]
-            for cmd in actions[1:][::-1]:
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
-            if not an_input:
-                an_input = "quit"
-                self.queue.insert(0, "quit")
 
         (known_args, other_args) = self.ca_parser.parse_known_args(an_input.split())
 
+        # Redirect commands to their correct functions
         if known_args.cmd:
             if known_args.cmd in ("..", "q"):
                 known_args.cmd = "quit"
@@ -200,20 +207,10 @@ Finviz:
         system_clear()
         return self.queue
 
-    def call_cd(self, other_args):
-        """Process cd command"""
-        if other_args and "-" not in other_args[0]:
-            args = other_args[0].split("/")
-            if len(args) > 0:
-                for m in args[::-1]:
-                    if m:
-                        self.queue.insert(0, m)
-            else:
-                self.queue.insert(0, args[0])
-
+    def call_home(self, _):
+        """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-
         return self.queue
 
     def call_help(self, _):
@@ -235,20 +232,19 @@ Finviz:
             self.queue.insert(0, "quit")
             self.queue.insert(0, "quit")
             self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
             return self.queue
-        return ["quit", "quit", "quit", "quit"]
+        return ["quit", "quit", "quit"]
 
     def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "disc")
+            self.queue.insert(0, "ca")
             self.queue.insert(0, "stocks")
-            self.queue.insert(0, "r")
+            self.queue.insert(0, "reset")
             self.queue.insert(0, "quit")
             self.queue.insert(0, "quit")
             return self.queue
-        return ["quit", "quit", "r", "stocks", "disc"]
+        return ["quit", "quit", "reset", "stocks", "ca"]
 
     @try_except
     def call_ticker(self, other_args: List[str]):
@@ -1117,7 +1113,9 @@ def menu(
     while True:
         # There is a command in the queue
         if ca_controller.queue and len(ca_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
             if ca_controller.queue[0] in ("q", "..", "quit"):
+                # Since we came from another menu we need to quit an additional time
                 if from_submenu:
                     ca_controller.queue.insert(0, "quit")
                     from_submenu = False
@@ -1126,16 +1124,21 @@ def menu(
                     return ca_controller.queue[1:]
                 return []
 
+            # Consume 1 element from the queue
             an_input = ca_controller.queue[0]
             ca_controller.queue = ca_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input in ca_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /stocks/ca/ $ {an_input}")
 
         # Get input command from user
         else:
-            if an_input == "HELP_ME" or an_input in ca_controller.CHOICES_MENUS:
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
                 ca_controller.print_help()
 
+            # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and ca_controller.completer:
                 an_input = session.prompt(
                     f"{get_flair()} /stocks/ca/ $ ",
@@ -1143,20 +1146,19 @@ def menu(
                     search_ignore_case=True,
                 )
 
+            # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /stocks/ca/ $ ")
 
         try:
-            if from_submenu:
-                if an_input in ("q", "..", "quit"):
-                    pass
-                    # print("here")
-                    # ca_controller.queue.insert(0, "quit")
-                    # from_submenu = False
+            # Process the input command
             ca_controller.queue = ca_controller.switch(an_input)
 
         except SystemExit:
-            print(f"\nThe command '{an_input}' doesn't exist.", end="")
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/ca menu.",
+                end="",
+            )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 ca_controller.CHOICES,
