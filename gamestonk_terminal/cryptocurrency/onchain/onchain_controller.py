@@ -93,8 +93,8 @@ class OnchainController:
             "cmd",
             choices=self.CHOICES,
         )
-        self.address = None
-        self.address_type = None
+        self.address = ""
+        self.address_type = ""
 
         self.completer: Union[None, NestedCompleter] = None
         if session and gtff.USE_PROMPT_TOOLKIT:
@@ -555,7 +555,7 @@ class OnchainController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if ns_parser or self.address:
+        if ns_parser and self.address:
             ethplorer_view.display_top_token_holders(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
@@ -1405,19 +1405,16 @@ Ethereum [Ethplorer]:
     address         load ethereum address of token, account or transaction
     top             top ERC20 tokens"""
 
-        # if self.address_type == "account":
         help_text += f"""{Style.DIM if self.address_type != "account" else ""}
     balance         check ethereum balance
     hist            ethereum balance history (transactions){Style.RESET_ALL if self.address_type != "account" else ""}"""
 
-        # if self.address_type == "token":
         help_text += f"""{Style.DIM if self.address_type != "token" else ""}
     info            ERC20 token info
     holders         top ERC20 token holders
     th              ERC20 token history
     prices          ERC20 token historical prices{Style.RESET_ALL if self.address_type != "token" else ""}"""
 
-        # if self.address_type == "tx":
         help_text += f"""{Style.DIM if self.address_type != "tx" else ""}
     tx              ethereum blockchain transaction info{Style.RESET_ALL if self.address_type != "tx" else ""}"""
 
