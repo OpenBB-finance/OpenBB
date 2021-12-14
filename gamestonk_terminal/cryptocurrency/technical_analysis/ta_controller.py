@@ -3,7 +3,8 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 
 import argparse
-from typing import List
+import difflib
+from typing import List, Union
 from datetime import datetime
 from colorama import Style
 
@@ -12,6 +13,7 @@ from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     get_flair,
     parse_known_args_and_warn,
     check_positive_list,
@@ -35,7 +37,20 @@ class TechnicalAnalysisController:
     """Technical Analysis Controller class"""
 
     # Command choices
-    CHOICES = ["cls", "?", "help", "q", "quit"]
+    CHOICES = [
+        "cls",
+        "cd",
+        "h",
+        "?",
+        "help",
+        "q",
+        "quit",
+        "..",
+        "exit",
+        "r",
+        "reset",
+    ]
+
     CHOICES_COMMANDS = [
         "ema",
         "sma",
@@ -64,38 +79,46 @@ class TechnicalAnalysisController:
         start: datetime,
         interval: str,
         stock: pd.DataFrame,
+        queue: List[str] = None,
     ):
         """Constructor"""
+        self.ta_parser = argparse.ArgumentParser(add_help=False, prog="ta")
+        self.ta_parser.add_argument(
+            "cmd",
+            choices=self.CHOICES,
+        )
+        self.completer: Union[None, NestedCompleter] = None
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
+
         self.ticker = ticker
         self.start = start
         self.interval = interval
         self.stock = stock
         self.stock["Adj Close"] = stock["Close"]
 
-        self.ta_parser = argparse.ArgumentParser(add_help=False, prog="ta")
-        self.ta_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-
     def print_help(self):
         """Print help"""
-        s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
+        s_intraday = (f"Interval: Intraday {self.interval}", "Daily")[
+            self.interval == "1440min"
+        ]
         if self.start:
-            stock_str = f"\n{s_intraday} Crypto: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            crypto_str = f"{s_intraday}\nCrypto: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            stock_str = f"\n{s_intraday} Crypto: {self.ticker}"
+            crypto_str = f"{s_intraday}\nCrypto: {self.ticker}"
 
         dim = Style.DIM if "Volume" not in self.stock else ""
         not_dim = Style.RESET_ALL if "Volume" not in self.stock else ""
         help_str = f"""
-{stock_str}
-
 Technical Analysis:
-    cls         clear screen
-    help        show this menu again
-    q           quit this menu, and shows back to main menu
-    quit        quit to abandon program
+
+{crypto_str}
 
 Overlap:
     ema         exponential moving average
@@ -126,46 +149,95 @@ Custom:
     def switch(self, an_input: str):
         """Process and dispatch input
 
+        Parameters
+        -------
+        an_input : str
+            string with input arguments
+
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
 
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue if len(self.queue) > 0 else []
+
+        if "/" in an_input:
+            actions = an_input.split("/")
+            an_input = actions[0]
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.ta_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+        if known_args.cmd:
+            if known_args.cmd in ("..", "quit"):
+                known_args.cmd = "q"
+            elif known_args.cmd == "?":
+                known_args.cmd = "h"
+            elif known_args.cmd == "reset":
+                known_args.cmd = "r"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
         )(other_args)
 
-    def call_help(self, _):
-        """Process Help command"""
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue if len(self.queue) > 0 else []
+
+    def call_cd(self, other_args):
+        """Process cd command"""
+        if other_args and "-" not in other_args[0]:
+            args = other_args[0].split("/")
+            if len(args) > 0:
+                for m in args[::-1]:
+                    if m:
+                        self.queue.insert(0, m)
+            else:
+                self.queue.insert(0, args[0])
+
+        self.queue.insert(0, "q")
+        self.queue.insert(0, "q")
+
+        return self.queue
+
+    def call_h(self, _):
+        """Process help command"""
         self.print_help()
+        return self.queue if len(self.queue) > 0 else []
 
     def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return False
+        """Process quit menu command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q"]
 
-    def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q", "q", "q"]
+
+    def call_r(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "ta")
+            self.queue.insert(0, "crypto")
+            self.queue.insert(0, "r")
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q", "q", "r", "crypto", "ta"]
 
     # TODO: Go through all models and make sure all needed columns are in dfs
     @try_except
@@ -207,32 +279,24 @@ Custom:
             help="offset",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-
         if other_args:
             if "-" not in other_args[0]:
                 other_args.insert(0, "-l")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        overlap_view.view_ma(
-            ma_type="EMA",
-            s_ticker=self.ticker,
-            s_interval=self.interval,
-            df_stock=self.stock,
-            length=ns_parser.n_length,
-            offset=ns_parser.n_offset,
-            export=ns_parser.export,
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            overlap_view.view_ma(
+                ma_type="EMA",
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                offset=ns_parser.n_offset,
+                export=ns_parser.export,
+            )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_sma(self, other_args: List[str]):
@@ -272,31 +336,23 @@ Custom:
             help="offset",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-
         if other_args:
             if "-" not in other_args[0]:
                 other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        overlap_view.view_ma(
-            ma_type="SMA",
-            s_ticker=self.ticker,
-            s_interval=self.interval,
-            df_stock=self.stock,
-            length=ns_parser.n_length,
-            offset=ns_parser.n_offset,
-            export=ns_parser.export,
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            overlap_view.view_ma(
+                ma_type="SMA",
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                offset=ns_parser.n_offset,
+                export=ns_parser.export,
+            )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_zlma(self, other_args: List[str]):
@@ -336,32 +392,24 @@ Custom:
             help="offset",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-
         if other_args:
             if "-" not in other_args[0]:
                 other_args.insert(0, "-l")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        overlap_view.view_ma(
-            ma_type="ZLMA",
-            s_ticker=self.ticker,
-            s_interval=self.interval,
-            df_stock=self.stock,
-            length=ns_parser.n_length,
-            offset=ns_parser.n_offset,
-            export=ns_parser.export,
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            overlap_view.view_ma(
+                ma_type="ZLMA",
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                offset=ns_parser.n_offset,
+                export=ns_parser.export,
+            )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_vwap(self, other_args: List[str]):
@@ -386,30 +434,21 @@ Custom:
             help="offset",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        # Daily
-        if self.interval == "1440min":
-            print("VWAP should be used with intraday data. \n")
-            return
-
-        overlap_view.view_vwap(
-            s_ticker=self.ticker,
-            s_interval=self.interval,
-            df_stock=self.stock,
-            offset=ns_parser.n_offset,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            if self.interval == "1440min":
+                print("VWAP should be used with intraday data.\n")
+                return self.queue if len(self.queue) > 0 else []
+            overlap_view.view_vwap(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                offset=ns_parser.n_offset,
+                export=ns_parser.export,
+            )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_cci(self, other_args: List[str]):
@@ -448,27 +487,19 @@ Custom:
             help="scalar",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        momentum_view.plot_cci(
-            s_ticker=self.ticker,
-            s_interval=self.interval,
-            df_stock=self.stock,
-            length=ns_parser.n_length,
-            scalar=ns_parser.n_scalar,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            momentum_view.plot_cci(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                scalar=ns_parser.n_scalar,
+                export=ns_parser.export,
+            )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_macd(self, other_args: List[str]):
@@ -519,28 +550,20 @@ Custom:
             help="The signal period.",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        momentum_view.view_macd(
-            s_ticker=self.ticker,
-            s_interval=self.interval,
-            df_stock=self.stock,
-            n_fast=ns_parser.n_fast,
-            n_slow=ns_parser.n_slow,
-            n_signal=ns_parser.n_signal,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            momentum_view.view_macd(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                n_fast=ns_parser.n_fast,
+                n_slow=ns_parser.n_slow,
+                n_signal=ns_parser.n_signal,
+                export=ns_parser.export,
+            )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_rsi(self, other_args: List[str]):
@@ -588,28 +611,20 @@ Custom:
             help="drift",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        momentum_view.view_rsi(
-            s_ticker=self.ticker,
-            s_interval=self.interval,
-            df_stock=self.stock,
-            length=ns_parser.n_length,
-            scalar=ns_parser.n_scalar,
-            drift=ns_parser.n_drift,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            momentum_view.view_rsi(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                scalar=ns_parser.n_scalar,
+                drift=ns_parser.n_drift,
+                export=ns_parser.export,
+            )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_stoch(self, other_args: List[str]):
@@ -657,27 +672,20 @@ Custom:
             help="The time period of the slowk moving average",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        momentum_view.view_stoch(
-            s_ticker=self.ticker,
-            s_interval=self.interval,
-            df_stock=self.stock,
-            fastkperiod=ns_parser.n_fastkperiod,
-            slowdperiod=ns_parser.n_slowdperiod,
-            slowkperiod=ns_parser.n_slowkperiod,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            momentum_view.view_stoch(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                fastkperiod=ns_parser.n_fastkperiod,
+                slowdperiod=ns_parser.n_slowdperiod,
+                slowkperiod=ns_parser.n_slowkperiod,
+                export=ns_parser.export,
+            )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_fisher(self, other_args: List[str]):
@@ -705,26 +713,18 @@ Custom:
             help="length",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        momentum_view.view_fisher(
-            s_ticker=self.ticker,
-            s_interval=self.interval,
-            df_stock=self.stock,
-            length=ns_parser.n_length,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            momentum_view.view_fisher(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                export=ns_parser.export,
+            )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_cg(self, other_args: List[str]):
@@ -752,25 +752,18 @@ Custom:
             help="length",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        momentum_view.view_cg(
-            s_ticker=self.ticker,
-            s_interval=self.interval,
-            df_stock=self.stock,
-            length=ns_parser.n_length,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            momentum_view.view_cg(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                export=ns_parser.export,
+            )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_adx(self, other_args: List[str]):
@@ -816,28 +809,20 @@ Custom:
             help="drift",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        trend_indicators_view.plot_adx(
-            s_ticker=self.ticker,
-            s_interval=self.interval,
-            df_stock=self.stock,
-            length=ns_parser.n_length,
-            scalar=ns_parser.n_scalar,
-            drift=ns_parser.n_drift,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            trend_indicators_view.plot_adx(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                scalar=ns_parser.n_scalar,
+                drift=ns_parser.n_drift,
+                export=ns_parser.export,
+            )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_aroon(self, other_args: List[str]):
@@ -890,27 +875,19 @@ Custom:
             help="offset",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        trend_indicators_view.plot_aroon(
-            s_ticker=self.ticker,
-            s_interval=self.interval,
-            df_stock=self.stock,
-            length=ns_parser.n_length,
-            scalar=ns_parser.n_scalar,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            trend_indicators_view.plot_aroon(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                scalar=ns_parser.n_scalar,
+                export=ns_parser.export,
+            )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_bbands(self, other_args: List[str]):
@@ -962,27 +939,20 @@ Custom:
             help="mamode",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        volatility_view.view_bbands(
-            ticker=self.ticker,
-            s_interval=self.interval,
-            df_stock=self.stock,
-            length=ns_parser.n_length,
-            n_std=ns_parser.n_std,
-            mamode=ns_parser.s_mamode,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            volatility_view.view_bbands(
+                ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                n_std=ns_parser.n_std,
+                mamode=ns_parser.s_mamode,
+                export=ns_parser.export,
+            )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_donchian(self, other_args: List[str]):
@@ -1021,26 +991,19 @@ Custom:
             help="length",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        volatility_view.view_donchian(
-            ticker=self.ticker,
-            s_interval=self.interval,
-            df_stock=self.stock,
-            upper_length=ns_parser.n_length_upper,
-            lower_length=ns_parser.n_length_lower,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            volatility_view.view_donchian(
+                ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                upper_length=ns_parser.n_length_upper,
+                lower_length=ns_parser.n_length_lower,
+                export=ns_parser.export,
+            )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_ad(self, other_args: List[str]):
@@ -1071,26 +1034,18 @@ Custom:
             help="uses open value of stock",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        volume_view.plot_ad(
-            s_ticker=self.ticker,
-            s_interval=self.interval,
-            df_stock=self.stock,
-            use_open=ns_parser.b_use_open,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            volume_view.plot_ad(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                use_open=ns_parser.b_use_open,
+                export=ns_parser.export,
+            )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_obv(self, other_args: List[str]):
@@ -1110,25 +1065,17 @@ Custom:
             """,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        volume_view.plot_obv(
-            s_ticker=self.ticker,
-            s_interval=self.interval,
-            df_stock=self.stock,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            volume_view.plot_obv(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                export=ns_parser.export,
+            )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_fib(self, other_args: List[str]):
@@ -1165,54 +1112,76 @@ Custom:
             required="--start" in other_args,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        custom_indicators_view.fibonacci_retracement(
-            s_ticker=self.ticker,
-            df_stock=self.stock,
-            period=ns_parser.period,
-            start_date=ns_parser.start,
-            end_date=ns_parser.end,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            custom_indicators_view.fibonacci_retracement(
+                s_ticker=self.ticker,
+                df_stock=self.stock,
+                period=ns_parser.period,
+                start_date=ns_parser.start,
+                end_date=ns_parser.end,
+                export=ns_parser.export,
+            )
+        return self.queue if len(self.queue) > 0 else []
 
 
-def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):
+def menu(
+    ticker: str,
+    start: datetime,
+    interval: str,
+    stock: pd.DataFrame,
+    queue: List[str] = None,
+):
     """Technical Analysis Menu"""
-
-    ta_controller = TechnicalAnalysisController(ticker, start, interval, stock)
-    ta_controller.call_help(None)
+    ta_controller = TechnicalAnalysisController(ticker, start, interval, stock, queue)
+    an_input = "HELP_ME"
 
     while True:
+        # There is a command in the queue
+        if ta_controller.queue and len(ta_controller.queue) > 0:
+            if ta_controller.queue[0] in ("q", ".."):
+                if len(ta_controller.queue) > 1:
+                    return ta_controller.queue[1:]
+                return []
+
+            an_input = ta_controller.queue[0]
+            ta_controller.queue = ta_controller.queue[1:]
+            if an_input and an_input in ta_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /crypto/ta/ $ {an_input}")
+
         # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in ta_controller.CHOICES}
-            )
-            an_input = session.prompt(
-                f"{get_flair()} (crypto)>(ta)> ",
-                completer=completer,
-            )
         else:
-            an_input = input(f"{get_flair()} (crypto)>(ta)> ")
+            if an_input == "HELP_ME" or an_input in ta_controller.CHOICES:
+                ta_controller.print_help()
+
+            if session and gtff.USE_PROMPT_TOOLKIT and ta_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /crypto/ta/ $ ",
+                    completer=ta_controller.completer,
+                    search_ignore_case=True,
+                )
+
+            else:
+                an_input = input(f"{get_flair()} /crypto/ta/ $ ")
 
         try:
-            process_input = ta_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            ta_controller.queue = ta_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            continue
+            print(f"\nThe command '{an_input}' doesn't exist.", end="")
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                ta_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
+            if similar_cmd:
+                if " " in an_input:
+                    an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                else:
+                    an_input = similar_cmd[0]
+                print(f" Replacing by '{an_input}'.")
+                ta_controller.queue.insert(0, an_input)
+            print("\n")

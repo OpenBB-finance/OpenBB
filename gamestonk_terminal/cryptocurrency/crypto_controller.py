@@ -447,6 +447,7 @@ Crypto Menus:
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
             )
 
+    @try_except
     def call_ta(self, other_args):
         """Process ta command"""
         from gamestonk_terminal.cryptocurrency.technical_analysis import ta_controller
@@ -565,7 +566,7 @@ Crypto Menus:
                         print(
                             f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
                         )
-                        return
+                        return self.queue
 
                     parser.add_argument(
                         "--vs",
@@ -613,7 +614,7 @@ Crypto Menus:
                     print(
                         f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
                     )
-                    return
+                    return self.queue
 
                 parser.add_argument(
                     "--vs",
@@ -646,53 +647,49 @@ Crypto Menus:
             try:
                 ns_parser = parse_known_args_and_warn(parser, other_args)
 
-                if not ns_parser:
-                    return
+                if ns_parser:
+                    if self.source in ["bin", "cb"]:
+                        limit = ns_parser.limit
+                        interval = ns_parser.interval
+                        days = 0
+                    else:
+                        limit = 0
+                        interval = "1day"
+                        days = ns_parser.days
 
-                if self.source in ["bin", "cb"]:
-                    limit = ns_parser.limit
-                    interval = ns_parser.interval
-                    days = 0
-                else:
-                    limit = 0
-                    interval = "1day"
-                    days = ns_parser.days
-
-                self.current_df, self.current_currency = load_ta_data(
-                    coin=self.current_coin,
-                    source=self.source,
-                    currency=ns_parser.vs,
-                    days=days,
-                    limit=limit,
-                    interval=interval,
-                )
+                    self.current_df, self.current_currency = load_ta_data(
+                        coin=self.current_coin,
+                        source=self.source,
+                        currency=ns_parser.vs,
+                        days=days,
+                        limit=limit,
+                        interval=interval,
+                    )
 
             except Exception as e:
                 print(e, "\n")
+                return self.queue
 
             if self.current_currency != "" and not self.current_df.empty:
                 try:
-                    quit = ta_controller.menu(
+                    return ta_controller.menu(
                         stock=self.current_df,
                         ticker=self.current_coin,
                         start=self.current_df.index[0],
                         interval="",
+                        queue=self.queue,
                     )
-                    print("")
-                    if quit is not None:
-                        if quit is True:
-                            return quit
-                        self.print_help()
-
                 except (ValueError, KeyError) as e:
                     print(e)
+                    return self.queue
             else:
-                return
+                return self.queue
 
         else:
             print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
             )
+            return self.queue
 
     def call_disc(self, _):
         """Process disc command"""
