@@ -1,5 +1,5 @@
 ```
-usage: ueat [-t TOP]
+usage: ueat [-l N]
             [-s {date,uniqueSenders,transactions,averageGasPrice,mediumGasPrice,maximumGasPrice}]
             [-i {day,month,week}] [--descend] [-h] [--export {csv,json,xlsx}]
 ```
@@ -9,7 +9,7 @@ time interval [Source: https://graphql.bitquery.io/]
 
 ```
 optional arguments:
-  -t TOP, --top TOP     top N number records. (Maximum available time period
+  -l N, --limit N     display N number records. (Maximum available time period
                         is 90 days.Depending on chosen time period, top N
                         records will be recalculated. E.g.For interval: month,
                         and top: 10, period of calculation equals to 300, but

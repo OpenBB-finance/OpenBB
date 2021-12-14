@@ -802,12 +802,7 @@ Crypto Menus:
         """Process onchain command"""
         from gamestonk_terminal.cryptocurrency.onchain import onchain_controller
 
-        ret = onchain_controller.menu()
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return onchain_controller.menu(queue=self.queue)
 
     def call_nft(self, _):
         """Process nft command"""

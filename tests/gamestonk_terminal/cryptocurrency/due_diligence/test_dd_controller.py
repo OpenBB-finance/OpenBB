@@ -2,9 +2,13 @@
 import unittest
 
 import vcr
+import pytest
 
 from gamestonk_terminal.cryptocurrency.due_diligence import dd_controller
 from tests.helpers.helpers import check_print
+
+
+pytest.skip(allow_module_level=True)
 
 
 class TestDDController(unittest.TestCase):
