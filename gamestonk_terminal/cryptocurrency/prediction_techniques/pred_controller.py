@@ -39,7 +39,7 @@ class PredictionTechniquesController:
     # Command choices
     CHOICES = [
         "cls",
-        "cd",
+        "home",
         "h",
         "?",
         "help",
@@ -101,7 +101,7 @@ class PredictionTechniquesController:
         """Print help"""
 
         help_string = f"""
-Prediction Techniques:
+Prediction Menu:
 
 Coin Loaded: {self.coin}
 Target Column: {self.target}
@@ -136,24 +136,34 @@ Models:
         # Empty command
         if not an_input:
             print("")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
+        # Navigation slash is being used
         if "/" in an_input:
             actions = an_input.split("/")
-            an_input = actions[0]
-            for cmd in actions[1:][::-1]:
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.pred_parser.parse_known_args(an_input.split())
 
+        # Redirect commands to their correct functions
         if known_args.cmd:
-            if known_args.cmd in ("..", "quit"):
-                known_args.cmd = "q"
-            elif known_args.cmd == "?":
-                known_args.cmd = "h"
-            elif known_args.cmd == "reset":
-                known_args.cmd = "r"
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -162,30 +172,21 @@ Models:
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
-    def call_cd(self, other_args):
-        """Process cd command"""
-        if other_args and "-" not in other_args[0]:
-            args = other_args[0].split("/")
-            if len(args) > 0:
-                for m in args[::-1]:
-                    if m:
-                        self.queue.insert(0, m)
-            else:
-                self.queue.insert(0, args[0])
-
-        self.queue.insert(0, "q")
-        self.queue.insert(0, "q")
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
         return self.queue
 
-    def call_h(self, _):
+    def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
-    def call_q(self, _):
+    def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "q")
@@ -201,7 +202,7 @@ Models:
             return self.queue
         return ["q", "q", "q"]
 
-    def call_r(self, _):
+    def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "pred")
@@ -268,7 +269,7 @@ Models:
             print(
                 f"{ns_parser.days} Days of {self.coin} vs {ns_parser.currency} loaded with {res} resolution.\n"
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_pick(self, other_args: List[str]):
@@ -295,7 +296,7 @@ Models:
         if ns_parser:
             self.target = ns_parser.target
             print("")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_ets(self, other_args: List[str]):
@@ -374,7 +375,7 @@ Models:
                     print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
-                    return self.queue if len(self.queue) > 0 else []
+                    return self.queue
 
                 if ns_parser.s_end_date < get_next_stock_market_days(
                     last_stock_day=self.data.index[0],
@@ -383,7 +384,7 @@ Models:
                     print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
-                    return self.queue if len(self.queue) > 0 else []
+                    return self.queue
 
             ets_view.display_exponential_smoothing(
                 ticker=self.coin,
@@ -396,7 +397,7 @@ Models:
                 export=ns_parser.export,
                 time_res=self.resolution,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_knn(self, other_args: List[str]):
@@ -484,7 +485,7 @@ Models:
                 no_shuffle=ns_parser.no_shuffle,
                 time_res=self.resolution,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_regression(self, other_args: List[str]):
@@ -561,7 +562,7 @@ Models:
                     print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
-                    return self.queue if len(self.queue) > 0 else []
+                    return self.queue
 
                 if ns_parser.s_end_date < get_next_stock_market_days(
                     last_stock_day=self.data.index[0],
@@ -570,7 +571,7 @@ Models:
                     print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
-                    return self.queue if len(self.queue) > 0 else []
+                    return self.queue
 
             regression_view.display_regression(
                 dataset=self.coin,
@@ -583,7 +584,7 @@ Models:
                 export=ns_parser.export,
                 time_res=self.resolution,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_arima(self, other_args: List[str]):
@@ -666,7 +667,7 @@ Models:
                     print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
-                    return self.queue if len(self.queue) > 0 else []
+                    return self.queue
 
                 if ns_parser.s_end_date < get_next_stock_market_days(
                     last_stock_day=self.data.index[0],
@@ -675,7 +676,7 @@ Models:
                     print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
-                    return self.queue if len(self.queue) > 0 else []
+                    return self.queue
 
             arima_view.display_arima(
                 dataset=self.coin,
@@ -689,7 +690,7 @@ Models:
                 export=ns_parser.export,
                 time_res=self.resolution,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_mlp(self, other_args: List[str]):
@@ -716,11 +717,11 @@ Models:
                 )
         except Exception as e:
             print(e, "\n")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
         finally:
             pred_helper.restore_env()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_rnn(self, other_args: List[str]):
         """Process rnn command"""
@@ -747,10 +748,10 @@ Models:
 
         except Exception as e:
             print(e, "\n")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
         finally:
             pred_helper.restore_env()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_lstm(self, other_args: List[str]):
         """Process lstm command"""
@@ -777,10 +778,10 @@ Models:
 
         except Exception as e:
             print(e, "\n")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
         finally:
             pred_helper.restore_env()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_conv1d(self, other_args: List[str]):
         """Process conv1d command"""
@@ -807,11 +808,11 @@ Models:
 
         except Exception as e:
             print(e, "\n")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
         finally:
             pred_helper.restore_env()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_mc(self, other_args: List[str]):
@@ -852,7 +853,7 @@ Models:
         )
         if self.target != "Close":
             print("MC Prediction designed for AdjClose prices\n")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
         if ns_parser:
             mc_view.display_mc_forecast(
@@ -863,7 +864,7 @@ Models:
                 export=ns_parser.export,
                 time_res=self.resolution,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
 
 def menu(coin: str, data: pd.DataFrame, queue: List[str] = None):
@@ -875,36 +876,46 @@ def menu(coin: str, data: pd.DataFrame, queue: List[str] = None):
     while True:
         # There is a command in the queue
         if pred_controller.queue and len(pred_controller.queue) > 0:
-            if pred_controller.queue[0] in ("q", ".."):
+            # If the command is quitting the menu we want to return in here
+            if pred_controller.queue[0] in ("q", "..", "quit"):
                 if len(pred_controller.queue) > 1:
                     return pred_controller.queue[1:]
                 return []
 
+            # Consume 1 element from the queue
             an_input = pred_controller.queue[0]
             pred_controller.queue = pred_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input in pred_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /crypto/pred/ $ {an_input}")
 
         # Get input command from user
         else:
-            if an_input == "HELP_ME" or an_input in pred_controller.CHOICES:
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
                 pred_controller.print_help()
 
+            # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and pred_controller.completer:
                 an_input = session.prompt(
                     f"{get_flair()} /crypto/pred/ $ ",
                     completer=pred_controller.completer,
                     search_ignore_case=True,
                 )
-
+            # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /crypto/pred/ $ ")
 
         try:
+            # Process the input command
             pred_controller.queue = pred_controller.switch(an_input)
 
         except SystemExit:
-            print(f"\nThe command '{an_input}' doesn't exist.", end="")
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/disc menu.",
+                end="",
+            )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 pred_controller.CHOICES,
@@ -913,9 +924,18 @@ def menu(coin: str, data: pd.DataFrame, queue: List[str] = None):
             )
             if similar_cmd:
                 if " " in an_input:
-                    an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        print("\n")
+                        continue
+                    an_input = candidate_input
                 else:
                     an_input = similar_cmd[0]
+
                 print(f" Replacing by '{an_input}'.")
                 pred_controller.queue.insert(0, an_input)
-            print("\n")
+            else:
+                print("\n")

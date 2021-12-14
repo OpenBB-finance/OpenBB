@@ -45,7 +45,7 @@ class DueDiligenceController:
 
     CHOICES = [
         "cls",
-        "cd",
+        "home",
         "h",
         "?",
         "help",
@@ -126,6 +126,8 @@ class DueDiligenceController:
     def print_help(self):
         """Print help"""
         help_text = """
+Due Diligence Menu:
+
 Overview:
    chart           show chart for loaded coin
 
@@ -188,24 +190,34 @@ Coinbase:
         # Empty command
         if not an_input:
             print("")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
+        # Navigation slash is being used
         if "/" in an_input:
             actions = an_input.split("/")
-            an_input = actions[0]
-            for cmd in actions[1:][::-1]:
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.dd_parser.parse_known_args(an_input.split())
 
+        # Redirect commands to their correct functions
         if known_args.cmd:
-            if known_args.cmd in ("..", "quit"):
-                known_args.cmd = "q"
-            elif known_args.cmd == "?":
-                known_args.cmd = "h"
-            elif known_args.cmd == "reset":
-                known_args.cmd = "r"
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -214,30 +226,21 @@ Coinbase:
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
-    def call_cd(self, other_args):
-        """Process cd command"""
-        if other_args and "-" not in other_args[0]:
-            args = other_args[0].split("/")
-            if len(args) > 0:
-                for m in args[::-1]:
-                    if m:
-                        self.queue.insert(0, m)
-            else:
-                self.queue.insert(0, args[0])
-
-        self.queue.insert(0, "q")
-        self.queue.insert(0, "q")
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
         return self.queue
 
-    def call_h(self, _):
+    def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
-    def call_q(self, _):
+    def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "q")
@@ -253,7 +256,7 @@ Coinbase:
             return self.queue
         return ["q", "q", "q"]
 
-    def call_r(self, _):
+    def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "dd")
@@ -323,7 +326,7 @@ Coinbase:
         else:
             print("Glassnode source does not support this symbol\n")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_change(self, other_args: List[str]):
@@ -397,7 +400,7 @@ Coinbase:
                 )
         else:
             print("Glassnode source does not support this symbol\n")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_eb(self, other_args: List[str]):
@@ -481,7 +484,7 @@ Coinbase:
 
         else:
             print("Glassnode source does not support this symbol\n")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_oi(self, other_args):
@@ -517,7 +520,7 @@ Coinbase:
                 interval=ns_parser.interval,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_info(self, other_args):
@@ -540,7 +543,7 @@ Coinbase:
             pycoingecko_view.display_info(
                 coin=self.current_coin, export=ns_parser.export
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_market(self, other_args):
@@ -558,7 +561,7 @@ Coinbase:
         )
         if ns_parser:
             pycoingecko_view.display_market(self.current_coin, ns_parser.export)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_web(self, other_args):
@@ -578,7 +581,7 @@ Coinbase:
         if ns_parser:
             pycoingecko_view.display_web(self.current_coin, export=ns_parser.export)
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_social(self, other_args):
@@ -596,7 +599,7 @@ Coinbase:
 
         if ns_parser:
             pycoingecko_view.display_social(self.current_coin, export=ns_parser.export)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_dev(self, other_args):
@@ -617,7 +620,7 @@ Coinbase:
 
         if ns_parser:
             pycoingecko_view.display_dev(self.current_coin, ns_parser.export)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_ath(self, other_args):
@@ -645,7 +648,7 @@ Coinbase:
             pycoingecko_view.display_ath(
                 self.current_coin, ns_parser.vs, ns_parser.export
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_atl(self, other_args):
@@ -672,7 +675,7 @@ Coinbase:
             pycoingecko_view.display_atl(
                 self.current_coin, ns_parser.vs, ns_parser.export
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_score(self, other_args):
@@ -695,7 +698,7 @@ Coinbase:
         if ns_parser:
             pycoingecko_view.display_score(self.current_coin, ns_parser.export)
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_bc(self, other_args):
@@ -716,7 +719,7 @@ Coinbase:
         if ns_parser:
             pycoingecko_view.display_bc(self.current_coin, ns_parser.export)
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_book(self, other_args):
@@ -760,7 +763,7 @@ Coinbase:
                 print(
                     f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
                 )
-                return self.queue if len(self.queue) > 0 else []
+                return self.queue
 
             parser.add_argument(
                 "--vs",
@@ -789,7 +792,7 @@ Coinbase:
                     product_id=pair,
                     export=ns_parser.export,
                 )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_balance(self, other_args):
@@ -822,7 +825,7 @@ Coinbase:
             binance_view.display_balance(
                 coin=self.current_coin, currency=ns_parser.vs, export=ns_parser.export
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_trades(self, other_args):
@@ -841,7 +844,7 @@ Coinbase:
             print(
                 f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
             )
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
         parser.add_argument(
             "--vs",
@@ -884,7 +887,7 @@ Coinbase:
             coinbase_view.display_trades(
                 product_id=pair, limit=ns_parser.top, side=side, export=ns_parser.export
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_stats(self, other_args):
@@ -917,7 +920,7 @@ Coinbase:
             pair = f"{self.current_coin.upper()}-{ns_parser.vs.upper()}"
             coinbase_view.display_stats(pair, ns_parser.export)
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_chart(self, other_args):
@@ -1032,7 +1035,7 @@ Coinbase:
                 print(
                     f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
                 )
-                return self.queue if len(self.queue) > 0 else []
+                return self.queue
 
             parser.add_argument(
                 "--vs",
@@ -1082,7 +1085,7 @@ Coinbase:
                 currency=ns_parser.vs,
                 source=self.source,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     # paprika
     @try_except
@@ -1111,7 +1114,7 @@ Coinbase:
                 self.current_coin, ns_parser.vs, ns_parser.export
             )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_basic(self, other_args):
@@ -1130,7 +1133,7 @@ Coinbase:
         if ns_parser:
             coinpaprika_view.display_basic(self.current_coin, ns_parser.export)
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_mkt(self, other_args):
@@ -1213,7 +1216,7 @@ Coinbase:
                 links=ns_parser.urls,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_ex(self, other_args):
@@ -1268,7 +1271,7 @@ Coinbase:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_events(self, other_args):
@@ -1335,7 +1338,7 @@ Coinbase:
                 links=ns_parser.urls,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_twitter(self, other_args):
@@ -1391,7 +1394,7 @@ Coinbase:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
 
 def menu(coin=None, source=None, symbol=None, queue: List[str] = None):
@@ -1402,40 +1405,49 @@ def menu(coin=None, source=None, symbol=None, queue: List[str] = None):
         coin=coin, source=source, symbol=symbol, queue=queue
     )
     an_input = "HELP_ME"
-
     while True:
         # There is a command in the queue
         if dd_controller.queue and len(dd_controller.queue) > 0:
-            if dd_controller.queue[0] in ("q", ".."):
+            # If the command is quitting the menu we want to return in here
+            if dd_controller.queue[0] in ("q", "..", "quit"):
                 if len(dd_controller.queue) > 1:
                     return dd_controller.queue[1:]
                 return []
 
+            # Consume 1 element from the queue
             an_input = dd_controller.queue[0]
             dd_controller.queue = dd_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input in dd_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /crypto/dd/ $ {an_input}")
 
         # Get input command from user
         else:
-            if an_input == "HELP_ME" or an_input in dd_controller.CHOICES:
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
                 dd_controller.print_help()
 
+            # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and dd_controller.completer:
                 an_input = session.prompt(
                     f"{get_flair()} /crypto/dd/ $ ",
                     completer=dd_controller.completer,
                     search_ignore_case=True,
                 )
-
+            # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /crypto/dd/ $ ")
 
         try:
+            # Process the input command
             dd_controller.queue = dd_controller.switch(an_input)
 
         except SystemExit:
-            print(f"\nThe command '{an_input}' doesn't exist.", end="")
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/disc menu.",
+                end="",
+            )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 dd_controller.CHOICES,
@@ -1444,9 +1456,18 @@ def menu(coin=None, source=None, symbol=None, queue: List[str] = None):
             )
             if similar_cmd:
                 if " " in an_input:
-                    an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        print("\n")
+                        continue
+                    an_input = candidate_input
                 else:
                     an_input = similar_cmd[0]
+
                 print(f" Replacing by '{an_input}'.")
                 dd_controller.queue.insert(0, an_input)
-            print("\n")
+            else:
+                print("\n")

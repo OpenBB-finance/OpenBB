@@ -17,14 +17,14 @@ class TestDDController(unittest.TestCase):
 
     @check_print(assert_in="Due Diligence:")
     def test_help(self):
-        self.cont.call_h(None)
+        self.cont.call_help(None)
 
     @check_print(assert_in="Moving back to")
     def test_q(self):
-        self.cont.call_q(None)
+        self.cont.call_quit(None)
 
     def test_quit(self):
-        self.assertTrue(self.cont.call_q(None))
+        self.assertTrue(self.cont.call_quit(None))
 
     @vcr.use_cassette(
         "tests/gamestonk_terminal/cryptocurrency/due_diligence/cassettes/test_dd_controller/test_dd_controller.yaml",

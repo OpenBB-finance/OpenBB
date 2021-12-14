@@ -39,7 +39,7 @@ class TechnicalAnalysisController:
     # Command choices
     CHOICES = [
         "cls",
-        "cd",
+        "home",
         "h",
         "?",
         "help",
@@ -116,7 +116,7 @@ class TechnicalAnalysisController:
         dim = Style.DIM if "Volume" not in self.stock else ""
         not_dim = Style.RESET_ALL if "Volume" not in self.stock else ""
         help_str = f"""
-Technical Analysis:
+Technical Analysis Menu:
 
 {crypto_str}
 
@@ -163,24 +163,34 @@ Custom:
         # Empty command
         if not an_input:
             print("")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
+        # Navigation slash is being used
         if "/" in an_input:
             actions = an_input.split("/")
-            an_input = actions[0]
-            for cmd in actions[1:][::-1]:
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.ta_parser.parse_known_args(an_input.split())
 
+        # Redirect commands to their correct functions
         if known_args.cmd:
-            if known_args.cmd in ("..", "quit"):
-                known_args.cmd = "q"
-            elif known_args.cmd == "?":
-                known_args.cmd = "h"
-            elif known_args.cmd == "reset":
-                known_args.cmd = "r"
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -189,30 +199,21 @@ Custom:
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
-    def call_cd(self, other_args):
-        """Process cd command"""
-        if other_args and "-" not in other_args[0]:
-            args = other_args[0].split("/")
-            if len(args) > 0:
-                for m in args[::-1]:
-                    if m:
-                        self.queue.insert(0, m)
-            else:
-                self.queue.insert(0, args[0])
-
-        self.queue.insert(0, "q")
-        self.queue.insert(0, "q")
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
         return self.queue
 
-    def call_h(self, _):
+    def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
-    def call_q(self, _):
+    def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "q")
@@ -228,7 +229,7 @@ Custom:
             return self.queue
         return ["q", "q", "q"]
 
-    def call_r(self, _):
+    def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "ta")
@@ -296,7 +297,7 @@ Custom:
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_sma(self, other_args: List[str]):
@@ -352,7 +353,7 @@ Custom:
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_zlma(self, other_args: List[str]):
@@ -409,7 +410,7 @@ Custom:
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_vwap(self, other_args: List[str]):
@@ -440,7 +441,7 @@ Custom:
         if ns_parser:
             if self.interval == "1440min":
                 print("VWAP should be used with intraday data.\n")
-                return self.queue if len(self.queue) > 0 else []
+                return self.queue
             overlap_view.view_vwap(
                 s_ticker=self.ticker,
                 s_interval=self.interval,
@@ -448,7 +449,7 @@ Custom:
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_cci(self, other_args: List[str]):
@@ -499,7 +500,7 @@ Custom:
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_macd(self, other_args: List[str]):
@@ -563,7 +564,7 @@ Custom:
                 n_signal=ns_parser.n_signal,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_rsi(self, other_args: List[str]):
@@ -624,7 +625,7 @@ Custom:
                 drift=ns_parser.n_drift,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_stoch(self, other_args: List[str]):
@@ -685,7 +686,7 @@ Custom:
                 slowkperiod=ns_parser.n_slowkperiod,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_fisher(self, other_args: List[str]):
@@ -724,7 +725,7 @@ Custom:
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_cg(self, other_args: List[str]):
@@ -763,7 +764,7 @@ Custom:
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_adx(self, other_args: List[str]):
@@ -822,7 +823,7 @@ Custom:
                 drift=ns_parser.n_drift,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_aroon(self, other_args: List[str]):
@@ -887,7 +888,7 @@ Custom:
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_bbands(self, other_args: List[str]):
@@ -952,7 +953,7 @@ Custom:
                 mamode=ns_parser.s_mamode,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_donchian(self, other_args: List[str]):
@@ -1003,7 +1004,7 @@ Custom:
                 lower_length=ns_parser.n_length_lower,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_ad(self, other_args: List[str]):
@@ -1045,7 +1046,7 @@ Custom:
                 use_open=ns_parser.b_use_open,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_obv(self, other_args: List[str]):
@@ -1075,7 +1076,7 @@ Custom:
                 df_stock=self.stock,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_fib(self, other_args: List[str]):
@@ -1124,7 +1125,7 @@ Custom:
                 end_date=ns_parser.end,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
 
 def menu(
@@ -1141,36 +1142,46 @@ def menu(
     while True:
         # There is a command in the queue
         if ta_controller.queue and len(ta_controller.queue) > 0:
-            if ta_controller.queue[0] in ("q", ".."):
+            # If the command is quitting the menu we want to return in here
+            if ta_controller.queue[0] in ("q", "..", "quit"):
                 if len(ta_controller.queue) > 1:
                     return ta_controller.queue[1:]
                 return []
 
+            # Consume 1 element from the queue
             an_input = ta_controller.queue[0]
             ta_controller.queue = ta_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input in ta_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /crypto/ta/ $ {an_input}")
 
         # Get input command from user
         else:
-            if an_input == "HELP_ME" or an_input in ta_controller.CHOICES:
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
                 ta_controller.print_help()
 
+            # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and ta_controller.completer:
                 an_input = session.prompt(
                     f"{get_flair()} /crypto/ta/ $ ",
                     completer=ta_controller.completer,
                     search_ignore_case=True,
                 )
-
+            # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /crypto/ta/ $ ")
 
         try:
+            # Process the input command
             ta_controller.queue = ta_controller.switch(an_input)
 
         except SystemExit:
-            print(f"\nThe command '{an_input}' doesn't exist.", end="")
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/disc menu.",
+                end="",
+            )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 ta_controller.CHOICES,
@@ -1179,9 +1190,18 @@ def menu(
             )
             if similar_cmd:
                 if " " in an_input:
-                    an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        print("\n")
+                        continue
+                    an_input = candidate_input
                 else:
                     an_input = similar_cmd[0]
+
                 print(f" Replacing by '{an_input}'.")
                 ta_controller.queue.insert(0, an_input)
-            print("\n")
+            else:
+                print("\n")

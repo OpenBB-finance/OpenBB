@@ -33,7 +33,7 @@ class DefiController:
 
     CHOICES = [
         "cls",
-        "cd",
+        "home",
         "h",
         "?",
         "help",
@@ -92,28 +92,37 @@ class DefiController:
         List[str]
             List of commands in the queue to execute
         """
-
         # Empty command
         if not an_input:
             print("")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
+        # Navigation slash is being used
         if "/" in an_input:
             actions = an_input.split("/")
-            an_input = actions[0]
-            for cmd in actions[1:][::-1]:
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.defi_parser.parse_known_args(an_input.split())
 
+        # Redirect commands to their correct functions
         if known_args.cmd:
-            if known_args.cmd in ("..", "quit"):
-                known_args.cmd = "q"
-            elif known_args.cmd == "?":
-                known_args.cmd = "h"
-            elif known_args.cmd == "reset":
-                known_args.cmd = "r"
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -122,30 +131,21 @@ class DefiController:
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
-    def call_cd(self, other_args):
-        """Process cd command"""
-        if other_args and "-" not in other_args[0]:
-            args = other_args[0].split("/")
-            if len(args) > 0:
-                for m in args[::-1]:
-                    if m:
-                        self.queue.insert(0, m)
-            else:
-                self.queue.insert(0, args[0])
-
-        self.queue.insert(0, "q")
-        self.queue.insert(0, "q")
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
         return self.queue
 
-    def call_h(self, _):
+    def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
-    def call_q(self, _):
+    def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "q")
@@ -161,7 +161,7 @@ class DefiController:
             return self.queue
         return ["q", "q", "q"]
 
-    def call_r(self, _):
+    def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "defi")
@@ -223,7 +223,7 @@ class DefiController:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_llama(self, other_args: List[str]):
@@ -294,7 +294,7 @@ class DefiController:
                 description=ns_parser.description,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_tvl(self, other_args: List[str]):
@@ -324,7 +324,7 @@ class DefiController:
 
         if ns_parser:
             llama_view.display_defi_tvl(top=ns_parser.limit, export=ns_parser.export)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_funding(self, other_args: List[str]):
@@ -364,7 +364,7 @@ class DefiController:
             defirate_view.display_funding_rates(
                 top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_borrow(self, other_args: List[str]):
@@ -404,7 +404,7 @@ class DefiController:
             defirate_view.display_borrow_rates(
                 top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_lending(self, other_args: List[str]):
@@ -444,7 +444,7 @@ class DefiController:
             defirate_view.display_lending_rates(
                 top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_newsletter(self, other_args: List[str]):
@@ -476,7 +476,7 @@ class DefiController:
             substack_view.display_newsletters(
                 top=ns_parser.limit, export=ns_parser.export
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_tokens(self, other_args: List[str]):
@@ -544,7 +544,7 @@ class DefiController:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_stats(self, other_args: List[str]):
@@ -565,7 +565,7 @@ class DefiController:
 
         if ns_parser:
             graph_view.display_uni_stats(export=ns_parser.export)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_pairs(self, other_args: List[str]):
@@ -655,7 +655,7 @@ class DefiController:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_pools(self, other_args: List[str]):
@@ -716,7 +716,7 @@ class DefiController:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_swaps(self, other_args: List[str]):
@@ -769,11 +769,13 @@ class DefiController:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def print_help(self):
         """Print help"""
         help_text = """
+Decentralized Finance Menu:
+
 Overview:
     llama         DeFi protocols listed on DeFi Llama
     tvl           Total value locked of DeFi protocols
@@ -801,36 +803,46 @@ def menu(queue: List[str] = None):
     while True:
         # There is a command in the queue
         if defi_controller.queue and len(defi_controller.queue) > 0:
-            if defi_controller.queue[0] in ("q", ".."):
+            # If the command is quitting the menu we want to return in here
+            if defi_controller.queue[0] in ("q", "..", "quit"):
                 if len(defi_controller.queue) > 1:
                     return defi_controller.queue[1:]
                 return []
 
+            # Consume 1 element from the queue
             an_input = defi_controller.queue[0]
             defi_controller.queue = defi_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input in defi_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /crypto/defi/ $ {an_input}")
 
         # Get input command from user
         else:
-            if an_input == "HELP_ME" or an_input in defi_controller.CHOICES:
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
                 defi_controller.print_help()
 
+            # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and defi_controller.completer:
                 an_input = session.prompt(
                     f"{get_flair()} /crypto/defi/ $ ",
                     completer=defi_controller.completer,
                     search_ignore_case=True,
                 )
-
+            # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /crypto/defi/ $ ")
 
         try:
+            # Process the input command
             defi_controller.queue = defi_controller.switch(an_input)
 
         except SystemExit:
-            print(f"\nThe command '{an_input}' doesn't exist.", end="")
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/disc menu.",
+                end="",
+            )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 defi_controller.CHOICES,
@@ -839,9 +851,18 @@ def menu(queue: List[str] = None):
             )
             if similar_cmd:
                 if " " in an_input:
-                    an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        print("\n")
+                        continue
+                    an_input = candidate_input
                 else:
                     an_input = similar_cmd[0]
+
                 print(f" Replacing by '{an_input}'.")
                 defi_controller.queue.insert(0, an_input)
-            print("\n")
+            else:
+                print("\n")

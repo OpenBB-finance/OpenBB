@@ -42,13 +42,16 @@ import gamestonk_terminal.config_terminal as cfg
 class CryptoController:
     CHOICES = [
         "cls",
-        "cd",
+        "home",
         "h",
         "?",
+        "help",
         "q",
+        "quit",
         "..",
         "exit",
         "r",
+        "reset",
     ]
 
     CHOICES_COMMANDS = [
@@ -123,12 +126,11 @@ Crypto Menus:
     /ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables{dim}
     /dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
     /ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
-    /pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
-{Style.RESET_ALL if not self.current_coin else ""}
+    /pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo{Style.RESET_ALL if not self.current_coin else ""}
     /onchain     information on different blockchains,   e.g.: eth gas fees, active asset addresses, whale alerts
     /defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
     /nft         non-fungible tokens,                    e.g.: today drops
-"""
+"""  # noqa
         print(help_text)
 
     def switch(self, an_input: str):
@@ -143,52 +145,55 @@ Crypto Menus:
         # Empty command
         if not an_input:
             print("")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
+        # Navigation slash is being used
         if "/" in an_input:
             actions = an_input.split("/")
-            an_input = actions[0]
-            for cmd in actions[1:][::-1]:
-                self.queue.insert(0, cmd)
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.crypto_parser.parse_known_args(an_input.split())
 
+        # Redirect commands to their correct functions
         if known_args.cmd:
-            if known_args.cmd in ("..", "quit"):
-                known_args.cmd = "q"
-            elif known_args.cmd == "?":
-                known_args.cmd = "h"
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
-            self, "call_" + known_args.cmd, lambda: "command not recognized!"
+            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
         )(other_args)
 
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
-    def call_cd(self, other_args):
-        """Process cd command"""
-        if other_args:
-            args = other_args[0].split("/")
-            if len(args) > 0:
-                for m in args[::-1]:
-                    if m:
-                        self.queue.insert(0, m)
-            else:
-                self.queue.insert(0, args[0])
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        return self.queue
 
-        self.queue.insert(0, "q")
-
-        return self.queue if len(self.queue) > 0 else []
-
-    def call_h(self, _):
+    def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
-    def call_q(self, _):
+    def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "q")
@@ -203,7 +208,7 @@ Crypto Menus:
             return self.queue
         return ["q", "q"]
 
-    def call_r(self, _):
+    def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "crypto")
@@ -260,7 +265,7 @@ Crypto Menus:
                     self.current_coin, self.source, self.symbol = load(
                         coin=ns_parser.coin, source=ns_parser.source
                     )
-                return self.queue if len(self.queue) > 0 else []
+                return self.queue
 
             except Exception as e:
                 print(e, "\n")
@@ -435,7 +440,7 @@ Crypto Menus:
                         currency=ns_parser.vs,
                         source=self.source,
                     )
-                return self.queue if len(self.queue) > 0 else []
+                return self.queue
 
             except Exception as e:
                 print(e, "\n")
@@ -740,7 +745,7 @@ Crypto Menus:
             finbrain_crypto_view.display_crypto_sentiment_analysis(
                 coin=ns_parser.coin, export=ns_parser.export
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_dd(self, _):
         """Process dd command"""
@@ -789,9 +794,9 @@ Crypto Menus:
 
     def call_nft(self, _):
         """Process nft command"""
-        from gamestonk_terminal.cryptocurrency.nft import nft_controller
+        from gamestonk_terminal.cryptocurrency.nft import crypto_controller
 
-        return nft_controller.menu(queue=self.queue)
+        return crypto_controller.menu(queue=self.queue)
 
     @try_except
     def call_find(self, other_args):
@@ -863,7 +868,7 @@ Crypto Menus:
                 top=ns_parser.limit,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
 
 def menu(queue: List[str] = None):
@@ -873,48 +878,66 @@ def menu(queue: List[str] = None):
     while True:
         # There is a command in the queue
         if crypto_controller.queue and len(crypto_controller.queue) > 0:
-            if crypto_controller.queue[0] in ("q", ".."):
+            # If the command is quitting the menu we want to return in here
+            if crypto_controller.queue[0] in ("q", "..", "quit"):
                 if len(crypto_controller.queue) > 1:
                     return crypto_controller.queue[1:]
                 return []
 
+            # Consume 1 element from the queue
             an_input = crypto_controller.queue[0]
             crypto_controller.queue = crypto_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input in crypto_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /crypto/ $ {an_input}")
 
         # Get input command from user
         else:
-            if an_input == "first" or an_input in crypto_controller.CHOICES:
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
                 crypto_controller.print_help()
 
+            # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and crypto_controller.completer:
                 an_input = session.prompt(
                     f"{get_flair()} /crypto/ $ ",
                     completer=crypto_controller.completer,
                     search_ignore_case=True,
                 )
-
+            # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /crypto/ $ ")
 
         try:
+            # Process the input command
             crypto_controller.queue = crypto_controller.switch(an_input)
 
         except SystemExit:
-            print(f"\nThe command '{an_input}' doesn't exist.", end="")
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/disc menu.",
+                end="",
+            )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 crypto_controller.CHOICES,
                 n=1,
                 cutoff=0.7,
             )
-
             if similar_cmd:
                 if " " in an_input:
-                    an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        print("\n")
+                        continue
+                    an_input = candidate_input
                 else:
                     an_input = similar_cmd[0]
+
                 print(f" Replacing by '{an_input}'.")
                 crypto_controller.queue.insert(0, an_input)
-            print("\n")
+            else:
+                print("\n")

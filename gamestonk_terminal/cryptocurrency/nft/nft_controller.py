@@ -22,7 +22,7 @@ class NFTController:
 
     CHOICES = [
         "cls",
-        "cd",
+        "home",
         "h",
         "?",
         "help",
@@ -64,6 +64,8 @@ class NFTController:
         """Print help"""
 
         help_text = """
+Non Fungible Tokens Menu:
+
 nftcalendar.io:
     today       today's NFT drops
     upcoming    upcoming NFT drops
@@ -87,55 +89,60 @@ nftcalendar.io:
             True - quit the program
             None - continue in the menu
         """
-
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.nft_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
-            self, "call_" + known_args.cmd, lambda: "command not recognized!"
+            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
         )(other_args)
 
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
-    def call_cd(self, other_args):
-        """Process cd command"""
-        if other_args and "-" not in other_args[0]:
-            args = other_args[0].split("/")
-            if len(args) > 0:
-                for m in args[::-1]:
-                    if m:
-                        self.queue.insert(0, m)
-            else:
-                self.queue.insert(0, args[0])
-
-        self.queue.insert(0, "q")
-        self.queue.insert(0, "q")
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
         return self.queue
 
-    def call_h(self, _):
+    def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
-    def call_q(self, _):
+    def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "q")
@@ -151,7 +158,7 @@ nftcalendar.io:
             return self.queue
         return ["q", "q", "q"]
 
-    def call_r(self, _):
+    def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "nft")
@@ -187,7 +194,7 @@ nftcalendar.io:
                 num=ns_parser.limit,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_upcoming(self, other_args: List[str]):
@@ -214,7 +221,7 @@ nftcalendar.io:
                 num=ns_parser.limit,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_ongoing(self, other_args: List[str]):
@@ -241,7 +248,7 @@ nftcalendar.io:
                 num=ns_parser.limit,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_newest(self, other_args: List[str]):
@@ -268,7 +275,7 @@ nftcalendar.io:
                 num=ns_parser.limit,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
 
 def menu(queue: List[str] = None):
@@ -279,36 +286,46 @@ def menu(queue: List[str] = None):
     while True:
         # There is a command in the queue
         if nft_controller.queue and len(nft_controller.queue) > 0:
-            if nft_controller.queue[0] in ("q", ".."):
+            # If the command is quitting the menu we want to return in here
+            if nft_controller.queue[0] in ("q", "..", "quit"):
                 if len(nft_controller.queue) > 1:
                     return nft_controller.queue[1:]
                 return []
 
+            # Consume 1 element from the queue
             an_input = nft_controller.queue[0]
             nft_controller.queue = nft_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input in nft_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /crypto/nft/ $ {an_input}")
 
         # Get input command from user
         else:
-            if an_input == "HELP_ME" or an_input in nft_controller.CHOICES:
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
                 nft_controller.print_help()
 
+            # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and nft_controller.completer:
                 an_input = session.prompt(
                     f"{get_flair()} /crypto/nft/ $ ",
                     completer=nft_controller.completer,
                     search_ignore_case=True,
                 )
-
+            # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /crypto/nft/ $ ")
 
         try:
+            # Process the input command
             nft_controller.queue = nft_controller.switch(an_input)
 
         except SystemExit:
-            print(f"\nThe command '{an_input}' doesn't exist.", end="")
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/disc menu.",
+                end="",
+            )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 nft_controller.CHOICES,
@@ -317,9 +334,18 @@ def menu(queue: List[str] = None):
             )
             if similar_cmd:
                 if " " in an_input:
-                    an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        print("\n")
+                        continue
+                    an_input = candidate_input
                 else:
                     an_input = similar_cmd[0]
+
                 print(f" Replacing by '{an_input}'.")
                 nft_controller.queue.insert(0, an_input)
-            print("\n")
+            else:
+                print("\n")
