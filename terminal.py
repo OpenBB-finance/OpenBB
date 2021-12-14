@@ -102,14 +102,14 @@ class TerminalController:
     keys        check for status of API keys
 
 Menus:
-    /stocks
-    /crypto
-    /etf
-    /economy
-    /forex
-    /portfolio
-    /reports
-    /resources
+>   stocks
+>   crypto
+>   etf
+>   economy
+>   forex
+>   portfolio
+>   reports
+>   resources
     """
         print(help_text)
 
