@@ -349,9 +349,7 @@ Forex brokerages:
             return self.queue if len(self.queue) > 0 else []
 
         if not self.to_symbol or not self.from_symbol:
-            print(
-                "Make sure both a to symbol and a from symbol are supplied using <select> \n"
-            )
+            print('Make sure both a "to" symbol and a "from" symbol are selected\n')
             return self.queue if len(self.queue) > 0 else []
 
         av_view.display_quote(self.to_symbol, self.from_symbol)
@@ -388,7 +386,7 @@ Forex brokerages:
 def menu(queue: List[str] = None):
     """Forex Menu"""
     fx_controller = ForexController(queue)
-    an_input = "HELP_ME"
+    HELP_ME = True
 
     while True:
         # There is a command in the queue
@@ -404,8 +402,9 @@ def menu(queue: List[str] = None):
                 print(f"{get_flair()} /forex/ $ {an_input}")
 
         else:
-            if an_input == "HELP_ME" or an_input not in fx_controller.CHOICES:
+            if HELP_ME:
                 fx_controller.print_help()
+                HELP_ME = False
 
             if session and gtff.USE_PROMPT_TOOLKIT and fx_controller.completer:
                 an_input = session.prompt(
