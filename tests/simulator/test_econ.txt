@@ -1,0 +1,15 @@
+economy
+bigmac -c USA,GBR
+meats
+q
+economy
+grains
+cd stocks/disc
+ugs -l 3
+cd economy/fred
+add dgs10,dgs5
+search gdp
+plot --raw
+q
+energy
+exit

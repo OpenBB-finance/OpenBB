@@ -25,7 +25,6 @@ from gamestonk_terminal.terminal_helper import (
     update_terminal,
     usage_instructions,
 )
-from gamestonk_terminal.paths import cd_CHOICES
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel
 
@@ -35,7 +34,6 @@ class TerminalController:
 
     CHOICES = [
         "cls",
-        "cd",
         "h",
         "?",
         "help",
@@ -77,7 +75,6 @@ class TerminalController:
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: None for c in self.CHOICES}
-            choices["cd"] = {c: None for c in cd_CHOICES}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -102,14 +99,14 @@ class TerminalController:
     keys        check for status of API keys
 
 Menus:
-    /stocks
-    /crypto
-    /etf
-    /economy
-    /forex
-    /portfolio
-    /reports
-    /resources
+>   stocks
+>   crypto
+>   etf
+>   economy
+>   forex
+>   portfolio
+>   reports
+>   resources
     """
         print(help_text)
 
@@ -124,17 +121,23 @@ Menus:
         # Empty command
         if not an_input:
             print("")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
+        # Navigation slash is being used
         if "/" in an_input:
             actions = an_input.split("/")
-            an_input = actions[0]
+
+            # Absolute path is specified. Since we are already in home we can pick up the first instruction
+            if not actions[0]:
+                an_input = actions[1]
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
             for cmd in actions[1:][::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
-            if not an_input:
-                an_input = "quit"
-                self.queue.insert(0, "quit")
 
         (known_args, other_args) = self.t_parser.parse_known_args(an_input.split())
 
@@ -153,28 +156,16 @@ Menus:
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue if len(self.queue) > 0 else []
-
-    def call_cd(self, other_args):
-        """Process cd command"""
-        if other_args:
-            args = other_args[0].split("/")
-            if len(args) > 0:
-                for m in args[::-1]:
-                    if m:
-                        self.queue.insert(0, m)
-            else:
-                self.queue.insert(0, args[0])
-
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
+        print("")
         if len(self.queue) > 0:
             self.queue.insert(0, "quit")
             return self.queue
@@ -190,29 +181,28 @@ Menus:
     def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
-            self.queue = [f"/{arg}" for arg in self.queue]
             return self.queue
         return []
 
     def call_update(self, _):
         """Process update command"""
         self.update_succcess = not update_terminal()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_keys(self, _):
         """Process keys command"""
         check_api_keys()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_about(self, _):
         """Process about command"""
         about_us()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_usage(self, _):
         """Process usage command"""
         usage_instructions()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     # MENUS
     def call_stocks(self, _):
@@ -231,7 +221,7 @@ Menus:
         """Process economy command"""
         from gamestonk_terminal.economy import economy_controller
 
-        return economy_controller.menu()
+        return economy_controller.menu(self.queue)
 
     def call_etf(self, _):
         """Process etf command"""
@@ -266,7 +256,6 @@ Menus:
 
 def terminal(jobs_cmds: List[str] = None):
     """Terminal Menu"""
-
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
     an_input = ""
@@ -282,38 +271,40 @@ def terminal(jobs_cmds: List[str] = None):
 
         # There is a command in the queue
         if t_controller.queue and len(t_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
             if t_controller.queue[0] in ("q", "..", "quit"):
+                print("")
                 if len(t_controller.queue) > 1:
                     return t_controller.queue[1:]
                 return []
 
+            # Consume 1 element from the queue
             an_input = t_controller.queue[0]
             t_controller.queue = t_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input in t_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} / $ {an_input}")
 
         # Get input command from user
         else:
+            # Display help menu when entering on this menu from a level above
             if not an_input:
                 t_controller.print_help()
 
+            # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT:
                 an_input = session.prompt(
                     f"{get_flair()} / $ ",
                     completer=t_controller.completer,
                     search_ignore_case=True,
                 )
-
+            # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} / $ ")
 
-        # Is command empty
-        if not an_input:
-            print("")
-            continue
-
-        # Process list of commands selected by user
         try:
+            # Process the input command
             t_controller.queue = t_controller.switch(an_input)
 
             if an_input in ("q", "..", "exit"):
@@ -331,7 +322,7 @@ def terminal(jobs_cmds: List[str] = None):
                     break
 
         except SystemExit:
-            print(f"\nThe command '{an_input}' doesn't exist.", end="")
+            print(f"\nThe command '{an_input}' doesn't exist on the / menu", end="")
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 t_controller.CHOICES,
@@ -359,11 +350,11 @@ def terminal(jobs_cmds: List[str] = None):
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        if "." in sys.argv[1]:
+        if ".gst" in sys.argv[1]:
             if os.path.isfile(sys.argv[1]):
                 with open(sys.argv[1]) as fp:
                     simulate_argv = f"/{'/'.join([line.rstrip() for line in fp])}"
-                    terminal(simulate_argv.split())
+                    terminal(simulate_argv.replace("//", "/home/").split())
             else:
                 print(
                     f"The file '{sys.argv[1]}' doesn't exist. Launching terminal without any configuration.\n"

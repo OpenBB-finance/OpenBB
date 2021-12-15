@@ -14,4 +14,6 @@ cd_CHOICES = [
     "crypto/defi",
     "crypto/nft",
     "crypto/pred",
+    "economy/",
+    "economy/fred",
 ]

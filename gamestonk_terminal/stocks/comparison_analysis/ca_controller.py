@@ -43,7 +43,7 @@ class ComparisonAnalysisController:
 
     CHOICES = [
         "cls",
-        "cd",
+        "home",
         "h",
         "?",
         "help",
@@ -169,20 +169,27 @@ Finviz:
         # Empty command
         if not an_input:
             print("")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
+        # Navigation slash is being used
         if "/" in an_input:
             actions = an_input.split("/")
-            an_input = actions[0]
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
             for cmd in actions[1:][::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
-            if not an_input:
-                an_input = "quit"
-                self.queue.insert(0, "quit")
 
         (known_args, other_args) = self.ca_parser.parse_known_args(an_input.split())
 
+        # Redirect commands to their correct functions
         if known_args.cmd:
             if known_args.cmd in ("..", "q"):
                 known_args.cmd = "quit"
@@ -198,31 +205,22 @@ Finviz:
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
-    def call_cd(self, other_args):
-        """Process cd command"""
-        if other_args and "-" not in other_args[0]:
-            args = other_args[0].split("/")
-            if len(args) > 0:
-                for m in args[::-1]:
-                    if m:
-                        self.queue.insert(0, m)
-            else:
-                self.queue.insert(0, args[0])
-
+    def call_home(self, _):
+        """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-
         return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
+        print("")
         if len(self.queue) > 0:
             self.queue.insert(0, "quit")
             return self.queue
@@ -235,20 +233,19 @@ Finviz:
             self.queue.insert(0, "quit")
             self.queue.insert(0, "quit")
             self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
             return self.queue
-        return ["quit", "quit", "quit", "quit"]
+        return ["quit", "quit", "quit"]
 
     def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "disc")
+            self.queue.insert(0, "ca")
             self.queue.insert(0, "stocks")
-            self.queue.insert(0, "r")
+            self.queue.insert(0, "reset")
             self.queue.insert(0, "quit")
             self.queue.insert(0, "quit")
             return self.queue
-        return ["quit", "quit", "r", "stocks", "disc"]
+        return ["quit", "quit", "reset", "stocks", "ca"]
 
     @try_except
     def call_ticker(self, other_args: List[str]):
@@ -284,7 +281,7 @@ Finviz:
                     self.ticker = ns_parser.ticker.upper()
             print("")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_tsne(self, other_args: List[str]):
@@ -332,7 +329,7 @@ Finviz:
             else:
                 print("You need to 'set' a ticker to get similar companies from first!")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_getfinviz(self, other_args: List[str]):
@@ -393,7 +390,7 @@ Finviz:
             else:
                 print("You need to 'set' a ticker to get similar companies from first!")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_getpoly(self, other_args: List[str]):
@@ -450,7 +447,7 @@ Finviz:
             else:
                 print("You need to 'set' a ticker to get similar companies from first!")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_getfinnhub(self, other_args: List[str]):
@@ -499,7 +496,7 @@ Finviz:
             else:
                 print("You need to 'set' a ticker to get similar companies from first!")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_add(self, other_args: List[str]):
@@ -530,7 +527,7 @@ Finviz:
 
             print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_rmv(self, other_args: List[str]):
@@ -570,7 +567,7 @@ Finviz:
             print("")
             self.user = "Custom"
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_set(self, other_args: List[str]):
@@ -597,7 +594,7 @@ Finviz:
             self.user = "Custom"
             print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_historical(self, other_args: List[str]):
@@ -654,7 +651,7 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_hcorr(self, other_args: List[str]):
@@ -698,7 +695,7 @@ Finviz:
             else:
                 print("Please make sure there are similar tickers selected. \n")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_income(self, other_args: List[str]):
@@ -740,7 +737,7 @@ Finviz:
                 quarter=ns_parser.b_quarter,
             )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_volume(self, other_args: List[str]):
@@ -776,7 +773,7 @@ Finviz:
             else:
                 print("Please make sure there are similar tickers selected. \n")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_balance(self, other_args: List[str]):
@@ -816,7 +813,7 @@ Finviz:
                 quarter=ns_parser.b_quarter,
             )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_cashflow(self, other_args: List[str]):
@@ -856,7 +853,7 @@ Finviz:
                 quarter=ns_parser.b_quarter,
             )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_sentiment(self, other_args: List[str]):
@@ -892,7 +889,7 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_scorr(self, other_args: List[str]):
@@ -926,7 +923,7 @@ Finviz:
             else:
                 print("Please make sure there are similar tickers selected. \n")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_overview(self, other_args: List[str]):
@@ -954,7 +951,7 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_valuation(self, other_args: List[str]):
@@ -982,7 +979,7 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_financial(self, other_args: List[str]):
@@ -1010,7 +1007,7 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_ownership(self, other_args: List[str]):
@@ -1038,7 +1035,7 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_performance(self, other_args: List[str]):
@@ -1066,7 +1063,7 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_technical(self, other_args: List[str]):
@@ -1094,7 +1091,7 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
@@ -1102,12 +1099,13 @@ Finviz:
             return po_controller.menu(self.similar, self.queue)
 
         print("Please make sure there are more than 1 similar tickers selected. \n")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
 
 def menu(
     similar: List,
     queue: List[str] = None,
+    from_submenu: bool = False,
 ):
     """Comparison Analysis Menu"""
     ca_controller = ComparisonAnalysisController(similar, queue)
@@ -1116,21 +1114,33 @@ def menu(
     while True:
         # There is a command in the queue
         if ca_controller.queue and len(ca_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
             if ca_controller.queue[0] in ("q", "..", "quit"):
+                print("")
+                # Since we came from another menu we need to quit an additional time
+                if from_submenu:
+                    ca_controller.queue.insert(0, "quit")
+                    from_submenu = False
+
                 if len(ca_controller.queue) > 1:
                     return ca_controller.queue[1:]
                 return []
 
+            # Consume 1 element from the queue
             an_input = ca_controller.queue[0]
             ca_controller.queue = ca_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input in ca_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /stocks/ca/ $ {an_input}")
 
         # Get input command from user
         else:
-            if an_input == "HELP_ME" or an_input in ca_controller.CHOICES_MENUS:
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
                 ca_controller.print_help()
 
+            # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and ca_controller.completer:
                 an_input = session.prompt(
                     f"{get_flair()} /stocks/ca/ $ ",
@@ -1138,14 +1148,19 @@ def menu(
                     search_ignore_case=True,
                 )
 
+            # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /stocks/ca/ $ ")
 
         try:
+            # Process the input command
             ca_controller.queue = ca_controller.switch(an_input)
 
         except SystemExit:
-            print(f"\nThe command '{an_input}' doesn't exist.", end="")
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/ca menu.",
+                end="",
+            )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 ca_controller.CHOICES,
