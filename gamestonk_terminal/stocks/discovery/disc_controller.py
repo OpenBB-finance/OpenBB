@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 
 import argparse
 import difflib
-from datetime import datetime
 from typing import List
 
 from matplotlib import pyplot as plt
@@ -16,7 +15,6 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_non_negative,
     check_positive,
-    valid_date,
     check_int_range,
     try_except,
     system_clear,
@@ -639,7 +637,7 @@ NASDAQ Data Link (Formerly Quandl):
         )
         parser.add_argument(
             "-a",
-            "-ascend",
+            "--ascend",
             dest="ascend",
             help="Flag to sort in ascending order",
             action="store_true",
@@ -772,15 +770,7 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="number of articles being printed",
         )
-        parser.add_argument(
-            "-d",
-            "--date",
-            action="store",
-            dest="s_date",
-            type=valid_date,
-            default=datetime.now().strftime("%Y-%m-%d"),
-            help="starting date of articles",
-        )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -798,10 +788,8 @@ NASDAQ Data Link (Formerly Quandl):
             return
 
         seeking_alpha_view.news(
-            news_type="trending",
             article_id=ns_parser.n_id,
             num=ns_parser.n_num,
-            start_date=ns_parser.s_date,
             export=ns_parser.export,
         )
 

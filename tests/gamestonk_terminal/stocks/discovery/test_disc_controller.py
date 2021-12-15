@@ -1,6 +1,5 @@
 # IMPORTATION STANDARD
 import os
-from datetime import datetime
 
 # IMPORTATION THIRDPARTY
 import pytest
@@ -248,14 +247,11 @@ def test_call_quit():
             [
                 "--id=123",
                 "--num=5",
-                "--date=2020-12-02",
                 "--export=csv",
             ],
             {
-                "news_type": "trending",
                 "article_id": 123,
                 "num": 5,
-                "start_date": datetime.strptime("2020-12-02", "%Y-%m-%d"),
                 "export": "csv",
             },
         ),
