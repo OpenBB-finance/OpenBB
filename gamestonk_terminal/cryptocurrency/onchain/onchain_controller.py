@@ -5,7 +5,9 @@ __docformat__ = "numpy"
 
 import argparse
 import difflib
-from typing import List
+from typing import List, Union
+
+from colorama.ansi import Style
 
 from prompt_toolkit.completion import NestedCompleter
 
@@ -35,10 +37,16 @@ class OnchainController:
 
     CHOICES = [
         "cls",
+        "home",
+        "h",
         "?",
         "help",
         "q",
         "quit",
+        "..",
+        "exit",
+        "r",
+        "reset",
     ]
 
     SPECIFIC_CHOICES = {
@@ -78,15 +86,31 @@ class OnchainController:
 
     CHOICES += CHOICES_COMMANDS
 
-    def __init__(self):
+    def __init__(self, queue: List[str] = None):
         """Constructor"""
         self.onchain_parser = argparse.ArgumentParser(add_help=False, prog="onchain")
         self.onchain_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
-        self.address = None
-        self.address_type = None
+        self.address = ""
+        self.address_type = ""
+
+        self.completer: Union[None, NestedCompleter] = None
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            choices["ttcp"] = {c: None for c in bitquery_model.DECENTRALIZED_EXCHANGES}
+
+            choices["baas"]["-c"] = {c: None for c in bitquery_model.POSSIBLE_CRYPTOS}
+            choices["baas"]["--coin"] = {
+                c: None for c in bitquery_model.POSSIBLE_CRYPTOS
+            }
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -98,46 +122,90 @@ class OnchainController:
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
-
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.onchain_parser.parse_known_args(
             an_input.split()
         )
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
         )(other_args)
 
-    def call_help(self, *_):
-        """Process Help command"""
-        self.print_help()
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue
 
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return False
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+
+        return self.queue
+
+    def call_help(self, _):
+        """Process help command"""
+        self.print_help()
+        return self.queue
 
     def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+        """Process quit menu command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q"]
+
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q", "q", "q"]
+
+    def call_reset(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "onchain")
+            self.queue.insert(0, "crypto")
+            self.queue.insert(0, "r")
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q", "q", "r", "crypto", "onchain"]
 
     @try_except
     def call_gwei(self, other_args: List[str]):
@@ -152,22 +220,16 @@ class OnchainController:
             """,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            ethgasstation_view.display_gwei_fees(export=ns_parser.export)
 
-        if not ns_parser:
-            return
+        return self.queue
 
-        ethgasstation_view.display_gwei_fees(export=ns_parser.export)
-
+    @try_except
     def call_whales(self, other_args: List[str]):
         """Process whales command"""
         parser = argparse.ArgumentParser(
@@ -190,11 +252,11 @@ class OnchainController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="display N number records",
             default=10,
         )
 
@@ -226,40 +288,28 @@ class OnchainController:
 
         parser.add_argument(
             "-a",
-            "--balance",
-            dest="balance",
+            "--address",
+            dest="address",
             action="store_true",
             help="Flag to show addresses of transaction",
             default=False,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-
-            if not ns_parser:
-                return
-
+        if ns_parser:
             whale_alert_view.display_whales_transactions(
                 min_value=ns_parser.min,
-                top=ns_parser.top,
+                top=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
                 show_address=ns_parser.address,
                 export=ns_parser.export,
             )
+        return self.queue
 
-        except Exception as e:
-            print(e)
-
+    @try_except
     def call_address(self, other_args: List[str]):
         """Process address command"""
         parser = argparse.ArgumentParser(
@@ -305,23 +355,22 @@ class OnchainController:
             required="-h" not in other_args,
         )
 
-        try:
-            if other_args:
-                if not other_args[0][0] == "-":
-                    other_args.insert(0, "--address")
+        if other_args:
+            if not other_args[0][0] == "-":
+                other_args.insert(0, "--address")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
-            if not ns_parser:
-                return
-
+        if ns_parser:
             if len(ns_parser.address) not in [42, 66]:
                 print(
                     f"Couldn't load address {ns_parser.address}. "
                     f"Token or account address should be 42 characters long. "
                     f"Transaction hash should be 66 characters long\n"
                 )
-                return
+                return self.queue
 
             if ns_parser.account:
                 address_type = "account"
@@ -338,10 +387,9 @@ class OnchainController:
             self.address = ns_parser.address
             self.address_type = address_type
 
-            print(f"Address loaded {self.address}\n")
-        except Exception as e:
-            print(e)
+        return self.queue
 
+    @try_except
     def call_balance(self, other_args: List[str]):
         """Process balance command"""
         parser = argparse.ArgumentParser(
@@ -355,11 +403,11 @@ class OnchainController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="display N number records",
             default=10,
         )
 
@@ -386,32 +434,23 @@ class OnchainController:
             default=True,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-
-            if not ns_parser or not self.address:
-                return
-
+        if ns_parser and self.address:
             ethplorer_view.display_address_info(
-                top=ns_parser.top,
+                top=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
                 address=self.address,
                 export=ns_parser.export,
             )
+        else:
+            print("You need to set an ethereum address\n")
+        return self.queue
 
-        except Exception as e:
-            print(e)
-
+    @try_except
     def call_hist(self, other_args: List[str]):
         """Process hist command"""
         parser = argparse.ArgumentParser(
@@ -426,11 +465,11 @@ class OnchainController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="display N number records",
             default=10,
         )
 
@@ -452,32 +491,23 @@ class OnchainController:
             default=True,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-
-            if not ns_parser or not self.address:
-                return
-
+        if ns_parser and self.address:
             ethplorer_view.display_address_history(
-                top=ns_parser.top,
+                top=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
                 address=self.address,
                 export=ns_parser.export,
             )
+        else:
+            print("You need to set an ethereum address\n")
+        return self.queue
 
-        except Exception as e:
-            print(e)
-
+    @try_except
     def call_holders(self, other_args: List[str]):
         """Process holders command"""
         parser = argparse.ArgumentParser(
@@ -491,11 +521,11 @@ class OnchainController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="display N number records",
             default=10,
         )
 
@@ -521,32 +551,24 @@ class OnchainController:
             default=False,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-
-            if not ns_parser or not self.address:
-                return
-
+        if ns_parser and self.address:
             ethplorer_view.display_top_token_holders(
-                top=ns_parser.top,
+                top=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
                 address=self.address,
                 export=ns_parser.export,
             )
+        else:
+            print("You need to set an ethereum address\n")
 
-        except Exception as e:
-            print(e)
+        return self.queue
 
+    @try_except
     def call_top(self, other_args: List[str]):
         """Process top command"""
         parser = argparse.ArgumentParser(
@@ -560,11 +582,11 @@ class OnchainController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="display N number records",
             default=10,
         )
 
@@ -594,31 +616,20 @@ class OnchainController:
             default=True,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-
-            if not ns_parser:
-                return
-
+        if ns_parser:
             ethplorer_view.display_top_tokens(
-                top=ns_parser.top,
+                top=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
+        return self.queue
 
-        except Exception as e:
-            print(e)
-
+    @try_except
     def call_info(self, other_args: List[str]):
         """Process info command"""
         parser = argparse.ArgumentParser(
@@ -639,30 +650,22 @@ class OnchainController:
             default=False,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-
-            if not ns_parser or not self.address:
-                return
-
+        if ns_parser and self.address:
             ethplorer_view.display_token_info(
                 social=ns_parser.social,
                 address=self.address,
                 export=ns_parser.export,
             )
+        else:
+            print("You need to set an ethereum address\n")
 
-        except Exception as e:
-            print(e)
+        return self.queue
 
+    @try_except
     def call_th(self, other_args: List[str]):
         """Process th command"""
         parser = argparse.ArgumentParser(
@@ -677,11 +680,11 @@ class OnchainController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="display N number records",
             default=10,
         )
 
@@ -713,34 +716,24 @@ class OnchainController:
             default=True,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        try:
-
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-
-            if not ns_parser or not self.address:
-                return
-
+        if ns_parser and self.address:
             ethplorer_view.display_token_history(
-                top=ns_parser.top,
+                top=ns_parser.limit,
                 hash_=ns_parser.hash,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
                 address=self.address,
                 export=ns_parser.export,
             )
+        else:
+            print("You need to set an ethereum address\n")
+        return self.queue
 
-        except Exception as e:
-            print(e)
-
+    @try_except
     def call_tx(self, other_args: List[str]):
         """Process tx command"""
         parser = argparse.ArgumentParser(
@@ -754,30 +747,20 @@ class OnchainController:
               """,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        try:
-
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-
-            if not ns_parser or not self.address:
-                return
-
+        if ns_parser and self.address:
             ethplorer_view.display_tx_info(
                 tx_hash=self.address,
                 export=ns_parser.export,
             )
+        else:
+            print("You need to set an ethereum address\n")
+        return self.queue
 
-        except Exception as e:
-            print(e)
-
+    @try_except
     def call_prices(self, other_args: List[str]):
         """Process prices command"""
         parser = argparse.ArgumentParser(
@@ -791,11 +774,11 @@ class OnchainController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="display N number records",
             default=10,
         )
 
@@ -825,32 +808,23 @@ class OnchainController:
             default=False,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-
-            if not ns_parser or not self.address:
-                return
-
+        if ns_parser and self.address:
             ethplorer_view.display_token_historical_prices(
-                top=ns_parser.top,
+                top=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
                 address=self.address,
                 export=ns_parser.export,
             )
+        else:
+            print("You need to set an ethereum address\n")
+        return self.queue
 
-        except Exception as e:
-            print(e)
-
+    @try_except
     def call_lt(self, other_args: List[str]):
         """Process lt command"""
         parser = argparse.ArgumentParser(
@@ -884,11 +858,11 @@ class OnchainController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="display N number records",
             default=10,
         )
 
@@ -919,27 +893,24 @@ class OnchainController:
             default=False,
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
-            if not ns_parser:
-                return
-
+        if ns_parser:
             bitquery_view.display_dex_trades(
                 kind=ns_parser.kind,
                 trade_amount_currency=ns_parser.vs,
-                top=ns_parser.top,
+                top=ns_parser.limit,
                 days=ns_parser.days,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
 
-        except Exception as e:
-            print(e)
+        return self.queue
 
+    @try_except
     def call_dvcp(self, other_args: List[str]):
         """Process dvcp command"""
         parser = argparse.ArgumentParser(
@@ -962,11 +933,11 @@ class OnchainController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="display N number records",
             default=10,
         )
 
@@ -1012,18 +983,15 @@ class OnchainController:
             default=False,
         )
 
-        try:
-            if other_args:
-                if not other_args[0][0] == "-":
-                    other_args.insert(0, "-c")
+        if other_args:
+            if not other_args[0][0] == "-":
+                other_args.insert(0, "-c")
 
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
-            if not ns_parser:
-                return
-
+        if ns_parser:
             bitquery_view.display_daily_volume_for_given_pair(
                 token=ns_parser.coin,
                 vs=ns_parser.vs,
@@ -1032,10 +1000,9 @@ class OnchainController:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
+        return self.queue
 
-        except Exception as e:
-            print(e)
-
+    @try_except
     def call_tv(self, other_args: List[str]):
         """Process tv command"""
         parser = argparse.ArgumentParser(
@@ -1068,11 +1035,11 @@ class OnchainController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="display N number records",
             default=10,
         )
 
@@ -1093,31 +1060,26 @@ class OnchainController:
             dest="descend",
             default=False,
         )
+        if other_args:
+            if not other_args[0][0] == "-":
+                other_args.insert(0, "-c")
 
-        try:
-            if other_args:
-                if not other_args[0][0] == "-":
-                    other_args.insert(0, "-c")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
-
-            if not ns_parser:
-                return
-
+        if ns_parser:
             bitquery_view.display_dex_volume_for_token(
                 token=ns_parser.coin,
                 trade_amount_currency=ns_parser.vs,
-                top=ns_parser.top,
+                top=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
+        return self.queue
 
-        except Exception as e:
-            print(e)
-
+    @try_except
     def call_ueat(self, other_args: List[str]):
         """Process ueat command"""
         parser = argparse.ArgumentParser(
@@ -1131,13 +1093,13 @@ class OnchainController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records. (Maximum available time period is 90 days."
-            "Depending on chosen time period, top N records will be recalculated. E.g."
-            "For interval: month, and top: 10, period of calculation equals to 300, "
+            help="display N number records. (Maximum available time period is 90 days."
+            "Depending on chosen time period, display N records will be recalculated. E.g."
+            "For interval: month, and number: 10, period of calculation equals to 300, "
             "but because of max days limit: 90, it will only return last 3 months (3 records). ",
             default=10,
         )
@@ -1177,26 +1139,21 @@ class OnchainController:
             dest="descend",
             default=False,
         )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
-        try:
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
-
-            if not ns_parser:
-                return
-
+        if ns_parser:
             bitquery_view.display_ethereum_unique_senders(
                 interval=ns_parser.interval,
-                limit=ns_parser.top,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
+        return self.queue
 
-        except Exception as e:
-            print(e)
-
+    @try_except
     def call_ttcp(self, other_args: List[str]):
         """Process ttcp command"""
         parser = argparse.ArgumentParser(
@@ -1210,11 +1167,11 @@ class OnchainController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="display N number records",
             default=10,
         )
 
@@ -1257,14 +1214,11 @@ class OnchainController:
             if "-" not in other_args[0]:
                 other_args.insert(0, "-e")
 
-        try:
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
-            if not ns_parser:
-                return
-
+        if ns_parser:
             exchange = "Uniswap"
             if ns_parser.exchange:
                 if ns_parser.exchange in bitquery_model.DECENTRALIZED_EXCHANGES:
@@ -1290,27 +1244,26 @@ class OnchainController:
                         )
                         if similar_cmd:
                             print(f"Did you mean '{similar_cmd[0]}'?")
-                            return
+                            return self.queue
                         print(
                             f"Couldn't find any exchange with provided name: {ns_parser.exchange}. "
                             f"Please choose one from list: {bitquery_model.DECENTRALIZED_EXCHANGES}\n"
                         )
-                        return
+                        return self.queue
             else:
                 print("Exchange not provided setting default to Uniswap.\n")
 
             bitquery_view.display_most_traded_pairs(
                 days=ns_parser.days,
-                top=ns_parser.top,
+                top=ns_parser.limit,
                 exchange=exchange,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
+        return self.queue
 
-        except Exception as e:
-            print(e)
-
+    @try_except
     def call_baas(self, other_args: List[str]):
         """Process baas command"""
         parser = argparse.ArgumentParser(
@@ -1369,18 +1322,15 @@ class OnchainController:
             default=False,
         )
 
-        try:
-            if other_args:
-                if not other_args[0][0] == "-":
-                    other_args.insert(0, "-c")
+        if other_args:
+            if not other_args[0][0] == "-":
+                other_args.insert(0, "-c")
 
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
-            if not ns_parser:
-                return
-
+        if ns_parser:
             if ns_parser.coin:
                 if ns_parser.coin in bitquery_model.POSSIBLE_CRYPTOS:
                     bitquery_view.display_spread_for_crypto_pair(
@@ -1405,7 +1355,7 @@ class OnchainController:
                         )
                         token = similar_cmd[0]
                     if similar_cmd[0]:
-                        print(f"Replacing by '{token}'")
+                        print(f"Replacing with '{token}'")
                         bitquery_view.display_spread_for_crypto_pair(
                             token=token,
                             vs=ns_parser.vs,
@@ -1426,32 +1376,26 @@ class OnchainController:
 
             else:
                 print("You didn't provide coin symbol.\n")
-                return
-        except Exception as e:
-            print(e)
+        return self.queue
 
     def print_help(self):
         """Print help"""
         help_text = """
-Onchain:
-    cls         clear screen
-    ?/help      show this menu again
-    q           quit this menu, and shows back to main menu
-    quit        quit to abandon the program
+Onchain Menu:
 
 Eth Gas Station:
-    gwei              check current eth gas fees
+    gwei             check current eth gas fees
 
 Whale Alert:
-    whales            check crypto wales transactions
+    whales           check crypto wales transactions
 
 BitQuery:
-    lt                last trades by dex or month
-    dvcp              daily volume for crypto pair
-    tv                token volume on DEXes
-    ueat              unique ethereum addresses which made a transaction
-    ttcp              top traded crypto pairs on given decentralized exchange
-    baas              bid, ask prices, average spread for given crypto pair
+    lt               last trades by dex or month
+    dvcp             daily volume for crypto pair
+    tv               token volume on DEXes
+    ueat             unique ethereum addresses which made a transaction
+    ttcp             top traded crypto pairs on given decentralized exchange
+    baas             bid, ask prices, average spread for given crypto pair
 """
         help_text += f"\nEthereum address: {self.address if self.address else '?'}"
         help_text += (
@@ -1460,60 +1404,93 @@ BitQuery:
 
         help_text += """
 Ethereum [Ethplorer]:
-    address           load ethereum address of token, account or transaction
-    top               top ERC20 tokens"""
+    address         load ethereum address of token, account or transaction
+    top             top ERC20 tokens"""
 
-        if self.address_type == "account":
-            help_text += """
-    balance           check ethereum balance balance
-    hist              ethereum balance history (transactions)"""
+        help_text += f"""{Style.DIM if self.address_type != "account" else ""}
+    balance         check ethereum balance
+    hist            ethereum balance history (transactions){Style.RESET_ALL if self.address_type != "account" else ""}"""
 
-        if self.address_type == "token":
-            help_text += """
-    info              ERC20 token info
-    holders           top ERC20 token holders
-    th                ERC20 token history
-    prices            ERC20 token historical prices"""
+        help_text += f"""{Style.DIM if self.address_type != "token" else ""}
+    info            ERC20 token info
+    holders         top ERC20 token holders
+    th              ERC20 token history
+    prices          ERC20 token historical prices{Style.RESET_ALL if self.address_type != "token" else ""}"""
 
-        if self.address_type == "tx":
-            help_text += """
-    tx                ethereum blockchain transaction info"""
+        help_text += f"""{Style.DIM if self.address_type != "tx" else ""}
+    tx              ethereum blockchain transaction info{Style.RESET_ALL if self.address_type != "tx" else ""}"""
 
-        print(help_text, "\n")
+        print(help_text)
 
 
-def menu():
+def menu(queue: List[str] = None):
     """Onchain Menu"""
-    onchain_controller = OnchainController()
-    onchain_controller.call_help(None)
+    onchain_controller = OnchainController(queue=queue)
+    an_input = "HELP_ME"
 
     while True:
+        # There is a command in the queue
+        if onchain_controller.queue and len(onchain_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
+            if onchain_controller.queue[0] in ("q", "..", "quit"):
+                if len(onchain_controller.queue) > 1:
+                    return onchain_controller.queue[1:]
+                return []
+
+            # Consume 1 element from the queue
+            an_input = onchain_controller.queue[0]
+            onchain_controller.queue = onchain_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
+            if an_input and an_input in onchain_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /crypto/onchain/ $ {an_input}")
+
         # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in onchain_controller.CHOICES}
-            choices["ttcp"] = {c: None for c in bitquery_model.DECENTRALIZED_EXCHANGES}
-
-            choices["baas"]["-c"] = {c: None for c in bitquery_model.POSSIBLE_CRYPTOS}
-            choices["baas"]["--coin"] = {
-                c: None for c in bitquery_model.POSSIBLE_CRYPTOS
-            }
-
-            completer = NestedCompleter.from_nested_dict(choices)
-            an_input = session.prompt(
-                f"{get_flair()} (crypto)>(onchain)> ",
-                completer=completer,
-            )
         else:
-            an_input = input(f"{get_flair()} (crypto)>(onchain)> ")
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
+                onchain_controller.print_help()
+
+            # Get input from user using auto-completion
+            if session and gtff.USE_PROMPT_TOOLKIT and onchain_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /crypto/onchain/ $ ",
+                    completer=onchain_controller.completer,
+                    search_ignore_case=True,
+                )
+            # Get input from user without auto-completion
+            else:
+                an_input = input(f"{get_flair()} /crypto/onchain/ $ ")
 
         try:
-            process_input = onchain_controller.switch(an_input)
+            # Process the input command
+            onchain_controller.queue = onchain_controller.switch(an_input)
+
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            continue
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /crypto/onchain menu.",
+                end="",
+            )
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                onchain_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
+            if similar_cmd:
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        print("\n")
+                        continue
+                    an_input = candidate_input
+                else:
+                    an_input = similar_cmd[0]
 
-        if process_input is False:
-            return False
-
-        if process_input is True:
-            return True
+                print(f" Replacing by '{an_input}'.")
+                onchain_controller.queue.insert(0, an_input)
+            else:
+                print("\n")

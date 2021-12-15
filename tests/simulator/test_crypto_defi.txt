@@ -1,5 +1,0 @@
-crypto
-defi
-llama
-tvl
-exit

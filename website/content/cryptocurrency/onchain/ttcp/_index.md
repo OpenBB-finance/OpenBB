@@ -1,5 +1,5 @@
 ```
-usage: ttcp [-t TOP]
+usage: ttcp [-l N]
             [-e {1inch,afrodex,airswap,amplbitcratic,balancer,bestswap,bitox,cellswap,cofix,coinchangex,curve,ddex,dubiex,decentrex,deversifi,dodo,ethercexchange,etherblockchain,etherdelta,ethernext,ethfinex,fegex,fffswap,fordex,gudecks,gudeks,hiswap,idex,ledgerdex,mat
 cha,miniswap,mooniswap,oasis,openrelay,s.finance,sakeswap,seeddex,singularx,starbitex,sushiswap,swapx,switchdex,tacoswap,tokenjar,tokenstore,tokentrove,tokenlon,tradexone,uniswap,zeusswap,dydx,dex.blue}]
             [-d DAYS] [-s {base,quoted,trades,tradeAmount}] [--descend] [-h]
@@ -11,7 +11,7 @@ time period [Source: https://graphql.bitquery.io/]
 
 ```
 optional arguments:
-  -t TOP, --top TOP     top N number records (default: 10)
+  -l N, --limit N     display N number records (default: 10)
   -e {1inch,afrodex,airswap,amplbitcratic,balancer,bestswap,bitox,cellswap,cofix,coinchangex,curve,ddex,dubiex,decentrex,deversifi,dodo,ethercexchange,etherblockchain,etherdelta,ethernext,ethfinex,fegex,fffswap,fordex,gudecks,gudeks,hiswap,idex,ledgerdex,matcha,miniswa
 p,mooniswap,oasis,openrelay,s.finance,sakeswap,seeddex,singularx,starbitex,sushiswap,swapx,switchdex,tacoswap,tokenjar,tokenstore,tokentrove,tokenlon,tradexone,uniswap,zeusswap,dydx,dex.blue}, --exchange {1inch,afrodex,airswap,amplbitcratic,balancer,bestswap,bitox,cell
 swap,cofix,coinchangex,curve,ddex,dubiex,decentrex,deversifi,dodo,ethercexchange,etherblockchain,etherdelta,ethernext,ethfinex,fegex,fffswap,fordex,gudecks,gudeks,hiswap,idex,ledgerdex,matcha,miniswap,mooniswap,oasis,openrelay,s.finance,sakeswap,seeddex,singularx,starb

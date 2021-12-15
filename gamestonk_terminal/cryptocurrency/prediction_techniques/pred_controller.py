@@ -3,11 +3,10 @@ __docformat__ = "numpy"
 
 import argparse
 import difflib
-from typing import List
+from typing import List, Union
 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
@@ -38,9 +37,21 @@ class PredictionTechniquesController:
     """Prediction Techniques Controller class"""
 
     # Command choices
-    CHOICES = ["cls", "?", "help", "q", "quit", "load", "pick"]
+    CHOICES = [
+        "cls",
+        "home",
+        "h",
+        "?",
+        "help",
+        "q",
+        "quit",
+        "..",
+        "exit",
+        "r",
+        "reset",
+    ]
 
-    CHOICES_MODELS = [
+    CHOICES_COMMANDS = [
         "ets",
         "knn",
         "regression",
@@ -51,15 +62,32 @@ class PredictionTechniquesController:
         "conv1d",
         "mc",
     ]
-    CHOICES += CHOICES_MODELS
+    CHOICES += CHOICES_COMMANDS
     sampling_map = {"H": "Hour", "D": "Day"}
 
     def __init__(
         self,
         coin: str,
         data: pd.DataFrame,
+        queue: List[str] = None,
     ):
         """Constructor"""
+        self.pred_parser = argparse.ArgumentParser(add_help=False, prog="pred")
+        self.pred_parser.add_argument(
+            "cmd",
+            choices=self.CHOICES,
+        )
+
+        self.completer: Union[None, NestedCompleter] = None
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
+
         data["Returns"] = data["Close"].pct_change()
         data["LogRet"] = np.log(data["Close"]) - np.log(data["Close"].shift(1))
         data = data.dropna()
@@ -68,27 +96,15 @@ class PredictionTechniquesController:
         self.coin = coin
         self.resolution = "1D"
         self.target = "Close"
-        self.pred_parser = argparse.ArgumentParser(add_help=False, prog="pred")
-        self.pred_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
 
     def print_help(self):
         """Print help"""
 
         help_string = f"""
-Prediction Techniques:
-    cls         clear screen
-    ?/help      show this menu again
-    q           quit this menu, and shows back to main menu
-    quit        quit to abandon program
-    load        load new ticker
-    pick        pick new target variable
+Prediction Menu:
 
 Coin Loaded: {self.coin}
 Target Column: {self.target}
-
 
 Models:
     ets         exponential smoothing (e.g. Holt-Winters)
@@ -106,46 +122,96 @@ Models:
     def switch(self, an_input: str):
         """Process and dispatch input
 
+        Parameters
+        -------
+        an_input : str
+            string with input arguments
+
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
 
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.pred_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
         )(other_args)
 
-    def call_help(self, _):
-        """Process Help command"""
-        self.print_help()
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue
 
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return False
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+
+        return self.queue
+
+    def call_help(self, _):
+        """Process help command"""
+        self.print_help()
+        return self.queue
 
     def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+        """Process quit menu command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q"]
+
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q", "q", "q"]
+
+    def call_reset(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "pred")
+            self.queue.insert(0, "crypto")
+            self.queue.insert(0, "r")
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q", "q", "r", "crypto", "pred"]
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -192,19 +258,18 @@ Models:
         if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-c")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
         # TODO: improve loading from this submenu.  Currently would recommend using this menu after using main load
-
-        self.coin = ns_parser.coin
-        self.data = c_help.load_cg_coin_data(
-            ns_parser.coin, ns_parser.currency, ns_parser.days, ns_parser.resolution
-        )
-        res = ns_parser.resolution if ns_parser.days < 90 else "1D"
-        self.resolution = res
-        print(
-            f"{ns_parser.days} Days of {self.coin} vs {ns_parser.currency} loaded with {res} resolution.\n"
-        )
+        if ns_parser:
+            self.coin = ns_parser.coin
+            self.data = c_help.load_cg_coin_data(
+                ns_parser.coin, ns_parser.currency, ns_parser.days, ns_parser.resolution
+            )
+            res = ns_parser.resolution if ns_parser.days < 90 else "1D"
+            self.resolution = res
+            print(
+                f"{ns_parser.days} Days of {self.coin} vs {ns_parser.currency} loaded with {res} resolution.\n"
+            )
+        return self.queue
 
     @try_except
     def call_pick(self, other_args: List[str]):
@@ -228,10 +293,10 @@ Models:
             other_args.insert(0, "-t")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        self.target = ns_parser.target
-        print("")
+        if ns_parser:
+            self.target = ns_parser.target
+            print("")
+        return self.queue
 
     @try_except
     def call_ets(self, other_args: List[str]):
@@ -304,37 +369,35 @@ Models:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
-        if not ns_parser:
-            return
+        if ns_parser:
+            if ns_parser.s_end_date:
+                if ns_parser.s_end_date < self.data.index[0]:
+                    print(
+                        "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
+                    )
+                    return self.queue
 
-        if ns_parser.s_end_date:
+                if ns_parser.s_end_date < get_next_stock_market_days(
+                    last_stock_day=self.data.index[0],
+                    n_next_days=5 + ns_parser.n_days,
+                )[-1]:
+                    print(
+                        "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
+                    )
+                    return self.queue
 
-            if ns_parser.s_end_date < self.data.index[0]:
-                print(
-                    "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
-                )
-                return
-
-            if ns_parser.s_end_date < get_next_stock_market_days(
-                last_stock_day=self.data.index[0],
-                n_next_days=5 + ns_parser.n_days,
-            )[-1]:
-                print(
-                    "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
-                )
-                return
-
-        ets_view.display_exponential_smoothing(
-            ticker=self.coin,
-            values=self.data[self.target],
-            n_predict=ns_parser.n_days,
-            trend=ns_parser.trend,
-            seasonal=ns_parser.seasonal,
-            seasonal_periods=ns_parser.seasonal_periods,
-            s_end_date=ns_parser.s_end_date,
-            export=ns_parser.export,
-            time_res=self.resolution,
-        )
+            ets_view.display_exponential_smoothing(
+                ticker=self.coin,
+                values=self.data[self.target],
+                n_predict=ns_parser.n_days,
+                trend=ns_parser.trend,
+                seasonal=ns_parser.seasonal,
+                seasonal_periods=ns_parser.seasonal_periods,
+                s_end_date=ns_parser.s_end_date,
+                export=ns_parser.export,
+                time_res=self.resolution,
+            )
+        return self.queue
 
     @try_except
     def call_knn(self, other_args: List[str]):
@@ -410,20 +473,19 @@ Models:
             help="Specify if shuffling validation inputs.",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        knn_view.display_k_nearest_neighbors(
-            ticker=self.coin,
-            data=self.data[self.target],
-            n_neighbors=ns_parser.n_neighbors,
-            n_input_days=ns_parser.n_inputs,
-            n_predict_days=ns_parser.n_days,
-            test_size=ns_parser.valid_split,
-            end_date=ns_parser.s_end_date,
-            no_shuffle=ns_parser.no_shuffle,
-            time_res=self.resolution,
-        )
+        if ns_parser:
+            knn_view.display_k_nearest_neighbors(
+                ticker=self.coin,
+                data=self.data[self.target],
+                n_neighbors=ns_parser.n_neighbors,
+                n_input_days=ns_parser.n_inputs,
+                n_predict_days=ns_parser.n_days,
+                test_size=ns_parser.valid_split,
+                end_date=ns_parser.s_end_date,
+                no_shuffle=ns_parser.no_shuffle,
+                time_res=self.resolution,
+            )
+        return self.queue
 
     @try_except
     def call_regression(self, other_args: List[str]):
@@ -493,36 +555,36 @@ Models:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
-        if not ns_parser:
-            return
-        # BACKTESTING CHECK
-        if ns_parser.s_end_date:
-            if ns_parser.s_end_date < self.data.index[0]:
-                print(
-                    "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
-                )
-                return
+        if ns_parser:
+            # BACKTESTING CHECK
+            if ns_parser.s_end_date:
+                if ns_parser.s_end_date < self.data.index[0]:
+                    print(
+                        "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
+                    )
+                    return self.queue
 
-            if ns_parser.s_end_date < get_next_stock_market_days(
-                last_stock_day=self.data.index[0],
-                n_next_days=5 + ns_parser.n_days,
-            )[-1]:
-                print(
-                    "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
-                )
-                return
+                if ns_parser.s_end_date < get_next_stock_market_days(
+                    last_stock_day=self.data.index[0],
+                    n_next_days=5 + ns_parser.n_days,
+                )[-1]:
+                    print(
+                        "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
+                    )
+                    return self.queue
 
-        regression_view.display_regression(
-            dataset=self.coin,
-            values=self.data[self.target],
-            poly_order=ns_parser.n_polynomial,
-            n_input=ns_parser.n_inputs,
-            n_predict=ns_parser.n_days,
-            n_jumps=ns_parser.n_jumps,
-            s_end_date=ns_parser.s_end_date,
-            export=ns_parser.export,
-            time_res=self.resolution,
-        )
+            regression_view.display_regression(
+                dataset=self.coin,
+                values=self.data[self.target],
+                poly_order=ns_parser.n_polynomial,
+                n_input=ns_parser.n_inputs,
+                n_predict=ns_parser.n_days,
+                n_jumps=ns_parser.n_jumps,
+                s_end_date=ns_parser.s_end_date,
+                export=ns_parser.export,
+                time_res=self.resolution,
+            )
+        return self.queue
 
     @try_except
     def call_arima(self, other_args: List[str]):
@@ -598,39 +660,37 @@ Models:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
-        if not ns_parser:
-            return
+        if ns_parser:
+            # BACKTESTING CHECK
+            if ns_parser.s_end_date:
+                if ns_parser.s_end_date < self.data.index[0]:
+                    print(
+                        "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
+                    )
+                    return self.queue
 
-        # BACKTESTING CHECK
-        if ns_parser.s_end_date:
+                if ns_parser.s_end_date < get_next_stock_market_days(
+                    last_stock_day=self.data.index[0],
+                    n_next_days=5 + ns_parser.n_days,
+                )[-1]:
+                    print(
+                        "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
+                    )
+                    return self.queue
 
-            if ns_parser.s_end_date < self.data.index[0]:
-                print(
-                    "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
-                )
-                return
-
-            if ns_parser.s_end_date < get_next_stock_market_days(
-                last_stock_day=self.data.index[0],
-                n_next_days=5 + ns_parser.n_days,
-            )[-1]:
-                print(
-                    "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
-                )
-                return
-
-        arima_view.display_arima(
-            dataset=self.coin,
-            values=self.data[self.target],
-            arima_order=ns_parser.s_order,
-            n_predict=ns_parser.n_days,
-            seasonal=ns_parser.b_seasonal,
-            ic=ns_parser.s_ic,
-            results=ns_parser.b_results,
-            s_end_date=ns_parser.s_end_date,
-            export=ns_parser.export,
-            time_res=self.resolution,
-        )
+            arima_view.display_arima(
+                dataset=self.coin,
+                values=self.data[self.target],
+                arima_order=ns_parser.s_order,
+                n_predict=ns_parser.n_days,
+                seasonal=ns_parser.b_seasonal,
+                ic=ns_parser.s_ic,
+                results=ns_parser.b_results,
+                s_end_date=ns_parser.s_end_date,
+                export=ns_parser.export,
+                time_res=self.resolution,
+            )
+        return self.queue
 
     @try_except
     def call_mlp(self, other_args: List[str]):
@@ -641,27 +701,27 @@ Models:
                 description="""Multi-Layered-Perceptron. """,
                 other_args=other_args,
             )
-            if not ns_parser:
-                return
-
-            neural_networks_view.display_mlp(
-                dataset=self.coin,
-                data=self.data[self.target],
-                n_input_days=ns_parser.n_inputs,
-                n_predict_days=ns_parser.n_days,
-                learning_rate=ns_parser.lr,
-                epochs=ns_parser.n_epochs,
-                batch_size=ns_parser.n_batch_size,
-                test_size=ns_parser.valid_split,
-                n_loops=ns_parser.n_loops,
-                no_shuffle=ns_parser.no_shuffle,
-                time_res=self.resolution,
-            )
+            if ns_parser:
+                neural_networks_view.display_mlp(
+                    dataset=self.coin,
+                    data=self.data[self.target],
+                    n_input_days=ns_parser.n_inputs,
+                    n_predict_days=ns_parser.n_days,
+                    learning_rate=ns_parser.lr,
+                    epochs=ns_parser.n_epochs,
+                    batch_size=ns_parser.n_batch_size,
+                    test_size=ns_parser.valid_split,
+                    n_loops=ns_parser.n_loops,
+                    no_shuffle=ns_parser.no_shuffle,
+                    time_res=self.resolution,
+                )
         except Exception as e:
             print(e, "\n")
+            return self.queue
 
         finally:
             pred_helper.restore_env()
+        return self.queue
 
     def call_rnn(self, other_args: List[str]):
         """Process rnn command"""
@@ -671,28 +731,27 @@ Models:
                 description="""Recurrent Neural Network. """,
                 other_args=other_args,
             )
-            if not ns_parser:
-                return
-
-            neural_networks_view.display_rnn(
-                dataset=self.coin,
-                data=self.data[self.target],
-                n_input_days=ns_parser.n_inputs,
-                n_predict_days=ns_parser.n_days,
-                learning_rate=ns_parser.lr,
-                epochs=ns_parser.n_epochs,
-                batch_size=ns_parser.n_batch_size,
-                test_size=ns_parser.valid_split,
-                n_loops=ns_parser.n_loops,
-                no_shuffle=ns_parser.no_shuffle,
-                time_res=self.resolution,
-            )
+            if ns_parser:
+                neural_networks_view.display_rnn(
+                    dataset=self.coin,
+                    data=self.data[self.target],
+                    n_input_days=ns_parser.n_inputs,
+                    n_predict_days=ns_parser.n_days,
+                    learning_rate=ns_parser.lr,
+                    epochs=ns_parser.n_epochs,
+                    batch_size=ns_parser.n_batch_size,
+                    test_size=ns_parser.valid_split,
+                    n_loops=ns_parser.n_loops,
+                    no_shuffle=ns_parser.no_shuffle,
+                    time_res=self.resolution,
+                )
 
         except Exception as e:
             print(e, "\n")
-
+            return self.queue
         finally:
             pred_helper.restore_env()
+        return self.queue
 
     def call_lstm(self, other_args: List[str]):
         """Process lstm command"""
@@ -702,27 +761,27 @@ Models:
                 description="""Long-Short Term Memory. """,
                 other_args=other_args,
             )
-            if not ns_parser:
-                return
-            neural_networks_view.display_lstm(
-                dataset=self.coin,
-                data=self.data[self.target],
-                n_input_days=ns_parser.n_inputs,
-                n_predict_days=ns_parser.n_days,
-                learning_rate=ns_parser.lr,
-                epochs=ns_parser.n_epochs,
-                batch_size=ns_parser.n_batch_size,
-                test_size=ns_parser.valid_split,
-                n_loops=ns_parser.n_loops,
-                no_shuffle=ns_parser.no_shuffle,
-                time_res=self.resolution,
-            )
+            if ns_parser:
+                neural_networks_view.display_lstm(
+                    dataset=self.coin,
+                    data=self.data[self.target],
+                    n_input_days=ns_parser.n_inputs,
+                    n_predict_days=ns_parser.n_days,
+                    learning_rate=ns_parser.lr,
+                    epochs=ns_parser.n_epochs,
+                    batch_size=ns_parser.n_batch_size,
+                    test_size=ns_parser.valid_split,
+                    n_loops=ns_parser.n_loops,
+                    no_shuffle=ns_parser.no_shuffle,
+                    time_res=self.resolution,
+                )
 
         except Exception as e:
             print(e, "\n")
-
+            return self.queue
         finally:
             pred_helper.restore_env()
+        return self.queue
 
     def call_conv1d(self, other_args: List[str]):
         """Process conv1d command"""
@@ -732,28 +791,28 @@ Models:
                 description="""1D CNN.""",
                 other_args=other_args,
             )
-            if not ns_parser:
-                return
-
-            neural_networks_view.display_conv1d(
-                dataset=self.coin,
-                data=self.data[self.target],
-                n_input_days=ns_parser.n_inputs,
-                n_predict_days=ns_parser.n_days,
-                learning_rate=ns_parser.lr,
-                epochs=ns_parser.n_epochs,
-                batch_size=ns_parser.n_batch_size,
-                test_size=ns_parser.valid_split,
-                n_loops=ns_parser.n_loops,
-                no_shuffle=ns_parser.no_shuffle,
-                time_res=self.resolution,
-            )
+            if ns_parser:
+                neural_networks_view.display_conv1d(
+                    dataset=self.coin,
+                    data=self.data[self.target],
+                    n_input_days=ns_parser.n_inputs,
+                    n_predict_days=ns_parser.n_days,
+                    learning_rate=ns_parser.lr,
+                    epochs=ns_parser.n_epochs,
+                    batch_size=ns_parser.n_batch_size,
+                    test_size=ns_parser.valid_split,
+                    n_loops=ns_parser.n_loops,
+                    no_shuffle=ns_parser.no_shuffle,
+                    time_res=self.resolution,
+                )
 
         except Exception as e:
             print(e, "\n")
+            return self.queue
 
         finally:
             pred_helper.restore_env()
+        return self.queue
 
     @try_except
     def call_mc(self, other_args: List[str]):
@@ -792,55 +851,91 @@ Models:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
-        if not ns_parser:
-            return
         if self.target != "Close":
-            print("MC Prediction designed for AdjClose prices")
-            return
+            print("MC Prediction designed for AdjClose prices\n")
+            return self.queue
 
-        mc_view.display_mc_forecast(
-            data=self.data[self.target],
-            n_future=ns_parser.n_days,
-            n_sims=ns_parser.n_sims,
-            use_log=ns_parser.dist == "lognormal",
-            export=ns_parser.export,
-            time_res=self.resolution,
-        )
+        if ns_parser:
+            mc_view.display_mc_forecast(
+                data=self.data[self.target],
+                n_future=ns_parser.n_days,
+                n_sims=ns_parser.n_sims,
+                use_log=ns_parser.dist == "lognormal",
+                export=ns_parser.export,
+                time_res=self.resolution,
+            )
+        return self.queue
 
 
-def menu(coin: str, data: pd.DataFrame):
+def menu(coin: str, data: pd.DataFrame, queue: List[str] = None):
     """Prediction Techniques Menu"""
 
-    pred_controller = PredictionTechniquesController(coin, data)
-    pred_controller.call_help(None)
+    pred_controller = PredictionTechniquesController(coin, data, queue)
+    an_input = "HELP_ME"
 
     while True:
+        # There is a command in the queue
+        if pred_controller.queue and len(pred_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
+            if pred_controller.queue[0] in ("q", "..", "quit"):
+                if len(pred_controller.queue) > 1:
+                    return pred_controller.queue[1:]
+                return []
+
+            # Consume 1 element from the queue
+            an_input = pred_controller.queue[0]
+            pred_controller.queue = pred_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
+            if an_input and an_input in pred_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /crypto/pred/ $ {an_input}")
+
         # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in pred_controller.CHOICES}
-            )
-            an_input = session.prompt(
-                f"{get_flair()} (crypto)>(pred)> ",
-                completer=completer,
-            )
         else:
-            an_input = input(f"{get_flair()} (crypto)>(pred)> ")
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
+                pred_controller.print_help()
+
+            # Get input from user using auto-completion
+            if session and gtff.USE_PROMPT_TOOLKIT and pred_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /crypto/pred/ $ ",
+                    completer=pred_controller.completer,
+                    search_ignore_case=True,
+                )
+            # Get input from user without auto-completion
+            else:
+                an_input = input(f"{get_flair()} /crypto/pred/ $ ")
 
         try:
-            plt.close("all")
-
-            process_input = pred_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            # Process the input command
+            pred_controller.queue = pred_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            similar_cmd = difflib.get_close_matches(
-                an_input, pred_controller.CHOICES, n=1, cutoff=0.7
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /crypto/pred menu.",
+                end="",
             )
-
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                pred_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
-            continue
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        print("\n")
+                        continue
+                    an_input = candidate_input
+                else:
+                    an_input = similar_cmd[0]
+
+                print(f" Replacing by '{an_input}'.")
+                pred_controller.queue.insert(0, an_input)
+            else:
+                print("\n")
