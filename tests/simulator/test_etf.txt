@@ -1,0 +1,8 @@
+etf
+gainers
+q
+etf
+r
+search blackrock
+holdings qqq -l 5
+exit

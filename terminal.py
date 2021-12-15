@@ -237,7 +237,7 @@ Menus:
         """Process etf command"""
         from gamestonk_terminal.etf import etf_controller
 
-        return etf_controller.menu()
+        return etf_controller.menu(self.queue)
 
     def call_forex(self, _):
         """Process forex command"""
