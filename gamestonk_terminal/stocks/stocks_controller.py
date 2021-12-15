@@ -555,11 +555,7 @@ Stocks Menus:
         """Process scr command"""
         from gamestonk_terminal.stocks.screener import screener_controller
 
-        ret = screener_controller.menu()
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return screener_controller.menu(self.queue)
 
     def call_sia(self, _):
         """Process ins command"""
