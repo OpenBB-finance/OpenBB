@@ -175,7 +175,7 @@ Stocks Menus:
                 an_input = actions[0]
 
             # Add all instructions to the queue
-            for cmd in actions[::-1]:
+            for cmd in actions[1:][::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
 
@@ -211,6 +211,7 @@ Stocks Menus:
 
     def call_quit(self, _):
         """Process quit menu command"""
+        print("")
         if len(self.queue) > 0:
             self.queue.insert(0, "quit")
             return self.queue
@@ -701,15 +702,7 @@ Stocks Menus:
         """Process ba command"""
         from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
 
-        ret = ba_controller.menu(
-            self.ticker,
-            self.start,
-        )
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return ba_controller.menu(self.ticker, self.start, self.queue)
 
     def call_qa(self, _):
         """Process qa command"""
@@ -785,6 +778,7 @@ def menu(ticker: str = "", queue: List[str] = None):
         if stocks_controller.queue and len(stocks_controller.queue) > 0:
             # If the command is quitting the menu we want to return in here
             if stocks_controller.queue[0] in ("q", "..", "quit"):
+                print("")
                 if len(stocks_controller.queue) > 1:
                     return stocks_controller.queue[1:]
                 return []

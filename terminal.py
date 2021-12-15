@@ -135,7 +135,7 @@ Menus:
                 an_input = actions[0]
 
             # Add all instructions to the queue
-            for cmd in actions[::-1]:
+            for cmd in actions[1:][::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
 
@@ -165,6 +165,7 @@ Menus:
 
     def call_quit(self, _):
         """Process quit menu command"""
+        print("")
         if len(self.queue) > 0:
             self.queue.insert(0, "quit")
             return self.queue
@@ -273,6 +274,7 @@ def terminal(jobs_cmds: List[str] = None):
         if t_controller.queue and len(t_controller.queue) > 0:
             # If the command is quitting the menu we want to return in here
             if t_controller.queue[0] in ("q", "..", "quit"):
+                print("")
                 if len(t_controller.queue) > 1:
                     return t_controller.queue[1:]
                 return []

@@ -199,7 +199,7 @@ NASDAQ Data Link (Formerly Quandl):
                 an_input = actions[0]
 
             # Add all instructions to the queue
-            for cmd in actions[::-1]:
+            for cmd in actions[1:][::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
 
@@ -236,6 +236,7 @@ NASDAQ Data Link (Formerly Quandl):
 
     def call_quit(self, _):
         """Process quit menu command"""
+        print("")
         if len(self.queue) > 0:
             self.queue.insert(0, "quit")
             return self.queue
@@ -948,6 +949,7 @@ def menu(queue: List[str] = None):
         if disc_controller.queue and len(disc_controller.queue) > 0:
             # If the command is quitting the menu we want to return in here
             if disc_controller.queue[0] in ("q", "..", "quit"):
+                print("")
                 if len(disc_controller.queue) > 1:
                     return disc_controller.queue[1:]
                 return []

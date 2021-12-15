@@ -92,11 +92,6 @@ class DarkPoolShortsController:
     def print_help(self):
         """Print help"""
         help_text = f"""
-Dark Pool Shorts:
-    cls            clear screen
-    ?/help         show this menu again
-    q              quit this menu, and shows back to main menu
-    quit           quit to abandon program
     load           load a specific stock ticker for analysis
 
 Yahoo Finance:
@@ -149,7 +144,7 @@ NYSE:
                 an_input = actions[0]
 
             # Add all instructions to the queue
-            for cmd in actions[::-1]:
+            for cmd in actions[1:][::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
 
@@ -186,6 +181,7 @@ NYSE:
 
     def call_quit(self, _):
         """Process quit menu command"""
+        print("")
         if len(self.queue) > 0:
             self.queue.insert(0, "quit")
             return self.queue
@@ -726,6 +722,7 @@ def menu(
         if dps_controller.queue and len(dps_controller.queue) > 0:
             # If the command is quitting the menu we want to return in here
             if dps_controller.queue[0] in ("q", "..", "quit"):
+                print("")
                 if len(dps_controller.queue) > 1:
                     return dps_controller.queue[1:]
                 return []

@@ -183,7 +183,7 @@ Finviz:
                 an_input = actions[0]
 
             # Add all instructions to the queue
-            for cmd in actions[::-1]:
+            for cmd in actions[1:][::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
 
@@ -220,6 +220,7 @@ Finviz:
 
     def call_quit(self, _):
         """Process quit menu command"""
+        print("")
         if len(self.queue) > 0:
             self.queue.insert(0, "quit")
             return self.queue
@@ -1115,6 +1116,7 @@ def menu(
         if ca_controller.queue and len(ca_controller.queue) > 0:
             # If the command is quitting the menu we want to return in here
             if ca_controller.queue[0] in ("q", "..", "quit"):
+                print("")
                 # Since we came from another menu we need to quit an additional time
                 if from_submenu:
                     ca_controller.queue.insert(0, "quit")
