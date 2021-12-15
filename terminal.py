@@ -221,7 +221,7 @@ Menus:
         """Process economy command"""
         from gamestonk_terminal.economy import economy_controller
 
-        return economy_controller.menu()
+        return economy_controller.menu(self.queue)
 
     def call_etf(self, _):
         """Process etf command"""
