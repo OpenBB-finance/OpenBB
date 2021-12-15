@@ -6,7 +6,7 @@ import difflib
 import os
 from os import listdir
 from os.path import isfile, join
-from typing import List
+from typing import List, Union
 from datetime import datetime
 
 from prompt_toolkit.completion import NestedCompleter
@@ -15,9 +15,6 @@ import pandas as pd
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
-    MENU_GO_BACK,
-    MENU_QUIT,
-    MENU_RESET,
     try_except,
     valid_date,
     check_positive_float,
@@ -44,17 +41,23 @@ class PortfolioController:
 
     CHOICES = [
         "cls",
+        "home",
+        "h",
         "?",
         "help",
         "q",
         "quit",
+        "..",
+        "exit",
+        "r",
         "reset",
     ]
 
     CHOICES_MENUS = [
         "bro",
-        # "pa",
         "po",
+    ]
+    CHOICES_COMMANDS = [
         "load",
         "save",
         "show",
@@ -64,18 +67,26 @@ class PortfolioController:
         "rmr",
     ]
 
-    CHOICES += CHOICES_MENUS
+    CHOICES += CHOICES_MENUS + CHOICES_COMMANDS
 
-    def __init__(self):
+    def __init__(self, queue: List[str] = None):
         """Constructor"""
         self.port_parser = argparse.ArgumentParser(add_help=False, prog="portfolio")
         self.port_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
-        self.completer = NestedCompleter.from_nested_dict(
-            {c: None for c in self.CHOICES}
-        )
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
+
         self.portfolio = pd.DataFrame(
             columns=[
                 "Name",
@@ -122,48 +133,79 @@ Graphs:
 
         Returns
         -------
-        MENU_GO_BACK, MENU_QUIT, MENU_RESET
-            MENU_GO_BACK - Show main context menu again
-            MENU_QUIT - Quit terminal
-            MENU_RESET - Reset terminal and go back to same previous menu
+        List[str]
+            List of commands in the queue to execute
         """
-
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.port_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
-
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
         return getattr(
-            self, "call_" + known_args.cmd, lambda: "command not recognized!"
+            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
         )(other_args)
 
-    def call_help(self, _):
-        """Process Help Command"""
-        self.print_help()
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue if len(self.queue) > 0 else []
 
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return MENU_GO_BACK
+    def call_help(self, _):
+        """Process help command"""
+        self.print_help()
+        return self.queue if len(self.queue) > 0 else []
 
     def call_quit(self, _):
-        """Process Quit command - exit the program"""
-        return MENU_QUIT
+        """Process quit menu command"""
+        print("")
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q"]
+
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        print("")
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q", "q"]
 
     def call_reset(self, _):
-        """Process Reset command - reset the program"""
-        return MENU_RESET
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "portfolio")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "reset", "portfolio"]
 
     # MENUS
     def call_bro(self, _):
@@ -173,14 +215,6 @@ Graphs:
             self.print_help()
         else:
             return True
-
-    # def call_pa(self, _):
-    #    """Process pa command"""
-    #    ret = pa_controller.menu()
-    #    if ret is False:
-    #        self.print_help()
-    #    else:
-    #        return True
 
     def call_po(self, _):
         """Process po command"""
@@ -220,6 +254,7 @@ Graphs:
 
         self.portfolio = portfolio_model.load_df(ns_parser.name)
         print("")
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_save(self, other_args: List[str]):
@@ -255,10 +290,12 @@ Graphs:
             )
 
         portfolio_model.save_df(self.portfolio, ns_parser.name)
+        return self.queue if len(self.queue) > 0 else []
 
     def call_show(self, _):
         """Process show command"""
         portfolio_view.show_df(self.portfolio, False)
+        return self.queue if len(self.queue) > 0 else []
 
     def call_add(self, other_args: List[str]):
         """Process add command"""
@@ -316,13 +353,7 @@ Graphs:
             type=check_positive_float,
             help="Fees paid for transaction",
         )
-        # parser.add_argument(
-        #     "-r",
-        #     "--premium",
-        #     dest="premium",
-        #     type=check_positive_float,
-        #     help="Premium paid/received for the option",
-        # )
+
         parser.add_argument(
             "-a",
             "--action",
@@ -367,6 +398,7 @@ Graphs:
         self.portfolio = self.portfolio.append([data])
         self.portfolio.index = list(range(0, len(self.portfolio.values)))
         print(f"{ns_parser.name.upper()} successfully added\n")
+        return self.queue if len(self.queue) > 0 else []
 
     def call_rmv(self, _):
         """Process rmv command"""
@@ -379,6 +411,7 @@ Graphs:
             print(
                 f"Invalid index please use an integer between 0 and {len(self.portfolio.index)-1}\n"
             )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_ar(self, other_args: List[str]):
@@ -409,6 +442,7 @@ Graphs:
         val, hist = portfolio_model.convert_df(self.portfolio)
         if not val.empty:
             portfolio_view.Report(val, hist, ns_parser.market, 365).generate_report()
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_rmr(self, other_args: List[str]):
@@ -444,36 +478,67 @@ Graphs:
         else:
             print("Cannot generate a graph from an empty dataframe\n")
 
+        return self.queue if len(self.queue) > 0 else []
 
-def menu():
-    """Portfolio Menu"""
-    portfolio_controller = PortfolioController()
-    portfolio_controller.call_help(None)
+
+def menu(queue: List[str] = None):
+    """Discovery Menu"""
+    port_controller = PortfolioController(queue)
+    first = True
+    # Loop forever and ever
     while True:
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in portfolio_controller.CHOICES}
-            )
+        # There is a command in the queue
+        if port_controller.queue and len(port_controller.queue) > 0:
+            if port_controller.queue[0] in ("q", "..", "quit"):
+                if len(port_controller.queue) > 1:
+                    return port_controller.queue[1:]
+                return []
 
-            an_input = session.prompt(
-                f"{get_flair()} (portfolio)> ",
-                completer=completer,
-            )
+            an_input = port_controller.queue[0]
+            port_controller.queue = port_controller.queue[1:]
+            if an_input and an_input in port_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /portfolio/ $ {an_input}")
+
+        # Get input command from user
         else:
-            an_input = input(f"{get_flair()} (portfolio)> ")
+            if first:
+                port_controller.print_help()
+                first = False
+            if session and gtff.USE_PROMPT_TOOLKIT and port_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /portfolio/ $ ",
+                    completer=port_controller.completer,
+                    search_ignore_case=True,
+                )
+
+            else:
+                an_input = input(f"{get_flair()} /portfolio/ $ ")
 
         try:
-            process_input = portfolio_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            port_controller.queue = port_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exit\n")
+            print(f"\nThe command '{an_input}' doesn't exist.", end="")
             similar_cmd = difflib.get_close_matches(
-                an_input, portfolio_controller.CHOICES, n=1, cutoff=0.7
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                port_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
             )
-
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
-            continue
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        print("\n")
+                        continue
+                    an_input = candidate_input
+                else:
+                    an_input = similar_cmd[0]
+
+                print(f" Replacing by '{an_input}'.")
+                port_controller.queue.insert(0, an_input)
+            else:
+                print("\n")

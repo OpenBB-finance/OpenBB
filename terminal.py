@@ -251,7 +251,7 @@ Menus:
         """Process portfolio command"""
         from gamestonk_terminal.portfolio import portfolio_controller
 
-        return portfolio_controller.menu()
+        return portfolio_controller.menu(self.queue)
 
 
 def terminal(jobs_cmds: List[str] = None):
