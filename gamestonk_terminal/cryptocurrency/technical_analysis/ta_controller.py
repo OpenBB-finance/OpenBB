@@ -1179,7 +1179,7 @@ def menu(
 
         except SystemExit:
             print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/disc menu.",
+                f"\nThe command '{an_input}' doesn't exist on the /crypto/ta menu.",
                 end="",
             )
             similar_cmd = difflib.get_close_matches(

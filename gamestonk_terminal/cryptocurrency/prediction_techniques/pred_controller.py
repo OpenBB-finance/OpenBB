@@ -913,7 +913,7 @@ def menu(coin: str, data: pd.DataFrame, queue: List[str] = None):
 
         except SystemExit:
             print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/disc menu.",
+                f"\nThe command '{an_input}' doesn't exist on the /crypto/pred menu.",
                 end="",
             )
             similar_cmd = difflib.get_close_matches(
