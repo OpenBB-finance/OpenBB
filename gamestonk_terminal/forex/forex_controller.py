@@ -21,7 +21,6 @@ from gamestonk_terminal.helper_funcs import (
     system_clear,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.paths import cd_CHOICES
 
 # pylint: disable=R1710,import-outside-toplevel
 
@@ -31,10 +30,10 @@ class ForexController:
 
     CHOICES = [
         "cls",
-        "cd",
+        "home",
         "h",
-        "help",
         "?",
+        "help",
         "q",
         "quit",
         "..",
@@ -62,7 +61,6 @@ class ForexController:
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
-            choices["cd"] = {c: None for c in cd_CHOICES}
 
             choices["to"] = {c: None for c in av_model.CURRENCY_LIST}
             choices["from"] = {c: None for c in av_model.CURRENCY_LIST}
@@ -94,7 +92,7 @@ AlphaVantage:
     candle        show candle plot for loaded data
 {Style.RESET_ALL}
 Forex brokerages:
-    /oanda         Oanda menu
+>   oanda         Oanda menu
  """
         print(help_text)
 
