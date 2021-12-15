@@ -88,12 +88,6 @@ class OverviewController:
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
             choices["wfpe"] = {c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS}
-            choices["wfpe"]["-c"] = {
-                c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS
-            }
-            choices["wfpe"]["--coin"] = {
-                c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS
-            }
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         if queue:
@@ -172,7 +166,7 @@ WithdrawalFees:
                 an_input = actions[0]
 
             # Add all instructions to the queue
-            for cmd in actions[::-1]:
+            for cmd in actions[1:][::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
 
