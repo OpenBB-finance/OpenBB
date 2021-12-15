@@ -27,6 +27,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence import (
     coinbase_view,
 )
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     get_flair,
     parse_known_args_and_warn,
@@ -243,29 +244,29 @@ Coinbase:
     def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q"]
+        return ["quit"]
 
     def call_exit(self, _):
         """Process exit terminal command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q", "q"]
+        return ["quit", "quit", "quit"]
 
     def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "dd")
             self.queue.insert(0, "crypto")
-            self.queue.insert(0, "r")
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q", "r", "crypto", "dd"]
+        return ["quit", "quit", "reset", "crypto", "dd"]
 
     @try_except
     def call_active(self, other_args: List[str]):
@@ -311,7 +312,7 @@ Coinbase:
             )
 
             ns_parser = parse_known_args_and_warn(
-                parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+                parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
             )
 
             if ns_parser:

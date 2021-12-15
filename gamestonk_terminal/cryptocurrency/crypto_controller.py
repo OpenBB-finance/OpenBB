@@ -196,26 +196,26 @@ Crypto Menus:
     def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q"]
+        return ["quit"]
 
     def call_exit(self, _):
         """Process exit terminal command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q"]
+        return ["quit", "quit"]
 
     def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "crypto")
-            self.queue.insert(0, "r")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "r", "crypto"]
+        return ["quit", "reset", "crypto"]
 
     def call_load(self, other_args):
         """Process load command"""
@@ -794,9 +794,9 @@ Crypto Menus:
 
     def call_nft(self, _):
         """Process nft command"""
-        from gamestonk_terminal.cryptocurrency.nft import crypto_controller
+        from gamestonk_terminal.cryptocurrency.nft import nft_controller
 
-        return crypto_controller.menu(queue=self.queue)
+        return nft_controller.menu(queue=self.queue)
 
     @try_except
     def call_find(self, other_args):
@@ -880,6 +880,7 @@ def menu(queue: List[str] = None):
         if crypto_controller.queue and len(crypto_controller.queue) > 0:
             # If the command is quitting the menu we want to return in here
             if crypto_controller.queue[0] in ("q", "..", "quit"):
+                print("")
                 if len(crypto_controller.queue) > 1:
                     return crypto_controller.queue[1:]
                 return []
