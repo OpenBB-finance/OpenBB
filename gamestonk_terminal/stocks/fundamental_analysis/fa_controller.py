@@ -77,7 +77,6 @@ class FundamentalAnalysisController:
 
     def __init__(self, ticker: str, start: str, interval: str, suffix: str = ""):
         """Constructor
-
         Parameters
         ----------
         ticker : str
@@ -109,7 +108,6 @@ Fundamental Analysis:
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
     load          load a new ticker
-
 Ticker: {self.ticker}
 {f"Note that only Yahoo Finance currently supports foreign exchanges{Style.DIM}{newline}" if self.suffix else ""}
     data          fundamental and technical data of company [FinViz]
@@ -147,7 +145,6 @@ Other Sources:
 
     def switch(self, an_input: str):
         """Process and dispatch input
-
         Returns
         -------
         True, False or None
@@ -460,15 +457,23 @@ Other Sources:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="divs",
-            description="Get historical dividends for company",
+            description="Historical dividends for a company",
         )
         parser.add_argument(
             "-n",
             "--num",
             dest="num",
             type=check_positive,
-            default=12,
+            default=16,
             help="Number of previous dividends to show",
+        )
+        parser.add_argument(
+            "-p",
+            "--plot",
+            dest="plot",
+            default=False,
+            action="store_true",
+            help="Plots changes in dividend over time",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -476,7 +481,10 @@ Other Sources:
         if not ns_parser:
             return
         yahoo_finance_view.display_dividends(
-            ticker=self.ticker, num=ns_parser.num, export=ns_parser.export
+            ticker=self.ticker,
+            num=ns_parser.num,
+            plot=ns_parser.plot,
+            export=ns_parser.export,
         )
 
     @try_except
@@ -837,7 +845,6 @@ Other Sources:
 @try_except
 def key_metrics_explained(other_args: List[str]):
     """Key metrics explained
-
     Parameters
     ----------
     other_args : List[str]
@@ -867,7 +874,6 @@ def key_metrics_explained(other_args: List[str]):
 
 def menu(ticker: str, start: str, interval: str, suffix: str = ""):
     """Fundamental Analysis menu
-
     Parameters
     ----------
     ticker : str
