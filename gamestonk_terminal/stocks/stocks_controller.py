@@ -232,7 +232,7 @@ Stocks Menus:
             self.queue.insert(0, "reset")
             self.queue.insert(0, "quit")
             return self.queue
-        return ["quit", "r", "stocks"]
+        return ["quit", "reset", "stocks"]
 
     @try_except
     def call_search(self, other_args: List[str]):
