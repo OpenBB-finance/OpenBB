@@ -1385,10 +1385,8 @@ Onchain Menu:
 
 Eth Gas Station:
     gwei             check current eth gas fees
-
 Whale Alert:
     whales           check crypto wales transactions
-
 BitQuery:
     lt               last trades by dex or month
     dvcp             daily volume for crypto pair

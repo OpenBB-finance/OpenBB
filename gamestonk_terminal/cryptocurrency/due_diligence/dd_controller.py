@@ -12,6 +12,7 @@ from binance.client import Client
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.cryptocurrency.crypto_controller import CRYPTO_SOURCES
 from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
     GLASSNODE_SUPPORTED_ASSETS,
     GLASSNODE_SUPPORTED_EXCHANGES,
@@ -38,7 +39,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 
 from gamestonk_terminal.cryptocurrency.due_diligence.coinpaprika_view import CURRENCIES
-from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_chart
+from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_chart, load
 import gamestonk_terminal.config_terminal as cfg
 
 
@@ -58,7 +59,7 @@ class DueDiligenceController:
         "reset",
     ]
 
-    CHOICES_COMMANDS = ["oi", "active", "change", "eb", "chart"]
+    CHOICES_COMMANDS = ["load", "oi", "active", "change", "eb", "chart"]
 
     CHOICES += CHOICES_COMMANDS
 
@@ -102,7 +103,6 @@ class DueDiligenceController:
         self.dd_parser.add_argument("cmd", choices=self.CHOICES)
 
         self.current_coin = coin
-        self.current_currency = None
         self.current_df = pd.DataFrame()
         self.source = source
         self.symbol = symbol
@@ -112,11 +112,7 @@ class DueDiligenceController:
         self.completer: Union[None, NestedCompleter] = None
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
-            # choices["change"] = {c: None for c in GLASSNODE_SUPPORTED_EXCHANGES}
-            # choices["change"]["-e"] = {c: None for c in GLASSNODE_SUPPORTED_EXCHANGES}
-            # choices["change"]["--exchange"] = {
-            #    c: None for c in GLASSNODE_SUPPORTED_EXCHANGES
-            # }
+            choices["change"] = {c: None for c in GLASSNODE_SUPPORTED_EXCHANGES}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         if queue:
@@ -126,20 +122,27 @@ class DueDiligenceController:
 
     def print_help(self):
         """Print help"""
-        help_text = """
-Due Diligence Menu:
-
+        help_text = "Due Diligence Menu:\n"
+        help_text += """
+    load        load a specific cryptocurrency for analysis
+"""
+        help_text += (
+            f"\nCoin: {self.current_coin}" if self.current_coin != "" else "\nCoin: ?"
+        )
+        help_text += (
+            f"\nSource: {CRYPTO_SOURCES.get(self.source, '?')}\n"
+            if self.source != ""
+            else "\nSource: ?\n"
+        )
+        help_text += """
 Overview:
    chart           show chart for loaded coin
-
 Glassnode:
    active          active addresses
    change          30d change of supply held on exchange wallets
    eb              total balance held on exchanges (in percentage and units)
-
 Coinglass:
-   oi              open interest per exchange
-"""
+   oi              open interest per exchange"""
         help_text += f"""{Style.DIM if self.source != "cp" else ""}
 CoinPaprika:
    basic           basic information about loaded coin
@@ -147,8 +150,7 @@ CoinPaprika:
    mkt             all markets for loaded coin
    ex              all exchanges where loaded coin is listed
    twitter         tweets for loaded coin
-   events          events related to loaded coin{Style.RESET_ALL if self.source != "cp" else ""}
-"""
+   events          events related to loaded coin{Style.RESET_ALL if self.source != "cp" else ""}"""
         help_text += f"""{Style.DIM if self.source != "cg" else ""}
 CoinGecko:
    info            basic information about loaded coin
@@ -159,13 +161,11 @@ CoinGecko:
    social          social portals urls for loaded coin, e.g reddit, twitter
    score           different kind of scores for loaded coin, e.g developer score, sentiment score
    dev             github, bitbucket coin development statistics
-   bc              links to blockchain explorers for loaded coin{Style.RESET_ALL if self.source != "cg" else ""}
-"""
+   bc              links to blockchain explorers for loaded coin{Style.RESET_ALL if self.source != "cg" else ""}"""
         help_text += f"""{Style.DIM if self.source != "bin" else ""}
 Binance:
    book            show order book
-   balance         show coin balance{Style.RESET_ALL if self.source != "bin" else ""}
-"""
+   balance         show coin balance{Style.RESET_ALL if self.source != "bin" else ""}"""
         help_text += f"""{Style.DIM if self.source != "cb" else ""}
 Coinbase:
    book            show order book
@@ -267,6 +267,60 @@ Coinbase:
             self.queue.insert(0, "quit")
             return self.queue
         return ["quit", "quit", "reset", "crypto", "dd"]
+
+    @try_except
+    def call_load(self, other_args: List[str]):
+        """Process load command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load crypto currency to perform analysis on. "
+            "Available data sources are CoinGecko, CoinPaprika, Binance, Coinbase"
+            "By default main source used for analysis is CoinGecko (cg). To change it use --source flag",
+        )
+
+        parser.add_argument(
+            "-c",
+            "--coin",
+            help="Coin to get",
+            dest="coin",
+            type=str,
+            required="-h" not in other_args,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--source",
+            help="Source of data",
+            dest="source",
+            choices=("cp", "cg", "bin", "cb"),
+            default="cg",
+            required=False,
+        )
+
+        try:
+            if other_args and not other_args[0][0] == "-":
+                other_args.insert(0, "-c")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if ns_parser:
+                source = ns_parser.source
+
+                for arg in ["--source", source]:
+                    if arg in other_args:
+                        other_args.remove(arg)
+
+                self.current_coin, self.source, self.symbol = load(
+                    coin=ns_parser.coin, source=ns_parser.source
+                )
+            return self.queue
+
+        except Exception as e:
+            print(e, "\n")
+            self.current_coin, self.source = self.current_coin, None
+            return self.queue
 
     @try_except
     def call_active(self, other_args: List[str]):
@@ -387,7 +441,7 @@ Coinbase:
                     other_args.insert(0, "-e")
 
             ns_parser = parse_known_args_and_warn(
-                parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+                parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
             )
 
             if ns_parser:
@@ -469,7 +523,7 @@ Coinbase:
                     other_args.insert(0, "-e")
 
             ns_parser = parse_known_args_and_warn(
-                parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+                parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
             )
 
             if ns_parser:
@@ -512,7 +566,7 @@ Coinbase:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
         if ns_parser:

@@ -39,6 +39,14 @@ import gamestonk_terminal.config_terminal as cfg
 # pylint: disable=import-outside-toplevel
 
 
+CRYPTO_SOURCES = {
+    "bin": "Binance",
+    "cg": "CoinGecko",
+    "cp": "CoinPaprika",
+    "cb": "Coinbase",
+}
+
+
 class CryptoController:
     CHOICES = [
         "cls",
@@ -62,13 +70,6 @@ class CryptoController:
     ]
 
     CHOICES_MENUS = ["ta", "dd", "ov", "disc", "onchain", "defi", "nft", "pred"]
-
-    SOURCES = {
-        "bin": "Binance",
-        "cg": "CoinGecko",
-        "cp": "CoinPaprika",
-        "cb": "Coinbase",
-    }
 
     DD_VIEWS_MAPPING = {
         "cg": pycoingecko_view,
@@ -105,31 +106,32 @@ class CryptoController:
 
     def print_help(self):
         """Print help"""
-        help_text = (
+        help_text = """
+    load        load a specific cryptocurrency for analysis
+    find        alternate way to search for coins
+"""
+        help_text += (
             f"\nCoin: {self.current_coin}" if self.current_coin != "" else "\nCoin: ?"
         )
         help_text += (
-            f"\nSource: {self.SOURCES.get(self.source, '?')}\n"
+            f"\nSource: {CRYPTO_SOURCES.get(self.source, '?')}\n"
             if self.source != ""
             else "\nSource: ?\n"
         )
         help_text += """
-    load        load a specific cryptocurrency for analysis
     chart       view a candle chart for a specific cryptocurrency
-    find        alternate way to search for coins
     headlines   crypto sentiment from 15+ major news headlines [Finbrain]
     """
         dim = Style.DIM if not self.current_coin else ""
         help_text += f"""
-Crypto Menus:
 >    disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
->    ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables{dim}
+>    ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
+>    onchain     information on different blockchains,   e.g.: eth gas fees, whale alerts, DEXes info
+>    defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
+>    nft         non-fungible tokens,                    e.g.: today drops{dim}
 >    dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
 >    ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
 >    pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo{Style.RESET_ALL if not self.current_coin else ""}
->    onchain     information on different blockchains,   e.g.: eth gas fees, active asset addresses, whale alerts
->    defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
->    nft         non-fungible tokens,                    e.g.: today drops
 """  # noqa
         print(help_text)
 

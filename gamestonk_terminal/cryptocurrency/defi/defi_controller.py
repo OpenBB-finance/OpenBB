@@ -784,7 +784,6 @@ Overview:
     funding       Funding reates - current or last 30 days average
     borrow        DeFi borrow rates - current or last 30 days average
     lending       DeFi ending rates - current or last 30 days average
-
 Uniswap:
     tokens        Tokens trade-able on Uniswap
     stats         Base statistics about Uniswap

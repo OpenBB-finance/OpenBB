@@ -83,7 +83,6 @@ Discovery Menu:
 
 Overview:
     coins             search for coins on CoinGecko, Binance, CoinPaprika
-
 CoinGecko:
     cgtrending        trending coins on CoinGecko
     cgvoted           most voted coins on CoinGecko

@@ -204,7 +204,7 @@ def load(
     Tuple[Union[str, pycoingecko_model.Coin], str, str]
         - str or Coin object for provided coin
         - str with source of the loaded data. CoinGecko, CoinPaprika, or Binance
-        - str with
+        - str with symbol
     """
 
     current_coin = ""  # type: Optional[Any]
