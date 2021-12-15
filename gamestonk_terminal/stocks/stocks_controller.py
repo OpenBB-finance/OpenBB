@@ -582,11 +582,7 @@ Stocks Menus:
         """Process gov command"""
         from gamestonk_terminal.stocks.government import gov_controller
 
-        ret = gov_controller.menu(self.ticker)
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return gov_controller.menu(self.ticker, self.queue)
 
     def call_options(self, _):
         """Process options command"""

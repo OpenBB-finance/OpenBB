@@ -226,6 +226,8 @@ class SectorIndustryAnalysisController:
         m = Style.DIM if not self.mktcap else ""
         r = Style.RESET_ALL
         help_text = f"""
+    load          load a specific ticker and all it's corresponding parameters
+
     clear         clear all or one of industry, sector, country and market cap parameters
     industry      see existing industries, or set industry if arg specified
     sector        see existing sectors, or set sector if arg specified
