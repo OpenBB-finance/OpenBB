@@ -226,12 +226,7 @@ class SectorIndustryAnalysisController:
         m = Style.DIM if not self.mktcap else ""
         r = Style.RESET_ALL
         help_text = f"""
-Sector and Industry Analysis:
-    cls           clear screen
-    ?/help        show this menu again
-    q             quit this menu, and shows back to main menu
-    quit          quit to abandon program
-    load          load a ticker and get its industry, sector, country and market cap
+    load          load a specific ticker and all it's corresponding parameters
 
     clear         clear all or one of industry, sector, country and market cap parameters
     industry      see existing industries, or set industry if arg specified

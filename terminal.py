@@ -227,7 +227,7 @@ Menus:
         """Process etf command"""
         from gamestonk_terminal.etf import etf_controller
 
-        return etf_controller.menu()
+        return etf_controller.menu(self.queue)
 
     def call_forex(self, _):
         """Process forex command"""
@@ -312,7 +312,7 @@ def terminal(jobs_cmds: List[str] = None):
                 break
 
             # Check if the user wants to reset application
-            if an_input == "r" or t_controller.update_succcess:
+            if an_input in ("r", "reset") or t_controller.update_succcess:
                 ret_code = reset(
                     t_controller.queue if len(t_controller.queue) > 0 else []
                 )
