@@ -497,7 +497,7 @@ def get_ethereum_unique_senders(interval: str = "day", limit: int = 90) -> pd.Da
         "week": 7,
     }
 
-    if interval not in intervals.keys():
+    if interval not in intervals:
         interval = "day"
 
     days = min(limit * intervals[interval], 90)
