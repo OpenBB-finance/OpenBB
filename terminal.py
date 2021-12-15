@@ -312,7 +312,7 @@ def terminal(jobs_cmds: List[str] = None):
                 break
 
             # Check if the user wants to reset application
-            if an_input == "r" or t_controller.update_succcess:
+            if an_input in ("r", "reset") or t_controller.update_succcess:
                 ret_code = reset(
                     t_controller.queue if len(t_controller.queue) > 0 else []
                 )
