@@ -181,7 +181,6 @@ Menus:
     def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
-            self.queue = [f"/{arg}" for arg in self.queue]
             return self.queue
         return []
 

@@ -785,6 +785,7 @@ def try_except(f):
             return f(*args, **kwargs)
         except Exception as e:
             print(e, "\n")
+            return []
 
     return inner
 
