@@ -1,7 +1,7 @@
 """Cryptocurrency Discovery Controller"""
 __docformat__ = "numpy"
 
-# pylint: disable=R0904, C0302, W0622
+# pylint: disable=R0904, C0302, W0622, C0201
 import argparse
 import difflib
 from typing import List, Union
@@ -17,10 +17,14 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.discovery import (
+    coinmarketcap_model,
+    coinpaprika_model,
+    pycoingecko_model,
     pycoingecko_view,
     coinpaprika_view,
     coinmarketcap_view,
 )
+from gamestonk_terminal.cryptocurrency.crypto_controller import CRYPTO_SOURCES
 from gamestonk_terminal.cryptocurrency import cryptocurrency_helpers
 
 
@@ -70,6 +74,44 @@ class DiscoveryController:
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
+            choices["coins"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
+            choices["cggainers"]["-p"] = {
+                c: {} for c in pycoingecko_model.PERIODS.keys()
+            }
+            choices["cggainers"]["-s"] = {
+                c: {} for c in pycoingecko_model.GAINERS_FILTERS
+            }
+            choices["cglosers"]["-p"] = {
+                c: {} for c in pycoingecko_model.PERIODS.keys()
+            }
+            choices["cglosers"]["-s"] = {
+                c: {} for c in pycoingecko_model.GAINERS_FILTERS
+            }
+            choices["cgtrending"]["-s"] = {
+                c: {} for c in pycoingecko_model.TRENDING_FILTERS
+            }
+            choices["cgvoted"]["-s"] = {
+                c: {} for c in pycoingecko_model.TRENDING_FILTERS
+            }
+            choices["cgvisited"]["-s"] = {
+                c: {} for c in pycoingecko_model.TRENDING_FILTERS
+            }
+            choices["cgsentiment"]["-s"] = {
+                c: {} for c in pycoingecko_model.TRENDING_FILTERS
+            }
+            choices["cgrecently"]["-s"] = {
+                c: {} for c in pycoingecko_model.RECENTLY_FILTERS
+            }
+            choices["cgyfarms"]["-s"] = {
+                c: {} for c in pycoingecko_model.YFARMS_FILTERS
+            }
+            choices["cgvolume"]["-s"] = {c: {} for c in pycoingecko_model.CAP_FILTERS}
+            choices["cgdefi"]["-s"] = {c: {} for c in pycoingecko_model.CAP_FILTERS}
+            choices["cgnft"]["-s"] = {c: {} for c in pycoingecko_model.CAP_FILTERS}
+            choices["cgdex"]["-s"] = {c: {} for c in pycoingecko_model.DEX_FILTERS}
+            choices["cmctop"]["-s"] = {c: {} for c in coinmarketcap_model.FILTERS}
+            choices["cpsearch"]["-s"] = {c: {} for c in coinpaprika_model.FILTERS}
+            choices["cpsearch"]["-c"] = {c: {} for c in coinpaprika_model.CATEGORIES}
             self.completer = NestedCompleter.from_nested_dict(choices)
         if queue:
             self.queue = queue
@@ -247,9 +289,9 @@ CoinMarketCap:
         parser.add_argument(
             "--source",
             dest="source",
-            required=False,
             help="Source of data.",
             type=str,
+            choices=CRYPTO_SOURCES.keys(),
         )
 
         if other_args:
@@ -294,7 +336,7 @@ CoinMarketCap:
             type=str,
             help="time period, one from [1h, 24h, 7d, 14d, 30d, 60d, 1y]",
             default="1h",
-            choices=["1h", "24h", "7d", "14d", "30d", "60d", "1y"],
+            choices=pycoingecko_model.PERIODS.keys(),
         )
 
         parser.add_argument(
@@ -313,7 +355,7 @@ CoinMarketCap:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=["Rank", "Symbol", "Name", "Volume", "Price", "Change"],
+            choices=pycoingecko_model.GAINERS_FILTERS,
         )
 
         parser.add_argument(
@@ -371,7 +413,7 @@ CoinMarketCap:
             type=str,
             help="time period, one from [1h, 24h, 7d, 14d, 30d, 60d, 1y]",
             default="1h",
-            choices=["1h", "24h", "7d", "14d", "30d", "60d", "1y"],
+            choices=pycoingecko_model.PERIODS.keys(),
         )
 
         parser.add_argument(
@@ -390,7 +432,7 @@ CoinMarketCap:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=["Rank", "Symbol", "Name", "Volume", "Price", "Change"],
+            choices=pycoingecko_model.GAINERS_FILTERS,
         )
         parser.add_argument(
             "--descend",
@@ -455,12 +497,7 @@ CoinMarketCap:
             type=str,
             help="Sort by given column. Default: rank",
             default="Rank",
-            choices=[
-                "Rank",
-                "Name",
-                "Price_BTC",
-                "Price_USD",
-            ],
+            choices=pycoingecko_model.TRENDING_FILTERS,
         )
 
         parser.add_argument(
@@ -527,12 +564,7 @@ CoinMarketCap:
             type=str,
             help="Sort by given column. Default: rank",
             default="Rank",
-            choices=[
-                "Rank",
-                "Name",
-                "Price_BTC",
-                "Price_USD",
-            ],
+            choices=pycoingecko_model.TRENDING_FILTERS,
         )
 
         parser.add_argument(
@@ -597,16 +629,7 @@ CoinMarketCap:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=[
-                "Rank",
-                "Name",
-                "Symbol",
-                "Price",
-                "Change_1h",
-                "Change_24h",
-                "Added",
-                "Url",
-            ],
+            choices=pycoingecko_model.RECENTLY_FILTERS,
         )
 
         parser.add_argument(
@@ -672,12 +695,7 @@ CoinMarketCap:
             type=str,
             help="Sort by given column. Default: rank",
             default="Rank",
-            choices=[
-                "Rank",
-                "Name",
-                "Price_BTC",
-                "Price_USD",
-            ],
+            choices=pycoingecko_model.TRENDING_FILTERS,
         )
 
         parser.add_argument(
@@ -744,12 +762,7 @@ CoinMarketCap:
             type=str,
             help="Sort by given column. Default: rank",
             default="Rank",
-            choices=[
-                "Rank",
-                "Name",
-                "Price_BTC",
-                "Price_USD",
-            ],
+            choices=pycoingecko_model.TRENDING_FILTERS,
         )
 
         parser.add_argument(
@@ -816,12 +829,7 @@ CoinMarketCap:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=[
-                "Rank",
-                "Name",
-                "Value_Locked",
-                "Return_Year",
-            ],
+            choices=pycoingecko_model.YFARMS_FILTERS,
         )
 
         parser.add_argument(
@@ -874,17 +882,7 @@ CoinMarketCap:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=[
-                "Rank",
-                "Name",
-                "Symbol",
-                "Price",
-                "Change_1h",
-                "Change_24h",
-                "Change_7d",
-                "Volume_24h",
-                "Market_Cap",
-            ],
+            choices=pycoingecko_model.CAP_FILTERS,
         )
 
         parser.add_argument(
@@ -939,18 +937,7 @@ CoinMarketCap:
             type=str,
             help="Sort by given column. Default: rank",
             default="Rank",
-            choices=[
-                "Rank",
-                "Name",
-                "Symbol",
-                "Price",
-                "Change_1h",
-                "Change_24h",
-                "Change_7d",
-                "Volume_24h",
-                "Market_Cap",
-                "Url",
-            ],
+            choices=pycoingecko_model.CAP_FILTERS,
         )
 
         parser.add_argument(
@@ -1015,16 +1002,7 @@ CoinMarketCap:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=[
-                "Name",
-                "Rank",
-                "Volume_24h",
-                "Coins",
-                "Pairs",
-                "Visits",
-                "Most_Traded",
-                "Market_Share",
-            ],
+            choices=pycoingecko_model.DEX_FILTERS,
         )
 
         parser.add_argument(
@@ -1080,17 +1058,7 @@ CoinMarketCap:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=[
-                "Rank",
-                "Name",
-                "Symbol",
-                "Price",
-                "Change_1h",
-                "Change_24h",
-                "Change_7d",
-                "Volume_24h",
-                "Market_Cap",
-            ],
+            choices=pycoingecko_model.CAP_FILTERS,
         )
 
         parser.add_argument(
@@ -1149,7 +1117,7 @@ CoinMarketCap:
             type=str,
             help="column to sort data by.",
             default="CMC_Rank",
-            choices=["Symbol", "CMC_Rank", "LastPrice", "DayPctChange", "MarketCap"],
+            choices=coinmarketcap_model.FILTERS,
         )
 
         parser.add_argument(
@@ -1193,6 +1161,7 @@ CoinMarketCap:
             "--query",
             help="phrase for search",
             dest="query",
+            nargs="+",
             type=str,
             required="-h" not in other_args,
         )
@@ -1204,14 +1173,7 @@ CoinMarketCap:
             dest="category",
             default="all",
             type=str,
-            choices=[
-                "currencies",
-                "exchanges",
-                "icos",
-                "people",
-                "tags",
-                "all",
-            ],
+            choices=coinpaprika_model.CATEGORIES,
         )
 
         parser.add_argument(
@@ -1230,7 +1192,7 @@ CoinMarketCap:
             type=str,
             help="Sort by given column. Default: id",
             default="id",
-            choices=["category", "id", "name"],
+            choices=coinpaprika_model.FILTERS,
         )
 
         parser.add_argument(
@@ -1254,7 +1216,7 @@ CoinMarketCap:
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
                 export=ns_parser.export,
-                query=ns_parser.query,
+                query=" ".join(ns_parser.query),
                 category=ns_parser.category,
             )
         return self.queue

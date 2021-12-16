@@ -13,7 +13,7 @@ from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     get_flair,
     parse_known_args_and_warn,
     check_positive_list,
@@ -280,12 +280,11 @@ Custom:
             help="offset",
         )
 
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-l")
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             overlap_view.view_ma(
@@ -337,11 +336,10 @@ Custom:
             help="offset",
         )
 
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-l")
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             overlap_view.view_ma(
@@ -393,12 +391,11 @@ Custom:
             help="offset",
         )
 
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-l")
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             overlap_view.view_ma(
@@ -436,7 +433,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             if self.interval == "1440min":
@@ -489,7 +486,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             momentum_view.plot_cci(
@@ -552,7 +549,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             momentum_view.view_macd(
@@ -613,7 +610,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             momentum_view.view_rsi(
@@ -674,7 +671,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             momentum_view.view_stoch(
@@ -715,7 +712,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             momentum_view.view_fisher(
@@ -754,7 +751,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             momentum_view.view_cg(
@@ -811,7 +808,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             trend_indicators_view.plot_adx(
@@ -877,7 +874,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             trend_indicators_view.plot_aroon(
@@ -941,7 +938,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             volatility_view.view_bbands(
@@ -993,7 +990,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             volatility_view.view_donchian(
@@ -1036,7 +1033,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             volume_view.plot_ad(
@@ -1067,7 +1064,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             volume_view.plot_obv(
@@ -1114,7 +1111,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             custom_indicators_view.fibonacci_retracement(

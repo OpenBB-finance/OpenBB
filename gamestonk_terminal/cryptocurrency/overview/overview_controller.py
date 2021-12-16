@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 # pylint: disable=R0904, C0302, W0622
 import argparse
 import difflib
-from typing import List, Union
+from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -17,17 +17,21 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.overview import (
+    cryptopanic_model,
+    pycoingecko_model,
     pycoingecko_view,
     coinpaprika_view,
     cryptopanic_view,
     withdrawalfees_model,
     withdrawalfees_view,
+    coinpaprika_model,
+    coinbase_model,
+    coinbase_view,
 )
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_view import CURRENCIES
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
     get_all_contract_platforms,
 )
-from gamestonk_terminal.cryptocurrency.overview import coinbase_view
 
 
 class OverviewController:
@@ -83,12 +87,6 @@ class OverviewController:
 
         self.overview_parser = argparse.ArgumentParser(add_help=False, prog="ov")
         self.overview_parser.add_argument("cmd", choices=self.CHOICES)
-
-        self.completer: Union[None, NestedCompleter] = None
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-            choices["wfpe"] = {c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS}
-            self.completer = NestedCompleter.from_nested_dict(choices)
 
         if queue:
             self.queue = queue
@@ -308,7 +306,7 @@ WithdrawalFees:
             help="Coin to check withdrawal fees in long format (e.g., bitcoin, ethereum)",
         )
 
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
         ns_parser = parse_known_args_and_warn(
@@ -372,10 +370,10 @@ WithdrawalFees:
             type=str,
             help="companies with ethereum or bitcoin",
             default="bitcoin",
-            choices=["ethereum", "bitcoin"],
+            choices=pycoingecko_model.HOLD_COINS,
         )
 
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
         ns_parser = parse_known_args_and_warn(
@@ -409,7 +407,7 @@ WithdrawalFees:
             type=str,
             help="companies with ethereum or bitcoin",
             default="bitcoin",
-            choices=["ethereum", "bitcoin"],
+            choices=pycoingecko_model.HOLD_COINS,
         )
 
         parser.add_argument(
@@ -421,7 +419,7 @@ WithdrawalFees:
             default=False,
         )
 
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
         ns_parser = parse_known_args_and_warn(
@@ -462,7 +460,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: index",
             default="Index",
-            choices=["Index", "Title", "Author", "Posted"],
+            choices=pycoingecko_model.NEWS_FILTERS,
         )
 
         parser.add_argument(
@@ -525,16 +523,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=[
-                "Rank",
-                "Name",
-                "Change_1h",
-                "Change_24h",
-                "Change_7d",
-                "Market_Cap",
-                "Volume_24h",
-                "Coins",
-            ],
+            choices=pycoingecko_model.CATEGORIES_FILTERS,
         )
 
         parser.add_argument(
@@ -599,16 +588,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=[
-                "Rank",
-                "Name",
-                "Symbol",
-                "Price",
-                "Change_24h",
-                "Exchanges",
-                "Market_Cap",
-                "Change_30d",
-            ],
+            choices=pycoingecko_model.STABLES_FILTERS,
         )
 
         parser.add_argument(
@@ -714,13 +694,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=[
-                "Rank",
-                "Platform",
-                "Identifier",
-                "Supply_Rate",
-                "Borrow_Rate",
-            ],
+            choices=pycoingecko_model.PRODUCTS_FILTERS,
         )
 
         parser.add_argument(
@@ -774,7 +748,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=["Rank", "Name", "Category", "Centralized"],
+            choices=pycoingecko_model.PLATFORMS_FILTERS,
         )
 
         parser.add_argument(
@@ -828,15 +802,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=[
-                "Rank",
-                "Trust_Score",
-                "Id",
-                "Name",
-                "Country",
-                "Year Established",
-                "Trade_Volume_24h_BTC",
-            ],
+            choices=pycoingecko_model.EXCHANGES_FILTERS,
         )
         parser.add_argument(
             "--descend",
@@ -897,7 +863,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: Index",
             default="Index",
-            choices=["Index", "Name", "Unit", "Value", "Type"],
+            choices=pycoingecko_model.EXRATES_FILTERS,
         )
 
         parser.add_argument(
@@ -952,7 +918,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=["Rank", "Name", "Id", "Market", "Last", "MultiAsset"],
+            choices=pycoingecko_model.INDEXES_FILTERS,
         )
 
         parser.add_argument(
@@ -1009,18 +975,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=[
-                "Rank",
-                "Market",
-                "Symbol",
-                "Price",
-                "Pct_Change_24h",
-                "Contract_Type",
-                "Basis",
-                "Spread",
-                "Funding_Rate",
-                "Volume_24h",
-            ],
+            choices=pycoingecko_model.DERIVATIVES_FILTERS,
         )
 
         parser.add_argument(
@@ -1142,18 +1097,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: rank",
             default="rank",
-            choices=[
-                "rank",
-                "name",
-                "symbol",
-                "price",
-                "volume_24h",
-                "mcap_change_24h",
-                "pct_change_1h",
-                "pct_change_24h",
-                "ath_price",
-                "pct_from_ath",
-            ],
+            choices=coinpaprika_model.MARKETS_FILTERS,
         )
 
         parser.add_argument(
@@ -1219,15 +1163,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: reported_volume_24h_share",
             default="reported_volume_24h_share",
-            choices=[
-                "pair",
-                "base_currency_name",
-                "quote_currency_name",
-                "category",
-                "reported_volume_24h_share",
-                "trust_score",
-                "market_url",
-            ],
+            choices=coinpaprika_model.EXMARKETS_FILTERS,
         )
 
         parser.add_argument(
@@ -1248,7 +1184,7 @@ WithdrawalFees:
             default=False,
         )
 
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-e")
 
         ns_parser = parse_known_args_and_warn(
@@ -1307,19 +1243,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: rank",
             default="rank",
-            choices=[
-                "rank",
-                "name",
-                "symbol",
-                "price",
-                "volume_24h",
-                "circulating_supply",
-                "total_supply",
-                "max_supply",
-                "ath_price",
-                "market_cap",
-                "beta_value",
-            ],
+            choices=coinpaprika_model.INFO_FILTERS,
         )
 
         parser.add_argument(
@@ -1385,18 +1309,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: rank",
             default="rank",
-            choices=[
-                "rank",
-                "name",
-                "currencies",
-                "markets",
-                "fiats",
-                "confidence",
-                "volume_24h",
-                "volume_7d",
-                "volume_30d",
-                "sessions_per_month",
-            ],
+            choices=coinpaprika_model.EXCHANGES_FILTERS,
         )
 
         parser.add_argument(
@@ -1485,7 +1398,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column",
             default="id",
-            choices=["id", "type", "active", "balance"],
+            choices=coinpaprika_model.CONTRACTS_FILTERS,
         )
 
         parser.add_argument(
@@ -1496,7 +1409,7 @@ WithdrawalFees:
             default=True,
         )
 
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
 
         ns_parser = parse_known_args_and_warn(
@@ -1538,16 +1451,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: id",
             default="id",
-            choices=[
-                "id",
-                "display_name",
-                "base_currency",
-                "quote_currency",
-                "base_min_size",
-                "base_max_size",
-                "min_market_funds",
-                "max_market_funds",
-            ],
+            choices=coinbase_model.PAIRS_FILTERS,
         )
 
         parser.add_argument(
@@ -1596,7 +1500,7 @@ WithdrawalFees:
             type=str,
             help="Filter by category of news. Available values: news or media.",
             default="news",
-            choices=["news", "media"],
+            choices=cryptopanic_model.CATEGORIES,
         )
 
         parser.add_argument(
@@ -1607,15 +1511,7 @@ WithdrawalFees:
             help="Filter by kind of news. One from list: rising|hot|bullish|bearish|important|saved|lol",
             default=None,
             required=False,
-            choices=[
-                "rising",
-                "hot",
-                "bullish",
-                "bearish",
-                "important",
-                "saved",
-                "lol",
-            ],
+            choices=cryptopanic_model.FILTERS,
         )
 
         parser.add_argument(
@@ -1626,7 +1522,7 @@ WithdrawalFees:
             help="Filter news by regions. Available regions are: en (English), de (Deutsch), nl (Dutch), es (Español), "
             "fr (Français), it (Italiano), pt (Português), ru (Русский)",
             default="en",
-            choices=["en", "de", "es", "fr", "nl", "it", "pt", "ru"],
+            choices=cryptopanic_model.REGIONS,
         )
 
         parser.add_argument(
@@ -1636,13 +1532,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: published_at",
             default="published_at",
-            choices=[
-                "published_at",
-                "domain",
-                "title",
-                "negative_votes",
-                "positive_votes",
-            ],
+            choices=cryptopanic_model.SORT_FILTERS,
         )
 
         parser.add_argument(
@@ -1708,10 +1598,69 @@ def menu(queue: List[str] = None):
                 overview_controller.print_help()
 
             # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and overview_controller.completer:
+            if session and gtff.USE_PROMPT_TOOLKIT:
+                choices: dict = {c: {} for c in overview_controller.CHOICES}
+                choices["cghold"] = {c: None for c in pycoingecko_model.HOLD_COINS}
+                choices["cgcompanies"] = {c: None for c in pycoingecko_model.HOLD_COINS}
+                choices["cgnews"]["-s"] = {
+                    c: None for c in pycoingecko_model.NEWS_FILTERS
+                }
+                choices["cgcategories"]["-s"] = {
+                    c: None for c in pycoingecko_model.CATEGORIES_FILTERS
+                }
+                choices["cgstables"]["-s"] = {
+                    c: None for c in pycoingecko_model.STABLES_FILTERS
+                }
+                choices["cgproducts"]["-s"] = {
+                    c: None for c in pycoingecko_model.PRODUCTS_FILTERS
+                }
+                choices["cgplatforms"]["-s"] = {
+                    c: None for c in pycoingecko_model.PLATFORMS_FILTERS
+                }
+                choices["cgexrates"]["-s"] = {
+                    c: None for c in pycoingecko_model.EXRATES_FILTERS
+                }
+                choices["cgindexes"]["-s"] = {
+                    c: None for c in pycoingecko_model.INDEXES_FILTERS
+                }
+                choices["cgderivatives"]["-s"] = {
+                    c: None for c in pycoingecko_model.DERIVATIVES_FILTERS
+                }
+                choices["cpmarkets"]["-s"] = {
+                    c: None for c in coinpaprika_model.MARKETS_FILTERS
+                }
+                choices["cpexmarkets"]["-s"] = {
+                    c: None for c in coinpaprika_model.EXMARKETS_FILTERS
+                }
+                choices["cpexchanges"]["-s"] = {
+                    c: None for c in coinpaprika_model.EXCHANGES_FILTERS
+                }
+                choices["cpcontracts"] = {
+                    c: None
+                    for c in get_all_contract_platforms()["platform_id"].tolist()
+                }
+                choices["cpcontracts"]["-s"] = {
+                    c: None for c in coinpaprika_model.CONTRACTS_FILTERS
+                }
+                choices["cpinfo"]["-s"] = {
+                    c: None for c in coinpaprika_model.INFO_FILTERS
+                }
+                choices["cbpairs"]["-s"] = {
+                    c: None for c in coinbase_model.PAIRS_FILTERS
+                }
+                choices["news"]["-k"] = {c: None for c in cryptopanic_model.CATEGORIES}
+                choices["news"]["-f"] = {c: None for c in cryptopanic_model.FILTERS}
+                choices["news"]["-r"] = {c: None for c in cryptopanic_model.REGIONS}
+                choices["news"]["-s"] = {
+                    c: None for c in cryptopanic_model.SORT_FILTERS
+                }
+                choices["wfpe"] = {
+                    c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS
+                }
+                completer = NestedCompleter.from_nested_dict(choices)
                 an_input = session.prompt(
                     f"{get_flair()} /crypto/ov/ $ ",
-                    completer=overview_controller.completer,
+                    completer=completer,
                     search_ignore_case=True,
                 )
             # Get input from user without auto-completion

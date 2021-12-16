@@ -22,9 +22,12 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.prediction_techniques import (
+    arima_model,
     arima_view,
+    ets_model,
     ets_view,
     knn_view,
+    mc_model,
     neural_networks_view,
     regression_view,
     pred_helper,
@@ -52,6 +55,8 @@ class PredictionTechniquesController:
     ]
 
     CHOICES_COMMANDS = [
+        "pick",
+        "load",
         "ets",
         "knn",
         "regression",
@@ -77,17 +82,6 @@ class PredictionTechniquesController:
             "cmd",
             choices=self.CHOICES,
         )
-
-        self.completer: Union[None, NestedCompleter] = None
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-            self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
-
         data["Returns"] = data["Close"].pct_change()
         data["LogRet"] = np.log(data["Close"]) - np.log(data["Close"].shift(1))
         data = data.dropna()
@@ -96,6 +90,22 @@ class PredictionTechniquesController:
         self.coin = coin
         self.resolution = "1D"
         self.target = "Close"
+
+        self.completer: Union[None, NestedCompleter] = None
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            choices["load"]["-r"] = {c: {} for c in c_help.INTERVALS}
+            choices["pick"] = {c: {} for c in self.data.columns}
+            choices["ets"]["-t"] = {c: {} for c in ets_model.TRENDS}
+            choices["ets"]["-s"] = {c: {} for c in ets_model.SEASONS}
+            choices["arima"]["-i"] = {c: {} for c in arima_model.ICS}
+            choices["mc"]["--dist"] = {c: {} for c in mc_model.DISTRIBUTIONS}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
 
     def print_help(self):
         """Print help"""
@@ -253,9 +263,9 @@ Models:
             type=str,
             dest="resolution",
             help="How often to resample data.",
-            choices=["1H", "3H", "6H", "1D"],
+            choices=c_help.INTERVALS,
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         # TODO: improve loading from this submenu.  Currently would recommend using this menu after using main load
@@ -335,7 +345,7 @@ Models:
             "--trend",
             action="store",
             dest="trend",
-            choices=["N", "A", "Ad"],
+            choices=ets_model.TRENDS,
             default="N",
             help="Trend component: N: None, A: Additive, Ad: Additive Damped.",
         )
@@ -344,7 +354,7 @@ Models:
             "--seasonal",
             action="store",
             dest="seasonal",
-            choices=["N", "A", "M"],
+            choices=ets_model.SEASONS,
             default="N",
             help="Seasonality component: N: None, A: Additive, M: Multiplicative.",
         )
@@ -472,7 +482,9 @@ Models:
             default=True,
             help="Specify if shuffling validation inputs.",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
+        )
         if ns_parser:
             knn_view.display_k_nearest_neighbors(
                 ticker=self.coin,
@@ -620,7 +632,7 @@ Models:
             dest="s_ic",
             type=str,
             default="aic",
-            choices=["aic", "aicc", "bic", "hqic", "oob"],
+            choices=arima_model.ICS,
             help="information criteria.",
         )
         parser.add_argument(
@@ -842,7 +854,7 @@ Models:
         )
         parser.add_argument(
             "--dist",
-            choices=["normal", "lognormal"],
+            choices=mc_model.DISTRIBUTIONS,
             default="lognormal",
             dest="dist",
             help="Whether to model returns or log returns",

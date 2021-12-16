@@ -25,6 +25,8 @@ from gamestonk_terminal.helper_funcs import (
 
 from gamestonk_terminal.cryptocurrency.onchain import (
     ethgasstation_view,
+    ethplorer_model,
+    whale_alert_model,
     whale_alert_view,
     ethplorer_view,
     bitquery_view,
@@ -99,12 +101,32 @@ class OnchainController:
         self.completer: Union[None, NestedCompleter] = None
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
+            choices["whales"]["-s"] = {c: None for c in whale_alert_model.FILTERS}
             choices["ttcp"] = {c: None for c in bitquery_model.DECENTRALIZED_EXCHANGES}
-
             choices["baas"]["-c"] = {c: None for c in bitquery_model.POSSIBLE_CRYPTOS}
             choices["baas"]["--coin"] = {
                 c: None for c in bitquery_model.POSSIBLE_CRYPTOS
             }
+            choices["balance"]["-s"] = {
+                c: None for c in ethplorer_model.BALANCE_FILTERS
+            }
+            choices["holders"]["-s"] = {
+                c: None for c in ethplorer_model.HOLDERS_FILTERS
+            }
+            choices["hist"]["-s"] = {c: None for c in ethplorer_model.HIST_FILTERS}
+            choices["top"]["-s"] = {c: None for c in ethplorer_model.TOP_FILTERS}
+            choices["th"]["-s"] = {c: None for c in ethplorer_model.TH_FILTERS}
+            choices["prices"]["-s"] = {c: None for c in ethplorer_model.PRICES_FILTERS}
+            choices["lt"]["-s"] = {c: None for c in bitquery_model.LT_FILTERS}
+            choices["tv"]["-s"] = {c: None for c in bitquery_model.LT_FILTERS}
+            choices["ueat"]["-s"] = {c: None for c in bitquery_model.UEAT_FILTERS}
+            choices["ueat"]["-i"] = {c: None for c in bitquery_model.INTERVALS}
+            choices["dvcp"]["-s"] = {c: None for c in bitquery_model.DVCP_FILTERS}
+            choices["lt"]["-k"] = {c: None for c in bitquery_model.LT_KIND}
+            choices["lt"]["-vs"] = {c: None for c in bitquery_model.CURRENCIES}
+            choices["ttcp"] = {c: None for c in bitquery_model.DECENTRALIZED_EXCHANGES}
+            choices["ttcp"]["-s"] = {c: None for c in bitquery_model.TTCP_FILTERS}
+            choices["baas"]["-s"] = {c: None for c in bitquery_model.BAAS_FILTERS}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         if queue:
@@ -267,15 +289,7 @@ class OnchainController:
             type=str,
             help="Sort by given column. Default: date",
             default="date",
-            choices=[
-                "date",
-                "symbol",
-                "blockchain",
-                "amount",
-                "amount_usd",
-                "from",
-                "to",
-            ],
+            choices=whale_alert_model.FILTERS,
         )
 
         parser.add_argument(
@@ -418,12 +432,7 @@ class OnchainController:
             type=str,
             help="Sort by given column. Default: index",
             default="index",
-            choices=[
-                "index",
-                "balance",
-                "tokenName",
-                "tokenSymbol",
-            ],
+            choices=ethplorer_model.BALANCE_FILTERS,
         )
 
         parser.add_argument(
@@ -480,7 +489,7 @@ class OnchainController:
             type=str,
             help="Sort by given column. Default: timestamp",
             default="timestamp",
-            choices=["timestamp", "transactionHash", "token", "value"],
+            choices=ethplorer_model.HIST_FILTERS,
         )
 
         parser.add_argument(
@@ -536,11 +545,7 @@ class OnchainController:
             type=str,
             help="Sort by given column. Default: share",
             default="share",
-            choices=[
-                "balance",
-                "balance",
-                "share",
-            ],
+            choices=ethplorer_model.HOLDERS_FILTERS,
         )
 
         parser.add_argument(
@@ -597,15 +602,7 @@ class OnchainController:
             type=str,
             help="Sort by given column. Default: rank",
             default="rank",
-            choices=[
-                "rank",
-                "name",
-                "symbol",
-                "price",
-                "txsCount",
-                "transfersCount",
-                "holdersCount",
-            ],
+            choices=ethplorer_model.TOP_FILTERS,
         )
 
         parser.add_argument(
@@ -695,9 +692,7 @@ class OnchainController:
             type=str,
             help="Sort by given column. Default: value",
             default="value",
-            choices=[
-                "value",
-            ],
+            choices=ethplorer_model.TH_FILTERS,
         )
 
         parser.add_argument(
@@ -789,15 +784,7 @@ class OnchainController:
             type=str,
             help="Sort by given column. Default: date",
             default="date",
-            choices=[
-                "date",
-                "cap",
-                "volumeConverted",
-                "open",
-                "high",
-                "close",
-                "low",
-            ],
+            choices=ethplorer_model.PRICES_FILTERS,
         )
 
         parser.add_argument(
@@ -844,7 +831,7 @@ class OnchainController:
             type=str,
             help="Aggregate trades by dex or time Default: dex",
             default="dex",
-            choices=["dex", "time"],
+            choices=bitquery_model.LT_KIND,
         )
 
         parser.add_argument(
@@ -882,7 +869,7 @@ class OnchainController:
             type=str,
             help="Sort by given column. Default: tradeAmount. For monthly trades date.",
             default="tradeAmount",
-            choices=["trades", "tradeAmount", "exchange"],
+            choices=bitquery_model.LT_FILTERS,
         )
 
         parser.add_argument(
@@ -961,18 +948,7 @@ class OnchainController:
             type=str,
             help="Sort by given column.",
             default="date",
-            choices=[
-                "date",
-                "exchange",
-                "base",
-                "quote",
-                "open",
-                "high",
-                "low",
-                "close",
-                "tradeAmount",
-                "trades",
-            ],
+            choices=bitquery_model.DVCP_FILTERS,
         )
 
         parser.add_argument(
@@ -983,9 +959,8 @@ class OnchainController:
             default=False,
         )
 
-        if other_args:
-            if not other_args[0][0] == "-":
-                other_args.insert(0, "-c")
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-c")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -1050,7 +1025,7 @@ class OnchainController:
             type=str,
             help="Sort by given column.",
             default="trades",
-            choices=["exchange", "tradeAmount", "trades"],
+            choices=bitquery_model.LT_FILTERS,
         )
 
         parser.add_argument(
@@ -1060,9 +1035,8 @@ class OnchainController:
             dest="descend",
             default=False,
         )
-        if other_args:
-            if not other_args[0][0] == "-":
-                other_args.insert(0, "-c")
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-c")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -1111,14 +1085,7 @@ class OnchainController:
             type=str,
             help="Sort by given column.",
             default="date",
-            choices=[
-                "date",
-                "uniqueSenders",
-                "transactions",
-                "averageGasPrice",
-                "mediumGasPrice",
-                "maximumGasPrice",
-            ],
+            choices=bitquery_model.UEAT_FILTERS,
         )
 
         parser.add_argument(
@@ -1129,7 +1096,7 @@ class OnchainController:
             help="Time interval in which ethereum address made transaction. month, week or day. "
             "Maximum time period is 90 days (3 months, 14 weeks)",
             default="day",
-            choices=["day", "month", "week"],
+            choices=bitquery_model.INTERVALS,
         )
 
         parser.add_argument(
@@ -1181,6 +1148,7 @@ class OnchainController:
             dest="exchange",
             type=str,
             help="Decentralized exchange name.",
+            choices=bitquery_model.DECENTRALIZED_EXCHANGES,
         )
 
         parser.add_argument(
@@ -1199,7 +1167,7 @@ class OnchainController:
             type=str,
             help="Sort by given column.",
             default="tradeAmount",
-            choices=["base", "quoted", "trades", "tradeAmount"],
+            choices=bitquery_model.TTCP_FILTERS,
         )
 
         parser.add_argument(
@@ -1210,9 +1178,8 @@ class OnchainController:
             default=False,
         )
 
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-e")
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-e")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -1304,14 +1271,7 @@ class OnchainController:
             type=str,
             help="Sort by given column.",
             default="date",
-            choices=[
-                "date",
-                "baseCurrency",
-                "quoteCurrency",
-                "dailySpread",
-                "averageBidPrice",
-                "averageAskPrice",
-            ],
+            choices=bitquery_model.BAAS_FILTERS,
         )
 
         parser.add_argument(
@@ -1322,9 +1282,8 @@ class OnchainController:
             default=False,
         )
 
-        if other_args:
-            if not other_args[0][0] == "-":
-                other_args.insert(0, "-c")
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-c")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED

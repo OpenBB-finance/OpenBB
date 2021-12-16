@@ -1,6 +1,6 @@
 """Cryptocurrency Context Controller"""
 __docformat__ = "numpy"
-# pylint: disable=R0904, C0302, R1710, W0622
+# pylint: disable=R0904, C0302, R1710, W0622, C0201
 
 import argparse
 import difflib
@@ -12,6 +12,7 @@ from binance.client import Client
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     get_flair,
     parse_known_args_and_warn,
@@ -29,6 +30,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence import (
     coinbase_model,
 )
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
+    FIND_KEYS,
     load,
     find,
     load_ta_data,
@@ -96,7 +98,10 @@ class CryptoController:
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
-
+            choices["load"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
+            choices["find"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
+            choices["find"]["-k"] = {c: {} for c in FIND_KEYS}
+            choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         if queue:
@@ -422,7 +427,9 @@ class CryptoController:
                 )
 
             try:
-                ns_parser = parse_known_args_and_warn(parser, other_args)
+                ns_parser = parse_known_args_and_warn(
+                    parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+                )
 
                 if ns_parser:
                     if self.source in ["bin", "cb"]:
@@ -736,11 +743,11 @@ class CryptoController:
             choices=finbrain_crypto_view.COINS,
         )
 
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
         if ns_parser:
@@ -833,7 +840,7 @@ class CryptoController:
             dest="key",
             help="Specify by which column you would like to search: symbol, name, id",
             type=str,
-            choices=["id", "symbol", "name"],
+            choices=FIND_KEYS,
             default="symbol",
         )
 
@@ -849,15 +856,14 @@ class CryptoController:
         parser.add_argument(
             "--source",
             dest="source",
-            choices=["cp", "cg", "bin", "cb"],
+            choices=CRYPTO_SOURCES.keys(),
             default="cg",
             help="Source of data.",
             type=str,
         )
 
-        if other_args:
-            if not other_args[0][0] == "-":
-                other_args.insert(0, "-c")
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-c")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED

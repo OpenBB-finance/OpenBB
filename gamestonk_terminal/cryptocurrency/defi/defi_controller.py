@@ -7,6 +7,7 @@ import difflib
 from typing import List, Union
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.cryptocurrency.defi import graph_model
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
@@ -22,6 +23,7 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.cryptocurrency.defi import (
     defirate_view,
     defipulse_view,
+    llama_model,
     llama_view,
     substack_view,
     graph_view,
@@ -72,6 +74,11 @@ class DefiController:
         self.completer: Union[None, NestedCompleter] = None
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
+            choices["llama"]["-s"] = {c: {} for c in llama_model.LLAMA_FILTERS}
+            choices["tokens"]["-s"] = {c: {} for c in graph_model.TOKENS_FILTERS}
+            choices["pairs"]["-s"] = {c: {} for c in graph_model.PAIRS_FILTERS}
+            choices["pools"]["-s"] = {c: {} for c in graph_model.POOLS_FILTERS}
+            choices["swaps"]["-s"] = {c: {} for c in graph_model.SWAPS_FILTERS}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         if queue:
@@ -254,16 +261,7 @@ class DefiController:
             type=str,
             help="Sort by given column. Default: tvl",
             default="tvl",
-            choices=[
-                "tvl",
-                "symbol",
-                "category",
-                "chains",
-                "change_1h",
-                "change_1d",
-                "change_7d",
-                "tvl",
-            ],
+            choices=llama_model.LLAMA_FILTERS,
         )
 
         parser.add_argument(
@@ -514,14 +512,7 @@ class DefiController:
             type=str,
             help="Sort by given column. Default: index",
             default="index",
-            choices=[
-                "index",
-                "symbol",
-                "name",
-                "tradeVolumeUSD",
-                "totalLiquidity",
-                "txCount",
-            ],
+            choices=graph_model.TOKENS_FILTERS,
         )
 
         parser.add_argument(
@@ -622,15 +613,7 @@ class DefiController:
             type=str,
             help="Sort by given column. Default: created",
             default="created",
-            choices=[
-                "created",
-                "pair",
-                "token0",
-                "token1",
-                "volumeUSD",
-                "txCount",
-                "totalSupply",
-            ],
+            choices=graph_model.PAIRS_FILTERS,
         )
 
         parser.add_argument(
@@ -686,15 +669,7 @@ class DefiController:
             type=str,
             help="Sort by given column. Default: volumeUSD",
             default="volumeUSD",
-            choices=[
-                "volumeUSD",
-                "token0.name",
-                "token0.symbol",
-                "token1.name",
-                "token1.symbol",
-                "volumeUSD",
-                "txCount",
-            ],
+            choices=graph_model.POOLS_FILTERS,
         )
 
         parser.add_argument(
@@ -747,7 +722,7 @@ class DefiController:
             type=str,
             help="Sort by given column. Default: timestamp",
             default="timestamp",
-            choices=["timestamp", "token0", "token1", "amountUSD"],
+            choices=graph_model.SWAPS_FILTERS,
         )
 
         parser.add_argument(
