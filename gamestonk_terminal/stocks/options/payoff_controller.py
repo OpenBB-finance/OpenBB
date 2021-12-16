@@ -5,8 +5,10 @@ import argparse
 import difflib
 from typing import List, Dict, Union
 from prompt_toolkit.completion import NestedCompleter
+from colorama import Style
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
+    check_non_negative,
     get_flair,
     parse_known_args_and_warn,
     try_except,
@@ -15,6 +17,9 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.options.yfinance_model import get_option_chain, get_price
 from gamestonk_terminal.stocks.options.yfinance_view import plot_payoff
+
+
+# pylint: disable=R0902
 
 
 class PayoffController:
@@ -43,22 +48,12 @@ class PayoffController:
     ]
     CHOICES += CHOICES_COMMANDS
 
+    underlying_asset_choices = ["long", "short", "none"]
+
     def __init__(self, ticker: str, expiration: str, queue: List[str] = None):
         """Construct"""
         self.payoff_parser = argparse.ArgumentParser(add_help=False, prog="payoff")
         self.payoff_parser.add_argument("cmd", choices=self.CHOICES)
-
-        self.completer: Union[None, NestedCompleter] = None
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-
-            choices: dict = {c: {} for c in self.CHOICES}
-            self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
         self.chain = get_option_chain(ticker, expiration)
         self.calls = list(
@@ -79,6 +74,24 @@ class PayoffController:
         self.options: List[Dict[str, str]] = []
         self.underlying = 0
 
+        self.call_index_choices = range(len(self.calls))
+        self.put_index_choices = range(len(self.puts))
+
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+
+            self.choices: dict = {c: {} for c in self.CHOICES}
+            self.choices["pick"] = {c: {} for c in self.underlying_asset_choices}
+            self.choices["add"] = {
+                str(c): {} for c in list(range(max(len(self.puts), len(self.calls))))
+            }
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
+
     def print_help(self):
         """Print help"""
         if self.underlying == 1:
@@ -98,8 +111,8 @@ Underlying Asset: {text}
 
     list          list available strike prices for calls and puts
 
-    add           add option to the list of the options to be plotted
-    rmv           remove option from the list of the options to be plotted
+    add           add option to the list of the options to be plotted{Style.DIM if not self.options else ""}
+    rmv           remove option from the list of the options to be plotted{Style.RESET_ALL}
 
     sop           selected options
     plot          show the option payoff diagram
@@ -246,17 +259,12 @@ Underlying Asset: {text}
             "-i",
             "--index",
             dest="index",
-            type=int,
+            type=check_non_negative,
             help="list index of the option",
             required="-h" not in other_args and "-k" not in other_args,
-        )
-        parser.add_argument(
-            "-k",
-            "--strike",
-            dest="strike",
-            type=float,
-            help="strike price for the option",
-            default=None,
+            choices=self.put_index_choices
+            if "-p" in other_args
+            else self.call_index_choices,
         )
         if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-i")
@@ -266,33 +274,26 @@ Underlying Asset: {text}
             sign = -1 if ns_parser.short else 1
             options_list = self.puts if ns_parser.put else self.calls
 
-            if ns_parser.strike is None:
-                index = ns_parser.index
-            elif float(ns_parser.strike) in [float(x[0]) for x in options_list]:
-                index = filter(
-                    lambda x: float(x[0]) == float(ns_parser.strike), options_list
-                )
-                index = options_list.index(list(index)[0])
-                print(index)
+            if ns_parser.index < len(options_list):
+                strike = options_list[ns_parser.index][0]
+                cost = options_list[ns_parser.index][1]
+
+                option = {
+                    "type": opt_type,
+                    "sign": sign,
+                    "strike": strike,
+                    "cost": cost,
+                }
+                self.options.append(option)
+
+                print("#\tType\tHold\tStrike\tCost")
+                for i, o in enumerate(self.options):
+                    asset: str = "Long" if o["sign"] == 1 else "Short"
+                    print(f"{i}\t{o['type']}\t{asset}\t{o['strike']}\t{o['cost']}")
+                print("")
+
             else:
-                print("Invalid strike price, please select a valid price from the list")
-                return self.queue
-
-            try:
-                strike = options_list[index][0]
-                cost = options_list[index][1]
-            except IndexError:
-                print("Please use the index, and not the strike price\n")
-                return self.queue
-
-            option = {"type": opt_type, "sign": sign, "strike": strike, "cost": cost}
-            self.options.append(option)
-
-            print("#\tType\tHold\tStrike\tCost")
-            for i, o in enumerate(self.options):
-                asset: str = "Long" if o["sign"] == 1 else "Short"
-                print(f"{i}\t{o['type']}\t{asset}\t{o['strike']}\t{o['cost']}")
-            print("")
+                print("Please use a valid index\n")
 
         return self.queue
 
@@ -305,11 +306,13 @@ Underlying Asset: {text}
             description="""Remove one of the options to be shown in the payoff.""",
         )
         parser.add_argument(
-            "-k",
-            "--strike",
-            dest="strike",
-            type=int,
-            help="strike price for option",
+            "-i",
+            "--index",
+            dest="index",
+            type=check_non_negative,
+            help="index of the option to remove",
+            required=bool("-h" not in other_args and len(self.options) > 0),
+            choices=range(len(self.options)),
         )
         parser.add_argument(
             "-a",
@@ -320,22 +323,25 @@ Underlying Asset: {text}
             default=False,
         )
         if other_args and "-" not in other_args[0]:
-            other_args.insert(0, "-k")
+            other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if ns_parser.all:
-                self.options = []
-            else:
-                try:
-                    del self.options[ns_parser.strike]
-                except IndexError:
-                    print("Please use the index, and not the strike price\n")
+            if self.options:
+                if ns_parser.all:
+                    self.options = []
+                else:
+                    if ns_parser.index < len(self.options):
+                        del self.options[ns_parser.index]
+                    else:
+                        print("Please use a valid index.\n")
 
-            print("#\tType\tHold\tStrike\tCost")
-            for i, o in enumerate(self.options):
-                sign = "Long" if o["sign"] == 1 else "Short"
-                print(f"{i}\t{o['type']}\t{sign}\t{o['strike']}\t{o['cost']}")
-            print("")
+                print("#\tType\tHold\tStrike\tCost")
+                for i, o in enumerate(self.options):
+                    sign = "Long" if o["sign"] == 1 else "Short"
+                    print(f"{i}\t{o['type']}\t{sign}\t{o['strike']}\t{o['cost']}")
+                print("")
+        else:
+            print("No options have been selected, removing them is not possible\n")
 
         return self.queue
 
@@ -354,7 +360,7 @@ Underlying Asset: {text}
             type=str,
             help="Choose what you would like to do with the underlying asset",
             required="-h" not in other_args,
-            choices=["long", "short", "none"],
+            choices=self.underlying_asset_choices,
         )
         if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-t")
@@ -441,10 +447,15 @@ def menu(ticker: str, expiration: str, queue: List[str] = None):
                 payoff_controller.print_help()
 
             # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and payoff_controller.completer:
+            if session and gtff.USE_PROMPT_TOOLKIT and payoff_controller.choices:
+                if payoff_controller.options:
+                    payoff_controller.choices["rmv"] = {
+                        str(c): {} for c in range(len(payoff_controller.options))
+                    }
+                completer = NestedCompleter.from_nested_dict(payoff_controller.choices)
                 an_input = session.prompt(
                     f"{get_flair()} /stocks/options/payoff/ $ ",
-                    completer=payoff_controller.completer,
+                    completer=completer,
                     search_ignore_case=True,
                 )
             # Get input from user without auto-completion
@@ -473,6 +484,7 @@ def menu(ticker: str, expiration: str, queue: List[str] = None):
                     )
                     if candidate_input == an_input:
                         an_input = ""
+                        payoff_controller.queue = []
                         print("\n")
                         continue
                     an_input = candidate_input
