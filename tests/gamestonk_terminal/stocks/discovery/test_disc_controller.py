@@ -10,6 +10,8 @@ from gamestonk_terminal.stocks.discovery import disc_controller
 # pylint: disable=E1101
 # pylint: disable=W0603
 
+pytest.skip(allow_module_level=True)
+
 
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout

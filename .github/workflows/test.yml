@@ -26,7 +26,7 @@ jobs:
           key: ${{ runner.os }}-linting
           restore-keys: ${{ runner.os }}-linting
 
-      - run: pip install bandit black codespell flake8 mypy==0.910 pyupgrade safety pylint==2.11.1
+      - run: pip install bandit black codespell flake8 mypy pyupgrade safety pylint==2.11.1
       - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil
       - run: bandit -x ./tests -r . || true
       - run: black --check .
