@@ -126,16 +126,22 @@ class DueDiligenceController:
             }
             choices["eb"]["-i"] = {c: None for c in glassnode_model.INTERVALS}
             choices["oi"]["-i"] = {c: None for c in coinglass_model.INTERVALS}
-            choices["atl"]["--vs"] = {c: None for c in FILTERS_VS_USD_BTC}
-            choices["ath"]["--vs"] = {c: None for c in FILTERS_VS_USD_BTC}
-            choices["mkt"]["--vs"] = {c: None for c in coinpaprika_view.CURRENCIES}
-            choices["mkt"]["-s"] = {c: None for c in coinpaprika_view.MARKET_FILTERS}
-            choices["ex"]["-s"] = {c: None for c in coinpaprika_view.EX_FILTERS}
-            choices["events"]["-s"] = {c: None for c in coinpaprika_view.EVENTS_FILTERS}
-            choices["twitter"]["-s"] = {
-                c: None for c in coinpaprika_view.TWEETS_FILTERS
-            }
-            choices["ps"]["--vs"] = {c: None for c in coinpaprika_view.CURRENCIES}
+            if self.source in ("cg"):
+                choices["atl"]["--vs"] = {c: None for c in FILTERS_VS_USD_BTC}
+                choices["ath"]["--vs"] = {c: None for c in FILTERS_VS_USD_BTC}
+            if self.source in ("cp"):
+                choices["mkt"]["--vs"] = {c: None for c in coinpaprika_view.CURRENCIES}
+                choices["mkt"]["-s"] = {
+                    c: None for c in coinpaprika_view.MARKET_FILTERS
+                }
+                choices["ex"]["-s"] = {c: None for c in coinpaprika_view.EX_FILTERS}
+                choices["events"]["-s"] = {
+                    c: None for c in coinpaprika_view.EVENTS_FILTERS
+                }
+                choices["twitter"]["-s"] = {
+                    c: None for c in coinpaprika_view.TWEETS_FILTERS
+                }
+                choices["ps"]["--vs"] = {c: None for c in coinpaprika_view.CURRENCIES}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         if queue:
