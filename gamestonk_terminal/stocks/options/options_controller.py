@@ -1,15 +1,11 @@
-"""Options Controller Module."""
+""" Options Controller Module """
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines
-
 
 import argparse
 import difflib
 import os
 from datetime import datetime, timedelta
-from typing import List
-
-import matplotlib.pyplot as plt
+from typing import List, Union
 from colorama import Style
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
@@ -41,20 +37,25 @@ from gamestonk_terminal.stocks.options import (
     pricing_controller,
 )
 
-# pylint: disable=R1710
+# pylint: disable=R1710,C0302
 
 
 class OptionsController:
-    """Options Controller class."""
+    """Options Controller class"""
 
     CHOICES = [
         "cls",
+        "home",
+        "h",
         "?",
         "help",
         "q",
         "quit",
+        "..",
+        "exit",
+        "r",
+        "reset",
     ]
-
     CHOICES_COMMANDS = [
         "pres",
         "disp",
@@ -77,14 +78,11 @@ class OptionsController:
         "parity",
         "binom",
     ]
-
     CHOICES_MENUS = [
         "payoff",
         "pricing",
     ]
-
-    CHOICES += CHOICES_COMMANDS
-    CHOICES += CHOICES_MENUS
+    CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
 
     PRESET_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -98,9 +96,24 @@ class OptionsController:
         "premium",
     ]
 
-    def __init__(self, ticker):
+    def __init__(self, ticker: str, queue: List[str] = None):
         """Constructor"""
+        self.op_parser = argparse.ArgumentParser(add_help=False, prog="op")
+        self.op_parser.add_argument(
+            "cmd",
+            choices=self.CHOICES,
+        )
+
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+
+            choices: dict = {c: {} for c in self.CHOICES}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
         self.ticker = ticker
+        self.prices = pd.DataFrame(columns=["Price", "Chance"])
+        self.selected_date = ""
 
         if ticker:
             if TRADIER_TOKEN == "REPLACE_ME":
@@ -110,25 +123,15 @@ class OptionsController:
                 print("Loaded expiry dates from Tradier")
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
 
-        self.selected_date = ""
-
-        self.op_parser = argparse.ArgumentParser(add_help=False, prog="payoff")
-        self.op_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-        self.prices = pd.DataFrame(columns=["Price", "Chance"])
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
 
     def print_help(self):
         """Print help."""
         colored = self.ticker and self.selected_date
         help_text = f"""
-What do you want to do?
-    cls           clear screen
-    ?/help        show this menu again
-    q             quit this menu, and shows back to main menu
-    quit          quit to abandon program
-
 Explore:
     pres          display available preset templates
     disp          display filters for selected preset
@@ -136,11 +139,11 @@ Explore:
     unu           show unusual options activity [fdscanner.com]
     calc          basic call/put PnL calculator
 
-Current Ticker: {self.ticker or None}
-Current Expiry: {self.selected_date or None}
-
     load          load new ticker
     exp           see and set expiration dates
+
+Ticker: {self.ticker or None}
+Expiry: {self.selected_date or None}
 {"" if self.ticker else Style.DIM}
     pcr           display put call ratio for ticker [AlphaQuery.com]{Style.DIM if not colored else ''}
     info          display option information (volatility, IV rank etc) [Barchart.com]
@@ -160,48 +163,92 @@ Current Expiry: {self.selected_date or None}
         print(help_text)
 
     def switch(self, an_input: str):
-        """Process and dispatch input.
+        """Process and dispatch input
 
         Returns
         -------
-        MENU_GO_BACK, MENU_QUIT, MENU_RESET
-            MENU_GO_BACK - Show main context menu again
-            MENU_QUIT - Quit terminal
-            MENU_RESET - Reset terminal and go back to same previous menu
+        List[str]
+            List of commands in the queue to execute
         """
-
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.op_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
         )(other_args)
 
-    def call_help(self, _):
-        """Process Help command."""
-        self.print_help()
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue
 
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return False
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        return self.queue
+
+    def call_help(self, _):
+        """Process help command"""
+        self.print_help()
+        return self.queue
 
     def call_quit(self, _):
-        """Process Quit command - exit the program"""
-        return True
+        """Process quit menu command"""
+        print("")
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit"]
+
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "quit"]
+
+    def call_reset(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "options")
+            self.queue.insert(0, "stocks")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "reset", "stocks", "options"]
 
     @try_except
     def call_calc(self, other_args: List[str]):
@@ -262,19 +309,21 @@ Current Expiry: {self.selected_date or None}
         )
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if ns_parser.min > 0 and ns_parser.max > 0:
-            pars = {"x_min": ns_parser.min, "x_max": ns_parser.max}
-        else:
-            pars = {}
-        calculator_view.view_calculator(
-            strike=ns_parser.strike,
-            premium=ns_parser.premium,
-            put=ns_parser.put,
-            sell=ns_parser.sell,
-            **pars,
-        )
+        if ns_parser:
+            if ns_parser.min > 0 and ns_parser.max > 0:
+                pars = {"x_min": ns_parser.min, "x_max": ns_parser.max}
+            else:
+                pars = {}
+
+            calculator_view.view_calculator(
+                strike=ns_parser.strike,
+                premium=ns_parser.premium,
+                put=ns_parser.put,
+                sell=ns_parser.sell,
+                **pars,
+            )
+
+        return self.queue
 
     @try_except
     def call_unu(self, other_args: List[str]):
@@ -286,12 +335,12 @@ Current Expiry: {self.selected_date or None}
             description="This command gets unusual options from fdscanner.com",
         )
         parser.add_argument(
-            "-n",
-            "--num",
-            dest="num",
+            "-l",
+            "--limit",
+            dest="limit",
             type=int,
             default=20,
-            help="Number of options to show.  Each scraped page gives 20 results.",
+            help="Limit of options to show. Each scraped page gives 20 results.",
         )
         parser.add_argument(
             "-s",
@@ -334,21 +383,22 @@ Current Expiry: {self.selected_date or None}
             help="Export dataframe data to csv,json,xlsx file",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if ns_parser.calls_only and ns_parser.puts_only:
-            print(
-                "Cannot return puts only and calls only.  Either use one or neither\n."
-            )
-            return
-        fdscanner_view.display_options(
-            num=ns_parser.num,
-            sort_column=ns_parser.sortby,
-            export=ns_parser.export,
-            ascending=ns_parser.ascend,
-            calls_only=ns_parser.calls_only,
-            puts_only=ns_parser.puts_only,
-        )
+        if ns_parser:
+            if ns_parser.calls_only and ns_parser.puts_only:
+                print(
+                    "Cannot return puts only and calls only. Either use one or neither\n."
+                )
+            else:
+                fdscanner_view.display_options(
+                    num=ns_parser.limit,
+                    sort_column=ns_parser.sortby,
+                    export=ns_parser.export,
+                    ascending=ns_parser.ascend,
+                    calls_only=ns_parser.calls_only,
+                    puts_only=ns_parser.puts_only,
+                )
+
+        return self.queue
 
     @try_except
     def call_pcr(self, other_args: List[str]):
@@ -369,35 +419,30 @@ Current Expiry: {self.selected_date or None}
         )
         parser.add_argument(
             "-s",
-            "--start-date",
+            "--start",
             help="Start date for plot",
             type=valid_date,
             default=datetime.now() - timedelta(days=366),
             dest="start",
         )
-
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        if not ns_parser:
-            return
-        if not self.ticker:
-            print("No ticker loaded.\n")
-            return
+        if ns_parser:
+            if self.ticker:
+                alphaquery_view.display_put_call_ratio(
+                    ticker=self.ticker,
+                    window=ns_parser.length,
+                    start_date=ns_parser.start.strftime("%Y-%m-%d"),
+                    export=ns_parser.export,
+                )
+            else:
+                print("No ticker loaded.\n")
 
-        alphaquery_view.display_put_call_ratio(
-            ticker=self.ticker,
-            window=ns_parser.length,
-            start_date=ns_parser.start.strftime("%Y-%m-%d"),
-            export=ns_parser.export,
-        )
+        return self.queue
 
     def call_info(self, other_args: List[str]):
         """Process info command"""
-        if not self.ticker:
-            print("No ticker loaded.\n")
-            return
-
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -413,9 +458,15 @@ Current Expiry: {self.selected_date or None}
         )
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        barchart_view.print_options_data(ticker=self.ticker, export=ns_parser.export)
+        if ns_parser:
+            if self.ticker:
+                barchart_view.print_options_data(
+                    ticker=self.ticker, export=ns_parser.export
+                )
+            else:
+                print("No ticker loaded.\n")
+
+        return self.queue
 
     @try_except
     def call_pres(self, other_args: List[str]):
@@ -426,13 +477,14 @@ Current Expiry: {self.selected_date or None}
             description="""View available presets under presets folder.""",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        presets = [f for f in os.listdir(self.PRESET_PATH) if f.endswith(".ini")]
+        if ns_parser:
+            presets = [f for f in os.listdir(self.PRESET_PATH) if f.endswith(".ini")]
 
-        for preset in presets:
-            print(preset)
-        print("")
+            for preset in presets:
+                print(preset)
+            print("")
+
+        return self.queue
 
     @try_except
     def call_disp(self, other_args: List[str]):
@@ -460,11 +512,12 @@ Current Expiry: {self.selected_date or None}
         if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        syncretism_view.view_available_presets(
-            preset=ns_parser.preset, presets_path=self.PRESET_PATH
-        )
+        if ns_parser:
+            syncretism_view.view_available_presets(
+                preset=ns_parser.preset, presets_path=self.PRESET_PATH
+            )
+
+        return self.queue
 
     @try_except
     def call_scr(self, other_args: List[str]):
@@ -513,14 +566,15 @@ Current Expiry: {self.selected_date or None}
         if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        syncretism_view.view_screener_output(
-            preset=ns_parser.preset,
-            presets_path=self.PRESET_PATH,
-            n_show=ns_parser.n_show,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            syncretism_view.view_screener_output(
+                preset=ns_parser.preset,
+                presets_path=self.PRESET_PATH,
+                n_show=ns_parser.n_show,
+                export=ns_parser.export,
+            )
+
+        return self.queue
 
     @try_except
     def call_grhist(self, other_args: List[str]):
@@ -581,25 +635,26 @@ Current Expiry: {self.selected_date or None}
         )
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if not self.ticker:
-            print("No ticker loaded.  First use `load {ticker}` \n")
-            return
-        if not self.selected_date:
-            print("No expiry loaded.  First use `exp {expiry date}` \n")
-            return
-        syncretism_view.view_historical_greeks(
-            ticker=self.ticker,
-            expiry=self.selected_date,
-            strike=ns_parser.strike,
-            greek=ns_parser.greek,
-            chain_id=ns_parser.chain_id,
-            put=ns_parser.put,
-            raw=ns_parser.raw,
-            n_show=ns_parser.num,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            if self.ticker:
+                if self.selected_date:
+                    syncretism_view.view_historical_greeks(
+                        ticker=self.ticker,
+                        expiry=self.selected_date,
+                        strike=ns_parser.strike,
+                        greek=ns_parser.greek,
+                        chain_id=ns_parser.chain_id,
+                        put=ns_parser.put,
+                        raw=ns_parser.raw,
+                        n_show=ns_parser.num,
+                        export=ns_parser.export,
+                    )
+                else:
+                    print("No expiry loaded. First use `exp <expiry date>`\n")
+            else:
+                print("No ticker loaded. First use `load <ticker>` \n")
+
+        return self.queue
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -628,15 +683,16 @@ Current Expiry: {self.selected_date or None}
         if other_args and "-t" not in other_args and "-h" not in other_args:
             other_args.insert(0, "-t")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        self.ticker = ns_parser.ticker.upper()
+        if ns_parser:
+            self.ticker = ns_parser.ticker.upper()
 
-        if TRADIER_TOKEN == "REPLACE_ME" or ns_parser.source == "yf":
-            self.expiry_dates = yfinance_model.option_expirations(self.ticker)
-        else:
-            self.expiry_dates = tradier_model.option_expirations(self.ticker)
-        print("")
+            if TRADIER_TOKEN == "REPLACE_ME" or ns_parser.source == "yf":
+                self.expiry_dates = yfinance_model.option_expirations(self.ticker)
+            else:
+                self.expiry_dates = tradier_model.option_expirations(self.ticker)
+            print("")
+
+        return self.queue
 
     @try_except
     def call_exp(self, other_args: List[str]):
@@ -670,27 +726,28 @@ Current Expiry: {self.selected_date or None}
         if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if not self.ticker:
-            print("Please load a ticker using `load {ticker}.\n")
-            return
-        # Print possible expiry dates
-        if ns_parser.index == -1 and not ns_parser.date:
-            print("\nAvailable expiry dates:")
-            for i, d in enumerate(self.expiry_dates):
-                print(f"   {(2 - len(str(i))) * ' '}{i}.  {d}")
-            print("")
-        elif ns_parser.date:
-            if ns_parser.date in self.expiry_dates:
-                print(f"Expiration set to {ns_parser.date} \n")
-                self.selected_date = ns_parser.date
+        if ns_parser:
+            if self.ticker:
+                # Print possible expiry dates
+                if ns_parser.index == -1 and not ns_parser.date:
+                    print("\nAvailable expiry dates:")
+                    for i, d in enumerate(self.expiry_dates):
+                        print(f"   {(2 - len(str(i))) * ' '}{i}.  {d}")
+                    print("")
+                elif ns_parser.date:
+                    if ns_parser.date in self.expiry_dates:
+                        print(f"Expiration set to {ns_parser.date} \n")
+                        self.selected_date = ns_parser.date
+                    else:
+                        print("Expiration not an option")
+                else:
+                    expiry_date = self.expiry_dates[ns_parser.index]
+                    print(f"Expiration set to {expiry_date} \n")
+                    self.selected_date = expiry_date
             else:
-                print("Expiration not an option")
-        else:
-            expiry_date = self.expiry_dates[ns_parser.index]
-            print(f"Expiration set to {expiry_date} \n")
-            self.selected_date = expiry_date
+                print("Please load a ticker using `load <ticker>`.\n")
+
+        return self.queue
 
     @try_except
     def call_hist(self, other_args: List[str]):
@@ -759,38 +816,38 @@ Current Expiry: {self.selected_date or None}
         ):
             other_args.insert(0, "-s")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if not self.ticker:
-            print("No ticker loaded.  First use `load ` \n")
-            return
-        if not self.selected_date:
-            print("No expiry loaded.  First use `exp ` \n")
-            return
-        if ns_parser.source.lower() == "ce":
-            chartexchange_view.display_raw(
-                ns_parser.export,
-                self.ticker,
-                self.selected_date,
-                not ns_parser.put,
-                ns_parser.strike,
-                ns_parser.num,
-            )
-            return
+        if ns_parser:
+            if self.ticker:
+                if self.selected_date:
+                    if ns_parser.source.lower() == "ce":
+                        chartexchange_view.display_raw(
+                            ns_parser.export,
+                            self.ticker,
+                            self.selected_date,
+                            not ns_parser.put,
+                            ns_parser.strike,
+                            ns_parser.num,
+                        )
 
-        if TRADIER_TOKEN == "REPLACE_ME":
-            print("TRADIER TOKEN not supplied. \n")
-            return
+                    else:
+                        if TRADIER_TOKEN != "REPLACE_ME":
+                            tradier_view.display_historical(
+                                ticker=self.ticker,
+                                expiry=self.selected_date,
+                                strike=ns_parser.strike,
+                                put=ns_parser.put,
+                                export=ns_parser.export,
+                                raw=ns_parser.raw,
+                                chain_id=ns_parser.chain_id,
+                            )
+                        else:
+                            print("TRADIER TOKEN not supplied. \n")
+                else:
+                    print("No expiry loaded. First use `exp <expiry date>` \n")
+            else:
+                print("No ticker loaded. First use `load <ticker>`\n")
 
-        tradier_view.display_historical(
-            ticker=self.ticker,
-            expiry=self.selected_date,
-            strike=ns_parser.strike,
-            put=ns_parser.put,
-            export=ns_parser.export,
-            raw=ns_parser.raw,
-            chain_id=ns_parser.chain_id,
-        )
+        return self.queue
 
     @try_except
     def call_chains(self, other_args: List[str]):
@@ -850,27 +907,28 @@ Current Expiry: {self.selected_date or None}
             help="Export dataframe data to csv,json,xlsx file",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if not self.ticker:
-            print("No ticker loaded.  First use `load {ticker}` \n")
-            return
-        if not self.selected_date:
-            print("No expiry loaded.  First use `exp {expiry date}` \n")
-            return
-        if TRADIER_TOKEN == "REPLACE_ME":
-            print("TRADIER TOKEN not supplied. \n")
-            return
-        tradier_view.display_chains(
-            ticker=self.ticker,
-            expiry=self.selected_date,
-            to_display=ns_parser.to_display,
-            min_sp=ns_parser.min_sp,
-            max_sp=ns_parser.max_sp,
-            calls_only=ns_parser.calls,
-            puts_only=ns_parser.puts,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            if self.ticker:
+                if self.selected_date:
+                    if TRADIER_TOKEN != "REPLACE_ME":
+                        tradier_view.display_chains(
+                            ticker=self.ticker,
+                            expiry=self.selected_date,
+                            to_display=ns_parser.to_display,
+                            min_sp=ns_parser.min_sp,
+                            max_sp=ns_parser.max_sp,
+                            calls_only=ns_parser.calls,
+                            puts_only=ns_parser.puts,
+                            export=ns_parser.export,
+                        )
+                    else:
+                        print("TRADIER TOKEN not supplied. \n")
+                else:
+                    print("No expiry loaded. First use `exp {expiry date}`\n")
+            else:
+                print("No ticker loaded. First use `load <ticker>`\n")
+
+        return self.queue
 
     @try_except
     def call_vol(self, other_args: List[str]):
@@ -930,31 +988,35 @@ Current Expiry: {self.selected_date or None}
             help="Export dataframe data to csv,json,xlsx file",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if not self.ticker and not self.selected_date:
-            print("Ticker and expiration required.\n")
-            return
-        if ns_parser.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
-            tradier_view.plot_vol(
-                ticker=self.ticker,
-                expiry=self.selected_date,
-                min_sp=ns_parser.min,
-                max_sp=ns_parser.max,
-                calls_only=ns_parser.calls,
-                puts_only=ns_parser.puts,
-                export=ns_parser.export,
-            )
-        else:
-            yfinance_view.plot_vol(
-                ticker=self.ticker,
-                expiry=self.selected_date,
-                min_sp=ns_parser.min,
-                max_sp=ns_parser.max,
-                calls_only=ns_parser.calls,
-                puts_only=ns_parser.puts,
-                export=ns_parser.export,
-            )
+        if ns_parser:
+            if self.ticker:
+                if self.selected_date:
+                    if ns_parser.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
+                        tradier_view.plot_vol(
+                            ticker=self.ticker,
+                            expiry=self.selected_date,
+                            min_sp=ns_parser.min,
+                            max_sp=ns_parser.max,
+                            calls_only=ns_parser.calls,
+                            puts_only=ns_parser.puts,
+                            export=ns_parser.export,
+                        )
+                    else:
+                        yfinance_view.plot_vol(
+                            ticker=self.ticker,
+                            expiry=self.selected_date,
+                            min_sp=ns_parser.min,
+                            max_sp=ns_parser.max,
+                            calls_only=ns_parser.calls,
+                            puts_only=ns_parser.puts,
+                            export=ns_parser.export,
+                        )
+                else:
+                    print("No expiry loaded. First use `exp {expiry date}`\n")
+            else:
+                print("No ticker loaded. First use `load <ticker>`\n")
+
+        return self.queue
 
     @try_except
     def call_voi(self, other_args: List[str]):
@@ -963,9 +1025,7 @@ Current Expiry: {self.selected_date or None}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="voi",
-            description="""
-                        Plots Volume + Open Interest of calls vs puts.
-                    """,
+            description="""Plots Volume + Open Interest of calls vs puts.""",
         )
         parser.add_argument(
             "-v",
@@ -1008,45 +1068,33 @@ Current Expiry: {self.selected_date or None}
             help="Export dataframe data to csv,json,xlsx file",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if not self.ticker and not self.selected_date:
-            print("Ticker and expiration required.\n")
-            return
-        if ns_parser.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
-            tradier_view.plot_volume_open_interest(
-                ticker=self.ticker,
-                expiry=self.selected_date,
-                min_sp=ns_parser.min_sp,
-                max_sp=ns_parser.max_sp,
-                min_vol=ns_parser.min_vol,
-                export=ns_parser.export,
-            )
-        else:
-            yfinance_view.plot_volume_open_interest(
-                ticker=self.ticker,
-                expiry=self.selected_date,
-                min_sp=ns_parser.min_sp,
-                max_sp=ns_parser.max_sp,
-                min_vol=ns_parser.min_vol,
-                export=ns_parser.export,
-            )
+        if ns_parser:
+            if self.ticker:
+                if self.selected_date:
+                    if ns_parser.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
+                        tradier_view.plot_volume_open_interest(
+                            ticker=self.ticker,
+                            expiry=self.selected_date,
+                            min_sp=ns_parser.min_sp,
+                            max_sp=ns_parser.max_sp,
+                            min_vol=ns_parser.min_vol,
+                            export=ns_parser.export,
+                        )
+                    else:
+                        yfinance_view.plot_volume_open_interest(
+                            ticker=self.ticker,
+                            expiry=self.selected_date,
+                            min_sp=ns_parser.min_sp,
+                            max_sp=ns_parser.max_sp,
+                            min_vol=ns_parser.min_vol,
+                            export=ns_parser.export,
+                        )
+                else:
+                    print("No expiry loaded. First use `exp {expiry date}`\n")
+            else:
+                print("No ticker loaded. First use `load <ticker>`\n")
 
-        if not self.ticker and not self.selected_date:
-            print("Ticker and expiration required.")
-            return
-
-    @try_except
-    def call_payoff(self, _):
-        """Process payoff command"""
-        if not self.ticker or not self.selected_date:
-            print("Ticker and expiration required.\n")
-            return None
-        ret = payoff_controller.menu(self.ticker, self.selected_date)
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return self.queue
 
     @try_except
     def call_oi(self, other_args: List[str]):
@@ -1106,31 +1154,35 @@ Current Expiry: {self.selected_date or None}
             help="Export dataframe data to csv,json,xlsx file",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if not self.ticker and not self.selected_date:
-            print("Ticker and expiration required. \n")
-            return
-        if ns_parser.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
-            tradier_view.plot_oi(
-                ticker=self.ticker,
-                expiry=self.selected_date,
-                min_sp=ns_parser.min,
-                max_sp=ns_parser.max,
-                calls_only=ns_parser.calls,
-                puts_only=ns_parser.puts,
-                export=ns_parser.export,
-            )
-        else:
-            yfinance_view.plot_oi(
-                ticker=self.ticker,
-                expiry=self.selected_date,
-                min_sp=ns_parser.min,
-                max_sp=ns_parser.max,
-                calls_only=ns_parser.calls,
-                puts_only=ns_parser.puts,
-                export=ns_parser.export,
-            )
+        if ns_parser:
+            if self.ticker:
+                if self.selected_date:
+                    if ns_parser.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
+                        tradier_view.plot_oi(
+                            ticker=self.ticker,
+                            expiry=self.selected_date,
+                            min_sp=ns_parser.min,
+                            max_sp=ns_parser.max,
+                            calls_only=ns_parser.calls,
+                            puts_only=ns_parser.puts,
+                            export=ns_parser.export,
+                        )
+                    else:
+                        yfinance_view.plot_oi(
+                            ticker=self.ticker,
+                            expiry=self.selected_date,
+                            min_sp=ns_parser.min,
+                            max_sp=ns_parser.max,
+                            calls_only=ns_parser.calls,
+                            puts_only=ns_parser.puts,
+                            export=ns_parser.export,
+                        )
+                else:
+                    print("No expiry loaded. First use `exp {expiry date}`\n")
+            else:
+                print("No ticker loaded. First use `load <ticker>`\n")
+
+        return self.queue
 
     @try_except
     def call_plot(self, other_args: List[str]):
@@ -1141,7 +1193,6 @@ Current Expiry: {self.selected_date or None}
             prog="plot",
             description="Shows a plot for the given x and y variables",
         )
-
         parser.add_argument(
             "-p",
             "--put",
@@ -1187,23 +1238,28 @@ Current Expiry: {self.selected_date or None}
         )
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if not self.ticker and not self.selected_date:
-            print("Ticker and expiration required. \n")
-            return
-        if (ns_parser.x is None or ns_parser.y is None) and ns_parser.custom is None:
-            print("Please submit an X and Y value, or select a preset.\n")
-            return
-        yfinance_view.plot_plot(
-            self.ticker,
-            self.selected_date,
-            ns_parser.put,
-            ns_parser.x,
-            ns_parser.y,
-            ns_parser.custom,
-        )
-        print("")
+        if ns_parser:
+            if self.ticker:
+                if self.selected_date:
+                    if (
+                        ns_parser.x is None or ns_parser.y is None
+                    ) and ns_parser.custom is None:
+                        print("Please submit an X and Y value, or select a preset.\n")
+                    else:
+                        yfinance_view.plot_plot(
+                            self.ticker,
+                            self.selected_date,
+                            ns_parser.put,
+                            ns_parser.x,
+                            ns_parser.y,
+                            ns_parser.custom,
+                        )
+                else:
+                    print("No expiry loaded. First use `exp {expiry date}`\n")
+            else:
+                print("No ticker loaded. First use `load <ticker>`\n")
+
+        return self.queue
 
     @try_except
     def call_parity(self, other_args: List[str]):
@@ -1247,20 +1303,23 @@ Current Expiry: {self.selected_date or None}
             help="Maximum strike price shown",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if not self.ticker and not self.selected_date:
-            print("Ticker and expiration required. \n")
-            return
-        yfinance_view.show_parity(
-            self.ticker,
-            self.selected_date,
-            ns_parser.put,
-            ns_parser.ask,
-            ns_parser.mini,
-            ns_parser.maxi,
-        )
-        print("")
+        if ns_parser:
+            if self.ticker:
+                if self.selected_date:
+                    yfinance_view.show_parity(
+                        self.ticker,
+                        self.selected_date,
+                        ns_parser.put,
+                        ns_parser.ask,
+                        ns_parser.mini,
+                        ns_parser.maxi,
+                    )
+                else:
+                    print("No expiry loaded. First use `exp {expiry date}`\n")
+            else:
+                print("No ticker loaded. First use `load <ticker>`\n")
+
+        return self.queue
 
     @try_except
     def call_binom(self, other_args: List[str]):
@@ -1268,7 +1327,7 @@ Current Expiry: {self.selected_date or None}
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="parity",
+            prog="binom",
             description="Gives the option value using binomial option valuation",
         )
         parser.add_argument(
@@ -1318,68 +1377,128 @@ Current Expiry: {self.selected_date or None}
             help="Underlying asset annualized volatility",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if not self.ticker or not self.selected_date:
-            print("Ticker and expiration required. \n")
-            return
+        if ns_parser:
+            if self.ticker:
+                if self.selected_date:
+                    yfinance_view.show_binom(
+                        self.ticker,
+                        self.selected_date,
+                        ns_parser.strike,
+                        ns_parser.put,
+                        ns_parser.europe,
+                        ns_parser.export,
+                        ns_parser.plot,
+                        ns_parser.volatility,
+                    )
+                else:
+                    print("No expiry loaded. First use `exp {expiry date}`\n")
+            else:
+                print("No ticker loaded. First use `load <ticker>`\n")
 
-        yfinance_view.show_binom(
-            self.ticker,
-            self.selected_date,
-            ns_parser.strike,
-            ns_parser.put,
-            ns_parser.europe,
-            ns_parser.export,
-            ns_parser.plot,
-            ns_parser.volatility,
-        )
+        return self.queue
+
+    @try_except
+    def call_payoff(self, _):
+        """Process payoff command"""
+        if self.ticker:
+            if self.selected_date:
+                return payoff_controller.menu(
+                    self.ticker, self.selected_date, self.queue
+                )
+
+            print("No expiry loaded. First use `exp {expiry date}`\n")
+
+        else:
+            print("No ticker loaded. First use `load <ticker>`\n")
+
+        return self.queue
 
     @try_except
     def call_pricing(self, _):
         """Process pricing command"""
-        if not self.ticker or not self.selected_date:
-            print("Ticker and expiration required.\n")
-            return None
-        ret = pricing_controller.menu(self.ticker, self.selected_date, self.prices)
-        if ret is False:
-            self.print_help()
+        if self.ticker:
+            if self.selected_date:
+                return pricing_controller.menu(
+                    self.ticker, self.selected_date, self.prices, self.queue
+                )
+
+            print("No expiry loaded. First use `exp {expiry date}`\n")
+
         else:
-            return True
+            print("No ticker loaded. First use `load <ticker>`\n")
+
+        return self.queue
 
 
-def menu(ticker: str = ""):
-    """Options Menu."""
-    op_controller = OptionsController(ticker)
-    op_controller.call_help(None)
+def menu(ticker: str = "", queue: List[str] = None):
+    """Options Menu"""
+    op_controller = OptionsController(ticker, queue)
+    an_input = "HELP_ME"
 
     while True:
+        # There is a command in the queue
+        if op_controller.queue and len(op_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
+            if op_controller.queue[0] in ("q", "..", "quit"):
+                print("")
+                if len(op_controller.queue) > 1:
+                    return op_controller.queue[1:]
+                return []
+
+            # Consume 1 element from the queue
+            an_input = op_controller.queue[0]
+            op_controller.queue = op_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
+            if an_input and an_input in op_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /stocks/options/ $ {an_input}")
+
         # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in op_controller.CHOICES}
-            )
-            an_input = session.prompt(
-                f"{get_flair()} (stocks)>(options)> ",
-                completer=completer,
-            )
         else:
-            an_input = input(f"{get_flair()} (stocks)>(options)> ")
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
+                op_controller.print_help()
+
+            # Get input from user using auto-completion
+            if session and gtff.USE_PROMPT_TOOLKIT and op_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /stocks/options/ $ ",
+                    completer=op_controller.completer,
+                    search_ignore_case=True,
+                )
+            # Get input from user without auto-completion
+            else:
+                an_input = input(f"{get_flair()} /stocks/options/ $ ")
 
         try:
-            plt.close("all")
-
-            process_input = op_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            # Process the input command
+            op_controller.queue = op_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            similar_cmd = difflib.get_close_matches(
-                an_input, op_controller.CHOICES, n=1, cutoff=0.7
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
+                end="",
             )
-
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                op_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
-            continue
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        print("\n")
+                        continue
+                    an_input = candidate_input
+                else:
+                    an_input = similar_cmd[0]
+
+                print(f" Replacing by '{an_input}'.")
+                op_controller.queue.insert(0, an_input)
+            else:
+                print("\n")

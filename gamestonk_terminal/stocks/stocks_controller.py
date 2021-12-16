@@ -588,11 +588,7 @@ Stocks Menus:
         """Process options command"""
         from gamestonk_terminal.stocks.options import options_controller
 
-        ret = options_controller.menu(self.ticker)
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return options_controller.menu(self.ticker, self.queue)
 
     def call_res(self, _):
         """Process res command"""

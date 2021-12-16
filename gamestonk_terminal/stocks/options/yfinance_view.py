@@ -115,21 +115,19 @@ def plot_oi(
             ls="-",
             c="g",
         )
-        ax.axvline(
-            current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.7
-        )
-        ax.axvline(max_pain, lw=3, c="k", label=f"Max Pain: {max_pain}", alpha=0.7)
-        ax.grid("on")
-        ax.set_xlabel("Strike Price")
-        ax.set_ylabel("Open Interest (1k) ")
-        ax.set_xlim(min_strike, max_strike)
+    ax.axvline(current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.7)
+    ax.axvline(max_pain, lw=3, c="k", label=f"Max Pain: {max_pain}", alpha=0.7)
+    ax.grid("on")
+    ax.set_xlabel("Strike Price")
+    ax.set_ylabel("Open Interest (1k) ")
+    ax.set_xlim(min_strike, max_strike)
 
-        if gtff.USE_ION:
-            plt.ion()
+    if gtff.USE_ION:
+        plt.ion()
 
-        ax.set_title(f"Open Interest for {ticker.upper()} expiring {expiry}")
-        plt.legend(loc=0)
-        fig.tight_layout(pad=1)
+    ax.set_title(f"Open Interest for {ticker.upper()} expiring {expiry}")
+    plt.legend(loc=0)
+    fig.tight_layout(pad=1)
 
     plt.show()
     plt.style.use("default")
@@ -465,6 +463,8 @@ def plot_plot(
         plt.gca().yaxis.set_major_locator(mdates.DayLocator(interval=1))
     elif varis[y]["format"]:
         ax.yaxis.set_major_formatter(varis[y]["format"])
+    if gtff.USE_ION:
+        plt.ion()
     plt.show()
 
 
@@ -489,6 +489,8 @@ def plot_payoff(
     ax.xaxis.set_major_formatter("${x:.2f}")
     ax.yaxis.set_major_formatter("${x:.2f}")
     plt.legend()
+    if gtff.USE_ION:
+        plt.ion()
     plt.show()
     print("")
 
