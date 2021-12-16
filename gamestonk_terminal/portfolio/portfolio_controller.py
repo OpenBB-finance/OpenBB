@@ -21,9 +21,7 @@ from gamestonk_terminal.helper_funcs import (
     system_clear,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.portfolio.brokers import bro_controller
 
-# from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
 from gamestonk_terminal.portfolio import (
     portfolio_view,
@@ -33,7 +31,7 @@ from gamestonk_terminal.portfolio import (
 )
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
-# pylint: disable=R1710,E1101
+# pylint: disable=R1710,E1101,C0415
 
 
 class PortfolioController:
@@ -104,13 +102,8 @@ class PortfolioController:
         """Print help"""
         help_text = """
 What do you want to do?
-    cls         clear screen
-    ?/help      show this menu again
-    q           quit this menu, and shows back to main menu
-    quit        quit to abandon the program
-    reset       reset terminal and reload configs
 
->   bro         brokers holdings, \t\t supports: robinhood, ally, degiro
+>   bro         brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
 >   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt
 
 Portfolio:
@@ -167,9 +160,15 @@ Graphs:
                 known_args.cmd = "help"
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
+
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
         )(other_args)
+
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        return self.queue
 
     def call_cls(self, _):
         """Process cls command"""
@@ -210,11 +209,9 @@ Graphs:
     # MENUS
     def call_bro(self, _):
         """Process bro command"""
-        ret = bro_controller.menu()
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        from gamestonk_terminal.portfolio.brokers import bro_controller
+
+        return bro_controller.menu(self.queue)
 
     def call_po(self, _):
         """Process po command"""

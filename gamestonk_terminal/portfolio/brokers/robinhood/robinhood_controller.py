@@ -2,7 +2,9 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List
+from typing import List, Union
+import difflib
+
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
@@ -15,37 +17,53 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     try_except,
     system_clear,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
-
-valid_span = ["day", "week", "month", "3month", "year", "5year", "all"]
-valid_interval = ["5minute", "10minute", "hour", "day", "week"]
 
 
 class RobinhoodController:
 
-    CHOICES = ["?", "cls", "help", "q", "quit", "login"]
+    CHOICES = [
+        "cls",
+        "home",
+        "h",
+        "?",
+        "help",
+        "q",
+        "quit",
+        "..",
+        "exit",
+        "r",
+        "reset",
+    ]
 
-    Robinhood_CHOICES = ["holdings", "history", "balances"]
+    CHOICES_COMMANDS = ["holdings", "history", "login"]
 
-    def __init__(self):
+    valid_span = ["day", "week", "month", "3month", "year", "5year", "all"]
+    valid_interval = ["5minute", "10minute", "hour", "day", "week"]
+
+    def __init__(self, queue: List[str] = None):
         """CONSTRUCTOR"""
 
-        self._robinhood_parser = argparse.ArgumentParser(
-            add_help=False, prog="robinhood"
-        )
-        self.CHOICES.extend(self.Robinhood_CHOICES)
+        self._rh_parser = argparse.ArgumentParser(add_help=False, prog="robinhood")
+        self.CHOICES.extend(self.CHOICES_COMMANDS)
 
-        self._robinhood_parser.add_argument("cmd", choices=self.CHOICES)
+        self._rh_parser.add_argument("cmd", choices=self.CHOICES)
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            choices["history"]["-i"] = {c: None for c in self.valid_interval}
+            choices["history"]["--interval"] = {c: None for c in self.valid_interval}
+            choices["history"]["-s"] = {c: None for c in self.valid_span}
+            choices["history"]["--span"] = {c: None for c in self.valid_span}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+        self.queue = queue if queue else list()
 
     def print_help(self):
         """Print help"""
         help_text = """
 Robinhood:
-    cls         clear screen
-    ?/help      show this menu again
-    q           quit this menu, and shows back to main menu
-    quit        quit to abandon the program
-
     login       login to robinhood
 
     holdings    show account holdings in stocks
@@ -59,60 +77,98 @@ Robinhood:
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
-
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue
 
-        (known_args, other_args) = self._robinhood_parser.parse_known_args(
-            an_input.split()
-        )
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
 
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
+
+        (known_args, other_args) = self._rh_parser.parse_known_args(an_input.split())
+
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
         )(other_args)
 
-    def call_help(self, _):
-        """Process Help command"""
-        self.print_help()
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue
 
-    def call_q(self, _):
-        """Process Q command - quit the menu."""
-        try:
-            robinhood_model.logoff()
-        except Exception:
-            # Exception would be not logged in - perfectly fine
-            pass
-        return False
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        return self.queue
+
+    def call_help(self, _):
+        """Process help command"""
+        self.print_help()
+        return self.queue
 
     def call_quit(self, _):
-        """Process Quit command - quit the program."""
-        try:
-            robinhood_model.logoff()
-        except Exception:
-            # Exception would be not logged in - perfectly fine
-            pass
-        return True
+        """Process quit menu command"""
+        print("")
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit"]
 
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "quit", "quit"]
+
+    def call_reset(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "rh")
+            self.queue.insert(0, "bro")
+            self.queue.insert(0, "portfolio")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "quit", "reset", "portfolio", "bro", "rh"]
+
+    @try_except
     def call_login(self, _):
         """Process login"""
         robinhood_model.login()
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_holdings(self, other_args: List[str]):
@@ -123,18 +179,12 @@ Robinhood:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Display info about your trading accounts on Robinhood",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        robinhood_view.display_holdings(export=ns_parser.export)
+        if ns_parser:
+            robinhood_view.display_holdings(export=ns_parser.export)
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_history(self, other_args: List[str]):
@@ -150,7 +200,7 @@ Robinhood:
             "--span",
             dest="span",
             type=str,
-            choices=valid_span,
+            choices=self.valid_span,
             default="3month",
             help="Span of historical data",
         )
@@ -159,52 +209,80 @@ Robinhood:
             "--interval",
             dest="interval",
             default="day",
-            choices=valid_interval,
+            choices=self.valid_interval,
             type=str,
             help="Interval to look at portfolio",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        robinhood_view.display_historical(
-            interval=ns_parser.interval,
-            span=ns_parser.span,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            robinhood_view.display_historical(
+                interval=ns_parser.interval,
+                span=ns_parser.span,
+                export=ns_parser.export,
+            )
+        return self.queue if len(self.queue) > 0 else []
 
 
-def menu():
+def menu(queue: List[str] = None):
 
-    robinhood_controller = RobinhoodController()
-    robinhood_controller.print_help()
-
+    rh_controller = RobinhoodController(queue)
+    first = True
+    # Loop forever and ever
     while True:
+        # There is a command in the queue
+        if rh_controller.queue and len(rh_controller.queue) > 0:
+            if rh_controller.queue[0] in ("q", "..", "quit"):
+                if len(rh_controller.queue) > 1:
+                    return rh_controller.queue[1:]
+                return []
+
+            an_input = rh_controller.queue[0]
+            rh_controller.queue = rh_controller.queue[1:]
+            if an_input and an_input in rh_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /portfolio/bro/rh/ $ {an_input}")
+
         # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in robinhood_controller.CHOICES}
-            )
-            an_input = session.prompt(
-                f"{get_flair()} (bro)>(rh)> ",
-                completer=completer,
-            )
         else:
-            an_input = input(f"{get_flair()} (bro)>(rh)> ")
+            if first:
+                rh_controller.print_help()
+                first = False
+            if session and gtff.USE_PROMPT_TOOLKIT and rh_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /portfolio/bro/rh/ $ ",
+                    completer=rh_controller.completer,
+                    search_ignore_case=True,
+                )
+
+            else:
+                an_input = input(f"{get_flair()} /portfolio/bro/rh/ $ ")
 
         try:
-            process_input = robinhood_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            rh_controller.queue = rh_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            continue
+            print(f"\nThe command '{an_input}' doesn't exist.", end="")
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                rh_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
+            if similar_cmd:
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        print("\n")
+                        continue
+                    an_input = candidate_input
+                else:
+                    an_input = similar_cmd[0]
+
+                print(f" Replacing by '{an_input}'.")
+                rh_controller.queue.insert(0, an_input)
+            else:
+                print("\n")
