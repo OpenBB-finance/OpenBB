@@ -215,11 +215,7 @@ Graphs:
 
     def call_po(self, _):
         """Process po command"""
-        ret = po_controller.menu([])
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return po_controller.menu([], self.queue)
 
     @try_except
     def call_load(self, other_args: List[str]):
