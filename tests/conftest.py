@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
+from _pytest.config.argparsing import Parser
 
 # from pytest_recording._vcr import merge_kwargs
 from _pytest.capture import MultiCapture, SysCapture
@@ -256,6 +257,14 @@ def build_path_by_extension(
             pathlib.Path(dir_name).mkdir(parents=True, exist_ok=True)
 
     return path
+
+
+def pytest_addoption(parser: Parser):
+    parser.addoption(
+        "--prediction",
+        action="store_true",
+        help="To run tests with the marker : @pytest.mark.prediction",
+    )
 
 
 def pytest_configure(config: Config) -> None:
