@@ -19,7 +19,6 @@ from gamestonk_terminal.helper_funcs import (
     system_clear,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.paths import cd_CHOICES
 
 
 account = cfg.OANDA_ACCOUNT
@@ -73,7 +72,6 @@ class OandaController:
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
-            choices["cd"] = {c: None for c in cd_CHOICES}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -90,11 +88,6 @@ class OandaController:
         reset_style_if_no_ticker = Style.RESET_ALL if not self.instrument else ""
 
         help_text = f"""
-    ?/help        show this menu again
-    q             quit this menu and goes back to main menu
-    quit          quit to abandon program
-    reset         reset terminal and reload configs
-
     summary       shows account summary
     calendar      show calendar
     list          list order history
@@ -126,20 +119,30 @@ class OandaController:
         List[str]
             List of commands in the queue to execute
         """
-
         # Empty command
         if not an_input:
             print("")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
+        # Navigation slash is being used
         if "/" in an_input:
             actions = an_input.split("/")
-            an_input = actions[0]
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
             for cmd in actions[1:][::-1]:
-                self.queue.insert(0, cmd)
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.fx_parser.parse_known_args(an_input.split())
 
+        # Redirect commands to their correct functions
         if known_args.cmd:
             if known_args.cmd in ("..", "q"):
                 known_args.cmd = "quit"
@@ -155,53 +158,46 @@ class OandaController:
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
-    def call_cd(self, other_args):
-        """Process cd command"""
-        if other_args:
-            args = other_args[0].split("/")
-            if len(args) > 0:
-                for m in args[::-1]:
-                    if m:
-                        self.queue.insert(0, m)
-            else:
-                self.queue.insert(0, args[0])
-
-        self.queue.insert(0, "q")
-
-        return self.queue if len(self.queue) > 0 else []
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        return self.queue
 
     def call_help(self, _):
-        """Process Help Command"""
+        """Process help command"""
         self.print_help()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
+        print("")
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q"]
+        return ["quit"]
 
     def call_exit(self, _):
         """Process exit terminal command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q", "q"]
+        return ["quit", "quit", "quit"]
 
     def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
+            self.queue.insert(0, "oanda")
             self.queue.insert(0, "forex")
-            self.queue.insert(0, "r")
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q", "r", "forex"]
+        return ["quit", "quit", "reset", "forex", "oanda"]
 
+    # COMMANDS
     @try_except
     def call_price(self, other_args):
         """Process Price Command"""
@@ -289,26 +285,33 @@ class OandaController:
 def menu(queue: List[str] = None):
     """Oanda Forex Menu"""
     oanda_controller = OandaController(queue)
-    HELP_ME = True
+    an_input = "HELP_ME"
 
     while True:
         # There is a command in the queue
         if oanda_controller.queue and len(oanda_controller.queue) > 0:
-            if oanda_controller.queue[0] in ("q", ".."):
+            # If the command is quitting the menu we want to return in here
+            if oanda_controller.queue[0] in ("q", "..", "quit"):
+                print("")
                 if len(oanda_controller.queue) > 1:
                     return oanda_controller.queue[1:]
                 return []
 
+            # Consume 1 element from the queue
             an_input = oanda_controller.queue[0]
             oanda_controller.queue = oanda_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input in oanda_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /forex/oanda/ $ {an_input}")
 
+        # Get input command from user
         else:
-            if HELP_ME:
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
                 oanda_controller.print_help()
-                HELP_ME = False
 
+            # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and oanda_controller.completer:
                 an_input = session.prompt(
                     f"{get_flair()} /forex/oanda/ $ ",
@@ -316,26 +319,42 @@ def menu(queue: List[str] = None):
                     search_ignore_case=True,
                 )
 
+            # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /forex/oanda/ $ ")
 
         try:
+            # Process the input command
             oanda_controller.queue = oanda_controller.switch(an_input)
 
         except SystemExit:
-            print(f"\nThe command '{an_input}' doesn't exist.", end="")
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /forex/oanda menu.",
+                end="",
+            )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 oanda_controller.CHOICES,
                 n=1,
                 cutoff=0.7,
             )
-
             if similar_cmd:
                 if " " in an_input:
-                    an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
                 else:
-                    an_input = similar_cmd[0]
+                    candidate_input = similar_cmd[0]
+
+                if candidate_input == an_input:
+                    an_input = ""
+                    oanda_controller.queue = []
+                    print("\n")
+                    continue
+
                 print(f" Replacing by '{an_input}'.")
                 oanda_controller.queue.insert(0, an_input)
-            print("\n")
+            else:
+                print("\n")
+                an_input = ""
+                oanda_controller.queue = []
