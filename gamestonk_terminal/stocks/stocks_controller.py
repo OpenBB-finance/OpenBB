@@ -178,7 +178,9 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             return None
 
         return getattr(
-            self, "call_" + known_args.cmd, lambda: "command not recognized!"
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
         )(other_args)
 
     def call_help(self, _):
