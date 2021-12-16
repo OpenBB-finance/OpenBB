@@ -15,12 +15,12 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_non_negative,
     check_positive,
-    valid_date,
     check_int_range,
     try_except,
     system_clear,
     get_flair,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    valid_date,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.discovery import (
@@ -644,7 +644,7 @@ NASDAQ Data Link (Formerly Quandl):
         )
         parser.add_argument(
             "-a",
-            "-ascend",
+            "--ascend",
             dest="ascend",
             help="Flag to sort in ascending order",
             action="store_true",
@@ -778,10 +778,8 @@ NASDAQ Data Link (Formerly Quandl):
         )
         if ns_parser:
             seeking_alpha_view.news(
-                news_type="trending",
                 article_id=ns_parser.n_id,
                 num=ns_parser.limit,
-                start_date=ns_parser.s_date,
                 export=ns_parser.export,
             )
 

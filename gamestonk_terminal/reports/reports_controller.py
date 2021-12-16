@@ -1,8 +1,6 @@
 """Papermill Controller Module"""
 __docformat__ = "numpy"
 
-# pylint: disable=R1732
-
 import argparse
 import difflib
 import os
