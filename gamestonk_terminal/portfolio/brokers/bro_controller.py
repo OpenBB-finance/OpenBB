@@ -80,7 +80,7 @@ Crypto Brokers:
         return getattr(
             self,
             "call_" + known_args.cmd,
-            lambda _ : "Command not recognized!",
+            lambda _: "Command not recognized!",
         )(other_args)
 
     def call_help(self, _):
