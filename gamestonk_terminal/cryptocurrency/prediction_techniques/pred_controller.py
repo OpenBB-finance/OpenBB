@@ -111,7 +111,10 @@ class PredictionTechniquesController:
         """Print help"""
 
         help_string = f"""
-Prediction Menu:
+Prediction Techniques Menu:
+
+    load        load new ticker
+    pick        pick new target variable
 
 Coin Loaded: {self.coin}
 Target Column: {self.target}
