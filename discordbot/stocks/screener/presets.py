@@ -13,7 +13,9 @@ async def presets_command(ctx):
         if cfg.DEBUG:
             print("!stocks.scr.presets")
 
-        presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..")
+        presets_path = os.path.join(
+            cfg.GST_PATH, "gamestonk_terminal", "stocks", "screener", "presets", ""
+        )
 
         d_signals_desc = {
             "top_gainers": "stocks with the highest %% price gain today",
@@ -58,16 +60,18 @@ async def presets_command(ctx):
         ]
 
         description = "***Custom Presets:***\n"
+
         for preset in presets:
             with open(
                 presets_path + preset + ".ini",
                 encoding="utf8",
             ) as f:
+                preset_line = ""
                 for line in f:
                     if line.strip() == "[General]":
                         break
-                    description += line.strip()
-            description += f"**{preset}:** *{description.split('Description: ')[1].replace('#', '')}*\n"
+                    preset_line += line.strip()
+            description += f"**{preset}:** *{preset_line.split('Description: ')[1].replace('#', '')}*\n"
 
         description += "\n\n***Default Presets:***\n"
         for signame, sigdesc in d_signals_desc.items():

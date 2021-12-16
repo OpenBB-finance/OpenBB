@@ -13,6 +13,7 @@ async def performance_command(
 ):
     """Displays stocks and sort by performance categories [Finviz]"""
     try:
+        preset_error = False
 
         # Debug
         if cfg.DEBUG:
@@ -35,12 +36,14 @@ async def performance_command(
             raise Exception("ascend argument has to be true or false")
 
         # Output Data
+        preset_error = True
         df_screen = get_screener_data(
             preset,
             "overview",
             limit,
             ascend,
         )
+        preset_error = False
 
         d_cols_to_sort = {
             "performance": [
@@ -136,11 +139,19 @@ async def performance_command(
             await pagination(columns, ctx)
 
     except Exception as e:
-        embed = discord.Embed(
-            title="ERROR Stocks: [Finviz] Performance Screener",
-            colour=cfg.COLOR,
-            description=e,
-        )
+        if not preset_error:
+            embed = discord.Embed(
+                title="ERROR Stocks: [Finviz] Performance Screener",
+                colour=cfg.COLOR,
+                description=e,
+            )
+        else:
+            embed = discord.Embed(
+                title="ERROR Stocks: [Finviz] Performance Screener",
+                colour=cfg.COLOR,
+                description=f"Wrong preset parameter entered. Use the command '{cfg.COMMAND_PREFIX}stocks.scr.presets' "
+                "in order to see the available presets.",
+            )
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,

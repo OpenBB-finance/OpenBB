@@ -20,13 +20,14 @@ from gamestonk_terminal.helper_funcs import plot_autoscale
 async def historical_command(ctx, signal="most_volatile", start=""):
     """Displays historical price comparison between similar companies [Yahoo Finance]"""
     try:
+
         # Debug user input
         if cfg.DEBUG:
             print(f"!stocks.scr.historical {signal} {start}")
 
         register_matplotlib_converters()
 
-        presets_path = os.path.join(cfg.GST_PATH, "stocks", "screener", "presets\\")
+        presets_path = os.path.join(cfg.GST_PATH, "stocks", "screener", "presets", "")
 
         screen = ticker.Ticker()
 
