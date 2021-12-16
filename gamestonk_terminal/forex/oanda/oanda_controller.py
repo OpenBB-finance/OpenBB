@@ -10,12 +10,14 @@ from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.forex import av_model
 from gamestonk_terminal.forex.oanda import oanda_view
 
 # from gamestonk_terminal.forex.exploratory_data_analysis import eda_controller
 from gamestonk_terminal.helper_funcs import (
     get_flair,
     try_except,
+    parse_known_args_and_warn,
     system_clear,
 )
 from gamestonk_terminal.menu import session
@@ -41,13 +43,14 @@ class OandaController:
     ]
 
     CHOICES_COMMANDS = [
+        "from",
+        "to",
         "price",
         "summary",
         "list",
         "orderbook",
         "positionbook",
         "order",
-        "load",
         "cancel",
         "positions",
         "closetrade",
@@ -73,7 +76,20 @@ class OandaController:
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
 
+            # HELP WANTED!
+            # TODO:
+            # We currently use the Alpha Vantage currency list for autocompletion
+            # This leads to messages like `USD_EUR is not a valid instrument.`
+            # In Oanda they have their own list of available instruments. It would be
+            # Great to fetch these lists and store them locally like it's done for
+            # other currency codes (see ./av_forex_currencies.csv and how it's handled).
+            choices["to"] = {c: None for c in av_model.CURRENCY_LIST}
+            choices["from"] = {c: None for c in av_model.CURRENCY_LIST}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
+
+        self.from_symbol = ""
+        self.to_symbol = ""
 
         self.instrument = None
 
@@ -99,7 +115,8 @@ class OandaController:
 
     Loaded instrument: {self.instrument if self.instrument else ""}
 
-    load          load an instrument to use
+    from      select the "from" currency in a forex pair
+    to        select the "to" currency in a forex pair
     {dim_if_no_ticker}
     candles       show candles
     price         shows price for selected instrument
@@ -199,15 +216,79 @@ class OandaController:
 
     # COMMANDS
     @try_except
-    def call_price(self, other_args):
-        """Process Price Command"""
-        oanda_view.get_fx_price(account, self.instrument, other_args)
+    def call_to(self, other_args: List[str]):
+        """Process 'to' command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="to",
+            description='Select the "to" currency symbol in a forex pair',
+        )
+        parser.add_argument(
+            "-n",
+            "--name",
+            help="To currency",
+            type=av_model.check_valid_forex_currency,
+            dest="to_symbol",
+        )
+
+        if (
+            other_args
+            and "-n" not in other_args[0]
+            and "--name" not in other_args[0]
+            and "-h" not in other_args
+        ):
+            other_args.insert(0, "-n")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return self.queue if len(self.queue) > 0 else []
+
+        self.to_symbol = ns_parser.to_symbol.upper()
+        self.instrument = f"{self.from_symbol}_{self.to_symbol}"
+
+        print(f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n")
         return self.queue if len(self.queue) > 0 else []
 
     @try_except
-    def call_load(self, other_args):
-        """Load a currency from Oanda"""
-        self.instrument = oanda_view.load(other_args)
+    def call_from(self, other_args: List[str]):
+        """Process 'from' command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="to",
+            description='Select the "from" currency symbol in a forex pair',
+        )
+        parser.add_argument(
+            "-n",
+            "--name",
+            help="From currency",
+            type=av_model.check_valid_forex_currency,
+            dest="from_symbol",
+        )
+
+        if (
+            other_args
+            and "-n" not in other_args[0]
+            and "--name" not in other_args[0]
+            and "-h" not in other_args
+        ):
+            other_args.insert(0, "-n")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return self.queue if len(self.queue) > 0 else []
+
+        self.from_symbol = ns_parser.from_symbol.upper()
+        self.instrument = f"{self.from_symbol}_{self.to_symbol}"
+
+        print(f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n")
+        return self.queue if len(self.queue) > 0 else []
+
+    @try_except
+    def call_price(self, other_args):
+        """Process Price Command"""
+        oanda_view.get_fx_price(account, self.instrument)
         return self.queue if len(self.queue) > 0 else []
 
     @try_except
