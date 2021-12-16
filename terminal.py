@@ -336,6 +336,7 @@ def terminal(jobs_cmds: List[str] = None):
                     )
                     if candidate_input == an_input:
                         an_input = ""
+                        t_controller.queue = []
                         print("\n")
                         continue
                     an_input = candidate_input

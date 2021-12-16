@@ -1217,6 +1217,7 @@ def menu(ticker: str, start: datetime, queue: List[str] = None):
                     )
                     if candidate_input == an_input:
                         an_input = ""
+                        ba_controller.queue = []
                         print("\n")
                         continue
                     an_input = candidate_input

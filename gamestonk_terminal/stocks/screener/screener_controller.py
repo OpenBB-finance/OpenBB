@@ -850,6 +850,7 @@ def menu(queue: List[str] = None):
                     )
                     if candidate_input == an_input:
                         an_input = ""
+                        scr_controller.queue = []
                         print("\n")
                         continue
                     an_input = candidate_input
