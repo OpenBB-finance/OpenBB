@@ -619,19 +619,11 @@ Stocks Menus:
 
         if not self.ticker:
             print("Use 'load <ticker>' prior to this command!", "\n")
-            return
+            return self.queue
 
-        ret = dd_controller.menu(
-            self.ticker,
-            self.start,
-            self.interval,
-            self.stock,
+        return dd_controller.menu(
+            self.ticker, self.start, self.interval, self.stock, self.queue
         )
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
 
     def call_ca(self, _):
         """Process ca command"""
