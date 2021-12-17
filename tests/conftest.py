@@ -24,7 +24,7 @@ class Record:
     def extract_string(data: Any) -> str:
         if isinstance(data, str):
             string_value = data
-        elif isinstance(data, pd.DataFrame):
+        elif isinstance(data, (pd.DataFrame, pd.Series)):
             string_value = data.to_csv(encoding="utf-8", line_terminator="\n")
         elif isinstance(data, (dict, list, tuple)):
             string_value = json.dumps(data)
@@ -110,11 +110,12 @@ class Record:
 class PathTemplate:
     EXTENSIONS_ALLOWED = ["csv", "json", "txt"]
     EXTENSIONS_MATCHING = {
+        dict: "json",
+        list: "json",
         pd.DataFrame: "csv",
+        pd.Series: "csv",
         str: "txt",
         tuple: "json",
-        list: "json",
-        dict: "json",
     }
 
     @classmethod

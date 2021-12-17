@@ -127,14 +127,6 @@ def view_historical_greeks(
     if raw:
         print(tabulate(df.tail(n_show), headers=df.columns, tablefmt="fancy_grid"))
 
-    if export:
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "grhist",
-            df,
-        )
-
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     im1 = ax.plot(df.index, df[greek], c="firebrick", label=greek)
     ax.set_ylabel(greek)
@@ -156,4 +148,10 @@ def view_historical_greeks(
     plt.legend(ims, labels, loc=0)
     fig.tight_layout(pad=1)
     plt.show()
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "grhist",
+        df,
+    )
     print("")

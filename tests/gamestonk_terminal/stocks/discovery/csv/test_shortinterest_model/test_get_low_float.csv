@@ -1,0 +1,52 @@
+,Ticker,Company,Exchange,Float,Outstd,ShortInt,Industry
+0,,,,,,,
+1,DIT,Amcon Distributing Co,AMEX,130K,580K,1.53%,Retail (Grocery)
+2,SEB,Seaboard Corp,AMEX,240K,1.16M,0.67%,Fish/Livestock
+3,HMG,HMG Courtland Properties,AMEX,280K,1.02M,0.38%,Real Estate Operations
+4,BDL,Flanigan's Enterprises Inc,AMEX,380K,1.86M,1.09%,Restaurants
+5,MAYS,JW Mays Inc,Nasdaq,390K,2.02M,0.64%,Real Estate Operations
+6,VBFC,Village Bank and Trust Financial Corp,Nasdaq,530K,1.47M,0.36%,Regional Banks
+7,NCSM,NCS Multistage Holdings Inc,Nasdaq,630K,2.38M,0.99%,Oil & Gas - Related Services and Equipment
+8,RAND,Rand Capital Corp,Nasdaq,640K,2.58M,0.15%,Misc. Financial Services
+9,PNRG,PrimeEnergy Corp,Nasdaq,650K,1.99M,0.26%,Oil & Gas Operations
+10,INTG,Intergroup Corp,Nasdaq,720K,2.20M,0.54%,Real Estate Operations
+11,SENEB,Seneca Foods Corp,Nasdaq,740K,1.71M,0.07%,Food Processing
+12,CVR,Chicago Rivet & Machine Co,AMEX,780K,970K,0.21%,Misc. Fabricated Products
+13,COHN,Cohen & Company Inc,AMEX,850K,1.63M,6.50%,Diversified Investment Services
+14,ISIG,"Insignia Systems, Inc.",Nasdaq,920K,1.77M,2.34%,Advertising & Marketing
+15,SVT,Servotronics Inc,NYSE,920K,2.49M,2.33%,Personal & Household Products
+16,OBAS,Optibase Ltd.,Nasdaq,920K,5.22M,0.02%,Communications Equipment
+17,VALU,Value Line Inc,Nasdaq,920K,9.56M,2.55%,Investment Services
+18,ARL,"American Realty Investors, Inc",NYSE,930K,16.15M,4.36%,Real Estate Operations
+19,AAMC,Altisource Asset Management Co,AMEX,950K,2.06M,0.41%,Investment Services
+20,FFDF,FFD Financial Corp,Nasdaq,980K,990K,0.00%,S&Ls/Savings Banks
+21,VRTA,Vestin Realty Mortgage I Inc,Nasdaq,1.01M,1.30M,0.00%,Real Estate Operations
+22,IKNX,Ikonics Corp,Nasdaq,1.05M,1.98M,1.57%,Photography
+23,LINK,Interlink Electronics Inc,Nasdaq,1.06M,6.60M,0.63%,Electronic Instruments & Controls
+24,DJCO,Daily Journal Corp,Nasdaq,1.08M,1.38M,0.93%,Printing & Publishing
+25,TSRI,TSR Inc,Nasdaq,1.09M,1.96M,2.43%,Software & Programming
+26,MXC,Mexco Energy Corp,AMEX,1.09M,2.09M,2.10%,Oil & Gas Operations
+27,NSEC,National Security Group Inc,Nasdaq,1.10M,2.53M,0.09%,Insurance (Life)
+28,BNSO,Bonso Electronic International Inc,Nasdaq,1.14M,4.86M,1.88%,Misc. Capital Goods
+29,NSYS,Nortech Systems Inc,Nasdaq,1.16M,2.67M,0.25%,Electronic Instruments & Controls
+30,RELI,Reliance Global Group Inc,Nasdaq,1.16M,10.96M,4.91%,REITs - Residential
+31,OFED,Oconee Federal Financial,Nasdaq,1.20M,5.59M,0.50%,S&Ls/Savings Banks
+32,WAFU,Wah Fu Education Group Ltd,Nasdaq,1.24M,4.44M,2.42%,Personal Services
+33,TCI,Transcontinental Realty Investors,NYSE,1.25M,8.64M,0.43%,Real Estate Operations
+34,LIVE,Live Ventures Inc,Nasdaq,1.26M,1.57M,0.63%,Computer Services
+35,QBAK,Qualstar Corp,Nasdaq,1.29M,1.93M,0.00%,Computer Storage Devices
+36,FFHL,Fuwei Films Holdings Co Ltd,Nasdaq,1.30M,3.27M,0.53%,Fabricated Plastic & Rubber
+37,DXR,Daxor Corp,AMEX,1.31M,4.03M,0.96%,Healthcare Facilities
+38,HIFS,Hingham Institution for Savings,Nasdaq,1.36M,2.14M,1.47%,S&Ls/Savings Banks
+39,MTEX,"Mannatech,Inc.",Nasdaq,1.37M,1.92M,0.48%,Biotechnology & Drugs
+40,ALAC,Alberton Acquisition Corp,Nasdaq,1.37M,4.48M,2.63%,Investment Holding Companies
+41,ATRI,Atrion Corp,Nasdaq,1.38M,1.80M,4.98%,Medical Equipment & Supplies
+42,CKX,CKX Lands Inc,AMEX,1.38M,1.94M,0.04%,Oil & Gas Operations
+43,KSPN,"Kaspien Holdings, Inc",Nasdaq,1.40M,2.49M,0.99%,Retailers - Other Specialty
+44,WVFC,WVS Financial Corp,Nasdaq,1.41M,1.88M,0.02%,S&Ls/Savings Banks
+45,ITIC,Investors Title Co,Nasdaq,1.41M,1.89M,1.06%,Insurance (Property & Casualty)
+46,WHLM,Wilhelmina International Inc,Nasdaq,1.43M,5.16M,6.34%,Business Services
+47,JRJC,China Finance Online Co.,Nasdaq,1.44M,2.44M,8.73%,Professional Information Services
+48,PFIN,P&F Industries Inc,Nasdaq,1.45M,3.18M,0.71%,Appliances & Tools
+49,MDJH,MDJM Ltd,Nasdaq,1.46M,11.68M,0.00%,Real Estate Services
+50,FBSI,First Bancshares Inc/MO,Nasdaq,1.48M,1.55M,0.00%,S&Ls/Savings Banks

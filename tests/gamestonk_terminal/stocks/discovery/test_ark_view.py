@@ -1,24 +1,65 @@
-""" discovery/ark_view.py tests """
-import unittest
-from unittest import mock
+# IMPORTATION STANDARD
 
-import vcr
+# IMPORTATION THIRDPARTY
+import pandas as pd
+import pytest
 
-from gamestonk_terminal.stocks.discovery.ark_view import ark_orders_view
-from tests.helpers.helpers import check_print
-
-
-def mock_add_order_total_noop(value):
-    return value
+# IMPORTATION INTERNAL
+from gamestonk_terminal.stocks.discovery import ark_view
 
 
-class TestDiscoveryArkView(unittest.TestCase):
-    @mock.patch("gamestonk_terminal.stocks.discovery.ark_model.add_order_total")
-    @check_print(assert_in="direction")
-    @vcr.use_cassette(
-        "tests/gamestonk_terminal/stocks/discovery/cassettes/test_ark_view/test_ark_order_view.yaml",
-        record_mode="none",
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [
+            ("period1", "1598220000"),
+            ("period2", "1635980400"),
+        ],
+    }
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "val",
+    ["Buy", "Sell", "Mocked Value"],
+)
+def test_direction_color_red_green(val, recorder):
+    result_txt = ark_view.direction_color_red_green(val=val)
+    recorder.capture(result_txt)
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "kwargs_dict, use_color",
+    [
+        ({"num": 2}, True),
+        ({"num": 2}, False),
+        ({"num": 2, "sort_col": "open"}, False),
+        ({"num": 2, "buys_only": True}, False),
+        ({"num": 2, "sells_only": True}, False),
+        ({"num": 2, "fund": "ARKK"}, False),
+    ],
+)
+def test_ark_orders_view(kwargs_dict, mocker, use_color):
+    yf_download = ark_view.ark_model.yf.download
+
+    def mock_yf_download(*args, **kwargs):
+        kwargs["threads"] = False
+        return yf_download(*args, **kwargs)
+
+    mocker.patch("yfinance.download", side_effect=mock_yf_download)
+
+    mocker.patch.object(target=ark_view.gtff, attribute="USE_COLOR", new=use_color)
+    ark_view.ark_orders_view(**kwargs_dict)
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.record_stdout
+def test_ark_orders_view_empty_df(mocker):
+    mocker.patch(
+        "gamestonk_terminal.stocks.discovery.ark_view.ark_model.get_ark_orders",
+        return_value=pd.DataFrame(),
     )
-    def test_ark_orders_view(self, mock_add_order_total):
-        mock_add_order_total.side_effect = mock_add_order_total_noop
-        ark_orders_view(10, "")
+    ark_view.ark_orders_view(num=2)

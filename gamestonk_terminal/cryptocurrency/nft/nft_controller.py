@@ -122,7 +122,9 @@ nftcalendar.io:
                 known_args.cmd = "reset"
 
         return getattr(
-            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
         )(other_args)
 
     def call_cls(self, _):
@@ -145,29 +147,29 @@ nftcalendar.io:
     def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q"]
+        return ["quit"]
 
     def call_exit(self, _):
         """Process exit terminal command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q", "q"]
+        return ["quit", "quit", "quit"]
 
     def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "nft")
             self.queue.insert(0, "crypto")
-            self.queue.insert(0, "r")
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q", "r", "crypto", "nft"]
+        return ["quit", "quit", "reset", "crypto", "nft"]
 
     @try_except
     def call_today(self, other_args: List[str]):
@@ -323,7 +325,7 @@ def menu(queue: List[str] = None):
 
         except SystemExit:
             print(
-                f"\nThe command '{an_input}' doesn't exist on the /crypto/nft menu.",
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
                 end="",
             )
             similar_cmd = difflib.get_close_matches(
@@ -337,15 +339,18 @@ def menu(queue: List[str] = None):
                     candidate_input = (
                         f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
                     )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        print("\n")
-                        continue
-                    an_input = candidate_input
                 else:
-                    an_input = similar_cmd[0]
+                    candidate_input = similar_cmd[0]
+
+                if candidate_input == an_input:
+                    an_input = ""
+                    nft_controller.queue = []
+                    print("\n")
+                    continue
 
                 print(f" Replacing by '{an_input}'.")
                 nft_controller.queue.insert(0, an_input)
             else:
                 print("\n")
+                an_input = ""
+                nft_controller.queue = []

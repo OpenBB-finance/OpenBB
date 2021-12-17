@@ -1,7 +1,7 @@
 """Cryptocurrency Due diligence Controller"""
 __docformat__ = "numpy"
 
-# pylint: disable=R0904, C0302, W0622
+# pylint: disable=R0904, C0302, W0622, C0201
 import argparse
 import difflib
 from typing import List, Union
@@ -10,12 +10,14 @@ from colorama.ansi import Style
 import pandas as pd
 from binance.client import Client
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.cryptocurrency.due_diligence import (
+    coinglass_model,
+    glassnode_model,
+)
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
-    GLASSNODE_SUPPORTED_ASSETS,
-    GLASSNODE_SUPPORTED_EXCHANGES,
-)
+from gamestonk_terminal.cryptocurrency.crypto_controller import CRYPTO_SOURCES
+
 from gamestonk_terminal.cryptocurrency.due_diligence import (
     coinglass_view,
     glassnode_view,
@@ -27,6 +29,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence import (
     coinbase_view,
 )
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     get_flair,
     parse_known_args_and_warn,
@@ -36,9 +39,10 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
 )
 
-from gamestonk_terminal.cryptocurrency.due_diligence.coinpaprika_view import CURRENCIES
-from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_chart
+from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_chart, load
 import gamestonk_terminal.config_terminal as cfg
+
+FILTERS_VS_USD_BTC = ["usd", "btc"]
 
 
 class DueDiligenceController:
@@ -57,7 +61,7 @@ class DueDiligenceController:
         "reset",
     ]
 
-    CHOICES_COMMANDS = ["oi", "active", "change", "eb", "chart"]
+    CHOICES_COMMANDS = ["load", "oi", "active", "change", "eb", "chart"]
 
     CHOICES += CHOICES_COMMANDS
 
@@ -101,21 +105,37 @@ class DueDiligenceController:
         self.dd_parser.add_argument("cmd", choices=self.CHOICES)
 
         self.current_coin = coin
-        self.current_currency = None
         self.current_df = pd.DataFrame()
         self.source = source
         self.symbol = symbol
 
-        self.CHOICES.extend(self.SPECIFIC_CHOICES[self.source])
+        for _, value in self.SPECIFIC_CHOICES.items():
+            self.CHOICES.extend(value)
 
         self.completer: Union[None, NestedCompleter] = None
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
-            # choices["change"] = {c: None for c in GLASSNODE_SUPPORTED_EXCHANGES}
-            # choices["change"]["-e"] = {c: None for c in GLASSNODE_SUPPORTED_EXCHANGES}
-            # choices["change"]["--exchange"] = {
-            #    c: None for c in GLASSNODE_SUPPORTED_EXCHANGES
-            # }
+            choices["load"]["--source"] = {c: None for c in CRYPTO_SOURCES.keys()}
+            choices["active"]["-i"] = {c: None for c in glassnode_model.INTERVALS}
+            choices["change"] = {
+                c: None for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
+            }
+            choices["change"]["-i"] = {c: None for c in glassnode_model.INTERVALS}
+            choices["eb"] = {
+                c: None for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
+            }
+            choices["eb"]["-i"] = {c: None for c in glassnode_model.INTERVALS}
+            choices["oi"]["-i"] = {c: None for c in coinglass_model.INTERVALS}
+            choices["atl"]["--vs"] = {c: None for c in FILTERS_VS_USD_BTC}
+            choices["ath"]["--vs"] = {c: None for c in FILTERS_VS_USD_BTC}
+            choices["mkt"]["--vs"] = {c: None for c in coinpaprika_view.CURRENCIES}
+            choices["mkt"]["-s"] = {c: None for c in coinpaprika_view.MARKET_FILTERS}
+            choices["ex"]["-s"] = {c: None for c in coinpaprika_view.EX_FILTERS}
+            choices["events"]["-s"] = {c: None for c in coinpaprika_view.EVENTS_FILTERS}
+            choices["twitter"]["-s"] = {
+                c: None for c in coinpaprika_view.TWEETS_FILTERS
+            }
+            choices["ps"]["--vs"] = {c: None for c in coinpaprika_view.CURRENCIES}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         if queue:
@@ -125,29 +145,35 @@ class DueDiligenceController:
 
     def print_help(self):
         """Print help"""
-        help_text = """
-Due Diligence Menu:
-
+        help_text = "Due Diligence Menu:\n"
+        help_text += """
+    load        load a specific cryptocurrency for analysis
+"""
+        help_text += (
+            f"\nCoin: {self.current_coin}" if self.current_coin != "" else "\nCoin: ?"
+        )
+        help_text += (
+            f"\nSource: {CRYPTO_SOURCES.get(self.source, '?')}\n"
+            if self.source != ""
+            else "\nSource: ?\n"
+        )
+        help_text += """
 Overview:
    chart           show chart for loaded coin
-
 Glassnode:
    active          active addresses
    change          30d change of supply held on exchange wallets
    eb              total balance held on exchanges (in percentage and units)
-
 Coinglass:
-   oi              open interest per exchange
-"""
-        help_text += f"""{Style.DIM if self.source != "cp" else ""}
+   oi              open interest per exchange"""
+        help_text += f"""{Style.DIM if self.source not in ("cp", "cg") else ""}
 CoinPaprika:
    basic           basic information about loaded coin
    ps              price and supply related metrics for loaded coin
    mkt             all markets for loaded coin
    ex              all exchanges where loaded coin is listed
    twitter         tweets for loaded coin
-   events          events related to loaded coin{Style.RESET_ALL if self.source != "cp" else ""}
-"""
+   events          events related to loaded coin{Style.RESET_ALL if self.source not in ("cp", "cg") else ""}"""
         help_text += f"""{Style.DIM if self.source != "cg" else ""}
 CoinGecko:
    info            basic information about loaded coin
@@ -158,13 +184,11 @@ CoinGecko:
    social          social portals urls for loaded coin, e.g reddit, twitter
    score           different kind of scores for loaded coin, e.g developer score, sentiment score
    dev             github, bitbucket coin development statistics
-   bc              links to blockchain explorers for loaded coin{Style.RESET_ALL if self.source != "cg" else ""}
-"""
+   bc              links to blockchain explorers for loaded coin{Style.RESET_ALL if self.source != "cg" else ""}"""
         help_text += f"""{Style.DIM if self.source != "bin" else ""}
 Binance:
    book            show order book
-   balance         show coin balance{Style.RESET_ALL if self.source != "bin" else ""}
-"""
+   balance         show coin balance{Style.RESET_ALL if self.source != "bin" else ""}"""
         help_text += f"""{Style.DIM if self.source != "cb" else ""}
 Coinbase:
    book            show order book
@@ -220,7 +244,9 @@ Coinbase:
                 known_args.cmd = "reset"
 
         return getattr(
-            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
         )(other_args)
 
     def call_cls(self, _):
@@ -243,35 +269,89 @@ Coinbase:
     def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q"]
+        return ["quit"]
 
     def call_exit(self, _):
         """Process exit terminal command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q", "q"]
+        return ["quit", "quit", "quit"]
 
     def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "dd")
             self.queue.insert(0, "crypto")
-            self.queue.insert(0, "r")
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q", "r", "crypto", "dd"]
+        return ["quit", "quit", "reset", "crypto", "dd"]
+
+    @try_except
+    def call_load(self, other_args: List[str]):
+        """Process load command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load crypto currency to perform analysis on. "
+            "Available data sources are CoinGecko, CoinPaprika, Binance, Coinbase"
+            "By default main source used for analysis is CoinGecko (cg). To change it use --source flag",
+        )
+
+        parser.add_argument(
+            "-c",
+            "--coin",
+            help="Coin to get",
+            dest="coin",
+            type=str,
+            required="-h" not in other_args,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--source",
+            help="Source of data",
+            dest="source",
+            choices=CRYPTO_SOURCES.keys(),
+            default="cg",
+            required=False,
+        )
+
+        try:
+            if other_args and not other_args[0][0] == "-":
+                other_args.insert(0, "-c")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if ns_parser:
+                source = ns_parser.source
+
+                for arg in ["--source", source]:
+                    if arg in other_args:
+                        other_args.remove(arg)
+
+                self.current_coin, self.source, self.symbol = load(
+                    coin=ns_parser.coin, source=ns_parser.source
+                )
+            return self.queue
+
+        except Exception as e:
+            print(e, "\n")
+            self.current_coin, self.source = self.current_coin, None
+            return self.queue
 
     @try_except
     def call_active(self, other_args: List[str]):
         """Process active command"""
 
-        if self.symbol.upper() in GLASSNODE_SUPPORTED_ASSETS:
+        if self.symbol.upper() in glassnode_model.GLASSNODE_SUPPORTED_ASSETS:
             parser = argparse.ArgumentParser(
                 add_help=False,
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -289,7 +369,7 @@ Coinbase:
                 type=str,
                 help="Frequency interval. Default: 24h",
                 default="24h",
-                choices=["1h", "24h", "10m", "1w", "1month"],
+                choices=glassnode_model.INTERVALS,
             )
 
             parser.add_argument(
@@ -311,7 +391,7 @@ Coinbase:
             )
 
             ns_parser = parse_known_args_and_warn(
-                parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+                parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
             )
 
             if ns_parser:
@@ -332,7 +412,7 @@ Coinbase:
     def call_change(self, other_args: List[str]):
         """Process change command"""
 
-        if self.symbol.upper() in GLASSNODE_SUPPORTED_ASSETS:
+        if self.symbol.upper() in glassnode_model.GLASSNODE_SUPPORTED_ASSETS:
             parser = argparse.ArgumentParser(
                 add_help=False,
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -350,7 +430,7 @@ Coinbase:
                 type=str,
                 help="Exchange to check change. Default: aggregated",
                 default="aggregated",
-                choices=GLASSNODE_SUPPORTED_EXCHANGES,
+                choices=glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES,
             )
 
             parser.add_argument(
@@ -360,7 +440,7 @@ Coinbase:
                 type=str,
                 help="Frequency interval. Default: 24h",
                 default="24h",
-                choices=["1h", "24h", "10m", "1w", "1month"],
+                choices=glassnode_model.INTERVALS,
             )
 
             parser.add_argument(
@@ -386,7 +466,7 @@ Coinbase:
                     other_args.insert(0, "-e")
 
             ns_parser = parse_known_args_and_warn(
-                parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+                parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
             )
 
             if ns_parser:
@@ -406,7 +486,7 @@ Coinbase:
     def call_eb(self, other_args: List[str]):
         """Process eb command"""
 
-        if self.symbol.upper() in GLASSNODE_SUPPORTED_ASSETS:
+        if self.symbol.upper() in glassnode_model.GLASSNODE_SUPPORTED_ASSETS:
             parser = argparse.ArgumentParser(
                 add_help=False,
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -432,7 +512,7 @@ Coinbase:
                 type=str,
                 help="Exchange to check change. Default: aggregated",
                 default="aggregated",
-                choices=GLASSNODE_SUPPORTED_EXCHANGES,
+                choices=glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES,
             )
 
             parser.add_argument(
@@ -442,7 +522,7 @@ Coinbase:
                 type=str,
                 help="Frequency interval. Default: 24h",
                 default="24h",
-                choices=["1h", "24h", "10m", "1w", "1month"],
+                choices=glassnode_model.INTERVALS,
             )
 
             parser.add_argument(
@@ -463,12 +543,11 @@ Coinbase:
                 default="2020-01-01",
             )
 
-            if other_args:
-                if not other_args[0][0] == "-":
-                    other_args.insert(0, "-e")
+            if other_args and not other_args[0][0] == "-":
+                other_args.insert(0, "-e")
 
             ns_parser = parse_known_args_and_warn(
-                parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+                parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
             )
 
             if ns_parser:
@@ -507,11 +586,11 @@ Coinbase:
             type=int,
             help="Frequency interval. Default: 0",
             default=0,
-            choices=[0, 1, 2, 4],
+            choices=coinglass_model.INTERVALS,
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
         if ns_parser:
@@ -637,7 +716,7 @@ Coinbase:
             dest="vs",
             help="currency",
             default="usd",
-            choices=["usd", "btc"],
+            choices=FILTERS_VS_USD_BTC,
         )
 
         ns_parser = parse_known_args_and_warn(
@@ -665,7 +744,7 @@ Coinbase:
             dest="vs",
             help="currency",
             default="usd",
-            choices=["usd", "btc"],
+            choices=FILTERS_VS_USD_BTC,
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -775,7 +854,7 @@ Coinbase:
             )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             if self.source == "bin":
@@ -1065,7 +1144,9 @@ Coinbase:
                 type=check_positive,
             )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
 
         if ns_parser:
             if self.source in ["bin", "cb"]:
@@ -1104,14 +1185,18 @@ Coinbase:
             dest="vs",
             default="USD",
             type=str,
-            choices=CURRENCIES,
+            choices=coinpaprika_view.CURRENCIES,
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             coinpaprika_view.display_price_supply(
-                self.current_coin, ns_parser.vs, ns_parser.export
+                f"{self.symbol}-{self.current_coin}"
+                if self.source == "cg"
+                else self.current_coin,
+                ns_parser.vs,
+                ns_parser.export,
             )
 
         return self.queue
@@ -1131,7 +1216,12 @@ Coinbase:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            coinpaprika_view.display_basic(self.current_coin, ns_parser.export)
+            coinpaprika_view.display_basic(
+                f"{self.symbol}-{self.current_coin}"
+                if self.source == "cg"
+                else self.current_coin,
+                ns_parser.export,
+            )
 
         return self.queue
 
@@ -1157,7 +1247,7 @@ Coinbase:
             dest="vs",
             default="USD",
             type=str,
-            choices=CURRENCIES,
+            choices=coinpaprika_view.CURRENCIES,
         )
 
         parser.add_argument(
@@ -1176,14 +1266,7 @@ Coinbase:
             type=str,
             help="Sort by given column. Default: pct_volume_share",
             default="pct_volume_share",
-            choices=[
-                "pct_volume_share",
-                "exchange",
-                "pair",
-                "trust_score",
-                "volume",
-                "price",
-            ],
+            choices=coinpaprika_view.MARKET_FILTERS,
         )
 
         parser.add_argument(
@@ -1208,7 +1291,9 @@ Coinbase:
         )
         if ns_parser:
             coinpaprika_view.display_markets(
-                coin_id=self.current_coin,
+                coin_id=f"{self.symbol}-{self.current_coin}"
+                if self.source == "cg"
+                else self.current_coin,
                 currency=ns_parser.vs,
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
@@ -1249,7 +1334,7 @@ Coinbase:
             type=str,
             help="Sort by given column. Default: date",
             default="adjusted_volume_24h_share",
-            choices=["id", "name", "adjusted_volume_24h_share", "fiats"],
+            choices=coinpaprika_view.EX_FILTERS,
         )
 
         parser.add_argument(
@@ -1265,7 +1350,9 @@ Coinbase:
         )
         if ns_parser:
             coinpaprika_view.display_exchanges(
-                coin_id=self.current_coin,
+                coin_id=f"{self.symbol}-{self.current_coin}"
+                if self.source == "cg"
+                else self.current_coin,
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
@@ -1306,7 +1393,7 @@ Coinbase:
             type=str,
             help="Sort by given column. Default: date",
             default="date",
-            choices=["date", "date_to", "name", "description", "is_conference"],
+            choices=coinpaprika_view.EVENTS_FILTERS,
         )
 
         parser.add_argument(
@@ -1331,7 +1418,9 @@ Coinbase:
         )
         if ns_parser:
             coinpaprika_view.display_events(
-                coin_id=self.current_coin,
+                coin_id=f"{self.symbol}-{self.current_coin}"
+                if self.source == "cg"
+                else self.current_coin,
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
@@ -1372,7 +1461,7 @@ Coinbase:
             type=str,
             help="Sort by given column. Default: date",
             default="date",
-            choices=["date", "user_name", "status", "retweet_count", "like_count"],
+            choices=coinpaprika_view.TWEETS_FILTERS,
         )
 
         parser.add_argument(
@@ -1388,7 +1477,9 @@ Coinbase:
         )
         if ns_parser:
             coinpaprika_view.display_twitter(
-                coin_id=self.current_coin,
+                coin_id=f"{self.symbol}-{self.current_coin}"
+                if self.source == "cg"
+                else self.current_coin,
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
@@ -1445,7 +1536,7 @@ def menu(coin=None, source=None, symbol=None, queue: List[str] = None):
 
         except SystemExit:
             print(
-                f"\nThe command '{an_input}' doesn't exist on the /crypto/dd menu.",
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
                 end="",
             )
             similar_cmd = difflib.get_close_matches(
@@ -1459,15 +1550,18 @@ def menu(coin=None, source=None, symbol=None, queue: List[str] = None):
                     candidate_input = (
                         f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
                     )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        print("\n")
-                        continue
-                    an_input = candidate_input
                 else:
-                    an_input = similar_cmd[0]
+                    candidate_input = similar_cmd[0]
+
+                if candidate_input == an_input:
+                    an_input = ""
+                    dd_controller.queue = []
+                    print("\n")
+                    continue
 
                 print(f" Replacing by '{an_input}'.")
                 dd_controller.queue.insert(0, an_input)
             else:
                 print("\n")
+                an_input = ""
+                dd_controller.queue = []

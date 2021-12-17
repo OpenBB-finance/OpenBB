@@ -7,6 +7,7 @@ import difflib
 from typing import List, Union
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.cryptocurrency.defi import graph_model
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
@@ -22,6 +23,7 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.cryptocurrency.defi import (
     defirate_view,
     defipulse_view,
+    llama_model,
     llama_view,
     substack_view,
     graph_view,
@@ -72,6 +74,11 @@ class DefiController:
         self.completer: Union[None, NestedCompleter] = None
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
+            choices["llama"]["-s"] = {c: {} for c in llama_model.LLAMA_FILTERS}
+            choices["tokens"]["-s"] = {c: {} for c in graph_model.TOKENS_FILTERS}
+            choices["pairs"]["-s"] = {c: {} for c in graph_model.PAIRS_FILTERS}
+            choices["pools"]["-s"] = {c: {} for c in graph_model.POOLS_FILTERS}
+            choices["swaps"]["-s"] = {c: {} for c in graph_model.SWAPS_FILTERS}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         if queue:
@@ -125,7 +132,9 @@ class DefiController:
                 known_args.cmd = "reset"
 
         return getattr(
-            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
         )(other_args)
 
     def call_cls(self, _):
@@ -148,29 +157,29 @@ class DefiController:
     def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q"]
+        return ["quit"]
 
     def call_exit(self, _):
         """Process exit terminal command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q", "q"]
+        return ["quit", "quit", "quit"]
 
     def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "defi")
             self.queue.insert(0, "crypto")
-            self.queue.insert(0, "r")
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q", "r", "crypto", "defi"]
+        return ["quit", "quit", "reset", "crypto", "defi"]
 
     @try_except
     def call_dpi(self, other_args: List[str]):
@@ -254,16 +263,7 @@ class DefiController:
             type=str,
             help="Sort by given column. Default: tvl",
             default="tvl",
-            choices=[
-                "tvl",
-                "symbol",
-                "category",
-                "chains",
-                "change_1h",
-                "change_1d",
-                "change_7d",
-                "tvl",
-            ],
+            choices=llama_model.LLAMA_FILTERS,
         )
 
         parser.add_argument(
@@ -514,14 +514,7 @@ class DefiController:
             type=str,
             help="Sort by given column. Default: index",
             default="index",
-            choices=[
-                "index",
-                "symbol",
-                "name",
-                "tradeVolumeUSD",
-                "totalLiquidity",
-                "txCount",
-            ],
+            choices=graph_model.TOKENS_FILTERS,
         )
 
         parser.add_argument(
@@ -622,15 +615,7 @@ class DefiController:
             type=str,
             help="Sort by given column. Default: created",
             default="created",
-            choices=[
-                "created",
-                "pair",
-                "token0",
-                "token1",
-                "volumeUSD",
-                "txCount",
-                "totalSupply",
-            ],
+            choices=graph_model.PAIRS_FILTERS,
         )
 
         parser.add_argument(
@@ -686,15 +671,7 @@ class DefiController:
             type=str,
             help="Sort by given column. Default: volumeUSD",
             default="volumeUSD",
-            choices=[
-                "volumeUSD",
-                "token0.name",
-                "token0.symbol",
-                "token1.name",
-                "token1.symbol",
-                "volumeUSD",
-                "txCount",
-            ],
+            choices=graph_model.POOLS_FILTERS,
         )
 
         parser.add_argument(
@@ -747,7 +724,7 @@ class DefiController:
             type=str,
             help="Sort by given column. Default: timestamp",
             default="timestamp",
-            choices=["timestamp", "token0", "token1", "amountUSD"],
+            choices=graph_model.SWAPS_FILTERS,
         )
 
         parser.add_argument(
@@ -784,7 +761,6 @@ Overview:
     funding       Funding reates - current or last 30 days average
     borrow        DeFi borrow rates - current or last 30 days average
     lending       DeFi ending rates - current or last 30 days average
-
 Uniswap:
     tokens        Tokens trade-able on Uniswap
     stats         Base statistics about Uniswap
@@ -840,7 +816,7 @@ def menu(queue: List[str] = None):
 
         except SystemExit:
             print(
-                f"\nThe command '{an_input}' doesn't exist on the /crypto/defi menu.",
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
                 end="",
             )
             similar_cmd = difflib.get_close_matches(
@@ -854,15 +830,18 @@ def menu(queue: List[str] = None):
                     candidate_input = (
                         f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
                     )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        print("\n")
-                        continue
-                    an_input = candidate_input
                 else:
-                    an_input = similar_cmd[0]
+                    candidate_input = similar_cmd[0]
+
+                if candidate_input == an_input:
+                    an_input = ""
+                    defi_controller.queue = []
+                    print("\n")
+                    continue
 
                 print(f" Replacing by '{an_input}'.")
                 defi_controller.queue.insert(0, an_input)
             else:
                 print("\n")
+                an_input = ""
+                defi_controller.queue = []

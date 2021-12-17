@@ -115,8 +115,10 @@ Ticker: {self.ticker}
             print(f"The following args were unexpected: {other_args}")
 
         return getattr(
-            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
-        )(None)
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
+        )(other_args)
 
     def call_help(self, _):
         """Process Help command"""

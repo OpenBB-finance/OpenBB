@@ -365,8 +365,8 @@ class DegiroController:
 
             return getattr(
                 self,
-                known_args.cmd,
-                lambda: "Command not recognized!",
+                "call_" + known_args.cmd,
+                lambda _: "Command not recognized!",
             )(other_args)
         except Exception as e:
             print(e)

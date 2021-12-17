@@ -1,6 +1,6 @@
 """Cryptocurrency Context Controller"""
 __docformat__ = "numpy"
-# pylint: disable=R0904, C0302, R1710, W0622
+# pylint: disable=R0904, C0302, R1710, W0622, C0201
 
 import argparse
 import difflib
@@ -12,6 +12,7 @@ from binance.client import Client
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     get_flair,
     parse_known_args_and_warn,
@@ -29,6 +30,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence import (
     coinbase_model,
 )
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
+    FIND_KEYS,
     load,
     find,
     load_ta_data,
@@ -37,6 +39,14 @@ from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
 import gamestonk_terminal.config_terminal as cfg
 
 # pylint: disable=import-outside-toplevel
+
+
+CRYPTO_SOURCES = {
+    "bin": "Binance",
+    "cg": "CoinGecko",
+    "cp": "CoinPaprika",
+    "cb": "Coinbase",
+}
 
 
 class CryptoController:
@@ -63,13 +73,6 @@ class CryptoController:
 
     CHOICES_MENUS = ["ta", "dd", "ov", "disc", "onchain", "defi", "nft", "pred"]
 
-    SOURCES = {
-        "bin": "Binance",
-        "cg": "CoinGecko",
-        "cp": "CoinPaprika",
-        "cb": "Coinbase",
-    }
-
     DD_VIEWS_MAPPING = {
         "cg": pycoingecko_view,
         "cp": coinpaprika_view,
@@ -95,7 +98,10 @@ class CryptoController:
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
-
+            choices["load"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
+            choices["find"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
+            choices["find"]["-k"] = {c: {} for c in FIND_KEYS}
+            choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         if queue:
@@ -105,31 +111,32 @@ class CryptoController:
 
     def print_help(self):
         """Print help"""
-        help_text = (
+        help_text = """
+    load        load a specific cryptocurrency for analysis
+    find        alternate way to search for coins
+"""
+        help_text += (
             f"\nCoin: {self.current_coin}" if self.current_coin != "" else "\nCoin: ?"
         )
         help_text += (
-            f"\nSource: {self.SOURCES.get(self.source, '?')}\n"
+            f"\nSource: {CRYPTO_SOURCES.get(self.source, '?')}\n"
             if self.source != ""
             else "\nSource: ?\n"
         )
         help_text += """
-    load        load a specific cryptocurrency for analysis
     chart       view a candle chart for a specific cryptocurrency
-    find        alternate way to search for coins
     headlines   crypto sentiment from 15+ major news headlines [Finbrain]
     """
         dim = Style.DIM if not self.current_coin else ""
         help_text += f"""
-Crypto Menus:
 >    disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
->    ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables{dim}
+>    ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
+>    onchain     information on different blockchains,   e.g.: eth gas fees, whale alerts, DEXes info
+>    defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
+>    nft         non-fungible tokens,                    e.g.: today drops{dim}
 >    dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
 >    ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
 >    pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo{Style.RESET_ALL if not self.current_coin else ""}
->    onchain     information on different blockchains,   e.g.: eth gas fees, active asset addresses, whale alerts
->    defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
->    nft         non-fungible tokens,                    e.g.: today drops
 """  # noqa
         print(help_text)
 
@@ -175,7 +182,9 @@ Crypto Menus:
                 known_args.cmd = "reset"
 
         return getattr(
-            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
         )(other_args)
 
     def call_cls(self, _):
@@ -196,26 +205,26 @@ Crypto Menus:
     def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q"]
+        return ["quit"]
 
     def call_exit(self, _):
         """Process exit terminal command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q"]
+        return ["quit", "quit"]
 
     def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "crypto")
-            self.queue.insert(0, "r")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "r", "crypto"]
+        return ["quit", "reset", "crypto"]
 
     def call_load(self, other_args):
         """Process load command"""
@@ -420,7 +429,9 @@ Crypto Menus:
                 )
 
             try:
-                ns_parser = parse_known_args_and_warn(parser, other_args)
+                ns_parser = parse_known_args_and_warn(
+                    parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+                )
 
                 if ns_parser:
                     if self.source in ["bin", "cb"]:
@@ -734,11 +745,11 @@ Crypto Menus:
             choices=finbrain_crypto_view.COINS,
         )
 
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
         if ns_parser:
@@ -794,9 +805,9 @@ Crypto Menus:
 
     def call_nft(self, _):
         """Process nft command"""
-        from gamestonk_terminal.cryptocurrency.nft import crypto_controller
+        from gamestonk_terminal.cryptocurrency.nft import nft_controller
 
-        return crypto_controller.menu(queue=self.queue)
+        return nft_controller.menu(queue=self.queue)
 
     @try_except
     def call_find(self, other_args):
@@ -831,7 +842,7 @@ Crypto Menus:
             dest="key",
             help="Specify by which column you would like to search: symbol, name, id",
             type=str,
-            choices=["id", "symbol", "name"],
+            choices=FIND_KEYS,
             default="symbol",
         )
 
@@ -847,15 +858,14 @@ Crypto Menus:
         parser.add_argument(
             "--source",
             dest="source",
-            choices=["cp", "cg", "bin", "cb"],
+            choices=CRYPTO_SOURCES.keys(),
             default="cg",
             help="Source of data.",
             type=str,
         )
 
-        if other_args:
-            if not other_args[0][0] == "-":
-                other_args.insert(0, "-c")
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-c")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -880,6 +890,7 @@ def menu(queue: List[str] = None):
         if crypto_controller.queue and len(crypto_controller.queue) > 0:
             # If the command is quitting the menu we want to return in here
             if crypto_controller.queue[0] in ("q", "..", "quit"):
+                print("")
                 if len(crypto_controller.queue) > 1:
                     return crypto_controller.queue[1:]
                 return []
@@ -912,10 +923,9 @@ def menu(queue: List[str] = None):
         try:
             # Process the input command
             crypto_controller.queue = crypto_controller.switch(an_input)
-
         except SystemExit:
             print(
-                f"\nThe command '{an_input}' doesn't exist on the /crypto menu.",
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
                 end="",
             )
             similar_cmd = difflib.get_close_matches(
@@ -929,15 +939,18 @@ def menu(queue: List[str] = None):
                     candidate_input = (
                         f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
                     )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        print("\n")
-                        continue
-                    an_input = candidate_input
                 else:
-                    an_input = similar_cmd[0]
+                    candidate_input = similar_cmd[0]
+
+                if candidate_input == an_input:
+                    an_input = ""
+                    crypto_controller.queue = []
+                    print("\n")
+                    continue
 
                 print(f" Replacing by '{an_input}'.")
                 crypto_controller.queue.insert(0, an_input)
             else:
                 print("\n")
+                an_input = ""
+                crypto_controller.queue = []

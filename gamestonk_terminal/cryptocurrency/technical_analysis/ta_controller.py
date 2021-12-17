@@ -13,7 +13,7 @@ from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     get_flair,
     parse_known_args_and_warn,
     check_positive_list,
@@ -193,7 +193,9 @@ Custom:
                 known_args.cmd = "reset"
 
         return getattr(
-            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
         )(other_args)
 
     def call_cls(self, _):
@@ -216,29 +218,29 @@ Custom:
     def call_quit(self, _):
         """Process quit menu command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q"]
+        return ["quit"]
 
     def call_exit(self, _):
         """Process exit terminal command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q", "q"]
+        return ["quit", "quit", "quit"]
 
     def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "ta")
             self.queue.insert(0, "crypto")
-            self.queue.insert(0, "r")
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q", "r", "crypto", "ta"]
+        return ["quit", "quit", "reset", "crypto", "ta"]
 
     # TODO: Go through all models and make sure all needed columns are in dfs
     @try_except
@@ -280,12 +282,11 @@ Custom:
             help="offset",
         )
 
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-l")
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             overlap_view.view_ma(
@@ -337,11 +338,10 @@ Custom:
             help="offset",
         )
 
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-l")
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             overlap_view.view_ma(
@@ -393,12 +393,11 @@ Custom:
             help="offset",
         )
 
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-l")
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             overlap_view.view_ma(
@@ -436,7 +435,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             if self.interval == "1440min":
@@ -489,7 +488,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             momentum_view.plot_cci(
@@ -552,7 +551,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             momentum_view.view_macd(
@@ -613,7 +612,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             momentum_view.view_rsi(
@@ -674,7 +673,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             momentum_view.view_stoch(
@@ -715,7 +714,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             momentum_view.view_fisher(
@@ -754,7 +753,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             momentum_view.view_cg(
@@ -811,7 +810,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             trend_indicators_view.plot_adx(
@@ -877,7 +876,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             trend_indicators_view.plot_aroon(
@@ -941,7 +940,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             volatility_view.view_bbands(
@@ -993,7 +992,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             volatility_view.view_donchian(
@@ -1036,7 +1035,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             volume_view.plot_ad(
@@ -1067,7 +1066,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             volume_view.plot_obv(
@@ -1114,7 +1113,7 @@ Custom:
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             custom_indicators_view.fibonacci_retracement(
@@ -1179,7 +1178,7 @@ def menu(
 
         except SystemExit:
             print(
-                f"\nThe command '{an_input}' doesn't exist on the /crypto/ta menu.",
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
                 end="",
             )
             similar_cmd = difflib.get_close_matches(
@@ -1193,15 +1192,18 @@ def menu(
                     candidate_input = (
                         f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
                     )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        print("\n")
-                        continue
-                    an_input = candidate_input
                 else:
-                    an_input = similar_cmd[0]
+                    candidate_input = similar_cmd[0]
+
+                if candidate_input == an_input:
+                    an_input = ""
+                    ta_controller.queue = []
+                    print("\n")
+                    continue
 
                 print(f" Replacing by '{an_input}'.")
                 ta_controller.queue.insert(0, an_input)
             else:
                 print("\n")
+                an_input = ""
+                ta_controller.queue = []
