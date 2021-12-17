@@ -48,7 +48,6 @@ closetrade -argument
 closetrade -i 5
 candles
 candles -h
-candles -argument
 candles -v
 candles -a -b -c -e -v
 calendar
