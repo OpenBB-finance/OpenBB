@@ -247,7 +247,7 @@ Menus:
         """Process resources command"""
         from gamestonk_terminal.resources import resources_controller
 
-        return resources_controller.menu()
+        return resources_controller.menu(self.queue)
 
     def call_portfolio(self, _):
         """Process portfolio command"""
