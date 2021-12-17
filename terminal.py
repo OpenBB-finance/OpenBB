@@ -235,7 +235,7 @@ Menus:
         """Process forex command"""
         from gamestonk_terminal.forex import forex_controller
 
-        return forex_controller.menu()
+        return forex_controller.menu(self.queue)
 
     def call_reports(self, _):
         """Process reports command"""

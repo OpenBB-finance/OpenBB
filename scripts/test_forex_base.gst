@@ -1,0 +1,13 @@
+forex
+h
+help
+?
+q
+forex
+..
+forex
+quit
+forex
+r
+reset
+exit

@@ -94,6 +94,14 @@ def check_non_negative(value) -> int:
     return new_value
 
 
+def check_non_negative_float(value) -> float:
+    """Argparse type to check non negative int"""
+    new_value = float(value)
+    if new_value < 0:
+        raise argparse.ArgumentTypeError(f"{value} is negative")
+    return new_value
+
+
 def check_positive_list(value) -> List[int]:
     """Argparse type to return list of positive ints"""
     list_of_nums = value.split(",")
