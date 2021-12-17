@@ -1,6 +1,7 @@
 """Terminal helper"""
 __docformat__ = "numpy"
 import hashlib
+import logging
 import os
 import random
 import subprocess  # nosec
@@ -24,12 +25,9 @@ from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import thought_of_the_day as thought
 
-# import git
+# pylint: disable=too-many-statements,no-member,too-many-branches,C0302
 
-# pylint: disable=no-member,too-many-branches,C0302
-
-
-# pylint: disable=too-many-statements
+logger = logging.getLogger(__name__)
 
 
 def check_api_keys():
@@ -315,6 +313,8 @@ def print_goodbye():
         goodbye_msg[random.randint(0, len(goodbye_msg) - 1)] + goodbye_msg_time + "\n"
     )
 
+    logger.info("Terminal started")
+
 
 def sha256sum(filename):
     h = hashlib.sha256()
@@ -389,6 +389,7 @@ def bootup():
             # pylint: disable=E1101
             sys.stdout.reconfigure(encoding="utf-8")
     except Exception as e:
+        logger.exception("%s", type(e).__name__)
         print(e, "\n")
 
     # Print first welcome message and help
@@ -402,6 +403,7 @@ def bootup():
         try:
             thought.get_thought_of_the_day()
         except Exception as e:
+            logger.exception("%s", type(e).__name__)
             print(e)
         print("")
 
