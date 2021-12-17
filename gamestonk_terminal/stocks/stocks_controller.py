@@ -332,34 +332,30 @@ Stocks Menus:
             dest="prepost",
             help="Pre/After market hours. Only works for 'yf' source, and intraday data",
         )
-
-        # For the case where a user uses: 'load BB'
-        if other_args and "-t" not in other_args and "-h" not in other_args:
+        if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-t")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            df_stock_candidate = load(
+                ns_parser.ticker,
+                ns_parser.start,
+                ns_parser.interval,
+                ns_parser.end,
+                ns_parser.prepost,
+                ns_parser.source,
+            )
 
-        df_stock_candidate = load(
-            ns_parser.ticker,
-            ns_parser.start,
-            ns_parser.interval,
-            ns_parser.end,
-            ns_parser.prepost,
-            ns_parser.source,
-        )
+            if not df_stock_candidate.empty:
+                self.stock = df_stock_candidate
+                if "." in ns_parser.ticker:
+                    self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
+                else:
+                    self.ticker = ns_parser.ticker.upper()
+                    self.suffix = ""
 
-        if not df_stock_candidate.empty:
-            self.stock = df_stock_candidate
-            if "." in ns_parser.ticker:
-                self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
-            else:
-                self.ticker = ns_parser.ticker.upper()
-                self.suffix = ""
-
-            self.start = ns_parser.start
-            self.interval = f"{ns_parser.interval}min"
+                self.start = ns_parser.start
+                self.interval = f"{ns_parser.interval}min"
 
         return self.queue
 

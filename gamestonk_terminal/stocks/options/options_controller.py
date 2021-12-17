@@ -14,6 +14,8 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_FIGURES_ALLOWED,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     get_flair,
     parse_known_args_and_warn,
@@ -37,7 +39,7 @@ from gamestonk_terminal.stocks.options import (
     pricing_controller,
 )
 
-# pylint: disable=R1710,C0302
+# pylint: disable=R1710,C0302,R0916
 
 
 class OptionsController:
@@ -86,7 +88,9 @@ class OptionsController:
 
     PRESET_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
-    POSSIBLE_GREEKS = [
+    presets = [f.split(".")[0] for f in os.listdir(PRESET_PATH) if f.endswith(".ini")]
+
+    grhist_greeks_choices = [
         "iv",
         "gamma",
         "theta",
@@ -95,6 +99,25 @@ class OptionsController:
         "rho",
         "premium",
     ]
+
+    unu_sortby_choices = [
+        "Strike",
+        "Vol/OI",
+        "Vol",
+        "OI",
+        "Bid",
+        "Ask",
+        "Exp",
+        "Ticker",
+    ]
+    pcr_length_choices = ["10", "20", "30", "60", "90", "120", "150", "180"]
+
+    load_source_choices = ["tr", "yf"]
+    hist_source_choices = ["td", "ce"]
+    voi_source_choices = ["tr", "yf"]
+    oi_source_choices = ["tr", "yf"]
+    plot_vars_choices = ["ltd", "s", "lp", "b", "a", "c", "pc", "v", "oi", "iv"]
+    plot_custom_choices = ["smile"]
 
     def __init__(self, ticker: str, queue: List[str] = None):
         """Constructor"""
@@ -108,12 +131,23 @@ class OptionsController:
 
         if session and gtff.USE_PROMPT_TOOLKIT:
 
-            choices: dict = {c: {} for c in self.CHOICES}
-            self.completer = NestedCompleter.from_nested_dict(choices)
+            self.choices: dict = {c: {} for c in self.CHOICES}
+            self.choices["unu"]["-s"] = {c: {} for c in self.unu_sortby_choices}
+            self.choices["pcr"] = {c: {} for c in self.pcr_length_choices}
+            self.choices["disp"] = {c: {} for c in self.presets}
+            self.choices["scr"] = {c: {} for c in self.presets}
+            self.choices["grhist"]["-g"] = {c: {} for c in self.grhist_greeks_choices}
+            self.choices["load"]["-s"] = {c: {} for c in self.load_source_choices}
+            self.choices["load"]["--source"] = {c: {} for c in self.hist_source_choices}
+            self.choices["load"]["-s"] = {c: {} for c in self.voi_source_choices}
+            self.choices["plot"]["-x"] = {c: {} for c in self.plot_vars_choices}
+            self.choices["plot"]["-y"] = {c: {} for c in self.plot_vars_choices}
+            self.choices["plot"]["-c"] = {c: {} for c in self.plot_custom_choices}
 
         self.ticker = ticker
         self.prices = pd.DataFrame(columns=["Price", "Chance"])
         self.selected_date = ""
+        self.chain = None
 
         if ticker:
             if TRADIER_TOKEN == "REPLACE_ME":
@@ -122,6 +156,8 @@ class OptionsController:
             else:
                 print("Loaded expiry dates from Tradier")
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
+        else:
+            self.expiry_dates = []
 
         if queue:
             self.queue = queue
@@ -307,7 +343,6 @@ Expiry: {self.selected_date or None}
             default=-1,
             required="-m" in other_args,
         )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.min > 0 and ns_parser.max > 0:
@@ -348,7 +383,7 @@ Expiry: {self.selected_date or None}
             dest="sortby",
             nargs="+",
             default="Vol/OI",
-            choices=["Strike", "Vol/OI", "Vol", "OI", "Bid", "Ask", "Exp", "Ticker"],
+            choices=self.unu_sortby_choices,
             help="Column to sort by.  Vol/OI is the default and typical variable to be considered unusual.",
         )
         parser.add_argument(
@@ -375,14 +410,11 @@ Expiry: {self.selected_date or None}
             default=False,
             action="store_true",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.calls_only and ns_parser.puts_only:
                 print(
@@ -413,9 +445,8 @@ Expiry: {self.selected_date or None}
             "-length",
             help="Window length to get",
             dest="length",
-            choices=[10, 20, 30, 60, 90, 120, 150, 180],
+            choices=self.pcr_length_choices,
             default=30,
-            type=int,
         )
         parser.add_argument(
             "-s",
@@ -425,6 +456,8 @@ Expiry: {self.selected_date or None}
             default=datetime.now() - timedelta(days=366),
             dest="start",
         )
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -449,15 +482,9 @@ Expiry: {self.selected_date or None}
             prog="info",
             description="Display option data [Source: Barchart.com]",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
                 barchart_view.print_options_data(
@@ -478,9 +505,7 @@ Expiry: {self.selected_date or None}
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            presets = [f for f in os.listdir(self.PRESET_PATH) if f.endswith(".ini")]
-
-            for preset in presets:
+            for preset in self.presets:
                 print(preset)
             print("")
 
@@ -503,11 +528,7 @@ Expiry: {self.selected_date or None}
             type=str,
             help="View specific preset",
             default="",
-            choices=[
-                preset.split(".")[0]
-                for preset in os.listdir(self.PRESET_PATH)
-                if preset[-4:] == ".ini"
-            ],
+            choices=self.presets,
         )
         if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-p")
@@ -541,36 +562,27 @@ Expiry: {self.selected_date or None}
             type=str,
             default="template",
             help="Filter presets",
-            choices=[
-                preset.split(".")[0]
-                for preset in os.listdir(self.PRESET_PATH)
-                if preset[-4:] == ".ini"
-            ],
+            choices=self.presets,
         )
         parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-        parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             type=check_positive,
             default=-1,
-            help="Number of random entries to show.  Default shows all",
-            dest="n_show",
+            help="Limit of random entries to display. Default shows all",
+            dest="limit",
         )
 
         if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
         if ns_parser:
             syncretism_view.view_screener_output(
                 preset=ns_parser.preset,
                 presets_path=self.PRESET_PATH,
-                n_show=ns_parser.n_show,
+                n_show=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -594,6 +606,7 @@ Expiry: {self.selected_date or None}
             help="Strike price to look at",
         )
         parser.add_argument(
+            "-p",
             "--put",
             dest="put",
             action="store_true",
@@ -605,14 +618,20 @@ Expiry: {self.selected_date or None}
             "--greek",
             dest="greek",
             type=str,
-            choices=self.POSSIBLE_GREEKS,
+            choices=self.grhist_greeks_choices,
             default="delta",
             help="Greek column to select",
         )
         parser.add_argument(
-            "--chain", dest="chain_id", default="", type=str, help="OCC option symbol"
+            "-c",
+            "--chain",
+            dest="chain_id",
+            default="",
+            type=str,
+            help="OCC option symbol",
         )
         parser.add_argument(
+            "-r",
             "--raw",
             dest="raw",
             action="store_true",
@@ -620,35 +639,42 @@ Expiry: {self.selected_date or None}
             help="Display raw data",
         )
         parser.add_argument(
-            "-n",
-            "--num",
-            dest="num",
+            "-l",
+            "--limit",
+            dest="limit",
             default=20,
-            help="Number of raw data rows to show",
+            help="Limit of raw data rows to display",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-s")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    syncretism_view.view_historical_greeks(
-                        ticker=self.ticker,
-                        expiry=self.selected_date,
-                        strike=ns_parser.strike,
-                        greek=ns_parser.greek,
-                        chain_id=ns_parser.chain_id,
-                        put=ns_parser.put,
-                        raw=ns_parser.raw,
-                        n_show=ns_parser.num,
-                        export=ns_parser.export,
-                    )
+                    if (
+                        ns_parser.put
+                        and self.chain
+                        and ns_parser.strike in self.chain.puts["strike"]
+                    ) or (
+                        not ns_parser.put
+                        and self.chain
+                        and ns_parser.strike in self.chain.calls["strike"]
+                    ):
+                        syncretism_view.view_historical_greeks(
+                            ticker=self.ticker,
+                            expiry=self.selected_date,
+                            strike=ns_parser.strike,
+                            greek=ns_parser.greek,
+                            chain_id=ns_parser.chain_id,
+                            put=ns_parser.put,
+                            raw=ns_parser.raw,
+                            n_show=ns_parser.limit,
+                            export=ns_parser.export,
+                        )
+                    else:
+                        print("No correct strike input\n")
                 else:
                     print("No expiry loaded. First use `exp <expiry date>`\n")
             else:
@@ -674,13 +700,14 @@ Expiry: {self.selected_date or None}
             help="Stock ticker",
         )
         parser.add_argument(
+            "-s",
             "--source",
-            choices=["tr", "yf"],
+            choices=self.load_source_choices,
             dest="source",
             default=None,
             help="Source to get option expirations from",
         )
-        if other_args and "-t" not in other_args and "-h" not in other_args:
+        if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-t")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -691,6 +718,11 @@ Expiry: {self.selected_date or None}
             else:
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
             print("")
+
+            if self.ticker and self.selected_date:
+                self.chain = yfinance_model.get_option_chain(
+                    self.ticker, self.selected_date
+                )
 
         return self.queue
 
@@ -747,6 +779,11 @@ Expiry: {self.selected_date or None}
             else:
                 print("Please load a ticker using `load <ticker>`.\n")
 
+            if self.selected_date:
+                self.chain = yfinance_model.get_option_chain(
+                    self.ticker, self.selected_date
+                )
+
         return self.queue
 
     @try_except
@@ -763,7 +800,7 @@ Expiry: {self.selected_date or None}
             "--strike",
             dest="strike",
             type=float,
-            required="--chain" not in other_args and "-h" not in other_args,
+            required="--chain" not in other_args and "-c" not in other_args,
             help="Strike price to look at",
         )
         parser.add_argument(
@@ -775,7 +812,7 @@ Expiry: {self.selected_date or None}
             help="Flag for showing put option",
         )
         parser.add_argument(
-            "--chain", dest="chain_id", type=str, help="OCC option symbol"
+            "-c", "--chain", dest="chain_id", type=str, help="OCC option symbol"
         )
         parser.add_argument(
             "-r",
@@ -786,62 +823,64 @@ Expiry: {self.selected_date or None}
             help="Display raw data",
         )
         parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-        parser.add_argument(
             "--source",
             dest="source",
             type=str,
-            choices=["td", "ce"],
+            choices=self.hist_source_choices,
             default="ce" if TRADIER_TOKEN == "REPLACE_ME" else "td",
             help="Choose Tradier(TD) or ChartExchange (CE), only affects raw data",
         )
         parser.add_argument(
-            "-n",
-            "--num",
-            dest="num",
+            "-l",
+            "--limit",
+            dest="limit",
             type=int,
-            help="Number of data rows to show",
+            help="Limit of data rows to display",
         )
 
-        if (
-            other_args
-            and ("-s" not in other_args and "--strike" not in other_args)
-            and "-h" not in other_args
-            and "--chain" not in other_args
-        ):
+        if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-s")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    if ns_parser.source.lower() == "ce":
-                        chartexchange_view.display_raw(
-                            ns_parser.export,
-                            self.ticker,
-                            self.selected_date,
-                            not ns_parser.put,
-                            ns_parser.strike,
-                            ns_parser.num,
+                    if self.chain and (
+                        (
+                            ns_parser.put
+                            and ns_parser.strike in self.chain.puts["strike"]
                         )
-
-                    else:
-                        if TRADIER_TOKEN != "REPLACE_ME":
-                            tradier_view.display_historical(
-                                ticker=self.ticker,
-                                expiry=self.selected_date,
-                                strike=ns_parser.strike,
-                                put=ns_parser.put,
-                                export=ns_parser.export,
-                                raw=ns_parser.raw,
-                                chain_id=ns_parser.chain_id,
+                        or (
+                            not ns_parser.put
+                            and ns_parser.strike in self.chain.calls["strike"]
+                        )
+                    ):
+                        if ns_parser.source.lower() == "ce":
+                            chartexchange_view.display_raw(
+                                ns_parser.export,
+                                self.ticker,
+                                self.selected_date,
+                                not ns_parser.put,
+                                ns_parser.strike,
+                                ns_parser.limit,
                             )
+
                         else:
-                            print("TRADIER TOKEN not supplied. \n")
+                            if TRADIER_TOKEN != "REPLACE_ME":
+                                tradier_view.display_historical(
+                                    ticker=self.ticker,
+                                    expiry=self.selected_date,
+                                    strike=ns_parser.strike,
+                                    put=ns_parser.put,
+                                    export=ns_parser.export,
+                                    raw=ns_parser.raw,
+                                    chain_id=ns_parser.chain_id,
+                                )
+                            else:
+                                print("TRADIER TOKEN not supplied. \n")
+                    else:
+                        print("No correct strike input\n")
                 else:
                     print("No expiry loaded. First use `exp <expiry date>` \n")
             else:
@@ -899,14 +938,9 @@ Expiry: {self.selected_date or None}
             help="columns to look at.  Columns can be:  {bid, ask, strike, bidsize, asksize, volume, open_interest, "
             "delta, gamma, theta, vega, ask_iv, bid_iv, mid_iv} ",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
@@ -980,14 +1014,9 @@ Expiry: {self.selected_date or None}
             dest="source",
             help="Source to get data from",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
@@ -1056,18 +1085,13 @@ Expiry: {self.selected_date or None}
             "--source",
             type=str,
             default="tr",
-            choices=["tr", "yf"],
+            choices=self.voi_source_choices,
             dest="source",
             help="Source to get data from",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
@@ -1142,18 +1166,13 @@ Expiry: {self.selected_date or None}
             "--source",
             type=str,
             default="tr",
-            choices=["tr", "yf"],
+            choices=self.oi_source_choices,
             dest="source",
             help="Source to get data from",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
@@ -1203,11 +1222,11 @@ Expiry: {self.selected_date or None}
         )
         parser.add_argument(
             "-x",
-            "--x",
+            "--x_axis",
             type=str,
             dest="x",
             default=None,
-            choices=["ltd", "s", "lp", "b", "a", "c", "pc", "v", "oi", "iv"],
+            choices=self.plot_vars_choices,
             help=(
                 "ltd- last trade date, s- strike, lp- last price, b- bid, a- ask,"
                 "c- change, pc- percent change, v- volume, oi- open interest, iv- implied volatility"
@@ -1215,11 +1234,11 @@ Expiry: {self.selected_date or None}
         )
         parser.add_argument(
             "-y",
-            "--y",
+            "--y_axis",
             type=str,
             dest="y",
             default=None,
-            choices=["ltd", "s", "lp", "b", "a", "c", "pc", "v", "oi", "iv"],
+            choices=self.plot_vars_choices,
             help=(
                 "ltd- last trade date, s- strike, lp- last price, b- bid, a- ask,"
                 "c- change, pc- percent change, v- volume, oi- open interest, iv- implied volatility"
@@ -1229,15 +1248,15 @@ Expiry: {self.selected_date or None}
             "-c",
             "--custom",
             type=str,
-            choices=[
-                "smile",
-            ],
+            choices=self.plot_custom_choices,
             dest="custom",
             default=None,
             help="Choose from already created graphs",
         )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
+        )
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
@@ -1253,6 +1272,7 @@ Expiry: {self.selected_date or None}
                             ns_parser.x,
                             ns_parser.y,
                             ns_parser.custom,
+                            ns_parser.export,
                         )
                 else:
                     print("No expiry loaded. First use `exp {expiry date}`\n")
@@ -1302,7 +1322,9 @@ Expiry: {self.selected_date or None}
             dest="maxi",
             help="Maximum strike price shown",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
@@ -1313,6 +1335,7 @@ Expiry: {self.selected_date or None}
                         ns_parser.ask,
                         ns_parser.mini,
                         ns_parser.maxi,
+                        ns_parser.export,
                     )
                 else:
                     print("No expiry loaded. First use `exp {expiry date}`\n")
@@ -1355,7 +1378,8 @@ Expiry: {self.selected_date or None}
             help="Value a European option instead of an American one",
         )
         parser.add_argument(
-            "--export",
+            "-x",
+            "--xlsx",
             action="store_true",
             default=False,
             dest="export",
@@ -1376,6 +1400,8 @@ Expiry: {self.selected_date or None}
             dest="volatility",
             help="Underlying asset annualized volatility",
         )
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-s")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
@@ -1460,10 +1486,37 @@ def menu(ticker: str = "", queue: List[str] = None):
                 op_controller.print_help()
 
             # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and op_controller.completer:
+            if session and gtff.USE_PROMPT_TOOLKIT and op_controller.choices:
+
+                if op_controller.expiry_dates:
+                    op_controller.choices["exp"] = {
+                        str(c): {} for c in range(len(op_controller.expiry_dates))
+                    }
+                    op_controller.choices["exp"]["-d"] = {
+                        c: {} for c in op_controller.expiry_dates + [""]
+                    }
+                    if op_controller.chain:
+                        op_controller.choices["hist"] = {
+                            str(c): {}
+                            for c in op_controller.chain.puts["strike"]
+                            + op_controller.chain.calls["strike"]
+                        }
+                        op_controller.choices["grhist"] = {
+                            str(c): {}
+                            for c in op_controller.chain.puts["strike"]
+                            + op_controller.chain.calls["strike"]
+                        }
+                        op_controller.choices["binom"] = {
+                            str(c): {}
+                            for c in op_controller.chain.puts["strike"]
+                            + op_controller.chain.calls["strike"]
+                        }
+
+                completer = NestedCompleter.from_nested_dict(op_controller.choices)
+
                 an_input = session.prompt(
                     f"{get_flair()} /stocks/options/ $ ",
-                    completer=op_controller.completer,
+                    completer=completer,
                     search_ignore_case=True,
                 )
             # Get input from user without auto-completion
@@ -1490,16 +1543,18 @@ def menu(ticker: str = "", queue: List[str] = None):
                     candidate_input = (
                         f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
                     )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        op_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
                 else:
-                    an_input = similar_cmd[0]
+                    candidate_input = similar_cmd[0]
+
+                if candidate_input == an_input:
+                    an_input = ""
+                    op_controller.queue = []
+                    print("\n")
+                    continue
 
                 print(f" Replacing by '{an_input}'.")
                 op_controller.queue.insert(0, an_input)
             else:
                 print("\n")
+                an_input = ""
+                op_controller.queue = []
