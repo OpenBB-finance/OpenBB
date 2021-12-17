@@ -1,4 +1,4 @@
-"""Oanda Controller"""
+"""Oanda Controller."""
 __docformat__ = "numpy"
 
 import argparse
@@ -28,6 +28,7 @@ account = cfg.OANDA_ACCOUNT
 
 
 class OandaController:
+    """Oanda menu controller."""
 
     CHOICES = [
         "cls",
@@ -65,7 +66,7 @@ class OandaController:
     CHOICES += CHOICES_COMMANDS
 
     def __init__(self, queue: List[str] = None):
-        """Construct Data"""
+        """Construct Data."""
         self.fx_parser = argparse.ArgumentParser(add_help=False, prog="oanda")
         self.fx_parser.add_argument(
             "cmd",
@@ -100,7 +101,7 @@ class OandaController:
             self.queue = list()
 
     def print_help(self):
-        """Print help"""
+        """Print help."""
         dim_if_no_ticker = Style.DIM if not self.instrument else ""
         reset_style_if_no_ticker = Style.RESET_ALL if not self.instrument else ""
 
@@ -130,7 +131,7 @@ class OandaController:
         print(help_text)
 
     def switch(self, an_input: str):
-        """Process and dispatch input
+        """Process and dispatch input.
 
         Returns
         -------
@@ -176,22 +177,22 @@ class OandaController:
         )(other_args)
 
     def call_cls(self, _):
-        """Process cls command"""
+        """Process cls command."""
         system_clear()
         return self.queue
 
     def call_home(self, _):
-        """Process home command"""
+        """Process home command."""
         self.queue.insert(0, "quit")
         return self.queue
 
     def call_help(self, _):
-        """Process help command"""
+        """Process help command."""
         self.print_help()
         return self.queue
 
     def call_quit(self, _):
-        """Process quit menu command"""
+        """Process quit menu command."""
         print("")
         if len(self.queue) > 0:
             self.queue.insert(0, "quit")
@@ -199,7 +200,7 @@ class OandaController:
         return ["quit"]
 
     def call_exit(self, _):
-        """Process exit terminal command"""
+        """Process exit terminal command."""
         if len(self.queue) > 0:
             self.queue.insert(0, "quit")
             self.queue.insert(0, "quit")
@@ -207,7 +208,7 @@ class OandaController:
         return ["quit", "quit", "quit"]
 
     def call_reset(self, _):
-        """Process reset command"""
+        """Process reset command."""
         if len(self.queue) > 0:
             self.queue.insert(0, "oanda")
             self.queue.insert(0, "forex")
@@ -220,7 +221,7 @@ class OandaController:
     # COMMANDS
     @try_except
     def call_to(self, other_args: List[str]):
-        """Process 'to' command"""
+        """Process 'to' command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -255,7 +256,7 @@ class OandaController:
 
     @try_except
     def call_from(self, other_args: List[str]):
-        """Process 'from' command"""
+        """Process 'from' command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -290,7 +291,7 @@ class OandaController:
 
     @try_except
     def call_price(self, other_args):
-        """Process Price Command"""
+        """Process Price Command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="price",
@@ -304,7 +305,7 @@ class OandaController:
 
     @try_except
     def call_summary(self, other_args):
-        """Process account summary command"""
+        """Process account summary command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="summary",
@@ -318,7 +319,7 @@ class OandaController:
 
     @try_except
     def call_orderbook(self, other_args):
-        """Process Oanda Order Book"""
+        """Process Oanda Order Book."""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="orderbook",
@@ -332,7 +333,7 @@ class OandaController:
 
     @try_except
     def call_positionbook(self, other_args):
-        """Process Oanda Position Book"""
+        """Process Oanda Position Book."""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="positionbook",
@@ -346,7 +347,7 @@ class OandaController:
 
     @try_except
     def call_list(self, other_args: List[str]):
-        """Process list orders command"""
+        """Process list orders command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="list",
@@ -382,7 +383,7 @@ class OandaController:
 
     @try_except
     def call_order(self, other_args: List[str]):
-        """Place limit order"""
+        """Place limit order."""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="order",
@@ -418,7 +419,7 @@ class OandaController:
 
     @try_except
     def call_cancel(self, other_args: List[str]):
-        """Cancel pending order by ID"""
+        """Cancel pending order by ID."""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="cancel",
@@ -445,7 +446,7 @@ class OandaController:
 
     @try_except
     def call_positions(self, other_args):
-        """Get Open Positions"""
+        """Get Open Positions."""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="positions",
@@ -459,7 +460,7 @@ class OandaController:
 
     @try_except
     def call_pending(self, other_args):
-        """See up to 25 pending orders"""
+        """See up to 25 pending orders."""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="pending",
@@ -487,7 +488,7 @@ class OandaController:
 
     @try_except
     def call_closetrade(self, other_args: List[str]):
-        """Close a trade by id"""
+        """Close a trade by id."""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="closetrade",
@@ -524,6 +525,7 @@ class OandaController:
 
     @try_except
     def call_candles(self, other_args: List[str]):
+        """Plot candle chart for a loaded currency pair."""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="candles",
@@ -630,7 +632,7 @@ class OandaController:
 
     @try_except
     def call_calendar(self, other_args: List[str]):
-        """Call calendar"""
+        """Call calendar."""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="calendar",
@@ -656,7 +658,7 @@ class OandaController:
 
 
 def menu(queue: List[str] = None):
-    """Oanda Forex Menu"""
+    """Oanda Forex Menu."""
     oanda_controller = OandaController(queue)
     an_input = "HELP_ME"
 

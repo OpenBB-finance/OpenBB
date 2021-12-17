@@ -1,4 +1,4 @@
-"""Forex Controller"""
+"""Forex Controller."""
 __docformat__ = "numpy"
 
 import argparse
@@ -26,7 +26,7 @@ from gamestonk_terminal.menu import session
 
 
 class ForexController:
-    """Forex Controller class"""
+    """Forex Controller class."""
 
     CHOICES = [
         "cls",
@@ -50,7 +50,7 @@ class ForexController:
     CHOICES += CHOICES_MENUS
 
     def __init__(self, queue: List[str] = None):
-        """Construct Data"""
+        """Construct Data."""
         self.fx_parser = argparse.ArgumentParser(add_help=False, prog="forex")
         self.fx_parser.add_argument(
             "cmd",
@@ -77,7 +77,7 @@ class ForexController:
             self.queue = list()
 
     def print_help(self):
-        """Print help"""
+        """Print help."""
         dim_bool = self.from_symbol and self.to_symbol
         help_text = f"""
     from      select the "from" currency in a forex pair
@@ -97,7 +97,7 @@ Forex brokerages:
         print(help_text)
 
     def switch(self, an_input: str):
-        """Process and dispatch input
+        """Process and dispatch input.
 
         Returns
         -------
@@ -143,22 +143,22 @@ Forex brokerages:
         )(other_args)
 
     def call_cls(self, _):
-        """Process cls command"""
+        """Process cls command."""
         system_clear()
         return self.queue
 
     def call_home(self, _):
-        """Process home command"""
+        """Process home command."""
         self.queue.insert(0, "quit")
         return self.queue
 
     def call_help(self, _):
-        """Process help command"""
+        """Process help command."""
         self.print_help()
         return self.queue
 
     def call_quit(self, _):
-        """Process quit menu command"""
+        """Process quit menu command."""
         print("")
         if len(self.queue) > 0:
             self.queue.insert(0, "quit")
@@ -166,7 +166,7 @@ Forex brokerages:
         return ["quit"]
 
     def call_exit(self, _):
-        """Process exit terminal command"""
+        """Process exit terminal command."""
         if len(self.queue) > 0:
             self.queue.insert(0, "quit")
             self.queue.insert(0, "quit")
@@ -174,7 +174,7 @@ Forex brokerages:
         return ["quit", "quit"]
 
     def call_reset(self, _):
-        """Process reset command"""
+        """Process reset command."""
         if len(self.queue) > 0:
             self.queue.insert(0, "forex")
             self.queue.insert(0, "reset")
@@ -185,7 +185,7 @@ Forex brokerages:
     # COMMANDS
     @try_except
     def call_to(self, other_args: List[str]):
-        """Process 'to' command"""
+        """Process 'to' command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -219,7 +219,7 @@ Forex brokerages:
 
     @try_except
     def call_from(self, other_args: List[str]):
-        """Process 'from' command"""
+        """Process 'from' command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -253,7 +253,7 @@ Forex brokerages:
 
     @try_except
     def call_load(self, other_args: List[str]):
-        """Process select command"""
+        """Process select command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -309,7 +309,7 @@ Forex brokerages:
 
     @try_except
     def call_candle(self, other_args: List[str]):
-        """Process quote command"""
+        """Process quote command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -337,7 +337,7 @@ Forex brokerages:
 
     @try_except
     def call_quote(self, other_args: List[str]):
-        """Process quote command"""
+        """Process quote command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -358,6 +358,7 @@ Forex brokerages:
 
     # MENUS
     def call_oanda(self, _):
+        """Enter Oanda menu."""
         from gamestonk_terminal.forex.oanda import oanda_controller
 
         return oanda_controller.menu(self.queue)
@@ -372,7 +373,7 @@ Forex brokerages:
 
 
 def menu(queue: List[str] = None):
-    """Forex Menu"""
+    """Forex Menu."""
     forex_controller = ForexController(queue)
     an_input = "HELP_ME"
 

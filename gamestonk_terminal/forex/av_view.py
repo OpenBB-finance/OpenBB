@@ -1,4 +1,4 @@
-"""AlphaVantage Forex View"""
+"""AlphaVantage Forex View."""
 __docformat__ = "numpy"
 
 import pandas as pd
@@ -11,7 +11,7 @@ from gamestonk_terminal.helper_funcs import plot_autoscale
 
 
 def display_quote(to_symbol: str, from_symbol: str):
-    """Display current forex pair exchange rate
+    """Display current forex pair exchange rate.
 
     Parameters
     ----------
@@ -37,7 +37,7 @@ def display_quote(to_symbol: str, from_symbol: str):
 
 
 def display_candle(data: pd.DataFrame, to_symbol: str, from_symbol: str):
-    """Show candle plot for fx data
+    """Show candle plot for fx data.
 
     Parameters
     ----------

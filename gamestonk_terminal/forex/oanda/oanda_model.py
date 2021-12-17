@@ -1,4 +1,4 @@
-"""Oanda Model"""
+"""Oanda Model."""
 __docformat__ = "numpy"
 
 import json
@@ -24,7 +24,23 @@ client = API(access_token=cfg.OANDA_TOKEN, environment=cfg.OANDA_ACCOUNT_TYPE)
 account = cfg.OANDA_ACCOUNT
 
 
-def fx_price_request(accountID=account, instrument=None):
+def fx_price_request(
+    accountID: str = account, instrument: Union[str, None] = None
+) -> Union[Dict[str, str], bool]:
+    """Request price for a forex pair.
+
+    Parameters
+    ----------
+    accountID : str, optional
+        Oanda account ID, by default cfg.OANDA_ACCOUNT
+    instrument : Union[str, None]
+        The loaded currency pair, by default None
+
+    Returns
+    -------
+    Union[Dict[str, str], bool]
+        The currency pair price or False
+    """
     if accountID == "REPLACE_ME":
         print("Error: Oanda account credentials are required.")
         return False
@@ -35,25 +51,25 @@ def fx_price_request(accountID=account, instrument=None):
         parameters = {"instruments": instrument}
         request = pricing.PricingInfo(accountID=accountID, params=parameters)
         response = client.request(request)
+        return response
     except V20Error as e:
         d_error = json.loads(e.msg)
         print(d_error["errorMessage"], "\n")
-        response = False
-    return response
+        return False
 
 
-def account_summary_request(accountID: str = account):
+def account_summary_request(accountID: str = account) -> Union[pd.DataFrame, bool]:
     """Request Oanda account summary.
 
     Parameters
     ----------
-    accountID : [str], optional
-        [description], by default account
+    accountID : str, optional
+        Oanda account ID, by default cfg.OANDA_ACCOUNT
 
     Returns
     -------
-    [type]
-        [description]
+    Union[pd.DataFrame, bool]
+        Account summary data or False
     """
     if accountID == "REPLACE_ME":
         print("Error: Oanda account credentials are required.")
@@ -100,7 +116,23 @@ def account_summary_request(accountID: str = account):
         return False
 
 
-def orderbook_plot_data_request(instrument: str, accountID: str = account):
+def orderbook_plot_data_request(
+    instrument: Union[str, None] = None, accountID: str = account
+) -> Union[pd.DataFrame, bool]:
+    """Request order book data for plotting.
+
+    Parameters
+    ----------
+    instrument : Union[str, None]
+        The loaded currency pair, by default None
+    accountID : str, optional
+        Oanda account ID, by default cfg.OANDA_ACCOUNT
+
+    Returns
+    -------
+    Union[pd.DataFrame, bool]
+        Order book data or False
+    """
     if accountID == "REPLACE_ME":
         print("Error: Oanda account credentials are required.")
         return False
@@ -121,7 +153,23 @@ def orderbook_plot_data_request(instrument: str, accountID: str = account):
         return False
 
 
-def positionbook_plot_data_request(instrument: str, accountID: str = account):
+def positionbook_plot_data_request(
+    instrument: Union[str, None] = None, accountID: str = account
+) -> Union[pd.DataFrame, bool]:
+    """Request position book data for plotting.
+
+    Parameters
+    ----------
+    instrument : Union[str, None]
+        The loaded currency pair, by default None
+    accountID : str, optional
+        Oanda account ID, by default cfg.OANDA_ACCOUNT
+
+    Returns
+    -------
+    Union[pd.DataFrame, bool]
+        Position book data or False
+    """
     if accountID == "REPLACE_ME":
         print("Error: Oanda account credentials are required.")
         return False
@@ -141,18 +189,23 @@ def positionbook_plot_data_request(instrument: str, accountID: str = account):
         return False
 
 
-def order_history_request(order_state: str, order_count: int, accountID: str = account):
+def order_history_request(
+    order_state: str, order_count: int, accountID: str = account
+) -> Union[pd.DataFrame, bool]:
     """Request the orders list from Oanda.
 
     Parameters
     ----------
     order_state : str
-        Filter orders by a specific state
+        Filter orders by a specific state ("PENDING", "CANCELLED", etc.)
     order_count : int
         Limit the number of orders to retrieve
     accountID : str, optional
         Oanda account ID, by default cfg.OANDA_ACCOUNT
     """
+    if accountID == "REPLACE_ME":
+        print("Error: Oanda account credentials are required.")
+        return False
     parameters: Dict[str, Union[str, int]] = {}
     parameters["state"] = order_state
     parameters["count"] = order_count
@@ -176,14 +229,17 @@ def order_history_request(order_state: str, order_count: int, accountID: str = a
 
 
 def create_order_request(
-    instrument: str, price: int, units: int, accountID: str = account
-):
-    """Request creation of buy/sell order.
+    price: int,
+    units: int,
+    instrument: Union[str, None] = None,
+    accountID: str = account,
+) -> Union[pd.DataFrame, bool]:
+    """Request creation of buy/sell trade order.
 
     Parameters
     ----------
-    instrument : str
-        The loaded currency pair
+    instrument : Union[str, None]
+        The loaded currency pair, by default None
     price : int
         The price to set for the limit order.
     units : int
@@ -193,9 +249,15 @@ def create_order_request(
 
     Returns
     -------
-    [type]
-        [description]
+    Union[pd.DataFrame, bool]
+        Orders data or False
     """
+    if accountID == "REPLACE_ME":
+        print("Error: Oanda account credentials are required.")
+        return False
+    if instrument is None:
+        print("Error: An instrument should be loaded before running this command.")
+        return False
     if "JPY" in instrument or "THB" in instrument or "HUF" in instrument:
         price = round(price, 3)
     else:
@@ -233,7 +295,9 @@ def create_order_request(
         return False
 
 
-def cancel_pending_order_request(orderID: str, accountID: str = account):
+def cancel_pending_order_request(
+    orderID: str, accountID: str = account
+) -> Union[str, bool]:
     """Request cancellation of a pending order.
 
     Parameters
@@ -243,6 +307,9 @@ def cancel_pending_order_request(orderID: str, accountID: str = account):
     accountID : str, optional
         Oanda account ID, by default cfg.OANDA_ACCOUNT
     """
+    if accountID == "REPLACE_ME":
+        print("Error: Oanda account credentials are required.")
+        return False
     try:
         request = orders.OrderCancel(accountID, orderID)
         response = client.request(request)
@@ -254,7 +321,7 @@ def cancel_pending_order_request(orderID: str, accountID: str = account):
         return False
 
 
-def open_positions_request(accountID: str = account):
+def open_positions_request(accountID: str = account) -> Union[pd.DataFrame, bool]:
     """Request information on open positions.
 
     Parameters
@@ -262,6 +329,9 @@ def open_positions_request(accountID: str = account):
     accountID : str, optional
         Oanda account ID, by default cfg.OANDA_ACCOUNT
     """
+    if accountID == "REPLACE_ME":
+        print("Error: Oanda account credentials are required.")
+        return False
     try:
         request = positions.OpenPositions(accountID)
         response = client.request(request)
@@ -290,7 +360,22 @@ def open_positions_request(accountID: str = account):
         return False
 
 
-def pending_orders_request(accountID: str = account):
+def pending_orders_request(accountID: str = account) -> Union[pd.DataFrame, bool]:
+    """Request information on pending orders.
+
+    Parameters
+    ----------
+    accountID : str, optional
+        Oanda account ID, by default cfg.OANDA_ACCOUNT
+
+    Returns
+    -------
+    Union[pd.DataFrame, bool]
+        Pending orders data or False
+    """
+    if accountID == "REPLACE_ME":
+        print("Error: Oanda account credentials are required.")
+        return False
     try:
         request = orders.OrdersPending(accountID)
         response = client.request(request)
@@ -318,12 +403,26 @@ def pending_orders_request(accountID: str = account):
         return False
 
 
-def open_trades_request(accountID: str = account):
+def open_trades_request(accountID: str = account) -> Union[pd.DataFrame, bool]:
+    """Request open trades data.
+
+    Parameters
+    ----------
+    accountID : str, optional
+        Oanda account ID, by default cfg.OANDA_ACCOUNT
+
+    Returns
+    -------
+    Union[pd.DataFrame, bool]
+        Open trades data or False
+    """
+    if accountID == "REPLACE_ME":
+        print("Error: Oanda account credentials are required.")
+        return False
     try:
         request = trades.OpenTrades(accountID)
         response = client.request(request)
         if "trades" in response and len(response["trades"]) > 0:
-            print(response["trades"])
             df_trades = pd.DataFrame.from_dict(response["trades"])
             df_trades = df_trades[
                 [
@@ -356,7 +455,26 @@ def open_trades_request(accountID: str = account):
 
 def close_trades_request(
     orderID: str, units: Union[int, None], accountID: str = account
-):
+) -> Union[pd.DataFrame, bool]:
+    """Close a trade.
+
+    Parameters
+    ----------
+    orderID : str
+        ID of the order to close
+    units : Union[int, None]
+        Number of units to close. If empty default to all.
+    accountID : str, optional
+        Oanda account ID, by default cfg.OANDA_ACCOUNT
+
+    Returns
+    -------
+    Union[pd.DataFrame, bool]
+        Close trades data or False
+    """
+    if accountID == "REPLACE_ME":
+        print("Error: Oanda account credentials are required.")
+        return False
     data = {}
     if units is not None:
         data["units"] = units
@@ -385,8 +503,27 @@ def close_trades_request(
 
 
 def get_candles_dataframe(
-    instrument: str, granularity: str = "D", candlecount: int = 180
-):
+    instrument: Union[str, None] = None, granularity: str = "D", candlecount: int = 180
+) -> Union[pd.DataFrame, bool]:
+    """Request data for candle chart.
+
+    Parameters
+    ----------
+    instrument : str
+        Loaded currency pair code
+    granularity : str, optional
+        Data granularity, by default "D"
+    candlecount : int, optional
+        Limit for the number of data points, by default 180
+
+    Returns
+    -------
+    Union[pd.DataFrame, bool]
+        Candle chart data or False
+    """
+    if instrument is None:
+        print("Error: An instrument should be loaded before running this command.")
+        return False
     parameters = {
         "granularity": granularity,
         "count": candlecount,
@@ -421,7 +558,26 @@ def get_candles_dataframe(
         return False
 
 
-def get_calendar_request(instrument: str, days: int):
+def get_calendar_request(
+    days: int, instrument: Union[str, None] = None
+) -> Union[pd.DataFrame, bool]:
+    """Request data of significant events calendar.
+
+    Parameters
+    ----------
+    instrument : Union[str, None]
+        The loaded currency pair, by default None
+    days : int
+        Number of days in advance
+
+    Returns
+    -------
+    Union[pd.DataFrame, bool]
+        Calendar events data or False
+    """
+    if instrument is None:
+        print("Error: An instrument should be loaded before running this command.")
+        return False
     parameters = {"instrument": instrument, "period": str(days * 86400 * -1)}
     try:
         request = forexlabs.Calendar(params=parameters)
