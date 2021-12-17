@@ -57,7 +57,7 @@ def setup_file_logger() -> None:
             a_file.write(f"{cfg.LOGGING_ID}\n")
     else:
         logger.debug("Log ID exists: %s", log_id.absolute())
-        with open(log_id.absolute(), "r") as a_file:
+        with open(log_id.absolute()) as a_file:
             cfg.LOGGING_ID = a_file.readline().rstrip()
 
     logger.debug("Log id: %s", cfg.LOGGING_ID)
