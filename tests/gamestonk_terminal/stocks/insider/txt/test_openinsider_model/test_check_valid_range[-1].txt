@@ -1,0 +1,1 @@
+Invalid General.SharePriceMin '-1'. Choose value between 0 and 9999, inclusive.

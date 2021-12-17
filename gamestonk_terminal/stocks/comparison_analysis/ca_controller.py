@@ -1174,6 +1174,7 @@ def menu(
                     )
                     if candidate_input == an_input:
                         an_input = ""
+                        ca_controller.queue = []
                         print("\n")
                         continue
                     an_input = candidate_input

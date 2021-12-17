@@ -116,7 +116,9 @@ Current Series IDs:
                 known_args.cmd = "reset"
 
         return getattr(
-            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
         )(other_args)
 
     def call_cls(self, _):
@@ -384,6 +386,7 @@ def menu(queue: List[str] = None):
                     )
                     if candidate_input == an_input:
                         an_input = ""
+                        fred_controller.queue = []
                         print("\n")
                         continue
                     an_input = candidate_input

@@ -1,0 +1,161 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://docs.google.com/uc?export=download&id=1-TsAuzKs_vvg40r5RuRaG_wyb2Hzxbd5
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAG1QTW+CQBC9+ys29NYElwUWpEEarChNNSZkD+3JIIxs+XAJC7T667vSHvsuM2/m
+        zUvm+THb74KZH0fhWhX2ynZRsBcj5IhB04ou7T7rq49/FzMf/wlXh/UHWm1fDrtDstQeNhM0xKJ3
+        pqgxQbv7kv/c1HTGOKBcZEMDlx7xVKJm0vkhipNos9R437fyCWOl0Ymte5WuOjkvhChqGCR0mbj0
+        6naeieYuklhCNnQgM8xToxOe5RbZkLm1m8P5XMmh5gXlbnNqCYaaCrMcKU8BhDQq0pxLozVtXrul
+        rJoSE8fyCLXo9Acm1HMXinrOYmFbjkFM18GPmOhMhsPtTR7HsbCNjiZDkm6PX9eTGd++Tzl9hmUu
+        vi61SHMt4NCBj8NgrkK8pzeFOYX/A3VbbmOEAQAA
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443";
+        ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - 'script-src ''nonce-bMB25PnSUSng2jpbcUq94g'' ''unsafe-inline'' ''strict-dynamic''
+        https: http: ''unsafe-eval'';object-src ''none'';base-uri ''self'';report-uri
+        https://csp.withgoogle.com/csp/drive-explorer/'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Cross-Origin-Opener-Policy-Report-Only:
+      - same-origin; report-to="coop_gse_l9ocaq"
+      Date:
+      - Fri, 10 Dec 2021 16:25:40 GMT
+      Expires:
+      - Mon, 01 Jan 1990 00:00:00 GMT
+      Location:
+      - https://doc-14-9k-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/el5o2jv5haeeos0k1mfj0p24hl7jskmj/1639153500000/15978153968843601276/*/1-TsAuzKs_vvg40r5RuRaG_wyb2Hzxbd5?e=download
+      P3P:
+      - CP="This is not a P3P policy! See g.co/p3phelp for more info."
+      Pragma:
+      - no-cache
+      Report-To:
+      - '{"group":"coop_gse_l9ocaq","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gse_l9ocaq"}]}'
+      Server:
+      - GSE
+      Set-Cookie:
+      - NID=511=cD4JjW48d2-V1yCMh2vDI34h2bbNkdNU5f5jLgCMtNXg-HVaHVuBJiIUB4uQoy3OgVk_lL0sXAtaHZdx-UGo-MHRpjNB23Lqb6ZN2MG-p6IoeDl7UVMtqG6hu93RvQw8KszSvS0PgneZ7lC42d24rSoq1PD5ViU9aZXdgNXx1o8;
+        expires=Sat, 11-Jun-2022 16:25:40 GMT; path=/; domain=.google.com; HttpOnly
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 302
+      message: Moved Temporarily
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://doc-14-9k-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/el5o2jv5haeeos0k1mfj0p24hl7jskmj/1639153500000/15978153968843601276/*/1-TsAuzKs_vvg40r5RuRaG_wyb2Hzxbd5?e=download
+  response:
+    body:
+      string: 'Symbol,Name,Stock Type,Earnings Date,Earnings Time,Confirmation,Special
+        Case,Conference Call,Press Release,This Move,Previous Earnings Date,Previous
+        Move,Expected Move,Options Volume,Has Options,Market Cap,event Vol,OI
+
+        MU,Micron Technology,Common,9/28/2021,AfterMarketClose,Announced,,9/28/2021
+        4:30:00 PM,,,6/30/2021,-0.0573,0.0595,63782.0,True,81886715904,23.946999999999996,2741.0
+
+        '
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'false'
+      Access-Control-Allow-Headers:
+      - Accept, Accept-Language, Authorization, Cache-Control, Content-Disposition,
+        Content-Encoding, Content-Language, Content-Length, Content-MD5, Content-Range,
+        Content-Type, Date, developer-token, financial-institution-id, X-Goog-Sn-Metadata,
+        X-Goog-Sn-PatientId, GData-Version, google-cloud-resource-prefix, linked-customer-id,
+        login-customer-id, x-goog-request-params, Host, If-Match, If-Modified-Since,
+        If-None-Match, If-Unmodified-Since, Origin, OriginToken, Pragma, Range, request-id,
+        Slug, Transfer-Encoding, hotrod-board-name, hotrod-chrome-cpu-model, hotrod-chrome-processors,
+        Want-Digest, x-chrome-connected, X-ClientDetails, X-Client-Version, X-Firebase-Locale,
+        X-Goog-Firebase-Installations-Auth, X-Firebase-Client, X-Firebase-Client-Log-Type,
+        X-Firebase-GMPID, X-Firebase-Auth-Token, X-Firebase-AppCheck, X-Goog-Drive-Client-Version,
+        X-Goog-Drive-Resource-Keys, X-GData-Client, X-GData-Key, X-GoogApps-Allowed-Domains,
+        X-Goog-AdX-Buyer-Impersonation, X-Goog-Api-Client, X-Goog-Visibilities, X-Goog-AuthUser,
+        x-goog-ext-124712974-jspb, x-goog-ext-251363160-jspb, x-goog-ext-259736195-jspb,
+        X-Goog-PageId, X-Goog-Encode-Response-If-Executable, X-Goog-Correlation-Id,
+        X-Goog-Request-Info, X-Goog-Request-Reason, X-Goog-Experiments, x-goog-iam-authority-selector,
+        x-goog-iam-authorization-token, X-Goog-Spatula, X-Goog-Travel-Bgr, X-Goog-Travel-Settings,
+        X-Goog-Upload-Command, X-Goog-Upload-Content-Disposition, X-Goog-Upload-Content-Length,
+        X-Goog-Upload-Content-Type, X-Goog-Upload-File-Name, X-Goog-Upload-Header-Content-Encoding,
+        X-Goog-Upload-Header-Content-Length, X-Goog-Upload-Header-Content-Type, X-Goog-Upload-Header-Transfer-Encoding,
+        X-Goog-Upload-Offset, X-Goog-Upload-Protocol, x-goog-user-project, X-Goog-Visitor-Id,
+        X-Goog-FieldMask, X-Google-Project-Override, X-Goog-Api-Key, X-HTTP-Method-Override,
+        X-JavaScript-User-Agent, X-Pan-Versionid, X-Proxied-User-IP, X-Origin, X-Referer,
+        X-Requested-With, X-Stadia-Client-Context, X-Upload-Content-Length, X-Upload-Content-Type,
+        X-Use-Alt-Service, X-Use-HTTP-Status-Code-Override, X-Ios-Bundle-Identifier,
+        X-Android-Package, X-Ariane-Xsrf-Token, X-YouTube-VVT, X-YouTube-Page-CL,
+        X-YouTube-Page-Timestamp, X-Compass-Routing-Destination, x-framework-xsrf-token,
+        X-Goog-Meeting-ABR, X-Goog-Meeting-Botguardid, X-Goog-Meeting-ClientInfo,
+        X-Goog-Meeting-ClientVersion, X-Goog-Meeting-Debugid, X-Goog-Meeting-Identifier,
+        X-Goog-Meeting-RtcClient, X-Goog-Meeting-StartSource, X-Goog-Meeting-Token,
+        X-Goog-Meeting-ViewerInfo, X-Client-Data, x-sdm-id-token, X-Sfdc-Authorization,
+        MIME-Version, Content-Transfer-Encoding, X-Earth-Engine-App-ID-Token, X-Earth-Engine-Computation-Profile,
+        X-Earth-Engine-Computation-Profiling, X-Play-Console-Experiments-Override,
+        X-Play-Console-Session-Id, x-alkali-account-key, x-alkali-application-key,
+        x-alkali-auth-apps-namespace, x-alkali-auth-entities-namespace, x-alkali-auth-entity,
+        x-alkali-client-locale, EES-S7E-MODE, cast-device-capabilities, X-Server-Timeout,
+        x-foyer-client-environment
+      Access-Control-Allow-Methods:
+      - GET,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443";
+        ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"
+      Cache-Control:
+      - private, max-age=0
+      Content-Disposition:
+      - attachment;filename="output.csv";filename*=UTF-8''output.csv
+      Content-Length:
+      - '384'
+      Content-Type:
+      - text/csv
+      Date:
+      - Fri, 10 Dec 2021 16:25:40 GMT
+      Expires:
+      - Fri, 10 Dec 2021 16:25:40 GMT
+      Server:
+      - UploadServer
+      X-GUploader-UploadID:
+      - ADPycdvFObPDrkapXfZh-KivIxOK8X4Ex9ZQGLvrMG07DcMA92lJr_FAC4nHXRkqbrS-dM7AkB9Lt9q7ifq7P3E-kJ4Y8dvk6w
+      X-Goog-Hash:
+      - crc32c=k6sHZA==
+    status:
+      code: 200
+      message: OK
+version: 1

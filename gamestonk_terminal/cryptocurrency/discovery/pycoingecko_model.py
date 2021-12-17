@@ -37,6 +37,56 @@ CATEGORIES = {
     "most_visited": 4,
 }
 
+GAINERS_FILTERS = ["Rank", "Symbol", "Name", "Volume", "Price", "Change"]
+TRENDING_FILTERS = [
+    "Rank",
+    "Name",
+    "Price_BTC",
+    "Price_USD",
+]
+RECENTLY_FILTERS = [
+    "Rank",
+    "Name",
+    "Symbol",
+    "Price",
+    "Change_1h",
+    "Change_24h",
+    "Added",
+    "Url",
+]
+
+YFARMS_FILTERS = [
+    "Rank",
+    "Name",
+    "Value_Locked",
+    "Return_Year",
+]
+
+CAP_FILTERS = [
+    "Rank",
+    "Name",
+    "Symbol",
+    "Price",
+    "Change_1h",
+    "Change_24h",
+    "Change_7d",
+    "Volume_24h",
+    "Market_Cap",
+]
+
+DEX_FILTERS = [
+    "Name",
+    "Rank",
+    "Volume_24h",
+    "Coins",
+    "Pairs",
+    "Visits",
+    "Most_Traded",
+    "Market_Share",
+]
+
+# TODO: convert Volume and other str that should be int to int otherwise sort won't work
+
 
 def get_gainers_or_losers(period: str = "1h", typ: str = "gainers") -> pd.DataFrame:
     """Scrape data about top gainers - coins which gain the most in given period and

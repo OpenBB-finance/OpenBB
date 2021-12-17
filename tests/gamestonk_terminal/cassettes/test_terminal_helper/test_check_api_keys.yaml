@@ -1618,4 +1618,76 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: '{"query": "\n        {\n        ethereum {\n        dexTrades(options:
+      {limit: 10, desc: \"count\"}) {\n            count\n            protocol\n        }}}\n        "}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '168'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.26.0
+      x-api-key:
+      - BQYKgInV5OcQn6JVo9kXCVRGeXonmqkx
+    method: POST
+    uri: https://graphql.bitquery.io/
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA22RPWvDQAyG/8qhOcN9n+0xxEMplA4ppC0drj6RlLincHESF+P/XgdC8YVuGh5J
+        j14NEHznoRoAux0mPH1f64D9OvmAR6jeB2joFDuonOVSOqcXcEjUUUMtVPASv44Xf2BnCePiDy0K
+        o5Uo/yfVnDSlEFzYjHxY1Zs5o5wyysiMqa+2K2wn99leaaQtncvIm+EdxoXMD1n61scGE3smatma
+        9hjnLaLUluvc4Q0T9azum52PW7yLQHBttVaZynLaQIk9YXehtM/Gc6l0kdOPP5+Tzg1m5yw2Zwsr
+        89TCa9hMT/gYx/EX9quDDdUBAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 16 Dec 2021 13:10:29 GMT
+      ETag:
+      - W/"46288ea837782750c2efbd682876a71a"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - fbe8e4b2-adef-45d8-9207-7cfc3189a555
+      X-Runtime:
+      - '0.125809'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 version: 1

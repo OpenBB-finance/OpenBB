@@ -11,6 +11,44 @@ import requests
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import create_df_index
 import gamestonk_terminal.config_terminal as cfg
 
+PRICES_FILTERS = [
+    "date",
+    "cap",
+    "volumeConverted",
+    "open",
+    "high",
+    "close",
+    "low",
+]
+
+TOP_FILTERS = [
+    "rank",
+    "name",
+    "symbol",
+    "price",
+    "txsCount",
+    "transfersCount",
+    "holdersCount",
+]
+
+TH_FILTERS = [
+    "value",
+]
+
+BALANCE_FILTERS = [
+    "index",
+    "balance",
+    "tokenName",
+    "tokenSymbol",
+]
+
+HIST_FILTERS = ["timestamp", "transactionHash", "token", "value"]
+
+HOLDERS_FILTERS = [
+    "balance",
+    "share",
+]
+
 
 def split_cols_with_dot(column: str) -> str:
     """Split column name in data frame columns whenever there is a dot between 2 words.

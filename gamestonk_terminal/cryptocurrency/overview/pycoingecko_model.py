@@ -17,6 +17,69 @@ from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
     GECKO_BASE_URL,
 )
 
+HOLD_COINS = ["ethereum", "bitcoin"]
+
+NEWS_FILTERS = ["Index", "Title", "Author", "Posted"]
+
+CATEGORIES_FILTERS = [
+    "Rank",
+    "Name",
+    "Change_1h",
+    "Change_24h",
+    "Change_7d",
+    "Market_Cap",
+    "Volume_24h",
+    "Coins",
+]
+
+STABLES_FILTERS = [
+    "Rank",
+    "Name",
+    "Symbol",
+    "Price",
+    "Change_24h",
+    "Exchanges",
+    "Market_Cap",
+    "Change_30d",
+]
+
+PRODUCTS_FILTERS = [
+    "Rank",
+    "Platform",
+    "Identifier",
+    "Supply_Rate",
+    "Borrow_Rate",
+]
+
+PLATFORMS_FILTERS = ["Rank", "Name", "Category", "Centralized"]
+
+EXCHANGES_FILTERS = [
+    "Rank",
+    "Trust_Score",
+    "Id",
+    "Name",
+    "Country",
+    "Year Established",
+    "Trade_Volume_24h_BTC",
+]
+
+EXRATES_FILTERS = ["Index", "Name", "Unit", "Value", "Type"]
+
+INDEXES_FILTERS = ["Rank", "Name", "Id", "Market", "Last", "MultiAsset"]
+
+DERIVATIVES_FILTERS = [
+    "Rank",
+    "Market",
+    "Symbol",
+    "Price",
+    "Pct_Change_24h",
+    "Contract_Type",
+    "Basis",
+    "Spread",
+    "Funding_Rate",
+    "Volume_24h",
+]
+
 
 def get_holdings_overview(endpoint: str = "bitcoin") -> pd.DataFrame:
     """Scrapes overview of public companies that holds ethereum or bitcoin

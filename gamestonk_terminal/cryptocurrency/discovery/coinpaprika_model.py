@@ -5,6 +5,17 @@ from typing import Optional, Any
 import pandas as pd
 from gamestonk_terminal.cryptocurrency.coinpaprika_helpers import PaprikaSession
 
+CATEGORIES = [
+    "currencies",
+    "exchanges",
+    "icos",
+    "people",
+    "tags",
+    "all",
+]
+
+FILTERS = ["category", "id", "name"]
+
 
 def get_search_results(
     query: str, category: Optional[Any] = None, modifier: Optional[Any] = None

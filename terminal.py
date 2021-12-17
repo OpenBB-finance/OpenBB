@@ -150,7 +150,9 @@ Menus:
                 known_args.cmd = "reset"
 
         return getattr(
-            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
         )(other_args)
 
     def call_cls(self, _):
@@ -215,7 +217,7 @@ Menus:
         """Process crypto command"""
         from gamestonk_terminal.cryptocurrency import crypto_controller
 
-        return crypto_controller.menu()
+        return crypto_controller.menu(queue=self.queue)
 
     def call_economy(self, _):
         """Process economy command"""
@@ -251,7 +253,7 @@ Menus:
         """Process portfolio command"""
         from gamestonk_terminal.portfolio import portfolio_controller
 
-        return portfolio_controller.menu()
+        return portfolio_controller.menu(self.queue)
 
 
 def terminal(jobs_cmds: List[str] = None):
@@ -336,6 +338,7 @@ def terminal(jobs_cmds: List[str] = None):
                     )
                     if candidate_input == an_input:
                         an_input = ""
+                        t_controller.queue = []
                         print("\n")
                         continue
                     an_input = candidate_input

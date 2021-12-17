@@ -7,6 +7,17 @@ import requests
 import pandas as pd
 import numpy as np
 
+LLAMA_FILTERS = [
+    "tvl",
+    "symbol",
+    "category",
+    "chains",
+    "change_1h",
+    "change_1d",
+    "change_7d",
+    "name",
+]
+
 
 def get_defi_protocols() -> pd.DataFrame:
     """Returns information about listed DeFi protocols, their current TVL and changes to it in the last hour/day/week.

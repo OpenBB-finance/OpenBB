@@ -434,7 +434,7 @@ def reset(queue: List[str] = None):
 
     if queue and len(queue) > 0:
         completed_process = subprocess.run(  # nosec
-            f"{sys.executable} terminal.py {' '.join(queue) if len(queue) > 0 else ''}",
+            f"{sys.executable} terminal.py {'/'.join(queue) if len(queue) > 0 else ''}",
             shell=True,
             check=False,
         )

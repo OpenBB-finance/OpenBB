@@ -1,0 +1,37 @@
+
+Discovery:
+    cls            clear screen
+    ?/help         show this menu again
+    q              quit this menu, and shows back to main menu
+    quit           quit to abandon program
+
+Geek of Wall St:
+    rtearn         realtime earnings from and expected moves
+Finnhub:
+    pipo           past IPOs dates
+    fipo           future IPOs dates
+Yahoo Finance:
+    gainers        show latest top gainers
+    losers         show latest top losers
+    ugs            undervalued stocks with revenue and earnings growth in excess of 25%
+    gtech          tech stocks with revenue and earnings growth more than 25%
+    active         most active stocks by intraday trade volume
+    ulc            potentially undervalued large cap stocks
+    asc            small cap stocks with earnings growth rates better than 25%
+Fidelity:
+    ford           orders by Fidelity Customers
+cathiesark.com:
+    arkord         orders by ARK Investment Management LLC
+Seeking Alpha:
+    upcoming       upcoming earnings release dates
+    trending       trending news
+    cnews          customized news (buybacks, ipos, spacs, healthcare, politics)
+shortinterest.com
+    lowfloat       low float stocks under 10M shares float
+pennystockflow.com
+    hotpenny       today's hot penny stocks
+Finance Database:
+    fds            advanced Equities search based on country, sector, industry, name and/or description
+NASDAQ Data Link (Formerly Quandl):
+    rtat           top 10 retail traded stocks per day
+

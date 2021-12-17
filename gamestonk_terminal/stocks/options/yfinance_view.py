@@ -115,24 +115,21 @@ def plot_oi(
             ls="-",
             c="g",
         )
-        ax.axvline(
-            current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.7
-        )
-        ax.axvline(max_pain, lw=3, c="k", label=f"Max Pain: {max_pain}", alpha=0.7)
-        ax.grid("on")
-        ax.set_xlabel("Strike Price")
-        ax.set_ylabel("Open Interest (1k) ")
-        ax.set_xlim(min_strike, max_strike)
+    ax.axvline(current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.7)
+    ax.axvline(max_pain, lw=3, c="k", label=f"Max Pain: {max_pain}", alpha=0.7)
+    ax.grid("on")
+    ax.set_xlabel("Strike Price")
+    ax.set_ylabel("Open Interest (1k) ")
+    ax.set_xlim(min_strike, max_strike)
 
-        if gtff.USE_ION:
-            plt.ion()
+    if gtff.USE_ION:
+        plt.ion()
 
-        ax.set_title(f"Open Interest for {ticker.upper()} expiring {expiry}")
-        plt.legend(loc=0)
-        fig.tight_layout(pad=1)
+    ax.set_title(f"Open Interest for {ticker.upper()} expiring {expiry}")
+    plt.legend(loc=0)
+    fig.tight_layout(pad=1)
 
     plt.show()
-    plt.style.use("default")
     print("")
 
 
@@ -165,12 +162,6 @@ def plot_vol(
         Format to export file
     """
     options = yfinance_model.get_option_chain(ticker, expiry)
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "vol_yf",
-        options,
-    )
     calls = options.calls
     puts = options.puts
     current_price = float(yf.Ticker(ticker).info["regularMarketPrice"])
@@ -228,7 +219,12 @@ def plot_vol(
     fig.tight_layout(pad=1)
 
     plt.show()
-    plt.style.use("default")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "vol_yf",
+        options,
+    )
     print("")
 
 
@@ -259,12 +255,6 @@ def plot_volume_open_interest(
     """
 
     options = yfinance_model.get_option_chain(ticker, expiry)
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "voi_yf",
-        options,
-    )
     calls = options.calls
     puts = options.puts
     current_price = float(yf.Ticker(ticker).info["regularMarketPrice"])
@@ -415,14 +405,39 @@ def plot_volume_open_interest(
     if gtff.USE_ION:
         plt.ion()
     plt.show()
-    plt.style.use("default")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "voi_yf",
+        options,
+    )
     print("")
 
 
 def plot_plot(
-    ticker: str, expiration: str, put: bool, x: str, y: str, custom: str
+    ticker: str, expiration: str, put: bool, x: str, y: str, custom: str, export: str
 ) -> None:
-    """Generate a graph custom graph based on user input"""
+    """Generate a graph custom graph based on user input
+
+    Parameters
+    ----------
+    ticker: str
+        Stock ticker
+    expiration: str
+        Option expiration
+    min_sp: float
+        Min strike price
+    put: bool
+        put option instead of call
+    x: str
+        variable to display in x axis
+    y: str
+        variable to display in y axis
+    custom: str
+        type of plot
+    export: str
+        type of data to export
+    """
     convert = {
         "ltd": "lastTradeDate",
         "s": "strike",
@@ -465,7 +480,11 @@ def plot_plot(
         plt.gca().yaxis.set_major_locator(mdates.DayLocator(interval=1))
     elif varis[y]["format"]:
         ax.yaxis.set_major_formatter(varis[y]["format"])
+    if gtff.USE_ION:
+        plt.ion()
     plt.show()
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "plot")
+    print("")
 
 
 def plot_payoff(
@@ -489,12 +508,14 @@ def plot_payoff(
     ax.xaxis.set_major_formatter("${x:.2f}")
     ax.yaxis.set_major_formatter("${x:.2f}")
     plt.legend()
+    if gtff.USE_ION:
+        plt.ion()
     plt.show()
     print("")
 
 
 def show_parity(
-    ticker: str, exp: str, put: bool, ask: bool, mini: float, maxi: float
+    ticker: str, exp: str, put: bool, ask: bool, mini: float, maxi: float, export: str
 ) -> None:
     """Prints options and whether they are under or over priced [Source: Yahoo Finance]
 
@@ -512,7 +533,8 @@ def show_parity(
         Minimum strike price to show
     maxi : float
         Maximum strike price to show
-
+    export : str
+        Export data
     """
     r_date = datetime.strptime(exp, "%Y-%m-%d").date()
     delta = (r_date - date.today()).days
@@ -593,6 +615,12 @@ def show_parity(
     else:
         print(show.to_string(index=False))
 
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "parity",
+        show,
+    )
     print("")
 
 
