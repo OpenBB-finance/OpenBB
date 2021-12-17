@@ -7,6 +7,8 @@ import pytest
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.government import quiverquant_view
 
+pytest.skip(allow_module_level=True)
+
 
 @pytest.fixture(scope="module")
 def vcr_config():
