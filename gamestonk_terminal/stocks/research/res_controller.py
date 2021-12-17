@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import difflib
 import webbrowser
+from typing import List
 from datetime import datetime
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
@@ -215,9 +216,9 @@ Ticker: {self.ticker}
         webbrowser.open(f"https://stockanalysis.com/stocks/{self.ticker}/")
 
 
-def menu(ticker: str, start: datetime, interval: str):
+def menu(ticker: str, start: datetime, interval: str, queue: List[str] = None):
     """Research Menu"""
-
+    print(queue)
     res_controller = ResearchController(ticker, start, interval)
     res_controller.call_help(None)
     print("")

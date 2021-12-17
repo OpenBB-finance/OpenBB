@@ -541,8 +541,12 @@ Ticker: {self.ticker}
         )
 
 
-def menu(ticker: str, start: str, interval: str, stock: pd.DataFrame):
+def menu(
+    ticker: str, start: str, interval: str, stock: pd.DataFrame, queue: List[str] = None
+):
     """Insider Menu"""
+    print(queue)
+
     ins_controller = InsiderController(ticker, start, interval, stock)
     ins_controller.call_help(None)
 
