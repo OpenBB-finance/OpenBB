@@ -76,7 +76,6 @@ def test_check_output(func, kwargs_dict, monkeypatch, use_tab):
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "func, mocked_func, kwargs_dict",

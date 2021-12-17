@@ -2,9 +2,12 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List
+import difflib
+
+from typing import List, Union
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.cryptocurrency.defi import graph_model
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
@@ -20,6 +23,7 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.cryptocurrency.defi import (
     defirate_view,
     defipulse_view,
+    llama_model,
     llama_view,
     substack_view,
     graph_view,
@@ -31,10 +35,16 @@ class DefiController:
 
     CHOICES = [
         "cls",
+        "home",
+        "h",
         "?",
         "help",
         "q",
         "quit",
+        "..",
+        "exit",
+        "r",
+        "reset",
     ]
 
     CHOICES_COMMANDS = [
@@ -54,13 +64,27 @@ class DefiController:
 
     CHOICES += CHOICES_COMMANDS
 
-    def __init__(self):
+    def __init__(self, queue: List[str] = None):
         """Constructor"""
         self.defi_parser = argparse.ArgumentParser(add_help=False, prog="defi")
         self.defi_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
+        self.completer: Union[None, NestedCompleter] = None
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            choices["llama"]["-s"] = {c: {} for c in llama_model.LLAMA_FILTERS}
+            choices["tokens"]["-s"] = {c: {} for c in graph_model.TOKENS_FILTERS}
+            choices["pairs"]["-s"] = {c: {} for c in graph_model.PAIRS_FILTERS}
+            choices["pools"]["-s"] = {c: {} for c in graph_model.POOLS_FILTERS}
+            choices["swaps"]["-s"] = {c: {} for c in graph_model.SWAPS_FILTERS}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -72,44 +96,90 @@ class DefiController:
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
-
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.defi_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
-            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
         )(other_args)
 
-    def call_help(self, *_):
-        """Process Help command"""
-        self.print_help()
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue
 
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return False
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+
+        return self.queue
+
+    def call_help(self, _):
+        """Process help command"""
+        self.print_help()
+        return self.queue
 
     def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+        """Process quit menu command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit"]
+
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "quit"]
+
+    def call_reset(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "defi")
+            self.queue.insert(0, "crypto")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "reset", "crypto", "defi"]
 
     @try_except
     def call_dpi(self, other_args: List[str]):
@@ -125,11 +195,11 @@ class DefiController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="Number of records to display",
             default=15,
         )
 
@@ -155,15 +225,14 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return
-
-        defipulse_view.display_defipulse(
-            top=ns_parser.top,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            defipulse_view.display_defipulse(
+                top=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
+        return self.queue
 
     @try_except
     def call_llama(self, other_args: List[str]):
@@ -179,11 +248,11 @@ class DefiController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="Number of records to display",
             default=10,
         )
 
@@ -194,16 +263,7 @@ class DefiController:
             type=str,
             help="Sort by given column. Default: tvl",
             default="tvl",
-            choices=[
-                "tvl",
-                "symbol",
-                "category",
-                "chains",
-                "change_1h",
-                "change_1d",
-                "change_7d",
-                "tvl",
-            ],
+            choices=llama_model.LLAMA_FILTERS,
         )
 
         parser.add_argument(
@@ -226,16 +286,15 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return
-
-        llama_view.display_defi_protocols(
-            top=ns_parser.top,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-            description=ns_parser.description,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            llama_view.display_defi_protocols(
+                top=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                description=ns_parser.description,
+                export=ns_parser.export,
+            )
+        return self.queue
 
     @try_except
     def call_tvl(self, other_args: List[str]):
@@ -251,11 +310,11 @@ class DefiController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="Number of records to display",
             default=10,
         )
 
@@ -263,10 +322,9 @@ class DefiController:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
-        if not ns_parser:
-            return
-
-        llama_view.display_defi_tvl(top=ns_parser.top, export=ns_parser.export)
+        if ns_parser:
+            llama_view.display_defi_tvl(top=ns_parser.limit, export=ns_parser.export)
+        return self.queue
 
     @try_except
     def call_funding(self, other_args: List[str]):
@@ -282,11 +340,11 @@ class DefiController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="Number of records to display",
             default=10,
         )
 
@@ -302,12 +360,11 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return
-
-        defirate_view.display_funding_rates(
-            top=ns_parser.top, current=ns_parser.current, export=ns_parser.export
-        )
+        if ns_parser:
+            defirate_view.display_funding_rates(
+                top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
+            )
+        return self.queue
 
     @try_except
     def call_borrow(self, other_args: List[str]):
@@ -323,11 +380,11 @@ class DefiController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="Number of records to display",
             default=10,
         )
 
@@ -343,12 +400,11 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return
-
-        defirate_view.display_borrow_rates(
-            top=ns_parser.top, current=ns_parser.current, export=ns_parser.export
-        )
+        if ns_parser:
+            defirate_view.display_borrow_rates(
+                top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
+            )
+        return self.queue
 
     @try_except
     def call_lending(self, other_args: List[str]):
@@ -364,11 +420,11 @@ class DefiController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="Number of records to display",
             default=15,
         )
 
@@ -384,12 +440,11 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return
-
-        defirate_view.display_lending_rates(
-            top=ns_parser.top, current=ns_parser.current, export=ns_parser.export
-        )
+        if ns_parser:
+            defirate_view.display_lending_rates(
+                top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
+            )
+        return self.queue
 
     @try_except
     def call_newsletter(self, other_args: List[str]):
@@ -405,11 +460,11 @@ class DefiController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="Number of records to display",
             default=10,
         )
 
@@ -417,10 +472,11 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return
-
-        substack_view.display_newsletters(top=ns_parser.top, export=ns_parser.export)
+        if ns_parser:
+            substack_view.display_newsletters(
+                top=ns_parser.limit, export=ns_parser.export
+            )
+        return self.queue
 
     @try_except
     def call_tokens(self, other_args: List[str]):
@@ -458,14 +514,7 @@ class DefiController:
             type=str,
             help="Sort by given column. Default: index",
             default="index",
-            choices=[
-                "index",
-                "symbol",
-                "name",
-                "tradeVolumeUSD",
-                "totalLiquidity",
-                "txCount",
-            ],
+            choices=graph_model.TOKENS_FILTERS,
         )
 
         parser.add_argument(
@@ -480,16 +529,15 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return
-
-        graph_view.display_uni_tokens(
-            skip=ns_parser.skip,
-            limit=ns_parser.limit,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            graph_view.display_uni_tokens(
+                skip=ns_parser.skip,
+                limit=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
+        return self.queue
 
     @try_except
     def call_stats(self, other_args: List[str]):
@@ -508,10 +556,9 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return
-
-        graph_view.display_uni_stats(export=ns_parser.export)
+        if ns_parser:
+            graph_view.display_uni_stats(export=ns_parser.export)
+        return self.queue
 
     @try_except
     def call_pairs(self, other_args: List[str]):
@@ -527,11 +574,11 @@ class DefiController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="Number of records",
+            help="Number of records to display",
             default=10,
         )
 
@@ -568,15 +615,7 @@ class DefiController:
             type=str,
             help="Sort by given column. Default: created",
             default="created",
-            choices=[
-                "created",
-                "pair",
-                "token0",
-                "token1",
-                "volumeUSD",
-                "txCount",
-                "totalSupply",
-            ],
+            choices=graph_model.PAIRS_FILTERS,
         )
 
         parser.add_argument(
@@ -591,18 +630,17 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return
-
-        graph_view.display_recently_added(
-            top=ns_parser.top,
-            days=ns_parser.days,
-            min_volume=ns_parser.vol,
-            min_tx=ns_parser.tx,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            graph_view.display_recently_added(
+                top=ns_parser.limit,
+                days=ns_parser.days,
+                min_volume=ns_parser.vol,
+                min_tx=ns_parser.tx,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
+        return self.queue
 
     @try_except
     def call_pools(self, other_args: List[str]):
@@ -618,11 +656,11 @@ class DefiController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="Number of records",
+            help="Number of records to display",
             default=10,
         )
 
@@ -633,15 +671,7 @@ class DefiController:
             type=str,
             help="Sort by given column. Default: volumeUSD",
             default="volumeUSD",
-            choices=[
-                "volumeUSD",
-                "token0.name",
-                "token0.symbol",
-                "token1.name",
-                "token1.symbol",
-                "volumeUSD",
-                "txCount",
-            ],
+            choices=graph_model.POOLS_FILTERS,
         )
 
         parser.add_argument(
@@ -656,15 +686,14 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return
-
-        graph_view.display_uni_pools(
-            top=ns_parser.top,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            graph_view.display_uni_pools(
+                top=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
+        return self.queue
 
     @try_except
     def call_swaps(self, other_args: List[str]):
@@ -680,11 +709,11 @@ class DefiController:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="Number of records",
+            help="Number of records to display",
             default=10,
         )
 
@@ -695,7 +724,7 @@ class DefiController:
             type=str,
             help="Sort by given column. Default: timestamp",
             default="timestamp",
-            choices=["timestamp", "token0", "token1", "amountUSD"],
+            choices=graph_model.SWAPS_FILTERS,
         )
 
         parser.add_argument(
@@ -710,24 +739,19 @@ class DefiController:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return
-
-        graph_view.display_last_uni_swaps(
-            top=ns_parser.top,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            graph_view.display_last_uni_swaps(
+                top=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
+        return self.queue
 
     def print_help(self):
         """Print help"""
         help_text = """
-Decentralized Finance:
-    cls         clear screen
-    ?/help      show this menu again
-    q           quit this menu, and shows back to main menu
-    quit        quit to abandon the program
+Decentralized Finance Menu:
 
 Overview:
     llama         DeFi protocols listed on DeFi Llama
@@ -737,42 +761,87 @@ Overview:
     funding       Funding reates - current or last 30 days average
     borrow        DeFi borrow rates - current or last 30 days average
     lending       DeFi ending rates - current or last 30 days average
-
 Uniswap:
     tokens        Tokens trade-able on Uniswap
     stats         Base statistics about Uniswap
     pairs         Recently added pairs on Uniswap
     pools         Pools by volume on Uniswap
-    swaps         Recent swaps done on Uniswap"""
-        print(help_text, "\n")
+    swaps         Recent swaps done on Uniswap
+"""
+        print(help_text)
 
 
-def menu():
+def menu(queue: List[str] = None):
     """Defi Menu"""
-    defi_controller = DefiController()
-    defi_controller.call_help(None)
+    defi_controller = DefiController(queue=queue)
+    an_input = "HELP_ME"
 
     while True:
+        # There is a command in the queue
+        if defi_controller.queue and len(defi_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
+            if defi_controller.queue[0] in ("q", "..", "quit"):
+                if len(defi_controller.queue) > 1:
+                    return defi_controller.queue[1:]
+                return []
+
+            # Consume 1 element from the queue
+            an_input = defi_controller.queue[0]
+            defi_controller.queue = defi_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
+            if an_input and an_input in defi_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /crypto/defi/ $ {an_input}")
+
         # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in defi_controller.CHOICES}
-            )
-            an_input = session.prompt(
-                f"{get_flair()} (crypto)>(defi)> ",
-                completer=completer,
-            )
         else:
-            an_input = input(f"{get_flair()} (crypto)>(defi)> ")
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
+                defi_controller.print_help()
+
+            # Get input from user using auto-completion
+            if session and gtff.USE_PROMPT_TOOLKIT and defi_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /crypto/defi/ $ ",
+                    completer=defi_controller.completer,
+                    search_ignore_case=True,
+                )
+            # Get input from user without auto-completion
+            else:
+                an_input = input(f"{get_flair()} /crypto/defi/ $ ")
 
         try:
-            process_input = defi_controller.switch(an_input)
+            # Process the input command
+            defi_controller.queue = defi_controller.switch(an_input)
+
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            continue
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
+                end="",
+            )
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                defi_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
+            if similar_cmd:
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                else:
+                    candidate_input = similar_cmd[0]
 
-        if process_input is False:
-            return False
+                if candidate_input == an_input:
+                    an_input = ""
+                    defi_controller.queue = []
+                    print("\n")
+                    continue
 
-        if process_input is True:
-            return True
+                print(f" Replacing by '{an_input}'.")
+                defi_controller.queue.insert(0, an_input)
+            else:
+                print("\n")
+                an_input = ""
+                defi_controller.queue = []

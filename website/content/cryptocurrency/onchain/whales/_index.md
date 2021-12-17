@@ -1,5 +1,5 @@
 ```
-usage: whales [-m MIN] [-t TOP]
+usage: whales [-m MIN] [-l N]
              [-s {date,symbol,blockchain,amount,amount_usd,from,to}]
              [--descend] [-a] [--export {csv,json,xlsx}] [-h]
 ```
@@ -9,7 +9,7 @@ Display huge value transactions from major blockchains. [Source: https://docs.wh
 ```
 optional arguments:
   -m MIN, --min MIN     Minimum value of transactions. (default: 1000000)
-  -t TOP, --top TOP     top N number of records (default: 10)
+  -l N, --limit N       display N number of records (default: 10)
   -s {date,symbol,blockchain,amount,amount_usd,from,to}, --sort {date,symbol,blockchain,amount,amount_usd,from,to}
                         Sort by given column (default: date)
   --descend             Flag to sort in descending order (lowest first)

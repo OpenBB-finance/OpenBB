@@ -1,3 +1,4 @@
+# pylint: disable=W0612
 from datetime import datetime, timedelta
 import asyncio
 import discord

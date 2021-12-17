@@ -39,6 +39,8 @@ from gamestonk_terminal import feature_flags as gtff
 # TODO: Improve implementation of coin loading
 # Currently adding this function to helpers for implementing prediction menu
 
+INTERVALS = ["1H", "3H", "6H", "1D"]
+
 
 def load_cg_coin_data(
     coin: str, currency: str = "USD", days: int = 365, sampling: str = "1D"
@@ -204,7 +206,7 @@ def load(
     Tuple[Union[str, pycoingecko_model.Coin], str, str]
         - str or Coin object for provided coin
         - str with source of the loaded data. CoinGecko, CoinPaprika, or Binance
-        - str with
+        - str with symbol
     """
 
     current_coin = ""  # type: Optional[Any]
@@ -242,7 +244,11 @@ def load(
     return current_coin, None, None
 
 
+FIND_KEYS = ["id", "symbol", "name"]
+
 # TODO: Find better algorithm then difflib.get_close_matches to find most similar coins
+
+
 def find(source: str, coin: str, key: str, top: int, export: str) -> None:
     """Find similar coin by coin name,symbol or id.
 

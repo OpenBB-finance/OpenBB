@@ -1,0 +1,63 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - MOCK_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+      X-CSRFToken:
+      - TyTJwjuEC7VV7mOqZ622haRaaUr0x0Ng4nrwSRFKQs7vdoBcJlK9qjAS69ghzhFu
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.quiverquant.com/beta/historical/govcontracts/SSTK
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3zUvUpEMRCG4VsJqQ9h/ifZzkuwFLGwsFRB1kq8d9lC2O9ApjvFS3hOMsnzT3+8
+        fvVL06P1p7fX26eQ8NH6w/vn98e1XxoLiQ/6Pdp/bBATxBxiE2otaiPXfczrPp6uC1eWfcxMs0Dz
+        vI9DLL1gQKxrkRcMiJ01GGLex2KxrDAnngqz65AtOnHvpDJDK7zWKszImCFamAPNQjRHxhYdCEmn
+        Qn1aO2cWaoincbXRftronDHYt2hHdLAO3aJxbfacBRpi09OxINpgos2iuliGc8dRTQfGJFExFO4K
+        LZYhuv1BqFPMCrMAY2V1veEBE8+zAmrCl0Mpc88guLLscZvQlz8AAAD//wMA5efr5kgFAAA=
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6bbe861f4e6f0838-CDG
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 11 Dec 2021 11:55:27 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=C8FAAEI0jMp92XDmQIPbBKmk9KSoaH4Uze6v79rs9%2FLFEeSSh%2BCYC2m3Pc06UR6quzhN7wqRZBdlYRuqJZaUazWvpXaKQXiCvzbf1ynd%2BRSqVTdxXBI5Mxu8oTS%2FE1E9p7xTaFc%3D"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1
