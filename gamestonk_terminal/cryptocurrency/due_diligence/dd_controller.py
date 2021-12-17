@@ -258,7 +258,6 @@ Coinbase:
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-
         return self.queue
 
     def call_help(self, _):
