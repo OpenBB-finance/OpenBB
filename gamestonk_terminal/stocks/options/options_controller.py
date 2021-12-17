@@ -16,7 +16,6 @@ from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    check_positive,
     get_flair,
     parse_known_args_and_warn,
     try_except,
@@ -37,6 +36,7 @@ from gamestonk_terminal.stocks.options import (
     chartexchange_view,
     payoff_controller,
     pricing_controller,
+    screener_controller,
 )
 
 # pylint: disable=R1710,C0302,R0916
@@ -59,9 +59,6 @@ class OptionsController:
         "reset",
     ]
     CHOICES_COMMANDS = [
-        "pres",
-        "disp",
-        "scr",
         "calc",
         "yf",
         "tr",
@@ -83,6 +80,7 @@ class OptionsController:
     CHOICES_MENUS = [
         "payoff",
         "pricing",
+        "screen",
     ]
     CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
 
@@ -168,10 +166,6 @@ class OptionsController:
         """Print help."""
         colored = self.ticker and self.selected_date
         help_text = f"""
-Explore:
-    pres          display available preset templates
-    disp          display filters for selected preset
-    scr           output screener options [Syncretism.io]
     unu           show unusual options activity [fdscanner.com]
     calc          basic call/put PnL calculator
 
@@ -193,6 +187,7 @@ Expiry: {self.selected_date or None}
     parity        shows whether options are above or below expected price [Yfinance]
     binom         shows the value of an option using binomial options pricing [Yfinance]
 
+>   scr           screens tickers based on preset [Syncretism.io]
 >   payoff        shows payoff diagram for a selection of options [Yfinance]
 >   pricing       shows options pricing and risk neutral valuation [Yfinance]
 {Style.RESET_ALL if not colored else ''}"""
@@ -505,99 +500,6 @@ Expiry: {self.selected_date or None}
                 )
             else:
                 print("No ticker loaded.\n")
-
-        return self.queue
-
-    @try_except
-    def call_pres(self, other_args: List[str]):
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="pres",
-            description="""View available presets under presets folder.""",
-        )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            for preset in self.presets:
-                print(preset)
-            print("")
-
-        return self.queue
-
-    @try_except
-    def call_disp(self, other_args: List[str]):
-        """Process disp command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="disp",
-            description="""View filters for a selected preset.""",
-        )
-        parser.add_argument(
-            "-p",
-            "--preset",
-            action="store",
-            dest="preset",
-            type=str,
-            help="View specific preset",
-            default="",
-            choices=self.presets,
-        )
-        if other_args and "-" not in other_args[0]:
-            other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            syncretism_view.view_available_presets(
-                preset=ns_parser.preset, presets_path=self.PRESET_PATH
-            )
-
-        return self.queue
-
-    @try_except
-    def call_scr(self, other_args: List[str]):
-        """Process scr command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="scr",
-            description="""Screener filter output from https://ops.syncretism.io/index.html.
-        Where: CS: Contract Symbol; S: Symbol, T: Option Type; Str: Strike; Exp v: Expiration;
-        IV: Implied Volatility; LP: Last Price; B: Bid; A: Ask; V: Volume; OI: Open Interest;
-        Y: Yield; MY: Monthly Yield; SMP: Regular Market Price; SMDL: Regular Market Day Low;
-        SMDH: Regular Market Day High; LU: Last Trade Date; LC: Last Crawl; ITM: In The Money;
-        PC: Price Change; PB: Price-to-book. """,
-        )
-        parser.add_argument(
-            "-p",
-            "--preset",
-            action="store",
-            dest="preset",
-            type=str,
-            default="template",
-            help="Filter presets",
-            choices=self.presets,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            type=check_positive,
-            default=-1,
-            help="Limit of random entries to display. Default shows all",
-            dest="limit",
-        )
-
-        if other_args and "-" not in other_args[0]:
-            other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            syncretism_view.view_screener_output(
-                preset=ns_parser.preset,
-                presets_path=self.PRESET_PATH,
-                n_show=ns_parser.limit,
-                export=ns_parser.export,
-            )
 
         return self.queue
 
@@ -1467,6 +1369,11 @@ Expiry: {self.selected_date or None}
             print("No ticker loaded. First use `load <ticker>`\n")
 
         return self.queue
+
+    @try_except
+    def call_screen(self, _):
+        """Process screen command"""
+        return screener_controller.menu(self.queue)
 
 
 def menu(ticker: str = "", queue: List[str] = None):
