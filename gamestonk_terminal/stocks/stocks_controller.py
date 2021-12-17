@@ -681,26 +681,18 @@ Stocks Menus:
         """Process qa command"""
         if not self.ticker:
             print("Use 'load <ticker>' prior to this command!", "\n")
-            return
+            return self.queue
 
         if self.interval != "1440min":
             # TODO: This menu should work regardless of data being daily or not!
             print("Load daily data to use this menu!", "\n")
-            return
+            return self.queue
 
         from gamestonk_terminal.stocks.quantitative_analysis import qa_controller
 
-        ret = qa_controller.menu(
-            self.ticker,
-            self.start,
-            self.interval,
-            self.stock,
+        return qa_controller.menu(
+            self.ticker, self.start, self.interval, self.stock, self.queue
         )
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
 
     @try_except
     def call_pred(self, _):
