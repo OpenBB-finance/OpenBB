@@ -29,6 +29,9 @@ from gamestonk_terminal.helper_funcs import (
 
 # pylint: disable=no-member,too-many-branches,C0302
 
+INTERVALS = [1, 5, 15, 30, 60]
+SOURCES = ["yf", "av", "iex"]
+
 
 @try_except
 def search(

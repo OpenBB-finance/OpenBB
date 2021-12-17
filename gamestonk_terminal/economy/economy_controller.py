@@ -5,7 +5,7 @@ import argparse
 import difflib
 from datetime import datetime, timedelta
 import os
-from typing import List
+from typing import List, Union
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
@@ -14,7 +14,6 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.economy import (
     alphavantage_view,
     cnn_view,
-    finnhub_view,
     finviz_view,
     nasdaq_model,
     wsj_view,
@@ -22,17 +21,16 @@ from gamestonk_terminal.economy import (
 )
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-    check_positive,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    EXPORT_ONLY_FIGURES_ALLOWED,
     get_flair,
     parse_known_args_and_warn,
     valid_date,
-    MENU_GO_BACK,
-    MENU_QUIT,
-    MENU_RESET,
     try_except,
     system_clear,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.paths import cd_CHOICES
 
 # pylint: disable=R1710,R0904,C0415
 
@@ -40,6 +38,44 @@ from gamestonk_terminal.menu import session
 class EconomyController:
     """Economy Controller"""
 
+    fear_greed_indicators = ["jbd", "mv", "pco", "mm", "sps", "spb", "shd", "index"]
+    wsj_sortby_cols_dict = {c: None for c in ["ticker", "last", "change", "prevClose"]}
+    map_period_list = ["1d", "1w", "1m", "3m", "6m", "1y"]
+    map_type_list = ["sp500", "world", "full", "etf"]
+    gdp_interval = ["annual", "quarter"]
+    cpi_interval = ["semiannual", "monthly"]
+    tyld_interval = ["daily", "weekly", "monthly"]
+    tyld_maturity = ["3m", "5y", "10y", "30y"]
+    valuation_sort_cols = [
+        "Name",
+        "MarketCap",
+        "P/E",
+        "FwdP/E",
+        "PEG",
+        "P/S",
+        "P/B",
+        "P/C",
+        "P/FCF",
+        "EPSpast5Y",
+        "EPSnext5Y",
+        "Salespast5Y",
+        "Change",
+        "Volume",
+    ]
+    performance_sort_list = [
+        "Name",
+        "Week",
+        "Month",
+        "3Month",
+        "6Month",
+        "1Year",
+        "YTD",
+        "Recom",
+        "AvgVolume",
+        "RelVolume",
+        "Change",
+        "Volume",
+    ]
     d_GROUPS = {
         "sector": "Sector",
         "industry": "Industry",
@@ -60,10 +96,15 @@ class EconomyController:
 
     CHOICES = [
         "cls",
+        "cd",
+        "h",
         "?",
         "help",
         "q",
         "quit",
+        "..",
+        "exit",
+        "r",
         "reset",
     ]
     CHOICES_MENUS = ["fred"]
@@ -99,25 +140,62 @@ class EconomyController:
 
     CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
 
-    def __init__(self):
+    def __init__(self, queue: List[str] = None):
         """Constructor"""
         self.econ_parser = argparse.ArgumentParser(add_help=False, prog="economy")
         self.econ_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            choices["cd"] = {c: None for c in cd_CHOICES}
+
+            choices["feargreed"]["-i"] = {c: None for c in self.fear_greed_indicators}
+            choices["feargreed"]["--indicator"] = {
+                c: None for c in self.fear_greed_indicators
+            }
+            for command in ["energy", "meats", "metals", "grains", "softs"]:
+                choices[command]["-s"] = self.wsj_sortby_cols_dict
+                choices[command]["--sortby"] = self.wsj_sortby_cols_dict
+
+            choices["map"]["-p"] = {c: None for c in self.map_period_list}
+            choices["map"]["--period"] = {c: None for c in self.map_period_list}
+
+            choices["valuation"]["-s"] = {c: None for c in self.valuation_sort_cols}
+            choices["valuation"]["--sortby"] = {
+                c: None for c in self.valuation_sort_cols
+            }
+
+            choices["performance"]["-s"] = {c: None for c in self.performance_sort_list}
+            choices["performance"]["--sortby"] = {
+                c: None for c in self.performance_sort_list
+            }
+
+            choices["gdp"]["-i"] = {c: None for c in self.gdp_interval}
+            choices["gdp"]["--interval"] = {c: None for c in self.gdp_interval}
+
+            choices["cpi"]["-i"] = {c: None for c in self.cpi_interval}
+            choices["cpi"]["--interval"] = {c: None for c in self.cpi_interval}
+
+            choices["tyld"]["-i"] = {c: None for c in self.tyld_interval}
+            choices["tyld"]["--interval"] = {c: None for c in self.tyld_interval}
+            choices["tyld"]["-m"] = {c: None for c in self.tyld_maturity}
+            choices["tyld"]["--maturity"] = {c: None for c in self.tyld_maturity}
+
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
 
     @staticmethod
     def print_help():
         """Print help"""
         help_text = """
-What do you want to do?
-    cls           clear screen
-    ?/help        show this menu again
-    q             quit this menu, and shows back to main menu
-    quit          quit to abandon program
-    reset         reset terminal and reload configs
-
 CNN:
     feargreed     CNN Fear and Greed Index
 Wall St. Journal:
@@ -163,22 +241,25 @@ NASDAQ DataLink (formerly Quandl):
             MENU_RESET - Reset terminal and go back to same previous menu
         """
 
-        # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue if len(self.queue) > 0 else []
+
+        if "/" in an_input:
+            actions = an_input.split("/")
+            an_input = actions[0]
+            for cmd in actions[1:][::-1]:
+                self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.econ_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self,
@@ -186,84 +267,55 @@ NASDAQ DataLink (formerly Quandl):
             lambda _: "Command not recognized!",
         )(other_args)
 
-    def call_help(self, _):
-        """Process Help command"""
-        self.print_help()
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue if len(self.queue) > 0 else []
 
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return MENU_GO_BACK
+    def call_cd(self, other_args):
+        """Process cd command"""
+        if other_args:
+            args = other_args[0].split("/")
+            if len(args) > 0:
+                for m in args[::-1]:
+                    if m:
+                        self.queue.insert(0, m)
+            else:
+                self.queue.insert(0, args[0])
+
+        self.queue.insert(0, "q")
+
+        return self.queue if len(self.queue) > 0 else []
+
+    def call_help(self, _):
+        """Process help command"""
+        self.print_help()
+        return self.queue if len(self.queue) > 0 else []
 
     def call_quit(self, _):
-        """Process Quit command - exit the program"""
-        return MENU_QUIT
+        """Process quit menu command"""
+        print("")
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q"]
+
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q", "q"]
 
     def call_reset(self, _):
-        """Process Reset command - reset the program"""
-        return MENU_RESET
-
-    @try_except
-    def call_events(self, other_args: List[str]):
-        """Process events command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="events",
-            description="""
-                Output economy impact calendar impact events. [Source: Finnhub]
-            """,
-        )
-        parser.add_argument(
-            "-c",
-            "--country",
-            action="store",
-            dest="country",
-            type=str,
-            default="US",
-            choices=["NZ", "AU", "ERL", "CA", "EU", "US", "JP", "CN", "GB", "CH"],
-            help="Country from where to get economy calendar impact events",
-        )
-        parser.add_argument(
-            "-n",
-            "--num",
-            action="store",
-            dest="num",
-            type=check_positive,
-            default=10,
-            help="Number economy calendar impact events to display",
-        )
-        parser.add_argument(
-            "-i",
-            "--impact",
-            action="store",
-            dest="impact",
-            type=str,
-            default="all",
-            choices=["low", "medium", "high", "all"],
-            help="Impact of the economy event",
-        )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-c")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        finnhub_view.economy_calendar_events(
-            country=ns_parser.country,
-            num=ns_parser.num,
-            impact=ns_parser.impact,
-            export=ns_parser.export,
-        )
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "economy")
+            self.queue.insert(0, "r")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "r", "economy"]
 
     @try_except
     def call_feargreed(self, other_args: List[str]):
@@ -281,26 +333,19 @@ NASDAQ DataLink (formerly Quandl):
             dest="indicator",
             required=False,
             type=str,
-            choices=["jbd", "mv", "pco", "mm", "sps", "spb", "shd", "index"],
+            choices=self.fear_greed_indicators,
             help="""
                 CNN Fear And Greed indicator or index. From Junk Bond Demand, Market Volatility,
                 Put and Call Options, Market Momentum Stock Price Strength, Stock Price Breadth,
                 Safe Heaven Demand, and Index.
             """,
         )
-        parser.add_argument(
-            "--export",
-            choices=["png", "jpg", "pdf", "svg"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export plot to png,jpg,pdf,svg file",
-        )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-i")
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-i")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
         if not ns_parser:
             return
 
@@ -308,6 +353,7 @@ NASDAQ DataLink (formerly Quandl):
             indicator=ns_parser.indicator,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_overview(self, other_args: List[str]):
@@ -318,21 +364,17 @@ NASDAQ DataLink (formerly Quandl):
             prog="overview",
             description="Market overview. [Source: Wall St. Journal]",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
         wsj_view.display_overview(
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_indices(self, other_args: List[str]):
@@ -343,21 +385,16 @@ NASDAQ DataLink (formerly Quandl):
             prog="indices",
             description="US indices. [Source: Wall St. Journal]",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
         wsj_view.display_indices(
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_futures(self, other_args: List[str]):
@@ -368,21 +405,16 @@ NASDAQ DataLink (formerly Quandl):
             prog="futures",
             description="Futures/Commodities. [Source: Wall St. Journal]",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
         wsj_view.display_futures(
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_usbonds(self, other_args: List[str]):
@@ -393,21 +425,16 @@ NASDAQ DataLink (formerly Quandl):
             prog="usbonds",
             description="US Bonds. [Source: Wall St. Journal]",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
         wsj_view.display_usbonds(
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_glbonds(self, other_args: List[str]):
@@ -418,21 +445,16 @@ NASDAQ DataLink (formerly Quandl):
             prog="glbonds",
             description="Global Bonds. [Source: Wall St. Journal]",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
         wsj_view.display_glbonds(
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_currencies(self, other_args: List[str]):
@@ -443,21 +465,17 @@ NASDAQ DataLink (formerly Quandl):
             prog="currencies",
             description="Currencies. [Source: Wall St. Journal]",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
         wsj_view.display_currencies(
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_energy(self, other_args: List[str]):
@@ -473,7 +491,7 @@ NASDAQ DataLink (formerly Quandl):
             "--sortby",
             dest="sort_col",
             type=str,
-            choices=["ticker", "last", "change", "prevClose"],
+            choices=self.wsj_sortby_cols_dict.keys(),
             default="ticker",
         )
         parser.add_argument(
@@ -484,15 +502,9 @@ NASDAQ DataLink (formerly Quandl):
             action="store_true",
             default=False,
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -502,6 +514,7 @@ NASDAQ DataLink (formerly Quandl):
             ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_metals(self, other_args: List[str]):
@@ -517,7 +530,7 @@ NASDAQ DataLink (formerly Quandl):
             "--sortby",
             dest="sort_col",
             type=str,
-            choices=["ticker", "last", "change", "prevClose"],
+            choices=self.wsj_sortby_cols_dict.keys(),
             default="ticker",
         )
         parser.add_argument(
@@ -528,15 +541,9 @@ NASDAQ DataLink (formerly Quandl):
             action="store_true",
             default=False,
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -546,6 +553,7 @@ NASDAQ DataLink (formerly Quandl):
             ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_meats(self, other_args: List[str]):
@@ -561,7 +569,7 @@ NASDAQ DataLink (formerly Quandl):
             "--sortby",
             dest="sort_col",
             type=str,
-            choices=["ticker", "last", "change", "prevClose"],
+            choices=self.wsj_sortby_cols_dict.keys(),
             default="ticker",
         )
         parser.add_argument(
@@ -572,15 +580,9 @@ NASDAQ DataLink (formerly Quandl):
             action="store_true",
             default=False,
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -590,6 +592,7 @@ NASDAQ DataLink (formerly Quandl):
             ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_grains(self, other_args: List[str]):
@@ -605,7 +608,7 @@ NASDAQ DataLink (formerly Quandl):
             "--sortby",
             dest="sort_col",
             type=str,
-            choices=["ticker", "last", "change", "prevClose"],
+            choices=self.wsj_sortby_cols_dict.keys(),
             default="ticker",
         )
         parser.add_argument(
@@ -616,15 +619,9 @@ NASDAQ DataLink (formerly Quandl):
             action="store_true",
             default=False,
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -634,6 +631,7 @@ NASDAQ DataLink (formerly Quandl):
             ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_softs(self, other_args: List[str]):
@@ -649,7 +647,7 @@ NASDAQ DataLink (formerly Quandl):
             "--sortby",
             dest="sort_col",
             type=str,
-            choices=["ticker", "last", "change", "prevClose"],
+            choices=self.wsj_sortby_cols_dict.keys(),
             default="ticker",
         )
         parser.add_argument(
@@ -660,15 +658,9 @@ NASDAQ DataLink (formerly Quandl):
             action="store_true",
             default=False,
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -678,6 +670,7 @@ NASDAQ DataLink (formerly Quandl):
             ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_map(self, other_args: List[str]):
@@ -698,7 +691,7 @@ NASDAQ DataLink (formerly Quandl):
             dest="s_period",
             type=str,
             default="1d",
-            choices=["1d", "1w", "1m", "3m", "6m", "1y"],
+            choices=self.map_period_list,
             help="Performance period.",
         )
         parser.add_argument(
@@ -708,7 +701,7 @@ NASDAQ DataLink (formerly Quandl):
             dest="s_type",
             type=str,
             default="sp500",
-            choices=["sp500", "world", "full", "etf"],
+            choices=self.map_type_list,
             help="Map filter type.",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -719,6 +712,7 @@ NASDAQ DataLink (formerly Quandl):
             period=ns_parser.s_period,
             map_type=ns_parser.s_type,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_valuation(self, other_args: List[str]):
@@ -745,22 +739,7 @@ NASDAQ DataLink (formerly Quandl):
             "--sortby",
             dest="sort_col",
             type=str,
-            choices=[
-                "Name",
-                "MarketCap",
-                "P/E",
-                "FwdP/E",
-                "PEG",
-                "P/S",
-                "P/B",
-                "P/C",
-                "P/FCF",
-                "EPSpast5Y",
-                "EPSnext5Y",
-                "Salespast5Y",
-                "Change",
-                "Volume",
-            ],
+            choices=self.valuation_sort_cols,
             default="Name",
             help="Column to sort by",
         )
@@ -772,18 +751,12 @@ NASDAQ DataLink (formerly Quandl):
             action="store_true",
             default=False,
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
         if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-g")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
         if not ns_parser:
             return
 
@@ -798,6 +771,7 @@ NASDAQ DataLink (formerly Quandl):
             ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_performance(self, other_args: List[str]):
@@ -823,20 +797,7 @@ NASDAQ DataLink (formerly Quandl):
             "-s",
             "--sortby",
             dest="sort_col",
-            choices=[
-                "Name",
-                "Week",
-                "Month",
-                "3Month",
-                "6Month",
-                "1Year",
-                "YTD",
-                "Recom",
-                "AvgVolume",
-                "RelVolume",
-                "Change",
-                "Volume",
-            ],
+            choices=self.performance_sort_list,
             default="Name",
             help="Column to sort by",
         )
@@ -848,17 +809,11 @@ NASDAQ DataLink (formerly Quandl):
             action="store_true",
             default=False,
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
         if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-g")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
         if not ns_parser:
             return
         group = (
@@ -872,6 +827,7 @@ NASDAQ DataLink (formerly Quandl):
             ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_spectrum(self, other_args: List[str]):
@@ -893,18 +849,12 @@ NASDAQ DataLink (formerly Quandl):
             dest="group",
             help="Data group (sector, industry or country)",
         )
-        parser.add_argument(
-            "--export",
-            choices=["png", "jpg", "pdf", "svg"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export plot to png,jpg,pdf,svg file",
-        )
         if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-g")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
         if not ns_parser:
             return
         group = (
@@ -917,6 +867,7 @@ NASDAQ DataLink (formerly Quandl):
         # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
         # after saving it and displaying it to the user
         os.remove(self.d_GROUPS[group] + ".jpg")
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_rtps(self, other_args: List[str]):
@@ -936,17 +887,9 @@ NASDAQ DataLink (formerly Quandl):
             dest="raw",
             help="Only output raw data",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"]
-            if "--raw" in other_args
-            else ["png", "jpg", "pdf", "svg"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export data to csv,json,xlsx or png,jpg,pdf,svg file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -954,6 +897,7 @@ NASDAQ DataLink (formerly Quandl):
             raw=ns_parser.raw,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_gdp(self, other_args: List[str]):
@@ -971,8 +915,8 @@ NASDAQ DataLink (formerly Quandl):
             "--interval",
             help="Interval for GDP data",
             dest="interval",
-            choices=["a", "q"],
-            default="a",
+            choices=self.gdp_interval,
+            default="annual",
         )
         parser.add_argument(
             "-s",
@@ -1000,11 +944,12 @@ NASDAQ DataLink (formerly Quandl):
             return
 
         alphavantage_view.display_real_gdp(
-            interval=ns_parser.interval,
+            interval=ns_parser.interval[0],
             start_year=ns_parser.start,
             raw=ns_parser.raw,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_gdpc(self, other_args: List[str]):
@@ -1045,6 +990,7 @@ NASDAQ DataLink (formerly Quandl):
             raw=ns_parser.raw,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_inf(self, other_args: List[str]):
@@ -1102,8 +1048,8 @@ NASDAQ DataLink (formerly Quandl):
             "--interval",
             help="Interval for GDP data",
             dest="interval",
-            choices=["s", "m"],
-            default="s",
+            choices=self.cpi_interval,
+            default="semiannual",
         )
         parser.add_argument(
             "-s",
@@ -1129,11 +1075,12 @@ NASDAQ DataLink (formerly Quandl):
             return
 
         alphavantage_view.display_cpi(
-            interval=ns_parser.interval,
+            interval=ns_parser.interval[0],
             start_year=ns_parser.start,
             raw=ns_parser.raw,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_tyld(self, other_args: List[str]):
@@ -1151,15 +1098,15 @@ NASDAQ DataLink (formerly Quandl):
             "--interval",
             help="Interval for treasury data",
             dest="interval",
-            choices=["d", "w", "m"],
-            default="w",
+            choices=self.tyld_interval,
+            default="weekly",
         )
         parser.add_argument(
             "-m",
             "--maturity",
             help="Maturity timeline for treasury",
             dest="maturity",
-            choices=["3m", "5y", "10y", "30y"],
+            choices=self.tyld_maturity,
             default="5y",
         )
         parser.add_argument(
@@ -1188,12 +1135,13 @@ NASDAQ DataLink (formerly Quandl):
             return
 
         alphavantage_view.display_treasury_yield(
-            interval=ns_parser.interval,
+            interval=ns_parser.interval[0],
             maturity=ns_parser.maturity,
             start_date=ns_parser.start,
             raw=ns_parser.raw,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_unemp(self, other_args: List[str]):
@@ -1234,6 +1182,7 @@ NASDAQ DataLink (formerly Quandl):
             raw=ns_parser.raw,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     @try_except
     def call_bigmac(self, other_args: List[str]):
@@ -1284,51 +1233,75 @@ NASDAQ DataLink (formerly Quandl):
             raw=ns_parser.raw,
             export=ns_parser.export,
         )
+        return self.queue if len(self.queue) > 0 else []
 
     def call_fred(self, _):
         """Process fred command"""
         from gamestonk_terminal.economy.fred import fred_controller
 
-        ret = fred_controller.menu()
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return fred_controller.menu(self.queue)
 
 
-def menu():
+def menu(queue: List[str] = None):
     """Econ Menu"""
 
-    econ_controller = EconomyController()
-    econ_controller.print_help()
-
+    econ_controller = EconomyController(queue)
+    first = True
     # Loop forever and ever
     while True:
+        # There is a command in the queue
+        if econ_controller.queue and len(econ_controller.queue) > 0:
+            if econ_controller.queue[0] in ("q", "..", "quit"):
+                if len(econ_controller.queue) > 1:
+                    return econ_controller.queue[1:]
+                return []
+
+            an_input = econ_controller.queue[0]
+            econ_controller.queue = econ_controller.queue[1:]
+            if an_input and an_input in econ_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /economy/ $ {an_input}")
+
         # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in econ_controller.CHOICES}
-            )
-
-            an_input = session.prompt(
-                f"{get_flair()} (economy)> ",
-                completer=completer,
-            )
         else:
-            an_input = input(f"{get_flair()} (economy)> ")
-        try:
-            process_input = econ_controller.switch(an_input)
+            if first:
+                econ_controller.print_help()
+                first = False
+            if session and gtff.USE_PROMPT_TOOLKIT and econ_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /economy/ $ ",
+                    completer=econ_controller.completer,
+                    search_ignore_case=True,
+                )
 
-            if process_input is not None:
-                return process_input
+            else:
+                an_input = input(f"{get_flair()} /economy/ $ ")
+
+        try:
+            econ_controller.queue = econ_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
+            print(f"\nThe command '{an_input}' doesn't exist.", end="")
             similar_cmd = difflib.get_close_matches(
-                an_input, econ_controller.CHOICES, n=1, cutoff=0.7
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                econ_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
             )
-
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
-            continue
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        econ_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
+                else:
+                    an_input = similar_cmd[0]
+
+                print(f" Replacing by '{an_input}'.")
+                econ_controller.queue.insert(0, an_input)
+            else:
+                print("\n")

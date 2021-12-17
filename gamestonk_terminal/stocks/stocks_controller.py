@@ -32,7 +32,6 @@ from gamestonk_terminal.stocks.stocks_helper import (
     quote,
     process_candle,
 )
-from gamestonk_terminal.paths import cd_CHOICES
 
 from gamestonk_terminal.common.quantitative_analysis import qa_view
 
@@ -47,15 +46,17 @@ class StocksController:
 
     CHOICES = [
         "cls",
-        "cd",
+        "home",
         "h",
         "?",
+        "help",
         "q",
+        "quit",
         "..",
         "exit",
         "r",
+        "reset",
     ]
-
     CHOICES_COMMANDS = [
         "search",
         "load",
@@ -63,7 +64,6 @@ class StocksController:
         "candle",
         "news",
     ]
-
     CHOICES_MENUS = [
         "ta",
         "ba",
@@ -82,7 +82,6 @@ class StocksController:
         "ca",
         "options",
     ]
-
     CHOICES += CHOICES_COMMANDS
     CHOICES += CHOICES_MENUS
 
@@ -98,7 +97,6 @@ class StocksController:
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
-            choices["cd"] = {c: None for c in cd_CHOICES}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -133,22 +131,22 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
     news        latest news of the company [News API]
 {reset_style_if_no_ticker}
 Stocks Menus:
-    /options    options menu,  \t\t\t e.g.: chains, open interest, greeks, parity
-    /disc       discover trending stocks, \t e.g. map, sectors, high short interest
-    /sia        sector and industry analysis, \t e.g. companies per sector, quick ratio per industry and country
-    /dps        dark pool and short data, \t e.g. darkpool, short interest, ftd
-    /scr        screener stocks, \t\t e.g. overview/performance, using preset filters
-    /ins        insider trading,         \t e.g.: latest penny stock buys, top officer purchases
-    /gov        government menu, \t\t e.g. house trading, contracts, corporate lobbying
-    /ba         behavioural analysis,    \t from: reddit, stocktwits, twitter, google
-    /ca         comparison analysis,     \t e.g.: get similar, historical, correlation, financials{dim_if_no_ticker}
-    /fa         fundamental analysis,    \t e.g.: income, balance, cash, earnings
-    /res        research web page,       \t e.g.: macroaxis, yahoo finance, fool
-    /dd         in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
-    /bt         strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies
-    /ta         technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
-    /qa         quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis
-    /pred       prediction techniques,   \t e.g.: regression, arima, rnn, lstm
+>   options     options menu,  \t\t\t e.g.: chains, open interest, greeks, parity
+>   disc        discover trending stocks, \t e.g. map, sectors, high short interest
+>   sia         sector and industry analysis, \t e.g. companies per sector, quick ratio per industry and country
+>   dps         dark pool and short data, \t e.g. darkpool, short interest, ftd
+>   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
+>   ins        insider trading,         \t e.g.: latest penny stock buys, top officer purchases
+>   gov        government menu, \t\t e.g. house trading, contracts, corporate lobbying
+>   ba         behavioural analysis,    \t from: reddit, stocktwits, twitter, google
+>   ca         comparison analysis,     \t e.g.: get similar, historical, correlation, financials{dim_if_no_ticker}
+>   fa         fundamental analysis,    \t e.g.: income, balance, cash, earnings
+>   res        research web page,       \t e.g.: macroaxis, yahoo finance, fool
+>   dd         in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
+>   bt         strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies
+>   ta         technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
+>   qa         quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis
+>   pred       prediction techniques,   \t e.g.: regression, arima, rnn, lstm
 {reset_style_if_no_ticker}"""
         print(help_text)
 
@@ -160,25 +158,37 @@ Stocks Menus:
         List[str]
             List of commands in the queue to execute
         """
-
         # Empty command
         if not an_input:
             print("")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
+        # Navigation slash is being used
         if "/" in an_input:
             actions = an_input.split("/")
-            an_input = actions[0]
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
             for cmd in actions[1:][::-1]:
-                self.queue.insert(0, cmd)
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.stocks_parser.parse_known_args(an_input.split())
 
+        # Redirect commands to their correct functions
         if known_args.cmd:
-            if known_args.cmd == "..":
-                known_args.cmd = "q"
-            elif known_args.cmd == "?":
-                known_args.cmd = "h"
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self,
@@ -189,53 +199,43 @@ Stocks Menus:
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
-    def call_cd(self, other_args):
-        """Process cd command"""
-        if other_args:
-            args = other_args[0].split("/")
-            if len(args) > 0:
-                for m in args[::-1]:
-                    if m:
-                        self.queue.insert(0, m)
-            else:
-                self.queue.insert(0, args[0])
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        return self.queue
 
-        self.queue.insert(0, "q")
-
-        return self.queue if len(self.queue) > 0 else []
-
-    def call_h(self, _):
+    def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
-    def call_q(self, _):
+    def call_quit(self, _):
         """Process quit menu command"""
+        print("")
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q"]
+        return ["quit"]
 
     def call_exit(self, _):
         """Process exit terminal command"""
         if len(self.queue) > 0:
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "q"]
+        return ["quit", "quit"]
 
-    def call_r(self, _):
+    def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "stocks")
-            self.queue.insert(0, "r")
-            self.queue.insert(0, "q")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["q", "r", "stocks"]
+        return ["quit", "reset", "stocks"]
 
-    # COMMANDS
     @try_except
     def call_search(self, other_args: List[str]):
         """Process search command"""
@@ -343,40 +343,34 @@ Stocks Menus:
             type=str,
             default="ytd",
         )
-
-        # For the case where a user uses: 'load BB'
-        if other_args and "-t" not in other_args and "-h" not in other_args:
+        if other_args and "-" not in other_args[0]:
             other_args.insert(0, "-t")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            df_stock_candidate = load(
+                ns_parser.ticker,
+                ns_parser.start,
+                ns_parser.interval,
+                ns_parser.end,
+                ns_parser.prepost,
+                ns_parser.source,
+            )
+            if not df_stock_candidate.empty:
+                self.stock = df_stock_candidate
+                if "." in ns_parser.ticker:
+                    self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
+                else:
+                    self.ticker = ns_parser.ticker.upper()
+                    self.suffix = ""
 
-        df_stock_candidate = load(
-            ns_parser.ticker,
-            ns_parser.start,
-            ns_parser.interval,
-            ns_parser.end,
-            ns_parser.prepost,
-            ns_parser.source,
-            ns_parser.iexrange,
-        )
+                if ns_parser.source == "iex":
+                    self.start = self.stock.index[0].strftime("%Y-%m-%d")
+                else:
+                    self.start = ns_parser.start
+                self.interval = f"{ns_parser.interval}min"
 
-        if not df_stock_candidate.empty:
-            self.stock = df_stock_candidate
-            if "." in ns_parser.ticker:
-                self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
-            else:
-                self.ticker = ns_parser.ticker.upper()
-                self.suffix = ""
-
-            if ns_parser.source == "iex":
-                self.start = self.stock.index[0].strftime("%Y-%m-%d")
-            else:
-                self.start = ns_parser.start
-            self.interval = f"{ns_parser.interval}min"
-
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_quote(self, other_args: List[str]):
         """Process quote command"""
@@ -482,7 +476,7 @@ Stocks Menus:
             else:
                 print("No ticker loaded. First use `load {ticker}`\n")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_news(self, other_args: List[str]):
@@ -564,31 +558,19 @@ Stocks Menus:
         """Process dps command"""
         from gamestonk_terminal.stocks.dark_pool_shorts import dps_controller
 
-        ret = dps_controller.menu(self.ticker, self.start, self.stock)
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return dps_controller.menu(self.ticker, self.start, self.stock, self.queue)
 
     def call_scr(self, _):
         """Process scr command"""
         from gamestonk_terminal.stocks.screener import screener_controller
 
-        ret = screener_controller.menu()
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return screener_controller.menu(self.queue)
 
     def call_sia(self, _):
         """Process ins command"""
         from gamestonk_terminal.stocks.sector_industry_analysis import sia_controller
 
-        ret = sia_controller.menu(self.ticker)
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return sia_controller.menu(self.ticker, self.queue)
 
     def call_ins(self, _):
         """Process ins command"""
@@ -609,21 +591,13 @@ Stocks Menus:
         """Process gov command"""
         from gamestonk_terminal.stocks.government import gov_controller
 
-        ret = gov_controller.menu(self.ticker)
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return gov_controller.menu(self.ticker, self.queue)
 
     def call_options(self, _):
         """Process options command"""
         from gamestonk_terminal.stocks.options import options_controller
 
-        ret = options_controller.menu(self.ticker)
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return options_controller.menu(self.ticker, self.queue)
 
     def call_res(self, _):
         """Process res command"""
@@ -650,31 +624,18 @@ Stocks Menus:
 
         if not self.ticker:
             print("Use 'load <ticker>' prior to this command!", "\n")
-            return
+            return self.queue
 
-        ret = dd_controller.menu(
-            self.ticker,
-            self.start,
-            self.interval,
-            self.stock,
+        return dd_controller.menu(
+            self.ticker, self.start, self.interval, self.stock, self.queue
         )
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
 
     def call_ca(self, _):
         """Process ca command"""
 
         from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 
-        ret = ca_controller.menu([self.ticker] if self.ticker else "")
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return ca_controller.menu([self.ticker] if self.ticker else "", self.queue)
 
     def call_fa(self, _):
         """Process fa command"""
@@ -684,12 +645,9 @@ Stocks Menus:
 
         from gamestonk_terminal.stocks.fundamental_analysis import fa_controller
 
-        ret = fa_controller.menu(self.ticker, self.start, self.interval, self.suffix)
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return fa_controller.menu(
+            self.ticker, self.start, self.interval, self.suffix, self.queue
+        )
 
     def call_bt(self, _):
         """Process bt command"""
@@ -710,35 +668,19 @@ Stocks Menus:
         """Process ta command"""
         if not self.ticker:
             print("Use 'load <ticker>' prior to this command!", "\n")
-            return
+            return self.queue
 
         from gamestonk_terminal.stocks.technical_analysis import ta_controller
 
-        ret = ta_controller.menu(
-            self.ticker,
-            self.start,
-            self.interval,
-            self.stock,
+        return ta_controller.menu(
+            self.ticker, self.start, self.interval, self.stock, self.queue
         )
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
 
     def call_ba(self, _):
         """Process ba command"""
         from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
 
-        ret = ba_controller.menu(
-            self.ticker,
-            self.start,
-        )
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return ba_controller.menu(self.ticker, self.start, self.queue)
 
     def call_qa(self, _):
         """Process qa command"""
@@ -773,60 +715,59 @@ Stocks Menus:
                 "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
                 "\n",
             )
-            return
+            return self.queue
 
         if not self.ticker:
             print("Use 'load <ticker>' prior to this command!", "\n")
-            return
+            return self.queue
 
         if self.interval != "1440min":
             # TODO: This menu should work regardless of data being daily or not!
             print("Load daily data to use this menu!", "\n")
-            return
+            return self.queue
 
         try:
             # pylint: disable=import-outside-toplevel
             from gamestonk_terminal.stocks.prediction_techniques import pred_controller
         except ModuleNotFoundError as e:
             print("One of the optional packages seems to be missing: ", e, "\n")
-            return
+            return self.queue
 
-        ret = pred_controller.menu(
-            self.ticker,
-            self.start,
-            self.interval,
-            self.stock,
+        return pred_controller.menu(
+            self.ticker, self.start, self.interval, self.stock, self.queue
         )
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
 
 
 def menu(ticker: str = "", queue: List[str] = None):
     """Stocks Menu"""
     stocks_controller = StocksController(ticker, queue)
-    an_input = "first"
+    an_input = "HELP_ME"
 
     while True:
         # There is a command in the queue
         if stocks_controller.queue and len(stocks_controller.queue) > 0:
-            if stocks_controller.queue[0] in ("q", ".."):
+            # If the command is quitting the menu we want to return in here
+            if stocks_controller.queue[0] in ("q", "..", "quit"):
+                print("")
                 if len(stocks_controller.queue) > 1:
                     return stocks_controller.queue[1:]
                 return []
 
+            # Consume 1 element from the queue
             an_input = stocks_controller.queue[0]
             stocks_controller.queue = stocks_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input in stocks_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /stocks/ $ {an_input}")
 
         # Get input command from user
         else:
-            if an_input == "first" or an_input in stocks_controller.CHOICES:
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
                 stocks_controller.print_help()
 
+            # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and stocks_controller.completer:
                 an_input = session.prompt(
                     f"{get_flair()} /stocks/ $ ",
@@ -834,26 +775,39 @@ def menu(ticker: str = "", queue: List[str] = None):
                     search_ignore_case=True,
                 )
 
+            # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /stocks/ $ ")
 
         try:
+            # Process the input command
             stocks_controller.queue = stocks_controller.switch(an_input)
 
         except SystemExit:
-            print(f"\nThe command '{an_input}' doesn't exist.", end="")
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks menu.", end=""
+            )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 stocks_controller.CHOICES,
                 n=1,
                 cutoff=0.7,
             )
-
             if similar_cmd:
                 if " " in an_input:
-                    an_input = f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        stocks_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
                 else:
                     an_input = similar_cmd[0]
+
                 print(f" Replacing by '{an_input}'.")
                 stocks_controller.queue.insert(0, an_input)
-            print("\n")
+            else:
+                print("\n")

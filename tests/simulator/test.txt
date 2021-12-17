@@ -1,0 +1,5 @@
+stocks
+disc
+ugs
+reset
+ugs

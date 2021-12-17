@@ -136,7 +136,6 @@ def display_bars_financials(
             else:
                 print(df.to_string, "\n")
         else:
-
             plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             if gtff.USE_ION:
                 plt.ion()
@@ -218,7 +217,7 @@ def display_bars_financials(
         if not export:
             print("")
 
-        return stocks_data, company_ticker
+        return stocks_data, company_tickers
 
     if len(metric_data) == 1:
         print(

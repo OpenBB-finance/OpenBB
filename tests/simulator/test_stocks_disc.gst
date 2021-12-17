@@ -1,5 +1,14 @@
 stocks
 disc
+q
+disc
+..
+disc
+quit
+disc
+help
+h
+?
 rtearn
 pipo
 fipo
@@ -18,4 +27,6 @@ cnews
 lowfloat
 hotpenny
 rtat
+reset
+r
 exit

@@ -223,13 +223,13 @@ Menus:
         """Process economy command"""
         from gamestonk_terminal.economy import economy_controller
 
-        return economy_controller.menu()
+        return economy_controller.menu(self.queue)
 
     def call_etf(self, _):
         """Process etf command"""
         from gamestonk_terminal.etf import etf_controller
 
-        return etf_controller.menu()
+        return etf_controller.menu(self.queue)
 
     def call_forex(self, _):
         """Process forex command"""
@@ -338,6 +338,7 @@ def terminal(jobs_cmds: List[str] = None):
                     )
                     if candidate_input == an_input:
                         an_input = ""
+                        t_controller.queue = []
                         print("\n")
                         continue
                     an_input = candidate_input
