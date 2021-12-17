@@ -11,6 +11,7 @@ from gamestonk_terminal.stocks.backtesting import bt_controller
 # pylint: disable=E1101
 # pylint: disable=W0603
 
+pytest.skip(allow_module_level=True)
 
 empty_df = pd.DataFrame()
 

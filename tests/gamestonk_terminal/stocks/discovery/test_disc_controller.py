@@ -157,9 +157,9 @@ def test_call_quit():
             [
                 "--country=MOCK_COUNTRY",
                 "--sector=MOCK_SECTOR",
-                "--industry=MOCK_INDUSTRY",
+                "--industry=MOCK_INDUSTRY",  # pragma: allowlist secret
                 "--name=MOCK_NAME",
-                "--description=MOCK_DESCRIPTION",
+                "--description=MOCK_DESCRIPTION",  # pragma: allowlist secret
                 "--marketcap=Large",
                 "--include_exchanges",
                 "--amount=10",

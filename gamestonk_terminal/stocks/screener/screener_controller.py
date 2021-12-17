@@ -186,7 +186,9 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 known_args.cmd = "reset"
 
         return getattr(
-            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
         )(other_args)
 
     def call_cls(self, _):
@@ -833,7 +835,7 @@ def menu(queue: List[str] = None):
 
         except SystemExit:
             print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/disc menu.",
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/scr menu.",
                 end="",
             )
             similar_cmd = difflib.get_close_matches(
