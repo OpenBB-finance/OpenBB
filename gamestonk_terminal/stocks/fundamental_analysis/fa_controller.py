@@ -987,18 +987,7 @@ def key_metrics_explained(other_args: List[str]):
 def menu(
     ticker: str, start: str, interval: str, suffix: str = "", queue: List[str] = None
 ):
-    """Fundamental Analysis menu
-    Parameters
-    ----------
-    ticker : str
-        Fundamental analysis ticker symbol
-    start : str
-        Start date of the stock data
-    interval : str
-        Stock data interval
-    suffix : str
-        Suffix for exchange ID
-    """
+    """Fundamental Analysis Menu"""
     fa_controller = FundamentalAnalysisController(
         ticker, start, interval, suffix, queue
     )
@@ -1044,7 +1033,7 @@ def menu(
 
         except SystemExit:
             print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/fa menu.",
                 end="",
             )
             similar_cmd = difflib.get_close_matches(
