@@ -1,5 +1,5 @@
 ```
-usage: volt [-c COIN] [-vs {ETH,USD,BTC,USDT}] [-t TOP]
+usage: volt [-c COIN] [-vs {ETH,USD,BTC,USDT}] [-l N]
             [-s {exchange,coin,tradeAmount,trades}] [--descend] [-h]
             [--export {csv,json,xlsx}]
 ```
@@ -11,7 +11,7 @@ optional arguments:
   -c COIN, --coin COIN  ERC20 token symbol or address. (default: ETH)
   -vs {ETH,USD,BTC,USDT}, --vs {ETH,USD,BTC,USDT}
                         Currency of displayed trade amount. (default: USD)
-  -t TOP, --top TOP     top N number records (default: 10)
+  -l N, --limit N     display N number records (default: 10)
   -s {exchange,coin,tradeAmount,trades}, --sort {exchange,coin,tradeAmount,trades}
                         Sort by given column. (default: trades)
   --descend             Flag to sort in descending order (lowest first)

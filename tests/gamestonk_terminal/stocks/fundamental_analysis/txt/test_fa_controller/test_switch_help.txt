@@ -5,7 +5,6 @@ Fundamental Analysis:
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
     load          load a new ticker
-
 Ticker: 
 
     data          fundamental and technical data of company [FinViz]

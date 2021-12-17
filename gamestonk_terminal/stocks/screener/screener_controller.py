@@ -321,7 +321,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
         if ns_parser:
             self.preset = ns_parser.preset
         print("")
-        return self.queue
 
     @try_except
     def call_historical(self, other_args: List[str]):
@@ -850,6 +849,7 @@ def menu(queue: List[str] = None):
                     )
                     if candidate_input == an_input:
                         an_input = ""
+                        scr_controller.queue = []
                         print("\n")
                         continue
                     an_input = candidate_input

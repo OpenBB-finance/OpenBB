@@ -1,0 +1,5 @@
+,TransactionDate,Ticker,Representative,Transaction,Amount,Range
+0,2021-11-26,CONE,"Carper, Thomas R.",Sale,1001.0,"$1,001 - $15,000"
+1,2021-11-16,CONE,"Carper, Thomas R.",Sale,1001.0,"$1,001 - $15,000"
+2,2020-11-20,CONE,"Carper, Thomas R.",Purchase,1001.0,"$1,001 - $15,000"
+3,2020-08-21,CONE,"Carper, Thomas R.",Sale,1001.0,"$1,001 - $15,000"

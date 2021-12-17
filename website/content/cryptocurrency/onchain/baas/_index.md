@@ -1,5 +1,5 @@
 ```
-usage: baas [-c COIN] [-t TOP] [-vs VS] [-d DAYS]
+usage: baas [-c COIN] [-l N] [-vs VS] [-d DAYS]
             [-s {date,baseCurrency,quoteCurrency,dailySpread,averageBidPrice,averageAskPrice}]
             [--descend] [-h] [--export {csv,json,xlsx}]
 ```
@@ -10,7 +10,7 @@ period [Source: https://graphql.bitquery.io/]
 ```
 optional arguments:
   -c COIN, --coin COIN  ERC20 token symbol or address. (default: None)
-  -t TOP, --top TOP     top N number records (default: 10)
+  -l N, --limit N     display N number records (default: 10)
   -vs VS, --vs VS       Quote currency (default: USDT)
   -d DAYS, --days DAYS  Number of days to display data for. (default: 10)
   -s {date,baseCurrency,quoteCurrency,dailySpread,averageBidPrice,averageAskPrice}, --sort {date,baseCurrency,quoteCurrency,dailySpread,averageBidPrice,averageAskPrice}

@@ -11,7 +11,7 @@ from gamestonk_terminal.common.behavioural_analysis.finbrain_view import (
 from gamestonk_terminal.common.behavioural_analysis.finbrain_model import get_sentiment
 from gamestonk_terminal.helper_funcs import export_data
 
-PATH = os.path.dirname(os.path.abspath(__file__))
+PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 try:
     COINS_JSON = pd.read_json(PATH + "/data/finbrain_coins.json")

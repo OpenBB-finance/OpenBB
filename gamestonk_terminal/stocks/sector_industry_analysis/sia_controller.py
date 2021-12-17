@@ -226,6 +226,8 @@ class SectorIndustryAnalysisController:
         m = Style.DIM if not self.mktcap else ""
         r = Style.RESET_ALL
         help_text = f"""
+    load          load a specific ticker and all it's corresponding parameters
+
     clear         clear all or one of industry, sector, country and market cap parameters
     industry      see existing industries, or set industry if arg specified
     sector        see existing sectors, or set sector if arg specified
@@ -296,7 +298,9 @@ Returned tickers: {', '.join(self.tickers)}
                 known_args.cmd = "reset"
 
         return getattr(
-            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
         )(other_args)
 
     def call_cls(self, _):
@@ -1173,6 +1177,7 @@ def menu(
                     )
                     if candidate_input == an_input:
                         an_input = ""
+                        sia_controller.queue = []
                         print("\n")
                         continue
                     an_input = candidate_input

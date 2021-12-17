@@ -1,29 +1,38 @@
-""" discovery/ark_model.py tests """
-import unittest
+# IMPORTATION STANDARD
 
-import vcr
+# IMPORTATION THIRDPARTY
+import pytest
 
-from gamestonk_terminal.stocks.discovery.ark_model import get_ark_orders
-from tests.helpers.helpers import check_print
+# IMPORTATION INTERNAL
+from gamestonk_terminal.stocks.discovery import ark_model
 
 
-class TestDiscoveryArkModel(unittest.TestCase):
-    @check_print(assert_in="direction")
-    @vcr.use_cassette(
-        "tests/gamestonk_terminal/stocks/discovery/cassettes/test_ark_model/test_get_ark_order.yaml",
-        record_mode="none",
-    )
-    def test_get_ark_orders(self):
-        ret = get_ark_orders()
-        print(ret)
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [
+            ("period1", "1598220000"),
+            ("period2", "1635980400"),
+        ],
+    }
 
-    @check_print(assert_in="weight")
-    @vcr.use_cassette(
-        "tests/gamestonk_terminal/stocks/discovery/cassettes/test_ark_model/test_get_add_order.yaml",
-        record_mode="none",
-    )
-    def test_add_order_total(self):
-        orders = get_ark_orders()
-        # ret = add_order_total(orders)
-        ret = orders
-        print(ret)
+
+@pytest.mark.vcr
+def test_get_ark_orders(recorder):
+    result_df = ark_model.get_ark_orders()
+    recorder.capture(result_df)
+
+
+@pytest.mark.vcr
+def test_add_order_total(recorder, mocker):
+    yf_download = ark_model.yf.download
+
+    def mock_yf_download(*args, **kwargs):
+        kwargs["threads"] = False
+        return yf_download(*args, **kwargs)
+
+    mocker.patch("yfinance.download", side_effect=mock_yf_download)
+    df_orders = ark_model.get_ark_orders()
+    result_df = ark_model.add_order_total(df_orders=df_orders.head(2))
+    recorder.capture(result_df)

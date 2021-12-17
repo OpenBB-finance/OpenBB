@@ -566,7 +566,12 @@ def parse_known_args_and_warn(
     if gtff.USE_CLEAR_AFTER_CMD:
         system_clear()
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
+    except SystemExit:
+        # In case the command has required argument that isn't specified
+        print("")
+        return None
 
     if ns_parser.help:
         parser.print_help()

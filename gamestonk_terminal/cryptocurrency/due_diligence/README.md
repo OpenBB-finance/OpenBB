@@ -6,46 +6,46 @@ will be available in menu.
 
 [CoinGecko](#CoinGecko)
 
-* [info](#info)
-  * show coin base information
-* [market](#market)
-  * show market data
-* [ath](#ath)
-  * show all time high related metrics
-* [atl](#atl)
-  * show all time low related metrics
-* [score](#score)
-  * show different scores related to loaded coin
-* [web](#web)
-  * show websites related to loaded coin
-* [social](#social)
-  * show social media urls for loaded coin
-* [bc](#bc)
-  * show block-chain explorers urls for loaded coins
-* [dev](#dev)
-  * show developers data for loaded coins
+- [info](#info)
+  - show coin base information
+- [market](#market)
+  - show market data
+- [ath](#ath)
+  - show all time high related metrics
+- [atl](#atl)
+  - show all time low related metrics
+- [score](#score)
+  - show different scores related to loaded coin
+- [web](#web)
+  - show websites related to loaded coin
+- [social](#social)
+  - show social media urls for loaded coin
+- [bc](#bc)
+  - show block-chain explorers urls for loaded coins
+- [dev](#dev)
+  - show developers data for loaded coins
 
 [CoinPaprika](#CoinPaprika)
 
-* [basic](#basic)
-  * show coin basic information
-* [ps](#ps)
-  * show coin price, supply, market cap related metrics.
-* [mkt](#mkt)
-  * show all markets for loaded coin
-* [ex](#ex)
-  * show all exchanges where loaded coin is listed
-* [twitter](#twitter)
-  * show up to 50 last tweets for loaded coin
-* [events](#events )
-  * show events related to loaded coin
+- [basic](#basic)
+  - show coin basic information
+- [ps](#ps)
+  - show coin price, supply, market cap related metrics.
+- [mkt](#mkt)
+  - show all markets for loaded coin
+- [ex](#ex)
+  - show all exchanges where loaded coin is listed
+- [twitter](#twitter)
+  - show up to 50 last tweets for loaded coin
+- [events](#events)
+  - show events related to loaded coin
 
 [Binance](#Binance)
 
-* [book](#book)
-  * show order book
-* [balance](#book)
-  * show coin balance
+- [book](#book)
+  - show order book
+- [balance](#book)
+  - show coin balance
 
 ## chart <a name="chart">
 
@@ -117,7 +117,7 @@ usage: score
 ```
 
 In this view you can find different kind of scores for loaded coin. Those scores represents different rankings,
-sentiment metrics, some user stats and other, like:  coingecko_rank, coingecko_score, developer_score, community_score,
+sentiment metrics, some user stats and other, like: coingecko_rank, coingecko_score, developer_score, community_score,
 liquidity_score, sentiment_votes_up_percentage, sentiment_votes_down_percentage, public_interest_score, facebook_likes,
 twitter_followers, reddit_average_posts_48h, reddit_average_comments_48h, reddit_subscribers,
 reddit_accounts_active_48h, telegram_channel_user_count, alexa_rank, bing_matches.
@@ -188,25 +188,25 @@ usage: ps [--vs]
 Price, supply related data for loaded coin. There you find metrics like:
 name, symbol, rank, supply, volume, ath, market cap, price change related metrics
 
-* --vs: The currency to look against. Available options are:
+- --vs: The currency to look against. Available options are:
   `BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK`.
   Default: USD
 
 ## mkt <a name="mkt"></a>
 
 ```text
-usage: mkt [--vs] [-t --top] [-s --sort] [--descend] [-l --links]
+usage: mkt [--vs] [-t --top] [-s --sort] [--descend] [-u --urls]
 ```
 
 Get all markets found for given coin.
 
-* --vs: The currency to look against. Available options are:
+- --vs: The currency to look against. Available options are:
   `BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK`.
   Default: USD
-* -t/--top - number of markets to display. To display top 10 markets: `mkt --top 10 --sort trust_score`
-* -s/--sort - sort by given column. You can chose on from `pct_volume_share, exchange, pair, trust_score, volume,price`.
-* --descend - flag to sort in descending order (lowest first)
-* -l/--links - flag to show urls. Using this flag will add additional column with urls e.g. `mkt --links`
+- -t/--top - number of markets to display. To display top 10 markets: `mkt --top 10 --sort trust_score`
+- -s/--sort - sort by given column. You can chose on from `pct_volume_share, exchange, pair, trust_score, volume,price`.
+- --descend - flag to sort in descending order (lowest first)
+- -u/--urls - flag to show urls. Using this flag will add additional column with urls e.g. `mkt --links`
 
 ## ex <a name="ex"></a>
 
@@ -216,9 +216,9 @@ usage: ex [-t --top] [-s --sort] [--descend]
 
 Get all exchanges found for given coin.
 
-* -t/--top: Number of exchanges to display. To display top 10 exchanges: `ex --top 10 --sort fiats`
-* -s/--sort: Sort by given column. You can chose on from `id, name, adjusted_volume_24h_share, fiats`.
-* --descend: Flag to sort in descending order (lowest first)
+- -t/--top: Number of exchanges to display. To display top 10 exchanges: `ex --top 10 --sort fiats`
+- -s/--sort: Sort by given column. You can chose on from `id, name, adjusted_volume_24h_share, fiats`.
+- --descend: Flag to sort in descending order (lowest first)
 
 ## twitter <a name="twitter"></a>
 
@@ -228,39 +228,39 @@ usage: twitter [-t --top] [-s --sort] [--descend]
 
 Show last tweets for given coin.
 
-* -t/--top: Number of tweets to display. To display top 10 tweets: `twitter --top 10 --sort date`
-* -s/--sort: Sort by given column. You can chose on from `date, user_name, status, retweet_count, like_count`.
-* --descend: Flag to sort in descending order (lowest first)
+- -t/--top: Number of tweets to display. To display top 10 tweets: `twitter --top 10 --sort date`
+- -s/--sort: Sort by given column. You can chose on from `date, user_name, status, retweet_count, like_count`.
+- --descend: Flag to sort in descending order (lowest first)
 
 ## events <a name="events"></a>
 
 ```text
-usage: events [-t --top] [-s --sort] [--descend] [-l --links]
+usage: events [-t --top] [-s --sort] [--descend] [-u --urls]
 ```
 
 Show information about most important coins events.
 
-* -t/--top:  Number of events to display. To display top 10 events: `events --top 10 --sort date`
-* -s/--sort:  Sort by given column. You can chose on from `date, date_to, name, description, is_conference`.
-* --descend:  Flag to sort in descending order (lowest first)
-* -l/--links:  Flag to show urls. Using this flag will add additional column with urls e.g. `events --links`. If you
+- -t/--top: Number of events to display. To display top 10 events: `events --top 10 --sort date`
+- -s/--sort: Sort by given column. You can chose on from `date, date_to, name, description, is_conference`.
+- --descend: Flag to sort in descending order (lowest first)
+- -u/--urls: Flag to show urls. Using this flag will add additional column with urls e.g. `events --links`. If you
   will use this flag url column will be displayed.
 
 # Binance <a name="Binance"></a>
 
-## book  <a name="book"></a>
+## book <a name="book"></a>
 
 ```text
 usage: book -l/--limit
 ```
 
-Gets and shows the order book for the given coin/currency.  Shows the cumulative amount of orders.
+Gets and shows the order book for the given coin/currency. Shows the cumulative amount of orders.
 
-* -l/--limit Number of orders to get on each side.  One of [5,10,20,50,100,500,1000,5000].  Defaults to 100.
+- -l/--limit Number of orders to get on each side. One of [5,10,20,50,100,500,1000,5000]. Defaults to 100.
 
 ![orderbook](https://user-images.githubusercontent.com/25267873/116886857-84fcf280-ac21-11eb-9803-5baa8bceca05.png)
 
-## balance  <a name="balance"></a>
+## balance <a name="balance"></a>
 
 ```text
 usage: balance
