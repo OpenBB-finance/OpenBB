@@ -14,8 +14,8 @@ def inputhook(inputhook_context):
         try:
             pyplot.pause(0.1)
         # pylint: disable=unused-variable
-        except Exception as e:  # noqa: F841
-            logger.exception("%s", type(e).__name__)
+        except Exception as exp:  # noqa: F841
+            logger.exception("%s", type(exp).__name__)
             continue
     return False
 
