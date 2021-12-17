@@ -229,12 +229,19 @@ Models:
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "pred")
+            if self.ticker:
+                self.queue.insert(0, f"load {self.ticker}")
             self.queue.insert(0, "stocks")
             self.queue.insert(0, "reset")
             self.queue.insert(0, "quit")
             self.queue.insert(0, "quit")
             return self.queue
-        return ["quit", "quit", "reset", "stocks", "pred"]
+
+        reset_commands = ["quit", "quit", "reset", "stocks"]
+        if self.ticker:
+            reset_commands.append(f"load {self.ticker}")
+        reset_commands.append("pred")
+        return reset_commands
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
