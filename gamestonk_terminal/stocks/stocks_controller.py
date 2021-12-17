@@ -653,16 +653,11 @@ Stocks Menus:
         """Process bt command"""
         if not self.ticker:
             print("Use 'load <ticker>' prior to this command!", "\n")
-            return
+            return self.queue
 
         from gamestonk_terminal.stocks.backtesting import bt_controller
 
-        ret = bt_controller.menu(self.ticker, self.stock)
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return bt_controller.menu(self.ticker, self.stock, self.queue)
 
     def call_ta(self, _):
         """Process ta command"""
