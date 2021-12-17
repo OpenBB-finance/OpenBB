@@ -278,13 +278,24 @@ Expiry: {self.selected_date or None}
     def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
+            if self.selected_date:
+                self.queue.insert(0, f"exp {self.selected_date}")
+            if self.ticker:
+                self.queue.insert(0, f"load {self.ticker}")
             self.queue.insert(0, "options")
             self.queue.insert(0, "stocks")
             self.queue.insert(0, "reset")
             self.queue.insert(0, "quit")
             self.queue.insert(0, "quit")
             return self.queue
-        return ["quit", "quit", "reset", "stocks", "options"]
+
+        reset_commands = ["quit", "quit", "reset", "stocks", "options"]
+        if self.ticker:
+            reset_commands.append(f"load {self.ticker}")
+        if self.selected_date:
+            reset_commands.append(f"exp -d {self.selected_date}")
+
+        return reset_commands
 
     @try_except
     def call_calc(self, other_args: List[str]):
@@ -1543,14 +1554,14 @@ def menu(ticker: str = "", queue: List[str] = None):
                     candidate_input = (
                         f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
                     )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        op_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
                 else:
-                    candidate_input = similar_cmd[0]
-
-                if candidate_input == an_input:
-                    an_input = ""
-                    op_controller.queue = []
-                    print("\n")
-                    continue
+                    an_input = similar_cmd[0]
 
                 print(f" Replacing by '{an_input}'.")
                 op_controller.queue.insert(0, an_input)

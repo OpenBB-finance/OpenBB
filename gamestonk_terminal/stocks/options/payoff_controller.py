@@ -202,6 +202,10 @@ Underlying Asset: {text}
         """Process reset command"""
         if len(self.queue) > 0:
             self.queue.insert(0, "payoff")
+            if self.expiration:
+                self.queue.insert(0, f"exp {self.expiration}")
+            if self.ticker:
+                self.queue.insert(0, f"load {self.ticker}")
             self.queue.insert(0, "options")
             self.queue.insert(0, "stocks")
             self.queue.insert(0, "reset")
@@ -209,7 +213,15 @@ Underlying Asset: {text}
             self.queue.insert(0, "quit")
             self.queue.insert(0, "quit")
             return self.queue
-        return ["quit", "quit", "quit", "reset", "stocks", "options", "payoff"]
+
+        reset_commands = ["quit", "quit", "quit", "reset", "stocks", "options"]
+        if self.ticker:
+            reset_commands.append(f"load {self.ticker}")
+        if self.expiration:
+            reset_commands.append(f"exp -d {self.expiration}")
+        reset_commands.append("payoff")
+
+        return reset_commands
 
     @try_except
     def call_list(self, other_args):
