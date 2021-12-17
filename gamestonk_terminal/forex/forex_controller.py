@@ -408,7 +408,6 @@ def menu(queue: List[str] = None):
                     completer=forex_controller.completer,
                     search_ignore_case=True,
                 )
-
             # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /forex/ $ ")
@@ -419,7 +418,8 @@ def menu(queue: List[str] = None):
 
         except SystemExit:
             print(
-                f"\nThe command '{an_input}' doesn't exist on the /forex menu.", end=""
+                f"\nThe command '{an_input}' doesn't exist on the /forex menu.",
+                end="",
             )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
@@ -434,6 +434,7 @@ def menu(queue: List[str] = None):
                     )
                     if candidate_input == an_input:
                         an_input = ""
+                        forex_controller.queue = []
                         print("\n")
                         continue
                     an_input = candidate_input
