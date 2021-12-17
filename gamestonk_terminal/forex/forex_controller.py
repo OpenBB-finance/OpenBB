@@ -360,26 +360,13 @@ Forex brokerages:
 
         return oanda_controller.menu(self.queue)
 
+    # HELP WANTED!
     # TODO: Add news and reddit commands back
-    # def call_eda(self, _):
-    #    try:
-    #        df = fx_view.get_candles_dataframe(account, self.instrument, None)
-    #        df = df.rename(columns={"Close": "Adj Close"})
-    #        instrument = self.instrument
-    #        s_start = pd.to_datetime(df.index.values[0])
-    #        s_interval = "1440min"
-    #        eda_controller.menu(df, instrument, s_start, s_interval)
-    #    except AttributeError:
-    #        print("No data found, do you have your oanda API keys set?")
-
-    # def call_ba(self, _):
-    #    instrument = fx_view.format_instrument(self.instrument, " ")
-    #    try:
-    #        df = fx_view.get_candles_dataframe(account, self.instrument, None)
-    #        s_start = pd.to_datetime(df.index.values[0])
-    #        ba_controller.menu(instrument, s_start)
-    #    except AttributeError:
-    #        print("No data found, do you have your oanda API keys set?")
+    # behavioural analysis and exploratory data analysis would be useful in the
+    # forex menu. The examples of integration of the common ba and eda components
+    # into the stocks context can provide an insight on how this can be done.
+    # The earlier implementation did not work and was deleted in commit
+    # d0e51033f7d5d4da6386b9e0b787892979924dce
 
 
 def menu(queue: List[str] = None):
