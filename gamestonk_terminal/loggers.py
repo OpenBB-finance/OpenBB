@@ -1,4 +1,4 @@
-"""Terminal helper"""
+"""Logging Configuration"""
 __docformat__ = "numpy"
 import logging
 import os
@@ -45,7 +45,7 @@ def setup_file_logger() -> None:
     logger.debug("Future logdir: %s", log_dir)
 
     if not os.path.isdir(log_dir.absolute()):
-        logger.debug("Logdir does not exist")
+        logger.debug("Logdir does not exist. Creating.")
         os.mkdir(log_dir.absolute())
 
     log_id = log_dir.absolute().joinpath(".logid")
@@ -67,7 +67,9 @@ def setup_file_logger() -> None:
     logger.debug("Current log dir: %s", uuid_log_dir)
 
     if not os.path.isdir(uuid_log_dir.absolute()):
-        logger.debug("UUID log dir does not exist: %s", uuid_log_dir.absolute())
+        logger.debug(
+            "UUID log dir does not exist: %s. Creating.", uuid_log_dir.absolute()
+        )
         os.mkdir(uuid_log_dir.absolute())
 
     cfg.LOGGING_FILE = uuid_log_dir.absolute().joinpath(f"{int(time.time())}.log")  # type: ignore

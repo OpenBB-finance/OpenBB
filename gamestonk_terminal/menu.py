@@ -13,8 +13,7 @@ def inputhook(inputhook_context):
     while not inputhook_context.input_is_ready():
         try:
             pyplot.pause(0.1)
-        # pylint: disable=unused-variable
-        except Exception as exp:  # noqa: F841
+        except Exception as exp:
             logger.exception("%s", type(exp).__name__)
             continue
     return False
