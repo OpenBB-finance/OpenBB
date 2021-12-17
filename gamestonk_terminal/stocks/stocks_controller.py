@@ -611,19 +611,11 @@ Stocks Menus:
 
         if not self.ticker:
             print("Use 'load <ticker>' prior to this command!", "\n")
-            return
+            return self.queue
 
-        ret = dd_controller.menu(
-            self.ticker,
-            self.start,
-            self.interval,
-            self.stock,
+        return dd_controller.menu(
+            self.ticker, self.start, self.interval, self.stock, self.queue
         )
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
 
     def call_ca(self, _):
         """Process ca command"""
@@ -640,12 +632,9 @@ Stocks Menus:
 
         from gamestonk_terminal.stocks.fundamental_analysis import fa_controller
 
-        ret = fa_controller.menu(self.ticker, self.start, self.interval, self.suffix)
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return fa_controller.menu(
+            self.ticker, self.start, self.interval, self.suffix, self.queue
+        )
 
     def call_bt(self, _):
         """Process bt command"""
@@ -666,21 +655,13 @@ Stocks Menus:
         """Process ta command"""
         if not self.ticker:
             print("Use 'load <ticker>' prior to this command!", "\n")
-            return
+            return self.queue
 
         from gamestonk_terminal.stocks.technical_analysis import ta_controller
 
-        ret = ta_controller.menu(
-            self.ticker,
-            self.start,
-            self.interval,
-            self.stock,
+        return ta_controller.menu(
+            self.ticker, self.start, self.interval, self.stock, self.queue
         )
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
 
     def call_ba(self, _):
         """Process ba command"""
@@ -721,35 +702,27 @@ Stocks Menus:
                 "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
                 "\n",
             )
-            return
+            return self.queue
 
         if not self.ticker:
             print("Use 'load <ticker>' prior to this command!", "\n")
-            return
+            return self.queue
 
         if self.interval != "1440min":
             # TODO: This menu should work regardless of data being daily or not!
             print("Load daily data to use this menu!", "\n")
-            return
+            return self.queue
 
         try:
             # pylint: disable=import-outside-toplevel
             from gamestonk_terminal.stocks.prediction_techniques import pred_controller
         except ModuleNotFoundError as e:
             print("One of the optional packages seems to be missing: ", e, "\n")
-            return
+            return self.queue
 
-        ret = pred_controller.menu(
-            self.ticker,
-            self.start,
-            self.interval,
-            self.stock,
+        return pred_controller.menu(
+            self.ticker, self.start, self.interval, self.stock, self.queue
         )
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
 
 
 def menu(ticker: str = "", queue: List[str] = None):

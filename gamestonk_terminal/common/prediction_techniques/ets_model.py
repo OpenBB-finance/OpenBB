@@ -7,6 +7,9 @@ import numpy as np
 import pandas as pd
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 
+TRENDS = ["N", "A", "Ad"]
+SEASONS = ["N", "A", "M"]
+
 
 def get_exponential_smoothing_model(
     data: Union[pd.Series, np.ndarray],

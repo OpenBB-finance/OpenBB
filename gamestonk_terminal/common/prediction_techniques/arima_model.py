@@ -6,6 +6,8 @@ import pandas as pd
 import pmdarima
 from statsmodels.tsa.arima.model import ARIMA
 
+ICS = ["aic", "aicc", "bic", "hqic", "oob"]
+
 
 def get_arima_model(
     values: Union[pd.Series, pd.DataFrame],

@@ -18,6 +18,8 @@ INTERVALS = {
     "1M": "1 month",
 }
 
+SCREENERS = ["crypto", "forex", "cfd"]
+
 
 def get_tradingview_recommendation(
     ticker: str, screener: str, exchange: str, interval: str
