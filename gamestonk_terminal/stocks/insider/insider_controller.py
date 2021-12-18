@@ -10,6 +10,7 @@ import pandas as pd
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     get_flair,
     parse_known_args_and_warn,
     check_positive,
@@ -73,6 +74,7 @@ class InsiderController:
         "tispm",
         "act",
         "lins",
+        "stats",
     ]
     CHOICES += CHOICES_COMMANDS
 
@@ -125,6 +127,14 @@ PRESET: {self.preset}
 
     filter        filter insiders based on preset
 
+    load          load a specific stock ticker for analysis
+{Style.DIM if not self.ticker else ''}
+Ticker: {self.ticker}
+
+    stats         insider stats of the company [Open Insider]
+    act           insider activity over time [Business Insider]
+    lins          last insider trading of the company [Finviz]
+{Style.RESET_ALL if not self.ticker else ''}
 Latest Insiders:
     lcb           latest cluster boys
     lpsb          latest penny stock buys
@@ -147,14 +157,7 @@ Top Insiders:
     tist          top insider sales today
     tispw         top insider sales past week
     tispm         top insider sales past month
-
-    load          load a specific stock ticker for analysis
-{Style.DIM if not self.ticker else ''}
-Ticker: {self.ticker}
-
-    act           insider activity over time [Business Insider]
-    lins          last insider trading of the company [Finviz]
-{Style.RESET_ALL if not self.ticker else ''}"""
+"""
         print(help_text)
 
     def switch(self, an_input: str):
@@ -244,15 +247,13 @@ Ticker: {self.ticker}
             if self.ticker:
                 self.queue.insert(0, f"load {self.ticker}")
             self.queue.insert(0, "ins")
-            self.queue.insert(0, "options")
             self.queue.insert(0, "stocks")
             self.queue.insert(0, "reset")
             self.queue.insert(0, "quit")
             self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
             return self.queue
 
-        reset_commands = ["quit", "quit", "quit", "reset", "stocks", "options", "ins"]
+        reset_commands = ["quit", "quit", "reset", "stocks", "ins"]
         if self.ticker:
             reset_commands.append(f"load {self.ticker}")
 
@@ -390,7 +391,83 @@ Ticker: {self.ticker}
     @try_except
     def call_filter(self, other_args: List[str]):
         """Process filter command"""
-        openinsider_view.print_insider_filter(other_args, self.preset)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="filter",
+            description="Print open insider filtered data using loaded preset. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        parser.add_argument(
+            "-u",
+            "--urls",
+            action="store_true",
+            default=False,
+            help="Flag to show hyperlinks",
+            dest="urls",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_filter(
+                preset_loaded=self.preset,
+                ticker="",
+                limit=ns_parser.limit,
+                links=ns_parser.urls,
+                export=ns_parser.export,
+            )
+
+        return self.queue
+
+    @try_except
+    def call_stats(self, other_args: List[str]):
+        """Process stats command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="stats",
+            description="Print open insider filtered data using selected ticker. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        parser.add_argument(
+            "-u",
+            "--urls",
+            action="store_true",
+            default=False,
+            help="Flag to show hyperlinks",
+            dest="urls",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            if self.ticker:
+                openinsider_view.print_insider_filter(
+                    preset_loaded="",
+                    ticker=self.ticker,
+                    limit=ns_parser.limit,
+                    links=ns_parser.urls,
+                    export=ns_parser.export,
+                )
+            else:
+                print("Please use `load <ticker>` before.\n")
 
         return self.queue
 
