@@ -491,7 +491,7 @@ def menu(queue: List[str] = None):
 
             an_input = port_controller.queue[0]
             port_controller.queue = port_controller.queue[1:]
-            if an_input and an_input in port_controller.CHOICES_COMMANDS:
+            if an_input and an_input.split(" ")[0] in port_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /portfolio/ $ {an_input}")
 
         # Get input command from user

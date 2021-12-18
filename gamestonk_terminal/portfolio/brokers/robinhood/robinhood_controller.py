@@ -242,7 +242,7 @@ def menu(queue: List[str] = None):
 
             an_input = rh_controller.queue[0]
             rh_controller.queue = rh_controller.queue[1:]
-            if an_input and an_input in rh_controller.CHOICES_COMMANDS:
+            if an_input and an_input.split(" ")[0] in rh_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /portfolio/bro/rh/ $ {an_input}")
 
         # Get input command from user

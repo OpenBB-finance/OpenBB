@@ -1401,7 +1401,10 @@ def menu(queue: List[str] = None):
             onchain_controller.queue = onchain_controller.queue[1:]
 
             # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input in onchain_controller.CHOICES_COMMANDS:
+            if (
+                an_input
+                and an_input.split(" ")[0] in onchain_controller.CHOICES_COMMANDS
+            ):
                 print(f"{get_flair()} /crypto/onchain/ $ {an_input}")
 
         # Get input command from user

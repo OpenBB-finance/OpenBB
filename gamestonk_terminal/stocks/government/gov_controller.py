@@ -726,7 +726,7 @@ def menu(ticker: str, queue: List[str] = None):
             gov_controller.queue = gov_controller.queue[1:]
 
             # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input in gov_controller.CHOICES_COMMANDS:
+            if an_input and an_input.split(" ")[0] in gov_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /stocks/gov/ $ {an_input}")
 
         # Get input command from user

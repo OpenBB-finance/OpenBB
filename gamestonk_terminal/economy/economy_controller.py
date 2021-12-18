@@ -1258,7 +1258,7 @@ def menu(queue: List[str] = None):
 
             an_input = econ_controller.queue[0]
             econ_controller.queue = econ_controller.queue[1:]
-            if an_input and an_input in econ_controller.CHOICES_COMMANDS:
+            if an_input and an_input.split(" ")[0] in econ_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /economy/ $ {an_input}")
 
         # Get input command from user

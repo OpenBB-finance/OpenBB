@@ -361,7 +361,7 @@ def menu(ticker: str, start: datetime, interval: str, queue: List[str] = None):
             res_controller.queue = res_controller.queue[1:]
 
             # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input in res_controller.CHOICES_COMMANDS:
+            if an_input and an_input.split(" ")[0] in res_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /stocks/res/ $ {an_input}")
 
         # Get input command from user

@@ -677,7 +677,7 @@ def menu(queue: List[str] = None):
             oanda_controller.queue = oanda_controller.queue[1:]
 
             # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input in oanda_controller.CHOICES_COMMANDS:
+            if an_input and an_input.split(" ")[0] in oanda_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /forex/oanda/ $ {an_input}")
 
         # Get input command from user

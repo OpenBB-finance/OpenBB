@@ -350,7 +350,7 @@ def menu(queue: List[str] = None):
 
             an_input = fred_controller.queue[0]
             fred_controller.queue = fred_controller.queue[1:]
-            if an_input and an_input in fred_controller.CHOICES_COMMANDS:
+            if an_input and an_input.split(" ")[0] in fred_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /economy/fred $ {an_input}")
 
         # Get input command from user

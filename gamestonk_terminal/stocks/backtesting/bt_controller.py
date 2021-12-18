@@ -385,7 +385,7 @@ def menu(ticker: str, stock: pd.DataFrame, queue: List[str] = None):
             bt_controller.queue = bt_controller.queue[1:]
 
             # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input in bt_controller.CHOICES_COMMANDS:
+            if an_input and an_input.split(" ")[0] in bt_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /stocks/bt/ $ {an_input}")
 
         # Get input command from user

@@ -312,7 +312,7 @@ def menu(queue: List[str] = None):
 
             an_input = ally_controller.queue[0]
             ally_controller.queue = ally_controller.queue[1:]
-            if an_input and an_input in ally_controller.CHOICES_COMMANDS:
+            if an_input and an_input.split(" ")[0] in ally_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /portfolio/bro/ally/ $ {an_input}")
 
         # Get input command from user

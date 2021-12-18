@@ -946,7 +946,7 @@ def menu(tickers: List[str], queue: List[str] = None):
 
             an_input = po_controller.queue[0]
             po_controller.queue = po_controller.queue[1:]
-            if an_input and an_input in po_controller.CHOICES_COMMANDS:
+            if an_input and an_input.split(" ")[0] in po_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /portfolio/po/ $ {an_input}")
 
         # Get input command from user

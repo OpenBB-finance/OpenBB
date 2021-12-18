@@ -900,7 +900,10 @@ def menu(queue: List[str] = None):
             crypto_controller.queue = crypto_controller.queue[1:]
 
             # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input in crypto_controller.CHOICES_COMMANDS:
+            if (
+                an_input
+                and an_input.split(" ")[0] in crypto_controller.CHOICES_COMMANDS
+            ):
                 print(f"{get_flair()} /crypto/ $ {an_input}")
 
         # Get input command from user
