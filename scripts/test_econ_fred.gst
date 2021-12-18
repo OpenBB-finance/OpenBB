@@ -4,12 +4,11 @@ meats
 q
 economy
 grains
-cd stocks/disc
-ugs -l 3
-cd economy/fred
+fred
 add dgs10,dgs5
 search gdp
 plot --raw
 q
 energy
+reset
 exit
