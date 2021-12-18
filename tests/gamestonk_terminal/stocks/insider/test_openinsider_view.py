@@ -61,12 +61,3 @@ def test_print_insider_filter():
         ticker="",
         limit=5,
     )
-
-
-@pytest.mark.vcr
-@pytest.mark.record_stdout
-@pytest.mark.parametrize(["topt", "lcb"])
-def test_print_insider_data(type_insider):
-    openinsider_view.print_insider_data(
-        type_insider=type_insider,
-    )
