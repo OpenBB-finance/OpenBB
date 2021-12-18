@@ -1590,7 +1590,10 @@ def menu(queue: List[str] = None):
             overview_controller.queue = overview_controller.queue[1:]
 
             # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input in overview_controller.CHOICES_COMMANDS:
+            if (
+                an_input
+                and an_input.split(" ")[0] in overview_controller.CHOICES_COMMANDS
+            ):
                 print(f"{get_flair()} /crypto/ov/ $ {an_input}")
 
         # Get input command from user

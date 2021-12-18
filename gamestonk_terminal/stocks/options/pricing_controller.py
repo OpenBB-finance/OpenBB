@@ -384,7 +384,10 @@ def menu(
             pricing_controller.queue = pricing_controller.queue[1:]
 
             # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input in pricing_controller.CHOICES_COMMANDS:
+            if (
+                an_input
+                and an_input.split(" ")[0] in pricing_controller.CHOICES_COMMANDS
+            ):
                 print(f"{get_flair()} /stocks/options/pricing/ $ {an_input}")
 
         # Get input command from user

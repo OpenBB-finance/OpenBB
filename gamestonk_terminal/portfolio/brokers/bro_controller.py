@@ -227,7 +227,7 @@ def menu(queue: List[str] = None):
 
             an_input = bro_controller.queue[0]
             bro_controller.queue = bro_controller.queue[1:]
-            if an_input and an_input in bro_controller.CHOICES_COMMANDS:
+            if an_input and an_input.split(" ")[0] in bro_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /portfolio/bro/ $ {an_input}")
 
         # Get input command from user

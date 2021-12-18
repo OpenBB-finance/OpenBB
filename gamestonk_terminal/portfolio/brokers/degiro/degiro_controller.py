@@ -462,7 +462,10 @@ def menu(queue: List[str] = None):
 
             an_input = degiro_controller.queue[0]
             degiro_controller.queue = degiro_controller.queue[1:]
-            if an_input and an_input in degiro_controller.CHOICES_COMMANDS:
+            if (
+                an_input
+                and an_input.split(" ")[0] in degiro_controller.CHOICES_COMMANDS
+            ):
                 print(f"{get_flair()} /portfolio/bro/degiro/ $ {an_input}")
 
         # Get input command from user
