@@ -1,7 +1,5 @@
 import os
-import argparse
 import textwrap
-from typing import List
 import itertools
 from bs4 import BeautifulSoup
 import requests
@@ -10,8 +8,6 @@ import pandas as pd
 from tabulate import tabulate
 from colorama import Fore, Style
 from gamestonk_terminal.helper_funcs import (
-    check_positive,
-    parse_known_args_and_warn,
     patch_pandas_text_adjustment,
     export_data,
 )
@@ -126,36 +122,18 @@ def green_highlight(values):
     return [f"{Fore.GREEN}{val}{Style.RESET_ALL}" for val in values]
 
 
-def print_insider_data(other_args: List[str], type_insider: str):
+def print_insider_data(type_insider: str, limit: int = 10, export: str = ""):
     """Print insider data
 
     Parameters
     ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
     type_insider: str
         Insider type of data
+    limit: int
+        Limit of data rows to display
+    export: str
+        Export data format
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog=type_insider,
-        description=f"Print {d_open_insider[type_insider].replace('-', ' ')} [Source: OpenInsider]",
-    )
-    parser.add_argument(
-        "-n",
-        "--num",
-        action="store",
-        dest="num",
-        type=check_positive,
-        default=20,
-        help="Number of datarows to display",
-    )
-
-    ns_parser = parse_known_args_and_warn(parser, other_args)
-    if not ns_parser:
-        return
-
     response = requests.get(f"http://openinsider.com/{d_open_insider[type_insider]}")
     soup = BeautifulSoup(response.text, "html.parser")
     table = soup.find("table", {"class": "tinytable"})
@@ -172,7 +150,7 @@ def print_insider_data(other_args: List[str], type_insider: str):
         row = [tr.text.strip() for tr in td if tr.text.strip()]
         res.append(row)
 
-    df = pd.DataFrame(res).dropna().head(n=ns_parser.num)
+    df = pd.DataFrame(res).dropna().head(n=limit)
 
     df.columns = [
         "X",
@@ -208,15 +186,21 @@ def print_insider_data(other_args: List[str], type_insider: str):
             lambda x: "\n".join(textwrap.wrap(x, width=20)) if isinstance(x, str) else x
         )
 
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            tablefmt="fancy_grid",
-            stralign="right",
-            showindex=False,
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                tablefmt="fancy_grid",
+                stralign="right",
+                showindex=False,
+            )
         )
-    )
+    else:
+        print(df.to_string())
+
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), type_insider, df)
+
     l_chars = [list(chars) for chars in df["X"].values]
     l_uchars = np.unique(list(itertools.chain(*l_chars)))
 

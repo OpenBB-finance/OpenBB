@@ -63,10 +63,8 @@ def test_print_insider_filter():
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-@pytest.mark.parametrize("type_insider", ["topt", "lcb"])
+@pytest.mark.parametrize(["topt", "lcb"])
 def test_print_insider_data(type_insider):
-    other_args = list()
     openinsider_view.print_insider_data(
-        other_args=other_args,
         type_insider=type_insider,
     )
