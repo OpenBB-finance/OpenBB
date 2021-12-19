@@ -20,7 +20,6 @@ from gamestonk_terminal.helper_funcs import (
     system_clear,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.paths import cd_CHOICES
 
 
 class FredController:
@@ -38,6 +37,7 @@ class FredController:
         "exit",
         "r",
         "reset",
+        "home",
     ]
 
     CHOICES_COMMANDS = ["search", "add", "rmv", "plot"]
@@ -58,7 +58,6 @@ class FredController:
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
-            choices["cd"] = {c: None for c in cd_CHOICES}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -91,22 +90,30 @@ Current Series IDs:
         List[str]
             List of commands in the queue to execute
         """
+        # Empty command
         if not an_input:
             print("")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
+        # Navigation slash is being used
         if "/" in an_input:
             actions = an_input.split("/")
-            an_input = actions[0]
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
             for cmd in actions[1:][::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
-            if not an_input:
-                an_input = "quit"
-                self.queue.insert(0, "quit")
 
         (known_args, other_args) = self.fred_parser.parse_known_args(an_input.split())
 
+        # Redirect commands to their correct functions
         if known_args.cmd:
             if known_args.cmd in ("..", "q"):
                 known_args.cmd = "quit"
@@ -126,26 +133,16 @@ Current Series IDs:
         system_clear()
         return self.queue if len(self.queue) > 0 else []
 
-    def call_cd(self, other_args):
-        """Process cd command"""
-        if other_args and "-" not in other_args[0]:
-            args = other_args[0].split("/")
-            if len(args) > 0:
-                for m in args[::-1]:
-                    if m:
-                        self.queue.insert(0, m)
-            else:
-                self.queue.insert(0, args[0])
-
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-        return self.queue
-
     def call_help(self, _):
         """Process help command"""
         self.print_help()
         return self.queue if len(self.queue) > 0 else []
+
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
@@ -339,40 +336,52 @@ def menu(queue: List[str] = None):
     """Fred Menu"""
     fred_controller = FredController(queue)
     first = True
-    # Loop forever and ever
+
     while True:
         # There is a command in the queue
         if fred_controller.queue and len(fred_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
             if fred_controller.queue[0] in ("q", "..", "quit"):
+                print("")
                 if len(fred_controller.queue) > 1:
                     return fred_controller.queue[1:]
                 return []
 
+            # Consume 1 element from the queue
             an_input = fred_controller.queue[0]
             fred_controller.queue = fred_controller.queue[1:]
-            if an_input and an_input.split(" ")[0] in fred_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /economy/fred $ {an_input}")
+
+            # Print the current location because this was an instruction and we want user to know what was the action
+            if an_input and an_input in fred_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /economy/fred/ $ {an_input}")
 
         # Get input command from user
         else:
+            # Display help menu when entering on this menu from a level above
             if first:
                 fred_controller.print_help()
                 first = False
+
+            # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and fred_controller.completer:
                 an_input = session.prompt(
-                    f"{get_flair()} /economy/fred $ ",
+                    f"{get_flair()} /economy/fred/ $ ",
                     completer=fred_controller.completer,
                     search_ignore_case=True,
                 )
-
+            # Get input from user without auto-completion
             else:
-                an_input = input(f"{get_flair()} /economy/fred $ ")
+                an_input = input(f"{get_flair()} /economy/fred/ $ ")
 
         try:
+            # Process the input command
             fred_controller.queue = fred_controller.switch(an_input)
 
         except SystemExit:
-            print(f"\nThe command '{an_input}' doesn't exist.", end="")
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /economy/fred menu.",
+                end="",
+            )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 fred_controller.CHOICES,

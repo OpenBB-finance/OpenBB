@@ -4,7 +4,7 @@ decliners
 active
 q
 etf
-r
+reset
 search blackrock
 holdings qqq -l 5
 overview spy
