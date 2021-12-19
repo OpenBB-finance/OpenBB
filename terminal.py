@@ -128,6 +128,9 @@ Menus:
             return self.queue
 
         # Navigation slash is being used
+        if an_input[0] == "/":
+            an_input = an_input[1:]
+
         if "/" in an_input:
             actions = an_input.split("/")
 
@@ -264,7 +267,7 @@ def terminal(jobs_cmds: List[str] = None):
     setup_logging()
 
     logger.info("Terminal started")
-    
+
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
     an_input = ""

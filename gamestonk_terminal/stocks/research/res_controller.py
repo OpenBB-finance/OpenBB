@@ -173,6 +173,7 @@ Ticker: {self.ticker}
 
     def call_quit(self, _):
         """Process quit menu command"""
+        print("")
         if len(self.queue) > 0:
             self.queue.insert(0, "quit")
             return self.queue
