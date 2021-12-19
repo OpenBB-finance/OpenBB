@@ -1,0 +1,35 @@
+
+Dark Pool Shorts:
+    cls            clear screen
+    ?/help         show this menu again
+    q              quit this menu, and shows back to main menu
+    quit           quit to abandon program
+    load           load a specific stock ticker for analysis
+
+Yahoo Finance:
+    shorted        show most shorted stocks
+shortinterest.com:
+    hsi            show top high short interest stocks of over 20% ratio
+FINRA:
+    prom           promising tickers based on dark pool shares regression
+Stockgrid:
+    pos            dark pool short position
+    sidtc          short interest and days to cover
+
+Ticker: TSLA
+
+FINRA:
+    dpotc          dark pools (ATS) vs OTC data
+SEC:
+    ftd            fails-to-deliver data
+Stockgrid:
+    spos           net short vs position
+Quandl/Stockgrid:
+    psi            price vs short interest volume
+NYSE:
+    volexch        short volume for ARCA,Amex,Chicago,NYSE and national exchanges
+
+The command selected doesn't exist
+
+Did you mean 'quit'?
+

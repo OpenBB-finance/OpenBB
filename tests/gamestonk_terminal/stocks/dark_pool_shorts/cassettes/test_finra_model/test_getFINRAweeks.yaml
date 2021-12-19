@@ -1,0 +1,75 @@
+interactions:
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "summaryTypeCode",
+      "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}], "delimiter": "|", "fields": ["weekStartDate"], "limit":
+      27, "quoteValues": false, "sortFields": ["-weekStartDate"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '299'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklyDownloadDetails
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//fNE7DsIwEAbhu7hmpX/Xj9jU3CAlokjhig5ZokC5OyfI1J80zTx/6Tvn
+        e1/HZz2ONdM9hcLN3SLSebtmr8jqzA4si4rsnZnjKtesYbExC9kzshpwtyzkyMjOcQ1m+K3NoiH7
+        YOa44LeaRWd2ZC/Iot/VsiNHSefrDwAA//8DALC4jk5GAwAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 6befdff4195dcdcf-CDG
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 17 Dec 2021 11:40:08 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      FINRA-api-request-id:
+      - c6de6dc9-9fca-46b9-a0f4-f13ca4fe8ca4
+      Record-Limit:
+      - '27'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '256'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cfruid=7703c8c9eafb22151a78d9aac8491b21fc088133-1639741208; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '27'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-61bc7718-4e12bd8546dd70ae2bd04a59;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - KfeLyFccIAMFfkg=
+      x-amzn-RequestId:
+      - c6de6dc9-9fca-46b9-a0f4-f13ca4fe8ca4
+    status:
+      code: 200
+      message: OK
+version: 1
