@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 import os
 import argparse
 import difflib
+import logging
 import sys
 from typing import List, Union
 
@@ -15,6 +16,7 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     system_clear,
 )
+from gamestonk_terminal.loggers import setup_logging
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.terminal_helper import (
     about_us,
@@ -27,6 +29,8 @@ from gamestonk_terminal.terminal_helper import (
 )
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel
+
+logger = logging.getLogger(__name__)
 
 
 class TerminalController:
@@ -206,7 +210,6 @@ Menus:
         usage_instructions()
         return self.queue
 
-    # MENUS
     def call_stocks(self, _):
         """Process stocks command"""
         from gamestonk_terminal.stocks import stocks_controller
@@ -258,6 +261,10 @@ Menus:
 
 def terminal(jobs_cmds: List[str] = None):
     """Terminal Menu"""
+    setup_logging()
+
+    logger.info("Terminal started")
+    
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
     an_input = ""
@@ -318,7 +325,6 @@ def terminal(jobs_cmds: List[str] = None):
                 ret_code = reset(
                     t_controller.queue if len(t_controller.queue) > 0 else []
                 )
-
                 if ret_code != 0:
                     print_goodbye()
                     break

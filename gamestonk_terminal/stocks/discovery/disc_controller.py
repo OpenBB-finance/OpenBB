@@ -639,7 +639,7 @@ NASDAQ Data Link (Formerly Quandl):
             dest="sort_col",
             choices=self.arkord_sortby_choices,
             nargs="+",
-            help="Colume to sort by",
+            help="Column to sort by",
             default="",
         )
         parser.add_argument(
