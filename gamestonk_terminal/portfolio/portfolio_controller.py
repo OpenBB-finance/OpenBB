@@ -175,12 +175,12 @@ Graphs:
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
@@ -249,7 +249,7 @@ Graphs:
 
         self.portfolio = portfolio_model.load_df(ns_parser.name)
         print("")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_save(self, other_args: List[str]):
@@ -285,12 +285,12 @@ Graphs:
             )
 
         portfolio_model.save_df(self.portfolio, ns_parser.name)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_show(self, _):
         """Process show command"""
         portfolio_view.show_df(self.portfolio, False)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_add(self, other_args: List[str]):
         """Process add command"""
@@ -393,7 +393,7 @@ Graphs:
         self.portfolio = self.portfolio.append([data])
         self.portfolio.index = list(range(0, len(self.portfolio.values)))
         print(f"{ns_parser.name.upper()} successfully added\n")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_rmv(self, _):
         """Process rmv command"""
@@ -406,7 +406,7 @@ Graphs:
             print(
                 f"Invalid index please use an integer between 0 and {len(self.portfolio.index)-1}\n"
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_ar(self, other_args: List[str]):
@@ -437,7 +437,7 @@ Graphs:
         val, hist = portfolio_model.convert_df(self.portfolio)
         if not val.empty:
             portfolio_view.Report(val, hist, ns_parser.market, 365).generate_report()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_rmr(self, other_args: List[str]):
@@ -473,7 +473,7 @@ Graphs:
         else:
             print("Cannot generate a graph from an empty dataframe\n")
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
 
 def menu(queue: List[str] = None):

@@ -131,12 +131,12 @@ Current Series IDs:
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_home(self, _):
         """Process home command"""
@@ -209,7 +209,7 @@ Current Series IDs:
                 series_term=ns_parser.series_term,
                 num=ns_parser.num,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_add(self, other_args: List[str]):
@@ -244,7 +244,7 @@ Current Series IDs:
             print(
                 f"Current Series: {', '.join(self.current_series.keys()) .upper() or None}\n"
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_rmv(self, other_args: List[str]):
@@ -289,12 +289,12 @@ Current Series IDs:
                 self.current_series = {}
                 self.current_long_id = 0
                 print("")
-                return self.queue if len(self.queue) > 0 else []
+                return self.queue
             self.current_series.pop(ns_parser.series_id)
             print(
                 f"Current Series Ids: {', '.join(self.current_series.keys()) or None}\n"
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_plot(self, other_args):
@@ -329,7 +329,7 @@ Current Series IDs:
                 ns_parser.raw,
                 ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
 
 def menu(queue: List[str] = None):

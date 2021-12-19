@@ -246,13 +246,13 @@ class OandaController:
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
         self.to_symbol = ns_parser.to_symbol.upper()
         self.instrument = f"{self.from_symbol}_{self.to_symbol}"
 
         print(f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_from(self, other_args: List[str]):
@@ -281,13 +281,13 @@ class OandaController:
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
         self.from_symbol = ns_parser.from_symbol.upper()
         self.instrument = f"{self.from_symbol}_{self.to_symbol}"
 
         print(f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_price(self, other_args):
@@ -299,9 +299,9 @@ class OandaController:
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
         oanda_view.get_fx_price(account, self.instrument)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_summary(self, other_args):
@@ -313,9 +313,9 @@ class OandaController:
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
         oanda_view.get_account_summary(account)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_orderbook(self, other_args):
@@ -327,9 +327,9 @@ class OandaController:
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
         oanda_view.get_order_book(account, self.instrument)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_positionbook(self, other_args):
@@ -341,9 +341,9 @@ class OandaController:
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
         oanda_view.get_position_book(account, self.instrument)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_list(self, other_args: List[str]):
@@ -375,11 +375,11 @@ class OandaController:
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
         order_state = ns_parser.state.upper()
         order_count = ns_parser.limit
         oanda_view.list_orders(account, order_state, order_count)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_order(self, other_args: List[str]):
@@ -411,11 +411,11 @@ class OandaController:
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
         price = ns_parser.price
         units = ns_parser.units
         oanda_view.create_order(account, self.instrument, price, units)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_cancel(self, other_args: List[str]):
@@ -439,10 +439,10 @@ class OandaController:
                 other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
         orderID = ns_parser.orderID
         oanda_view.cancel_pending_order(account, orderID)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_positions(self, other_args):
@@ -454,9 +454,9 @@ class OandaController:
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
         oanda_view.get_open_positions(account)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_pending(self, other_args):
@@ -468,9 +468,9 @@ class OandaController:
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
         oanda_view.get_pending_orders(account)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_trades(self, other_args):
@@ -482,9 +482,9 @@ class OandaController:
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
         oanda_view.get_open_trades(account)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_closetrade(self, other_args: List[str]):
@@ -517,11 +517,11 @@ class OandaController:
                 other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
         orderID = ns_parser.orderID
         units = ns_parser.units
         oanda_view.close_trade(account, orderID, units)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_candles(self, other_args: List[str]):
@@ -611,7 +611,7 @@ class OandaController:
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
         oanda_view.show_candles(
             self.instrument,
@@ -628,7 +628,7 @@ class OandaController:
                 "vwap": ns_parser.vwap,
             },
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_calendar(self, other_args: List[str]):
@@ -651,10 +651,10 @@ class OandaController:
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
         days = ns_parser.days
         oanda_view.calendar(self.instrument, days)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
 
 def menu(queue: List[str] = None):

@@ -307,17 +307,17 @@ Mean Variance Optimization:
         """Process select command"""
         self.tickers = []
         self.add_stocks(other_args)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_add(self, other_args: List[str]):
         """Process add command"""
         self.add_stocks(other_args)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_rmv(self, other_args: List[str]):
         """Process rmv command"""
         self.rmv_stocks(other_args)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_equal(self, other_args: List[str]):
@@ -348,12 +348,12 @@ Mean Variance Optimization:
         if ns_parser:
             if len(self.tickers) < 2:
                 print("Please have at least 2 loaded tickers to calculate weights.\n")
-                return self.queue if len(self.queue) > 0 else []
+                return self.queue
 
             optimizer_view.display_equal_weight(
                 stocks=self.tickers, value=ns_parser.value, pie=ns_parser.pie
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_mktcap(self, other_args: List[str]):
@@ -383,7 +383,7 @@ Mean Variance Optimization:
         if ns_parser:
             if len(self.tickers) < 2:
                 print("Please have at least 2 stocks selected to perform calculations.")
-                return self.queue if len(self.queue) > 0 else []
+                return self.queue
 
             optimizer_view.display_property_weighting(
                 self.tickers,
@@ -391,7 +391,7 @@ Mean Variance Optimization:
                 value=ns_parser.value,
                 pie=ns_parser.pie,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_dividend(self, other_args: List[str]):
@@ -421,7 +421,7 @@ Mean Variance Optimization:
         if ns_parser:
             if len(self.tickers) < 2:
                 print("Please have at least 2 stocks selected to perform calculations.")
-                return self.queue if len(self.queue) > 0 else []
+                return self.queue
 
             optimizer_view.display_property_weighting(
                 self.tickers,
@@ -429,7 +429,7 @@ Mean Variance Optimization:
                 value=ns_parser.value,
                 pie=ns_parser.pie,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_property(self, other_args: List[str]):
@@ -468,7 +468,7 @@ Mean Variance Optimization:
         if ns_parser:
             if len(self.tickers) < 2:
                 print("Please have at least 2 stocks selected to perform calculations.")
-                return self.queue if len(self.queue) > 0 else []
+                return self.queue
 
             optimizer_view.display_property_weighting(
                 self.tickers,
@@ -476,7 +476,7 @@ Mean Variance Optimization:
                 value=ns_parser.value,
                 pie=ns_parser.pie,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_maxsharpe(self, other_args: List[str]):
@@ -524,7 +524,7 @@ Mean Variance Optimization:
         if ns_parser:
             if len(self.tickers) < 2:
                 print("Please have at least 2 loaded tickers to calculate weights.\n")
-                return self.queue if len(self.queue) > 0 else []
+                return self.queue
             optimizer_view.display_max_sharpe(
                 stocks=self.tickers,
                 period=ns_parser.period,
@@ -532,7 +532,7 @@ Mean Variance Optimization:
                 rfrate=ns_parser.risk_free_rate,
                 pie=ns_parser.pie,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_minvol(self, other_args: List[str]):
@@ -571,7 +571,7 @@ Mean Variance Optimization:
         if ns_parser:
             if len(self.tickers) < 2:
                 print("Please have at least 2 loaded tickers to calculate weights.\n")
-                return self.queue if len(self.queue) > 0 else []
+                return self.queue
 
             optimizer_view.display_min_volatility(
                 stocks=self.tickers,
@@ -579,7 +579,7 @@ Mean Variance Optimization:
                 value=ns_parser.value,
                 pie=ns_parser.pie,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_maxquadutil(self, other_args: List[str]):
@@ -635,13 +635,13 @@ Mean Variance Optimization:
         if ns_parser:
             if len(self.tickers) < 2:
                 print("Please have at least 2 loaded tickers to calculate weights.\n")
-                return self.queue if len(self.queue) > 0 else []
+                return self.queue
 
             if ns_parser.pie and ns_parser.market_neutral:
                 print(
                     "Cannot show pie chart for market neutral due to negative weights."
                 )
-                return self.queue if len(self.queue) > 0 else []
+                return self.queue
 
             optimizer_view.display_max_quadratic_utility(
                 stocks=self.tickers,
@@ -651,7 +651,7 @@ Mean Variance Optimization:
                 market_neutral=ns_parser.market_neutral,
                 pie=ns_parser.pie,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_effrisk(self, other_args: List[str]):
@@ -712,13 +712,13 @@ Mean Variance Optimization:
         if ns_parser:
             if len(self.tickers) < 2:
                 print("Please have at least 2 loaded tickers to calculate weights.\n")
-                return self.queue if len(self.queue) > 0 else []
+                return self.queue
 
             if ns_parser.pie and ns_parser.market_neutral:
                 print(
                     "Cannot show pie chart for market neutral due to negative weights."
                 )
-                return self.queue if len(self.queue) > 0 else []
+                return self.queue
 
             optimizer_view.display_efficient_risk(
                 stocks=self.tickers,
@@ -728,7 +728,7 @@ Mean Variance Optimization:
                 market_neutral=ns_parser.market_neutral,
                 pie=ns_parser.pie,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_effret(self, other_args: List[str]):
@@ -787,13 +787,13 @@ Mean Variance Optimization:
         if ns_parser:
             if len(self.tickers) < 2:
                 print("Please have at least 2 loaded tickers to calculate weights.\n")
-                return self.queue if len(self.queue) > 0 else []
+                return self.queue
 
             if ns_parser.pie and ns_parser.market_neutral:
                 print(
                     "Cannot show pie chart for market neutral due to negative weights."
                 )
-                return self.queue if len(self.queue) > 0 else []
+                return self.queue
 
             optimizer_view.display_efficient_return(
                 stocks=self.tickers,
@@ -803,7 +803,7 @@ Mean Variance Optimization:
                 market_neutral=ns_parser.market_neutral,
                 pie=ns_parser.pie,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_ef(self, other_args):
@@ -846,7 +846,7 @@ Mean Variance Optimization:
         if ns_parser:
             if len(self.tickers) < 2:
                 print("Please have at least 2 loaded tickers to calculate weights.\n")
-                return self.queue if len(self.queue) > 0 else []
+                return self.queue
 
             optimizer_view.display_ef(
                 stocks=self.tickers,
@@ -854,13 +854,13 @@ Mean Variance Optimization:
                 n_portfolios=ns_parser.n_port,
                 risk_free=ns_parser.risk_free,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_yolo(self, _):
         # Easter egg :)
         print("DFV YOLO")
         print("GME: ALL", "\n")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def add_stocks(self, other_args: List[str]):

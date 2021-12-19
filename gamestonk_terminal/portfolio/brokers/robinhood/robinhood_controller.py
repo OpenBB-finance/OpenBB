@@ -170,7 +170,7 @@ Robinhood:
     def call_login(self, _):
         """Process login"""
         robinhood_model.login()
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_holdings(self, other_args: List[str]):
@@ -186,7 +186,7 @@ Robinhood:
         )
         if ns_parser:
             robinhood_view.display_holdings(export=ns_parser.export)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_history(self, other_args: List[str]):
@@ -224,7 +224,7 @@ Robinhood:
                 span=ns_parser.span,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
 
 def menu(queue: List[str] = None):

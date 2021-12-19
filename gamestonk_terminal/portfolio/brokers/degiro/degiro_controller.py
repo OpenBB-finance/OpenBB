@@ -175,7 +175,7 @@ class DegiroController:
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         self.__degiro_view.cancel(ns_parser=ns_parser)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def companynews(self, other_args: List[str]):
         """Display news related to a company using its ISIN."""
@@ -193,7 +193,7 @@ class DegiroController:
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         self.__degiro_view.companynews(ns_parser=ns_parser)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def create(self, other_args: List[str]):
         """Create an order."""
@@ -272,7 +272,7 @@ class DegiroController:
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         self.__degiro_view.create(ns_parser=ns_parser)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def hold(self, other_args):
         """Display held products."""
@@ -285,7 +285,7 @@ class DegiroController:
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         self.__degiro_view.hold(ns_parser=ns_parser)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def lastnews(self, other_args: List[str]):
         """Display latest news."""
@@ -306,7 +306,7 @@ class DegiroController:
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         self.__degiro_view.lastnews(ns_parser=ns_parser)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def login(self, other_args: List[str]):
         """Connect to Degiro's API."""
@@ -347,7 +347,7 @@ class DegiroController:
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         self.__degiro_view.login(ns_parser=ns_parser)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def logout(self, other_args: List[str]):
         """Log out from Degiro's API."""
@@ -391,7 +391,7 @@ class DegiroController:
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         self.__degiro_view.lookup(ns_parser=ns_parser)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def pending(self, other_args: List[str]):
         """Display pending orders."""
@@ -404,7 +404,7 @@ class DegiroController:
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         self.__degiro_view.pending(ns_parser=ns_parser)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def topnews(self, other_args: List[str]):
         """Display top news."""
@@ -417,7 +417,7 @@ class DegiroController:
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         self.__degiro_view.topnews(ns_parser=ns_parser)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def update(self, other_args: List[str]):
         """Update an order."""
@@ -442,7 +442,7 @@ class DegiroController:
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         self.__degiro_view.update(ns_parser=ns_parser)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
 
 def menu(queue: List[str] = None):

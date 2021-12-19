@@ -166,43 +166,43 @@ Resource Collection:
         """Process hfletters command"""
         webbrowser.open("https://miltonfmr.com/hedge-fund-letters/")
         print("")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_arxiv(self, _):
         """Process arxiv command"""
         webbrowser.open("https://arxiv.org")
         print("")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_finra(self, _):
         """Process finra command"""
         webbrowser.open("https://www.finra.org/#/")
         print("")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_edgar(self, _):
         """Process edgar command"""
         webbrowser.open("https://www.sec.gov/edgar.shtml")
         print("")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_fred(self, _):
         """Process fred command"""
         webbrowser.open("https://fred.stlouisfed.org")
         print("")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_learn(self, _):
         """Process learn command"""
         webbrowser.open("https://moongangcapital.com/free-stock-market-resources/")
         print("")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_econiverse(self, _):
         """Process econiverse command"""
         webbrowser.open("https://econiverse.github.io")
         print("")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
 
 def menu(queue: List[str] = None):

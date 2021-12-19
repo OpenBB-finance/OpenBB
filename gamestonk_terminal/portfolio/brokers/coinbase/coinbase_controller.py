@@ -213,7 +213,7 @@ Coinbase:
                 currency=ns_parser.currency,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_history(self, other_args):
@@ -253,7 +253,7 @@ Coinbase:
             coinbase_view.display_history(
                 ns_parser.account, ns_parser.export, ns_parser.limit
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_orders(self, other_args):
@@ -299,7 +299,7 @@ Coinbase:
             coinbase_view.display_orders(
                 ns_parser.limit, ns_parser.sortby, ns_parser.descend, ns_parser.export
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_deposits(self, other_args):
@@ -354,7 +354,7 @@ Coinbase:
                 ns_parser.descend,
                 ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
 
 def menu(queue: List[str] = None):

@@ -210,12 +210,12 @@ Forex brokerages:
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
         self.to_symbol = ns_parser.to_symbol
 
         print(f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_from(self, other_args: List[str]):
@@ -244,12 +244,12 @@ Forex brokerages:
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
         self.from_symbol = ns_parser.from_symbol
 
         print(f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -291,11 +291,11 @@ Forex brokerages:
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
         if not self.to_symbol or not self.from_symbol:
             print("\nMake sure both a to symbol and a from symbol are supplied\n")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
         self.data = av_model.get_historical(
             to_symbol=self.to_symbol,
@@ -305,7 +305,7 @@ Forex brokerages:
             start_date=ns_parser.start_date.strftime("%Y-%m-%d"),
         )
         print(f"Loaded historic data from {self.from_symbol} to {self.to_symbol}")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_candle(self, other_args: List[str]):
@@ -327,13 +327,13 @@ Forex brokerages:
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
         if self.data.empty:
             print("No forex historical data loaded.  Load first using <load>.")
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
         av_view.display_candle(self.data, self.to_symbol, self.from_symbol)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_quote(self, other_args: List[str]):
@@ -347,14 +347,14 @@ Forex brokerages:
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
         if not self.to_symbol or not self.from_symbol:
             print('Make sure both a "to" symbol and a "from" symbol are selected\n')
-            return self.queue if len(self.queue) > 0 else []
+            return self.queue
 
         av_view.display_quote(self.to_symbol, self.from_symbol)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     # MENUS
     def call_oanda(self, _):

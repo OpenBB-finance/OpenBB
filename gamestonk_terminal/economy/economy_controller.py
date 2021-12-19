@@ -350,7 +350,7 @@ NASDAQ DataLink (formerly Quandl):
             indicator=ns_parser.indicator,
             export=ns_parser.export,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_overview(self, other_args: List[str]):
@@ -371,7 +371,7 @@ NASDAQ DataLink (formerly Quandl):
         wsj_view.display_overview(
             export=ns_parser.export,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_indices(self, other_args: List[str]):
@@ -391,7 +391,7 @@ NASDAQ DataLink (formerly Quandl):
         wsj_view.display_indices(
             export=ns_parser.export,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_futures(self, other_args: List[str]):
@@ -411,7 +411,7 @@ NASDAQ DataLink (formerly Quandl):
         wsj_view.display_futures(
             export=ns_parser.export,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_usbonds(self, other_args: List[str]):
@@ -431,7 +431,7 @@ NASDAQ DataLink (formerly Quandl):
         wsj_view.display_usbonds(
             export=ns_parser.export,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_glbonds(self, other_args: List[str]):
@@ -451,7 +451,7 @@ NASDAQ DataLink (formerly Quandl):
         wsj_view.display_glbonds(
             export=ns_parser.export,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_currencies(self, other_args: List[str]):
@@ -472,7 +472,7 @@ NASDAQ DataLink (formerly Quandl):
         wsj_view.display_currencies(
             export=ns_parser.export,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_energy(self, other_args: List[str]):
@@ -511,7 +511,7 @@ NASDAQ DataLink (formerly Quandl):
             ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_metals(self, other_args: List[str]):
@@ -550,7 +550,7 @@ NASDAQ DataLink (formerly Quandl):
             ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_meats(self, other_args: List[str]):
@@ -589,7 +589,7 @@ NASDAQ DataLink (formerly Quandl):
             ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_grains(self, other_args: List[str]):
@@ -628,7 +628,7 @@ NASDAQ DataLink (formerly Quandl):
             ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_softs(self, other_args: List[str]):
@@ -667,7 +667,7 @@ NASDAQ DataLink (formerly Quandl):
             ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_map(self, other_args: List[str]):
@@ -709,7 +709,7 @@ NASDAQ DataLink (formerly Quandl):
             period=ns_parser.s_period,
             map_type=ns_parser.s_type,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_valuation(self, other_args: List[str]):
@@ -768,7 +768,7 @@ NASDAQ DataLink (formerly Quandl):
             ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_performance(self, other_args: List[str]):
@@ -824,7 +824,7 @@ NASDAQ DataLink (formerly Quandl):
             ascending=ns_parser.ascend,
             export=ns_parser.export,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_spectrum(self, other_args: List[str]):
@@ -864,7 +864,7 @@ NASDAQ DataLink (formerly Quandl):
         # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
         # after saving it and displaying it to the user
         os.remove(self.d_GROUPS[group] + ".jpg")
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_rtps(self, other_args: List[str]):
@@ -894,7 +894,7 @@ NASDAQ DataLink (formerly Quandl):
             raw=ns_parser.raw,
             export=ns_parser.export,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_gdp(self, other_args: List[str]):
@@ -946,7 +946,7 @@ NASDAQ DataLink (formerly Quandl):
             raw=ns_parser.raw,
             export=ns_parser.export,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_gdpc(self, other_args: List[str]):
@@ -987,7 +987,7 @@ NASDAQ DataLink (formerly Quandl):
             raw=ns_parser.raw,
             export=ns_parser.export,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_inf(self, other_args: List[str]):
@@ -1077,7 +1077,7 @@ NASDAQ DataLink (formerly Quandl):
             raw=ns_parser.raw,
             export=ns_parser.export,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_tyld(self, other_args: List[str]):
@@ -1138,7 +1138,7 @@ NASDAQ DataLink (formerly Quandl):
             raw=ns_parser.raw,
             export=ns_parser.export,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_unemp(self, other_args: List[str]):
@@ -1179,7 +1179,7 @@ NASDAQ DataLink (formerly Quandl):
             raw=ns_parser.raw,
             export=ns_parser.export,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_bigmac(self, other_args: List[str]):
@@ -1230,7 +1230,7 @@ NASDAQ DataLink (formerly Quandl):
             raw=ns_parser.raw,
             export=ns_parser.export,
         )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_fred(self, _):
         """Process fred command"""

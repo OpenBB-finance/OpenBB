@@ -182,7 +182,7 @@ Stock Information:
         )
         if ns_parser:
             ally_view.display_holdings(export=ns_parser.export)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_history(self, other_args: List[str]):
@@ -208,7 +208,7 @@ Stock Information:
             ally_view.display_history(
                 n_to_show=ns_parser.limit, export=ns_parser.export
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_balances(self, other_args: List[str]):
@@ -224,7 +224,7 @@ Stock Information:
         )
         if ns_parser:
             ally_view.display_balances(export=ns_parser.export)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_quote(self, other_args: List[str]):
@@ -248,7 +248,7 @@ Stock Information:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             ally_view.display_stock_quote(ns_parser.ticker)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_movers(self, other_args: List[str]):
@@ -294,7 +294,7 @@ Stock Information:
                 num_to_show=ns_parser.limit,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
 
 def menu(queue: List[str] = None):

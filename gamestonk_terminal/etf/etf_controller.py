@@ -220,7 +220,7 @@ Finance Database:
             stockanalysis_view.view_search(
                 to_match=search_string, export=ns_parser.export
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_overview(self, other_args: List[str]):
@@ -251,7 +251,7 @@ Finance Database:
             stockanalysis_view.view_overview(
                 symbol=ns_parser.name, export=ns_parser.export
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_holdings(self, other_args: List[str]):
@@ -290,7 +290,7 @@ Finance Database:
                 num_to_show=ns_parser.limit,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_compare(self, other_args):
@@ -319,7 +319,7 @@ Finance Database:
         if ns_parser:
             etf_list = ns_parser.names.upper().split(",")
             stockanalysis_view.view_comparisons(etf_list, export=ns_parser.export)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_screener(self, other_args):
@@ -359,7 +359,7 @@ Finance Database:
                 preset=ns_parser.preset,
                 export=ns_parser.export,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_gainers(self, other_args):
@@ -378,7 +378,7 @@ Finance Database:
         if ns_parser:
             wsj_view.show_top_mover("gainers", ns_parser.limit, ns_parser.export)
 
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_decliners(self, other_args):
         """Process decliners command"""
@@ -395,7 +395,7 @@ Finance Database:
         )
         if ns_parser:
             wsj_view.show_top_mover("decliners", ns_parser.limit, ns_parser.export)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     def call_active(self, other_args):
         """Process gainers command"""
@@ -412,7 +412,7 @@ Finance Database:
         )
         if ns_parser:
             wsj_view.show_top_mover("active", ns_parser.limit, ns_parser.export)
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_pir(self, other_args):
@@ -458,7 +458,7 @@ Finance Database:
             print(
                 f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
     @try_except
     def call_fds(self, other_args):
@@ -524,7 +524,7 @@ Finance Database:
                 amount=ns_parser.limit,
                 options=ns_parser.options,
             )
-        return self.queue if len(self.queue) > 0 else []
+        return self.queue
 
 
 def menu(queue: List[str] = None):
