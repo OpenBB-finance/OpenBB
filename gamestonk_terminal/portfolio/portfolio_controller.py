@@ -244,11 +244,9 @@ Graphs:
                 other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        self.portfolio = portfolio_model.load_df(ns_parser.name)
-        print("")
+        if ns_parser:
+            self.portfolio = portfolio_model.load_df(ns_parser.name)
+            print("")
         return self.queue
 
     @try_except
@@ -272,19 +270,18 @@ Graphs:
             other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            if (
+                ".csv" in ns_parser.name
+                or ".xlsx" in ns_parser.name
+                or ".json" in ns_parser.name
+            ):
+                portfolio_model.save_df(self.portfolio, ns_parser.name)
+            else:
+                print(
+                    "Please submit as 'filename.filetype' with filetype being csv, xlsx, or json\n"
+                )
 
-        if (
-            ".csv" not in ns_parser.name
-            and ".xlsx" not in ns_parser.name
-            and ".json" not in ns_parser.name
-        ):
-            print(
-                "Please submit as 'filename.filetype' with filetype being csv, xlsx, or json\n"
-            )
-
-        portfolio_model.save_df(self.portfolio, ns_parser.name)
         return self.queue
 
     def call_show(self, _):
@@ -425,18 +422,18 @@ Graphs:
             default="SPY",
             help="Choose a ticker to be the market asset",
         )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if self.portfolio.empty:
-            print("Please add items to the portfolio\n")
-            return
-
-        val, hist = portfolio_model.convert_df(self.portfolio)
-        if not val.empty:
-            portfolio_view.Report(val, hist, ns_parser.market, 365).generate_report()
+        if ns_parser:
+            if not self.portfolio.empty:
+                val, hist = portfolio_model.convert_df(self.portfolio)
+                if not val.empty:
+                    portfolio_view.Report(
+                        val, hist, ns_parser.market, 365
+                    ).generate_report()
+                else:
+                    print("Cannot generate a graph from an empty dataframe\n")
+            else:
+                print("Please add items to the portfolio\n")
         return self.queue
 
     @try_except
@@ -456,22 +453,18 @@ Graphs:
             default="SPY",
             help="Choose a ticker to be the market asset",
         )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if self.portfolio.empty:
-            print("Please add items to the portfolio\n")
-            return
-
-        val, _ = portfolio_model.convert_df(self.portfolio)
-        if not val.empty:
-            df_m = yfinance_model.get_market(val.index[0], ns_parser.market)
-            returns, _ = portfolio_model.get_return(val, df_m, 365)
-            portfolio_view.plot_overall_return(returns, ns_parser.market, True)
-        else:
-            print("Cannot generate a graph from an empty dataframe\n")
+        if ns_parser:
+            if self.portfolio.empty:
+                val, _ = portfolio_model.convert_df(self.portfolio)
+                if not val.empty:
+                    df_m = yfinance_model.get_market(val.index[0], ns_parser.market)
+                    returns, _ = portfolio_model.get_return(val, df_m, 365)
+                    portfolio_view.plot_overall_return(returns, ns_parser.market, True)
+                else:
+                    print("Cannot generate a graph from an empty dataframe\n")
+            else:
+                print("Please add items to the portfolio\n")
 
         return self.queue
 

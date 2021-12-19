@@ -243,15 +243,14 @@ class OandaController:
             and "-h" not in other_args
         ):
             other_args.insert(0, "-n")
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return self.queue
+        if ns_parser:
+            self.to_symbol = ns_parser.to_symbol.upper()
+            self.instrument = f"{self.from_symbol}_{self.to_symbol}"
 
-        self.to_symbol = ns_parser.to_symbol.upper()
-        self.instrument = f"{self.from_symbol}_{self.to_symbol}"
-
-        print(f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n")
+            print(
+                f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
+            )
         return self.queue
 
     @try_except
@@ -280,13 +279,13 @@ class OandaController:
             other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return self.queue
+        if ns_parser:
+            self.from_symbol = ns_parser.from_symbol.upper()
+            self.instrument = f"{self.from_symbol}_{self.to_symbol}"
 
-        self.from_symbol = ns_parser.from_symbol.upper()
-        self.instrument = f"{self.from_symbol}_{self.to_symbol}"
-
-        print(f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n")
+            print(
+                f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
+            )
         return self.queue
 
     @try_except
@@ -298,9 +297,8 @@ class OandaController:
             description="Get price for selected instrument.",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return self.queue
-        oanda_view.get_fx_price(account, self.instrument)
+        if ns_parser:
+            oanda_view.get_fx_price(account, self.instrument)
         return self.queue
 
     @try_except
@@ -312,9 +310,8 @@ class OandaController:
             description="Print some information about your account.",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return self.queue
-        oanda_view.get_account_summary(account)
+        if ns_parser:
+            oanda_view.get_account_summary(account)
         return self.queue
 
     @try_except
@@ -326,9 +323,8 @@ class OandaController:
             description="Plot an orderbook for an instrument if Oanda provides one.",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return self.queue
-        oanda_view.get_order_book(account, self.instrument)
+        if ns_parser:
+            oanda_view.get_order_book(account, self.instrument)
         return self.queue
 
     @try_except
@@ -340,9 +336,8 @@ class OandaController:
             description="Plot a position book for an instrument if Oanda provides one.",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return self.queue
-        oanda_view.get_position_book(account, self.instrument)
+        if ns_parser:
+            oanda_view.get_position_book(account, self.instrument)
         return self.queue
 
     @try_except
@@ -374,11 +369,10 @@ class OandaController:
             help="Limit the number of orders to retrieve.",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return self.queue
-        order_state = ns_parser.state.upper()
-        order_count = ns_parser.limit
-        oanda_view.list_orders(account, order_state, order_count)
+        if ns_parser:
+            order_state = ns_parser.state.upper()
+            order_count = ns_parser.limit
+            oanda_view.list_orders(account, order_state, order_count)
         return self.queue
 
     @try_except
@@ -408,13 +402,11 @@ class OandaController:
             required="-h" not in other_args,
             help="The price to set for the limit order.",
         )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return self.queue
-        price = ns_parser.price
-        units = ns_parser.units
-        oanda_view.create_order(account, self.instrument, price, units)
+        if ns_parser:
+            price = ns_parser.price
+            units = ns_parser.units
+            oanda_view.create_order(account, self.instrument, price, units)
         return self.queue
 
     @try_except
@@ -438,10 +430,9 @@ class OandaController:
             if "-" not in other_args[0]:
                 other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return self.queue
-        orderID = ns_parser.orderID
-        oanda_view.cancel_pending_order(account, orderID)
+        if ns_parser:
+            orderID = ns_parser.orderID
+            oanda_view.cancel_pending_order(account, orderID)
         return self.queue
 
     @try_except
@@ -453,9 +444,8 @@ class OandaController:
             description="Get information about open positions.",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return self.queue
-        oanda_view.get_open_positions(account)
+        if ns_parser:
+            oanda_view.get_open_positions(account)
         return self.queue
 
     @try_except
@@ -467,9 +457,8 @@ class OandaController:
             description="Get information about pending orders.",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return self.queue
-        oanda_view.get_pending_orders(account)
+        if ns_parser:
+            oanda_view.get_pending_orders(account)
         return self.queue
 
     @try_except
@@ -481,9 +470,8 @@ class OandaController:
             description="Get information about open trades.",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return self.queue
-        oanda_view.get_open_trades(account)
+        if ns_parser:
+            oanda_view.get_open_trades(account)
         return self.queue
 
     @try_except
@@ -516,11 +504,10 @@ class OandaController:
             if "-i" not in other_args[0]:
                 other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return self.queue
-        orderID = ns_parser.orderID
-        units = ns_parser.units
-        oanda_view.close_trade(account, orderID, units)
+        if ns_parser:
+            orderID = ns_parser.orderID
+            units = ns_parser.units
+            oanda_view.close_trade(account, orderID, units)
         return self.queue
 
     @try_except
@@ -610,24 +597,22 @@ class OandaController:
             help="Adds vwap (Volume Weighted Average Price) to the chart",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return self.queue
-
-        oanda_view.show_candles(
-            self.instrument,
-            granularity=ns_parser.granularity.upper(),
-            candlecount=ns_parser.candlecount,
-            additional_charts={
-                "ad": ns_parser.ad,
-                "bbands": ns_parser.bbands,
-                "cci": ns_parser.cci,
-                "ema": ns_parser.ema,
-                "obv": ns_parser.obv,
-                "rsi": ns_parser.rsi,
-                "sma": ns_parser.sma,
-                "vwap": ns_parser.vwap,
-            },
-        )
+        if ns_parser:
+            oanda_view.show_candles(
+                self.instrument,
+                granularity=ns_parser.granularity.upper(),
+                candlecount=ns_parser.candlecount,
+                additional_charts={
+                    "ad": ns_parser.ad,
+                    "bbands": ns_parser.bbands,
+                    "cci": ns_parser.cci,
+                    "ema": ns_parser.ema,
+                    "obv": ns_parser.obv,
+                    "rsi": ns_parser.rsi,
+                    "sma": ns_parser.sma,
+                    "vwap": ns_parser.vwap,
+                },
+            )
         return self.queue
 
     @try_except
@@ -650,10 +635,9 @@ class OandaController:
             + "use negative numbers to search back. ",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return self.queue
-        days = ns_parser.days
-        oanda_view.calendar(self.instrument, days)
+        if ns_parser:
+            days = ns_parser.days
+            oanda_view.calendar(self.instrument, days)
         return self.queue
 
 

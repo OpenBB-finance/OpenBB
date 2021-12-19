@@ -209,12 +209,12 @@ Forex brokerages:
             other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return self.queue
+        if ns_parser:
+            self.to_symbol = ns_parser.to_symbol
 
-        self.to_symbol = ns_parser.to_symbol
-
-        print(f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n")
+            print(
+                f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
+            )
         return self.queue
 
     @try_except
@@ -243,12 +243,11 @@ Forex brokerages:
             other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return self.queue
-
-        self.from_symbol = ns_parser.from_symbol
-
-        print(f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n")
+        if ns_parser:
+            self.from_symbol = ns_parser.from_symbol
+            print(
+                f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
+            )
         return self.queue
 
     @try_except
@@ -284,27 +283,24 @@ Forex brokerages:
             help="Start date of data.",
             dest="start_date",
         )
-
-        # For the case where a user uses: 'load BB'
         if other_args and "-t" not in other_args and "-h" not in other_args:
             other_args.insert(0, "-t")
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return self.queue
+        if ns_parser:
+            if self.to_symbol and self.from_symbol:
+                self.data = av_model.get_historical(
+                    to_symbol=self.to_symbol,
+                    from_symbol=self.from_symbol,
+                    resolution=ns_parser.resolution,
+                    interval=ns_parser.interval,
+                    start_date=ns_parser.start_date.strftime("%Y-%m-%d"),
+                )
+                print(
+                    f"Loaded historic data from {self.from_symbol} to {self.to_symbol}"
+                )
+            else:
+                print("\nMake sure both a to symbol and a from symbol are supplied\n")
 
-        if not self.to_symbol or not self.from_symbol:
-            print("\nMake sure both a to symbol and a from symbol are supplied\n")
-            return self.queue
-
-        self.data = av_model.get_historical(
-            to_symbol=self.to_symbol,
-            from_symbol=self.from_symbol,
-            resolution=ns_parser.resolution,
-            interval=ns_parser.interval,
-            start_date=ns_parser.start_date.strftime("%Y-%m-%d"),
-        )
-        print(f"Loaded historic data from {self.from_symbol} to {self.to_symbol}")
         return self.queue
 
     @try_except
@@ -316,23 +312,12 @@ Forex brokerages:
             prog="candle",
             description="Show candle for loaded fx data",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return self.queue
-        if self.data.empty:
-            print("No forex historical data loaded.  Load first using <load>.")
-            return self.queue
-
-        av_view.display_candle(self.data, self.to_symbol, self.from_symbol)
+        if ns_parser:
+            if not self.data.empty:
+                av_view.display_candle(self.data, self.to_symbol, self.from_symbol)
+            else:
+                print("No forex historical data loaded.  Load first using <load>.")
         return self.queue
 
     @try_except
@@ -344,16 +329,13 @@ Forex brokerages:
             prog="quote",
             description="Get current exchange rate quote",
         )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return self.queue
+        if ns_parser:
+            if self.to_symbol and self.from_symbol:
+                av_view.display_quote(self.to_symbol, self.from_symbol)
+            else:
+                print('Make sure both a "to" symbol and a "from" symbol are selected\n')
 
-        if not self.to_symbol or not self.from_symbol:
-            print('Make sure both a "to" symbol and a "from" symbol are selected\n')
-            return self.queue
-
-        av_view.display_quote(self.to_symbol, self.from_symbol)
         return self.queue
 
     # MENUS

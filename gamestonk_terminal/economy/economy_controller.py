@@ -343,13 +343,11 @@ NASDAQ DataLink (formerly Quandl):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
-        if not ns_parser:
-            return
-
-        cnn_view.fear_and_greed_index(
-            indicator=ns_parser.indicator,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            cnn_view.fear_and_greed_index(
+                indicator=ns_parser.indicator,
+                export=ns_parser.export,
+            )
         return self.queue
 
     @try_except
@@ -365,12 +363,10 @@ NASDAQ DataLink (formerly Quandl):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-
-        wsj_view.display_overview(
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            wsj_view.display_overview(
+                export=ns_parser.export,
+            )
         return self.queue
 
     @try_except
@@ -385,12 +381,10 @@ NASDAQ DataLink (formerly Quandl):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-
-        wsj_view.display_indices(
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            wsj_view.display_indices(
+                export=ns_parser.export,
+            )
         return self.queue
 
     @try_except
@@ -405,12 +399,10 @@ NASDAQ DataLink (formerly Quandl):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-
-        wsj_view.display_futures(
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            wsj_view.display_futures(
+                export=ns_parser.export,
+            )
         return self.queue
 
     @try_except
@@ -425,12 +417,10 @@ NASDAQ DataLink (formerly Quandl):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-
-        wsj_view.display_usbonds(
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            wsj_view.display_usbonds(
+                export=ns_parser.export,
+            )
         return self.queue
 
     @try_except
@@ -445,12 +435,10 @@ NASDAQ DataLink (formerly Quandl):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-
-        wsj_view.display_glbonds(
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            wsj_view.display_glbonds(
+                export=ns_parser.export,
+            )
         return self.queue
 
     @try_except
@@ -466,12 +454,10 @@ NASDAQ DataLink (formerly Quandl):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-
-        wsj_view.display_currencies(
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            wsj_view.display_currencies(
+                export=ns_parser.export,
+            )
         return self.queue
 
     @try_except
@@ -502,15 +488,13 @@ NASDAQ DataLink (formerly Quandl):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-
-        finviz_view.display_future(
-            future_type="Energy",
-            sort_col=ns_parser.sort_col,
-            ascending=ns_parser.ascend,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            finviz_view.display_future(
+                future_type="Energy",
+                sort_col=ns_parser.sort_col,
+                ascending=ns_parser.ascend,
+                export=ns_parser.export,
+            )
         return self.queue
 
     @try_except
@@ -541,15 +525,13 @@ NASDAQ DataLink (formerly Quandl):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-
-        finviz_view.display_future(
-            future_type="Metals",
-            sort_col=ns_parser.sort_col,
-            ascending=ns_parser.ascend,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            finviz_view.display_future(
+                future_type="Metals",
+                sort_col=ns_parser.sort_col,
+                ascending=ns_parser.ascend,
+                export=ns_parser.export,
+            )
         return self.queue
 
     @try_except
@@ -580,15 +562,13 @@ NASDAQ DataLink (formerly Quandl):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-
-        finviz_view.display_future(
-            future_type="Meats",
-            sort_col=ns_parser.sort_col,
-            ascending=ns_parser.ascend,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            finviz_view.display_future(
+                future_type="Meats",
+                sort_col=ns_parser.sort_col,
+                ascending=ns_parser.ascend,
+                export=ns_parser.export,
+            )
         return self.queue
 
     @try_except
@@ -619,15 +599,13 @@ NASDAQ DataLink (formerly Quandl):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-
-        finviz_view.display_future(
-            future_type="Grains",
-            sort_col=ns_parser.sort_col,
-            ascending=ns_parser.ascend,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            finviz_view.display_future(
+                future_type="Grains",
+                sort_col=ns_parser.sort_col,
+                ascending=ns_parser.ascend,
+                export=ns_parser.export,
+            )
         return self.queue
 
     @try_except
@@ -658,15 +636,13 @@ NASDAQ DataLink (formerly Quandl):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-
-        finviz_view.display_future(
-            future_type="Softs",
-            sort_col=ns_parser.sort_col,
-            ascending=ns_parser.ascend,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            finviz_view.display_future(
+                future_type="Softs",
+                sort_col=ns_parser.sort_col,
+                ascending=ns_parser.ascend,
+                export=ns_parser.export,
+            )
         return self.queue
 
     @try_except
@@ -702,13 +678,11 @@ NASDAQ DataLink (formerly Quandl):
             help="Map filter type.",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        finviz_view.map_sp500_view(
-            period=ns_parser.s_period,
-            map_type=ns_parser.s_type,
-        )
+        if ns_parser:
+            finviz_view.map_sp500_view(
+                period=ns_parser.s_period,
+                map_type=ns_parser.s_type,
+            )
         return self.queue
 
     @try_except
@@ -754,20 +728,18 @@ NASDAQ DataLink (formerly Quandl):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-
-        group = (
-            " ".join(ns_parser.group)
-            if isinstance(ns_parser.group, list)
-            else ns_parser.group
-        )
-        finviz_view.display_valuation(
-            s_group=self.d_GROUPS[group],
-            sort_col=ns_parser.sort_col,
-            ascending=ns_parser.ascend,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            group = (
+                " ".join(ns_parser.group)
+                if isinstance(ns_parser.group, list)
+                else ns_parser.group
+            )
+            finviz_view.display_valuation(
+                s_group=self.d_GROUPS[group],
+                sort_col=ns_parser.sort_col,
+                ascending=ns_parser.ascend,
+                export=ns_parser.export,
+            )
         return self.queue
 
     @try_except
@@ -811,19 +783,18 @@ NASDAQ DataLink (formerly Quandl):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-        group = (
-            " ".join(ns_parser.group)
-            if isinstance(ns_parser.group, list)
-            else ns_parser.group
-        )
-        finviz_view.display_performance(
-            s_group=self.d_GROUPS[group],
-            sort_col=ns_parser.sort_col,
-            ascending=ns_parser.ascend,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            group = (
+                " ".join(ns_parser.group)
+                if isinstance(ns_parser.group, list)
+                else ns_parser.group
+            )
+            finviz_view.display_performance(
+                s_group=self.d_GROUPS[group],
+                sort_col=ns_parser.sort_col,
+                ascending=ns_parser.ascend,
+                export=ns_parser.export,
+            )
         return self.queue
 
     @try_except
@@ -852,13 +823,12 @@ NASDAQ DataLink (formerly Quandl):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
-        if not ns_parser:
-            return
-        group = (
-            " ".join(ns_parser.group)
-            if isinstance(ns_parser.group, list)
-            else ns_parser.group
-        )
+        if ns_parser:
+            group = (
+                " ".join(ns_parser.group)
+                if isinstance(ns_parser.group, list)
+                else ns_parser.group
+            )
         finviz_view.display_spectrum(s_group=self.d_GROUPS[group])
 
         # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
@@ -887,13 +857,11 @@ NASDAQ DataLink (formerly Quandl):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        if not ns_parser:
-            return
-
-        alphavantage_view.realtime_performance_sector(
-            raw=ns_parser.raw,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            alphavantage_view.realtime_performance_sector(
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
         return self.queue
 
     @try_except
@@ -937,15 +905,13 @@ NASDAQ DataLink (formerly Quandl):
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
-        if not ns_parser:
-            return
-
-        alphavantage_view.display_real_gdp(
-            interval=ns_parser.interval[0],
-            start_year=ns_parser.start,
-            raw=ns_parser.raw,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            alphavantage_view.display_real_gdp(
+                interval=ns_parser.interval[0],
+                start_year=ns_parser.start,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
         return self.queue
 
     @try_except
@@ -974,19 +940,15 @@ NASDAQ DataLink (formerly Quandl):
             dest="raw",
             default=False,
         )
-
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-
-        if not ns_parser:
-            return
-
-        alphavantage_view.display_gdp_capita(
-            start_year=ns_parser.start,
-            raw=ns_parser.raw,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            alphavantage_view.display_gdp_capita(
+                start_year=ns_parser.start,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
         return self.queue
 
     @try_except
@@ -1015,19 +977,15 @@ NASDAQ DataLink (formerly Quandl):
             dest="raw",
             default=False,
         )
-
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-
-        if not ns_parser:
-            return
-
-        alphavantage_view.display_inflation(
-            start_year=ns_parser.start,
-            raw=ns_parser.raw,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            alphavantage_view.display_inflation(
+                start_year=ns_parser.start,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_cpi(self, other_args: List[str]):
@@ -1063,20 +1021,16 @@ NASDAQ DataLink (formerly Quandl):
             dest="raw",
             default=False,
         )
-
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-
-        if not ns_parser:
-            return
-
-        alphavantage_view.display_cpi(
-            interval=ns_parser.interval[0],
-            start_year=ns_parser.start,
-            raw=ns_parser.raw,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            alphavantage_view.display_cpi(
+                interval=ns_parser.interval[0],
+                start_year=ns_parser.start,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
         return self.queue
 
     @try_except
@@ -1127,17 +1081,14 @@ NASDAQ DataLink (formerly Quandl):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-
-        if not ns_parser:
-            return
-
-        alphavantage_view.display_treasury_yield(
-            interval=ns_parser.interval[0],
-            maturity=ns_parser.maturity,
-            start_date=ns_parser.start,
-            raw=ns_parser.raw,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            alphavantage_view.display_treasury_yield(
+                interval=ns_parser.interval[0],
+                maturity=ns_parser.maturity,
+                start_date=ns_parser.start,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
         return self.queue
 
     @try_except
@@ -1166,19 +1117,15 @@ NASDAQ DataLink (formerly Quandl):
             dest="raw",
             default=False,
         )
-
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-
-        if not ns_parser:
-            return
-
-        alphavantage_view.display_unemployment(
-            start_year=ns_parser.start,
-            raw=ns_parser.raw,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            alphavantage_view.display_unemployment(
+                start_year=ns_parser.start,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
         return self.queue
 
     @try_except
@@ -1217,19 +1164,18 @@ NASDAQ DataLink (formerly Quandl):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        if not ns_parser:
-            return
-
-        if ns_parser.codes:
-            file = os.path.join(os.path.dirname(__file__), "NASDAQ_CountryCodes.csv")
-            print(pd.read_csv(file, index_col=0).to_string(index=False), "\n")
-            return
-
-        nasdaq_view.display_big_mac_index(
-            country_codes=ns_parser.countries,
-            raw=ns_parser.raw,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            if ns_parser.codes:
+                file = os.path.join(
+                    os.path.dirname(__file__), "NASDAQ_CountryCodes.csv"
+                )
+                print(pd.read_csv(file, index_col=0).to_string(index=False), "\n")
+            else:
+                nasdaq_view.display_big_mac_index(
+                    country_codes=ns_parser.countries,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
         return self.queue
 
     def call_fred(self, _):
