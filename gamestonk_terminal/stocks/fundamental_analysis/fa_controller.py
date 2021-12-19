@@ -135,7 +135,6 @@ class FundamentalAnalysisController:
         newline = "\n"
         help_text = f"""
 Ticker: {self.ticker}
-
 {f"Note that only Yahoo Finance currently supports foreign exchanges{Style.DIM}{newline}" if self.suffix else ""}
     data          fundamental and technical data of company [FinViz]
     mgmt          management team of the company [Business Insider]
