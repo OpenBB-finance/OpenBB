@@ -87,7 +87,7 @@ Screener:
     {Style.NORMAL if self.screen_tickers else Style.DIM}
 Last screened tickers: {', '.join(self.screen_tickers)}
 >   ca             take these to comparison analysis menu
->   po             take these to portoflio optimization menu{Style.RESET_ALL}
+>   po             take these to portfolio optimization menu{Style.RESET_ALL}
         """
         print(help_text)
 

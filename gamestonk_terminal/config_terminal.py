@@ -15,6 +15,30 @@ DEBUG_MODE = False
 # By default the jupyter notebook will be run on port 8888
 PAPERMILL_NOTEBOOK_REPORT_PORT = "8888"
 
+# Logging settings
+
+# 0 - INFO
+# 1 - DEBUG for terminal, INFO for libraries
+# 2 - DEBUG for terminal, DEBUG for libraries
+
+LOGGING_VERBOSITY = 2
+
+if tmp_verbosity := os.getenv("GT_LOGGING_VERBOSITY"):
+    print(f"Setting verbosity to {tmp_verbosity}")
+    try:
+        LOGGING_VERBOSITY = int(tmp_verbosity)
+    except ValueError:
+        LOGGING_VERBOSITY = 2
+
+# stdout, stderr, file, noop
+LOGGING_HANDLERS = os.getenv("GT_LOGGING_HANDLERS") or "file"
+
+LOGGING_ID = os.getenv("GT_LOGGING_ID") or None
+
+LOGGING_FILE = ""
+
+LOGGING_VERSION = os.getenv("GT_LOGGING_VERSION") or "ver:1.0.0"
+
 # https://www.alphavantage.co
 API_KEY_ALPHAVANTAGE = os.getenv("GT_API_KEY_ALPHAVANTAGE") or "REPLACE_ME"
 

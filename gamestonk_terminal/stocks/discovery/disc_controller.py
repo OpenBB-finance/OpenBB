@@ -634,7 +634,7 @@ NASDAQ Data Link (Formerly Quandl):
                 "shares",
             ],
             nargs="+",
-            help="Colume to sort by",
+            help="Column to sort by",
             default="",
         )
         parser.add_argument(

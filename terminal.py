@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 
 import argparse
 import difflib
+import logging
 import sys
 
 from prompt_toolkit.completion import NestedCompleter
@@ -17,6 +18,7 @@ from gamestonk_terminal.helper_funcs import (
     MENU_GO_BACK,
     MENU_QUIT,
 )
+from gamestonk_terminal.loggers import setup_logging
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.terminal_helper import (
     about_us,
@@ -28,6 +30,8 @@ from gamestonk_terminal.terminal_helper import (
 )
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel
+
+logger = logging.getLogger(__name__)
 
 
 class TerminalController:
@@ -66,7 +70,7 @@ class TerminalController:
 
     def __init__(self):
         """Constructor"""
-        self.update_succcess = False
+        self.update_success = False
         self.t_parser = argparse.ArgumentParser(add_help=False, prog="terminal")
         self.t_parser.add_argument(
             "cmd",
@@ -152,7 +156,7 @@ What do you want to do?
 
     def call_update(self, _):
         """Process update command"""
-        self.update_succcess = not update_terminal()
+        self.update_success = not update_terminal()
         return True
 
     def call_keys(self, _):
@@ -244,6 +248,10 @@ What do you want to do?
 def terminal(menu_prior_to_reset=""):
     """Terminal Menu"""
 
+    setup_logging()
+
+    logger.info("Terminal started")
+
     bootup()
     process_input = False
     t_controller = TerminalController()
@@ -315,7 +323,7 @@ def terminal(menu_prior_to_reset=""):
             # Check if the user wants to reset application
             if (
                 an_input == "reset"
-                or t_controller.update_succcess
+                or t_controller.update_success
                 or process_input == MENU_RESET
             ):
                 ret_code = reset(an_input if an_input != "reset" else "")

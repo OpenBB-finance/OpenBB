@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 import argparse
 import functools
+import logging
 from typing import List
 from datetime import datetime, timedelta, time as Time
 import os
@@ -25,6 +26,8 @@ from screeninfo import get_monitors
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_plot as cfgPlot
 import gamestonk_terminal.config_terminal as cfg
+
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 if cfgPlot.BACKEND is not None:
@@ -186,6 +189,7 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
         print(
             "Encountered an error trying to open a chart window. Check your X server configuration."
         )
+        logging.exception("%s", type(e).__name__)
         return
 
     # In order to make nice Volume plot, make the bar width = interval
@@ -784,7 +788,7 @@ def try_except(f):
         try:
             return f(*args, **kwargs)
         except Exception as e:
-            print(e, "\n")
+            logger.exception("%s", type(e).__name__)
 
     return inner
 
