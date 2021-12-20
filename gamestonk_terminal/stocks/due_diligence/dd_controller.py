@@ -72,21 +72,7 @@ class DueDiligenceController:
         stock: DataFrame,
         queue: List[str] = None,
     ):
-        """Constructor
-
-        Parameters
-        ----------
-        ticker : str
-            Due diligence ticker symbol
-        start : str
-            Start date of the stock data
-        interval : str
-            Stock data interval
-        stock : DataFrame
-            Due diligence stock dataframe
-        queue: List[str]
-            Commands in queue to run
-        """
+        """Constructor"""
         self.ticker = ticker
         self.start = start
         self.interval = interval
@@ -112,8 +98,6 @@ class DueDiligenceController:
     def print_help(self):
         """Print help"""
         help_text = f"""
-Due Diligence Menu:
-
 Ticker: {self.ticker}
 
 Finviz:
@@ -340,15 +324,17 @@ cathiesark.com
             help="Only output raw data",
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=10,
-            help="Number of latest price targets from analysts to print.",
+            help="Limit of latest price targets from analysts to print.",
         )
 
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -358,7 +344,7 @@ cathiesark.com
                 start=self.start,
                 interval=self.interval,
                 stock=self.stock,
-                num=ns_parser.n_num,
+                num=ns_parser.limit,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )
@@ -395,13 +381,13 @@ cathiesark.com
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=10,
-            help="number of last months",
+            help="Limit of last months",
         )
         parser.add_argument(
             "--raw",
@@ -411,7 +397,7 @@ cathiesark.com
         )
 
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-n")
+            other_args.insert(0, "-l")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -419,7 +405,7 @@ cathiesark.com
         if ns_parser:
             finnhub_view.rating_over_time(
                 ticker=self.ticker,
-                num=ns_parser.n_num,
+                num=ns_parser.limit,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )
@@ -438,17 +424,17 @@ cathiesark.com
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=10,
-            help="number of last days to display ratings",
+            help="limit of last days to display ratings",
         )
 
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-n")
+            other_args.insert(0, "-l")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -456,7 +442,7 @@ cathiesark.com
         if ns_parser:
             fmp_view.rating(
                 ticker=self.ticker,
-                num=ns_parser.n_num,
+                num=ns_parser.limit,
                 export=ns_parser.export,
             )
         return self.queue
@@ -473,17 +459,17 @@ cathiesark.com
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=5,
             help="number of latest SEC filings.",
         )
 
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-n")
+            other_args.insert(0, "-l")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -491,7 +477,7 @@ cathiesark.com
         if ns_parser:
             marketwatch_view.sec_filings(
                 ticker=self.ticker,
-                num=ns_parser.n_num,
+                num=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -545,12 +531,12 @@ cathiesark.com
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
-            help="Number of rows to show",
-            dest="num",
-            default=20,
-            type=int,
+            "-l",
+            "--limi",
+            help="Limit of rows to show",
+            dest="limit",
+            default=10,
+            type=check_positive,
         )
         parser.add_argument(
             "-s",
@@ -560,13 +546,15 @@ cathiesark.com
             help="Flag to show ticker in table",
             dest="show_ticker",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             ark_view.display_ark_trades(
                 ticker=self.ticker,
-                num=ns_parser.num,
+                num=ns_parser.limit,
                 export=ns_parser.export,
                 show_ticker=ns_parser.show_ticker,
             )
