@@ -246,7 +246,7 @@ Menus:
         """Process reports command"""
         from gamestonk_terminal.reports import reports_controller
 
-        return reports_controller.menu()
+        return reports_controller.menu(self.queue)
 
     def call_resources(self, _):
         """Process resources command"""
