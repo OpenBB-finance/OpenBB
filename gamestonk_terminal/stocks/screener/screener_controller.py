@@ -323,6 +323,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
         if ns_parser:
             self.preset = ns_parser.preset
         print("")
+        return self.queue
 
     @try_except
     def call_historical(self, other_args: List[str]):
