@@ -18,3 +18,4 @@ grhist 100
 plot -x ltd -y iv
 parity
 binom
+exit

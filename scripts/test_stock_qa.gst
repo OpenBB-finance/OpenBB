@@ -27,3 +27,4 @@ raw
 decompose
 cusum
 capm
+exit

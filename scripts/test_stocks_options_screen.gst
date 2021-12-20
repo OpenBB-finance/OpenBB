@@ -7,3 +7,4 @@ set high_IV
 scr
 ca
 historical
+exit

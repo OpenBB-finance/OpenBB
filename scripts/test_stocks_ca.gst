@@ -21,3 +21,4 @@ tsne
 getpoly
 getfinnhub
 getfinviz
+exit

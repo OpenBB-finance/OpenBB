@@ -10,3 +10,4 @@ add 170 -c 0.5
 add 180 -c 0.2
 show
 rnval
+exit

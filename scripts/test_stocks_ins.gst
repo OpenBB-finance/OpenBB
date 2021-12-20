@@ -28,3 +28,4 @@ tippm 3
 tist
 tispw
 tispm 3
+exit

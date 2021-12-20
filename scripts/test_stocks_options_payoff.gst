@@ -10,3 +10,4 @@ add 15
 add 10 -p
 sop
 plot
+exit

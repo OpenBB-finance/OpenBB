@@ -12,3 +12,4 @@ performance
 technical
 ca
 hcorr
+exit
