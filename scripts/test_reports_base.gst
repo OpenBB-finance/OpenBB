@@ -1,0 +1,17 @@
+reports
+h
+help
+?
+q
+repors
+..
+repots
+..
+reports
+quit
+reports
+r
+reset
+home
+reports
+exit
