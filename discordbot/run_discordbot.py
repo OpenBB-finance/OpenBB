@@ -4,7 +4,7 @@ import difflib
 import discord
 import discord_components
 import pyimgur
-import discordbot.config_discordbot as cfg
+import config_discordbot as cfg
 
 
 activity = discord.Game(
@@ -18,7 +18,7 @@ discord_components.DiscordComponents(gst_bot)
 
 if cfg.IMGUR_CLIENT_ID == "REPLACE_ME" or cfg.DISCORD_BOT_TOKEN == "REPLACE_ME":
     print(
-        f"Update IMGUR_CLIENT_ID or DISCORD_BOT_TOKEN or both in { os.path.join('discordbot', 'config_discordot') } \n"
+        f"Update IMGUR_CLIENT_ID or DISCORD_BOT_TOKEN or both in { os.path.join('discordbot', 'config_discordbot') } \n"
     )
     sys.exit()
 
@@ -36,6 +36,7 @@ gst_bot.load_extension("stocks.dark_pool_shorts.dps_menu")
 gst_bot.load_extension("stocks.technical_analysis.ta_menu")
 gst_bot.load_extension("stocks.due_diligence.dd_menu")
 gst_bot.load_extension("stocks.government.gov_menu")
+gst_bot.load_extension("stocks.screener.screener_menu")
 
 # Get all command names
 all_cmds = gst_bot.all_commands.keys()

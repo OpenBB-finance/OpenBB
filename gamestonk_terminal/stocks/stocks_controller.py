@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import difflib
+import logging
 import os
 from typing import List
 
@@ -39,6 +40,8 @@ from gamestonk_terminal.stocks.stocks_helper import (
 from gamestonk_terminal.common.quantitative_analysis import qa_view
 
 # pylint: disable=R1710,import-outside-toplevel
+
+logger = logging.getLogger(__name__)
 
 
 class StocksController:
@@ -178,7 +181,9 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             return None
 
         return getattr(
-            self, "call_" + known_args.cmd, lambda: "command not recognized!"
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
         )(other_args)
 
     def call_help(self, _):

@@ -96,7 +96,7 @@ def test_another_function(mocker):
 ```python
 import pytest
 
-pytest.skip(reaason="Some optional comment.", allow_module_level=True)
+pytest.skip(msg="Some optional comment.", allow_module_level=True)
 
 def test_some_function(mocker):
     pass

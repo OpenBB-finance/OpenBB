@@ -147,7 +147,9 @@ NASDAQ Data Link (Formerly Quandl):
             return None
 
         return getattr(
-            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
         )(other_args)
 
     def call_help(self, _):
@@ -632,7 +634,7 @@ NASDAQ Data Link (Formerly Quandl):
                 "shares",
             ],
             nargs="+",
-            help="Colume to sort by",
+            help="Column to sort by",
             default="",
         )
         parser.add_argument(

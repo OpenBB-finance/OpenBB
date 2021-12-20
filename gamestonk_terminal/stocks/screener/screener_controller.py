@@ -87,7 +87,7 @@ Screener:
     {Style.NORMAL if self.screen_tickers else Style.DIM}
 Last screened tickers: {', '.join(self.screen_tickers)}
 >   ca             take these to comparison analysis menu
->   po             take these to portoflio optimization menu{Style.RESET_ALL}
+>   po             take these to portfolio optimization menu{Style.RESET_ALL}
         """
         print(help_text)
 
@@ -239,7 +239,9 @@ Last screened tickers: {', '.join(self.screen_tickers)}
             return None
 
         return getattr(
-            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
         )(other_args)
 
     def call_help(self, _):
