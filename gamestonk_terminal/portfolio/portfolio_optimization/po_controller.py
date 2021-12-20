@@ -774,7 +774,7 @@ Mean Variance Optimization:
             help="Display a pie chart for weights. Only if neutral flag is left False.",
         )
 
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
         parser.add_argument(
@@ -825,7 +825,7 @@ Mean Variance Optimization:
             help="period to get yfinance data from",
             choices=self.period_choices,
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         parser.add_argument(
             "-n",

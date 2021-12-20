@@ -280,7 +280,7 @@ Underlying Asset: {text}
             if "-p" in other_args
             else self.call_index_choices,
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -336,7 +336,7 @@ Underlying Asset: {text}
             help="remove all of the options",
             default=False,
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -376,7 +376,7 @@ Underlying Asset: {text}
             required="-h" not in other_args,
             choices=self.underlying_asset_choices,
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:

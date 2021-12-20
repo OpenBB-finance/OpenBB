@@ -217,7 +217,7 @@ Expiry: {self.selected_date or None}
             dest="chance",
             help="Chance that the stock is at a given projected price",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -258,7 +258,7 @@ Expiry: {self.selected_date or None}
             dest="all",
             help="Remove all prices from the list",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:

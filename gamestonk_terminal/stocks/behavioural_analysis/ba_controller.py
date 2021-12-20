@@ -276,7 +276,7 @@ SentimentInvestor:
             dest="start",
             help="The starting date (format YYYY-MM-DD) of the stock",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -313,7 +313,7 @@ SentimentInvestor:
             default=5,
             help="limit of posts with watchlists retrieved.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -339,7 +339,7 @@ SentimentInvestor:
             default=5,
             help="limit of posts with SPACs retrieved.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -373,7 +373,7 @@ SentimentInvestor:
             dest="b_popular",
             help="popular flag, if true the posts retrieved are based on score rather than time",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -408,7 +408,7 @@ SentimentInvestor:
             dest="b_new",
             help="new flag, if true the posts retrieved are based on being more recent rather than their score.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -457,7 +457,7 @@ SentimentInvestor:
                 wallstreetbets
             """,
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -507,7 +507,7 @@ SentimentInvestor:
                 search through all flairs (apart from Yolo and Meme), otherwise we focus on
                 specific flairs: DD, technical analysis, Catalyst, News, Advice, Chart""",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -562,7 +562,7 @@ SentimentInvestor:
             default=30,
             help="limit messages shown.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -617,7 +617,7 @@ SentimentInvestor:
             default=30,
             help="limit messages shown.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -648,7 +648,7 @@ SentimentInvestor:
             default=self.start,
             help="starting date (format YYYY-MM-DD) from when we are interested in stock's mentions.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -681,7 +681,7 @@ SentimentInvestor:
             default=10,
             help="limit of regions to plot that show highest interest.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -714,7 +714,7 @@ SentimentInvestor:
             default=10,
             help="limit of top related queries to print.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -747,7 +747,7 @@ SentimentInvestor:
             default=10,
             help="limit of top rising related queries to print.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -784,7 +784,7 @@ SentimentInvestor:
             default=100,
             help="limit of latest tweets to infer from.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -830,7 +830,7 @@ SentimentInvestor:
             default=6,
             help="number of days in the past to extract tweets.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -1056,7 +1056,7 @@ SentimentInvestor:
             choices=self.historical_metric,
             help="the metric to plot",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-m")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:

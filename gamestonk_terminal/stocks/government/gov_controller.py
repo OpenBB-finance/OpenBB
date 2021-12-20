@@ -232,7 +232,7 @@ Ticker: {self.ticker or None}{dim_no_ticker}
             dest="start",
             help="The starting date (format YYYY-MM-DD) of the stock",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -282,7 +282,7 @@ Ticker: {self.ticker or None}{dim_no_ticker}
             default="",
             help="Representative",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -339,7 +339,7 @@ Ticker: {self.ticker or None}{dim_no_ticker}
             dest="raw",
             help="Print raw data.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -397,7 +397,7 @@ Ticker: {self.ticker or None}{dim_no_ticker}
             dest="raw",
             help="Print raw data.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -448,7 +448,7 @@ Ticker: {self.ticker or None}{dim_no_ticker}
             default=False,
             help="Flag to show total amount of contracts.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -499,7 +499,7 @@ Ticker: {self.ticker or None}{dim_no_ticker}
             dest="raw",
             help="Print raw data.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -582,7 +582,7 @@ Ticker: {self.ticker or None}{dim_no_ticker}
             dest="raw",
             help="Print raw data.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -626,7 +626,7 @@ Ticker: {self.ticker or None}{dim_no_ticker}
             dest="raw",
             help="Print raw data.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -691,7 +691,7 @@ Ticker: {self.ticker or None}{dim_no_ticker}
             default=10,
             help="Limit of events to show",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:

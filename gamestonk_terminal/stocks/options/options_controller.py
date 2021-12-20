@@ -418,7 +418,7 @@ Expiry: {self.selected_date or None}
             default=False,
             action="store_true",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -464,7 +464,7 @@ Expiry: {self.selected_date or None}
             default=datetime.now() - timedelta(days=366),
             dest="start",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -560,7 +560,7 @@ Expiry: {self.selected_date or None}
             default=20,
             help="Limit of raw data rows to display",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -622,7 +622,7 @@ Expiry: {self.selected_date or None}
             default=None,
             help="Source to get option expirations from",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -670,7 +670,7 @@ Expiry: {self.selected_date or None}
             default="",
         )
 
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -753,7 +753,7 @@ Expiry: {self.selected_date or None}
             help="Limit of data rows to display",
         )
 
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -1315,7 +1315,7 @@ Expiry: {self.selected_date or None}
             dest="volatility",
             help="Underlying asset annualized volatility",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:

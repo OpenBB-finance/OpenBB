@@ -303,7 +303,7 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="Limit of past days to look for IPOs.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -336,7 +336,7 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="Limit of future days to look for IPOs.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -367,7 +367,7 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="Limit of stocks to display.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -398,7 +398,7 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="Limit of stocks to display.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -432,7 +432,7 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="Limit of stocks to display.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -465,7 +465,7 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="Limit of stocks to display.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -498,7 +498,7 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="Limit of stocks to display.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -531,7 +531,7 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="Limit of stocks to display.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -564,7 +564,7 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="Limit of stocks to display.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -600,7 +600,7 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="Limit of stocks to display.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -675,7 +675,7 @@ NASDAQ Data Link (Formerly Quandl):
             dest="fund",
             choices=self.arkord_fund_choices,
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -721,7 +721,7 @@ NASDAQ Data Link (Formerly Quandl):
             default=10,
             help="Number of pages to read upcoming earnings from in Seeking Alpha website.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -771,7 +771,7 @@ NASDAQ Data Link (Formerly Quandl):
             default=datetime.now().strftime("%Y-%m-%d"),
             help="starting date of articles",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -809,7 +809,7 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="limit of stocks to display",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -849,7 +849,7 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="limit of news to display",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
         ns_parser = parse_known_args_and_warn(
@@ -890,7 +890,7 @@ NASDAQ Data Link (Formerly Quandl):
             default=5,
             help="limit of stocks to display",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
         ns_parser = parse_known_args_and_warn(
@@ -926,7 +926,7 @@ NASDAQ Data Link (Formerly Quandl):
             default=3,
             help="limit of days to display",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED

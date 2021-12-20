@@ -199,7 +199,7 @@ Current Series IDs:
             default=5,
             help="Maximum number of series notes to display.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -227,7 +227,7 @@ Current Series IDs:
             type=str,
             help="FRED Series from https://fred.stlouisfed.org. For multiple series use: series1,series2,series3",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:

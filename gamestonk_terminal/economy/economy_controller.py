@@ -337,7 +337,7 @@ NASDAQ DataLink (formerly Quandl):
                 Safe Heaven Demand, and Index.
             """,
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
 
         ns_parser = parse_known_args_and_warn(
@@ -722,7 +722,7 @@ NASDAQ DataLink (formerly Quandl):
             action="store_true",
             default=False,
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
 
         ns_parser = parse_known_args_and_warn(
@@ -778,7 +778,7 @@ NASDAQ DataLink (formerly Quandl):
             action="store_true",
             default=False,
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -817,7 +817,7 @@ NASDAQ DataLink (formerly Quandl):
             dest="group",
             help="Data group (sector, industry or country)",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
 
         ns_parser = parse_known_args_and_warn(
@@ -898,7 +898,7 @@ NASDAQ DataLink (formerly Quandl):
             dest="raw",
             default=False,
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
 
         ns_parser = parse_known_args_and_warn(

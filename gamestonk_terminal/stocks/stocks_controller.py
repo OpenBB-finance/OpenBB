@@ -260,7 +260,7 @@ Stocks Menus:
             dest="amount",
             help="Enter the number of Equities you wish to see in the Tabulate window.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -338,7 +338,7 @@ Stocks Menus:
             type=str,
             default="ytd",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)

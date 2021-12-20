@@ -266,7 +266,7 @@ Finviz:
             required=True,
             help="Ticker get similar tickers from",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -313,7 +313,7 @@ Finviz:
         parser.add_argument(
             "-p", "--no_plot", action="store_true", default=False, dest="no_plot"
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -358,7 +358,7 @@ Finviz:
             type=check_positive,
             help="Limit of stocks to retrieve.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -419,7 +419,7 @@ Finviz:
             type=check_positive,
             help="Limit of stocks to retrieve.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -468,7 +468,7 @@ Finviz:
             type=check_positive,
             help="Limit of stocks to retrieve.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -517,7 +517,7 @@ Finviz:
             default=[],
             help="Tickers to add to similar list",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -548,7 +548,7 @@ Finviz:
             default=[],
             help="Tickers to remove from similar list",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -588,7 +588,7 @@ Finviz:
             default=[],
             help="similar companies to compare with.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -633,7 +633,7 @@ Finviz:
             dest="start",
             help="The starting date (format YYYY-MM-DD) of the stock",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -684,7 +684,7 @@ Finviz:
             dest="start",
             help="The starting date (format YYYY-MM-DD) of the stock",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -727,7 +727,7 @@ Finviz:
             default=None,
             help="Specify yearly/quarterly timeframe. Default is last.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -759,7 +759,7 @@ Finviz:
             dest="start",
             help="The starting date (format YYYY-MM-DD) of the stock",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED

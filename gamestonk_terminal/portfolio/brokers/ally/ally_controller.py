@@ -235,7 +235,7 @@ Stock Information:
             prog="quote",
             description="""Get stock quote""",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         parser.add_argument(
             "-t",

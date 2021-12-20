@@ -206,7 +206,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
             default="",
             choices=self.preset_choices,
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -240,7 +240,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
             help="Filter presets",
             choices=self.preset_choices,
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -282,7 +282,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
             dest="limit",
         )
 
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED

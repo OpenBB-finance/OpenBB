@@ -366,7 +366,7 @@ Returned tickers: {', '.join(self.tickers)}
             required="-h" not in other_args,
             help="Stock ticker",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -448,7 +448,7 @@ Returned tickers: {', '.join(self.tickers)}
             nargs="+",
             help="industry to select",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -513,7 +513,7 @@ Returned tickers: {', '.join(self.tickers)}
             nargs="+",
             help="sector to select",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -573,7 +573,7 @@ Returned tickers: {', '.join(self.tickers)}
             nargs="+",
             help="country to select",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -630,7 +630,7 @@ Returned tickers: {', '.join(self.tickers)}
             choices=self.mktcap_choices,
             help="market cap to select",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -683,7 +683,7 @@ Returned tickers: {', '.join(self.tickers)}
             choices=self.clear_choices,
             help="parameter to clear",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -793,7 +793,7 @@ Returned tickers: {', '.join(self.tickers)}
             help="Output all raw data",
         )
 
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-m")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES

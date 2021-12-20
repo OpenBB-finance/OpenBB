@@ -159,7 +159,7 @@ Portfolio: {self.portfolio_name or None}
             dest="path",
         )
 
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -183,7 +183,7 @@ Portfolio: {self.portfolio_name or None}
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Displays portfolio grouped by a given column",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
         parser.add_argument(
             "-g",

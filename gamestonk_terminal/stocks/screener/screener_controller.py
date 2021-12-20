@@ -254,7 +254,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
             default="",
             choices=self.preset_choices,
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -317,7 +317,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
             help="Filter presets",
             choices=self.preset_choices + list(finviz_model.d_signals.keys()),
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -367,7 +367,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
             default="a",  # in case it's adjusted close
             help="type of candles: o-open, h-high, l-low, c-close, a-adjusted close.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -431,7 +431,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
             choices=finviz_view.d_cols_to_sort["overview"],
             help="Sort elements of the table.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -495,7 +495,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
             choices=finviz_view.d_cols_to_sort["valuation"],
             help="Sort elements of the table.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -559,7 +559,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
             choices=finviz_view.d_cols_to_sort["financial"],
             help="Sort elements of the table.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -623,7 +623,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
             choices=finviz_view.d_cols_to_sort["ownership"],
             help="Sort elements of the table.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -687,7 +687,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
             choices=finviz_view.d_cols_to_sort["performance"],
             help="Sort elements of the table.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -751,7 +751,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
             choices=finviz_view.d_cols_to_sort["technical"],
             help="Sort elements of the table.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED

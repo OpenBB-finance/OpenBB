@@ -209,7 +209,7 @@ Finance Database:
             required="-h" not in other_args,
         )
 
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-e")
 
         ns_parser = parse_known_args_and_warn(
@@ -240,7 +240,7 @@ Finance Database:
             required="-h" not in other_args,
         )
 
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-e")
 
         ns_parser = parse_known_args_and_warn(
@@ -278,7 +278,7 @@ Finance Database:
             help="Number of holdings to get",
             default=20,
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-e")
 
         ns_parser = parse_known_args_and_warn(
@@ -310,7 +310,7 @@ Finance Database:
             required="-h" not in other_args,
         )
 
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-e")
 
         ns_parser = parse_known_args_and_warn(
@@ -446,7 +446,7 @@ Finance Database:
             help="Folder where the ETF report will be saved",
         )
 
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-e")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
