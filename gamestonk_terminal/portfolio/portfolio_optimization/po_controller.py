@@ -933,7 +933,11 @@ Mean Variance Optimization:
             print("")
 
 
-def menu(tickers: List[str], queue: List[str] = None):
+def menu(
+    tickers: List[str],
+    queue: List[str] = None,
+    from_submenu: bool = False,
+):
     """Portfolio Optimization Menu"""
     po_controller = PortfolioOptimization(tickers, queue)
     an_input = "HELP_ME"
@@ -944,6 +948,15 @@ def menu(tickers: List[str], queue: List[str] = None):
             # If the command is quitting the menu we want to return in here
             if po_controller.queue[0] in ("q", "..", "quit"):
                 print("")
+                # Since we came from another menu we need to quit an additional time
+                if from_submenu:
+                    # Skip quit
+                    po_controller.queue = po_controller.queue[1:]
+                    po_controller.queue.insert(0, "portfolio")
+                    po_controller.queue.insert(0, "home")
+                    from_submenu = False
+                    return po_controller.queue
+
                 if len(po_controller.queue) > 1:
                     return po_controller.queue[1:]
                 return []

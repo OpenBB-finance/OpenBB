@@ -1098,7 +1098,7 @@ Finviz:
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
         if self.similar and len(self.similar) > 1:
-            return po_controller.menu(self.similar, self.queue)
+            return po_controller.menu(self.similar, self.queue, from_submenu=True)
 
         print("Please make sure there are more than 1 similar tickers selected. \n")
         return self.queue
