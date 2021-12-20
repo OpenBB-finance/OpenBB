@@ -58,10 +58,7 @@ class FundamentalAnalysisController:
     CHOICES_COMMANDS = [
         "load",
         "analysis",
-        "score",
-        "dcf",
         "data",
-        "fraud",
         "income",
         "balance",
         "cash",
@@ -77,10 +74,15 @@ class FundamentalAnalysisController:
         "income",
         "balance",
         "cash",
-        "earnings",
-        "warnings",
         "divs",
     ]
+    # TODO: These commands either don't work or work inconsistently.
+    # They have been excluded from the CHOICES list until they are fixed:
+    # "score",
+    # "fraud",
+    # "dcf",
+    # "warnings",
+    # "earnings",
 
     CHOICES_MENUS = [
         "fmp",
@@ -912,6 +914,8 @@ Other Sources:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+
+        # TODO: This does not work for the following example tickers: AA, TSLA
         if ns_parser:
             dcf = dcf_view.CreateExcelFA(self.ticker, ns_parser.audit)
             dcf.create_workbook()
