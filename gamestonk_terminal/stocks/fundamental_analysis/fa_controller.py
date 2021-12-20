@@ -58,6 +58,8 @@ class FundamentalAnalysisController:
     CHOICES_COMMANDS = [
         "load",
         "analysis",
+        "score",
+        "warnings",
         "data",
         "income",
         "balance",
@@ -75,14 +77,12 @@ class FundamentalAnalysisController:
         "balance",
         "cash",
         "divs",
+        "earnings",
+        "fraud",
     ]
     # TODO: These commands either don't work or work inconsistently.
     # They have been excluded from the CHOICES list until they are fixed:
-    # "score",
-    # "fraud",
     # "dcf",
-    # "warnings",
-    # "earnings",
 
     CHOICES_MENUS = [
         "fmp",
