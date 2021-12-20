@@ -59,7 +59,7 @@ def display_key(ticker: str):
 
 
 def display_income_statement(
-    ticker: str, number: int, quarterly: bool = False, export: str = ""
+    ticker: str, limit: int, quarterly: bool = False, export: str = ""
 ):
     """Alpha Vantage income statement
 
@@ -67,14 +67,14 @@ def display_income_statement(
     ----------
     ticker : str
         Fundamental analysis ticker symbol
-    number: int
+    limit: int
         Number of past statements
     quarterly: bool
         Flag to get quarterly instead of annual
     export: str
         Format to export data
     """
-    df_income = av_model.get_income_statements(ticker, number, quarterly)
+    df_income = av_model.get_income_statements(ticker, limit, quarterly)
 
     if gtff.USE_TABULATE_DF:
         print(tabulate(df_income, headers=df_income.columns, tablefmt="fancy_grid"))

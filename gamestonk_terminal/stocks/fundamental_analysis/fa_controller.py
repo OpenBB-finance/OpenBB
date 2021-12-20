@@ -567,9 +567,9 @@ Other Sources:
             description="Historical dividends for a company",
         )
         parser.add_argument(
-            "-n",
-            "--num",
-            dest="num",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
             default=16,
             help="Number of previous dividends to show",
@@ -588,7 +588,7 @@ Other Sources:
         if ns_parser:
             yahoo_finance_view.display_dividends(
                 ticker=self.ticker,
-                num=ns_parser.num,
+                limit=ns_parser.limit,
                 plot=ns_parser.plot,
                 export=ns_parser.export,
             )
@@ -667,10 +667,10 @@ Other Sources:
                 average shs out dil [Source: Alpha Vantage]""",
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=1,
             help="Number of latest years/quarters.",
@@ -689,7 +689,7 @@ Other Sources:
         if ns_parser:
             av_view.display_income_statement(
                 ticker=self.ticker,
-                number=ns_parser.n_num,
+                limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
             )
