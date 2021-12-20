@@ -1,4 +1,4 @@
-""" Fundamental Analysis Controller """
+"""Fundamental Analysis Controller."""
 __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 
@@ -39,7 +39,7 @@ from gamestonk_terminal.menu import session
 
 
 class FundamentalAnalysisController:
-    """Fundamental Analysis Controller"""
+    """Fundamental Analysis Controller."""
 
     CHOICES = [
         "cls",
@@ -99,7 +99,8 @@ class FundamentalAnalysisController:
         suffix: str = "",
         queue: List[str] = None,
     ):
-        """Constructor
+        """Construct Fundamental Analysis Controller.
+
         Parameters
         ----------
         ticker : str
@@ -108,8 +109,11 @@ class FundamentalAnalysisController:
             Stat date of the stock data
         interval : str
             Stock data interval
+        suffix : str, optional
+            Exchange suffix, by default ""
+        queue : List[str], optional
+            Command queue, by default None
         """
-
         self.ticker = f"{ticker}.{suffix}" if suffix else ticker
         self.start = start
         self.interval = interval
@@ -133,7 +137,7 @@ class FundamentalAnalysisController:
             self.queue = list()
 
     def print_help(self):
-        """Print help"""
+        """Print help."""
         newline = "\n"
         help_text = f"""
 Ticker: {self.ticker}
@@ -172,10 +176,10 @@ Other Sources:
         # print("   cash          cash flow statement of the company")
 
     def switch(self, an_input: str):
-        """Process and dispatch input
+        """Process and dispatch input.
 
         Parameters
-        -------
+        ----------
         an_input : str
             string with input arguments
 
@@ -184,7 +188,6 @@ Other Sources:
         List[str]
             List of commands in the queue to execute
         """
-
         # Empty command
         if not an_input:
             print("")
@@ -224,24 +227,24 @@ Other Sources:
         )(other_args)
 
     def call_cls(self, _):
-        """Process cls command"""
+        """Process cls command."""
         system_clear()
         return self.queue
 
     def call_home(self, _):
-        """Process home command"""
+        """Process home command."""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
 
         return self.queue
 
     def call_help(self, _):
-        """Process help command"""
+        """Process help command."""
         self.print_help()
         return self.queue
 
     def call_quit(self, _):
-        """Process quit menu command"""
+        """Process quit menu command."""
         print("")
         if len(self.queue) > 0:
             self.queue.insert(0, "quit")
@@ -249,7 +252,7 @@ Other Sources:
         return ["quit"]
 
     def call_exit(self, _):
-        """Process exit terminal command"""
+        """Process exit terminal command."""
         if len(self.queue) > 0:
             self.queue.insert(0, "quit")
             self.queue.insert(0, "quit")
@@ -258,7 +261,7 @@ Other Sources:
         return ["quit", "quit", "quit"]
 
     def call_reset(self, _):
-        """Process reset command"""
+        """Process reset command."""
         if len(self.queue) > 0:
             self.queue.insert(0, "fa")
             if self.ticker:
@@ -277,14 +280,15 @@ Other Sources:
 
     @try_except
     def call_load(self, other_args: List[str]):
-        """Process load command"""
+        """Process load command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
-            " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
-            " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
+            description="Load stock ticker to perform analysis on. When the data source "
+            + "is 'yf', an Indian ticker can be loaded by using '.NS' at the end, e.g. "
+            + "'SBIN.NS'. See available market in"
+            + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
         )
         parser.add_argument(
             "-t",
@@ -346,7 +350,7 @@ Other Sources:
 
     @try_except
     def call_analysis(self, other_args: List[str]):
-        """Process analysis command"""
+        """Process analysis command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -362,7 +366,7 @@ Other Sources:
 
     @try_except
     def call_mgmt(self, other_args: List[str]):
-        """Process mgmt command"""
+        """Process mgmt command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -384,7 +388,7 @@ Other Sources:
 
     @try_except
     def call_data(self, other_args: List[str]):
-        """Process screener command"""
+        """Process screener command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -397,9 +401,9 @@ Other Sources:
                 Sales, P/S, EPS this Y, Inst Trans, Short Ratio, Perf Half Y, Book/sh, P/B, ROA,
                 Target Price, Perf Year, Cash/sh, P/C, ROE, 52W Range, Perf YTD, P/FCF, EPS past 5Y,
                 ROI, 52W High, Beta, Quick Ratio, Sales past 5Y, Gross Margin, 52W Low, ATR,
-                Employees, Current Ratio, Sales Q/Q, Oper. Margin, RSI (14), Volatility, Optionable,
+                Employees, Current Ratio, Sales Q/Q, Operating Margin, RSI (14), Volatility, Optionable,
                 Debt/Eq, EPS Q/Q, Profit Margin, Rel Volume, Prev Close, Shortable, LT Debt/Eq,
-                Earnings, Payout, Avg Volume, Price, Recom, SMA20, SMA50, SMA200, Volume, Change.
+                Earnings, Payout, Avg Volume, Price, Recomendation, SMA20, SMA50, SMA200, Volume, Change.
                 [Source: Finviz]
             """,
         )
@@ -413,14 +417,15 @@ Other Sources:
 
     @try_except
     def call_score(self, other_args: List[str]):
-        """Process score command"""
+        """Process score command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="score",
             description="""
-                Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: FMP]
-            """,
+                Value investing tool based on Warren Buffett, Joseph Piotroski
+                and Benjamin Graham thoughts [Source: FMP]
+                """,
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -430,7 +435,7 @@ Other Sources:
 
     @try_except
     def call_info(self, other_args: List[str]):
-        """Process info command"""
+        """Process info command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -465,7 +470,7 @@ Other Sources:
 
     @try_except
     def call_shrs(self, other_args: List[str]):
-        """Process shrs command"""
+        """Process shrs command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -483,7 +488,7 @@ Other Sources:
 
     @try_except
     def call_sust(self, other_args: List[str]):
-        """Process sust command"""
+        """Process sust command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -492,7 +497,7 @@ Other Sources:
                 Print sustainability values of the company. The following fields are expected:
                 Palmoil, Controversialweapons, Gambling, Socialscore, Nuclear, Furleather, Alcoholic,
                 Gmo, Catholic, Socialpercentile, Peercount, Governancescore, Environmentpercentile,
-                Animaltesting, Tobacco, Totalesg, Highestcontroversy, Esgperformance, Coal, Pesticides,
+                Animaltesting, Tobacco, Total ESG, Highestcontroversy, ESG Performance, Coal, Pesticides,
                 Adult, Percentile, Peergroup, Smallarms, Environmentscore, Governancepercentile,
                 Militarycontract. [Source: Yahoo Finance]
             """,
@@ -506,7 +511,7 @@ Other Sources:
 
     @try_except
     def call_cal(self, other_args: List[str]):
-        """Process cal command"""
+        """Process cal command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -525,7 +530,7 @@ Other Sources:
 
     @try_except
     def call_web(self, other_args: List[str]):
-        """Process web command"""
+        """Process web command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -543,7 +548,7 @@ Other Sources:
 
     @try_except
     def call_hq(self, other_args: List[str]):
-        """Process hq command"""
+        """Process hq command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -561,7 +566,7 @@ Other Sources:
 
     @try_except
     def call_divs(self, other_args: List[str]):
-        """Process divs command"""
+        """Process divs command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -598,7 +603,7 @@ Other Sources:
 
     @try_except
     def call_overview(self, other_args: List[str]):
-        """Process overview command"""
+        """Process overview command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -630,7 +635,7 @@ Other Sources:
 
     @try_except
     def call_key(self, other_args: List[str]):
-        """Process overview command"""
+        """Process overview command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -652,7 +657,7 @@ Other Sources:
 
     @try_except
     def call_income(self, other_args: List[str]):
-        """Process income command"""
+        """Process income command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -660,7 +665,7 @@ Other Sources:
             description="""
                 Prints a complete income statement over time. This can be either quarterly or annually.
                 The following fields are expected: Accepted date, Cost and expenses, Cost of revenue,
-                Depreciation and amortization, Ebitda, Ebitdaratio, Eps, Epsdiluted, Filling date,
+                Depreciation and amortization, Ebitda, Ebitda Ratio, Eps, EPS Diluted, Filling date,
                 Final link, General and administrative expenses, Gross profit, Gross profit ratio,
                 Income before tax, Income before tax ratio, Income tax expense, Interest expense, Link,
                 Net income, Net income ratio, Operating expenses, Operating income, Operating income
@@ -699,7 +704,7 @@ Other Sources:
 
     @try_except
     def call_balance(self, other_args: List[str]):
-        """Process balance command"""
+        """Process balance command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -752,7 +757,7 @@ Other Sources:
 
     @try_except
     def call_cash(self, other_args: List[str]):
-        """Process cash command"""
+        """Process cash command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -803,7 +808,7 @@ Other Sources:
 
     @try_except
     def call_earnings(self, other_args: List[str]):
-        """Process earnings command"""
+        """Process earnings command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -843,13 +848,13 @@ Other Sources:
 
     @try_except
     def call_fraud(self, other_args: List[str]):
-        """Process fraud command"""
+        """Process fraud command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.RawTextHelpFormatter,
             prog="fraud",
             description=(
-                "Mscore:\n------------------------------------------------\n"
+                "M-score:\n------------------------------------------------\n"
                 "The Beneish model is a statistical model that uses financial ratios calculated with"
                 " accounting data of a specific company in order to check if it is likely (high"
                 " probability) that the reported earnings of the company have been manipulated."
@@ -873,9 +878,9 @@ Other Sources:
                 " be a positive relationship between SGAI and earnings management.\n\nLVGI:\nLeverage"
                 " Index represents change in leverage. A LVGI greater than one indicates a lower"
                 " change of fraud.\n\nTATA: \nTotal Accruals to Total Assets is a proxy for the"
-                " extent that cash underlies earnigns. A higher number is associated with a higher"
+                " extent that cash underlies earnings. A higher number is associated with a higher"
                 " likelihood of manipulation.\n\n\n"
-                "Zscore:\n------------------------------------------------\n"
+                "Z-score:\n------------------------------------------------\n"
                 "The Zmijewski Score is a bankruptcy model used to predict a firm's bankruptcy in two"
                 " years. The ratio uses in the Zmijewski score were determined by probit analysis ("
                 "think of probit as probability unit). In this case, scores less than .5 represent a"
@@ -893,7 +898,7 @@ Other Sources:
 
     @try_except
     def call_dcf(self, other_args: List[str]):
-        """Process dcf command"""
+        """Process dcf command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -923,7 +928,7 @@ Other Sources:
 
     @try_except
     def call_warnings(self, other_args: List[str]):
-        """Process warnings command"""
+        """Process warnings command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="warnings",
@@ -954,13 +959,14 @@ Other Sources:
         return self.queue
 
     def call_fmp(self, _):
-        """Process fmp command"""
+        """Process fmp command."""
         return fmp_controller.menu(self.ticker, self.start, self.interval, self.queue)
 
 
 @try_except
 def key_metrics_explained(other_args: List[str]):
-    """Key metrics explained
+    """Key metrics explained.
+
     Parameters
     ----------
     other_args : List[str]
@@ -991,7 +997,7 @@ def key_metrics_explained(other_args: List[str]):
 def menu(
     ticker: str, start: str, interval: str, suffix: str = "", queue: List[str] = None
 ):
-    """Fundamental Analysis Menu"""
+    """Fundamental Analysis Menu."""
     fa_controller = FundamentalAnalysisController(
         ticker, start, interval, suffix, queue
     )
