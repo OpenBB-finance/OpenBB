@@ -23,6 +23,9 @@ from gamestonk_terminal.portfolio.portfolio_optimization import (
 from gamestonk_terminal.helper_funcs import get_rf
 
 
+# pylint: disable=C0302
+
+
 class PortfolioOptimization:
     CHOICES = [
         "cls",
@@ -185,8 +188,7 @@ class PortfolioOptimization:
                 choices[fn]["--period"] = {c: None for c in self.period_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-    @staticmethod
-    def print_help(tickers: List[str]):
+    def print_help(self):
         """Print help"""
         help_text = f"""
 Portfolio Optimization:
@@ -194,7 +196,7 @@ Portfolio Optimization:
     add           add tickers to the list of the tickers to be optimized
     rmv           remove tickers from the list of the tickers to be optimized
 
-Tickers: {('None', ', '.join(tickers))[bool(tickers)]}
+Tickers: {('None', ', '.join(self.tickers))[bool(self.tickers)]}
 
 Optimization:
     equal         equally weighted
@@ -272,7 +274,7 @@ Mean Variance Optimization:
 
     def call_help(self, _):
         """Process help command"""
-        self.print_help(self.tickers)
+        self.print_help()
         return self.queue
 
     def call_quit(self, _):
@@ -934,26 +936,33 @@ Mean Variance Optimization:
 def menu(tickers: List[str], queue: List[str] = None):
     """Portfolio Optimization Menu"""
     po_controller = PortfolioOptimization(tickers, queue)
-    first = True
-    # Loop forever and ever
+    an_input = "HELP_ME"
+
     while True:
         # There is a command in the queue
         if po_controller.queue and len(po_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
             if po_controller.queue[0] in ("q", "..", "quit"):
+                print("")
                 if len(po_controller.queue) > 1:
                     return po_controller.queue[1:]
                 return []
 
+            # Consume 1 element from the queue
             an_input = po_controller.queue[0]
             po_controller.queue = po_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input.split(" ")[0] in po_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /portfolio/po/ $ {an_input}")
 
         # Get input command from user
         else:
-            if first:
-                po_controller.print_help(tickers)
-                first = False
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
+                po_controller.print_help()
+
+            # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and po_controller.completer:
                 an_input = session.prompt(
                     f"{get_flair()} /portfolio/po/ $ ",
@@ -961,14 +970,19 @@ def menu(tickers: List[str], queue: List[str] = None):
                     search_ignore_case=True,
                 )
 
+            # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /portfolio/po/ $ ")
 
         try:
+            # Process the input command
             po_controller.queue = po_controller.switch(an_input)
 
         except SystemExit:
-            print(f"\nThe command '{an_input}' doesn't exist.", end="")
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /portfolio/po menu.",
+                end="",
+            )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 po_controller.CHOICES,
@@ -982,6 +996,7 @@ def menu(tickers: List[str], queue: List[str] = None):
                     )
                     if candidate_input == an_input:
                         an_input = ""
+                        po_controller.queue = []
                         print("\n")
                         continue
                     an_input = candidate_input

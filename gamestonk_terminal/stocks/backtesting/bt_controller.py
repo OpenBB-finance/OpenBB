@@ -368,7 +368,7 @@ Ticker: {self.ticker.upper()}
 def menu(ticker: str, stock: pd.DataFrame, queue: List[str] = None):
     """Backtesting Menu"""
     bt_controller = BacktestingController(ticker, stock, queue)
-    first = True
+    an_input = "HELP_ME"
 
     while True:
         # There is a command in the queue
@@ -391,9 +391,8 @@ def menu(ticker: str, stock: pd.DataFrame, queue: List[str] = None):
         # Get input command from user
         else:
             # Display help menu when entering on this menu from a level above
-            if first:
+            if an_input == "HELP_ME":
                 bt_controller.print_help()
-                first = False
 
             # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and bt_controller.completer:
@@ -402,6 +401,7 @@ def menu(ticker: str, stock: pd.DataFrame, queue: List[str] = None):
                     completer=bt_controller.completer,
                     search_ignore_case=True,
                 )
+
             # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /stocks/bt/ $ ")
@@ -428,6 +428,7 @@ def menu(ticker: str, stock: pd.DataFrame, queue: List[str] = None):
                     )
                     if candidate_input == an_input:
                         an_input = ""
+                        bt_controller.queue = []
                         print("\n")
                         continue
                     an_input = candidate_input

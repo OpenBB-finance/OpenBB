@@ -1186,10 +1186,9 @@ NASDAQ DataLink (formerly Quandl):
 
 
 def menu(queue: List[str] = None):
-    """Econ Menu"""
-
+    """Economy Menu"""
     econ_controller = EconomyController(queue)
-    first = True
+    an_input = "HELP_ME"
 
     while True:
         # There is a command in the queue
@@ -1206,15 +1205,14 @@ def menu(queue: List[str] = None):
             econ_controller.queue = econ_controller.queue[1:]
 
             # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input in econ_controller.CHOICES_COMMANDS:
+            if an_input and an_input.split(" ")[0] in econ_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /economy/ $ {an_input}")
 
         # Get input command from user
         else:
             # Display help menu when entering on this menu from a level above
-            if first:
+            if an_input == "HELP_ME":
                 econ_controller.print_help()
-                first = False
 
             # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and econ_controller.completer:

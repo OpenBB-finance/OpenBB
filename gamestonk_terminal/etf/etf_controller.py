@@ -529,26 +529,33 @@ Finance Database:
 
 def menu(queue: List[str] = None):
     etf_controller = ETFController(queue)
-    first = True
-    # Loop forever and ever
+    an_input = "HELP_ME"
+
     while True:
         # There is a command in the queue
         if etf_controller.queue and len(etf_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
             if etf_controller.queue[0] in ("q", "..", "quit"):
+                print("")
                 if len(etf_controller.queue) > 1:
                     return etf_controller.queue[1:]
                 return []
 
+            # Consume 1 element from the queue
             an_input = etf_controller.queue[0]
             etf_controller.queue = etf_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input.split(" ")[0] in etf_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /etf/ $ {an_input}")
 
         # Get input command from user
         else:
-            if first:
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
                 etf_controller.print_help()
-                first = False
+
+            # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and etf_controller.completer:
                 an_input = session.prompt(
                     f"{get_flair()} /etf/ $ ",
@@ -556,14 +563,16 @@ def menu(queue: List[str] = None):
                     search_ignore_case=True,
                 )
 
+            # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /etf/ $ ")
 
         try:
+            # Process the input command
             etf_controller.queue = etf_controller.switch(an_input)
 
         except SystemExit:
-            print(f"\nThe command '{an_input}' doesn't exist.", end="")
+            print(f"\nThe command '{an_input}' doesn't exist on the /etf menu.", end="")
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 etf_controller.CHOICES,

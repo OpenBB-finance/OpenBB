@@ -207,9 +207,8 @@ Resource Collection:
 
 def menu(queue: List[str] = None):
     """Resource Collection Menu"""
-
     rc_controller = ResourceCollectionController(queue)
-    first = True
+    an_input = "HELP_ME"
 
     while True:
         # There is a command in the queue
@@ -232,9 +231,8 @@ def menu(queue: List[str] = None):
         # Get input command from user
         else:
             # Display help menu when entering on this menu from a level above
-            if first:
+            if an_input == "HELP_ME":
                 rc_controller.print_help()
-                first = False
 
             # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and rc_controller.completer:
@@ -270,6 +268,7 @@ def menu(queue: List[str] = None):
                     )
                     if candidate_input == an_input:
                         an_input = ""
+                        rc_controller.queue = []
                         print("\n")
                         continue
                     an_input = candidate_input

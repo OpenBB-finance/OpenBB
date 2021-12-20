@@ -335,7 +335,7 @@ Current Series IDs:
 def menu(queue: List[str] = None):
     """Fred Menu"""
     fred_controller = FredController(queue)
-    first = True
+    an_input = "HELP_ME"
 
     while True:
         # There is a command in the queue
@@ -352,15 +352,14 @@ def menu(queue: List[str] = None):
             fred_controller.queue = fred_controller.queue[1:]
 
             # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input in fred_controller.CHOICES_COMMANDS:
+            if an_input and an_input.split(" ")[0] in fred_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /economy/fred/ $ {an_input}")
 
         # Get input command from user
         else:
             # Display help menu when entering on this menu from a level above
-            if first:
+            if an_input == "HELP_ME":
                 fred_controller.print_help()
-                first = False
 
             # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and fred_controller.completer:
@@ -369,6 +368,7 @@ def menu(queue: List[str] = None):
                     completer=fred_controller.completer,
                     search_ignore_case=True,
                 )
+
             # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /economy/fred/ $ ")

@@ -914,10 +914,9 @@ def menu(
     stock: pd.DataFrame,
     queue: List[str] = None,
 ):
-    """Statistics Menu"""
-
+    """Quantitative Analysis Menu"""
     qa_controller = QaController(ticker, start, interval, stock, queue)
-    first = True
+    an_input = "HELP_ME"
 
     while True:
         # There is a command in the queue
@@ -940,9 +939,8 @@ def menu(
         # Get input command from user
         else:
             # Display help menu when entering on this menu from a level above
-            if first:
+            if an_input == "HELP_ME":
                 qa_controller.print_help()
-                first = False
 
             # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and qa_controller.completer:
@@ -951,6 +949,7 @@ def menu(
                     completer=qa_controller.completer,
                     search_ignore_case=True,
                 )
+
             # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /stocks/qa/ $ ")
@@ -977,6 +976,7 @@ def menu(
                     )
                     if candidate_input == an_input:
                         an_input = ""
+                        qa_controller.queue = []
                         print("\n")
                         continue
                     an_input = candidate_input

@@ -447,21 +447,24 @@ class DegiroController:
 
 def menu(queue: List[str] = None):
     """Degiro Menu"""
-
-    # SETUP CONTROLLER
     degiro_controller = DegiroController(queue)
-    first = True
-    # Loop forever and ever
+    an_input = "HELP_ME"
+
     while True:
         # There is a command in the queue
         if degiro_controller.queue and len(degiro_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
             if degiro_controller.queue[0] in ("q", "..", "quit"):
+                print("")
                 if len(degiro_controller.queue) > 1:
                     return degiro_controller.queue[1:]
                 return []
 
+            # Consume 1 element from the queue
             an_input = degiro_controller.queue[0]
             degiro_controller.queue = degiro_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
             if (
                 an_input
                 and an_input.split(" ")[0] in degiro_controller.CHOICES_COMMANDS
@@ -470,9 +473,11 @@ def menu(queue: List[str] = None):
 
         # Get input command from user
         else:
-            if first:
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
                 DegiroView.help_display()
-                first = False
+
+            # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and degiro_controller.completer:
                 an_input = session.prompt(
                     f"{get_flair()} /portfolio/bro/degiro/ $ ",
@@ -480,14 +485,19 @@ def menu(queue: List[str] = None):
                     search_ignore_case=True,
                 )
 
+            # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /portfolio/bro/degiro/ $ ")
 
         try:
+            # Process the input command
             degiro_controller.queue = degiro_controller.switch(an_input)
 
         except SystemExit:
-            print(f"\nThe command '{an_input}' doesn't exist.", end="")
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /portfolio/bro/degiro menu.",
+                end="",
+            )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 degiro_controller.CHOICES,
@@ -501,6 +511,7 @@ def menu(queue: List[str] = None):
                     )
                     if candidate_input == an_input:
                         an_input = ""
+                        degiro_controller.queue = []
                         print("\n")
                         continue
                     an_input = candidate_input

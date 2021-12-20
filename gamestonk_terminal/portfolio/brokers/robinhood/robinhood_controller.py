@@ -228,28 +228,35 @@ Robinhood:
 
 
 def menu(queue: List[str] = None):
-
+    """Robinhood Menu"""
     rh_controller = RobinhoodController(queue)
-    first = True
-    # Loop forever and ever
+    an_input = "HELP_ME"
+
     while True:
         # There is a command in the queue
         if rh_controller.queue and len(rh_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
             if rh_controller.queue[0] in ("q", "..", "quit"):
+                print("")
                 if len(rh_controller.queue) > 1:
                     return rh_controller.queue[1:]
                 return []
 
+            # Consume 1 element from the queue
             an_input = rh_controller.queue[0]
             rh_controller.queue = rh_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input.split(" ")[0] in rh_controller.CHOICES_COMMANDS:
                 print(f"{get_flair()} /portfolio/bro/rh/ $ {an_input}")
 
         # Get input command from user
         else:
-            if first:
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
                 rh_controller.print_help()
-                first = False
+
+            # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and rh_controller.completer:
                 an_input = session.prompt(
                     f"{get_flair()} /portfolio/bro/rh/ $ ",
@@ -257,14 +264,19 @@ def menu(queue: List[str] = None):
                     search_ignore_case=True,
                 )
 
+            # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /portfolio/bro/rh/ $ ")
 
         try:
+            # Process the input command
             rh_controller.queue = rh_controller.switch(an_input)
 
         except SystemExit:
-            print(f"\nThe command '{an_input}' doesn't exist.", end="")
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /portfolio/bro/rh menu.",
+                end="",
+            )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 rh_controller.CHOICES,
@@ -278,6 +290,7 @@ def menu(queue: List[str] = None):
                     )
                     if candidate_input == an_input:
                         an_input = ""
+                        rh_controller.queue = []
                         print("\n")
                         continue
                     an_input = candidate_input
