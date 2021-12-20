@@ -727,10 +727,10 @@ Other Sources:
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=1,
             help="Number of latest years/quarters.",
@@ -749,7 +749,7 @@ Other Sources:
         if ns_parser:
             av_view.display_balance_sheet(
                 ticker=self.ticker,
-                number=ns_parser.n_num,
+                limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
             )
@@ -778,10 +778,10 @@ Other Sources:
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=1,
             help="Number of latest years/quarters.",
@@ -800,7 +800,7 @@ Other Sources:
         if ns_parser:
             av_view.display_cash_flow(
                 ticker=self.ticker,
-                number=ns_parser.n_num,
+                limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
             )
@@ -827,10 +827,10 @@ Other Sources:
             help="Quarter fundamental data flag.",
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=5,
             help="Number of latest info",
@@ -841,7 +841,7 @@ Other Sources:
         if ns_parser:
             av_view.display_earnings(
                 ticker=self.ticker,
-                number=ns_parser.n_num,
+                limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
             )
         return self.queue
