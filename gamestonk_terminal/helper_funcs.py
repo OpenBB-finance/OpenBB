@@ -803,7 +803,7 @@ def try_except(f):
         except Exception as e:
             logger.exception("%s", type(e).__name__)
             return []
-            
+
     return inner
 
 

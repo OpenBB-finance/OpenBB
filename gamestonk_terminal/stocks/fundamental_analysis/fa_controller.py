@@ -135,7 +135,6 @@ class FundamentalAnalysisController:
         newline = "\n"
         help_text = f"""
 Ticker: {self.ticker}
-
 {f"Note that only Yahoo Finance currently supports foreign exchanges{Style.DIM}{newline}" if self.suffix else ""}
     data          fundamental and technical data of company [FinViz]
     mgmt          management team of the company [Business Insider]
@@ -241,6 +240,7 @@ Other Sources:
 
     def call_quit(self, _):
         """Process quit menu command"""
+        print("")
         if len(self.queue) > 0:
             self.queue.insert(0, "quit")
             return self.queue

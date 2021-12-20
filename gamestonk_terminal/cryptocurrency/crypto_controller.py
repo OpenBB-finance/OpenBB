@@ -883,7 +883,7 @@ class CryptoController:
 
 def menu(queue: List[str] = None):
     crypto_controller = CryptoController(queue)
-    an_input = "first"
+    first = True
 
     while True:
         # There is a command in the queue
@@ -909,8 +909,9 @@ def menu(queue: List[str] = None):
         # Get input command from user
         else:
             # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
+            if first:
                 crypto_controller.print_help()
+                first = False
 
             # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and crypto_controller.completer:

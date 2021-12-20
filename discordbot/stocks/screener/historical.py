@@ -16,6 +16,8 @@ from gamestonk_terminal.stocks.screener import finviz_view
 from gamestonk_terminal.stocks.screener import finviz_model
 from gamestonk_terminal.helper_funcs import plot_autoscale
 
+# pylint:disable=no-member
+
 
 async def historical_command(ctx, signal="most_volatile", start=""):
     """Displays historical price comparison between similar companies [Yahoo Finance]"""

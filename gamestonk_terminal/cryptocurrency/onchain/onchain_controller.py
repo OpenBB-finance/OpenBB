@@ -206,6 +206,7 @@ class OnchainController:
 
     def call_quit(self, _):
         """Process quit menu command"""
+        print("")
         if len(self.queue) > 0:
             self.queue.insert(0, "quit")
             return self.queue
@@ -1377,7 +1378,8 @@ Ethereum [Ethplorer]:
     prices          ERC20 token historical prices{Style.RESET_ALL if self.address_type != "token" else ""}"""
 
         help_text += f"""{Style.DIM if self.address_type != "tx" else ""}
-    tx              ethereum blockchain transaction info{Style.RESET_ALL if self.address_type != "tx" else ""}"""
+    tx              ethereum blockchain transaction info{Style.RESET_ALL if self.address_type != "tx" else ""}
+    """
 
         print(help_text)
 
