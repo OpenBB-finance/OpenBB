@@ -128,21 +128,20 @@ Menus:
             return self.queue
 
         # Navigation slash is being used
-        if an_input[0] == "/":
-            an_input = an_input[1:]
-
         if "/" in an_input:
             actions = an_input.split("/")
-
-            # Absolute path is specified. Since we are already in home we can pick up the first instruction
+            # Absolute path is specified.
             if not actions[0]:
+                # Since we are already in home we can pick up the first instruction
                 an_input = actions[1]
+                idx_to_start = 2
             # Relative path so execute first instruction
             else:
                 an_input = actions[0]
+                idx_to_start = 1
 
             # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
+            for cmd in actions[idx_to_start:][::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
 
