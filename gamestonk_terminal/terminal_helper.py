@@ -377,29 +377,6 @@ def about_us():
     )
 
 
-def usage_instructions():
-    """Prints an usage instructions section"""
-    help_text = """USAGE INSTRUCTIONS
-
-The main commands you should be aware when navigating through the terminal are:
-    cls             clear the screen
-    help / h / ?    help menu
-    quit / q / ..   quit this menu and go one menu above
-    exit            exit the terminal
-    reset / r       reset the terminal and reload configs from the current location
-
-Multiple jobs queue (where each '/' denotes a new command). E.g.
-    /stocks $ disc/ugs -n 3/../load tsla/candle
-
-If you want to jump from crypto/ta to stocks you can use an absolute path that starts with a slash (/). E.g.
-    /crypto/ta $ /stocks
-
-The previous logic also holds for when launching the terminal. E.g.
-    python terminal.py /stocks/disc/ugs -n 3/../load tsla/candle
-"""
-    print(help_text)
-
-
 def bootup():
     # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
     if sys.platform == "win32":
