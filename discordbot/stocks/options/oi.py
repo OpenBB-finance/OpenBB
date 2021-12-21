@@ -91,7 +91,7 @@ async def oi_command(ctx, ticker: str = "", expiration_date: str = ""):
 
     except Exception as e:
         embed = discord.Embed(
-            title="ERROR Options: Open Interest",
+            title="ERROR Stock-Options: Open Interest",
             colour=cfg.COLOR,
             description=e,
         )

@@ -13,7 +13,7 @@ async def calls_command(ctx, ticker: str = "", expiration_date: str = ""):
         if cfg.DEBUG:
             print(f"!stocks.opt.calls {ticker.upper()} {expiration_date}")
 
-            # Check for argument
+        # Check for argument
         if ticker == "":
             raise Exception("Stock ticker is required")
         calls = yf.Ticker(ticker).option_chain(expiration_date).calls.fillna(0)
@@ -63,7 +63,7 @@ async def calls_command(ctx, ticker: str = "", expiration_date: str = ""):
 
     except Exception as e:
         embed = discord.Embed(
-            title="ERROR Stocks-Options: Expirations",
+            title="ERROR Stock-Options: Expirations",
             colour=cfg.COLOR,
             description=e,
         )

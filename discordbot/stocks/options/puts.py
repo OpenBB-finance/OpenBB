@@ -63,7 +63,7 @@ async def puts_command(ctx, ticker: str = "", expiration_date: str = ""):
 
     except Exception as e:
         embed = discord.Embed(
-            title="ERROR Stocks-Options: Expirations",
+            title="ERROR Stock-Options: Expirations",
             colour=cfg.COLOR,
             description=e,
         )

@@ -106,7 +106,7 @@ class OptionsCommands(discord.ext.commands.Cog):
                 discord.Embed(
                     description=col,
                     colour=cfg.COLOR,
-                    title="Stocks: Technical Analysis (TA) Menu",
+                    title="Stocks: Options (opt) Menu",
                 ).set_author(
                     name=cfg.AUTHOR_NAME,
                     icon_url=cfg.AUTHOR_ICON_URL,
