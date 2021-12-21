@@ -94,6 +94,9 @@ def display_defi_tvl(top: int, export: str = "") -> None:
     df = df.tail(top)
     df["totalLiquidityUSD"] = df["totalLiquidityUSD"] / 1_000_000_000
 
+    if gtff.USE_ION:
+        plt.ion()
+
     plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     plt.plot(df["date"], df["totalLiquidityUSD"], "-ok", ms=2)

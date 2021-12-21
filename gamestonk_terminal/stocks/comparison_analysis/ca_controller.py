@@ -1,15 +1,13 @@
 """Comparison Analysis Controller Module"""
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines
+
 import argparse
 import difflib
 import random
-from typing import List
-
+from typing import List, Union
 from datetime import datetime, timedelta
 import yfinance as yf
 from colorama import Style
-from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
@@ -21,6 +19,7 @@ from gamestonk_terminal.helper_funcs import (
     try_except,
     system_clear,
     valid_date,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
@@ -35,15 +34,26 @@ from gamestonk_terminal.stocks.comparison_analysis import (
     yahoo_finance_model,
 )
 
-# pylint: disable=E1121
+
+# pylint: disable=E1121,C0302,R0904
 
 
 class ComparisonAnalysisController:
     """Comparison Analysis Controller class"""
 
-    # Command choices
-    CHOICES = ["?", "cls", "help", "q", "quit"]
-
+    CHOICES = [
+        "cls",
+        "home",
+        "h",
+        "?",
+        "help",
+        "q",
+        "quit",
+        "..",
+        "exit",
+        "r",
+        "reset",
+    ]
     CHOICES_COMMANDS = [
         "ticker",
         "getpoly",
@@ -68,50 +78,52 @@ class ComparisonAnalysisController:
         "technical",
         "tsne",
     ]
-    CHOICES_MENUS = ["po"]
+    CHOICES_MENUS = [
+        "po",
+    ]
     CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
 
     def __init__(
         self,
         similar: List[str] = None,
+        queue: List[str] = None,
     ):
-        """Constructor
-
-        Parameters
-        ----------
-        similar : List
-            Similar tickers
-        """
-        if similar:
-            self.similar = similar
-        else:
-            self.similar = []
-
-        if similar and len(similar) == 1:
-            self.ticker = self.similar[0].upper()
-        else:
-            self.ticker = ""
-
-        self.user = ""
-
+        """Constructor"""
         self.ca_parser = argparse.ArgumentParser(add_help=False, prog="ca")
         self.ca_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
 
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+
+            choices: dict = {c: {} for c in self.CHOICES}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        self.ticker = ""
+        self.user = ""
+
+        if similar:
+            self.similar = similar
+            if len(similar) == 1:
+                self.ticker = self.similar[0].upper()
+        else:
+            self.similar = []
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
+
     def print_help(self):
         """Print help"""
-        help_str = f"""
-Comparison Analysis:
-    cls           clear screen
-    ?/help        show this menu again
-    q             quit this menu, and shows back to main menu
-    quit          quit to abandon program
-
+        help_text = f"""
     ticker        set ticker to get similar companies from{Style.NORMAL if self.ticker else Style.DIM}
 
 Ticker to get similar companies from: {self.ticker}
+
     tsne          run TSNE on all SP500 stocks and returns closest tickers
     getpoly       get similar stocks from polygon API
     getfinnhub    get similar stocks from finnhub API
@@ -144,7 +156,99 @@ Finviz:
 
 >   po            portfolio optimization for selected tickers{Style.RESET_ALL}
         """
-        print(help_str)
+        print(help_text)
+
+    def switch(self, an_input: str):
+        """Process and dispatch input
+
+        Returns
+        -------
+        List[str]
+            List of commands in the queue to execute
+        """
+        # Empty command
+        if not an_input:
+            print("")
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
+
+        (known_args, other_args) = self.ca_parser.parse_known_args(an_input.split())
+
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
+
+        return getattr(
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
+        )(other_args)
+
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue
+
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        return self.queue
+
+    def call_help(self, _):
+        """Process help command"""
+        self.print_help()
+        return self.queue
+
+    def call_quit(self, _):
+        """Process quit menu command"""
+        print("")
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit"]
+
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        # additional quit for when we come to this menu through a relative path
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "quit", "quit"]
+
+    def call_reset(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "ca")
+            self.queue.insert(0, "stocks")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "reset", "stocks", "ca"]
 
     @try_except
     def call_ticker(self, other_args: List[str]):
@@ -163,27 +267,24 @@ Finviz:
             required=True,
             help="Ticker get similar tickers from",
         )
-
-        # For the case where a user uses: 'add NIO,XPEV,LI'
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if "," in ns_parser.ticker:
-            print("Only one ticker must be selected!")
-        else:
-            stock_data = yf.download(
-                ns_parser.ticker,
-                progress=False,
-            )
-            if stock_data.empty:
-                print(f"The ticker '{ns_parser.ticker}' provided does not exist!")
+        if ns_parser:
+            if "," in ns_parser.ticker:
+                print("Only one ticker must be selected!")
             else:
-                self.ticker = ns_parser.ticker.upper()
-        print("")
+                stock_data = yf.download(
+                    ns_parser.ticker,
+                    progress=False,
+                )
+                if stock_data.empty:
+                    print(f"The ticker '{ns_parser.ticker}' provided does not exist!")
+                else:
+                    self.ticker = ns_parser.ticker.upper()
+            print("")
+
+        return self.queue
 
     @try_except
     def call_tsne(self, other_args: List[str]):
@@ -213,25 +314,25 @@ Finviz:
         parser.add_argument(
             "-p", "--no_plot", action="store_true", default=False, dest="no_plot"
         )
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            if self.ticker:
+                self.similar = yahoo_finance_model.get_sp500_comps_tsne(
+                    self.ticker,
+                    lr=ns_parser.lr,
+                    no_plot=ns_parser.no_plot,
+                    num_tickers=ns_parser.limit,
+                )
 
-        if not self.ticker:
-            print("You need to 'set' a ticker to get similar companies from first!")
-            return
+                self.similar = [self.ticker] + self.similar
+                print(f"[ML] Similar Companies: {', '.join(self.similar)}", "\n")
 
-        self.similar = yahoo_finance_model.get_sp500_comps_tsne(
-            self.ticker,
-            lr=ns_parser.lr,
-            no_plot=ns_parser.no_plot,
-            num_tickers=ns_parser.limit,
-        )
+            else:
+                print("You need to 'set' a ticker to get similar companies from first!")
 
-        self.similar = [self.ticker] + self.similar
-
-        print(f"[ML] Similar Companies: {', '.join(self.similar)}", "\n")
+        return self.queue
 
     @try_except
     def call_getfinviz(self, other_args: List[str]):
@@ -243,43 +344,56 @@ Finviz:
             description="""Get similar companies from finviz to compare with.""",
         )
         parser.add_argument(
+            "-n",
             "--nocountry",
             action="store_true",
             default=False,
             dest="b_no_country",
             help="Similar stocks from finviz using only Industry and Sector.",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if not self.ticker:
-            print("You need to 'set' a ticker to get similar companies from first!")
-            return
-
-        if ns_parser.b_no_country:
-            compare_list = ["Sector", "Industry"]
-        else:
-            compare_list = ["Sector", "Industry", "Country"]
-
-        self.similar, self.user = finviz_compare_model.get_similar_companies(
-            self.ticker, compare_list
+        parser.add_argument(
+            "-l",
+            "--limit",
+            default=10,
+            dest="limit",
+            type=check_positive,
+            help="Limit of stocks to retrieve.",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if self.ticker:
+                if ns_parser.b_no_country:
+                    compare_list = ["Sector", "Industry"]
+                else:
+                    compare_list = ["Sector", "Industry", "Country"]
 
-        if self.ticker.upper() in self.similar:
-            self.similar.remove(self.ticker.upper())
+                self.similar, self.user = finviz_compare_model.get_similar_companies(
+                    self.ticker, compare_list
+                )
 
-        if len(self.similar) > 10:
-            random.shuffle(self.similar)
-            self.similar = sorted(self.similar[:10])
-            print(
-                "The limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed.\n",
-            )
+                if self.ticker.upper() in self.similar:
+                    self.similar.remove(self.ticker.upper())
 
-        if self.similar:
-            self.similar = [self.ticker] + self.similar
+                if len(self.similar) > ns_parser.limit:
+                    random.shuffle(self.similar)
+                    self.similar = sorted(self.similar[: ns_parser.limit])
+                    print(
+                        f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
+                    )
 
-            print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
+                if self.similar:
+                    self.similar = [self.ticker] + self.similar
+
+                    print(
+                        f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
+                        "\n",
+                    )
+            else:
+                print("You need to 'set' a ticker to get similar companies from first!")
+
+        return self.queue
 
     @try_except
     def call_getpoly(self, other_args: List[str]):
@@ -298,33 +412,45 @@ Finviz:
             dest="us_only",
             help="Show only stocks from the US stock exchanges",
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if not self.ticker:
-            print("You need to 'set' a ticker to get similar companies from first!")
-            return
-
-        self.similar, self.user = polygon_model.get_similar_companies(
-            self.ticker, ns_parser.us_only
+        parser.add_argument(
+            "-l",
+            "--limit",
+            default=10,
+            dest="limit",
+            type=check_positive,
+            help="Limit of stocks to retrieve.",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if self.ticker:
+                self.similar, self.user = polygon_model.get_similar_companies(
+                    self.ticker, ns_parser.us_only
+                )
 
-        if self.ticker.upper() in self.similar:
-            self.similar.remove(self.ticker.upper())
+                if self.ticker.upper() in self.similar:
+                    self.similar.remove(self.ticker.upper())
 
-        if len(self.similar) > 10:
-            random.shuffle(self.similar)
-            self.similar = sorted(self.similar[:10])
-            print(
-                "The limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed.\n",
-            )
+                if len(self.similar) > ns_parser.limit:
+                    random.shuffle(self.similar)
+                    self.similar = sorted(self.similar[: ns_parser.limit])
+                    print(
+                        f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
+                    )
 
-        self.similar = [self.ticker] + self.similar
+                self.similar = [self.ticker] + self.similar
 
-        if self.similar:
-            print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
+                if self.similar:
+                    print(
+                        f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
+                        "\n",
+                    )
+
+            else:
+                print("You need to 'set' a ticker to get similar companies from first!")
+
+        return self.queue
 
     @try_except
     def call_getfinnhub(self, other_args: List[str]):
@@ -335,30 +461,45 @@ Finviz:
             prog="getfinnhub",
             description="""Get similar companies from finnhub to compare with.""",
         )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            default=10,
+            dest="limit",
+            type=check_positive,
+            help="Limit of stocks to retrieve.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            if self.ticker:
+                self.similar, self.user = finnhub_model.get_similar_companies(
+                    self.ticker
+                )
 
-        if not self.ticker:
-            print("You need to 'set' a ticker to get similar companies from first!")
-            return
+                if self.ticker.upper() in self.similar:
+                    self.similar.remove(self.ticker.upper())
 
-        self.similar, self.user = finnhub_model.get_similar_companies(self.ticker)
+                if len(self.similar) > ns_parser.limit:
+                    random.shuffle(self.similar)
+                    self.similar = sorted(self.similar[: ns_parser.limit])
+                    print(
+                        f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
+                    )
 
-        if self.ticker.upper() in self.similar:
-            self.similar.remove(self.ticker.upper())
+                self.similar = [self.ticker] + self.similar
 
-        if len(self.similar) > 10:
-            random.shuffle(self.similar)
-            self.similar = sorted(self.similar[:10])
-            print(
-                "The limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed.\n",
-            )
+                if self.similar:
+                    print(
+                        f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
+                        "\n",
+                    )
 
-        self.similar = [self.ticker] + self.similar
+            else:
+                print("You need to 'set' a ticker to get similar companies from first!")
 
-        if self.similar:
-            print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
+        return self.queue
 
     @try_except
     def call_add(self, other_args: List[str]):
@@ -377,21 +518,19 @@ Finviz:
             default=[],
             help="Tickers to add to similar list",
         )
-
-        # For the case where a user uses: 'add NIO,XPEV,LI'
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        # Add sets to avoid duplicates
-        if self.similar:
-            self.similar = list(set(self.similar + ns_parser.l_similar))
-        else:
-            self.similar = ns_parser.l_similar
-        self.user = "Custom"
-        print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
+        if ns_parser:
+            if self.similar:
+                self.similar = list(set(self.similar + ns_parser.l_similar))
+            else:
+                self.similar = ns_parser.l_similar
+            self.user = "Custom"
+
+            print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
+
+        return self.queue
 
     @try_except
     def call_rmv(self, other_args: List[str]):
@@ -410,32 +549,28 @@ Finviz:
             default=[],
             help="Tickers to remove from similar list",
         )
-
-        # For the case where a user uses: 'add NIO,XPEV,LI'
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            if ns_parser.l_similar:
+                for symbol in ns_parser.l_similar:
+                    if symbol in self.similar:
+                        self.similar.remove(symbol)
+                    else:
+                        print(
+                            f"Ticker {symbol} does not exist in similar list to be removed"
+                        )
 
-        if ns_parser.l_similar:
-            # Add sets to avoid duplicates
-            for symbol in ns_parser.l_similar:
-                if symbol in self.similar:
-                    self.similar.remove(symbol)
-                else:
-                    print(
-                        f"Ticker {symbol} does not exist in similar list to be removed"
-                    )
+                print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}")
 
-            print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}")
+            else:
+                self.similar = []
 
-        else:
-            self.similar = []
+            print("")
+            self.user = "Custom"
 
-        print("")
-        self.user = "Custom"
+        return self.queue
 
     @try_except
     def call_set(self, other_args: List[str]):
@@ -454,64 +589,15 @@ Finviz:
             default=[],
             help="similar companies to compare with.",
         )
-
-        # For the case where a user uses: 'select NIO,XPEV,LI'
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            self.similar = list(set(ns_parser.l_similar))
+            self.user = "Custom"
+            print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
 
-        self.similar = list(set(ns_parser.l_similar))
-        self.user = "Custom"
-        print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
-
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
-        """
-
-        # Empty command
-        if not an_input:
-            print("")
-            return None
-
-        (known_args, other_args) = self.ca_parser.parse_known_args(an_input.split())
-
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
-
-        return getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-    def call_help(self, _):
-        """Process Help command"""
-        self.print_help()
-
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return False
-
-    def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+        return self.queue
 
     @try_except
     def call_historical(self, other_args: List[str]):
@@ -520,8 +606,7 @@ Finviz:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="historical",
-            description="""Historical price comparison between similar companies.
-            """,
+            description="""Historical price comparison between similar companies.""",
         )
         parser.add_argument(
             "-t",
@@ -549,29 +634,27 @@ Finviz:
             dest="start",
             help="The starting date (format YYYY-MM-DD) of the stock",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            if self.similar and len(self.similar) > 1:
+                yahoo_finance_view.display_historical(
+                    similar_tickers=self.similar,
+                    start=ns_parser.start,
+                    candle_type=ns_parser.type_candle,
+                    normalize=not ns_parser.no_scale,
+                    export=ns_parser.export,
+                )
 
-        if not self.similar or len(self.similar) == 1:
-            print("Please make sure there are more than 1 similar tickers selected. \n")
-            return
+            else:
+                print(
+                    "Please make sure there are more than 1 similar tickers selected. \n"
+                )
 
-        yahoo_finance_view.display_historical(
-            similar_tickers=self.similar,
-            start=ns_parser.start,
-            candle_type=ns_parser.type_candle,
-            normalize=not ns_parser.no_scale,
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_hcorr(self, other_args: List[str]):
@@ -602,20 +685,20 @@ Finviz:
             dest="start",
             help="The starting date (format YYYY-MM-DD) of the stock",
         )
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            if self.similar and len(self.similar) > 1:
+                yahoo_finance_view.display_correlation(
+                    similar_tickers=self.similar,
+                    start=ns_parser.start,
+                    candle_type=ns_parser.type_candle,
+                )
+            else:
+                print("Please make sure there are similar tickers selected. \n")
 
-        if not self.similar or len(self.similar) == 1:
-            print("Please make sure there are similar tickers selected. \n")
-            return
-
-        yahoo_finance_view.display_correlation(
-            similar_tickers=self.similar,
-            start=ns_parser.start,
-            candle_type=ns_parser.type_candle,
-        )
+        return self.queue
 
     @try_except
     def call_income(self, other_args: List[str]):
@@ -645,24 +728,19 @@ Finviz:
             default=None,
             help="Specify yearly/quarterly timeframe. Default is last.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            marketwatch_view.display_income_comparison(
+                similar=self.similar,
+                timeframe=ns_parser.s_timeframe,
+                quarter=ns_parser.b_quarter,
+            )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        marketwatch_view.display_income_comparison(
-            similar=self.similar,
-            timeframe=ns_parser.s_timeframe,
-            quarter=ns_parser.b_quarter,
-        )
+        return self.queue
 
     @try_except
     def call_volume(self, other_args: List[str]):
@@ -682,27 +760,23 @@ Finviz:
             dest="start",
             help="The starting date (format YYYY-MM-DD) of the stock",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-s")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            if self.similar and len(self.similar) > 1:
+                yahoo_finance_view.display_volume(
+                    similar_tickers=self.similar,
+                    start=ns_parser.start,
+                    export=ns_parser.export,
+                )
 
-        if not self.similar or len(self.similar) == 1:
-            print("Please make sure there are similar tickers selected. \n")
-            return
+            else:
+                print("Please make sure there are similar tickers selected. \n")
 
-        yahoo_finance_view.display_volume(
-            similar_tickers=self.similar,
-            start=ns_parser.start,
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_balance(self, other_args: List[str]):
@@ -724,7 +798,6 @@ Finviz:
             dest="b_quarter",
             help="Quarter financial data flag.",
         )
-
         parser.add_argument(
             "-t",
             "--timeframe",
@@ -733,23 +806,17 @@ Finviz:
             default=None,
             help="Specify yearly/quarterly timeframe. Default is last.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            marketwatch_view.display_balance_comparison(
+                similar=self.similar,
+                timeframe=ns_parser.s_timeframe,
+                quarter=ns_parser.b_quarter,
+            )
 
-        marketwatch_view.display_balance_comparison(
-            similar=self.similar,
-            timeframe=ns_parser.s_timeframe,
-            quarter=ns_parser.b_quarter,
-        )
+        return self.queue
 
     @try_except
     def call_cashflow(self, other_args: List[str]):
@@ -771,7 +838,6 @@ Finviz:
             dest="b_quarter",
             help="Quarter financial data flag.",
         )
-
         parser.add_argument(
             "-t",
             "--timeframe",
@@ -780,23 +846,17 @@ Finviz:
             default=None,
             help="Specify yearly/quarterly timeframe. Default is last.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            marketwatch_view.display_cashflow_comparison(
+                similar=self.similar,
+                timeframe=ns_parser.s_timeframe,
+                quarter=ns_parser.b_quarter,
+            )
 
-        marketwatch_view.display_cashflow_comparison(
-            similar=self.similar,
-            timeframe=ns_parser.s_timeframe,
-            quarter=ns_parser.b_quarter,
-        )
+        return self.queue
 
     @try_except
     def call_sentiment(self, other_args: List[str]):
@@ -817,27 +877,22 @@ Finviz:
             help="Display raw sentiment data",
             dest="raw",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            if self.similar and len(self.similar) > 1:
+                finbrain_view.display_sentiment_compare(
+                    similar=self.similar,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
+            else:
+                print(
+                    "Please make sure there are more than 1 similar tickers selected. \n"
+                )
 
-        if not self.similar or len(self.similar) == 1:
-            print("Please make sure there are more than 1 similar tickers selected. \n")
-            return
-
-        finbrain_view.display_sentiment_compare(
-            similar=self.similar,
-            raw=ns_parser.raw,
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_scorr(self, other_args: List[str]):
@@ -858,27 +913,20 @@ Finviz:
             help="Display raw sentiment data",
             dest="raw",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            if self.similar and len(self.similar) > 1:
+                finbrain_view.display_sentiment_correlation(
+                    similar=self.similar,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
+            else:
+                print("Please make sure there are similar tickers selected. \n")
 
-        if not self.similar or len(self.similar) == 1:
-            print("Please make sure there are similar tickers selected. \n")
-            return
-
-        finbrain_view.display_sentiment_correlation(
-            similar=self.similar,
-            raw=ns_parser.raw,
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_overview(self, other_args: List[str]):
@@ -891,27 +939,22 @@ Finviz:
                 Prints screener data of similar companies. [Source: Finviz]
             """,
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            if self.similar and len(self.similar) > 1:
+                finviz_compare_view.screener(
+                    similar=self.similar,
+                    data_type="overview",
+                    export=ns_parser.export,
+                )
+            else:
+                print(
+                    "Please make sure there are more than 1 similar tickers selected. \n"
+                )
 
-        if not self.similar or len(self.similar) == 1:
-            print("Please make sure there are more than 1 similar tickers selected. \n")
-            return
-
-        finviz_compare_view.screener(
-            similar=self.similar,
-            data_type="overview",
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_valuation(self, other_args: List[str]):
@@ -924,27 +967,22 @@ Finviz:
                 Prints screener data of similar companies. [Source: Finviz]
             """,
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            if self.similar and len(self.similar) > 1:
+                finviz_compare_view.screener(
+                    similar=self.similar,
+                    data_type="valuation",
+                    export=ns_parser.export,
+                )
+            else:
+                print(
+                    "Please make sure there are more than 1 similar tickers selected. \n"
+                )
 
-        if not self.similar or len(self.similar) == 1:
-            print("Please make sure there are more than 1 similar tickers selected. \n")
-            return
-
-        finviz_compare_view.screener(
-            similar=self.similar,
-            data_type="valuation",
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_financial(self, other_args: List[str]):
@@ -957,27 +995,22 @@ Finviz:
                 Prints screener data of similar companies. [Source: Finviz]
             """,
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            if self.similar and len(self.similar) > 1:
+                finviz_compare_view.screener(
+                    similar=self.similar,
+                    data_type="financial",
+                    export=ns_parser.export,
+                )
+            else:
+                print(
+                    "Please make sure there are more than 1 similar tickers selected. \n"
+                )
 
-        if not self.similar or len(self.similar) == 1:
-            print("Please make sure there are more than 1 similar tickers selected. \n")
-            return
-
-        finviz_compare_view.screener(
-            similar=self.similar,
-            data_type="financial",
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_ownership(self, other_args: List[str]):
@@ -990,27 +1023,22 @@ Finviz:
                 Prints screener data of similar companies. [Source: Finviz]
             """,
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            if self.similar and len(self.similar) > 1:
+                finviz_compare_view.screener(
+                    similar=self.similar,
+                    data_type="ownership",
+                    export=ns_parser.export,
+                )
+            else:
+                print(
+                    "Please make sure there are more than 1 similar tickers selected. \n"
+                )
 
-        if not self.similar or len(self.similar) == 1:
-            print("Please make sure there are more than 1 similar tickers selected. \n")
-            return
-
-        finviz_compare_view.screener(
-            similar=self.similar,
-            data_type="ownership",
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_performance(self, other_args: List[str]):
@@ -1023,27 +1051,22 @@ Finviz:
                 Prints screener data of similar companies. [Source: Finviz]
             """,
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            if self.similar and len(self.similar) > 1:
+                finviz_compare_view.screener(
+                    similar=self.similar,
+                    data_type="performance",
+                    export=ns_parser.export,
+                )
+            else:
+                print(
+                    "Please make sure there are more than 1 similar tickers selected. \n"
+                )
 
-        if not self.similar or len(self.similar) == 1:
-            print("Please make sure there are more than 1 similar tickers selected. \n")
-            return
-
-        finviz_compare_view.screener(
-            similar=self.similar,
-            data_type="performance",
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_technical(self, other_args: List[str]):
@@ -1056,76 +1079,112 @@ Finviz:
                 Prints screener data of similar companies. [Source: Finviz]
             """,
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            if self.similar and len(self.similar) > 1:
+                finviz_compare_view.screener(
+                    similar=self.similar,
+                    data_type="technical",
+                    export=ns_parser.export,
+                )
+            else:
+                print(
+                    "Please make sure there are more than 1 similar tickers selected. \n"
+                )
 
-        if not self.similar or len(self.similar) == 1:
-            print("Please make sure there are more than 1 similar tickers selected. \n")
-            return
-
-        finviz_compare_view.screener(
-            similar=self.similar,
-            data_type="technical",
-            export=ns_parser.export,
-        )
+        return self.queue
 
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
-        if not self.similar or len(self.similar) == 1:
-            print("Please make sure there are more than 1 similar tickers selected. \n")
-            return None
+        if self.similar and len(self.similar) > 1:
+            return po_controller.menu(self.similar, self.queue, from_submenu=True)
 
-        return po_controller.menu(self.similar)
+        print("Please make sure there are more than 1 similar tickers selected. \n")
+        return self.queue
 
 
-def menu(similar: List):
-    """Comparison Analysis Menu
-
-    Parameters
-    ----------
-    similar : List
-        Similar tickers
-    """
-
-    ca_controller = ComparisonAnalysisController(similar)
-    ca_controller.call_help(None)
+def menu(
+    similar: List,
+    queue: List[str] = None,
+    from_submenu: bool = False,
+):
+    """Comparison Analysis Menu"""
+    ca_controller = ComparisonAnalysisController(similar, queue)
+    an_input = "HELP_ME"
 
     while True:
+        # There is a command in the queue
+        if ca_controller.queue and len(ca_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
+            if ca_controller.queue[0] in ("q", "..", "quit"):
+                print("")
+                # Since we came from another menu we need to quit an additional time
+                if from_submenu:
+                    ca_controller.queue.insert(0, "quit")
+                    from_submenu = False
+
+                if len(ca_controller.queue) > 1:
+                    return ca_controller.queue[1:]
+                return []
+
+            # Consume 1 element from the queue
+            an_input = ca_controller.queue[0]
+            ca_controller.queue = ca_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
+            if an_input and an_input.split(" ")[0] in ca_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /stocks/ca/ $ {an_input}")
+
         # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in ca_controller.CHOICES}
-            )
-            an_input = session.prompt(
-                f"{get_flair()} (stocks)>(ca)> ",
-                completer=completer,
-            )
         else:
-            an_input = input(f"{get_flair()} (stocks)>(ca)> ")
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
+                ca_controller.print_help()
+
+            # Get input from user using auto-completion
+            if session and gtff.USE_PROMPT_TOOLKIT and ca_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /stocks/ca/ $ ",
+                    completer=ca_controller.completer,
+                    search_ignore_case=True,
+                )
+
+            # Get input from user without auto-completion
+            else:
+                an_input = input(f"{get_flair()} /stocks/ca/ $ ")
 
         try:
-            plt.close("all")
-
-            process_input = ca_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            # Process the input command
+            ca_controller.queue = ca_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            similar_cmd = difflib.get_close_matches(
-                an_input, ca_controller.CHOICES, n=1, cutoff=0.7
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/ca menu.",
+                end="",
             )
-
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                ca_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
-            continue
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        ca_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
+                else:
+                    an_input = similar_cmd[0]
+
+                print(f" Replacing by '{an_input}'.")
+                ca_controller.queue.insert(0, an_input)
+            else:
+                print("\n")

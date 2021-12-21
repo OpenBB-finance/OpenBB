@@ -1,12 +1,12 @@
 ```
-usage: newsletter [-t TOP] [--export {csv,json,xlsx}] [-h]
+usage: newsletter [-l N] [--export {csv,json,xlsx}] [-h]
 ```
 
 Display DeFi related substack newsletters. [Source: substack.com]
 
 ```
 optional arguments:
-  -t TOP, --top TOP     top N number records (default: 10)
+  -l N, --limit N       display N records (default: 10)
   --export {csv,json,xlsx}
                         Export dataframe data to csv,json,xlsx file (default:
                         )

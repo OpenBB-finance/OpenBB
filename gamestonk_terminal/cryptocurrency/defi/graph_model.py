@@ -11,6 +11,39 @@ from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
 
 UNI_URL = "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2"
 
+SWAPS_FILTERS = ["timestamp", "token0", "token1", "amountUSD"]
+
+POOLS_FILTERS = [
+    "volumeUSD",
+    "token0.name",
+    "token0.symbol",
+    "token1.name",
+    "token1.symbol",
+    "volumeUSD",
+    "txCount",
+]
+
+TOKENS_FILTERS = [
+    "index",
+    "symbol",
+    "name",
+    "tradeVolumeUSD",
+    "totalLiquidity",
+    "txCount",
+]
+
+PAIRS_FILTERS = [
+    "created",
+    "pair",
+    "token0",
+    "token1",
+    "volumeUSD",
+    "txCount",
+    "totalSupply",
+]
+
+# TODO: convert USD values to int. otherwise sort by these columns won't work
+
 
 def query_graph(url: str, query: str) -> dict:
     """Helper methods for querying graphql api. [Source: https://thegraph.com/en/]

@@ -34,6 +34,10 @@ def get_high_short_interest() -> DataFrame:
         a_high_short_interest_header.append(
             high_short_interest_header.text.strip("\n").split("\n")[0]
         )
+
+    if not a_high_short_interest_header:
+        return pd.DataFrame()
+
     df_high_short_interest = pd.DataFrame(columns=a_high_short_interest_header)
     df_high_short_interest.loc[0] = ["", "", "", "", "", "", ""]
 

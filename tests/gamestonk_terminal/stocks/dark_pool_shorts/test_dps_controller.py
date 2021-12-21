@@ -44,7 +44,7 @@ def test_menu_quick_exit(mocker):
         stock=pd.DataFrame(),
     )
 
-    assert result_menu
+    assert result_menu == []
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -99,7 +99,7 @@ def test_switch_empty():
     )
     result = controller.switch(an_input="")
 
-    assert result is None
+    assert result == []
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -112,7 +112,7 @@ def test_switch_help():
     )
     result = controller.switch(an_input="?")
 
-    assert result is None
+    assert result == []
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -125,21 +125,8 @@ def test_switch_cls(mocker):
     )
     result = controller.switch(an_input="cls")
 
-    assert result is None
+    assert result == []
     os.system.assert_called_once_with("cls||clear")
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_call_q():
-    controller = dps_controller.DarkPoolShortsController(
-        ticker="TSLA",
-        start=None,
-        stock=pd.DataFrame(),
-    )
-    other_args = list()
-    result = controller.call_q(other_args)
-
-    assert result is False
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -152,7 +139,7 @@ def test_call_quit():
     other_args = list()
     result = controller.call_quit(other_args)
 
-    assert result is True
+    assert result == ["quit"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -163,7 +150,7 @@ def test_call_quit():
             "call_shorted",
             "yahoofinance_view.display_most_shorted",
             [
-                "--num=1",
+                "--limit=1",
                 "--export=csv",
             ],
             dict(
@@ -175,7 +162,7 @@ def test_call_quit():
             "call_hsi",
             "shortinterest_view.high_short_interest",
             [
-                "--num=1",
+                "--limit=1",
                 "--export=csv",
             ],
             dict(
@@ -188,7 +175,7 @@ def test_call_quit():
             "finra_view.darkpool_otc",
             [
                 "--num=1",
-                "--top=2",
+                "--limit=2",
                 "--tier=T1",
                 "--export=csv",
             ],
@@ -203,7 +190,7 @@ def test_call_quit():
             "call_pos",
             "stockgrid_view.dark_pool_short_positions",
             [
-                "--number=1",
+                "--limit=1",
                 "--sort=sv",
                 "--ascending",
                 "--export=csv",
@@ -219,7 +206,7 @@ def test_call_quit():
             "call_sidtc",
             "stockgrid_view.short_interest_days_to_cover",
             [
-                "--number=1",
+                "--limit=1",
                 "--sort=si",
                 "--export=csv",
             ],
@@ -231,18 +218,14 @@ def test_call_quit():
         ),
         (
             "call_psi",
-            "quandl_view.short_interest",
+            "stockgrid_view.short_interest_volume",
             [
-                "quandl",
-                "--nyse",
-                "--number=1",
                 "-r",
                 "--export=csv",
             ],
             dict(
                 ticker="MOCK_TICKER",
-                nyse=True,
-                days=1,
+                num=10,
                 raw=True,
                 export="csv",
             ),
@@ -282,13 +265,13 @@ def test_call_quit():
             "call_spos",
             "stockgrid_view.net_short_position",
             [
-                "--num=1",
+                "--limit=10",
                 "-r",
                 "--export=csv",
             ],
             dict(
                 ticker="MOCK_TICKER",
-                num=1,
+                num=10,
                 raw=True,
                 export="csv",
             ),
@@ -365,7 +348,7 @@ def test_call_func_no_parser(func, mocker):
     )
 
     func_result = getattr(controller, func)(other_args=list())
-    assert func_result is None
+    assert func_result == []
     getattr(dps_controller, "parse_known_args_and_warn").assert_called_once()
 
 

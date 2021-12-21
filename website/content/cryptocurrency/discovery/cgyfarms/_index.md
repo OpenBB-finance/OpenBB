@@ -1,5 +1,5 @@
 ```
-usage: cgyfarms [-t TOP] [-s {Rank,Name,Value_Locked,Return_Year}] [--descend] [--export {csv,json,xlsx}] [-h]
+usage: cgyfarms [-l N] [-s {Rank,Name,Value_Locked,Return_Year}] [--descend] [--export {csv,json,xlsx}] [-h]
 ```
 
 Shows Top Yield Farming Pools by Value Locked. Yield farming, also referred to as liquidity mining, is a way to generate rewards with cryptocurrency
@@ -8,7 +8,7 @@ You can sort data by Rank, Name, Value_Locked, Return_Year with --sort parameter
 
 ```
 optional arguments:
-  -t TOP, --top TOP     Top N of records. Default 20 (default: 15)
+  -l N, --limit N       display N records (default: 15)
   -s {Rank,Name,Value_Locked,Return_Year}, --sort {Rank,Name,Value_Locked,Return_Year}
                         Sort by given column. Default: Rank (default: Rank)
   --descend             Flag to sort in descending order (lowest first) (default: True)

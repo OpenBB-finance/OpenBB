@@ -1,5 +1,5 @@
 ```
-usage: balance [-t TOP] [-s {index,balance,tokenName,tokenSymbol}] [--descend] [--export {csv,json,xlsx}] [-h]
+usage: balance [-l N] [-s {index,balance,tokenName,tokenSymbol}] [--descend] [--export {csv,json,xlsx}] [-h]
 ```
 
 Display info about tokens on given ethereum blockchain address. [Source:
@@ -7,7 +7,7 @@ Ethplorer]
 
 ```
 optional arguments:
-  -t TOP, --top TOP     top N number records (default: 10)
+  -l N, --limit N         display N number records (default: 10)
   -s {index,balance,tokenName,tokenSymbol}, --sort {index,balance,tokenName,tokenSymbol}
                         Sort by given column. Default: index (default: index)
   --descend             Flag to sort in descending order (lowest first) (default: True)

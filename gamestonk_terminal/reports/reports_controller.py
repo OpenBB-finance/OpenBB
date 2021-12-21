@@ -1,12 +1,11 @@
-"""Papermill Controller Module"""
+"""Reports Controller Module."""
 __docformat__ = "numpy"
 
 # pylint: disable=R1732
-
 import argparse
 import difflib
 import os
-import subprocess
+from typing import List, Union
 import webbrowser
 from datetime import datetime
 from ast import literal_eval
@@ -16,23 +15,22 @@ import papermill as pm
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import get_flair, system_clear
-from gamestonk_terminal import config_terminal
-from gamestonk_terminal.helper_funcs import (
-    MENU_GO_BACK,
-    MENU_QUIT,
-    MENU_RESET,
-)
 
 
 class ReportController:
-    """Report Controller class"""
+    """Report Controller class."""
 
     CHOICES = [
         "cls",
+        "home",
+        "h",
         "?",
         "help",
         "q",
         "quit",
+        "..",
+        "exit",
+        "r",
         "reset",
     ]
 
@@ -64,7 +62,7 @@ class ReportController:
         notebook_content = open(notebook_file + ".ipynb").read()
         metadata_cell = """"metadata": {\n    "tags": [\n     "parameters"\n    ]\n   },\n   "outputs":"""
         notebook_metadata_content = notebook_content[
-            notebook_content.find(metadata_cell) :
+            notebook_content.find(metadata_cell) :  # noqa: E203
         ]
         cell_start = 'source": '
         cell_end = '"report_name='
@@ -72,7 +70,9 @@ class ReportController:
             notebook_metadata_content[
                 notebook_metadata_content.find(
                     cell_start
-                ) : notebook_metadata_content.find(cell_end)
+                ) : notebook_metadata_content.find(  # noqa: E203
+                    cell_end
+                )
             ]
             + "]"
         )
@@ -85,83 +85,92 @@ class ReportController:
         d_params[report_to_run] = l_params
 
         args = f"<{'> <'.join(l_params)}>"
-        reports_opts += f"   {k}. {report_to_run}{(max_len_name-len(report_to_run))*' '} {args if args != '<>' else ''}\n"
+        reports_opts += (
+            f"   {k}. {report_to_run}"
+            + f"{(max_len_name-len(report_to_run))*' '} "
+            + f"{args if args != '<>' else ''}\n"
+        )
 
-    def __init__(self):
-        """Constructor"""
+    def __init__(self, queue: List[str] = None):
+        """Construct the Reports Controller."""
         self.report_parser = argparse.ArgumentParser(add_help=False, prog="reports")
         self.report_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
 
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
+
     def print_help(self):
-        """Print help"""
+        """Print help."""
         help_text = f"""
-What do you want to do?
-    cls         clear screen
-    ?/help      show this menu again
-    q           quit this menu, and shows back to main menu
-    quit        quit to abandon the program
-    reset       reset terminal and reload configs
 
 Select one of the following reports:
 {self.reports_opts}"""
         print(help_text)
 
-    def switch(self, an_input: str, proc: subprocess.Popen):
-        """Process and dispatch input
+    def switch(self, an_input: str):
+        """Process and dispatch input.
 
         Parameters
-        -------
+        ----------
         an_input : str
             string with input arguments
-        proc : subprocess.Popen
-            subprocess that calls jupyter notebook for report generation
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
-
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.report_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd in ["?", "help"]:
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
-
-        # Go back to menu above
-        if known_args.cmd == "q":
-            proc.kill()
-            print("")
-            return MENU_GO_BACK
-
-        # Quit terminal
-        if known_args.cmd == "quit":
-            proc.kill()
-            print("")
-            return MENU_QUIT
-
-        # Reset menu
-        if known_args.cmd == "reset":
-            print("")
-            return MENU_RESET
-
+        # Redirect commands to their correct functions
         if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
+
+            if known_args.cmd in ["quit", "help", "reset", "home", "exit"]:
+                return getattr(
+                    self,
+                    "call_" + known_args.cmd,
+                    lambda _: "Command not recognized!",
+                )(other_args)
+
+            # Execute the requested report
             if known_args.cmd in self.d_id_to_report_name:
                 report_to_run = self.d_id_to_report_name[known_args.cmd]
             else:
@@ -169,9 +178,10 @@ Select one of the following reports:
 
             params = self.d_params[report_to_run]
 
-            # Check that the number of arguments match. We can't check validity of argument used because
-            # this depends on what the user will use it for in the notebook. This is a downside of allowing
-            # the user to have this much flexibility.
+            # Check that the number of arguments match. We can't check validity of the
+            # argument used because this depends on what the user will use it for in
+            # the notebook. This is a downside of allowing the user to have this much
+            # flexibility.
             if len(other_args) != len(params):
                 print("Wrong number of arguments provided!")
                 if len(params):
@@ -181,17 +191,22 @@ Select one of the following reports:
                 else:
                     print("No argument required.")
                 print("")
-                return None
+                return self.queue
 
             notebook_template = os.path.join(
                 "gamestonk_terminal", "reports", report_to_run
             )
             args_to_output = f"_{'_'.join(other_args)}" if "_".join(other_args) else ""
+            report_output_name = (
+                f"{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+                + "_"
+                + f"{report_to_run}{args_to_output}"
+            )
             notebook_output = os.path.join(
                 "gamestonk_terminal",
                 "reports",
                 "stored",
-                f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{report_to_run}{args_to_output}",
+                report_output_name,
             )
 
             d_report_params = {}
@@ -207,22 +222,10 @@ Select one of the following reports:
             )
 
             if gtff.OPEN_REPORT_AS_HTML:
-                webbrowser.open(
-                    os.path.join(
-                        f"http://localhost:{config_terminal.PAPERMILL_NOTEBOOK_REPORT_PORT}",
-                        "view",
-                        notebook_output + ".html",
-                    )
+                report_output_path = os.path.join(
+                    os.path.dirname(__file__), "..", "..", f"{notebook_output}.html"
                 )
-
-            else:
-                webbrowser.open(
-                    os.path.join(
-                        f"http://localhost:{config_terminal.PAPERMILL_NOTEBOOK_REPORT_PORT}",
-                        "notebooks",
-                        notebook_output + ".ipynb",
-                    )
-                )
+                webbrowser.open(f"file://{report_output_path}")
 
             print("")
             print(
@@ -232,51 +235,123 @@ Select one of the following reports:
                 ),
                 "\n",
             )
+            return self.queue
+        return self.queue
 
-        return None
+    def call_home(self, _):
+        """Process home command."""
+        self.queue.insert(0, "quit")
+        return self.queue
+
+    def call_cls(self, _):
+        """Process cls command."""
+        system_clear()
+        return self.queue
+
+    def call_help(self, _):
+        """Process help command."""
+        self.print_help()
+        return self.queue
+
+    def call_quit(self, _):
+        """Process quit menu command."""
+        print("")
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q"]
+
+    def call_exit(self, _):
+        """Process exit terminal command."""
+        print("")
+        if len(self.queue) > 0:
+            self.queue.insert(0, "q")
+            self.queue.insert(0, "q")
+            return self.queue
+        return ["q", "q"]
+
+    def call_reset(self, _):
+        """Process reset command."""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "reports")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "reset", "reports"]
 
 
-def menu():
-    """Report Menu"""
-    report_controller = ReportController()
-    report_controller.print_help()
-
-    # Initialize jupyter notebook
-
-    cmd = f"jupyter notebook --port={config_terminal.PAPERMILL_NOTEBOOK_REPORT_PORT}"
-    proc = subprocess.Popen(
-        cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
-    )
-
-    print(
-        f"Jupyter notebook environment launched on http://localhost:{config_terminal.PAPERMILL_NOTEBOOK_REPORT_PORT}\n"
-    )
+def menu(queue: List[str] = None):
+    """Report Menu."""
+    report_controller = ReportController(queue)
+    an_input = "HELP_ME"
 
     while True:
+        # There is a command in the queue
+        if report_controller.queue and len(report_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
+            if report_controller.queue[0] in ("q", "..", "quit"):
+                print("")
+                if len(report_controller.queue) > 1:
+                    return report_controller.queue[1:]
+                return []
+
+            # Consume 1 element from the queue
+            an_input = report_controller.queue[0]
+            report_controller.queue = report_controller.queue[1:]
+
+            # Print the current location because this was an instruction
+            # and we want user to know what was the action
+            if an_input and an_input.split(" ")[0] in report_controller.CHOICES:
+                print(f"{get_flair()} /reports/ $ {an_input}")
+
         # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in report_controller.CHOICES}
-            )
-            an_input = session.prompt(
-                f"{get_flair()} (reports)> ",
-                completer=completer,
-            )
         else:
-            an_input = input(f"{get_flair()} (reports)> ")
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
+                report_controller.print_help()
+
+            # Get input from user using auto-completion
+            if session and gtff.USE_PROMPT_TOOLKIT and report_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /reports/ $ ",
+                    completer=report_controller.completer,
+                    search_ignore_case=True,
+                )
+
+            # Get input from user without auto-completion
+            else:
+                an_input = input(f"{get_flair()} /reports/ $ ")
 
         try:
-            process_input = report_controller.switch(an_input, proc)
-
-            if process_input is not None:
-                return process_input
+            # Process the input command
+            report_controller.queue = report_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            similar_cmd = difflib.get_close_matches(
-                an_input, report_controller.CHOICES, n=1, cutoff=0.7
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /reports menu.",
+                end="",
             )
-
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                report_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
-            continue
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        report_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
+                else:
+                    an_input = similar_cmd[0]
+
+                print(f" Replacing by '{an_input}'.")
+                report_controller.queue.insert(0, an_input)
+            else:
+                print("\n")

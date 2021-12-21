@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import difflib
-from typing import List
+from typing import List, Union, Dict
 
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
@@ -23,21 +23,48 @@ from gamestonk_terminal.menu import session
 
 
 class FredController:
-    CHOICES = ["cls", "?", "help", "q", "quit"]
+    """FRED Controller Class"""
+
+    CHOICES = [
+        "cls",
+        "cd",
+        "h",
+        "?",
+        "help",
+        "q",
+        "quit",
+        "..",
+        "exit",
+        "r",
+        "reset",
+        "home",
+    ]
 
     CHOICES_COMMANDS = ["search", "add", "rmv", "plot"]
 
     CHOICES += CHOICES_COMMANDS
 
-    def __init__(self):
+    def __init__(self, queue: List[str] = None):
         """Constructor"""
         self.fred_parser = argparse.ArgumentParser(add_help=False, prog="fred")
         self.fred_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
-        self.current_series = dict()
+        self.current_series: Dict = dict()
         self.current_long_id = 0
+
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
 
     def print_help(self):
         """Print help"""
@@ -45,12 +72,6 @@ class FredController:
         for s_id, sub_dict in self.current_series.items():
             id_string += f"    {s_id.upper()}{(self.current_long_id-len(s_id)) * ' '} : {sub_dict['title']}\n"
         help_text = f"""
-What do you want to do?
-    cls           clear screen
-    ?/help        show this menu again
-    q             quit this menu, and shows back to main menu
-    quit          quit to abandon program
-
     search        search FRED series notes
     add           add series ID to list
     rmv           remove series ID from list
@@ -66,28 +87,40 @@ Current Series IDs:
 
         Returns
         -------
-        MENU_GO_BACK, MENU_QUIT, MENU_RESET
-            MENU_GO_BACK - Show main context menu again
-            MENU_QUIT - Quit terminal
-            MENU_RESET - Reset terminal and go back to same previous menu
+        List[str]
+            List of commands in the queue to execute
         """
-
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.fred_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self,
@@ -95,17 +128,49 @@ Current Series IDs:
             lambda _: "Command not recognized!",
         )(other_args)
 
-    def call_help(self, _):
-        """Process Help command"""
-        self.print_help()
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue
 
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return False
+    def call_help(self, _):
+        """Process help command"""
+        self.print_help()
+        return self.queue
+
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        return self.queue
 
     def call_quit(self, _):
-        """Process Quit command - exit the program"""
-        return True
+        """Process quit menu command"""
+        print("")
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit"]
+
+    def call_exit(self, _):
+        print("")
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "quit"]
+
+    def call_reset(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "fred")
+            self.queue.insert(0, "economy")
+            self.queue.insert(0, "r")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "r", "economy", "fred"]
 
     @try_except
     def call_search(self, other_args: List[str]):
@@ -134,17 +199,17 @@ Current Series IDs:
             default=5,
             help="Maximum number of series notes to display.",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
 
-        fred_view.notes(
-            series_term=ns_parser.series_term,
-            num=ns_parser.num,
-        )
+            fred_view.notes(
+                series_term=ns_parser.series_term,
+                num=ns_parser.num,
+            )
+        return self.queue
 
     @try_except
     def call_add(self, other_args: List[str]):
@@ -162,25 +227,24 @@ Current Series IDs:
             type=str,
             help="FRED Series from https://fred.stlouisfed.org. For multiple series use: series1,series2,series3",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            # Loop through entries.  If it exists, save title in dictionary
+            for s_id in ns_parser.series_id.split(","):
+                exists, information = fred_model.check_series_id(s_id)
+                if exists:
+                    self.current_series[s_id] = {
+                        "title": information["seriess"][0]["title"],
+                        "units": information["seriess"][0]["units_short"],
+                    }
+                    self.current_long_id = max(self.current_long_id, len(s_id))
 
-        # Loop through entries.  If it exists, save title in dictionary
-        for s_id in ns_parser.series_id.split(","):
-            exists, information = fred_model.check_series_id(s_id)
-            if exists:
-                self.current_series[s_id] = {
-                    "title": information["seriess"][0]["title"],
-                    "units": information["seriess"][0]["units_short"],
-                }
-                self.current_long_id = max(self.current_long_id, len(s_id))
-
-        print(
-            f"Current Series: {', '.join(self.current_series.keys()) .upper() or None}\n"
-        )
+            print(
+                f"Current Series: {', '.join(self.current_series.keys()) .upper() or None}\n"
+            )
+        return self.queue
 
     @try_except
     def call_rmv(self, other_args: List[str]):
@@ -220,17 +284,17 @@ Current Series IDs:
             ):
                 other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if ns_parser.all:
-            self.current_series = {}
-            self.current_long_id = 0
-            print("")
-            return
-
-        self.current_series.pop(ns_parser.series_id)
-        print(f"Current Series Ids: {', '.join(self.current_series.keys()) or None}\n")
+        if ns_parser:
+            if ns_parser.all:
+                self.current_series = {}
+                self.current_long_id = 0
+                print("")
+                return self.queue
+            self.current_series.pop(ns_parser.series_id)
+            print(
+                f"Current Series Ids: {', '.join(self.current_series.keys()) or None}\n"
+            )
+        return self.queue
 
     @try_except
     def call_plot(self, other_args):
@@ -258,46 +322,87 @@ Current Series IDs:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        if not ns_parser:
-            return
+        if ns_parser:
+            fred_view.display_fred_series(
+                self.current_series,
+                ns_parser.start_date,
+                ns_parser.raw,
+                ns_parser.export,
+            )
+        return self.queue
 
-        fred_view.display_fred_series(
-            self.current_series, ns_parser.start_date, ns_parser.raw, ns_parser.export
-        )
 
-
-def menu():
+def menu(queue: List[str] = None):
     """Fred Menu"""
+    fred_controller = FredController(queue)
+    an_input = "HELP_ME"
 
-    fred_controller = FredController()
-    fred_controller.print_help()
-
-    # Loop forever and ever
     while True:
+        # There is a command in the queue
+        if fred_controller.queue and len(fred_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
+            if fred_controller.queue[0] in ("q", "..", "quit"):
+                print("")
+                if len(fred_controller.queue) > 1:
+                    return fred_controller.queue[1:]
+                return []
+
+            # Consume 1 element from the queue
+            an_input = fred_controller.queue[0]
+            fred_controller.queue = fred_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
+            if an_input and an_input.split(" ")[0] in fred_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /economy/fred/ $ {an_input}")
+
         # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in fred_controller.CHOICES}
-            )
-
-            an_input = session.prompt(
-                f"{get_flair()} (economy)(fred)> ",
-                completer=completer,
-            )
         else:
-            an_input = input(f"{get_flair()} (economy)(fred)> ")
-        try:
-            process_input = fred_controller.switch(an_input)
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
+                fred_controller.print_help()
 
-            if process_input is not None:
-                return process_input
+            # Get input from user using auto-completion
+            if session and gtff.USE_PROMPT_TOOLKIT and fred_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /economy/fred/ $ ",
+                    completer=fred_controller.completer,
+                    search_ignore_case=True,
+                )
+
+            # Get input from user without auto-completion
+            else:
+                an_input = input(f"{get_flair()} /economy/fred/ $ ")
+
+        try:
+            # Process the input command
+            fred_controller.queue = fred_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            similar_cmd = difflib.get_close_matches(
-                an_input, fred_controller.CHOICES, n=1, cutoff=0.7
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /economy/fred menu.",
+                end="",
             )
-
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                fred_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
-            continue
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        fred_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
+                else:
+                    an_input = similar_cmd[0]
+
+                print(f" Replacing by '{an_input}'.")
+                fred_controller.queue.insert(0, an_input)
+            else:
+                print("\n")

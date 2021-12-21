@@ -2,8 +2,8 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List
-import matplotlib.pyplot as plt
+import difflib
+from typing import List, Union
 import pandas as pd
 from tabulate import tabulate
 from prompt_toolkit.completion import NestedCompleter
@@ -20,9 +20,21 @@ from gamestonk_terminal.stocks.options import yfinance_view
 
 
 class PricingController:
-    """Pricing Controller class."""
+    """Pricing Controller class"""
 
-    CHOICES = ["cls", "?", "help", "q", "quit"]
+    CHOICES = [
+        "cls",
+        "home",
+        "h",
+        "?",
+        "help",
+        "q",
+        "quit",
+        "..",
+        "exit",
+        "r",
+        "reset",
+    ]
     CHOICES_COMMANDS = [
         "add",
         "rmv",
@@ -31,12 +43,28 @@ class PricingController:
     ]
     CHOICES += CHOICES_COMMANDS
 
-    # pylint: disable=dangerous-default-value
-    def __init__(self, ticker: str, selected_date: str, prices: pd.DataFrame):
-        """Construct Pricing"""
-
+    def __init__(
+        self,
+        ticker: str,
+        selected_date: str,
+        prices: pd.DataFrame,
+        queue: List[str] = None,
+    ):
+        """Construct"""
         self.pricing_parser = argparse.ArgumentParser(add_help=False, prog="pricing")
         self.pricing_parser.add_argument("cmd", choices=self.CHOICES)
+
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+
+            choices: dict = {c: {} for c in self.CHOICES}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
 
         self.ticker = ticker
         self.selected_date = selected_date
@@ -45,18 +73,12 @@ class PricingController:
     def print_help(self):
         """Print help"""
         help_text = f"""
-What do you want to do?
-    cls           clear screen
-    ?/help        show this menu again
-    q             quit this menu, and shows back to main menu
-    quit          quit to abandon program
+Ticker: {self.ticker or None}
+Expiry: {self.selected_date or None}
 
-Current Ticker: {self.ticker or None}
-Current Expiry: {self.selected_date or None}
-
-Options Pricing:
     add           add an expected price to the list
     rmv           remove an expected price from the list
+
     show          show the listed of expected prices
     rnval         risk neutral valuation for an option
         """
@@ -67,30 +89,42 @@ Options Pricing:
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
-
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.pricing_parser.parse_known_args(
             an_input.split()
         )
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self,
@@ -98,17 +132,65 @@ Options Pricing:
             lambda _: "Command not recognized!",
         )(other_args)
 
-    def call_help(self, _):
-        """Process Help command"""
-        self.print_help()
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue
 
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return False
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        return self.queue
+
+    def call_help(self, _):
+        """Process help command"""
+        self.print_help()
+        return self.queue
 
     def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+        """Process quit menu command"""
+        print("")
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit"]
+
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "quit", "quit"]
+
+    def call_reset(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "pricing")
+            if self.selected_date:
+                self.queue.insert(0, f"exp {self.selected_date}")
+            if self.ticker:
+                self.queue.insert(0, f"load {self.ticker}")
+            self.queue.insert(0, "options")
+            self.queue.insert(0, "stocks")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+
+        reset_commands = ["quit", "quit", "quit", "reset", "stocks", "options"]
+        if self.ticker:
+            reset_commands.append(f"load {self.ticker}")
+        if self.selected_date:
+            reset_commands.append(f"exp -d {self.selected_date}")
+        reset_commands.append("pricing")
+
+        return reset_commands
 
     @try_except
     def call_add(self, other_args: List[str]):
@@ -135,18 +217,21 @@ Options Pricing:
             dest="chance",
             help="Chance that the stock is at a given projected price",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if ns_parser.price in self.prices["Price"].to_list():
-            df = self.prices[(self.prices["Price"] != ns_parser.price)]
-        else:
-            df = self.prices
+        if ns_parser:
+            if ns_parser.price in self.prices["Price"].to_list():
+                df = self.prices[(self.prices["Price"] != ns_parser.price)]
+            else:
+                df = self.prices
 
-        new = {"Price": ns_parser.price, "Chance": ns_parser.chance}
-        df = df.append(new, ignore_index=True)
-        self.prices = df.sort_values("Price")
-        print("")
+            new = {"Price": ns_parser.price, "Chance": ns_parser.chance}
+            df = df.append(new, ignore_index=True)
+            self.prices = df.sort_values("Price")
+            print("")
+
+        return self.queue
 
     @try_except
     def call_rmv(self, other_args: List[str]):
@@ -173,36 +258,45 @@ Options Pricing:
             dest="all",
             help="Remove all prices from the list",
         )
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if ns_parser.all:
-            self.prices = pd.DataFrame(columns=["Price", "Chance"])
-            return
+        if ns_parser:
+            if ns_parser.all:
+                self.prices = pd.DataFrame(columns=["Price", "Chance"])
+            else:
+                self.prices = self.prices[(self.prices["Price"] != ns_parser.price)]
+            print("")
 
-        self.prices = self.prices[(self.prices["Price"] != ns_parser.price)]
-        print("")
+        return self.queue
 
     @try_except
-    def call_show(self, _):
+    def call_show(self, other_args):
         """Process show command"""
-        print(f"Estimated price(s) of {self.ticker} at {self.selected_date}")
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    self.prices,
-                    headers=self.prices.columns,
-                    floatfmt=".2f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            print(self.prices.to_string, "\n")
-            print("")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="show",
+            description="Display prices",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            print(f"Estimated price(s) of {self.ticker} at {self.selected_date}")
+            if gtff.USE_TABULATE_DF:
+                print(
+                    tabulate(
+                        self.prices,
+                        headers=self.prices.columns,
+                        floatfmt=".2f",
+                        showindex=False,
+                        tablefmt="fancy_grid",
+                    ),
+                    "\n",
+                )
+            else:
+                print(self.prices.to_string, "\n")
+
+        return self.queue
 
     @try_except
     def call_rnval(self, other_args: List[str]):
@@ -245,53 +339,104 @@ Options Pricing:
             help="The risk-free rate to use",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if not self.ticker and not self.selected_date:
-            print("Ticker and expiration required. \n")
-            return
-        if sum(self.prices["Chance"]) != 1:
-            print("Total chances must equal one\n")
-            return
+        if ns_parser:
+            if self.ticker:
+                if self.selected_date:
+                    if sum(self.prices["Chance"]) == 1:
+                        yfinance_view.risk_neutral_vals(
+                            self.ticker,
+                            self.selected_date,
+                            ns_parser.put,
+                            self.prices,
+                            ns_parser.mini,
+                            ns_parser.maxi,
+                            ns_parser.risk,
+                        )
+                    else:
+                        print("Total chances must equal one\n")
+                else:
+                    print("No expiry loaded. First use `exp {expiry date}`\n")
+            else:
+                print("No ticker loaded. First use `load <ticker>`\n")
 
-        yfinance_view.risk_neutral_vals(
-            self.ticker,
-            self.selected_date,
-            ns_parser.put,
-            self.prices,
-            ns_parser.mini,
-            ns_parser.maxi,
-            ns_parser.risk,
-        )
+        return self.queue
 
 
-def menu(ticker: str, selected_date: str, prices: pd.DataFrame):
-    """Options Pricing Menu"""
-    plt.close("all")
-    pricing_controller = PricingController(ticker, selected_date, prices)
-    pricing_controller.call_help(None)
+def menu(
+    ticker: str, selected_date: str, prices: pd.DataFrame, queue: List[str] = None
+):
+    """Pricing Menu"""
+    pricing_controller = PricingController(ticker, selected_date, prices, queue)
+    an_input = "HELP_ME"
 
     while True:
+        # There is a command in the queue
+        if pricing_controller.queue and len(pricing_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
+            if pricing_controller.queue[0] in ("q", "..", "quit"):
+                print("")
+                if len(pricing_controller.queue) > 1:
+                    return pricing_controller.queue[1:]
+                return []
+
+            # Consume 1 element from the queue
+            an_input = pricing_controller.queue[0]
+            pricing_controller.queue = pricing_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
+            if (
+                an_input
+                and an_input.split(" ")[0] in pricing_controller.CHOICES_COMMANDS
+            ):
+                print(f"{get_flair()} /stocks/options/pricing/ $ {an_input}")
+
         # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in pricing_controller.CHOICES}
-            )
-            an_input = session.prompt(
-                f"{get_flair()} (stocks)>(options)>(pricing)> ",
-                completer=completer,
-            )
         else:
-            an_input = input(f"{get_flair()} (stocks)>(options)>(pricing)> ")
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
+                pricing_controller.print_help()
+
+            # Get input from user using auto-completion
+            if session and gtff.USE_PROMPT_TOOLKIT and pricing_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /stocks/options/pricing/ $ ",
+                    completer=pricing_controller.completer,
+                    search_ignore_case=True,
+                )
+            # Get input from user without auto-completion
+            else:
+                an_input = input(f"{get_flair()} /stocks/options/pricing/ $ ")
 
         try:
-            plt.close("all")
-
-            process_input = pricing_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            # Process the input command
+            pricing_controller.queue = pricing_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            continue
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/options/pricing menu.",
+                end="",
+            )
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                pricing_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
+            if similar_cmd:
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        pricing_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
+                else:
+                    an_input = similar_cmd[0]
+
+                print(f" Replacing by '{an_input}'.")
+                pricing_controller.queue.insert(0, an_input)
+            else:
+                print("\n")

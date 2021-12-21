@@ -6,6 +6,8 @@ import pandas as pd
 import numpy as np
 from scipy.stats import norm
 
+DISTRIBUTIONS = ["normal", "lognormal"]
+
 
 def get_mc_brownian(
     data: Union[pd.Series, np.ndarray], n_future: int, n_sims: int, use_log=True

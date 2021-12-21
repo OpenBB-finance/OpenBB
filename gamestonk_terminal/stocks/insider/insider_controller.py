@@ -5,11 +5,12 @@ import os
 import argparse
 import difflib
 import configparser
-from typing import List
+from typing import List, Union
 import pandas as pd
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     get_flair,
     parse_known_args_and_warn,
     check_positive,
@@ -27,23 +28,27 @@ from gamestonk_terminal.stocks.insider import (
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
-# pylint: disable=inconsistent-return-statements,too-many-public-methods
+# pylint: disable=C0302,inconsistent-return-statements,too-many-public-methods
 
 
 class InsiderController:
     """Screener Controller class"""
 
-    # Command choices
     CHOICES = [
         "cls",
+        "home",
+        "h",
         "?",
         "help",
         "q",
         "quit",
-        "load",
+        "..",
+        "exit",
+        "r",
+        "reset",
     ]
-
     CHOICES_COMMANDS = [
+        "load",
         "view",
         "set",
         "filter",
@@ -67,58 +72,72 @@ class InsiderController:
         "tist",
         "tispw",
         "tispm",
-    ]
-
-    CHOICES_COMMANDS_WITH_TICKER = [
         "act",
         "lins",
+        "stats",
+    ]
+    CHOICES += CHOICES_COMMANDS
+
+    preset_choices = [
+        preset.split(".")[0]
+        for preset in os.listdir(presets_path)
+        if preset[-4:] == ".ini"
     ]
 
-    CHOICES += CHOICES_COMMANDS
-    CHOICES += CHOICES_COMMANDS_WITH_TICKER
-
-    def __init__(self, ticker: str, start: str, interval: str, stock: pd.DataFrame):
-        """Constructor
-
-        Parameters
-        ----------
-        stock : DataFrame
-            Due diligence stock dataframe
-        ticker : str
-            Due diligence ticker symbol
-        start : str
-            Start date of the stock data
-        interval : str
-            Stock data interval
-        """
-        self.ticker = ticker
-        self.start = start
-        self.interval = interval
-        self.stock = stock
-
-        self.preset = "template"
+    def __init__(
+        self,
+        ticker: str,
+        start: str,
+        interval: str,
+        stock: pd.DataFrame,
+        queue: List[str] = None,
+    ):
+        """Constructor"""
         self.insider_parser = argparse.ArgumentParser(add_help=False, prog="ins")
         self.insider_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
 
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            choices["view"] = {c: None for c in self.preset_choices}
+            choices["set"] = {c: None for c in self.preset_choices}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
+
+        self.ticker = ticker
+        self.start = start
+        self.interval = interval
+        self.stock = stock
+
+        self.preset = "whales"
+
     def print_help(self):
         """Print help"""
         help_text = f"""
-Insider Trading:
-    cls           clear screen
-    ?/help        show this menu again
-    q             quit this menu, and shows back to main menu
-    quit          quit to abandon program
-    load          load a specific stock ticker for analysis
-
-PRESET: {self.preset}
     view          view available presets
     set           set one of the available presets
+
+PRESET: {self.preset}
+
     filter        filter insiders based on preset
 
-Latest:
+    load          load a specific stock ticker for analysis
+{Style.DIM if not self.ticker else ''}
+Ticker: {self.ticker}
+
+    stats         insider stats of the company [Open Insider]
+    act           insider activity over time [Business Insider]
+    lins          last insider trading of the company [Finviz]
+{Style.RESET_ALL if not self.ticker else ''}
+Latest Insiders:
     lcb           latest cluster boys
     lpsb          latest penny stock buys
     lit           latest insider trading (all filings)
@@ -130,7 +149,7 @@ Latest:
     blis          big latest insider sales ($100k+)
     blos          big latest officer sales ($100k+)
     blcs          big latest CEO/CFO sales ($100k+)
-Top:
+Top Insiders:
     topt          top officer purchases today
     toppw         top officer purchases past week
     toppm         top officer purchases past month
@@ -140,17 +159,149 @@ Top:
     tist          top insider sales today
     tispw         top insider sales past week
     tispm         top insider sales past month
-{Style.DIM if not self.ticker else ''}
-Ticker: {self.ticker}
-
-    act           insider activity over time [Business Insider]
-    lins          last insider trading of the company [Finviz]
-{Style.RESET_ALL if not self.ticker else ''}"""
+"""
         print(help_text)
 
-    @staticmethod
-    def view_available_presets(other_args: List[str]):
-        """View available presets."""
+    def switch(self, an_input: str):
+        """Process and dispatch input
+
+        Returns
+        -------
+        List[str]
+            List of commands in the queue to execute
+        """
+        # Empty command
+        if not an_input:
+            print("")
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
+
+        (known_args, other_args) = self.insider_parser.parse_known_args(
+            an_input.split()
+        )
+
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
+
+        return getattr(
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
+        )(other_args)
+
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue
+
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        return self.queue
+
+    def call_help(self, _):
+        """Process help command"""
+        self.print_help()
+        return self.queue
+
+    def call_quit(self, _):
+        """Process quit menu command"""
+        print("")
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit"]
+
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "quit"]
+
+    def call_reset(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            if self.ticker:
+                self.queue.insert(0, f"load {self.ticker}")
+            self.queue.insert(0, "ins")
+            self.queue.insert(0, "stocks")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+
+        reset_commands = ["quit", "quit", "reset", "stocks", "ins"]
+        if self.ticker:
+            reset_commands.append(f"load {self.ticker}")
+
+        return reset_commands
+
+    @try_except
+    def call_load(self, other_args: List[str]):
+        """Process load command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
+            " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
+            " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="ticker",
+            required="-h" not in other_args,
+            help="Stock ticker",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            df_stock_candidate = stocks_helper.load(
+                ns_parser.ticker,
+            )
+            if not df_stock_candidate.empty:
+                if "." in ns_parser.ticker:
+                    self.ticker = ns_parser.ticker.upper().split(".")[0]
+                else:
+                    self.ticker = ns_parser.ticker.upper()
+
+                self.stock = df_stock_candidate
+                self.start = self.stock.index[0].strftime("%Y-%m-%d")
+                self.interval = "1440min"
+
+        return self.queue
+
+    @try_except
+    def call_view(self, other_args: List[str]):
+        """Process view command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="view",
@@ -164,21 +315,13 @@ Ticker: {self.ticker}
             type=str,
             help="View specific preset",
             default="",
-            choices=[
-                preset.split(".")[0]
-                for preset in os.listdir(presets_path)
-                if preset[-4:] == ".ini"
-            ],
+            choices=self.preset_choices,
         )
 
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-p")
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
             if ns_parser.preset:
                 preset_filter = configparser.RawConfigParser()
                 preset_filter.optionxform = str  # type: ignore
@@ -206,13 +349,7 @@ Ticker: {self.ticker}
                     print("")
 
             else:
-                presets = [
-                    preset.split(".")[0]
-                    for preset in os.listdir(presets_path)
-                    if preset[-4:] == ".ini"
-                ]
-
-                for preset in presets:
+                for preset in self.preset_choices:
                     with open(
                         presets_path + preset + ".ini",
                         encoding="utf8",
@@ -226,11 +363,11 @@ Ticker: {self.ticker}
                     print(description.split("Description: ")[1].replace("#", ""))
                 print("")
 
-        except Exception as e:
-            print(e)
+        return self.queue
 
-    def set_preset(self, other_args: List[str]):
-        """Set preset"""
+    @try_except
+    def call_set(self, other_args: List[str]):
+        """Process set command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="set",
@@ -244,205 +381,703 @@ Ticker: {self.ticker}
             type=str,
             default="template",
             help="Filter presets",
-            choices=[
-                preset.split(".")[0]
-                for preset in os.listdir(presets_path)
-                if preset[-4:] == ".ini"
-            ],
+            choices=self.preset_choices,
         )
-
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-p")
-
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
             self.preset = ns_parser.preset
-
-        except Exception as e:
-            print(e)
-
-        print("")
-        return
-
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
-        """
-
-        # Empty command
-        if not an_input:
             print("")
-            return None
 
-        (known_args, other_args) = self.insider_parser.parse_known_args(
-            an_input.split()
-        )
+        return self.queue
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
-
-        return getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-    def call_help(self, _):
-        """Process Help command"""
-        self.print_help()
-
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return False
-
-    def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
-
-    def call_load(self, other_args: List[str]):
-        """Process load command"""
+    @try_except
+    def call_filter(self, other_args: List[str]):
+        """Process filter command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="load",
-            description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
-            " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
-            " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
+            prog="filter",
+            description="Print open insider filtered data using loaded preset. [Source: OpenInsider]",
         )
         parser.add_argument(
-            "-t",
-            "--ticker",
+            "-l",
+            "--limit",
             action="store",
-            dest="ticker",
-            required="-h" not in other_args,
-            help="Stock ticker",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
         )
-        # For the case where a user uses: 'load BB'
-        if other_args and "-t" not in other_args and "-h" not in other_args:
-            other_args.insert(0, "-t")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        df_stock_candidate = stocks_helper.load(
-            ns_parser.ticker,
+        parser.add_argument(
+            "-u",
+            "--urls",
+            action="store_true",
+            default=False,
+            help="Flag to show hyperlinks",
+            dest="urls",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_filter(
+                preset_loaded=self.preset,
+                ticker="",
+                limit=ns_parser.limit,
+                links=ns_parser.urls,
+                export=ns_parser.export,
+            )
 
-        if not df_stock_candidate.empty:
-            if "." in ns_parser.ticker:
-                self.ticker = ns_parser.ticker.upper().split(".")[0]
+        return self.queue
+
+    @try_except
+    def call_stats(self, other_args: List[str]):
+        """Process stats command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="stats",
+            description="Print open insider filtered data using selected ticker. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        parser.add_argument(
+            "-u",
+            "--urls",
+            action="store_true",
+            default=False,
+            help="Flag to show hyperlinks",
+            dest="urls",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            if self.ticker:
+                openinsider_view.print_insider_filter(
+                    preset_loaded="",
+                    ticker=self.ticker,
+                    limit=ns_parser.limit,
+                    links=ns_parser.urls,
+                    export=ns_parser.export,
+                )
             else:
-                self.ticker = ns_parser.ticker.upper()
+                print("Please use `load <ticker>` before.\n")
 
-    def call_view(self, other_args: List[str]):
-        """Process view command"""
-        self.view_available_presets(other_args)
+        return self.queue
 
-    def call_set(self, other_args: List[str]):
-        """Process set command"""
-        self.set_preset(other_args)
-
-    def call_filter(self, other_args: List[str]):
-        """Process filter command"""
-        return openinsider_view.print_insider_filter(other_args, self.preset)
-
+    @try_except
     def call_lcb(self, other_args: List[str]):
         """Process latest-cluster-buys"""
-        return openinsider_view.print_insider_data(other_args, "lcb")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="lcb",
+            description="Print latest cluster buys. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_data(
+                "lcb", ns_parser.limit, ns_parser.export
+            )
 
+        return self.queue
+
+    @try_except
     def call_lpsb(self, other_args: List[str]):
         """Process latest-penny-stock-buys"""
-        return openinsider_view.print_insider_data(other_args, "lpsb")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="lpsb",
+            description="Print latest penny stock buys. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_data(
+                "lpsb", ns_parser.limit, ns_parser.export
+            )
 
+        return self.queue
+
+    @try_except
     def call_lit(self, other_args: List[str]):
         """Process latest-insider-trading"""
-        return openinsider_view.print_insider_data(other_args, "lit")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="lit",
+            description="Print latest insider trading. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_data(
+                "lit", ns_parser.limit, ns_parser.export
+            )
 
+        return self.queue
+
+    @try_except
     def call_lip(self, other_args: List[str]):
         """Process insider-purchases"""
-        return openinsider_view.print_insider_data(other_args, "lip")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="lip",
+            description="Print latest insider purchases. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_data(
+                "lip", ns_parser.limit, ns_parser.export
+            )
 
+        return self.queue
+
+    @try_except
     def call_blip(self, other_args: List[str]):
         """Process latest-insider-purchases-25k"""
-        return openinsider_view.print_insider_data(other_args, "blip")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="blip",
+            description="Print latest insider purchases 25k. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_data(
+                "blip", ns_parser.limit, ns_parser.export
+            )
 
+        return self.queue
+
+    @try_except
     def call_blop(self, other_args: List[str]):
         """Process latest-officer-purchases-25k"""
-        return openinsider_view.print_insider_data(other_args, "blop")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="blop",
+            description="Print latest officer purchases 25k. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_data(
+                "blop", ns_parser.limit, ns_parser.export
+            )
 
+        return self.queue
+
+    @try_except
     def call_blcp(self, other_args: List[str]):
         """Process latest-ceo-cfo-purchases-25k"""
-        return openinsider_view.print_insider_data(other_args, "blcp")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="blcp",
+            description="Print latest CEO/CFO purchases 25k. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_data(
+                "blcp", ns_parser.limit, ns_parser.export
+            )
 
+        return self.queue
+
+    @try_except
     def call_lis(self, other_args: List[str]):
         """Process insider-sales"""
-        return openinsider_view.print_insider_data(other_args, "lis")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="lis",
+            description="Print latest insider sales. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_data(
+                "lis", ns_parser.limit, ns_parser.export
+            )
 
+        return self.queue
+
+    @try_except
     def call_blis(self, other_args: List[str]):
         """Process latest-insider-sales-100k"""
-        return openinsider_view.print_insider_data(other_args, "blis")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="blis",
+            description="Print latest insider sales 100k. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_data(
+                "blis", ns_parser.limit, ns_parser.export
+            )
 
+        return self.queue
+
+    @try_except
     def call_blos(self, other_args: List[str]):
         """Process latest-officer-sales-100k"""
-        return openinsider_view.print_insider_data(other_args, "blos")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="blos",
+            description="Print latest officer sales 100k. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_data(
+                "blos", ns_parser.limit, ns_parser.export
+            )
 
+        return self.queue
+
+    @try_except
     def call_blcs(self, other_args: List[str]):
         """Process latest-ceo-cfo-sales-100k"""
-        return openinsider_view.print_insider_data(other_args, "blcs")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="blcs",
+            description="Print latest CEO/CFO sales 100k. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_data(
+                "blcs", ns_parser.limit, ns_parser.export
+            )
 
+        return self.queue
+
+    @try_except
     def call_topt(self, other_args: List[str]):
         """Process top-officer-purchases-of-the-day"""
-        return openinsider_view.print_insider_data(other_args, "topt")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="topt",
+            description="Print top officer purchases of the day. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_data(
+                "topt", ns_parser.limit, ns_parser.export
+            )
 
+        return self.queue
+
+    @try_except
     def call_toppw(self, other_args: List[str]):
         """Process top-officer-purchases-of-the-week"""
-        return openinsider_view.print_insider_data(other_args, "toppw")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="toppw",
+            description="Print top officer purchases of the week. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_data(
+                "toppw", ns_parser.limit, ns_parser.export
+            )
 
+        return self.queue
+
+    @try_except
     def call_toppm(self, other_args: List[str]):
         """Process top-officer-purchases-of-the-month"""
-        return openinsider_view.print_insider_data(other_args, "toppm")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="toppm",
+            description="Print top officer purchases of the month. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_data(
+                "toppm", ns_parser.limit, ns_parser.export
+            )
 
+        return self.queue
+
+    @try_except
     def call_tipt(self, other_args: List[str]):
         """Process top-insider-purchases-of-the-day"""
-        return openinsider_view.print_insider_data(other_args, "tipt")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tipt",
+            description="Print top insider purchases of the day. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_data(
+                "tipt", ns_parser.limit, ns_parser.export
+            )
 
+        return self.queue
+
+    @try_except
     def call_tippw(self, other_args: List[str]):
         """Process top-insider-purchases-of-the-week"""
-        return openinsider_view.print_insider_data(other_args, "tippw")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tippw",
+            description="Print top insider purchases of the week. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_data(
+                "tippw", ns_parser.limit, ns_parser.export
+            )
 
+        return self.queue
+
+    @try_except
     def call_tippm(self, other_args: List[str]):
         """Process top-insider-purchases-of-the-month"""
-        return openinsider_view.print_insider_data(other_args, "tippm")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tippm",
+            description="Print top insider purchases of the month. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_data(
+                "tippm", ns_parser.limit, ns_parser.export
+            )
 
+        return self.queue
+
+    @try_except
     def call_tist(self, other_args: List[str]):
         """Process top-insider-sales-of-the-day"""
-        return openinsider_view.print_insider_data(other_args, "tist")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tist",
+            description="Print top insider sales of the day. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_data(
+                "tist", ns_parser.limit, ns_parser.export
+            )
 
+        return self.queue
+
+    @try_except
     def call_tispw(self, other_args: List[str]):
         """Process top-insider-sales-of-the-week"""
-        return openinsider_view.print_insider_data(other_args, "tispw")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tispw",
+            description="Print top insider sales of the week. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_data(
+                "tispw", ns_parser.limit, ns_parser.export
+            )
 
+        return self.queue
+
+    @try_except
     def call_tispm(self, other_args: List[str]):
         """Process top-insider-sales-of-the-month"""
-        return openinsider_view.print_insider_data(other_args, "tispm")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tispm",
+            description="Print top insider sales of the month. [Source: OpenInsider]",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of datarows to display",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            openinsider_view.print_insider_data(
+                "tispm", ns_parser.limit, ns_parser.export
+            )
+
+        return self.queue
 
     @try_except
     def call_act(self, other_args: List[str]):
@@ -453,13 +1088,13 @@ Ticker: {self.ticker}
             description="""Prints insider activity over time [Source: Business Insider]""",
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=10,
-            help="number of latest insider activity.",
+            help="Limit of latest insider activity.",
         )
         parser.add_argument(
             "--raw",
@@ -468,35 +1103,26 @@ Ticker: {self.ticker}
             dest="raw",
             help="Print raw data.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
+        if ns_parser:
+            if self.ticker:
+                businessinsider_view.insider_activity(
+                    stock=self.stock,
+                    ticker=self.ticker,
+                    start=self.start,
+                    interval=self.interval,
+                    num=ns_parser.limit,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
+            else:
+                print("No ticker loaded. First use `load {ticker}`\n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if not self.ticker:
-            print("No ticker loaded.  First use `load {ticker}` \n")
-            return
-
-        businessinsider_view.insider_activity(
-            stock=self.stock,
-            ticker=self.ticker,
-            start=self.start,
-            interval=self.interval,
-            num=ns_parser.n_num,
-            raw=ns_parser.raw,
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_lins(self, other_args: List[str]):
@@ -510,67 +1136,104 @@ Ticker: {self.ticker}
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=10,
-            help="number of latest inside traders.",
+            help="Limit of latest inside traders.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            if self.ticker:
+                finviz_view.last_insider_activity(
+                    ticker=self.ticker,
+                    num=ns_parser.limit,
+                    export=ns_parser.export,
+                )
+            else:
+                print("No ticker loaded. First use `load {ticker}`\n")
 
-        if not self.ticker:
-            print("No ticker loaded.  First use `load {ticker}` \n")
-            return
-
-        finviz_view.last_insider_activity(
-            ticker=self.ticker,
-            num=ns_parser.n_num,
-            export=ns_parser.export,
-        )
+        return self.queue
 
 
-def menu(ticker: str, start: str, interval: str, stock: pd.DataFrame):
+def menu(
+    ticker: str, start: str, interval: str, stock: pd.DataFrame, queue: List[str] = None
+):
     """Insider Menu"""
-    ins_controller = InsiderController(ticker, start, interval, stock)
-    ins_controller.call_help(None)
+    ins_controller = InsiderController(ticker, start, interval, stock, queue)
+    an_input = "HELP_ME"
 
     while True:
+        # There is a command in the queue
+        if ins_controller.queue and len(ins_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
+            if ins_controller.queue[0] in ("q", "..", "quit"):
+                print("")
+                if len(ins_controller.queue) > 1:
+                    return ins_controller.queue[1:]
+                return []
+
+            # Consume 1 element from the queue
+            an_input = ins_controller.queue[0]
+            ins_controller.queue = ins_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
+            if an_input and an_input.split(" ")[0] in ins_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /stocks/ins/ $ {an_input}")
+
         # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in ins_controller.CHOICES}
-            )
-            an_input = session.prompt(
-                f"{get_flair()} (stocks)>(ins)> ",
-                completer=completer,
-            )
         else:
-            an_input = input(f"{get_flair()} (stocks)>(ins)> ")
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
+                ins_controller.print_help()
+
+            # Get input from user using auto-completion
+            if session and gtff.USE_PROMPT_TOOLKIT and ins_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /stocks/ins/ $ ",
+                    completer=ins_controller.completer,
+                    search_ignore_case=True,
+                )
+            # Get input from user without auto-completion
+            else:
+                an_input = input(f"{get_flair()} /stocks/ins/ $ ")
 
         try:
-            process_input = ins_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            # Process the input command
+            ins_controller.queue = ins_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            similar_cmd = difflib.get_close_matches(
-                an_input, ins_controller.CHOICES, n=1, cutoff=0.7
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/ins menu.",
+                end="",
             )
-
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                ins_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
-            continue
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        ins_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
+                else:
+                    an_input = similar_cmd[0]
+
+                print(f" Replacing by '{an_input}'.")
+                ins_controller.queue.insert(0, an_input)
+            else:
+                print("\n")

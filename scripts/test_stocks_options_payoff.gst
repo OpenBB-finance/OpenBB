@@ -1,0 +1,13 @@
+stocks
+options
+load aapl
+exp 0
+payoff
+list
+pick long
+add 20
+add 15
+add 10 -p
+sop
+plot
+exit

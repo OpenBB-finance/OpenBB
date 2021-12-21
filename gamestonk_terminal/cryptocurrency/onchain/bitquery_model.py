@@ -32,6 +32,38 @@ class BitQueryTimeoutException(Exception):
 
 BQ_URL = "https://graphql.bitquery.io"
 CURRENCIES = ["ETH", "USD", "BTC", "USDT"]
+LT_FILTERS = ["exchange", "trades", "tradeAmount"]
+LT_KIND = ["dex", "time"]
+INTERVALS = ["day", "month", "week"]
+DVCP_FILTERS = [
+    "date",
+    "exchange",
+    "base",
+    "quote",
+    "open",
+    "high",
+    "low",
+    "close",
+    "tradeAmount",
+    "trades",
+]
+UEAT_FILTERS = [
+    "date",
+    "uniqueSenders",
+    "transactions",
+    "averageGasPrice",
+    "mediumGasPrice",
+    "maximumGasPrice",
+]
+TTCP_FILTERS = ["base", "quoted", "trades", "tradeAmount"]
+BAAS_FILTERS = [
+    "date",
+    "baseCurrency",
+    "quoteCurrency",
+    "dailySpread",
+    "averageBidPrice",
+    "averageAskPrice",
+]
 DECENTRALIZED_EXCHANGES = [
     "1inch",
     "AfroDex",
@@ -469,7 +501,7 @@ def get_token_volume_on_dexes(
         return pd.DataFrame()
 
     df = _extract_dex_trades(data)[["exchange.fullName", "tradeAmount", "count"]]
-    df.columns = ["exchange", "tradeAmount", "trades"]
+    df.columns = LT_FILTERS
     return df[~df["exchange"].str.startswith("<")].sort_values(
         by="tradeAmount", ascending=False
     )
@@ -497,7 +529,7 @@ def get_ethereum_unique_senders(interval: str = "day", limit: int = 90) -> pd.Da
         "week": 7,
     }
 
-    if interval not in intervals.keys():
+    if interval not in intervals:
         interval = "day"
 
     days = min(limit * intervals[interval], 90)
@@ -527,16 +559,7 @@ def get_ethereum_unique_senders(interval: str = "day", limit: int = 90) -> pd.Da
 
     df = pd.DataFrame(data["ethereum"]["transactions"])
     df["date"] = df["date"].apply(lambda x: x["date"])
-    return df[
-        [
-            "date",
-            "uniqueSenders",
-            "transactions",
-            "averageGasPrice",
-            "mediumGasPrice",
-            "maximumGasPrice",
-        ]
-    ]
+    return df[UEAT_FILTERS]
 
 
 def get_most_traded_pairs(
@@ -585,7 +608,7 @@ def get_most_traded_pairs(
 
     df = _extract_dex_trades(data)
     df.columns = ["trades", "tradeAmount", "base", "quoted"]
-    return df[["base", "quoted", "trades", "tradeAmount"]]
+    return df[TTCP_FILTERS]
 
 
 def get_spread_for_crypto_pair(
