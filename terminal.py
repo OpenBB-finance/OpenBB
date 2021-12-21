@@ -25,7 +25,6 @@ from gamestonk_terminal.terminal_helper import (
     print_goodbye,
     reset,
     update_terminal,
-    usage_instructions,
 )
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel
@@ -52,7 +51,6 @@ class TerminalController:
         "update",
         "about",
         "keys",
-        "usage",
     ]
     CHOICES_MENUS = [
         "stocks",
@@ -97,12 +95,26 @@ class TerminalController:
     def print_help(self):
         """Print help"""
         help_text = """
-    about       about us
-    usage       usage instructions
-    update      update terminal automatically
-    keys        check for status of API keys
+Multiple jobs queue (where each '/' denotes a new command). E.g.
+    /stocks $ disc/ugs -n 3/../load tsla/candle
 
-Menus:
+If you want to jump from crypto/ta to stocks you can use an absolute path that starts with a slash (/). E.g.
+    /crypto/ta $ /stocks
+
+The previous logic also holds for when launching the terminal. E.g.
+    $ python terminal.py /stocks/disc/ugs -n 3/../load tsla/candle
+
+The main commands you should be aware when navigating through the terminal are:
+    cls             clear the screen
+    help / h / ?    help menu
+    quit / q / ..   quit this menu and go one menu above
+    exit            exit the terminal
+    reset / r       reset the terminal and reload configs from the current location
+
+    about           about us
+    update          update terminal automatically
+    keys            check for status of API keys
+
 >   stocks
 >   crypto
 >   etf
@@ -207,11 +219,6 @@ Menus:
         about_us()
         return self.queue
 
-    def call_usage(self, _):
-        """Process usage command"""
-        usage_instructions()
-        return self.queue
-
     def call_stocks(self, _):
         """Process stocks command"""
         from gamestonk_terminal.stocks import stocks_controller
@@ -273,7 +280,6 @@ def terminal(jobs_cmds: List[str] = None):
 
     if not jobs_cmds:
         bootup()
-        usage_instructions()
 
     while ret_code:
         if gtff.ENABLE_QUICK_EXIT:
