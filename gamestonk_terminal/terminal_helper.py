@@ -382,15 +382,17 @@ def usage_instructions():
     help_text = """USAGE INSTRUCTIONS
 
 The main commands you should be aware when navigating through the terminal are:
-    cls      clear the screen
-    h / ?    help menu
-    q / ..   quit this menu and go one menu above
-    exit     exit the terminal
-    r        reset the terminal and reload configs from the current location
-    cd       jump into a menu in an absolute way (e.g. if in crypto I can do 'cd stocks/disc/')
+    cls             clear the screen
+    help / h / ?    help menu
+    quit / q / ..   quit this menu and go one menu above
+    exit            exit the terminal
+    reset / r       reset the terminal and reload configs from the current location
 
 Multiple jobs queue (where each '/' denotes a new command). E.g.
     /stocks $ disc/ugs -n 3/../load tsla/candle
+
+If you want to jump from crypto/ta to stocks you can use an absolute path. E.g.
+    /crypto/ta $ /stocks
 
 The previous logic also holds for when launching the terminal. E.g.
     python terminal.py /stocks/disc/ugs -n 3/../load tsla/candle
