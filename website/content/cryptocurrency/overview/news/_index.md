@@ -1,5 +1,5 @@
 ```
-usage: news [-t TOP] [-k {news,media}]
+usage: news [-l N] [-k {news,media}]
             [-f {rising,hot,bullish,bearish,important,saved,lol}]
             [-r {en,de,es,fr,nl,it,pt,ru}]
             [-s {published_at,domain,title,negative_votes,positive_votes}]
@@ -9,10 +9,9 @@ usage: news [-t TOP] [-k {news,media}]
 
 Display recent posts from CryptoPanic news aggregator platform. [Source:https://cryptopanic.com/]
 
-
 ```
 optional arguments:
-  -t TOP, --top TOP     top N number of news >=10 (default: 20)
+  -l N, --limit N      N number of news >=10 (default: 20)
   -k {news,media}, --kind {news,media}
                         Filter by category of news. Available values: news or
                         media. (default: news)
@@ -30,7 +29,7 @@ optional arguments:
                         published_at)
   --descend             Flag to sort in descending order (lowest first)
                         (default: True)
-  -l, --links           Flag to show urls. If you will use that flag you will
+  -u, --urls           Flag to show urls. If you will use that flag you will
                         additional column with urls (default: False)
   -h, --help            show this help message (default: False)
   --export {png,jpg,pdf,svg}

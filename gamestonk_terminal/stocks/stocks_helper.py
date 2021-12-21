@@ -29,6 +29,9 @@ from gamestonk_terminal.helper_funcs import (
 
 # pylint: disable=no-member,too-many-branches,C0302
 
+INTERVALS = [1, 5, 15, 30, 60]
+SOURCES = ["yf", "av", "iex"]
+
 
 @try_except
 def search(
@@ -497,7 +500,7 @@ def quote(other_args: List[str], s_ticker: str):
 
     try:
         # For the case where a user uses: 'quote BB'
-        if other_args and "-" not in other_args[0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:

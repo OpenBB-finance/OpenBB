@@ -17,27 +17,40 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.overview import (
+    cryptopanic_model,
+    pycoingecko_model,
     pycoingecko_view,
     coinpaprika_view,
     cryptopanic_view,
     withdrawalfees_model,
     withdrawalfees_view,
+    coinpaprika_model,
+    coinbase_model,
+    coinbase_view,
 )
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_view import CURRENCIES
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
     get_all_contract_platforms,
 )
-from gamestonk_terminal.cryptocurrency.overview import coinbase_view
 
 
-class Controller:
+class OverviewController:
 
     CHOICES = [
-        "?",
         "cls",
+        "home",
+        "h",
+        "?",
         "help",
         "q",
         "quit",
+        "..",
+        "exit",
+        "r",
+        "reset",
+    ]
+
+    CHOICES_COMMANDS = [
         "cgglobal",
         "cgdefi",
         "cgnews",
@@ -67,20 +80,23 @@ class Controller:
         "wfpe",
     ]
 
-    def __init__(self):
+    CHOICES += CHOICES_COMMANDS
+
+    def __init__(self, queue: List[str] = None):
         """CONSTRUCTOR"""
 
-        self._overview_parser = argparse.ArgumentParser(add_help=False, prog="ov")
-        self._overview_parser.add_argument("cmd", choices=self.CHOICES)
+        self.overview_parser = argparse.ArgumentParser(add_help=False, prog="ov")
+        self.overview_parser.add_argument("cmd", choices=self.CHOICES)
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
 
     def print_help(self):
         """Print help"""
         help_text = """
-Overview:
-    cls         clear screen
-    ?/help      show this menu again
-    q           quit this menu, and shows back to main menu
-    quit        quit to abandon the program
+Overview Menu:
 
 CoinGecko:
     cgglobal          global crypto market info
@@ -121,32 +137,49 @@ WithdrawalFees:
     def switch(self, an_input: str):
         """Process and dispatch input
 
+        Parameters
+        -------
+        an_input : str
+            string with input arguments
+
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
-
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue
 
-        (known_args, other_args) = self._overview_parser.parse_known_args(
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
+
+        (known_args, other_args) = self.overview_parser.parse_known_args(
             an_input.split()
         )
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self,
@@ -154,17 +187,50 @@ WithdrawalFees:
             lambda _: "Command not recognized!",
         )(other_args)
 
-    def call_help(self, _):
-        """Process Help command"""
-        self.print_help()
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue
 
-    def call_q(self, _):
-        """Process Q command - quit the menu."""
-        return False
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+
+        return self.queue
+
+    def call_help(self, _):
+        """Process help command"""
+        self.print_help()
+        return self.queue
 
     def call_quit(self, _):
-        """Process Quit command - quit the program."""
-        return True
+        """Process quit menu command"""
+        print("")
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit"]
+
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "quit"]
+
+    def call_reset(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "ov")
+            self.queue.insert(0, "crypto")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "reset", "crypto", "ov"]
 
     @try_except
     def call_wf(self, other_args: List[str]):
@@ -188,23 +254,15 @@ WithdrawalFees:
             default=10,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-
-        if not ns_parser:
-            return
-
-        withdrawalfees_view.display_overall_withdrawal_fees(
-            export=ns_parser.export, top=ns_parser.limit
-        )
+        if ns_parser:
+            withdrawalfees_view.display_overall_withdrawal_fees(
+                export=ns_parser.export, top=ns_parser.limit
+            )
+        return self.queue
 
     @try_except
     def call_ewf(self, other_args: List[str]):
@@ -219,23 +277,15 @@ WithdrawalFees:
             """,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-
-        if not ns_parser:
-            return
-
-        withdrawalfees_view.display_overall_exchange_withdrawal_fees(
-            export=ns_parser.export
-        )
+        if ns_parser:
+            withdrawalfees_view.display_overall_exchange_withdrawal_fees(
+                export=ns_parser.export
+            )
+        return self.queue
 
     @try_except
     def call_wfpe(self, other_args: List[str]):
@@ -259,55 +309,48 @@ WithdrawalFees:
             help="Coin to check withdrawal fees in long format (e.g., bitcoin, ethereum)",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-c")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-
-        if not ns_parser:
-            return
-
-        if ns_parser.coin:
-            if ns_parser.coin in withdrawalfees_model.POSSIBLE_CRYPTOS:
-                withdrawalfees_view.display_crypto_withdrawal_fees(
-                    export=ns_parser.export, symbol=ns_parser.coin
-                )
-            else:
-                print(f"Coin '{ns_parser.coin}' does not exist.")
-
-                similar_cmd = difflib.get_close_matches(
-                    ns_parser.coin,
-                    withdrawalfees_model.POSSIBLE_CRYPTOS,
-                    n=1,
-                    cutoff=0.75,
-                )
-                if similar_cmd:
-                    print(f"Replacing by '{similar_cmd[0]}'")
+        if ns_parser:
+            if ns_parser.coin:
+                if ns_parser.coin in withdrawalfees_model.POSSIBLE_CRYPTOS:
                     withdrawalfees_view.display_crypto_withdrawal_fees(
-                        export=ns_parser.export, symbol=similar_cmd[0]
+                        export=ns_parser.export, symbol=ns_parser.coin
                     )
                 else:
+                    print(f"Coin '{ns_parser.coin}' does not exist.")
+
                     similar_cmd = difflib.get_close_matches(
                         ns_parser.coin,
                         withdrawalfees_model.POSSIBLE_CRYPTOS,
                         n=1,
-                        cutoff=0.5,
+                        cutoff=0.75,
                     )
                     if similar_cmd:
-                        print(f"Did you mean '{similar_cmd[0]}'?")
-        else:
-            for coin in withdrawalfees_model.POSSIBLE_CRYPTOS:
-                print(coin)
+                        print(f"Replacing by '{similar_cmd[0]}'")
+                        withdrawalfees_view.display_crypto_withdrawal_fees(
+                            export=ns_parser.export, symbol=similar_cmd[0]
+                        )
+                    else:
+                        similar_cmd = difflib.get_close_matches(
+                            ns_parser.coin,
+                            withdrawalfees_model.POSSIBLE_CRYPTOS,
+                            n=1,
+                            cutoff=0.5,
+                        )
+                        if similar_cmd:
+                            print(f"Did you mean '{similar_cmd[0]}'?")
+            else:
+                print(
+                    f"Couldn't find any coin with provided name: {ns_parser.coin}. "
+                    f"Please choose one from list: {withdrawalfees_model.POSSIBLE_CRYPTOS}\n"
+                )
+        return self.queue
 
     @try_except
     def call_cghold(self, other_args):
@@ -330,24 +373,20 @@ WithdrawalFees:
             type=str,
             help="companies with ethereum or bitcoin",
             default="bitcoin",
-            choices=["ethereum", "bitcoin"],
+            choices=pycoingecko_model.HOLD_COINS,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        pycoingecko_view.display_holdings_overview(
-            coin=ns_parser.coin, export=ns_parser.export
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            pycoingecko_view.display_holdings_overview(
+                coin=ns_parser.coin, export=ns_parser.export
+            )
+        return self.queue
 
     @try_except
     def call_cgcompanies(self, other_args):
@@ -359,7 +398,7 @@ WithdrawalFees:
             description="""Track publicly traded companies around the world that
             are buying ethereum or bitcoin as part of corporate treasury:
             Rank, Company, Ticker, Country, Total_Btc, Entry_Value, Today_Value, Pct_Supply, Url
-            You can use additional flag --links to see urls to announcement about buying btc or eth by given company.
+            You can use additional flag --urls to see urls to announcement about buying btc or eth by given company.
             In this case you will see only columns like rank, company, url
             """,
         )
@@ -371,34 +410,29 @@ WithdrawalFees:
             type=str,
             help="companies with ethereum or bitcoin",
             default="bitcoin",
-            choices=["ethereum", "bitcoin"],
+            choices=pycoingecko_model.HOLD_COINS,
         )
 
         parser.add_argument(
-            "-l",
-            "--links",
-            dest="links",
+            "-u",
+            "--urls",
+            dest="urls",
             action="store_true",
             help="Flag to show urls. If you will use that flag you will see only rank, company, url columns",
             default=False,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        pycoingecko_view.display_holdings_companies_list(
-            coin=ns_parser.coin, export=ns_parser.export, links=ns_parser.links
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            pycoingecko_view.display_holdings_companies_list(
+                coin=ns_parser.coin, export=ns_parser.export, links=ns_parser.urls
+            )
+        return self.queue
 
     @try_except
     def call_cgnews(self, other_args):
@@ -410,15 +444,15 @@ WithdrawalFees:
             description="Shows latest crypto news from CoinGecko. "
             "You will see Index, Title, Author, Posted columns. "
             "You can sort by each of column above, using --sort parameter and also do it descending with --descend flag"
-            "To display urls to news use --links flag.",
+            "To display urls to news use --urls flag.",
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=int,
-            help="top N number of news >=10",
+            help="display N number of news >=10",
             default=15,
         )
 
@@ -429,7 +463,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: index",
             default="Index",
-            choices=["Index", "Title", "Author", "Posted"],
+            choices=pycoingecko_model.NEWS_FILTERS,
         )
 
         parser.add_argument(
@@ -441,33 +475,26 @@ WithdrawalFees:
         )
 
         parser.add_argument(
-            "-l",
-            "--links",
-            dest="links",
+            "-u",
+            "--urls",
+            dest="urls",
             action="store_true",
             help="Flag to show urls. If you will use that flag you will additional column with urls",
             default=False,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        pycoingecko_view.display_news(
-            top=ns_parser.top,
-            export=ns_parser.export,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-            links=ns_parser.links,
-        )
+        if ns_parser:
+            pycoingecko_view.display_news(
+                top=ns_parser.limit,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                links=ns_parser.urls,
+            )
+        return self.queue
 
     @try_except
     def call_cgcategories(self, other_args):
@@ -479,16 +506,16 @@ WithdrawalFees:
             description="""Shows top cryptocurrency categories by market capitalization. It includes categories like:
             stablecoins, defi, solana ecosystem, polkadot ecosystem and many others.
             "You can sort by each of column above, using --sort parameter and also do it descending with --descend flag"
-            "To display urls use --links flag.",
+            "To display urls use --urls flag.",
             Displays: Rank, Name, Change_1h, Change_7d, Market_Cap, Volume_24h, Coins,""",
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number of records",
+            help="display N number of records",
             default=15,
         )
 
@@ -499,16 +526,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=[
-                "Rank",
-                "Name",
-                "Change_1h",
-                "Change_24h",
-                "Change_7d",
-                "Market_Cap",
-                "Volume_24h",
-                "Coins",
-            ],
+            choices=pycoingecko_model.CATEGORIES_FILTERS,
         )
 
         parser.add_argument(
@@ -520,33 +538,26 @@ WithdrawalFees:
         )
 
         parser.add_argument(
-            "-l",
-            "--links",
-            dest="links",
+            "-u",
+            "--urls",
+            dest="urls",
             action="store_true",
             help="Flag to show urls. If you will use that flag you will additional column with urls",
             default=False,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        pycoingecko_view.display_categories(
-            top=ns_parser.top,
-            export=ns_parser.export,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-            links=ns_parser.links,
-        )
+        if ns_parser:
+            pycoingecko_view.display_categories(
+                top=ns_parser.limit,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                links=ns_parser.urls,
+            )
+        return self.queue
 
     @try_except
     def call_cgstables(self, other_args):
@@ -558,18 +569,18 @@ WithdrawalFees:
             description="""Shows stablecoins by market capitalization.
                 Stablecoins are cryptocurrencies that attempt to peg their market value to some external reference
                 like the U.S. dollar or to a commodity's price such as gold.
-                You can display only top N number of coins with --top parameter.
+                You can display only N number of coins with --limit parameter.
                 You can sort data by Rank, Name, Symbol, Price, Change_24h, Exchanges, Market_Cap, Change_30d with --sort
                 and also with --descend flag to sort descending.
-                Flag --links will display stablecoins urls""",
+                Flag --urls will display stablecoins urls""",
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="display N number records",
             default=15,
         )
 
@@ -580,16 +591,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=[
-                "Rank",
-                "Name",
-                "Symbol",
-                "Price",
-                "Change_24h",
-                "Exchanges",
-                "Market_Cap",
-                "Change_30d",
-            ],
+            choices=pycoingecko_model.STABLES_FILTERS,
         )
 
         parser.add_argument(
@@ -601,34 +603,26 @@ WithdrawalFees:
         )
 
         parser.add_argument(
-            "-l",
-            "--links",
-            dest="links",
+            "-u",
+            "--urls",
+            dest="urls",
             action="store_true",
-            help="Flag to show urls",
+            help="Flag to show urls. If you will use that flag you will additional column with urls",
             default=False,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        pycoingecko_view.display_stablecoins(
-            top=ns_parser.top,
-            export=ns_parser.export,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-            links=ns_parser.links,
-        )
+        if ns_parser:
+            pycoingecko_view.display_stablecoins(
+                top=ns_parser.limit,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                links=ns_parser.urls,
+            )
+        return self.queue
 
     @try_except
     def call_cgnft(self, other_args):
@@ -645,20 +639,12 @@ WithdrawalFees:
                 """,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        pycoingecko_view.display_nft_market_status(export=ns_parser.export)
+        if ns_parser:
+            pycoingecko_view.display_nft_market_status(export=ns_parser.export)
+        return self.queue
 
     @try_except
     def call_cgnftday(self, other_args):
@@ -674,20 +660,12 @@ WithdrawalFees:
                     author, description, url, img url for NFT which was chosen on CoinGecko as a nft of the day.""",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        pycoingecko_view.display_nft_of_the_day(export=ns_parser.export)
+        if ns_parser:
+            pycoingecko_view.display_nft_of_the_day(export=ns_parser.export)
+        return self.queue
 
     @try_except
     def call_cgproducts(self, other_args):
@@ -697,18 +675,18 @@ WithdrawalFees:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows Top Crypto Financial Products with which you can earn yield, borrow or lend your crypto.
-                You can display only top N number of platforms with --top parameter.
+                You can display only N number of platforms with --limit parameter.
                 You can sort data by Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate with --sort
                 and also with --descend flag to sort descending.
                 Displays: Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate""",
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="display N number records",
             default=15,
         )
 
@@ -719,13 +697,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=[
-                "Rank",
-                "Platform",
-                "Identifier",
-                "Supply_Rate",
-                "Borrow_Rate",
-            ],
+            choices=pycoingecko_model.PRODUCTS_FILTERS,
         )
 
         parser.add_argument(
@@ -736,25 +708,17 @@ WithdrawalFees:
             default=True,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        pycoingecko_view.display_products(
-            top=ns_parser.top,
-            export=ns_parser.export,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-        )
+        if ns_parser:
+            pycoingecko_view.display_products(
+                top=ns_parser.limit,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+            )
+        return self.queue
 
     @try_except
     def call_cgplatforms(self, other_args):
@@ -765,18 +729,18 @@ WithdrawalFees:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows Top Crypto Financial Platforms in which you can borrow or lend your crypto.
                 e.g Celsius, Nexo, Crypto.com, Aave and others.
-                You can display only top N number of platforms with --top parameter.
+                You can display only N number of platforms with --limit parameter.
                 You can sort data by Rank, Name, Category, Centralized with --sort
                 and also with --descend flag to sort descending.
                 Displays: Rank, Name, Category, Centralized, Url""",
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="display N number records",
             default=15,
         )
 
@@ -787,7 +751,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=["Rank", "Name", "Category", "Centralized"],
+            choices=pycoingecko_model.PLATFORMS_FILTERS,
         )
 
         parser.add_argument(
@@ -798,25 +762,17 @@ WithdrawalFees:
             default=True,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        pycoingecko_view.display_platforms(
-            top=ns_parser.top,
-            export=ns_parser.export,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-        )
+        if ns_parser:
+            pycoingecko_view.display_platforms(
+                top=ns_parser.limit,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+            )
+        return self.queue
 
     @try_except
     def call_cgexchanges(self, other_args):
@@ -826,19 +782,19 @@ WithdrawalFees:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows Top Crypto Exchanges
-                You can display only top N number exchanges with --top parameter.
+                You can display only N number exchanges with --limit parameter.
                 You can sort data by Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC with --sort
                 and also with --descend flag to sort descending.
-                Flag --links will display urls.
+                Flag --urls will display urls.
                 Displays: Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC""",
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="display N number records",
             default=15,
         )
 
@@ -849,15 +805,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=[
-                "Rank",
-                "Trust_Score",
-                "Id",
-                "Name",
-                "Country",
-                "Year Established",
-                "Trade_Volume_24h_BTC",
-            ],
+            choices=pycoingecko_model.EXCHANGES_FILTERS,
         )
         parser.add_argument(
             "--descend",
@@ -868,34 +816,26 @@ WithdrawalFees:
         )
 
         parser.add_argument(
-            "-l",
-            "--links",
-            dest="links",
+            "-u",
+            "--urls",
+            dest="urls",
             action="store_true",
-            help="Flag to show urls",
+            help="Flag to show urls. If you will use that flag you will additional column with urls",
             default=False,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        pycoingecko_view.display_exchanges(
-            top=ns_parser.top,
-            export=ns_parser.export,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-            links=ns_parser.links,
-        )
+        if ns_parser:
+            pycoingecko_view.display_exchanges(
+                top=ns_parser.limit,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                links=ns_parser.urls,
+            )
+        return self.queue
 
     @try_except
     def call_cgexrates(self, other_args):
@@ -906,16 +846,16 @@ WithdrawalFees:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
                 Shows list of crypto, fiats, commodity exchange rates from CoinGecko
-                You can look on only top N number of records with --top,
+                You can look on only N number of records with --limit,
                 You can sort by Index, Name, Unit, Value, Type, and also use --descend flag to sort descending.""",
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="display N number records",
             default=15,
         )
 
@@ -926,7 +866,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: Index",
             default="Index",
-            choices=["Index", "Name", "Unit", "Value", "Type"],
+            choices=pycoingecko_model.EXRATES_FILTERS,
         )
 
         parser.add_argument(
@@ -937,24 +877,17 @@ WithdrawalFees:
             default=True,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        pycoingecko_view.display_exchange_rates(
-            sortby=ns_parser.sortby,
-            top=ns_parser.top,
-            descend=ns_parser.descend,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            pycoingecko_view.display_exchange_rates(
+                sortby=ns_parser.sortby,
+                top=ns_parser.limit,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
+        return self.queue
 
     @try_except
     def call_cgindexes(self, other_args):
@@ -965,7 +898,7 @@ WithdrawalFees:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows list of crypto indexes from CoinGecko.
             Each crypto index is made up of a selection of cryptocurrencies, grouped together and weighted by market cap.
-            You can display only top N number of indexes with --top parameter.
+            You can display only N number of indexes with --limit parameter.
             You can sort data by Rank, Name, Id, Market, Last, MultiAsset with --sort
             and also with --descend flag to sort descending.
             Displays: Rank, Name, Id, Market, Last, MultiAsset
@@ -973,11 +906,11 @@ WithdrawalFees:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="display N number records",
             default=15,
         )
 
@@ -988,7 +921,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=["Rank", "Name", "Id", "Market", "Last", "MultiAsset"],
+            choices=pycoingecko_model.INDEXES_FILTERS,
         )
 
         parser.add_argument(
@@ -999,25 +932,17 @@ WithdrawalFees:
             default=True,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        pycoingecko_view.display_indexes(
-            top=ns_parser.top,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            pycoingecko_view.display_indexes(
+                top=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
+        return self.queue
 
     @try_except
     def call_cgderivatives(self, other_args):
@@ -1030,7 +955,7 @@ WithdrawalFees:
                Crypto derivatives are secondary contracts or financial tools that derive their value from a primary
                underlying asset. In this case, the primary asset would be a cryptocurrency such as Bitcoin.
                The most popular crypto derivatives are crypto futures, crypto options, and perpetual contracts.
-               You can look on only top N number of records with --top,
+               You can look on only N number of records with --limit,
                You can sort by Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread, Funding_Rate,
                Volume_24h with --sort and also with --descend flag to set it to sort descending.
                Displays:
@@ -1038,11 +963,11 @@ WithdrawalFees:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
-            help="top N number records",
+            help="display N number records",
             default=15,
         )
 
@@ -1053,18 +978,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=[
-                "Rank",
-                "Market",
-                "Symbol",
-                "Price",
-                "Pct_Change_24h",
-                "Contract_Type",
-                "Basis",
-                "Spread",
-                "Funding_Rate",
-                "Volume_24h",
-            ],
+            choices=pycoingecko_model.DERIVATIVES_FILTERS,
         )
 
         parser.add_argument(
@@ -1075,24 +989,17 @@ WithdrawalFees:
             default=True,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        pycoingecko_view.display_derivatives(
-            top=ns_parser.top,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            pycoingecko_view.display_derivatives(
+                top=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
+        return self.queue
 
     @try_except
     def call_cgglobal(self, other_args):
@@ -1104,20 +1011,12 @@ WithdrawalFees:
             description="""Shows global statistics about Crypto Market""",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        pycoingecko_view.display_global_market_info(export=ns_parser.export)
+        if ns_parser:
+            pycoingecko_view.display_global_market_info(export=ns_parser.export)
+        return self.queue
 
     @try_except
     def call_cgdefi(self, other_args):
@@ -1133,20 +1032,12 @@ WithdrawalFees:
                    Market Cap, Trading Volume, Defi Dominance, Top Coins...""",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        pycoingecko_view.display_global_defi_info(export=ns_parser.export)
+        if ns_parser:
+            pycoingecko_view.display_global_defi_info(export=ns_parser.export)
+        return self.queue
 
     @try_except
     def call_cpglobal(self, other_args):
@@ -1160,20 +1051,12 @@ WithdrawalFees:
             Number of cryptocurrencies, All Time High, All Time Low""",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        coinpaprika_view.display_global_market(export=ns_parser.export)
+        if ns_parser:
+            coinpaprika_view.display_global_market(export=ns_parser.export)
+        return self.queue
 
     @try_except
     def call_cpmarkets(self, other_args):
@@ -1183,7 +1066,7 @@ WithdrawalFees:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Show market related (price, supply, volume) coin information for all coins on CoinPaprika.
-            You can display only top N number of coins with --top parameter.
+            You can display only N number of coins with --limit parameter.
             You can sort data by rank, name, symbol, price, volume_24h, mcap_change_24h, pct_change_1h, pct_change_24h,
             ath_price, pct_from_ath, --sort parameter and also with --descend flag to sort descending.
             Displays:
@@ -1202,12 +1085,12 @@ WithdrawalFees:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            default=15,
-            dest="top",
-            help="Limit of records",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
+            help="display N number records",
+            default=15,
         )
 
         parser.add_argument(
@@ -1217,18 +1100,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: rank",
             default="rank",
-            choices=[
-                "rank",
-                "name",
-                "symbol",
-                "price",
-                "volume_24h",
-                "mcap_change_24h",
-                "pct_change_1h",
-                "pct_change_24h",
-                "ath_price",
-                "pct_from_ath",
-            ],
+            choices=coinpaprika_model.MARKETS_FILTERS,
         )
 
         parser.add_argument(
@@ -1239,26 +1111,18 @@ WithdrawalFees:
             default=True,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        coinpaprika_view.display_all_coins_market_info(
-            currency=ns_parser.vs,
-            top=ns_parser.top,
-            descend=ns_parser.descend,
-            export=ns_parser.export,
-            sortby=ns_parser.sortby,
-        )
+        if ns_parser:
+            coinpaprika_view.display_all_coins_market_info(
+                currency=ns_parser.vs,
+                top=ns_parser.limit,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+            )
+        return self.queue
 
     @try_except
     def call_cpexmarkets(self, other_args):
@@ -1268,10 +1132,10 @@ WithdrawalFees:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Get all exchange markets found for given exchange
-                You can display only top N number of records with --top parameter.
+                You can display only N number of records with --limit parameter.
                 You can sort data by pair, base_currency_name, quote_currency_name, market_url, category,
                 reported_volume_24h_share, trust_score --sort parameter and also with --descend flag to sort descending.
-                You can use additional flag --links to see urls for each market
+                You can use additional flag --urls to see urls for each market
                 Displays:
                     exchange_id, pair, base_currency_name, quote_currency_name, market_url,
                     category, reported_volume_24h_share, trust_score,""",
@@ -1287,12 +1151,12 @@ WithdrawalFees:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            default=10,
-            dest="top",
-            help="Limit of records",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
+            help="display N number records",
+            default=10,
         )
 
         parser.add_argument(
@@ -1302,15 +1166,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: reported_volume_24h_share",
             default="reported_volume_24h_share",
-            choices=[
-                "pair",
-                "base_currency_name",
-                "quote_currency_name",
-                "category",
-                "reported_volume_24h_share",
-                "trust_score",
-                "market_url",
-            ],
+            choices=coinpaprika_model.EXMARKETS_FILTERS,
         )
 
         parser.add_argument(
@@ -1322,36 +1178,31 @@ WithdrawalFees:
         )
 
         parser.add_argument(
-            "-l",
-            "--links",
-            dest="links",
+            "-u",
+            "--urls",
+            dest="urls",
             action="store_true",
             help="""Flag to show urls. If you will use that flag you will see only:
                 exchange, pair, trust_score, market_url columns""",
             default=False,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-e")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        coinpaprika_view.display_exchange_markets(
-            exchange=ns_parser.exchange,
-            top=ns_parser.top,
-            export=ns_parser.export,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-            links=ns_parser.links,
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            coinpaprika_view.display_exchange_markets(
+                exchange=ns_parser.exchange,
+                top=ns_parser.limit,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                links=ns_parser.urls,
+            )
+        return self.queue
 
     @try_except
     def call_cpinfo(self, other_args):
@@ -1361,7 +1212,7 @@ WithdrawalFees:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="cpinfo",
             description="""Show basic coin information for all coins from CoinPaprika API
-                You can display only top N number of coins with --top parameter.
+                You can display only N number of coins with --limit parameter.
                 You can sort data by rank, name, symbol, price, volume_24h, circulating_supply, total_supply, max_supply,
                 market_cap, beta_value, ath_price --sort parameter and also with --descend flag to sort descending.
                 Displays:
@@ -1380,12 +1231,12 @@ WithdrawalFees:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            default=20,
-            dest="top",
-            help="Limit of records",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
+            help="display N number records",
+            default=20,
         )
 
         parser.add_argument(
@@ -1395,19 +1246,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: rank",
             default="rank",
-            choices=[
-                "rank",
-                "name",
-                "symbol",
-                "price",
-                "volume_24h",
-                "circulating_supply",
-                "total_supply",
-                "max_supply",
-                "ath_price",
-                "market_cap",
-                "beta_value",
-            ],
+            choices=coinpaprika_model.INFO_FILTERS,
         )
 
         parser.add_argument(
@@ -1418,25 +1257,18 @@ WithdrawalFees:
             default=True,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        coinpaprika_view.display_all_coins_info(
-            currency=ns_parser.vs,
-            top=ns_parser.top,
-            descend=ns_parser.descend,
-            sortby=ns_parser.sortby,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            coinpaprika_view.display_all_coins_info(
+                currency=ns_parser.vs,
+                top=ns_parser.limit,
+                descend=ns_parser.descend,
+                sortby=ns_parser.sortby,
+                export=ns_parser.export,
+            )
+        return self.queue
 
     @try_except
     def call_cpexchanges(self, other_args):
@@ -1446,7 +1278,7 @@ WithdrawalFees:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="cpexchanges",
             description="""Show all exchanges from CoinPaprika
-               You can display only top N number of coins with --top parameter.
+               You can display only N number of coins with --limit parameter.
                You can sort data by  rank, name, currencies, markets, fiats, confidence,
                volume_24h,volume_7d ,volume_30d, sessions_per_month --sort parameter
                and also with --descend flag to sort descending.
@@ -1465,12 +1297,12 @@ WithdrawalFees:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            default=20,
-            dest="top",
-            help="Limit of records",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
+            help="display N number records",
+            default=20,
         )
 
         parser.add_argument(
@@ -1480,18 +1312,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: rank",
             default="rank",
-            choices=[
-                "rank",
-                "name",
-                "currencies",
-                "markets",
-                "fiats",
-                "confidence",
-                "volume_24h",
-                "volume_7d",
-                "volume_30d",
-                "sessions_per_month",
-            ],
+            choices=coinpaprika_model.EXCHANGES_FILTERS,
         )
 
         parser.add_argument(
@@ -1502,25 +1323,19 @@ WithdrawalFees:
             default=True,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            coinpaprika_view.display_all_exchanges(
+                currency=ns_parser.vs,
+                top=ns_parser.limit,
+                descend=ns_parser.descend,
+                sortby=ns_parser.sortby,
+                export=ns_parser.export,
+            )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        coinpaprika_view.display_all_exchanges(
-            currency=ns_parser.vs,
-            top=ns_parser.top,
-            descend=ns_parser.descend,
-            sortby=ns_parser.sortby,
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_cpplatforms(self, other_args):
@@ -1532,19 +1347,13 @@ WithdrawalFees:
             description="""List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama""",
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            coinpaprika_view.display_all_platforms(export=ns_parser.export)
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        coinpaprika_view.display_all_platforms(export=ns_parser.export)
+        return self.queue
 
     @try_except
     def call_cpcontracts(self, other_args):
@@ -1557,7 +1366,7 @@ WithdrawalFees:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Gets all contract addresses for given platform.
                Provide platform id with -p/--platform parameter
-               You can display only top N number of smart contracts with --top parameter.
+               You can display only N number of smart contracts with --limit parameter.
                You can sort data by id, type, active, balance  --sort parameter
                and also with --descend flag to sort descending.
 
@@ -1577,12 +1386,12 @@ WithdrawalFees:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            default=15,
-            dest="top",
-            help="Limit of records",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
+            help="display N number records",
+            default=15,
         )
 
         parser.add_argument(
@@ -1592,7 +1401,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column",
             default="id",
-            choices=["id", "type", "active", "balance"],
+            choices=coinpaprika_model.CONTRACTS_FILTERS,
         )
 
         parser.add_argument(
@@ -1603,26 +1412,21 @@ WithdrawalFees:
             default=True,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        coinpaprika_view.display_contracts(
-            platform=ns_parser.platform,
-            top=ns_parser.top,
-            descend=ns_parser.descend,
-            sortby=ns_parser.sortby,
-            export=ns_parser.export,
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            coinpaprika_view.display_contracts(
+                platform=ns_parser.platform,
+                top=ns_parser.limit,
+                descend=ns_parser.descend,
+                sortby=ns_parser.sortby,
+                export=ns_parser.export,
+            )
+        return self.queue
 
     @try_except
     def call_cbpairs(self, other_args):
@@ -1635,11 +1439,11 @@ WithdrawalFees:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
+            "-l",
+            "--limit",
+            dest="limit",
             type=int,
-            help="top N number of news >=10",
+            help="display N number of news >=10",
             default=15,
         )
 
@@ -1650,16 +1454,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: id",
             default="id",
-            choices=[
-                "id",
-                "display_name",
-                "base_currency",
-                "quote_currency",
-                "base_min_size",
-                "base_max_size",
-                "min_market_funds",
-                "max_market_funds",
-            ],
+            choices=coinbase_model.PAIRS_FILTERS,
         )
 
         parser.add_argument(
@@ -1670,25 +1465,17 @@ WithdrawalFees:
             default=True,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        coinbase_view.display_trading_pairs(
-            top=ns_parser.top,
-            export=ns_parser.export,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-        )
+        if ns_parser:
+            coinbase_view.display_trading_pairs(
+                top=ns_parser.limit,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+            )
+        return self.queue
 
     @try_except
     def call_news(self, other_args):
@@ -1701,11 +1488,11 @@ WithdrawalFees:
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
-            dest="top",
-            type=int,
-            help="top N number of news >=10",
+            "-l",
+            "--limit",
+            dest="limit",
+            type=check_positive,
+            help="display N number records",
             default=20,
         )
 
@@ -1716,7 +1503,7 @@ WithdrawalFees:
             type=str,
             help="Filter by category of news. Available values: news or media.",
             default="news",
-            choices=["news", "media"],
+            choices=cryptopanic_model.CATEGORIES,
         )
 
         parser.add_argument(
@@ -1727,15 +1514,7 @@ WithdrawalFees:
             help="Filter by kind of news. One from list: rising|hot|bullish|bearish|important|saved|lol",
             default=None,
             required=False,
-            choices=[
-                "rising",
-                "hot",
-                "bullish",
-                "bearish",
-                "important",
-                "saved",
-                "lol",
-            ],
+            choices=cryptopanic_model.FILTERS,
         )
 
         parser.add_argument(
@@ -1746,7 +1525,7 @@ WithdrawalFees:
             help="Filter news by regions. Available regions are: en (English), de (Deutsch), nl (Dutch), es (Español), "
             "fr (Français), it (Italiano), pt (Português), ru (Русский)",
             default="en",
-            choices=["en", "de", "es", "fr", "nl", "it", "pt", "ru"],
+            choices=cryptopanic_model.REGIONS,
         )
 
         parser.add_argument(
@@ -1756,13 +1535,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: published_at",
             default="published_at",
-            choices=[
-                "published_at",
-                "domain",
-                "title",
-                "negative_votes",
-                "positive_votes",
-            ],
+            choices=cryptopanic_model.SORT_FILTERS,
         )
 
         parser.add_argument(
@@ -1774,9 +1547,9 @@ WithdrawalFees:
         )
 
         parser.add_argument(
-            "-l",
-            "--links",
-            dest="links",
+            "-u",
+            "--urls",
+            dest="urls",
             action="store_true",
             help="Flag to show urls. If you will use that flag you will additional column with urls",
             default=False,
@@ -1786,52 +1559,152 @@ WithdrawalFees:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if not ns_parser:
-            return
+        if ns_parser:
+            cryptopanic_view.display_news(
+                top=ns_parser.limit,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                links=ns_parser.urls,
+                post_kind=ns_parser.kind,
+                filter_=ns_parser.filter,
+                region=ns_parser.region,
+            )
+        return self.queue
 
-        cryptopanic_view.display_news(
-            top=ns_parser.top,
-            export=ns_parser.export,
-            sortby=ns_parser.sortby,
-            descend=ns_parser.descend,
-            links=ns_parser.links,
-            post_kind=ns_parser.kind,
-            filter_=ns_parser.filter,
-            region=ns_parser.region,
-        )
 
-
-def menu():
-    overview_controller = Controller()
-    overview_controller.print_help()
+def menu(queue: List[str] = None):
+    overview_controller = OverviewController(queue=queue)
+    an_input = "HELP_ME"
 
     while True:
+        # There is a command in the queue
+        if overview_controller.queue and len(overview_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
+            if overview_controller.queue[0] in ("q", "..", "quit"):
+                if len(overview_controller.queue) > 1:
+                    return overview_controller.queue[1:]
+                return []
+
+            # Consume 1 element from the queue
+            an_input = overview_controller.queue[0]
+            overview_controller.queue = overview_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
+            if (
+                an_input
+                and an_input.split(" ")[0] in overview_controller.CHOICES_COMMANDS
+            ):
+                print(f"{get_flair()} /crypto/ov/ $ {an_input}")
+
         # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in overview_controller.CHOICES}
-
-            choices["wfpe"] = {c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS}
-            choices["wfpe"]["-c"] = {
-                c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS
-            }
-            choices["wfpe"]["--coin"] = {
-                c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS
-            }
-
-            completer = NestedCompleter.from_nested_dict(choices)
-            an_input = session.prompt(
-                f"{get_flair()} (crypto)>(ov)> ",
-                completer=completer,
-            )
         else:
-            an_input = input(f"{get_flair()} (crypto)>(ov)> ")
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
+                overview_controller.print_help()
+
+            # Get input from user using auto-completion
+            if session and gtff.USE_PROMPT_TOOLKIT:
+                choices: dict = {c: {} for c in overview_controller.CHOICES}
+                choices["cghold"] = {c: None for c in pycoingecko_model.HOLD_COINS}
+                choices["cgcompanies"] = {c: None for c in pycoingecko_model.HOLD_COINS}
+                choices["cgnews"]["-s"] = {
+                    c: None for c in pycoingecko_model.NEWS_FILTERS
+                }
+                choices["cgcategories"]["-s"] = {
+                    c: None for c in pycoingecko_model.CATEGORIES_FILTERS
+                }
+                choices["cgstables"]["-s"] = {
+                    c: None for c in pycoingecko_model.STABLES_FILTERS
+                }
+                choices["cgproducts"]["-s"] = {
+                    c: None for c in pycoingecko_model.PRODUCTS_FILTERS
+                }
+                choices["cgplatforms"]["-s"] = {
+                    c: None for c in pycoingecko_model.PLATFORMS_FILTERS
+                }
+                choices["cgexrates"]["-s"] = {
+                    c: None for c in pycoingecko_model.EXRATES_FILTERS
+                }
+                choices["cgindexes"]["-s"] = {
+                    c: None for c in pycoingecko_model.INDEXES_FILTERS
+                }
+                choices["cgderivatives"]["-s"] = {
+                    c: None for c in pycoingecko_model.DERIVATIVES_FILTERS
+                }
+                choices["cpmarkets"]["-s"] = {
+                    c: None for c in coinpaprika_model.MARKETS_FILTERS
+                }
+                choices["cpexmarkets"]["-s"] = {
+                    c: None for c in coinpaprika_model.EXMARKETS_FILTERS
+                }
+                choices["cpexchanges"]["-s"] = {
+                    c: None for c in coinpaprika_model.EXCHANGES_FILTERS
+                }
+                choices["cpcontracts"] = {
+                    c: None
+                    for c in get_all_contract_platforms()["platform_id"].tolist()
+                }
+                choices["cpcontracts"]["-s"] = {
+                    c: None for c in coinpaprika_model.CONTRACTS_FILTERS
+                }
+                choices["cpinfo"]["-s"] = {
+                    c: None for c in coinpaprika_model.INFO_FILTERS
+                }
+                choices["cbpairs"]["-s"] = {
+                    c: None for c in coinbase_model.PAIRS_FILTERS
+                }
+                choices["news"]["-k"] = {c: None for c in cryptopanic_model.CATEGORIES}
+                choices["news"]["-f"] = {c: None for c in cryptopanic_model.FILTERS}
+                choices["news"]["-r"] = {c: None for c in cryptopanic_model.REGIONS}
+                choices["news"]["-s"] = {
+                    c: None for c in cryptopanic_model.SORT_FILTERS
+                }
+                choices["wfpe"] = {
+                    c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS
+                }
+                completer = NestedCompleter.from_nested_dict(choices)
+                an_input = session.prompt(
+                    f"{get_flair()} /crypto/ov/ $ ",
+                    completer=completer,
+                    search_ignore_case=True,
+                )
+            # Get input from user without auto-completion
+            else:
+                an_input = input(f"{get_flair()} /crypto/ov/ $ ")
 
         try:
-            process_input = overview_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            # Process the input command
+            overview_controller.queue = overview_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            continue
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
+                end="",
+            )
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                overview_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
+            if similar_cmd:
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                else:
+                    candidate_input = similar_cmd[0]
+
+                if candidate_input == an_input:
+                    an_input = ""
+                    overview_controller.queue = []
+                    print("\n")
+                    continue
+
+                print(f" Replacing by '{an_input}'.")
+                overview_controller.queue.insert(0, an_input)
+            else:
+                print("\n")
+                an_input = ""
+                overview_controller.queue = []

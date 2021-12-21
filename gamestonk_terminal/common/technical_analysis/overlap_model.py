@@ -4,6 +4,9 @@ ___docformat__ = "numpy"
 import pandas as pd
 import pandas_ta as ta
 
+WINDOW_LENGTHS = [20, 50]
+WINDOW_LENGTHS2 = [10, 20]
+
 
 def ema(
     s_interval: str, df_stock: pd.DataFrame, length: int, offset: int

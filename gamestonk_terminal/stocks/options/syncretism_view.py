@@ -1,8 +1,9 @@
-"""Helper functions for scraping options data"""
+"""Syncretistm View module"""
 __docformat__ = "numpy"
 
 import configparser
 import os
+from typing import List
 
 import matplotlib.pyplot as plt
 from tabulate import tabulate
@@ -35,7 +36,7 @@ def view_available_presets(preset: str, presets_path: str):
             d_filters = {**preset_filter[filter_header]}
             d_filters = {k: v for k, v in d_filters.items() if v}
             if d_filters:
-                max_len = len(max(d_filters, key=len))
+                max_len = len(max(d_filters, key=len)) + 2
                 for key, value in d_filters.items():
                     print(f"{key}{(max_len-len(key))*' '}: {value}")
             print("")
@@ -45,7 +46,9 @@ def view_available_presets(preset: str, presets_path: str):
     print("")
 
 
-def view_screener_output(preset: str, presets_path: str, n_show: int, export: str):
+def view_screener_output(
+    preset: str, presets_path: str, n_show: int, export: str
+) -> List:
     """Print the output of screener
 
     Parameters
@@ -58,11 +61,16 @@ def view_screener_output(preset: str, presets_path: str, n_show: int, export: st
         Number of randomly sorted rows to display
     export: str
         Format for export file
+
+    Returns
+    -------
+    List
+        List of tickers screened
     """
     df_res, error_msg = syncretism_model.get_screener_output(preset, presets_path)
     if error_msg:
         print(error_msg, "\n")
-        return
+        return []
 
     export_data(
         export,
@@ -74,15 +82,20 @@ def view_screener_output(preset: str, presets_path: str, n_show: int, export: st
     if n_show > 0:
         df_res = df_res.sample(n_show)
 
-    print(
-        tabulate(
-            df_res,
-            headers=df_res.columns,
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df_res,
+                headers=df_res.columns,
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df_res.to_string())
+
+    return df_res["S"].values.tolist()
 
 
 # pylint:disable=too-many-arguments
@@ -127,14 +140,6 @@ def view_historical_greeks(
     if raw:
         print(tabulate(df.tail(n_show), headers=df.columns, tablefmt="fancy_grid"))
 
-    if export:
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "grhist",
-            df,
-        )
-
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     im1 = ax.plot(df.index, df[greek], c="firebrick", label=greek)
     ax.set_ylabel(greek)
@@ -156,4 +161,10 @@ def view_historical_greeks(
     plt.legend(ims, labels, loc=0)
     fig.tight_layout(pad=1)
     plt.show()
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "grhist",
+        df,
+    )
     print("")

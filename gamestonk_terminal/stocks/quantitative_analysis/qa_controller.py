@@ -3,12 +3,11 @@ __docformat__ = "numpy"
 
 import argparse
 import difflib
-from typing import List
+from typing import List, Union
 from datetime import datetime, timedelta
 
 import numpy as np
 import pandas as pd
-from matplotlib import pyplot as plt
 
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.common.quantitative_analysis import (
@@ -35,9 +34,24 @@ class QaController:
     """Quantitative Analysis Controller class"""
 
     # Command choices
-    CHOICES = ["?", "cls", "help", "q", "quit", "load", "pick", "raw"]
+    CHOICES = [
+        "cls",
+        "home",
+        "h",
+        "?",
+        "help",
+        "q",
+        "quit",
+        "..",
+        "exit",
+        "r",
+        "reset",
+    ]
 
     CHOICES_COMMANDS = [
+        "load",
+        "pick",
+        "raw",
         "summary",
         "hist",
         "cdf",
@@ -60,12 +74,16 @@ class QaController:
 
     CHOICES += CHOICES_COMMANDS
 
+    stock_interval = [1, 5, 15, 30, 60]
+    stock_sources = ["yf", "av", "iex"]
+
     def __init__(
         self,
         ticker: str,
         start: datetime,
         interval: str,
         stock: pd.DataFrame,
+        queue: List[str] = None,
     ):
         """Constructor"""
         stock["Returns"] = stock["Adj Close"].pct_change()
@@ -79,11 +97,27 @@ class QaController:
         self.start = start
         self.interval = interval
         self.target = "Returns"
+        self.df_columns = list(stock.columns)
         self.qa_parser = argparse.ArgumentParser(add_help=False, prog="qa")
         self.qa_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            choices["pick"]["-t"] = {c: None for c in self.df_columns}
+            choices["pick"]["--target"] = {c: None for c in self.df_columns}
+            choices["load"]["-i"] = {c: None for c in self.stock_interval}
+            choices["load"]["--interval"] = {c: None for c in self.stock_interval}
+            choices["load"]["--source"] = {c: None for c in self.stock_sources}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
 
     def print_help(self):
         """Print help"""
@@ -94,13 +128,6 @@ class QaController:
             stock_str = f"{s_intraday} Stock: {self.ticker}"
         help_str = f"""
 Quantitative Analysis:
-    cls         clear screen
-    help        show this menu again
-    q           quit this menu, and shows back to main menu
-    quit        quit to abandon program
-    load        load new ticker
-    pick        pick new target variable
-
 {stock_str}
 Target Column: {self.target}
 
@@ -133,34 +160,97 @@ Other:
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
-
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.qa_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
+
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue
+
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        return self.queue
+
+    def call_help(self, _):
+        """Process help command"""
+        self.print_help()
+        return self.queue
+
+    def call_quit(self, _):
+        """Process quit menu command"""
+        print("")
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit"]
+
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "quit"]
+
+    def call_reset(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "qa")
+            if self.ticker:
+                self.queue.insert(0, f"load {self.ticker}")
+            self.queue.insert(0, "stocks")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+
+        reset_commands = ["quit", "quit", "reset", "stocks"]
+        if self.ticker:
+            reset_commands.append(f"load {self.ticker}")
+        reset_commands.append("qa")
+        return reset_commands
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -203,14 +293,14 @@ Other:
             dest="interval",
             type=int,
             default=1440,
-            choices=[1, 5, 15, 30, 60],
+            choices=self.stock_interval,
             help="Intraday stock minutes",
         )
         parser.add_argument(
             "--source",
             action="store",
             dest="source",
-            choices=["yf", "av", "iex"],
+            choices=self.stock_sources,
             default="yf",
             help="Source of historical data.",
         )
@@ -228,46 +318,34 @@ Other:
             other_args.insert(0, "-t")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
 
-        df_stock_candidate = stocks_helper.load(
-            ns_parser.ticker,
-            ns_parser.start,
-            ns_parser.interval,
-            ns_parser.end,
-            ns_parser.prepost,
-            ns_parser.source,
-        )
-
-        if not df_stock_candidate.empty:
-            self.stock = df_stock_candidate
-            if "." in ns_parser.ticker:
-                self.ticker = ns_parser.ticker.upper().split(".")[0]
-            else:
-                self.ticker = ns_parser.ticker.upper()
-
-            self.start = ns_parser.start
-            self.interval = str(ns_parser.interval) + "min"
-
-            self.stock["Returns"] = self.stock["Adj Close"].pct_change()
-            self.stock["LogRet"] = np.log(self.stock["Adj Close"]) - np.log(
-                self.stock["Adj Close"].shift(1)
+            df_stock_candidate = stocks_helper.load(
+                ns_parser.ticker,
+                ns_parser.start,
+                ns_parser.interval,
+                ns_parser.end,
+                ns_parser.prepost,
+                ns_parser.source,
             )
-            self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
-            self.stock = self.stock.dropna()
 
-    def call_help(self, _):
-        """Process Help command"""
-        self.print_help()
+            if not df_stock_candidate.empty:
+                self.stock = df_stock_candidate
+                if "." in ns_parser.ticker:
+                    self.ticker = ns_parser.ticker.upper().split(".")[0]
+                else:
+                    self.ticker = ns_parser.ticker.upper()
 
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return False
+                self.start = ns_parser.start
+                self.interval = str(ns_parser.interval) + "min"
 
-    def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+                self.stock["Returns"] = self.stock["Adj Close"].pct_change()
+                self.stock["LogRet"] = np.log(self.stock["Adj Close"]) - np.log(
+                    self.stock["Adj Close"].shift(1)
+                )
+                self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
+                self.stock = self.stock.dropna()
+        return self.queue
 
     @try_except
     def call_pick(self, other_args: List[str]):
@@ -287,15 +365,14 @@ Other:
             choices=list(self.stock.columns),
             help="Select variable to analyze",
         )
-        if other_args:
-            if "-t" not in other_args and "-h" not in other_args:
-                other_args.insert(0, "-t")
+        if other_args and "-t" not in other_args and "-h" not in other_args:
+            other_args.insert(0, "-t")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        self.target = ns_parser.target
+        if ns_parser:
+            self.target = ns_parser.target
         print("")
+        return self.queue
 
     @try_except
     def call_raw(self, other_args: List[str]):
@@ -327,15 +404,15 @@ Other:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-        qa_view.display_raw(
-            self.stock[self.target],
-            num=ns_parser.num,
-            sort="",
-            des=ns_parser.descend,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            qa_view.display_raw(
+                self.stock[self.target],
+                num=ns_parser.num,
+                sort="",
+                des=ns_parser.descend,
+                export=ns_parser.export,
+            )
+        return self.queue
 
     @try_except
     def call_summary(self, other_args: List[str]):
@@ -348,19 +425,12 @@ Other:
                 Summary statistics
             """,
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        qa_view.display_summary(df=self.stock, export=ns_parser.export)
+        if ns_parser:
+            qa_view.display_summary(df=self.stock, export=ns_parser.export)
+        return self.queue
 
     @try_except
     def call_hist(self, other_args: List[str]):
@@ -377,15 +447,14 @@ Other:
             "-b", "--bins", type=check_positive, default=15, dest="n_bins"
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        qa_view.display_hist(
-            name=self.ticker,
-            df=self.stock,
-            target=self.target,
-            bins=ns_parser.n_bins,
-        )
+        if ns_parser:
+            qa_view.display_hist(
+                name=self.ticker,
+                df=self.stock,
+                target=self.target,
+                bins=ns_parser.n_bins,
+            )
+        return self.queue
 
     @try_except
     def call_cdf(self, other_args: List[str]):
@@ -398,24 +467,17 @@ Other:
                 Cumulative distribution function
             """,
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        qa_view.display_cdf(
-            name=self.ticker,
-            df=self.stock,
-            target=self.target,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            qa_view.display_cdf(
+                name=self.ticker,
+                df=self.stock,
+                target=self.target,
+                export=ns_parser.export,
+            )
+        return self.queue
 
     @try_except
     def call_bw(self, other_args: List[str]):
@@ -437,14 +499,14 @@ Other:
             help="Flag to show yearly bw plot",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        qa_view.display_bw(
-            name=self.ticker,
-            df=self.stock,
-            target=self.target,
-            yearly=ns_parser.year,
-        )
+        if ns_parser:
+            qa_view.display_bw(
+                name=self.ticker,
+                df=self.stock,
+                target=self.target,
+                yearly=ns_parser.year,
+            )
+        return self.queue
 
     @try_except
     def call_decompose(self, other_args: List[str]):
@@ -467,25 +529,18 @@ Other:
             dest="multiplicative",
             help="decompose using multiplicative model instead of additive",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        qa_view.display_seasonal(
-            name=self.ticker,
-            df=self.stock,
-            target=self.target,
-            multiplicative=ns_parser.multiplicative,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            qa_view.display_seasonal(
+                name=self.ticker,
+                df=self.stock,
+                target=self.target,
+                multiplicative=ns_parser.multiplicative,
+                export=ns_parser.export,
+            )
+        return self.queue
 
     @try_except
     def call_cusum(self, other_args: List[str]):
@@ -523,15 +578,14 @@ Other:
             help="drift",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        qa_view.display_cusum(
-            df=self.stock,
-            target=self.target,
-            threshold=ns_parser.threshold,
-            drift=ns_parser.drift,
-        )
+        if ns_parser:
+            qa_view.display_cusum(
+                df=self.stock,
+                target=self.target,
+                threshold=ns_parser.threshold,
+                drift=ns_parser.drift,
+            )
+        return self.queue
 
     @try_except
     def call_acf(self, other_args: List[str]):
@@ -553,22 +607,23 @@ Other:
             help="maximum lags to display in plots",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if self.target != "AdjClose":
-            print("Target not AdjClose.  For best results, use `pick AdjClose` first.")
+        if ns_parser:
+            if self.target != "AdjClose":
+                print(
+                    "Target not AdjClose.  For best results, use `pick AdjClose` first."
+                )
 
-        qa_view.display_acf(
-            name=self.ticker,
-            df=self.stock,
-            target=self.target,
-            lags=ns_parser.lags,
-        )
+            qa_view.display_acf(
+                name=self.ticker,
+                df=self.stock,
+                target=self.target,
+                lags=ns_parser.lags,
+            )
+        return self.queue
 
     @try_except
     def call_rolling(self, other_args: List[str]):
         """Process rolling command"""
-
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -586,25 +641,18 @@ Other:
             default=14,
             help="Window length",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        rolling_view.display_mean_std(
-            name=self.ticker,
-            df=self.stock,
-            target=self.target,
-            length=ns_parser.n_length,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            rolling_view.display_mean_std(
+                name=self.ticker,
+                df=self.stock,
+                target=self.target,
+                length=ns_parser.n_length,
+                export=ns_parser.export,
+            )
+        return self.queue
 
     @try_except
     def call_spread(self, other_args: List[str]):
@@ -613,8 +661,7 @@ Other:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="spread",
-            description="""
-
+            description="""Shows rolling spread measurement
             """,
         )
         parser.add_argument(
@@ -626,25 +673,18 @@ Other:
             default=14,
             help="Window length",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        rolling_view.display_spread(
-            name=self.ticker,
-            df=self.stock,
-            target=self.target,
-            length=ns_parser.n_length,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            rolling_view.display_spread(
+                name=self.ticker,
+                df=self.stock,
+                target=self.target,
+                length=ns_parser.n_length,
+                export=ns_parser.export,
+            )
+        return self.queue
 
     @try_except
     def call_quantile(self, other_args: List[str]):
@@ -664,7 +704,6 @@ Other:
                 get the desired quantile (0<q<1).
             """,
         )
-
         parser.add_argument(
             "-l",
             "--length",
@@ -674,7 +713,6 @@ Other:
             default=14,
             help="length",
         )
-
         parser.add_argument(
             "-q",
             "--quantile",
@@ -684,26 +722,19 @@ Other:
             default=0.5,
             help="quantile",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        rolling_view.display_quantile(
-            name=self.ticker,
-            df=self.stock,
-            target=self.target,
-            length=ns_parser.n_length,
-            quantile=ns_parser.f_quantile,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            rolling_view.display_quantile(
+                name=self.ticker,
+                df=self.stock,
+                target=self.target,
+                length=ns_parser.n_length,
+                quantile=ns_parser.f_quantile,
+                export=ns_parser.export,
+            )
+        return self.queue
 
     @try_except
     def call_skew(self, other_args: List[str]):
@@ -730,25 +761,18 @@ Other:
             default=14,
             help="length",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        rolling_view.display_skew(
-            name=self.ticker,
-            df=self.stock,
-            target=self.target,
-            length=ns_parser.n_length,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            rolling_view.display_skew(
+                name=self.ticker,
+                df=self.stock,
+                target=self.target,
+                length=ns_parser.n_length,
+                export=ns_parser.export,
+            )
+        return self.queue
 
     @try_except
     def call_kurtosis(self, other_args: List[str]):
@@ -775,25 +799,18 @@ Other:
             default=14,
             help="length",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export data frame df to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        rolling_view.display_kurtosis(
-            name=self.ticker,
-            df=self.stock,
-            target=self.target,
-            length=ns_parser.n_length,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            rolling_view.display_kurtosis(
+                name=self.ticker,
+                df=self.stock,
+                target=self.target,
+                length=ns_parser.n_length,
+                export=ns_parser.export,
+            )
+        return self.queue
 
     @try_except
     def call_normality(self, other_args: List[str]):
@@ -806,21 +823,14 @@ Other:
                 Normality tests
             """,
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        qa_view.display_normality(
-            df=self.stock, target=self.target, export=ns_parser.export
-        )
+        if ns_parser:
+            qa_view.display_normality(
+                df=self.stock, target=self.target, export=ns_parser.export
+            )
+        return self.queue
 
     @try_except
     def call_qqplot(self, other_args: List[str]):
@@ -834,10 +844,9 @@ Other:
             """,
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        qa_view.display_qqplot(name=self.ticker, df=self.stock, target=self.target)
+        if ns_parser:
+            qa_view.display_qqplot(name=self.ticker, df=self.stock, target=self.target)
+        return self.queue
 
     @try_except
     def call_unitroot(self, other_args: List[str]):
@@ -868,25 +877,18 @@ Other:
             dest="kpss_reg",
             default="c",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        qa_view.display_unitroot(
-            df=self.stock,
-            target=self.target,
-            fuller_reg=ns_parser.fuller_reg,
-            kpss_reg=ns_parser.kpss_reg,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            qa_view.display_unitroot(
+                df=self.stock,
+                target=self.target,
+                fuller_reg=ns_parser.fuller_reg,
+                kpss_reg=ns_parser.kpss_reg,
+                export=ns_parser.export,
+            )
+        return self.queue
 
     @try_except
     def call_capm(self, other_args: List[str]):
@@ -900,44 +902,88 @@ Other:
             """,
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        capm_view(self.ticker)
+        if ns_parser:
+            capm_view(self.ticker)
+        return self.queue
 
 
-def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):
-    """Statistics Menu"""
-
-    qa_controller = QaController(ticker, start, interval, stock)
-    qa_controller.call_help(None)
+def menu(
+    ticker: str,
+    start: datetime,
+    interval: str,
+    stock: pd.DataFrame,
+    queue: List[str] = None,
+):
+    """Quantitative Analysis Menu"""
+    qa_controller = QaController(ticker, start, interval, stock, queue)
+    an_input = "HELP_ME"
 
     while True:
+        # There is a command in the queue
+        if qa_controller.queue and len(qa_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
+            if qa_controller.queue[0] in ("q", "..", "quit"):
+                print("")
+                if len(qa_controller.queue) > 1:
+                    return qa_controller.queue[1:]
+                return []
+
+            # Consume 1 element from the queue
+            an_input = qa_controller.queue[0]
+            qa_controller.queue = qa_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
+            if an_input and an_input.split(" ")[0] in qa_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /stocks/qa/ $ {an_input}")
+
         # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in qa_controller.CHOICES}
-            )
-            an_input = session.prompt(
-                f"{get_flair()} (stocks)>(qa)> ",
-                completer=completer,
-            )
         else:
-            an_input = input(f"{get_flair()} (stocks)>(qa)> ")
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
+                qa_controller.print_help()
+
+            # Get input from user using auto-completion
+            if session and gtff.USE_PROMPT_TOOLKIT and qa_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /stocks/qa/ $ ",
+                    completer=qa_controller.completer,
+                    search_ignore_case=True,
+                )
+
+            # Get input from user without auto-completion
+            else:
+                an_input = input(f"{get_flair()} /stocks/qa/ $ ")
 
         try:
-            plt.close("all")
-
-            process_input = qa_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            # Process the input command
+            qa_controller.queue = qa_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            similar_cmd = difflib.get_close_matches(
-                an_input, qa_controller.CHOICES, n=1, cutoff=0.7
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/qa menu.",
+                end="",
             )
-
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                qa_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
-            continue
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        qa_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
+                else:
+                    an_input = similar_cmd[0]
+
+                print(f" Replacing by '{an_input}'.")
+                qa_controller.queue.insert(0, an_input)
+            else:
+                print("\n")

@@ -101,7 +101,7 @@ def display_sustainability(ticker: str):
     df_sustainability = yahoo_finance_model.get_sustainability(ticker)
 
     if df_sustainability.empty:
-        print("No sustainability data found.")
+        print("No sustainability data found.", "\n")
         return
 
     if gtff.USE_TABULATE_DF:
@@ -143,13 +143,15 @@ def display_calendar_earnings(ticker: str):
     print("")
 
 
-def display_dividends(ticker: str, num: int = 12, plot: bool = False, export: str = ""):
+def display_dividends(
+    ticker: str, limit: int = 12, plot: bool = False, export: str = ""
+):
     """Display historical dividends
     Parameters
     ----------
     ticker: str
         Stock ticker
-    num: int
+    limit: int
         Number to show
     plot: bool
         Plots hitsorical data
@@ -193,7 +195,7 @@ def display_dividends(ticker: str, num: int = 12, plot: bool = False, export: st
         if gtff.USE_TABULATE_DF:
             print(
                 tabulate(
-                    div_history.head(num),
+                    div_history.head(limit),
                     tablefmt="fancy_grid",
                     headers=["Amount Paid ($)", "Change"],
                     floatfmt=".2f",

@@ -2,13 +2,13 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List, Dict
-
-import matplotlib.pyplot as plt
+import difflib
+from typing import List, Dict, Union
 from prompt_toolkit.completion import NestedCompleter
-
+from colorama import Style
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
+    check_non_negative,
     get_flair,
     parse_known_args_and_warn,
     try_except,
@@ -19,25 +19,42 @@ from gamestonk_terminal.stocks.options.yfinance_model import get_option_chain, g
 from gamestonk_terminal.stocks.options.yfinance_view import plot_payoff
 
 
-class PayoffController:
-    """Payoff Controller class."""
+# pylint: disable=R0902
 
-    CHOICES = ["cls", "?", "help", "q", "quit"]
+
+class PayoffController:
+    """Payoff Controller class"""
+
+    CHOICES = [
+        "cls",
+        "home",
+        "h",
+        "?",
+        "help",
+        "q",
+        "quit",
+        "..",
+        "exit",
+        "r",
+        "reset",
+    ]
     CHOICES_COMMANDS = [
         "list",
         "add",
         "rmv",
         "pick",
         "plot",
+        "sop",
     ]
     CHOICES += CHOICES_COMMANDS
 
-    # pylint: disable=dangerous-default-value
-    def __init__(self, ticker: str, expiration: str):
-        """Construct Payoff"""
+    underlying_asset_choices = ["long", "short", "none"]
 
-        self.payoff_parser = argparse.ArgumentParser(add_help=False, prog="po")
+    def __init__(self, ticker: str, expiration: str, queue: List[str] = None):
+        """Construct"""
+        self.payoff_parser = argparse.ArgumentParser(add_help=False, prog="payoff")
         self.payoff_parser.add_argument("cmd", choices=self.CHOICES)
+
         self.chain = get_option_chain(ticker, expiration)
         self.calls = list(
             zip(
@@ -52,10 +69,28 @@ class PayoffController:
             )
         )
         self.ticker = ticker
+        self.current_price = get_price(ticker)
         self.expiration = expiration
         self.options: List[Dict[str, str]] = []
         self.underlying = 0
-        self.current_price = get_price(ticker)
+
+        self.call_index_choices = range(len(self.calls))
+        self.put_index_choices = range(len(self.puts))
+
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+
+            self.choices: dict = {c: {} for c in self.CHOICES}
+            self.choices["pick"] = {c: {} for c in self.underlying_asset_choices}
+            self.choices["add"] = {
+                str(c): {} for c in list(range(max(len(self.puts), len(self.calls))))
+            }
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
 
     def print_help(self):
         """Print help"""
@@ -67,23 +102,19 @@ class PayoffController:
             text = "Short"
 
         help_text = f"""
-What do you want to do?
-    cls           clear screen
-    ?/help        show this menu again
-    q             quit this menu, and shows back to main menu
-    quit          quit to abandon program
+Ticker: {self.ticker or None}
+Expiry: {self.expiration or None}
 
-Current Ticker: {self.ticker or None}
-Current Expiry: {self.expiration or None}
+    pick          long, short, or none (default) underlying asset
 
 Underlying Asset: {text}
 
     list          list available strike prices for calls and puts
 
-    pick          long, short, or none (default) underlying asset
-    add           add option to the list of the options to be plotted
-    rmv           remove option from the list of the options to be plotted
+    add           add option to the list of the options to be plotted{Style.DIM if not self.options else ""}
+    rmv           remove option from the list of the options to be plotted{Style.RESET_ALL}
 
+    sop           selected options
     plot          show the option payoff diagram
         """
         print(help_text)
@@ -93,28 +124,40 @@ Underlying Asset: {text}
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
-
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.payoff_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self,
@@ -122,107 +165,89 @@ Underlying Asset: {text}
             lambda _: "Command not recognized!",
         )(other_args)
 
-    def call_help(self, _):
-        """Process Help command"""
-        self.print_help()
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue
 
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return False
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        return self.queue
+
+    def call_help(self, _):
+        """Process help command"""
+        self.print_help()
+        return self.queue
 
     def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
-
-    def call_list(self, _):
-        """Lists available calls and puts"""
-        length = max(len(self.calls), len(self.puts)) - 1
-        print(
-            "Add an option using the index on the left, and not the actual strike price"
-        )
-        print("#\tcall\tput")
-        for i in range(length):
-            call = self.calls[i][0] if i < len(self.calls) else ""
-            put = self.puts[i][0] if i < len(self.puts) else ""
-            print(f"{i}\t{call}\t{put}")
+        """Process quit menu command"""
         print("")
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit"]
 
-    def call_add(self, other_args: List[str]):
-        """Process add command"""
-        self.add_option(other_args)
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "quit", "quit"]
 
-    def call_rmv(self, other_args: List[str]):
-        """Process rmv command"""
-        self.rmv_option(other_args)
+    def call_reset(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "payoff")
+            if self.expiration:
+                self.queue.insert(0, f"exp {self.expiration}")
+            if self.ticker:
+                self.queue.insert(0, f"load {self.ticker}")
+            self.queue.insert(0, "options")
+            self.queue.insert(0, "stocks")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
 
-    def call_pick(self, other_args: List[str]):
-        """Process pick command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="long",
-            description="This function plots option payoff diagrams",
-        )
-        parser.add_argument(
-            "-t",
-            "--type",
-            dest="type",
-            type=str,
-            help="choose what you would like to do with the underlying asset, choose from: long, short, or none",
-            required="-h" not in other_args,
-        )
+        reset_commands = ["quit", "quit", "quit", "reset", "stocks", "options"]
+        if self.ticker:
+            reset_commands.append(f"load {self.ticker}")
+        if self.expiration:
+            reset_commands.append(f"exp -d {self.expiration}")
+        reset_commands.append("payoff")
 
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-t")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if ns_parser.type == "long":
-            self.underlying = 1
-        elif ns_parser.type == "none":
-            self.underlying = 0
-        elif ns_parser.type == "short":
-            self.underlying = -1
-
-        self.print_help()
+        return reset_commands
 
     @try_except
-    def call_plot(self, other_args):
-        """Process plot command"""
+    def call_list(self, other_args):
+        """Lists available calls and puts"""
         parser = argparse.ArgumentParser(
             add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="plot",
-            description="This function plots option payoff diagrams",
+            prog="list",
+            description="""Lists available calls and puts.""",
         )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        plot_payoff(
-            self.current_price,
-            self.options,
-            self.underlying,
-            self.ticker,
-            self.expiration,
-        )
-
-    def show_setup(self, nl: bool = False):
-        """Shows the current assets to display in the diagram"""
-        print("#\tType\tHold\tStrike\tCost")
-        for i, o in enumerate(self.options):
-            sign = "Long" if o["sign"] == 1 else "Short"
-            print(f"{i}\t{o['type']}\t{sign}\t{o['strike']}\t{o['cost']}")
-        if nl:
+        if ns_parser:
+            length = max(len(self.calls), len(self.puts)) - 1
+            print("#\tcall\tput")
+            for i in range(length):
+                call = self.calls[i][0] if i < len(self.calls) else ""
+                put = self.puts[i][0] if i < len(self.puts) else ""
+                print(f"{i}\t{call}\t{put}")
             print("")
 
+        return self.queue
+
     @try_except
-    def add_option(self, other_args: List[str]):
-        """Add an option to the diagram"""
+    def call_add(self, other_args: List[str]):
+        """Process add command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="add",
@@ -248,70 +273,61 @@ Underlying Asset: {text}
             "-i",
             "--index",
             dest="index",
-            type=int,
+            type=check_non_negative,
             help="list index of the option",
             required="-h" not in other_args and "-k" not in other_args,
+            choices=self.put_index_choices
+            if "-p" in other_args
+            else self.call_index_choices,
         )
-
-        parser.add_argument(
-            "-k",
-            "--strike",
-            dest="strike",
-            type=float,
-            help="strike price for the option",
-            default=None,
-        )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-i")
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            opt_type = "put" if ns_parser.put else "call"
+            sign = -1 if ns_parser.short else 1
+            options_list = self.puts if ns_parser.put else self.calls
 
-        opt_type = "put" if ns_parser.put else "call"
-        sign = -1 if ns_parser.short else 1
-        options_list = self.puts if ns_parser.put else self.calls
-        if ns_parser.strike is None:
-            index = ns_parser.index
-        elif float(ns_parser.strike) in [float(x[0]) for x in options_list]:
-            index = filter(
-                lambda x: float(x[0]) == float(ns_parser.strike), options_list
-            )
-            index = options_list.index(list(index)[0])
-            print(index)
-        else:
-            print("Invalid strike price, please select a valid price from the list")
-            return
-        try:
-            strike = options_list[index][0]
-            cost = options_list[index][1]
-        except IndexError:
-            print("Please use the index, and not the strike price\n")
-            return
+            if ns_parser.index < len(options_list):
+                strike = options_list[ns_parser.index][0]
+                cost = options_list[ns_parser.index][1]
 
-        option = {"type": opt_type, "sign": sign, "strike": strike, "cost": cost}
-        self.options.append(option)
+                option = {
+                    "type": opt_type,
+                    "sign": sign,
+                    "strike": strike,
+                    "cost": cost,
+                }
+                self.options.append(option)
 
-        self.show_setup(True)
+                print("#\tType\tHold\tStrike\tCost")
+                for i, o in enumerate(self.options):
+                    asset: str = "Long" if o["sign"] == 1 else "Short"
+                    print(f"{i}\t{o['type']}\t{asset}\t{o['strike']}\t{o['cost']}")
+                print("")
+
+            else:
+                print("Please use a valid index\n")
+
+        return self.queue
 
     @try_except
-    def rmv_option(self, other_args: List[str]):
-        """Remove one of the options from the diagram"""
+    def call_rmv(self, other_args: List[str]):
+        """Process rmv command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="rmv",
             description="""Remove one of the options to be shown in the payoff.""",
         )
-
         parser.add_argument(
-            "-k",
-            "--strike",
-            dest="strike",
-            type=int,
-            help="strike price for option",
+            "-i",
+            "--index",
+            dest="index",
+            type=check_non_negative,
+            help="index of the option to remove",
+            required=bool("-h" not in other_args and len(self.options) > 0),
+            choices=range(len(self.options)),
         )
-
         parser.add_argument(
             "-a",
             "--all",
@@ -320,52 +336,179 @@ Underlying Asset: {text}
             help="remove all of the options",
             default=False,
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-k")
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            if self.options:
+                if ns_parser.all:
+                    self.options = []
+                else:
+                    if ns_parser.index < len(self.options):
+                        del self.options[ns_parser.index]
+                    else:
+                        print("Please use a valid index.\n")
 
-        if ns_parser.all:
-            self.options = []
+                print("#\tType\tHold\tStrike\tCost")
+                for i, o in enumerate(self.options):
+                    sign = "Long" if o["sign"] == 1 else "Short"
+                    print(f"{i}\t{o['type']}\t{sign}\t{o['strike']}\t{o['cost']}")
+                print("")
         else:
-            try:
-                del self.options[ns_parser.strike]
-            except IndexError:
-                print("Please use the index, and not the strike price\n")
-                return
+            print("No options have been selected, removing them is not possible\n")
 
-        self.show_setup(True)
+        return self.queue
+
+    def call_pick(self, other_args: List[str]):
+        """Process pick command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="long",
+            description="This function plots option payoff diagrams",
+        )
+        parser.add_argument(
+            "-t",
+            "--type",
+            dest="underlyingtype",
+            type=str,
+            help="Choose what you would like to do with the underlying asset",
+            required="-h" not in other_args,
+            choices=self.underlying_asset_choices,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if ns_parser.underlyingtype == "long":
+                self.underlying = 1
+            elif ns_parser.underlyingtype == "none":
+                self.underlying = 0
+            elif ns_parser.underlyingtype == "short":
+                self.underlying = -1
+
+        print("")
+        return self.queue
+
+    @try_except
+    def call_sop(self, other_args):
+        """Process sop command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="sop",
+            description="Displays selected option",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            print("#\tType\tHold\tStrike\tCost")
+            for i, o in enumerate(self.options):
+                sign = "Long" if o["sign"] == 1 else "Short"
+                print(f"{i}\t{o['type']}\t{sign}\t{o['strike']}\t{o['cost']}")
+            print("")
+
+        return self.queue
+
+    @try_except
+    def call_plot(self, other_args):
+        """Process plot command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="plot",
+            description="This function plots option payoff diagrams",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            plot_payoff(
+                self.current_price,
+                self.options,
+                self.underlying,
+                self.ticker,
+                self.expiration,
+            )
+
+        return self.queue
 
 
-def menu(ticker: str, expiration: str):
-    """Options Payoff Menu"""
-    plt.close("all")
-    payoff_controller = PayoffController(ticker, expiration)
-    payoff_controller.call_help(None)
+def menu(ticker: str, expiration: str, queue: List[str] = None):
+    """Payoff Menu"""
+    payoff_controller = PayoffController(ticker, expiration, queue)
+    an_input = "HELP_ME"
 
     while True:
+        # There is a command in the queue
+        if payoff_controller.queue and len(payoff_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
+            if payoff_controller.queue[0] in ("q", "..", "quit"):
+                print("")
+                if len(payoff_controller.queue) > 1:
+                    return payoff_controller.queue[1:]
+                return []
+
+            # Consume 1 element from the queue
+            an_input = payoff_controller.queue[0]
+            payoff_controller.queue = payoff_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
+            if (
+                an_input
+                and an_input.split(" ")[0] in payoff_controller.CHOICES_COMMANDS
+            ):
+                print(f"{get_flair()} /stocks/options/payoff/ $ {an_input}")
+
         # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in payoff_controller.CHOICES}
-            )
-            an_input = session.prompt(
-                f"{get_flair()} (stocks)>(options)>(payoff)> ",
-                completer=completer,
-            )
         else:
-            an_input = input(f"{get_flair()} (stocks)>(options)>(payoff)> ")
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
+                payoff_controller.print_help()
+
+            # Get input from user using auto-completion
+            if session and gtff.USE_PROMPT_TOOLKIT and payoff_controller.choices:
+                if payoff_controller.options:
+                    payoff_controller.choices["rmv"] = {
+                        str(c): {} for c in range(len(payoff_controller.options))
+                    }
+                completer = NestedCompleter.from_nested_dict(payoff_controller.choices)
+                an_input = session.prompt(
+                    f"{get_flair()} /stocks/options/payoff/ $ ",
+                    completer=completer,
+                    search_ignore_case=True,
+                )
+            # Get input from user without auto-completion
+            else:
+                an_input = input(f"{get_flair()} /stocks/options/payoff/ $ ")
 
         try:
-            plt.close("all")
-
-            process_input = payoff_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            # Process the input command
+            payoff_controller.queue = payoff_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            continue
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/options/payoff menu.",
+                end="",
+            )
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                payoff_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
+            if similar_cmd:
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        payoff_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
+                else:
+                    an_input = similar_cmd[0]
+
+                print(f" Replacing by '{an_input}'.")
+                payoff_controller.queue.insert(0, an_input)
+            else:
+                print("\n")

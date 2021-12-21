@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/TSLA?events=div%2Csplits&includePrePost=False&interval=1d&period1=1598220000&period2=1635980400
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1639774808,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":932.57,"chartPreviousClose":932.57,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1639751400,"start":1639731600,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1639774800,"start":1639751400,"gmtoffset":-18000},"post":{"timezone":"EST","end":1639789200,"start":1639774800,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1639751400,1639774808],"indicators":{"quote":[{"volume":[33479100,33626772],"low":[909.0399780273438,909.0401000976562],"open":[914.77001953125,914.77001953125],"high":[960.6599731445312,960.659912109375],"close":[932.5700073242188,932.5700073242188]}],"adjclose":[{"adjclose":[932.5700073242188,932.5700073242188]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1045'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Sun, 19 Dec 2021 08:29:15 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '5'
+      x-request-id:
+      - 137a4bdd-9b38-4657-8604-f48ffb2f2e21
+      x-yahoo-request-id:
+      - 3gme57hgrtrar
+      y-rid:
+      - 3gme57hgrtrar
+    status:
+      code: 200
+      message: OK
+version: 1

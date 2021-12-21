@@ -7,6 +7,7 @@ import random
 import subprocess  # nosec
 import sys
 from datetime import datetime
+from typing import List
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -355,7 +356,7 @@ def update_terminal():
 def about_us():
     """Prints an about us section"""
     print(
-        f"\n{Fore.GREEN}Thanks for using Gamestonk Terminal. This is our way!{Style.RESET_ALL}\n"
+        f"{Fore.GREEN}Thanks for using Gamestonk Terminal. This is our way!{Style.RESET_ALL}\n"
         "\n"
         f"{Fore.CYAN}Join our community on discord: {Style.RESET_ALL}https://discord.gg/Up2QGbMKHY\n"
         f"{Fore.CYAN}Follow our twitter for updates: {Style.RESET_ALL}https://twitter.com/gamestonkt\n"
@@ -372,9 +373,29 @@ def about_us():
         "markets, carefully consider your investment objectives, level of experience, and risk appetite, and seek "
         "professional advice where needed. The data contained in Gamestonk Terminal (GST) is not necessarily accurate. "
         "GST and any provider of the data contained in this website will not accept liability for any loss or damage "
-        "as a result of your trading, or your reliance on the information displayed."
-        f"\n{Style.RESET_ALL}"
+        f"as a result of your trading, or your reliance on the information displayed.{Style.RESET_ALL}"
     )
+
+
+def usage_instructions():
+    """Prints an usage instructions section"""
+    help_text = """USAGE INSTRUCTIONS
+
+The main commands you should be aware when navigating through the terminal are:
+    cls      clear the screen
+    h / ?    help menu
+    q / ..   quit this menu and go one menu above
+    exit     exit the terminal
+    r        reset the terminal and reload configs from the current location
+    cd       jump into a menu in an absolute way (e.g. if in crypto I can do 'cd stocks/disc/')
+
+Multiple jobs queue (where each '/' denotes a new command). E.g.
+    /stocks $ disc/ugs -n 3/../load tsla/candle
+
+The previous logic also holds for when launching the terminal. E.g.
+    python terminal.py /stocks/disc/ugs -n 3/../load tsla/candle
+"""
+    print(help_text)
 
 
 def bootup():
@@ -393,7 +414,7 @@ def bootup():
         print(e, "\n")
 
     # Print first welcome message and help
-    print("\nWelcome to Gamestonk Terminal Beta")
+    print("\nWelcome to Gamestonk Terminal Beta\n")
 
     # The commit has was commented out because the terminal was crashing due to git import for multiple users
     # ({str(git.Repo('.').head.commit)[:7]})
@@ -408,15 +429,21 @@ def bootup():
         print("")
 
 
-def reset(menu_prior_to_reset=""):
+def reset(queue: List[str] = None):
     """Resets the terminal.  Allows for checking code or keys without quitting"""
     print("resetting...")
     plt.close("all")
 
-    arg = f" {menu_prior_to_reset}" if menu_prior_to_reset else ""
-    completed_process = subprocess.run(  # nosec
-        f"{sys.executable} terminal.py{arg}", shell=True, check=False
-    )
+    if queue and len(queue) > 0:
+        completed_process = subprocess.run(  # nosec
+            f"{sys.executable} terminal.py {'/'.join(queue) if len(queue) > 0 else ''}",
+            shell=True,
+            check=False,
+        )
+    else:
+        completed_process = subprocess.run(  # nosec
+            f"{sys.executable} terminal.py", shell=True, check=False
+        )
     if completed_process.returncode != 0:
         print("Unfortunately, resetting wasn't possible!\n")
 

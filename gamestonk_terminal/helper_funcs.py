@@ -97,6 +97,14 @@ def check_non_negative(value) -> int:
     return new_value
 
 
+def check_non_negative_float(value) -> float:
+    """Argparse type to check non negative int"""
+    new_value = float(value)
+    if new_value < 0:
+        raise argparse.ArgumentTypeError(f"{value} is negative")
+    return new_value
+
+
 def check_positive_list(value) -> List[int]:
     """Argparse type to return list of positive ints"""
     list_of_nums = value.split(",")
@@ -570,7 +578,12 @@ def parse_known_args_and_warn(
     if gtff.USE_CLEAR_AFTER_CMD:
         system_clear()
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
+    except SystemExit:
+        # In case the command has required argument that isn't specified
+        print("")
+        return None
 
     if ns_parser.help:
         parser.print_help()
@@ -789,6 +802,7 @@ def try_except(f):
             return f(*args, **kwargs)
         except Exception as e:
             logger.exception("%s", type(e).__name__)
+            return []
 
     return inner
 

@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
+from requests.adapters import RetryError
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     percent_to_float,
     create_df_index,
@@ -37,6 +38,56 @@ CATEGORIES = {
     "most_visited": 4,
 }
 
+GAINERS_FILTERS = ["Rank", "Symbol", "Name", "Volume", "Price", "Change"]
+TRENDING_FILTERS = [
+    "Rank",
+    "Name",
+    "Price_BTC",
+    "Price_USD",
+]
+RECENTLY_FILTERS = [
+    "Rank",
+    "Name",
+    "Symbol",
+    "Price",
+    "Change_1h",
+    "Change_24h",
+    "Added",
+    "Url",
+]
+
+YFARMS_FILTERS = [
+    "Rank",
+    "Name",
+    "Value_Locked",
+    "Return_Year",
+]
+
+CAP_FILTERS = [
+    "Rank",
+    "Name",
+    "Symbol",
+    "Price",
+    "Change_1h",
+    "Change_24h",
+    "Change_7d",
+    "Volume_24h",
+    "Market_Cap",
+]
+
+DEX_FILTERS = [
+    "Name",
+    "Rank",
+    "Volume_24h",
+    "Coins",
+    "Pairs",
+    "Visits",
+    "Most_Traded",
+    "Market_Share",
+]
+
+# TODO: convert Volume and other str that should be int to int otherwise sort won't work
+
 
 def get_gainers_or_losers(period: str = "1h", typ: str = "gainers") -> pd.DataFrame:
     """Scrape data about top gainers - coins which gain the most in given period and
@@ -66,7 +117,12 @@ def get_gainers_or_losers(period: str = "1h", typ: str = "gainers") -> pd.DataFr
         )
 
     url = f"https://www.coingecko.com/en/coins/trending{PERIODS.get(period)}"
-    rows = scrape_gecko_data(url).find_all("tbody")[category.get(typ)].find_all("tr")
+    try:
+        scraped_data = scrape_gecko_data(url)
+    except RetryError as e:
+        print(e)
+        return pd.DataFrame()
+    rows = scraped_data.find_all("tbody")[category.get(typ)].find_all("tr")
     results = []
     for row in rows:
         url = GECKO_BASE_URL + row.find("a")["href"]
@@ -117,9 +173,14 @@ def get_discovered_coins(category: str = "trending") -> pd.DataFrame:
             f"Wrong category name\nPlease chose one from list: {CATEGORIES.keys()}"
         )
     url = "https://www.coingecko.com/en/discover"
-    popular = scrape_gecko_data(url).find_all(
-        "div", class_="col-12 col-sm-6 col-md-6 col-lg-4"
-    )[CATEGORIES[category]]
+    try:
+        scraped_data = scrape_gecko_data(url)
+    except RetryError as e:
+        print(e)
+        return pd.DataFrame()
+    popular = scraped_data.find_all("div", class_="col-12 col-sm-6 col-md-6 col-lg-4")[
+        CATEGORIES[category]
+    ]
     rows = popular.find_all("a")
     results = []
     btc_price = get_btc_price()
@@ -165,7 +226,12 @@ def get_recently_added_coins() -> pd.DataFrame:
     ]
 
     url = "https://www.coingecko.com/en/coins/recently_added"
-    rows = scrape_gecko_data(url).find("tbody").find_all("tr")
+    try:
+        scraped_data = scrape_gecko_data(url)
+    except RetryError as e:
+        print(e)
+        return pd.DataFrame()
+    rows = scraped_data.find("tbody").find_all("tr")
     results = []
 
     for row in rows:
@@ -211,7 +277,12 @@ def get_yield_farms() -> pd.DataFrame:
         "Return_Year",
     ]
     url = "https://www.coingecko.com/en/yield-farming"
-    rows = scrape_gecko_data(url).find("tbody").find_all("tr")
+    try:
+        scraped_data = scrape_gecko_data(url)
+    except RetryError as e:
+        print(e)
+        return pd.DataFrame()
+    rows = scraped_data.find("tbody").find_all("tr")
     results = []
     for row in rows:
         row_cleaned = clean_row(row)[:-2]
@@ -276,7 +347,12 @@ def get_top_volume_coins() -> pd.DataFrame:
         "Market_Cap",
     ]
     url = "https://www.coingecko.com/en/coins/high_volume"
-    rows = scrape_gecko_data(url).find("tbody").find_all("tr")
+    try:
+        scraped_data = scrape_gecko_data(url)
+    except RetryError as e:
+        print(e)
+        return pd.DataFrame()
+    rows = scraped_data.find("tbody").find_all("tr")
     results = []
     for row in rows:
         row_cleaned = clean_row(row)
@@ -302,7 +378,12 @@ def get_top_defi_coins() -> pd.DataFrame:
     """
 
     url = "https://www.coingecko.com/en/defi"
-    rows = scrape_gecko_data(url).find("tbody").find_all("tr")
+    try:
+        scraped_data = scrape_gecko_data(url)
+    except RetryError as e:
+        print(e)
+        return pd.DataFrame()
+    rows = scraped_data.find("tbody").find_all("tr")
     results = []
     for row in rows:
 
@@ -362,7 +443,12 @@ def get_top_dexes() -> pd.DataFrame:
         "Market_Share",
     ]
     url = "https://www.coingecko.com/en/dex"
-    rows = scrape_gecko_data(url).find("tbody").find_all("tr")
+    try:
+        scraped_data = scrape_gecko_data(url)
+    except RetryError as e:
+        print(e)
+        return pd.DataFrame()
+    rows = scraped_data.find("tbody").find_all("tr")
     results = []
     for row in rows:
         row_cleaned = clean_row(row)
@@ -399,7 +485,12 @@ def get_top_nfts() -> pd.DataFrame:
     """
 
     url = "https://www.coingecko.com/en/nft"
-    rows = scrape_gecko_data(url).find("tbody").find_all("tr")
+    try:
+        scraped_data = scrape_gecko_data(url)
+    except RetryError as e:
+        print(e)
+        return pd.DataFrame()
+    rows = scraped_data.find("tbody").find_all("tr")
     results = []
     for row in rows:
         link = GECKO_BASE_URL + row.find("a")["href"]

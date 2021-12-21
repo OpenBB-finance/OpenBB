@@ -1,16 +1,13 @@
-""" Disc Controller """
+""" Discovery Controller Module """
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines
 
 import argparse
 import difflib
-from typing import List
-
-from matplotlib import pyplot as plt
+from datetime import datetime
+from typing import List, Union
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED, get_flair
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_non_negative,
@@ -18,6 +15,9 @@ from gamestonk_terminal.helper_funcs import (
     check_int_range,
     try_except,
     system_clear,
+    get_flair,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    valid_date,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.discovery import (
@@ -28,23 +28,29 @@ from gamestonk_terminal.stocks.discovery import (
     yahoofinance_view,
     finnhub_view,
     geekofwallstreet_view,
-    financedatabase_view,
     nasdaq_view,
 )
 
 
-class DiscoveryController:
-    """Discovery Controller"""
+# pylint:disable=C0302
 
-    # Command choices
+
+class DiscoveryController:
+    """Discovery Controller class"""
+
     CHOICES = [
-        "?",
         "cls",
+        "home",
+        "h",
+        "?",
         "help",
         "q",
         "quit",
+        "..",
+        "exit",
+        "r",
+        "reset",
     ]
-
     CHOICES_COMMANDS = [
         "pipo",
         "fipo",
@@ -62,14 +68,51 @@ class DiscoveryController:
         "lowfloat",
         "hotpenny",
         "rtearn",
-        "fds",
         "cnews",
         "rtat",
     ]
-
     CHOICES += CHOICES_COMMANDS
 
-    def __init__(self):
+    arkord_sortby_choices = [
+        "date",
+        "volume",
+        "open",
+        "high",
+        "close",
+        "low",
+        "total",
+        "weight",
+        "shares",
+    ]
+    arkord_fund_choices = ["ARKK", "ARKF", "ARKW", "ARKQ", "ARKG", "ARKX", ""]
+    cnews_type_choices = [
+        nt.lower()
+        for nt in [
+            "Top-News",
+            "On-The-Move",
+            "Market-Pulse",
+            "Notable-Calls",
+            "Buybacks",
+            "Commodities",
+            "Crypto",
+            "Issuance",
+            "Global",
+            "Guidance",
+            "IPOs",
+            "SPACs",
+            "Politics",
+            "M-A",
+            "Consumer",
+            "Energy",
+            "Financials",
+            "Healthcare",
+            "MLPs",
+            "REITs",
+            "Technology",
+        ]
+    ]
+
+    def __init__(self, queue: List[str] = None):
         """Constructor"""
         self.disc_parser = argparse.ArgumentParser(add_help=False, prog="disc")
         self.disc_parser.add_argument(
@@ -77,16 +120,30 @@ class DiscoveryController:
             choices=self.CHOICES,
         )
 
-    @staticmethod
-    def print_help():
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+
+            choices: dict = {c: {} for c in self.CHOICES}
+            choices["arkord"]["-s"] = {c: None for c in self.arkord_sortby_choices}
+            choices["arkord"]["--sortby"] = {
+                c: None for c in self.arkord_sortby_choices
+            }
+            choices["arkord"]["-f"] = {c: None for c in self.arkord_fund_choices}
+            choices["arkord"]["--fund"] = {c: None for c in self.arkord_fund_choices}
+            choices["cnews"]["-t"] = {c: None for c in self.cnews_type_choices}
+            choices["cnews"]["--type"] = {c: None for c in self.cnews_type_choices}
+
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
+
+    def print_help(self):
         """Print help"""
         help_text = """
-Discovery:
-    cls            clear screen
-    ?/help         show this menu again
-    q              quit this menu, and shows back to main menu
-    quit           quit to abandon program
-
 Geek of Wall St:
     rtearn         realtime earnings from and expected moves
 Finnhub:
@@ -112,8 +169,6 @@ shortinterest.com
     lowfloat       low float stocks under 10M shares float
 pennystockflow.com
     hotpenny       today's hot penny stocks
-Finance Database:
-    fds            advanced Equities search based on country, sector, industry, name and/or description
 NASDAQ Data Link (Formerly Quandl):
     rtat           top 10 retail traded stocks per day
 """
@@ -124,27 +179,40 @@ NASDAQ Data Link (Formerly Quandl):
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.disc_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self,
@@ -152,17 +220,49 @@ NASDAQ Data Link (Formerly Quandl):
             lambda _: "Command not recognized!",
         )(other_args)
 
-    def call_help(self, _):
-        """Process Help command"""
-        self.print_help()
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue
 
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return False
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        return self.queue
+
+    def call_help(self, _):
+        """Process help command"""
+        self.print_help()
+        return self.queue
 
     def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+        """Process quit menu command"""
+        print("")
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit"]
+
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "quit"]
+
+    def call_reset(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "disc")
+            self.queue.insert(0, "stocks")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "reset", "stocks", "disc"]
 
     @try_except
     def call_rtearn(self, other_args: List[str]):
@@ -175,19 +275,13 @@ NASDAQ Data Link (Formerly Quandl):
                 Realtime earnings data and expected moves. [Source: https://thegeekofwallstreet.com]
             """,
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            geekofwallstreet_view.display_realtime_earnings(ns_parser.export)
 
-        geekofwallstreet_view.display_realtime_earnings(ns_parser.export)
+        return self.queue
 
     @try_except
     def call_pipo(self, other_args: List[str]):
@@ -201,34 +295,26 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="num",
+            dest="limit",
             type=check_non_negative,
             default=5,
-            help="Number of past days to look for IPOs.",
+            help="Limit of past days to look for IPOs.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
+        if ns_parser:
+            finnhub_view.past_ipo(
+                num_days_behind=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        finnhub_view.past_ipo(
-            num_days_behind=ns_parser.num,
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_fipo(self, other_args: List[str]):
@@ -242,33 +328,26 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="num",
+            dest="limit",
             type=check_non_negative,
             default=5,
-            help="Number of future days to look for IPOs.",
+            help="Limit of future days to look for IPOs.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if other_args and "-" not in other_args[0]:
-            other_args.insert(0, "-n")
+        if ns_parser:
+            finnhub_view.future_ipo(
+                num_days_ahead=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        finnhub_view.future_ipo(
-            num_days_ahead=ns_parser.num,
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_gainers(self, other_args: List[str]):
@@ -280,34 +359,26 @@ NASDAQ Data Link (Formerly Quandl):
             description="Print up to 25 top gainers. [Source: Yahoo Finance]",
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="num",
+            dest="limit",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of stocks to display.",
+            help="Limit of stocks to display.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
+        if ns_parser:
+            yahoofinance_view.display_gainers(
+                num_stocks=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        yahoofinance_view.display_gainers(
-            num_stocks=ns_parser.num,
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_losers(self, other_args: List[str]):
@@ -319,34 +390,26 @@ NASDAQ Data Link (Formerly Quandl):
             description="Print up to 25 top losers. [Source: Yahoo Finance]",
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="num",
+            dest="limit",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of stocks to display.",
+            help="Limit of stocks to display.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
+        if ns_parser:
+            yahoofinance_view.display_losers(
+                num_stocks=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        yahoofinance_view.display_losers(
-            num_stocks=ns_parser.num,
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_ugs(self, other_args: List[str]):
@@ -361,34 +424,26 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="num",
+            dest="limit",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of stocks to display.",
+            help="Limit of stocks to display.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
+        if ns_parser:
+            yahoofinance_view.display_ugs(
+                num_stocks=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        yahoofinance_view.display_ugs(
-            num_stocks=ns_parser.num,
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_gtech(self, other_args: List[str]):
@@ -402,34 +457,26 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="num",
+            dest="limit",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of stocks to display.",
+            help="Limit of stocks to display.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
+        if ns_parser:
+            yahoofinance_view.display_gtech(
+                num_stocks=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        yahoofinance_view.display_gtech(
-            num_stocks=ns_parser.num,
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_active(self, other_args: List[str]):
@@ -443,34 +490,26 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="num",
+            dest="limit",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of stocks to display.",
+            help="Limit of stocks to display.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
+        if ns_parser:
+            yahoofinance_view.display_active(
+                num_stocks=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        yahoofinance_view.display_active(
-            num_stocks=ns_parser.num,
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_ulc(self, other_args: List[str]):
@@ -484,34 +523,26 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="num",
+            dest="limit",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of the stocks to display.",
+            help="Limit of stocks to display.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
+        if ns_parser:
+            yahoofinance_view.display_ulc(
+                num_stocks=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        yahoofinance_view.display_ulc(
-            num_stocks=ns_parser.num,
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_asc(self, other_args: List[str]):
@@ -525,34 +556,26 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="num",
+            dest="limit",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of the stocks to display.",
+            help="Limit of stocks to display.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
+        if ns_parser:
+            yahoofinance_view.display_asc(
+                num_stocks=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        yahoofinance_view.display_asc(
-            num_stocks=ns_parser.num,
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_ford(self, other_args: List[str]):
@@ -569,34 +592,26 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
-            type=check_positive,
-            default=10,
-            help="Number of top ordered stocks to be printed.",
+            dest="limit",
+            type=check_int_range(1, 25),
+            default=5,
+            help="Limit of stocks to display.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
+        if ns_parser:
+            fidelity_view.orders_view(
+                num=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        fidelity_view.orders_view(
-            num=ns_parser.n_num,
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_arkord(self, other_args: List[str]):
@@ -610,29 +625,19 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=10,
-            help="Last N ARK orders.",
+            help="Limit of stocks to display.",
         )
         parser.add_argument(
             "-s",
             "--sortby",
             dest="sort_col",
-            choices=[
-                "date",
-                "volume",
-                "open",
-                "high",
-                "close",
-                "low",
-                "total",
-                "weight",
-                "shares",
-            ],
+            choices=self.arkord_sortby_choices,
             nargs="+",
             help="Column to sort by",
             default="",
@@ -668,32 +673,25 @@ NASDAQ Data Link (Formerly Quandl):
             default="",
             help="Filter by fund",
             dest="fund",
-            choices=["ARKK", "ARKF", "ARKW", "ARKQ", "ARKG", "ARKX", ""],
+            choices=self.arkord_fund_choices,
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if other_args and "-" not in other_args[0]:
-            other_args.insert(0, "-n")
+        if ns_parser:
+            ark_view.ark_orders_view(
+                num=ns_parser.limit,
+                sort_col=ns_parser.sort_col,
+                ascending=ns_parser.ascend,
+                buys_only=ns_parser.buys_only,
+                sells_only=ns_parser.sells_only,
+                fund=ns_parser.fund,
+                export=ns_parser.export,
+            )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        ark_view.ark_orders_view(
-            num=ns_parser.n_num,
-            sort_col=ns_parser.sort_col,
-            ascending=ns_parser.ascend,
-            buys_only=ns_parser.buys_only,
-            sells_only=ns_parser.sells_only,
-            fund=ns_parser.fund,
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_upcoming(self, other_args: List[str]):
@@ -706,6 +704,15 @@ NASDAQ Data Link (Formerly Quandl):
             description="""Upcoming earnings release dates. [Source: Seeking Alpha]""",
         )
         parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=1,
+            help="Limit of upcoming earnings release dates to display.",
+        )
+        parser.add_argument(
             "-p",
             "--pages",
             action="store",
@@ -714,36 +721,19 @@ NASDAQ Data Link (Formerly Quandl):
             default=10,
             help="Number of pages to read upcoming earnings from in Seeking Alpha website.",
         )
-        parser.add_argument(
-            "-n",
-            "--num",
-            action="store",
-            dest="n_num",
-            type=check_positive,
-            default=1,
-            help="Number of upcoming earnings release dates to display",
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
+        if ns_parser:
+            seeking_alpha_view.upcoming_earning_release_dates(
+                num_pages=ns_parser.n_pages,
+                num_earnings=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        seeking_alpha_view.upcoming_earning_release_dates(
-            num_pages=ns_parser.n_pages,
-            num_earnings=ns_parser.n_num,
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_trending(self, other_args: List[str]):
@@ -764,36 +754,36 @@ NASDAQ Data Link (Formerly Quandl):
             help="article ID",
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=5,
-            help="number of articles being printed",
+            help="limit of articles being printed",
         )
-
         parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+            "-d",
+            "--date",
+            action="store",
+            dest="s_date",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            help="starting date of articles",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-i")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        seeking_alpha_view.news(
-            article_id=ns_parser.n_id,
-            num=ns_parser.n_num,
-            export=ns_parser.export,
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-i")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            seeking_alpha_view.news(
+                article_id=ns_parser.n_id,
+                num=ns_parser.limit,
+                export=ns_parser.export,
+            )
+
+        return self.queue
 
     @try_except
     def call_lowfloat(self, other_args: List[str]):
@@ -811,30 +801,26 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
-            default=10,
-            help="Number of top stocks to print.",
+            default=5,
+            help="limit of stocks to display",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            shortinterest_view.low_float(
+                num=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
-        shortinterest_view.low_float(
-            num=ns_parser.n_num,
-            export=ns_parser.export,
-        )
+        return self.queue
 
     @try_except
     def call_cnews(self, other_args: List[str]):
@@ -845,68 +831,38 @@ NASDAQ Data Link (Formerly Quandl):
             prog="cnews",
             description="""Customized news. [Source: Seeking Alpha]""",
         )
-        l_news_type = [
-            "Top-News",
-            "On-The-Move",
-            "Market-Pulse",
-            "Notable-Calls",
-            "Buybacks",
-            "Commodities",
-            "Crypto",
-            "Issuance",
-            "Global",
-            "Guidance",
-            "IPOs",
-            "SPACs",
-            "Politics",
-            "M-A",
-            "Consumer",
-            "Energy",
-            "Financials",
-            "Healthcare",
-            "MLPs",
-            "REITs",
-            "Technology",
-        ]
         parser.add_argument(
             "-t",
             "--type",
             action="store",
             dest="s_type",
-            choices=[tnews.lower() for tnews in l_news_type],
+            choices=self.cnews_type_choices,
             default="Top-News",
             help="number of news to display",
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=5,
-            help="number of news to display",
+            help="limit of news to display",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-t")
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        seeking_alpha_view.display_news(
-            news_type=ns_parser.s_type,
-            num=ns_parser.n_num,
-            export=ns_parser.export,
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            seeking_alpha_view.display_news(
+                news_type=ns_parser.s_type,
+                num=ns_parser.limit,
+                export=ns_parser.export,
+            )
+
+        return self.queue
 
     @try_except
     def call_hotpenny(self, other_args: List[str]):
@@ -926,139 +882,27 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
-            default=10,
-            help="Number of top stocks to print.",
+            default=5,
+            help="limit of stocks to display",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            shortinterest_view.hot_penny_stocks(
+                num=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
-        shortinterest_view.hot_penny_stocks(
-            num=ns_parser.n_num,
-            export=ns_parser.export,
-        )
-
-    @try_except
-    def call_fds(self, other_args: List[str]):
-        """Process fds command"""
-        parser = argparse.ArgumentParser(
-            description="Display a selection of Equities based on country, sector, industry, name and/or description "
-            "filtered by market cap. If no arguments are given, return the equities with the highest "
-            "market cap. [Source: Finance Database]",
-            add_help=False,
-        )
-
-        parser.add_argument(
-            "-c",
-            "--country",
-            default=None,
-            nargs="+",
-            dest="country",
-            help="Specify the Equities selection based on a country",
-        )
-
-        parser.add_argument(
-            "-s",
-            "--sector",
-            default=None,
-            nargs="+",
-            dest="sector",
-            help="Specify the Equities selection based on a sector",
-        )
-
-        parser.add_argument(
-            "-i",
-            "--industry",
-            default=None,
-            nargs="+",
-            dest="industry",
-            help="Specify the Equities selection based on an industry",
-        )
-
-        parser.add_argument(
-            "-n",
-            "--name",
-            default=None,
-            nargs="+",
-            dest="name",
-            help="Specify the Equities selection based on the name",
-        )
-
-        parser.add_argument(
-            "-d",
-            "--description",
-            default=None,
-            nargs="+",
-            dest="description",
-            help="Specify the Equities selection based on the description (not shown in table)",
-        )
-
-        parser.add_argument(
-            "-m",
-            "--marketcap",
-            default=["Large"],
-            choices=["Small", "Mid", "Large"],
-            nargs="+",
-            dest="marketcap",
-            type=str.title,
-            help="Specify the Equities selection based on Market Cap",
-        )
-
-        parser.add_argument(
-            "-ie",
-            "--include_exchanges",
-            action="store_false",
-            help="When used, data from different exchanges is also included. This leads to a much larger "
-            "pool of data due to the same company being listed on multiple exchanges",
-        )
-
-        parser.add_argument(
-            "-a",
-            "--amount",
-            default=10,
-            type=int,
-            dest="amount",
-            help="Enter the number of Equities you wish to see in the Tabulate window",
-        )
-
-        parser.add_argument(
-            "-o",
-            "--options ",
-            choices=["countries", "sectors", "industries"],
-            default=None,
-            dest="options",
-            help="Obtain the available options for country, sector and industry",
-        )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-
-        if not ns_parser:
-            return
-
-        financedatabase_view.show_equities(
-            country=ns_parser.country,
-            sector=ns_parser.sector,
-            industry=ns_parser.industry,
-            name=ns_parser.name,
-            description=ns_parser.description,
-            marketcap=ns_parser.marketcap,
-            include_exchanges=ns_parser.include_exchanges,
-            amount=ns_parser.amount,
-            options=ns_parser.options,
-        )
+        return self.queue
 
     @try_except
     def call_rtat(self, other_args: List[str]):
@@ -1074,57 +918,97 @@ NASDAQ Data Link (Formerly Quandl):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
-            dest="n_days",
-            help="Number of days to show",
-            default=3,
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
             type=check_positive,
+            default=3,
+            help="limit of days to display",
         )
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-        nasdaq_view.display_top_retail(n_days=ns_parser.n_days, export=ns_parser.export)
+        if ns_parser:
+            nasdaq_view.display_top_retail(
+                n_days=ns_parser.limit, export=ns_parser.export
+            )
+
+        return self.queue
 
 
-def menu():
+def menu(queue: List[str] = None):
     """Discovery Menu"""
+    disc_controller = DiscoveryController(queue)
+    an_input = "HELP_ME"
 
-    disc_controller = DiscoveryController()
-    disc_controller.call_help(None)
-
-    # Loop forever and ever
     while True:
-        # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in disc_controller.CHOICES}
-            )
+        # There is a command in the queue
+        if disc_controller.queue and len(disc_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
+            if disc_controller.queue[0] in ("q", "..", "quit"):
+                print("")
+                if len(disc_controller.queue) > 1:
+                    return disc_controller.queue[1:]
+                return []
 
-            an_input = session.prompt(
-                f"{get_flair()} (stocks)>(disc)> ",
-                completer=completer,
-            )
+            # Consume 1 element from the queue
+            an_input = disc_controller.queue[0]
+            disc_controller.queue = disc_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
+            if an_input and an_input.split(" ")[0] in disc_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /stocks/disc/ $ {an_input}")
+
+        # Get input command from user
         else:
-            an_input = input(f"{get_flair()} (stocks)>(disc)> ")
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
+                disc_controller.print_help()
+
+            # Get input from user using auto-completion
+            if session and gtff.USE_PROMPT_TOOLKIT and disc_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /stocks/disc/ $ ",
+                    completer=disc_controller.completer,
+                    search_ignore_case=True,
+                )
+            # Get input from user without auto-completion
+            else:
+                an_input = input(f"{get_flair()} /stocks/disc/ $ ")
 
         try:
-            plt.close("all")
-
-            process_input = disc_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            # Process the input command
+            disc_controller.queue = disc_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            similar_cmd = difflib.get_close_matches(
-                an_input, disc_controller.CHOICES, n=1, cutoff=0.7
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/disc menu.",
+                end="",
             )
-
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                disc_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
-            continue
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        disc_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
+                else:
+                    an_input = similar_cmd[0]
+
+                print(f" Replacing by '{an_input}'.")
+                disc_controller.queue.insert(0, an_input)
+            else:
+                print("\n")

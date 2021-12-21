@@ -1,10 +1,9 @@
 """Behavioural Analysis Controller Module"""
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines
 
 import argparse
 import difflib
-from typing import List
+from typing import List, Union
 from datetime import datetime, timedelta
 import textwrap
 from prompt_toolkit.completion import NestedCompleter
@@ -28,18 +27,32 @@ from gamestonk_terminal.common.behavioural_analysis import (
     stocktwits_view,
     finbrain_view,
     finnhub_view,
-    sentimentinvestor_view,
     twitter_view,
 )
 from gamestonk_terminal.stocks import stocks_helper
+
+# pylint:disable=R0904,C0302
 
 
 class BehaviouralAnalysisController:
     """Behavioural Analysis Controller class"""
 
     # Command choices
-    CHOICES = ["?", "cls", "help", "q", "quit", "load"]
+    CHOICES = [
+        "cls",
+        "home",
+        "h",
+        "?",
+        "help",
+        "q",
+        "quit",
+        "..",
+        "exit",
+        "r",
+        "reset",
+    ]
     CHOICES_COMMANDS = [
+        "load",
         "watchlist",
         "spac",
         "spac_c",
@@ -67,25 +80,49 @@ class BehaviouralAnalysisController:
     ]
     CHOICES += CHOICES_COMMANDS
 
-    def __init__(self, ticker: str, start: datetime):
+    historical_sort = ["date", "value"]
+    historical_direction = ["asc", "desc"]
+    historical_metric = ["sentiment", "AHI", "RHI", "SGP"]
+
+    def __init__(self, ticker: str, start: datetime, queue: List[str] = None):
         """Constructor"""
-        self.ticker = ticker
-        self.start = start
         self.ba_parser = argparse.ArgumentParser(add_help=False, prog="ba")
         self.ba_parser.add_argument(
             "cmd",
             choices=self.CHOICES + self.CHOICES_COMMANDS,
         )
 
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            choices["historical"]["-s"] = {c: None for c in self.historical_sort}
+            choices["historical"]["--sort"] = {c: None for c in self.historical_sort}
+            choices["historical"]["-d"] = {c: None for c in self.historical_direction}
+            choices["historical"]["--direction"] = {
+                c: None for c in self.historical_direction
+            }
+            choices["historical"]["-m"] = {c: None for c in self.historical_metric}
+            choices["historical"]["--metric"] = {
+                c: None for c in self.historical_metric
+            }
+            choices["historical"] = {c: None for c in self.historical_metric}
+
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        self.ticker = ticker
+        self.start = start
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
+
     def print_help(self):
         dim = Style.DIM if not self.ticker else ""
         res = Style.RESET_ALL
-        help_string = f"""
-Behavioural Analysis:
-    cls           clear screen
-    ?/help        show this menu again
-    q             quit this menu, and shows back to main menu
-    quit          quit to abandon program
+        help_txt = f"""
+    load           load a specific stock ticker for analysis
 
 Ticker: {self.ticker.upper() or None}
 
@@ -120,34 +157,47 @@ SentimentInvestor:
     social        social media figures for stock popularity
     historical    plot the past week of data for a selected metric{res}
         """
-        print(help_string)
+        print(help_txt)
 
     def switch(self, an_input: str):
         """Process and dispatch input
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
         # Empty command
         if not an_input:
             print("")
             return None
 
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
+
         (known_args, other_args) = self.ba_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self,
@@ -155,25 +205,51 @@ SentimentInvestor:
             lambda _: "Command not recognized!",
         )(other_args)
 
-    def call_help(self, _):
-        """Process Help command"""
-        self.print_help()
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue
 
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return False
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        return self.queue
+
+    def call_help(self, _):
+        """Process help command"""
+        self.print_help()
+        return self.queue
 
     def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+        """Process quit menu command"""
+        print("")
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit"]
 
-    def _check_ticker(self):
-        """Checks if ticker loaded"""
-        if not self.ticker:
-            print("No ticker loaded.  Please load using 'load <ticker>'\n")
-            return False
-        return True
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "quit"]
 
+    def call_reset(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "ba")
+            self.queue.insert(0, "stocks")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "reset", "stocks", "ba"]
+
+    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -200,25 +276,24 @@ SentimentInvestor:
             dest="start",
             help="The starting date (format YYYY-MM-DD) of the stock",
         )
-        # For the case where a user uses: 'load BB'
-        if other_args and "-t" not in other_args and "-h" not in other_args:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        df_stock_candidate = stocks_helper.load(
-            ns_parser.ticker,
-            ns_parser.start,
-        )
-
-        if not df_stock_candidate.empty:
-            self.start = ns_parser.start
-            if "." in ns_parser.ticker:
-                self.ticker = ns_parser.ticker.upper().split(".")[0]
+        if ns_parser:
+            df_stock_candidate = stocks_helper.load(
+                ns_parser.ticker,
+                ns_parser.start,
+            )
+            if not df_stock_candidate.empty:
+                self.start = ns_parser.start
+                if "." in ns_parser.ticker:
+                    self.ticker = ns_parser.ticker.upper().split(".")[0]
+                else:
+                    self.ticker = ns_parser.ticker.upper()
             else:
-                self.ticker = ns_parser.ticker.upper()
+                print("Provide a valid ticker")
+
+        return self.queue
 
     @try_except
     def call_watchlist(self, other_args: List[str]):
@@ -233,17 +308,18 @@ SentimentInvestor:
             "-l",
             "--limit",
             action="store",
-            dest="n_limit",
+            dest="limit",
             type=check_positive,
             default=5,
             help="limit of posts with watchlists retrieved.",
         )
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            reddit_view.display_watchlist(num=ns_parser.limit)
 
-        reddit_view.display_watchlist(num=ns_parser.n_limit)
+        return self.queue
 
     @try_except
     def call_spac(self, other_args: List[str]):
@@ -263,12 +339,13 @@ SentimentInvestor:
             default=5,
             help="limit of posts with SPACs retrieved.",
         )
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            reddit_view.display_spac(limit=ns_parser.n_limit)
 
-        reddit_view.display_spac(limit=ns_parser.n_limit)
+        return self.queue
 
     @try_except
     def call_spac_c(self, other_args: List[str]):
@@ -296,14 +373,15 @@ SentimentInvestor:
             dest="b_popular",
             help="popular flag, if true the posts retrieved are based on score rather than time",
         )
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            reddit_view.display_spac_community(
+                limit=ns_parser.n_limit, popular=ns_parser.b_popular
+            )
 
-        reddit_view.display_spac_community(
-            limit=ns_parser.n_limit, popular=ns_parser.b_popular
-        )
+        return self.queue
 
     @try_except
     def call_wsb(self, other_args: List[str]):
@@ -330,12 +408,15 @@ SentimentInvestor:
             dest="b_new",
             help="new flag, if true the posts retrieved are based on being more recent rather than their score.",
         )
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            reddit_view.display_wsb_community(
+                limit=ns_parser.n_limit, new=ns_parser.b_new
+            )
 
-        reddit_view.display_wsb_community(limit=ns_parser.n_limit, new=ns_parser.b_new)
+        return self.queue
 
     @try_except
     def call_popular(self, other_args: List[str]):
@@ -347,22 +428,22 @@ SentimentInvestor:
             description="""Print latest popular tickers. [Source: Reddit]""",
         )
         parser.add_argument(
-            "-n",
-            "--number",
-            action="store",
-            dest="n_top",
-            type=check_positive,
-            default=10,
-            help="display top N tickers",
-        )
-        parser.add_argument(
             "-l",
             "--limit",
             action="store",
-            dest="n_limit",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="limit of top tickers to retrieve",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
             type=check_positive,
             default=50,
-            help="limit of posts retrieved per sub reddit.",
+            help="number of posts retrieved per sub reddit.",
         )
         parser.add_argument(
             "-s",
@@ -376,16 +457,17 @@ SentimentInvestor:
                 wallstreetbets
             """,
         )
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            reddit_view.display_popular_tickers(
+                n_top=ns_parser.limit,
+                posts_to_look_at=ns_parser.num,
+                subreddits=ns_parser.s_subreddit,
+            )
 
-        reddit_view.display_popular_tickers(
-            n_top=ns_parser.n_top,
-            posts_to_look_at=ns_parser.n_limit,
-            subreddits=ns_parser.s_subreddit,
-        )
+        return self.queue
 
     @try_except
     def call_getdd(self, other_args: List[str]):
@@ -401,7 +483,7 @@ SentimentInvestor:
             "-l",
             "--limit",
             action="store",
-            dest="n_limit",
+            dest="limit",
             type=check_positive,
             default=5,
             help="limit of posts to retrieve.",
@@ -410,7 +492,7 @@ SentimentInvestor:
             "-d",
             "--days",
             action="store",
-            dest="n_days",
+            dest="days",
             type=check_positive,
             default=3,
             help="number of prior days to look for.",
@@ -419,23 +501,27 @@ SentimentInvestor:
             "-a",
             "--all",
             action="store_true",
-            dest="b_all",
+            dest="all",
             default=False,
             help="""
                 search through all flairs (apart from Yolo and Meme), otherwise we focus on
                 specific flairs: DD, technical analysis, Catalyst, News, Advice, Chart""",
         )
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if self._check_ticker():
-            reddit_view.display_due_diligence(
-                ticker=self.ticker,
-                limit=ns_parser.n_limit,
-                n_days=ns_parser.n_days,
-                show_all_flairs=ns_parser.b_all,
-            )
+        if ns_parser:
+            if self.ticker:
+                reddit_view.display_due_diligence(
+                    ticker=self.ticker,
+                    limit=ns_parser.limit,
+                    n_days=ns_parser.days,
+                    show_all_flairs=ns_parser.all,
+                )
+            else:
+                print("No ticker loaded. Please load using 'load <ticker>'\n")
+
+        return self.queue
 
     @try_except
     def call_bullbear(self, other_args: List[str]):
@@ -449,12 +535,14 @@ SentimentInvestor:
                 Also prints the watchlist_count. [Source: Stocktwits]
             """,
         )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if self._check_ticker():
-            stocktwits_view.display_bullbear(ticker=self.ticker)
+        if ns_parser:
+            if self.ticker:
+                stocktwits_view.display_bullbear(ticker=self.ticker)
+            else:
+                print("No ticker loaded. Please load using 'load <ticker>'\n")
+
+        return self.queue
 
     @try_except
     def call_messages(self, other_args: List[str]):
@@ -469,16 +557,23 @@ SentimentInvestor:
             "-l",
             "--limit",
             action="store",
-            dest="n_lim",
+            dest="limit",
             type=check_positive,
             default=30,
             help="limit messages shown.",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if self._check_ticker():
-            stocktwits_view.display_messages(ticker=self.ticker, limit=ns_parser.n_lim)
+        if ns_parser:
+            if self.ticker:
+                stocktwits_view.display_messages(
+                    ticker=self.ticker, limit=ns_parser.limit
+                )
+            else:
+                print("No ticker loaded. Please load using 'load <ticker>'\n")
+
+        return self.queue
 
     @try_except
     def call_trending(self, other_args: List[str]):
@@ -490,10 +585,10 @@ SentimentInvestor:
             description="""Stocks trending. [Source: Stocktwits]""",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            stocktwits_view.display_trending()
 
-        stocktwits_view.display_trending()
+        return self.queue
 
     @try_except
     def call_stalker(self, other_args: List[str]):
@@ -517,18 +612,22 @@ SentimentInvestor:
             "-l",
             "--limit",
             action="store",
-            dest="n_lim",
+            dest="limit",
             type=check_positive,
             default=30,
             help="limit messages shown.",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
+        if ns_parser:
+            stocktwits_view.display_stalker(
+                user=ns_parser.s_user, limit=ns_parser.limit
+            )
 
-        stocktwits_view.display_stalker(user=ns_parser.s_user, limit=ns_parser.n_lim)
+        return self.queue
 
     @try_except
     def call_mentions(self, other_args: List[str]):
@@ -549,15 +648,20 @@ SentimentInvestor:
             default=self.start,
             help="starting date (format YYYY-MM-DD) from when we are interested in stock's mentions.",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-s")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        if not ns_parser:
-            return
-        if self._check_ticker():
-            google_view.display_mentions(
-                ticker=self.ticker, start=self.start, export=ns_parser.export
-            )
+        if ns_parser:
+            if self.ticker:
+                google_view.display_mentions(
+                    ticker=self.ticker, start=ns_parser.start, export=ns_parser.export
+                )
+            else:
+                print("No ticker loaded. Please load using 'load <ticker>'\n")
+
+        return self.queue
 
     @try_except
     def call_regions(self, other_args: List[str]):
@@ -569,23 +673,28 @@ SentimentInvestor:
             description="""Plot bars of regions based on stock's interest. [Source: Google]""",
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=10,
-            help="number of regions to plot that show highest interest.",
+            help="limit of regions to plot that show highest interest.",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        if not ns_parser:
-            return
-        if self._check_ticker():
-            google_view.display_regions(
-                ticker=self.ticker, num=ns_parser.n_num, export=ns_parser.export
-            )
+        if ns_parser:
+            if self.ticker:
+                google_view.display_regions(
+                    ticker=self.ticker, num=ns_parser.limit, export=ns_parser.export
+                )
+            else:
+                print("No ticker loaded. Please load using 'load <ticker>'\n")
+
+        return self.queue
 
     @try_except
     def call_queries(self, other_args: List[str]):
@@ -597,23 +706,28 @@ SentimentInvestor:
             description="""Print top related queries with this stock's query. [Source: Google]""",
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=10,
-            help="number of top related queries to print.",
+            help="limit of top related queries to print.",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        if not ns_parser:
-            return
-        if self._check_ticker():
-            google_view.display_queries(
-                ticker=self.ticker, num=ns_parser.n_num, export=ns_parser.export
-            )
+        if ns_parser:
+            if self.ticker:
+                google_view.display_queries(
+                    ticker=self.ticker, num=ns_parser.limit, export=ns_parser.export
+                )
+            else:
+                print("No ticker loaded. Please load using 'load <ticker>'\n")
+
+        return self.queue
 
     @try_except
     def call_rise(self, other_args: List[str]):
@@ -625,23 +739,28 @@ SentimentInvestor:
             description="""Print top rising related queries with this stock's query. [Source: Google]""",
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=10,
-            help="number of top rising related queries to print.",
+            help="limit of top rising related queries to print.",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        if not ns_parser:
-            return
-        if self._check_ticker():
-            google_view.display_rise(
-                ticker=self.ticker, num=ns_parser.n_num, export=ns_parser.export
-            )
+        if ns_parser:
+            if self.ticker:
+                google_view.display_rise(
+                    ticker=self.ticker, num=ns_parser.limit, export=ns_parser.export
+                )
+            else:
+                print("No ticker loaded. Please load using 'load <ticker>'\n")
+
+        return self.queue
 
     @try_except
     def call_infer(self, other_args: List[str]):
@@ -657,23 +776,26 @@ SentimentInvestor:
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_int_range(10, 100),
             default=100,
-            help="num of latest tweets to infer from.",
+            help="limit of latest tweets to infer from.",
         )
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        if not ns_parser:
-            return
+        if ns_parser:
+            if self.ticker:
+                twitter_view.display_inference(ticker=self.ticker, num=ns_parser.limit)
+            else:
+                print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-        if self._check_ticker():
-            twitter_view.display_inference(ticker=self.ticker, num=ns_parser.n_num)
+        return self.queue
 
     @try_except
     def call_sentiment(self, other_args: List[str]):
@@ -689,14 +811,15 @@ SentimentInvestor:
         )
         # in reality this argument could be 100, but after testing it takes too long
         # to compute which may not be acceptable
+        # TODO: use https://github.com/twintproject/twint instead of twitter API
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_tweets",
+            dest="limit",
             type=check_int_range(10, 62),
             default=15,
-            help="number of tweets to extract per hour.",
+            help="limit of tweets to extract per hour.",
         )
         parser.add_argument(
             "-d",
@@ -707,18 +830,23 @@ SentimentInvestor:
             default=6,
             help="number of days in the past to extract tweets.",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        if not ns_parser:
-            return
-        if self._check_ticker():
-            twitter_view.display_sentiment(
-                ticker=self.ticker,
-                n_tweets=ns_parser.n_tweets,
-                n_days_past=ns_parser.n_days_past,
-                export=ns_parser.export,
-            )
+        if ns_parser:
+            if self.ticker:
+                twitter_view.display_sentiment(
+                    ticker=self.ticker,
+                    n_tweets=ns_parser.limit,
+                    n_days_past=ns_parser.n_days_past,
+                    export=ns_parser.export,
+                )
+            else:
+                print("No ticker loaded. Please load using 'load <ticker>'\n")
+
+        return self.queue
 
     @try_except
     def call_headlines(self, other_args: List[str]):
@@ -737,12 +865,15 @@ SentimentInvestor:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        if not ns_parser:
-            return
-        if self._check_ticker():
-            finbrain_view.display_sentiment_analysis(
-                ticker=self.ticker, export=ns_parser.export
-            )
+        if ns_parser:
+            if self.ticker:
+                finbrain_view.display_sentiment_analysis(
+                    ticker=self.ticker, export=ns_parser.export
+                )
+            else:
+                print("No ticker loaded. Please load using 'load <ticker>'\n")
+
+        return self.queue
 
     @try_except
     def call_stats(self, other_args: List[str]):
@@ -760,13 +891,15 @@ SentimentInvestor:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        if not ns_parser:
-            return
+        if ns_parser:
+            if self.ticker:
+                finnhub_view.display_sentiment_stats(
+                    ticker=self.ticker, export=ns_parser.export
+                )
+            else:
+                print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-        if self._check_ticker():
-            finnhub_view.display_sentiment_stats(
-                ticker=self.ticker, export=ns_parser.export
-            )
+        return self.queue
 
     @try_except
     def call_metrics(self, other_args: List[str]):
@@ -810,11 +943,16 @@ SentimentInvestor:
             description=textwrap.dedent(command_description),
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            if self.ticker:
+                print(
+                    "Currently under maintenance by the new Sentiment Investor team.\n"
+                )
+                # sentimentinvestor_view.display_metrics(ticker=self.ticker)
+            else:
+                print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-        if self._check_ticker():
-            sentimentinvestor_view.display_metrics(ticker=self.ticker)
+        return self.queue
 
     @try_except
     def call_social(self, other_args: List[str]):
@@ -836,11 +974,16 @@ SentimentInvestor:
         )
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if ns_parser:
+            if self.ticker:
+                print(
+                    "Currently under maintenance by the new Sentiment Investor team.\n"
+                )
+                # sentimentinvestor_view.display_social(ticker=self.ticker)
+            else:
+                print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-        if self._check_ticker():
-            sentimentinvestor_view.display_social(ticker=self.ticker)
+        return self.queue
 
     @try_except
     def call_historical(self, other_args: List[str]):
@@ -891,8 +1034,7 @@ SentimentInvestor:
             default="date",
             help="the parameter to sort output table by",
             dest="sort_param",
-            nargs="?",
-            choices=["date", "value"],
+            choices=self.historical_sort,
         )
         parser.add_argument(
             "-d",
@@ -902,28 +1044,36 @@ SentimentInvestor:
             default="desc",
             help="the direction to sort the output table",
             dest="sort_dir",
-            nargs="?",
-            choices=["asc", "desc"],
+            choices=self.historical_direction,
         )
         parser.add_argument(
-            "metric",
+            "-m",
+            "--metric",
             type=str,
             action="store",
             default="sentiment",
-            nargs="?",
-            choices=["sentiment", "AHI", "RHI", "SGP"],
+            dest="metric",
+            choices=self.historical_metric,
             help="the metric to plot",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-m")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if self._check_ticker():
-            sentimentinvestor_view.display_historical(
-                ticker=self.ticker,
-                sort_param=ns_parser.sort_param,
-                sort_dir=ns_parser.sort_dir,
-                metric=ns_parser.metric,
-            )
+        if ns_parser:
+            if self.ticker:
+                print(
+                    "Currently under maintenance by the new Sentiment Investor team.\n"
+                )
+                # sentimentinvestor_view.display_historical(
+                #    ticker=self.ticker,
+                #    sort_param=ns_parser.sort_param,
+                #    metric=ns_parser.metric,
+                #    sort_dir=ns_parser.sort_dir,
+                # )
+            else:
+                print("No ticker loaded. Please load using 'load <ticker>'\n")
+
+        return self.queue
 
     @try_except
     def call_popularsi(self, other_args: List[str]):
@@ -960,9 +1110,11 @@ SentimentInvestor:
             help="the maximum number of stocks to retrieve",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        sentimentinvestor_view.display_top(metric="AHI", limit=ns_parser.limit)
+        if ns_parser:
+            print("Currently under maintenance by the new Sentiment Investor team.\n")
+            # sentimentinvestor_view.display_top(metric="AHI", limit=ns_parser.limit)
+
+        return self.queue
 
     @try_except
     def call_emerging(self, other_args: List[str]):
@@ -998,42 +1150,83 @@ SentimentInvestor:
             help="the maximum number of stocks to retrieve",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        sentimentinvestor_view.display_top(metric="RHI", limit=ns_parser.limit)
+        if ns_parser:
+            print("Currently under maintenance by the new Sentiment Investor team.\n")
+            # sentimentinvestor_view.display_top(metric="RHI", limit=ns_parser.limit)
+
+        return self.queue
 
 
-def menu(ticker: str, start: datetime):
+def menu(ticker: str, start: datetime, queue: List[str] = None):
     """Behavioural Analysis Menu"""
-
-    ba_controller = BehaviouralAnalysisController(ticker, start)
-    ba_controller.call_help(None)
+    ba_controller = BehaviouralAnalysisController(ticker, start, queue)
+    an_input = "HELP_ME"
 
     while True:
+        # There is a command in the queue
+        if ba_controller.queue and len(ba_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
+            if ba_controller.queue[0] in ("q", "..", "quit"):
+                print("")
+                if len(ba_controller.queue) > 1:
+                    return ba_controller.queue[1:]
+                return []
+
+            # Consume 1 element from the queue
+            an_input = ba_controller.queue[0]
+            ba_controller.queue = ba_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
+            if an_input and an_input.split(" ")[0] in ba_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /stocks/ba/ $ {an_input}")
+
         # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in ba_controller.CHOICES}
-            )
-            an_input = session.prompt(
-                f"{get_flair()} (stocks)>(ba)> ",
-                completer=completer,
-            )
         else:
-            an_input = input(f"{get_flair()} (stocks)>(ba)> ")
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
+                ba_controller.print_help()
+
+            # Get input from user using auto-completion
+            if session and gtff.USE_PROMPT_TOOLKIT and ba_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /stocks/ba/ $ ",
+                    completer=ba_controller.completer,
+                    search_ignore_case=True,
+                )
+            # Get input from user without auto-completion
+            else:
+                an_input = input(f"{get_flair()} /stocks/ba/ $ ")
 
         try:
-            process_input = ba_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            # Process the input command
+            ba_controller.queue = ba_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            similar_cmd = difflib.get_close_matches(
-                an_input, ba_controller.CHOICES, n=1, cutoff=0.7
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/ba menu.",
+                end="",
             )
-
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                ba_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
-            continue
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        ba_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
+                else:
+                    an_input = similar_cmd[0]
+
+                print(f" Replacing by '{an_input}'.")
+                ba_controller.queue.insert(0, an_input)
+            else:
+                print("\n")

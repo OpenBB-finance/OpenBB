@@ -1,27 +1,26 @@
-"""Cryptocurrency Controller"""
+"""Cryptocurrency Context Controller"""
 __docformat__ = "numpy"
-# pylint: disable=R0904, C0302, R1710, W0622
+# pylint: disable=R0904, C0302, R1710, W0622, C0201
 
 import argparse
 import difflib
-import matplotlib.pyplot as plt
+from typing import List, Union
 import pandas as pd
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 from binance.client import Client
+
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     get_flair,
     parse_known_args_and_warn,
     check_positive,
     system_clear,
     try_except,
-    MENU_GO_BACK,
-    MENU_QUIT,
-    MENU_RESET,
 )
 from gamestonk_terminal.menu import session
-
 from gamestonk_terminal.cryptocurrency.due_diligence import (
     coinpaprika_view,
     binance_view,
@@ -30,31 +29,42 @@ from gamestonk_terminal.cryptocurrency.due_diligence import (
     binance_model,
     coinbase_model,
 )
-
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
+    FIND_KEYS,
     load,
     find,
     load_ta_data,
     plot_chart,
 )
-
-
 import gamestonk_terminal.config_terminal as cfg
 
 # pylint: disable=import-outside-toplevel
 
 
+CRYPTO_SOURCES = {
+    "bin": "Binance",
+    "cg": "CoinGecko",
+    "cp": "CoinPaprika",
+    "cb": "Coinbase",
+}
+
+
 class CryptoController:
     CHOICES = [
-        "?",
         "cls",
+        "home",
+        "h",
+        "?",
         "help",
         "q",
         "quit",
+        "..",
+        "exit",
+        "r",
         "reset",
     ]
 
-    CHOICES_COMMAND = [
+    CHOICES_COMMANDS = [
         "headlines",
         "chart",
         "load",
@@ -63,23 +73,16 @@ class CryptoController:
 
     CHOICES_MENUS = ["ta", "dd", "ov", "disc", "onchain", "defi", "nft", "pred"]
 
-    SOURCES = {
-        "bin": "Binance",
-        "cg": "CoinGecko",
-        "cp": "CoinPaprika",
-        "cb": "Coinbase",
-    }
-
     DD_VIEWS_MAPPING = {
         "cg": pycoingecko_view,
         "cp": coinpaprika_view,
         "bin": binance_view,
     }
 
-    CHOICES += CHOICES_COMMAND
+    CHOICES += CHOICES_COMMANDS
     CHOICES += CHOICES_MENUS
 
-    def __init__(self):
+    def __init__(self, queue: List[str] = None):
         """CONSTRUCTOR"""
 
         self.crypto_parser = argparse.ArgumentParser(add_help=False, prog="crypto")
@@ -91,41 +94,50 @@ class CryptoController:
         self.current_currency = ""
         self.source = ""
 
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            choices["load"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
+            choices["find"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
+            choices["find"]["-k"] = {c: {} for c in FIND_KEYS}
+            choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
+
     def print_help(self):
         """Print help"""
         help_text = """
-What do you want to do?
-    cls         clear screen
-    ?/help      show this menu again
-    q           quit this menu, and shows back to main menu
-    quit        quit to abandon the program
-    reset       reset terminal and reload configs
+    load        load a specific cryptocurrency for analysis
+    find        alternate way to search for coins
 """
         help_text += (
             f"\nCoin: {self.current_coin}" if self.current_coin != "" else "\nCoin: ?"
         )
         help_text += (
-            f"\nSource: {self.SOURCES.get(self.source, '?')}\n"
+            f"\nSource: {CRYPTO_SOURCES.get(self.source, '?')}\n"
             if self.source != ""
             else "\nSource: ?\n"
         )
+        help_text += """
+    chart       view a candle chart for a specific cryptocurrency
+    headlines   crypto sentiment from 15+ major news headlines [Finbrain]
+    """
         dim = Style.DIM if not self.current_coin else ""
         help_text += f"""
-    load        load a specific cryptocurrency for analysis
-    chart       view a candle chart for a specific cryptocurrency
-    find        alternate way to search for coins
-    headlines   crypto sentiment from 15+ major news headlines [Finbrain]
-
->   disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
->   ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables{dim}
->   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
->   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
->   pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
-{Style.RESET_ALL if not self.current_coin else ""}
->   onchain     information on different blockchains,   e.g.: eth gas fees, active asset addresses, whale alerts
->   defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
->   nft         non-fungible tokens,                    e.g.: today drops
-"""
+>    disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
+>    ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
+>    onchain     information on different blockchains,   e.g.: eth gas fees, whale alerts, DEXes info
+>    defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
+>    nft         non-fungible tokens,                    e.g.: today drops{dim}
+>    dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
+>    ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
+>    pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo{Style.RESET_ALL if not self.current_coin else ""}
+"""  # noqa
         print(help_text)
 
     def switch(self, an_input: str):
@@ -133,28 +145,41 @@ What do you want to do?
 
         Returns
         -------
-        MENU_GO_BACK, MENU_QUIT, MENU_RESET
-            MENU_GO_BACK - Show main context menu again
-            MENU_QUIT - Quit terminal
-            MENU_RESET - Reset terminal and go back to same previous menu
+        List[str]
+            List of commands in the queue to execute
         """
 
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.crypto_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
         return getattr(
             self,
@@ -162,21 +187,44 @@ What do you want to do?
             lambda _: "Command not recognized!",
         )(other_args)
 
-    def call_help(self, _):
-        """Process Help command"""
-        self.print_help()
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue
 
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return MENU_GO_BACK
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        return self.queue
+
+    def call_help(self, _):
+        """Process help command"""
+        self.print_help()
+        return self.queue
 
     def call_quit(self, _):
-        """Process Quit command - exit the program"""
-        return MENU_QUIT
+        """Process quit menu command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit"]
+
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit"]
 
     def call_reset(self, _):
-        """Process Reset command - exit the program"""
-        return MENU_RESET
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "crypto")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "reset", "crypto"]
 
     def call_load(self, other_args):
         """Process load command"""
@@ -216,26 +264,26 @@ What do you want to do?
 
                 ns_parser = parse_known_args_and_warn(parser, other_args)
 
-                if not ns_parser:
-                    self.current_coin, self.source = self.current_coin, None
-                    return
+                if ns_parser:
+                    source = ns_parser.source
 
-                source = ns_parser.source
+                    for arg in ["--source", source]:
+                        if arg in other_args:
+                            other_args.remove(arg)
 
-                for arg in ["--source", source]:
-                    if arg in other_args:
-                        other_args.remove(arg)
-
-                self.current_coin, self.source, self.symbol = load(
-                    coin=ns_parser.coin, source=ns_parser.source
-                )
+                    self.current_coin, self.source, self.symbol = load(
+                        coin=ns_parser.coin, source=ns_parser.source
+                    )
+                return self.queue
 
             except Exception as e:
                 print(e, "\n")
                 self.current_coin, self.source = self.current_coin, None
+                return self.queue
 
         except TypeError:
             print("Couldn't load data\n")
+            return self.queue
 
     def call_chart(self, other_args):
         """Process chart command"""
@@ -381,37 +429,41 @@ What do you want to do?
                 )
 
             try:
-                ns_parser = parse_known_args_and_warn(parser, other_args)
-
-                if not ns_parser:
-                    return
-
-                if self.source in ["bin", "cb"]:
-                    limit = ns_parser.limit
-                    interval = ns_parser.interval
-                    days = 0
-                else:
-                    limit = 0
-                    interval = "1day"
-                    days = ns_parser.days
-
-                plot_chart(
-                    coin=self.current_coin,
-                    limit=limit,
-                    interval=interval,
-                    days=days,
-                    currency=ns_parser.vs,
-                    source=self.source,
+                ns_parser = parse_known_args_and_warn(
+                    parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
                 )
+
+                if ns_parser:
+                    if self.source in ["bin", "cb"]:
+                        limit = ns_parser.limit
+                        interval = ns_parser.interval
+                        days = 0
+                    else:
+                        limit = 0
+                        interval = "1day"
+                        days = ns_parser.days
+
+                    plot_chart(
+                        coin=self.current_coin,
+                        limit=limit,
+                        interval=interval,
+                        days=days,
+                        currency=ns_parser.vs,
+                        source=self.source,
+                    )
+                return self.queue
 
             except Exception as e:
                 print(e, "\n")
+                return self.queue
 
         else:
             print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
             )
+            return self.queue
 
+    @try_except
     def call_ta(self, other_args):
         """Process ta command"""
         from gamestonk_terminal.cryptocurrency.technical_analysis import ta_controller
@@ -530,7 +582,7 @@ What do you want to do?
                         print(
                             f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
                         )
-                        return
+                        return self.queue
 
                     parser.add_argument(
                         "--vs",
@@ -578,7 +630,7 @@ What do you want to do?
                     print(
                         f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
                     )
-                    return
+                    return self.queue
 
                 parser.add_argument(
                     "--vs",
@@ -611,84 +663,67 @@ What do you want to do?
             try:
                 ns_parser = parse_known_args_and_warn(parser, other_args)
 
-                if not ns_parser:
-                    return
+                if ns_parser:
+                    if self.source in ["bin", "cb"]:
+                        limit = ns_parser.limit
+                        interval = ns_parser.interval
+                        days = 0
+                    else:
+                        limit = 0
+                        interval = "1day"
+                        days = ns_parser.days
 
-                if self.source in ["bin", "cb"]:
-                    limit = ns_parser.limit
-                    interval = ns_parser.interval
-                    days = 0
-                else:
-                    limit = 0
-                    interval = "1day"
-                    days = ns_parser.days
-
-                self.current_df, self.current_currency = load_ta_data(
-                    coin=self.current_coin,
-                    source=self.source,
-                    currency=ns_parser.vs,
-                    days=days,
-                    limit=limit,
-                    interval=interval,
-                )
+                    self.current_df, self.current_currency = load_ta_data(
+                        coin=self.current_coin,
+                        source=self.source,
+                        currency=ns_parser.vs,
+                        days=days,
+                        limit=limit,
+                        interval=interval,
+                    )
 
             except Exception as e:
                 print(e, "\n")
+                return self.queue
 
             if self.current_currency != "" and not self.current_df.empty:
                 try:
-                    quit = ta_controller.menu(
+                    return ta_controller.menu(
                         stock=self.current_df,
                         ticker=self.current_coin,
                         start=self.current_df.index[0],
                         interval="",
+                        queue=self.queue,
                     )
-                    print("")
-                    if quit is not None:
-                        if quit is True:
-                            return quit
-                        self.print_help()
-
                 except (ValueError, KeyError) as e:
                     print(e)
+                    return self.queue
             else:
-                return
+                return self.queue
 
         else:
             print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
             )
+            return self.queue
 
     def call_disc(self, _):
         """Process disc command"""
         from gamestonk_terminal.cryptocurrency.discovery import discovery_controller
 
-        ret = discovery_controller.menu()
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return discovery_controller.menu(queue=self.queue)
 
     def call_ov(self, _):
         """Process ov command"""
         from gamestonk_terminal.cryptocurrency.overview import overview_controller
 
-        ret = overview_controller.menu()
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return overview_controller.menu(queue=self.queue)
 
     def call_defi(self, _):
         """Process defi command"""
         from gamestonk_terminal.cryptocurrency.defi import defi_controller
 
-        ret = defi_controller.menu()
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return defi_controller.menu(queue=self.queue)
 
     @try_except
     def call_headlines(self, other_args):
@@ -710,38 +745,29 @@ What do you want to do?
             choices=finbrain_crypto_view.COINS,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-
-        if not ns_parser:
-            return
-
-        finbrain_crypto_view.display_crypto_sentiment_analysis(
-            coin=ns_parser.coin, export=ns_parser.export
-        )
+        if ns_parser:
+            finbrain_crypto_view.display_crypto_sentiment_analysis(
+                coin=ns_parser.coin, export=ns_parser.export
+            )
+        return self.queue
 
     def call_dd(self, _):
         """Process dd command"""
         if self.current_coin:
             from gamestonk_terminal.cryptocurrency.due_diligence import dd_controller
 
-            dd = dd_controller.menu(self.current_coin, self.source, self.symbol)
-            if dd is False:
-                self.print_help()
-            else:
-                return True
-        else:
-            print(
-                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            return dd_controller.menu(
+                self.current_coin, self.source, self.symbol, queue=self.queue
             )
+        print("No coin selected. Use 'load' to load the coin you want to look at.\n")
+        return self.queue
 
     def call_pred(self, _):
         """Process pred command"""
@@ -749,11 +775,12 @@ What do you want to do?
             print(
                 "No coin loaded.  Please use `load <coin>` to access prediction menu\n."
             )
-            return
+            return self.queue
 
         if self.source != "cg":
             print("Currently only supports CoinGecko source.\n")
-            return
+            return self.queue
+
         if self.current_coin:
             from gamestonk_terminal.cryptocurrency.prediction_techniques import (
                 pred_controller,
@@ -762,40 +789,25 @@ What do you want to do?
                 cryptocurrency_helpers as c_help,
             )
 
-            pred = pred_controller.menu(
+            return pred_controller.menu(
                 self.current_coin,
                 c_help.load_cg_coin_data(self.current_coin, "USD", 365, "1D"),
+                self.queue,
             )
-            if pred is False:
-                self.print_help()
-            else:
-                return True
-        else:
-            print(
-                "No coin selected. Use 'load' to load the coin you want to look at.\n"
-            )
+        print("No coin selected. Use 'load' to load the coin you want to look at.\n")
+        return self.queue
 
     def call_onchain(self, _):
         """Process onchain command"""
         from gamestonk_terminal.cryptocurrency.onchain import onchain_controller
 
-        ret = onchain_controller.menu()
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return onchain_controller.menu(queue=self.queue)
 
     def call_nft(self, _):
         """Process nft command"""
         from gamestonk_terminal.cryptocurrency.nft import nft_controller
 
-        ret = nft_controller.menu()
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        return nft_controller.menu(queue=self.queue)
 
     @try_except
     def call_find(self, other_args):
@@ -812,7 +824,7 @@ What do you want to do?
             It will search for coin that has similar name to polka and display top 25 matches.
             -c, --coin stands for coin - you provide here your search query
             -k, --key it's a searching key. You can search by symbol, id or name of coin
-            -t, --top it displays top N number of records.""",
+            -l, --limit it displays top N number of records.""",
         )
 
         parser.add_argument(
@@ -830,83 +842,119 @@ What do you want to do?
             dest="key",
             help="Specify by which column you would like to search: symbol, name, id",
             type=str,
-            choices=["id", "symbol", "name"],
+            choices=FIND_KEYS,
             default="symbol",
         )
 
         parser.add_argument(
-            "-t",
-            "--top",
+            "-l",
+            "--limit",
             default=10,
-            dest="top",
-            help="Limit of records",
+            dest="limit",
+            help="Number of records to display",
             type=check_positive,
         )
 
         parser.add_argument(
             "--source",
             dest="source",
-            choices=["cp", "cg", "bin", "cb"],
+            choices=CRYPTO_SOURCES.keys(),
             default="cg",
             help="Source of data.",
             type=str,
         )
 
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-c")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        if other_args:
-            if not other_args[0][0] == "-":
-                other_args.insert(0, "-c")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        find(
-            coin=ns_parser.coin,
-            source=ns_parser.source,
-            key=ns_parser.key,
-            top=ns_parser.top,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            find(
+                coin=ns_parser.coin,
+                source=ns_parser.source,
+                key=ns_parser.key,
+                top=ns_parser.limit,
+                export=ns_parser.export,
+            )
+        return self.queue
 
 
-def menu():
-    crypto_controller = CryptoController()
-    crypto_controller.call_help(None)
-    plt.close("all")
+def menu(queue: List[str] = None):
+    crypto_controller = CryptoController(queue)
+    first = True
+
     while True:
+        # There is a command in the queue
+        if crypto_controller.queue and len(crypto_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
+            if crypto_controller.queue[0] in ("q", "..", "quit"):
+                print("")
+                if len(crypto_controller.queue) > 1:
+                    return crypto_controller.queue[1:]
+                return []
+
+            # Consume 1 element from the queue
+            an_input = crypto_controller.queue[0]
+            crypto_controller.queue = crypto_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
+            if (
+                an_input
+                and an_input.split(" ")[0] in crypto_controller.CHOICES_COMMANDS
+            ):
+                print(f"{get_flair()} /crypto/ $ {an_input}")
+
         # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in crypto_controller.CHOICES}
-            )
-            an_input = session.prompt(
-                f"{get_flair()} (crypto)> ",
-                completer=completer,
-            )
         else:
-            an_input = input(f"{get_flair()} (crypto)> ")
+            # Display help menu when entering on this menu from a level above
+            if first:
+                crypto_controller.print_help()
+                first = False
+
+            # Get input from user using auto-completion
+            if session and gtff.USE_PROMPT_TOOLKIT and crypto_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /crypto/ $ ",
+                    completer=crypto_controller.completer,
+                    search_ignore_case=True,
+                )
+            # Get input from user without auto-completion
+            else:
+                an_input = input(f"{get_flair()} /crypto/ $ ")
 
         try:
-            process_input = crypto_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
-
+            # Process the input command
+            crypto_controller.queue = crypto_controller.switch(an_input)
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            similar_cmd = difflib.get_close_matches(
-                an_input, crypto_controller.CHOICES, n=1, cutoff=0.7
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
+                end="",
             )
-
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                crypto_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
-            continue
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                else:
+                    candidate_input = similar_cmd[0]
+
+                if candidate_input == an_input:
+                    an_input = ""
+                    crypto_controller.queue = []
+                    print("\n")
+                    continue
+
+                print(f" Replacing by '{an_input}'.")
+                crypto_controller.queue.insert(0, an_input)
+            else:
+                print("\n")
+                an_input = ""
+                crypto_controller.queue = []

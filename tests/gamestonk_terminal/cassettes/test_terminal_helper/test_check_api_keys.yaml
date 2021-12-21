@@ -74,8 +74,6 @@ interactions:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       Server:
       - cloudflare
-      Transfer-Encoding:
-      - chunked
       Vary:
       - Cookie
       Via:
@@ -143,8 +141,6 @@ interactions:
       - Thu, 19 Aug 2021 11:43:07 GMT
       Server:
       - nginx/1.14.0 (Ubuntu)
-      Transfer-Encoding:
-      - chunked
       Vary:
       - Accept-Encoding
     status:
@@ -491,8 +487,6 @@ interactions:
       - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=esMYVEKFQLtbQGQgQG5oknla6OUhNc%2B0P6T8aZm3jh0%2F480%2BXQSfBSLYCrbJBh7d7v6DaImESVYnZ7VIdh3IPpCIu0wy16b1OuFFYPvPIORTDdau1llwCefvPLq3"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
-      Transfer-Encoding:
-      - chunked
       X-Cached-Result:
       - 'false'
     status:
@@ -537,8 +531,6 @@ interactions:
       - application/json;charset=UTF-8
       Date:
       - Thu, 19 Aug 2021 11:43:09 GMT
-      Transfer-Encoding:
-      - chunked
       X-Ratelimit-Allowed:
       - '200'
       X-Ratelimit-Available:
@@ -591,8 +583,6 @@ interactions:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       Server:
       - cloudflare
-      Transfer-Encoding:
-      - chunked
       cache-control:
       - no-cache
       vary:
@@ -639,8 +629,6 @@ interactions:
       - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=RKS29IzuFDH4jBIA195Ul1J%2FrbJyLr90LteVooyS5vlYk85prszD9GJyFk1qBKRr2idEqyzzun5kg%2F%2ByeQ%2FYuSzlgwfRDeehVZUu1XptBJQZcg2PcXskWeg%2BFcSXUlxtgsgjV53l93NM"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
-      Transfer-Encoding:
-      - chunked
       access-control-allow-credentials:
       - 'true'
       access-control-allow-headers:
@@ -1615,6 +1603,172 @@ interactions:
       - cache-lhr7351-LHR
       X-Timer:
       - S1629373392.712520,VS0,VE3073
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"query": "\n        {\n        ethereum {\n        dexTrades(options:
+      {limit: 10, desc: \"count\"}) {\n            count\n            protocol\n        }}}\n        "}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '168'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.26.0
+      x-api-key:
+      - BQYKgInV5OcQn6JVo9kXCVRGeXonmqkx
+    method: POST
+    uri: https://graphql.bitquery.io/
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA22RPWvDQAyG/8qhOcN9n+0xxEMplA4ppC0drj6RlLincHESF+P/XgdC8YVuGh5J
+        j14NEHznoRoAux0mPH1f64D9OvmAR6jeB2joFDuonOVSOqcXcEjUUUMtVPASv44Xf2BnCePiDy0K
+        o5Uo/yfVnDSlEFzYjHxY1Zs5o5wyysiMqa+2K2wn99leaaQtncvIm+EdxoXMD1n61scGE3smatma
+        9hjnLaLUluvc4Q0T9azum52PW7yLQHBttVaZynLaQIk9YXehtM/Gc6l0kdOPP5+Tzg1m5yw2Zwsr
+        89TCa9hMT/gYx/EX9quDDdUBAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 16 Dec 2021 13:10:29 GMT
+      ETag:
+      - W/"46288ea837782750c2efbd682876a71a"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - fbe8e4b2-adef-45d8-9207-7cfc3189a555
+      X-Runtime:
+      - '0.125809'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+      accept:
+      - application/json
+      request-source:
+      - python
+      request-source-version:
+      - 3.7.0
+      x-api-token:
+      - yn5sTZkvDg9oSHnP6wZg
+    method: GET
+    uri: https://data.nasdaq.com/api/v3/datatables/ZACKS/FC?ticker%5B%5D=AAPL&ticker%5B%5D=MSFT&per_end_date.gte=2015-01-01&qopts.columns%5B%5D=ticker&qopts.columns%5B%5D=per_end_date
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/5WQTwuCQBTEv8ucV1AXIr0J0akgsJvIYvoIaV1lXaGQ/e6t0R9KL/FOM/yYx8yI
+        qjDuTpIQjw+BOMuQJIcdGEI/WHt+5HEfOftxuceDubtaZBcTgvCVsE+3x3nCl8v/YKMl9/ktZyhb
+        OTSqdz1HqKJxxWHq8kLaoebWTTo1ulZnWPYmOtKCVCXcQvThNpOyuWVoaFrO4XQ1ohx032pRV4jV
+        IKW1d+5psDJnAQAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - X-RateLimit-Limit, X-RateLimit-Remaining
+      Access-Control-Max-Age:
+      - '1728000'
+      Allow:
+      - GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'self';
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 21 Dec 2021 11:01:56 GMT
+      ETag:
+      - W/"d7cab2696c63f665357d438af9d4794f"
+      Location:
+      - https://data.nasdaq.com/api/v3/datatables/ZACKS/FC
+      Pragma:
+      - no-cache
+      Referrer-Policy:
+      - origin-when-cross-origin
+      Server:
+      - openresty
+      Set-Cookie:
+      - visid_incap_2170999=oHfyKazDQ9OAIRrQyoq+dyS0wWEAAAAAQUIPAAAAAABvQiZHyv/PfvJFvY53ZZ8D;
+        expires=Wed, 21 Dec 2022 06:38:29 GMT; HttpOnly; path=/; Domain=.nasdaq.com
+      - nlbi_2170999=mi7TDkn6lHw4ol5NKj7S7QAAAACuEFDSUJcEz/UiCwn7Ah/O; path=/; Domain=.nasdaq.com
+      - incap_ses_1286_2170999=d8A5c94Lh0bDSh7jhcrYESS0wWEAAAAAzKYU11SMCDU9TOOKb0mmMg==;
+        path=/; Domain=.nasdaq.com
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      X-CDN:
+      - Imperva
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Iinfo:
+      - 7-297647-297650 NNYN CT(1 2 0) RT(1640084516202 107) q(0 0 0 0) r(1 1) U2
+      X-RateLimit-Limit:
+      - '50000'
+      X-RateLimit-Remaining:
+      - '49999'
+      X-Request-Id:
+      - 7dc7526c-402a-4737-80fc-127ba27d8438
+      X-Runtime:
+      - '0.103058'
+      X-XSS-Protection:
+      - 1; mode=block
     status:
       code: 200
       message: OK

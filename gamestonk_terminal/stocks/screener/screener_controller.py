@@ -1,20 +1,25 @@
-"""Screener Controller Module"""
+""" Screener Controller Module """
 __docformat__ = "numpy"
 
 import argparse
 import difflib
 import configparser
 import os
-from typing import List
+import datetime
+from typing import List, Union
 
 from colorama import Style
-import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_positive,
     get_flair,
     parse_known_args_and_warn,
     system_clear,
+    try_except,
+    valid_date,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
@@ -36,10 +41,18 @@ class ScreenerController:
     # Command choices
     CHOICES = [
         "cls",
+        "home",
+        "h",
         "?",
         "help",
         "q",
         "quit",
+        "..",
+        "exit",
+        "r",
+        "reset",
+    ]
+    CHOICES_COMMANDS = [
         "view",
         "set",
         "historical",
@@ -52,26 +65,67 @@ class ScreenerController:
         "po",
         "ca",
     ]
+    CHOICES += CHOICES_COMMANDS
 
-    def __init__(self):
+    preset_choices = [
+        preset.split(".")[0]
+        for preset in os.listdir(presets_path)
+        if preset[-4:] == ".ini"
+    ]
+
+    historical_candle_choices = ["o", "h", "l", "c", "a"]
+
+    def __init__(self, queue: List[str] = None):
         """Constructor"""
-        self.preset = "top_gainers"
-        self.screen_tickers = []
         self.scr_parser = argparse.ArgumentParser(add_help=False, prog="scr")
         self.scr_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
 
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            choices["view"] = {c: None for c in self.preset_choices}
+            choices["set"] = {
+                c: None
+                for c in self.preset_choices + list(finviz_model.d_signals.keys())
+            }
+            choices["historical"]["-t"] = {
+                c: None for c in self.historical_candle_choices
+            }
+            choices["overview"]["-s"] = {
+                c: None for c in finviz_view.d_cols_to_sort["overview"]
+            }
+            choices["valuation"]["-s"] = {
+                c: None for c in finviz_view.d_cols_to_sort["valuation"]
+            }
+            choices["financial"]["-s"] = {
+                c: None for c in finviz_view.d_cols_to_sort["financial"]
+            }
+            choices["ownership"]["-s"] = {
+                c: None for c in finviz_view.d_cols_to_sort["ownership"]
+            }
+            choices["performance"]["-s"] = {
+                c: None for c in finviz_view.d_cols_to_sort["performance"]
+            }
+            choices["technical"]["-s"] = {
+                c: None for c in finviz_view.d_cols_to_sort["technical"]
+            }
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        self.preset = "top_gainers"
+        self.screen_tickers: List = list()
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
+
     def print_help(self):
         """Print help"""
         help_text = f"""
-Screener:
-    cls           clear screen
-    ?/help        show this menu again
-    q             quit this menu, and shows back to main menu
-    quit          quit to abandon program
-
     view          view available presets (defaults and customs)
     set           set one of the available presets
 
@@ -91,9 +145,100 @@ Last screened tickers: {', '.join(self.screen_tickers)}
         """
         print(help_text)
 
-    @staticmethod
-    def view_available_presets(other_args: List[str]):
-        """View available presets."""
+    def switch(self, an_input: str):
+        """Process and dispatch input
+
+        Returns
+        -------
+        List[str]
+            List of commands in the queue to execute
+        """
+        # Empty command
+        if not an_input:
+            print("")
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
+
+        (known_args, other_args) = self.scr_parser.parse_known_args(an_input.split())
+
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
+
+        return getattr(
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
+        )(other_args)
+
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+        return self.queue
+
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        return self.queue
+
+    def call_help(self, _):
+        """Process help command"""
+        self.print_help()
+        return self.queue
+
+    def call_quit(self, _):
+        """Process quit menu command"""
+        print("")
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit"]
+
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        # additional quit for when we come to this menu through a relative path
+        if len(self.queue) > 0:
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "quit"]
+
+    def call_reset(self, _):
+        """Process reset command"""
+        if len(self.queue) > 0:
+            self.queue.insert(0, "scr")
+            self.queue.insert(0, "stocks")
+            self.queue.insert(0, "reset")
+            self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
+            return self.queue
+        return ["quit", "quit", "reset", "stocks", "scr"]
+
+    @try_except
+    def call_view(self, other_args: List[str]):
+        """Process view command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="view",
@@ -105,23 +250,14 @@ Last screened tickers: {', '.join(self.screen_tickers)}
             action="store",
             dest="preset",
             type=str,
-            help="View specific preset",
+            help="View specific custom preset",
             default="",
-            choices=[
-                preset.split(".")[0]
-                for preset in os.listdir(presets_path)
-                if preset[-4:] == ".ini"
-            ],
+            choices=self.preset_choices,
         )
-
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-p")
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
             if ns_parser.preset:
                 preset_filter = configparser.RawConfigParser()
                 preset_filter.optionxform = str  # type: ignore
@@ -141,14 +277,8 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                     print("")
 
             else:
-                presets = [
-                    preset.split(".")[0]
-                    for preset in os.listdir(presets_path)
-                    if preset[-4:] == ".ini"
-                ]
-
                 print("\nCustom Presets:")
-                for preset in presets:
+                for preset in self.preset_choices:
                     with open(
                         presets_path + preset + ".ini",
                         encoding="utf8",
@@ -167,15 +297,15 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                     print(f"   {signame}{(50-len(signame)) * ' '}{sigdesc}")
                 print("")
 
-        except Exception as e:
-            print(e)
+        return self.queue
 
-    def set_preset(self, other_args: List[str]):
-        """Set preset"""
+    @try_except
+    def call_set(self, other_args: List[str]):
+        """Process set command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="set",
-            description="""Set preset from under presets folder.""",
+            description="""Set preset from custom and default ones.""",
         )
         parser.add_argument(
             "-p",
@@ -185,165 +315,551 @@ Last screened tickers: {', '.join(self.screen_tickers)}
             type=str,
             default="template",
             help="Filter presets",
-            choices=[
-                preset.split(".")[0]
-                for preset in os.listdir(presets_path)
-                if preset[-4:] == ".ini"
-            ]
-            + list(finviz_model.d_signals.keys()),
+            choices=self.preset_choices + list(finviz_model.d_signals.keys()),
         )
-
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-p")
-
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
             self.preset = ns_parser.preset
-
-        except Exception as e:
-            print(e)
-
         print("")
-        return
+        return self.queue
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
-        """
-
-        # Empty command
-        if not an_input:
-            print("")
-            return None
-
-        (known_args, other_args) = self.scr_parser.parse_known_args(an_input.split())
-
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
-
-        return getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-    def call_help(self, _):
-        """Process Help command"""
-        self.print_help()
-
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return False
-
-    def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
-
-    def call_view(self, other_args: List[str]):
-        """Process view command"""
-        self.view_available_presets(other_args)
-
-    def call_set(self, other_args: List[str]):
-        """Process set command"""
-        self.set_preset(other_args)
-
+    @try_except
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
-        self.screen_tickers = yahoofinance_view.historical(other_args, self.preset)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="historical",
+            description="""Historical price comparison between similar companies [Source: Yahoo Finance]
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of the most shorted stocks to retrieve.",
+        )
+        parser.add_argument(
+            "-n",
+            "--no-scale",
+            action="store_false",
+            dest="no_scale",
+            default=False,
+            help="Flag to not put all prices on same 0-1 scale",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=datetime.datetime.now() - datetime.timedelta(days=6 * 30),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the historical price to plot",
+        )
+        parser.add_argument(
+            "-t",
+            "--type",
+            action="store",
+            dest="type_candle",
+            choices=self.historical_candle_choices,
+            default="a",  # in case it's adjusted close
+            help="type of candles: o-open, h-high, l-low, c-close, a-adjusted close.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            self.screen_tickers = yahoofinance_view.historical(
+                self.preset,
+                ns_parser.limit,
+                ns_parser.start,
+                ns_parser.type_candle,
+                not ns_parser.no_scale,
+                ns_parser.export,
+            )
 
+        return self.queue
+
+    @try_except
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
-        self.screen_tickers = finviz_view.screener(other_args, self.preset, "overview")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="overview",
+            description="""
+                Prints overview data of the companies that meet the pre-set filtering.
+            """,
+        )
+        parser.add_argument(
+            "-p",
+            "--preset",
+            action="store",
+            dest="preset",
+            type=str,
+            default=self.preset,
+            help="Filter presets",
+            choices=self.preset_choices + list(finviz_model.d_signals.keys()),
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of stocks to print",
+        )
+        parser.add_argument(
+            "-a",
+            "--ascend",
+            action="store_true",
+            default=False,
+            dest="ascend",
+            help="Set order to Ascend, the default is Descend",
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            action="store",
+            dest="sort",
+            default="",
+            nargs="+",
+            choices=finviz_view.d_cols_to_sort["overview"],
+            help="Sort elements of the table.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            self.screen_tickers = finviz_view.screener(
+                loaded_preset=self.preset,
+                data_type="overview",
+                limit=ns_parser.limit,
+                ascend=ns_parser.ascend,
+                sort=ns_parser.sort,
+                export=ns_parser.export,
+            )
 
+        return self.queue
+
+    @try_except
     def call_valuation(self, other_args: List[str]):
         """Process valuation command"""
-        self.screen_tickers = finviz_view.screener(other_args, self.preset, "valuation")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="valuation",
+            description="""
+                Prints valuation data of the companies that meet the pre-set filtering.
+            """,
+        )
+        parser.add_argument(
+            "-p",
+            "--preset",
+            action="store",
+            dest="preset",
+            type=str,
+            default=self.preset,
+            help="Filter presets",
+            choices=self.preset_choices + list(finviz_model.d_signals.keys()),
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of stocks to print",
+        )
+        parser.add_argument(
+            "-a",
+            "--ascend",
+            action="store_true",
+            default=False,
+            dest="ascend",
+            help="Set order to Ascend, the default is Descend",
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            action="store",
+            dest="sort",
+            default="",
+            nargs="+",
+            choices=finviz_view.d_cols_to_sort["valuation"],
+            help="Sort elements of the table.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            self.screen_tickers = finviz_view.screener(
+                loaded_preset=self.preset,
+                data_type="valuation",
+                limit=ns_parser.limit,
+                ascend=ns_parser.ascend,
+                sort=ns_parser.sort,
+                export=ns_parser.export,
+            )
 
+        return self.queue
+
+    @try_except
     def call_financial(self, other_args: List[str]):
         """Process financial command"""
-        self.screen_tickers = finviz_view.screener(other_args, self.preset, "financial")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="financial",
+            description="""
+                Prints financial data of the companies that meet the pre-set filtering.
+            """,
+        )
+        parser.add_argument(
+            "-p",
+            "--preset",
+            action="store",
+            dest="preset",
+            type=str,
+            default=self.preset,
+            help="Filter presets",
+            choices=self.preset_choices + list(finviz_model.d_signals.keys()),
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of stocks to print",
+        )
+        parser.add_argument(
+            "-a",
+            "--ascend",
+            action="store_true",
+            default=False,
+            dest="ascend",
+            help="Set order to Ascend, the default is Descend",
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            action="store",
+            dest="sort",
+            default="",
+            nargs="+",
+            choices=finviz_view.d_cols_to_sort["financial"],
+            help="Sort elements of the table.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            self.screen_tickers = finviz_view.screener(
+                loaded_preset=self.preset,
+                data_type="financial",
+                limit=ns_parser.limit,
+                ascend=ns_parser.ascend,
+                sort=ns_parser.sort,
+                export=ns_parser.export,
+            )
 
+        return self.queue
+
+    @try_except
     def call_ownership(self, other_args: List[str]):
         """Process ownership command"""
-        self.screen_tickers = finviz_view.screener(other_args, self.preset, "ownership")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="ownership",
+            description="""
+                Prints ownership data of the companies that meet the pre-set filtering.
+            """,
+        )
+        parser.add_argument(
+            "-p",
+            "--preset",
+            action="store",
+            dest="preset",
+            type=str,
+            default=self.preset,
+            help="Filter presets",
+            choices=self.preset_choices + list(finviz_model.d_signals.keys()),
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of stocks to print",
+        )
+        parser.add_argument(
+            "-a",
+            "--ascend",
+            action="store_true",
+            default=False,
+            dest="ascend",
+            help="Set order to Ascend, the default is Descend",
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            action="store",
+            dest="sort",
+            default="",
+            nargs="+",
+            choices=finviz_view.d_cols_to_sort["ownership"],
+            help="Sort elements of the table.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            self.screen_tickers = finviz_view.screener(
+                loaded_preset=self.preset,
+                data_type="ownership",
+                limit=ns_parser.limit,
+                ascend=ns_parser.ascend,
+                sort=ns_parser.sort,
+                export=ns_parser.export,
+            )
 
+        return self.queue
+
+    @try_except
     def call_performance(self, other_args: List[str]):
         """Process performance command"""
-        self.screen_tickers = finviz_view.screener(
-            other_args, self.preset, "performance"
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="performance",
+            description="""
+                Prints performance data of the companies that meet the pre-set filtering.
+            """,
         )
+        parser.add_argument(
+            "-p",
+            "--preset",
+            action="store",
+            dest="preset",
+            type=str,
+            default=self.preset,
+            help="Filter presets",
+            choices=self.preset_choices + list(finviz_model.d_signals.keys()),
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of stocks to print",
+        )
+        parser.add_argument(
+            "-a",
+            "--ascend",
+            action="store_true",
+            default=False,
+            dest="ascend",
+            help="Set order to Ascend, the default is Descend",
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            action="store",
+            dest="sort",
+            default="",
+            nargs="+",
+            choices=finviz_view.d_cols_to_sort["performance"],
+            help="Sort elements of the table.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            self.screen_tickers = finviz_view.screener(
+                loaded_preset=self.preset,
+                data_type="performance",
+                limit=ns_parser.limit,
+                ascend=ns_parser.ascend,
+                sort=ns_parser.sort,
+                export=ns_parser.export,
+            )
 
+        return self.queue
+
+    @try_except
     def call_technical(self, other_args: List[str]):
         """Process technical command"""
-        self.screen_tickers = finviz_view.screener(other_args, self.preset, "technical")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="technical",
+            description="""
+                Prints technical data of the companies that meet the pre-set filtering.
+            """,
+        )
+        parser.add_argument(
+            "-p",
+            "--preset",
+            action="store",
+            dest="preset",
+            type=str,
+            default=self.preset,
+            help="Filter presets",
+            choices=self.preset_choices + list(finviz_model.d_signals.keys()),
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of stocks to print",
+        )
+        parser.add_argument(
+            "-a",
+            "--ascend",
+            action="store_true",
+            default=False,
+            dest="ascend",
+            help="Set order to Ascend, the default is Descend",
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            action="store",
+            dest="sort",
+            default="",
+            nargs="+",
+            choices=finviz_view.d_cols_to_sort["technical"],
+            help="Sort elements of the table.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            self.screen_tickers = finviz_view.screener(
+                loaded_preset=self.preset,
+                data_type="technical",
+                limit=ns_parser.limit,
+                ascend=ns_parser.ascend,
+                sort=ns_parser.sort,
+                export=ns_parser.export,
+            )
 
+        return self.queue
+
+    @try_except
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
-        if not self.screen_tickers:
-            print("Some tickers must be screened first through one of the presets!\n")
-            return None
+        if self.screen_tickers:
+            return po_controller.menu(self.screen_tickers, from_submenu=True)
 
-        return po_controller.menu(self.screen_tickers)
+        print("Some tickers must be screened first through one of the presets!\n")
+        return self.queue
 
+    @try_except
     def call_ca(self, _):
         """Call the comparison analysis menu with selected tickers"""
-        if not self.screen_tickers:
-            print("Some tickers must be screened first through one of the presets!\n")
-            return None
+        if self.screen_tickers:
+            return ca_controller.menu(
+                self.screen_tickers, self.queue, from_submenu=True
+            )
 
-        return ca_controller.menu(self.screen_tickers)
+        print("Some tickers must be screened first through one of the presets!\n")
+        return self.queue
 
 
-def menu():
+def menu(queue: List[str] = None):
     """Screener Menu"""
-
-    scr_controller = ScreenerController()
-    scr_controller.call_help(None)
+    scr_controller = ScreenerController(queue)
+    an_input = "HELP_ME"
 
     while True:
+        # There is a command in the queue
+        if scr_controller.queue and len(scr_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
+            if scr_controller.queue[0] in ("q", "..", "quit"):
+                print("")
+                if len(scr_controller.queue) > 1:
+                    return scr_controller.queue[1:]
+                return []
+
+            # Consume 1 element from the queue
+            an_input = scr_controller.queue[0]
+            scr_controller.queue = scr_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
+            if an_input and an_input.split(" ")[0] in scr_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /stocks/scr/ $ {an_input}")
+
         # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in scr_controller.CHOICES}
-            )
-            an_input = session.prompt(
-                f"{get_flair()} (stocks)>(scr)> ",
-                completer=completer,
-            )
         else:
-            an_input = input(f"{get_flair()} (stocks)>(scr)> ")
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
+                scr_controller.print_help()
+
+            # Get input from user using auto-completion
+            if session and gtff.USE_PROMPT_TOOLKIT and scr_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /stocks/scr/ $ ",
+                    completer=scr_controller.completer,
+                    search_ignore_case=True,
+                )
+            # Get input from user without auto-completion
+            else:
+                an_input = input(f"{get_flair()} /stocks/scr/ $ ")
 
         try:
-            plt.close("all")
-
-            process_input = scr_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            # Process the input command
+            scr_controller.queue = scr_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            similar_cmd = difflib.get_close_matches(
-                an_input, scr_controller.CHOICES, n=1, cutoff=0.7
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/scr menu.",
+                end="",
             )
-
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                scr_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
-            continue
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        scr_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
+                else:
+                    an_input = similar_cmd[0]
+
+                print(f" Replacing by '{an_input}'.")
+                scr_controller.queue.insert(0, an_input)
+            else:
+                print("\n")

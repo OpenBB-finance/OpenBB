@@ -1,15 +1,24 @@
-"""AlphaVantage FX Model"""
+"""AlphaVantage FX Model."""
 
 import argparse
-from typing import Dict
+from typing import Dict, List
 import os
 import pandas as pd
 import requests
 from gamestonk_terminal import config_terminal as cfg
 
 
+def get_currency_list() -> List:
+    """Load AV currency codes from a local file."""
+    path = os.path.join(os.path.dirname(__file__), "av_forex_currencies.csv")
+    return list(pd.read_csv(path)["currency code"])
+
+
+CURRENCY_LIST = get_currency_list()
+
+
 def check_valid_forex_currency(fx_symbol: str) -> str:
-    """Check if given symbol is supported on alphavantage
+    """Check if given symbol is supported on alphavantage.
 
     Parameters
     ----------
@@ -26,8 +35,7 @@ def check_valid_forex_currency(fx_symbol: str) -> str:
     argparse.ArgumentTypeError
         Symbol not valid on alphavantage
     """
-    path = os.path.join(os.path.dirname(__file__), "av_forex_currencies.csv")
-    if fx_symbol.upper() in list(pd.read_csv(path)["currency code"]):
+    if fx_symbol.upper() in CURRENCY_LIST:
         return fx_symbol.upper()
 
     raise argparse.ArgumentTypeError(
@@ -36,7 +44,7 @@ def check_valid_forex_currency(fx_symbol: str) -> str:
 
 
 def get_quote(to_symbol: str, from_symbol: str) -> Dict:
-    """Get current exchange rate quote from alpha vantage
+    """Get current exchange rate quote from alpha vantage.
 
     Parameters
     ----------
@@ -50,8 +58,12 @@ def get_quote(to_symbol: str, from_symbol: str) -> Dict:
     Dict
         Dictionary of exchange rate
     """
-    url = "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RAT"
-    url += f"E&from_currency={from_symbol}&to_currency={to_symbol}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    url = (
+        "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE"
+        + f"&from_currency={from_symbol}"
+        + f"&to_currency={to_symbol}"
+        + f"&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    )
     r = requests.get(url)
     if r.status_code != 200:
         return {}
@@ -65,7 +77,7 @@ def get_historical(
     interval: int = 5,
     start_date: str = "",
 ) -> pd.DataFrame:
-    """Get historical forex data
+    """Get historical forex data.
 
     Parameters
     ----------

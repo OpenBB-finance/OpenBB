@@ -21,8 +21,9 @@ def display_overview(ticker: str):
     """
     df_fa = av_model.get_overview(ticker)
     if df_fa.empty:
-        print(f"No data found from alphavantage for {ticker}.\n")
+        print("No API calls left. Try me later", "\n")
         return
+
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
@@ -45,9 +46,8 @@ def display_key(ticker: str):
         Fundamental analysis ticker symbol
     """
     df_key = av_model.get_key_metrics(ticker)
-
     if df_key.empty:
-        print("Issue getting key metrics from alpha vantage.")
+        print("No API calls left. Try me later", "\n")
         return
 
     if gtff.USE_TABULATE_DF:
@@ -59,7 +59,7 @@ def display_key(ticker: str):
 
 
 def display_income_statement(
-    ticker: str, number: int, quarterly: bool = False, export: str = ""
+    ticker: str, limit: int, quarterly: bool = False, export: str = ""
 ):
     """Alpha Vantage income statement
 
@@ -67,14 +67,17 @@ def display_income_statement(
     ----------
     ticker : str
         Fundamental analysis ticker symbol
-    number: int
+    limit: int
         Number of past statements
     quarterly: bool
         Flag to get quarterly instead of annual
     export: str
         Format to export data
     """
-    df_income = av_model.get_income_statements(ticker, number, quarterly)
+    df_income = av_model.get_income_statements(ticker, limit, quarterly)
+    if df_income.empty:
+        print("No API calls left. Try me later", "\n")
+        return
 
     if gtff.USE_TABULATE_DF:
         print(tabulate(df_income, headers=df_income.columns, tablefmt="fancy_grid"))
@@ -86,7 +89,7 @@ def display_income_statement(
 
 
 def display_balance_sheet(
-    ticker: str, number: int, quarterly: bool = False, export: str = ""
+    ticker: str, limit: int, quarterly: bool = False, export: str = ""
 ):
     """Alpha Vantage income statement
 
@@ -94,14 +97,17 @@ def display_balance_sheet(
     ----------
     ticker : str
         Fundamental analysis ticker symbol
-    number: int
+    limit: int
         Number of past statements
     quarterly: bool
         Flag to get quarterly instead of annual
     export: str
         Format to export data
     """
-    df_balance = av_model.get_balance_sheet(ticker, number, quarterly)
+    df_balance = av_model.get_balance_sheet(ticker, limit, quarterly)
+    if df_balance.empty:
+        print("No API calls left. Try me later", "\n")
+        return
 
     if gtff.USE_TABULATE_DF:
         print(tabulate(df_balance, headers=df_balance.columns, tablefmt="fancy_grid"))
@@ -115,7 +121,7 @@ def display_balance_sheet(
 
 
 def display_cash_flow(
-    ticker: str, number: int, quarterly: bool = False, export: str = ""
+    ticker: str, limit: int, quarterly: bool = False, export: str = ""
 ):
     """Alpha Vantage income statement
 
@@ -123,14 +129,17 @@ def display_cash_flow(
     ----------
     ticker : str
         Fundamental analysis ticker symbol
-    number: int
+    limit: int
         Number of past statements
     quarterly: bool
         Flag to get quarterly instead of annual
     export: str
         Format to export data
     """
-    df_cash = av_model.get_cash_flow(ticker, number, quarterly)
+    df_cash = av_model.get_cash_flow(ticker, limit, quarterly)
+    if df_cash.empty:
+        print("No API calls left. Try me later", "\n")
+        return
 
     if gtff.USE_TABULATE_DF:
         print(tabulate(df_cash, headers=df_cash.columns, tablefmt="fancy_grid"))
@@ -141,33 +150,33 @@ def display_cash_flow(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "cash", df_cash)
 
 
-def display_earnings(ticker: str, number: int, quarterly: bool = False):
+def display_earnings(ticker: str, limit: int, quarterly: bool = False):
     """Alpha Vantage earnings
 
     Parameters
     ----------
     ticker : str
         Fundamental analysis ticker symbol
-    number:int
+    limit:int
         Number of events to show
     quarterly: bool
         Flag to show quarterly instead of annual
     """
     df_fa = av_model.get_earnings(ticker, quarterly)
     if df_fa.empty:
-        print("Error getting earnings data.\n")
+        print("No API calls left. Try me later", "\n")
         return
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
-                df_fa.head(number),
+                df_fa.head(limit),
                 headers=df_fa.columns,
                 showindex=False,
                 tablefmt="fancy_grid",
             )
         )
     else:
-        print(df_fa.head(n=number).T.to_string(header=False))
+        print(df_fa.head(n=limit).T.to_string(header=False))
 
     print("")
 
