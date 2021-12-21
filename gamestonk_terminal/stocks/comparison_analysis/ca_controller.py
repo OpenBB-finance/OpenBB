@@ -235,8 +235,9 @@ Finviz:
             self.queue.insert(0, "quit")
             self.queue.insert(0, "quit")
             self.queue.insert(0, "quit")
+            self.queue.insert(0, "quit")
             return self.queue
-        return ["quit", "quit", "quit"]
+        return ["quit", "quit", "quit", "quit"]
 
     def call_reset(self, _):
         """Process reset command"""
