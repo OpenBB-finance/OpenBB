@@ -37,6 +37,8 @@ gst_bot.load_extension("stocks.technical_analysis.ta_menu")
 gst_bot.load_extension("stocks.due_diligence.dd_menu")
 gst_bot.load_extension("stocks.government.gov_menu")
 gst_bot.load_extension("stocks.screener.screener_menu")
+gst_bot.load_extension("stocks.options.options_menu")
+
 
 # Get all command names
 all_cmds = gst_bot.all_commands.keys()
