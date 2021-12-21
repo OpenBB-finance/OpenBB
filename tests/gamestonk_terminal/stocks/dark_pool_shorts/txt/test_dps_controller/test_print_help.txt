@@ -1,9 +1,4 @@
 
-Dark Pool Shorts:
-    cls            clear screen
-    ?/help         show this menu again
-    q              quit this menu, and shows back to main menu
-    quit           quit to abandon program
     load           load a specific stock ticker for analysis
 
 Yahoo Finance:
