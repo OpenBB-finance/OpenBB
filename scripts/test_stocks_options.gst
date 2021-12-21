@@ -1,8 +1,11 @@
 stocks
 options
-pres
-disp high_IV
-scr high_IV
+screen
+view
+view high_IV
+set high_IV
+scr
+q
 unu
 calc
 load aapl

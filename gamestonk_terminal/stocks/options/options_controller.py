@@ -187,7 +187,7 @@ Expiry: {self.selected_date or None}
     parity        shows whether options are above or below expected price [Yfinance]
     binom         shows the value of an option using binomial options pricing [Yfinance]
 
->   scr           screens tickers based on preset [Syncretism.io]
+>   screen        screens tickers based on preset [Syncretism.io]
 >   payoff        shows payoff diagram for a selection of options [Yfinance]
 >   pricing       shows options pricing and risk neutral valuation [Yfinance]
 {Style.RESET_ALL if not colored else ''}"""
