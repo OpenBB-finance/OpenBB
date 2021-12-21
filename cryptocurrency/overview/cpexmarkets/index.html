@@ -10,7 +10,7 @@
 
 
 
-    <meta name="description" content="usage: cpexmarkets [-e EXCHANGE] [-t TOP] [-s {pair,base_currency_name,quote_currency_name,category,reported_volume_24h_share,trust_score,market_url}] [--descend] [-l] [--export {csv,json,xlsx}] [-h] Get all exchange markets found for given exchange You can display only top N number of records with &ndash;top parameter. You can sort data by pair, base_currency_name, quote_currency_name, market_url, category, reported_volume_24h_share, trust_score &ndash;sort parameter and also with &ndash;descend flag to sort descending. You can use additional flag &ndash;links to see urls for each market Displays: exchange_id, pair, base_currency_name, quote_currency_name, market_url, category, reported_volume_24h_share, trust_score,">
+    <meta name="description" content="usage: cpexmarkets [-e EXCHANGE] [-l N] [-s {pair,base_currency_name,quote_currency_name,category,reported_volume_24h_share,trust_score,market_url}] [--descend] [-l] [--export {csv,json,xlsx}] [-h] Get all exchange markets found for given exchange You can display only display N number records with &ndash;limit parameter. You can sort data by pair, base_currency_name, quote_currency_name, market_url, category, reported_volume_24h_share, trust_score &ndash;sort parameter and also with &ndash;descend flag to sort descending. You can use additional flag &ndash;urls to see urls for each market Displays: exchange_id, pair, base_currency_name, quote_currency_name, market_url, category, reported_volume_24h_share, trust_score,">
 
 
 
@@ -16083,19 +16083,19 @@
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Cpexmarkets</h1>
-        <pre><code>usage: cpexmarkets [-e EXCHANGE] [-t TOP]
+        <pre><code>usage: cpexmarkets [-e EXCHANGE] [-l N]
                    [-s {pair,base_currency_name,quote_currency_name,category,reported_volume_24h_share,trust_score,market_url}] [--descend] [-l]
                    [--export {csv,json,xlsx}] [-h]
-</code></pre><p>Get all exchange markets found for given exchange You can display only top N number of records with &ndash;top parameter. You can sort data by pair, base_currency_name, quote_currency_name, market_url, category, reported_volume_24h_share, trust_score &ndash;sort parameter and also with &ndash;descend flag to sort descending. You can use additional flag &ndash;links to see urls for each market Displays: exchange_id, pair, base_currency_name,
+</code></pre><p>Get all exchange markets found for given exchange You can display only display N number records with &ndash;limit parameter. You can sort data by pair, base_currency_name, quote_currency_name, market_url, category, reported_volume_24h_share, trust_score &ndash;sort parameter and also with &ndash;descend flag to sort descending. You can use additional flag &ndash;urls to see urls for each market Displays: exchange_id, pair, base_currency_name,
 quote_currency_name, market_url, category, reported_volume_24h_share, trust_score,</p>
 <pre><code>optional arguments:
   -e EXCHANGE, --exchange EXCHANGE
                         Identifier of exchange e.g for Binance Exchange -&gt; binance (default: binance)
-  -t TOP, --top TOP     Limit of records (default: 10)
+  -l N, --limit N     Limit of records (default: 10)
   -s {pair,base_currency_name,quote_currency_name,category,reported_volume_24h_share,trust_score,market_url}, --sort {pair,base_currency_name,quote_currency_name,category,reported_volume_24h_share,trust_score,market_url}
                         Sort by given column. Default: reported_volume_24h_share (default: reported_volume_24h_share)
   --descend             Flag to sort in descending order (lowest first) (default: False)
-  -l, --links           Flag to show urls. If you will use that flag you will see only: exchange, pair, trust_score, market_url columns (default:
+  -u, --urls           Flag to show urls. If you will use that flag you will see only: exchange, pair, trust_score, market_url columns (default:
                         False)
   --export {csv,json,xlsx}
                         Export dataframe data to csv,json,xlsx file (default: )

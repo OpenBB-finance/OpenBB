@@ -10,7 +10,7 @@
 
 
 
-    <meta name="description" content="usage: events [-t TOP] [-s {date,date_to,name,description,is_conference}] [--descend] [-l] [--export {csv,json,xlsx}] [-h] Show information about most important coins events. Most of coins doesn&rsquo;t have any events. You can display only top N number of events with &ndash;top parameter. You can sort data by id, date , date_to, name, description, is_conference &ndash;sort parameter and also with &ndash;descend flag to sort descending. You can use additional flag &ndash;links to see urls for each event Displays: date , date_to, name, description, is_conference, link, proof_image_link">
+    <meta name="description" content="usage: events [-l N] [-s {date,date_to,name,description,is_conference}] [--descend] [-u] [--export {csv,json,xlsx}] [-h] Show information about most important coins events. Most of coins doesn&rsquo;t have any events. You can display only N number of events with &ndash;limit parameter. You can sort data by id, date , date_to, name, description, is_conference &ndash;sort parameter and also with &ndash;descend flag to sort descending. You can use additional flag &ndash;urls to see urls for each event Displays: date , date_to, name, description, is_conference, link, proof_image_link">
 
 
 
@@ -16083,17 +16083,17 @@
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Events</h1>
-        <pre><code>usage: events [-t TOP] [-s {date,date_to,name,description,is_conference}] [--descend] [-l] [--export {csv,json,xlsx}] [-h]
-</code></pre><p>Show information about most important coins events. Most of coins doesn&rsquo;t have any events. You can display only top N number of events with &ndash;top
+        <pre><code>usage: events [-l N] [-s {date,date_to,name,description,is_conference}] [--descend] [-u] [--export {csv,json,xlsx}] [-h]
+</code></pre><p>Show information about most important coins events. Most of coins doesn&rsquo;t have any events. You can display only N number of events with &ndash;limit
 parameter. You can sort data by id, date , date_to, name, description, is_conference &ndash;sort parameter and also with &ndash;descend flag to sort
-descending. You can use additional flag &ndash;links to see urls for each event Displays: date , date_to, name, description, is_conference, link,
+descending. You can use additional flag &ndash;urls to see urls for each event Displays: date , date_to, name, description, is_conference, link,
 proof_image_link</p>
 <pre><code>optional arguments:
-  -t TOP, --top TOP     Limit of records (default: 10)
+  -l N, --limit N       Limit of records (default: 10)
   -s {date,date_to,name,description,is_conference}, --sort {date,date_to,name,description,is_conference}
                         Sort by given column. Default: date (default: date)
   --descend             Flag to sort in descending order (lowest first) (default: False)
-  -l, --links           Flag to show urls. If you will use that flag you will see only date, name, link columns (default: False)
+  -u, --urls            Flag to show urls. If you will use that flag you will see only date, name, link columns (default: False)
   --export {csv,json,xlsx}
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)

@@ -10,8 +10,8 @@
 
 
 
-    <meta name="description" content="usage: cgexchanges [-t TOP] [-s {Rank,Trust_Score,Id,Name,Country,Year Established,Trade_Volume_24h_BTC}] [--descend] [-l] [--export {csv,json,xlsx}] [-h] Shows Top Crypto Exchanges You can display only top N number exchanges with &ndash;top parameter. You can sort data by Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC with &ndash;sort and also with &ndash;descend flag to sort descending. Flag &ndash;links will display urls. Displays: Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC
-optional arguments: -t TOP, --top TOP top N number records (default: 15) -s {Rank,Trust_Score,Id,Name,Country,Year Established,Trade_Volume_24h_BTC}, --sort {Rank,Trust_Score,Id,Name,Country,Year Established,Trade_Volume_24h_BTC} Sort by given column.">
+    <meta name="description" content="usage: cgexchanges [-l N] [-s {Rank,Trust_Score,Id,Name,Country,Year Established,Trade_Volume_24h_BTC}] [--descend] [-l] [--export {csv,json,xlsx}] [-h] Shows Top Crypto Exchanges You can display only N number exchanges with &ndash;limit parameter. You can sort data by Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC with &ndash;sort and also with &ndash;descend flag to sort descending. Flag &ndash;urls will display urls. Displays: Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC
+optional arguments: -l N, --limit N display N number records (default: 15) -s {Rank,Trust_Score,Id,Name,Country,Year Established,Trade_Volume_24h_BTC}, --sort {Rank,Trust_Score,Id,Name,Country,Year Established,Trade_Volume_24h_BTC} Sort by given column.">
 
 
 
@@ -16084,16 +16084,16 @@ optional arguments: -t TOP, --top TOP top N number records (default: 15) -s {Ran
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Cgexchanges</h1>
-        <pre><code>usage: cgexchanges [-t TOP] [-s {Rank,Trust_Score,Id,Name,Country,Year Established,Trade_Volume_24h_BTC}] [--descend] [-l] [--export {csv,json,xlsx}] [-h]
-</code></pre><p>Shows Top Crypto Exchanges You can display only top N number exchanges with &ndash;top parameter. You can sort data by Trust_Score, Id, Name, Country,
-Year_Established, Trade_Volume_24h_BTC with &ndash;sort and also with &ndash;descend flag to sort descending. Flag &ndash;links will display urls. Displays:
+        <pre><code>usage: cgexchanges [-l N] [-s {Rank,Trust_Score,Id,Name,Country,Year Established,Trade_Volume_24h_BTC}] [--descend] [-l] [--export {csv,json,xlsx}] [-h]
+</code></pre><p>Shows Top Crypto Exchanges You can display only N number exchanges with &ndash;limit parameter. You can sort data by Trust_Score, Id, Name, Country,
+Year_Established, Trade_Volume_24h_BTC with &ndash;sort and also with &ndash;descend flag to sort descending. Flag &ndash;urls will display urls. Displays:
 Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC</p>
 <pre><code>optional arguments:
-  -t TOP, --top TOP     top N number records (default: 15)
+  -l N, --limit N     display N number records (default: 15)
   -s {Rank,Trust_Score,Id,Name,Country,Year Established,Trade_Volume_24h_BTC}, --sort {Rank,Trust_Score,Id,Name,Country,Year Established,Trade_Volume_24h_BTC}
                         Sort by given column. Default: Rank (default: Rank)
   --descend             Flag to sort in descending order (lowest first) (default: True)
-  -l, --links           Flag to show urls (default: False)
+  -u, --urls           Flag to show urls (default: False)
   --export {csv,json,xlsx}
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)

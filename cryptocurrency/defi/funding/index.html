@@ -10,8 +10,8 @@
 
 
 
-    <meta name="description" content="usage: funding [-t TOP] [--current] [--export {csv,json,xlsx}] [-h] Display Funding rates. [Source: https://defirate.com/]
-optional arguments: -t TOP, --top TOP top N number records (default: 10) --current Show Current Funding Rates or Last 30 Days Average (default: True) --export {csv,json,xlsx} Export dataframe data to csv,json,xlsx file (default: ) -h, --help show this help message (default: False) ">
+    <meta name="description" content="usage: funding [-l N] [--current] [--export {csv,json,xlsx}] [-h] Display Funding rates. [Source: https://defirate.com/]
+optional arguments: -l N, --limit N display N records (default: 10) --current Show Current Funding Rates or Last 30 Days Average (default: True) --export {csv,json,xlsx} Export dataframe data to csv,json,xlsx file (default: ) -h, --help show this help message (default: False) ">
 
 
 
@@ -16084,10 +16084,10 @@ optional arguments: -t TOP, --top TOP top N number records (default: 10) --curre
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Funding</h1>
-        <pre><code>usage: funding [-t TOP] [--current] [--export {csv,json,xlsx}] [-h]
+        <pre><code>usage: funding [-l N] [--current] [--export {csv,json,xlsx}] [-h]
 </code></pre><p>Display Funding rates. [Source: https://defirate.com/]</p>
 <pre><code>optional arguments:
-  -t TOP, --top TOP     top N number records (default: 10)
+  -l N, --limit N       display N records (default: 10)
   --current             Show Current Funding Rates or Last 30 Days Average
                         (default: True)
   --export {csv,json,xlsx}

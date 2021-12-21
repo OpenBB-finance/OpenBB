@@ -10,8 +10,8 @@
 
 
 
-    <meta name="description" content="usage: news [-t TOP] [-k {news,media}] [-f {rising,hot,bullish,bearish,important,saved,lol}] [-r {en,de,es,fr,nl,it,pt,ru}] [-s {published_at,domain,title,negative_votes,positive_votes}] [--descend] [-l] [-h] [--export {png,jpg,pdf,svg}] Display recent posts from CryptoPanic news aggregator platform. [Source:https://cryptopanic.com/]
-optional arguments: -t TOP, --top TOP top N number of news &gt;=10 (default: 20) -k {news,media}, --kind {news,media} Filter by category of news. Available values: news or media. (default: news) -f {rising,hot,bullish,bearish,important,saved,lol}, --filter {rising,hot,bullish,bearish,important,saved,lol} Filter by kind of news. One from list: rising|hot|bullish|bearish|important|saved|lol (default: None) -r {en,de,es,fr,nl,it,pt,ru}, --region {en,de,es,fr,nl,it,pt,ru} Filter news by regions.">
+    <meta name="description" content="usage: news [-l N] [-k {news,media}] [-f {rising,hot,bullish,bearish,important,saved,lol}] [-r {en,de,es,fr,nl,it,pt,ru}] [-s {published_at,domain,title,negative_votes,positive_votes}] [--descend] [-l] [-h] [--export {png,jpg,pdf,svg}] Display recent posts from CryptoPanic news aggregator platform. [Source:https://cryptopanic.com/]
+optional arguments: -l N, --limit N N number of news &gt;=10 (default: 20) -k {news,media}, --kind {news,media} Filter by category of news. Available values: news or media. (default: news) -f {rising,hot,bullish,bearish,important,saved,lol}, --filter {rising,hot,bullish,bearish,important,saved,lol} Filter by kind of news. One from list: rising|hot|bullish|bearish|important|saved|lol (default: None) -r {en,de,es,fr,nl,it,pt,ru}, --region {en,de,es,fr,nl,it,pt,ru} Filter news by regions.">
 
 
 
@@ -16084,7 +16084,7 @@ optional arguments: -t TOP, --top TOP top N number of news &gt;=10 (default: 20)
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>News</h1>
-        <pre><code>usage: news [-t TOP] [-k {news,media}]
+        <pre><code>usage: news [-l N] [-k {news,media}]
             [-f {rising,hot,bullish,bearish,important,saved,lol}]
             [-r {en,de,es,fr,nl,it,pt,ru}]
             [-s {published_at,domain,title,negative_votes,positive_votes}]
@@ -16092,7 +16092,7 @@ optional arguments: -t TOP, --top TOP top N number of news &gt;=10 (default: 20)
 
 </code></pre><p>Display recent posts from CryptoPanic news aggregator platform. [Source:https://cryptopanic.com/]</p>
 <pre><code>optional arguments:
-  -t TOP, --top TOP     top N number of news &gt;=10 (default: 20)
+  -l N, --limit N      N number of news &gt;=10 (default: 20)
   -k {news,media}, --kind {news,media}
                         Filter by category of news. Available values: news or
                         media. (default: news)
@@ -16110,7 +16110,7 @@ optional arguments: -t TOP, --top TOP top N number of news &gt;=10 (default: 20)
                         published_at)
   --descend             Flag to sort in descending order (lowest first)
                         (default: True)
-  -l, --links           Flag to show urls. If you will use that flag you will
+  -u, --urls           Flag to show urls. If you will use that flag you will
                         additional column with urls (default: False)
   -h, --help            show this help message (default: False)
   --export {png,jpg,pdf,svg}

@@ -10,7 +10,7 @@
 
 
 
-    <meta name="description" content="usage: cgyfarms [-t TOP] [-s {Rank,Name,Value_Locked,Return_Year}] [--descend] [--export {csv,json,xlsx}] [-h] Shows Top Yield Farming Pools by Value Locked. Yield farming, also referred to as liquidity mining, is a way to generate rewards with cryptocurrency holdings. In simple terms, it means locking up cryptocurrencies and getting rewards. You can display only top N number of coins with &ndash;top parameter. You can sort data by Rank, Name, Value_Locked, Return_Year with &ndash;sort parameter and also with &ndash;descend flag to sort descending.">
+    <meta name="description" content="usage: cgyfarms [-l N] [-s {Rank,Name,Value_Locked,Return_Year}] [--descend] [--export {csv,json,xlsx}] [-h] Shows Top Yield Farming Pools by Value Locked. Yield farming, also referred to as liquidity mining, is a way to generate rewards with cryptocurrency holdings. In simple terms, it means locking up cryptocurrencies and getting rewards. You can display only top N number of coins with &ndash;top parameter. You can sort data by Rank, Name, Value_Locked, Return_Year with &ndash;sort parameter and also with &ndash;descend flag to sort descending.">
 
 
 
@@ -16083,12 +16083,12 @@
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Cgyfarms</h1>
-        <pre><code>usage: cgyfarms [-t TOP] [-s {Rank,Name,Value_Locked,Return_Year}] [--descend] [--export {csv,json,xlsx}] [-h]
+        <pre><code>usage: cgyfarms [-l N] [-s {Rank,Name,Value_Locked,Return_Year}] [--descend] [--export {csv,json,xlsx}] [-h]
 </code></pre><p>Shows Top Yield Farming Pools by Value Locked. Yield farming, also referred to as liquidity mining, is a way to generate rewards with cryptocurrency
 holdings. In simple terms, it means locking up cryptocurrencies and getting rewards. You can display only top N number of coins with &ndash;top parameter.
 You can sort data by Rank, Name, Value_Locked, Return_Year with &ndash;sort parameter and also with &ndash;descend flag to sort descending.</p>
 <pre><code>optional arguments:
-  -t TOP, --top TOP     Top N of records. Default 20 (default: 15)
+  -l N, --limit N       display N records (default: 15)
   -s {Rank,Name,Value_Locked,Return_Year}, --sort {Rank,Name,Value_Locked,Return_Year}
                         Sort by given column. Default: Rank (default: Rank)
   --descend             Flag to sort in descending order (lowest first) (default: True)

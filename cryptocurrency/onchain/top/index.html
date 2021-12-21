@@ -10,8 +10,8 @@
 
 
 
-    <meta name="description" content="usage: top [-t TOP] [-s {rank,name,symbol,price,txsCount,transfersCount,holdersCount,address}] [--descend] [--export {csv,json,xlsx}] [-h] Display top ERC20 tokens. [Source: Ethplorer]
-optional arguments: -t TOP, --top TOP top N number records (default: 10) -s {rank,name,symbol,price,txsCount,transfersCount,holdersCount,address}, --sort {rank,name,symbol,price,txsCount,transfersCount,holdersCount,address} Sort by given column. Default: rank (default: rank) --descend Flag to sort in descending order (lowest first) (default: True) --export {csv,json,xlsx} Export dataframe data to csv,json,xlsx file (default: ) -h, --help show this help message (default: False) ">
+    <meta name="description" content="usage: top [-l N] [-s {rank,name,symbol,price,txsCount,transfersCount,holdersCount,address}] [--descend] [--export {csv,json,xlsx}] [-h] Display top ERC20 tokens. [Source: Ethplorer]
+optional arguments: -l N, --limit N display N number records (default: 10) -s {rank,name,symbol,price,txsCount,transfersCount,holdersCount,address}, --sort {rank,name,symbol,price,txsCount,transfersCount,holdersCount,address} Sort by given column. Default: rank (default: rank) --descend Flag to sort in descending order (lowest first) (default: True) --export {csv,json,xlsx} Export dataframe data to csv,json,xlsx file (default: ) -h, --help show this help message (default: False) ">
 
 
 
@@ -16084,12 +16084,12 @@ optional arguments: -t TOP, --top TOP top N number records (default: 10) -s {ran
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Top</h1>
-        <pre><code>usage: top [-t TOP]
+        <pre><code>usage: top [-l N]
            [-s {rank,name,symbol,price,txsCount,transfersCount,holdersCount,address}]
            [--descend] [--export {csv,json,xlsx}] [-h]
 </code></pre><p>Display top ERC20 tokens. [Source: Ethplorer]</p>
 <pre><code>optional arguments:
-  -t TOP, --top TOP     top N number records (default: 10)
+  -l N, --limit N     display N number records (default: 10)
   -s {rank,name,symbol,price,txsCount,transfersCount,holdersCount,address}, --sort {rank,name,symbol,price,txsCount,transfersCount,holdersCount,address}
                         Sort by given column. Default: rank (default: rank)
   --descend             Flag to sort in descending order (lowest first)

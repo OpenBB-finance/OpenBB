@@ -10,8 +10,8 @@
 
 
 
-    <meta name="description" content="usage: lt [-k {dex,time}] [-vs {ETH,USD,BTC,USDT}] [-t TOP] [-d DAYS] [-s {trades,tradeAmount,exchange}] [--descend] [-h] [--export {csv,json,xlsx}] Display Trades on Decentralized Exchanges aggregated by DEX or Month [Source: https://graphql.bitquery.io/]
-optional arguments: -k {dex,time}, --kind {dex,time} Aggregate trades by dex or time Default: dex (default: dex) -vs {ETH,USD,BTC,USDT}, --vs {ETH,USD,BTC,USDT} Currency of displayed trade amount. (default: USD) -t TOP, --top TOP top N number records (default: 10) -d DAYS, --days DAYS Number of days to display data for.">
+    <meta name="description" content="usage: lt [-k {dex,time}] [-vs {ETH,USD,BTC,USDT}] [-l N] [-d DAYS] [-s {trades,tradeAmount,exchange}] [--descend] [-h] [--export {csv,json,xlsx}] Display Trades on Decentralized Exchanges aggregated by DEX or Month [Source: https://graphql.bitquery.io/]
+optional arguments: -k {dex,time}, --kind {dex,time} Aggregate trades by dex or time Default: dex (default: dex) -vs {ETH,USD,BTC,USDT}, --vs {ETH,USD,BTC,USDT} Currency of displayed trade amount. (default: USD) -l N, --limit N display N number records (default: 10) -d DAYS, --days DAYS Number of days to display data for.">
 
 
 
@@ -16084,7 +16084,7 @@ optional arguments: -k {dex,time}, --kind {dex,time} Aggregate trades by dex or 
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Lt</h1>
-        <pre><code>usage: lt [-k {dex,time}] [-vs {ETH,USD,BTC,USDT}] [-t TOP] [-d DAYS]
+        <pre><code>usage: lt [-k {dex,time}] [-vs {ETH,USD,BTC,USDT}] [-l N] [-d DAYS]
           [-s {trades,tradeAmount,exchange}] [--descend] [-h]
           [--export {csv,json,xlsx}]
 </code></pre><p>Display Trades on Decentralized Exchanges aggregated by DEX or Month [Source: https://graphql.bitquery.io/]</p>
@@ -16094,7 +16094,7 @@ optional arguments: -k {dex,time}, --kind {dex,time} Aggregate trades by dex or 
                         dex)
   -vs {ETH,USD,BTC,USDT}, --vs {ETH,USD,BTC,USDT}
                         Currency of displayed trade amount. (default: USD)
-  -t TOP, --top TOP     top N number records (default: 10)
+  -l N, --limit N     display N number records (default: 10)
   -d DAYS, --days DAYS  Number of days to display data for. (default: 90)
   -s {trades,tradeAmount,exchange}, --sort {trades,tradeAmount,exchange}
                         Sort by given column. Default: tradeAmount. For

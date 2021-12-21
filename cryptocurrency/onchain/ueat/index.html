@@ -10,8 +10,8 @@
 
 
 
-    <meta name="description" content="usage: ueat [-t TOP] [-s {date,uniqueSenders,transactions,averageGasPrice,mediumGasPrice,maximumGasPrice}] [-i {day,month,week}] [--descend] [-h] [--export {csv,json,xlsx}] Display number of unique ethereum addresses which made a transaction in given time interval [Source: https://graphql.bitquery.io/]
-optional arguments: -t TOP, --top TOP top N number records. (Maximum available time period is 90 days.Depending on chosen time period, top N records will be recalculated. E.g.For interval: month, and top: 10, period of calculation equals to 300, but because of max days limit: 90, it will only return last 3 months (3 records).">
+    <meta name="description" content="usage: ueat [-l N] [-s {date,uniqueSenders,transactions,averageGasPrice,mediumGasPrice,maximumGasPrice}] [-i {day,month,week}] [--descend] [-h] [--export {csv,json,xlsx}] Display number of unique ethereum addresses which made a transaction in given time interval [Source: https://graphql.bitquery.io/]
+optional arguments: -l N, --limit N display N number records. (Maximum available time period is 90 days.Depending on chosen time period, top N records will be recalculated. E.g.For interval: month, and top: 10, period of calculation equals to 300, but because of max days limit: 90, it will only return last 3 months (3 records).">
 
 
 
@@ -16084,13 +16084,13 @@ optional arguments: -t TOP, --top TOP top N number records. (Maximum available t
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Ueat</h1>
-        <pre><code>usage: ueat [-t TOP]
+        <pre><code>usage: ueat [-l N]
             [-s {date,uniqueSenders,transactions,averageGasPrice,mediumGasPrice,maximumGasPrice}]
             [-i {day,month,week}] [--descend] [-h] [--export {csv,json,xlsx}]
 </code></pre><p>Display number of unique ethereum addresses which made a transaction in given
 time interval [Source: https://graphql.bitquery.io/]</p>
 <pre><code>optional arguments:
-  -t TOP, --top TOP     top N number records. (Maximum available time period
+  -l N, --limit N     display N number records. (Maximum available time period
                         is 90 days.Depending on chosen time period, top N
                         records will be recalculated. E.g.For interval: month,
                         and top: 10, period of calculation equals to 300, but

@@ -10,8 +10,8 @@
 
 
 
-    <meta name="description" content="usage: cgproducts [-t TOP] [-s {Rank,Platform,Identifier,Supply_Rate,Borrow_Rate}] [--descend] [--export {csv,json,xlsx}] [-h] Shows Top Crypto Financial Products with which you can earn yield, borrow or lend your crypto. You can display only top N number of platforms with &ndash;top parameter. You can sort data by Rank, Platform, Identifier, Supply_Rate, Borrow_Rate with &ndash;sort and also with &ndash;descend flag to sort descending. Displays: Rank, Platform, Identifier, Supply_Rate, Borrow_Rate
-optional arguments: -t TOP, --top TOP top N number records (default: 15) -s {Rank,Platform,Identifier,Supply_Rate,Borrow_Rate}, --sort {Rank,Platform,Identifier,Supply_Rate,Borrow_Rate} Sort by given column.">
+    <meta name="description" content="usage: cgproducts [-l N] [-s {Rank,Platform,Identifier,Supply_Rate,Borrow_Rate}] [--descend] [--export {csv,json,xlsx}] [-h] Shows Top Crypto Financial Products with which you can earn yield, borrow or lend your crypto. You can display only N number of platforms with &ndash;limit parameter. You can sort data by Rank, Platform, Identifier, Supply_Rate, Borrow_Rate with &ndash;sort and also with &ndash;descend flag to sort descending. Displays: Rank, Platform, Identifier, Supply_Rate, Borrow_Rate
+optional arguments: -l N, --limit N display N number records (default: 15) -s {Rank,Platform,Identifier,Supply_Rate,Borrow_Rate}, --sort {Rank,Platform,Identifier,Supply_Rate,Borrow_Rate} Sort by given column.">
 
 
 
@@ -16084,12 +16084,12 @@ optional arguments: -t TOP, --top TOP top N number records (default: 15) -s {Ran
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Cgproducts</h1>
-        <pre><code>usage: cgproducts [-t TOP] [-s {Rank,Platform,Identifier,Supply_Rate,Borrow_Rate}] [--descend] [--export {csv,json,xlsx}] [-h]
-</code></pre><p>Shows Top Crypto Financial Products with which you can earn yield, borrow or lend your crypto. You can display only top N number of platforms with
-&ndash;top parameter. You can sort data by Rank, Platform, Identifier, Supply_Rate, Borrow_Rate with &ndash;sort and also with &ndash;descend flag to sort
+        <pre><code>usage: cgproducts [-l N] [-s {Rank,Platform,Identifier,Supply_Rate,Borrow_Rate}] [--descend] [--export {csv,json,xlsx}] [-h]
+</code></pre><p>Shows Top Crypto Financial Products with which you can earn yield, borrow or lend your crypto. You can display only N number of platforms with
+&ndash;limit parameter. You can sort data by Rank, Platform, Identifier, Supply_Rate, Borrow_Rate with &ndash;sort and also with &ndash;descend flag to sort
 descending. Displays: Rank, Platform, Identifier, Supply_Rate, Borrow_Rate</p>
 <pre><code>optional arguments:
-  -t TOP, --top TOP     top N number records (default: 15)
+  -l N, --limit N     display N number records (default: 15)
   -s {Rank,Platform,Identifier,Supply_Rate,Borrow_Rate}, --sort {Rank,Platform,Identifier,Supply_Rate,Borrow_Rate}
                         Sort by given column. Default: Rank (default: Rank)
   --descend             Flag to sort in descending order (lowest first) (default: True)

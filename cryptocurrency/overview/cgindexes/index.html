@@ -10,7 +10,7 @@
 
 
 
-    <meta name="description" content="usage: cgindexes [-t TOP] [-s {Rank,Name,Id,Market,Last,MultiAsset}] [--descend] [--export {csv,json,xlsx}] [-h] Shows list of crypto indexes from CoinGecko. Each crypto index is made up of a selection of cryptocurrencies, grouped together and weighted by market cap. You can display only top N number of indexes with &ndash;top parameter. You can sort data by Rank, Name, Id, Market, Last, MultiAsset with &ndash;sort and also with &ndash;descend flag to sort descending. Displays: Rank, Name, Id, Market, Last, MultiAsset">
+    <meta name="description" content="usage: cgindexes [-l N] [-s {Rank,Name,Id,Market,Last,MultiAsset}] [--descend] [--export {csv,json,xlsx}] [-h] Shows list of crypto indexes from CoinGecko. Each crypto index is made up of a selection of cryptocurrencies, grouped together and weighted by market cap. You can display only N number of indexes with &ndash;limit parameter. You can sort data by Rank, Name, Id, Market, Last, MultiAsset with &ndash;sort and also with &ndash;descend flag to sort descending. Displays: Rank, Name, Id, Market, Last, MultiAsset">
 
 
 
@@ -16083,12 +16083,12 @@
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Cgindexes</h1>
-        <pre><code>usage: cgindexes [-t TOP] [-s {Rank,Name,Id,Market,Last,MultiAsset}] [--descend] [--export {csv,json,xlsx}] [-h]
+        <pre><code>usage: cgindexes [-l N] [-s {Rank,Name,Id,Market,Last,MultiAsset}] [--descend] [--export {csv,json,xlsx}] [-h]
 </code></pre><p>Shows list of crypto indexes from CoinGecko. Each crypto index is made up of a selection of cryptocurrencies, grouped together and weighted by market
-cap. You can display only top N number of indexes with &ndash;top parameter. You can sort data by Rank, Name, Id, Market, Last, MultiAsset with &ndash;sort and
+cap. You can display only N number of indexes with &ndash;limit parameter. You can sort data by Rank, Name, Id, Market, Last, MultiAsset with &ndash;sort and
 also with &ndash;descend flag to sort descending. Displays: Rank, Name, Id, Market, Last, MultiAsset</p>
 <pre><code>optional arguments:
-  -t TOP, --top TOP     top N number records (default: 15)
+  -l N, --limit N     display N number records (default: 15)
   -s {Rank,Name,Id,Market,Last,MultiAsset}, --sort {Rank,Name,Id,Market,Last,MultiAsset}
                         Sort by given column. Default: Rank (default: Rank)
   --descend             Flag to sort in descending order (lowest first) (default: True)
