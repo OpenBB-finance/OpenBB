@@ -5,4 +5,5 @@ from . import (
     government,
     screener,
     technical_analysis,
+    options,
 )
