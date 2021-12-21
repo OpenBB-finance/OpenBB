@@ -39,35 +39,39 @@ def display_gainers(
     if sortby == "Change":
         sortby = f"%Change_{period}"
 
-    df = pycoingecko_model.get_gainers_or_losers(
-        period=period, typ="gainers"
-    ).sort_values(by=sortby, ascending=descend)
+    df = pycoingecko_model.get_gainers_or_losers(period=period, typ="gainers")
+    if not df.empty:
+        df = df.sort_values(by=sortby, ascending=descend)
 
-    df_data = df.copy()
+        df_data = df.copy()
 
-    if not links:
-        df.drop("Url", axis=1, inplace=True)
+        if not links:
+            df.drop("Url", axis=1, inplace=True)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".4f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df.head(top),
+                    headers=df.columns,
+                    floatfmt=".4f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "gainers",
+            df_data,
         )
     else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "gainers",
-        df_data,
-    )
+        print("")
+        print("Unable to retrieve data from CoinGecko.")
+        print("")
 
 
 def display_losers(
@@ -94,35 +98,39 @@ def display_losers(
     if sortby == "Change":
         sortby = f"%Change_{period}"
 
-    df = pycoingecko_model.get_gainers_or_losers(
-        period=period, typ="losers"
-    ).sort_values(by=sortby, ascending=descend)
+    df = pycoingecko_model.get_gainers_or_losers(period=period, typ="losers")
+    if not df.empty:
+        df = df.sort_values(by=sortby, ascending=descend)
 
-    df_data = df.copy()
+        df_data = df.copy()
 
-    if not links:
-        df.drop("Url", axis=1, inplace=True)
+        if not links:
+            df.drop("Url", axis=1, inplace=True)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".4f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df.head(top),
+                    headers=df.columns,
+                    floatfmt=".4f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "losers",
+            df_data,
         )
     else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "losers",
-        df_data,
-    )
+        print("")
+        print("Unable to retrieve data from CoinGecko.")
+        print("")
 
 
 def display_discover(
@@ -151,37 +159,42 @@ def display_discover(
     """
 
     df = pycoingecko_model.get_discovered_coins(category=category)
-    df.index = df.index + 1
-    df.reset_index(inplace=True)
-    df.rename(columns={"index": "Rank"}, inplace=True)
+    if not df.empty:
+        df.index = df.index + 1
+        df.reset_index(inplace=True)
+        df.rename(columns={"index": "Rank"}, inplace=True)
 
-    df = df.sort_values(by=sortby, ascending=descend)
+        df = df.sort_values(by=sortby, ascending=descend)
 
-    df_data = df.copy()
+        df_data = df.copy()
 
-    if not links:
-        df.drop("Url", axis=1, inplace=True)
+        if not links:
+            df.drop("Url", axis=1, inplace=True)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".4f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df.head(top),
+                    headers=df.columns,
+                    floatfmt=".4f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            category,
+            df_data,
         )
     else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        category,
-        df_data,
-    )
+        print("")
+        print("Unable to retrieve data from CoinGecko.")
+        print("")
 
 
 def display_recently_added(
@@ -345,30 +358,34 @@ def display_top_volume_coins(top: int, sortby: str, descend: bool, export: str) 
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = pycoingecko_model.get_top_volume_coins().sort_values(
-        by=sortby, ascending=descend
-    )
+    df = pycoingecko_model.get_top_volume_coins()
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".4f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+    if not df.empty:
+        df = df.sort_values(by=sortby, ascending=descend)
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df.head(top),
+                    headers=df.columns,
+                    floatfmt=".4f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "volume",
+            df,
         )
     else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "volume",
-        df,
-    )
+        print("")
+        print("Unable to retrieve data from CoinGecko.")
+        print("")
 
 
 def display_top_nft(
@@ -396,33 +413,38 @@ def display_top_nft(
 
     df = pycoingecko_model.get_top_nfts().sort_values(by=sortby, ascending=descend)
 
-    df_data = df.copy()
+    if not df.empty:
+        df_data = df.copy()
 
-    if links is True:
-        df = df[["Rank", "Name", "Symbol", "Url"]]
-    else:
-        df.drop("Url", axis=1, inplace=True)
+        if links is True:
+            df = df[["Rank", "Name", "Symbol", "Url"]]
+        else:
+            df.drop("Url", axis=1, inplace=True)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".4f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df.head(top),
+                    headers=df.columns,
+                    floatfmt=".4f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "nft",
+            df_data,
         )
     else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "nft",
-        df_data,
-    )
+        print("")
+        print("Unable to retrieve data from CoinGecko.")
+        print("")
 
 
 def display_yieldfarms(top: int, sortby: str, descend: bool, export: str) -> None:
@@ -442,27 +464,33 @@ def display_yieldfarms(top: int, sortby: str, descend: bool, export: str) -> Non
     """
 
     df = pycoingecko_model.get_yield_farms()
-    df_data = df.copy()
 
-    df = df.sort_values(by=sortby, ascending=descend)
+    if not df.empty:
+        df_data = df.copy()
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".0f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+        df = df.sort_values(by=sortby, ascending=descend)
+
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df.head(top),
+                    headers=df.columns,
+                    floatfmt=".0f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "yfarms",
+            df_data,
         )
     else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "yfarms",
-        df_data,
-    )
+        print("")
+        print("Unable to retrieve data from CoinGecko.")
+        print("")

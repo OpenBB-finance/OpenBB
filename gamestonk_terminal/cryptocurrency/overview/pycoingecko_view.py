@@ -143,27 +143,31 @@ def display_nft_market_status(export: str) -> None:
     """
 
     df = gecko.get_nft_market_status()
+    if not df.empty:
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df,
+                    headers=df.columns,
+                    floatfmt=".2f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            print(df.to_string, "\n")
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "nft",
+            df,
         )
     else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "nft",
-        df,
-    )
+        print("")
+        print("Unable to retrieve data from CoinGecko.")
+        print("")
 
 
 def display_exchange_rates(sortby: str, descend: bool, top: int, export: str) -> None:
@@ -183,26 +187,31 @@ def display_exchange_rates(sortby: str, descend: bool, top: int, export: str) ->
 
     df = gecko.get_exchange_rates().sort_values(by=sortby, ascending=descend)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+    if not df.empty:
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df.head(top),
+                    headers=df.columns,
+                    floatfmt=".2f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "exrates",
+            df,
         )
     else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "exrates",
-        df,
-    )
+        print("")
+        print("Unable to retrieve data from CoinGecko.")
+        print("")
 
 
 def display_global_market_info(export: str) -> None:
@@ -221,26 +230,31 @@ def display_global_market_info(export: str) -> None:
 
     df = gecko.get_global_info()
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+    if not df.empty:
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df,
+                    headers=df.columns,
+                    floatfmt=".2f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "global",
+            df,
         )
     else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "global",
-        df,
-    )
+        print("")
+        print("Unable to retrieve data from CoinGecko.")
+        print("")
 
 
 def display_global_defi_info(export: str) -> None:
@@ -254,26 +268,31 @@ def display_global_defi_info(export: str) -> None:
 
     df = gecko.get_global_defi_info()
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".1f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+    if not df.empty:
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df,
+                    headers=df.columns,
+                    floatfmt=".1f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "defi",
+            df,
         )
     else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "defi",
-        df,
-    )
+        print("")
+        print("Unable to retrieve data from CoinGecko.")
+        print("")
 
 
 def display_stablecoins(
@@ -295,35 +314,41 @@ def display_stablecoins(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = gecko.get_stable_coins().sort_values(by=sortby, ascending=descend)
+    df = gecko.get_stable_coins()
 
-    df_data = df.copy()
+    if not df.empty:
+        df = df.sort_values(by=sortby, ascending=descend)
+        df_data = df.copy()
 
-    if links is True:
-        df = df[["Rank", "Name", "Symbol", "Url"]]
-    else:
-        df.drop("Url", axis=1, inplace=True)
+        if links is True:
+            df = df[["Rank", "Name", "Symbol", "Url"]]
+        else:
+            df.drop("Url", axis=1, inplace=True)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".0f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df.head(top),
+                    headers=df.columns,
+                    floatfmt=".0f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "stables",
+            df_data,
         )
     else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "stables",
-        df_data,
-    )
+        print("")
+        print("Unable to retrieve data from CoinGecko.")
+        print("")
 
 
 def display_news(
@@ -345,39 +370,45 @@ def display_news(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = gecko.get_news(n=top).sort_values(by=sortby, ascending=descend)
+    df = gecko.get_news(n=top)
 
-    df_data = df.copy()
+    if not df.empty:
+        df = df.sort_values(by=sortby, ascending=descend)
+        df_data = df.copy()
 
-    df["Title"] = df["Title"].apply(
-        lambda x: "\n".join(textwrap.wrap(x, width=65)) if isinstance(x, str) else x
-    )
+        df["Title"] = df["Title"].apply(
+            lambda x: "\n".join(textwrap.wrap(x, width=65)) if isinstance(x, str) else x
+        )
 
-    if not links:
-        df.drop("Url", axis=1, inplace=True)
-    else:
-        df = df[["Index", "Url"]]
+        if not links:
+            df.drop("Url", axis=1, inplace=True)
+        else:
+            df = df[["Index", "Url"]]
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".0f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df,
+                    headers=df.columns,
+                    floatfmt=".0f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "news",
+            df_data,
         )
     else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "news",
-        df_data,
-    )
+        print("")
+        print("Unable to retrieve data from CoinGecko.")
+        print("")
 
 
 def display_categories(
@@ -401,35 +432,41 @@ def display_categories(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = gecko.get_top_crypto_categories().sort_values(by=sortby, ascending=descend)
+    df = gecko.get_top_crypto_categories()
 
-    df_data = df.copy()
+    if not df.empty:
+        df = df.sort_values(by=sortby, ascending=descend)
+        df_data = df.copy()
 
-    if not links:
-        df.drop("Url", axis=1, inplace=True)
-    else:
-        df = df[["Rank", "Name", "Url"]]
+        if not links:
+            df.drop("Url", axis=1, inplace=True)
+        else:
+            df = df[["Rank", "Name", "Url"]]
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".0f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df.head(top),
+                    headers=df.columns,
+                    floatfmt=".0f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "categories",
+            df_data,
         )
     else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "categories",
-        df_data,
-    )
+        print("")
+        print("Unable to retrieve data from CoinGecko.")
+        print("")
 
 
 def display_exchanges(
@@ -451,33 +488,40 @@ def display_exchanges(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = gecko.get_exchanges().sort_values(by=sortby, ascending=descend)
+    df = gecko.get_exchanges()
 
-    if links is True:
-        df = df[["Rank", "Name", "Url"]]
-    else:
-        df.drop("Url", axis=1, inplace=True)
+    if not df.empty:
+        df = df.sort_values(by=sortby, ascending=descend)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".1f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+        if links is True:
+            df = df[["Rank", "Name", "Url"]]
+        else:
+            df.drop("Url", axis=1, inplace=True)
+
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df.head(top),
+                    headers=df.columns,
+                    floatfmt=".1f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "exchanges",
+            df,
         )
     else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "exchanges",
-        df,
-    )
+        print("")
+        print("Unable to retrieve data from CoinGecko.")
+        print("")
 
 
 def display_platforms(sortby: str, descend: bool, top: int, export: str) -> None:
@@ -495,28 +539,35 @@ def display_platforms(sortby: str, descend: bool, top: int, export: str) -> None
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = gecko.get_financial_platforms().sort_values(by=sortby, ascending=descend)
+    df = gecko.get_financial_platforms()
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+    if not df.empty:
+        df = df.sort_values(by=sortby, ascending=descend)
+
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df.head(top),
+                    headers=df.columns,
+                    floatfmt=".2f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "platforms",
+            df,
         )
     else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "platforms",
-        df,
-    )
+        print("")
+        print("Unable to retrieve data from CoinGecko.")
+        print("")
 
 
 def display_products(sortby: str, descend: bool, top: int, export: str) -> None:
@@ -534,28 +585,35 @@ def display_products(sortby: str, descend: bool, top: int, export: str) -> None:
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = gecko.get_finance_products().sort_values(by=sortby, ascending=descend)
+    df = gecko.get_finance_products()
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+    if not df.empty:
+        df = df.sort_values(by=sortby, ascending=descend)
+
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df.head(top),
+                    headers=df.columns,
+                    floatfmt=".2f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "products",
+            df,
         )
     else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "products",
-        df,
-    )
+        print("")
+        print("Unable to retrieve data from CoinGecko.")
+        print("")
 
 
 def display_indexes(sortby: str, descend: bool, top: int, export: str) -> None:
@@ -573,28 +631,34 @@ def display_indexes(sortby: str, descend: bool, top: int, export: str) -> None:
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = gecko.get_indexes().sort_values(by=sortby, ascending=descend)
+    df = gecko.get_indexes()
+    if not df.empty:
+        df = df.sort_values(by=sortby, ascending=descend)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df.head(top),
+                    headers=df.columns,
+                    floatfmt=".2f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "indexes",
+            df,
         )
     else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "indexes",
-        df,
-    )
+        print("")
+        print("Unable to retrieve data from CoinGecko.")
+        print("")
 
 
 def display_derivatives(sortby: str, descend: bool, top: int, export: str) -> None:
@@ -612,25 +676,32 @@ def display_derivatives(sortby: str, descend: bool, top: int, export: str) -> No
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = gecko.get_derivatives().sort_values(by=sortby, ascending=descend)
+    df = gecko.get_derivatives()
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".4f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+    if not df.empty:
+        df = df.sort_values(by=sortby, ascending=descend)
+
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df.head(top),
+                    headers=df.columns,
+                    floatfmt=".4f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "derivatives",
+            df,
         )
     else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "derivatives",
-        df,
-    )
+        print("")
+        print("Unable to retrieve data from CoinGecko.")
+        print("")
