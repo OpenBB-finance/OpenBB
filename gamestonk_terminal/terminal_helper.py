@@ -391,7 +391,7 @@ The main commands you should be aware when navigating through the terminal are:
 Multiple jobs queue (where each '/' denotes a new command). E.g.
     /stocks $ disc/ugs -n 3/../load tsla/candle
 
-If you want to jump from crypto/ta to stocks you can use an absolute path. E.g.
+If you want to jump from crypto/ta to stocks you can use an absolute path that starts with a slash (/). E.g.
     /crypto/ta $ /stocks
 
 The previous logic also holds for when launching the terminal. E.g.
