@@ -21,8 +21,9 @@ def display_overview(ticker: str):
     """
     df_fa = av_model.get_overview(ticker)
     if df_fa.empty:
-        print(f"No data found from alphavantage for {ticker}.\n")
+        print("No API calls left. Try me later", "\n")
         return
+
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
@@ -45,9 +46,8 @@ def display_key(ticker: str):
         Fundamental analysis ticker symbol
     """
     df_key = av_model.get_key_metrics(ticker)
-
     if df_key.empty:
-        print("Issue getting key metrics from alpha vantage.")
+        print("No API calls left. Try me later", "\n")
         return
 
     if gtff.USE_TABULATE_DF:
@@ -75,6 +75,9 @@ def display_income_statement(
         Format to export data
     """
     df_income = av_model.get_income_statements(ticker, limit, quarterly)
+    if df_income.empty:
+        print("No API calls left. Try me later", "\n")
+        return
 
     if gtff.USE_TABULATE_DF:
         print(tabulate(df_income, headers=df_income.columns, tablefmt="fancy_grid"))
@@ -102,6 +105,9 @@ def display_balance_sheet(
         Format to export data
     """
     df_balance = av_model.get_balance_sheet(ticker, limit, quarterly)
+    if df_balance.empty:
+        print("No API calls left. Try me later", "\n")
+        return
 
     if gtff.USE_TABULATE_DF:
         print(tabulate(df_balance, headers=df_balance.columns, tablefmt="fancy_grid"))
@@ -131,6 +137,9 @@ def display_cash_flow(
         Format to export data
     """
     df_cash = av_model.get_cash_flow(ticker, limit, quarterly)
+    if df_cash.empty:
+        print("No API calls left. Try me later", "\n")
+        return
 
     if gtff.USE_TABULATE_DF:
         print(tabulate(df_cash, headers=df_cash.columns, tablefmt="fancy_grid"))
@@ -155,7 +164,7 @@ def display_earnings(ticker: str, limit: int, quarterly: bool = False):
     """
     df_fa = av_model.get_earnings(ticker, quarterly)
     if df_fa.empty:
-        print("Error getting earnings data.\n")
+        print("No API calls left. Try me later", "\n")
         return
     if gtff.USE_TABULATE_DF:
         print(

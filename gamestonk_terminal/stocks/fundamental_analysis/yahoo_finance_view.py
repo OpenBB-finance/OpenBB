@@ -101,7 +101,7 @@ def display_sustainability(ticker: str):
     df_sustainability = yahoo_finance_model.get_sustainability(ticker)
 
     if df_sustainability.empty:
-        print("No sustainability data found.")
+        print("No sustainability data found.", "\n")
         return
 
     if gtff.USE_TABULATE_DF:
