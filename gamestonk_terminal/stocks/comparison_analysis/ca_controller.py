@@ -242,13 +242,18 @@ Finviz:
     def call_reset(self, _):
         """Process reset command"""
         if len(self.queue) > 0:
+            if self.similar:
+                self.queue.insert(0, f"set {','.join(self.similar)}")
             self.queue.insert(0, "ca")
             self.queue.insert(0, "stocks")
             self.queue.insert(0, "reset")
             self.queue.insert(0, "quit")
             self.queue.insert(0, "quit")
             return self.queue
-        return ["quit", "quit", "reset", "stocks", "ca"]
+        reset_commands = ["quit", "quit", "reset", "stocks", "ca"]
+        if self.similar:
+            reset_commands.append(f"set {','.join(self.similar)}")
+        return reset_commands
 
     @try_except
     def call_ticker(self, other_args: List[str]):
@@ -643,7 +648,7 @@ Finviz:
             if self.similar and len(self.similar) > 1:
                 yahoo_finance_view.display_historical(
                     similar_tickers=self.similar,
-                    start=ns_parser.start,
+                    start=ns_parser.start.strftime("%Y-%m-%d"),
                     candle_type=ns_parser.type_candle,
                     normalize=not ns_parser.no_scale,
                     export=ns_parser.export,
@@ -692,7 +697,7 @@ Finviz:
             if self.similar and len(self.similar) > 1:
                 yahoo_finance_view.display_correlation(
                     similar_tickers=self.similar,
-                    start=ns_parser.start,
+                    start=ns_parser.start.strftime("%Y-%m-%d"),
                     candle_type=ns_parser.type_candle,
                 )
             else:
@@ -769,7 +774,7 @@ Finviz:
             if self.similar and len(self.similar) > 1:
                 yahoo_finance_view.display_volume(
                     similar_tickers=self.similar,
-                    start=ns_parser.start,
+                    start=ns_parser.start.strftime("%Y-%m-%d"),
                     export=ns_parser.export,
                 )
 
