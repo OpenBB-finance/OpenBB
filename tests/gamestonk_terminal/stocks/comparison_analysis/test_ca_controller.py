@@ -187,7 +187,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
     result = getattr(controller, func)([])
 
     assert result is None
-    controller.queue == expected_queue
+    assert controller.queue == expected_queue
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -467,7 +467,7 @@ def test_call_func_no_parser(func, mocker):
 
     func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
-    controller.queue == []
+    assert controller.queue == []
     getattr(ca_controller, "parse_known_args_and_warn").assert_called_once()
 
 
@@ -531,7 +531,7 @@ def test_call_po(mocker):
 
     controller = ca_controller.ComparisonAnalysisController()
     controller.call_po([])
-    controller.queue == []
+    assert controller.queue == []
 
 
 @pytest.mark.vcr(record_mode="none")
