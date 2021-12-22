@@ -7,6 +7,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence.coinglass_model import (
 )
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal import config_plot as cfgPlot
+from gamestonk_terminal import feature_flags as gtff
 
 
 def display_open_interest(symbol: str, interval: int, export: str) -> None:
@@ -59,5 +60,8 @@ def plot_data(df: pd.DataFrame, symbol: str):
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
     plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=1))
     plt.gcf().autofmt_xdate()
+
+    if gtff.USE_ION:
+        plt.ion()
 
     plt.show()

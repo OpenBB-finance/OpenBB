@@ -94,9 +94,6 @@ def display_defi_tvl(top: int, export: str = "") -> None:
     df = df.tail(top)
     df["totalLiquidityUSD"] = df["totalLiquidityUSD"] / 1_000_000_000
 
-    if gtff.USE_ION:
-        plt.ion()
-
     plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     plt.plot(df["date"], df["totalLiquidityUSD"], "-ok", ms=2)
@@ -108,6 +105,8 @@ def display_defi_tvl(top: int, export: str = "") -> None:
     plt.minorticks_on()
     plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
     plt.title("Total Value Locked in DeFi [Billions USD]")
+    if gtff.USE_ION:
+        plt.ion()
     plt.show()
     print("")
 
