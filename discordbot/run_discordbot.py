@@ -12,7 +12,10 @@ activity = discord.Game(
 )
 
 gst_bot = discord.ext.commands.Bot(
-    command_prefix=cfg.COMMAND_PREFIX, intents=discord.Intents.all(), activity=activity
+    command_prefix=cfg.COMMAND_PREFIX,
+    help_command=None,
+    intents=discord.Intents.all(),
+    activity=activity,
 )
 discord_components.DiscordComponents(gst_bot)
 

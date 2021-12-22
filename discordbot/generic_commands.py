@@ -49,6 +49,57 @@ class GenericCommands(discord.ext.commands.Cog):
 
         await ctx.send(embed=embed)
 
+    @discord.ext.commands.command(name="help")
+    async def help(self, ctx: discord.ext.commands.Context):
+        help_message = """
+```
+Commands:
+
+Economy Menu:
+  !economy    - Economy Info
+
+Stocks Menu:
+  !stocks.dps - Dark Pool Shorts
+  !stocks.gov - Government
+  !stocks.opt - Options
+  !stocks.scr - Screeners
+  !stocks.dd  - Due Diligence
+  !stocks.ta  - Technical Analysis
+
+Generic:
+  !about      - About us
+  !usage      - Usage instructions
+  !help       - Print this message
+```
+        """
+        await ctx.send(help_message)
+
+    @discord.ext.commands.command(name="usage")
+    async def usage(self, ctx: discord.ext.commands.Context):
+        usage_instructions_message = """
+```
+- Every command starts with an exclamation point "!".
+
+- Any command can be triggered from the chat. For example:
+
+  !about
+  or
+  !stocks.dps.spos tsla
+  or
+  !stocks.ta.recom tsla
+
+- Every menu has it's own help command that can be called
+  by adding .help to the menu name. For example:
+
+  !stocks.help
+
+- Call the help command to see the list of available menus:
+
+  !help
+```
+        """
+        await ctx.send(usage_instructions_message)
+
 
 def setup(bot: discord.ext.commands.Bot):
     bot.add_cog(GenericCommands(bot))
