@@ -167,105 +167,94 @@ The main commands you should be aware when navigating through the terminal are:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            return self.queue
-        return []
+        # has been dealt with before
 
     def call_update(self, _):
         """Process update command"""
         self.update_succcess = not update_terminal()
-        return self.queue
 
     def call_keys(self, _):
         """Process keys command"""
         check_api_keys()
-        return self.queue
 
     def call_about(self, _):
         """Process about command"""
         about_us()
-        return self.queue
 
     def call_stocks(self, _):
         """Process stocks command"""
         from gamestonk_terminal.stocks import stocks_controller
 
-        return stocks_controller.menu("", self.queue)
+        self.queue = stocks_controller.menu("", self.queue)
 
     def call_crypto(self, _):
         """Process crypto command"""
         from gamestonk_terminal.cryptocurrency import crypto_controller
 
-        return crypto_controller.menu(queue=self.queue)
+        self.queue = crypto_controller.menu(queue=self.queue)
 
     def call_economy(self, _):
         """Process economy command"""
         from gamestonk_terminal.economy import economy_controller
 
-        return economy_controller.menu(self.queue)
+        self.queue = economy_controller.menu(self.queue)
 
     def call_etf(self, _):
         """Process etf command"""
         from gamestonk_terminal.etf import etf_controller
 
-        return etf_controller.menu(self.queue)
+        self.queue = etf_controller.menu(self.queue)
 
     def call_forex(self, _):
         """Process forex command"""
         from gamestonk_terminal.forex import forex_controller
 
-        return forex_controller.menu(self.queue)
+        self.queue = forex_controller.menu(self.queue)
 
     def call_reports(self, _):
         """Process reports command"""
         from gamestonk_terminal.reports import reports_controller
 
-        return reports_controller.menu(self.queue)
+        self.queue = reports_controller.menu(self.queue)
 
     def call_resources(self, _):
         """Process resources command"""
         from gamestonk_terminal.resources import resources_controller
 
-        return resources_controller.menu(self.queue)
+        self.queue = resources_controller.menu(self.queue)
 
     def call_portfolio(self, _):
         """Process portfolio command"""
         from gamestonk_terminal.portfolio import portfolio_controller
 
-        return portfolio_controller.menu(self.queue)
+        self.queue = portfolio_controller.menu(self.queue)
 
 
 def terminal(jobs_cmds: List[str] = None):

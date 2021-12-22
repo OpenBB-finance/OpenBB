@@ -142,53 +142,43 @@ Finance Database:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         print("")
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "etf")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "reset", "etf"]
+        self.queue.insert(0, "etf")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_search(self, other_args: List[str]):
@@ -220,7 +210,6 @@ Finance Database:
             stockanalysis_view.view_search(
                 to_match=search_string, export=ns_parser.export
             )
-        return self.queue
 
     @try_except
     def call_overview(self, other_args: List[str]):
@@ -251,7 +240,6 @@ Finance Database:
             stockanalysis_view.view_overview(
                 symbol=ns_parser.name, export=ns_parser.export
             )
-        return self.queue
 
     @try_except
     def call_holdings(self, other_args: List[str]):
@@ -290,7 +278,6 @@ Finance Database:
                 num_to_show=ns_parser.limit,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_compare(self, other_args):
@@ -319,7 +306,6 @@ Finance Database:
         if ns_parser:
             etf_list = ns_parser.names.upper().split(",")
             stockanalysis_view.view_comparisons(etf_list, export=ns_parser.export)
-        return self.queue
 
     @try_except
     def call_screener(self, other_args):
@@ -359,7 +345,6 @@ Finance Database:
                 preset=ns_parser.preset,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_gainers(self, other_args):
@@ -378,8 +363,6 @@ Finance Database:
         if ns_parser:
             wsj_view.show_top_mover("gainers", ns_parser.limit, ns_parser.export)
 
-        return self.queue
-
     def call_decliners(self, other_args):
         """Process decliners command"""
         parser = argparse.ArgumentParser(
@@ -395,7 +378,6 @@ Finance Database:
         )
         if ns_parser:
             wsj_view.show_top_mover("decliners", ns_parser.limit, ns_parser.export)
-        return self.queue
 
     def call_active(self, other_args):
         """Process gainers command"""
@@ -412,7 +394,6 @@ Finance Database:
         )
         if ns_parser:
             wsj_view.show_top_mover("active", ns_parser.limit, ns_parser.export)
-        return self.queue
 
     @try_except
     def call_pir(self, other_args):
@@ -458,7 +439,6 @@ Finance Database:
             print(
                 f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
             )
-        return self.queue
 
     @try_except
     def call_fds(self, other_args):
@@ -524,7 +504,6 @@ Finance Database:
                 amount=ns_parser.limit,
                 options=ns_parser.options,
             )
-        return self.queue
 
 
 def menu(queue: List[str] = None):

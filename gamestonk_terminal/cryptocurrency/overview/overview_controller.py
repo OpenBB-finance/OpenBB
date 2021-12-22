@@ -181,56 +181,45 @@ WithdrawalFees:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
 
-        return self.queue
-
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "ov")
-            self.queue.insert(0, "crypto")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "reset", "crypto", "ov"]
+        self.queue.insert(0, "ov")
+        self.queue.insert(0, "crypto")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_wf(self, other_args: List[str]):
@@ -262,7 +251,6 @@ WithdrawalFees:
             withdrawalfees_view.display_overall_withdrawal_fees(
                 export=ns_parser.export, top=ns_parser.limit
             )
-        return self.queue
 
     @try_except
     def call_ewf(self, other_args: List[str]):
@@ -285,7 +273,6 @@ WithdrawalFees:
             withdrawalfees_view.display_overall_exchange_withdrawal_fees(
                 export=ns_parser.export
             )
-        return self.queue
 
     @try_except
     def call_wfpe(self, other_args: List[str]):
@@ -350,7 +337,6 @@ WithdrawalFees:
                     f"Couldn't find any coin with provided name: {ns_parser.coin}. "
                     f"Please choose one from list: {withdrawalfees_model.POSSIBLE_CRYPTOS}\n"
                 )
-        return self.queue
 
     @try_except
     def call_cghold(self, other_args):
@@ -386,7 +372,6 @@ WithdrawalFees:
             pycoingecko_view.display_holdings_overview(
                 coin=ns_parser.coin, export=ns_parser.export
             )
-        return self.queue
 
     @try_except
     def call_cgcompanies(self, other_args):
@@ -432,7 +417,6 @@ WithdrawalFees:
             pycoingecko_view.display_holdings_companies_list(
                 coin=ns_parser.coin, export=ns_parser.export, links=ns_parser.urls
             )
-        return self.queue
 
     @try_except
     def call_cgnews(self, other_args):
@@ -494,7 +478,6 @@ WithdrawalFees:
                 descend=ns_parser.descend,
                 links=ns_parser.urls,
             )
-        return self.queue
 
     @try_except
     def call_cgcategories(self, other_args):
@@ -557,7 +540,6 @@ WithdrawalFees:
                 descend=ns_parser.descend,
                 links=ns_parser.urls,
             )
-        return self.queue
 
     @try_except
     def call_cgstables(self, other_args):
@@ -622,7 +604,6 @@ WithdrawalFees:
                 descend=ns_parser.descend,
                 links=ns_parser.urls,
             )
-        return self.queue
 
     @try_except
     def call_cgnft(self, other_args):
@@ -644,7 +625,6 @@ WithdrawalFees:
         )
         if ns_parser:
             pycoingecko_view.display_nft_market_status(export=ns_parser.export)
-        return self.queue
 
     @try_except
     def call_cgnftday(self, other_args):
@@ -665,7 +645,6 @@ WithdrawalFees:
         )
         if ns_parser:
             pycoingecko_view.display_nft_of_the_day(export=ns_parser.export)
-        return self.queue
 
     @try_except
     def call_cgproducts(self, other_args):
@@ -718,7 +697,6 @@ WithdrawalFees:
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
             )
-        return self.queue
 
     @try_except
     def call_cgplatforms(self, other_args):
@@ -772,7 +750,6 @@ WithdrawalFees:
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
             )
-        return self.queue
 
     @try_except
     def call_cgexchanges(self, other_args):
@@ -835,7 +812,6 @@ WithdrawalFees:
                 descend=ns_parser.descend,
                 links=ns_parser.urls,
             )
-        return self.queue
 
     @try_except
     def call_cgexrates(self, other_args):
@@ -887,7 +863,6 @@ WithdrawalFees:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_cgindexes(self, other_args):
@@ -942,7 +917,6 @@ WithdrawalFees:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_cgderivatives(self, other_args):
@@ -999,7 +973,6 @@ WithdrawalFees:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_cgglobal(self, other_args):
@@ -1016,7 +989,6 @@ WithdrawalFees:
         )
         if ns_parser:
             pycoingecko_view.display_global_market_info(export=ns_parser.export)
-        return self.queue
 
     @try_except
     def call_cgdefi(self, other_args):
@@ -1037,7 +1009,6 @@ WithdrawalFees:
         )
         if ns_parser:
             pycoingecko_view.display_global_defi_info(export=ns_parser.export)
-        return self.queue
 
     @try_except
     def call_cpglobal(self, other_args):
@@ -1056,7 +1027,6 @@ WithdrawalFees:
         )
         if ns_parser:
             coinpaprika_view.display_global_market(export=ns_parser.export)
-        return self.queue
 
     @try_except
     def call_cpmarkets(self, other_args):
@@ -1122,7 +1092,6 @@ WithdrawalFees:
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
             )
-        return self.queue
 
     @try_except
     def call_cpexmarkets(self, other_args):
@@ -1202,7 +1171,6 @@ WithdrawalFees:
                 descend=ns_parser.descend,
                 links=ns_parser.urls,
             )
-        return self.queue
 
     @try_except
     def call_cpinfo(self, other_args):
@@ -1268,7 +1236,6 @@ WithdrawalFees:
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_cpexchanges(self, other_args):
@@ -1335,8 +1302,6 @@ WithdrawalFees:
                 export=ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_cpplatforms(self, other_args):
         """Process platforms command"""
@@ -1352,8 +1317,6 @@ WithdrawalFees:
         )
         if ns_parser:
             coinpaprika_view.display_all_platforms(export=ns_parser.export)
-
-        return self.queue
 
     @try_except
     def call_cpcontracts(self, other_args):
@@ -1426,7 +1389,6 @@ WithdrawalFees:
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_cbpairs(self, other_args):
@@ -1475,7 +1437,6 @@ WithdrawalFees:
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
             )
-        return self.queue
 
     @try_except
     def call_news(self, other_args):
@@ -1570,7 +1531,6 @@ WithdrawalFees:
                 filter_=ns_parser.filter,
                 region=ns_parser.region,
             )
-        return self.queue
 
 
 def menu(queue: List[str] = None):

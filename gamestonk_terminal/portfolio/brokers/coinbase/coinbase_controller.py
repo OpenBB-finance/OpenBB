@@ -122,59 +122,49 @@ Coinbase:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "cb")
-            self.queue.insert(0, "bro")
-            self.queue.insert(0, "portfolio")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit", "reset", "portfolio", "bro", "cb"]
+        self.queue.insert(0, "cb")
+        self.queue.insert(0, "bro")
+        self.queue.insert(0, "portfolio")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_account(self, other_args):
@@ -213,7 +203,6 @@ Coinbase:
                 currency=ns_parser.currency,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_history(self, other_args):
@@ -253,7 +242,6 @@ Coinbase:
             coinbase_view.display_history(
                 ns_parser.account, ns_parser.export, ns_parser.limit
             )
-        return self.queue
 
     @try_except
     def call_orders(self, other_args):
@@ -299,7 +287,6 @@ Coinbase:
             coinbase_view.display_orders(
                 ns_parser.limit, ns_parser.sortby, ns_parser.descend, ns_parser.export
             )
-        return self.queue
 
     @try_except
     def call_deposits(self, other_args):
@@ -354,7 +341,6 @@ Coinbase:
                 ns_parser.descend,
                 ns_parser.export,
             )
-        return self.queue
 
 
 def menu(queue: List[str] = None):

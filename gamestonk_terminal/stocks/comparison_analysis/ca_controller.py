@@ -198,62 +198,49 @@ Finviz:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
         # additional quit for when we come to this menu through a relative path
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            if self.similar:
-                self.queue.insert(0, f"set {','.join(self.similar)}")
-            self.queue.insert(0, "ca")
-            self.queue.insert(0, "stocks")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        reset_commands = ["quit", "quit", "reset", "stocks", "ca"]
         if self.similar:
-            reset_commands.append(f"set {','.join(self.similar)}")
-        return reset_commands
+            self.queue.insert(0, f"set {','.join(self.similar)}")
+        self.queue.insert(0, "ca")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_ticker(self, other_args: List[str]):
@@ -288,8 +275,6 @@ Finviz:
                 else:
                     self.ticker = ns_parser.ticker.upper()
             print("")
-
-        return self.queue
 
     @try_except
     def call_tsne(self, other_args: List[str]):
@@ -336,8 +321,6 @@ Finviz:
 
             else:
                 print("You need to 'set' a ticker to get similar companies from first!")
-
-        return self.queue
 
     @try_except
     def call_getfinviz(self, other_args: List[str]):
@@ -398,8 +381,6 @@ Finviz:
             else:
                 print("You need to 'set' a ticker to get similar companies from first!")
 
-        return self.queue
-
     @try_except
     def call_getpoly(self, other_args: List[str]):
         """Process get command"""
@@ -455,8 +436,6 @@ Finviz:
             else:
                 print("You need to 'set' a ticker to get similar companies from first!")
 
-        return self.queue
-
     @try_except
     def call_getfinnhub(self, other_args: List[str]):
         """Process get command"""
@@ -504,8 +483,6 @@ Finviz:
             else:
                 print("You need to 'set' a ticker to get similar companies from first!")
 
-        return self.queue
-
     @try_except
     def call_add(self, other_args: List[str]):
         """Process add command"""
@@ -534,8 +511,6 @@ Finviz:
             self.user = "Custom"
 
             print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
-
-        return self.queue
 
     @try_except
     def call_rmv(self, other_args: List[str]):
@@ -575,8 +550,6 @@ Finviz:
             print("")
             self.user = "Custom"
 
-        return self.queue
-
     @try_except
     def call_set(self, other_args: List[str]):
         """Process set command"""
@@ -601,8 +574,6 @@ Finviz:
             self.similar = list(set(ns_parser.l_similar))
             self.user = "Custom"
             print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
-
-        return self.queue
 
     @try_except
     def call_historical(self, other_args: List[str]):
@@ -659,8 +630,6 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-        return self.queue
-
     @try_except
     def call_hcorr(self, other_args: List[str]):
         """Process historical correlation command"""
@@ -703,8 +672,6 @@ Finviz:
             else:
                 print("Please make sure there are similar tickers selected. \n")
 
-        return self.queue
-
     @try_except
     def call_income(self, other_args: List[str]):
         """Process income command"""
@@ -745,8 +712,6 @@ Finviz:
                 quarter=ns_parser.b_quarter,
             )
 
-        return self.queue
-
     @try_except
     def call_volume(self, other_args: List[str]):
         """Process volume command"""
@@ -780,8 +745,6 @@ Finviz:
 
             else:
                 print("Please make sure there are similar tickers selected. \n")
-
-        return self.queue
 
     @try_except
     def call_balance(self, other_args: List[str]):
@@ -821,8 +784,6 @@ Finviz:
                 quarter=ns_parser.b_quarter,
             )
 
-        return self.queue
-
     @try_except
     def call_cashflow(self, other_args: List[str]):
         """Process cashflow command"""
@@ -861,8 +822,6 @@ Finviz:
                 quarter=ns_parser.b_quarter,
             )
 
-        return self.queue
-
     @try_except
     def call_sentiment(self, other_args: List[str]):
         """Process sentiment command"""
@@ -897,8 +856,6 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-        return self.queue
-
     @try_except
     def call_scorr(self, other_args: List[str]):
         """Process sentiment correlation command"""
@@ -931,8 +888,6 @@ Finviz:
             else:
                 print("Please make sure there are similar tickers selected. \n")
 
-        return self.queue
-
     @try_except
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
@@ -958,8 +913,6 @@ Finviz:
                 print(
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
-
-        return self.queue
 
     @try_except
     def call_valuation(self, other_args: List[str]):
@@ -987,8 +940,6 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-        return self.queue
-
     @try_except
     def call_financial(self, other_args: List[str]):
         """Process financial command"""
@@ -1014,8 +965,6 @@ Finviz:
                 print(
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
-
-        return self.queue
 
     @try_except
     def call_ownership(self, other_args: List[str]):
@@ -1043,8 +992,6 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-        return self.queue
-
     @try_except
     def call_performance(self, other_args: List[str]):
         """Process performance command"""
@@ -1070,8 +1017,6 @@ Finviz:
                 print(
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
-
-        return self.queue
 
     @try_except
     def call_technical(self, other_args: List[str]):
@@ -1099,15 +1044,12 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-        return self.queue
-
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
         if self.similar and len(self.similar) > 1:
-            return po_controller.menu(self.similar, self.queue, from_submenu=True)
-
-        print("Please make sure there are more than 1 similar tickers selected. \n")
-        return self.queue
+            self.queue = po_controller.menu(self.similar, self.queue, from_submenu=True)
+        else:
+            print("Please make sure there are more than 1 similar tickers selected. \n")
 
 
 def menu(

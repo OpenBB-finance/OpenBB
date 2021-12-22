@@ -164,11 +164,13 @@ Select one of the following reports:
                 known_args.cmd = "reset"
 
             if known_args.cmd in ["quit", "help", "reset", "home", "exit"]:
-                return getattr(
+                getattr(
                     self,
                     "call_" + known_args.cmd,
                     lambda _: "Command not recognized!",
                 )(other_args)
+
+                return self.queue
 
             # Execute the requested report
             if known_args.cmd in self.d_id_to_report_name:
@@ -191,7 +193,6 @@ Select one of the following reports:
                 else:
                     print("No argument required.")
                 print("")
-                return self.queue
 
             notebook_template = os.path.join(
                 "gamestonk_terminal", "reports", report_to_run
@@ -235,49 +236,37 @@ Select one of the following reports:
                 ),
                 "\n",
             )
-            return self.queue
+
         return self.queue
 
     def call_home(self, _):
         """Process home command."""
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_cls(self, _):
         """Process cls command."""
         system_clear()
-        return self.queue
 
     def call_help(self, _):
         """Process help command."""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command."""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "q")
-            return self.queue
-        return ["q"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command."""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
-            return self.queue
-        return ["q", "q"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command."""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "reports")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "reset", "reports"]
+        self.queue.insert(0, "reports")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
 
 
 def menu(queue: List[str] = None):
