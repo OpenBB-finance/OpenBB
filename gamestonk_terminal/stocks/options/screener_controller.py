@@ -134,59 +134,48 @@ Last screened tickers: {', '.join(self.screen_tickers)}
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
         # additional quit for when we come to this menu through a relative path
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "scr")
-            self.queue.insert(0, "options")
-            self.queue.insert(0, "stocks")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-
-        return ["quit", "quit", "quit", "reset", "stocks", "options", "scr"]
+        self.queue.insert(0, "scr")
+        self.queue.insert(0, "options")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_view(self, other_args: List[str]):
@@ -220,8 +209,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                     print(preset)
                 print("")
 
-        return self.queue
-
     @try_except
     def call_set(self, other_args: List[str]):
         """Process set command"""
@@ -246,8 +233,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
         if ns_parser:
             self.preset = ns_parser.preset
         print("")
-
-        return self.queue
 
     @try_except
     def call_scr(self, other_args: List[str]):
@@ -295,27 +280,23 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 export=ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
         if self.screen_tickers:
-            return po_controller.menu(self.screen_tickers, from_submenu=True)
-
-        print("Some tickers must be screened first through one of the presets!\n")
-        return self.queue
+            self.queue = po_controller.menu(self.screen_tickers, from_submenu=True)
+        else:
+            print("Some tickers must be screened first through one of the presets!\n")
 
     @try_except
     def call_ca(self, _):
         """Call the comparison analysis menu with selected tickers"""
         if self.screen_tickers:
-            return ca_controller.menu(
+            self.queue = ca_controller.menu(
                 self.screen_tickers, self.queue, from_submenu=True
             )
-
-        print("Some tickers must be screened first through one of the presets!\n")
-        return self.queue
+        else:
+            print("Some tickers must be screened first through one of the presets!\n")
 
 
 def menu(queue: List[str] = None):

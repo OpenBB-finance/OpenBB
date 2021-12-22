@@ -214,55 +214,45 @@ NASDAQ Data Link (Formerly Quandl):
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "disc")
-            self.queue.insert(0, "stocks")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "reset", "stocks", "disc"]
+        self.queue.insert(0, "disc")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_rtearn(self, other_args: List[str]):
@@ -280,8 +270,6 @@ NASDAQ Data Link (Formerly Quandl):
         )
         if ns_parser:
             geekofwallstreet_view.display_realtime_earnings(ns_parser.export)
-
-        return self.queue
 
     @try_except
     def call_pipo(self, other_args: List[str]):
@@ -314,8 +302,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_fipo(self, other_args: List[str]):
         """Process fipo command"""
@@ -347,8 +333,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_gainers(self, other_args: List[str]):
         """Process gainers command"""
@@ -378,8 +362,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_losers(self, other_args: List[str]):
         """Process losers command"""
@@ -408,8 +390,6 @@ NASDAQ Data Link (Formerly Quandl):
                 num_stocks=ns_parser.limit,
                 export=ns_parser.export,
             )
-
-        return self.queue
 
     @try_except
     def call_ugs(self, other_args: List[str]):
@@ -443,8 +423,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_gtech(self, other_args: List[str]):
         """Process gtech command"""
@@ -475,8 +453,6 @@ NASDAQ Data Link (Formerly Quandl):
                 num_stocks=ns_parser.limit,
                 export=ns_parser.export,
             )
-
-        return self.queue
 
     @try_except
     def call_active(self, other_args: List[str]):
@@ -509,8 +485,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_ulc(self, other_args: List[str]):
         """Process ulc command"""
@@ -542,8 +516,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_asc(self, other_args: List[str]):
         """Process asc command"""
@@ -574,8 +546,6 @@ NASDAQ Data Link (Formerly Quandl):
                 num_stocks=ns_parser.limit,
                 export=ns_parser.export,
             )
-
-        return self.queue
 
     @try_except
     def call_ford(self, other_args: List[str]):
@@ -610,8 +580,6 @@ NASDAQ Data Link (Formerly Quandl):
                 num=ns_parser.limit,
                 export=ns_parser.export,
             )
-
-        return self.queue
 
     @try_except
     def call_arkord(self, other_args: List[str]):
@@ -691,8 +659,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_upcoming(self, other_args: List[str]):
         # TODO: switch to nasdaq
@@ -732,8 +698,6 @@ NASDAQ Data Link (Formerly Quandl):
                 num_earnings=ns_parser.limit,
                 export=ns_parser.export,
             )
-
-        return self.queue
 
     @try_except
     def call_trending(self, other_args: List[str]):
@@ -783,8 +747,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_lowfloat(self, other_args: List[str]):
         """Process lowfloat command"""
@@ -819,8 +781,6 @@ NASDAQ Data Link (Formerly Quandl):
                 num=ns_parser.limit,
                 export=ns_parser.export,
             )
-
-        return self.queue
 
     @try_except
     def call_cnews(self, other_args: List[str]):
@@ -862,8 +822,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_hotpenny(self, other_args: List[str]):
         """Process hotpenny command"""
@@ -902,8 +860,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_rtat(self, other_args: List[str]):
         """Process fds command"""
@@ -935,8 +891,6 @@ NASDAQ Data Link (Formerly Quandl):
             nasdaq_view.display_top_retail(
                 n_days=ns_parser.limit, export=ns_parser.export
             )
-
-        return self.queue
 
 
 def menu(queue: List[str] = None):

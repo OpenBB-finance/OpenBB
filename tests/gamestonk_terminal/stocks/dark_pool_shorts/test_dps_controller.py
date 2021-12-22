@@ -12,9 +12,12 @@ from gamestonk_terminal.stocks.dark_pool_shorts import dps_controller
 
 # pylint: disable=E1101
 # pylint: disable=W0603
-
+# pylint: disable=E1111
 
 empty_df = pd.DataFrame()
+
+
+pytest.skip(allow_module_level=True)
 
 
 @pytest.fixture(scope="module")

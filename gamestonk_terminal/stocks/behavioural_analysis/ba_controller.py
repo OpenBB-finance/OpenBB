@@ -170,7 +170,7 @@ SentimentInvestor:
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue
 
         # Navigation slash is being used
         if "/" in an_input:
@@ -199,55 +199,45 @@ SentimentInvestor:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "ba")
-            self.queue.insert(0, "stocks")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "reset", "stocks", "ba"]
+        self.queue.insert(0, "ba")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -293,8 +283,6 @@ SentimentInvestor:
             else:
                 print("Provide a valid ticker")
 
-        return self.queue
-
     @try_except
     def call_watchlist(self, other_args: List[str]):
         """Process watchlist command"""
@@ -319,8 +307,6 @@ SentimentInvestor:
         if ns_parser:
             reddit_view.display_watchlist(num=ns_parser.limit)
 
-        return self.queue
-
     @try_except
     def call_spac(self, other_args: List[str]):
         """Process spac command"""
@@ -344,8 +330,6 @@ SentimentInvestor:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             reddit_view.display_spac(limit=ns_parser.n_limit)
-
-        return self.queue
 
     @try_except
     def call_spac_c(self, other_args: List[str]):
@@ -381,8 +365,6 @@ SentimentInvestor:
                 limit=ns_parser.n_limit, popular=ns_parser.b_popular
             )
 
-        return self.queue
-
     @try_except
     def call_wsb(self, other_args: List[str]):
         """Process wsb command"""
@@ -415,8 +397,6 @@ SentimentInvestor:
             reddit_view.display_wsb_community(
                 limit=ns_parser.n_limit, new=ns_parser.b_new
             )
-
-        return self.queue
 
     @try_except
     def call_popular(self, other_args: List[str]):
@@ -466,8 +446,6 @@ SentimentInvestor:
                 posts_to_look_at=ns_parser.num,
                 subreddits=ns_parser.s_subreddit,
             )
-
-        return self.queue
 
     @try_except
     def call_getdd(self, other_args: List[str]):
@@ -521,8 +499,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-        return self.queue
-
     @try_except
     def call_bullbear(self, other_args: List[str]):
         """Process bullbear command"""
@@ -541,8 +517,6 @@ SentimentInvestor:
                 stocktwits_view.display_bullbear(ticker=self.ticker)
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
-
-        return self.queue
 
     @try_except
     def call_messages(self, other_args: List[str]):
@@ -573,8 +547,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-        return self.queue
-
     @try_except
     def call_trending(self, other_args: List[str]):
         """Process trending command"""
@@ -587,8 +559,6 @@ SentimentInvestor:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             stocktwits_view.display_trending()
-
-        return self.queue
 
     @try_except
     def call_stalker(self, other_args: List[str]):
@@ -627,8 +597,6 @@ SentimentInvestor:
                 user=ns_parser.s_user, limit=ns_parser.limit
             )
 
-        return self.queue
-
     @try_except
     def call_mentions(self, other_args: List[str]):
         """Process mentions command"""
@@ -661,8 +629,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-        return self.queue
-
     @try_except
     def call_regions(self, other_args: List[str]):
         """Process regions command"""
@@ -693,8 +659,6 @@ SentimentInvestor:
                 )
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
-
-        return self.queue
 
     @try_except
     def call_queries(self, other_args: List[str]):
@@ -727,8 +691,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-        return self.queue
-
     @try_except
     def call_rise(self, other_args: List[str]):
         """Process rise command"""
@@ -759,8 +721,6 @@ SentimentInvestor:
                 )
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
-
-        return self.queue
 
     @try_except
     def call_infer(self, other_args: List[str]):
@@ -794,8 +754,6 @@ SentimentInvestor:
                 twitter_view.display_inference(ticker=self.ticker, num=ns_parser.limit)
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
-
-        return self.queue
 
     @try_except
     def call_sentiment(self, other_args: List[str]):
@@ -846,8 +804,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-        return self.queue
-
     @try_except
     def call_headlines(self, other_args: List[str]):
         """Process finbrain command"""
@@ -873,8 +829,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-        return self.queue
-
     @try_except
     def call_stats(self, other_args: List[str]):
         """Process stats command"""
@@ -898,8 +852,6 @@ SentimentInvestor:
                 )
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
-
-        return self.queue
 
     @try_except
     def call_metrics(self, other_args: List[str]):
@@ -952,8 +904,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-        return self.queue
-
     @try_except
     def call_social(self, other_args: List[str]):
         """Process social command"""
@@ -982,8 +932,6 @@ SentimentInvestor:
                 # sentimentinvestor_view.display_social(ticker=self.ticker)
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
-
-        return self.queue
 
     @try_except
     def call_historical(self, other_args: List[str]):
@@ -1073,8 +1021,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-        return self.queue
-
     @try_except
     def call_popularsi(self, other_args: List[str]):
         """Process popular command"""
@@ -1114,8 +1060,6 @@ SentimentInvestor:
             print("Currently under maintenance by the new Sentiment Investor team.\n")
             # sentimentinvestor_view.display_top(metric="AHI", limit=ns_parser.limit)
 
-        return self.queue
-
     @try_except
     def call_emerging(self, other_args: List[str]):
         """Process emerging command"""
@@ -1153,8 +1097,6 @@ SentimentInvestor:
         if ns_parser:
             print("Currently under maintenance by the new Sentiment Investor team.\n")
             # sentimentinvestor_view.display_top(metric="RHI", limit=ns_parser.limit)
-
-        return self.queue
 
 
 def menu(ticker: str, start: datetime, queue: List[str] = None):

@@ -243,55 +243,45 @@ Coinbase:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "dd")
-            self.queue.insert(0, "crypto")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "reset", "crypto", "dd"]
+        self.queue.insert(0, "dd")
+        self.queue.insert(0, "crypto")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -323,29 +313,21 @@ Coinbase:
             default="cg",
             required=False,
         )
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-c")
 
-        try:
-            if other_args and not other_args[0][0] == "-":
-                other_args.insert(0, "-c")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            source = ns_parser.source
 
-            if ns_parser:
-                source = ns_parser.source
+            for arg in ["--source", source]:
+                if arg in other_args:
+                    other_args.remove(arg)
 
-                for arg in ["--source", source]:
-                    if arg in other_args:
-                        other_args.remove(arg)
-
-                self.current_coin, self.source, self.symbol = load(
-                    coin=ns_parser.coin, source=ns_parser.source
-                )
-            return self.queue
-
-        except Exception as e:
-            print(e, "\n")
-            self.current_coin, self.source = self.current_coin, None
-            return self.queue
+            self.current_coin, self.source, self.symbol = load(
+                coin=ns_parser.coin, source=ns_parser.source
+            )
 
     @try_except
     def call_active(self, other_args: List[str]):
@@ -405,8 +387,6 @@ Coinbase:
 
         else:
             print("Glassnode source does not support this symbol\n")
-
-        return self.queue
 
     @try_except
     def call_change(self, other_args: List[str]):
@@ -480,7 +460,6 @@ Coinbase:
                 )
         else:
             print("Glassnode source does not support this symbol\n")
-        return self.queue
 
     @try_except
     def call_eb(self, other_args: List[str]):
@@ -563,7 +542,6 @@ Coinbase:
 
         else:
             print("Glassnode source does not support this symbol\n")
-        return self.queue
 
     @try_except
     def call_oi(self, other_args):
@@ -599,7 +577,6 @@ Coinbase:
                 interval=ns_parser.interval,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_info(self, other_args):
@@ -622,7 +599,6 @@ Coinbase:
             pycoingecko_view.display_info(
                 coin=self.current_coin, export=ns_parser.export
             )
-        return self.queue
 
     @try_except
     def call_market(self, other_args):
@@ -640,7 +616,6 @@ Coinbase:
         )
         if ns_parser:
             pycoingecko_view.display_market(self.current_coin, ns_parser.export)
-        return self.queue
 
     @try_except
     def call_web(self, other_args):
@@ -660,8 +635,6 @@ Coinbase:
         if ns_parser:
             pycoingecko_view.display_web(self.current_coin, export=ns_parser.export)
 
-        return self.queue
-
     @try_except
     def call_social(self, other_args):
         """Process social command"""
@@ -678,7 +651,6 @@ Coinbase:
 
         if ns_parser:
             pycoingecko_view.display_social(self.current_coin, export=ns_parser.export)
-        return self.queue
 
     @try_except
     def call_dev(self, other_args):
@@ -699,7 +671,6 @@ Coinbase:
 
         if ns_parser:
             pycoingecko_view.display_dev(self.current_coin, ns_parser.export)
-        return self.queue
 
     @try_except
     def call_ath(self, other_args):
@@ -727,7 +698,6 @@ Coinbase:
             pycoingecko_view.display_ath(
                 self.current_coin, ns_parser.vs, ns_parser.export
             )
-        return self.queue
 
     @try_except
     def call_atl(self, other_args):
@@ -754,7 +724,6 @@ Coinbase:
             pycoingecko_view.display_atl(
                 self.current_coin, ns_parser.vs, ns_parser.export
             )
-        return self.queue
 
     @try_except
     def call_score(self, other_args):
@@ -777,8 +746,6 @@ Coinbase:
         if ns_parser:
             pycoingecko_view.display_score(self.current_coin, ns_parser.export)
 
-        return self.queue
-
     @try_except
     def call_bc(self, other_args):
         """Process bc command"""
@@ -797,8 +764,6 @@ Coinbase:
 
         if ns_parser:
             pycoingecko_view.display_bc(self.current_coin, ns_parser.export)
-
-        return self.queue
 
     @try_except
     def call_book(self, other_args):
@@ -842,7 +807,6 @@ Coinbase:
                 print(
                     f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
                 )
-                return self.queue
 
             parser.add_argument(
                 "--vs",
@@ -871,7 +835,6 @@ Coinbase:
                     product_id=pair,
                     export=ns_parser.export,
                 )
-        return self.queue
 
     @try_except
     def call_balance(self, other_args):
@@ -904,7 +867,6 @@ Coinbase:
             binance_view.display_balance(
                 coin=self.current_coin, currency=ns_parser.vs, export=ns_parser.export
             )
-        return self.queue
 
     @try_except
     def call_trades(self, other_args):
@@ -923,7 +885,6 @@ Coinbase:
             print(
                 f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
             )
-            return self.queue
 
         parser.add_argument(
             "--vs",
@@ -966,7 +927,6 @@ Coinbase:
             coinbase_view.display_trades(
                 product_id=pair, limit=ns_parser.top, side=side, export=ns_parser.export
             )
-        return self.queue
 
     @try_except
     def call_stats(self, other_args):
@@ -998,8 +958,6 @@ Coinbase:
         if ns_parser:
             pair = f"{self.current_coin.upper()}-{ns_parser.vs.upper()}"
             coinbase_view.display_stats(pair, ns_parser.export)
-
-        return self.queue
 
     @try_except
     def call_chart(self, other_args):
@@ -1114,7 +1072,6 @@ Coinbase:
                 print(
                     f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
                 )
-                return self.queue
 
             parser.add_argument(
                 "--vs",
@@ -1166,7 +1123,6 @@ Coinbase:
                 currency=ns_parser.vs,
                 source=self.source,
             )
-        return self.queue
 
     # paprika
     @try_except
@@ -1199,8 +1155,6 @@ Coinbase:
                 ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_basic(self, other_args):
         """Process basic command"""
@@ -1222,8 +1176,6 @@ Coinbase:
                 else self.current_coin,
                 ns_parser.export,
             )
-
-        return self.queue
 
     @try_except
     def call_mkt(self, other_args):
@@ -1301,7 +1253,6 @@ Coinbase:
                 links=ns_parser.urls,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_ex(self, other_args):
@@ -1358,7 +1309,6 @@ Coinbase:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_events(self, other_args):
@@ -1427,7 +1377,6 @@ Coinbase:
                 links=ns_parser.urls,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_twitter(self, other_args):
@@ -1485,7 +1434,6 @@ Coinbase:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue
 
 
 def menu(coin=None, source=None, symbol=None, queue: List[str] = None):

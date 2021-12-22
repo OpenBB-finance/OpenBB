@@ -109,71 +109,61 @@ Crypto Brokers:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "bro")
-            self.queue.insert(0, "portfolio")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "reset", "portfolio", "bro"]
+        self.queue.insert(0, "bro")
+        self.queue.insert(0, "portfolio")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_degiro(self, _):
         """Process degiro command."""
-        return degiro_controller.menu(self.queue)
+        self.queue = degiro_controller.menu(self.queue)
 
     def call_ally(self, _):
         """Process ally command."""
-        return ally_controller.menu(self.queue)
+        self.queue = ally_controller.menu(self.queue)
 
     def call_rh(self, _):
         """Process rh command."""
-        return robinhood_controller.menu(self.queue)
+        self.queue = robinhood_controller.menu(self.queue)
 
     def call_cb(self, _):
         """Process degiro command."""
-        return coinbase_controller.menu(self.queue)
+        self.queue = coinbase_controller.menu(self.queue)
 
     # TODO: Consistent way of merging across brokers including crypto
     # def call_login(self, other_args):

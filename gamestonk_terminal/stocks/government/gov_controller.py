@@ -155,55 +155,47 @@ Ticker: {self.ticker or None}{dim_no_ticker}
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "gov")
-            self.queue.insert(0, "stocks")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "reset", "stocks", "gov"]
+        self.queue.insert(0, "gov")
+        if self.ticker:
+            self.queue.insert(0, f"load {self.ticker}")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -244,8 +236,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                 self.ticker = ns_parser.ticker.upper()
             else:
                 print("Ticker selected does not exist!", "\n")
-
-        return self.queue
 
     @try_except
     def call_lasttrades(self, other_args: List[str]):
@@ -294,8 +284,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                 representative=ns_parser.representative,
                 export=ns_parser.export,
             )
-
-        return self.queue
 
     @try_except
     def call_topbuys(self, other_args: List[str]):
@@ -353,8 +341,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                 export=ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_topsells(self, other_args: List[str]):
         """Process topsells command"""
@@ -411,8 +397,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                 export=ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_lastcontracts(self, other_args: List[str]):
         """Process lastcontracts command"""
@@ -460,8 +444,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                 sum_contracts=ns_parser.sum,
                 export=ns_parser.export,
             )
-
-        return self.queue
 
     @try_except
     def call_qtrcontracts(self, other_args: List[str]):
@@ -512,8 +494,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                 export=ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_toplobbying(self, other_args: List[str]):
         """Process toplobbying command"""
@@ -546,8 +526,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
             quiverquant_view.display_top_lobbying(
                 num=ns_parser.limit, raw=ns_parser.raw, export=ns_parser.export
             )
-
-        return self.queue
 
     @try_except
     def call_gtrades(self, other_args: List[str]):
@@ -599,8 +577,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
             else:
                 print("No ticker loaded. Use `load <ticker>` first.\n")
 
-        return self.queue
-
     @try_except
     def call_contracts(self, other_args: List[str]):
         """Process contracts command"""
@@ -642,8 +618,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
             else:
                 print("No ticker loaded. Use `load <ticker>` first.\n")
 
-        return self.queue
-
     @try_except
     def call_histcont(self, other_args: List[str]):
         """Process histcont command"""
@@ -670,8 +644,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                 )
             else:
                 print("No ticker loaded. Use `load <ticker>` first.\n")
-
-        return self.queue
 
     @try_except
     def call_lobbying(self, other_args: List[str]):
@@ -702,8 +674,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                 )
             else:
                 print("No ticker loaded. Use `load <ticker>` first.\n")
-
-        return self.queue
 
 
 def menu(ticker: str, queue: List[str] = None):

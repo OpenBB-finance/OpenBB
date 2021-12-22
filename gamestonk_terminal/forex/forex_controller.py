@@ -136,53 +136,42 @@ Forex brokerages:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command."""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command."""
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command."""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command."""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command."""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command."""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "forex")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "reset", "forex"]
+        self.queue.insert(0, "forex")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
 
-    # COMMANDS
     @try_except
     def call_to(self, other_args: List[str]):
         """Process 'to' command."""
@@ -215,7 +204,6 @@ Forex brokerages:
             print(
                 f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
             )
-        return self.queue
 
     @try_except
     def call_from(self, other_args: List[str]):
@@ -248,7 +236,6 @@ Forex brokerages:
             print(
                 f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
             )
-        return self.queue
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -301,8 +288,6 @@ Forex brokerages:
             else:
                 print("\nMake sure both a to symbol and a from symbol are supplied\n")
 
-        return self.queue
-
     @try_except
     def call_candle(self, other_args: List[str]):
         """Process quote command."""
@@ -318,7 +303,6 @@ Forex brokerages:
                 av_view.display_candle(self.data, self.to_symbol, self.from_symbol)
             else:
                 print("No forex historical data loaded.  Load first using <load>.")
-        return self.queue
 
     @try_except
     def call_quote(self, other_args: List[str]):
@@ -336,14 +320,12 @@ Forex brokerages:
             else:
                 print('Make sure both a "to" symbol and a "from" symbol are selected\n')
 
-        return self.queue
-
     # MENUS
     def call_oanda(self, _):
         """Enter Oanda menu."""
         from gamestonk_terminal.forex.oanda import oanda_controller
 
-        return oanda_controller.menu(self.queue)
+        self.queue = oanda_controller.menu(self.queue)
 
     # HELP WANTED!
     # TODO: Add news and reddit commands back
