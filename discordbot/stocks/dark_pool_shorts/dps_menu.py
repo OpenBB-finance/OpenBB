@@ -21,7 +21,24 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
     def __init__(self, bot: discord.ext.commands.Bot):
         self.bot = bot
 
-    @discord.ext.commands.command(name="stocks.dps.shorted")
+    @discord.ext.commands.command(
+        name="stocks.dps.help", brief="Print all commands of the menu"
+    )
+    async def dps_help(self, ctx: discord.ext.commands.Context):
+        menu_command_list = [
+            command
+            for command in self.bot.commands
+            if command.name.startswith("stocks.dps.")
+        ]
+        helptext = "```"
+        for command in menu_command_list:
+            helptext = f"!{command.name}\n{command.brief}\n\n"
+        helptext += "```"
+        await ctx.send(helptext)
+
+    @discord.ext.commands.command(
+        name="stocks.dps.shorted", brief="Show most shorted stocks [Yahoo Finance]"
+    )
     async def shorted(self, ctx: discord.ext.commands.Context, num="10"):
         """Show most shorted stocks [Yahoo Finance]
 
@@ -32,7 +49,10 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         """
         await shorted_command(ctx, num)
 
-    @discord.ext.commands.command(name="stocks.dps.hsi")
+    @discord.ext.commands.command(
+        name="stocks.dps.hsi",
+        brief="Show top high short interest stocks of over 20% ratio [shortinterest.com]",
+    )
     async def hsi(self, ctx: discord.ext.commands.Context, num="10"):
         """Show top high short interest stocks of over 20% ratio [shortinterest.com]
 
@@ -43,7 +63,9 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         """
         await hsi_command(ctx, num)
 
-    @discord.ext.commands.command(name="stocks.dps.pos")
+    @discord.ext.commands.command(
+        name="stocks.dps.pos", brief="Dark pool short position [Stockgrid]"
+    )
     async def pos(self, ctx: discord.ext.commands.Context, sort="dpp_dollar", num="10"):
         """Dark pool short position [Stockgrid]
 
@@ -58,7 +80,9 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         """
         await pos_command(ctx, sort, num)
 
-    @discord.ext.commands.command(name="stocks.dps.sidtc")
+    @discord.ext.commands.command(
+        name="stocks.dps.sidtc", brief="Short interest and days to cover [Stockgrid]"
+    )
     async def sidtc(self, ctx: discord.ext.commands.Context, sort="float", num="10"):
         """Short interest and days to cover [Stockgrid]
 
@@ -72,7 +96,9 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         """
         await sidtc_command(ctx, sort, num)
 
-    @discord.ext.commands.command(name="stocks.dps.ftd")
+    @discord.ext.commands.command(
+        name="stocks.dps.ftd", brief="Fails-to-deliver data [SEC]"
+    )
     async def ftd(self, ctx: discord.ext.commands.Context, ticker="", start="", end=""):
         """Fails-to-deliver data [SEC]
 
@@ -87,7 +113,9 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         """
         await ftd_command(ctx, ticker, start, end)
 
-    @discord.ext.commands.command(name="stocks.dps.dpotc")
+    @discord.ext.commands.command(
+        name="stocks.dps.dpotc", brief="Dark pools (ATS) vs OTC data [FINRA]"
+    )
     async def dpotc(self, ctx: discord.ext.commands.Context, ticker=""):
         """Dark pools (ATS) vs OTC data [FINRA]
 
@@ -98,7 +126,9 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         """
         await dpotc_command(ctx, ticker)
 
-    @discord.ext.commands.command(name="stocks.dps.spos")
+    @discord.ext.commands.command(
+        name="stocks.dps.spos", brief="Net short vs position [Stockgrid]"
+    )
     async def spos(self, ctx: discord.ext.commands.Context, ticker=""):
         """Net short vs position [Stockgrid]
 
@@ -109,7 +139,9 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         """
         await spos_command(ctx, ticker)
 
-    @discord.ext.commands.command(name="stocks.dps.psi")
+    @discord.ext.commands.command(
+        name="stocks.dps.psi", brief="Price vs short interest volume [Stockgrid]"
+    )
     async def psi(self, ctx: discord.ext.commands.Context, ticker=""):
         """Price vs short interest volume [Stockgrid]
 
