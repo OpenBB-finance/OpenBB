@@ -155,7 +155,7 @@ def test_call_cls(mocker):
     controller = ca_controller.ComparisonAnalysisController()
     controller.call_cls([])
 
-    controller.queue == []
+    assert controller.queue == []
     os.system.assert_called_once_with("cls||clear")
 
 
