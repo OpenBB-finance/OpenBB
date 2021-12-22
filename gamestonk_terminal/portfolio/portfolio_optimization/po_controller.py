@@ -279,30 +279,21 @@ Mean Variance Optimization:
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "po")
-            self.queue.insert(0, "portfolio")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-
-        return ["quit", "quit", "reset", "portfolio", "po"]
+        self.queue.insert(0, "po")
+        self.queue.insert(0, "portfolio")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_select(self, other_args: List[str]):
         """Process select command"""

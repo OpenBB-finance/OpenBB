@@ -722,7 +722,7 @@ class CryptoController:
     @try_except
     def call_pred(self, _):
         """Process pred command"""
-        if not self.current_coin:
+        if self.current_coin:
             if self.source != "cg":
                 print("Currently only supports CoinGecko source.\n")
                 return
