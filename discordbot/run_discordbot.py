@@ -1,10 +1,26 @@
 import os
 import sys
+import logging
 import difflib
 import discord
 import discord_components
 import pyimgur
+
 import config_discordbot as cfg
+
+
+# Logging
+logger = logging.getLogger("discord")
+logging.basicConfig(level=logging.INFO)  # DEBUG/INFO/WARNING/ERROR/CRITICAL
+handler = logging.FileHandler(
+    filename=os.path.join(os.path.dirname(__file__), "..", "logs", "bot.log"),
+    encoding="utf-8",
+    mode="w",
+)
+handler.setFormatter(
+    logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
+)
+logger.addHandler(handler)
 
 
 activity = discord.Game(
