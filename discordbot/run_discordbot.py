@@ -21,7 +21,8 @@ discord_components.DiscordComponents(gst_bot)
 
 if cfg.IMGUR_CLIENT_ID == "REPLACE_ME" or cfg.DISCORD_BOT_TOKEN == "REPLACE_ME":
     print(
-        f"Update IMGUR_CLIENT_ID or DISCORD_BOT_TOKEN or both in { os.path.join('discordbot', 'config_discordbot') } \n"
+        "Update IMGUR_CLIENT_ID or DISCORD_BOT_TOKEN or both in "
+        + f"{ os.path.join('discordbot', 'config_discordbot') } \n"
     )
     sys.exit()
 
