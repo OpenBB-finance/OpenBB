@@ -944,71 +944,85 @@ main:
   - name: portfolio
     ref: "/portfolio"
     sub:
-      - name: brokers
-        ref: "/portfolio/brokers"
+      - name: bro
+        ref: "/portfolio/bro"
         sub:
           - name: ally
-            ref: "/portfolio/brokers/ally"
+            ref: "/portfolio/bro/ally"
             sub:
               - name: balances
-                ref: "/portfolio/brokers/ally/balances"
+                ref: "/portfolio/bro/ally/balances"
               - name: history
-                ref: "/portfolio/brokers/ally/history"
+                ref: "/portfolio/bro/ally/history"
               - name: holdings
-                ref: "/portfolio/brokers/ally/holdings"
+                ref: "/portfolio/bro/ally/holdings"
               - name: movers
-                ref: "/portfolio/brokers/ally/movers"
+                ref: "/portfolio/bro/ally/movers"
               - name: quote
-                ref: "/portfolio/brokers/ally/quote"
-          - name: coinbase
-            ref: "/portfolio/brokers/coinbase"
+                ref: "/portfolio/bro/ally/quote"
+          - name: cb
+            ref: "/portfolio/bro/cb"
             sub:
               - name: account
-                ref: "/portfolio/brokers/coinbase/account"
+                ref: "/portfolio/bro/cb/account"
               - name: deposits
-                ref: "/portfolio/brokers/coinbase/deposits"
+                ref: "/portfolio/bro/cb/deposits"
               - name: history
-                ref: "/portfolio/brokers/coinbase/history"
+                ref: "/portfolio/bro/cb/history"
               - name: orders
-                ref: "/portfolio/brokers/coinbase/orders"
-          - name: robinhood
-            ref: "/portfolio/brokers/robinhood"
+                ref: "/portfolio/bro/cb/orders"
+          - name: rh
+            ref: "/portfolio/bro/rh"
             sub:
+              - name: login
+                ref: "/portfolio/bro/rh/login"
               - name: history
-                ref: "/portfolio/brokers/robinhood/history"
+                ref: "/portfolio/bro/rh/history"
               - name: holdings
-                ref: "/portfolio/brokers/robinhood/holdings"
-      - name: portfolio analysis
-        ref: "/portfolio/portfolio_analysis"
-      - name: portfolio optimization
-        ref: "/portfolio/portfolio_optimization"
+                ref: "/portfolio/bro/rh/holdings"
+      - name: po
+        ref: "/portfolio/po"
         sub:
           - name: select
-            ref: "/portfolio/portfolio_optimization/select"
+            ref: "/portfolio/po/select"
           - name: add
-            ref: "/portfolio/portfolio_optimization/add"
+            ref: "/portfolio/po/add"
           - name: rmv
-            ref: "/portfolio/portfolio_optimization/rmv"
+            ref: "/portfolio/po/rmv"
           - name: equal
-            ref: "/portfolio/portfolio_optimization/equal"
+            ref: "/portfolio/po/equal"
           - name: mktcap
-            ref: "/portfolio/portfolio_optimization/mktcap"
+            ref: "/portfolio/po/mktcap"
           - name: dividend
-            ref: "/portfolio/portfolio_optimization/dividend"
+            ref: "/portfolio/po/dividend"
           - name: property
-            ref: "/portfolio/portfolio_optimization/property"
+            ref: "/portfolio/po/property"
           - name: maxhsarpe
-            ref: "/portfolio/portfolio_optimization/maxsharpe"
+            ref: "/portfolio/po/maxsharpe"
           - name: minvol
-            ref: "/portfolio/portfolio_optimization/minvol"
+            ref: "/portfolio/po/minvol"
           - name: maxquadutil
-            ref: "/portfolio/portfolio_optimization/maxquadutil"
+            ref: "/portfolio/po/maxquadutil"
           - name: effret
-            ref: "/portfolio/portfolio_optimization/effret"
+            ref: "/portfolio/po/effret"
           - name: effrisk
-            ref: "/portfolio/portfolio_optimization/effrisk"
+            ref: "/portfolio/po/effrisk"
           - name: ef
-            ref: "/portfolio/portfolio_optimization/ef"
+            ref: "/portfolio/po/ef"
+      - name: load
+        ref: "/portfolio/load"
+      - name: save
+        ref: "/portfolio/save"
+      - name: show
+        ref: "/portfolio/show"
+      - name: add
+        ref: "/portfolio/add"
+      - name: rmv
+        ref: "/portfolio/rmv"
+      - name: ar
+        ref: "/portfolio/ar"
+      - name: rmr
+        ref: "/portfolio/rmr"
   - name: forex
     ref: "/forex"
     sub:
