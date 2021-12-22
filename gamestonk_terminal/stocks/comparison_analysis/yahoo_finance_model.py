@@ -12,6 +12,7 @@ from sklearn.preprocessing import normalize
 
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal import feature_flags as gtff
 
 d_candle_types = {
     "o": "Open",
@@ -121,6 +122,8 @@ def get_sp500_comps_tsne(
                 ax.scatter(x, y, s=50, c="r")
                 ax.annotate(company, (x, y), fontsize=9, alpha=1)
         fig.tight_layout()
+        if gtff.USE_ION:
+            plt.ion()
         plt.show()
     data = pd.DataFrame({"X": xs, "Y": ys}, index=rets.index)
     x0, y0 = data.loc[ticker]

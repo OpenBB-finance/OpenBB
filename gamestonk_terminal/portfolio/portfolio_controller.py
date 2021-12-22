@@ -442,7 +442,7 @@ Graphs:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ret",
+            prog="rmr",
             description="Graph of portfolio returns versus market returns",
         )
         parser.add_argument(
