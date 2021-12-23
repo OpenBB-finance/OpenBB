@@ -16,12 +16,13 @@ DF_EMPTY = pd.DataFrame()
 
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
-    "queue, expected",
+    "from_submenu, queue, expected",
     [
-        (["historical", "help"], []),
+        (False, ["historical", "help"], []),
+        (True, ["q", ".."], ["q", ".."]),
     ],
 )
-def test_menu_with_queue(expected, mocker, queue):
+def test_menu_with_queue(expected, from_submenu, mocker, queue):
     mocker.patch(
         target=(
             "gamestonk_terminal.stocks.comparison_analysis.ca_controller."
@@ -32,18 +33,10 @@ def test_menu_with_queue(expected, mocker, queue):
     result_menu = ca_controller.menu(
         similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
         queue=queue,
-        from_submenu=False,
+        from_submenu=from_submenu,
     )
 
     assert result_menu == expected
-
-    result_menu = ca_controller.menu(
-        similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
-        queue=["q", ".."],
-        from_submenu=True,
-    )
-
-    assert result_menu == ["q", ".."]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -61,9 +54,6 @@ def test_menu_without_queue_completion(mocker):
         target="gamestonk_terminal.stocks.comparison_analysis.ca_controller.session.prompt",
         return_value="quit",
     )
-
-    # MOCK USER INPUT
-    mocker.patch("builtins.input", return_value="quit")
 
     result_menu = ca_controller.menu(
         similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
@@ -178,12 +168,23 @@ def test_call_cls(mocker):
         ("call_help", [], []),
         ("call_quit", [], ["quit"]),
         ("call_quit", ["help"], ["quit", "help"]),
-        ("call_reset", [], ["quit", "quit", "reset", "stocks", "ca"]),
-        ("call_reset", ["help"], ["quit", "quit", "reset", "stocks", "ca", "help"]),
+        (
+            "call_reset",
+            [],
+            ["quit", "quit", "reset", "stocks", "ca", "set MOCK_SIMILAR"],
+        ),
+        (
+            "call_reset",
+            ["help"],
+            ["quit", "quit", "reset", "stocks", "ca", "set MOCK_SIMILAR", "help"],
+        ),
     ],
 )
 def test_call_func_expect_queue(expected_queue, queue, func):
-    controller = ca_controller.ComparisonAnalysisController(queue=queue)
+    controller = ca_controller.ComparisonAnalysisController(
+        similar=["MOCK_SIMILAR"],
+        queue=queue,
+    )
     result = getattr(controller, func)([])
 
     assert result is None
