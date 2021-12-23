@@ -26,6 +26,7 @@ accepted_orders = [
     "v_asc",
 ]
 
+
 def get_historical_greeks(
     ticker: str, expiry: str, chain_id: str, strike: float, put: bool
 ) -> pd.DataFrame:
@@ -151,10 +152,15 @@ def get_screener_output(preset: str, presets_path: str) -> Tuple[pd.DataFrame, s
 
     d_filters = {k: v for k, v in dict(preset_filter["FILTER"]).items() if v}
     s_filters = str(d_filters)
-    s_filters = s_filters.replace(": '", ": ").replace("',", ",").replace("'}", "}").replace("'", '"')
+    s_filters = (
+        s_filters.replace(": '", ": ")
+        .replace("',", ",")
+        .replace("'}", "}")
+        .replace("'", '"')
+    )
     for order in accepted_orders:
-        s_filters = s_filters.replace(f" {order}", f' "{order}"') 
-    
+        s_filters = s_filters.replace(f" {order}", f' "{order}"')
+
     errors = check_presets(d_filters)
 
     if errors:
@@ -302,7 +308,7 @@ def check_presets(preset_dict: dict) -> str:
                 error += f"{key} : {value} , should be integer\n"
 
         elif key == "order-by":
-            if value.replace('"', '') not in accepted_orders:
+            if value.replace('"', "") not in accepted_orders:
                 error += f"{key} : {value} not accepted ordering\n"
 
     return error
