@@ -126,71 +126,53 @@ Expiry: {self.selected_date or None}
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "pricing")
-            if self.selected_date:
-                self.queue.insert(0, f"exp {self.selected_date}")
-            if self.ticker:
-                self.queue.insert(0, f"load {self.ticker}")
-            self.queue.insert(0, "options")
-            self.queue.insert(0, "stocks")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-
-        reset_commands = ["quit", "quit", "quit", "reset", "stocks", "options"]
-        if self.ticker:
-            reset_commands.append(f"load {self.ticker}")
+        self.queue.insert(0, "pricing")
         if self.selected_date:
-            reset_commands.append(f"exp -d {self.selected_date}")
-        reset_commands.append("pricing")
-
-        return reset_commands
+            self.queue.insert(0, f"exp {self.selected_date}")
+        if self.ticker:
+            self.queue.insert(0, f"load {self.ticker}")
+        self.queue.insert(0, "options")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_add(self, other_args: List[str]):
@@ -231,8 +213,6 @@ Expiry: {self.selected_date or None}
             self.prices = df.sort_values("Price")
             print("")
 
-        return self.queue
-
     @try_except
     def call_rmv(self, other_args: List[str]):
         """Process rmv command"""
@@ -268,8 +248,6 @@ Expiry: {self.selected_date or None}
                 self.prices = self.prices[(self.prices["Price"] != ns_parser.price)]
             print("")
 
-        return self.queue
-
     @try_except
     def call_show(self, other_args):
         """Process show command"""
@@ -295,8 +273,6 @@ Expiry: {self.selected_date or None}
                 )
             else:
                 print(self.prices.to_string, "\n")
-
-        return self.queue
 
     @try_except
     def call_rnval(self, other_args: List[str]):
@@ -358,8 +334,6 @@ Expiry: {self.selected_date or None}
                     print("No expiry loaded. First use `exp {expiry date}`\n")
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
-
-        return self.queue
 
 
 def menu(

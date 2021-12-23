@@ -218,63 +218,47 @@ Custom:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
 
-        return self.queue
-
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "ta")
-            if self.ticker:
-                self.queue.insert(0, f"load {self.ticker}")
-            self.queue.insert(0, "stocks")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-
-        reset_commands = ["quit", "quit", "reset", "stocks"]
+        self.queue.insert(0, "ta")
         if self.ticker:
-            reset_commands.append(f"load {self.ticker}")
-        reset_commands.append("ta")
-        return reset_commands
+            self.queue.insert(0, f"load {self.ticker}")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -364,7 +348,6 @@ Custom:
 
                 self.start = ns_parser.start
                 self.interval = f"{ns_parser.interval}min"
-        return self.queue
 
     # SPECIFIC
     @try_except
@@ -382,7 +365,6 @@ Custom:
         )
         if ns_parser:
             finviz_view.view(self.ticker)
-        return self.queue
 
     @try_except
     def call_summary(self, other_args: List[str]):
@@ -403,7 +385,6 @@ Custom:
         )
         if ns_parser:
             finbrain_view.technical_summary_report(self.ticker)
-        return self.queue
 
     @try_except
     def call_recom(self, other_args: List[str]):
@@ -461,7 +442,6 @@ Custom:
                 interval=ns_parser.interval,
                 export=ns_parser.export,
             )
-        return self.queue
 
     # COMMON
     # TODO: Go through all models and make sure all needed columns are in dfs
@@ -518,7 +498,6 @@ Custom:
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_sma(self, other_args: List[str]):
@@ -572,7 +551,6 @@ Custom:
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_wma(self, other_args: List[str]):
@@ -623,7 +601,6 @@ Custom:
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_hma(self, other_args: List[str]):
@@ -674,7 +651,6 @@ Custom:
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_zlma(self, other_args: List[str]):
@@ -728,7 +704,6 @@ Custom:
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_vwap(self, other_args: List[str]):
@@ -759,7 +734,6 @@ Custom:
             # Daily
             if self.interval == "1440min":
                 print("VWAP should be used with intraday data. \n")
-                return self.queue
 
             overlap_view.view_vwap(
                 s_ticker=self.ticker,
@@ -768,7 +742,6 @@ Custom:
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_cci(self, other_args: List[str]):
@@ -818,7 +791,6 @@ Custom:
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_macd(self, other_args: List[str]):
@@ -880,7 +852,6 @@ Custom:
                 n_signal=ns_parser.n_signal,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_rsi(self, other_args: List[str]):
@@ -942,7 +913,6 @@ Custom:
                 drift=ns_parser.n_drift,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_stoch(self, other_args: List[str]):
@@ -1001,7 +971,6 @@ Custom:
                 slowkperiod=ns_parser.n_slowkperiod,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_fisher(self, other_args: List[str]):
@@ -1043,7 +1012,6 @@ Custom:
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_cg(self, other_args: List[str]):
@@ -1085,7 +1053,6 @@ Custom:
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_adx(self, other_args: List[str]):
@@ -1144,7 +1111,6 @@ Custom:
                 drift=ns_parser.n_drift,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_aroon(self, other_args: List[str]):
@@ -1201,7 +1167,6 @@ Custom:
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_bbands(self, other_args: List[str]):
@@ -1267,7 +1232,6 @@ Custom:
                 mamode=ns_parser.s_mamode,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_donchian(self, other_args: List[str]):
@@ -1316,7 +1280,6 @@ Custom:
                 lower_length=ns_parser.n_length_lower,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_kc(self, other_args: List[str]):
@@ -1387,7 +1350,6 @@ Custom:
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_ad(self, other_args: List[str]):
@@ -1428,7 +1390,6 @@ Custom:
                 use_open=ns_parser.b_use_open,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_adosc(self, other_args: List[str]):
@@ -1486,7 +1447,6 @@ Custom:
                 slow=ns_parser.n_length_slow,
                 export=ns_parser.export,
             )
-        return self.queue
 
     def call_obv(self, other_args: List[str]):
         """Process obv command"""
@@ -1515,7 +1475,6 @@ Custom:
                 df_stock=self.stock,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_fib(self, other_args: List[str]):
@@ -1564,7 +1523,6 @@ Custom:
                 end_date=ns_parser.end,
                 export=ns_parser.export,
             )
-        return self.queue
 
 
 def menu(

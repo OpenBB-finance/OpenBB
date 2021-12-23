@@ -122,55 +122,47 @@ Current Series IDs:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
+        self.queue.insert(0, "quit")
+
         return ["quit"]
 
     def call_exit(self, _):
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "fred")
-            self.queue.insert(0, "economy")
-            self.queue.insert(0, "r")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "r", "economy", "fred"]
+        self.queue.insert(0, "fred")
+        self.queue.insert(0, "economy")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_search(self, other_args: List[str]):
@@ -209,7 +201,6 @@ Current Series IDs:
                 series_term=ns_parser.series_term,
                 num=ns_parser.num,
             )
-        return self.queue
 
     @try_except
     def call_add(self, other_args: List[str]):
@@ -244,7 +235,6 @@ Current Series IDs:
             print(
                 f"Current Series: {', '.join(self.current_series.keys()) .upper() or None}\n"
             )
-        return self.queue
 
     @try_except
     def call_rmv(self, other_args: List[str]):
@@ -289,12 +279,11 @@ Current Series IDs:
                 self.current_series = {}
                 self.current_long_id = 0
                 print("")
-                return self.queue
+
             self.current_series.pop(ns_parser.series_id)
             print(
                 f"Current Series Ids: {', '.join(self.current_series.keys()) or None}\n"
             )
-        return self.queue
 
     @try_except
     def call_plot(self, other_args):
@@ -329,7 +318,6 @@ Current Series IDs:
                 ns_parser.raw,
                 ns_parser.export,
             )
-        return self.queue
 
 
 def menu(queue: List[str] = None):

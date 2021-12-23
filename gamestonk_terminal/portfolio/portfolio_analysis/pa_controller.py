@@ -86,25 +86,27 @@ Portfolio: {self.portfolio_name or None}
         # Empty command
         if not an_input:
             print("")
-            return None
+            return
 
         (known_args, other_args) = self.pa_parser.parse_known_args(an_input.split())
 
         # Help menu again
         if known_args.cmd == "?":
             self.print_help()
-            return None
+            return
 
         # Clear screen
         if known_args.cmd == "cls":
             system_clear()
-            return None
+            return
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
+
+        return
 
     def call_help(self, _):
         """Process Help command"""
@@ -112,11 +114,9 @@ Portfolio: {self.portfolio_name or None}
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
-        return False
 
     def call_quit(self, _):
         """Process Quit command - quit the program"""
-        return True
 
     @try_except
     def call_load(self, other_args):
@@ -273,10 +273,7 @@ def menu():
             an_input = input(f"{get_flair()} (portfolio)>(pa)> ")
 
         try:
-            process_input = pa_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            pa_controller.switch(an_input)
 
         except SystemExit:
             print("The command selected doesn't exist\n")
