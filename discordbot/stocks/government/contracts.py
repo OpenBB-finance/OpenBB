@@ -10,6 +10,7 @@ from gamestonk_terminal.helper_funcs import plot_autoscale
 import discordbot.config_discordbot as cfg
 from discordbot.run_discordbot import gst_imgur
 
+
 async def contracts_command(ctx, ticker="", past_transaction_days="", raw=""):
     """Displays contracts associated with tickers [quiverquant.com]"""
     try:

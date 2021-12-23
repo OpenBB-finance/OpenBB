@@ -4,6 +4,7 @@ from gamestonk_terminal.stocks.government import quiverquant_model
 import discordbot.config_discordbot as cfg
 from discordbot.helpers import pagination
 
+
 async def lasttrades_command(
     ctx, gov_type="", past_transactions_days="", representative=""
 ):
