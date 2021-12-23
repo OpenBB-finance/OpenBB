@@ -2,16 +2,18 @@ import difflib
 import discord
 import pandas as pd
 
+from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 import discordbot.config_discordbot as cfg
 from discordbot.helpers import pagination
+from discordbot.stocks.screener import screener_options as so
 
-from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 
-
-async def overview_command(ctx, preset="template", sort="", limit="25", ascend="False"):
+async def overview_command(ctx, preset="template", sort="", limit="5", ascend="False"):
     """Displays stocks with overview data such as Sector and Industry [Finviz]"""
     try:
-        preset_error = False
+        # Check for argument
+        if preset == "template" or preset not in so.all_presets:
+            raise Exception("Invalid preset selected!")
 
         # Debug
         if cfg.DEBUG:
@@ -34,29 +36,12 @@ async def overview_command(ctx, preset="template", sort="", limit="25", ascend="
             raise Exception("ascend argument has to be true or false")
 
         # Output Data
-        preset_error = True
         df_screen = get_screener_data(
             preset,
             "overview",
             limit,
             ascend,
         )
-        preset_error = False
-
-        d_cols_to_sort = {
-            "overview": [
-                "Ticker",
-                "Company",
-                "Sector",
-                "Industry",
-                "Country",
-                "Market Cap",
-                "P/E",
-                "Price",
-                "Change",
-                "Volume",
-            ],
-        }
 
         description = ""
 
@@ -67,7 +52,7 @@ async def overview_command(ctx, preset="template", sort="", limit="25", ascend="
             df_screen = df_screen.dropna(axis="columns", how="all")
 
             if sort:
-                if " ".join(sort) in d_cols_to_sort["overview"]:
+                if " ".join(sort) in so.d_cols_to_sort["overview"]:
                     df_screen = df_screen.sort_values(
                         by=[" ".join(sort)],
                         ascending=ascend,
@@ -76,7 +61,7 @@ async def overview_command(ctx, preset="template", sort="", limit="25", ascend="
                 else:
                     similar_cmd = difflib.get_close_matches(
                         " ".join(sort),
-                        d_cols_to_sort["overview"],
+                        so.d_cols_to_sort["overview"],
                         n=1,
                         cutoff=0.7,
                     )
@@ -89,7 +74,7 @@ async def overview_command(ctx, preset="template", sort="", limit="25", ascend="
                         )
                     else:
                         raise ValueError(
-                            f"Wrong sort column provided! Provide one of these: {', '.join(d_cols_to_sort['overview'])}"
+                            f"Wrong sort column provided! Select from: {', '.join(so.d_cols_to_sort['overview'])}"
                         )
 
             df_screen = df_screen.fillna("")
@@ -131,19 +116,11 @@ async def overview_command(ctx, preset="template", sort="", limit="25", ascend="
             await pagination(columns, ctx)
 
     except Exception as e:
-        if not preset_error:
-            embed = discord.Embed(
-                title="ERROR Stocks: [Finviz] Overview Screener",
-                colour=cfg.COLOR,
-                description=e,
-            )
-        else:
-            embed = discord.Embed(
-                title="ERROR Stocks: [Finviz] Overview Screener",
-                colour=cfg.COLOR,
-                description=f"Wrong preset parameter entered. Use the command '{cfg.COMMAND_PREFIX}stocks.scr.presets' "
-                "in order to see the available presets.",
-            )
+        embed = discord.Embed(
+            title="ERROR Stocks: [Finviz] Overview Screener",
+            colour=cfg.COLOR,
+            description=e,
+        )
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
