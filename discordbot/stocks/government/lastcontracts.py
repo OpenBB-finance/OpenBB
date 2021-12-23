@@ -36,6 +36,7 @@ async def lastcontracts_command(ctx, past_transactions_days="", num=""):
         df_contracts.sort_values("Date", ascending=False)
 
         df_contracts["Date"] = pd.to_datetime(df_contracts["Date"])
+        df_contracts["Date"] = df_contracts["Date"].dt.date
 
         df_contracts.drop_duplicates(inplace=True)
         df_contracts = df_contracts[
@@ -44,42 +45,40 @@ async def lastcontracts_command(ctx, past_transactions_days="", num=""):
             )
         ]
 
-        df_contracts = df_contracts[
-            ["Date", "Ticker", "Amount", "Description", "Agency"]
-        ][:num]
-        df_contracts_str = df_contracts.to_string()
-        if len(df_contracts_str) <= 4000:
-            embed = discord.Embed(
+        df_contracts = df_contracts[["Date", "Ticker", "Amount", "Agency"]][:num]
+
+        initial_str = "Page 0: Overview"
+        i = 1
+        for col_name in df_contracts["Ticker"].values:
+            initial_str += f"\nPage {i}: {col_name}"
+            i += 1
+
+        columns = []
+        df_contracts = df_contracts.T
+        columns.append(
+            discord.Embed(
                 title="Stocks: [quiverquant.com] Top buy government trading",
-                description="```" + df_contracts_str + "```",
+                description=initial_str,
                 colour=cfg.COLOR,
-            )
-            embed.set_author(
+            ).set_author(
                 name=cfg.AUTHOR_NAME,
                 icon_url=cfg.AUTHOR_ICON_URL,
             )
-            await ctx.send(embed=embed)
-        else:
-            i = 0
-            str_start = 0
-            str_end = 4000
-            columns = []
-            while i <= len(df_contracts_str) / 4000:
-                columns.append(
-                    discord.Embed(
-                        title="Stocks: [quiverquant.com] Top buy government trading",
-                        description="```" + df_contracts_str[str_start:str_end] + "```",
-                        colour=cfg.COLOR,
-                    ).set_author(
-                        name=cfg.AUTHOR_NAME,
-                        icon_url=cfg.AUTHOR_ICON_URL,
-                    )
+        )
+        for column in df_contracts.columns.values:
+            columns.append(
+                discord.Embed(
+                    description="```"
+                    + df_contracts[column].fillna("").to_string()
+                    + "```",
+                    colour=cfg.COLOR,
+                ).set_author(
+                    name=cfg.AUTHOR_NAME,
+                    icon_url=cfg.AUTHOR_ICON_URL,
                 )
-                str_end = str_start
-                str_start += 4000
-                i += 1
+            )
 
-            await pagination(columns, ctx)
+        await pagination(columns, ctx)
 
     except Exception as e:
         embed = discord.Embed(
