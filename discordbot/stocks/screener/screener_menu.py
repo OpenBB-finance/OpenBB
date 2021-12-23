@@ -19,6 +19,7 @@ from discordbot.stocks.screener import screener_options as so
 
 # pylint: disable=R0912
 
+
 class ScreenerCommands(discord.ext.commands.Cog):
     """Screener menu"""
 
