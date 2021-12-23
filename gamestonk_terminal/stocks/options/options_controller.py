@@ -545,9 +545,11 @@ Expiry: {self.selected_date or None}
                 if self.selected_date:
                     if (
                         ns_parser.put
+                        and self.chain
                         and ns_parser.strike in self.chain.puts["strike"].values
                     ) or (
                         not ns_parser.put
+                        and self.chain
                         and ns_parser.strike in self.chain.calls["strike"].values
                     ):
                         syncretism_view.view_historical_greeks(
