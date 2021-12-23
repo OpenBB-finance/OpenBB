@@ -85,51 +85,73 @@ async def lasttrades_command(
                     f"{', '.join(df_gov['Representative'].str.split().str[0].unique())}"
                 )
 
-            embed = discord.Embed(
-                title=f"Stocks: [quiverquant.com] Trades by {representative}",
-                description="```" + df_gov_rep.to_string(index=False) + "```",
-                colour=cfg.COLOR,
-            )
-            embed.set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
-            )
+            initial_str = "Page 0: Overview"
+            i = 1
+            for col_name in df_gov_rep["Ticker"].values:
+                initial_str += f"\nPage {i}: {col_name}"
+                i += 1
 
-            await ctx.send(embed=embed)
-        else:
-            df_gov_str = df_gov.to_string(index=False)
-            if len(df_gov_str) <= 4000:
-                embed = discord.Embed(
-                    title=f"Stocks: [quiverquant.com] Last transactions for {gov_type.upper()}",
-                    description="```" + df_gov_str + "```",
+            columns = []
+            df_gov_rep = df_gov_rep.T
+            columns.append(
+                discord.Embed(
+                    title=f"Stocks: [quiverquant.com] Trades by {representative}",
+                    description=initial_str,
                     colour=cfg.COLOR,
-                )
-                embed.set_author(
+                ).set_author(
                     name=cfg.AUTHOR_NAME,
                     icon_url=cfg.AUTHOR_ICON_URL,
                 )
-                await ctx.send(embed=embed)
-            else:
-                i = 0
-                str_start = 0
-                str_end = 4000
-                columns = []
-                while i <= len(gov_type) / 4000:
-                    columns.append(
-                        discord.Embed(
-                            title=f"Stocks: [quiverquant.com] Last transactions for {gov_type.upper()}",
-                            description="```" + gov_type[str_start:str_end] + "```",
-                            colour=cfg.COLOR,
-                        ).set_author(
-                            name=cfg.AUTHOR_NAME,
-                            icon_url=cfg.AUTHOR_ICON_URL,
-                        )
+            )
+            for column in df_gov_rep.columns.values:
+                columns.append(
+                    discord.Embed(
+                        description="```"
+                        + df_gov_rep[column].fillna("").to_string()
+                        + "```",
+                        colour=cfg.COLOR,
+                    ).set_author(
+                        name=cfg.AUTHOR_NAME,
+                        icon_url=cfg.AUTHOR_ICON_URL,
                     )
-                    str_end = str_start
-                    str_start += 4000
-                    i += 1
+                )
 
-                await pagination(columns, ctx)
+            await pagination(columns, ctx)
+
+        else:
+            initial_str = "Page 0: Overview"
+            i = 1
+            for col_name in df_gov["Ticker"].values:
+                initial_str += f"\nPage {i}: {col_name}"
+                i += 1
+
+            columns = []
+            df_gov = df_gov.T
+            columns.append(
+                discord.Embed(
+                    title=f"Stocks: [quiverquant.com] Trades for {gov_type.upper()}",
+                    description=initial_str,
+                    colour=cfg.COLOR,
+                ).set_author(
+                    name=cfg.AUTHOR_NAME,
+                    icon_url=cfg.AUTHOR_ICON_URL,
+                )
+            )
+
+            for column in df_gov.columns.values:
+                columns.append(
+                    discord.Embed(
+                        description="```"
+                        + df_gov[column].fillna("").to_string()
+                        + "```",
+                        colour=cfg.COLOR,
+                    ).set_author(
+                        name=cfg.AUTHOR_NAME,
+                        icon_url=cfg.AUTHOR_ICON_URL,
+                    )
+                )
+
+            await pagination(columns, ctx)
 
     except Exception as e:
         embed = discord.Embed(
