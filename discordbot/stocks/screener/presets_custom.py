@@ -1,9 +1,9 @@
-import os
 import discord
 
 import discordbot.config_discordbot as cfg
 
 from discordbot.stocks.screener import screener_options as so
+
 
 async def presets_custom_command(ctx):
     """Displays every custom preset"""

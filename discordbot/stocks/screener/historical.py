@@ -7,14 +7,13 @@ from matplotlib import pyplot as plt
 import yfinance as yf
 from pandas.plotting import register_matplotlib_converters
 from finvizfinance.screener import ticker
-import discordbot.config_discordbot as cfg
-
-from discordbot.run_discordbot import gst_imgur
 
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.stocks.screener import finviz_model
 from gamestonk_terminal.helper_funcs import plot_autoscale
 
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur
 from discordbot.stocks.screener import screener_options as so
 
 # pylint:disable=no-member

@@ -2,16 +2,13 @@ import difflib
 import discord
 import pandas as pd
 
+from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 import discordbot.config_discordbot as cfg
 from discordbot.helpers import pagination
-
-from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 from discordbot.stocks.screener import screener_options as so
 
 
-async def valuation_command(
-    ctx, preset="template", sort="", limit="5", ascend="False"
-):
+async def valuation_command(ctx, preset="template", sort="", limit="5", ascend="False"):
     """Displays results from chosen preset focusing on valuation metrics [Finviz]"""
     try:
         # Check for argument
@@ -45,7 +42,7 @@ async def valuation_command(
             limit,
             ascend,
         )
-        
+
         description = ""
 
         if isinstance(df_screen, pd.DataFrame):

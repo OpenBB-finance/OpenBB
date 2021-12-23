@@ -2,16 +2,13 @@ import difflib
 import discord
 import pandas as pd
 
+from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 import discordbot.config_discordbot as cfg
 from discordbot.helpers import pagination
-
-from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 from discordbot.stocks.screener import screener_options as so
 
 
-async def technical_command(
-    ctx, preset="template", sort="", limit="5", ascend="False"
-):
+async def technical_command(ctx, preset="template", sort="", limit="5", ascend="False"):
     """Displays stocks according to chosen preset, sorting by technical factors [Finviz]"""
     try:
         # Check for argument

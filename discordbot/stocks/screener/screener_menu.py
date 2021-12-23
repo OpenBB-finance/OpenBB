@@ -16,16 +16,14 @@ from discordbot.stocks.screener.performance import performance_command
 from discordbot.stocks.screener.technical import technical_command
 from discordbot.stocks.screener import screener_options as so
 
+
+# pylint: disable=R0912
+
 class ScreenerCommands(discord.ext.commands.Cog):
     """Screener menu"""
 
     def __init__(self, bot: discord.ext.commands.Bot):
         self.bot = bot
-
-    @discord.ext.commands.command(name="stocks.scr.presets")
-    async def presets(self, ctx: discord.ext.commands.Context):
-        """Displays every available preset"""
-        await presets_command(ctx)
 
     @discord.ext.commands.command(name="stocks.scr.presets_default")
     async def presets_default(self, ctx: discord.ext.commands.Context):

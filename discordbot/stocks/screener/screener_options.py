@@ -43,9 +43,7 @@ d_signals_desc = {
 }
 
 presets = [
-    preset.split(".")[0]
-    for preset in os.listdir(presets_path)
-    if preset[-4:] == ".ini"
+    preset.split(".")[0] for preset in os.listdir(presets_path) if preset[-4:] == ".ini"
 ]
 
 all_presets = list(d_signals_desc.keys()) + presets

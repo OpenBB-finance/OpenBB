@@ -1,9 +1,9 @@
-import os
 import discord
 
 import discordbot.config_discordbot as cfg
 
 from discordbot.stocks.screener import screener_options as so
+
 
 async def presets_default_command(ctx):
     """Displays default presets"""
@@ -28,7 +28,6 @@ async def presets_default_command(ctx):
 
         await ctx.send(embed=embed)
 
-       
     except Exception as e:
         embed = discord.Embed(
             title="ERROR Stocks: Screener Presets",
