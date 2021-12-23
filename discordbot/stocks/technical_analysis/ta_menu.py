@@ -971,15 +971,16 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
                     ]
                 ]
                 await main_message.edit(components=components)
-                embed = discord.Embed(
-                    description="Error timeout - you snooze you lose! 😋",
-                    colour=cfg.COLOR,
-                    title="TIMEOUT Stocks: Technical Analysis (TA) Menu",
-                ).set_author(
-                    name=cfg.AUTHOR_NAME,
-                    icon_url=cfg.AUTHOR_ICON_URL,
-                )
-                await ctx.send(embed=embed)
+                if cfg.DEBUG:
+                    embed = discord.Embed(
+                        description="Error timeout - you snooze you lose! 😋",
+                        colour=cfg.COLOR,
+                        title="TIMEOUT Stocks: Technical Analysis (TA) Menu",
+                    ).set_author(
+                        name=cfg.AUTHOR_NAME,
+                        icon_url=cfg.AUTHOR_ICON_URL,
+                    )
+                    await ctx.send(embed=embed)
 
                 for emoji in emoji_list:
                     await main_message.remove_reaction(emoji, ctx.bot.user)
