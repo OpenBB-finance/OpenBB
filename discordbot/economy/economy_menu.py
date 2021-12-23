@@ -126,6 +126,8 @@ class EconomyCommands(discord.ext.commands.Cog):
     async def economy(self, ctx: discord.ext.commands.Context):
         """Economy Context Menu
 
+        Run `!help EconomyCommands` to see the list of available commands.
+
         Returns
         -------
         Sends a message to the discord user with the commands from the economy context.
