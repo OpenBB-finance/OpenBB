@@ -16,7 +16,7 @@ class OptionsCommands(discord.ext.commands.Cog):
     def __init__(self, bot: discord.ext.commands.Bot):
         self.bot = bot
 
-    @discord.ext.commands.command(name="stocks.opt.exp")
+    @discord.ext.commands.command(name="stocks.opt.exp", usage="[ticker]")
     async def expirations(self, ctx: discord.ext.commands.Context, ticker=""):
         """Get available expirations [yfinance]
 
@@ -27,7 +27,9 @@ class OptionsCommands(discord.ext.commands.Cog):
         """
         await expirations_command(ctx, ticker)
 
-    @discord.ext.commands.command(name="stocks.opt.calls")
+    @discord.ext.commands.command(
+        name="stocks.opt.calls", usage="[ticker] [expiration]"
+    )
     async def calls(
         self, ctx: discord.ext.commands.Context, ticker="", expiration: str = ""
     ):
@@ -42,7 +44,7 @@ class OptionsCommands(discord.ext.commands.Cog):
         """
         await calls_command(ctx, ticker, expiration)
 
-    @discord.ext.commands.command(name="stocks.opt.puts")
+    @discord.ext.commands.command(name="stocks.opt.puts", usage="[ticker] [expiration]")
     async def puts(
         self, ctx: discord.ext.commands.Context, ticker="", expiration: str = ""
     ):
@@ -57,7 +59,7 @@ class OptionsCommands(discord.ext.commands.Cog):
         """
         await puts_command(ctx, ticker, expiration)
 
-    @discord.ext.commands.command(name="stocks.opt.oi")
+    @discord.ext.commands.command(name="stocks.opt.oi", usage="[ticker] [expiration]")
     async def oi(
         self, ctx: discord.ext.commands.Context, ticker="", expiration: str = ""
     ):
@@ -75,6 +77,8 @@ class OptionsCommands(discord.ext.commands.Cog):
     @discord.ext.commands.command(name="stocks.opt")
     async def opt(self, ctx: discord.ext.commands.Context, ticker="", expiration=""):
         """Stocks Context - Shows Options Menu
+
+        Run `!help OptionsCommands` to see the list of available commands.
 
         Returns
         -------
@@ -153,15 +157,16 @@ class OptionsCommands(discord.ext.commands.Cog):
         except asyncio.TimeoutError:
             for emoji in emoji_list:
                 await msg.remove_reaction(emoji, ctx.bot.user)
-            embed = discord.Embed(
-                description="Error timeout - you snooze you lose! 😋",
-                colour=cfg.COLOR,
-                title="TIMEOUT Stocks: Government (GOV) Menu",
-            ).set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
-            )
-            await ctx.send(embed=embed)
+            if cfg.DEBUG:
+                embed = discord.Embed(
+                    description="Error timeout - you snooze you lose! 😋",
+                    colour=cfg.COLOR,
+                    title="TIMEOUT Stocks: Government (GOV) Menu",
+                ).set_author(
+                    name=cfg.AUTHOR_NAME,
+                    icon_url=cfg.AUTHOR_ICON_URL,
+                )
+                await ctx.send(embed=embed)
 
 
 def setup(bot: discord.ext.commands.Bot):
