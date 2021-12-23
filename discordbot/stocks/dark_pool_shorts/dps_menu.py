@@ -101,9 +101,9 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         ticker: str
             Stock ticker
         start: datetime
-            Starting date
+            Starting date in YYYY-MM-DD format
         end: datetime
-            Ending date
+            Ending date in YYYY-MM-DD format
         """
         await ftd_command(ctx, ticker, start, end)
 

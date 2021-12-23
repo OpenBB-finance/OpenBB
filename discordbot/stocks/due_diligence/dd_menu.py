@@ -26,7 +26,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         """
         await analyst_command(ctx, ticker)
 
@@ -37,11 +37,11 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         raw: boolean
              True or false
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         """
         await pt_command(ctx, ticker, raw, start)
 
@@ -52,7 +52,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         """
         await est_command(ctx, ticker)
 
@@ -63,7 +63,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         """
         await sec_command(ctx, ticker)
 
@@ -74,7 +74,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         """
         await supplier_command(ctx, ticker)
 
@@ -85,7 +85,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         """
         await customer_command(ctx, ticker)
 
@@ -96,7 +96,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         num: int
             number of rows displayed
         """

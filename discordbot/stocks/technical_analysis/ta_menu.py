@@ -56,15 +56,15 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         window: int
             window length. Default: 20, 50
         offset: int
             offset. Default: 0
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await ema_command(ctx, ticker, window, offset, start, end)
@@ -86,15 +86,15 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         window: int
             window length. Default: 20, 50
         offset: int
             offset. Default: 0
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await sma_command(ctx, ticker, window, offset, start, end)
@@ -116,15 +116,15 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         window: int
             window length. Default: 20, 50
         offset: int
             offset. Default: 0
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await wma_command(ctx, ticker, window, offset, start, end)
@@ -146,15 +146,15 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         window: int
             window length. Default: 20, 50
         offset: int
             offset. Default: 0
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await hma_command(ctx, ticker, window, offset, start, end)
@@ -176,15 +176,15 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         window: int
             window length. Default: 20
         offset: int
             offset. Default: 0
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await zlma_command(ctx, ticker, window, offset, start, end)
@@ -206,15 +206,15 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         length: int
             window length. Default: 14
         scalar: int
             scalar. Default: 0.015
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await cci_command(ctx, ticker, length, scalar, start, end)
@@ -237,7 +237,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         fast: int
             fast period. Default: 12
         slow: int
@@ -245,9 +245,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         signal: int
             signal period. Default: 9
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await macd_command(ctx, ticker, fast, slow, signal, start, end)
@@ -270,7 +270,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         length: int
             length. Default: 14
         scalar: int
@@ -278,9 +278,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         drift: int
             drift. Default: 1
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await rsi_command(ctx, ticker, length, scalar, drift, start, end)
@@ -304,7 +304,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         fast_k: int
             fast_k moving average period. Default: 14
         slow_d: int
@@ -312,9 +312,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         slow_k: int
             slow_k moving average period. Default: 3
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await stoch_command(ctx, ticker, fast_k, slow_d, slow_k, start, end)
@@ -335,13 +335,13 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         length: int
             length. Default: 14
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await fisher_command(ctx, ticker, length, start, end)
@@ -362,13 +362,13 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         length: int
             length. Default: 14
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await cg_command(ctx, ticker, length, start, end)
@@ -391,7 +391,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         length: int
             length. Default: 14
         scalar: int
@@ -399,9 +399,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         drift: int
             drift. Default: 1
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await adx_command(ctx, ticker, length, scalar, drift, start, end)
@@ -423,15 +423,15 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         length: int
             length. Default: 25
         scalar: int
             scalar. Default: 100
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await aroon_command(ctx, ticker, length, scalar, start, end)
@@ -454,7 +454,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         length: int
             length. Default: 5
         std: int
@@ -462,9 +462,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         ma_mode: str
             mode of moving average. Default: sma
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await bbands_command(ctx, ticker, length, std, ma_mode, start, end)
@@ -487,15 +487,15 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         upper_length: int
             length. Default: 25
         lower_length: int
             standard deviation. Default: 100
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await donchian_command(ctx, ticker, upper_length, lower_length, start, end)
@@ -521,7 +521,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         length: int
             length. Default: 20
         scalar: int
@@ -531,9 +531,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         offset: int
             offset value. Default: 0
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await kc_command(ctx, ticker, length, scalar, ma_mode, offset, start, end)
@@ -554,13 +554,13 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         is_open: bool
             whether open price is used. Default: False
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await ad_command(ctx, ticker, is_open, start, end)
@@ -583,7 +583,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         is_open: bool
             whether open price is used. Default: False
         fast: int
@@ -591,9 +591,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         slow: int
             slow value. Default: 10
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await adosc_command(ctx, ticker, is_open, fast, slow, start, end)
@@ -605,11 +605,11 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await obv_command(ctx, ticker, start, end)
@@ -621,11 +621,11 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await fib_command(ctx, ticker, start, end)
@@ -637,7 +637,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         """
 
         await view_command(ctx, ticker)
@@ -649,7 +649,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         """
 
         await summary_command(ctx, ticker)
@@ -661,7 +661,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         """
 
         await recom_command(ctx, ticker)

@@ -52,7 +52,7 @@ class ScreenerCommands(discord.ext.commands.Cog):
         signal: str
             Signal. Default: most_volatile
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         """
         await historical_command(ctx, signal, start)
 
