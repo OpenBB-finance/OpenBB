@@ -6,14 +6,17 @@ import discordbot.config_discordbot as cfg
 from discordbot.helpers import pagination
 
 from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
+from discordbot.stocks.screener import screener_options as so
 
 
 async def technical_command(
-    ctx, preset="template", sort="", limit="25", ascend="False"
+    ctx, preset="template", sort="", limit="5", ascend="False"
 ):
     """Displays stocks according to chosen preset, sorting by technical factors [Finviz]"""
     try:
-        preset_error = False
+        # Check for argument
+        if preset == "template" or preset not in so.all_presets:
+            raise Exception("Invalid preset selected!")
 
         # Debug
         if cfg.DEBUG:
@@ -36,33 +39,12 @@ async def technical_command(
             raise Exception("ascend argument has to be true or false")
 
         # Output Data
-        preset_error = True
         df_screen = get_screener_data(
             preset,
-            "overview",
+            "technical",
             limit,
             ascend,
         )
-        preset_error = False
-
-        d_cols_to_sort = {
-            "technical": [
-                "Ticker",
-                "Beta",
-                "ATR",
-                "SMA20",
-                "SMA50",
-                "SMA200",
-                "52W High",
-                "52W Low",
-                "RSI",
-                "Price",
-                "Change",
-                "from Open",
-                "Gap",
-                "Volume",
-            ],
-        }
 
         description = ""
 
@@ -73,7 +55,7 @@ async def technical_command(
             df_screen = df_screen.dropna(axis="columns", how="all")
 
             if sort:
-                if " ".join(sort) in d_cols_to_sort["technical"]:
+                if " ".join(sort) in so.d_cols_to_sort["technical"]:
                     df_screen = df_screen.sort_values(
                         by=[" ".join(sort)],
                         ascending=ascend,
@@ -82,7 +64,7 @@ async def technical_command(
                 else:
                     similar_cmd = difflib.get_close_matches(
                         " ".join(sort),
-                        d_cols_to_sort["technical"],
+                        so.d_cols_to_sort["technical"],
                         n=1,
                         cutoff=0.7,
                     )
@@ -95,7 +77,7 @@ async def technical_command(
                         )
                     else:
                         raise ValueError(
-                            f"Wrong sort column provided! Provide one of these: {', '.join(d_cols_to_sort['technical'])}"
+                            f"Wrong sort column provided! Provide one of these: {', '.join(so.d_cols_to_sort['technical'])}"
                         )
 
             df_screen = df_screen.fillna("")
@@ -137,19 +119,11 @@ async def technical_command(
             await pagination(columns, ctx)
 
     except Exception as e:
-        if not preset_error:
-            embed = discord.Embed(
-                title="ERROR Stocks: [Finviz] Technical Screener",
-                colour=cfg.COLOR,
-                description=e,
-            )
-        else:
-            embed = discord.Embed(
-                title="ERROR Stocks: [Finviz] Technical Screener",
-                colour=cfg.COLOR,
-                description=f"Wrong preset parameter entered. Use the command '{cfg.COMMAND_PREFIX}stocks.scr.presets' "
-                "in order to see the available presets.",
-            )
+        embed = discord.Embed(
+            title="ERROR Stocks: [Finviz] Technical Screener",
+            colour=cfg.COLOR,
+            description=e,
+        )
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
