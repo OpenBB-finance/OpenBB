@@ -8,6 +8,11 @@ class GenericCommands(discord.ext.commands.Cog):
     def __init__(self, bot: discord.ext.commands.Bot):
         self.bot = bot
 
+        bot.help_command.cog = self
+
+    def cog_unload(self):
+        self.bot.help_command = None
+
     @discord.ext.commands.command(name="about")
     async def about(self, ctx: discord.ext.commands.Context):
         """About Gamestonk Terminal"""
@@ -49,31 +54,6 @@ class GenericCommands(discord.ext.commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @discord.ext.commands.command(name="help")
-    async def help(self, ctx: discord.ext.commands.Context):
-        help_message = """
-```
-Commands:
-
-Economy Menu:
-  !economy    - Economy Info
-
-Stocks Menu:
-  !stocks.dps - Dark Pool Shorts
-  !stocks.gov - Government
-  !stocks.opt - Options
-  !stocks.scr - Screeners
-  !stocks.dd  - Due Diligence
-  !stocks.ta  - Technical Analysis
-
-Generic:
-  !about      - About us
-  !usage      - Usage instructions
-  !help       - Print this message
-```
-        """
-        await ctx.send(help_message)
-
     @discord.ext.commands.command(name="usage")
     async def usage(self, ctx: discord.ext.commands.Context):
         usage_instructions_message = """
@@ -88,10 +68,13 @@ Generic:
   or
   !stocks.ta.recom tsla
 
-- Every menu has it's own help command that can be called
-  by adding .help to the menu name. For example:
+- Help is available for all menus and functions.
 
-  !stocks.help
+  Call help for individual menus like this:
+  !help DarkPoolShortsCommands
+
+  Call help for individual commands like this:
+  !help stocks.dps
 
 - Call the help command to see the list of available menus:
 

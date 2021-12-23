@@ -20,24 +20,14 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
 
     def __init__(self, bot: discord.ext.commands.Bot):
         self.bot = bot
+        self.bot.help_command.cog = self
+
+    def cog_unload(self):
+        self.bot.help_command = None
 
     @discord.ext.commands.command(
-        name="stocks.dps.help", brief="Print all commands of the menu"
-    )
-    async def dps_help(self, ctx: discord.ext.commands.Context):
-        menu_command_list = [
-            command
-            for command in self.bot.commands
-            if command.name.startswith("stocks.dps.")
-        ]
-        helptext = "```"
-        for command in menu_command_list:
-            helptext = f"!{command.name}\n{command.brief}\n\n"
-        helptext += "```"
-        await ctx.send(helptext)
-
-    @discord.ext.commands.command(
-        name="stocks.dps.shorted", brief="Show most shorted stocks [Yahoo Finance]"
+        name="stocks.dps.shorted",
+        usage="[num]",
     )
     async def shorted(self, ctx: discord.ext.commands.Context, num="10"):
         """Show most shorted stocks [Yahoo Finance]
@@ -51,7 +41,7 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
 
     @discord.ext.commands.command(
         name="stocks.dps.hsi",
-        brief="Show top high short interest stocks of over 20% ratio [shortinterest.com]",
+        usage="[num]",
     )
     async def hsi(self, ctx: discord.ext.commands.Context, num="10"):
         """Show top high short interest stocks of over 20% ratio [shortinterest.com]
@@ -64,7 +54,8 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         await hsi_command(ctx, num)
 
     @discord.ext.commands.command(
-        name="stocks.dps.pos", brief="Dark pool short position [Stockgrid]"
+        name="stocks.dps.pos",
+        usage="[sort] [num]",
     )
     async def pos(self, ctx: discord.ext.commands.Context, sort="dpp_dollar", num="10"):
         """Dark pool short position [Stockgrid]
@@ -72,7 +63,8 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         sort: str
-            Field for which to sort. Possible are: sv, sv_pct, nsv, nsv_dollar, dpp, dpp_dollar.
+            Field for which to sort. Possible are: `sv`, `sv_pct`, `nsv`, `nsv_dollar`,
+            `dpp` and `dpp_dollar`.
             These correspond to Short Vol. (1M), Short Vol. %%, Net Short Vol. (1M),
             Net Short Vol. ($100M), DP Position (1M), DP Position ($1B), respectively.
         num: int
@@ -81,7 +73,8 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         await pos_command(ctx, sort, num)
 
     @discord.ext.commands.command(
-        name="stocks.dps.sidtc", brief="Short interest and days to cover [Stockgrid]"
+        name="stocks.dps.sidtc",
+        usage="[sort] [num]",
     )
     async def sidtc(self, ctx: discord.ext.commands.Context, sort="float", num="10"):
         """Short interest and days to cover [Stockgrid]
@@ -89,7 +82,7 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         sort: str
-            Field for which to sort. Possible are: float, dtc, si.
+            Field for which to sort. Possible are: `float`, `dtc`, `si`.
             These correspond to Float Short %%, Days to Cover, Short Interest, respectively.
         num: int
             Number of top tickers to show
@@ -97,7 +90,8 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         await sidtc_command(ctx, sort, num)
 
     @discord.ext.commands.command(
-        name="stocks.dps.ftd", brief="Fails-to-deliver data [SEC]"
+        name="stocks.dps.ftd",
+        usage="[ticker] [start] [end]",
     )
     async def ftd(self, ctx: discord.ext.commands.Context, ticker="", start="", end=""):
         """Fails-to-deliver data [SEC]
@@ -107,14 +101,15 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         ticker: str
             Stock ticker
         start: datetime
-            Start of date
+            Starting date
         end: datetime
-            End of date
+            Ending date
         """
         await ftd_command(ctx, ticker, start, end)
 
     @discord.ext.commands.command(
-        name="stocks.dps.dpotc", brief="Dark pools (ATS) vs OTC data [FINRA]"
+        name="stocks.dps.dpotc",
+        usage=["ticker"],
     )
     async def dpotc(self, ctx: discord.ext.commands.Context, ticker=""):
         """Dark pools (ATS) vs OTC data [FINRA]
@@ -127,7 +122,8 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         await dpotc_command(ctx, ticker)
 
     @discord.ext.commands.command(
-        name="stocks.dps.spos", brief="Net short vs position [Stockgrid]"
+        name="stocks.dps.spos",
+        usage="[ticker]",
     )
     async def spos(self, ctx: discord.ext.commands.Context, ticker=""):
         """Net short vs position [Stockgrid]
@@ -140,7 +136,8 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         await spos_command(ctx, ticker)
 
     @discord.ext.commands.command(
-        name="stocks.dps.psi", brief="Price vs short interest volume [Stockgrid]"
+        name="stocks.dps.psi",
+        usage="[ticker]",
     )
     async def psi(self, ctx: discord.ext.commands.Context, ticker=""):
         """Price vs short interest volume [Stockgrid]
@@ -152,10 +149,15 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         """
         await psi_command(ctx, ticker)
 
-    @discord.ext.commands.command(name="stocks.dps")
+    @discord.ext.commands.command(
+        name="stocks.dps",
+        usage="[ticker]",
+    )
     # pylint: disable=too-many-branches
     async def dark_pool_shorts_menu(self, ctx: discord.ext.commands.Context, ticker=""):
         """Stocks Context - Shows Dark Pool Shorts Menu
+
+        Run `!help DarkPoolShortsCommands` to see the list of available commands.
 
         Returns
         -------
