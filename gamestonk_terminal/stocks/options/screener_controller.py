@@ -150,6 +150,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_help(self, _):
         """Process help command"""
@@ -166,10 +167,11 @@ Last screened tickers: {', '.join(self.screen_tickers)}
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        self.queue.insert(0, "scr")
+        self.queue.insert(0, "screen")
         self.queue.insert(0, "options")
         self.queue.insert(0, "stocks")
         self.queue.insert(0, "reset")
@@ -254,7 +256,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
             action="store",
             dest="preset",
             type=str,
-            default="template",
+            default=self.preset,
             help="Filter presets",
             choices=self.preset_choices,
         )
