@@ -40,15 +40,12 @@ async def zlma_command(ctx, ticker="", window="", offset="", start="", end=""):
         if window == "":
             window = [20]
         else:
-            window_temp = []
-            i = 0
-            b = 0
-            while i < len(window):
-                if window[i] == ",":
-                    window_temp.append(float(window[b:i]))
-                    l_legend.append(float(window[b:i]))
-                    b = i
-                i += 1
+            window_temp = list()
+            for wind in window.split(","):
+                try:
+                    window_temp.append(float(wind))
+                except Exception as e:
+                    raise Exception("Window needs to be a float")
             window = window_temp
 
         if offset == "":
