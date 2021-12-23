@@ -73,7 +73,7 @@ async def financial_command(ctx, preset="template", sort="", limit="5", ascend="
                         )
                     else:
                         raise ValueError(
-                            f"Wrong sort column provided! Provide one of these: {', '.join(so.d_cols_to_sort['financial'])}"
+                            f"Wrong sort column provided! Select from: {', '.join(so.d_cols_to_sort['financial'])}"
                         )
 
             df_screen = df_screen.fillna("")

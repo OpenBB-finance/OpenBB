@@ -74,7 +74,7 @@ async def overview_command(ctx, preset="template", sort="", limit="5", ascend="F
                         )
                     else:
                         raise ValueError(
-                            f"Wrong sort column provided! Provide one of these: {', '.join(so.d_cols_to_sort['overview'])}"
+                            f"Wrong sort column provided! Select from: {', '.join(so.d_cols_to_sort['overview'])}"
                         )
 
             df_screen = df_screen.fillna("")

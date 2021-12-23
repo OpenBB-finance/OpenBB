@@ -74,7 +74,7 @@ async def technical_command(ctx, preset="template", sort="", limit="5", ascend="
                         )
                     else:
                         raise ValueError(
-                            f"Wrong sort column provided! Provide one of these: {', '.join(so.d_cols_to_sort['technical'])}"
+                            f"Wrong sort column provided! Select from: {', '.join(so.d_cols_to_sort['technical'])}"
                         )
 
             df_screen = df_screen.fillna("")
