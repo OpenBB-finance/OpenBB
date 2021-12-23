@@ -186,8 +186,8 @@ Expiry: {self.selected_date or None}
     plot          plot variables provided by the user [Yfinance]
     parity        shows whether options are above or below expected price [Yfinance]
     binom         shows the value of an option using binomial options pricing [Yfinance]
-
->   screen        screens tickers based on preset [Syncretism.io]
+{Style.RESET_ALL if not colored else ''}
+>   screen        screens tickers based on preset [Syncretism.io]{"" if colored else Style.DIM}
 >   payoff        shows payoff diagram for a selection of options [Yfinance]
 >   pricing       shows options pricing and risk neutral valuation [Yfinance]
 {Style.RESET_ALL if not colored else ''}"""
