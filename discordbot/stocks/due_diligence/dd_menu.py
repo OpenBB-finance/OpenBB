@@ -19,7 +19,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
     def __init__(self, bot: discord.ext.commands.Bot):
         self.bot = bot
 
-    @discord.ext.commands.command(name="stocks.dd.analyst")
+    @discord.ext.commands.command(name="stocks.dd.analyst", usage="[ticker]")
     async def analyst(self, ctx: discord.ext.commands.Context, ticker=""):
         """Displays analyst recommendations [Finviz]
 
@@ -30,7 +30,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         """
         await analyst_command(ctx, ticker)
 
-    @discord.ext.commands.command(name="stocks.dd.pt")
+    @discord.ext.commands.command(name="stocks.dd.pt", usage="[ticker] [raw] [start]")
     async def pt(self, ctx: discord.ext.commands.Context, ticker="", raw="", start=""):
         """Displays chart with price targets [Business Insiders]
 
@@ -45,7 +45,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         """
         await pt_command(ctx, ticker, raw, start)
 
-    @discord.ext.commands.command(name="stocks.dd.est")
+    @discord.ext.commands.command(name="stocks.dd.est", usage="[ticker]")
     async def est(self, ctx: discord.ext.commands.Context, ticker=""):
         """Displays earning estimates [Business Insider]
 
@@ -56,7 +56,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         """
         await est_command(ctx, ticker)
 
-    @discord.ext.commands.command(name="stocks.dd.sec")
+    @discord.ext.commands.command(name="stocks.dd.sec", usage="[ticker]")
     async def sec(self, ctx: discord.ext.commands.Context, ticker=""):
         """Displays sec filings [Market Watch]
 
@@ -67,7 +67,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         """
         await sec_command(ctx, ticker)
 
-    @discord.ext.commands.command(name="stocks.dd.supplier")
+    @discord.ext.commands.command(name="stocks.dd.supplier", usage="[ticker]")
     async def supplier(self, ctx: discord.ext.commands.Context, ticker=""):
         """Displays suppliers of the company [CSIMarket]
 
@@ -78,7 +78,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         """
         await supplier_command(ctx, ticker)
 
-    @discord.ext.commands.command(name="stocks.dd.customer")
+    @discord.ext.commands.command(name="stocks.dd.customer", usage="[ticker]")
     async def customer(self, ctx: discord.ext.commands.Context, ticker=""):
         """Displays customers of the company [CSIMarket]
 
@@ -89,7 +89,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         """
         await customer_command(ctx, ticker)
 
-    @discord.ext.commands.command(name="stocks.dd.arktrades")
+    @discord.ext.commands.command(name="stocks.dd.arktrades", usage="[ticker] [num]")
     async def arktrades(self, ctx: discord.ext.commands.Context, ticker="", num=""):
         """Displays trades made by ark [cathiesark.com]
 
@@ -103,8 +103,10 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         await arktrades_command(ctx, ticker, num)
 
     @discord.ext.commands.command(name="stocks.dd")
-    async def economy(self, ctx: discord.ext.commands.Context, ticker=""):
-        """Economy Context Menu
+    async def due_diligence(self, ctx: discord.ext.commands.Context, ticker=""):
+        """Due Diligence Context Menu
+
+        Run `!help DueDiligenceCommands` to see the list of available commands.
 
         Returns
         -------

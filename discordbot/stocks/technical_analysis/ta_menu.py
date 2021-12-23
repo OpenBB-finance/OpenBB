@@ -39,7 +39,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
     def __init__(self, bot: discord.ext.commands.Bot):
         self.bot = bot
 
-    @discord.ext.commands.command(name="stocks.ta.ema")
+    @discord.ext.commands.command(
+        name="stocks.ta.ema", usage="[ticker] [window] [offset] [start] [end]"
+    )
     async def ema(
         self,
         ctx: discord.ext.commands.Context,
@@ -67,7 +69,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await ema_command(ctx, ticker, window, offset, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.sma")
+    @discord.ext.commands.command(
+        name="stocks.ta.sma", usage="[ticker] [window] [offset] [start] [end]"
+    )
     async def sma(
         self,
         ctx: discord.ext.commands.Context,
@@ -95,7 +99,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await sma_command(ctx, ticker, window, offset, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.wma")
+    @discord.ext.commands.command(
+        name="stocks.ta.wma", usage="[ticker] [window] [offset] [start] [end]"
+    )
     async def wma(
         self,
         ctx: discord.ext.commands.Context,
@@ -123,7 +129,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await wma_command(ctx, ticker, window, offset, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.hma")
+    @discord.ext.commands.command(
+        name="stocks.ta.hma", usage="[ticker] [window] [offset] [start] [end]"
+    )
     async def hma(
         self,
         ctx: discord.ext.commands.Context,
@@ -151,7 +159,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await hma_command(ctx, ticker, window, offset, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.zlma")
+    @discord.ext.commands.command(
+        name="stocks.ta.zlma", usage="[ticker] [window] [offset] [start] [end]"
+    )
     async def zlma(
         self,
         ctx: discord.ext.commands.Context,
@@ -179,7 +189,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await zlma_command(ctx, ticker, window, offset, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.cci")
+    @discord.ext.commands.command(
+        name="stocks.ta.cci", usage="[ticker] [length] [scalar] [start] [end]"
+    )
     async def cci(
         self,
         ctx: discord.ext.commands.Context,
@@ -207,7 +219,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await cci_command(ctx, ticker, length, scalar, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.macd")
+    @discord.ext.commands.command(
+        name="stocks.ta.macd", usage="[ticker] [fast] [slow] [signal] [start] [end]"
+    )
     async def macd(
         self,
         ctx: discord.ext.commands.Context,
@@ -238,7 +252,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await macd_command(ctx, ticker, fast, slow, signal, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.rsi")
+    @discord.ext.commands.command(
+        name="stocks.ta.rsi", usage="[ticker] [length] [scalar] [drift] [start] [end]"
+    )
     async def rsi(
         self,
         ctx: discord.ext.commands.Context,
@@ -269,7 +285,10 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await rsi_command(ctx, ticker, length, scalar, drift, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.stoch")
+    @discord.ext.commands.command(
+        name="stocks.ta.stoch",
+        usage="[ticker] [fast_k] [slow_d] [slow_k] [start] [end]",
+    )
     async def stoch(
         self,
         ctx: discord.ext.commands.Context,
@@ -300,7 +319,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await stoch_command(ctx, ticker, fast_k, slow_d, slow_k, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.fisher")
+    @discord.ext.commands.command(
+        name="stocks.ta.fisher", usage="[ticker] [length] [start] [end]"
+    )
     async def fisher(
         self,
         ctx: discord.ext.commands.Context,
@@ -325,7 +346,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await fisher_command(ctx, ticker, length, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.cg")
+    @discord.ext.commands.command(
+        name="stocks.ta.cg", usage="[ticker] [length] [start] [end]"
+    )
     async def cg(
         self,
         ctx: discord.ext.commands.Context,
@@ -350,7 +373,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await cg_command(ctx, ticker, length, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.adx")
+    @discord.ext.commands.command(
+        name="stocks.ta.adx", usage="[ticker] [length] [scalar] [drift] [start] [end]"
+    )
     async def adx(
         self,
         ctx: discord.ext.commands.Context,
@@ -381,7 +406,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await adx_command(ctx, ticker, length, scalar, drift, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.aroon")
+    @discord.ext.commands.command(
+        name="stocks.ta.aroon", usage="[ticker] [length] [scalar] [start] [end]"
+    )
     async def aroon(
         self,
         ctx: discord.ext.commands.Context,
@@ -409,7 +436,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await aroon_command(ctx, ticker, length, scalar, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.bbands")
+    @discord.ext.commands.command(
+        name="stocks.ta.bbands", usage="[ticker] [length] [std] [ma_mode] [start] [end]"
+    )
     async def bbands(
         self,
         ctx: discord.ext.commands.Context,
@@ -440,7 +469,10 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await bbands_command(ctx, ticker, length, std, ma_mode, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.donchian")
+    @discord.ext.commands.command(
+        name="stocks.ta.donchian",
+        usage="[ticker] [upper_length] [lower_length] [start] [end]",
+    )
     async def donchian(
         self,
         ctx: discord.ext.commands.Context,
@@ -469,7 +501,10 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         await donchian_command(ctx, ticker, upper_length, lower_length, start, end)
 
     # pylint: disable=too-many-arguments
-    @discord.ext.commands.command(name="stocks.ta.kc")
+    @discord.ext.commands.command(
+        name="stocks.ta.kc",
+        usage="[ticker] [length] [scalar] [ma_mode] [offset] [start] [end]",
+    )
     async def kc(
         self,
         ctx: discord.ext.commands.Context,
@@ -503,7 +538,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await kc_command(ctx, ticker, length, scalar, ma_mode, offset, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.ad")
+    @discord.ext.commands.command(
+        name="stocks.ta.ad", usage="[ticker] [is_open] [start] [end]"
+    )
     async def ad(
         self,
         ctx: discord.ext.commands.Context,
@@ -528,7 +565,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await ad_command(ctx, ticker, is_open, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.adosc")
+    @discord.ext.commands.command(
+        name="stocks.ta.adosc", usage="[ticker] [is_open] [fast] [slow] [start] [end]"
+    )
     async def adosc(
         self,
         ctx: discord.ext.commands.Context,
@@ -559,7 +598,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await adosc_command(ctx, ticker, is_open, fast, slow, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.obv")
+    @discord.ext.commands.command(name="stocks.ta.obv", usage="[ticker] [start] [end]")
     async def obv(self, ctx: discord.ext.commands.Context, ticker="", start="", end=""):
         """Displays chart with on balance volume [Yahoo Finance]
 
@@ -575,7 +614,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await obv_command(ctx, ticker, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.fib")
+    @discord.ext.commands.command(name="stocks.ta.fib", usage="[ticker] [start] [end]")
     async def fib(self, ctx: discord.ext.commands.Context, ticker="", start="", end=""):
         """Displays chart with fibonacci retracement [Yahoo Finance]
 
@@ -603,7 +642,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await view_command(ctx, ticker)
 
-    @discord.ext.commands.command(name="stocks.ta.summary")
+    @discord.ext.commands.command(name="stocks.ta.summary", usage="[ticker]")
     async def summary(self, ctx: discord.ext.commands.Context, ticker=""):
         """Displays text of a given stocks ta summary [FinBrain API]
 
@@ -615,7 +654,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
 
         await summary_command(ctx, ticker)
 
-    @discord.ext.commands.command(name="stocks.ta.recom")
+    @discord.ext.commands.command(name="stocks.ta.recom", usage="[ticker]")
     async def recom(self, ctx: discord.ext.commands.Context, ticker=""):
         """Displays text of a given stocks recommendation based on ta [Tradingview API]
 
@@ -631,6 +670,8 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
     @discord.ext.commands.command(name="stocks.ta")
     async def ta(self, ctx: discord.ext.commands.Context, ticker=""):
         """Stocks Context - Shows Technical Analysis Menu
+
+        Run `!help TechnicalAnalysisCommands` to see the list of available commands.
 
         Returns
         -------
