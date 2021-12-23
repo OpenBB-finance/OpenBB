@@ -1,10 +1,9 @@
 import discord
 import pandas as pd
 
+from gamestonk_terminal.stocks.government import quiverquant_model
 import discordbot.config_discordbot as cfg
 from discordbot.helpers import pagination
-
-from gamestonk_terminal.stocks.government import quiverquant_model
 
 
 async def lastcontracts_command(ctx, past_transactions_days="", num=""):
