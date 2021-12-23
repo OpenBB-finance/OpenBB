@@ -11,6 +11,7 @@ from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
 
 # pylint: disable=E1101
 # pylint: disable=W0603
+# pylint: disable=E1111
 
 pytest.skip(allow_module_level=True)
 

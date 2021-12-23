@@ -121,56 +121,45 @@ nftcalendar.io:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
 
-        return self.queue
-
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "nft")
-            self.queue.insert(0, "crypto")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "reset", "crypto", "nft"]
+        self.queue.insert(0, "nft")
+        self.queue.insert(0, "crypto")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_today(self, other_args: List[str]):
@@ -197,7 +186,6 @@ nftcalendar.io:
                 num=ns_parser.limit,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_upcoming(self, other_args: List[str]):
@@ -224,7 +212,6 @@ nftcalendar.io:
                 num=ns_parser.limit,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_ongoing(self, other_args: List[str]):
@@ -251,7 +238,6 @@ nftcalendar.io:
                 num=ns_parser.limit,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_newest(self, other_args: List[str]):
@@ -278,7 +264,6 @@ nftcalendar.io:
                 num=ns_parser.limit,
                 export=ns_parser.export,
             )
-        return self.queue
 
 
 def menu(queue: List[str] = None):

@@ -131,56 +131,45 @@ class DefiController:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
 
-        return self.queue
-
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "defi")
-            self.queue.insert(0, "crypto")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "reset", "crypto", "defi"]
+        self.queue.insert(0, "defi")
+        self.queue.insert(0, "crypto")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_dpi(self, other_args: List[str]):
@@ -233,7 +222,6 @@ class DefiController:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_llama(self, other_args: List[str]):
@@ -295,7 +283,6 @@ class DefiController:
                 description=ns_parser.description,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_tvl(self, other_args: List[str]):
@@ -325,7 +312,6 @@ class DefiController:
 
         if ns_parser:
             llama_view.display_defi_tvl(top=ns_parser.limit, export=ns_parser.export)
-        return self.queue
 
     @try_except
     def call_funding(self, other_args: List[str]):
@@ -365,7 +351,6 @@ class DefiController:
             defirate_view.display_funding_rates(
                 top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
             )
-        return self.queue
 
     @try_except
     def call_borrow(self, other_args: List[str]):
@@ -405,7 +390,6 @@ class DefiController:
             defirate_view.display_borrow_rates(
                 top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
             )
-        return self.queue
 
     @try_except
     def call_lending(self, other_args: List[str]):
@@ -445,7 +429,6 @@ class DefiController:
             defirate_view.display_lending_rates(
                 top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
             )
-        return self.queue
 
     @try_except
     def call_newsletter(self, other_args: List[str]):
@@ -477,7 +460,6 @@ class DefiController:
             substack_view.display_newsletters(
                 top=ns_parser.limit, export=ns_parser.export
             )
-        return self.queue
 
     @try_except
     def call_tokens(self, other_args: List[str]):
@@ -538,7 +520,6 @@ class DefiController:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_stats(self, other_args: List[str]):
@@ -559,7 +540,6 @@ class DefiController:
 
         if ns_parser:
             graph_view.display_uni_stats(export=ns_parser.export)
-        return self.queue
 
     @try_except
     def call_pairs(self, other_args: List[str]):
@@ -641,7 +621,6 @@ class DefiController:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_pools(self, other_args: List[str]):
@@ -694,7 +673,6 @@ class DefiController:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_swaps(self, other_args: List[str]):
@@ -747,7 +725,6 @@ class DefiController:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     def print_help(self):
         """Print help"""

@@ -188,51 +188,41 @@ Stocks Menus:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "stocks")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "reset", "stocks"]
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_search(self, other_args: List[str]):
@@ -265,8 +255,6 @@ Stocks Menus:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             stocks_helper.search(query=ns_parser.query, amount=ns_parser.amount)
-
-        return self.queue
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -365,15 +353,11 @@ Stocks Menus:
                     self.start = ns_parser.start
                 self.interval = f"{ns_parser.interval}min"
 
-        return self.queue
-
     def call_quote(self, other_args: List[str]):
         """Process quote command"""
         stocks_helper.quote(
             other_args, self.ticker + "." + self.suffix if self.suffix else self.ticker
         )
-
-        return self.queue
 
     @try_except
     def call_candle(self, other_args: List[str]):
@@ -467,8 +451,6 @@ Stocks Menus:
             else:
                 print("No ticker loaded. First use `load {ticker}`\n")
 
-        return self.queue
-
     @try_except
     def call_news(self, other_args: List[str]):
         """Process news command"""
@@ -536,37 +518,37 @@ Stocks Menus:
                 sources=",".join(sources),
             )
 
-        return self.queue
-
     def call_disc(self, _):
         """Process disc command"""
         from gamestonk_terminal.stocks.discovery import disc_controller
 
-        return disc_controller.menu(self.queue)
+        self.queue = disc_controller.menu(self.queue)
 
     def call_dps(self, _):
         """Process dps command"""
         from gamestonk_terminal.stocks.dark_pool_shorts import dps_controller
 
-        return dps_controller.menu(self.ticker, self.start, self.stock, self.queue)
+        self.queue = dps_controller.menu(
+            self.ticker, self.start, self.stock, self.queue
+        )
 
     def call_scr(self, _):
         """Process scr command"""
         from gamestonk_terminal.stocks.screener import screener_controller
 
-        return screener_controller.menu(self.queue)
+        self.queue = screener_controller.menu(self.queue)
 
     def call_sia(self, _):
         """Process ins command"""
         from gamestonk_terminal.stocks.sector_industry_analysis import sia_controller
 
-        return sia_controller.menu(self.ticker, self.queue)
+        self.queue = sia_controller.menu(self.ticker, self.queue)
 
     def call_ins(self, _):
         """Process ins command"""
         from gamestonk_terminal.stocks.insider import insider_controller
 
-        return insider_controller.menu(
+        self.queue = insider_controller.menu(
             self.ticker,
             self.start,
             self.interval,
@@ -578,20 +560,20 @@ Stocks Menus:
         """Process gov command"""
         from gamestonk_terminal.stocks.government import gov_controller
 
-        return gov_controller.menu(self.ticker, self.queue)
+        self.queue = gov_controller.menu(self.ticker, self.queue)
 
     def call_options(self, _):
         """Process options command"""
         from gamestonk_terminal.stocks.options import options_controller
 
-        return options_controller.menu(self.ticker, self.queue)
+        self.queue = options_controller.menu(self.ticker, self.queue)
 
     def call_res(self, _):
         """Process res command"""
         if self.ticker:
             from gamestonk_terminal.stocks.research import res_controller
 
-            return res_controller.menu(
+            self.queue = res_controller.menu(
                 self.ticker,
                 self.start,
                 self.interval,
@@ -599,66 +581,63 @@ Stocks Menus:
             )
 
         print("Use 'load <ticker>' prior to this command!", "\n")
-        return self.queue
 
     def call_dd(self, _):
         """Process dd command"""
         if self.ticker:
             from gamestonk_terminal.stocks.due_diligence import dd_controller
 
-            return dd_controller.menu(
+            self.queue = dd_controller.menu(
                 self.ticker, self.start, self.interval, self.stock, self.queue
             )
 
         print("Use 'load <ticker>' prior to this command!", "\n")
-        return self.queue
 
     def call_ca(self, _):
         """Process ca command"""
 
         from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 
-        return ca_controller.menu([self.ticker] if self.ticker else "", self.queue)
+        self.queue = ca_controller.menu(
+            [self.ticker] if self.ticker else "", self.queue
+        )
 
     def call_fa(self, _):
         """Process fa command"""
         if self.ticker:
             from gamestonk_terminal.stocks.fundamental_analysis import fa_controller
 
-            return fa_controller.menu(
+            self.queue = fa_controller.menu(
                 self.ticker, self.start, self.interval, self.suffix, self.queue
             )
 
         print("Use 'load <ticker>' prior to this command!", "\n")
-        return self.queue
 
     def call_bt(self, _):
         """Process bt command"""
         if self.ticker:
             from gamestonk_terminal.stocks.backtesting import bt_controller
 
-            return bt_controller.menu(self.ticker, self.stock, self.queue)
+            self.queue = bt_controller.menu(self.ticker, self.stock, self.queue)
 
         print("Use 'load <ticker>' prior to this command!", "\n")
-        return self.queue
 
     def call_ta(self, _):
         """Process ta command"""
         if self.ticker:
             from gamestonk_terminal.stocks.technical_analysis import ta_controller
 
-            return ta_controller.menu(
+            self.queue = ta_controller.menu(
                 self.ticker, self.start, self.interval, self.stock, self.queue
             )
 
         print("Use 'load <ticker>' prior to this command!", "\n")
-        return self.queue
 
     def call_ba(self, _):
         """Process ba command"""
         from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
 
-        return ba_controller.menu(self.ticker, self.start, self.queue)
+        self.queue = ba_controller.menu(self.ticker, self.start, self.queue)
 
     def call_qa(self, _):
         """Process qa command"""
@@ -668,14 +647,13 @@ Stocks Menus:
                     qa_controller,
                 )
 
-                return qa_controller.menu(
+                self.queue = qa_controller.menu(
                     self.ticker, self.start, self.interval, self.stock, self.queue
                 )
             # TODO: This menu should work regardless of data being daily or not!
             print("Load daily data to use this menu!", "\n")
         else:
             print("Use 'load <ticker>' prior to this command!", "\n")
-        return self.queue
 
     @try_except
     def call_pred(self, _):
@@ -688,7 +666,7 @@ Stocks Menus:
                             pred_controller,
                         )
 
-                        return pred_controller.menu(
+                        self.queue = pred_controller.menu(
                             self.ticker,
                             self.start,
                             self.interval,
@@ -701,7 +679,7 @@ Stocks Menus:
                             e,
                             "\n",
                         )
-                        return self.queue
+
                 # TODO: This menu should work regardless of data being daily or not!
                 print("Load daily data to use this menu!", "\n")
             else:
@@ -711,8 +689,6 @@ Stocks Menus:
                 "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
                 "\n",
             )
-
-        return self.queue
 
 
 def menu(ticker: str = "", queue: List[str] = None):

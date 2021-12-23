@@ -148,98 +148,77 @@ Ticker: {self.ticker}
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
 
-        return self.queue
-
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "res")
-            if self.ticker:
-                self.queue.insert(0, f"load {self.ticker}")
-            self.queue.insert(0, "stocks")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-
-        reset_commands = ["quit", "quit", "reset", "stocks"]
+        self.queue.insert(0, "res")
         if self.ticker:
-            reset_commands.append(f"load {self.ticker}")
-        reset_commands.append("res")
-        return reset_commands
+            self.queue.insert(0, f"load {self.ticker}")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_macroaxis(self, _):
         """Process macroaxis command"""
         webbrowser.open(f"https://www.macroaxis.com/invest/market/{self.ticker}")
         print("")
-        return self.queue
 
     @try_except
     def call_yahoo(self, _):
         """Process yahoo command"""
         webbrowser.open(f"https://finance.yahoo.com/quote/{self.ticker}")
         print("")
-        return self.queue
 
     @try_except
     def call_finviz(self, _):
         """Process finviz command"""
         webbrowser.open(f"https://finviz.com/quote.ashx?t={self.ticker}")
         print("")
-        return self.queue
 
     @try_except
     def call_marketwatch(self, _):
         """Process marketwatch command"""
         webbrowser.open(f"https://www.marketwatch.com/investing/stock/{self.ticker}")
         print("")
-        return self.queue
 
     @try_except
     def call_fool(self, _):
         """Process fool command"""
         webbrowser.open(f"https://www.fool.com/quote/{self.ticker}")
         print("")
-        return self.queue
 
     @try_except
     def call_businessinsider(self, _):
@@ -248,7 +227,6 @@ Ticker: {self.ticker}
             f"https://markets.businessinsider.com/stocks/{self.ticker}-stock/"
         )
         print("")
-        return self.queue
 
     @try_except
     def call_fmp(self, _):
@@ -257,7 +235,6 @@ Ticker: {self.ticker}
             f"https://financialmodelingprep.com/financial-summary/{self.ticker}"
         )
         print("")
-        return self.queue
 
     @try_except
     def call_fidelity(self, _):
@@ -266,28 +243,24 @@ Ticker: {self.ticker}
             f"https://eresearch.fidelity.com/eresearch/goto/evaluate/snapshot.jhtml?symbols={self.ticker}"
         )
         print("")
-        return self.queue
 
     @try_except
     def call_tradingview(self, _):
         """Process tradingview command"""
         webbrowser.open(f"https://www.tradingview.com/symbols/{self.ticker}")
         print("")
-        return self.queue
 
     @try_except
     def call_marketchameleon(self, _):
         """Process marketchameleon command"""
         webbrowser.open(f"https://marketchameleon.com/Overview/{self.ticker}")
         print("")
-        return self.queue
 
     @try_except
     def call_stockrow(self, _):
         """Process stockrow command"""
         webbrowser.open(f"https://stockrow.com/{self.ticker}")
         print("")
-        return self.queue
 
     @try_except
     def call_barchart(self, _):
@@ -296,28 +269,24 @@ Ticker: {self.ticker}
             f"https://www.barchart.com/stocks/quotes/{self.ticker}/overview"
         )
         print("")
-        return self.queue
 
     @try_except
     def call_grufity(self, _):
         """Process grufity command"""
         webbrowser.open(f"https://grufity.com/stock/{self.ticker}")
         print("")
-        return self.queue
 
     @try_except
     def call_fintel(self, _):
         """Process fintel command"""
         webbrowser.open(f"https://fintel.io/s/us/{self.ticker}")
         print("")
-        return self.queue
 
     @try_except
     def call_zacks(self, _):
         """Process zacks command"""
         webbrowser.open(f"https://www.zacks.com/stock/quote/{self.ticker}")
         print("")
-        return self.queue
 
     @try_except
     def call_macrotrends(self, _):
@@ -326,21 +295,18 @@ Ticker: {self.ticker}
             f"https://www.macrotrends.net/stocks/charts/{self.ticker}/{self.ticker}/market-cap"
         )
         print("")
-        return self.queue
 
     @try_except
     def call_newsfilter(self, _):
         """Process newsfilter command"""
         webbrowser.open(f"https://newsfilter.io/search?query={self.ticker}")
         print("")
-        return self.queue
 
     @try_except
     def call_stockanalysis(self, _):
         """Process stockanalysis command"""
         webbrowser.open(f"https://stockanalysis.com/stocks/{self.ticker}/")
         print("")
-        return self.queue
 
 
 def menu(ticker: str, start: datetime, interval: str, queue: List[str] = None):

@@ -159,71 +159,53 @@ Underlying Asset: {text}
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "payoff")
-            if self.expiration:
-                self.queue.insert(0, f"exp {self.expiration}")
-            if self.ticker:
-                self.queue.insert(0, f"load {self.ticker}")
-            self.queue.insert(0, "options")
-            self.queue.insert(0, "stocks")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-
-        reset_commands = ["quit", "quit", "quit", "reset", "stocks", "options"]
-        if self.ticker:
-            reset_commands.append(f"load {self.ticker}")
+        self.queue.insert(0, "payoff")
         if self.expiration:
-            reset_commands.append(f"exp -d {self.expiration}")
-        reset_commands.append("payoff")
-
-        return reset_commands
+            self.queue.insert(0, f"exp {self.expiration}")
+        if self.ticker:
+            self.queue.insert(0, f"load {self.ticker}")
+        self.queue.insert(0, "options")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_list(self, other_args):
@@ -242,8 +224,6 @@ Underlying Asset: {text}
                 put = self.puts[i][0] if i < len(self.puts) else ""
                 print(f"{i}\t{call}\t{put}")
             print("")
-
-        return self.queue
 
     @try_except
     def call_add(self, other_args: List[str]):
@@ -309,8 +289,6 @@ Underlying Asset: {text}
             else:
                 print("Please use a valid index\n")
 
-        return self.queue
-
     @try_except
     def call_rmv(self, other_args: List[str]):
         """Process rmv command"""
@@ -357,8 +335,6 @@ Underlying Asset: {text}
         else:
             print("No options have been selected, removing them is not possible\n")
 
-        return self.queue
-
     def call_pick(self, other_args: List[str]):
         """Process pick command"""
         parser = argparse.ArgumentParser(
@@ -388,7 +364,6 @@ Underlying Asset: {text}
                 self.underlying = -1
 
         print("")
-        return self.queue
 
     @try_except
     def call_sop(self, other_args):
@@ -406,8 +381,6 @@ Underlying Asset: {text}
                 sign = "Long" if o["sign"] == 1 else "Short"
                 print(f"{i}\t{o['type']}\t{sign}\t{o['strike']}\t{o['cost']}")
             print("")
-
-        return self.queue
 
     @try_except
     def call_plot(self, other_args):
@@ -427,8 +400,6 @@ Underlying Asset: {text}
                 self.ticker,
                 self.expiration,
             )
-
-        return self.queue
 
 
 def menu(ticker: str, expiration: str, queue: List[str] = None):
