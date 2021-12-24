@@ -6,7 +6,7 @@ from gamestonk_terminal.stocks.options import barchart_model
 
 
 
-async def iv_command(ctx, ticker=""):
+async def iv_command(ctx, ticker: str= None):
  async with ctx.typing():
     await asyncio.sleep(0.2)
     """Options IV"""
@@ -18,7 +18,7 @@ async def iv_command(ctx, ticker=""):
             print(f"!iv {ticker}")
 
         # Check for argument
-        if ticker == "":
+        if ticker is None:
             raise Exception("Stock ticker is required")
         
 
