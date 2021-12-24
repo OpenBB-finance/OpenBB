@@ -3,14 +3,18 @@ import discord
 
 from discordbot.run_discordbot import gst_bot
 import discordbot.config_discordbot as cfg
+from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 
 from discordbot.stocks.options.vol import vol_command
 from discordbot.stocks.options.hist import hist_command
 from discordbot.stocks.options.oi import oi_command
-from gamestonk_terminal.stocks.options import tradier_model
+from gamestonk_terminal.stocks.options import tradier_model, yfinance_model
 
 async def  expiry_dates_reaction(ctx, ticker, call_arg:tuple, expiry, func_cmd):
-    dates = tradier_model.option_expirations(ticker)
+    if TRADIER_TOKEN == "REPLACE_ME":
+        dates = yfinance_model.option_expirations(ticker)
+    else:
+        dates = tradier_model.option_expirations(ticker)
 
     if expiry == "0":
         expiry = dates[0]
