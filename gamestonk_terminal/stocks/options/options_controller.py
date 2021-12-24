@@ -268,7 +268,7 @@ Expiry: {self.selected_date or None}
     def call_reset(self, _):
         """Process reset command"""
         if self.selected_date:
-            self.queue.insert(0, f"exp {self.selected_date}")
+            self.queue.insert(0, f"exp -d {self.selected_date}")
         if self.ticker:
             self.queue.insert(0, f"load {self.ticker}")
         self.queue.insert(0, "options")
@@ -546,11 +546,11 @@ Expiry: {self.selected_date or None}
                     if (
                         ns_parser.put
                         and self.chain
-                        and ns_parser.strike in self.chain.puts["strike"]
+                        and ns_parser.strike in self.chain.puts["strike"].values
                     ) or (
                         not ns_parser.put
                         and self.chain
-                        and ns_parser.strike in self.chain.calls["strike"]
+                        and ns_parser.strike in self.chain.calls["strike"].values
                     ):
                         syncretism_view.view_historical_greeks(
                             ticker=self.ticker,

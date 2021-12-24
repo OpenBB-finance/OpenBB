@@ -126,6 +126,8 @@ class EconomyCommands(discord.ext.commands.Cog):
     async def economy(self, ctx: discord.ext.commands.Context):
         """Economy Context Menu
 
+        Run `!help EconomyCommands` to see the list of available commands.
+
         Returns
         -------
         Sends a message to the discord user with the commands from the economy context.
@@ -359,15 +361,16 @@ class EconomyCommands(discord.ext.commands.Cog):
                     ]
                 ]
                 await main_message.edit(components=components)
-                embed = discord.Embed(
-                    description="Error timeout - you snooze you lose! 😋",
-                    colour=cfg.COLOR,
-                    title="TIMEOUT Economy Menu",
-                ).set_author(
-                    name=cfg.AUTHOR_NAME,
-                    icon_url=cfg.AUTHOR_ICON_URL,
-                )
-                await ctx.send(embed=embed)
+                if cfg.DEBUG:
+                    embed = discord.Embed(
+                        description="Error timeout - you snooze you lose! 😋",
+                        colour=cfg.COLOR,
+                        title="TIMEOUT Economy Menu",
+                    ).set_author(
+                        name=cfg.AUTHOR_NAME,
+                        icon_url=cfg.AUTHOR_ICON_URL,
+                    )
+                    await ctx.send(embed=embed)
 
                 for emoji in emoji_list:
                     await main_message.remove_reaction(emoji, ctx.bot.user)

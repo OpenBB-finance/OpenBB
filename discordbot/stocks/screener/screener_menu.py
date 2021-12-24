@@ -36,7 +36,9 @@ class ScreenerCommands(discord.ext.commands.Cog):
         """Displays every available preset"""
         await presets_custom_command(ctx)
 
-    @discord.ext.commands.command(name="stocks.scr.historical")
+    @discord.ext.commands.command(
+        name="stocks.scr.historical", usage="[signal] [start]"
+    )
     async def historical(
         self,
         ctx: discord.ext.commands.Context,
@@ -50,11 +52,13 @@ class ScreenerCommands(discord.ext.commands.Cog):
         signal: str
             Signal. Default: most_volatile
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         """
         await historical_command(ctx, signal, start)
 
-    @discord.ext.commands.command(name="stocks.scr.overview")
+    @discord.ext.commands.command(
+        name="stocks.scr.overview", usage="[preset] [sort] [limit] [ascend]"
+    )
     async def overview(
         self,
         ctx: discord.ext.commands.Context,
@@ -78,7 +82,9 @@ class ScreenerCommands(discord.ext.commands.Cog):
         """
         await overview_command(ctx, preset, sort, limit, ascend)
 
-    @discord.ext.commands.command(name="stocks.scr.valuation")
+    @discord.ext.commands.command(
+        name="stocks.scr.valuation", usage="[preset] [sort] [limit] [ascend]"
+    )
     async def valuation(
         self,
         ctx: discord.ext.commands.Context,
@@ -102,7 +108,9 @@ class ScreenerCommands(discord.ext.commands.Cog):
         """
         await valuation_command(ctx, preset, sort, limit, ascend)
 
-    @discord.ext.commands.command(name="stocks.scr.financial")
+    @discord.ext.commands.command(
+        name="stocks.scr.financial", usage="[preset] [sort] [limit] [ascend]"
+    )
     async def financial(
         self,
         ctx: discord.ext.commands.Context,
@@ -126,7 +134,9 @@ class ScreenerCommands(discord.ext.commands.Cog):
         """
         await financial_command(ctx, preset, sort, limit, ascend)
 
-    @discord.ext.commands.command(name="stocks.scr.ownership")
+    @discord.ext.commands.command(
+        name="stocks.scr.ownership", usage="[preset] [sort] [limit] [ascend]"
+    )
     async def ownership(
         self,
         ctx: discord.ext.commands.Context,
@@ -150,7 +160,9 @@ class ScreenerCommands(discord.ext.commands.Cog):
         """
         await ownership_command(ctx, preset, sort, limit, ascend)
 
-    @discord.ext.commands.command(name="stocks.scr.performance")
+    @discord.ext.commands.command(
+        name="stocks.scr.performance", usage="[preset] [sort] [limit] [ascend]"
+    )
     async def performance(
         self,
         ctx: discord.ext.commands.Context,
@@ -174,7 +186,9 @@ class ScreenerCommands(discord.ext.commands.Cog):
         """
         await performance_command(ctx, preset, sort, limit, ascend)
 
-    @discord.ext.commands.command(name="stocks.scr.technical")
+    @discord.ext.commands.command(
+        name="stocks.scr.technical", usage="[preset] [sort] [limit] [ascend]"
+    )
     async def technical(
         self,
         ctx: discord.ext.commands.Context,
@@ -201,6 +215,8 @@ class ScreenerCommands(discord.ext.commands.Cog):
     @discord.ext.commands.command(name="stocks.scr")
     async def scr(self, ctx: discord.ext.commands.Context, preset=""):
         """Screener Context Menu
+
+        Run `!help ScreenerCommands` to see the list of available commands.
 
         Returns
         -------
@@ -302,15 +318,16 @@ class ScreenerCommands(discord.ext.commands.Cog):
         except asyncio.TimeoutError:
             for emoji in emoji_list:
                 await msg.remove_reaction(emoji, ctx.bot.user)
-            embed = discord.Embed(
-                description="Error timeout - you snooze you lose! 😋",
-                colour=cfg.COLOR,
-                title="TIMEOUT Screener Menu",
-            ).set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
-            )
-            await ctx.send(embed=embed)
+            if cfg.DEBUG:
+                embed = discord.Embed(
+                    description="Error timeout - you snooze you lose! 😋",
+                    colour=cfg.COLOR,
+                    title="TIMEOUT Screener Menu",
+                ).set_author(
+                    name=cfg.AUTHOR_NAME,
+                    icon_url=cfg.AUTHOR_ICON_URL,
+                )
+                await ctx.send(embed=embed)
 
 
 def setup(bot: discord.ext.commands.Bot):
