@@ -12,17 +12,17 @@ from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.stocks.options import op_helpers, tradier_model
 
 
-async def oi_command(ctx, ticker="", expiry=""):
+async def oi_command(ctx, ticker: str= None, expiry: str= None, min_sp: float= None, max_sp: float= None):
     """Options OI"""
 
     try:
 
         # Debug
         if cfg.DEBUG:
-            print(f"!oi {ticker} {expiry}")
+            print(f"!oi {ticker} {expiry} {min_sp} {max_sp}")
 
         # Check for argument
-        if ticker == "":
+        if ticker is None:
             raise Exception("Stock ticker is required")    
         
         dates = tradier_model.option_expirations(ticker)
@@ -33,9 +33,16 @@ async def oi_command(ctx, ticker="", expiry=""):
         options = tradier_model.get_option_chains(ticker, expiry)
         current_price = tradier_model.last_price(ticker)
 
-        min_strike = 0.75 * current_price
-        max_strike = 1.25 * current_price
 
+        if min_sp is None:
+            min_strike = 0.75 * current_price
+        else:
+            min_strike = min_sp
+
+        if max_sp is None:
+            max_strike = 1.90 * current_price
+        else:
+            max_strike = max_sp
 
         calls = options[options.option_type == "call"][["strike", "open_interest"]]
         puts = options[options.option_type == "put"][["strike", "open_interest"]]
