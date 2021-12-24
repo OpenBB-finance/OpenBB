@@ -630,8 +630,8 @@ Stocks Menus:
             self.queue = ta_controller.menu(
                 self.ticker, self.start, self.interval, self.stock, self.queue
             )
-
-        print("Use 'load <ticker>' prior to this command!", "\n")
+        else:
+            print("Use 'load <ticker>' prior to this command!", "\n")
 
     def call_ba(self, _):
         """Process ba command"""
