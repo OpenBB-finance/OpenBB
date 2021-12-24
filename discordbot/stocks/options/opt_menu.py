@@ -39,13 +39,7 @@ class OptionsCommands(discord.ext.commands.Cog):
     async def unu(self, ctx: discord.ext.commands.Context, num: int= None):
      async with ctx.typing():
         await asyncio.sleep(0.2)        
-        """Unusual Options
-
-        Parameters
-        -----------
-        ticker: str
-            ticker
-        """
+        """Unusual Options"""
         await unu_command(ctx, num)
     
     @discord.ext.commands.command(name="hist")
