@@ -8,7 +8,7 @@ from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import get_user_agent
 
 
-async def unu_command(ctx, num=""):
+async def unu_command(ctx, num: int= None):
  async with ctx.typing():
     await asyncio.sleep(0.2)
     """Unusual Options"""
@@ -19,10 +19,10 @@ async def unu_command(ctx, num=""):
         if cfg.DEBUG:
             print(f"!unu {num}")
        
-        if num == "":
-            num= "10"
-          
-        num = int(num)
+        # Check for argument
+        if num is None:
+            num = 10
+        
         pages = np.arange(0, num // 20 + 1)
         data_list = []
         for page_num in pages:
