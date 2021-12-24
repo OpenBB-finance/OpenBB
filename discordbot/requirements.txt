@@ -200,7 +200,7 @@ requests==2.26.0; (python_version >= "2.7" and python_full_version < "3.0.0") or
 retrying==1.3.3
 robin-stocks==2.1.0; python_version >= "3"
 scikit-learn==1.0.1; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7"
-scipy==1.7.3; python_version >= "3.7" and python_version < "3.11"
+scipy==1.7.3; python_version >= "3.7" and python_version < "3.11" and python_full_version >= "3.6.1" and python_full_version < "4.0.0" and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0") and (python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7")
 screeninfo==0.6.7
 scs==3.0.0; python_full_version >= "3.6.1" and python_full_version < "4.0.0" and python_version >= "3.6"
 seaborn==0.11.2; python_version >= "3.6"
