@@ -11,17 +11,17 @@ from gamestonk_terminal.stocks.options import tradier_model
 
 
 
-async def vol_command(ctx, ticker="", expiry=""):
+async def vol_command(ctx, ticker: str= None, expiry: str= None, min_sp: float= None, max_sp: float= None):
     """Options VOL"""
 
     try:
 
         # Debug
         if cfg.DEBUG:
-            print(f"!vol {ticker} {expiry}")
+            print(f"!vol {ticker} {expiry} {min_sp} {max_sp}")
 
         # Check for argument
-        if ticker == "":
+        if ticker is None:
             raise Exception("Stock ticker is required")    
         
         dates = tradier_model.option_expirations(ticker)
@@ -31,14 +31,16 @@ async def vol_command(ctx, ticker="", expiry=""):
         
         options = tradier_model.get_option_chains(ticker, expiry)
         current_price = tradier_model.last_price(ticker)
-        min_strike = 0.75 * current_price
-        max_strike = 1.90 * current_price
 
-        if current_price > 100:
-            max_strike = 2.25 * current_price
-        if current_price > 500:
-            min_strike = 0.50 * current_price
-            max_strike = 1.25 * current_price      
+        if min_sp is None:
+            min_strike = 0.75 * current_price
+        else:
+            min_strike = min_sp
+
+        if max_sp is None:
+            max_strike = 1.90 * current_price
+        else:
+            max_strike = max_sp 
 
 
         calls = options[options.option_type == "call"][["strike", "volume"]]
