@@ -17,7 +17,7 @@ async def unu_command(ctx, num: int= None):
 
         # Debug
         if cfg.DEBUG:
-            print(f"!unu {num}")
+            print(f"!stocks.opt.unu {num}")
        
         # Check for argument
         if num is None:
