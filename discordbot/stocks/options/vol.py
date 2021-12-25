@@ -6,8 +6,7 @@ from discordbot.run_discordbot import gst_imgur
 
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal.helper_funcs import plot_autoscale
-from gamestonk_terminal.stocks.options import tradier_model
-
+from gamestonk_terminal.stocks.options import yfinance_model
 
 
 
@@ -24,13 +23,13 @@ async def vol_command(ctx, ticker: str= None, expiry: str= None, min_sp: float= 
         if ticker is None:
             raise Exception("Stock ticker is required")    
         
-        dates = tradier_model.option_expirations(ticker)
+        dates = yfinance_model.option_expirations(ticker)
 
         if not dates:
             raise Exception("Stock ticker is invalid")
         
-        options = tradier_model.get_option_chains(ticker, expiry)
-        current_price = tradier_model.last_price(ticker)
+        options = yfinance_model.get_option_chain(ticker, expiry)
+        current_price = yfinance_model.get_price(ticker)
 
         if min_sp is None:
             min_strike = 0.75 * current_price
@@ -42,14 +41,14 @@ async def vol_command(ctx, ticker: str= None, expiry: str= None, min_sp: float= 
         else:
             max_strike = max_sp 
 
-
-        calls = options[options.option_type == "call"][["strike", "volume"]]
-        puts = options[options.option_type == "put"][["strike", "volume"]]
+        calls = options.calls
+        puts = options.puts
         call_v = calls.set_index("strike")["volume"] / 1000
         put_v = puts.set_index("strike")["volume"] / 1000
         plt.style.use("seaborn")
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
 
+        
         put_v.plot(
             x="strike",
             y="volume",
