@@ -436,6 +436,7 @@ def test_call_func_no_parser(func, mocker):
     getattr(insider_controller, "parse_known_args_and_warn").assert_called_once()
 
 
+@pytest.mark.skip
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
