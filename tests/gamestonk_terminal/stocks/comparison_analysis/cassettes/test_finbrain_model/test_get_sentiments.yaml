@@ -1,0 +1,48 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://api.finbrain.tech/v0/sentiments/TSLA
+  response:
+    body:
+      string: '{"ticker":"TSLA","name":"Tesla Inc.","sentimentAnalysis":{"2021-12-20":"0.169","2021-12-17":"-0.14","2021-12-16":"0.049","2021-12-15":"-0.073","2021-12-14":"0.03","2021-12-13":"0.135","2021-12-10":"0.05","2021-12-09":"0.15","2021-12-08":"0.333","2021-12-07":"0.068"}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '267'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 20 Dec 2021 17:15:22 GMT
+      X-Amzn-Trace-Id:
+      - Root=1-61c0ba2a-622c00de3606396b5bb5f061;Sampled=0
+      access-control-allow-origin:
+      - '*'
+      etag:
+      - W/"10b-1o2byEDRNuryxKM+Mm/8tWR1vqE"
+      x-amz-apigw-id:
+      - KqIGtGJCoAMFn9w=
+      x-amzn-Remapped-connection:
+      - close
+      x-amzn-Remapped-content-length:
+      - '267'
+      x-amzn-Remapped-date:
+      - Mon, 20 Dec 2021 17:15:22 GMT
+      x-amzn-RequestId:
+      - a813c43d-8574-48fa-827b-672c833eeb4e
+      x-powered-by:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1
