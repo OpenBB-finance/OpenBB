@@ -3,14 +3,17 @@ import discord
 
 from discordbot.run_discordbot import gst_bot
 import discordbot.config_discordbot as cfg
-from gamestonk_terminal.stocks.options import tradier_model
+from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 from discordbot.reaction_helper import expiry_dates_reaction
 
 from discordbot.stocks.options.hist import hist_command
 from discordbot.stocks.options.vol import vol_command
 from discordbot.stocks.options.iv import iv_command
 from discordbot.stocks.options.unu import unu_command
-from discordbot.stocks.options.oi import oi_command
+if TRADIER_TOKEN == "REPLACE_ME":
+    from discordbot.stocks.options.oi import oi_command
+else:
+    from discordbot.stocks.options.oi_tradier import oi_command
 
 
 
@@ -128,7 +131,7 @@ class OptionsCommands(discord.ext.commands.Cog):
         Example:
         (It's a Monday)
         !stocks.opt.oi gme 0 500 1000
-            returns GME End of Week expiry strike prices 500-1000
+            returns GME End of Week expiry strike prices $500-$1000
         
         expiry = only accepts 0-9, inputs the dates up to 10 weeks
         
@@ -186,7 +189,7 @@ class OptionsCommands(discord.ext.commands.Cog):
         Example:
         (It's a Monday)
         !vol gme 0 500 1000
-            returns GME End of Week expiry strike prices 500-1000
+            returns GME End of Week expiry strike prices $500-$1000
         
         expiry = only accepts 0-9, inputs the dates up to 10 weeks
         
