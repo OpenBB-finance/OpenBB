@@ -12,32 +12,80 @@ from gamestonk_terminal.stocks.backtesting import bt_controller
 # pylint: disable=W0603
 # pylint: disable=E1111
 
-pytest.skip(allow_module_level=True)
-
-empty_df = pd.DataFrame()
+EMPTY_DF = pd.DataFrame()
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_menu_quick_exit(mocker):
-    mocker.patch("builtins.input", return_value="quit")
-    mocker.patch("gamestonk_terminal.stocks.backtesting.bt_controller.session")
+@pytest.mark.parametrize(
+    "queue, expected",
+    [
+        (["ema", "help"], []),
+        (["quit", "help"], ["help"]),
+    ],
+)
+def test_menu_with_queue(expected, mocker, queue):
     mocker.patch(
-        "gamestonk_terminal.stocks.backtesting.bt_controller.session.prompt",
+        target=(
+            "gamestonk_terminal.stocks.backtesting.bt_controller."
+            "BacktestingController.switch"
+        ),
+        return_value=["quit"],
+    )
+    result_menu = bt_controller.menu(
+        ticker="TSLA",
+        stock=pd.DataFrame(),
+        queue=queue,
+    )
+
+    assert result_menu == expected
+
+
+@pytest.mark.vcr(record_mode="none")
+def test_menu_without_queue_completion(mocker):
+    # DISABLE AUTO-COMPLETION
+    mocker.patch.object(
+        target=bt_controller.gtff,
+        attribute="USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.backtesting.bt_controller.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.backtesting.bt_controller.session.prompt",
         return_value="quit",
     )
 
     result_menu = bt_controller.menu(
         ticker="TSLA",
         stock=pd.DataFrame(),
+        queue=None,
     )
 
-    assert result_menu
+    assert result_menu == []
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_menu_system_exit(mocker):
+@pytest.mark.parametrize(
+    "mock_input",
+    ["help", "homee help", "home help", "mock"],
+)
+def test_menu_without_queue_sys_exit(mock_input, mocker):
+    # DISABLE AUTO-COMPLETION
+    mocker.patch.object(
+        target=bt_controller.gtff,
+        attribute="USE_PROMPT_TOOLKIT",
+        new=False,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.backtesting.bt_controller.session",
+        return_value=None,
+    )
+
+    # MOCK USER INPUT
+    mocker.patch("builtins.input", return_value=mock_input)
+
+    # MOCK SWITCH
     class SystemExitSideEffect:
         def __init__(self):
             self.first_call = True
@@ -46,24 +94,24 @@ def test_menu_system_exit(mocker):
             if self.first_call:
                 self.first_call = False
                 raise SystemExit()
-            return True
+            return ["quit"]
 
     mock_switch = mocker.Mock(side_effect=SystemExitSideEffect())
-    mocker.patch("builtins.input", return_value="quit")
-    mocker.patch("gamestonk_terminal.stocks.backtesting.bt_controller.session")
     mocker.patch(
-        "gamestonk_terminal.stocks.backtesting.bt_controller.session.prompt",
-        return_value="quit",
-    )
-    mocker.patch(
-        "gamestonk_terminal.stocks.backtesting.bt_controller.BacktestingController.switch",
+        target=(
+            "gamestonk_terminal.stocks.backtesting.bt_controller."
+            "BacktestingController.switch"
+        ),
         new=mock_switch,
     )
 
-    bt_controller.menu(
+    result_menu = bt_controller.menu(
         ticker="TSLA",
         stock=pd.DataFrame(),
+        queue=None,
     )
+
+    assert result_menu == []
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -77,63 +125,81 @@ def test_print_help():
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_switch_empty():
+@pytest.mark.parametrize(
+    "an_input, expected_queue",
+    [
+        ("", []),
+        ("/help", ["quit", "quit", "help"]),
+        ("help/help", ["help"]),
+        ("q", ["quit"]),
+        ("h", []),
+        ("r", ["quit", "quit", "reset", "stocks", "load TSLA", "bt"]),
+    ],
+)
+def test_switch(an_input, expected_queue):
     controller = bt_controller.BacktestingController(
         ticker="TSLA",
         stock=pd.DataFrame(),
+        queue=None,
     )
-    result = controller.switch(an_input="")
+    queue = controller.switch(an_input=an_input)
 
-    assert result is None
+    assert queue == expected_queue
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_switch_help():
-    controller = bt_controller.BacktestingController(
-        ticker="TSLA",
-        stock=pd.DataFrame(),
-    )
-    result = controller.switch(an_input="?")
-
-    assert result is None
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_switch_cls(mocker):
+def test_call_cls(mocker):
     mocker.patch("os.system")
     controller = bt_controller.BacktestingController(
         ticker="TSLA",
         stock=pd.DataFrame(),
     )
-    result = controller.switch(an_input="cls")
+    controller.call_cls([])
 
-    assert result is None
+    assert controller.queue == []
     os.system.assert_called_once_with("cls||clear")
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_call_q():
+@pytest.mark.parametrize(
+    "func, queue, expected_queue",
+    [
+        (
+            "call_exit",
+            [],
+            [
+                "quit",
+                "quit",
+                "quit",
+            ],
+        ),
+        ("call_exit", ["help"], ["quit", "quit", "quit", "help"]),
+        ("call_home", [], ["quit", "quit"]),
+        ("call_help", [], []),
+        ("call_quit", [], ["quit"]),
+        ("call_quit", ["help"], ["quit", "help"]),
+        (
+            "call_reset",
+            [],
+            ["quit", "quit", "reset", "stocks", "load TSLA", "bt"],
+        ),
+        (
+            "call_reset",
+            ["help"],
+            ["quit", "quit", "reset", "stocks", "load TSLA", "bt", "help"],
+        ),
+    ],
+)
+def test_call_func_expect_queue(expected_queue, queue, func):
     controller = bt_controller.BacktestingController(
         ticker="TSLA",
         stock=pd.DataFrame(),
+        queue=queue,
     )
-    other_args = list()
-    result = controller.call_q(other_args)
+    result = getattr(controller, func)([])
 
-    assert result is False
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_call_quit():
-    controller = bt_controller.BacktestingController(
-        ticker="TSLA",
-        stock=pd.DataFrame(),
-    )
-    other_args = list()
-    result = controller.call_quit(other_args)
-
-    assert result is True
+    assert result is None
+    assert controller.queue == expected_queue
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -146,7 +212,7 @@ def test_call_quit():
             ["-l=2", "--spy", "--no_bench", "--export=csv"],
             dict(
                 ticker="MOCK_TICKER",
-                df_stock=empty_df,
+                df_stock=EMPTY_DF,
                 ema_length=2,
                 spy_bt=True,
                 no_bench=True,
@@ -158,8 +224,8 @@ def test_call_quit():
             "bt_view.display_ema_cross",
             [
                 "-l=2",
-                "--long=20",
-                "--short=10",
+                "--long=10",
+                "--short=20",
                 "--spy",
                 "--no_bench",
                 "--no_short",
@@ -167,9 +233,9 @@ def test_call_quit():
             ],
             dict(
                 ticker="MOCK_TICKER",
-                df_stock=empty_df,
-                short_ema=10,
-                long_ema=20,
+                df_stock=EMPTY_DF,
+                short_ema=20,
+                long_ema=10,
                 spy_bt=True,
                 no_bench=True,
                 shortable=False,
@@ -181,8 +247,8 @@ def test_call_quit():
             "bt_view.display_rsi_strategy",
             [
                 "--periods=2",
-                "--high=20",
-                "--low=10",
+                "--high=10",
+                "--low=20",
                 "--spy",
                 "--no_bench",
                 "--no_short",
@@ -190,10 +256,10 @@ def test_call_quit():
             ],
             dict(
                 ticker="MOCK_TICKER",
-                df_stock=empty_df,
+                df_stock=EMPTY_DF,
                 periods=2,
-                low_rsi=10,
-                high_rsi=20,
+                low_rsi=20,
+                high_rsi=10,
                 spy_bt=True,
                 no_bench=True,
                 shortable=False,
@@ -208,10 +274,10 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         "gamestonk_terminal.stocks.backtesting.bt_controller." + mocked_func,
         new=mock,
     )
-    empty_df.drop(empty_df.index, inplace=True)
+    EMPTY_DF.drop(EMPTY_DF.index, inplace=True)
     controller = bt_controller.BacktestingController(
         ticker="MOCK_TICKER",
-        stock=empty_df,
+        stock=EMPTY_DF,
     )
     getattr(controller, tested_func)(other_args=other_args)
 
@@ -244,4 +310,5 @@ def test_call_func_no_parser(func, mocker):
 
     func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
+    assert controller.queue == []
     getattr(bt_controller, "parse_known_args_and_warn").assert_called_once()

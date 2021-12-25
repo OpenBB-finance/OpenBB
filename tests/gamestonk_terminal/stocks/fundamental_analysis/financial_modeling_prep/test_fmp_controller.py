@@ -13,33 +13,76 @@ from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep impo
 # pylint: disable=W0603
 # pylint: disable=E1111
 
-pytest.skip(allow_module_level=True)
-
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_menu_quick_exit(mocker):
-    mocker.patch("builtins.input", return_value="quit")
+@pytest.mark.parametrize(
+    "queue, expected",
+    [
+        (["profile", "help"], []),
+        (["quit", "help"], ["help"]),
+    ],
+)
+def test_menu_with_queue(expected, mocker, queue):
     mocker.patch(
-        "gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_controller.session"
+        target=(
+            "gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_controller."
+            "FinancialModelingPrepController.switch"
+        ),
+        return_value=["quit"],
     )
-    mocker.patch(
-        "gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_controller.session.prompt",
-        return_value="quit",
-    )
-
     result_menu = fmp_controller.menu(
         ticker="TSLA",
         start="10/25/2021",
         interval="1440min",
+        queue=queue,
     )
 
-    assert result_menu
+    assert result_menu == expected
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_menu_system_exit(mocker):
+def test_menu_without_queue_completion(mocker):
+    # DISABLE AUTO-COMPLETION
+    mocker.patch.object(
+        target=fmp_controller.gtff,
+        attribute="USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_controller.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_controller.session.prompt",
+        return_value="quit",
+    )
+    result_menu = fmp_controller.menu(
+        ticker="TSLA", start="10/25/2021", interval="1440min", queue=None
+    )
+
+    assert result_menu == []
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "mock_input",
+    ["help", "homee help", "home help", "mock"],
+)
+def test_menu_without_queue_sys_exit(mock_input, mocker):
+    # DISABLE AUTO-COMPLETION
+    mocker.patch.object(
+        target=fmp_controller.gtff,
+        attribute="USE_PROMPT_TOOLKIT",
+        new=False,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_controller.session",
+        return_value=None,
+    )
+
+    # MOCK USER INPUT
+    mocker.patch("builtins.input", return_value=mock_input)
+
+    # MOCK SWITCH
     class SystemExitSideEffect:
         def __init__(self):
             self.first_call = True
@@ -48,105 +91,133 @@ def test_menu_system_exit(mocker):
             if self.first_call:
                 self.first_call = False
                 raise SystemExit()
-            return True
+            return ["quit"]
 
-    financial_modeling_prep = (
-        "gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep"
-    )
     mock_switch = mocker.Mock(side_effect=SystemExitSideEffect())
-    mocker.patch("builtins.input", return_value="quit")
-    mocker.patch(financial_modeling_prep + ".fmp_controller.session")
     mocker.patch(
-        financial_modeling_prep + ".fmp_controller.session.prompt",
-        return_value="quit",
-    )
-    mocker.patch(
-        financial_modeling_prep
-        + ".fmp_controller.FinancialModelingPrepController.switch",
+        target=(
+            "gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_controller."
+            "FinancialModelingPrepController.switch"
+        ),
         new=mock_switch,
     )
-
-    fmp_controller.menu(
-        ticker="TSLA",
-        start="10/25/2021",
-        interval="1440min",
+    result_menu = fmp_controller.menu(
+        ticker="TSLA", start="10/25/2021", interval="1440min", queue=None
     )
+
+    assert result_menu == []
 
 
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_print_help():
-    fmp = fmp_controller.FinancialModelingPrepController(
+    controller = fmp_controller.FinancialModelingPrepController(
         ticker="",
         start="",
         interval="",
     )
-    fmp.print_help()
+    controller.print_help()
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_switch_empty():
-    fmp = fmp_controller.FinancialModelingPrepController(
+@pytest.mark.parametrize(
+    "an_input, expected_queue",
+    [
+        ("", []),
+        ("/help", ["quit", "quit", "quit", "help"]),
+        ("help/help", ["help"]),
+        ("q", ["quit"]),
+        ("h", []),
+        ("r", ["quit", "quit", "quit", "reset", "stocks", "fa", "fmp"]),
+    ],
+)
+def test_switch(an_input, expected_queue):
+    controller = fmp_controller.FinancialModelingPrepController(
         ticker="",
         start="",
         interval="",
+        queue=None,
     )
-    result = fmp.switch(an_input="")
+    queue = controller.switch(an_input=an_input)
 
-    assert result is None
+    assert queue == expected_queue
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_switch_help():
-    fmp = fmp_controller.FinancialModelingPrepController(
-        ticker="",
-        start="",
-        interval="",
-    )
-    result = fmp.switch(an_input="?")
-
-    assert result is None
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_switch_cls(mocker):
+def test_call_cls(mocker):
     mocker.patch("os.system")
-    fmp = fmp_controller.FinancialModelingPrepController(
+    controller = fmp_controller.FinancialModelingPrepController(
         ticker="",
         start="",
         interval="",
     )
-    result = fmp.switch(an_input="cls")
+    controller.call_cls([])
 
-    assert result is None
+    assert controller.queue == []
     os.system.assert_called_once_with("cls||clear")
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_call_q():
-    fmp = fmp_controller.FinancialModelingPrepController(
-        ticker="",
+@pytest.mark.parametrize(
+    "func, queue, expected_queue",
+    [
+        (
+            "call_exit",
+            [],
+            [
+                "quit",
+                "quit",
+                "quit",
+                "quit",
+            ],
+        ),
+        ("call_exit", ["help"], ["quit", "quit", "quit", "quit", "help"]),
+        ("call_home", [], ["quit", "quit", "quit"]),
+        ("call_help", [], []),
+        ("call_quit", [], ["quit"]),
+        ("call_quit", ["help"], ["quit", "help"]),
+        (
+            "call_reset",
+            [],
+            [
+                "quit",
+                "quit",
+                "quit",
+                "reset",
+                "stocks",
+                "load MOCK_TICKER",
+                "fa",
+                "fmp",
+            ],
+        ),
+        (
+            "call_reset",
+            ["help"],
+            [
+                "quit",
+                "quit",
+                "quit",
+                "reset",
+                "stocks",
+                "load MOCK_TICKER",
+                "fa",
+                "fmp",
+                "help",
+            ],
+        ),
+    ],
+)
+def test_call_func_expect_queue(expected_queue, queue, func):
+    controller = fmp_controller.FinancialModelingPrepController(
+        ticker="MOCK_TICKER",
         start="",
         interval="",
+        queue=queue,
     )
-    other_args = list()
-    result = fmp.call_q(other_args)
+    result = getattr(controller, func)([])
 
-    assert result is False
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_call_quit():
-    fmp = fmp_controller.FinancialModelingPrepController(
-        ticker="",
-        start="",
-        interval="",
-    )
-    other_args = list()
-    result = fmp.call_quit(other_args)
-
-    assert result is True
+    assert result is None
+    assert controller.queue == expected_queue
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -168,49 +239,49 @@ def test_call_quit():
         (
             "call_enterprise",
             "fmp_view.display_enterprise",
-            ["--export=csv", "--num=5", "--quarter"],
+            ["--export=csv", "--limit=5", "--quarter"],
             {"ticker": "TSLA", "number": 5, "quarterly": True, "export": "csv"},
         ),
         (
             "call_dcf",
             "fmp_view.display_discounted_cash_flow",
-            ["--export=csv", "--num=5", "--quarter"],
+            ["--export=csv", "--limit=5", "--quarter"],
             {"ticker": "TSLA", "number": 5, "quarterly": True, "export": "csv"},
         ),
         (
             "call_income",
             "fmp_view.display_income_statement",
-            ["--export=csv", "--num=5", "--quarter"],
+            ["--export=csv", "--limit=5", "--quarter"],
             {"ticker": "TSLA", "number": 5, "quarterly": True, "export": "csv"},
         ),
         (
             "call_balance",
             "fmp_view.display_balance_sheet",
-            ["--export=csv", "--num=5", "--quarter"],
+            ["--export=csv", "--limit=5", "--quarter"],
             {"ticker": "TSLA", "number": 5, "quarterly": True, "export": "csv"},
         ),
         (
             "call_cash",
             "fmp_view.display_cash_flow",
-            ["--export=csv", "--num=5", "--quarter"],
+            ["--export=csv", "--limit=5", "--quarter"],
             {"ticker": "TSLA", "number": 5, "quarterly": True, "export": "csv"},
         ),
         (
             "call_metrics",
             "fmp_view.display_key_metrics",
-            ["--export=csv", "--num=5", "--quarter"],
+            ["--export=csv", "--limit=5", "--quarter"],
             {"ticker": "TSLA", "number": 5, "quarterly": True, "export": "csv"},
         ),
         (
             "call_ratios",
             "fmp_view.display_financial_ratios",
-            ["--export=csv", "--num=5", "--quarter"],
+            ["--export=csv", "--limit=5", "--quarter"],
             {"ticker": "TSLA", "number": 5, "quarterly": True, "export": "csv"},
         ),
         (
             "call_growth",
             "fmp_view.display_financial_statement_growth",
-            ["--export=csv", "--num=5", "--quarter"],
+            ["--export=csv", "--limit=5", "--quarter"],
             {"ticker": "TSLA", "number": 5, "quarterly": True, "export": "csv"},
         ),
     ],
@@ -222,12 +293,12 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         + mocked_func,
         new=mock,
     )
-    fa = fmp_controller.FinancialModelingPrepController(
+    controller = fmp_controller.FinancialModelingPrepController(
         ticker="TSLA",
         start="10/25/2021",
         interval="1440min",
     )
-    getattr(fa, tested_func)(other_args=other_args)
+    getattr(controller, tested_func)(other_args=other_args)
 
     if isinstance(called_with, dict):
         mock.assert_called_once_with(**called_with)
@@ -258,12 +329,13 @@ def test_call_func_no_parser(func, mocker):
         "gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_controller.parse_known_args_and_warn",
         return_value=None,
     )
-    fa = fmp_controller.FinancialModelingPrepController(
+    controller = fmp_controller.FinancialModelingPrepController(
         ticker="AAPL",
         start="10/25/2021",
         interval="1440min",
     )
 
-    func_result = getattr(fa, func)(other_args=list())
+    func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
+    assert controller.queue == []
     getattr(fmp_controller, "parse_known_args_and_warn").assert_called_once()

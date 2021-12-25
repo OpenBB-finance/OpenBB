@@ -8,8 +8,6 @@ from gamestonk_terminal.stocks.insider import openinsider_view
 
 # pylint: disable=E1101
 
-pytest.skip(allow_module_level=True)
-
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
