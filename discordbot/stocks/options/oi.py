@@ -90,21 +90,22 @@ async def oi_command(ctx, ticker: str= None, expiry: str= None, min_sp: float= N
 
         imagefile = "opt_oi.png"
         plt.savefig("opt_oi.png")
+        image = discord.File(imagefile)
         
-        uploaded_image = gst_imgur.upload_image("opt_oi.png", title="something")
-        image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            print(f"Image {imagefile}")
         title = " " + ticker.upper() + " Options: Open Interest"
         embed = discord.Embed(title=title, colour=cfg.COLOR)
-        embed.set_image(url=image_link)
+        embed.set_image(
+            url="attachment://opt_oi.png"
+        )
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
         )
         os.remove("opt_oi.png")
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, file=image)
 
     except Exception as e:
         embed = discord.Embed(
