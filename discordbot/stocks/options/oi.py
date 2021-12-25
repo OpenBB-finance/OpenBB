@@ -19,7 +19,7 @@ async def oi_command(ctx, ticker: str= None, expiry: str= None, min_sp: float= N
 
         # Debug
         if cfg.DEBUG:
-            print(f"!oi {ticker} {expiry} {min_sp} {max_sp}")
+            print(f"!stocks.opt.oi {ticker} {expiry} {min_sp} {max_sp}")
 
         # Check for argument
         if ticker is None:
