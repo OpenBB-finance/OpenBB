@@ -7,8 +7,6 @@ import pytest
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.government import quiverquant_view
 
-pytest.skip(allow_module_level=True)
-
 
 @pytest.fixture(scope="module")
 def vcr_config():
@@ -73,8 +71,11 @@ def vcr_config():
     ],
 )
 def test_call_func(func, kwargs_dict, mocker, use_tab):
-    mocker.patch(target="matplotlib.pyplot.show", new=mocker.Mock())
-    mocker.patch.object(target=quiverquant_view.gtff, attribute="USE_ION", new=False)
+    mocker.patch.object(target=quiverquant_view.gtff, attribute="USE_ION", new=True)
+    mocker.patch(target="gamestonk_terminal.stocks.government.quiverquant_view.plt.ion")
+    mocker.patch(
+        target="gamestonk_terminal.stocks.government.quiverquant_view.plt.show"
+    )
     mocker.patch.object(
         target=quiverquant_view.gtff, attribute="USE_TABULATE_DF", new=use_tab
     )
