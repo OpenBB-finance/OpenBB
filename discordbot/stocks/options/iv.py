@@ -15,7 +15,7 @@ async def iv_command(ctx, ticker: str= None):
 
         # Debug
         if cfg.DEBUG:
-            print(f"!iv {ticker}")
+            print(f"!stocks.opt.iv {ticker}")
 
         # Check for argument
         if ticker is None:
