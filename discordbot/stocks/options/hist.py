@@ -19,7 +19,7 @@ async def hist_command(ctx,  ticker: str= None, strike: float= None, put: bool= 
 
         # Debug
         if cfg.DEBUG:
-            print(f"!hist {ticker} {strike} {put} {expiry}")
+            print(f"!stocks.opt.hist {ticker} {strike} {put} {expiry}")
 
         # Check for argument
         if ticker is None:
