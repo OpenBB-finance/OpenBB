@@ -10,7 +10,7 @@ from discordbot.stocks.options.hist import hist_command
 from discordbot.stocks.options.vol import vol_command
 from discordbot.stocks.options.iv import iv_command
 from discordbot.stocks.options.unu import unu_command
-from discordbot.stocks.options.oi_tradier import oi_command
+from discordbot.stocks.options.oi import oi_command
 
 
 
