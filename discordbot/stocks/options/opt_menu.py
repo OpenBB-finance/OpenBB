@@ -9,9 +9,8 @@ from discordbot.reaction_helper import expiry_dates_reaction
 from discordbot.stocks.options.hist import hist_command
 from discordbot.stocks.options.vol import vol_command
 from discordbot.stocks.options.iv import iv_command
-from discordbot.stocks.options.oi import oi_command
 from discordbot.stocks.options.unu import unu_command
-from gamestonk_terminal.stocks.options import tradier_model
+from discordbot.stocks.options.oi_tradier import oi_command
 
 
 
@@ -57,6 +56,23 @@ class OptionsCommands(discord.ext.commands.Cog):
         put: bool
             c for call
             p for put
+        expiry: str
+            accepts only 0-9 
+            0 being weeklies
+            1+ for weeks out
+            prompts reaction helper if empty
+            
+        Example:
+        (It's a Monday)
+        !hist gme 500 c 0
+            returns GME 500 calls End of Week expiry
+            
+        expiry = only accepts 0-9, inputs the dates up to 10 weeks
+        
+        if empty
+        
+        Sends a message to the discord user with the expiry dates.
+        The user can then select a reaction to trigger the selected date.            
         """
         if cfg.DEBUG:
             print(f"!hist {ticker} {strike} {put} {expiry}")
@@ -92,6 +108,28 @@ class OptionsCommands(discord.ext.commands.Cog):
      async with ctx.typing():
         await asyncio.sleep(0.2)
         """Open Interest
+        
+        Parameters
+        -----------
+        ticker: str
+            ticker
+        strike: float
+            strike 
+        expiry: str
+            accepts only 0-9 
+            0 being weeklies
+            1+ for weeks out
+            prompts reaction helper if empty
+        min_sp: float
+            min strike price
+        max_sp:float
+            max strike price
+            
+        Example:
+        (It's a Monday)
+        !oi gme 0 500 1000
+            returns GME End of Week expiry strike prices 500-1000
+        
         expiry = only accepts 0-9, inputs the dates up to 10 weeks
         
         if empty
@@ -127,7 +165,29 @@ class OptionsCommands(discord.ext.commands.Cog):
     async def vol(self, ctx: discord.ext.commands.Context, ticker: str= None, expiry: str= None, min_sp: float= None, max_sp: float= None):
      async with ctx.typing():
         await asyncio.sleep(0.2)
-        """Open Interest
+        """Options Volume
+        
+        Parameters
+        -----------
+        ticker: str
+            ticker
+        strike: float
+            strike 
+        expiry: str
+            accepts only 0-9 
+            0 being weeklies
+            1+ for weeks out
+            prompts reaction helper if empty
+        min_sp: float
+            min strike price
+        max_sp:float
+            max strike price
+            
+        Example:
+        (It's a Monday)
+        !vol gme 0 500 1000
+            returns GME End of Week expiry strike prices 500-1000
+        
         expiry = only accepts 0-9, inputs the dates up to 10 weeks
         
         if empty
