@@ -9,7 +9,7 @@ from gamestonk_terminal.stocks.insider import finviz_model
 
 
 @pytest.mark.vcr
-def testget_last_insider_activity(mocker, recorder):
+def test_get_last_insider_activity(mocker, recorder):
     # REMOVE FINVIZ STOCK_PAGE CACHE
     mocker.patch.object(target=finviz.main_func, attribute="STOCK_PAGE", new={})
 
