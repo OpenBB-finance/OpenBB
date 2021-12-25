@@ -43,7 +43,7 @@ DF_STOCK = pd.DataFrame.from_dict(
 EMPTY_DF = pd.DataFrame()
 QA_CONTROLLER = qa_controller.QaController(
     ticker="MOCK_TICKER",
-    start="MOCK_DATE",
+    start=datetime.strptime("2021-12-21", "%Y-%m-%d"),
     interval="MOCK_INTERVAL",
     stock=DF_STOCK.copy(),
 )
