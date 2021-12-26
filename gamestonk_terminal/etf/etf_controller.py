@@ -33,6 +33,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks import stocks_helper
+from gamestonk_terminal.etf.technical_analysis import ta_controller
 
 # pylint: disable=W0105
 
@@ -64,6 +65,9 @@ class ETFController:
         "candle",
     ]
 
+    CHOICES_MENUS = [
+        "ta",
+    ]
     """
     CHOICES_COMMANDS = [
         "search",
@@ -77,7 +81,8 @@ class ETFController:
     ]
     """
 
-    CHOICES += CHOICES_COMMANDS
+    CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
+
     preset_options = [
         file.strip(".ini")
         for file in os.listdir(
@@ -568,6 +573,16 @@ Finance Database:
 
             else:
                 print("No ticker loaded. First use `load {ticker}`\n")
+
+    @try_except
+    def call_ta(self, _):
+        """Process ta command"""
+        if self.etf_name:
+            self.queue = ta_controller.menu(
+                self.etf_name, self.etf_data.index[0], self.etf_data, self.queue
+            )
+        else:
+            print("Use 'load <ticker>' prior to this command!", "\n")
 
 
 '''
