@@ -1,0 +1,11 @@
+,ReportDate,TransactionDate,Ticker,Representative,Transaction,Amount,House,Range
+0,2021-12-08,2021-11-18,COIN, Marie Newman,Purchase,15001.0,Representatives,"$15,001-$50,000"
+1,2021-12-08,2021-11-09,COIN, Marie Newman,Purchase,15001.0,Representatives,"$15,001-$50,000"
+2,2021-12-09,2021-11-05,COIN, Marie Newman,Sale,50001.0,Representatives,"$50,001-$100,000"
+3,2021-12-08,2021-11-05,COIN, Marie Newman,Sale,50001.0,Representatives,"$50,001-$100,000"
+4,2021-10-26,2021-09-23,COIN, Ed Perlmutter,Purchase,1001.0,Representatives,"$1,001-$15,000"
+5,2021-10-06,2021-09-14,COIN, Marie Newman,Purchase,15001.0,Representatives,"$15,001-$50,000"
+6,2021-09-08,2021-08-13,COIN, Marie Newman,Purchase,15001.0,Representatives,"$15,001-$50,000"
+7,2021-09-08,2021-07-30,COIN, Marie Newman,Sale,15001.0,Representatives,"$15,001-$50,000"
+8,2021-09-08,2021-07-30,COIN, Marie Newman,Sale,15001.0,Representatives,"$15,001-$50,000"
+9,2021-08-05,2021-07-23,COIN, Marie Newman,Purchase,15001.0,Representatives,"$15,001-$50,000"

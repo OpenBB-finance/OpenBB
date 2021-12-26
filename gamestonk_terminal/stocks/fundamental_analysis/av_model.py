@@ -32,7 +32,12 @@ def get_overview(ticker: str) -> pd.DataFrame:
     # If the returned data was successful
     if result.status_code == 200:
         # Parse json data to dataframe
+        if "Note" in result.json():
+            print(result.json()["Note"], "\n")
+            return pd.DataFrame()
+
         df_fa = pd.json_normalize(result.json())
+
         # Keep json data sorting in dataframe
         df_fa = df_fa[list(result.json().keys())].T
         df_fa.iloc[5:] = df_fa.iloc[5:].applymap(lambda x: long_number_format(x))
@@ -136,18 +141,24 @@ def get_income_statements(
     """
     url = f"https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url)
-    statements = r.json()
-    if quarterly:
-        # pylint: disable=unbalanced-tuple-unpacking
-        df_fa = pd.DataFrame(statements["quarterlyReports"])
-    else:
-        # pylint: disable=unbalanced-tuple-unpacking
-        df_fa = pd.DataFrame(statements["annualReports"])
+    if r.status_code == 200:
+        statements = r.json()
+        df_fa = pd.DataFrame()
+        if quarterly:
+            if "quarterlyReports" in statements:
+                df_fa = pd.DataFrame(statements["quarterlyReports"])
+        else:
+            if "annualReports" in statements:
+                df_fa = pd.DataFrame(statements["annualReports"])
 
-    df_fa = df_fa.set_index("fiscalDateEnding")
-    df_fa = df_fa.head(number)
-    df_fa = df_fa.applymap(lambda x: long_number_format(x))
-    return df_fa[::-1].T
+        if df_fa.empty:
+            return pd.DataFrame()
+
+        df_fa = df_fa.set_index("fiscalDateEnding")
+        df_fa = df_fa.head(number)
+        df_fa = df_fa.applymap(lambda x: long_number_format(x))
+        return df_fa[::-1].T
+    return pd.DataFrame()
 
 
 def get_balance_sheet(
@@ -171,16 +182,24 @@ def get_balance_sheet(
     """
     url = f"https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url)
-    statements = r.json()
-    if quarterly:
-        df_fa = pd.DataFrame(statements["quarterlyReports"])
-    else:
-        df_fa = pd.DataFrame(statements["annualReports"])
+    if r.status_code == 200:
+        statements = r.json()
+        df_fa = pd.DataFrame()
+        if quarterly:
+            if "quarterlyReports" in statements:
+                df_fa = pd.DataFrame(statements["quarterlyReports"])
+        else:
+            if "annualReports" in statements:
+                df_fa = pd.DataFrame(statements["annualReports"])
 
-    df_fa = df_fa.set_index("fiscalDateEnding")
-    df_fa = df_fa.head(number)
-    df_fa = df_fa.applymap(lambda x: long_number_format(x))
-    return df_fa[::-1].T
+        if df_fa.empty:
+            return pd.DataFrame()
+
+        df_fa = df_fa.set_index("fiscalDateEnding")
+        df_fa = df_fa.head(number)
+        df_fa = df_fa.applymap(lambda x: long_number_format(x))
+        return df_fa[::-1].T
+    return pd.DataFrame()
 
 
 def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
@@ -202,16 +221,24 @@ def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataF
     """
     url = f"https://www.alphavantage.co/query?function=CASH_FLOW&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url)
-    statements = r.json()
-    if quarterly:
-        df_fa = pd.DataFrame(statements["quarterlyReports"])
-    else:
-        df_fa = pd.DataFrame(statements["annualReports"])
+    if r.status_code == 200:
+        statements = r.json()
+        df_fa = pd.DataFrame()
+        if quarterly:
+            if "quarterlyReports" in statements:
+                df_fa = pd.DataFrame(statements["quarterlyReports"])
+        else:
+            if "annualReports" in statements:
+                df_fa = pd.DataFrame(statements["annualReports"])
 
-    df_fa = df_fa.set_index("fiscalDateEnding")
-    df_fa = df_fa.head(number)
-    df_fa = df_fa.applymap(lambda x: long_number_format(x))
-    return df_fa[::-1].T
+        if df_fa.empty:
+            return pd.DataFrame()
+
+        df_fa = df_fa.set_index("fiscalDateEnding")
+        df_fa = df_fa.head(number)
+        df_fa = df_fa.applymap(lambda x: long_number_format(x))
+        return df_fa[::-1].T
+    return pd.DataFrame()
 
 
 def get_earnings(ticker: str, quarterly: bool = False) -> pd.DataFrame:

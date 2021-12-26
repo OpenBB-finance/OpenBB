@@ -39,7 +39,7 @@ async def overview_command(ctx):
 
     except Exception as e:
         embed = discord.Embed(
-            title="ERROR Economy: [WSK] Market Overview",
+            title="ERROR Economy: [WSJ] Market Overview",
             colour=cfg.COLOR,
             description=e,
         )

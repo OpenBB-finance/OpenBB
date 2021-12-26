@@ -48,15 +48,18 @@ def price_target_from_analysts(
 
     if raw:
         df_analyst_data.index = df_analyst_data.index.strftime("%d/%m/%Y")
-        print(
-            tabulate(
-                df_analyst_data.sort_index(ascending=False).head(num),
-                headers=df_analyst_data.columns,
-                floatfmt=".2f",
-                showindex=True,
-                tablefmt="fancy_grid",
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df_analyst_data.sort_index(ascending=False).head(num),
+                    headers=df_analyst_data.columns,
+                    floatfmt=".2f",
+                    showindex=True,
+                    tablefmt="fancy_grid",
+                )
             )
-        )
+        else:
+            print(df_analyst_data.head(num).to_string())
 
     else:
         # Slice start of ratings
@@ -86,7 +89,7 @@ def price_target_from_analysts(
 
         if gtff.USE_ION:
             plt.ion()
-
+        plt.gcf().autofmt_xdate()
         plt.show()
     print("")
 

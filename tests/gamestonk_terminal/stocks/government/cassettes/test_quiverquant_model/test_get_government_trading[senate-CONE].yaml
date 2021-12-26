@@ -1,0 +1,62 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - MOCK_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+      X-CSRFToken:
+      - TyTJwjuEC7VV7mOqZ622haRaaUr0x0Ng4nrwSRFKQs7vdoBcJlK9qjAS69ghzhFu
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.quiverquant.com/beta/historical/senatetrading/CONE
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA8yQMQvCMBCF/8pxdEzKXUCRbqKuKm03cThKsKU2kTSdxP8uqaNrQdeP93gf7/LE
+        vUSLBaAhw5pZmzUqwLprehsS352Oh0Qq6yT6D5LwsEFB3fpBRijzuRHEjdLEzruUqeRuE94OfnIR
+        C2AizkkBluJu82LGiohBQ8YrRUT4UvDtw//jQ/M/tIjPeQpNK+MCTrTRhn/30fUNAAD//wMAaJ/n
+        ZUQCAAA=
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6bbd5d7f08ad69b0-CDG
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 11 Dec 2021 08:32:57 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=c5ANYnDtmtNwcZncyAR8oYw2aFm8V%2FU0fIUF%2F%2BChN1UoiKveQhtQptdmY0WPuwAk6RS%2Fn8wGRYu1cM671jUuUnPpkPsZsAkIjWiUxbxyFetQMkZjNYjXvoy3QSyCtB3hmOlNBxE%3D"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1

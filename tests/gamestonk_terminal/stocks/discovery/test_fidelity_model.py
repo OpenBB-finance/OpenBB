@@ -1,39 +1,21 @@
-""" discovery/fidelity_model.py tests """
-import unittest
-from unittest import mock
+# IMPORTATION STANDARD
 
-from gamestonk_terminal.stocks.discovery.fidelity_model import get_orders
+# IMPORTATION THIRDPARTY
+import pytest
 
-# pylint: disable=unused-import
-from tests.helpers.tools import (  # noqa: F401
-    parameterize_from_file,
-    pytest_generate_tests,
-)
-
-assertions = unittest.TestCase("__init__")
+# IMPORTATION INTERNAL
+from gamestonk_terminal.stocks.discovery import fidelity_model
 
 
-class TestDiscoveryFidelityModel:
-    @mock.patch("gamestonk_terminal.stocks.discovery.fidelity_model.requests")
-    @parameterize_from_file(
-        "test_get_orders",
-        "../../tests/gamestonk_terminal/stocks/discovery/yaml/test_fidelity_model/fidelity_model.yaml",
-    )
-    # pylint: disable=unused-argument
-    def test_get_orders(
-        self,
-        mock_requests_get,
-        mock_fidelity_orders_html,
-        expected_header,
-        expected_orders,
-    ):
-        mock_requests_get.get().text = mock_fidelity_orders_html
-        header, ret = get_orders()
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("User-Agent", None)],
+    }
 
-        assertions.assertEqual.__self__.maxDiff = None
-        assertions.assertEqual(
-            header.replace("\r\n", "\n"), expected_header.replace("\r\n", "\n")
-        )
-        assertions.assertEqual(
-            ret.to_csv().replace("\r\n", "\n"), expected_orders.replace("\r\n", "\n")
-        )
+
+@pytest.mark.vcr()
+def test_get_orders(recorder):
+    order_header, df_orders = fidelity_model.get_orders()
+    recorder.capture(order_header)
+    recorder.capture(df_orders)

@@ -7,6 +7,59 @@ import pandas as pd
 from dateutil import parser
 from gamestonk_terminal.cryptocurrency.coinpaprika_helpers import PaprikaSession
 
+MARKETS_FILTERS = [
+    "rank",
+    "name",
+    "symbol",
+    "price",
+    "volume_24h",
+    "mcap_change_24h",
+    "pct_change_1h",
+    "pct_change_24h",
+    "ath_price",
+    "pct_from_ath",
+]
+
+EXMARKETS_FILTERS = [
+    "pair",
+    "base_currency_name",
+    "quote_currency_name",
+    "category",
+    "reported_volume_24h_share",
+    "trust_score",
+    "market_url",
+]
+
+INFO_FILTERS = [
+    "rank",
+    "name",
+    "symbol",
+    "price",
+    "volume_24h",
+    "circulating_supply",
+    "total_supply",
+    "max_supply",
+    "ath_price",
+    "market_cap",
+    "beta_value",
+]
+
+EXCHANGES_FILTERS = [
+    "rank",
+    "name",
+    "currencies",
+    "markets",
+    "fiats",
+    "confidence",
+    "volume_24h",
+    "volume_7d",
+    "volume_30d",
+    "sessions_per_month",
+]
+
+
+CONTRACTS_FILTERS = ["id", "type", "active"]
+
 
 def get_global_market() -> pd.DataFrame:
     """Return data frame with most important global crypto statistics like:
@@ -313,7 +366,7 @@ def get_contract_platform(platform_id: str = "eth-ethereum") -> pd.DataFrame:
     Returns
     -------
     pandas.DataFrame
-         id, type, active, balance
+         id, type, active
     """
 
     session = PaprikaSession()
@@ -321,4 +374,4 @@ def get_contract_platform(platform_id: str = "eth-ethereum") -> pd.DataFrame:
         session.ENDPOINTS["contract_platform_addresses"].format(platform_id)
     )
 
-    return pd.DataFrame(contract_platforms)[["id", "type", "active", "balance"]]
+    return pd.DataFrame(contract_platforms)[["id", "type", "active"]]

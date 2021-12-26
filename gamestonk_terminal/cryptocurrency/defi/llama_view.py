@@ -105,6 +105,8 @@ def display_defi_tvl(top: int, export: str = "") -> None:
     plt.minorticks_on()
     plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
     plt.title("Total Value Locked in DeFi [Billions USD]")
+    if gtff.USE_ION:
+        plt.ion()
     plt.show()
     print("")
 

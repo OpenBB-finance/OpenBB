@@ -94,7 +94,7 @@ def get_coin_events_by_id(coin_id: str = "eth-ethereum") -> pd.DataFrame:
 
     session = PaprikaSession()
     res = session.make_request(session.ENDPOINTS["coin_events"].format(coin_id))
-    if not res:
+    if not res or "error" in res:
         return pd.DataFrame()
     data = pd.DataFrame(res)
     data["description"] = data["description"].apply(

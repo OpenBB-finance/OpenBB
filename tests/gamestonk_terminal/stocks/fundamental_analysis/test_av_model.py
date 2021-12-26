@@ -59,7 +59,6 @@ def test_check_output(func, kwargs_dict, recorder):
     result_df = getattr(av_model, func)(**kwargs_dict)
 
     assert not result_df.empty
-    recorder.record_mode = "rewrite"
     recorder.capture(result_df)
 
 
@@ -67,5 +66,4 @@ def test_check_output(func, kwargs_dict, recorder):
 def test_get_fraud_ratios(recorder):
     result_tuple = av_model.get_fraud_ratios(ticker="TSLA")
 
-    recorder.record_mode = "rewrite"
     recorder.capture(result_tuple)

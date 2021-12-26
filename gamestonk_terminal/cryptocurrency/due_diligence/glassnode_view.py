@@ -8,6 +8,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
     get_exchange_balances,
     get_exchange_net_position_change,
 )
+from gamestonk_terminal import feature_flags as gtff
 
 
 def display_active_addresses(
@@ -48,6 +49,9 @@ def display_active_addresses(
         plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
         plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=1))
         plt.gcf().autofmt_xdate()
+
+        if gtff.USE_ION:
+            plt.ion()
 
         plt.show()
 
@@ -118,6 +122,9 @@ def display_exchange_net_position_change(
         plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=3))
         plt.gcf().autofmt_xdate()
 
+        if gtff.USE_ION:
+            plt.ion()
+
         plt.show()
     print("")
 
@@ -184,6 +191,9 @@ def display_exchange_balances(
         plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%m-%Y"))
         plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=3))
         plt.gcf().autofmt_xdate()
+
+        if gtff.USE_ION:
+            plt.ion()
 
         plt.show()
 

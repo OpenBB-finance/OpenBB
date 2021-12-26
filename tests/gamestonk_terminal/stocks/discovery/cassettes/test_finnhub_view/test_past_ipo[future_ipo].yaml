@@ -1,0 +1,72 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://finnhub.io/api/v1/calendar/ipo?from=MOCK_FROM&to=MOCK_TO&token=MOCK_TOKEN
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA7SVX2+bMBTFv4rlZ1oZ1D9R3pjHskhJyZK0XbXt4QZcsGJsZhulUdXvPjGydlHi
+        DYjKm6/to9+x7j08Y14qCoLJFDQefnvGKViGhzgggX/mB2ckwB5mT0kOMqvrN+HiY/gFjYRagcAe
+        llDU5dtliMLkZ8UNt1xJRJUu692qWDEdPy5y0MzgYUCaz8Ol5kl90SfnhGAPGwu2MnjYbKR1ZVus
+        lGi0w1vsYassiEbpDkTF3uTIi9cXfB5TFEmms+0B//kRA/6gh4F5TB0G/sidYGAEBTPoe0VIcIUi
+        UyptDYqeSqY5kwlr5+r6srurURR9dbjaybVwJSshXq2EVoC0PEFUgbEgDtnReHwEvxHZoTeLV+5H
+        LvaxQxp+cHTTYMfdEfueCbOCJEdLluRSCZVt0ZRZEKbV43eiv19OHa00uAouXfC+G35Rgl6jKK0S
+        +E05sWlHxg23eaphI//ibI4cQtb1/wPim4dF9Nbhs3kcfzp4SnSsE4KLHuM5C+nY0REX/xhPv12+
+        KJsj+nkP/w5RdXQMSb9wmTjGkJxMT6HkFsRG6bVBUcF0xmWGpqDXzJp3C3w6pX0Cv52l5WT08G7k
+        tfjJ5PuZOGsD2y0BZ87f0XWwS8AfL78AAAD//wMAfpcGJBoIAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6bb7b33dce27048b-CDG
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Dec 2021 16:02:53 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=hRx4gOMtSkNi3Om3%2BET8Y0bpl2LniMXQLLEOeBDzM2Bj%2BOins57itrcO486cKuq0nYOekByi0DVzicFsc2w%2BxNmc9nUudpI0KLQbIoswWq4gAqg62Me2fT1D3lU4"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin
+      access-control-allow-methods:
+      - POST, GET, OPTIONS, PUT, DELETE
+      access-control-allow-origin:
+      - '*'
+      access-control-expose-headers:
+      - Content-Length
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400, h3-28=":443"; ma=86400, h3-27=":443";
+        ma=86400
+      x-ratelimit-limit:
+      - '60'
+      x-ratelimit-remaining:
+      - '58'
+      x-ratelimit-reset:
+      - '1639152233'
+    status:
+      code: 200
+      message: OK
+version: 1

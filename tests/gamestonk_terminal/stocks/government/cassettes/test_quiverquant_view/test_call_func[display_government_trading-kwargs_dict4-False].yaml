@@ -1,0 +1,65 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - MOCK_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+      X-CSRFToken:
+      - TyTJwjuEC7VV7mOqZ622haRaaUr0x0Ng4nrwSRFKQs7vdoBcJlK9qjAS69ghzhFu
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.quiverquant.com/beta/historical/congresstrading/AMRC
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA9zUPW/CMBAG4L9iWYy56s6RE2BD7dChSFVg62RFVrEAG8VOO1T971VcMUAhQEWE
+        wno+fzx6k3v74oXeuCo8qaD5mHGBggBzoJQnjM8rZb0qg3F2tyEDymODKZe6auqTafHYVAq9qbTX
+        NqhgPuIONqu90exF670jm8WZWsXyZO1qG/iYESI9YML4s6t93L97oo+XKPse1waUIBIMSCaIyL8T
+        dhiUgWgHSRDZ2aC5W7OpWhnrPv3S3E413D76mCoFHF1P9VpX5UL5PZm8kCZ/bRLbbSlgu00Ayi4T
+        68h1MrOm505dee/+sHT7kbWosh6mRUB03IVAAsToKgP+8NC4wTi8FPXPcdiJ7Jy4xB3GRcNexnVS
+        RkD4V/YDAAD//xrSrQ2q+2owxZeBruHQax3ir7sMdA1MqNo6HCy+MtY1Hrx5KxYAAAD//wMAFCiw
+        13ENAAA=
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6bbe70936ac439ff-CDG
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 11 Dec 2021 11:40:43 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=RQvtcm%2FZQu20yU0plMfp%2BJCNpvYIMprSiGpMG9bzHhW6IxpgAGhHuOrX4S0ZJFOqb8j%2BSCrC8Awulv2Ut7qR8Gyj5Zqz59paSxKnX5%2BoIubRCoI7OToUHOm%2FJU4tMLVazGwFxaE%3D"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1

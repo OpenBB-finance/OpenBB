@@ -1,5 +1,5 @@
 ```
-usage: cgdex [-t TOP] [-s {Name,Rank,Volume_24h,Coins,Pairs,Visits,Most_Traded,Market_Share}] [--descend] [--export {csv,json,xlsx}] [-h]
+usage: cgdex [-l N] [-s {Name,Rank,Volume_24h,Coins,Pairs,Visits,Most_Traded,Market_Share}] [--descend] [--export {csv,json,xlsx}] [-h]
 ```
 
 Shows Top Decentralized Exchanges on CoinGecko by Trading Volume You can display only top N number of coins with --top parameter. You can sort data
@@ -8,7 +8,7 @@ Display columns: Name, Rank, Volume_24h, Coins, Pairs, Visits, Most_Traded, Mark
 
 ```
 optional arguments:
-  -t TOP, --top TOP     top N number records (default: 15)
+  -l N, --limit N       display N records (default: 15)
   -s {Name,Rank,Volume_24h,Coins,Pairs,Visits,Most_Traded,Market_Share}, --sort {Name,Rank,Volume_24h,Coins,Pairs,Visits,Most_Traded,Market_Share}
                         Sort by given column. Default: Rank (default: Rank)
   --descend             Flag to sort in descending order (lowest first) (default: True)

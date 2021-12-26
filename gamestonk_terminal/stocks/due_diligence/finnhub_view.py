@@ -14,19 +14,19 @@ from gamestonk_terminal import feature_flags as gtff
 register_matplotlib_converters()
 
 
-def plot_rating_over_time(rot: pd.DataFrame, ticker: str):
+def plot_rating_over_time(df_rot: pd.DataFrame, ticker: str):
     """Plot rating over time
 
     Parameters
     ----------
-    rot : pd.DataFrame
+    df_rot : pd.DataFrame
         Rating over time
     ticker : str
         Ticker associated with ratings
     """
     plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-    rot.sort_values("period", inplace=True)
+    rot = df_rot.sort_values("period")
     plt.plot(pd.to_datetime(rot["period"]), rot["strongBuy"], c="green", lw=3)
     plt.plot(pd.to_datetime(rot["period"]), rot["buy"], c="lightgreen", lw=3)
     plt.plot(pd.to_datetime(rot["period"]), rot["hold"], c="grey", lw=3)
@@ -82,15 +82,18 @@ def rating_over_time(ticker: str, num: int, raw: bool, export: str):
             .rename(columns=d_cols)
             .head(num)
         )
-        print(
-            tabulate(
-                df_rot_raw,
-                headers=df_rot_raw.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df_rot_raw,
+                    headers=df_rot_raw.columns,
+                    floatfmt=".2f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                )
             )
-        )
+        else:
+            print(df_rot_raw.to_string())
     else:
         plot_rating_over_time(df_rot.head(num), ticker)
 

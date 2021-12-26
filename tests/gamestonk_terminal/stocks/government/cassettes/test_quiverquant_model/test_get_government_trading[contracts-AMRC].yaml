@@ -1,0 +1,94 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - MOCK_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+      X-CSRFToken:
+      - TyTJwjuEC7VV7mOqZ622haRaaUr0x0Ng4nrwSRFKQs7vdoBcJlK9qjAS69ghzhFu
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.quiverquant.com/beta/historical/govcontractsall/AMRC
+  response:
+    body:
+      string: !!binary |
+        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
+        MWLkbfrAP1Qf/v4HAAD//wMAGFRI//iAAAA=
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6bbd90989f9539db-CDG
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 11 Dec 2021 09:07:50 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=K92AzQ%2BMbrrnAizl%2Fz7Z%2FlHLZiHWMKzyOe1xhdZCcDPoxD%2BrBqPG49Wf9YbQ5apXiDRyQ8QC8SQf9gYS92TxXkKpjCBpqmkr4AZ8GZkM3uguQZanTvvDPV6YxiSkfPkHddnpIuk%3D"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1
