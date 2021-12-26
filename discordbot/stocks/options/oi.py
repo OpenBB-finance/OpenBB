@@ -5,7 +5,6 @@ import pandas as pd
 
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
 
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal.helper_funcs import plot_autoscale
