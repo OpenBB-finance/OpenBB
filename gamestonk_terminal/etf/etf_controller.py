@@ -34,6 +34,7 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.etf.technical_analysis import ta_controller
+from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 
 # pylint: disable=W0105,C0415
 
@@ -68,6 +69,7 @@ class ETFController:
     CHOICES_MENUS = [
         "ta",
         "pred",
+        "ca",
     ]
     """
     CHOICES_COMMANDS = [
@@ -385,7 +387,7 @@ Finance Database:
             self.etf_data = df_etf_candidate
 
             holdings = stockanalysis_model.get_etf_holdings(self.etf_name)
-            self.etf_holdings = holdings.index[:5]
+            self.etf_holdings = holdings.index[:5].tolist()
 
             print("")
 
@@ -614,6 +616,14 @@ Finance Database:
             print(
                 "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
                 "\n",
+            )
+
+    @try_except
+    def call_ca(self, _):
+        """Process ca command"""
+        if len(self.etf_holdings) > 0:
+            self.queue = ca_controller.menu(
+                self.etf_holdings, self.queue, from_submenu=True
             )
 
 
