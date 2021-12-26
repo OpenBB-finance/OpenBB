@@ -9,6 +9,7 @@ from typing import List, Union
 import yfinance as yf
 import matplotlib.pyplot as plt
 import mplfinance as mpf
+from colorama import Style
 
 from prompt_toolkit.completion import NestedCompleter
 
@@ -122,9 +123,9 @@ class ETFController:
 
 Symbol: {self.etf_name}
 Major holdings: {', '.join(self.etf_holdings)}
-
+{Style.DIM if len(self.etf_holdings)==0 else ""}
 >   ca            comparison analysis,          e.g.: get similar, historical, correlation, financials
-
+{Style.RESET_ALL}{Style.DIM if not self.etf_name else ""}
     overview      get overview [StockAnalysis.com]
     holdings      get top holdings [StockAnalysis.com]
     candle        view a candle chart for ETF
@@ -134,7 +135,7 @@ Major holdings: {', '.join(self.etf_holdings)}
 >   ce            compare ETFs,                 e.g.: get similar, historical, correlation, financials
 >   ta            technical analysis,           e.g.: ema, macd, rsi, adx, bbands, obv
 >   pred          prediction techniques,        e.g.: regression, arima, rnn, lstm
-
+{Style.RESET_ALL}
 old stuff:
 StockAnalysis.com:
     search        search ETFs matching name (i.e. BlackRock or Invesco)
@@ -366,6 +367,14 @@ Finance Database:
             dest="end",
             help="The ending date (format YYYY-MM-DD) of the ETF",
         )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            type=check_positive,
+            default=5,
+            dest="limit",
+            help="Limit of holdings to display",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
@@ -387,7 +396,7 @@ Finance Database:
             self.etf_data = df_etf_candidate
 
             holdings = stockanalysis_model.get_etf_holdings(self.etf_name)
-            self.etf_holdings = holdings.index[:5].tolist()
+            self.etf_holdings = holdings.index[: ns_parser.limit].tolist()
 
             print("")
 
