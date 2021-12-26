@@ -5,12 +5,9 @@ from discordbot.run_discordbot import gst_bot
 import discordbot.config_discordbot as cfg
 from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 
-from discordbot.stocks.options.vol import vol_command
-from discordbot.stocks.options.hist import hist_command
-from discordbot.stocks.options.oi import oi_command
 from gamestonk_terminal.stocks.options import tradier_model, yfinance_model
 
-async def  expiry_dates_reaction(ctx, ticker, call_arg:tuple, expiry, func_cmd):
+async def  expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg:tuple=None):
     if TRADIER_TOKEN == "REPLACE_ME":
         dates = yfinance_model.option_expirations(ticker)
     else:
@@ -18,93 +15,93 @@ async def  expiry_dates_reaction(ctx, ticker, call_arg:tuple, expiry, func_cmd):
 
     if expiry == "0":
         expiry = dates[0]
-        if func_cmd is not hist_command:
-            await func_cmd(ctx, ticker, expiry, *call_arg)
+        if call_arg == None:
+            await func_cmd(ctx, ticker, expiry)
             return
         else:
-            await func_cmd(ctx, ticker, *call_arg, expiry)
-            return
+            await func_cmd(ctx, ticker, expiry, *call_arg)
+            return   
         
     if expiry == "1":
         expiry = dates[1]
-        if func_cmd is not hist_command:
-            await func_cmd(ctx, ticker, expiry, *call_arg)
+        if call_arg == None:
+            await func_cmd(ctx, ticker, expiry)
             return
         else:
-            await func_cmd(ctx, ticker, *call_arg, expiry)
-            return
+            await func_cmd(ctx, ticker, expiry, *call_arg)
+            return   
         
     if expiry == "2":
         expiry = dates[2]
-        if func_cmd is not hist_command:
-            await func_cmd(ctx, ticker, expiry, *call_arg)
+        if call_arg == None:
+            await func_cmd(ctx, ticker, expiry)
             return
         else:
-            await func_cmd(ctx, ticker, *call_arg, expiry)
-            return
+            await func_cmd(ctx, ticker, expiry, *call_arg)
+            return   
         
     if expiry == "3":
         expiry = dates[3]
-        if func_cmd is not hist_command:
-            await func_cmd(ctx, ticker, expiry, *call_arg)
+        if call_arg == None:
+            await func_cmd(ctx, ticker, expiry)
             return
         else:
-            await func_cmd(ctx, ticker, *call_arg, expiry)
-            return
+            await func_cmd(ctx, ticker, expiry, *call_arg)
+            return   
         
     if expiry == "4":
         expiry = dates[4]
-        if func_cmd is not hist_command:
-            await func_cmd(ctx, ticker, expiry, *call_arg)
+        if call_arg == None:
+            await func_cmd(ctx, ticker, expiry)
             return
         else:
-            await func_cmd(ctx, ticker, *call_arg, expiry)
-            return
+            await func_cmd(ctx, ticker, expiry, *call_arg)
+            return   
         
     if expiry == "5":
         expiry = dates[5]
-        if func_cmd is not hist_command:
-            await func_cmd(ctx, ticker, expiry, *call_arg)
+        if call_arg == None:
+            await func_cmd(ctx, ticker, expiry)
             return
         else:
-            await func_cmd(ctx, ticker, *call_arg, expiry)
-            return
+            await func_cmd(ctx, ticker, expiry, *call_arg)
+            return   
         
     if expiry == "6":
         expiry = dates[6]
-        if func_cmd is not hist_command:
-            await func_cmd(ctx, ticker, expiry, *call_arg)
+        if call_arg == None:
+            await func_cmd(ctx, ticker, expiry)
             return
         else:
-            await func_cmd(ctx, ticker, *call_arg, expiry)
-            return
+            await func_cmd(ctx, ticker, expiry, *call_arg)
+            return   
         
     if expiry == "7":
         expiry = dates[7]
-        if func_cmd is not hist_command:
-            await func_cmd(ctx, ticker, expiry, *call_arg)
+        if call_arg == None:
+            await func_cmd(ctx, ticker, expiry)
             return
         else:
-            await func_cmd(ctx, ticker, *call_arg, expiry)
-            return
+            await func_cmd(ctx, ticker, expiry, *call_arg)
+            return   
         
     if expiry == "8":
         expiry = dates[8]
-        if func_cmd is not hist_command:
-            await func_cmd(ctx, ticker, expiry, *call_arg)
+        if call_arg == None:
+            await func_cmd(ctx, ticker, expiry)
             return
         else:
-            await func_cmd(ctx, ticker, *call_arg, expiry)
-            return
+            await func_cmd(ctx, ticker, expiry, *call_arg)
+            return   
         
     if expiry == "9":
         expiry = dates[9]
-        if func_cmd is not hist_command:
-            await func_cmd(ctx, ticker, expiry, *call_arg)
+        if call_arg == None:
+            await func_cmd(ctx, ticker, expiry)
             return
         else:
-            await func_cmd(ctx, ticker, *call_arg, expiry)
-            return    
+            await func_cmd(ctx, ticker, expiry, *call_arg)
+            return        
     
     if not dates:
         embed = discord.Embed(
@@ -160,91 +157,91 @@ async def  expiry_dates_reaction(ctx, ticker, call_arg:tuple, expiry, func_cmd):
             if cfg.DEBUG:
                 print("Reaction selected: 0")
                 expiry = dates[0]
-                if func_cmd is not hist_command:
-                    await func_cmd(ctx, ticker, expiry, *call_arg)
+                if call_arg == None:
+                    await func_cmd(ctx, ticker, expiry)
                 else:
-                    await func_cmd(ctx, ticker, *call_arg, expiry)
+                    await func_cmd(ctx, ticker, expiry, *call_arg)
         
         elif reaction.emoji == "1️⃣":
             if cfg.DEBUG:
                 print("Reaction selected: 1")
                 expiry = dates[1]
-                if func_cmd is not hist_command:
-                    await func_cmd(ctx, ticker, expiry, *call_arg)
+                if call_arg == None:
+                    await func_cmd(ctx, ticker, expiry)
                 else:
-                    await func_cmd(ctx, ticker, *call_arg, expiry)
+                    await func_cmd(ctx, ticker, expiry, *call_arg)
                 
         elif reaction.emoji == "2️⃣":
             if cfg.DEBUG:
                 print("Reaction selected: 2")
                 expiry = dates[2]
-                if func_cmd is not hist_command:
-                    await func_cmd(ctx, ticker, expiry, *call_arg)
+                if call_arg == None:
+                    await func_cmd(ctx, ticker, expiry)
                 else:
-                    await func_cmd(ctx, ticker, *call_arg, expiry)
+                    await func_cmd(ctx, ticker, expiry, *call_arg)
                 
         elif reaction.emoji == "3️⃣":
             if cfg.DEBUG:
                 print("Reaction selected: 3")
                 expiry = dates[3]
-                if func_cmd is not hist_command:
-                    await func_cmd(ctx, ticker, expiry, *call_arg)
+                if call_arg == None:
+                    await func_cmd(ctx, ticker, expiry)
                 else:
-                    await func_cmd(ctx, ticker, *call_arg, expiry)
+                    await func_cmd(ctx, ticker, expiry, *call_arg)
                 
         elif reaction.emoji == "4️⃣":
             if cfg.DEBUG:
                 print("Reaction selected: 4")
                 expiry = dates[4]
-                if func_cmd is not hist_command:
-                    await func_cmd(ctx, ticker, expiry, *call_arg)
+                if call_arg == None:
+                    await func_cmd(ctx, ticker, expiry)
                 else:
-                    await func_cmd(ctx, ticker, *call_arg, expiry)
+                    await func_cmd(ctx, ticker, expiry, *call_arg)
                 
         elif reaction.emoji == "5️⃣":
             if cfg.DEBUG:
                 print("Reaction selected: 5")
                 expiry = dates[5]
-                if func_cmd is not hist_command:
-                    await func_cmd(ctx, ticker, expiry, *call_arg)
+                if call_arg == None:
+                    await func_cmd(ctx, ticker, expiry)
                 else:
-                    await func_cmd(ctx, ticker, *call_arg, expiry)
+                    await func_cmd(ctx, ticker, expiry, *call_arg)
                 
         elif reaction.emoji == "6️⃣":
             if cfg.DEBUG:
                 print("Reaction selected: 6")
                 expiry = dates[6]
-                if func_cmd is not hist_command:
-                    await func_cmd(ctx, ticker, expiry, *call_arg)
+                if call_arg == None:
+                    await func_cmd(ctx, ticker, expiry)
                 else:
-                    await func_cmd(ctx, ticker, *call_arg, expiry)
+                    await func_cmd(ctx, ticker, expiry, *call_arg)
                 
         elif reaction.emoji == "7️⃣":
             if cfg.DEBUG:
                 print("Reaction selected: 7")
                 expiry = dates[7]
-                if func_cmd is not hist_command:
-                    await func_cmd(ctx, ticker, expiry, *call_arg)
+                if call_arg == None:
+                    await func_cmd(ctx, ticker, expiry)
                 else:
-                    await func_cmd(ctx, ticker, *call_arg, expiry)
+                    await func_cmd(ctx, ticker, expiry, *call_arg)
                 
         elif reaction.emoji == "8️⃣":
             if cfg.DEBUG:
                 print("Reaction selected: 8")
                 expiry = dates[8]
-                if func_cmd is not hist_command:
-                    await func_cmd(ctx, ticker, expiry, *call_arg)
+                if call_arg == None:
+                    await func_cmd(ctx, ticker, expiry)
                 else:
-                    await func_cmd(ctx, ticker, *call_arg, expiry)
+                    await func_cmd(ctx, ticker, expiry, *call_arg)
                 
         elif reaction.emoji == "9️⃣":
             if cfg.DEBUG:
                 print("Reaction selected: 9")
                 expiry = dates[9]
-                if func_cmd is not hist_command:
-                    await func_cmd(ctx, ticker, expiry, *call_arg)
+                if call_arg == None:
+                    await func_cmd(ctx, ticker, expiry)
                 else:
-                    await func_cmd(ctx, ticker, *call_arg, expiry)
+                    await func_cmd(ctx, ticker, expiry, *call_arg)
                 
 
         for emoji in emoji_list:
