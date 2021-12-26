@@ -119,23 +119,30 @@ def compare_etfs(symbols: List[str]) -> pd.DataFrame:
     return df_compare
 
 
-def search_etfs(to_search) -> List[str]:
-    """Search for an etf string in list of ETFs
+def get_etfs_by_name(name_to_search: str) -> pd.DataFrame:
+    """Get an ETF symbol and name based on ETF string to search. [Source: StockAnalysis]
 
     Parameters
     ----------
-    to_search: str
-        String to match
+    name_to_search: str
+        ETF name to match
 
     Returns
     -------
-    matching_etfs: List[str]
-        List of matching ETF names
+    df: pd.Dataframe
+        Dataframe with symbols and names
     """
     all_symbols, all_names = get_all_names_symbols()
-    matching_etfs = [
-        all_symbols[idx] + " - " + etf
-        for idx, etf in enumerate(all_names)
-        if to_search.lower() in etf.lower()
-    ]
-    return matching_etfs
+
+    filtered_symbols = list()
+    filtered_names = list()
+    for symbol, name in zip(all_symbols, all_names):
+        if name_to_search.lower() in name.lower():
+            filtered_symbols.append(symbol)
+            filtered_names.append(name)
+
+    df = pd.DataFrame(
+        list(zip(filtered_symbols, filtered_names)), columns=["Symbol", "Name"]
+    )
+
+    return df

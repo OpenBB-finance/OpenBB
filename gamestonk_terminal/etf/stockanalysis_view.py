@@ -4,9 +4,8 @@ __docformat__ = "numpy"
 import os
 from typing import List
 
-import pandas as pd
 from tabulate import tabulate
-
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.etf import stockanalysis_model
 from gamestonk_terminal.helper_funcs import export_data
 
@@ -80,26 +79,36 @@ def view_comparisons(symbols: List[str], export: str):
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "overview", data)
 
 
-def view_search(to_match: str, export: str):
-    """Display ETFs matching search string
+def display_etf_by_name(name: str, limit: int, export: str):
+    """Display ETFs matching search string. [Source: StockAnalysis]
 
     Parameters
     ----------
-    to_match: str
+    name: str
         String being matched
+    limit: int
+        Limit of ETFs to display
     export: str
         Export to given file type
 
     """
-    matching_etfs = stockanalysis_model.search_etfs(to_match)
+    matching_etfs = stockanalysis_model.get_etfs_by_name(name)
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                matching_etfs.head(limit),
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(matching_etfs.head(limit).to_string(), "\n")
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "search",
-        pd.DataFrame(data=matching_etfs),
+        "ln_sa",
+        matching_etfs,
     )
-    print(*matching_etfs, sep="\n")
-    if len(matching_etfs) == 0:
-        print("No matches found")
-    print("")
