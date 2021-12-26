@@ -185,7 +185,7 @@ class OptionsCommands(discord.ext.commands.Cog):
             embed = discord.Embed(
                 title="ERROR Options: History",
                 colour=cfg.COLOR,
-                description="A strike and c/p is required\n```bash\n\"!hist {ticker} {strike} {c/p}\"```",
+                description="A strike and c/p is required\n```bash\n\"!stocks.opt.hist {ticker} {strike} {c/p}\"```",
             )
 
             await ctx.send(embed=embed)
