@@ -13,16 +13,19 @@ from colorama import Style
 
 from prompt_toolkit.completion import NestedCompleter
 
+from thepassiveinvestor import create_ETF_report
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.etf import (
     stockanalysis_view,
     financedatabase_view,
     stockanalysis_model,
+    yfinance_view,
 )
 from gamestonk_terminal.common import newsapi_view
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_non_negative_float,
     check_positive,
     valid_date,
     get_flair,
@@ -37,7 +40,7 @@ from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.etf.technical_analysis import ta_controller
 from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 
-# pylint: disable=W0105,C0415
+# pylint: disable=W0105,C0415,C0302
 
 
 class ETFController:
@@ -62,9 +65,12 @@ class ETFController:
         "ld",
         "load",
         "overview",
-        "holdings",
+        "chold",
         "news",
         "candle",
+        "pir",
+        "shold",
+        "summary",
     ]
 
     CHOICES_MENUS = [
@@ -127,9 +133,13 @@ Major holdings: {', '.join(self.etf_holdings)}
 >   ca            comparison analysis,          e.g.: get similar, historical, correlation, financials
 {Style.RESET_ALL}{Style.DIM if not self.etf_name else ""}
     overview      get overview [StockAnalysis.com]
-    holdings      get top holdings [StockAnalysis.com]
+    chold         top company holdings [StockAnalysis.com]
+    shold         sector holdings allocation [Yfinance]
+    summary       summary description of the ETF [Yfinance]
+
     candle        view a candle chart for ETF
     news          latest news of the company [News API]
+    pir           create passive investor excel report
 
 >   scr           screener ETFs,                e.g.: overview/performance, using preset filters
 >   ce            compare ETFs,                 e.g.: get similar, historical, correlation, financials
@@ -147,8 +157,6 @@ Wall St. Journal:
     gainers       show top gainers
     decliners     show top decliners
     active        show most active
-The Passive Investor:
-    pir           create ETF report of multiple tickers
 Finance Database:
     fds           advanced ETF search based on category, name and/or description
 """
@@ -419,13 +427,13 @@ Finance Database:
             )
 
     @try_except
-    def call_holdings(self, other_args: List[str]):
-        """Process holdings command"""
+    def call_chold(self, other_args: List[str]):
+        """Process chold command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="holdings",
-            description="Look at ETF holdings",
+            prog="chold",
+            description="Look at ETF company holdings",
         )
         parser.add_argument(
             "-l",
@@ -459,13 +467,13 @@ Finance Database:
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=5,
-            help="Number of latest news being printed.",
+            help="Limit of latest news being printed.",
         )
         parser.add_argument(
             "-d",
@@ -491,7 +499,8 @@ Finance Database:
             nargs="+",
             help="Show news only from the sources specified (e.g bbc yahoo.com)",
         )
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.etf_name:
@@ -506,7 +515,7 @@ Finance Database:
                     term=d_stock["shortName"].replace(" ", "+")
                     if "shortName" in d_stock
                     else self.etf_name,
-                    num=ns_parser.n_num,
+                    num=ns_parser.limit,
                     s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
                     show_newest=ns_parser.n_oldest,
                     sources=",".join(sources),
@@ -585,6 +594,97 @@ Finance Database:
 
             else:
                 print("No ticker loaded. First use `load {ticker}`\n")
+
+    @try_except
+    def call_pir(self, other_args):
+        """Process pir command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="pir",
+            description="Create passive investor ETF excel report",
+        )
+        parser.add_argument(
+            "--filename",
+            default=f"ETF_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+            dest="filename",
+            help="Filename of the excel ETF report",
+        )
+        parser.add_argument(
+            "--folder",
+            default=os.path.dirname(os.path.abspath(__file__)).replace(
+                "gamestonk_terminal", "exports"
+            ),
+            dest="folder",
+            help="Folder where the excel ETF report will be saved",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if self.etf_name:
+                create_ETF_report(
+                    [self.etf_name],
+                    filename=ns_parser.filename,
+                    folder=ns_parser.folder,
+                )
+                print(
+                    f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
+                )
+
+    @try_except
+    def call_shold(self, other_args: List[str]):
+        """Process shold command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="shold",
+            description="Look at ETF sector holdings",
+        )
+        parser.add_argument(
+            "-m",
+            "--min",
+            type=check_non_negative_float,
+            dest="min",
+            help="Minimum positive float to display sector",
+            default=5,
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            dest="raw",
+            help="Only output raw data",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            yfinance_view.display_etf_weightings(
+                name=self.etf_name,
+                raw=ns_parser.raw,
+                min_pct_to_display=ns_parser.min,
+                export=ns_parser.export,
+            )
+
+    @try_except
+    def call_summary(self, other_args: List[str]):
+        """Process summary command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="summary",
+            description="Print ETF description summary",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+        )
+        if ns_parser:
+            yfinance_view.display_etf_description(
+                name=self.etf_name,
+            )
 
     @try_except
     def call_ta(self, _):
