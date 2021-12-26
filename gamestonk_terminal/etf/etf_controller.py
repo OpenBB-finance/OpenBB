@@ -35,7 +35,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.etf.technical_analysis import ta_controller
 
-# pylint: disable=W0105
+# pylint: disable=W0105,C0415
 
 
 class ETFController:
@@ -67,6 +67,7 @@ class ETFController:
 
     CHOICES_MENUS = [
         "ta",
+        "pred",
     ]
     """
     CHOICES_COMMANDS = [
@@ -583,6 +584,37 @@ Finance Database:
             )
         else:
             print("Use 'load <ticker>' prior to this command!", "\n")
+
+    @try_except
+    def call_pred(self, _):
+        """Process pred command"""
+        if gtff.ENABLE_PREDICT:
+            if self.etf_name:
+                try:
+                    from gamestonk_terminal.stocks.prediction_techniques import (
+                        pred_controller,
+                    )
+
+                    self.queue = pred_controller.menu(
+                        self.etf_name,
+                        self.etf_data.index[0],
+                        "1440min",
+                        self.etf_data,
+                        self.queue,
+                    )
+                except ModuleNotFoundError as e:
+                    print(
+                        "One of the optional packages seems to be missing: ",
+                        e,
+                        "\n",
+                    )
+            else:
+                print("Use 'load <ticker>' prior to this command!", "\n")
+        else:
+            print(
+                "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
+                "\n",
+            )
 
 
 '''
