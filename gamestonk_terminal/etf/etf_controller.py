@@ -39,6 +39,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.etf.technical_analysis import ta_controller
 from gamestonk_terminal.stocks.comparison_analysis import ca_controller
+from gamestonk_terminal.etf.screener import screener_controller
 
 # pylint: disable=W0105,C0415,C0302
 
@@ -77,6 +78,7 @@ class ETFController:
         "ta",
         "pred",
         "ca",
+        "scr",
     ]
     """
     CHOICES_COMMANDS = [
@@ -92,13 +94,6 @@ class ETFController:
     """
 
     CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
-
-    preset_options = [
-        file.strip(".ini")
-        for file in os.listdir(
-            os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
-        )
-    ]
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -132,8 +127,8 @@ Major holdings: {', '.join(self.etf_holdings)}
 
 >   ca            comparison analysis,          e.g.: get similar, historical, correlation, financials
 {Style.RESET_ALL}{Style.DIM if not self.etf_name else ""}
-    overview      get overview [StockAnalysis.com]
-    chold         top company holdings [StockAnalysis.com]
+    overview      get overview [StockAnalysis]
+    chold         top company holdings [StockAnalysis]
     shold         sector holdings allocation [Yfinance]
     summary       summary description of the ETF [Yfinance]
 
@@ -145,21 +140,7 @@ Major holdings: {', '.join(self.etf_holdings)}
 >   ce            compare ETFs,                 e.g.: get similar, historical, correlation, financials
 >   ta            technical analysis,           e.g.: ema, macd, rsi, adx, bbands, obv
 >   pred          prediction techniques,        e.g.: regression, arima, rnn, lstm
-{Style.RESET_ALL}
-old stuff:
-StockAnalysis.com:
-    search        search ETFs matching name (i.e. BlackRock or Invesco)
-    overview      get overview of ETF symbol
-    holdings      get top holdings for ETF
-    compare       compare overview of multiple ETF
-    screener      screen etfs based on overview data
-Wall St. Journal:
-    gainers       show top gainers
-    decliners     show top decliners
-    active        show most active
-Finance Database:
-    fds           advanced ETF search based on category, name and/or description
-"""
+{Style.RESET_ALL}"""
         print(help_txt)
 
     def switch(self, an_input: str):
@@ -739,6 +720,11 @@ Finance Database:
                 self.etf_holdings, self.queue, from_submenu=True
             )
 
+    @try_except
+    def call_scr(self, _):
+        """Process scr command"""
+        self.queue = screener_controller.menu(self.queue)
+
 
 '''
     @try_except
@@ -768,45 +754,6 @@ Finance Database:
         if ns_parser:
             etf_list = ns_parser.names.upper().split(",")
             stockanalysis_view.view_comparisons(etf_list, export=ns_parser.export)
-
-    @try_except
-    def call_screener(self, other_args):
-        """Process screener command"""
-        # TODO: Change presets to use view/set like in stocks/options
-
-        parser = argparse.ArgumentParser(
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="screener",
-            add_help=False,
-            description="Screens ETFS from a personal scraping github repository.  Data scraped from stockanalysis.com",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            type=int,
-            help="Number of etfs to show",
-            dest="limit",
-            default=20,
-        )
-
-        parser.add_argument(
-            "--preset",
-            choices=self.preset_options,
-            default="etf_config",
-            help="Preset to use",
-            dest="preset",
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-
-            screener_view.view_screener(
-                num_to_show=ns_parser.limit,
-                preset=ns_parser.preset,
-                export=ns_parser.export,
-            )
 
     @try_except
     def call_gainers(self, other_args):
