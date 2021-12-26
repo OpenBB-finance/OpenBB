@@ -4,7 +4,11 @@ __docformat__ = "numpy"
 import argparse
 import difflib
 import os
+from datetime import datetime, timedelta
 from typing import List, Union
+import yfinance as yf
+import matplotlib.pyplot as plt
+import mplfinance as mpf
 
 from prompt_toolkit.completion import NestedCompleter
 
@@ -12,16 +16,23 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.etf import (
     stockanalysis_view,
     financedatabase_view,
+    stockanalysis_model,
 )
+from gamestonk_terminal.common import newsapi_view
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
+    valid_date,
     get_flair,
     parse_known_args_and_warn,
     try_except,
     system_clear,
+    plot_autoscale,
+    export_data,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.stocks import stocks_helper
 
 # pylint: disable=W0105
 
@@ -46,14 +57,17 @@ class ETFController:
     CHOICES_COMMANDS = [
         "ln",
         "ld",
+        "load",
+        "overview",
+        "holdings",
+        "news",
+        "candle",
     ]
 
     """
     CHOICES_COMMANDS = [
         "search",
-        "overview",
         "compare",
-        "holdings",
         "screener",
         "gainers",
         "decliners",
@@ -87,29 +101,31 @@ class ETFController:
         else:
             self.queue = list()
 
+        self.etf_name = ""
+        self.etf_data = ""
+        self.etf_holdings: List = list()
+
     def print_help(self):
         """Print help"""
-        help_txt = """
+        help_txt = f"""
     ln            lookup by name [FinanceDatabase/StockAnalysis.com]
     ld            lookup by description [FinanceDatabase]
-    load          load ETF
+    load          load ETF data [Yfinance]
 
-Symbol:
+Symbol: {self.etf_name}
+Major holdings: {', '.join(self.etf_holdings)}
+
+>   ca            comparison analysis,          e.g.: get similar, historical, correlation, financials
 
     overview      get overview [StockAnalysis.com]
-    candle        view a candle chart for a specific stock ticker [Yahoo Finance]
+    holdings      get top holdings [StockAnalysis.com]
+    candle        view a candle chart for ETF
     news          latest news of the company [News API]
 
 >   scr           screener ETFs,                e.g.: overview/performance, using preset filters
 >   ce            compare ETFs,                 e.g.: get similar, historical, correlation, financials
 >   ta            technical analysis,           e.g.: ema, macd, rsi, adx, bbands, obv
 >   pred          prediction techniques,        e.g.: regression, arima, rnn, lstm
-
-    holdings      get top holdings [StockAnalysis.com]
-
-Major holdings:
-
->   ca            comparison analysis,          e.g.: get similar, historical, correlation, financials
 
 old stuff:
 StockAnalysis.com:
@@ -203,6 +219,8 @@ Finance Database:
 
     def call_reset(self, _):
         """Process reset command"""
+        if self.etf_name:
+            self.queue.insert(0, f"load {self.etf_name}")
         self.queue.insert(0, "etf")
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
@@ -307,8 +325,64 @@ Finance Database:
                 export=ns_parser.export,
             )
 
+    @try_except
+    def call_load(self, other_args: List[str]):
+        """Process load command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load ETF ticker to perform analysis on.",
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="ticker",
+            required="-h" not in other_args,
+            help="ETF ticker",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the ETF",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            dest="end",
+            help="The ending date (format YYYY-MM-DD) of the ETF",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
 
-'''
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            df_etf_candidate = yf.download(
+                ns_parser.ticker,
+                start=ns_parser.start,
+                end=ns_parser.end,
+                progress=False,
+            )
+            if df_etf_candidate.empty:
+                print("ETF ticker provided does not exist!\n")
+                return
+
+            df_etf_candidate.index.name = "date"
+
+            self.etf_name = ns_parser.ticker.upper()
+            self.etf_data = df_etf_candidate
+
+            holdings = stockanalysis_model.get_etf_holdings(self.etf_name)
+            self.etf_holdings = holdings.index[:5]
+
+            print("")
+
     @try_except
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
@@ -318,25 +392,13 @@ Finance Database:
             prog="overview",
             description="Get overview data for selected etf",
         )
-        parser.add_argument(
-            "-e",
-            "--etf",
-            type=str,
-            dest="name",
-            help="Symbol to look for",
-            required="-h" not in other_args,
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-e")
-
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
         if ns_parser:
             stockanalysis_view.view_overview(
-                symbol=ns_parser.name, export=ns_parser.export
+                symbol=self.etf_name, export=ns_parser.export
             )
 
     @try_except
@@ -349,34 +411,166 @@ Finance Database:
             description="Look at ETF holdings",
         )
         parser.add_argument(
-            "-e",
-            "--etf",
-            type=str,
-            dest="name",
-            help="ETF to get holdings for",
-            required="-h" not in other_args,
-        )
-        parser.add_argument(
             "-l",
             "--limit",
             type=int,
             dest="limit",
             help="Number of holdings to get",
-            default=20,
+            default=10,
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-e")
+            other_args.insert(0, "-l")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             stockanalysis_view.view_holdings(
-                symbol=ns_parser.name,
+                symbol=self.etf_name,
                 num_to_show=ns_parser.limit,
                 export=ns_parser.export,
             )
 
+    @try_except
+    def call_news(self, other_args: List[str]):
+        """Process news command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="news",
+            description="""
+                Prints latest news about ETF, including date, title and web link. [Source: News API]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=5,
+            help="Number of latest news being printed.",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            action="store",
+            dest="n_start_date",
+            type=valid_date,
+            default=datetime.now() - timedelta(days=7),
+            help="The starting date (format YYYY-MM-DD) to search articles from",
+        )
+        parser.add_argument(
+            "-o",
+            "--oldest",
+            action="store_false",
+            dest="n_oldest",
+            default=True,
+            help="Show oldest articles first",
+        )
+        parser.add_argument(
+            "-s",
+            "--sources",
+            default=[],
+            nargs="+",
+            help="Show news only from the sources specified (e.g bbc yahoo.com)",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if self.etf_name:
+                sources = ns_parser.sources
+                for idx, source in enumerate(sources):
+                    if source.find(".") == -1:
+                        sources[idx] += ".com"
+
+                d_stock = yf.Ticker(self.etf_name).info
+
+                newsapi_view.news(
+                    term=d_stock["shortName"].replace(" ", "+")
+                    if "shortName" in d_stock
+                    else self.etf_name,
+                    num=ns_parser.n_num,
+                    s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
+                    show_newest=ns_parser.n_oldest,
+                    sources=",".join(sources),
+                )
+            else:
+                print("Use 'load <ticker>' prior to this command!", "\n")
+
+    @try_except
+    def call_candle(self, other_args: List[str]):
+        """Process candle command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="candle",
+            description="Shows historic data for an ETF",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            if self.etf_name:
+                data = stocks_helper.process_candle(self.etf_data)
+                df_etf = stocks_helper.find_trendline(data, "OC_High", "high")
+                df_etf = stocks_helper.find_trendline(data, "OC_Low", "low")
+
+                mc = mpf.make_marketcolors(
+                    up="green",
+                    down="red",
+                    edge="black",
+                    wick="black",
+                    volume="in",
+                    ohlc="i",
+                )
+
+                s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
+
+                ap0 = []
+
+                if "OC_High_trend" in df_etf.columns:
+                    ap0.append(
+                        mpf.make_addplot(df_etf["OC_High_trend"], color="g"),
+                    )
+
+                if "OC_Low_trend" in df_etf.columns:
+                    ap0.append(
+                        mpf.make_addplot(df_etf["OC_Low_trend"], color="b"),
+                    )
+
+                if gtff.USE_ION:
+                    plt.ion()
+
+                mpf.plot(
+                    df_etf,
+                    type="candle",
+                    mav=(20, 50),
+                    volume=True,
+                    title=f"\nStock {self.etf_name}",
+                    addplot=ap0,
+                    xrotation=10,
+                    style=s,
+                    figratio=(10, 7),
+                    figscale=1.10,
+                    figsize=(plot_autoscale()),
+                    update_width_config=dict(
+                        candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
+                    ),
+                )
+                print("")
+
+                export_data(
+                    ns_parser.export,
+                    os.path.join(os.path.dirname(os.path.abspath(__file__)), "candle"),
+                    f"{self.etf_name}",
+                    self.etf_data,
+                )
+
+            else:
+                print("No ticker loaded. First use `load {ticker}`\n")
+
+
+'''
     @try_except
     def call_compare(self, other_args):
         """Process compare command"""

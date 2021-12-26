@@ -46,14 +46,18 @@ def view_holdings(symbol: str, num_to_show: int, export: str):
     """
 
     data = stockanalysis_model.get_etf_holdings(symbol)
-    print(
-        tabulate(
-            data[:num_to_show],
-            headers=data.columns,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                data[:num_to_show],
+                headers=data.columns,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(data.head(num_to_show).to_string(), "\n")
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "holdings", data)
 
 
