@@ -1,12 +1,12 @@
 import os
+
 import discord
-from matplotlib import pyplot as plt
+import matplotlib.pyplot as plt
 import pandas as pd
 
-
 import discordbot.config_discordbot as cfg
-
-from gamestonk_terminal import config_plot as cfp
+from discordbot.run_discordbot import gst_imgur
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
 
@@ -55,7 +55,7 @@ async def oi_command(ctx, ticker: str= None, expiry: str= None, min_sp: float= N
 
         max_pain = op_helpers.calculate_max_pain(df_opt)
         plt.style.use("seaborn")
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         put_oi.plot(
             x="strike",
