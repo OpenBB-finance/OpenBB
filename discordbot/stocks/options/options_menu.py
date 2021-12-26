@@ -3,20 +3,16 @@ import discord
 
 import discordbot.config_discordbot as cfg
 from discordbot.run_discordbot import gst_bot
-from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 from discordbot.reaction_helper import expiry_dates_reaction
 
-from discordbot.stocks.options.iv import iv_command
-from discordbot.stocks.options.unu import unu_command
-from discordbot.stocks.options.hist import hist_command
-from discordbot.stocks.options.vol import vol_command
 from discordbot.stocks.options.calls import calls_command
-from discordbot.stocks.options.puts import puts_command
 from discordbot.stocks.options.expirations import expirations_command
-if TRADIER_TOKEN == "REPLACE_ME":
-    from discordbot.stocks.options.oi import oi_command
-else:
-    from discordbot.stocks.options.oi_tradier import oi_command
+from discordbot.stocks.options.hist import hist_command
+from discordbot.stocks.options.iv import iv_command
+from discordbot.stocks.options.oi import oi_command
+from discordbot.stocks.options.puts import puts_comman
+from discordbot.stocks.options.unu import unu_command
+from discordbot.stocks.options.vol import vol_command
 
 
 class OptionsCommands(discord.ext.commands.Cog):
