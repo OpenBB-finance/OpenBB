@@ -5,6 +5,8 @@ import pandas as pd
 from coinmarketcapapi import CoinMarketCapAPI
 import gamestonk_terminal.config_terminal as cfg
 
+FILTERS = ["Symbol", "CMC_Rank", "LastPrice", "DayPctChange", "MarketCap"]
+
 
 def get_cmc_top_n() -> pd.DataFrame:
     """Shows top n coins. [Source: CoinMarketCap]

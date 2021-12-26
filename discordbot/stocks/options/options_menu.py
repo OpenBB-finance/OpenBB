@@ -10,13 +10,13 @@ from discordbot.stocks.options.expirations import expirations_command
 from discordbot.stocks.options.hist import hist_command
 from discordbot.stocks.options.iv import iv_command
 from discordbot.stocks.options.oi import oi_command
-from discordbot.stocks.options.puts import puts_comman
+from discordbot.stocks.options.puts import puts_command
 from discordbot.stocks.options.unu import unu_command
 from discordbot.stocks.options.vol import vol_command
 
 
 class OptionsCommands(discord.ext.commands.Cog):
-    """Dark Pool Shorts menu"""
+    """Options menu."""
 
     def __init__(self, bot: discord.ext.commands.Bot):
         self.bot = bot
@@ -333,7 +333,7 @@ class OptionsCommands(discord.ext.commands.Cog):
                 embed = discord.Embed(
                     description="Error timeout - you snooze you lose! 😋",
                     colour=cfg.COLOR,
-                    title="TIMEOUT Stocks: Government (GOV) Menu",
+                    title="TIMEOUT Stocks: Options Menu",
                 ).set_author(
                     name=cfg.AUTHOR_NAME,
                     icon_url=cfg.AUTHOR_ICON_URL,

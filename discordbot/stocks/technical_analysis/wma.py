@@ -4,13 +4,13 @@ import discord
 from matplotlib import pyplot as plt
 import pandas as pd
 
-import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
-import discordbot.helpers
-
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.common.technical_analysis import overlap_model
 from gamestonk_terminal.config_plot import PLOT_DPI
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur
+import discordbot.helpers
 
 
 async def wma_command(ctx, ticker="", window="", offset="", start="", end=""):
@@ -40,15 +40,12 @@ async def wma_command(ctx, ticker="", window="", offset="", start="", end=""):
         if window == "":
             window = [20, 50]
         else:
-            window_temp = []
-            i = 0
-            b = 0
-            while i < len(window):
-                if window[i] == ",":
-                    window_temp.append(float(window[b:i]))
-                    l_legend.append(float(window[b:i]))
-                    b = i
-                i += 1
+            window_temp = list()
+            for wind in window.split(","):
+                try:
+                    window_temp.append(float(wind))
+                except Exception as e:
+                    raise Exception("Window needs to be a float") from e
             window = window_temp
 
         if offset == "":

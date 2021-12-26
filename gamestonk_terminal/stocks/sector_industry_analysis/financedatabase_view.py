@@ -136,10 +136,7 @@ def display_bars_financials(
             else:
                 print(df.to_string, "\n")
         else:
-
             plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            if gtff.USE_ION:
-                plt.ion()
 
             magnitude = 0
             while max(company_metric) > 1_000 or abs(min(company_metric)) > 1_000:
@@ -205,6 +202,8 @@ def display_bars_financials(
             )
 
             plt.title(title)
+            if gtff.USE_ION:
+                plt.ion()
             plt.tight_layout()
             plt.show()
 
@@ -218,7 +217,7 @@ def display_bars_financials(
         if not export:
             print("")
 
-        return stocks_data, company_ticker
+        return stocks_data, company_tickers
 
     if len(metric_data) == 1:
         print(
@@ -356,8 +355,6 @@ def display_companies_per_sector_in_country(
                 legend, values = zip(*companies_per_sector.items())
 
             plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            if gtff.USE_ION:
-                plt.ion()
             plt.pie(
                 values,
                 labels=legend,
@@ -368,7 +365,8 @@ def display_companies_per_sector_in_country(
             )
             plt.title(title)
             plt.tight_layout()
-
+            if gtff.USE_ION:
+                plt.ion()
             plt.show()
 
         elif len(companies_per_sector) == 1:
@@ -522,8 +520,6 @@ def display_companies_per_industry_in_country(
                 legend, values = zip(*companies_per_industry.items())
 
             plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            if gtff.USE_ION:
-                plt.ion()
             plt.pie(
                 values,
                 labels=legend,
@@ -534,7 +530,8 @@ def display_companies_per_industry_in_country(
             )
             plt.title(title)
             plt.tight_layout()
-
+            if gtff.USE_ION:
+                plt.ion()
             plt.show()
 
         elif len(companies_per_industry) == 1:
@@ -686,8 +683,6 @@ def display_companies_per_industry_in_sector(
                 legend, values = zip(*companies_per_industry.items())
 
             plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            if gtff.USE_ION:
-                plt.ion()
             plt.pie(
                 values,
                 labels=legend,
@@ -698,7 +693,8 @@ def display_companies_per_industry_in_sector(
             )
             plt.title(title)
             plt.tight_layout()
-
+            if gtff.USE_ION:
+                plt.ion()
             plt.show()
 
         elif len(companies_per_industry) == 1:
@@ -848,8 +844,6 @@ def display_companies_per_country_in_sector(
                 legend, values = zip(*companies_per_country.items())
 
             plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            if gtff.USE_ION:
-                plt.ion()
             plt.pie(
                 values,
                 labels=legend,
@@ -860,7 +854,8 @@ def display_companies_per_country_in_sector(
             )
             plt.title(title)
             plt.tight_layout()
-
+            if gtff.USE_ION:
+                plt.ion()
             plt.show()
 
         elif len(companies_per_country) == 1:
@@ -1010,8 +1005,6 @@ def display_companies_per_country_in_industry(
                 legend, values = zip(*companies_per_country.items())
 
             plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            if gtff.USE_ION:
-                plt.ion()
             plt.pie(
                 values,
                 labels=legend,
@@ -1022,7 +1015,8 @@ def display_companies_per_country_in_industry(
             )
             plt.title(title)
             plt.tight_layout()
-
+            if gtff.USE_ION:
+                plt.ion()
             plt.show()
 
         elif len(companies_per_country) == 1:

@@ -19,6 +19,7 @@ from gamestonk_terminal.common.behavioural_analysis.sentimentinvestor_model impo
 )
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal import feature_flags as gtff
 
 sentipy: Sentipy = Sentipy(
     token=cfg.API_SENTIMENTINVESTOR_TOKEN, key=cfg.API_SENTIMENTINVESTOR_KEY
@@ -179,7 +180,8 @@ def display_historical(
 
     # add title e.g. AAPL sentiment since 22/07/21
     plt.title(f"{ticker} {metric} since {min(df.date).strftime('%x')}")
-
+    if gtff.USE_ION:
+        plt.ion()
     plt.show()
 
     ###
