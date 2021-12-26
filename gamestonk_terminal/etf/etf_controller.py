@@ -756,55 +756,6 @@ Major holdings: {', '.join(self.etf_holdings)}
             stockanalysis_view.view_comparisons(etf_list, export=ns_parser.export)
 
     @try_except
-    def call_gainers(self, other_args):
-        """Process gainers command"""
-        parser = argparse.ArgumentParser(
-            prog="gainers",
-            description="Displays top ETF/Mutual fund gainers from wsj.com/market-data",
-            add_help=False,
-        )
-        parser.add_argument(
-            "-l", "--limit", help="Number to show", type=int, default=25, dest="limit"
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            wsj_view.show_top_mover("gainers", ns_parser.limit, ns_parser.export)
-
-    def call_decliners(self, other_args):
-        """Process decliners command"""
-        parser = argparse.ArgumentParser(
-            prog="decliners",
-            description="Displays top ETF/Mutual fund decliners from wsj.com/market-data",
-            add_help=False,
-        )
-        parser.add_argument(
-            "-l", "--limit", help="Number to show", type=int, default=25, dest="limit"
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            wsj_view.show_top_mover("decliners", ns_parser.limit, ns_parser.export)
-
-    def call_active(self, other_args):
-        """Process gainers command"""
-        parser = argparse.ArgumentParser(
-            prog="active",
-            description="Displays most active ETF/Mutual funds from wsj.com/market-data",
-            add_help=False,
-        )
-        parser.add_argument(
-            "-l", "--limit", help="Number to show", type=int, default=25, dest="limit"
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            wsj_view.show_top_mover("active", ns_parser.limit, ns_parser.export)
-
-    @try_except
     def call_pir(self, other_args):
         """Process pir command"""
         parser = argparse.ArgumentParser(
