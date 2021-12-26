@@ -1,0 +1,20 @@
+
+Prediction Techniques Menu:
+
+    load        load new ticker
+    pick        pick new target variable
+
+Ticker Loaded: Daily Stock: TSLA (from 2020-12-01)
+Target Column: AdjClose
+
+Models:
+    ets         exponential smoothing (e.g. Holt-Winters)
+    knn         k-Nearest Neighbors
+    regression  polynomial regression
+    arima       autoregressive integrated moving average
+    mlp         MultiLayer Perceptron
+    rnn         Recurrent Neural Network
+    lstm        Long-Short Term Memory
+    conv1d      1D Convolutional Neural Network
+    mc          Monte-Carlo simulations
+        

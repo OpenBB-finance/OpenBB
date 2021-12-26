@@ -8,6 +8,16 @@ import pandas as pd
 import numpy as np
 import gamestonk_terminal.config_terminal as cfg
 
+FILTERS = [
+    "date",
+    "symbol",
+    "blockchain",
+    "amount",
+    "amount_usd",
+    "from",
+    "to",
+]
+
 
 class ApiKeyException(Exception):
     """Api Key Exception object"""

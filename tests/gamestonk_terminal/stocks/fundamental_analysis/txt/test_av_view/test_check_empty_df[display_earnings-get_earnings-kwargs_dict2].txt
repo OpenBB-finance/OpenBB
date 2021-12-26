@@ -1,2 +1,2 @@
-Error getting earnings data.
+No API calls left. Try me later 
 

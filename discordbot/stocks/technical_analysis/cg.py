@@ -4,13 +4,13 @@ import discord
 from matplotlib import pyplot as plt
 import numpy as np
 
-import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
-import discordbot.helpers
-
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.config_plot import PLOT_DPI
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur
+import discordbot.helpers
 
 
 async def cg_command(ctx, ticker="", length="14", start="", end=""):

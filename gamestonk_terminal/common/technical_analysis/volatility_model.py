@@ -4,6 +4,8 @@ __docformat__ = "numpy"
 import pandas as pd
 import pandas_ta as ta
 
+MAMODES = ["ema", "sma", "wma", "hma", "zlma"]
+
 
 def bbands(
     s_interval: str, df_stock: pd.DataFrame, length: int, n_std: float, mamode: str

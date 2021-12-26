@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 import argparse
 import functools
+import logging
 from typing import List
 from datetime import datetime, timedelta, time as Time
 import os
@@ -25,6 +26,8 @@ from screeninfo import get_monitors
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_plot as cfgPlot
 import gamestonk_terminal.config_terminal as cfg
+
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 if cfgPlot.BACKEND is not None:
@@ -89,6 +92,14 @@ def check_int_range(mini: int, maxi: int):
 def check_non_negative(value) -> int:
     """Argparse type to check non negative int"""
     new_value = int(value)
+    if new_value < 0:
+        raise argparse.ArgumentTypeError(f"{value} is negative")
+    return new_value
+
+
+def check_non_negative_float(value) -> float:
+    """Argparse type to check non negative int"""
+    new_value = float(value)
     if new_value < 0:
         raise argparse.ArgumentTypeError(f"{value} is negative")
     return new_value
@@ -186,6 +197,7 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
         print(
             "Encountered an error trying to open a chart window. Check your X server configuration."
         )
+        logging.exception("%s", type(e).__name__)
         return
 
     # In order to make nice Volume plot, make the bar width = interval
@@ -566,7 +578,12 @@ def parse_known_args_and_warn(
     if gtff.USE_CLEAR_AFTER_CMD:
         system_clear()
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
+    except SystemExit:
+        # In case the command has required argument that isn't specified
+        print("")
+        return None
 
     if ns_parser.help:
         parser.print_help()
@@ -784,7 +801,8 @@ def try_except(f):
         try:
             return f(*args, **kwargs)
         except Exception as e:
-            print(e, "\n")
+            logger.exception("%s", type(e).__name__)
+            return []
 
     return inner
 

@@ -1,22 +1,23 @@
 """Yahoo Finance View"""
 __docformat__ = "numpy"
-import argparse
 import configparser
 import datetime
 import os
 import random
 from typing import List
+import numpy as np
+import pandas as pd
 
 from pandas.plotting import register_matplotlib_converters
+from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
 import yfinance as yf
 from finvizfinance.screener import ticker
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
+    export_data,
     plot_autoscale,
-    valid_date,
 )
 from gamestonk_terminal.stocks.screener import finviz_model
 
@@ -33,155 +34,119 @@ d_candle_types = {
 }
 
 
-def check_one_of_ohlca(type_candles: str) -> str:
-    if type_candles in ("o", "h", "l", "c", "a"):
-        return type_candles
-    raise argparse.ArgumentTypeError("The type of candles specified is not recognized")
-
-
-def historical(other_args: List[str], preset_loaded: str) -> List[str]:
+def historical(
+    preset_loaded: str,
+    limit: int = 10,
+    start: datetime.datetime = datetime.datetime.now()
+    - datetime.timedelta(days=6 * 30),
+    type_candle: str = "a",
+    normalize: bool = True,
+    export: str = "",
+) -> List[str]:
     """View historical price of stocks that meet preset
 
     Parameters
     ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
-    ticker : str
-        Loaded preset filter
-
-    Returns
-    -------
-    List[str]
-        List of stocks that meet preset criteria
+    preset_loaded: str
+        Preset loaded to filter for tickers
+    limit: int
+        Number of stocks to display
+    start: datetime
+        Start datetime to display historical data
+    type_candle: str
+        Type of candle to display
+    normalize : bool
+        Boolean to normalize all stock prices using MinMax
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="historical",
-        description="""Historical price comparison between similar companies [Source: Yahoo Finance]
-        """,
-    )
-    parser.add_argument(
-        "--start",
-        type=valid_date,
-        default=datetime.datetime.now() - datetime.timedelta(days=6 * 30),
-        dest="start",
-        help="The starting date (format YYYY-MM-DD) of the historical price to plot",
-    )
-    parser.add_argument(
-        "-t",
-        "--type",
-        action="store",
-        dest="type_candle",
-        type=check_one_of_ohlca,
-        default="a",  # in case it's adjusted close
-        help=("type of candles: o-open, h-high, l-low, c-close, a-adjusted close."),
-    )
+    screen = ticker.Ticker()
+    if preset_loaded in finviz_model.d_signals:
+        screen.set_filter(signal=finviz_model.d_signals[preset_loaded])
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return list()
+    else:
+        preset_filter = configparser.RawConfigParser()
+        preset_filter.optionxform = str  # type: ignore
+        preset_filter.read(presets_path + preset_loaded + ".ini")
 
-        screen = ticker.Ticker()
-        if preset_loaded in finviz_model.d_signals:
-            screen.set_filter(signal=finviz_model.d_signals[preset_loaded])
+        d_general = preset_filter["General"]
+        d_filters = {
+            **preset_filter["Descriptive"],
+            **preset_filter["Fundamental"],
+            **preset_filter["Technical"],
+        }
 
+        d_filters = {k: v for k, v in d_filters.items() if v}
+
+        if "Signal" in d_general and d_general["Signal"]:
+            screen.set_filter(filters_dict=d_filters, signal=d_general["Signal"])
         else:
-            preset_filter = configparser.RawConfigParser()
-            preset_filter.optionxform = str  # type: ignore
-            preset_filter.read(presets_path + preset_loaded + ".ini")
+            screen.set_filter(filters_dict=d_filters)
 
-            d_general = preset_filter["General"]
-            d_filters = {
-                **preset_filter["Descriptive"],
-                **preset_filter["Fundamental"],
-                **preset_filter["Technical"],
-            }
+    l_stocks = screen.ScreenerView(verbose=0)
+    limit_random_stocks = False
 
-            d_filters = {k: v for k, v in d_filters.items() if v}
-
-            if d_general["Signal"]:
-                screen.set_filter(filters_dict=d_filters, signal=d_general["Signal"])
-            else:
-                screen.set_filter(filters_dict=d_filters)
-
-        l_min = []
-        l_leg = []
-        l_stocks = screen.ScreenerView(verbose=0)
-        limit_random_stocks = False
-
-        if len(l_stocks) > 10:
+    if l_stocks:
+        if len(l_stocks) > limit:
+            random.shuffle(l_stocks)
+            l_stocks = sorted(l_stocks[:limit])
             print(
                 "\nThe limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed.",
-                "\nThe selected list will be:",
+                f"\nThe selected list will be: {', '.join(l_stocks)}",
             )
-            random.shuffle(l_stocks)
-            l_stocks = sorted(l_stocks[:10])
-            print(", ".join(l_stocks))
             limit_random_stocks = True
 
-        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        df_screener = yf.download(l_stocks, start=start, progress=False, threads=False)[
+            d_candle_types[type_candle]
+        ][l_stocks]
+        df_screener = df_screener[l_stocks]
 
-        while l_stocks:
-            l_parsed_stocks = []
-            for symbol in l_stocks:
-                try:
-                    df_similar_stock = yf.download(
-                        symbol,
-                        start=datetime.datetime.strftime(ns_parser.start, "%Y-%m-%d"),
-                        progress=False,
-                        threads=False,
-                    )
-                    if not df_similar_stock.empty:
-                        plt.plot(
-                            df_similar_stock.index,
-                            df_similar_stock[
-                                d_candle_types[ns_parser.type_candle]
-                            ].values,
-                        )
-                        l_min.append(df_similar_stock.index[0])
-                        l_leg.append(symbol)
+        if np.any(df_screener.isna()):
+            nan_tickers = df_screener.columns[df_screener.isna().sum() >= 1].to_list()
+            print(
+                f"NaN values found in: {', '.join(nan_tickers)}.  Replacing with zeros."
+            )
+            df_screener = df_screener.fillna(0)
 
-                    l_parsed_stocks.append(symbol)
-                except Exception as e:
-                    print("")
-                    print(e)
-                    print(
-                        "Disregard previous error, which is due to API Rate limits from Yahoo Finance."
-                    )
-                    print(
-                        f"Because we like '{symbol}', and we won't leave without getting data from it."
-                    )
-
-            for parsed_stock in l_parsed_stocks:
-                l_stocks.remove(parsed_stock)
-
+        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        # This puts everything on 0-1 scale for visualizing
+        if normalize:
+            mm_scale = MinMaxScaler()
+            df_screener = pd.DataFrame(
+                mm_scale.fit_transform(df_screener),
+                columns=df_screener.columns,
+                index=df_screener.index,
+            )
+        df_screener.plot(ax=ax)
         if limit_random_stocks:
-            plt.title(
+            ax.set_title(
                 f"Screener Historical Price using {preset_loaded} on 10 of those stocks"
             )
         else:
-            plt.title(f"Screener Historical Price using {preset_loaded}")
-
-        plt.xlabel("Time")
-        plt.ylabel("Share Price ($)")
-        plt.legend(l_leg)
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+            ax.set_title(f"Screener Historical Price using {preset_loaded}")
+        ax.set_xlabel("Time")
+        ax.set_ylabel(
+            f"{['','Normalized'][normalize]} Share Price {['($)',''][normalize]}"
+        )
+        ax.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax.legend(l_stocks, bbox_to_anchor=(1.04, 1), loc="upper left")
         # ensures that the historical data starts from same datapoint
-        plt.xlim([max(l_min), df_similar_stock.index[-1]])
-
+        ax.set_xlim([df_screener.index[0], df_screener.index[-1]])
+        plt.gcf().autofmt_xdate()
+        fig.tight_layout()
         if gtff.USE_ION:
             plt.ion()
 
         plt.show()
         print("")
-        return l_parsed_stocks
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "historical",
+            df_screener,
+        )
 
-    except SystemExit:
-        print("Similar companies need to be provided", "\n")
-        return []
-    except Exception as e:
-        print(e, "\n")
-        return []
+        return l_stocks
+
+    print("No screener stocks found with this preset", "\n")
+    return []

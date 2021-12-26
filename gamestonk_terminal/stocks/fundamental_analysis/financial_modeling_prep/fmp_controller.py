@@ -2,7 +2,8 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List
+import difflib
+from typing import List, Union
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
@@ -24,7 +25,20 @@ class FinancialModelingPrepController:
     """Financial Modeling Prep Controller"""
 
     # Command choices
-    CHOICES = ["cls", "?", "help", "q", "quit"]
+    CHOICES = [
+        "cls",
+        "home",
+        "h",
+        "?",
+        "help",
+        "q",
+        "quit",
+        "..",
+        "exit",
+        "r",
+        "reset",
+    ]
+
     CHOICES_COMMANDS = [
         "profile",
         "quote",
@@ -39,7 +53,13 @@ class FinancialModelingPrepController:
     ]
     CHOICES += CHOICES_COMMANDS
 
-    def __init__(self, ticker: str, start: str, interval: str):
+    def __init__(
+        self,
+        ticker: str,
+        start: str,
+        interval: str,
+        queue: List[str] = None,
+    ):
         """Constructor
 
         Parameters
@@ -60,15 +80,20 @@ class FinancialModelingPrepController:
             "cmd",
             choices=self.CHOICES,
         )
+        self.completer: Union[None, NestedCompleter] = None
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
 
     def print_help(self):
         """Print help"""
         help_text = f"""
-Financial Modeling Prep:
-    cls           clear screen
-    ?/help        show this menu again
-    q             quit this menu, and shows back to main menu
-    quit          quit to abandon program
+Financial Modeling Prep Menu:
 
 Ticker: {self.ticker}
 
@@ -87,47 +112,92 @@ Ticker: {self.ticker}
 
     def switch(self, an_input: str):
         """Process and dispatch input
-
+        Parameters
+        -------
+        an_input : str
+            string with input arguments
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
 
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.fmp_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
-
-        return getattr(
-            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
+        getattr(
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+
     def call_help(self, _):
-        """Process Help command"""
+        """Process help command"""
         self.print_help()
 
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return False
-
     def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+        """Process quit menu command"""
+        self.queue.insert(0, "quit")
+
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+
+    def call_reset(self, _):
+        """Process reset command"""
+        self.queue.insert(0, "fmp")
+        self.queue.insert(0, "fa")
+        if self.ticker:
+            self.queue.insert(0, f"load {self.ticker}")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_profile(self, other_args: List[str]):
@@ -146,9 +216,8 @@ Ticker: {self.ticker}
             """,
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        fmp_view.display_profile(self.ticker)
+        if ns_parser:
+            fmp_view.display_profile(self.ticker)
 
     @try_except
     def call_quote(self, other_args: List[str]):
@@ -167,9 +236,8 @@ Ticker: {self.ticker}
             """,
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        fmp_view.display_quote(self.ticker)
+        if ns_parser:
+            fmp_view.display_quote(self.ticker)
 
     @try_except
     def call_enterprise(self, other_args: List[str]):
@@ -186,13 +254,13 @@ Ticker: {self.ticker}
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=1,
-            help="Number of latest years/quarters.",
+            help="Limit of latest years/quarters.",
         )
         parser.add_argument(
             "-q",
@@ -205,15 +273,13 @@ Ticker: {self.ticker}
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-
-        fmp_view.display_enterprise(
-            ticker=self.ticker,
-            number=ns_parser.n_num,
-            quarterly=ns_parser.b_quarter,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            fmp_view.display_enterprise(
+                ticker=self.ticker,
+                number=ns_parser.limit,
+                quarterly=ns_parser.b_quarter,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_dcf(self, other_args: List[str]):
@@ -229,13 +295,13 @@ Ticker: {self.ticker}
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=1,
-            help="Number of latest years/quarters.",
+            help="Limit of latest years/quarters.",
         )
         parser.add_argument(
             "-q",
@@ -248,14 +314,13 @@ Ticker: {self.ticker}
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-        fmp_view.display_discounted_cash_flow(
-            ticker=self.ticker,
-            number=ns_parser.n_num,
-            quarterly=ns_parser.b_quarter,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            fmp_view.display_discounted_cash_flow(
+                ticker=self.ticker,
+                number=ns_parser.limit,
+                quarterly=ns_parser.b_quarter,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_income(self, other_args: List[str]):
@@ -277,13 +342,13 @@ Ticker: {self.ticker}
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=1,
-            help="Number of latest years/quarters.",
+            help="Limit of latest years/quarters.",
         )
         parser.add_argument(
             "-q",
@@ -296,14 +361,13 @@ Ticker: {self.ticker}
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-        fmp_view.display_income_statement(
-            ticker=self.ticker,
-            number=ns_parser.n_num,
-            quarterly=ns_parser.b_quarter,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            fmp_view.display_income_statement(
+                ticker=self.ticker,
+                number=ns_parser.limit,
+                quarterly=ns_parser.b_quarter,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_balance(self, other_args: List[str]):
@@ -330,13 +394,13 @@ Ticker: {self.ticker}
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=1,
-            help="Number of latest years/quarters.",
+            help="Limit of latest years/quarters.",
         )
         parser.add_argument(
             "-q",
@@ -349,14 +413,13 @@ Ticker: {self.ticker}
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-        fmp_view.display_balance_sheet(
-            ticker=self.ticker,
-            number=ns_parser.n_num,
-            quarterly=ns_parser.b_quarter,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            fmp_view.display_balance_sheet(
+                ticker=self.ticker,
+                number=ns_parser.limit,
+                quarterly=ns_parser.b_quarter,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_cash(self, other_args: List[str]):
@@ -381,13 +444,13 @@ Ticker: {self.ticker}
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=1,
-            help="Number of latest years/quarters.",
+            help="Limit of latest years/quarters.",
         )
         parser.add_argument(
             "-q",
@@ -400,14 +463,13 @@ Ticker: {self.ticker}
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-        fmp_view.display_cash_flow(
-            ticker=self.ticker,
-            number=ns_parser.n_num,
-            quarterly=ns_parser.b_quarter,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            fmp_view.display_cash_flow(
+                ticker=self.ticker,
+                number=ns_parser.limit,
+                quarterly=ns_parser.b_quarter,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_metrics(self, other_args: List[str]):
@@ -437,13 +499,13 @@ Ticker: {self.ticker}
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=1,
-            help="Number of latest years/quarters.",
+            help="Limit of latest years/quarters.",
         )
         parser.add_argument(
             "-q",
@@ -456,14 +518,13 @@ Ticker: {self.ticker}
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-        fmp_view.display_key_metrics(
-            ticker=self.ticker,
-            number=ns_parser.n_num,
-            quarterly=ns_parser.b_quarter,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            fmp_view.display_key_metrics(
+                ticker=self.ticker,
+                number=ns_parser.limit,
+                quarterly=ns_parser.b_quarter,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_ratios(self, other_args: List[str]):
@@ -494,13 +555,13 @@ Ticker: {self.ticker}
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=1,
-            help="Number of latest years/quarters.",
+            help="Limit of latest years/quarters.",
         )
         parser.add_argument(
             "-q",
@@ -513,14 +574,13 @@ Ticker: {self.ticker}
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-        fmp_view.display_financial_ratios(
-            ticker=self.ticker,
-            number=ns_parser.n_num,
-            quarterly=ns_parser.b_quarter,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            fmp_view.display_financial_ratios(
+                ticker=self.ticker,
+                number=ns_parser.limit,
+                quarterly=ns_parser.b_quarter,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_growth(self, other_args: List[str]):
@@ -547,13 +607,13 @@ Ticker: {self.ticker}
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=1,
-            help="Number of latest years/quarters.",
+            help="Limit of latest years/quarters.",
         )
         parser.add_argument(
             "-q",
@@ -566,17 +626,21 @@ Ticker: {self.ticker}
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-        fmp_view.display_financial_statement_growth(
-            ticker=self.ticker,
-            number=ns_parser.n_num,
-            quarterly=ns_parser.b_quarter,
-            export=ns_parser.export,
-        )
+        if ns_parser:
+            fmp_view.display_financial_statement_growth(
+                ticker=self.ticker,
+                number=ns_parser.limit,
+                quarterly=ns_parser.b_quarter,
+                export=ns_parser.export,
+            )
 
 
-def menu(ticker: str, start: str, interval: str):
+def menu(
+    ticker: str,
+    start: str,
+    interval: str,
+    queue: List[str] = None,
+):
     """Financial Modeling Prep menu
 
     Parameters
@@ -589,29 +653,75 @@ def menu(ticker: str, start: str, interval: str):
         Stock data interval
     """
 
-    fmp_controller = FinancialModelingPrepController(ticker, start, interval)
-    fmp_controller.call_help(None)
+    fmp_controller = FinancialModelingPrepController(ticker, start, interval, queue)
+    an_input = "HELP_ME"
 
     while True:
-        # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in fmp_controller.CHOICES}
-            )
+        # There is a command in the queue
+        if fmp_controller.queue and len(fmp_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
+            if fmp_controller.queue[0] in ("q", "..", "quit"):
+                if len(fmp_controller.queue) > 1:
+                    return fmp_controller.queue[1:]
+                return []
 
-            an_input = session.prompt(
-                f"{get_flair()} (stocks)>(fa)>(fmp)> ",
-                completer=completer,
-            )
+            # Consume 1 element from the queue
+            an_input = fmp_controller.queue[0]
+            fmp_controller.queue = fmp_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
+            if an_input and an_input.split(" ")[0] in fmp_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /stocks/fa/fmp/ $ {an_input}")
+
+        # Get input command from user
         else:
-            an_input = input(f"{get_flair()} (stocks)>(fa)>(fmp)> ")
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
+                fmp_controller.print_help()
+
+            # Get input from user using auto-completion
+            if session and gtff.USE_PROMPT_TOOLKIT and fmp_controller.completer:
+                an_input = session.prompt(
+                    f"{get_flair()} /stocks/fa/fmp/ $ ",
+                    completer=fmp_controller.completer,
+                    search_ignore_case=True,
+                )
+            # Get input from user without auto-completion
+            else:
+                an_input = input(f"{get_flair()} /stocks/fa/fmp/ $ ")
 
         try:
-            process_input = fmp_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            # Process the input command
+            fmp_controller.queue = fmp_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            continue
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
+                end="",
+            )
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                fmp_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
+            if similar_cmd:
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                else:
+                    candidate_input = similar_cmd[0]
+
+                if candidate_input == an_input:
+                    an_input = ""
+                    fmp_controller.queue = []
+                    print("\n")
+                    continue
+
+                print(f" Replacing by '{an_input}'.")
+                fmp_controller.queue.insert(0, an_input)
+            else:
+                print("\n")
+                an_input = ""
+                fmp_controller.queue = []

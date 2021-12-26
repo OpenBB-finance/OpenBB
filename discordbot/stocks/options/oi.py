@@ -76,8 +76,8 @@ async def oi_command(ctx, ticker: str= None, expiry: str= None, min_sp: float= N
             ls="-",
             c="g",
         )
-        ax.axvline(current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.7)
-        ax.axvline(max_pain, lw=3, c="k", label=f"Max Pain: {max_pain}", alpha=0.7)
+        ax.axvline(current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.4)
+        ax.axvline(max_pain, lw=3, c="k", label=f"Max Pain: {max_pain}", alpha=0.4)
         ax.grid("on")
         ax.set_xlabel("Strike Price")
         ax.set_ylabel("Open Interest (1k) ")
@@ -86,7 +86,7 @@ async def oi_command(ctx, ticker: str= None, expiry: str= None, min_sp: float= N
 
         ax.set_title(f"Open Interest for {ticker.upper()} expiring {expiry}")
         plt.legend(loc=0)
-        fig.tight_layout(pad=1)
+        fig.tight_layout()
 
         imagefile = "opt_oi.png"
         plt.savefig("opt_oi.png")

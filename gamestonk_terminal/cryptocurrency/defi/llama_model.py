@@ -7,6 +7,17 @@ import requests
 import pandas as pd
 import numpy as np
 
+LLAMA_FILTERS = [
+    "tvl",
+    "symbol",
+    "category",
+    "chains",
+    "change_1h",
+    "change_1d",
+    "change_7d",
+    "name",
+]
+
 
 def get_defi_protocols() -> pd.DataFrame:
     """Returns information about listed DeFi protocols, their current TVL and changes to it in the last hour/day/week.
@@ -57,7 +68,7 @@ def get_defi_tvl() -> pd.DataFrame:
     pd.DataFrame
         Historical values of total sum of Total Value Locked from all listed protocols.
     """
-    response = requests.get("https://api.llama.fi/charts")
+    response = requests.get("https://api.llama.fi/charts", timeout=5)
     if response.status_code != 200:
         raise Exception(f"Status code: {response.status_code}. Reason: {response.text}")
     try:
