@@ -80,22 +80,24 @@ def get_etf_holdings(symbol: str) -> pd.DataFrame:
 
     link = f"https://stockanalysis.com/etf/{symbol}/holdings/"
     r = requests.get(link, headers={"User-Agent": get_user_agent()})
-    soup = bs(r.text, "html.parser")
-    soup = soup.find("table")
-    tds = soup.findAll("td")
-    tickers = []
-    for i in tds[1::5]:
-        tickers.append(i.text)
-    percents = []
-    for i in tds[3::5]:
-        percents.append(i.text)
-    shares = []
-    for i in tds[4::5]:
-        shares.append(i.text)
-    df = pd.DataFrame(index=tickers)
-    df["% Of Etf"] = percents
-    df["Shares"] = shares
-    return df
+    if r.status_code == 200:
+        soup = bs(r.text, "html.parser")
+        soup = soup.find("table")
+        tds = soup.findAll("td")
+        tickers = []
+        for i in tds[1::5]:
+            tickers.append(i.text)
+        percents = []
+        for i in tds[3::5]:
+            percents.append(i.text)
+        shares = []
+        for i in tds[4::5]:
+            shares.append(i.text)
+        df = pd.DataFrame(index=tickers)
+        df["% Of Etf"] = percents
+        df["Shares"] = shares
+        return df
+    return pd.DataFrame()
 
 
 def compare_etfs(symbols: List[str]) -> pd.DataFrame:

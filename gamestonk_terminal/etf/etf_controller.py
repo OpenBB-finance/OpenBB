@@ -127,9 +127,9 @@ class ETFController:
     ld            lookup by description [FinanceDatabase]
     load          load ETF data [Yfinance]
 
-Symbol: {self.etf_name}
+Symbol: {self.etf_name}{Style.DIM if len(self.etf_holdings)==0 else ""}
 Major holdings: {', '.join(self.etf_holdings)}
-{Style.DIM if len(self.etf_holdings)==0 else ""}
+
 >   ca            comparison analysis,          e.g.: get similar, historical, correlation, financials
 {Style.RESET_ALL}{Style.DIM if not self.etf_name else ""}
     overview      get overview [StockAnalysis.com]
@@ -404,7 +404,11 @@ Finance Database:
             self.etf_data = df_etf_candidate
 
             holdings = stockanalysis_model.get_etf_holdings(self.etf_name)
-            self.etf_holdings = holdings.index[: ns_parser.limit].tolist()
+            if holdings.empty:
+                print("No company holdings found!\n")
+            else:
+                self.etf_holdings = holdings.index[: ns_parser.limit].tolist()
+                print(f"Top company holdings found: {', '.join(self.etf_holdings)}\n")
 
             print("")
 
