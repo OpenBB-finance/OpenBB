@@ -1,96 +1,105 @@
 import os
 import discord
-import mplfinance as mpf
+import matplotlib.pyplot as plt
 import discordbot.config_discordbot as cfg
-from gamestonk_terminal.stocks.options import tradier_model
+from discordbot.run_discordbot import gst_imgur
+
+from gamestonk_terminal import config_plot as cfp
+from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal.stocks.options import yfinance_model
 
 
 
 
-async def hist_command(ctx,  ticker: str= None, expiry: str= None, strike: float= None, put: bool= False):
-    """Plot historical option prices
-
-    Parameters
-    ----------
-    ticker: str
-        Stock ticker
-    expiry: str
-        accepts 0-9 
-        0 being weeklies
-        1+ for weeks out
-        prompts reaction helper if empty
-    strike: float
-        Option strike price
-    put: bool
-        c for call
-        p for put
-    """
+async def vol_command(ctx, ticker: str= None, expiry: str= None, min_sp: float= None, max_sp: float= None):
+    """Options VOL"""
 
     try:
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.opt.hist {ticker} {strike} {put} {expiry}")
+            print(f"!stocks.opt.vol {ticker} {expiry} {min_sp} {max_sp}")
 
         # Check for argument
         if ticker is None:
-            raise Exception("Stock ticker is required") 
+            raise Exception("Stock ticker is required")    
         
-        if strike is None or put =="":
-            raise Exception("A strike and c/p is required\n```bash\n\"!hist {ticker} {strike} {c/p}\"```")
- 
-        chain_id: str= None
+        dates = yfinance_model.option_expirations(ticker)
 
+        if not dates:
+            raise Exception("Stock ticker is invalid")
+        
+        options = yfinance_model.get_option_chain(ticker, expiry)
+        current_price = yfinance_model.get_price(ticker)
 
-        df_hist = tradier_model.get_historical_options(
-            ticker, expiry, strike, put, chain_id
+        if min_sp is None:
+            min_strike = 0.75 * current_price
+        else:
+            min_strike = min_sp
+
+        if max_sp is None:
+            max_strike = 1.90 * current_price
+        else:
+            max_strike = max_sp 
+
+        calls = options.calls
+        puts = options.puts
+        call_v = calls.set_index("strike")["volume"] / 1000
+        put_v = puts.set_index("strike")["volume"] / 1000
+        plt.style.use("seaborn")
+        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+
+        
+        put_v.plot(
+            x="strike",
+            y="volume",
+            label="Puts",
+            ax=ax,
+            marker="o",
+            ls="-",
+            c="r",
         )
-
-        op_type = ["call", "put"][put]
-
-        mc = mpf.make_marketcolors(
-            up="green", down="red", edge="black", wick="black", volume="in", ohlc="i"
+        call_v.plot(
+            x="strike",
+            y="volume",
+            label="Calls",
+            ax=ax,
+            marker="o",
+            ls="-",
+            c="g",
         )
+        ax.axvline(current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.7)
+        ax.grid("on")
+        ax.set_xlabel("Strike Price")
+        ax.set_ylabel("Volume (1k) ")
+        ax.set_xlim(min_strike, max_strike)
 
-        s = mpf.make_mpf_style(base_mpl_style='seaborn', marketcolors=mc, gridstyle=":", y_on_right=True)
+        ax.set_title(f"Volume for {ticker.upper()} expiring {expiry}")
+        plt.legend(loc=0)
+        fig.tight_layout(pad=1)
 
-        mpf.plot(
-            df_hist,
-            type="candle",
-            volume=True,
-            title=f"\n{ticker.upper()} {strike} {op_type} expiring {expiry} Historical",
-            tight_layout=True,
-            style=s,
-            figratio=(10, 7),
-            figscale=1.10,
-            figsize=(12,5),
-            update_width_config=dict(
-                candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
-            ),
-            savefig="opt_hist.png",
-        )
-
-        imagefile = "opt_hist.png"
+        imagefile = "opt_vol.png"
+        plt.savefig("opt_vol.png")
         image = discord.File(imagefile)
 
         if cfg.DEBUG:
             print(f"Image: {imagefile}")
-        title = " " + ticker.upper() + " Options: History"
+        title = " " + ticker.upper() + " Options: Volume"
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_image(
-            url="attachment://opt_hist.png"
+            url="attachment://opt_vol.png"
         )
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
         )
-        os.remove("opt_hist.png")
+        os.remove("opt_vol.png")
 
         await ctx.send(embed=embed, file=image)
 
     except Exception as e:
         embed = discord.Embed(
-            title="ERROR Options: History",
+            title="ERROR Options: Volume",
             colour=cfg.COLOR,
             description=e,
         )
@@ -98,5 +107,5 @@ async def hist_command(ctx,  ticker: str= None, expiry: str= None, strike: float
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
         )
-
+                
         await ctx.send(embed=embed)
