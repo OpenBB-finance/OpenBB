@@ -16,7 +16,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
 
     if expiry == "0":
         expiry = dates[0]
-        if call_arg == None:
+        if call_arg is None:
             await func_cmd(ctx, ticker, expiry)
             return
         else:
@@ -25,7 +25,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
 
     if expiry == "1":
         expiry = dates[1]
-        if call_arg == None:
+        if call_arg is None:
             await func_cmd(ctx, ticker, expiry)
             return
         else:
@@ -34,7 +34,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
 
     if expiry == "2":
         expiry = dates[2]
-        if call_arg == None:
+        if call_arg is None:
             await func_cmd(ctx, ticker, expiry)
             return
         else:
@@ -43,7 +43,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
 
     if expiry == "3":
         expiry = dates[3]
-        if call_arg == None:
+        if call_arg is None:
             await func_cmd(ctx, ticker, expiry)
             return
         else:
@@ -52,7 +52,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
 
     if expiry == "4":
         expiry = dates[4]
-        if call_arg == None:
+        if call_arg is None:
             await func_cmd(ctx, ticker, expiry)
             return
         else:
@@ -61,7 +61,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
 
     if expiry == "5":
         expiry = dates[5]
-        if call_arg == None:
+        if call_arg is None:
             await func_cmd(ctx, ticker, expiry)
             return
         else:
@@ -70,7 +70,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
 
     if expiry == "6":
         expiry = dates[6]
-        if call_arg == None:
+        if call_arg is None:
             await func_cmd(ctx, ticker, expiry)
             return
         else:
@@ -79,7 +79,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
 
     if expiry == "7":
         expiry = dates[7]
-        if call_arg == None:
+        if call_arg is None:
             await func_cmd(ctx, ticker, expiry)
             return
         else:
@@ -88,7 +88,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
 
     if expiry == "8":
         expiry = dates[8]
-        if call_arg == None:
+        if call_arg is None:
             await func_cmd(ctx, ticker, expiry)
             return
         else:
@@ -97,7 +97,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
 
     if expiry == "9":
         expiry = dates[9]
-        if call_arg == None:
+        if call_arg is None:
             await func_cmd(ctx, ticker, expiry)
             return
         else:
@@ -156,7 +156,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
             if cfg.DEBUG:
                 print("Reaction selected: 0")
                 expiry = dates[0]
-                if call_arg == None:
+                if call_arg is None:
                     await func_cmd(ctx, ticker, expiry)
                 else:
                     await func_cmd(ctx, ticker, expiry, *call_arg)
@@ -165,7 +165,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
             if cfg.DEBUG:
                 print("Reaction selected: 1")
                 expiry = dates[1]
-                if call_arg == None:
+                if call_arg is None:
                     await func_cmd(ctx, ticker, expiry)
                 else:
                     await func_cmd(ctx, ticker, expiry, *call_arg)
@@ -174,7 +174,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
             if cfg.DEBUG:
                 print("Reaction selected: 2")
                 expiry = dates[2]
-                if call_arg == None:
+                if call_arg is None:
                     await func_cmd(ctx, ticker, expiry)
                 else:
                     await func_cmd(ctx, ticker, expiry, *call_arg)
@@ -183,7 +183,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
             if cfg.DEBUG:
                 print("Reaction selected: 3")
                 expiry = dates[3]
-                if call_arg == None:
+                if call_arg is None:
                     await func_cmd(ctx, ticker, expiry)
                 else:
                     await func_cmd(ctx, ticker, expiry, *call_arg)
@@ -192,7 +192,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
             if cfg.DEBUG:
                 print("Reaction selected: 4")
                 expiry = dates[4]
-                if call_arg == None:
+                if call_arg is None:
                     await func_cmd(ctx, ticker, expiry)
                 else:
                     await func_cmd(ctx, ticker, expiry, *call_arg)
@@ -201,7 +201,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
             if cfg.DEBUG:
                 print("Reaction selected: 5")
                 expiry = dates[5]
-                if call_arg == None:
+                if call_arg is None:
                     await func_cmd(ctx, ticker, expiry)
                 else:
                     await func_cmd(ctx, ticker, expiry, *call_arg)
@@ -210,7 +210,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
             if cfg.DEBUG:
                 print("Reaction selected: 6")
                 expiry = dates[6]
-                if call_arg == None:
+                if call_arg is None:
                     await func_cmd(ctx, ticker, expiry)
                 else:
                     await func_cmd(ctx, ticker, expiry, *call_arg)
@@ -219,7 +219,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
             if cfg.DEBUG:
                 print("Reaction selected: 7")
                 expiry = dates[7]
-                if call_arg == None:
+                if call_arg is None:
                     await func_cmd(ctx, ticker, expiry)
                 else:
                     await func_cmd(ctx, ticker, expiry, *call_arg)
@@ -228,7 +228,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
             if cfg.DEBUG:
                 print("Reaction selected: 8")
                 expiry = dates[8]
-                if call_arg == None:
+                if call_arg is None:
                     await func_cmd(ctx, ticker, expiry)
                 else:
                     await func_cmd(ctx, ticker, expiry, *call_arg)
@@ -237,7 +237,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
             if cfg.DEBUG:
                 print("Reaction selected: 9")
                 expiry = dates[9]
-                if call_arg == None:
+                if call_arg is None:
                     await func_cmd(ctx, ticker, expiry)
                 else:
                     await func_cmd(ctx, ticker, expiry, *call_arg)
