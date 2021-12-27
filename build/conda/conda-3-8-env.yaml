@@ -5,7 +5,7 @@ dependencies:
   - python=3.8
   - pip
   - poetry=1.1.12
-  - numpy=1.21.5
+  - numpy=1.21.2
   - cvxpy=1.1.17
   - pytest
   - black=21.7b0
