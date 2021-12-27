@@ -6,7 +6,7 @@ from gamestonk_terminal.stocks.options import tradier_model
 
 
 async def hist_command(
-    ctx, ticker: str = None, expiry: str = None, strike: float = None, put: bool = False
+    ctx, ticker: str = None, expiry: str = "", strike: float = None, put: bool = False
 ):
     """Plot historical option prices
 
@@ -41,7 +41,7 @@ async def hist_command(
                 'A strike and c/p is required\n```bash\n"!hist {ticker} {strike} {c/p}"```'
             )
 
-        chain_id: str = None
+        chain_id = None
 
         df_hist = tradier_model.get_historical_options(
             ticker, expiry, strike, put, chain_id

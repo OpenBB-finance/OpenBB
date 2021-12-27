@@ -11,7 +11,7 @@ from gamestonk_terminal.stocks.options import yfinance_model
 async def vol_command(
     ctx,
     ticker: str = None,
-    expiry: str = None,
+    expiry: str = "",
     min_sp: float = None,
     max_sp: float = None,
 ):

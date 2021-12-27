@@ -13,7 +13,7 @@ from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
 async def oi_command(
     ctx,
     ticker: str = None,
-    expiry: str = None,
+    expiry: str = "",
     min_sp: float = None,
     max_sp: float = None,
 ):
