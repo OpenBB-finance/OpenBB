@@ -68,7 +68,9 @@ class OptionsCommands(discord.ext.commands.Cog):
         name="stocks.opt.calls",
         usage="[ticker] [expiration 0 - 9 (weeks out) or YYYY-MM-DD]",
     )
-    async def calls(self, ctx: discord.ext.commands.Context, ticker: str = None, expiry: str = None):
+    async def calls(
+        self, ctx: discord.ext.commands.Context, ticker: str = None, expiry: str = None
+    ):
         """Get call options for ticker and given expiration
 
         Parameters
@@ -94,7 +96,9 @@ class OptionsCommands(discord.ext.commands.Cog):
         name="stocks.opt.puts",
         usage="[ticker] [expiration 0 - 9 (weeks out) or YYYY-MM-DD]",
     )
-    async def puts(self, ctx: discord.ext.commands.Context, ticker: str = None, expiry: str = None):
+    async def puts(
+        self, ctx: discord.ext.commands.Context, ticker: str = None, expiry: str = None
+    ):
         """Get put options for ticker and given expiration
 
         Parameters
@@ -313,7 +317,9 @@ class OptionsCommands(discord.ext.commands.Cog):
             return user == ctx.message.author and str(reaction.emoji) in emoji_list
 
         try:
-            reaction, _ = await gst_bot.wait_for("reaction_add", timeout=cfg.MENU_TIMEOUT, check=check)
+            reaction, _ = await gst_bot.wait_for(
+                "reaction_add", timeout=cfg.MENU_TIMEOUT, check=check
+            )
             if reaction.emoji == "0️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 0")
