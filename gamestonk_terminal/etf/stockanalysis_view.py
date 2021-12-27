@@ -75,11 +75,17 @@ def view_comparisons(symbols: List[str], export: str):
     etf_list = stockanalysis_model.get_all_names_symbols()[0]
     for etf in symbols:
         if etf not in etf_list:
-            print(f"{etf} not a known symbol. ")
+            print(f"{etf} not a known symbol.\n")
             etf_list.remove(etf)
 
     data = stockanalysis_model.compare_etfs(symbols)
-    print(tabulate(data, headers=data.columns, tablefmt="fancy_grid"), "\n")
+    if data.empty:
+        print("No data found for given ETFs\n")
+        return
+    if gtff.USE_TABULATE_DF:
+        print(tabulate(data, headers=data.columns, tablefmt="fancy_grid"), "\n")
+    else:
+        print(data.to_string())
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "overview", data)
 
 

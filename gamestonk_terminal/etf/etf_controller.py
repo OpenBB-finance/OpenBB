@@ -72,6 +72,7 @@ class ETFController:
         "pir",
         "shold",
         "summary",
+        "compare",
     ]
 
     CHOICES_MENUS = [
@@ -80,18 +81,6 @@ class ETFController:
         "ca",
         "scr",
     ]
-    """
-    CHOICES_COMMANDS = [
-        "search",
-        "compare",
-        "screener",
-        "gainers",
-        "decliners",
-        "active",
-        "pir",
-        "fds",
-    ]
-    """
 
     CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
 
@@ -134,10 +123,10 @@ Major holdings: {', '.join(self.etf_holdings)}
 
     candle        view a candle chart for ETF
     news          latest news of the company [News API]
-    pir           create passive investor excel report
+    pir           create passive investor excel report (for one or more ETFs)
+    compare       compare multiple different ETFs
 
 >   scr           screener ETFs,                e.g.: overview/performance, using preset filters
->   ce            compare ETFs,                 e.g.: get similar, historical, correlation, financials
 >   ta            technical analysis,           e.g.: ema, macd, rsi, adx, bbands, obv
 >   pred          prediction techniques,        e.g.: regression, arima, rnn, lstm
 {Style.RESET_ALL}"""
@@ -590,6 +579,14 @@ Major holdings: {', '.join(self.etf_holdings)}
             description="Create passive investor ETF excel report",
         )
         parser.add_argument(
+            "-e",
+            "--etfs",
+            type=str,
+            dest="names",
+            help="Symbols to create a report for (e.g. ARKW,ARKQ)",
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
             "--filename",
             default=f"ETF_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
             dest="filename",
@@ -603,12 +600,13 @@ Major holdings: {', '.join(self.etf_holdings)}
             dest="folder",
             help="Folder where the excel ETF report will be saved",
         )
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-e")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.etf_name:
                 create_ETF_report(
-                    [self.etf_name],
+                    ns_parser.names if ns_parser.names else [self.etf_name],
                     filename=ns_parser.filename,
                     folder=ns_parser.folder,
                 )
@@ -725,8 +723,6 @@ Major holdings: {', '.join(self.etf_holdings)}
         """Process scr command"""
         self.queue = screener_controller.menu(self.queue)
 
-
-'''
     @try_except
     def call_compare(self, other_args):
         """Process compare command"""
@@ -755,51 +751,8 @@ Major holdings: {', '.join(self.etf_holdings)}
             etf_list = ns_parser.names.upper().split(",")
             stockanalysis_view.view_comparisons(etf_list, export=ns_parser.export)
 
-    @try_except
-    def call_pir(self, other_args):
-        """Process pir command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="pir",
-            description="Create a ETF Report of the selected ETFs",
-        )
-        parser.add_argument(
-            "-e",
-            "--etfs",
-            type=str,
-            dest="names",
-            help="Symbols to create a report for",
-            required="-h" not in other_args,
-        )
-        parser.add_argument(
-            "--filename",
-            default=f"ETF_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
-            dest="filename",
-            help="Filename of the ETF report",
-        )
-        parser.add_argument(
-            "--folder",
-            default=os.path.dirname(os.path.abspath(__file__)).replace(
-                "gamestonk_terminal", "exports"
-            ),
-            dest="folder",
-            help="Folder where the ETF report will be saved",
-        )
 
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-e")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            etf_list = ns_parser.names.upper().split(",")
-            create_ETF_report(
-                etf_list, filename=ns_parser.filename, folder=ns_parser.folder
-            )
-            print(
-                f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
-            )
-
+'''
     @try_except
     def call_fds(self, other_args):
         """Process fds command"""
