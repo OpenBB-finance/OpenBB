@@ -30,6 +30,7 @@ activity = discord.Game(
     name="Gamestonk Terminal: https://github.com/GamestonkTerminal/GamestonkTerminal"
 )
 
+
 class GSTHelpCommand(discord.ext.commands.MinimalHelpCommand):
     """Custom Help Command."""
 
@@ -49,6 +50,7 @@ class GSTHelpCommand(discord.ext.commands.MinimalHelpCommand):
                 f"__**{menu_header}**__ " + f"contains {len(commands)} commands."
             )
             self.paginator.add_line(f"\t\t`!help {heading}` for info and options.")
+
 
 gst_bot = discord.ext.commands.Bot(
     command_prefix=cfg.COMMAND_PREFIX,

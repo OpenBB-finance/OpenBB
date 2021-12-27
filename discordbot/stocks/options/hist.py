@@ -5,9 +5,9 @@ import discordbot.config_discordbot as cfg
 from gamestonk_terminal.stocks.options import tradier_model
 
 
-
-
-async def hist_command(ctx,  ticker: str= None, expiry: str= None, strike: float= None, put: bool= False):
+async def hist_command(
+    ctx, ticker: str = None, expiry: str = None, strike: float = None, put: bool = False
+):
     """Plot historical option prices
 
     Parameters
@@ -15,7 +15,7 @@ async def hist_command(ctx,  ticker: str= None, expiry: str= None, strike: float
     ticker: str
         Stock ticker
     expiry: str
-        accepts 0-9 
+        accepts 0-9
         0 being weeklies
         1+ for weeks out
         prompts reaction helper if empty
@@ -34,13 +34,14 @@ async def hist_command(ctx,  ticker: str= None, expiry: str= None, strike: float
 
         # Check for argument
         if ticker is None:
-            raise Exception("Stock ticker is required") 
-        
-        if strike is None or put =="":
-            raise Exception("A strike and c/p is required\n```bash\n\"!hist {ticker} {strike} {c/p}\"```")
- 
-        chain_id: str= None
+            raise Exception("Stock ticker is required")
 
+        if strike is None or put == "":
+            raise Exception(
+                'A strike and c/p is required\n```bash\n"!hist {ticker} {strike} {c/p}"```'
+            )
+
+        chain_id: str = None
 
         df_hist = tradier_model.get_historical_options(
             ticker, expiry, strike, put, chain_id
@@ -52,7 +53,9 @@ async def hist_command(ctx,  ticker: str= None, expiry: str= None, strike: float
             up="green", down="red", edge="black", wick="black", volume="in", ohlc="i"
         )
 
-        s = mpf.make_mpf_style(base_mpl_style='seaborn', marketcolors=mc, gridstyle=":", y_on_right=True)
+        s = mpf.make_mpf_style(
+            base_mpl_style="seaborn", marketcolors=mc, gridstyle=":", y_on_right=True
+        )
 
         mpf.plot(
             df_hist,
@@ -63,7 +66,7 @@ async def hist_command(ctx,  ticker: str= None, expiry: str= None, strike: float
             style=s,
             figratio=(10, 7),
             figscale=1.10,
-            figsize=(12,5),
+            figsize=(12, 5),
             update_width_config=dict(
                 candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
             ),
@@ -77,9 +80,7 @@ async def hist_command(ctx,  ticker: str= None, expiry: str= None, strike: float
             print(f"Image: {imagefile}")
         title = " " + ticker.upper() + " Options: History"
         embed = discord.Embed(title=title, colour=cfg.COLOR)
-        embed.set_image(
-            url="attachment://opt_hist.png"
-        )
+        embed.set_image(url="attachment://opt_hist.png")
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,

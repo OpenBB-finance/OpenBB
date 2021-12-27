@@ -9,9 +9,13 @@ from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.stocks.options import yfinance_model
 
 
-
-
-async def vol_command(ctx, ticker: str= None, expiry: str= None, min_sp: float= None, max_sp: float= None):
+async def vol_command(
+    ctx,
+    ticker: str = None,
+    expiry: str = None,
+    min_sp: float = None,
+    max_sp: float = None,
+):
     """Options VOL"""
 
     try:
@@ -22,13 +26,13 @@ async def vol_command(ctx, ticker: str= None, expiry: str= None, min_sp: float= 
 
         # Check for argument
         if ticker is None:
-            raise Exception("Stock ticker is required")    
-        
+            raise Exception("Stock ticker is required")
+
         dates = yfinance_model.option_expirations(ticker)
 
         if not dates:
             raise Exception("Stock ticker is invalid")
-        
+
         options = yfinance_model.get_option_chain(ticker, expiry)
         current_price = yfinance_model.get_price(ticker)
 
@@ -40,7 +44,7 @@ async def vol_command(ctx, ticker: str= None, expiry: str= None, min_sp: float= 
         if max_sp is None:
             max_strike = 1.90 * current_price
         else:
-            max_strike = max_sp 
+            max_strike = max_sp
 
         calls = options.calls
         puts = options.puts
@@ -49,7 +53,6 @@ async def vol_command(ctx, ticker: str= None, expiry: str= None, min_sp: float= 
         plt.style.use("seaborn")
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
 
-        
         put_v.plot(
             x="strike",
             y="volume",
@@ -68,7 +71,9 @@ async def vol_command(ctx, ticker: str= None, expiry: str= None, min_sp: float= 
             ls="-",
             c="g",
         )
-        ax.axvline(current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.7)
+        ax.axvline(
+            current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.7
+        )
         ax.grid("on")
         ax.set_xlabel("Strike Price")
         ax.set_ylabel("Volume (1k) ")
@@ -86,9 +91,7 @@ async def vol_command(ctx, ticker: str= None, expiry: str= None, min_sp: float= 
             print(f"Image: {imagefile}")
         title = " " + ticker.upper() + " Options: Volume"
         embed = discord.Embed(title=title, colour=cfg.COLOR)
-        embed.set_image(
-            url="attachment://opt_vol.png"
-        )
+        embed.set_image(url="attachment://opt_vol.png")
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
@@ -107,5 +110,5 @@ async def vol_command(ctx, ticker: str= None, expiry: str= None, min_sp: float= 
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
         )
-                
+
         await ctx.send(embed=embed)
