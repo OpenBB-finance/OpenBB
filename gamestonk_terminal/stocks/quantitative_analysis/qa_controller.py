@@ -195,62 +195,47 @@ Other:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "qa")
-            if self.ticker:
-                self.queue.insert(0, f"load {self.ticker}")
-            self.queue.insert(0, "stocks")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-
-        reset_commands = ["quit", "quit", "reset", "stocks"]
+        self.queue.insert(0, "qa")
         if self.ticker:
-            reset_commands.append(f"load {self.ticker}")
-        reset_commands.append("qa")
-        return reset_commands
+            self.queue.insert(0, f"load {self.ticker}")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -345,7 +330,6 @@ Other:
                 )
                 self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
                 self.stock = self.stock.dropna()
-        return self.queue
 
     @try_except
     def call_pick(self, other_args: List[str]):
@@ -372,7 +356,6 @@ Other:
         if ns_parser:
             self.target = ns_parser.target
         print("")
-        return self.queue
 
     @try_except
     def call_raw(self, other_args: List[str]):
@@ -412,7 +395,6 @@ Other:
                 des=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_summary(self, other_args: List[str]):
@@ -430,7 +412,6 @@ Other:
         )
         if ns_parser:
             qa_view.display_summary(df=self.stock, export=ns_parser.export)
-        return self.queue
 
     @try_except
     def call_hist(self, other_args: List[str]):
@@ -454,7 +435,6 @@ Other:
                 target=self.target,
                 bins=ns_parser.n_bins,
             )
-        return self.queue
 
     @try_except
     def call_cdf(self, other_args: List[str]):
@@ -477,7 +457,6 @@ Other:
                 target=self.target,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_bw(self, other_args: List[str]):
@@ -506,7 +485,6 @@ Other:
                 target=self.target,
                 yearly=ns_parser.year,
             )
-        return self.queue
 
     @try_except
     def call_decompose(self, other_args: List[str]):
@@ -540,7 +518,6 @@ Other:
                 multiplicative=ns_parser.multiplicative,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_cusum(self, other_args: List[str]):
@@ -585,7 +562,6 @@ Other:
                 threshold=ns_parser.threshold,
                 drift=ns_parser.drift,
             )
-        return self.queue
 
     @try_except
     def call_acf(self, other_args: List[str]):
@@ -619,7 +595,6 @@ Other:
                 target=self.target,
                 lags=ns_parser.lags,
             )
-        return self.queue
 
     @try_except
     def call_rolling(self, other_args: List[str]):
@@ -652,7 +627,6 @@ Other:
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_spread(self, other_args: List[str]):
@@ -684,7 +658,6 @@ Other:
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_quantile(self, other_args: List[str]):
@@ -734,7 +707,6 @@ Other:
                 quantile=ns_parser.f_quantile,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_skew(self, other_args: List[str]):
@@ -772,7 +744,6 @@ Other:
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_kurtosis(self, other_args: List[str]):
@@ -810,7 +781,6 @@ Other:
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_normality(self, other_args: List[str]):
@@ -830,7 +800,6 @@ Other:
             qa_view.display_normality(
                 df=self.stock, target=self.target, export=ns_parser.export
             )
-        return self.queue
 
     @try_except
     def call_qqplot(self, other_args: List[str]):
@@ -846,7 +815,6 @@ Other:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_qqplot(name=self.ticker, df=self.stock, target=self.target)
-        return self.queue
 
     @try_except
     def call_unitroot(self, other_args: List[str]):
@@ -888,7 +856,6 @@ Other:
                 kpss_reg=ns_parser.kpss_reg,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_capm(self, other_args: List[str]):
@@ -904,7 +871,6 @@ Other:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             capm_view(self.ticker)
-        return self.queue
 
 
 def menu(

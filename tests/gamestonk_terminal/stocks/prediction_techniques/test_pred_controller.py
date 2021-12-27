@@ -56,14 +56,45 @@ PRED_CONTROLLER = pred_controller.PredictionTechniquesController(
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_menu_quick_exit(mocker):
-    mocker.patch("builtins.input", return_value="quit")
+@pytest.mark.parametrize(
+    "queue, expected",
+    [
+        (["pick", "help"], []),
+        (["quit", "help"], ["help"]),
+    ],
+)
+def test_menu_with_queue(expected, mocker, queue):
     mocker.patch(
-        "gamestonk_terminal.stocks.prediction_techniques.pred_controller.session"
+        target=(
+            "gamestonk_terminal.stocks.prediction_techniques.pred_controller."
+            "PredictionTechniquesController.switch"
+        ),
+        return_value=["quit"],
+    )
+    result_menu = pred_controller.menu(
+        ticker="TSLA",
+        start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
+        interval="1440min",
+        stock=DF_STOCK,
+        queue=queue,
+    )
+
+    assert result_menu == expected
+
+
+@pytest.mark.vcr(record_mode="none")
+def test_menu_without_queue_completion(mocker):
+    # DISABLE AUTO-COMPLETION
+    mocker.patch.object(
+        target=pred_controller.gtff,
+        attribute="USE_PROMPT_TOOLKIT",
+        new=True,
     )
     mocker.patch(
-        "gamestonk_terminal.stocks.prediction_techniques.pred_controller.session.prompt",
+        target="gamestonk_terminal.stocks.prediction_techniques.pred_controller.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.prediction_techniques.pred_controller.session.prompt",
         return_value="quit",
     )
 
@@ -72,14 +103,33 @@ def test_menu_quick_exit(mocker):
         start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
         interval="1440min",
         stock=DF_STOCK,
+        queue=None,
     )
 
-    assert result_menu
+    assert result_menu == []
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_menu_system_exit(mocker):
+@pytest.mark.parametrize(
+    "mock_input",
+    ["picked", "load help", "mock"],
+)
+def test_menu_without_queue_sys_exit(mock_input, mocker):
+    # DISABLE AUTO-COMPLETION
+    mocker.patch.object(
+        target=pred_controller.gtff,
+        attribute="USE_PROMPT_TOOLKIT",
+        new=False,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.prediction_techniques.pred_controller.session",
+        return_value=None,
+    )
+
+    # MOCK USER INPUT
+    mocker.patch("builtins.input", return_value=mock_input)
+
+    # MOCK SWITCH
     class SystemExitSideEffect:
         def __init__(self):
             self.first_call = True
@@ -88,36 +138,41 @@ def test_menu_system_exit(mocker):
             if self.first_call:
                 self.first_call = False
                 raise SystemExit()
-            return True
+            return ["quit"]
 
     mock_switch = mocker.Mock(side_effect=SystemExitSideEffect())
-    mocker.patch("builtins.input", return_value="quit")
     mocker.patch(
-        "gamestonk_terminal.stocks.prediction_techniques.pred_controller.session"
-    )
-    mocker.patch(
-        "gamestonk_terminal.stocks.prediction_techniques.pred_controller.session.prompt",
-        return_value="quit",
-    )
-    mocker.patch(
-        "gamestonk_terminal.stocks.prediction_techniques.pred_controller.PredictionTechniquesController.switch",
+        target=(
+            "gamestonk_terminal.stocks.prediction_techniques.pred_controller."
+            "PredictionTechniquesController.switch"
+        ),
         new=mock_switch,
     )
 
-    pred_controller.menu(
+    result_menu = pred_controller.menu(
         ticker="TSLA",
         start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
         interval="1440min",
         stock=DF_STOCK,
+        queue=None,
     )
+
+    assert result_menu == []
 
 
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
-def test_print_help():
+@pytest.mark.parametrize(
+    "start",
+    [
+        None,
+        datetime.strptime("2020-12-01", "%Y-%m-%d"),
+    ],
+)
+def test_print_help(start):
     controller = pred_controller.PredictionTechniquesController(
         ticker="TSLA",
-        start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
+        start=start,
         interval="1440min",
         stock=DF_STOCK,
     )
@@ -125,34 +180,32 @@ def test_print_help():
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_switch_empty():
+@pytest.mark.parametrize(
+    "an_input, expected_queue",
+    [
+        ("", []),
+        ("/help", ["quit", "quit", "help"]),
+        ("help/help", ["help"]),
+        ("q", ["quit"]),
+        ("h", []),
+        ("r", ["quit", "quit", "reset", "stocks", "load TSLA", "pred"]),
+    ],
+)
+def test_switch(an_input, expected_queue):
     controller = pred_controller.PredictionTechniquesController(
         ticker="TSLA",
         start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
         interval="1440min",
         stock=DF_STOCK,
+        queue=None,
     )
-    result = controller.switch(an_input="")
+    queue = controller.switch(an_input=an_input)
 
-    assert result is None
+    assert queue == expected_queue
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_switch_help():
-    controller = pred_controller.PredictionTechniquesController(
-        ticker="TSLA",
-        start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
-        interval="1440min",
-        stock=DF_STOCK,
-    )
-    result = controller.switch(an_input="?")
-
-    assert result is None
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_switch_cls(mocker):
+def test_call_cls(mocker):
     mocker.patch("os.system")
     controller = pred_controller.PredictionTechniquesController(
         ticker="TSLA",
@@ -160,38 +213,54 @@ def test_switch_cls(mocker):
         interval="1440min",
         stock=DF_STOCK,
     )
-    result = controller.switch(an_input="cls")
+    controller.call_cls([])
 
-    assert result is None
+    assert controller.queue == []
     os.system.assert_called_once_with("cls||clear")
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_call_q():
+@pytest.mark.parametrize(
+    "func, queue, expected_queue",
+    [
+        (
+            "call_exit",
+            [],
+            [
+                "quit",
+                "quit",
+                "quit",
+            ],
+        ),
+        ("call_exit", ["help"], ["quit", "quit", "quit", "help"]),
+        ("call_home", [], ["quit", "quit"]),
+        ("call_help", [], []),
+        ("call_quit", [], ["quit"]),
+        ("call_quit", ["help"], ["quit", "help"]),
+        (
+            "call_reset",
+            [],
+            ["quit", "quit", "reset", "stocks", "load TSLA", "pred"],
+        ),
+        (
+            "call_reset",
+            ["help"],
+            ["quit", "quit", "reset", "stocks", "load TSLA", "pred", "help"],
+        ),
+    ],
+)
+def test_call_func_expect_queue(expected_queue, queue, func):
     controller = pred_controller.PredictionTechniquesController(
         ticker="TSLA",
         start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
         interval="1440min",
         stock=DF_STOCK,
+        queue=queue,
     )
-    other_args = list()
-    result = controller.call_q(other_args)
+    result = getattr(controller, func)([])
 
-    assert result is False
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_call_quit():
-    controller = pred_controller.PredictionTechniquesController(
-        ticker="TSLA",
-        start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
-        interval="1440min",
-        stock=DF_STOCK,
-    )
-    other_args = list()
-    result = controller.call_quit(other_args)
-
-    assert result is True
+    assert result is None
+    assert controller.queue == expected_queue
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -438,6 +507,7 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
     "func",
     [
         "call_load",
+        "call_pick",
         "call_ets",
         "call_knn",
         "call_regression",
@@ -470,4 +540,32 @@ def test_call_func_no_parser(func, mocker):
 
     func_result = getattr(controller, func)(other_args=["PM"])
     assert func_result is None
+    assert controller.queue == []
     getattr(pred_controller, "parse_known_args_and_warn").assert_called_once()
+
+
+@pytest.mark.vcr(record_mode="none")
+def test_call_load(mocker):
+    # DISABLE AUTO-COMPLETION
+    mocker.patch.object(
+        target=pred_controller.gtff,
+        attribute="USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.prediction_techniques.pred_controller.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.prediction_techniques.pred_controller.session.prompt",
+        return_value="quit",
+    )
+
+    result_menu = pred_controller.menu(
+        ticker="TSLA",
+        start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
+        interval="1440min",
+        stock=DF_STOCK,
+        queue=None,
+    )
+
+    assert result_menu == []

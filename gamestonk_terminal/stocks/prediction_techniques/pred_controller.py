@@ -186,63 +186,47 @@ Models:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
 
-        return self.queue
-
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "pred")
-            if self.ticker:
-                self.queue.insert(0, f"load {self.ticker}")
-            self.queue.insert(0, "stocks")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-
-        reset_commands = ["quit", "quit", "reset", "stocks"]
+        self.queue.insert(0, "pred")
         if self.ticker:
-            reset_commands.append(f"load {self.ticker}")
-        reset_commands.append("pred")
-        return reset_commands
+            self.queue.insert(0, f"load {self.ticker}")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -338,7 +322,6 @@ Models:
                 )
                 self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
                 self.stock = self.stock.dropna()
-        return self.queue
 
     @try_except
     def call_pick(self, other_args: List[str]):
@@ -367,7 +350,6 @@ Models:
         if ns_parser:
             self.target = ns_parser.target
             print("")
-        return self.queue
 
     @try_except
     def call_ets(self, other_args: List[str]):
@@ -448,7 +430,6 @@ Models:
                     print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
-                    return self.queue
 
                 if ns_parser.s_end_date < get_next_stock_market_days(
                     last_stock_day=self.stock.index[0],
@@ -457,7 +438,6 @@ Models:
                     print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
-                    return self.queue
 
             ets_view.display_exponential_smoothing(
                 ticker=self.ticker,
@@ -469,7 +449,6 @@ Models:
                 s_end_date=ns_parser.s_end_date,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_knn(self, other_args: List[str]):
@@ -558,7 +537,6 @@ Models:
                 end_date=ns_parser.s_end_date,
                 no_shuffle=ns_parser.no_shuffle,
             )
-        return self.queue
 
     @try_except
     def call_regression(self, other_args: List[str]):
@@ -635,7 +613,6 @@ Models:
                     print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
-                    return self.queue
 
                 if ns_parser.s_end_date < get_next_stock_market_days(
                     last_stock_day=self.stock.index[0],
@@ -644,7 +621,6 @@ Models:
                     print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
-                    return self.queue
 
             regression_view.display_regression(
                 dataset=self.ticker,
@@ -656,7 +632,6 @@ Models:
                 s_end_date=ns_parser.s_end_date,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_arima(self, other_args: List[str]):
@@ -740,7 +715,6 @@ Models:
                     print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
-                    return self.queue
 
                 if ns_parser.s_end_date < get_next_stock_market_days(
                     last_stock_day=self.stock.index[0],
@@ -749,7 +723,6 @@ Models:
                     print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
-                    return self.queue
 
             arima_view.display_arima(
                 dataset=self.ticker,
@@ -762,7 +735,6 @@ Models:
                 s_end_date=ns_parser.s_end_date,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_mlp(self, other_args: List[str]):
@@ -788,11 +760,9 @@ Models:
                 )
         except Exception as e:
             print(e, "\n")
-            return self.queue
 
         finally:
             pred_helper.restore_env()
-        return self.queue
 
     def call_rnn(self, other_args: List[str]):
         """Process rnn command"""
@@ -818,11 +788,9 @@ Models:
 
         except Exception as e:
             print(e, "\n")
-            return self.queue
 
         finally:
             pred_helper.restore_env()
-        return self.queue
 
     def call_lstm(self, other_args: List[str]):
         """Process lstm command"""
@@ -848,11 +816,9 @@ Models:
 
         except Exception as e:
             print(e, "\n")
-            return self.queue
 
         finally:
             pred_helper.restore_env()
-        return self.queue
 
     def call_conv1d(self, other_args: List[str]):
         """Process conv1d command"""
@@ -878,11 +844,9 @@ Models:
 
         except Exception as e:
             print(e, "\n")
-            return self.queue
 
         finally:
             pred_helper.restore_env()
-        return self.queue
 
     @try_except
     def call_mc(self, other_args: List[str]):
@@ -924,7 +888,6 @@ Models:
         if ns_parser:
             if self.target != "AdjClose":
                 print("MC Prediction designed for AdjClose prices\n")
-                return self.queue
 
             mc_view.display_mc_forecast(
                 data=self.stock[self.target],
@@ -933,7 +896,6 @@ Models:
                 use_log=ns_parser.dist == "lognormal",
                 export=ns_parser.export,
             )
-        return self.queue
 
 
 def menu(

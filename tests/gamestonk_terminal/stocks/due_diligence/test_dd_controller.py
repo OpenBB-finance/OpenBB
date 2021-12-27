@@ -10,31 +10,82 @@ from gamestonk_terminal.stocks.due_diligence import dd_controller
 
 # pylint: disable=E1101
 # pylint: disable=W0603
-
-pytest.skip(allow_module_level=True)
+# pylint: disable=E1111
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_menu_quick_exit(mocker):
-    mocker.patch("builtins.input", return_value="quit")
-    mocker.patch("gamestonk_terminal.stocks.due_diligence.dd_controller.session")
+@pytest.mark.parametrize(
+    "queue, expected",
+    [
+        (["load", "help"], []),
+        (["quit", "help"], ["help"]),
+    ],
+)
+def test_menu_with_queue(expected, mocker, queue):
     mocker.patch(
-        "gamestonk_terminal.stocks.due_diligence.dd_controller.session.prompt",
+        target=(
+            "gamestonk_terminal.stocks.due_diligence.dd_controller."
+            "DueDiligenceController.switch"
+        ),
+        return_value=["quit"],
+    )
+    stock = pd.DataFrame()
+    result_menu = dd_controller.menu(
+        ticker="TSLA",
+        start="10/25/2021",
+        interval="1440min",
+        stock=stock,
+        queue=queue,
+    )
+
+    assert result_menu == expected
+
+
+@pytest.mark.vcr(record_mode="none")
+def test_menu_without_queue_completion(mocker):
+    # DISABLE AUTO-COMPLETION
+    mocker.patch.object(
+        target=dd_controller.gtff,
+        attribute="USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.due_diligence.dd_controller.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.due_diligence.dd_controller.session.prompt",
         return_value="quit",
     )
 
     stock = pd.DataFrame()
     result_menu = dd_controller.menu(
-        ticker="TSLA", start="10/25/2021", interval="1440min", stock=stock
+        ticker="TSLA", start="10/25/2021", interval="1440min", stock=stock, queue=None
     )
 
-    assert result_menu
+    assert result_menu == []
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_menu_system_exit(mocker):
+@pytest.mark.parametrize(
+    "mock_input",
+    ["help", "homee help", "home help", "mock"],
+)
+def test_menu_without_queue_sys_exit(mock_input, mocker):
+    # DISABLE AUTO-COMPLETION
+    mocker.patch.object(
+        target=dd_controller.gtff,
+        attribute="USE_PROMPT_TOOLKIT",
+        new=False,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.due_diligence.dd_controller.session",
+        return_value=None,
+    )
+
+    # MOCK USER INPUT
+    mocker.patch("builtins.input", return_value=mock_input)
+
+    # MOCK SWITCH
     class SystemExitSideEffect:
         def __init__(self):
             self.first_call = True
@@ -43,88 +94,113 @@ def test_menu_system_exit(mocker):
             if self.first_call:
                 self.first_call = False
                 raise SystemExit()
-            return True
+            return ["quit"]
 
     mock_switch = mocker.Mock(side_effect=SystemExitSideEffect())
-    mocker.patch("builtins.input", return_value="quit")
-    mocker.patch("gamestonk_terminal.stocks.due_diligence.dd_controller.session")
     mocker.patch(
-        "gamestonk_terminal.stocks.due_diligence.dd_controller.session.prompt",
-        return_value="quit",
-    )
-    mocker.patch(
-        "gamestonk_terminal.stocks.due_diligence.dd_controller.DueDiligenceController.switch",
+        target=(
+            "gamestonk_terminal.stocks.due_diligence.dd_controller."
+            "DueDiligenceController.switch"
+        ),
         new=mock_switch,
     )
 
     stock = pd.DataFrame()
-    dd_controller.menu(
-        ticker="TSLA", start="10/25/2021", interval="1440min", stock=stock
+    result_menu = dd_controller.menu(
+        ticker="TSLA", start="10/25/2021", interval="1440min", stock=stock, queue=None
     )
+
+    assert result_menu == []
 
 
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_print_help():
-    dd = dd_controller.DueDiligenceController(
+    controller = dd_controller.DueDiligenceController(
         ticker="", start="", interval="", stock=pd.DataFrame()
     )
-    dd.print_help()
+    controller.print_help()
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_switch_empty():
-    dd = dd_controller.DueDiligenceController(
-        ticker="", start="", interval="", stock=pd.DataFrame()
+@pytest.mark.parametrize(
+    "an_input, expected_queue",
+    [
+        ("", []),
+        ("/help", ["quit", "quit", "help"]),
+        ("help/help", ["help"]),
+        ("q", ["quit"]),
+        ("h", []),
+        ("r", ["quit", "quit", "reset", "stocks", "dd"]),
+    ],
+)
+def test_switch(an_input, expected_queue):
+    controller = dd_controller.DueDiligenceController(
+        ticker="",
+        start="",
+        interval="",
+        stock=pd.DataFrame(),
+        queue=None,
     )
-    result = dd.switch(an_input="")
+    queue = controller.switch(an_input=an_input)
 
-    assert result is None
+    assert queue == expected_queue
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_switch_help():
-    dd = dd_controller.DueDiligenceController(
-        ticker="", start="", interval="", stock=pd.DataFrame()
-    )
-    result = dd.switch(an_input="?")
-
-    assert result is None
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_switch_cls(mocker):
+def test_call_cls(mocker):
     mocker.patch("os.system")
-    dd = dd_controller.DueDiligenceController(
+    controller = dd_controller.DueDiligenceController(
         ticker="", start="", interval="", stock=pd.DataFrame()
     )
-    result = dd.switch(an_input="cls")
+    controller.call_cls([])
 
-    assert result is None
+    assert controller.queue == []
     os.system.assert_called_once_with("cls||clear")
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_call_q():
-    dd = dd_controller.DueDiligenceController(
-        ticker="", start="", interval="", stock=pd.DataFrame()
+@pytest.mark.parametrize(
+    "func, queue, expected_queue",
+    [
+        (
+            "call_exit",
+            [],
+            [
+                "quit",
+                "quit",
+                "quit",
+            ],
+        ),
+        ("call_exit", ["help"], ["quit", "quit", "quit", "help"]),
+        ("call_home", [], ["quit", "quit"]),
+        ("call_help", [], []),
+        ("call_quit", [], ["quit"]),
+        ("call_quit", ["help"], ["quit", "help"]),
+        (
+            "call_reset",
+            [],
+            ["quit", "quit", "reset", "stocks", "dd"],
+        ),
+        (
+            "call_reset",
+            ["help"],
+            ["quit", "quit", "reset", "stocks", "dd", "help"],
+        ),
+    ],
+)
+def test_call_func_expect_queue(expected_queue, queue, func):
+    controller = dd_controller.DueDiligenceController(
+        ticker="",
+        start="",
+        interval="",
+        stock=pd.DataFrame(),
+        queue=queue,
     )
-    other_args = list()
-    result = dd.call_q(other_args)
+    result = getattr(controller, func)([])
 
-    assert result is False
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_call_quit():
-    dd = dd_controller.DueDiligenceController(
-        ticker="", start="", interval="", stock=pd.DataFrame()
-    )
-    other_args = list()
-    result = dd.call_quit(other_args)
-
-    assert result is True
+    assert result is None
+    assert controller.queue == expected_queue
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -158,7 +234,7 @@ def test_call_quit():
         (
             "call_pt",
             "business_insider_view.price_target_from_analysts",
-            ["--num=10"],
+            ["--limit=10"],
             {
                 "ticker": "TSLA",
                 "start": "10/25/2021",
@@ -181,7 +257,7 @@ def test_call_quit():
         (
             "call_rot",
             "finnhub_view.rating_over_time",
-            ["--num=10"],
+            ["--limit=10"],
             {
                 "ticker": "TSLA",
                 "num": 10,
@@ -192,7 +268,7 @@ def test_call_quit():
         (
             "call_rating",
             "fmp_view.rating",
-            ["--num=10"],
+            ["--limit=10"],
             {
                 "ticker": "TSLA",
                 "num": 10,
@@ -202,7 +278,7 @@ def test_call_quit():
         (
             "call_sec",
             "marketwatch_view.sec_filings",
-            ["--num=10"],
+            ["--limit=10"],
             {
                 "ticker": "TSLA",
                 "num": 10,
@@ -221,7 +297,7 @@ def test_call_quit():
         (
             "call_arktrades",
             "ark_view.display_ark_trades",
-            ["--num=10", "--show_ticker"],
+            ["--limit=10", "--show_ticker"],
             {
                 "ticker": "TSLA",
                 "num": 10,
@@ -237,13 +313,13 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         "gamestonk_terminal.stocks.due_diligence.dd_controller." + mocked_func,
         new=mock,
     )
-    dd = dd_controller.DueDiligenceController(
+    controller = dd_controller.DueDiligenceController(
         ticker="TSLA",
         start="10/25/2021",
         interval="1440min",
         stock=None,
     )
-    getattr(dd, tested_func)(other_args=other_args)
+    getattr(controller, tested_func)(other_args=other_args)
 
     if isinstance(called_with, dict):
         mock.assert_called_once_with(**called_with)
@@ -273,10 +349,11 @@ def test_call_func_no_parser(func, mocker):
         "gamestonk_terminal.stocks.due_diligence.dd_controller.parse_known_args_and_warn",
         return_value=None,
     )
-    dd = dd_controller.DueDiligenceController(
+    controller = dd_controller.DueDiligenceController(
         ticker="AAPL", start="10/25/2021", interval="1440min", stock=pd.DataFrame()
     )
 
-    func_result = getattr(dd, func)(other_args=list())
+    func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
+    assert controller.queue == []
     getattr(dd_controller, "parse_known_args_and_warn").assert_called_once()

@@ -114,59 +114,49 @@ Stock Information:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "ally")
-            self.queue.insert(0, "bro")
-            self.queue.insert(0, "portfolio")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit", "reset", "portfolio", "bro", "ally"]
+        self.queue.insert(0, "ally")
+        self.queue.insert(0, "bro")
+        self.queue.insert(0, "portfolio")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_holdings(self, other_args: List[str]):
@@ -182,7 +172,6 @@ Stock Information:
         )
         if ns_parser:
             ally_view.display_holdings(export=ns_parser.export)
-        return self.queue
 
     @try_except
     def call_history(self, other_args: List[str]):
@@ -208,7 +197,6 @@ Stock Information:
             ally_view.display_history(
                 n_to_show=ns_parser.limit, export=ns_parser.export
             )
-        return self.queue
 
     @try_except
     def call_balances(self, other_args: List[str]):
@@ -224,7 +212,6 @@ Stock Information:
         )
         if ns_parser:
             ally_view.display_balances(export=ns_parser.export)
-        return self.queue
 
     @try_except
     def call_quote(self, other_args: List[str]):
@@ -248,7 +235,6 @@ Stock Information:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             ally_view.display_stock_quote(ns_parser.ticker)
-        return self.queue
 
     @try_except
     def call_movers(self, other_args: List[str]):
@@ -294,7 +280,6 @@ Stock Information:
                 num_to_show=ns_parser.limit,
                 export=ns_parser.export,
             )
-        return self.queue
 
 
 def menu(queue: List[str] = None):

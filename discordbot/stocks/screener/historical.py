@@ -7,19 +7,19 @@ from matplotlib import pyplot as plt
 import yfinance as yf
 from pandas.plotting import register_matplotlib_converters
 from finvizfinance.screener import ticker
-import discordbot.config_discordbot as cfg
-
-from discordbot.run_discordbot import gst_imgur
 
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.stocks.screener import finviz_view
 from gamestonk_terminal.stocks.screener import finviz_model
 from gamestonk_terminal.helper_funcs import plot_autoscale
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur
+from discordbot.stocks.screener import screener_options as so
 
 # pylint:disable=no-member
 
 
-async def historical_command(ctx, signal="most_volatile", start=""):
+async def historical_command(ctx, signal="", start=""):
     """Displays historical price comparison between similar companies [Yahoo Finance]"""
     try:
 
@@ -27,9 +27,11 @@ async def historical_command(ctx, signal="most_volatile", start=""):
         if cfg.DEBUG:
             print(f"!stocks.scr.historical {signal} {start}")
 
-        register_matplotlib_converters()
+        # Check for argument
+        if signal == "" or signal not in list(so.d_signals_desc.keys):
+            raise Exception("Invalid preset selected!")
 
-        presets_path = os.path.join(cfg.GST_PATH, "stocks", "screener", "presets", "")
+        register_matplotlib_converters()
 
         screen = ticker.Ticker()
 
@@ -39,7 +41,7 @@ async def historical_command(ctx, signal="most_volatile", start=""):
         else:
             preset_filter = configparser.RawConfigParser()
             preset_filter.optionxform = str  # type: ignore
-            preset_filter.read(presets_path + signal + ".ini")
+            preset_filter.read(so.presets_path + signal + ".ini")
 
             d_general = preset_filter["General"]
             d_filters = {
@@ -118,7 +120,7 @@ async def historical_command(ctx, signal="most_volatile", start=""):
 
         if signal:
             plt.title(
-                f"Screener Historical Price using {finviz_view.d_signals[signal]} signal"
+                f"Screener Historical Price using {finviz_model.d_signals[signal]} signal"
             )
         else:
             plt.title(f"Screener Historical Price using {signal} preset")

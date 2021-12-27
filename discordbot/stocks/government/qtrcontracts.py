@@ -1,14 +1,15 @@
 import os
 import discord
 from matplotlib import pyplot as plt
+from tabulate import tabulate
 import numpy as np
-
-import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
 
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.stocks.government import quiverquant_model
 from gamestonk_terminal.helper_funcs import plot_autoscale
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur
 
 
 async def qtrcontracts_command(ctx, num="", analysis=""):
@@ -110,10 +111,22 @@ async def qtrcontracts_command(ctx, num="", analysis=""):
             await ctx.send(embed=embed)
 
         elif analysis == "total":
-            description = tickers.to_string()
+
+            tickers.index = [ind + " " * (7 - len(ind)) for ind in tickers.index]
+            tickers[:] = [str(round(val[0] / 1e9, 2)) for val in tickers.values]
+            tickers.columns = ["Amount [M]"]
+
+            tickers_str = tabulate(
+                tickers,
+                headers=tickers.columns,
+                showindex=True,
+                numalign="right",
+                stralign="center",
+            )
+
             embed = discord.Embed(
                 title="Stocks: [quiverquant.com] Government contracts",
-                description=description,
+                description=tickers_str,
                 colour=cfg.COLOR,
             )
             embed.set_author(

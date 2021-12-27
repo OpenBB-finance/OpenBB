@@ -20,7 +20,7 @@ async def arktrades_command(ctx, ticker="", num=""):
         else:
             if not num.lstrip("-").isnumeric():
                 raise Exception("Number has to be an integer")
-            num = float(num)
+            num = int(num)
 
         if ticker == "":
             raise Exception("A ticker is required")

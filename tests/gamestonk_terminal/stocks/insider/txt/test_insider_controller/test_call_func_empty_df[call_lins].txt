@@ -1,2 +1,2 @@
-No ticker loaded.  First use `load {ticker}` 
+No ticker loaded. First use `load {ticker}`
 

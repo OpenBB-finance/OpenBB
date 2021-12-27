@@ -297,55 +297,47 @@ Returned tickers: {', '.join(self.tickers)}
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "sia")
-            self.queue.insert(0, "stocks")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "reset", "stocks", "sia"]
+        if self.ticker:
+            self.queue.insert(0, f"load {self.ticker}")
+        self.queue.insert(0, "sia")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -429,8 +421,6 @@ Returned tickers: {', '.join(self.tickers)}
 
                 self.stocks_data = {}
 
-        return self.queue
-
     @try_except
     def call_industry(self, other_args: List[str]):
         """Process industry command"""
@@ -494,8 +484,6 @@ Returned tickers: {', '.join(self.tickers)}
             self.stocks_data = {}
             print("")
 
-        return self.queue
-
     @try_except
     def call_sector(self, other_args: List[str]):
         """Process sector command"""
@@ -554,8 +542,6 @@ Returned tickers: {', '.join(self.tickers)}
             self.stocks_data = {}
             print("")
 
-        return self.queue
-
     @try_except
     def call_country(self, other_args: List[str]):
         """Process country command"""
@@ -611,8 +597,6 @@ Returned tickers: {', '.join(self.tickers)}
             self.stocks_data = {}
             print("")
 
-        return self.queue
-
     @try_except
     def call_mktcap(self, other_args: List[str]):
         """Process mktcap command"""
@@ -642,8 +626,6 @@ Returned tickers: {', '.join(self.tickers)}
             self.stocks_data = {}
             print("")
 
-        return self.queue
-
     @try_except
     def call_exchange(self, other_args: List[str]):
         """Process exchange command"""
@@ -663,8 +645,6 @@ Returned tickers: {', '.join(self.tickers)}
 
         self.stocks_data = {}
         print("")
-
-        return self.queue
 
     @try_except
     def call_clear(self, other_args: List[str]):
@@ -706,8 +686,6 @@ Returned tickers: {', '.join(self.tickers)}
 
             self.stocks_data = {}
             print("")
-
-        return self.queue
 
     @try_except
     def call_sama(self, other_args: List[str]):
@@ -756,8 +734,6 @@ Returned tickers: {', '.join(self.tickers)}
         fpe           forward P/E
             """
             print(help_text)
-
-        return self.queue
 
     @try_except
     def call_metric(self, other_args: List[str]):
@@ -816,8 +792,6 @@ Returned tickers: {', '.join(self.tickers)}
                 self.stocks_data,
             )
 
-        return self.queue
-
     @try_except
     def call_cps(self, other_args: List[str]):
         """Process cps command"""
@@ -868,8 +842,6 @@ Returned tickers: {', '.join(self.tickers)}
                     ns_parser.max_sectors_to_display,
                     ns_parser.min_pct_to_display_sector,
                 )
-
-        return self.queue
 
     @try_except
     def call_cpic(self, other_args: List[str]):
@@ -922,8 +894,6 @@ Returned tickers: {', '.join(self.tickers)}
                     ns_parser.min_pct_to_display_industry,
                 )
 
-        return self.queue
-
     @try_except
     def call_cpis(self, other_args: List[str]):
         """Process cpis command"""
@@ -974,8 +944,6 @@ Returned tickers: {', '.join(self.tickers)}
                     ns_parser.max_industries_to_display,
                     ns_parser.min_pct_to_display_industry,
                 )
-
-        return self.queue
 
     @try_except
     def call_cpcs(self, other_args: List[str]):
@@ -1028,8 +996,6 @@ Returned tickers: {', '.join(self.tickers)}
                     ns_parser.min_pct_to_display_country,
                 )
 
-        return self.queue
-
     @try_except
     def call_cpci(self, other_args: List[str]):
         """Process cpci command"""
@@ -1081,15 +1047,12 @@ Returned tickers: {', '.join(self.tickers)}
                     ns_parser.min_pct_to_display_country,
                 )
 
-        return self.queue
-
     def call_ca(self, _):
         """Call the comparison analysis menu with selected tickers"""
         if self.tickers:
-            return ca_controller.menu(self.tickers, self.queue, from_submenu=True)
-
-        print("No main ticker loaded to go into comparison analysis menu", "\n")
-        return self.queue
+            self.queue = ca_controller.menu(self.tickers, self.queue, from_submenu=True)
+        else:
+            print("No main ticker loaded to go into comparison analysis menu", "\n")
 
 
 def menu(

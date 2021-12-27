@@ -268,51 +268,41 @@ NASDAQ DataLink (formerly Quandl):
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "economy")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "reset", "economy"]
+        self.queue.insert(0, "economy")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_feargreed(self, other_args: List[str]):
@@ -348,7 +338,6 @@ NASDAQ DataLink (formerly Quandl):
                 indicator=ns_parser.indicator,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_overview(self, other_args: List[str]):
@@ -367,7 +356,6 @@ NASDAQ DataLink (formerly Quandl):
             wsj_view.display_overview(
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_indices(self, other_args: List[str]):
@@ -385,7 +373,6 @@ NASDAQ DataLink (formerly Quandl):
             wsj_view.display_indices(
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_futures(self, other_args: List[str]):
@@ -403,7 +390,6 @@ NASDAQ DataLink (formerly Quandl):
             wsj_view.display_futures(
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_usbonds(self, other_args: List[str]):
@@ -421,7 +407,6 @@ NASDAQ DataLink (formerly Quandl):
             wsj_view.display_usbonds(
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_glbonds(self, other_args: List[str]):
@@ -439,7 +424,6 @@ NASDAQ DataLink (formerly Quandl):
             wsj_view.display_glbonds(
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_currencies(self, other_args: List[str]):
@@ -458,7 +442,6 @@ NASDAQ DataLink (formerly Quandl):
             wsj_view.display_currencies(
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_energy(self, other_args: List[str]):
@@ -495,7 +478,6 @@ NASDAQ DataLink (formerly Quandl):
                 ascending=ns_parser.ascend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_metals(self, other_args: List[str]):
@@ -532,7 +514,6 @@ NASDAQ DataLink (formerly Quandl):
                 ascending=ns_parser.ascend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_meats(self, other_args: List[str]):
@@ -569,7 +550,6 @@ NASDAQ DataLink (formerly Quandl):
                 ascending=ns_parser.ascend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_grains(self, other_args: List[str]):
@@ -606,7 +586,6 @@ NASDAQ DataLink (formerly Quandl):
                 ascending=ns_parser.ascend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_softs(self, other_args: List[str]):
@@ -643,7 +622,6 @@ NASDAQ DataLink (formerly Quandl):
                 ascending=ns_parser.ascend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_map(self, other_args: List[str]):
@@ -683,7 +661,6 @@ NASDAQ DataLink (formerly Quandl):
                 period=ns_parser.s_period,
                 map_type=ns_parser.s_type,
             )
-        return self.queue
 
     @try_except
     def call_valuation(self, other_args: List[str]):
@@ -740,7 +717,6 @@ NASDAQ DataLink (formerly Quandl):
                 ascending=ns_parser.ascend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_performance(self, other_args: List[str]):
@@ -795,7 +771,6 @@ NASDAQ DataLink (formerly Quandl):
                 ascending=ns_parser.ascend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_spectrum(self, other_args: List[str]):
@@ -834,7 +809,6 @@ NASDAQ DataLink (formerly Quandl):
         # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
         # after saving it and displaying it to the user
         os.remove(self.d_GROUPS[group] + ".jpg")
-        return self.queue
 
     @try_except
     def call_rtps(self, other_args: List[str]):
@@ -862,7 +836,6 @@ NASDAQ DataLink (formerly Quandl):
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_gdp(self, other_args: List[str]):
@@ -912,7 +885,6 @@ NASDAQ DataLink (formerly Quandl):
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_gdpc(self, other_args: List[str]):
@@ -949,7 +921,6 @@ NASDAQ DataLink (formerly Quandl):
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_inf(self, other_args: List[str]):
@@ -1031,7 +1002,6 @@ NASDAQ DataLink (formerly Quandl):
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_tyld(self, other_args: List[str]):
@@ -1089,7 +1059,6 @@ NASDAQ DataLink (formerly Quandl):
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_unemp(self, other_args: List[str]):
@@ -1126,7 +1095,6 @@ NASDAQ DataLink (formerly Quandl):
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_bigmac(self, other_args: List[str]):
@@ -1176,13 +1144,12 @@ NASDAQ DataLink (formerly Quandl):
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
-        return self.queue
 
     def call_fred(self, _):
         """Process fred command"""
         from gamestonk_terminal.economy.fred import fred_controller
 
-        return fred_controller.menu(self.queue)
+        self.queue = fred_controller.menu(self.queue)
 
 
 def menu(queue: List[str] = None):

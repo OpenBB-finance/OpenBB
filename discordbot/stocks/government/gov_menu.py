@@ -21,8 +21,15 @@ class GovernmentCommands(discord.ext.commands.Cog):
 
     def __init__(self, bot: discord.ext.commands.Bot):
         self.bot = bot
+        self.bot.help_command.cog = self
 
-    @discord.ext.commands.command(name="stocks.gov.lasttrades")
+    def cog_unload(self):
+        self.bot.help_command = None
+
+    @discord.ext.commands.command(
+        name="stocks.gov.lasttrades",
+        usage="[gov_type] [past_transactions_days] [representative]",
+    )
     async def lasttrades(
         self,
         ctx: discord.ext.commands.Context,
@@ -43,7 +50,10 @@ class GovernmentCommands(discord.ext.commands.Cog):
         """
         await lasttrades_command(ctx, gov_type, past_transactions_days, representative)
 
-    @discord.ext.commands.command(name="stocks.gov.topbuys")
+    @discord.ext.commands.command(
+        name="stocks.gov.topbuys",
+        usage="[gov_type] [past_transactions_months] [num] [raw]",
+    )
     async def topbuys(
         self,
         ctx: discord.ext.commands.Context,
@@ -67,7 +77,10 @@ class GovernmentCommands(discord.ext.commands.Cog):
         """
         await topbuys_command(ctx, gov_type, past_transactions_months, num, raw)
 
-    @discord.ext.commands.command(name="stocks.gov.topsells")
+    @discord.ext.commands.command(
+        name="stocks.gov.topsells",
+        usage="[gov_type] [past_transactions_months] [num] [raw]",
+    )
     async def topsells(
         self,
         ctx: discord.ext.commands.Context,
@@ -91,7 +104,10 @@ class GovernmentCommands(discord.ext.commands.Cog):
         """
         await topsells_command(ctx, gov_type, past_transactions_months, num, raw)
 
-    @discord.ext.commands.command(name="stocks.gov.lastcontracts")
+    @discord.ext.commands.command(
+        name="stocks.gov.lastcontracts",
+        usage="[past_transactions_days] [num]",
+    )
     async def lastcontracts(
         self, ctx: discord.ext.commands.Context, past_transactions_days="", num=""
     ):
@@ -106,7 +122,10 @@ class GovernmentCommands(discord.ext.commands.Cog):
         """
         await lastcontracts_command(ctx, past_transactions_days, num)
 
-    @discord.ext.commands.command(name="stocks.gov.qtrcontracts")
+    @discord.ext.commands.command(
+        name="stocks.gov.qtrcontracts",
+        usage="[analysis] [num]",
+    )
     async def qtrcontracts(
         self, ctx: discord.ext.commands.Context, num="", analysis=""
     ):
@@ -121,7 +140,10 @@ class GovernmentCommands(discord.ext.commands.Cog):
         """
         await qtrcontracts_command(ctx, num, analysis)
 
-    @discord.ext.commands.command(name="stocks.gov.toplobbying")
+    @discord.ext.commands.command(
+        name="stocks.gov.toplobbying",
+        usage="[num] [raw]",
+    )
     async def toplobbying(self, ctx: discord.ext.commands.Context, num="", raw=""):
         """Displays top lobbying firms [quiverquant.com]
 
@@ -134,7 +156,10 @@ class GovernmentCommands(discord.ext.commands.Cog):
         """
         await toplobbying_command(ctx, num, raw)
 
-    @discord.ext.commands.command(name="stocks.gov.gtrades")
+    @discord.ext.commands.command(
+        name="stocks.gov.gtrades",
+        usage="[ticker] [gov_type] [past_transactions_months] [raw]",
+    )
     async def gtrades(
         self,
         ctx: discord.ext.commands.Context,
@@ -158,7 +183,10 @@ class GovernmentCommands(discord.ext.commands.Cog):
         """
         await gtrades_command(ctx, ticker, gov_type, past_transactions_months, raw)
 
-    @discord.ext.commands.command(name="stocks.gov.contracts")
+    @discord.ext.commands.command(
+        name="stocks.gov.contracts",
+        usage="[ticker] [past_transaction_days] [raw]",
+    )
     async def contracts(
         self,
         ctx: discord.ext.commands.Context,
@@ -179,7 +207,10 @@ class GovernmentCommands(discord.ext.commands.Cog):
         """
         await contracts_command(ctx, ticker, past_transaction_days, raw)
 
-    @discord.ext.commands.command(name="stocks.gov.histcont")
+    @discord.ext.commands.command(
+        name="stocks.gov.histcont",
+        usage="[ticker]",
+    )
     async def histcont(self, ctx: discord.ext.commands.Context, ticker=""):
         """Displays historical quarterly-contracts [quiverquant.com]
 
@@ -190,7 +221,10 @@ class GovernmentCommands(discord.ext.commands.Cog):
         """
         await histcont_command(ctx, ticker)
 
-    @discord.ext.commands.command(name="stocks.gov.lobbying")
+    @discord.ext.commands.command(
+        name="stocks.gov.lobbying",
+        usage="[ticker] [num]",
+    )
     async def lobbying(self, ctx: discord.ext.commands.Context, ticker="", num=""):
         """Displays lobbying details [quiverquant.com]
 
@@ -203,10 +237,15 @@ class GovernmentCommands(discord.ext.commands.Cog):
         """
         await lobbying_command(ctx, ticker, num)
 
+    @discord.ext.commands.command(
+        name="stocks.gov",
+        usage="[ticker]",
+    )
     # pylint: disable=too-many-branches
-    @discord.ext.commands.command(name="stocks.gov")
     async def government_menu(self, ctx: discord.ext.commands.Context, ticker=""):
         """Stocks Context - Shows Government Menu
+
+        Run `!help GovernmentCommands` to see the list of available commands.
 
         Returns
         -------

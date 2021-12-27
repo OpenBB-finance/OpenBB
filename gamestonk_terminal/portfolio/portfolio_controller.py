@@ -161,63 +161,52 @@ Graphs:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "q")
-            return self.queue
-        return ["q"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "q")
-            self.queue.insert(0, "q")
-            return self.queue
-        return ["q", "q"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "portfolio")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "reset", "portfolio"]
+        self.queue.insert(0, "portfolio")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
 
-    # MENUS
     def call_bro(self, _):
         """Process bro command"""
         from gamestonk_terminal.portfolio.brokers import bro_controller
 
-        return bro_controller.menu(self.queue)
+        self.queue = bro_controller.menu(self.queue)
 
     def call_po(self, _):
         """Process po command"""
-        return po_controller.menu([], self.queue)
+        self.queue = po_controller.menu([], self.queue)
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -247,7 +236,6 @@ Graphs:
         if ns_parser:
             self.portfolio = portfolio_model.load_df(ns_parser.name)
             print("")
-        return self.queue
 
     @try_except
     def call_save(self, other_args: List[str]):
@@ -282,12 +270,9 @@ Graphs:
                     "Please submit as 'filename.filetype' with filetype being csv, xlsx, or json\n"
                 )
 
-        return self.queue
-
     def call_show(self, _):
         """Process show command"""
         portfolio_view.show_df(self.portfolio, False)
-        return self.queue
 
     def call_add(self, other_args: List[str]):
         """Process add command"""
@@ -390,7 +375,6 @@ Graphs:
         self.portfolio = self.portfolio.append([data])
         self.portfolio.index = list(range(0, len(self.portfolio.values)))
         print(f"{ns_parser.name.upper()} successfully added\n")
-        return self.queue
 
     def call_rmv(self, _):
         """Process rmv command"""
@@ -403,7 +387,6 @@ Graphs:
             print(
                 f"Invalid index please use an integer between 0 and {len(self.portfolio.index)-1}\n"
             )
-        return self.queue
 
     @try_except
     def call_ar(self, other_args: List[str]):
@@ -434,7 +417,6 @@ Graphs:
                     print("Cannot generate a graph from an empty dataframe\n")
             else:
                 print("Please add items to the portfolio\n")
-        return self.queue
 
     @try_except
     def call_rmr(self, other_args: List[str]):
@@ -465,8 +447,6 @@ Graphs:
                     print("Cannot generate a graph from an empty dataframe\n")
             else:
                 print("Please add items to the portfolio\n")
-
-        return self.queue
 
 
 def menu(queue: List[str] = None):
