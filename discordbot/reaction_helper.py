@@ -1,11 +1,10 @@
 import asyncio
 import discord
 
+from gamestonk_terminal.config_terminal import TRADIER_TOKEN
+from gamestonk_terminal.stocks.options import tradier_model, yfinance_model
 from discordbot.run_discordbot import gst_bot
 import discordbot.config_discordbot as cfg
-from gamestonk_terminal.config_terminal import TRADIER_TOKEN
-
-from gamestonk_terminal.stocks.options import tradier_model, yfinance_model
 
 
 async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple = None):
