@@ -17,91 +17,81 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
         expiry = dates[0]
         if call_arg is None:
             await func_cmd(ctx, ticker, expiry)
-            return
         else:
             await func_cmd(ctx, ticker, expiry, *call_arg)
-            return
+        return
 
     if expiry == "1":
         expiry = dates[1]
         if call_arg is None:
             await func_cmd(ctx, ticker, expiry)
-            return
         else:
             await func_cmd(ctx, ticker, expiry, *call_arg)
-            return
+        return
 
     if expiry == "2":
         expiry = dates[2]
         if call_arg is None:
             await func_cmd(ctx, ticker, expiry)
-            return
         else:
             await func_cmd(ctx, ticker, expiry, *call_arg)
-            return
+        return
 
     if expiry == "3":
         expiry = dates[3]
         if call_arg is None:
             await func_cmd(ctx, ticker, expiry)
-            return
         else:
             await func_cmd(ctx, ticker, expiry, *call_arg)
-            return
+        return
 
     if expiry == "4":
         expiry = dates[4]
         if call_arg is None:
             await func_cmd(ctx, ticker, expiry)
-            return
         else:
             await func_cmd(ctx, ticker, expiry, *call_arg)
-            return
+        return
 
     if expiry == "5":
         expiry = dates[5]
         if call_arg is None:
             await func_cmd(ctx, ticker, expiry)
-            return
         else:
             await func_cmd(ctx, ticker, expiry, *call_arg)
-            return
+        return
 
     if expiry == "6":
         expiry = dates[6]
         if call_arg is None:
             await func_cmd(ctx, ticker, expiry)
-            return
         else:
             await func_cmd(ctx, ticker, expiry, *call_arg)
-            return
+        return
 
     if expiry == "7":
         expiry = dates[7]
         if call_arg is None:
             await func_cmd(ctx, ticker, expiry)
-            return
         else:
             await func_cmd(ctx, ticker, expiry, *call_arg)
-            return
+        return
 
     if expiry == "8":
         expiry = dates[8]
         if call_arg is None:
             await func_cmd(ctx, ticker, expiry)
-            return
         else:
             await func_cmd(ctx, ticker, expiry, *call_arg)
-            return
+        return
 
     if expiry == "9":
         expiry = dates[9]
         if call_arg is None:
             await func_cmd(ctx, ticker, expiry)
-            return
         else:
             await func_cmd(ctx, ticker, expiry, *call_arg)
-            return
+        return
 
     if not dates:
         embed = discord.Embed(
