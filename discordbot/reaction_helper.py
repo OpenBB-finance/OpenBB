@@ -119,16 +119,16 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
         return
 
     text = (
-        f"```0️⃣ " + dates[0] + "\n"
-        f"1️⃣ " + dates[1] + "\n"
-        f"2️⃣ " + dates[2] + "\n"
-        f"3️⃣ " + dates[3] + "\n"
-        f"4️⃣ " + dates[4] + "\n"
-        f"5️⃣ " + dates[5] + "\n"
-        f"6️⃣ " + dates[6] + "\n"
-        f"7️⃣ " + dates[7] + "\n"
-        f"8️⃣ " + dates[8] + "\n"
-        f"9️⃣ " + dates[9] + "```"
+        "```0️⃣ " + dates[0] + "\n"
+        "1️⃣ " + dates[1] + "\n"
+        "2️⃣ " + dates[2] + "\n"
+        "3️⃣ " + dates[3] + "\n"
+        "4️⃣ " + dates[4] + "\n"
+        "5️⃣ " + dates[5] + "\n"
+        "6️⃣ " + dates[6] + "\n"
+        "7️⃣ " + dates[7] + "\n"
+        "8️⃣ " + dates[8] + "\n"
+        "9️⃣ " + dates[9] + "```"
     )
 
     title = " " + ticker.upper() + " Options: Expiry Date"

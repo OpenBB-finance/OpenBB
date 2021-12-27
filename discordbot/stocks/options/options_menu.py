@@ -78,7 +78,7 @@ class OptionsCommands(discord.ext.commands.Cog):
         ticker: str
             Stock ticker
         expiry: str
-            accepts 0-9 or YYYY-MM-DD 
+            accepts 0-9 or YYYY-MM-DD
             0 being weeklies
             1+ for weeks out
             prompts reaction helper if empty
@@ -107,7 +107,7 @@ class OptionsCommands(discord.ext.commands.Cog):
         ticker: str
             Stock ticker
         expiry: str
-            accepts 0-9 or YYYY-MM-DD 
+            accepts 0-9 or YYYY-MM-DD
             0 being weeklies
             1+ for weeks out
             prompts reaction helper if empty
@@ -134,30 +134,30 @@ class OptionsCommands(discord.ext.commands.Cog):
         async with ctx.typing():
             await asyncio.sleep(0.2)
             """Open Interest
-        
+
         Parameters
         -----------
         ticker: str
             ticker
         strike: float
-            strike 
+            strike
         expiry: str
-            accepts 0-9 or YYYY-MM-DD 
+            accepts 0-9 or YYYY-MM-DD
         min_sp: float
             min strike price
         max_sp:float
             max strike price
-            
+
         Example:
         (It's a Monday)
         !stocks.opt.oi gme 0 500 1000
             returns GME End of Week expiry strike prices 500-1000
-        
-        expiry = 0-9 or YYYY-MM-DD 
+
+        expiry = 0-9 or YYYY-MM-DD
                  0 being weeklies, 1+ for weeks out
 
         if empty
-        
+
         Sends a message to the discord user with the expiry dates.
         The user can then select a reaction to trigger the selected date.
         """
@@ -191,25 +191,25 @@ class OptionsCommands(discord.ext.commands.Cog):
         ticker: str
             ticker
         strike: float
-            strike 
+            strike
         put: bool
             c for call
             p for put
         expiry: str
             accepts 0-9 or YYYY-MM-DD
-            
+
         Example:
         (It's a Monday)
         !stocks.opt.hist gme 500 c 0
             returns GME 500 calls End of Week expiry
-            
-        expiry = 0-9 or YYYY-MM-DD 
+
+        expiry = 0-9 or YYYY-MM-DD
                  0 being weeklies, 1+ for weeks out
 
         if empty
-        
+
         Sends a message to the discord user with the expiry dates.
-        The user can then select a reaction to trigger the selected date.            
+        The user can then select a reaction to trigger the selected date.
         """
             if cfg.DEBUG:
                 print(f"!stocks.opt.hist {ticker} {strike} {put} {expiry}")
@@ -252,30 +252,30 @@ class OptionsCommands(discord.ext.commands.Cog):
         async with ctx.typing():
             await asyncio.sleep(0.2)
             """Options Volume
-        
+
         Parameters
         -----------
         ticker: str
             ticker
         strike: float
-            strike 
+            strike
         expiry: str
             accepts 0-9 or YYYY-MM-DD
         min_sp: float
             min strike price
         max_sp:float
             max strike price
-            
+
         Example:
         (It's a Monday)
         !stocks.opt.vol gme 0 500 1000
             returns GME End of Week expiry strike prices 500-1000
-        
-        expiry = 0-9 or YYYY-MM-DD 
+
+        expiry = 0-9 or YYYY-MM-DD
                  0 being weeklies, 1+ for weeks out
 
         if empty
-        
+
         Sends a message to the discord user with the expiry dates.
         The user can then select a reaction to trigger the selected date.
         """
