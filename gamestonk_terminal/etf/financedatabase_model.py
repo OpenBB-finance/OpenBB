@@ -1,7 +1,7 @@
 """Finance Database model"""
 __docformat__ = "numpy"
 
-from typing import Dict
+from typing import Dict, List
 import financedatabase as fd
 
 
@@ -41,3 +41,33 @@ def get_etfs_by_description(description: str) -> Dict:
     data = fd.search_products(data, query=description, search="summary")
 
     return data
+
+
+def get_etfs_by_category(category: str) -> Dict:
+    """Return a selection of ETFs based on category filtered by total assets. [Source: Finance Database]
+
+    Parameters
+    ----------
+    category: str
+        Search by category to find ETFs matching the criteria.
+
+    Returns
+    ----------
+    df : pd.DataFrame
+        Dataframe with ETFs that match a certain description
+    """
+    data = fd.select_etfs(category=category)
+
+    return data
+
+
+def get_etfs_categories() -> List[str]:
+    """Return a selection of ETF categories. [Source: Finance Database]
+
+    Returns
+    ----------
+    List[str]
+        ETF categories
+    """
+
+    return fd.show_options("etfs")

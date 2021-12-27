@@ -22,6 +22,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.etf.screener import screener_view, wsj_view
+from gamestonk_terminal.etf import financedatabase_view, financedatabase_model
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -92,6 +93,9 @@ class ScreenerController:
             choices: dict = {c: {} for c in self.CHOICES}
             choices["view"] = {c: None for c in self.preset_choices}
             choices["set"] = {c: None for c in self.preset_choices}
+            choices["sbc"] = {
+                c: None for c in financedatabase_model.get_etfs_categories()
+            }
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         self.preset = "etf_config"
@@ -363,11 +367,11 @@ PRESET: {self.preset}
             default=10,
             dest="limit",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
         if ns_parser:
             wsj_view.show_top_mover("gainers", ns_parser.limit, ns_parser.export)
 
@@ -386,11 +390,11 @@ PRESET: {self.preset}
             default=10,
             dest="limit",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
         if ns_parser:
             wsj_view.show_top_mover("decliners", ns_parser.limit, ns_parser.export)
 
@@ -409,13 +413,60 @@ PRESET: {self.preset}
             default=10,
             dest="limit",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
         if ns_parser:
             wsj_view.show_top_mover("active", ns_parser.limit, ns_parser.export)
+
+    @try_except
+    def call_sbc(self, other_args: List[str]):
+        """Process sbc command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="sbc",
+            description="Search by category [Source: FinanceDatabase/StockAnalysis.com]",
+        )
+        parser.add_argument(
+            "-c",
+            "--category",
+            type=str,
+            dest="category",
+            nargs="+",
+            help="Category to look for",
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            type=check_positive,
+            dest="limit",
+            help="Limit of ETFs to display",
+            default=5,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            category = " ".join(ns_parser.category)
+            if category in financedatabase_model.get_etfs_categories():
+                financedatabase_view.display_etf_by_category(
+                    category=category,
+                    limit=ns_parser.limit,
+                    export=ns_parser.export,
+                )
+            else:
+                print(
+                    "The category selected does not exist, choose one from:"
+                    f" {', '.join(financedatabase_model.get_etfs_categories())}\n"
+                )
 
 
 def menu(

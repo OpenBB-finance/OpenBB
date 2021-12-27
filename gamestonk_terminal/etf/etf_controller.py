@@ -41,7 +41,7 @@ from gamestonk_terminal.etf.technical_analysis import ta_controller
 from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 from gamestonk_terminal.etf.screener import screener_controller
 
-# pylint: disable=W0105,C0415,C0302
+# pylint: disable=C0415,C0302
 
 
 class ETFController:
@@ -750,74 +750,6 @@ Major holdings: {', '.join(self.etf_holdings)}
         if ns_parser:
             etf_list = ns_parser.names.upper().split(",")
             stockanalysis_view.view_comparisons(etf_list, export=ns_parser.export)
-
-
-'''
-    @try_except
-    def call_fds(self, other_args):
-        """Process fds command"""
-        parser = argparse.ArgumentParser(
-            description="Display a selection of ETFs based on category, name and/or description filtered by total "
-            "assets. Returns the top ETFs when no argument is given. [Source: Finance Database]",
-            add_help=False,
-        )
-        parser.add_argument(
-            "-c",
-            "--category",
-            default=None,
-            nargs="+",
-            dest="category",
-            help="Specify the ETF selection based on a category",
-        )
-        parser.add_argument(
-            "-n",
-            "--name",
-            default=None,
-            nargs="+",
-            dest="name",
-            help="Specify the ETF selection based on the name",
-        )
-        parser.add_argument(
-            "-d",
-            "--description",
-            default=None,
-            nargs="+",
-            dest="description",
-            help="Specify the ETF selection based on the description (not shown in table)",
-        )
-        parser.add_argument(
-            "-ie",
-            "--include_exchanges",
-            action="store_false",
-            help="When used, data from different exchanges is also included. This leads to a much larger "
-            "pool of data due to the same ETF being listed on multiple exchanges",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            default=10,
-            type=int,
-            dest="limit",
-            help="Enter the number of ETFs you wish to see in the Tabulate window",
-        )
-        parser.add_argument(
-            "-o",
-            "--options",
-            action="store_true",
-            help="Obtain the available categories",
-        )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            financedatabase_view.show_etfs(
-                category=ns_parser.category,
-                name=ns_parser.name,
-                description=ns_parser.description,
-                include_exchanges=ns_parser.include_exchanges,
-                amount=ns_parser.limit,
-                options=ns_parser.options,
-            )
-'''
 
 
 def menu(queue: List[str] = None):
