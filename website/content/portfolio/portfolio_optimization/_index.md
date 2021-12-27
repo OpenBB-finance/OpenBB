@@ -1,3 +1,5 @@
+The terminal has incorporated PyPortfolioOpt. Refer to the documentation here: https://pyportfolioopt.readthedocs.io/en/latest/MeanVariance.html
+
 ```text
 Portfolio Optimization:
     select        select list of tickers to be optimized
