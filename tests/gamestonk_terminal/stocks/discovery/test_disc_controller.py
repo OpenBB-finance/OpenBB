@@ -11,27 +11,72 @@ from gamestonk_terminal.stocks.discovery import disc_controller
 # pylint: disable=W0603
 # pylint: disable=E1111
 
-pytest.skip(allow_module_level=True)
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "queue, expected",
+    [
+        (["load", "help"], []),
+        (["quit", "help"], ["help"]),
+    ],
+)
+def test_menu_with_queue(expected, mocker, queue):
+    mocker.patch(
+        target=(
+            "gamestonk_terminal.stocks.discovery.disc_controller."
+            "DiscoveryController.switch"
+        ),
+        return_value=["quit"],
+    )
+    result_menu = disc_controller.menu(
+        queue=queue,
+    )
+
+    assert result_menu == expected
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_menu_quick_exit(mocker):
-    mocker.patch("builtins.input", return_value="quit")
-    mocker.patch("gamestonk_terminal.stocks.discovery.disc_controller.session")
+def test_menu_without_queue_completion(mocker):
+    # DISABLE AUTO-COMPLETION
+    mocker.patch.object(
+        target=disc_controller.gtff,
+        attribute="USE_PROMPT_TOOLKIT",
+        new=True,
+    )
     mocker.patch(
-        "gamestonk_terminal.stocks.discovery.disc_controller.session.prompt",
+        target="gamestonk_terminal.stocks.discovery.disc_controller.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.discovery.disc_controller.session.prompt",
         return_value="quit",
     )
 
-    result_menu = disc_controller.menu()
+    result_menu = disc_controller.menu(queue=None)
 
-    assert result_menu
+    assert result_menu == []
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_menu_system_exit(mocker):
+@pytest.mark.parametrize(
+    "mock_input",
+    ["help", "homee help", "home help", "mock"],
+)
+def test_menu_without_queue_sys_exit(mock_input, mocker):
+    # DISABLE AUTO-COMPLETION
+    mocker.patch.object(
+        target=disc_controller.gtff,
+        attribute="USE_PROMPT_TOOLKIT",
+        new=False,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.discovery.disc_controller.session",
+        return_value=None,
+    )
+
+    # MOCK USER INPUT
+    mocker.patch("builtins.input", return_value=mock_input)
+
+    # MOCK SWITCH
     class SystemExitSideEffect:
         def __init__(self):
             self.first_call = True
@@ -40,73 +85,96 @@ def test_menu_system_exit(mocker):
             if self.first_call:
                 self.first_call = False
                 raise SystemExit()
-            return True
+            return ["quit"]
 
     mock_switch = mocker.Mock(side_effect=SystemExitSideEffect())
-    mocker.patch("builtins.input", return_value="quit")
-    mocker.patch("gamestonk_terminal.stocks.discovery.disc_controller.session")
     mocker.patch(
-        "gamestonk_terminal.stocks.discovery.disc_controller.session.prompt",
-        return_value="quit",
-    )
-    mocker.patch(
-        "gamestonk_terminal.stocks.discovery.disc_controller.DiscoveryController.switch",
+        target=(
+            "gamestonk_terminal.stocks.discovery.disc_controller."
+            "DiscoveryController.switch"
+        ),
         new=mock_switch,
     )
 
-    disc_controller.menu()
+    result_menu = disc_controller.menu(queue=None)
+
+    assert result_menu == []
 
 
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_print_help():
-    dd = disc_controller.DiscoveryController()
-    dd.print_help()
+    controller = disc_controller.DiscoveryController()
+    controller.print_help()
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_switch_empty():
-    dd = disc_controller.DiscoveryController()
-    result = dd.switch(an_input="")
+@pytest.mark.parametrize(
+    "an_input, expected_queue",
+    [
+        ("", []),
+        ("/help", ["quit", "quit", "help"]),
+        ("help/help", ["help"]),
+        ("q", ["quit"]),
+        ("h", []),
+        ("r", ["quit", "quit", "reset", "stocks", "disc"]),
+    ],
+)
+def test_switch(an_input, expected_queue):
+    controller = disc_controller.DiscoveryController(queue=None)
+    queue = controller.switch(an_input=an_input)
 
-    assert result is None
+    assert queue == expected_queue
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_switch_help():
-    dd = disc_controller.DiscoveryController()
-    result = dd.switch(an_input="?")
-
-    assert result is None
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_switch_cls(mocker):
+def test_call_cls(mocker):
     mocker.patch("os.system")
-    dd = disc_controller.DiscoveryController()
-    result = dd.switch(an_input="cls")
+    controller = disc_controller.DiscoveryController()
+    controller.call_cls([])
 
-    assert result is None
+    assert controller.queue == []
     os.system.assert_called_once_with("cls||clear")
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_call_q():
-    dd = disc_controller.DiscoveryController()
-    other_args = list()
-    result = dd.call_q(other_args)
+@pytest.mark.parametrize(
+    "func, queue, expected_queue",
+    [
+        (
+            "call_exit",
+            [],
+            [
+                "quit",
+                "quit",
+                "quit",
+            ],
+        ),
+        ("call_exit", ["help"], ["quit", "quit", "quit", "help"]),
+        ("call_home", [], ["quit", "quit"]),
+        ("call_help", [], []),
+        ("call_quit", [], ["quit"]),
+        ("call_quit", ["help"], ["quit", "help"]),
+        (
+            "call_reset",
+            [],
+            ["quit", "quit", "reset", "stocks", "disc"],
+        ),
+        (
+            "call_reset",
+            ["help"],
+            ["quit", "quit", "reset", "stocks", "disc", "help"],
+        ),
+    ],
+)
+def test_call_func_expect_queue(expected_queue, queue, func):
+    controller = disc_controller.DiscoveryController(
+        queue=queue,
+    )
+    result = getattr(controller, func)([])
 
-    assert result is False
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_call_quit():
-    dd = disc_controller.DiscoveryController()
-    other_args = list()
-    result = dd.call_quit(other_args)
-
-    assert result is True
+    assert result is None
+    assert controller.queue == expected_queue
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -116,13 +184,13 @@ def test_call_quit():
         (
             "call_active",
             "yahoofinance_view.display_active",
-            ["--num=5", "--export=csv"],
+            ["--limit=5", "--export=csv"],
             {"num_stocks": 5, "export": "csv"},
         ),
         (
             "call_arkord",
             "ark_view.ark_orders_view",
-            ["--num=5", "--sortby=date", "--fund=ARKK", "--export=csv"],
+            ["--limit=5", "--sortby=date", "--fund=ARKK", "--export=csv"],
             {
                 "num": 5,
                 "sort_col": ["date"],
@@ -137,7 +205,7 @@ def test_call_quit():
             "call_asc",
             "yahoofinance_view.display_asc",
             [
-                "--num=5",
+                "--limit=5",
                 "--export=csv",
             ],
             {"num_stocks": 5, "export": "csv"},
@@ -147,42 +215,16 @@ def test_call_quit():
             "seeking_alpha_view.display_news",
             [
                 "--type=technology",
-                "--num=5",
+                "--limit=5",
                 "--export=csv",
             ],
             {"news_type": "technology", "num": 5, "export": "csv"},
         ),
         (
-            "call_fds",
-            "financedatabase_view.show_equities",
-            [
-                "--country=MOCK_COUNTRY",
-                "--sector=MOCK_SECTOR",
-                "--industry=MOCK_INDUSTRY",  # pragma: allowlist secret
-                "--name=MOCK_NAME",
-                "--description=MOCK_DESCRIPTION",  # pragma: allowlist secret
-                "--marketcap=Large",
-                "--include_exchanges",
-                "--amount=10",
-                "--options=countries",
-            ],
-            {
-                "country": ["MOCK_COUNTRY"],
-                "sector": ["MOCK_SECTOR"],
-                "industry": ["MOCK_INDUSTRY"],
-                "name": ["MOCK_NAME"],
-                "description": ["MOCK_DESCRIPTION"],
-                "marketcap": ["Large"],
-                "include_exchanges": False,
-                "amount": 10,
-                "options": "countries",
-            },
-        ),
-        (
             "call_fipo",
             "finnhub_view.future_ipo",
             [
-                "--num=5",
+                "--limit=5",
                 "--export=csv",
             ],
             {"num_days_ahead": 5, "export": "csv"},
@@ -191,7 +233,7 @@ def test_call_quit():
             "call_ford",
             "fidelity_view.orders_view",
             [
-                "--num=5",
+                "--limit=5",
                 "--export=csv",
             ],
             {"num": 5, "export": "csv"},
@@ -199,43 +241,43 @@ def test_call_quit():
         (
             "call_gainers",
             "yahoofinance_view.display_gainers",
-            ["--num=5", "--export=csv"],
+            ["--limit=5", "--export=csv"],
             {"num_stocks": 5, "export": "csv"},
         ),
         (
             "call_gtech",
             "yahoofinance_view.display_gtech",
-            ["--num=5", "--export=csv"],
+            ["--limit=5", "--export=csv"],
             {"num_stocks": 5, "export": "csv"},
         ),
         (
             "call_hotpenny",
             "shortinterest_view.hot_penny_stocks",
-            ["--num=5", "--export=csv"],
+            ["--limit=5", "--export=csv"],
             {"num": 5, "export": "csv"},
         ),
         (
             "call_losers",
             "yahoofinance_view.display_losers",
-            ["--num=5", "--export=csv"],
+            ["--limit=5", "--export=csv"],
             {"num_stocks": 5, "export": "csv"},
         ),
         (
             "call_lowfloat",
             "shortinterest_view.low_float",
-            ["--num=5", "--export=csv"],
+            ["--limit=5", "--export=csv"],
             {"num": 5, "export": "csv"},
         ),
         (
             "call_pipo",
             "finnhub_view.past_ipo",
-            ["--num=5", "--export=csv"],
+            ["--limit=5", "--export=csv"],
             {"num_days_behind": 5, "export": "csv"},
         ),
         (
             "call_rtat",
             "nasdaq_view.display_top_retail",
-            ["--num=5", "--export=csv"],
+            ["--limit=5", "--export=csv"],
             {"n_days": 5, "export": "csv"},
         ),
         (
@@ -249,7 +291,7 @@ def test_call_quit():
             "seeking_alpha_view.news",
             [
                 "--id=123",
-                "--num=5",
+                "--limit=5",
                 "--export=csv",
             ],
             {
@@ -261,19 +303,19 @@ def test_call_quit():
         (
             "call_ugs",
             "yahoofinance_view.display_ugs",
-            ["--num=5", "--export=csv"],
+            ["--limit=5", "--export=csv"],
             {"num_stocks": 5, "export": "csv"},
         ),
         (
             "call_ulc",
             "yahoofinance_view.display_ulc",
-            ["--num=5", "--export=csv"],
+            ["--limit=5", "--export=csv"],
             {"num_stocks": 5, "export": "csv"},
         ),
         (
             "call_upcoming",
             "seeking_alpha_view.upcoming_earning_release_dates",
-            ["--n_pages=10", "--num=5", "--export=csv"],
+            ["--n_pages=10", "--limit=5", "--export=csv"],
             {"num_pages": 10, "num_earnings": 5, "export": "csv"},
         ),
     ],
@@ -284,8 +326,8 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         "gamestonk_terminal.stocks.discovery." + mocked_func,
         new=mock,
     )
-    fa = disc_controller.DiscoveryController()
-    getattr(fa, tested_func)(other_args=other_args)
+    controller = disc_controller.DiscoveryController()
+    getattr(controller, tested_func)(other_args=other_args)
 
     if isinstance(called_with, dict):
         mock.assert_called_once_with(**called_with)
@@ -303,7 +345,6 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         "call_arkord",
         "call_asc",
         "call_cnews",
-        "call_fds",
         "call_fipo",
         "call_ford",
         "call_gainers",
@@ -325,8 +366,9 @@ def test_call_func_no_parser(func, mocker):
         "gamestonk_terminal.stocks.discovery.disc_controller.parse_known_args_and_warn",
         return_value=None,
     )
-    fa = disc_controller.DiscoveryController()
+    controller = disc_controller.DiscoveryController()
 
-    func_result = getattr(fa, func)(other_args=list())
+    func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
+    assert controller.queue == []
     getattr(disc_controller, "parse_known_args_and_warn").assert_called_once()

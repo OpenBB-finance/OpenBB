@@ -11,27 +11,87 @@ from gamestonk_terminal.stocks.government import gov_controller
 # pylint: disable=W0603
 # pylint: disable=E1111
 
-pytest.skip(allow_module_level=True)
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [
+            ("period1", "1598220000"),
+            ("period2", "1635980400"),
+        ],
+    }
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_menu_quick_exit(mocker):
-    mocker.patch("builtins.input", return_value="quit")
-    mocker.patch("gamestonk_terminal.stocks.government.gov_controller.session")
+@pytest.mark.parametrize(
+    "queue, expected",
+    [
+        (["load", "help"], []),
+        (["quit", "help"], ["help"]),
+    ],
+)
+def test_menu_with_queue(expected, mocker, queue):
     mocker.patch(
-        "gamestonk_terminal.stocks.government.gov_controller.session.prompt",
+        target=(
+            "gamestonk_terminal.stocks.government.gov_controller."
+            "GovController.switch"
+        ),
+        return_value=["quit"],
+    )
+    result_menu = gov_controller.menu(
+        ticker="TSLA",
+        queue=queue,
+    )
+
+    assert result_menu == expected
+
+
+@pytest.mark.vcr(record_mode="none")
+def test_menu_without_queue_completion(mocker):
+    # DISABLE AUTO-COMPLETION
+    mocker.patch.object(
+        target=gov_controller.gtff,
+        attribute="USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.government.gov_controller.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.government.gov_controller.session.prompt",
         return_value="quit",
     )
 
-    result_menu = gov_controller.menu(ticker="TSLA")
+    result_menu = gov_controller.menu(
+        ticker="TSLA",
+        queue=None,
+    )
 
-    assert result_menu
+    assert result_menu == []
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_menu_system_exit(mocker):
+@pytest.mark.parametrize(
+    "mock_input",
+    ["help", "homee help", "home help", "mock"],
+)
+def test_menu_without_queue_sys_exit(mock_input, mocker):
+    # DISABLE AUTO-COMPLETION
+    mocker.patch.object(
+        target=gov_controller.gtff,
+        attribute="USE_PROMPT_TOOLKIT",
+        new=False,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.government.gov_controller.session",
+        return_value=None,
+    )
+
+    # MOCK USER INPUT
+    mocker.patch("builtins.input", return_value=mock_input)
+
+    # MOCK SWITCH
     class SystemExitSideEffect:
         def __init__(self):
             self.first_call = True
@@ -40,73 +100,107 @@ def test_menu_system_exit(mocker):
             if self.first_call:
                 self.first_call = False
                 raise SystemExit()
-            return True
+            return ["quit"]
 
     mock_switch = mocker.Mock(side_effect=SystemExitSideEffect())
-    mocker.patch("builtins.input", return_value="quit")
-    mocker.patch("gamestonk_terminal.stocks.government.gov_controller.session")
     mocker.patch(
-        "gamestonk_terminal.stocks.government.gov_controller.session.prompt",
-        return_value="quit",
-    )
-    mocker.patch(
-        "gamestonk_terminal.stocks.government.gov_controller.GovController.switch",
+        target=(
+            "gamestonk_terminal.stocks.government.gov_controller."
+            "GovController.switch"
+        ),
         new=mock_switch,
     )
 
-    gov_controller.menu(ticker="TSLA")
+    result_menu = gov_controller.menu(
+        ticker="TSLA",
+        queue=None,
+    )
+
+    assert result_menu == []
 
 
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_print_help():
-    dd = gov_controller.GovController(ticker="")
-    dd.print_help()
+    controller = gov_controller.GovController(
+        ticker="",
+    )
+    controller.print_help()
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_switch_empty():
-    dd = gov_controller.GovController(ticker="")
-    result = dd.switch(an_input="")
+@pytest.mark.parametrize(
+    "an_input, expected_queue",
+    [
+        ("", []),
+        ("/help", ["quit", "quit", "help"]),
+        ("help/help", ["help"]),
+        ("q", ["quit"]),
+        ("h", []),
+        ("r", ["quit", "quit", "reset", "stocks", "gov"]),
+    ],
+)
+def test_switch(an_input, expected_queue):
+    controller = gov_controller.GovController(
+        ticker="",
+        queue=None,
+    )
+    queue = controller.switch(an_input=an_input)
 
-    assert result is None
+    assert queue == expected_queue
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_switch_help():
-    dd = gov_controller.GovController(ticker="")
-    result = dd.switch(an_input="?")
-
-    assert result is None
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_switch_cls(mocker):
+def test_call_cls(mocker):
     mocker.patch("os.system")
-    dd = gov_controller.GovController(ticker="")
-    result = dd.switch(an_input="cls")
+    controller = gov_controller.GovController(
+        ticker="",
+    )
+    controller.call_cls([])
 
-    assert result is None
+    assert controller.queue == []
     os.system.assert_called_once_with("cls||clear")
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_call_q():
-    dd = gov_controller.GovController(ticker="")
-    other_args = list()
-    result = dd.call_q(other_args)
+@pytest.mark.parametrize(
+    "func, queue, expected_queue",
+    [
+        (
+            "call_exit",
+            [],
+            [
+                "quit",
+                "quit",
+                "quit",
+            ],
+        ),
+        ("call_exit", ["help"], ["quit", "quit", "quit", "help"]),
+        ("call_home", [], ["quit", "quit"]),
+        ("call_help", [], []),
+        ("call_quit", [], ["quit"]),
+        ("call_quit", ["help"], ["quit", "help"]),
+        (
+            "call_reset",
+            [],
+            ["quit", "quit", "reset", "stocks", "gov"],
+        ),
+        (
+            "call_reset",
+            ["help"],
+            ["quit", "quit", "reset", "stocks", "gov", "help"],
+        ),
+    ],
+)
+def test_call_func_expect_queue(expected_queue, queue, func):
+    controller = gov_controller.GovController(
+        ticker="",
+        queue=queue,
+    )
+    result = getattr(controller, func)([])
 
-    assert result is False
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_call_quit():
-    dd = gov_controller.GovController(ticker="")
-    other_args = list()
-    result = dd.call_quit(other_args)
-
-    assert result is True
+    assert result is None
+    assert controller.queue == expected_queue
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -116,37 +210,45 @@ def test_call_quit():
         (
             "call_contracts",
             "quiverquant_view.display_contracts",
-            ["--past_transaction_days=5", "--raw"],
+            ["--past_transaction_days=5", "--raw", "--export=csv"],
             dict(
                 ticker="MOCK_TICKER",
                 past_transaction_days=5,
                 raw=True,
+                export="csv",
             ),
         ),
         (
             "call_gtrades",
             "quiverquant_view.display_government_trading",
-            ["--past_transactions_months=5", "--govtype=congress", "--raw"],
+            [
+                "--past_transactions_months=5",
+                "--govtype=congress",
+                "--raw",
+                "--export=csv",
+            ],
             dict(
                 ticker="MOCK_TICKER",
                 gov_type="congress",
                 past_transactions_months=5,
                 raw=True,
+                export="csv",
             ),
         ),
         (
             "call_histcont",
             "quiverquant_view.display_hist_contracts",
-            ["--export=csv"],
+            ["--raw", "--export=csv"],
             dict(
                 ticker="MOCK_TICKER",
+                raw=True,
                 export="csv",
             ),
         ),
         (
             "call_lastcontracts",
             "quiverquant_view.display_last_contracts",
-            ["--past_transaction_days=2", "--num=5", "--sum", "--export=csv"],
+            ["--past_transaction_days=2", "--limit=5", "--sum", "--export=csv"],
             dict(
                 past_transaction_days=2,
                 num=5,
@@ -173,7 +275,7 @@ def test_call_quit():
         (
             "call_lobbying",
             "quiverquant_view.display_lobbying",
-            ["--num=5"],
+            ["--limit=5"],
             dict(
                 ticker="MOCK_TICKER",
                 num=5,
@@ -182,10 +284,12 @@ def test_call_quit():
         (
             "call_qtrcontracts",
             "quiverquant_view.display_qtr_contracts",
-            ["--num=5", "--analysis=total"],
+            ["--limit=5", "--analysis=total", "--raw", "--export=csv"],
             dict(
                 analysis="total",
                 num=5,
+                raw=True,
+                export="csv",
             ),
         ),
         (
@@ -194,7 +298,7 @@ def test_call_quit():
             [
                 "--govtype=congress",
                 "--past_transactions_months=2",
-                "--num=5",
+                "--limit=5",
                 "--raw",
                 "--export=csv",
             ],
@@ -209,7 +313,7 @@ def test_call_quit():
         (
             "call_toplobbying",
             "quiverquant_view.display_top_lobbying",
-            ["--num=5", "--raw", "--export=csv"],
+            ["--limit=5", "--raw", "--export=csv"],
             dict(
                 num=5,
                 raw=True,
@@ -222,7 +326,7 @@ def test_call_quit():
             [
                 "--govtype=congress",
                 "--past_transactions_months=2",
-                "--num=5",
+                "--limit=5",
                 "--raw",
                 "--export=csv",
             ],
@@ -279,17 +383,47 @@ def test_call_func_no_parser(func, mocker):
 
     func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
+    assert controller.queue == []
     getattr(gov_controller, "parse_known_args_and_warn").assert_called_once()
 
 
-@pytest.mark.vcr(record_move="none")
-@pytest.mark.record_stdout
+@pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
-    "expected, ticker",
-    [(True, "MOCK_TYPE"), (False, None)],
+    "func",
+    [
+        "call_gtrades",
+        "call_contracts",
+        "call_histcont",
+        "call_lobbying",
+    ],
 )
-def test_check_ticker(expected, ticker):
-    controller = gov_controller.GovController(ticker=ticker)
+def test_call_func_no_ticker(func, mocker):
+    mocker.patch(
+        "gamestonk_terminal.stocks.government.gov_controller.parse_known_args_and_warn",
+        return_value=True,
+    )
+    controller = gov_controller.GovController(ticker=None)
 
-    # pylint: disable=protected-access
-    assert controller._check_ticker() == expected
+    func_result = getattr(controller, func)(other_args=list())
+    assert func_result is None
+    assert controller.queue == []
+    getattr(gov_controller, "parse_known_args_and_warn").assert_called_once()
+
+
+@pytest.mark.vcr
+def test_call_load(mocker):
+    yf_download = gov_controller.stocks_helper.yf.download
+
+    def mock_yf_download(*args, **kwargs):
+        kwargs["threads"] = False
+        return yf_download(*args, **kwargs)
+
+    mocker.patch("yfinance.download", side_effect=mock_yf_download)
+    controller = gov_controller.GovController(
+        ticker="TSLA",
+    )
+    other_args = [
+        "TSLA",
+        "--start=2021-12-17",
+    ]
+    controller.call_load(other_args=other_args)

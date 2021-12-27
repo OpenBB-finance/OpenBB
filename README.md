@@ -62,8 +62,8 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#dock-install">Docker Install</a></li>
-        <li><a href="#install">Install</a></li>
+        <li><a href="#docker-installation---new-and-improved">Docker Installation - new and improved</a></li>
+        <li><a href="#local-install---anaconda-and-python">Local Install - Anaconda and Python</a></li>
         <li><a href="#advanced-user-install---machine-learning">Advanced User Install - Machine Learning</a></li>
         <li><a href="#update-terminal">Update Terminal</a></li>
         <li><a href="#api-keys">API Keys</a></li>
