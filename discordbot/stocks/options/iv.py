@@ -21,9 +21,7 @@ async def iv_command(ctx, ticker: str = None):
         df = barchart_model.get_options_info(ticker)
         tickerr = ticker.upper()
 
-        report = (
-            "```" + tabulate(df, tablefmt="fancy_grid", showindex=False) + "```"
-        )
+        report = "```" + tabulate(df, tablefmt="fancy_grid", showindex=False) + "```"
         embed = discord.Embed(
             title=" " + tickerr.__str__() + " Options: IV",
             description=report,
