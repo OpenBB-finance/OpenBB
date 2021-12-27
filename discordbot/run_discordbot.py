@@ -54,15 +54,15 @@ gst_bot = discord.ext.commands.Bot(
 discord_components.DiscordComponents(gst_bot)
 
 if cfg.IMGUR_CLIENT_ID == "REPLACE_ME" or cfg.DISCORD_BOT_TOKEN == "REPLACE_ME":
-    print(
-        "Update IMGUR_CLIENT_ID or DISCORD_BOT_TOKEN or both in "
-        + f"{ os.path.join('discordbot', 'config_discordbot') } \n"
+    logger.info(
+        "Update IMGUR_CLIENT_ID or DISCORD_BOT_TOKEN or both in %s \n",
+        os.path.join("discordbot", "config_discordbot"),
     )
     sys.exit()
 
 
 async def on_ready():
-    print("GST Discord Bot Ready to Gamestonk!")
+    logger.info("GST Discord Bot Ready to Gamestonk!")
 
 
 gst_imgur = pyimgur.Imgur(cfg.IMGUR_CLIENT_ID)

@@ -4,18 +4,14 @@ import matplotlib.pyplot as plt
 import discord
 
 from gamestonk_terminal.economy import cnn_view, cnn_model
+from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
 
 
 async def feargreed_command(ctx, indicator=""):
     """CNN Fear and Greed Index [CNN]"""
 
     try:
-        # Debug user input
-        if cfg.DEBUG:
-            print(f"\n!economy.feargreed {indicator}")
-
         # Check for argument
         possible_indicators = ("", "jbd", "mv", "pco", "mm", "sps", "spb", "shd")
 
@@ -68,12 +64,12 @@ async def feargreed_command(ctx, indicator=""):
             embed.set_image(url=uploaded_image.link)
 
         else:
-            if cfg.DEBUG:
-                print("Error with uploading the the image to Imgur.")
+            logger.error("Error when uploading the the image to Imgur.")
 
         await ctx.send(embed=embed)
 
     except Exception as e:
+        logger.error("ERROR Economy: [CNN] Feargreed. %s", e)
         embed = discord.Embed(
             title="ERROR Economy: [CNN] Feargreed",
             colour=cfg.COLOR,

@@ -4,7 +4,7 @@ import discord_components
 
 import discordbot.config_discordbot as cfg
 
-from discordbot.run_discordbot import gst_bot
+from discordbot.run_discordbot import gst_bot, logger
 
 from discordbot.economy.feargreed import feargreed_command
 from discordbot.economy.overview import overview_command
@@ -33,7 +33,7 @@ class EconomyCommands(discord.ext.commands.Cog):
         """CNN Fear and Greed Index [CNN]
 
         Parameters
-        -----------
+        ----------
         indicator: str
             Possible indicatores are: jbd, mv, pco, mm, sps, spb, shd. Which stand for
             Junk Bond Demand, Market Volatility, Put and Call Options, Market Momentum,
@@ -44,56 +44,67 @@ class EconomyCommands(discord.ext.commands.Cog):
     @discord.ext.commands.command(name="economy.overview")
     async def overview(self, ctx: discord.ext.commands.Context):
         """Market data overview [Wall St. Journal]"""
+        logger.info("economy.overview")
         await overview_command(ctx)
 
     @discord.ext.commands.command(name="economy.indices")
     async def indices(self, ctx: discord.ext.commands.Context):
         """US indices overview [Wall St. Journal]"""
+        logger.info("economy.indices")
         await indices_command(ctx)
 
     @discord.ext.commands.command(name="economy.futures")
     async def futures(self, ctx: discord.ext.commands.Context):
         """Futures and commodities overview [Wall St. Journal]"""
+        logger.info("economy.futures")
         await futures_command(ctx)
 
     @discord.ext.commands.command(name="economy.usbonds")
     async def usbonds(self, ctx: discord.ext.commands.Context):
         """US bonds overview [Wall St. Journal]"""
+        logger.info("economy.usbonds")
         await usbonds_command(ctx)
 
     @discord.ext.commands.command(name="economy.glbonds")
     async def glbonds(self, ctx: discord.ext.commands.Context):
         """Global bonds overview [Wall St. Journal]"""
+        logger.info("economy.glbonds")
         await glbonds_command(ctx)
 
     @discord.ext.commands.command(name="economy.energy")
     async def energy(self, ctx: discord.ext.commands.Context):
         """Displays energy futures data [Finviz]"""
+        logger.info("economy.energy")
         await energy_command(ctx)
 
     @discord.ext.commands.command(name="economy.metals")
     async def metals(self, ctx: discord.ext.commands.Context):
         """Displays metals futures data [Finviz]"""
+        logger.info("economy.metals")
         await metals_command(ctx)
 
     @discord.ext.commands.command(name="economy.meats")
     async def meats(self, ctx: discord.ext.commands.Context):
         """Displays meats futures data [Finviz]"""
+        logger.info("economy.meats")
         await meats_command(ctx)
 
     @discord.ext.commands.command(name="economy.grains")
     async def grains(self, ctx: discord.ext.commands.Context):
         """Displays grains futures data [Finviz]"""
+        logger.info("economy.grains")
         await grains_command(ctx)
 
     @discord.ext.commands.command(name="economy.softs")
     async def softs(self, ctx: discord.ext.commands.Context):
         """Displays softs futures data [Finviz]"""
+        logger.info("economy.softs")
         await softs_command(ctx)
 
     @discord.ext.commands.command(name="economy.currencies")
     async def currencies(self, ctx: discord.ext.commands.Context):
         """Currencies overview [Wall St. Journal]"""
+        logger.info("economy.currencies")
         await currencies_command(ctx)
 
     @discord.ext.commands.command(name="economy.valuation")
@@ -133,9 +144,7 @@ class EconomyCommands(discord.ext.commands.Cog):
         Sends a message to the discord user with the commands from the economy context.
         The user can then select a reaction to trigger a command.
         """
-
-        if cfg.DEBUG:
-            print("!economy")
+        logger.info("!economy")
 
         cols_temp = []
         cols = []
@@ -258,56 +267,46 @@ class EconomyCommands(discord.ext.commands.Cog):
                 async def on_reaction_add(reaction, user):
                     if user == ctx.message.author and str(reaction.emoji) in emoji_list:
                         if reaction.emoji == "0️⃣":
-                            if cfg.DEBUG:
-                                print("Reaction selected: 0")
+                            logger.info("!economy. Reaction selected: 0")
                             if current == 0:
                                 await overview_command(ctx)
                             elif current == 1:
                                 await metals_command(ctx)
                         elif reaction.emoji == "1️⃣":
-                            if cfg.DEBUG:
-                                print("Reaction selected: 1")
+                            logger.info("!economy. Reaction selected: 1")
                             if current == 0:
                                 await futures_command(ctx)
                             elif current == 1:
                                 await meats_command(ctx)
                         elif reaction.emoji == "2️⃣":
-                            if cfg.DEBUG:
-                                print("Reaction selected: 2")
+                            logger.info("!economy. Reaction selected: 2")
                             if current == 0:
                                 await usbonds_command(ctx)
                             elif current == 1:
                                 await grains_command(ctx)
                         elif reaction.emoji == "3️⃣":
-                            if cfg.DEBUG:
-                                print("Reaction selected: 3")
+                            logger.info("!economy. Reaction selected: 3")
                             if current == 0:
                                 await glbonds_command(ctx)
                             elif current == 1:
                                 await softs_command(ctx)
                         elif reaction.emoji == "4️⃣":
-                            if cfg.DEBUG:
-                                print("Reaction selected: 4")
+                            logger.info("!economy. Reaction selected: 4")
                             await indices_command(ctx)
                         elif reaction.emoji == "5️⃣":
-                            if cfg.DEBUG:
-                                print("Reaction selected: 5")
+                            logger.info("!economy. Reaction selected: 5")
                             await currencies_command(ctx)
                         elif reaction.emoji == "6️⃣":
-                            if cfg.DEBUG:
-                                print("Reaction selected: 6")
+                            logger.info("!economy. Reaction selected: 6")
                             await feargreed_command(ctx)
                         elif reaction.emoji == "7️⃣":
-                            if cfg.DEBUG:
-                                print("Reaction selected: 7")
+                            logger.info("!economy. Reaction selected: 7")
                             await valuation_command(ctx)
                         elif reaction.emoji == "8️⃣":
-                            if cfg.DEBUG:
-                                print("Reaction selected: 8")
+                            logger.info("!economy. Reaction selected: 8")
                             await performance_command(ctx)
                         elif reaction.emoji == "9️⃣":
-                            if cfg.DEBUG:
-                                print("Reaction selected: 9")
+                            logger.info("!economy. Reaction selected: 9")
                             await energy_command(ctx)
                         for emoji in emoji_list:
                             await main_message.remove_reaction(emoji, ctx.bot.user)
