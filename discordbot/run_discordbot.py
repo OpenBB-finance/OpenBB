@@ -2,7 +2,6 @@ import difflib
 import logging
 import os
 import sys
-from datetime import datetime
 
 import discord
 import discord_components
@@ -13,13 +12,7 @@ import config_discordbot as cfg
 # Logging
 logger = logging.getLogger("discord")
 logging.basicConfig(level=logging.INFO)  # DEBUG/INFO/WARNING/ERROR/CRITICAL
-handler = logging.FileHandler(
-    filename=os.path.join(
-        os.path.dirname(__file__), "..", "logs", f"{datetime.now()}_bot.log"
-    ),
-    encoding="utf-8",
-    mode="w",
-)
+handler = logging.StreamHandler(sys.stdout)
 handler.setFormatter(
     logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
 )
