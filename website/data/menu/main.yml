@@ -974,12 +974,12 @@ main:
           - name: robinhood
             ref: "/portfolio/brokers/robinhood"
             sub:
+              - name: login
+                ref: "/portfolio/portfolio/brokers/robinhood/login"
               - name: history
                 ref: "/portfolio/brokers/robinhood/history"
               - name: holdings
                 ref: "/portfolio/brokers/robinhood/holdings"
-      - name: portfolio analysis
-        ref: "/portfolio/portfolio_analysis"
       - name: portfolio optimization
         ref: "/portfolio/portfolio_optimization"
         sub:
@@ -1009,6 +1009,20 @@ main:
             ref: "/portfolio/portfolio_optimization/effrisk"
           - name: ef
             ref: "/portfolio/portfolio_optimization/ef"
+      - name: load
+        ref: "/portfolio/load"
+      - name: save
+        ref: "/portfolio/save"
+      - name: show
+        ref: "/portfolio/show"
+      - name: add
+        ref: "/portfolio/add"
+      - name: rmv
+        ref: "/portfolio/rmv"
+      - name: ar
+        ref: "/portfolio/ar"
+      - name: rmr
+        ref: "/portfolio/rmr"
   - name: forex
     ref: "/forex"
     sub:
