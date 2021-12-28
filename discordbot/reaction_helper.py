@@ -13,16 +13,41 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
     else:
         dates = tradier_model.option_expirations(ticker)
 
+    index_dates = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
     if expiry is not None:
+        try:
+            if expiry not in dates:
+                exp = int(expiry.replace("-", ""))
 
-        index = int(expiry)
+            if (expiry not in dates) and (exp not in index_dates):
+                raise Exception("Enter a valid expiration date.")
 
-        if 0 <= index <= 9:
-            expiry = dates[index]
-            if call_arg is None:
-                await func_cmd(ctx, ticker, expiry)
-            else:
-                await func_cmd(ctx, ticker, expiry, *call_arg)
+            if expiry in dates:
+                if call_arg is None:
+                    await func_cmd(ctx, ticker, expiry)
+                else:
+                    await func_cmd(ctx, ticker, expiry, *call_arg)
+                return
+            if exp in index_dates:
+                expiry = dates[int(expiry)]
+                if call_arg is None:
+                    await func_cmd(ctx, ticker, expiry)
+                else:
+                    await func_cmd(ctx, ticker, expiry, *call_arg)
+                return
+
+        except Exception as e:
+            embed = discord.Embed(
+                title="ERROR Options: Expiry Date",
+                colour=cfg.COLOR,
+                description=e,
+            )
+            embed.set_author(
+                name=cfg.AUTHOR_NAME,
+                icon_url=cfg.AUTHOR_ICON_URL,
+            )
+            await ctx.send(embed=embed)
             return
 
     if not dates:
