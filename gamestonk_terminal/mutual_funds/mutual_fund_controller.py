@@ -98,24 +98,28 @@ class FundController:
         fund_string2 = f" ({self.fund_symbol})" if self.fund_symbol else ""
         fund_string += fund_string2
         help_str = f"""
-[bold]Mutual Funds[/bold]:
+[bold]Mutual Funds[/bold]:[italic]
 
-Current Fund:[cyan] {fund_string}[/cyan]
+Investing.com[/italic]:
+    country       set a country for filtering
+
 Current Country: [green]{self.country.title()}[/green][italic]
 
-Investing.com:[/italic]
-
-    country       set a country for filtering
+Investing.com[/italic]:
+    overview      overview of top funds by country
     search        search for Mutual Funds
-    overview      overview of top funds from {self.country.title()}
-    load          load historical fund data{'[dim]' if not self.fund_symbol else ''}
-    info          display fund information
-    plot          plot loaded historical fund data{'[/dim]' if not self.fund_symbol else ''}
+    load          load historical fund data
 
-[italic]Yahoo Finance [dim]currently only united states supported[/dim]:[/italic]
-{'[dim]' if not self.fund_symbol or self.country!='united states' else ''}
-    sector        sector weightings
-    equity        equity holdings{'[/dim]' if not self.fund_symbol or self.country!='united states'else ''}
+Current Fund: [cyan] {fund_string}[/cyan]
+[italic]
+Investing.com[/italic]:{'[dim]' if not self.fund_symbol else ''}
+    info          get fund information
+    plot          plot loaded historical fund data{'[/dim]' if not self.fund_symbol else ''}
+[italic]
+Yahoo Finance[/italic] [dim]currently only united states supported[/dim]:
+    {'[dim]' if not self.fund_symbol or self.country!='united states' else ''}sector        sector weightings
+    equity        equity holdings
+    {'[/dim]' if not self.fund_symbol or self.country!='united states' else ''}
     """
         console.print(help_str)
 
@@ -377,6 +381,7 @@ Investing.com:[/italic]
                 self.data,
                 self.fund_name,
                 self.fund_symbol,
+                self.country,
             ) = investpy_model.get_fund_historical(
                 fund=parsed_fund,
                 name=ns_parser.name,
@@ -403,11 +408,11 @@ Investing.com:[/italic]
         if ns_parser:
             if not self.fund_symbol:
                 console.print(
-                    "No fund load.  Please use `load` first to plot.\n", style="bold"
+                    "No fund loaded.  Please use `load` first to plot.\n", style="bold"
                 )
                 return self.queue
             investpy_view.display_historical(
-                self.data, fund=self.fund_symbol, export=ns_parser.export
+                self.data, fund=self.fund_name, export=ns_parser.export
             )
         return self.queue
 
@@ -423,6 +428,11 @@ Investing.com:[/italic]
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if self.country != "united states":
+                console.print(
+                    "YFinance implementation currently only supports funds from united states"
+                )
+                return self.queue
             if not self.fund_symbol or not self.fund_name:
                 console.print(
                     "No fund loaded.  Please use `load` first to plot.\n", style="bold"
@@ -444,6 +454,11 @@ Investing.com:[/italic]
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if self.country != "united states":
+                console.print(
+                    "YFinance implementation currently only supports funds from united states"
+                )
+                return self.queue
             if not self.fund_symbol or not self.fund_name:
                 console.print(
                     "No fund loaded.  Please use `load` first to plot.\n", style="bold"

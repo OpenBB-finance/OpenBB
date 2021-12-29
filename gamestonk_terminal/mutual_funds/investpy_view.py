@@ -153,7 +153,7 @@ def display_historical(data: pd.DataFrame, fund: str = "", export: str = ""):
     ax.set_xlim([data.index[0], data.index[-1]])
     ax.set_xlabel("Date")
     ax.set_ylabel("Close Price")
-    ax.set_title(f"{fund.upper()} Price History")
+    ax.set_title(f"{fund.title()} Price History")
     fig.autofmt_xdate()
     fig.tight_layout(pad=1)
     if gtff.USE_ION:
