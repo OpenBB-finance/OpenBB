@@ -84,7 +84,7 @@ main:
           - name: sama
             ref: "/stocks/sia/sama"
           - name: metric
-            ref: "/stocks/sia/metric"            
+            ref: "/stocks/sia/metric"
       - name: dark pool shorts
         ref: "/stocks/dark_pool_shorts"
         sub:
@@ -975,7 +975,7 @@ main:
             ref: "/portfolio/brokers/robinhood"
             sub:
               - name: login
-                ref: "/portfolio/portfolio/brokers/robinhood/login"
+                ref: "/portfolio/brokers/robinhood"
               - name: history
                 ref: "/portfolio/brokers/robinhood/history"
               - name: holdings
