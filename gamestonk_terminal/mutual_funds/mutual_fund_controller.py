@@ -267,6 +267,7 @@ Investing.com:[/italic]
         parser.add_argument(
             "-a",
             "--ascend",
+            dest="ascending",
             help="Sort in ascending order",
             action="store_true",
             default=False,

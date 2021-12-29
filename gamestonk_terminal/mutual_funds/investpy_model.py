@@ -26,8 +26,10 @@ def search_funds(by: str = "name", value: str = "") -> pd.DataFrame:
     pd.DataFrame
         Dataframe containing matches
     """
-
-    return investpy.funds.search_funds(by=by, value=value)
+    try:
+        return investpy.funds.search_funds(by=by, value=value)
+    except RuntimeError:
+        return pd.DataFrame()
 
 
 def get_overview(country: str = "united states", limit: int = 20) -> pd.DataFrame:

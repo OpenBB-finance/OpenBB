@@ -45,9 +45,14 @@ def display_search(
         Flag to sort in ascending order
     """
     searches = investpy_model.search_funds(by, value)
-
+    if searches.empty:
+        console.print("No matches found.\n")
+        return
     if country:
         searches = searches[searches.country == country]
+        if searches.empty:
+            console.print(f"No matches found in {country}.\n")
+            return
         searches = searches.drop(columns=["country", "underlying"])
 
     if sortby:
