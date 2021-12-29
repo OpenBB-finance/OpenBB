@@ -27,7 +27,7 @@ def display_collection_stats(slug: str, export: str):
                 tabulate(
                     collection_stats_df,
                     headers=collection_stats_df.columns,
-                    floatfmt=".0f",
+                    floatfmt=".2f",
                     showindex=False,
                     tablefmt="fancy_grid",
                 ),
