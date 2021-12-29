@@ -10,8 +10,8 @@
 
 
 
-    <meta name="description" content="usage: property [-p PROPERTY] [-v VALUE] [--pie] [-h] Returns a portfolio that is weighted based on a selected property info
-optional arguments: -p PROPERTY, --property PROPERTY Property info to weigh. Use one of: previousClose, regularMarketOpen, twoHundredDayAverage, trailingAnnualDividendYield, payoutRatio, volume24Hr, regularMarketDayHigh, navPrice, averageDailyVolume10Day, totalAssets, regularMarketPreviousClose, fiftyDayAverage, trailingAnnualDividendRate, open, toCurrency, averageVolume10days, expireDate, yield, algorithm, dividendRate, exDividendDate, beta, circulatingSupply, regularMarketDayLow, priceHint, currency, trailingPE, regularMarketVolume, lastMarket, maxSupply, openInterest, marketCap, volumeAllCurrencies, strikePrice, averageVolume, priceToSalesTrailing12Months, dayLow, ask, ytdReturn, askSize, volume, fiftyTwoWeekHigh, forwardPE, fromCurrency, fiveYearAvgDividendYield, fiftyTwoWeekLow, bid, dividendYield, bidSize, dayHigh, annualHoldingsTurnover, enterpriseToRevenue, beta3Year, profitMargins, enterpriseToEbitda, 52WeekChange, morningStarRiskRating, forwardEps, revenueQuarterlyGrowth, sharesOutstanding, fundInceptionDate, annualReportExpenseRatio, bookValue, sharesShort, sharesPercentSharesOut, fundFamily, lastFiscalYearEnd, heldPercentInstitutions, netIncomeToCommon, trailingEps, lastDividendValue, SandP52WeekChange, priceToBook, heldPercentInsiders, shortRatio, sharesShortPreviousMonthDate, floatShares, enterpriseValue, threeYearAverageReturn, lastSplitFactor, legalType, lastDividendDate, morningStarOverallRating, earningsQuarterlyGrowth, pegRatio, lastCapGain, shortPercentOfFloat, sharesShortPriorMonth, impliedSharesOutstanding, fiveYearAverageReturn, and regularMarketPrice.">
+    <meta name="description" content="usage: property [-p PROPERTY] [-v VALUE] [--pie] [-h] Returns a portfolio that is weighted based on market cap.
+optional arguments: -v VALUE, --value VALUE Amount to allocate to portfolio (default: 1) --pie Display a pie chart for weights (default: False) -h, --help show this help message (default: False) ">
 
 
 
@@ -324,6 +324,9 @@ optional arguments: -p PROPERTY, --property PROPERTY Property info to weigh. Use
             
 
             
+            <input type="checkbox" id="navtree-22accada" class="gdoc-nav__toggle" >
+            <label for="navtree-22accada" class="flex justify-between">
+            
             <span class="flex">
                 
                 <a href="/GamestonkTerminal/stocks/discovery/"
@@ -331,6 +334,10 @@ optional arguments: -p PROPERTY, --property PROPERTY Property info to weigh. Use
                     discovery
                 </a>
             </span>
+            
+            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
+            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
+            </label>
             
         
 
@@ -14699,9 +14706,6 @@ optional arguments: -p PROPERTY, --property PROPERTY Property info to weigh. Use
             
 
             
-            <input type="checkbox" id="navtree-6e363e55" class="gdoc-nav__toggle" checked>
-            <label for="navtree-6e363e55" class="flex justify-between">
-            
             <span class="flex">
                 
                 <a href="/GamestonkTerminal/portfolio/"
@@ -14709,10 +14713,6 @@ optional arguments: -p PROPERTY, --property PROPERTY Property info to weigh. Use
                     portfolio
                 </a>
             </span>
-            
-            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
-            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
-            </label>
             
         
 
@@ -15248,37 +15248,6 @@ optional arguments: -p PROPERTY, --property PROPERTY Property info to weigh. Use
             
 
             
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/portfolio/portfolio_analysis/"
-                    class="gdoc-nav__entry ">
-                    portfolio analysis
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li>
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
             <input type="checkbox" id="navtree-6eb4d284" class="gdoc-nav__toggle" checked>
             <label for="navtree-6eb4d284" class="flex justify-between">
             
@@ -15712,6 +15681,223 @@ optional arguments: -p PROPERTY, --property PROPERTY Property info to weigh. Use
     </li>
 
 
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/portfolio/load/"
+                    class="gdoc-nav__entry ">
+                    load
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/portfolio/save/"
+                    class="gdoc-nav__entry ">
+                    save
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/portfolio/show/"
+                    class="gdoc-nav__entry ">
+                    show
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/portfolio/add/"
+                    class="gdoc-nav__entry ">
+                    add
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/portfolio/rmv/"
+                    class="gdoc-nav__entry ">
+                    rmv
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/portfolio/ar/"
+                    class="gdoc-nav__entry ">
+                    ar
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/portfolio/rmr/"
+                    class="gdoc-nav__entry ">
+                    rmr
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
 </ul>
 
         
@@ -16085,28 +16271,14 @@ optional arguments: -p PROPERTY, --property PROPERTY Property info to weigh. Use
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Mktcap</h1>
         <pre><code>usage: property [-p PROPERTY] [-v VALUE] [--pie] [-h]
-</code></pre><p>Returns a portfolio that is weighted based on a selected property info</p>
+</code></pre><p>Returns a portfolio that is weighted based on market cap.</p>
 <pre><code>optional arguments:
-  -p PROPERTY, --property PROPERTY
-                        Property info to weigh. Use one of: previousClose, regularMarketOpen, twoHundredDayAverage, trailingAnnualDividendYield,
-                        payoutRatio, volume24Hr, regularMarketDayHigh, navPrice, averageDailyVolume10Day, totalAssets, regularMarketPreviousClose,
-                        fiftyDayAverage, trailingAnnualDividendRate, open, toCurrency, averageVolume10days, expireDate, yield, algorithm,
-                        dividendRate, exDividendDate, beta, circulatingSupply, regularMarketDayLow, priceHint, currency, trailingPE,
-                        regularMarketVolume, lastMarket, maxSupply, openInterest, marketCap, volumeAllCurrencies, strikePrice, averageVolume,
-                        priceToSalesTrailing12Months, dayLow, ask, ytdReturn, askSize, volume, fiftyTwoWeekHigh, forwardPE, fromCurrency,
-                        fiveYearAvgDividendYield, fiftyTwoWeekLow, bid, dividendYield, bidSize, dayHigh, annualHoldingsTurnover, enterpriseToRevenue,
-                        beta3Year, profitMargins, enterpriseToEbitda, 52WeekChange, morningStarRiskRating, forwardEps, revenueQuarterlyGrowth,
-                        sharesOutstanding, fundInceptionDate, annualReportExpenseRatio, bookValue, sharesShort, sharesPercentSharesOut, fundFamily,
-                        lastFiscalYearEnd, heldPercentInstitutions, netIncomeToCommon, trailingEps, lastDividendValue, SandP52WeekChange,
-                        priceToBook, heldPercentInsiders, shortRatio, sharesShortPreviousMonthDate, floatShares, enterpriseValue,
-                        threeYearAverageReturn, lastSplitFactor, legalType, lastDividendDate, morningStarOverallRating, earningsQuarterlyGrowth,
-                        pegRatio, lastCapGain, shortPercentOfFloat, sharesShortPriorMonth, impliedSharesOutstanding, fiveYearAverageReturn, and
-                        regularMarketPrice. (default: None)
   -v VALUE, --value VALUE
                         Amount to allocate to portfolio (default: 1)
   --pie                 Display a pie chart for weights (default: False)
   -h, --help            show this help message (default: False)
-</code></pre>
+</code></pre><img size="1400" alt="Feature Screenshot - mktcap" src="https://user-images.githubusercontent.com/85772166/147147744-327d7db7-dcc2-4fa7-94dc-ff83d91a6cc6.png">
+
     </article>
 
                 
@@ -25331,25 +25503,6 @@ optional arguments: -p PROPERTY, --property PROPERTY Property info to weigh. Use
 
         
         
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
             
     
     
@@ -25609,6 +25762,139 @@ optional arguments: -p PROPERTY, --property PROPERTY Property info to weigh. Use
         
     
 
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
         
     
 

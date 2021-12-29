@@ -10,8 +10,7 @@
 
 
 
-    <meta name="description" content="usage: maxsharpe [-p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}] [-v VALUE] [--pie] [-r RISK_FREE_RATE] [-h] Maximise the Sharpe Ratio
-optional arguments: -p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}, --period {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max} period to get yfinance data from (default: 3mo) -v VALUE, --value VALUE Amount to allocate to portfolio (default: 1.0) --pie Display a pie chart for weights (default: False) -r RISK_FREE_RATE, --risk-free-rate RISK_FREE_RATE Risk-free rate of borrowing/lending. The period of the risk-free rate should correspond to the frequency of expected returns. (default: 0.">
+    <meta name="description" content="usage: maxsharpe [-p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}] [-v VALUE] [--pie] [-r RISK_FREE_RATE] [-h] The Sharpe ratio is one of the most widely used methods for calculating risk-adjusted return. Modern Portfolio Theory (MPT) states that adding assets to a diversified portfolio that has low correlations can decrease portfolio risk without sacrificing returns. Adding diversification should increase the Sharpe ratio compared to similar portfolios with a lower level of diversification. For this to be true, investors must also accept the assumption that risk is equal to volatility, which is not unreasonable but may be too narrow to be applied to all investments.">
 
 
 
@@ -324,6 +323,9 @@ optional arguments: -p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}, --period {1d,5d
             
 
             
+            <input type="checkbox" id="navtree-22accada" class="gdoc-nav__toggle" >
+            <label for="navtree-22accada" class="flex justify-between">
+            
             <span class="flex">
                 
                 <a href="/GamestonkTerminal/stocks/discovery/"
@@ -331,6 +333,10 @@ optional arguments: -p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}, --period {1d,5d
                     discovery
                 </a>
             </span>
+            
+            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
+            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
+            </label>
             
         
 
@@ -14699,9 +14705,6 @@ optional arguments: -p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}, --period {1d,5d
             
 
             
-            <input type="checkbox" id="navtree-6e363e55" class="gdoc-nav__toggle" checked>
-            <label for="navtree-6e363e55" class="flex justify-between">
-            
             <span class="flex">
                 
                 <a href="/GamestonkTerminal/portfolio/"
@@ -14709,10 +14712,6 @@ optional arguments: -p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}, --period {1d,5d
                     portfolio
                 </a>
             </span>
-            
-            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
-            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
-            </label>
             
         
 
@@ -15248,37 +15247,6 @@ optional arguments: -p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}, --period {1d,5d
             
 
             
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/portfolio/portfolio_analysis/"
-                    class="gdoc-nav__entry ">
-                    portfolio analysis
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li>
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
             <input type="checkbox" id="navtree-6eb4d284" class="gdoc-nav__toggle" checked>
             <label for="navtree-6eb4d284" class="flex justify-between">
             
@@ -15712,6 +15680,223 @@ optional arguments: -p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}, --period {1d,5d
     </li>
 
 
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/portfolio/load/"
+                    class="gdoc-nav__entry ">
+                    load
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/portfolio/save/"
+                    class="gdoc-nav__entry ">
+                    save
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/portfolio/show/"
+                    class="gdoc-nav__entry ">
+                    show
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/portfolio/add/"
+                    class="gdoc-nav__entry ">
+                    add
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/portfolio/rmv/"
+                    class="gdoc-nav__entry ">
+                    rmv
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/portfolio/ar/"
+                    class="gdoc-nav__entry ">
+                    ar
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/portfolio/rmr/"
+                    class="gdoc-nav__entry ">
+                    rmr
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
 </ul>
 
         
@@ -16085,7 +16270,17 @@ optional arguments: -p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}, --period {1d,5d
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Maxsharpe</h1>
         <pre><code>usage: maxsharpe [-p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}] [-v VALUE] [--pie] [-r RISK_FREE_RATE] [-h]
-</code></pre><p>Maximise the Sharpe Ratio</p>
+</code></pre><p>The Sharpe ratio is one of the most widely used methods for calculating risk-adjusted return. Modern Portfolio Theory (MPT) states that adding assets to a diversified portfolio that has low correlations can decrease portfolio risk without sacrificing returns. Adding diversification should increase the Sharpe ratio compared to similar portfolios with a lower level of diversification. For this to be true, investors must also accept the assumption that risk is equal to volatility, which is not unreasonable but may be too narrow to be applied to all investments.</p>
+<p>The Sharpe Ratio is calculated as follows:</p>
+<ol>
+<li>
+<p>Subtract the risk-free rate from the return of the portfolio. The risk-free rate could be a U.S. Treasury rate or yield, such as the one-year or two-year Treasury yield.</p>
+</li>
+<li>
+<p>Divide the result by the standard deviation of the portfolio’s excess return. The standard deviation helps to show how much the portfolio&rsquo;s return deviates from the expected return. The standard deviation also sheds light on the portfolio&rsquo;s volatility.</p>
+</li>
+</ol>
+<p>The Sharpe ratio can also help explain whether a portfolio&rsquo;s excess returns are due to smart investment decisions or a result of too much risk.</p>
 <pre><code>optional arguments:
   -p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}, --period {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}
                         period to get yfinance data from (default: 3mo)
@@ -16096,7 +16291,8 @@ optional arguments: -p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}, --period {1d,5d
                         Risk-free rate of borrowing/lending. The period of the risk-free rate should correspond to the frequency of expected returns.
                         (default: 0.02)
   -h, --help            show this help message (default: False)
-</code></pre>
+</code></pre><img width="1400" alt="Feature Screenshot - maxsharpe" src="https://user-images.githubusercontent.com/85772166/147481783-0b8f3ecf-8946-49a9-bd97-3db2a0348b3d.png">
+
     </article>
 
                 
@@ -25321,25 +25517,6 @@ optional arguments: -p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}, --period {1d,5d
 
         
         
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
             
     
     
@@ -25599,6 +25776,139 @@ optional arguments: -p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}, --period {1d,5d
         
     
 
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
         
     
 
