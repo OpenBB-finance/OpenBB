@@ -19,7 +19,7 @@ def get_collection_stats(slug: str) -> pd.DataFrame:
     pd.DataFrame
         collection stats
     """
-    res = requests.get(f"{API_URL}/collection/{slug}?format=json")
+    res = requests.get(f"{API_URL}/collection/{slug}")
     if res.status_code == 200:
         data = res.json()
         collection = data["collection"]
