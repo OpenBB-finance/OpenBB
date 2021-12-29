@@ -1,3 +1,7 @@
+---
+geekdocCollapseSection: true
+---
+
 The terminal has incorporated PyPortfolioOpt. Refer to the documentation here: https://pyportfolioopt.readthedocs.io/en/latest/MeanVariance.html
 
 ```text
@@ -23,9 +27,5 @@ Mean Variance Optimization:
 
     ef            show the efficient frontier
 ```
-
----
-geekdocCollapseSection: true
----
 
 {{< toc-tree >}}
