@@ -974,8 +974,6 @@ main:
           - name: robinhood
             ref: "/portfolio/brokers/robinhood"
             sub:
-              - name: login
-                ref: "/portfolio/brokers/robinhood"
               - name: history
                 ref: "/portfolio/brokers/robinhood/history"
               - name: holdings
