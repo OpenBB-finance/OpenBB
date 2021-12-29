@@ -302,7 +302,7 @@ Forex brokerages:
             if not self.data.empty:
                 av_view.display_candle(self.data, self.to_symbol, self.from_symbol)
             else:
-                print("No forex historical data loaded.  Load first using <load>.")
+                print("No forex historical data loaded.  Load first using <load>.\n")
 
     @try_except
     def call_quote(self, other_args: List[str]):

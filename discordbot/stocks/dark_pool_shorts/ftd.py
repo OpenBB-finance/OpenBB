@@ -7,7 +7,7 @@ import yfinance as yf
 import discordbot.config_discordbot as cfg
 import discordbot.helpers
 from discordbot.run_discordbot import gst_imgur
-
+from gamestonk_terminal.config_plot import PLOT_DPI
 
 from gamestonk_terminal.stocks.dark_pool_shorts import sec_model
 
@@ -47,6 +47,7 @@ async def ftd_command(ctx, ticker="", start="", end=""):
         if cfg.DEBUG:
             print(ftds_data.to_string())
 
+        plt.figure(dpi=PLOT_DPI)
         # Output data
         plt.bar(
             ftds_data["SETTLEMENT DATE"],

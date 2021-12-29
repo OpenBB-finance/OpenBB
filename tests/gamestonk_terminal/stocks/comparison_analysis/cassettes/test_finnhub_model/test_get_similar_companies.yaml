@@ -1,0 +1,65 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://finnhub.io/api/v1/stock/peers?symbol=TSLA&token=MOCK_TOKEN
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAxTIwQnAIBBFwV7e+TcRjG4WTAQVc5D030bY2zCbOeqB6L4ehN2IgqjJT8S8WsTo
+        iNfC1vKKKp75fgAAAP//AwB7RqQjPwAAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6c0a94118a1e402b-CDG
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 20 Dec 2021 17:26:55 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=St%2FnA4iUSbRBB37rrLUj87MVwCiXx9EF6gX9l4%2Ftc5%2B%2B7HxtRbDyhy4IUu%2FrktuM48WLarWk8O7hxNpw8LwdxGVZZHxtso2fXQ6nn%2Fa1X1WykS4in6H0d63lsX6K"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin
+      access-control-allow-methods:
+      - POST, GET, OPTIONS, PUT, DELETE
+      access-control-allow-origin:
+      - '*'
+      access-control-expose-headers:
+      - Content-Length
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400, h3-28=":443"; ma=86400, h3-27=":443";
+        ma=86400
+      x-ratelimit-limit:
+      - '60'
+      x-ratelimit-remaining:
+      - '59'
+      x-ratelimit-reset:
+      - '1640021275'
+    status:
+      code: 200
+      message: OK
+version: 1

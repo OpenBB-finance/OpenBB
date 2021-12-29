@@ -13,32 +13,91 @@ from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
 # pylint: disable=W0603
 # pylint: disable=E1111
 
-pytest.skip(allow_module_level=True)
+EMPTY_DF = pd.DataFrame()
 
-empty_df = pd.DataFrame()
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [
+            ("period1", "1598220000"),
+            ("period2", "1635980400"),
+        ],
+    }
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_menu_quick_exit(mocker):
-    mocker.patch("builtins.input", return_value="quit")
-    mocker.patch("gamestonk_terminal.stocks.behavioural_analysis.ba_controller.session")
+@pytest.mark.parametrize(
+    "queue, expected",
+    [
+        (["load", "help"], []),
+        (["quit", "help"], ["help"]),
+    ],
+)
+def test_menu_with_queue(expected, mocker, queue):
     mocker.patch(
-        "gamestonk_terminal.stocks.behavioural_analysis.ba_controller.session.prompt",
+        target=(
+            "gamestonk_terminal.stocks.behavioural_analysis.ba_controller."
+            "BehaviouralAnalysisController.switch"
+        ),
+        return_value=["quit"],
+    )
+    result_menu = ba_controller.menu(
+        ticker="TSLA",
+        start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
+        queue=queue,
+    )
+
+    assert result_menu == expected
+
+
+@pytest.mark.vcr(record_mode="none")
+def test_menu_without_queue_completion(mocker):
+    # DISABLE AUTO-COMPLETION
+    mocker.patch.object(
+        target=ba_controller.gtff,
+        attribute="USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.behavioural_analysis.ba_controller.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.behavioural_analysis.ba_controller.session.prompt",
         return_value="quit",
     )
 
     result_menu = ba_controller.menu(
         ticker="TSLA",
         start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
+        queue=None,
     )
 
-    assert result_menu
+    assert result_menu == []
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_menu_system_exit(mocker):
+@pytest.mark.parametrize(
+    "mock_input",
+    ["help", "homee help", "home help", "mock"],
+)
+def test_menu_without_queue_sys_exit(mock_input, mocker):
+    # DISABLE AUTO-COMPLETION
+    mocker.patch.object(
+        target=ba_controller.gtff,
+        attribute="USE_PROMPT_TOOLKIT",
+        new=False,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.behavioural_analysis.ba_controller.session",
+        return_value=None,
+    )
+
+    # MOCK USER INPUT
+    mocker.patch("builtins.input", return_value=mock_input)
+
+    # MOCK SWITCH
     class SystemExitSideEffect:
         def __init__(self):
             self.first_call = True
@@ -47,24 +106,24 @@ def test_menu_system_exit(mocker):
             if self.first_call:
                 self.first_call = False
                 raise SystemExit()
-            return True
+            return ["quit"]
 
     mock_switch = mocker.Mock(side_effect=SystemExitSideEffect())
-    mocker.patch("builtins.input", return_value="quit")
-    mocker.patch("gamestonk_terminal.stocks.behavioural_analysis.ba_controller.session")
     mocker.patch(
-        "gamestonk_terminal.stocks.behavioural_analysis.ba_controller.session.prompt",
-        return_value="quit",
-    )
-    mocker.patch(
-        "gamestonk_terminal.stocks.behavioural_analysis.ba_controller.BehaviouralAnalysisController.switch",
+        target=(
+            "gamestonk_terminal.stocks.behavioural_analysis.ba_controller."
+            "BehaviouralAnalysisController.switch"
+        ),
         new=mock_switch,
     )
 
-    ba_controller.menu(
+    result_menu = ba_controller.menu(
         ticker="TSLA",
         start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
+        queue=None,
     )
+
+    assert result_menu == []
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -78,63 +137,81 @@ def test_print_help():
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_switch_empty():
+@pytest.mark.parametrize(
+    "an_input, expected_queue",
+    [
+        ("", []),
+        ("/help", ["quit", "quit", "help"]),
+        ("help/help", ["help"]),
+        ("q", ["quit"]),
+        ("h", []),
+        ("r", ["quit", "quit", "reset", "stocks", "ba"]),
+    ],
+)
+def test_switch(an_input, expected_queue):
     controller = ba_controller.BehaviouralAnalysisController(
         ticker="TSLA",
         start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
+        queue=None,
     )
-    result = controller.switch(an_input="")
+    queue = controller.switch(an_input=an_input)
 
-    assert result is None
+    assert queue == expected_queue
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_switch_help():
-    controller = ba_controller.BehaviouralAnalysisController(
-        ticker="TSLA",
-        start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
-    )
-    result = controller.switch(an_input="?")
-
-    assert result is None
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_switch_cls(mocker):
+def test_call_cls(mocker):
     mocker.patch("os.system")
     controller = ba_controller.BehaviouralAnalysisController(
         ticker="TSLA",
         start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
     )
-    result = controller.switch(an_input="cls")
+    controller.call_cls([])
 
-    assert result is None
+    assert controller.queue == []
     os.system.assert_called_once_with("cls||clear")
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_call_q():
+@pytest.mark.parametrize(
+    "func, queue, expected_queue",
+    [
+        (
+            "call_exit",
+            [],
+            [
+                "quit",
+                "quit",
+                "quit",
+            ],
+        ),
+        ("call_exit", ["help"], ["quit", "quit", "quit", "help"]),
+        ("call_home", [], ["quit", "quit"]),
+        ("call_help", [], []),
+        ("call_quit", [], ["quit"]),
+        ("call_quit", ["help"], ["quit", "help"]),
+        (
+            "call_reset",
+            [],
+            ["quit", "quit", "reset", "stocks", "ba"],
+        ),
+        (
+            "call_reset",
+            ["help"],
+            ["quit", "quit", "reset", "stocks", "ba", "help"],
+        ),
+    ],
+)
+def test_call_func_expect_queue(expected_queue, queue, func):
     controller = ba_controller.BehaviouralAnalysisController(
         ticker="TSLA",
         start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
+        queue=queue,
     )
-    other_args = list()
-    result = controller.call_q(other_args)
+    result = getattr(controller, func)([])
 
-    assert result is False
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_call_quit():
-    controller = ba_controller.BehaviouralAnalysisController(
-        ticker="TSLA",
-        start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
-    )
-    other_args = list()
-    result = controller.call_quit(other_args)
-
-    assert result is True
+    assert result is None
+    assert controller.queue == expected_queue
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -174,10 +251,10 @@ def test_call_quit():
         (
             "call_popular",
             "reddit_view.display_popular_tickers",
-            ["--number=5", "--limit=10", "--sub=MOCK_SUB"],
+            ["--num=5", "--limit=10", "--sub=MOCK_SUB"],
             dict(
-                n_top=5,
-                posts_to_look_at=10,
+                n_top=10,
+                posts_to_look_at=5,
                 subreddits="MOCK_SUB",
             ),
         ),
@@ -216,7 +293,7 @@ def test_call_quit():
         (
             "call_infer",
             "twitter_view.display_inference",
-            ["--num=20"],
+            ["--limit=20"],
             dict(
                 ticker="MOCK_TICKER",
                 num=20,
@@ -225,7 +302,7 @@ def test_call_quit():
         (
             "call_sentiment",
             "twitter_view.display_sentiment",
-            ["--num=20", "--days=2", "--export=csv"],
+            ["--limit=20", "--days=2", "--export=csv"],
             dict(
                 ticker="MOCK_TICKER",
                 n_tweets=20,
@@ -236,7 +313,7 @@ def test_call_quit():
         (
             "call_mentions",
             "google_view.display_mentions",
-            ["--start=2020-12-02", "--export=csv"],
+            ["--start=2020-12-01", "--export=csv"],
             dict(
                 ticker="MOCK_TICKER",
                 start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
@@ -246,7 +323,7 @@ def test_call_quit():
         (
             "call_regions",
             "google_view.display_regions",
-            ["--num=5", "--export=csv"],
+            ["--limit=5", "--export=csv"],
             dict(
                 ticker="MOCK_TICKER",
                 num=5,
@@ -256,7 +333,7 @@ def test_call_quit():
         (
             "call_queries",
             "google_view.display_queries",
-            ["--num=5", "--export=csv"],
+            ["--limit=5", "--export=csv"],
             dict(
                 ticker="MOCK_TICKER",
                 num=5,
@@ -266,7 +343,7 @@ def test_call_quit():
         (
             "call_rise",
             "google_view.display_rise",
-            ["--num=5", "--export=csv"],
+            ["--limit=5", "--export=csv"],
             dict(
                 ticker="MOCK_TICKER",
                 num=5,
@@ -295,45 +372,49 @@ def test_call_quit():
             "call_metrics",
             "sentimentinvestor_view.display_metrics",
             list(),
-            dict(
-                ticker="MOCK_TICKER",
-            ),
+            None,
+            # dict(
+            #     ticker="MOCK_TICKER",
+            # ),
         ),
         (
             "call_social",
             "sentimentinvestor_view.display_social",
             list(),
-            dict(
-                ticker="MOCK_TICKER",
-            ),
+            None,
+            # dict(
+            #     ticker="MOCK_TICKER",
+            # ),
         ),
         (
             "call_historical",
             "sentimentinvestor_view.display_historical",
             ["--sort=date", "--direction=desc", "--metric=sentiment"],
-            dict(
-                ticker="MOCK_TICKER",
-                sort_param="date",
-                sort_dir="desc",
-                metric="sentiment",
-            ),
+            None,
+            # dict(
+            #     ticker="MOCK_TICKER",
+            #     sort_param="date",
+            #     sort_dir="desc",
+            #     metric="sentiment",
+            # ),
         ),
         (
             "call_emerging",
             "sentimentinvestor_view.display_top",
             ["--limit=2"],
-            dict(
-                metric="RHI",
-                limit=2,
-            ),
+            None,
+            # dict(
+            #     metric="RHI",
+            #     limit=2,
+            # ),
         ),
         (
             "call_popular",
             "reddit_view.display_popular_tickers",
-            ["--number=1", "--limit=2", "--sub=MOCK_SUB"],
+            ["--num=1", "--limit=2", "--sub=MOCK_SUB"],
             dict(
-                n_top=1,
-                posts_to_look_at=2,
+                n_top=2,
+                posts_to_look_at=1,
                 subreddits="MOCK_SUB",
             ),
         ),
@@ -341,10 +422,11 @@ def test_call_quit():
             "call_popularsi",
             "sentimentinvestor_view.display_top",
             ["--limit=2"],
-            dict(
-                metric="AHI",
-                limit=2,
-            ),
+            None,
+            # dict(
+            #     metric="AHI",
+            #     limit=2,
+            # ),
         ),
         (
             "call_getdd",
@@ -360,24 +442,33 @@ def test_call_quit():
     ],
 )
 def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
-    mock = mocker.Mock()
-    mocker.patch(
-        "gamestonk_terminal.stocks.behavioural_analysis.ba_controller." + mocked_func,
-        new=mock,
-    )
-    empty_df.drop(empty_df.index, inplace=True)
-    controller = ba_controller.BehaviouralAnalysisController(
-        ticker="MOCK_TICKER",
-        start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
-    )
-    getattr(controller, tested_func)(other_args=other_args)
+    if called_with:
+        mock = mocker.Mock()
+        mocker.patch(
+            "gamestonk_terminal.stocks.behavioural_analysis.ba_controller."
+            + mocked_func,
+            new=mock,
+        )
+        EMPTY_DF.drop(EMPTY_DF.index, inplace=True)
+        controller = ba_controller.BehaviouralAnalysisController(
+            ticker="MOCK_TICKER",
+            start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
+        )
+        getattr(controller, tested_func)(other_args=other_args)
 
-    if isinstance(called_with, dict):
-        mock.assert_called_once_with(**called_with)
-    elif isinstance(called_with, list):
-        mock.assert_called_once_with(*called_with)
+        if isinstance(called_with, dict):
+            mock.assert_called_once_with(**called_with)
+        elif isinstance(called_with, list):
+            mock.assert_called_once_with(*called_with)
+        else:
+            mock.assert_called_once()
     else:
-        mock.assert_called_once()
+        EMPTY_DF.drop(EMPTY_DF.index, inplace=True)
+        controller = ba_controller.BehaviouralAnalysisController(
+            ticker="MOCK_TICKER",
+            start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
+        )
+        getattr(controller, tested_func)(other_args=other_args)
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -423,4 +514,61 @@ def test_call_func_no_parser(func, mocker):
 
     func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
+    assert controller.queue == []
     getattr(ba_controller, "parse_known_args_and_warn").assert_called_once()
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "func",
+    [
+        "call_historical",
+        "call_social",
+        "call_metrics",
+        "call_stats",
+        "call_headlines",
+        "call_sentiment",
+        "call_infer",
+        "call_rise",
+        "call_queries",
+        "call_regions",
+        "call_mentions",
+        "call_messages",
+        "call_bullbear",
+        "call_getdd",
+    ],
+)
+def test_call_func_no_ticker(func, mocker):
+    mocker.patch(
+        "gamestonk_terminal.stocks.behavioural_analysis.ba_controller.parse_known_args_and_warn",
+        return_value=True,
+    )
+    controller = ba_controller.BehaviouralAnalysisController(
+        ticker=None,
+        start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
+    )
+
+    func_result = getattr(controller, func)(other_args=list())
+    assert func_result is None
+    assert controller.queue == []
+    getattr(ba_controller, "parse_known_args_and_warn").assert_called_once()
+
+
+@pytest.mark.vcr
+def test_call_load(mocker):
+    yf_download = ba_controller.stocks_helper.yf.download
+
+    def mock_yf_download(*args, **kwargs):
+        kwargs["threads"] = False
+        return yf_download(*args, **kwargs)
+
+    mocker.patch("yfinance.download", side_effect=mock_yf_download)
+    controller = ba_controller.BehaviouralAnalysisController(
+        ticker="TSLA",
+        start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
+    )
+    other_args = [
+        "TSLA",
+        "--start=2021-12-17",
+    ]
+    controller.call_load(other_args=other_args)

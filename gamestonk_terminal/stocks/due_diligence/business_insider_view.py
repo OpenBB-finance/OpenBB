@@ -10,6 +10,8 @@ from gamestonk_terminal.stocks.due_diligence import business_insider_model
 from gamestonk_terminal.helper_funcs import (
     export_data,
 )
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
@@ -62,6 +64,8 @@ def price_target_from_analysts(
             print(df_analyst_data.head(num).to_string())
 
     else:
+        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
         # Slice start of ratings
         if start:
             df_analyst_data = df_analyst_data[start:]  # type: ignore

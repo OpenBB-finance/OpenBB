@@ -17,9 +17,6 @@ from gamestonk_terminal.stocks.dark_pool_shorts import dps_controller
 empty_df = pd.DataFrame()
 
 
-pytest.skip(allow_module_level=True)
-
-
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
@@ -32,12 +29,44 @@ def vcr_config():
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_menu_quick_exit(mocker):
-    mocker.patch("builtins.input", return_value="quit")
-    mocker.patch("gamestonk_terminal.stocks.dark_pool_shorts.dps_controller.session")
+@pytest.mark.parametrize(
+    "queue, expected",
+    [
+        (["load", "help"], []),
+        (["quit", "help"], ["help"]),
+    ],
+)
+def test_menu_with_queue(expected, mocker, queue):
     mocker.patch(
-        "gamestonk_terminal.stocks.dark_pool_shorts.dps_controller.session.prompt",
+        target=(
+            "gamestonk_terminal.stocks.dark_pool_shorts.dps_controller."
+            "DarkPoolShortsController.switch"
+        ),
+        return_value=["quit"],
+    )
+    result_menu = dps_controller.menu(
+        ticker="TSLA",
+        start=None,
+        stock=pd.DataFrame(),
+        queue=queue,
+    )
+
+    assert result_menu == expected
+
+
+@pytest.mark.vcr(record_mode="none")
+def test_menu_without_queue_completion(mocker):
+    # DISABLE AUTO-COMPLETION
+    mocker.patch.object(
+        target=dps_controller.gtff,
+        attribute="USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.dark_pool_shorts.dps_controller.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.dark_pool_shorts.dps_controller.session.prompt",
         return_value="quit",
     )
 
@@ -45,14 +74,33 @@ def test_menu_quick_exit(mocker):
         ticker="TSLA",
         start=None,
         stock=pd.DataFrame(),
+        queue=None,
     )
 
     assert result_menu == []
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_menu_system_exit(mocker):
+@pytest.mark.parametrize(
+    "mock_input",
+    ["help", "homee help", "home help", "mock"],
+)
+def test_menu_without_queue_sys_exit(mock_input, mocker):
+    # DISABLE AUTO-COMPLETION
+    mocker.patch.object(
+        target=dps_controller.gtff,
+        attribute="USE_PROMPT_TOOLKIT",
+        new=False,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.dark_pool_shorts.dps_controller.session",
+        return_value=None,
+    )
+
+    # MOCK USER INPUT
+    mocker.patch("builtins.input", return_value=mock_input)
+
+    # MOCK SWITCH
     class SystemExitSideEffect:
         def __init__(self):
             self.first_call = True
@@ -61,25 +109,25 @@ def test_menu_system_exit(mocker):
             if self.first_call:
                 self.first_call = False
                 raise SystemExit()
-            return True
+            return ["quit"]
 
     mock_switch = mocker.Mock(side_effect=SystemExitSideEffect())
-    mocker.patch("builtins.input", return_value="quit")
-    mocker.patch("gamestonk_terminal.stocks.dark_pool_shorts.dps_controller.session")
     mocker.patch(
-        "gamestonk_terminal.stocks.dark_pool_shorts.dps_controller.session.prompt",
-        return_value="quit",
-    )
-    mocker.patch(
-        "gamestonk_terminal.stocks.dark_pool_shorts.dps_controller.DarkPoolShortsController.switch",
+        target=(
+            "gamestonk_terminal.stocks.dark_pool_shorts.dps_controller."
+            "DarkPoolShortsController.switch"
+        ),
         new=mock_switch,
     )
 
-    dps_controller.menu(
+    result_menu = dps_controller.menu(
         ticker="TSLA",
         start=None,
         stock=pd.DataFrame(),
+        queue=None,
     )
+
+    assert result_menu == []
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -94,55 +142,84 @@ def test_print_help():
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_switch_empty():
+@pytest.mark.parametrize(
+    "an_input, expected_queue",
+    [
+        ("", []),
+        ("/help", ["quit", "quit", "help"]),
+        ("help/help", ["help"]),
+        ("q", ["quit"]),
+        ("h", []),
+        ("r", ["quit", "quit", "reset", "stocks", "dps", "load TSLA"]),
+    ],
+)
+def test_switch(an_input, expected_queue):
     controller = dps_controller.DarkPoolShortsController(
         ticker="TSLA",
         start=None,
         stock=pd.DataFrame(),
+        queue=None,
     )
-    result = controller.switch(an_input="")
+    queue = controller.switch(an_input=an_input)
 
-    assert result == []
+    assert queue == expected_queue
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-def test_switch_help():
-    controller = dps_controller.DarkPoolShortsController(
-        ticker="TSLA",
-        start=None,
-        stock=pd.DataFrame(),
-    )
-    result = controller.switch(an_input="?")
-
-    assert result == []
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_switch_cls(mocker):
+def test_call_cls(mocker):
     mocker.patch("os.system")
     controller = dps_controller.DarkPoolShortsController(
         ticker="TSLA",
         start=None,
         stock=pd.DataFrame(),
     )
-    result = controller.switch(an_input="cls")
+    controller.call_cls([])
 
-    assert result == []
+    assert controller.queue == []
     os.system.assert_called_once_with("cls||clear")
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_call_quit():
+@pytest.mark.parametrize(
+    "func, queue, expected_queue",
+    [
+        (
+            "call_exit",
+            [],
+            [
+                "quit",
+                "quit",
+                "quit",
+            ],
+        ),
+        ("call_exit", ["help"], ["quit", "quit", "quit", "help"]),
+        ("call_home", [], ["quit", "quit"]),
+        ("call_help", [], []),
+        ("call_quit", [], ["quit"]),
+        ("call_quit", ["help"], ["quit", "help"]),
+        (
+            "call_reset",
+            [],
+            ["quit", "quit", "reset", "stocks", "dps", "load TSLA"],
+        ),
+        (
+            "call_reset",
+            ["help"],
+            ["quit", "quit", "reset", "stocks", "dps", "load TSLA", "help"],
+        ),
+    ],
+)
+def test_call_func_expect_queue(expected_queue, queue, func):
     controller = dps_controller.DarkPoolShortsController(
         ticker="TSLA",
         start=None,
         stock=pd.DataFrame(),
+        queue=queue,
     )
-    other_args = list()
-    result = controller.call_quit(other_args)
+    result = getattr(controller, func)([])
 
-    assert result == ["quit"]
+    assert result is None
+    assert controller.queue == expected_queue
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -221,14 +298,34 @@ def test_call_quit():
         ),
         (
             "call_psi",
-            "stockgrid_view.short_interest_volume",
+            "quandl_view.short_interest",
             [
-                "-r",
+                "quandl",
+                "--nyse",
+                "--number=1",
+                "--raw",
                 "--export=csv",
             ],
             dict(
                 ticker="MOCK_TICKER",
-                num=10,
+                nyse=True,
+                days=1,
+                raw=True,
+                export="csv",
+            ),
+        ),
+        (
+            "call_psi",
+            "stockgrid_view.short_interest_volume",
+            [
+                "--number=1",
+                "--source=stockgrid",
+                "--raw",
+                "--export=csv",
+            ],
+            dict(
+                ticker="MOCK_TICKER",
+                num=1,
                 raw=True,
                 export="csv",
             ),
@@ -351,7 +448,36 @@ def test_call_func_no_parser(func, mocker):
     )
 
     func_result = getattr(controller, func)(other_args=list())
-    assert func_result == []
+    assert func_result is None
+    assert controller.queue == []
+    getattr(dps_controller, "parse_known_args_and_warn").assert_called_once()
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "func",
+    [
+        "call_dpotc",
+        "call_ftd",
+        "call_spos",
+        "call_psi",
+        "call_volexch",
+    ],
+)
+def test_call_func_no_ticker(func, mocker):
+    mocker.patch(
+        "gamestonk_terminal.stocks.dark_pool_shorts.dps_controller.parse_known_args_and_warn",
+        return_value=True,
+    )
+    controller = dps_controller.DarkPoolShortsController(
+        ticker=None,
+        start=None,
+        stock=pd.DataFrame(),
+    )
+
+    func_result = getattr(controller, func)(other_args=list())
+    assert func_result is None
+    assert controller.queue == []
     getattr(dps_controller, "parse_known_args_and_warn").assert_called_once()
 
 

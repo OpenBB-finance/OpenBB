@@ -6,6 +6,7 @@ from matplotlib import pyplot as plt
 import discordbot.config_discordbot as cfg
 from discordbot.run_discordbot import gst_imgur
 import discordbot.helpers
+from gamestonk_terminal.config_plot import PLOT_DPI
 
 from gamestonk_terminal.stocks.due_diligence import business_insider_model
 
@@ -14,7 +15,6 @@ async def pt_command(ctx, ticker="", raw="", start=""):
     """Displays price targets [Business Insider]"""
 
     try:
-
         # Debug
         if cfg.DEBUG:
             print(f"!stocks.dd.pt {ticker}")
@@ -58,6 +58,7 @@ async def pt_command(ctx, ticker="", raw="", start=""):
             )
             ctx.send(embed=embed)
         else:
+            plt.figure(dpi=PLOT_DPI)
             if start:
                 df_analyst_data = df_analyst_data[start:]
 
@@ -76,7 +77,7 @@ async def pt_command(ctx, ticker="", raw="", start=""):
             plt.xlabel("Time")
             plt.ylabel("Share Price")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
-
+            plt.gcf().autofmt_xdate()
             plt.savefig("ta_pt.png")
             uploaded_image = gst_imgur.upload_image("ta_pt.png", title="something")
             image_link = uploaded_image.link
