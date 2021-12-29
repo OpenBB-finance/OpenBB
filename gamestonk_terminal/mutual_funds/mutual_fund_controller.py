@@ -108,14 +108,14 @@ Investing.com:[/italic]
     country       set a country for filtering
     search        search for Mutual Funds
     overview      overview of top funds from {self.country.title()}
-    info          get fund information
     load          load historical fund data{'[dim]' if not self.fund_symbol else ''}
+    info          display fund information
     plot          plot loaded historical fund data{'[/dim]' if not self.fund_symbol else ''}
 
-[italic]Yahoo Finance:[/italic]
-
+[italic]Yahoo Finance [dim]currently only united states supported[/dim]:[/italic]
+{'[dim]' if not self.fund_symbol or self.country!='united states' else ''}
     sector        sector weightings
-    equity        equity holdings
+    equity        equity holdings{'[/dim]' if not self.fund_symbol or self.country!='united states'else ''}
     """
         console.print(help_str)
 
@@ -193,6 +193,7 @@ Investing.com:[/italic]
         """Process reset command"""
         if self.fund_name:
             self.queue.insert(0, f"load {self.fund_name} --name")
+        self.queue.insert(0, f"country -n {self.country}")
         self.queue.insert(0, "funds")
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
@@ -319,28 +320,9 @@ Investing.com:[/italic]
             prog="info",
             description="Get fund information.",
         )
-        parser.add_argument(
-            "-f",
-            "--fund",
-            help="Fund string to search for",
-            dest="fund",
-            type=str,
-            required="-h" not in other_args,
-        )
-        parser.add_argument(
-            "--name",
-            action="store_true",
-            default=False,
-            dest="name",
-            help="Flag to indicate name provided instead of symbol.",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            investpy_view.display_fund_info(
-                ns_parser.fund, country=self.country, name=ns_parser.name
-            )
+            investpy_view.display_fund_info(self.fund_name, country=self.country)
         return self.queue
 
     @try_except

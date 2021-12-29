@@ -100,7 +100,7 @@ def display_overview(country: str = "united states", limit: int = 10, export: st
     console.print("")
 
 
-def display_fund_info(fund: str, country: str = "united states", name: bool = False):
+def display_fund_info(fund_name: str, country: str = "united states"):
     """Display fund infomration.  Finds name from symbol first if name is false
 
     Parameters
@@ -109,14 +109,7 @@ def display_fund_info(fund: str, country: str = "united states", name: bool = Fa
         Fund name to get info for
     country : str
         Country of fund
-    name: bool
-        Flag to indicate name provided instead of symbol
     """
-    if name:
-        fund_name = fund
-    else:
-        fund_name = investpy_model.get_fund_name_from_symbol(fund)
-
     info = (
         investpy_model.get_fund_info(fund_name, country)
         .reset_index(drop=False)
