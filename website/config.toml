@@ -1,4 +1,4 @@
-baseURL = "https://gamestonkterminal.github.io/GamestonkTerminal/"
+baseURL = "https://gamestonkterminal.github.io/"
 title = "Gamestonk Terminal"
 theme = "hugo-geekdoc"
 
