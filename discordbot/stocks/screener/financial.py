@@ -2,18 +2,18 @@ import difflib
 import discord
 import pandas as pd
 
+from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 import discordbot.config_discordbot as cfg
 from discordbot.helpers import pagination
+from discordbot.stocks.screener import screener_options as so
 
-from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 
-
-async def financial_command(
-    ctx, preset="template", sort="", limit="25", ascend="False"
-):
+async def financial_command(ctx, preset="template", sort="", limit="5", ascend="False"):
     """Displays returned results from preset by financial metrics [Finviz]"""
     try:
-        preset_error = False
+        # Check for argument
+        if preset == "template" or preset not in so.all_presets:
+            raise Exception("Invalid preset selected!")
 
         # Debug
         if cfg.DEBUG:
@@ -36,39 +36,14 @@ async def financial_command(
             raise Exception("ascend argument has to be true or false")
 
         # Output Data
-        preset_error = True
         df_screen = get_screener_data(
             preset,
-            "overview",
+            "financial",
             limit,
             ascend,
         )
-        preset_error = False
-
-        d_cols_to_sort = {
-            "financial": [
-                "Ticker",
-                "Market Cap",
-                "Dividend",
-                "ROA",
-                "ROE",
-                "ROI",
-                "Curr R",
-                "Quick R",
-                "LTDebt/Eq",
-                "Debt/Eq",
-                "Gross M",
-                "Oper M",
-                "Profit M",
-                "Earnings",
-                "Price",
-                "Change",
-                "Volume",
-            ],
-        }
 
         description = ""
-
         if isinstance(df_screen, pd.DataFrame):
             if df_screen.empty:
                 return []
@@ -76,7 +51,7 @@ async def financial_command(
             df_screen = df_screen.dropna(axis="columns", how="all")
 
             if sort:
-                if " ".join(sort) in d_cols_to_sort["financial"]:
+                if " ".join(sort) in so.d_cols_to_sort["financial"]:
                     df_screen = df_screen.sort_values(
                         by=[" ".join(sort)],
                         ascending=ascend,
@@ -85,7 +60,7 @@ async def financial_command(
                 else:
                     similar_cmd = difflib.get_close_matches(
                         " ".join(sort),
-                        d_cols_to_sort["financial"],
+                        so.d_cols_to_sort["financial"],
                         n=1,
                         cutoff=0.7,
                     )
@@ -98,7 +73,7 @@ async def financial_command(
                         )
                     else:
                         raise ValueError(
-                            f"Wrong sort column provided! Provide one of these: {', '.join(d_cols_to_sort['financial'])}"
+                            f"Wrong sort column provided! Select from: {', '.join(so.d_cols_to_sort['financial'])}"
                         )
 
             df_screen = df_screen.fillna("")
@@ -140,19 +115,11 @@ async def financial_command(
             await pagination(columns, ctx)
 
     except Exception as e:
-        if not preset_error:
-            embed = discord.Embed(
-                title="ERROR Stocks: [Finviz] Financial Screener",
-                colour=cfg.COLOR,
-                description=e,
-            )
-        else:
-            embed = discord.Embed(
-                title="ERROR Stocks: [Finviz] Financial Screener",
-                colour=cfg.COLOR,
-                description=f"Wrong preset parameter entered. Use the command '{cfg.COMMAND_PREFIX}stocks.scr.presets' "
-                "in order to see the available presets.",
-            )
+        embed = discord.Embed(
+            title="ERROR Stocks: [Finviz] Financial Screener",
+            colour=cfg.COLOR,
+            description=e,
+        )
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,

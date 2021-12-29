@@ -1,17 +1,20 @@
 
-Insider Trading:
-    cls           clear screen
-    ?/help        show this menu again
-    q             quit this menu, and shows back to main menu
-    quit          quit to abandon program
-    load          load a specific stock ticker for analysis
-
-PRESET: template
     view          view available presets
     set           set one of the available presets
+
+PRESET: whales
+
     filter        filter insiders based on preset
 
-Latest:
+    load          load a specific stock ticker for analysis
+[2m
+Ticker: 
+
+    stats         insider stats of the company [Open Insider]
+    act           insider activity over time [Business Insider]
+    lins          last insider trading of the company [Finviz]
+[0m
+Latest Insiders:
     lcb           latest cluster boys
     lpsb          latest penny stock buys
     lit           latest insider trading (all filings)
@@ -23,7 +26,7 @@ Latest:
     blis          big latest insider sales ($100k+)
     blos          big latest officer sales ($100k+)
     blcs          big latest CEO/CFO sales ($100k+)
-Top:
+Top Insiders:
     topt          top officer purchases today
     toppw         top officer purchases past week
     toppm         top officer purchases past month
@@ -33,9 +36,4 @@ Top:
     tist          top insider sales today
     tispw         top insider sales past week
     tispm         top insider sales past month
-
-Ticker: TSLA
-
-    act           insider activity over time [Business Insider]
-    lins          last insider trading of the company [Finviz]
 

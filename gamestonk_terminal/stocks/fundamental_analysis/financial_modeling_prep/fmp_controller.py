@@ -154,16 +154,17 @@ Ticker: {self.ticker}
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
@@ -171,42 +172,32 @@ Ticker: {self.ticker}
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
 
-        return self.queue
-
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "fmp")
-            self.queue.insert(0, "fa")
-            self.queue.insert(0, "stocks")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit", "reset", "stocks", "fa", "fmp"]
+        self.queue.insert(0, "fmp")
+        self.queue.insert(0, "fa")
+        if self.ticker:
+            self.queue.insert(0, f"load {self.ticker}")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_profile(self, other_args: List[str]):
@@ -227,7 +218,6 @@ Ticker: {self.ticker}
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             fmp_view.display_profile(self.ticker)
-        return self.queue
 
     @try_except
     def call_quote(self, other_args: List[str]):
@@ -248,7 +238,6 @@ Ticker: {self.ticker}
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             fmp_view.display_quote(self.ticker)
-        return self.queue
 
     @try_except
     def call_enterprise(self, other_args: List[str]):
@@ -265,13 +254,13 @@ Ticker: {self.ticker}
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=1,
-            help="Number of latest years/quarters.",
+            help="Limit of latest years/quarters.",
         )
         parser.add_argument(
             "-q",
@@ -287,12 +276,10 @@ Ticker: {self.ticker}
         if ns_parser:
             fmp_view.display_enterprise(
                 ticker=self.ticker,
-                number=ns_parser.n_num,
+                number=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
             )
-
-        return self.queue
 
     @try_except
     def call_dcf(self, other_args: List[str]):
@@ -308,13 +295,13 @@ Ticker: {self.ticker}
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=1,
-            help="Number of latest years/quarters.",
+            help="Limit of latest years/quarters.",
         )
         parser.add_argument(
             "-q",
@@ -330,11 +317,10 @@ Ticker: {self.ticker}
         if ns_parser:
             fmp_view.display_discounted_cash_flow(
                 ticker=self.ticker,
-                number=ns_parser.n_num,
+                number=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_income(self, other_args: List[str]):
@@ -356,13 +342,13 @@ Ticker: {self.ticker}
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=1,
-            help="Number of latest years/quarters.",
+            help="Limit of latest years/quarters.",
         )
         parser.add_argument(
             "-q",
@@ -378,11 +364,10 @@ Ticker: {self.ticker}
         if ns_parser:
             fmp_view.display_income_statement(
                 ticker=self.ticker,
-                number=ns_parser.n_num,
+                number=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_balance(self, other_args: List[str]):
@@ -409,13 +394,13 @@ Ticker: {self.ticker}
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=1,
-            help="Number of latest years/quarters.",
+            help="Limit of latest years/quarters.",
         )
         parser.add_argument(
             "-q",
@@ -431,11 +416,10 @@ Ticker: {self.ticker}
         if ns_parser:
             fmp_view.display_balance_sheet(
                 ticker=self.ticker,
-                number=ns_parser.n_num,
+                number=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_cash(self, other_args: List[str]):
@@ -460,13 +444,13 @@ Ticker: {self.ticker}
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=1,
-            help="Number of latest years/quarters.",
+            help="Limit of latest years/quarters.",
         )
         parser.add_argument(
             "-q",
@@ -482,11 +466,10 @@ Ticker: {self.ticker}
         if ns_parser:
             fmp_view.display_cash_flow(
                 ticker=self.ticker,
-                number=ns_parser.n_num,
+                number=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_metrics(self, other_args: List[str]):
@@ -516,13 +499,13 @@ Ticker: {self.ticker}
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=1,
-            help="Number of latest years/quarters.",
+            help="Limit of latest years/quarters.",
         )
         parser.add_argument(
             "-q",
@@ -538,11 +521,10 @@ Ticker: {self.ticker}
         if ns_parser:
             fmp_view.display_key_metrics(
                 ticker=self.ticker,
-                number=ns_parser.n_num,
+                number=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_ratios(self, other_args: List[str]):
@@ -573,13 +555,13 @@ Ticker: {self.ticker}
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=1,
-            help="Number of latest years/quarters.",
+            help="Limit of latest years/quarters.",
         )
         parser.add_argument(
             "-q",
@@ -595,11 +577,10 @@ Ticker: {self.ticker}
         if ns_parser:
             fmp_view.display_financial_ratios(
                 ticker=self.ticker,
-                number=ns_parser.n_num,
+                number=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_growth(self, other_args: List[str]):
@@ -626,13 +607,13 @@ Ticker: {self.ticker}
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=1,
-            help="Number of latest years/quarters.",
+            help="Limit of latest years/quarters.",
         )
         parser.add_argument(
             "-q",
@@ -648,11 +629,10 @@ Ticker: {self.ticker}
         if ns_parser:
             fmp_view.display_financial_statement_growth(
                 ticker=self.ticker,
-                number=ns_parser.n_num,
+                number=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
             )
-        return self.queue
 
 
 def menu(

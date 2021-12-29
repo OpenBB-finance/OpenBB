@@ -39,7 +39,9 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
     def __init__(self, bot: discord.ext.commands.Bot):
         self.bot = bot
 
-    @discord.ext.commands.command(name="stocks.ta.ema")
+    @discord.ext.commands.command(
+        name="stocks.ta.ema", usage="[ticker] [window] [offset] [start] [end]"
+    )
     async def ema(
         self,
         ctx: discord.ext.commands.Context,
@@ -54,20 +56,22 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         window: int
             window length. Default: 20, 50
         offset: int
             offset. Default: 0
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await ema_command(ctx, ticker, window, offset, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.sma")
+    @discord.ext.commands.command(
+        name="stocks.ta.sma", usage="[ticker] [window] [offset] [start] [end]"
+    )
     async def sma(
         self,
         ctx: discord.ext.commands.Context,
@@ -82,20 +86,22 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         window: int
             window length. Default: 20, 50
         offset: int
             offset. Default: 0
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await sma_command(ctx, ticker, window, offset, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.wma")
+    @discord.ext.commands.command(
+        name="stocks.ta.wma", usage="[ticker] [window] [offset] [start] [end]"
+    )
     async def wma(
         self,
         ctx: discord.ext.commands.Context,
@@ -110,20 +116,22 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         window: int
             window length. Default: 20, 50
         offset: int
             offset. Default: 0
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await wma_command(ctx, ticker, window, offset, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.hma")
+    @discord.ext.commands.command(
+        name="stocks.ta.hma", usage="[ticker] [window] [offset] [start] [end]"
+    )
     async def hma(
         self,
         ctx: discord.ext.commands.Context,
@@ -138,20 +146,22 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         window: int
             window length. Default: 20, 50
         offset: int
             offset. Default: 0
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await hma_command(ctx, ticker, window, offset, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.zlma")
+    @discord.ext.commands.command(
+        name="stocks.ta.zlma", usage="[ticker] [window] [offset] [start] [end]"
+    )
     async def zlma(
         self,
         ctx: discord.ext.commands.Context,
@@ -166,20 +176,22 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         window: int
             window length. Default: 20
         offset: int
             offset. Default: 0
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await zlma_command(ctx, ticker, window, offset, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.cci")
+    @discord.ext.commands.command(
+        name="stocks.ta.cci", usage="[ticker] [length] [scalar] [start] [end]"
+    )
     async def cci(
         self,
         ctx: discord.ext.commands.Context,
@@ -194,20 +206,22 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         length: int
             window length. Default: 14
         scalar: int
             scalar. Default: 0.015
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await cci_command(ctx, ticker, length, scalar, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.macd")
+    @discord.ext.commands.command(
+        name="stocks.ta.macd", usage="[ticker] [fast] [slow] [signal] [start] [end]"
+    )
     async def macd(
         self,
         ctx: discord.ext.commands.Context,
@@ -223,7 +237,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         fast: int
             fast period. Default: 12
         slow: int
@@ -231,14 +245,16 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         signal: int
             signal period. Default: 9
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await macd_command(ctx, ticker, fast, slow, signal, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.rsi")
+    @discord.ext.commands.command(
+        name="stocks.ta.rsi", usage="[ticker] [length] [scalar] [drift] [start] [end]"
+    )
     async def rsi(
         self,
         ctx: discord.ext.commands.Context,
@@ -254,7 +270,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         length: int
             length. Default: 14
         scalar: int
@@ -262,14 +278,17 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         drift: int
             drift. Default: 1
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await rsi_command(ctx, ticker, length, scalar, drift, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.stoch")
+    @discord.ext.commands.command(
+        name="stocks.ta.stoch",
+        usage="[ticker] [fast_k] [slow_d] [slow_k] [start] [end]",
+    )
     async def stoch(
         self,
         ctx: discord.ext.commands.Context,
@@ -285,7 +304,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         fast_k: int
             fast_k moving average period. Default: 14
         slow_d: int
@@ -293,14 +312,16 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         slow_k: int
             slow_k moving average period. Default: 3
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await stoch_command(ctx, ticker, fast_k, slow_d, slow_k, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.fisher")
+    @discord.ext.commands.command(
+        name="stocks.ta.fisher", usage="[ticker] [length] [start] [end]"
+    )
     async def fisher(
         self,
         ctx: discord.ext.commands.Context,
@@ -314,18 +335,20 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         length: int
             length. Default: 14
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await fisher_command(ctx, ticker, length, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.cg")
+    @discord.ext.commands.command(
+        name="stocks.ta.cg", usage="[ticker] [length] [start] [end]"
+    )
     async def cg(
         self,
         ctx: discord.ext.commands.Context,
@@ -339,18 +362,20 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         length: int
             length. Default: 14
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await cg_command(ctx, ticker, length, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.adx")
+    @discord.ext.commands.command(
+        name="stocks.ta.adx", usage="[ticker] [length] [scalar] [drift] [start] [end]"
+    )
     async def adx(
         self,
         ctx: discord.ext.commands.Context,
@@ -366,7 +391,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         length: int
             length. Default: 14
         scalar: int
@@ -374,14 +399,16 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         drift: int
             drift. Default: 1
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await adx_command(ctx, ticker, length, scalar, drift, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.aroon")
+    @discord.ext.commands.command(
+        name="stocks.ta.aroon", usage="[ticker] [length] [scalar] [start] [end]"
+    )
     async def aroon(
         self,
         ctx: discord.ext.commands.Context,
@@ -396,20 +423,22 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         length: int
             length. Default: 25
         scalar: int
             scalar. Default: 100
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await aroon_command(ctx, ticker, length, scalar, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.bbands")
+    @discord.ext.commands.command(
+        name="stocks.ta.bbands", usage="[ticker] [length] [std] [ma_mode] [start] [end]"
+    )
     async def bbands(
         self,
         ctx: discord.ext.commands.Context,
@@ -425,7 +454,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         length: int
             length. Default: 5
         std: int
@@ -433,14 +462,17 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         ma_mode: str
             mode of moving average. Default: sma
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await bbands_command(ctx, ticker, length, std, ma_mode, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.donchian")
+    @discord.ext.commands.command(
+        name="stocks.ta.donchian",
+        usage="[ticker] [upper_length] [lower_length] [start] [end]",
+    )
     async def donchian(
         self,
         ctx: discord.ext.commands.Context,
@@ -455,21 +487,24 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         upper_length: int
             length. Default: 25
         lower_length: int
             standard deviation. Default: 100
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await donchian_command(ctx, ticker, upper_length, lower_length, start, end)
 
     # pylint: disable=too-many-arguments
-    @discord.ext.commands.command(name="stocks.ta.kc")
+    @discord.ext.commands.command(
+        name="stocks.ta.kc",
+        usage="[ticker] [length] [scalar] [ma_mode] [offset] [start] [end]",
+    )
     async def kc(
         self,
         ctx: discord.ext.commands.Context,
@@ -486,7 +521,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         length: int
             length. Default: 20
         scalar: int
@@ -496,14 +531,16 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         offset: int
             offset value. Default: 0
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await kc_command(ctx, ticker, length, scalar, ma_mode, offset, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.ad")
+    @discord.ext.commands.command(
+        name="stocks.ta.ad", usage="[ticker] [is_open] [start] [end]"
+    )
     async def ad(
         self,
         ctx: discord.ext.commands.Context,
@@ -517,18 +554,20 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         is_open: bool
             whether open price is used. Default: False
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await ad_command(ctx, ticker, is_open, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.adosc")
+    @discord.ext.commands.command(
+        name="stocks.ta.adosc", usage="[ticker] [is_open] [fast] [slow] [start] [end]"
+    )
     async def adosc(
         self,
         ctx: discord.ext.commands.Context,
@@ -544,7 +583,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         is_open: bool
             whether open price is used. Default: False
         fast: int
@@ -552,41 +591,41 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         slow: int
             slow value. Default: 10
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await adosc_command(ctx, ticker, is_open, fast, slow, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.obv")
+    @discord.ext.commands.command(name="stocks.ta.obv", usage="[ticker] [start] [end]")
     async def obv(self, ctx: discord.ext.commands.Context, ticker="", start="", end=""):
         """Displays chart with on balance volume [Yahoo Finance]
 
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await obv_command(ctx, ticker, start, end)
 
-    @discord.ext.commands.command(name="stocks.ta.fib")
+    @discord.ext.commands.command(name="stocks.ta.fib", usage="[ticker] [start] [end]")
     async def fib(self, ctx: discord.ext.commands.Context, ticker="", start="", end=""):
         """Displays chart with fibonacci retracement [Yahoo Finance]
 
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         end:
-            date (in date format for end date)
+            Ending date in YYYY-MM-DD format
         """
 
         await fib_command(ctx, ticker, start, end)
@@ -598,31 +637,31 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         """
 
         await view_command(ctx, ticker)
 
-    @discord.ext.commands.command(name="stocks.ta.summary")
+    @discord.ext.commands.command(name="stocks.ta.summary", usage="[ticker]")
     async def summary(self, ctx: discord.ext.commands.Context, ticker=""):
         """Displays text of a given stocks ta summary [FinBrain API]
 
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         """
 
         await summary_command(ctx, ticker)
 
-    @discord.ext.commands.command(name="stocks.ta.recom")
+    @discord.ext.commands.command(name="stocks.ta.recom", usage="[ticker]")
     async def recom(self, ctx: discord.ext.commands.Context, ticker=""):
         """Displays text of a given stocks recommendation based on ta [Tradingview API]
 
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         """
 
         await recom_command(ctx, ticker)
@@ -631,6 +670,8 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
     @discord.ext.commands.command(name="stocks.ta")
     async def ta(self, ctx: discord.ext.commands.Context, ticker=""):
         """Stocks Context - Shows Technical Analysis Menu
+
+        Run `!help TechnicalAnalysisCommands` to see the list of available commands.
 
         Returns
         -------
@@ -930,15 +971,16 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
                     ]
                 ]
                 await main_message.edit(components=components)
-                embed = discord.Embed(
-                    description="Error timeout - you snooze you lose! 😋",
-                    colour=cfg.COLOR,
-                    title="TIMEOUT Stocks: Technical Analysis (TA) Menu",
-                ).set_author(
-                    name=cfg.AUTHOR_NAME,
-                    icon_url=cfg.AUTHOR_ICON_URL,
-                )
-                await ctx.send(embed=embed)
+                if cfg.DEBUG:
+                    embed = discord.Embed(
+                        description="Error timeout - you snooze you lose! 😋",
+                        colour=cfg.COLOR,
+                        title="TIMEOUT Stocks: Technical Analysis (TA) Menu",
+                    ).set_author(
+                        name=cfg.AUTHOR_NAME,
+                        icon_url=cfg.AUTHOR_ICON_URL,
+                    )
+                    await ctx.send(embed=embed)
 
                 for emoji in emoji_list:
                     await main_message.remove_reaction(emoji, ctx.bot.user)

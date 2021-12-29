@@ -1,11 +1,4 @@
 
-Government:
-    cls                  clear screen
-    ?/help               show this menu again
-    q                    quit this menu, and shows back to main menu
-    quit                 quit to abandon program
-    load                 load a ticker
-
 Explore:
     lasttrades           last trades
     topbuys              show most purchased stocks
@@ -13,6 +6,8 @@ Explore:
     lastcontracts        show last government contracts given out
     qtrcontracts         quarterly government contracts analysis
     toplobbying          top corporate lobbying tickers
+
+    load                 load a specific ticker for analysis
 
 Ticker: None[2m
 

@@ -163,63 +163,47 @@ cathiesark.com
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
 
-        return self.queue
-
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "dd")
-            if self.ticker:
-                self.queue.insert(0, f"load {self.ticker}")
-            self.queue.insert(0, "stocks")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-
-        reset_commands = ["quit", "quit", "reset", "stocks"]
+        self.queue.insert(0, "dd")
         if self.ticker:
-            reset_commands.append(f"load {self.ticker}")
-        reset_commands.append("dd")
-        return reset_commands
+            self.queue.insert(0, f"load {self.ticker}")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -287,7 +271,6 @@ cathiesark.com
                     self.ticker = ns_parser.ticker.upper().split(".")[0]
                 else:
                     self.ticker = ns_parser.ticker.upper()
-        return self.queue
 
     @try_except
     def call_analyst(self, other_args: List[str]):
@@ -306,8 +289,6 @@ cathiesark.com
         )
         if ns_parser:
             finviz_view.analyst(ticker=self.ticker, export=ns_parser.export)
-
-        return self.queue
 
     @try_except
     def call_pt(self, other_args: List[str]):
@@ -348,7 +329,6 @@ cathiesark.com
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_est(self, other_args: List[str]):
@@ -367,8 +347,6 @@ cathiesark.com
                 ticker=self.ticker,
                 export=ns_parser.export,
             )
-
-        return self.queue
 
     @try_except
     def call_rot(self, other_args: List[str]):
@@ -409,7 +387,6 @@ cathiesark.com
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_rating(self, other_args: List[str]):
@@ -445,7 +422,6 @@ cathiesark.com
                 num=ns_parser.limit,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_sec(self, other_args: List[str]):
@@ -481,8 +457,6 @@ cathiesark.com
                 export=ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_supplier(self, other_args: List[str]):
         """Process supplier command"""
@@ -500,7 +474,6 @@ cathiesark.com
                 ticker=self.ticker,
                 export=ns_parser.export,
             )
-        return self.queue
 
     def call_customer(self, other_args: List[str]):
         """Process customer command"""
@@ -518,7 +491,6 @@ cathiesark.com
                 ticker=self.ticker,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_arktrades(self, other_args):
@@ -558,7 +530,6 @@ cathiesark.com
                 export=ns_parser.export,
                 show_ticker=ns_parser.show_ticker,
             )
-        return self.queue
 
 
 def menu(

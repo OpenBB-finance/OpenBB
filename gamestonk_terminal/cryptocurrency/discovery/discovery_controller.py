@@ -193,56 +193,45 @@ CoinMarketCap:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
 
-        return self.queue
-
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "disc")
-            self.queue.insert(0, "crypto")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "reset", "crypto", "disc"]
+        self.queue.insert(0, "disc")
+        self.queue.insert(0, "crypto")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_coins(self, other_args):
@@ -313,7 +302,6 @@ CoinMarketCap:
                 show_all=bool("ALL" in other_args),
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_cggainers(self, other_args):
@@ -390,7 +378,6 @@ CoinMarketCap:
                 links=ns_parser.urls,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_cglosers(self, other_args):
@@ -467,7 +454,6 @@ CoinMarketCap:
                 links=ns_parser.urls,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_cgtrending(self, other_args):
@@ -532,8 +518,6 @@ CoinMarketCap:
                 links=ns_parser.urls,
                 export=ns_parser.export,
             )
-
-        return self.queue
 
     @try_except
     def call_cgvoted(self, other_args):
@@ -600,8 +584,6 @@ CoinMarketCap:
                 export=ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_cgrecently(self, other_args):
         """Process recently command"""
@@ -663,7 +645,6 @@ CoinMarketCap:
                 links=ns_parser.urls,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_cgvisited(self, other_args):
@@ -730,7 +711,6 @@ CoinMarketCap:
                 links=ns_parser.urls,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_cgsentiment(self, other_args):
@@ -797,7 +777,6 @@ CoinMarketCap:
                 links=ns_parser.urls,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_cgyfarms(self, other_args):
@@ -853,7 +832,6 @@ CoinMarketCap:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_cgvolume(self, other_args):
@@ -906,7 +884,6 @@ CoinMarketCap:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_cgdefi(self, other_args):
@@ -971,7 +948,6 @@ CoinMarketCap:
                 links=ns_parser.urls,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_cgdex(self, other_args):
@@ -1026,7 +1002,6 @@ CoinMarketCap:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_cgnft(self, other_args):
@@ -1092,7 +1067,6 @@ CoinMarketCap:
                 export=ns_parser.export,
                 links=ns_parser.urls,
             )
-        return self.queue
 
     @try_except
     def call_cmctop(self, other_args):
@@ -1141,7 +1115,6 @@ CoinMarketCap:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_cpsearch(self, other_args):
@@ -1222,7 +1195,6 @@ CoinMarketCap:
                 query=" ".join(ns_parser.query),
                 category=ns_parser.category,
             )
-        return self.queue
 
 
 def menu(queue: List[str] = None):

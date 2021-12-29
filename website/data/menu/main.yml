@@ -84,7 +84,7 @@ main:
           - name: sama
             ref: "/stocks/sia/sama"
           - name: metric
-            ref: "/stocks/sia/metric"            
+            ref: "/stocks/sia/metric"
       - name: dark pool shorts
         ref: "/stocks/dark_pool_shorts"
         sub:
@@ -995,8 +995,6 @@ main:
                 ref: "/portfolio/brokers/robinhood/history"
               - name: holdings
                 ref: "/portfolio/brokers/robinhood/holdings"
-      - name: portfolio analysis
-        ref: "/portfolio/portfolio_analysis"
       - name: portfolio optimization
         ref: "/portfolio/portfolio_optimization"
         sub:
@@ -1026,6 +1024,20 @@ main:
             ref: "/portfolio/portfolio_optimization/effrisk"
           - name: ef
             ref: "/portfolio/portfolio_optimization/ef"
+      - name: load
+        ref: "/portfolio/load"
+      - name: save
+        ref: "/portfolio/save"
+      - name: show
+        ref: "/portfolio/show"
+      - name: add
+        ref: "/portfolio/add"
+      - name: rmv
+        ref: "/portfolio/rmv"
+      - name: ar
+        ref: "/portfolio/ar"
+      - name: rmr
+        ref: "/portfolio/rmr"
   - name: forex
     ref: "/forex"
     sub:

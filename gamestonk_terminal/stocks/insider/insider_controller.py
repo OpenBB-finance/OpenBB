@@ -204,62 +204,47 @@ Top Insiders:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            if self.ticker:
-                self.queue.insert(0, f"load {self.ticker}")
-            self.queue.insert(0, "ins")
-            self.queue.insert(0, "stocks")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-
-        reset_commands = ["quit", "quit", "reset", "stocks", "ins"]
         if self.ticker:
-            reset_commands.append(f"load {self.ticker}")
-
-        return reset_commands
+            self.queue.insert(0, f"load {self.ticker}")
+        self.queue.insert(0, "ins")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -296,8 +281,6 @@ Top Insiders:
                 self.stock = df_stock_candidate
                 self.start = self.stock.index[0].strftime("%Y-%m-%d")
                 self.interval = "1440min"
-
-        return self.queue
 
     @try_except
     def call_view(self, other_args: List[str]):
@@ -363,8 +346,6 @@ Top Insiders:
                     print(description.split("Description: ")[1].replace("#", ""))
                 print("")
 
-        return self.queue
-
     @try_except
     def call_set(self, other_args: List[str]):
         """Process set command"""
@@ -389,8 +370,6 @@ Top Insiders:
         if ns_parser:
             self.preset = ns_parser.preset
             print("")
-
-        return self.queue
 
     @try_except
     def call_filter(self, other_args: List[str]):
@@ -431,8 +410,6 @@ Top Insiders:
                 links=ns_parser.urls,
                 export=ns_parser.export,
             )
-
-        return self.queue
 
     @try_except
     def call_stats(self, other_args: List[str]):
@@ -477,8 +454,6 @@ Top Insiders:
             else:
                 print("Please use `load <ticker>` before.\n")
 
-        return self.queue
-
     @try_except
     def call_lcb(self, other_args: List[str]):
         """Process latest-cluster-buys"""
@@ -506,8 +481,6 @@ Top Insiders:
             openinsider_view.print_insider_data(
                 "lcb", ns_parser.limit, ns_parser.export
             )
-
-        return self.queue
 
     @try_except
     def call_lpsb(self, other_args: List[str]):
@@ -537,8 +510,6 @@ Top Insiders:
                 "lpsb", ns_parser.limit, ns_parser.export
             )
 
-        return self.queue
-
     @try_except
     def call_lit(self, other_args: List[str]):
         """Process latest-insider-trading"""
@@ -566,8 +537,6 @@ Top Insiders:
             openinsider_view.print_insider_data(
                 "lit", ns_parser.limit, ns_parser.export
             )
-
-        return self.queue
 
     @try_except
     def call_lip(self, other_args: List[str]):
@@ -597,8 +566,6 @@ Top Insiders:
                 "lip", ns_parser.limit, ns_parser.export
             )
 
-        return self.queue
-
     @try_except
     def call_blip(self, other_args: List[str]):
         """Process latest-insider-purchases-25k"""
@@ -626,8 +593,6 @@ Top Insiders:
             openinsider_view.print_insider_data(
                 "blip", ns_parser.limit, ns_parser.export
             )
-
-        return self.queue
 
     @try_except
     def call_blop(self, other_args: List[str]):
@@ -657,8 +622,6 @@ Top Insiders:
                 "blop", ns_parser.limit, ns_parser.export
             )
 
-        return self.queue
-
     @try_except
     def call_blcp(self, other_args: List[str]):
         """Process latest-ceo-cfo-purchases-25k"""
@@ -686,8 +649,6 @@ Top Insiders:
             openinsider_view.print_insider_data(
                 "blcp", ns_parser.limit, ns_parser.export
             )
-
-        return self.queue
 
     @try_except
     def call_lis(self, other_args: List[str]):
@@ -717,8 +678,6 @@ Top Insiders:
                 "lis", ns_parser.limit, ns_parser.export
             )
 
-        return self.queue
-
     @try_except
     def call_blis(self, other_args: List[str]):
         """Process latest-insider-sales-100k"""
@@ -746,8 +705,6 @@ Top Insiders:
             openinsider_view.print_insider_data(
                 "blis", ns_parser.limit, ns_parser.export
             )
-
-        return self.queue
 
     @try_except
     def call_blos(self, other_args: List[str]):
@@ -777,8 +734,6 @@ Top Insiders:
                 "blos", ns_parser.limit, ns_parser.export
             )
 
-        return self.queue
-
     @try_except
     def call_blcs(self, other_args: List[str]):
         """Process latest-ceo-cfo-sales-100k"""
@@ -806,8 +761,6 @@ Top Insiders:
             openinsider_view.print_insider_data(
                 "blcs", ns_parser.limit, ns_parser.export
             )
-
-        return self.queue
 
     @try_except
     def call_topt(self, other_args: List[str]):
@@ -837,8 +790,6 @@ Top Insiders:
                 "topt", ns_parser.limit, ns_parser.export
             )
 
-        return self.queue
-
     @try_except
     def call_toppw(self, other_args: List[str]):
         """Process top-officer-purchases-of-the-week"""
@@ -866,8 +817,6 @@ Top Insiders:
             openinsider_view.print_insider_data(
                 "toppw", ns_parser.limit, ns_parser.export
             )
-
-        return self.queue
 
     @try_except
     def call_toppm(self, other_args: List[str]):
@@ -897,8 +846,6 @@ Top Insiders:
                 "toppm", ns_parser.limit, ns_parser.export
             )
 
-        return self.queue
-
     @try_except
     def call_tipt(self, other_args: List[str]):
         """Process top-insider-purchases-of-the-day"""
@@ -926,8 +873,6 @@ Top Insiders:
             openinsider_view.print_insider_data(
                 "tipt", ns_parser.limit, ns_parser.export
             )
-
-        return self.queue
 
     @try_except
     def call_tippw(self, other_args: List[str]):
@@ -957,8 +902,6 @@ Top Insiders:
                 "tippw", ns_parser.limit, ns_parser.export
             )
 
-        return self.queue
-
     @try_except
     def call_tippm(self, other_args: List[str]):
         """Process top-insider-purchases-of-the-month"""
@@ -986,8 +929,6 @@ Top Insiders:
             openinsider_view.print_insider_data(
                 "tippm", ns_parser.limit, ns_parser.export
             )
-
-        return self.queue
 
     @try_except
     def call_tist(self, other_args: List[str]):
@@ -1017,8 +958,6 @@ Top Insiders:
                 "tist", ns_parser.limit, ns_parser.export
             )
 
-        return self.queue
-
     @try_except
     def call_tispw(self, other_args: List[str]):
         """Process top-insider-sales-of-the-week"""
@@ -1047,8 +986,6 @@ Top Insiders:
                 "tispw", ns_parser.limit, ns_parser.export
             )
 
-        return self.queue
-
     @try_except
     def call_tispm(self, other_args: List[str]):
         """Process top-insider-sales-of-the-month"""
@@ -1076,8 +1013,6 @@ Top Insiders:
             openinsider_view.print_insider_data(
                 "tispm", ns_parser.limit, ns_parser.export
             )
-
-        return self.queue
 
     @try_except
     def call_act(self, other_args: List[str]):
@@ -1122,8 +1057,6 @@ Top Insiders:
             else:
                 print("No ticker loaded. First use `load {ticker}`\n")
 
-        return self.queue
-
     @try_except
     def call_lins(self, other_args: List[str]):
         """Process lins command"""
@@ -1158,8 +1091,6 @@ Top Insiders:
                 )
             else:
                 print("No ticker loaded. First use `load {ticker}`\n")
-
-        return self.queue
 
 
 def menu(

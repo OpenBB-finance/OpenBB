@@ -181,110 +181,84 @@ class CryptoController:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "crypto")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "reset", "crypto"]
+        self.queue.insert(0, "crypto")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
 
+    @try_except
     def call_load(self, other_args):
         """Process load command"""
-        try:
-            parser = argparse.ArgumentParser(
-                add_help=False,
-                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-                prog="load",
-                description="Load crypto currency to perform analysis on. "
-                "Available data sources are CoinGecko, CoinPaprika, Binance, Coinbase"
-                "By default main source used for analysis is CoinGecko (cg). To change it use --source flag",
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load crypto currency to perform analysis on. "
+            "Available data sources are CoinGecko, CoinPaprika, Binance, Coinbase"
+            "By default main source used for analysis is CoinGecko (cg). To change it use --source flag",
+        )
+        parser.add_argument(
+            "-c",
+            "--coin",
+            help="Coin to get",
+            dest="coin",
+            type=str,
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "-s",
+            "--source",
+            help="Source of data",
+            dest="source",
+            choices=("cp", "cg", "bin", "cb"),
+            default="cg",
+            required=False,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            source = ns_parser.source
+            for arg in ["--source", source]:
+                if arg in other_args:
+                    other_args.remove(arg)
+
+            self.current_coin, self.source, self.symbol = load(
+                coin=ns_parser.coin, source=ns_parser.source
             )
 
-            parser.add_argument(
-                "-c",
-                "--coin",
-                help="Coin to get",
-                dest="coin",
-                type=str,
-                required="-h" not in other_args,
-            )
-
-            parser.add_argument(
-                "-s",
-                "--source",
-                help="Source of data",
-                dest="source",
-                choices=("cp", "cg", "bin", "cb"),
-                default="cg",
-                required=False,
-            )
-
-            try:
-                if other_args:
-                    if not other_args[0][0] == "-":
-                        other_args.insert(0, "-c")
-
-                ns_parser = parse_known_args_and_warn(parser, other_args)
-
-                if ns_parser:
-                    source = ns_parser.source
-
-                    for arg in ["--source", source]:
-                        if arg in other_args:
-                            other_args.remove(arg)
-
-                    self.current_coin, self.source, self.symbol = load(
-                        coin=ns_parser.coin, source=ns_parser.source
-                    )
-                return self.queue
-
-            except Exception as e:
-                print(e, "\n")
-                self.current_coin, self.source = self.current_coin, None
-                return self.queue
-
-        except TypeError:
-            print("Couldn't load data\n")
-            return self.queue
-
+    @try_except
     def call_chart(self, other_args):
         """Process chart command"""
         if self.current_coin:
@@ -399,7 +373,6 @@ class CryptoController:
                         f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
                     )
                     return
-
                 parser.add_argument(
                     "--vs",
                     help="Quote currency (what to view coin vs)",
@@ -408,7 +381,6 @@ class CryptoController:
                     default="USDT" if "USDT" in quotes else quotes[0],
                     choices=quotes,
                 )
-
                 parser.add_argument(
                     "-i",
                     "--interval",
@@ -418,7 +390,6 @@ class CryptoController:
                     default="1day",
                     type=str,
                 )
-
                 parser.add_argument(
                     "-l",
                     "--limit",
@@ -427,41 +398,28 @@ class CryptoController:
                     help="Number to get",
                     type=check_positive,
                 )
-
-            try:
-                ns_parser = parse_known_args_and_warn(
-                    parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-                )
-
-                if ns_parser:
-                    if self.source in ["bin", "cb"]:
-                        limit = ns_parser.limit
-                        interval = ns_parser.interval
-                        days = 0
-                    else:
-                        limit = 0
-                        interval = "1day"
-                        days = ns_parser.days
-
-                    plot_chart(
-                        coin=self.current_coin,
-                        limit=limit,
-                        interval=interval,
-                        days=days,
-                        currency=ns_parser.vs,
-                        source=self.source,
-                    )
-                return self.queue
-
-            except Exception as e:
-                print(e, "\n")
-                return self.queue
-
-        else:
-            print(
-                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
             )
-            return self.queue
+
+            if ns_parser:
+                if self.source in ["bin", "cb"]:
+                    limit = ns_parser.limit
+                    interval = ns_parser.interval
+                    days = 0
+                else:
+                    limit = 0
+                    interval = "1day"
+                    days = ns_parser.days
+
+                plot_chart(
+                    coin=self.current_coin,
+                    limit=limit,
+                    interval=interval,
+                    days=days,
+                    currency=ns_parser.vs,
+                    source=self.source,
+                )
 
     @try_except
     def call_ta(self, other_args):
@@ -582,7 +540,7 @@ class CryptoController:
                         print(
                             f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
                         )
-                        return self.queue
+                        return
 
                     parser.add_argument(
                         "--vs",
@@ -630,7 +588,7 @@ class CryptoController:
                     print(
                         f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
                     )
-                    return self.queue
+                    return
 
                 parser.add_argument(
                     "--vs",
@@ -659,71 +617,61 @@ class CryptoController:
                     help="Number to get",
                     type=check_positive,
                 )
+            ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            try:
-                ns_parser = parse_known_args_and_warn(parser, other_args)
+            if ns_parser:
+                if self.source in ["bin", "cb"]:
+                    limit = ns_parser.limit
+                    interval = ns_parser.interval
+                    days = 0
+                else:
+                    limit = 0
+                    interval = "1day"
+                    days = ns_parser.days
 
-                if ns_parser:
-                    if self.source in ["bin", "cb"]:
-                        limit = ns_parser.limit
-                        interval = ns_parser.interval
-                        days = 0
-                    else:
-                        limit = 0
-                        interval = "1day"
-                        days = ns_parser.days
-
-                    self.current_df, self.current_currency = load_ta_data(
-                        coin=self.current_coin,
-                        source=self.source,
-                        currency=ns_parser.vs,
-                        days=days,
-                        limit=limit,
-                        interval=interval,
-                    )
-
-            except Exception as e:
-                print(e, "\n")
-                return self.queue
+                self.current_df, self.current_currency = load_ta_data(
+                    coin=self.current_coin,
+                    source=self.source,
+                    currency=ns_parser.vs,
+                    days=days,
+                    limit=limit,
+                    interval=interval,
+                )
 
             if self.current_currency != "" and not self.current_df.empty:
-                try:
-                    return ta_controller.menu(
-                        stock=self.current_df,
-                        ticker=self.current_coin,
-                        start=self.current_df.index[0],
-                        interval="",
-                        queue=self.queue,
-                    )
-                except (ValueError, KeyError) as e:
-                    print(e)
-                    return self.queue
-            else:
-                return self.queue
+                self.queue = ta_controller.menu(
+                    stock=self.current_df,
+                    ticker=self.current_coin,
+                    start=self.current_df.index[0],
+                    interval="",
+                    queue=self.queue,
+                )
 
         else:
             print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
             )
-            return self.queue
 
+    @try_except
     def call_disc(self, _):
         """Process disc command"""
         from gamestonk_terminal.cryptocurrency.discovery import discovery_controller
 
-        return discovery_controller.menu(queue=self.queue)
+        self.queue = discovery_controller.menu(queue=self.queue)
 
+    @try_except
     def call_ov(self, _):
         """Process ov command"""
         from gamestonk_terminal.cryptocurrency.overview import overview_controller
 
-        return overview_controller.menu(queue=self.queue)
+        self.queue = overview_controller.menu(queue=self.queue)
 
+    @try_except
     def call_defi(self, _):
         """Process defi command"""
         from gamestonk_terminal.cryptocurrency.defi import defi_controller
 
-        return defi_controller.menu(queue=self.queue)
+        self.queue = defi_controller.menu(queue=self.queue)
 
     @try_except
     def call_headlines(self, other_args):
@@ -756,58 +704,60 @@ class CryptoController:
             finbrain_crypto_view.display_crypto_sentiment_analysis(
                 coin=ns_parser.coin, export=ns_parser.export
             )
-        return self.queue
 
+    @try_except
     def call_dd(self, _):
         """Process dd command"""
         if self.current_coin:
             from gamestonk_terminal.cryptocurrency.due_diligence import dd_controller
 
-            return dd_controller.menu(
+            self.queue = dd_controller.menu(
                 self.current_coin, self.source, self.symbol, queue=self.queue
             )
-        print("No coin selected. Use 'load' to load the coin you want to look at.\n")
-        return self.queue
+        else:
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
+    @try_except
     def call_pred(self, _):
         """Process pred command"""
-        if not self.current_coin:
-            print(
-                "No coin loaded.  Please use `load <coin>` to access prediction menu\n."
-            )
-            return self.queue
-
-        if self.source != "cg":
-            print("Currently only supports CoinGecko source.\n")
-            return self.queue
-
         if self.current_coin:
-            from gamestonk_terminal.cryptocurrency.prediction_techniques import (
-                pred_controller,
-            )
-            from gamestonk_terminal.cryptocurrency import (
-                cryptocurrency_helpers as c_help,
+            if self.source != "cg":
+                print("Currently only supports CoinGecko source.\n")
+                return
+
+            if self.current_coin:
+                from gamestonk_terminal.cryptocurrency.prediction_techniques import (
+                    pred_controller,
+                )
+                from gamestonk_terminal.cryptocurrency import (
+                    cryptocurrency_helpers as c_help,
+                )
+
+                self.queue = pred_controller.menu(
+                    self.current_coin,
+                    c_help.load_cg_coin_data(self.current_coin, "USD", 365, "1D"),
+                    self.queue,
+                )
+        else:
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
             )
 
-            return pred_controller.menu(
-                self.current_coin,
-                c_help.load_cg_coin_data(self.current_coin, "USD", 365, "1D"),
-                self.queue,
-            )
-        print("No coin selected. Use 'load' to load the coin you want to look at.\n")
-        return self.queue
-
+    @try_except
     def call_onchain(self, _):
         """Process onchain command"""
         from gamestonk_terminal.cryptocurrency.onchain import onchain_controller
 
-        return onchain_controller.menu(queue=self.queue)
+        self.queue = onchain_controller.menu(queue=self.queue)
 
+    @try_except
     def call_nft(self, _):
         """Process nft command"""
         from gamestonk_terminal.cryptocurrency.nft import nft_controller
 
-        return nft_controller.menu(queue=self.queue)
+        self.queue = nft_controller.menu(queue=self.queue)
 
     @try_except
     def call_find(self, other_args):
@@ -878,7 +828,6 @@ class CryptoController:
                 top=ns_parser.limit,
                 export=ns_parser.export,
             )
-        return self.queue
 
 
 def menu(queue: List[str] = None):

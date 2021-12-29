@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/TSLA?events=div%2Csplits&includePrePost=False&interval=1d&period1=1598220000&period2=1635980400
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1640293203,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":1067.0,"chartPreviousClose":926.92,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1640250000,"end":1640269800,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1640269800,"end":1640293200,"gmtoffset":-18000},"post":{"timezone":"EST","start":1640293200,"end":1640307600,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1639665000,1639751400,1640010600,1640097000,1640183400,1640269800],"indicators":{"quote":[{"high":[994.97998046875,960.6599731445312,921.6900024414062,939.5,1015.6599731445312,1072.97998046875],"volume":[27590500,33479100,18826700,23839300,31211400,30904400],"low":[921.8499755859375,909.0399780273438,893.3900146484375,886.1199951171875,957.0499877929688,997.5599975585938],"close":[926.9199829101562,932.5700073242188,899.9400024414062,938.530029296875,1008.8699951171875,1067.0],"open":[994.5,914.77001953125,910.7000122070312,916.8699951171875,965.6599731445312,1006.7999877929688]}],"adjclose":[{"adjclose":[926.9199829101562,932.5700073242188,899.9400024414062,938.530029296875,1008.8699951171875,1067.0]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1441'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Sat, 25 Dec 2021 01:03:05 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '4'
+      x-request-id:
+      - e3137bb6-2e2b-4de1-b652-27391a42bf87
+      x-yahoo-request-id:
+      - epfmtqlgscre9
+      y-rid:
+      - epfmtqlgscre9
+    status:
+      code: 200
+      message: OK
+version: 1
