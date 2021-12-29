@@ -106,8 +106,8 @@ def get_fund_historical(
     fund: str,
     country: str = "united states",
     name: bool = False,
-    start_date: str = (datetime.now() - timedelta(days=366)).strftime("%d/%m/%Y"),
-    end_date: str = datetime.now().strftime("%d/%m/%Y"),
+    start_date: datetime = (datetime.now() - timedelta(days=366)),
+    end_date: datetime = datetime.now(),
 ) -> Tuple[pd.DataFrame, str, str]:
     """Get historical fund data
 
@@ -119,10 +119,10 @@ def get_fund_historical(
         Country of fund
     name : bool
         Flag to search by name instead of symbol
-    start_date: str
-        Start date of data
-    end_date: str
-        End date of data
+    start_date: datetime
+        Start date of data in format YYYY-MM-DD
+    end_date: datetime
+        End date of data in format YYYY-MM-DD
 
     Returns
     -------
@@ -139,10 +139,12 @@ def get_fund_historical(
     else:
         fund_name = get_fund_name_from_symbol(fund)
         fund_symbol = fund
-
+    # Note that dates for investpy need to be in the format dd/mm/yyyy
+    from_date = start_date.strftime("%d/%m/%Y")
+    to_date = end_date.strftime("%d/%m/%Y")
     return (
         investpy.funds.get_fund_historical_data(
-            fund_name, country, from_date=start_date, to_date=end_date
+            fund_name, country, from_date=from_date, to_date=to_date
         ),
         fund_name,
         fund_symbol,

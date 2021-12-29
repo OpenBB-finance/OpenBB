@@ -79,9 +79,6 @@ def display_overview(country: str = "united states", limit: int = 10, export: st
         Number to show
     export : str
         Format to export data
-    Returns
-    -------
-
     """
     overview = investpy_model.get_overview(country=country, limit=limit)
     overview["Assets (1B)"] = overview.total_assets / 1_000_000_000

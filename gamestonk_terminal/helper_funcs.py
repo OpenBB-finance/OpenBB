@@ -10,7 +10,7 @@ import random
 import re
 import sys
 import pandas as pd
-import rich
+from rich.table import Table
 from pytz import timezone
 import iso8601
 
@@ -51,7 +51,7 @@ def rich_table_from_df(
     index_name: str = "",
     headers: List[str] = None,
     floatfmt: str = ".2f",
-) -> rich.table.Table:
+) -> Table:
     """Prepare a table from df in rich
 
     Parameters
@@ -70,10 +70,10 @@ def rich_table_from_df(
         String to
     Returns
     -------
-    rich.table.Table
+    Table
         rich table
     """
-    table = rich.table.Table(title=title, show_lines=True)
+    table = Table(title=title, show_lines=True)
 
     if show_index:
         table.add_column(index_name)

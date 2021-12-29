@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import difflib
-
+from datetime import datetime, timedelta
 from typing import List, Union
 
 import investpy
@@ -20,6 +20,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     system_clear,
     try_except,
+    valid_date,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.mutual_funds import investpy_model, investpy_view, yfinance_view
@@ -367,6 +368,23 @@ Investing.com:[/italic]
             dest="name",
             help="Flag to indicate name provided instead of symbol.",
         )
+        # Keeping the date format constant for investpy even though it needs to be reformatted in model
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the fund",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            dest="end",
+            help="The ending date (format YYYY-MM-DD) of the fund",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -377,7 +395,11 @@ Investing.com:[/italic]
                 self.fund_name,
                 self.fund_symbol,
             ) = investpy_model.get_fund_historical(
-                fund=parsed_fund, name=ns_parser.name, country=self.country
+                fund=parsed_fund,
+                name=ns_parser.name,
+                country=self.country,
+                start_date=ns_parser.start,
+                end_date=ns_parser.end,
             )
 
         return self.queue

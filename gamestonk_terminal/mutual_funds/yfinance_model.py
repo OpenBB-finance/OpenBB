@@ -13,6 +13,7 @@ def get_information(fund: str) -> Dict:
     ----------
     fund : str
         Symbol of fund
+
     Returns
     -------
     dict
