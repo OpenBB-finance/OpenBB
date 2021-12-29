@@ -77,7 +77,6 @@ class OnchainController:
         "th",
         "prices",
         "address",
-        "active",
         "lt",
         "dvcp",
         "tv",
