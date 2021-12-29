@@ -4,10 +4,10 @@ channels:
 dependencies:
   - python=3.8
   - pip
-  - poetry=1.1.11
-  - numpy=1.21.4
+  - poetry=1.1.12
+  - numpy=1.21.2
   - cvxpy=1.1.17
   - pytest
   - black=21.7b0
   - sphinx=4.1.1
-  - charset-normalizer=2.0.8
+  - charset-normalizer=2.0.9

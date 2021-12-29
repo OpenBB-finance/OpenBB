@@ -84,7 +84,7 @@ main:
           - name: sama
             ref: "/stocks/sia/sama"
           - name: metric
-            ref: "/stocks/sia/metric"            
+            ref: "/stocks/sia/metric"
       - name: dark pool shorts
         ref: "/stocks/dark_pool_shorts"
         sub:
