@@ -388,8 +388,8 @@ Investing.com:[/italic]
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        parsed_fund = " ".join(ns_parser.fund)
         if ns_parser:
+            parsed_fund = " ".join(ns_parser.fund)
             (
                 self.data,
                 self.fund_name,
