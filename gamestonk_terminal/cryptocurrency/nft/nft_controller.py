@@ -14,7 +14,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
 
-from gamestonk_terminal.cryptocurrency.nft import nftcalendar_view
+from gamestonk_terminal.cryptocurrency.nft import nftcalendar_view, opensea_view
 
 
 class NFTController:
@@ -34,12 +34,7 @@ class NFTController:
         "reset",
     ]
 
-    CHOICES_COMMANDS = [
-        "today",
-        "upcoming",
-        "ongoing",
-        "newest",
-    ]
+    CHOICES_COMMANDS = ["today", "upcoming", "ongoing", "newest", "stats"]
 
     CHOICES += CHOICES_COMMANDS
 
@@ -71,6 +66,8 @@ nftcalendar.io:
     upcoming    upcoming NFT drops
     ongoing     Ongoing NFT drops
     newest      Recently NFTs added
+opensea.io
+    stats       check open sea collection stats
 """
         print(help_text)
 
@@ -160,6 +157,39 @@ nftcalendar.io:
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
+
+    @try_except
+    def call_stats(self, other_args: List[str]):
+        """Process stats command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="info",
+            description="""
+                Display stats about an opensea nft collection. e.g. alien-frens
+                [Source: opensea.io]
+            """,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--slug",
+            type=str,
+            help="Opensea collection slug (e.g., mutant-ape-yacht-club)",
+            dest="slug",
+        )
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "--slug")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            opensea_view.display_collection_stats(
+                slug=ns_parser.slug,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_today(self, other_args: List[str]):
