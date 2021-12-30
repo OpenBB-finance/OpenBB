@@ -1,39 +1,46 @@
 <!DOCTYPE html>
 <html lang="{{ .Site.Language.Lang }}" class="color-toggle-hidden">
-
-<head>
+  <head>
     {{ partial "head/meta" . }}
-    <title>{{ if not (eq .Kind "home") }}{{ partial "title" . }} | {{ end }}{{ .Site.Title }}</title>
+    <title>
+      {{ if not (eq .Kind "home") }}{{ partial "title" . }} | {{ end }}{{
+      .Site.Title }}
+    </title>
 
-    {{ partial "head/favicons" . }}
-    {{ partial "head/others" . }}
-    {{ partial "head/custom" . }}
-</head>
+    {{ partial "head/favicons" . }} {{ partial "head/others" . }} {{ partial
+    "head/custom" . }}
+  </head>
 
-<body itemscope itemtype="https://schema.org/WebPage">
+  <body itemscope itemtype="https://schema.org/WebPage">
     {{ partial "svg-icon-symbols" . }}
 
-    <div class="wrapper {{ if default false .Site.Params.GeekdocDarkModeDim }}dark-mode-dim{{ end }}">
-        <input type="checkbox" class="hidden" id="menu-control" />
-        {{ $navEnabled := default true .Page.Params.GeekdocNav }}
-        {{ partial "site-header" (dict "Root" . "MenuEnabled" $navEnabled) }}
+    <div
+      class="{{ if default false .Site.Params.GeekdocDarkModeDim }}dark-mode-dim{{ end }}"
+    >
+      <input type="checkbox" class="hidden" id="menu-control" />
+      {{ $navEnabled := default true .Page.Params.GeekdocNav }} {{ partial
+      "site-header" (dict "Root" . "MenuEnabled" $navEnabled) }}
 
-        <main class="container flex flex-even">
-            {{ if $navEnabled }}
-            <aside class="gdoc-nav">
-                {{ partial "menu" . }}
-            </aside>
-            {{ end }}
+      <main class="flex flex-even">
+        {{ if $navEnabled }}
+        <aside class="gdoc-nav">{{ partial "menu" . }}</aside>
+        {{ end }}
 
-            <div class="gdoc-page">
-                {{ template "main" . }}
-                {{ partial "page-footer" . }}
-            </div>
-        </main>
+        <div
+          class="gdoc-page"
+          style="
+            padding-right: 20px;
+            padding-left: 20px;
+            background-color: #1e1e1e;
+          "
+        >
+          {{ template "main" . }} {{ partial "page-footer" . }}
+        </div>
+      </main>
 
-        {{ partial "site-footer" . }}
+      {{ partial "site-footer" . }}
     </div>
 
     {{ partial "foot" . }}
-</body>
+  </body>
 </html>
