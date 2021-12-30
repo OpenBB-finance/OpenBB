@@ -6,7 +6,7 @@ __docformat__ = "numpy"
 import argparse
 import difflib
 from typing import List, Union
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
@@ -14,8 +14,6 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-    EXPORT_ONLY_FIGURES_ALLOWED,
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
     get_flair,
     parse_known_args_and_warn,
     check_positive_list,
@@ -25,12 +23,6 @@ from gamestonk_terminal.helper_funcs import (
     system_clear,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.stocks.technical_analysis import (
-    finviz_view,
-    finbrain_view,
-    tradingview_model,
-    tradingview_view,
-)
 from gamestonk_terminal.common.technical_analysis import (
     custom_indicators_view,
     momentum_view,
@@ -41,8 +33,6 @@ from gamestonk_terminal.common.technical_analysis import (
     volatility_view,
     volume_view,
 )
-
-from gamestonk_terminal.stocks import stocks_helper
 
 
 class TechnicalAnalysisController:
@@ -65,14 +55,10 @@ class TechnicalAnalysisController:
 
     CHOICES_COMMANDS = [
         "load",
-        "view",
-        "summary",
-        "recom",
         "ema",
         "sma",
         "wma",
         "hma",
-        "vwap",
         "zlma",
         "cci",
         "macd",
@@ -97,15 +83,13 @@ class TechnicalAnalysisController:
         self,
         ticker: str,
         start: datetime,
-        interval: str,
-        stock: pd.DataFrame,
+        data: pd.DataFrame,
         queue: List[str] = None,
     ):
         """Constructor"""
         self.ticker = ticker
         self.start = start
-        self.interval = interval
-        self.stock = stock
+        self.data = data
 
         self.ta_parser = argparse.ArgumentParser(add_help=False, prog="ta")
         self.ta_parser.add_argument(
@@ -115,11 +99,6 @@ class TechnicalAnalysisController:
         self.completer: Union[None, NestedCompleter] = None
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
-            choices["load"]["-i"] = {c: {} for c in stocks_helper.INTERVALS}
-            choices["load"]["-s"] = {c: {} for c in stocks_helper.SOURCES}
-            choices["recom"]["-i"] = {c: {} for c in tradingview_model.INTERVALS.keys()}
-            choices["recom"]["-s"] = {c: {} for c in tradingview_model.SCREENERS}
-            choices["kc"]["-m"] = {c: {} for c in volatility_model.MAMODES}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         if queue:
@@ -129,20 +108,9 @@ class TechnicalAnalysisController:
 
     def print_help(self):
         """Print help"""
-        s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
-        if self.start:
-            stock_str = f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-        else:
-            stock_str = f"\n{s_intraday} Stock: {self.ticker}"
-
         help_str = f"""
-Technical Analysis Menu:
 
-{stock_str}
-
-    view        view historical data and trendlines [Finviz]
-    summary     technical summary report [FinBrain API]
-    recom       recommendation based on Technical Indicators [Tradingview API]
+ETF: {self.ticker}
 
 Overlap:
     ema         exponential moving average
@@ -150,7 +118,6 @@ Overlap:
     wma         weighted moving average
     hma         hull moving average
     zlma        zero lag moving average
-    vwap        volume weighted average price
 Momentum:
     cci         commodity channel index
     macd        moving average convergence/divergence
@@ -255,196 +222,11 @@ Custom:
         self.queue.insert(0, "ta")
         if self.ticker:
             self.queue.insert(0, f"load {self.ticker}")
-        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "etf")
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
 
-    @try_except
-    def call_load(self, other_args: List[str]):
-        """Process load command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="load",
-            description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
-            " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
-            " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
-        )
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            action="store",
-            dest="ticker",
-            required="-h" not in other_args,
-            help="Stock ticker",
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            type=valid_date,
-            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
-            dest="start",
-            help="The starting date (format YYYY-MM-DD) of the stock",
-        )
-        parser.add_argument(
-            "-e",
-            "--end",
-            type=valid_date,
-            default=datetime.now().strftime("%Y-%m-%d"),
-            dest="end",
-            help="The ending date (format YYYY-MM-DD) of the stock",
-        )
-        parser.add_argument(
-            "-i",
-            "--interval",
-            action="store",
-            dest="interval",
-            type=int,
-            default=1440,
-            choices=stocks_helper.INTERVALS,
-            help="Intraday stock minutes",
-        )
-        parser.add_argument(
-            "--source",
-            action="store",
-            dest="source",
-            choices=stocks_helper.SOURCES,
-            default="yf",
-            help="Source of historical data.",
-        )
-        parser.add_argument(
-            "-p",
-            "--prepost",
-            action="store_true",
-            default=False,
-            dest="prepost",
-            help="Pre/After market hours. Only works for 'yf' source, and intraday data",
-        )
-
-        # For the case where a user uses: 'load BB'
-        if other_args and "-t" not in other_args and "-h" not in other_args:
-            other_args.insert(0, "-t")
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            df_stock_candidate = stocks_helper.load(
-                ns_parser.ticker,
-                ns_parser.start,
-                ns_parser.interval,
-                ns_parser.end,
-                ns_parser.prepost,
-                ns_parser.source,
-            )
-
-            if not df_stock_candidate.empty:
-                self.stock = df_stock_candidate
-                if "." in ns_parser.ticker:
-                    self.ticker = ns_parser.ticker.upper().split(".")[0]
-                else:
-                    self.ticker = ns_parser.ticker.upper()
-
-                self.start = ns_parser.start
-                self.interval = f"{ns_parser.interval}min"
-
-    # SPECIFIC
-    @try_except
-    def call_view(self, other_args: List[str]):
-        """Process view command"""
-
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="view",
-            description="""View historical price with trendlines. [Source: Finviz]""",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
-        )
-        if ns_parser:
-            finviz_view.view(self.ticker)
-
-    @try_except
-    def call_summary(self, other_args: List[str]):
-        """Process summary command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="summary",
-            description="""
-            Technical summary report provided by FinBrain's API.
-            FinBrain Technologies develops deep learning algorithms for financial analysis
-            and prediction, which currently serves traders from more than 150 countries
-            all around the world. [Source:  Finbrain]
-        """,
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            finbrain_view.technical_summary_report(self.ticker)
-
-    @try_except
-    def call_recom(self, other_args: List[str]):
-        """Process recom command"""
-
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="recom",
-            description="""
-            Print tradingview recommendation based on technical indicators.
-            [Source: Tradingview]
-        """,
-        )
-        parser.add_argument(
-            "-s",
-            "--screener",
-            action="store",
-            dest="screener",
-            type=str,
-            default="america",
-            choices=tradingview_model.SCREENERS,
-            help="Screener. See https://python-tradingview-ta.readthedocs.io/en/latest/usage.html",
-        )
-        parser.add_argument(
-            "-e",
-            "--exchange",
-            action="store",
-            dest="exchange",
-            type=str,
-            default="",
-            help="""Set exchange. For Forex use: 'FX_IDC', and for crypto use 'TVC'.
-            See https://python-tradingview-ta.readthedocs.io/en/latest/usage.html.
-            By default Alpha Vantage tries to get this data from the ticker. """,
-        )
-        parser.add_argument(
-            "-i",
-            "--interval",
-            action="store",
-            dest="interval",
-            type=str,
-            default="",
-            choices=tradingview_model.INTERVALS.keys(),
-            help="""Interval, that corresponds to the recommendation given by tradingview based on technical indicators.
-            See https://python-tradingview-ta.readthedocs.io/en/latest/usage.html""",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            tradingview_view.print_recommendation(
-                ticker=self.ticker,
-                screener=ns_parser.screener,
-                exchange=ns_parser.exchange,
-                interval=ns_parser.interval,
-                export=ns_parser.export,
-            )
-
-    # COMMON
-    # TODO: Go through all models and make sure all needed columns are in dfs
     @try_except
     def call_ema(self, other_args: List[str]):
         """Process ema command"""
@@ -492,8 +274,8 @@ Custom:
             overlap_view.view_ma(
                 ma_type="EMA",
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                s_interval="1440min",
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -545,8 +327,8 @@ Custom:
             overlap_view.view_ma(
                 ma_type="SMA",
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                s_interval="1440min",
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -595,8 +377,8 @@ Custom:
             overlap_view.view_ma(
                 ma_type="WMA",
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                s_interval="1440min",
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -645,8 +427,8 @@ Custom:
             overlap_view.view_ma(
                 ma_type="HMA",
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                s_interval="1440min",
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -698,48 +480,9 @@ Custom:
             overlap_view.view_ma(
                 ma_type="ZLMA",
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                s_interval="1440min",
+                df_stock=self.data,
                 length=ns_parser.n_length,
-                offset=ns_parser.n_offset,
-                export=ns_parser.export,
-            )
-
-    @try_except
-    def call_vwap(self, other_args: List[str]):
-        """Process vwap command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="vwap",
-            description="""
-                The Volume Weighted Average Price that measures the average typical price
-                by volume.  It is typically used with intraday charts to identify general direction.
-            """,
-        )
-        parser.add_argument(
-            "-o",
-            "--offset",
-            action="store",
-            dest="n_offset",
-            type=int,
-            default=0,
-            help="offset",
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            # Daily
-            if self.interval == "1440min":
-                print("VWAP should be used with intraday data. \n")
-                return
-
-            overlap_view.view_vwap(
-                s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
@@ -786,8 +529,8 @@ Custom:
         if ns_parser:
             momentum_view.plot_cci(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                s_interval="1440min",
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
@@ -846,8 +589,8 @@ Custom:
         if ns_parser:
             momentum_view.view_macd(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                s_interval="1440min",
+                df_stock=self.data,
                 n_fast=ns_parser.n_fast,
                 n_slow=ns_parser.n_slow,
                 n_signal=ns_parser.n_signal,
@@ -907,8 +650,8 @@ Custom:
         if ns_parser:
             momentum_view.view_rsi(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                s_interval="1440min",
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
@@ -965,8 +708,8 @@ Custom:
         if ns_parser:
             momentum_view.view_stoch(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                s_interval="1440min",
+                df_stock=self.data,
                 fastkperiod=ns_parser.n_fastkperiod,
                 slowdperiod=ns_parser.n_slowdperiod,
                 slowkperiod=ns_parser.n_slowkperiod,
@@ -1008,8 +751,8 @@ Custom:
         if ns_parser:
             momentum_view.view_fisher(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                s_interval="1440min",
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
@@ -1049,8 +792,8 @@ Custom:
         if ns_parser:
             momentum_view.view_cg(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                s_interval="1440min",
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
@@ -1105,8 +848,8 @@ Custom:
         if ns_parser:
             trend_indicators_view.plot_adx(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                s_interval="1440min",
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
@@ -1162,8 +905,8 @@ Custom:
         if ns_parser:
             trend_indicators_view.plot_aroon(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                s_interval="1440min",
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
@@ -1226,8 +969,8 @@ Custom:
         if ns_parser:
             volatility_view.view_bbands(
                 ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                s_interval="1440min",
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 n_std=ns_parser.n_std,
                 mamode=ns_parser.s_mamode,
@@ -1275,8 +1018,8 @@ Custom:
         if ns_parser:
             volatility_view.view_donchian(
                 ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                s_interval="1440min",
+                df_stock=self.data,
                 upper_length=ns_parser.n_length_upper,
                 lower_length=ns_parser.n_length_lower,
                 export=ns_parser.export,
@@ -1343,8 +1086,8 @@ Custom:
         if ns_parser:
             volatility_view.view_kc(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                s_interval="1440min",
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 mamode=ns_parser.s_mamode,
@@ -1386,8 +1129,8 @@ Custom:
         if ns_parser:
             volume_view.plot_ad(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                s_interval="1440min",
+                df_stock=self.data,
                 use_open=ns_parser.b_use_open,
                 export=ns_parser.export,
             )
@@ -1441,8 +1184,8 @@ Custom:
         if ns_parser:
             volume_view.plot_adosc(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                s_interval="1440min",
+                df_stock=self.data,
                 use_open=ns_parser.b_use_open,
                 fast=ns_parser.n_length_fast,
                 slow=ns_parser.n_length_slow,
@@ -1472,8 +1215,8 @@ Custom:
         if ns_parser:
             volume_view.plot_obv(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                s_interval="1440min",
+                df_stock=self.data,
                 export=ns_parser.export,
             )
 
@@ -1518,7 +1261,7 @@ Custom:
         if ns_parser:
             custom_indicators_view.fibonacci_retracement(
                 s_ticker=self.ticker,
-                df_stock=self.stock,
+                df_stock=self.data,
                 period=ns_parser.period,
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,
@@ -1529,13 +1272,12 @@ Custom:
 def menu(
     ticker: str,
     start: datetime,
-    interval: str,
-    stock: pd.DataFrame,
+    data: pd.DataFrame,
     queue: List[str] = None,
 ):
     """Technical Analysis Menu"""
 
-    ta_controller = TechnicalAnalysisController(ticker, start, interval, stock, queue)
+    ta_controller = TechnicalAnalysisController(ticker, start, data, queue)
     an_input = "HELP_ME"
 
     while True:
@@ -1553,7 +1295,7 @@ def menu(
 
             # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input.split(" ")[0] in ta_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /stocks/ta/ $ {an_input}")
+                print(f"{get_flair()} /etf/ta/ $ {an_input}")
 
         # Get input command from user
         else:
@@ -1564,13 +1306,13 @@ def menu(
             # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and ta_controller.completer:
                 an_input = session.prompt(
-                    f"{get_flair()} /stocks/ta/ $ ",
+                    f"{get_flair()} /etf/ta/ $ ",
                     completer=ta_controller.completer,
                     search_ignore_case=True,
                 )
             # Get input from user without auto-completion
             else:
-                an_input = input(f"{get_flair()} /stocks/ta/ $ ")
+                an_input = input(f"{get_flair()} /etf/ta/ $ ")
 
         try:
             # Process the input command
@@ -1578,7 +1320,7 @@ def menu(
 
         except SystemExit:
             print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
+                f"\nThe command '{an_input}' doesn't exist on the /etf/ta menu.",
                 end="",
             )
             similar_cmd = difflib.get_close_matches(
@@ -1592,16 +1334,18 @@ def menu(
                     candidate_input = (
                         f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
                     )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        ta_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
                 else:
-                    an_input = similar_cmd[0]
+                    candidate_input = similar_cmd[0]
+
+                if candidate_input == an_input:
+                    an_input = ""
+                    ta_controller.queue = []
+                    print("\n")
+                    continue
 
                 print(f" Replacing by '{an_input}'.")
                 ta_controller.queue.insert(0, an_input)
             else:
                 print("\n")
+                an_input = ""
+                ta_controller.queue = []
