@@ -357,9 +357,8 @@ class OnchainController:
             required="-h" not in other_args,
         )
 
-        if other_args:
-            if not other_args[0][0] == "-":
-                other_args.insert(0, "--address")
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "--address")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
