@@ -16,7 +16,7 @@ from discordbot.stocks.options.vol import vol_command
 # pylint: disable=R0912
 
 
-async def opt_command(ctx, ticker="", expiration="", strike: float = "", put=""):
+async def opt_command(ctx, ticker="", expiration="", strike="", put=""):
     """Options Menu command"""
 
     if cfg.DEBUG:
@@ -94,6 +94,7 @@ async def opt_command(ctx, ticker="", expiration="", strike: float = "", put="")
         elif reaction.emoji == "7️⃣":
             if cfg.DEBUG:
                 print("Reaction selected: 7")
+                strike = float(strike)
             await hist_command(ctx, ticker, expiration, strike, put)
 
         for emoji in emoji_list:
