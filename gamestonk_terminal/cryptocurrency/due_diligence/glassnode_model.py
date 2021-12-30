@@ -195,7 +195,7 @@ def get_non_zero_addresses(
     }
 
     r = requests.get(url, params=parameters)
-    print(url, parameters)
+
     if r.status_code == 200:
         df = pd.DataFrame(json.loads(r.text))
         df["t"] = pd.to_datetime(df["t"], unit="s")
