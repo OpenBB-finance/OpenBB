@@ -400,9 +400,11 @@ class CreateExcelFA:
         self.ws2["A8"] = "Preferred Dividends"
         self.ws2["A9"] = "Free Cash Flows"
         r = 4
-        c1 = dcf_model.letters[self.len_data + 3]
-        c2 = dcf_model.letters[self.len_data + 4]
-        c3 = dcf_model.letters[self.len_data + 5]
+
+        # Switched len_data to len_pred
+        c1 = dcf_model.letters[self.len_pred + 3]
+        c2 = dcf_model.letters[self.len_pred + 4]
+        c3 = dcf_model.letters[self.len_pred + 5]
         for i in range(self.len_pred):
             j = 1 + i + self.len_data
             cols = dcf_model.letters
