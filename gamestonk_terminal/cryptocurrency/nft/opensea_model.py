@@ -2,6 +2,7 @@
 
 import requests
 import pandas as pd
+from datetime import datetime
 
 API_URL = "https://api.opensea.io/api/v1"
 
@@ -61,7 +62,9 @@ def get_collection_stats(slug: str) -> pd.DataFrame:
             round(float(stats["total_supply"]), 2),
             round(float(stats["total_sales"]), 2),
             round(float(stats["total_volume"]), 2),
-            collection["created_date"],
+            datetime.strptime(
+                collection["created_date"], "%Y-%m-%dT%H:%M:%S.%f"
+            ).strftime("%b %d, %Y"),
             "-" if not collection["external_url"] else collection["external_url"],
         ]
         df = pd.DataFrame({"Metric": metrics, "Value": values})

@@ -59,8 +59,6 @@ class NFTController:
         """Print help"""
 
         help_text = """
-Non Fungible Tokens Menu:
-
 nftcalendar.io:
     today       today's NFT drops
     upcoming    upcoming NFT drops
@@ -81,10 +79,8 @@ opensea.io
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
         # Empty command
         if not an_input:
@@ -177,6 +173,7 @@ opensea.io
             type=str,
             help="Opensea collection slug (e.g., mutant-ape-yacht-club)",
             dest="slug",
+            required=True,
         )
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "--slug")
