@@ -22,7 +22,7 @@ def view_bbands(
     length: int,
     n_std: float,
     mamode: str,
-    export: str,
+    export: str = "",
 ):
     """Show bollinger bands
 
@@ -91,7 +91,7 @@ def view_donchian(
     df_stock: pd.DataFrame,
     upper_length: int,
     lower_length: int,
-    export: str,
+    export: str = "",
 ):
     """Show donchian channels
 
@@ -162,7 +162,7 @@ def view_kc(
     scalar: float,
     mamode: str,
     offset: int,
-    export: str,
+    export: str = "",
 ):
     """View Keltner Channels Indicator
 
