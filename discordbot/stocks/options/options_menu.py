@@ -288,142 +288,142 @@ class OptionsCommands(discord.ext.commands.Cog):
         async with ctx.typing():
             await asyncio.sleep(0.2)
 
-        if TRADIER_TOKEN == "REPLACE_ME":
-            dates = yfinance_model.option_expirations(ticker)
-        else:
-            dates = tradier_model.option_expirations(ticker)
+            if TRADIER_TOKEN == "REPLACE_ME":
+                dates = yfinance_model.option_expirations(ticker)
+            else:
+                dates = tradier_model.option_expirations(ticker)
 
-        index_dates = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+            index_dates = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-        if cfg.DEBUG:
-            print(f"!stocks.opt {ticker} {expiration} {strike} {put}")
-
-        if not ticker:
-            current = 0
-            text = (
-                "```0️⃣ !stocks.opt.unu```\n"
-                "Provide a ticker and expiration date with this menu,\n"
-                "\ne.g.\n!stocks.opt TSLA 0-9\n!stocks.opt TSLA 2021-06-04"
-            )
-
-        if (ticker != "") and (expiration == ""):
-            current = 1
-            text = (
-                "```0️⃣ !stocks.opt.unu\n"
-                f"1️⃣ !stocks.opt.exp {ticker}\n"
-                f"2️⃣ !stocks.opt.iv {ticker}\n```"
-            )
-
-        if expiration:
-            current = 2
-            exp = int(expiration.replace("-", ""))
-            if exp > 9 and (expiration not in dates) and (exp not in index_dates):
-                call_arg = (strike, put)
-                func_cmd = opt_command
-                expiry = None
-                await expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg)
-                return
-            if exp in index_dates:
-                expiration = dates[int(expiration)]
-
-            hist = f"7️⃣ !stocks.opt.hist {ticker} (strike*) (c/p*) {expiration}\n\n* Required"
-            if strike and put:
-                hist = f"7️⃣ !stocks.opt.hist {ticker} {strike} {put} {expiration}"
-                current = 3
-
-            text = (
-                "```0️⃣ !stocks.opt.unu\n"
-                f"1️⃣ !stocks.opt.exp {ticker}\n"
-                f"2️⃣ !stocks.opt.iv {ticker}\n"
-                f"3️⃣ !stocks.opt.calls {ticker} {expiration} \n"
-                f"4️⃣ !stocks.opt.puts {ticker} {expiration} \n"
-                f"5️⃣ !stocks.opt.oi {ticker} {expiration} \n"
-                f"6️⃣ !stocks.opt.vol {ticker} {expiration} \n"
-                f"{hist}```"
-            )
-
-        if put == "p":
-            put = bool(True)
-        if put == "c":
-            put = bool(False)
-
-        title = "Stocks: Options Menu"
-        embed = discord.Embed(title=title, description=text, colour=cfg.COLOR)
-        embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
-        )
-        msg = await ctx.send(embed=embed, delete_after=60.0)
-
-        if current == 0:
-            emoji_list = ["0️⃣"]
-        if current == 1:
-            emoji_list = ["0️⃣", "1️⃣", "2️⃣"]
-        if current == 2:
-            emoji_list = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣"]
-        if current == 3:
-            emoji_list = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣"]
-
-        for emoji in emoji_list:
-            await msg.add_reaction(emoji)
-
-        def check(reaction, user):
-            return user == ctx.message.author and str(reaction.emoji) in emoji_list
-
-        try:
-            reaction, _ = await gst_bot.wait_for(
-                "reaction_add", timeout=cfg.MENU_TIMEOUT, check=check
-            )
-            if reaction.emoji == "0️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 0")
-                await unu_command(ctx)
-            elif reaction.emoji == "1️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 1")
-                await expirations_command(ctx, ticker)
-            elif reaction.emoji == "2️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 2")
-                await iv_command(ctx, ticker)
-            elif reaction.emoji == "3️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 3")
-                await calls_command(ctx, ticker, expiration)
-            elif reaction.emoji == "4️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 4")
-                await puts_command(ctx, ticker, expiration)
-            elif reaction.emoji == "5️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 5")
-                await oi_command(ctx, ticker, expiration)
-            elif reaction.emoji == "6️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 6")
-                await vol_command(ctx, ticker, expiration)
-            elif reaction.emoji == "7️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 7")
-                strike = float(strike)
-                await hist_command(ctx, ticker, expiration, strike, put)
-
-            for emoji in emoji_list:
-                await msg.remove_reaction(emoji, ctx.bot.user)
-
-        except asyncio.TimeoutError:
-            for emoji in emoji_list:
-                await msg.remove_reaction(emoji, ctx.bot.user)
             if cfg.DEBUG:
-                embed = discord.Embed(
-                    description="Error timeout - you snooze you lose! 😋",
-                    colour=cfg.COLOR,
-                    title="TIMEOUT Stocks: Options Menu",
-                ).set_author(
-                    name=cfg.AUTHOR_NAME,
-                    icon_url=cfg.AUTHOR_ICON_URL,
+                print(f"!stocks.opt {ticker} {expiration} {strike} {put}")
+
+            if not ticker:
+                current = 0
+                text = (
+                    "```0️⃣ !stocks.opt.unu```\n"
+                    "Provide a ticker and expiration date with this menu,\n"
+                    "\ne.g.\n!stocks.opt TSLA 0-9\n!stocks.opt TSLA 2021-06-04"
                 )
-                await ctx.send(embed=embed, delete_after=30.0)
+
+            if (ticker != "") and (expiration == ""):
+                current = 1
+                text = (
+                    "```0️⃣ !stocks.opt.unu\n"
+                    f"1️⃣ !stocks.opt.exp {ticker}\n"
+                    f"2️⃣ !stocks.opt.iv {ticker}\n```"
+                )
+
+            if expiration:
+                current = 2
+                exp = int(expiration.replace("-", ""))
+                if exp > 9 and (expiration not in dates) and (exp not in index_dates):
+                    call_arg = (strike, put)
+                    func_cmd = opt_command
+                    expiry = None
+                    await expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg)
+                    return
+                if exp in index_dates:
+                    expiration = dates[int(expiration)]
+
+                hist = f"7️⃣ !stocks.opt.hist {ticker} (strike*) (c/p*) {expiration}\n\n* Required"
+                if strike and put:
+                    hist = f"7️⃣ !stocks.opt.hist {ticker} {strike} {put} {expiration}"
+                    current = 3
+
+                text = (
+                    "```0️⃣ !stocks.opt.unu\n"
+                    f"1️⃣ !stocks.opt.exp {ticker}\n"
+                    f"2️⃣ !stocks.opt.iv {ticker}\n"
+                    f"3️⃣ !stocks.opt.calls {ticker} {expiration} \n"
+                    f"4️⃣ !stocks.opt.puts {ticker} {expiration} \n"
+                    f"5️⃣ !stocks.opt.oi {ticker} {expiration} \n"
+                    f"6️⃣ !stocks.opt.vol {ticker} {expiration} \n"
+                    f"{hist}```"
+                )
+
+            if put == "p":
+                put = bool(True)
+            if put == "c":
+                put = bool(False)
+
+            title = "Stocks: Options Menu"
+            embed = discord.Embed(title=title, description=text, colour=cfg.COLOR)
+            embed.set_author(
+                name=cfg.AUTHOR_NAME,
+                icon_url=cfg.AUTHOR_ICON_URL,
+            )
+            msg = await ctx.send(embed=embed, delete_after=60.0)
+
+            if current == 0:
+                emoji_list = ["0️⃣"]
+            if current == 1:
+                emoji_list = ["0️⃣", "1️⃣", "2️⃣"]
+            if current == 2:
+                emoji_list = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣"]
+            if current == 3:
+                emoji_list = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣"]
+
+            for emoji in emoji_list:
+                await msg.add_reaction(emoji)
+
+            def check(reaction, user):
+                return user == ctx.message.author and str(reaction.emoji) in emoji_list
+
+            try:
+                reaction, _ = await gst_bot.wait_for(
+                    "reaction_add", timeout=cfg.MENU_TIMEOUT, check=check
+                )
+                if reaction.emoji == "0️⃣":
+                    if cfg.DEBUG:
+                        print("Reaction selected: 0")
+                    await unu_command(ctx)
+                elif reaction.emoji == "1️⃣":
+                    if cfg.DEBUG:
+                        print("Reaction selected: 1")
+                    await expirations_command(ctx, ticker)
+                elif reaction.emoji == "2️⃣":
+                    if cfg.DEBUG:
+                        print("Reaction selected: 2")
+                    await iv_command(ctx, ticker)
+                elif reaction.emoji == "3️⃣":
+                    if cfg.DEBUG:
+                        print("Reaction selected: 3")
+                    await calls_command(ctx, ticker, expiration)
+                elif reaction.emoji == "4️⃣":
+                    if cfg.DEBUG:
+                        print("Reaction selected: 4")
+                    await puts_command(ctx, ticker, expiration)
+                elif reaction.emoji == "5️⃣":
+                    if cfg.DEBUG:
+                        print("Reaction selected: 5")
+                    await oi_command(ctx, ticker, expiration)
+                elif reaction.emoji == "6️⃣":
+                    if cfg.DEBUG:
+                        print("Reaction selected: 6")
+                    await vol_command(ctx, ticker, expiration)
+                elif reaction.emoji == "7️⃣":
+                    if cfg.DEBUG:
+                        print("Reaction selected: 7")
+                    strike = float(strike)
+                    await hist_command(ctx, ticker, expiration, strike, put)
+
+                for emoji in emoji_list:
+                    await msg.remove_reaction(emoji, ctx.bot.user)
+
+            except asyncio.TimeoutError:
+                for emoji in emoji_list:
+                    await msg.remove_reaction(emoji, ctx.bot.user)
+                if cfg.DEBUG:
+                    embed = discord.Embed(
+                        description="Error timeout - you snooze you lose! 😋",
+                        colour=cfg.COLOR,
+                        title="TIMEOUT Stocks: Options Menu",
+                    ).set_author(
+                        name=cfg.AUTHOR_NAME,
+                        icon_url=cfg.AUTHOR_ICON_URL,
+                    )
+                    await ctx.send(embed=embed, delete_after=30.0)
 
 
 def setup(bot: discord.ext.commands.Bot):
