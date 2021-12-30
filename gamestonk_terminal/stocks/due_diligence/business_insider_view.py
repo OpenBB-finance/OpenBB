@@ -24,7 +24,7 @@ def price_target_from_analysts(
     stock: DataFrame,
     num: int,
     raw: bool,
-    export: str,
+    export: str = "",
 ):
     """Display analysts' price targets for a given stock. [Source: Business Insider]
 

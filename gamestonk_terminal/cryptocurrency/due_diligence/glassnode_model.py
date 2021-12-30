@@ -161,6 +161,49 @@ GLASSNODE_SUPPORTED_ASSETS = [
 INTERVALS = ["1h", "24h", "10m", "1w", "1month"]
 
 
+def get_non_zero_addresses(
+    asset: str, interval: str, since: int, until: int
+) -> pd.DataFrame:
+    """Returns addresses with non-zero balance of a certain asset
+    [Source: https://glassnode.com]
+
+    Parameters
+    ----------
+    asset : str
+        Asset to search (e.g., BTC)
+    since : int
+        Initial date timestamp (e.g., 1_577_836_800)
+    until : int
+        End date timestamp (e.g., 1_609_459_200)
+    interval : str
+        Interval frequency (e.g., 24h)
+
+    Returns
+    -------
+    pd.DataFrame
+        addresses with non-zero balances
+    """
+
+    url = api_url + "addresses/non_zero_count"
+
+    parameters = {
+        "api_key": cfg.API_GLASSNODE_KEY,
+        "a": asset,
+        "i": interval,
+        "s": str(since),
+        "u": str(until),
+    }
+
+    r = requests.get(url, params=parameters)
+
+    if r.status_code == 200:
+        df = pd.DataFrame(json.loads(r.text))
+        df["t"] = pd.to_datetime(df["t"], unit="s")
+        df = df.set_index("t")
+        return df
+    return pd.DataFrame()
+
+
 def get_active_addresses(
     asset: str, interval: str, since: int, until: int
 ) -> pd.DataFrame:

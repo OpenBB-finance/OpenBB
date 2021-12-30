@@ -158,6 +158,8 @@ def display_correlation(
     mask = np.zeros((df_similar.shape[1], df_similar.shape[1]), dtype=bool)
     mask[np.triu_indices(len(mask))] = True
 
+    plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
     sns.heatmap(
         df_similar.corr(),
         cbar_kws={"ticks": [-1.0, -0.5, 0.0, 0.5, 1.0]},

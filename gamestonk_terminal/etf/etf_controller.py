@@ -4,27 +4,45 @@ __docformat__ = "numpy"
 import argparse
 import difflib
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List, Union
+import yfinance as yf
+import matplotlib.pyplot as plt
+import mplfinance as mpf
+from colorama import Style
 
 from prompt_toolkit.completion import NestedCompleter
-from thepassiveinvestor import create_ETF_report
 
+from thepassiveinvestor import create_ETF_report
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.etf import (
-    screener_view,
     stockanalysis_view,
-    wsj_view,
     financedatabase_view,
+    stockanalysis_model,
+    yfinance_view,
 )
+from gamestonk_terminal.common import newsapi_view
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_non_negative_float,
+    check_positive,
+    valid_date,
     get_flair,
     parse_known_args_and_warn,
     try_except,
     system_clear,
+    plot_autoscale,
+    export_data,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.stocks import stocks_helper
+from gamestonk_terminal.etf.technical_analysis import ta_controller
+from gamestonk_terminal.stocks.comparison_analysis import ca_controller
+from gamestonk_terminal.etf.screener import screener_controller
+from gamestonk_terminal.etf.discovery import disc_controller
+
+# pylint: disable=C0415,C0302
 
 
 class ETFController:
@@ -45,25 +63,28 @@ class ETFController:
     ]
 
     CHOICES_COMMANDS = [
-        "search",
+        "ln",
+        "ld",
+        "load",
         "overview",
-        "compare",
         "holdings",
-        "screener",
-        "gainers",
-        "decliners",
-        "active",
+        "news",
+        "candle",
         "pir",
-        "fds",
+        "weights",
+        "summary",
+        "compare",
     ]
 
-    CHOICES += CHOICES_COMMANDS
-    preset_options = [
-        file.strip(".ini")
-        for file in os.listdir(
-            os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
-        )
+    CHOICES_MENUS = [
+        "ta",
+        "pred",
+        "ca",
+        "scr",
+        "disc",
     ]
+
+    CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -74,7 +95,6 @@ class ETFController:
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
-            choices["screener"]["--preset"] = {c: None for c in self.preset_options}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         if queue:
@@ -82,25 +102,39 @@ class ETFController:
         else:
             self.queue = list()
 
+        self.etf_name = ""
+        self.etf_data = ""
+        self.etf_holdings: List = list()
+
     def print_help(self):
         """Print help"""
-        help_str = """
-StockAnalysis.com:
-    search        search ETFs matching name (i.e. BlackRock or Invesco)
-    overview      get overview of ETF symbol
-    holdings      get top holdings for ETF
-    compare       compare overview of multiple ETF
-    screener      screen etfs based on overview data
-Wall St. Journal:
-    gainers       show top gainers
-    decliners     show top decliners
-    active        show most active
-The Passive Investor:
-    pir           create ETF report of multiple tickers
-Finance Database:
-    fds           advanced ETF search based on category, name and/or description
-"""
-        print(help_str)
+        help_txt = f"""
+    ln            lookup by name [FinanceDatabase/StockAnalysis.com]
+    ld            lookup by description [FinanceDatabase]
+    load          load ETF data [Yfinance]
+{Style.DIM if not self.etf_name else ""}
+Symbol: {self.etf_name}{Style.DIM if len(self.etf_holdings)==0 else ""}
+Major holdings: {', '.join(self.etf_holdings)}
+
+>   ca            comparison analysis,          e.g.: get similar, historical, correlation, financials
+{Style.RESET_ALL}
+>   disc          discover ETFs,                e.g.: gainers/decliners/active
+>   scr           screener ETFs,                e.g.: overview/performance, using preset filters
+{Style.DIM if not self.etf_name else ""}
+    overview      get overview [StockAnalysis]
+    holdings      top company holdings [StockAnalysis]
+    weights       sector weights allocation [Yfinance]
+    summary       summary description of the ETF [Yfinance]
+    candle        view a candle chart for ETF
+    news          latest news of the company [News API]
+
+    pir           create (multiple) passive investor excel report(s) [PassiveInvestor]
+    compare       compare multiple different ETFs [StockAnalysis]
+
+>   ta            technical analysis,           e.g.: ema, macd, rsi, adx, bbands, obv
+>   pred          prediction techniques,        e.g.: regression, arima, rnn, lstm
+{Style.RESET_ALL}"""
+        print(help_txt)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -176,40 +210,181 @@ Finance Database:
 
     def call_reset(self, _):
         """Process reset command"""
+        if self.etf_name:
+            self.queue.insert(0, f"load {self.etf_name}")
         self.queue.insert(0, "etf")
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
 
     @try_except
-    def call_search(self, other_args: List[str]):
-        """Process search command"""
+    def call_ln(self, other_args: List[str]):
+        """Process ln command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="search",
-            description="Search all available etfs for matching input",
+            prog="ln",
+            description="Lookup by name [Source: FinanceDatabase/StockAnalysis.com]",
         )
         parser.add_argument(
-            "-e",
-            "--etf",
+            "-n",
+            "--name",
             type=str,
-            dest="search_str",
+            dest="name",
             nargs="+",
-            help="String to search for",
+            help="Name to look for ETFs",
             required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "-s",
+            "--source",
+            type=str,
+            default="fd",
+            dest="source",
+            help="Name to search for, using either FinanceDatabase (fd) or StockAnalysis (sa) as source.",
+            choices=["sa", "fd"],
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            type=check_positive,
+            dest="limit",
+            help="Limit of ETFs to display",
+            default=5,
         )
 
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-e")
+            other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            search_string = " ".join(ns_parser.search_str)
-            stockanalysis_view.view_search(
-                to_match=search_string, export=ns_parser.export
+            name_to_search = " ".join(ns_parser.name)
+            if ns_parser.source == "fd":
+                financedatabase_view.display_etf_by_name(
+                    name=name_to_search,
+                    limit=ns_parser.limit,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "sa":
+                stockanalysis_view.display_etf_by_name(
+                    name=name_to_search,
+                    limit=ns_parser.limit,
+                    export=ns_parser.export,
+                )
+            else:
+                print("Wrong source choice!\n")
+
+    @try_except
+    def call_ld(self, other_args: List[str]):
+        """Process ld command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ld",
+            description="Lookup by description [Source: FinanceDatabase/StockAnalysis.com]",
+        )
+        parser.add_argument(
+            "-d",
+            "--description",
+            type=str,
+            dest="description",
+            nargs="+",
+            help="Name to look for ETFs",
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            type=check_positive,
+            dest="limit",
+            help="Limit of ETFs to display",
+            default=5,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-d")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            description_to_search = " ".join(ns_parser.description)
+            financedatabase_view.display_etf_by_description(
+                description=description_to_search,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
             )
+
+    @try_except
+    def call_load(self, other_args: List[str]):
+        """Process load command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load ETF ticker to perform analysis on.",
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="ticker",
+            required="-h" not in other_args,
+            help="ETF ticker",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the ETF",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            dest="end",
+            help="The ending date (format YYYY-MM-DD) of the ETF",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            type=check_positive,
+            default=5,
+            dest="limit",
+            help="Limit of holdings to display",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            df_etf_candidate = yf.download(
+                ns_parser.ticker,
+                start=ns_parser.start,
+                end=ns_parser.end,
+                progress=False,
+            )
+            if df_etf_candidate.empty:
+                print("ETF ticker provided does not exist!\n")
+                return
+
+            df_etf_candidate.index.name = "date"
+
+            self.etf_name = ns_parser.ticker.upper()
+            self.etf_data = df_etf_candidate
+
+            holdings = stockanalysis_model.get_etf_holdings(self.etf_name)
+            if holdings.empty:
+                print("No company holdings found!\n")
+            else:
+                self.etf_holdings = holdings.index[: ns_parser.limit].tolist()
+                print(f"Top company holdings found: {', '.join(self.etf_holdings)}\n")
+
+            print("")
 
     @try_except
     def call_overview(self, other_args: List[str]):
@@ -220,25 +395,13 @@ Finance Database:
             prog="overview",
             description="Get overview data for selected etf",
         )
-        parser.add_argument(
-            "-e",
-            "--etf",
-            type=str,
-            dest="name",
-            help="Symbol to look for",
-            required="-h" not in other_args,
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-e")
-
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
         if ns_parser:
             stockanalysis_view.view_overview(
-                symbol=ns_parser.name, export=ns_parser.export
+                symbol=self.etf_name, export=ns_parser.export
             )
 
     @try_except
@@ -248,15 +411,7 @@ Finance Database:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="holdings",
-            description="Look at ETF holdings",
-        )
-        parser.add_argument(
-            "-e",
-            "--etf",
-            type=str,
-            dest="name",
-            help="ETF to get holdings for",
-            required="-h" not in other_args,
+            description="Look at ETF company holdings",
         )
         parser.add_argument(
             "-l",
@@ -264,20 +419,318 @@ Finance Database:
             type=int,
             dest="limit",
             help="Number of holdings to get",
-            default=20,
+            default=10,
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-e")
+            other_args.insert(0, "-l")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             stockanalysis_view.view_holdings(
-                symbol=ns_parser.name,
+                symbol=self.etf_name,
                 num_to_show=ns_parser.limit,
                 export=ns_parser.export,
             )
+
+    @try_except
+    def call_news(self, other_args: List[str]):
+        """Process news command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="news",
+            description="""
+                Prints latest news about ETF, including date, title and web link. [Source: News API]
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=5,
+            help="Limit of latest news being printed.",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            action="store",
+            dest="n_start_date",
+            type=valid_date,
+            default=datetime.now() - timedelta(days=7),
+            help="The starting date (format YYYY-MM-DD) to search articles from",
+        )
+        parser.add_argument(
+            "-o",
+            "--oldest",
+            action="store_false",
+            dest="n_oldest",
+            default=True,
+            help="Show oldest articles first",
+        )
+        parser.add_argument(
+            "-s",
+            "--sources",
+            default=[],
+            nargs="+",
+            help="Show news only from the sources specified (e.g bbc yahoo.com)",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if self.etf_name:
+                sources = ns_parser.sources
+                for idx, source in enumerate(sources):
+                    if source.find(".") == -1:
+                        sources[idx] += ".com"
+
+                d_stock = yf.Ticker(self.etf_name).info
+
+                newsapi_view.news(
+                    term=d_stock["shortName"].replace(" ", "+")
+                    if "shortName" in d_stock
+                    else self.etf_name,
+                    num=ns_parser.limit,
+                    s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
+                    show_newest=ns_parser.n_oldest,
+                    sources=",".join(sources),
+                )
+            else:
+                print("Use 'load <ticker>' prior to this command!", "\n")
+
+    @try_except
+    def call_candle(self, other_args: List[str]):
+        """Process candle command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="candle",
+            description="Shows historic data for an ETF",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            if self.etf_name:
+                data = stocks_helper.process_candle(self.etf_data)
+                df_etf = stocks_helper.find_trendline(data, "OC_High", "high")
+                df_etf = stocks_helper.find_trendline(data, "OC_Low", "low")
+
+                mc = mpf.make_marketcolors(
+                    up="green",
+                    down="red",
+                    edge="black",
+                    wick="black",
+                    volume="in",
+                    ohlc="i",
+                )
+
+                s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
+
+                ap0 = []
+
+                if "OC_High_trend" in df_etf.columns:
+                    ap0.append(
+                        mpf.make_addplot(df_etf["OC_High_trend"], color="g"),
+                    )
+
+                if "OC_Low_trend" in df_etf.columns:
+                    ap0.append(
+                        mpf.make_addplot(df_etf["OC_Low_trend"], color="b"),
+                    )
+
+                if gtff.USE_ION:
+                    plt.ion()
+
+                mpf.plot(
+                    df_etf,
+                    type="candle",
+                    mav=(20, 50),
+                    volume=True,
+                    title=f"\nETF: {self.etf_name}",
+                    addplot=ap0,
+                    xrotation=10,
+                    style=s,
+                    figratio=(10, 7),
+                    figscale=1.10,
+                    figsize=(plot_autoscale()),
+                    update_width_config=dict(
+                        candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
+                    ),
+                )
+                print("")
+
+                export_data(
+                    ns_parser.export,
+                    os.path.join(os.path.dirname(os.path.abspath(__file__)), "candle"),
+                    f"{self.etf_name}",
+                    self.etf_data,
+                )
+
+            else:
+                print("No ticker loaded. First use `load {ticker}`\n")
+
+    @try_except
+    def call_pir(self, other_args):
+        """Process pir command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="pir",
+            description="Create passive investor ETF excel report",
+        )
+        parser.add_argument(
+            "-e",
+            "--etfs",
+            type=str,
+            dest="names",
+            help="Symbols to create a report for (e.g. ARKW,ARKQ)",
+            default=self.etf_name,
+        )
+        parser.add_argument(
+            "--filename",
+            default=f"ETF_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+            dest="filename",
+            help="Filename of the excel ETF report",
+        )
+        parser.add_argument(
+            "--folder",
+            default=os.path.dirname(os.path.abspath(__file__)).replace(
+                "gamestonk_terminal", "exports"
+            ),
+            dest="folder",
+            help="Folder where the excel ETF report will be saved",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-e")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if self.etf_name:
+                create_ETF_report(
+                    ns_parser.names if ns_parser.names else [self.etf_name],
+                    filename=ns_parser.filename,
+                    folder=ns_parser.folder,
+                )
+                print(
+                    f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
+                )
+
+    @try_except
+    def call_weights(self, other_args: List[str]):
+        """Process weights command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="weights",
+            description="Look at ETF sector holdings",
+        )
+        parser.add_argument(
+            "-m",
+            "--min",
+            type=check_non_negative_float,
+            dest="min",
+            help="Minimum positive float to display sector",
+            default=5,
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            dest="raw",
+            help="Only output raw data",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            yfinance_view.display_etf_weightings(
+                name=self.etf_name,
+                raw=ns_parser.raw,
+                min_pct_to_display=ns_parser.min,
+                export=ns_parser.export,
+            )
+
+    @try_except
+    def call_summary(self, other_args: List[str]):
+        """Process summary command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="summary",
+            description="Print ETF description summary",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+        )
+        if ns_parser:
+            yfinance_view.display_etf_description(
+                name=self.etf_name,
+            )
+
+    @try_except
+    def call_ta(self, _):
+        """Process ta command"""
+        if self.etf_name:
+            self.queue = ta_controller.menu(
+                self.etf_name, self.etf_data.index[0], self.etf_data, self.queue
+            )
+        else:
+            print("Use 'load <ticker>' prior to this command!", "\n")
+
+    @try_except
+    def call_pred(self, _):
+        """Process pred command"""
+        if gtff.ENABLE_PREDICT:
+            if self.etf_name:
+                try:
+                    from gamestonk_terminal.stocks.prediction_techniques import (
+                        pred_controller,
+                    )
+
+                    self.queue = pred_controller.menu(
+                        self.etf_name,
+                        self.etf_data.index[0],
+                        "1440min",
+                        self.etf_data,
+                        self.queue,
+                    )
+                except ModuleNotFoundError as e:
+                    print(
+                        "One of the optional packages seems to be missing: ",
+                        e,
+                        "\n",
+                    )
+            else:
+                print("Use 'load <ticker>' prior to this command!", "\n")
+        else:
+            print(
+                "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
+                "\n",
+            )
+
+    @try_except
+    def call_ca(self, _):
+        """Process ca command"""
+        if len(self.etf_holdings) > 0:
+            self.queue = ca_controller.menu(
+                self.etf_holdings, self.queue, from_submenu=True
+            )
+
+    @try_except
+    def call_scr(self, _):
+        """Process scr command"""
+        self.queue = screener_controller.menu(self.queue)
+
+    @try_except
+    def call_disc(self, _):
+        """Process disc command"""
+        self.queue = disc_controller.menu(self.queue)
 
     @try_except
     def call_compare(self, other_args):
@@ -286,7 +739,7 @@ Finance Database:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="compare",
-            description="Compare selected ETFs",
+            description="Compare selected ETFs [Source: StockAnalysis]",
         )
         parser.add_argument(
             "-e",
@@ -306,204 +759,6 @@ Finance Database:
         if ns_parser:
             etf_list = ns_parser.names.upper().split(",")
             stockanalysis_view.view_comparisons(etf_list, export=ns_parser.export)
-
-    @try_except
-    def call_screener(self, other_args):
-        """Process screener command"""
-        # TODO: Change presets to use view/set like in stocks/options
-
-        parser = argparse.ArgumentParser(
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="screener",
-            add_help=False,
-            description="Screens ETFS from a personal scraping github repository.  Data scraped from stockanalysis.com",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            type=int,
-            help="Number of etfs to show",
-            dest="limit",
-            default=20,
-        )
-
-        parser.add_argument(
-            "--preset",
-            choices=self.preset_options,
-            default="etf_config",
-            help="Preset to use",
-            dest="preset",
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-
-            screener_view.view_screener(
-                num_to_show=ns_parser.limit,
-                preset=ns_parser.preset,
-                export=ns_parser.export,
-            )
-
-    @try_except
-    def call_gainers(self, other_args):
-        """Process gainers command"""
-        parser = argparse.ArgumentParser(
-            prog="gainers",
-            description="Displays top ETF/Mutual fund gainers from wsj.com/market-data",
-            add_help=False,
-        )
-        parser.add_argument(
-            "-l", "--limit", help="Number to show", type=int, default=25, dest="limit"
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            wsj_view.show_top_mover("gainers", ns_parser.limit, ns_parser.export)
-
-    def call_decliners(self, other_args):
-        """Process decliners command"""
-        parser = argparse.ArgumentParser(
-            prog="decliners",
-            description="Displays top ETF/Mutual fund decliners from wsj.com/market-data",
-            add_help=False,
-        )
-        parser.add_argument(
-            "-l", "--limit", help="Number to show", type=int, default=25, dest="limit"
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            wsj_view.show_top_mover("decliners", ns_parser.limit, ns_parser.export)
-
-    def call_active(self, other_args):
-        """Process gainers command"""
-        parser = argparse.ArgumentParser(
-            prog="active",
-            description="Displays most active ETF/Mutual funds from wsj.com/market-data",
-            add_help=False,
-        )
-        parser.add_argument(
-            "-l", "--limit", help="Number to show", type=int, default=25, dest="limit"
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            wsj_view.show_top_mover("active", ns_parser.limit, ns_parser.export)
-
-    @try_except
-    def call_pir(self, other_args):
-        """Process pir command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="pir",
-            description="Create a ETF Report of the selected ETFs",
-        )
-        parser.add_argument(
-            "-e",
-            "--etfs",
-            type=str,
-            dest="names",
-            help="Symbols to create a report for",
-            required="-h" not in other_args,
-        )
-        parser.add_argument(
-            "--filename",
-            default=f"ETF_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
-            dest="filename",
-            help="Filename of the ETF report",
-        )
-        parser.add_argument(
-            "--folder",
-            default=os.path.dirname(os.path.abspath(__file__)).replace(
-                "gamestonk_terminal", "exports"
-            ),
-            dest="folder",
-            help="Folder where the ETF report will be saved",
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-e")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            etf_list = ns_parser.names.upper().split(",")
-            create_ETF_report(
-                etf_list, filename=ns_parser.filename, folder=ns_parser.folder
-            )
-            print(
-                f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
-            )
-
-    @try_except
-    def call_fds(self, other_args):
-        """Process fds command"""
-        parser = argparse.ArgumentParser(
-            description="Display a selection of ETFs based on category, name and/or description filtered by total "
-            "assets. Returns the top ETFs when no argument is given. [Source: Finance Database]",
-            add_help=False,
-        )
-        parser.add_argument(
-            "-c",
-            "--category",
-            default=None,
-            nargs="+",
-            dest="category",
-            help="Specify the ETF selection based on a category",
-        )
-        parser.add_argument(
-            "-n",
-            "--name",
-            default=None,
-            nargs="+",
-            dest="name",
-            help="Specify the ETF selection based on the name",
-        )
-        parser.add_argument(
-            "-d",
-            "--description",
-            default=None,
-            nargs="+",
-            dest="description",
-            help="Specify the ETF selection based on the description (not shown in table)",
-        )
-        parser.add_argument(
-            "-ie",
-            "--include_exchanges",
-            action="store_false",
-            help="When used, data from different exchanges is also included. This leads to a much larger "
-            "pool of data due to the same ETF being listed on multiple exchanges",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            default=10,
-            type=int,
-            dest="limit",
-            help="Enter the number of ETFs you wish to see in the Tabulate window",
-        )
-        parser.add_argument(
-            "-o",
-            "--options",
-            action="store_true",
-            help="Obtain the available categories",
-        )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            financedatabase_view.show_etfs(
-                category=ns_parser.category,
-                name=ns_parser.name,
-                description=ns_parser.description,
-                include_exchanges=ns_parser.include_exchanges,
-                amount=ns_parser.limit,
-                options=ns_parser.options,
-            )
 
 
 def menu(queue: List[str] = None):

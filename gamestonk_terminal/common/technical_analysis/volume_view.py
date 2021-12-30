@@ -117,7 +117,7 @@ def plot_adosc(
     fast: int,
     slow: int,
     use_open: bool,
-    export: str,
+    export: str = "",
 ):
     """Display AD Osc Indicator
 
