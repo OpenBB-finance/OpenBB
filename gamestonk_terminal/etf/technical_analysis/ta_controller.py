@@ -83,13 +83,13 @@ class TechnicalAnalysisController:
         self,
         ticker: str,
         start: datetime,
-        etf: pd.DataFrame,
+        data: pd.DataFrame,
         queue: List[str] = None,
     ):
         """Constructor"""
         self.ticker = ticker
         self.start = start
-        self.etf = etf
+        self.data = data
 
         self.ta_parser = argparse.ArgumentParser(add_help=False, prog="ta")
         self.ta_parser.add_argument(
@@ -275,7 +275,7 @@ Custom:
                 ma_type="EMA",
                 s_ticker=self.ticker,
                 s_interval="1440min",
-                df_stock=self.etf,
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -328,7 +328,7 @@ Custom:
                 ma_type="SMA",
                 s_ticker=self.ticker,
                 s_interval="1440min",
-                df_stock=self.etf,
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -378,7 +378,7 @@ Custom:
                 ma_type="WMA",
                 s_ticker=self.ticker,
                 s_interval="1440min",
-                df_stock=self.etf,
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -428,7 +428,7 @@ Custom:
                 ma_type="HMA",
                 s_ticker=self.ticker,
                 s_interval="1440min",
-                df_stock=self.etf,
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -481,7 +481,7 @@ Custom:
                 ma_type="ZLMA",
                 s_ticker=self.ticker,
                 s_interval="1440min",
-                df_stock=self.etf,
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -530,7 +530,7 @@ Custom:
             momentum_view.plot_cci(
                 s_ticker=self.ticker,
                 s_interval="1440min",
-                df_stock=self.etf,
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
@@ -590,7 +590,7 @@ Custom:
             momentum_view.view_macd(
                 s_ticker=self.ticker,
                 s_interval="1440min",
-                df_stock=self.etf,
+                df_stock=self.data,
                 n_fast=ns_parser.n_fast,
                 n_slow=ns_parser.n_slow,
                 n_signal=ns_parser.n_signal,
@@ -651,7 +651,7 @@ Custom:
             momentum_view.view_rsi(
                 s_ticker=self.ticker,
                 s_interval="1440min",
-                df_stock=self.etf,
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
@@ -709,7 +709,7 @@ Custom:
             momentum_view.view_stoch(
                 s_ticker=self.ticker,
                 s_interval="1440min",
-                df_stock=self.etf,
+                df_stock=self.data,
                 fastkperiod=ns_parser.n_fastkperiod,
                 slowdperiod=ns_parser.n_slowdperiod,
                 slowkperiod=ns_parser.n_slowkperiod,
@@ -752,7 +752,7 @@ Custom:
             momentum_view.view_fisher(
                 s_ticker=self.ticker,
                 s_interval="1440min",
-                df_stock=self.etf,
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
@@ -793,7 +793,7 @@ Custom:
             momentum_view.view_cg(
                 s_ticker=self.ticker,
                 s_interval="1440min",
-                df_stock=self.etf,
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
@@ -849,7 +849,7 @@ Custom:
             trend_indicators_view.plot_adx(
                 s_ticker=self.ticker,
                 s_interval="1440min",
-                df_stock=self.etf,
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
@@ -906,7 +906,7 @@ Custom:
             trend_indicators_view.plot_aroon(
                 s_ticker=self.ticker,
                 s_interval="1440min",
-                df_stock=self.etf,
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
@@ -970,7 +970,7 @@ Custom:
             volatility_view.view_bbands(
                 ticker=self.ticker,
                 s_interval="1440min",
-                df_stock=self.etf,
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 n_std=ns_parser.n_std,
                 mamode=ns_parser.s_mamode,
@@ -1019,7 +1019,7 @@ Custom:
             volatility_view.view_donchian(
                 ticker=self.ticker,
                 s_interval="1440min",
-                df_stock=self.etf,
+                df_stock=self.data,
                 upper_length=ns_parser.n_length_upper,
                 lower_length=ns_parser.n_length_lower,
                 export=ns_parser.export,
@@ -1087,7 +1087,7 @@ Custom:
             volatility_view.view_kc(
                 s_ticker=self.ticker,
                 s_interval="1440min",
-                df_stock=self.etf,
+                df_stock=self.data,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 mamode=ns_parser.s_mamode,
@@ -1130,7 +1130,7 @@ Custom:
             volume_view.plot_ad(
                 s_ticker=self.ticker,
                 s_interval="1440min",
-                df_stock=self.etf,
+                df_stock=self.data,
                 use_open=ns_parser.b_use_open,
                 export=ns_parser.export,
             )
@@ -1185,7 +1185,7 @@ Custom:
             volume_view.plot_adosc(
                 s_ticker=self.ticker,
                 s_interval="1440min",
-                df_stock=self.etf,
+                df_stock=self.data,
                 use_open=ns_parser.b_use_open,
                 fast=ns_parser.n_length_fast,
                 slow=ns_parser.n_length_slow,
@@ -1216,7 +1216,7 @@ Custom:
             volume_view.plot_obv(
                 s_ticker=self.ticker,
                 s_interval="1440min",
-                df_stock=self.etf,
+                df_stock=self.data,
                 export=ns_parser.export,
             )
 
@@ -1261,7 +1261,7 @@ Custom:
         if ns_parser:
             custom_indicators_view.fibonacci_retracement(
                 s_ticker=self.ticker,
-                df_stock=self.etf,
+                df_stock=self.data,
                 period=ns_parser.period,
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,
@@ -1272,12 +1272,12 @@ Custom:
 def menu(
     ticker: str,
     start: datetime,
-    etf: pd.DataFrame,
+    data: pd.DataFrame,
     queue: List[str] = None,
 ):
     """Technical Analysis Menu"""
 
-    ta_controller = TechnicalAnalysisController(ticker, start, etf, queue)
+    ta_controller = TechnicalAnalysisController(ticker, start, data, queue)
     an_input = "HELP_ME"
 
     while True:

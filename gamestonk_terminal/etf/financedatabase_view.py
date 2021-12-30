@@ -12,7 +12,7 @@ from gamestonk_terminal.helper_funcs import export_data
 def display_etf_by_name(
     name: str,
     limit: int,
-    export: str,
+    export: str = "",
 ):
     """Display a selection of ETFs based on name filtered by total assets. [Source: Finance Database]
 
@@ -56,7 +56,7 @@ def display_etf_by_name(
 def display_etf_by_description(
     description: str,
     limit: int,
-    export: str,
+    export: str = "",
 ):
     """Display a selection of ETFs based on description filtered by total assets. [Source: Finance Database]
 
@@ -100,7 +100,7 @@ def display_etf_by_description(
 def display_etf_by_category(
     category: str,
     limit: int,
-    export: str,
+    export: str = "",
 ):
     """Display a selection of ETFs based on a category filtered by total assets. [Source: Finance Database]
 
