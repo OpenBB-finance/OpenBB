@@ -40,6 +40,7 @@ from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.etf.technical_analysis import ta_controller
 from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 from gamestonk_terminal.etf.screener import screener_controller
+from gamestonk_terminal.etf.discovery import disc_controller
 
 # pylint: disable=C0415,C0302
 
@@ -80,6 +81,7 @@ class ETFController:
         "pred",
         "ca",
         "scr",
+        "disc",
     ]
 
     CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
@@ -110,12 +112,15 @@ class ETFController:
     ln            lookup by name [FinanceDatabase/StockAnalysis.com]
     ld            lookup by description [FinanceDatabase]
     load          load ETF data [Yfinance]
-
+{Style.DIM if not self.etf_name else ""}
 Symbol: {self.etf_name}{Style.DIM if len(self.etf_holdings)==0 else ""}
 Major holdings: {', '.join(self.etf_holdings)}
 
 >   ca            comparison analysis,          e.g.: get similar, historical, correlation, financials
-{Style.RESET_ALL}{Style.DIM if not self.etf_name else ""}
+{Style.RESET_ALL}
+>   disc          discover ETFs,                e.g.: gainers/decliners/active
+>   scr           screener ETFs,                e.g.: overview/performance, using preset filters
+{Style.DIM if not self.etf_name else ""}
     overview      get overview [StockAnalysis]
     holdings      top company holdings [StockAnalysis]
     weights       sector weights allocation [Yfinance]
@@ -126,7 +131,6 @@ Major holdings: {', '.join(self.etf_holdings)}
     pir           create (multiple) passive investor excel report(s) [PassiveInvestor]
     compare       compare multiple different ETFs [StockAnalysis]
 
->   scr           screener ETFs,                e.g.: overview/performance, using preset filters
 >   ta            technical analysis,           e.g.: ema, macd, rsi, adx, bbands, obv
 >   pred          prediction techniques,        e.g.: regression, arima, rnn, lstm
 {Style.RESET_ALL}"""
@@ -722,6 +726,11 @@ Major holdings: {', '.join(self.etf_holdings)}
     def call_scr(self, _):
         """Process scr command"""
         self.queue = screener_controller.menu(self.queue)
+
+    @try_except
+    def call_disc(self, _):
+        """Process disc command"""
+        self.queue = disc_controller.menu(self.queue)
 
     @try_except
     def call_compare(self, other_args):

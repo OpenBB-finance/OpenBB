@@ -21,7 +21,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.etf.screener import screener_view, wsj_view
+from gamestonk_terminal.etf.screener import screener_view
 from gamestonk_terminal.etf import financedatabase_view, financedatabase_model
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
@@ -49,9 +49,6 @@ class ScreenerController:
         "set",
         "screen",
         "sbc",
-        "gainers",
-        "decliners",
-        "active",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -117,10 +114,6 @@ PRESET: {self.preset}
     screen      screen ETF using preset selected [StockAnalysis]
 
     sbc         screen by category [FinanceDatabase]
-
-    gainers     show top gainers [WSJ]
-    decliners   show top decliners [WSJ]
-    active      show most active [WSJ]
 """
         print(help_str)
 
@@ -350,76 +343,6 @@ PRESET: {self.preset}
                 ascend=ns_parser.ascend,
                 export=ns_parser.export,
             )
-
-    @try_except
-    def call_gainers(self, other_args):
-        """Process gainers command"""
-        parser = argparse.ArgumentParser(
-            prog="gainers",
-            description="Displays top ETF/Mutual fund gainers from wsj.com/market-data",
-            add_help=False,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            help="Limit of ETFs to display",
-            type=check_positive,
-            default=10,
-            dest="limit",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            wsj_view.show_top_mover("gainers", ns_parser.limit, ns_parser.export)
-
-    def call_decliners(self, other_args):
-        """Process decliners command"""
-        parser = argparse.ArgumentParser(
-            prog="decliners",
-            description="Displays top ETF/Mutual fund decliners from wsj.com/market-data",
-            add_help=False,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            help="Limit of ETFs to display",
-            type=check_positive,
-            default=10,
-            dest="limit",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            wsj_view.show_top_mover("decliners", ns_parser.limit, ns_parser.export)
-
-    def call_active(self, other_args):
-        """Process gainers command"""
-        parser = argparse.ArgumentParser(
-            prog="active",
-            description="Displays most active ETF/Mutual funds from wsj.com/market-data",
-            add_help=False,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            help="Limit of ETFs to display",
-            type=check_positive,
-            default=10,
-            dest="limit",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            wsj_view.show_top_mover("active", ns_parser.limit, ns_parser.export)
 
     @try_except
     def call_sbc(self, other_args: List[str]):

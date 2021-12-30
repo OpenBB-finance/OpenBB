@@ -5,7 +5,7 @@ import os
 
 from tabulate import tabulate
 
-from gamestonk_terminal.etf.screener import wsj_model
+from gamestonk_terminal.etf.discovery import wsj_model
 from gamestonk_terminal.helper_funcs import (
     export_data,
 )
