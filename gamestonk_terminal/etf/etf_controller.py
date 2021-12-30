@@ -123,8 +123,8 @@ Major holdings: {', '.join(self.etf_holdings)}
     candle        view a candle chart for ETF
     news          latest news of the company [News API]
 
-    pir           create passive investor excel report (for one or more ETFs)
-    compare       compare multiple different ETFs
+    pir           create (multiple) passive investor excel report(s) [PassiveInvestor]
+    compare       compare multiple different ETFs [StockAnalysis]
 
 >   scr           screener ETFs,                e.g.: overview/performance, using preset filters
 >   ta            technical analysis,           e.g.: ema, macd, rsi, adx, bbands, obv
