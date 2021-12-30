@@ -66,11 +66,11 @@ class ETFController:
         "ld",
         "load",
         "overview",
-        "chold",
+        "holdings",
         "news",
         "candle",
         "pir",
-        "shold",
+        "weights",
         "summary",
         "compare",
     ]
@@ -117,8 +117,8 @@ Major holdings: {', '.join(self.etf_holdings)}
 >   ca            comparison analysis,          e.g.: get similar, historical, correlation, financials
 {Style.RESET_ALL}{Style.DIM if not self.etf_name else ""}
     overview      get overview [StockAnalysis]
-    chold         top company holdings [StockAnalysis]
-    shold         sector holdings allocation [Yfinance]
+    holdings      top company holdings [StockAnalysis]
+    weights       sector weights allocation [Yfinance]
     summary       summary description of the ETF [Yfinance]
 
     candle        view a candle chart for ETF
@@ -401,12 +401,12 @@ Major holdings: {', '.join(self.etf_holdings)}
             )
 
     @try_except
-    def call_chold(self, other_args: List[str]):
-        """Process chold command"""
+    def call_holdings(self, other_args: List[str]):
+        """Process holdings command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="chold",
+            prog="holdings",
             description="Look at ETF company holdings",
         )
         parser.add_argument(
@@ -615,12 +615,12 @@ Major holdings: {', '.join(self.etf_holdings)}
                 )
 
     @try_except
-    def call_shold(self, other_args: List[str]):
-        """Process shold command"""
+    def call_weights(self, other_args: List[str]):
+        """Process weights command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="shold",
+            prog="weights",
             description="Look at ETF sector holdings",
         )
         parser.add_argument(

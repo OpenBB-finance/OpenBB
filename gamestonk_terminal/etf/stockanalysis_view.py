@@ -58,7 +58,7 @@ def view_holdings(symbol: str, num_to_show: int, export: str):
     else:
         print(data.head(num_to_show).to_string(), "\n")
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "chold", data)
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "holdings", data)
 
 
 def view_comparisons(symbols: List[str], export: str):

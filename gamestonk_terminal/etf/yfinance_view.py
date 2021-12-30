@@ -79,7 +79,7 @@ def display_etf_weightings(
 
         print("")
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "shold", holdings)
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "weights", holdings)
 
 
 def display_etf_description(
