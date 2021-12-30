@@ -28,7 +28,7 @@ commonmark==0.9.1; python_full_version >= "3.6.2" and python_full_version < "4.0
 convertdate==2.3.2; python_version >= "3.6"
 cryptography==36.0.1; python_version >= "3.6"
 cssselect==1.1.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
-cvxpy==1.1.18; python_full_version >= "3.6.1" and python_full_version < "4.0.0" and python_version >= "3.6"
+cvxpy==1.1.17; python_full_version >= "3.6.1" and python_full_version < "4.0.0" and python_version >= "3.6"
 cycler==0.11.0; python_version >= "3.7"
 cython==0.29.26; python_version >= "3.6" and python_full_version < "3.0.0" and sys_platform == "darwin" or python_full_version >= "3.3.0" and sys_platform == "darwin" and python_version >= "3.6"
 dateparser==1.1.0; python_version >= "3.5"
