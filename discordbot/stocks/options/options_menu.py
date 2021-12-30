@@ -405,7 +405,7 @@ class OptionsCommands(discord.ext.commands.Cog):
             elif reaction.emoji == "7️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 7")
-                    strike = float(strike)
+                strike = float(strike)
                 await hist_command(ctx, ticker, expiration, strike, put)
 
             for emoji in emoji_list:
