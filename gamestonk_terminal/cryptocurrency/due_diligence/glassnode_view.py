@@ -7,6 +7,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
     get_active_addresses,
     get_exchange_balances,
     get_exchange_net_position_change,
+    get_non_zero_addresses,
 )
 from gamestonk_terminal import feature_flags as gtff
 
@@ -61,6 +62,60 @@ def display_active_addresses(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "active",
+        df_addresses,
+    )
+
+
+def display_non_zero_addresses(
+    asset: str, since: int, until: int, interval: str, export: str = ""
+) -> None:
+    """Display addresses with non-zero balance of a certain asset
+    [Source: https://glassnode.org]
+
+    Parameters
+    ----------
+    asset : str
+        Asset to search (e.g., BTC)
+    since : int
+        Initial date timestamp (e.g., 1_577_836_800)
+    until : int
+        End date timestamp (e.g., 1_609_459_200)
+    interval : str
+        Interval frequency (e.g., 24h)
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+
+    df_addresses = get_non_zero_addresses(asset, interval, since, until)
+
+    if df_addresses.empty:
+        print("Error in glassnode request")
+    else:
+        _, main_ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+
+        main_ax.plot(df_addresses.index, df_addresses["v"] / 1_000, linewidth=1.5)
+        main_ax.grid(True)
+
+        main_ax.set_title(f"{asset} Addresses with non-zero balances")
+        main_ax.set_ylabel("Number of Addresses")
+        main_ax.set_xlabel("Date")
+        main_ax.set_xlim(df_addresses.index[0], df_addresses.index[-1])
+
+        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
+        plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+        plt.gcf().autofmt_xdate()
+
+        if gtff.USE_ION:
+            plt.ion()
+
+        plt.show()
+
+    print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "nonzero",
         df_addresses,
     )
 

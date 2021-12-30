@@ -110,7 +110,7 @@ def view_historical_greeks(
     put: bool,
     raw: bool,
     n_show: int,
-    export: str,
+    export: str = "",
 ):
     """Plots historical greeks for a given option
 

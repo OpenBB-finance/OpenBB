@@ -129,7 +129,7 @@ class ScreenerController:
     view          view available presets (defaults and customs)
     set           set one of the available presets
 
-    PRESET: {self.preset}
+PRESET: {self.preset}
 
     historical     view historical price
     overview       overview (e.g. Sector, Industry, Market Cap, Volume)
