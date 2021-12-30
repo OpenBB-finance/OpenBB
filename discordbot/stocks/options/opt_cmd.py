@@ -20,13 +20,16 @@ async def opt_command(ctx, ticker="", expiration="", strike="", put=""):
     """Options Menu command"""
 
     if cfg.DEBUG:
-        print(f"!stocks.opt {ticker} {expiration}")
-    if strike and put:
-        sp = f" {strike} {put} "
-    else:
-        sp = " "
+        print(f"!stocks.opt {ticker} {expiration} {strike} {put}")
 
     if ticker:
+        hist = (
+            f"7️⃣ !stocks.opt.hist {ticker} (strike*) (c/p*) {expiration}\n\n* Required"
+        )
+        hist_emoji = "❌"
+        if strike and put:
+            hist = f"7️⃣ !stocks.opt.hist {ticker} {strike} {put} {expiration}"
+            hist_emoji = "7️⃣"
         text = (
             "```0️⃣ !stocks.opt.unu\n"
             f"1️⃣ !stocks.opt.exp {ticker}\n"
@@ -35,7 +38,7 @@ async def opt_command(ctx, ticker="", expiration="", strike="", put=""):
             f"4️⃣ !stocks.opt.puts {ticker} {expiration} \n"
             f"5️⃣ !stocks.opt.oi {ticker} {expiration} \n"
             f"6️⃣ !stocks.opt.vol {ticker} {expiration} \n"
-            f"7️⃣ !stocks.opt.hist {ticker}{sp}{expiration}```"
+            f"{hist}```"
         )
 
     if put == "p":
@@ -51,7 +54,7 @@ async def opt_command(ctx, ticker="", expiration="", strike="", put=""):
     )
     msg = await ctx.send(embed=embed, delete_after=60.0)
 
-    emoji_list = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣"]
+    emoji_list = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", hist_emoji]
 
     for emoji in emoji_list:
         await msg.add_reaction(emoji)
