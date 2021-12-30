@@ -90,7 +90,7 @@ class TerminalController:
 
             self.queue = " ".join(jobs_cmds).split("/")
 
-        self.update_succcess = False
+        self.update_success = False
 
     def print_help(self):
         """Print help"""
@@ -198,7 +198,7 @@ The main commands you should be aware when navigating through the terminal are:
 
     def call_update(self, _):
         """Process update command"""
-        self.update_succcess = not update_terminal()
+        self.update_success = not update_terminal()
 
     def call_keys(self, _):
         """Process keys command"""
@@ -318,7 +318,7 @@ def terminal(jobs_cmds: List[str] = None):
                 break
 
             # Check if the user wants to reset application
-            if an_input in ("r", "reset") or t_controller.update_succcess:
+            if an_input in ("r", "reset") or t_controller.update_success:
                 ret_code = reset(
                     t_controller.queue if len(t_controller.queue) > 0 else []
                 )

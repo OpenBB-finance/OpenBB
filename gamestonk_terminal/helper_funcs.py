@@ -713,7 +713,7 @@ def get_last_time_market_was_open(dt):
 
 def export_data(
     export_type: str, dir_path: str, func_name: str, df: pd.DataFrame = pd.DataFrame()
-):
+) -> None:
     """Export data to a file.
 
     Parameters
