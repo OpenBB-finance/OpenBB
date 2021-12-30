@@ -401,7 +401,6 @@ class CreateExcelFA:
         self.ws2["A9"] = "Free Cash Flows"
         r = 4
 
-        # Switched len_data to len_pred
         c1 = dcf_model.letters[self.len_pred + 3]
         c2 = dcf_model.letters[self.len_pred + 4]
         c3 = dcf_model.letters[self.len_pred + 5]
