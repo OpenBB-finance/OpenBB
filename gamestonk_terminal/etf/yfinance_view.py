@@ -62,11 +62,12 @@ def display_etf_weightings(
             main_holdings["Others"] = 100 - sum(main_holdings.values())
 
         legend, values = zip(*main_holdings.items())
+        leg = [f"{le}\n{round(v,2)}%" for le, v in zip(legend, values)]
 
         plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         plt.pie(
             values,
-            labels=legend,
+            labels=leg,
             wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
             labeldistance=1.05,
             startangle=90,

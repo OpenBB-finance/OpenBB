@@ -546,7 +546,7 @@ Major holdings: {', '.join(self.etf_holdings)}
                     type="candle",
                     mav=(20, 50),
                     volume=True,
-                    title=f"\nStock {self.etf_name}",
+                    title=f"\nETF: {self.etf_name}",
                     addplot=ap0,
                     xrotation=10,
                     style=s,
