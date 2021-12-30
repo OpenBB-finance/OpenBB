@@ -1,29 +1,27 @@
 import os
-
 import discord
 import matplotlib.pyplot as plt
-import pandas as pd
-
 import discordbot.config_discordbot as cfg
-from gamestonk_terminal.config_plot import PLOT_DPI
+
+from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal.helper_funcs import plot_autoscale
-from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
+from gamestonk_terminal.stocks.options import yfinance_model
 
 
-async def oi_command(
+async def vol_command(
     ctx,
     ticker: str = None,
     expiry: str = "",
     min_sp: float = None,
     max_sp: float = None,
 ):
-    """Options OI"""
+    """Options VOL"""
 
     try:
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.opt.oi {ticker} {expiry} {min_sp} {max_sp}")
+            print(f"!stocks.opt.vol {ticker} {expiry} {min_sp} {max_sp}")
 
         # Check for argument
         if ticker is None:
@@ -35,8 +33,6 @@ async def oi_command(
             raise Exception("Stock ticker is invalid")
 
         options = yfinance_model.get_option_chain(ticker, expiry)
-        calls = options.calls
-        puts = options.puts
         current_price = yfinance_model.get_price(ticker)
 
         if min_sp is None:
@@ -49,30 +45,25 @@ async def oi_command(
         else:
             max_strike = max_sp
 
-        call_oi = calls.set_index("strike")["openInterest"] / 1000
-        put_oi = puts.set_index("strike")["openInterest"] / 1000
-
-        df_opt = pd.merge(call_oi, put_oi, left_index=True, right_index=True)
-        df_opt = df_opt.rename(
-            columns={"openInterest_x": "OI_call", "openInterest_y": "OI_put"}
-        )
-
-        max_pain = op_helpers.calculate_max_pain(df_opt)
+        calls = options.calls
+        puts = options.puts
+        call_v = calls.set_index("strike")["volume"] / 1000
+        put_v = puts.set_index("strike")["volume"] / 1000
         plt.style.use("seaborn")
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
 
-        put_oi.plot(
+        put_v.plot(
             x="strike",
-            y="openInterest",
+            y="volume",
             label="Puts",
             ax=ax,
             marker="o",
             ls="-",
             c="r",
         )
-        call_oi.plot(
+        call_v.plot(
             x="strike",
-            y="openInterest",
+            y="volume",
             label="Calls",
             ax=ax,
             marker="o",
@@ -80,38 +71,37 @@ async def oi_command(
             c="g",
         )
         ax.axvline(
-            current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.4
+            current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.7
         )
-        ax.axvline(max_pain, lw=3, c="k", label=f"Max Pain: {max_pain}", alpha=0.4)
         ax.grid("on")
         ax.set_xlabel("Strike Price")
-        ax.set_ylabel("Open Interest (1k) ")
+        ax.set_ylabel("Volume (1k) ")
         ax.set_xlim(min_strike, max_strike)
 
-        ax.set_title(f"Open Interest for {ticker.upper()} expiring {expiry}")
+        ax.set_title(f"Volume for {ticker.upper()} expiring {expiry}")
         plt.legend(loc=0)
-        fig.tight_layout()
+        fig.tight_layout(pad=1)
 
-        imagefile = "opt_oi.png"
-        plt.savefig("opt_oi.png")
+        imagefile = "opt_vol.png"
+        plt.savefig("opt_vol.png")
         image = discord.File(imagefile)
 
         if cfg.DEBUG:
-            print(f"Image {imagefile}")
-        title = " " + ticker.upper() + " Options: Open Interest"
+            print(f"Image: {imagefile}")
+        title = " " + ticker.upper() + " Options: Volume"
         embed = discord.Embed(title=title, colour=cfg.COLOR)
-        embed.set_image(url="attachment://opt_oi.png")
+        embed.set_image(url="attachment://opt_vol.png")
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
         )
-        os.remove("opt_oi.png")
+        os.remove("opt_vol.png")
 
         await ctx.send(embed=embed, file=image)
 
     except Exception as e:
         embed = discord.Embed(
-            title="ERROR Options: Open Interest",
+            title="ERROR Options: Volume",
             colour=cfg.COLOR,
             description=e,
         )
