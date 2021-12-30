@@ -588,7 +588,7 @@ Major holdings: {', '.join(self.etf_holdings)}
             type=str,
             dest="names",
             help="Symbols to create a report for (e.g. ARKW,ARKQ)",
-            required="-h" not in other_args,
+            default=self.etf_name,
         )
         parser.add_argument(
             "--filename",
