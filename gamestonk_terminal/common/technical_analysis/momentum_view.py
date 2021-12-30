@@ -22,7 +22,7 @@ def plot_cci(
     df_stock: pd.DataFrame,
     length: int,
     scalar: float,
-    export: str,
+    export: str = "",
 ):
     """Display CCI Indicator
 
@@ -92,7 +92,7 @@ def view_macd(
     n_fast: int,
     n_slow: int,
     n_signal: int,
-    export: str,
+    export: str = "",
 ):
     """Plot MACD signal
 
@@ -164,7 +164,7 @@ def view_rsi(
     length: int,
     scalar: float,
     drift: int,
-    export: str,
+    export: str = "",
 ):
     """Display RSI Indicator
 
@@ -235,7 +235,7 @@ def view_stoch(
     fastkperiod: int,
     slowdperiod: int,
     slowkperiod: int,
-    export: str,
+    export: str = "",
 ):
     """Plot stochastic oscillator signal
 

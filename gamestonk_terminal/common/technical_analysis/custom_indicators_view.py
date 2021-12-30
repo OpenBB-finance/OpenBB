@@ -20,7 +20,7 @@ def fibonacci_retracement(
     period: int,
     start_date: Any,
     end_date: Any,
-    export: str,
+    export: str = "",
 ):
     """Calculate fibonacci retracement levels
 

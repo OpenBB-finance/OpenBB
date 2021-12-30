@@ -742,12 +742,12 @@ Expiry: {self.selected_date or None}
                     ):
                         if ns_parser.source.lower() == "ce":
                             chartexchange_view.display_raw(
-                                ns_parser.export,
                                 self.ticker,
                                 self.selected_date,
                                 not ns_parser.put,
                                 ns_parser.strike,
                                 ns_parser.limit,
+                                ns_parser.export,
                             )
 
                         else:
@@ -757,9 +757,9 @@ Expiry: {self.selected_date or None}
                                     expiry=self.selected_date,
                                     strike=ns_parser.strike,
                                     put=ns_parser.put,
-                                    export=ns_parser.export,
                                     raw=ns_parser.raw,
                                     chain_id=ns_parser.chain_id,
+                                    export=ns_parser.export,
                                 )
                             else:
                                 print("TRADIER TOKEN not supplied. \n")
