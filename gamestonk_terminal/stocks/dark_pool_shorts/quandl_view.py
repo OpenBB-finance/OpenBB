@@ -11,6 +11,7 @@ from gamestonk_terminal.helper_funcs import (
     long_number_format,
     export_data,
 )
+from gamestonk_terminal import feature_flags as gtff
 
 
 def plot_short_interest(ticker: str, nyse: bool, df_short_interest: pd.DataFrame):
@@ -57,6 +58,9 @@ def plot_short_interest(ticker: str, nyse: bool, df_short_interest: pd.DataFrame
     ax_twin.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter("%.0f%%"))
     plt.xlim([df_short_interest.index[0], df_short_interest.index[-1]])
     plt.gcf().autofmt_xdate()
+
+    if gtff.USE_ION:
+        plt.ion()
 
     plt.show()
 

@@ -116,14 +116,6 @@ def display_chains(
     columns = to_display + ["strike", "option_type"]
     chains_df = chains_df[columns].rename(columns=column_map)
 
-    if export:
-        export_data(
-            export,
-            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-            "chains",
-            chains_df,
-        )
-
     if min_sp == -1:
         min_strike = np.percentile(chains_df["strike"], 25)
     else:
@@ -197,6 +189,13 @@ def display_chains(
             "\n",
         )
 
+    export_data(
+        export,
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "chains",
+        chains_df,
+    )
+
 
 def plot_oi(
     ticker: str,
@@ -228,12 +227,6 @@ def plot_oi(
     """
 
     options = tradier_model.get_option_chains(ticker, expiry)
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "oi_tr",
-        options,
-    )
     current_price = tradier_model.last_price(ticker)
 
     if min_sp == -1:
@@ -284,24 +277,27 @@ def plot_oi(
             ls="-",
             c="g",
         )
-        ax.axvline(
-            current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.7
-        )
-        ax.axvline(max_pain, lw=3, c="k", label=f"Max Pain: {max_pain}", alpha=0.7)
-        ax.grid("on")
-        ax.set_xlabel("Strike Price")
-        ax.set_ylabel("Open Interest (1k) ")
-        ax.set_xlim(min_strike, max_strike)
+    ax.axvline(current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.7)
+    ax.axvline(max_pain, lw=3, c="k", label=f"Max Pain: {max_pain}", alpha=0.7)
+    ax.grid("on")
+    ax.set_xlabel("Strike Price")
+    ax.set_ylabel("Open Interest (1k) ")
+    ax.set_xlim(min_strike, max_strike)
 
-        if gtff.USE_ION:
-            plt.ion()
+    if gtff.USE_ION:
+        plt.ion()
 
-        ax.set_title(f"Open Interest for {ticker.upper()} expiring {expiry}")
-        plt.legend(loc=0)
-        fig.tight_layout(pad=1)
+    ax.set_title(f"Open Interest for {ticker.upper()} expiring {expiry}")
+    plt.legend(loc=0)
+    fig.tight_layout(pad=1)
 
     plt.show()
-    plt.style.use("default")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "oi_tr",
+        options,
+    )
     print("")
 
 
@@ -335,12 +331,6 @@ def plot_vol(
     """
 
     options = tradier_model.get_option_chains(ticker, expiry)
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "vol_tr",
-        options,
-    )
     current_price = tradier_model.last_price(ticker)
 
     if min_sp == -1:
@@ -398,7 +388,12 @@ def plot_vol(
     fig.tight_layout(pad=1)
 
     plt.show()
-    plt.style.use("default")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "vol_tr",
+        options,
+    )
     print("")
 
 
@@ -429,12 +424,6 @@ def plot_volume_open_interest(
     """
     current_price = tradier_model.last_price(ticker)
     options = tradier_model.get_option_chains(ticker, expiry)
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "voi_tr",
-        options,
-    )
 
     calls = options[options.option_type == "call"][
         ["strike", "volume", "open_interest"]
@@ -587,7 +576,12 @@ def plot_volume_open_interest(
     if gtff.USE_ION:
         plt.ion()
     plt.show()
-    plt.style.use("default")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "voi_tr",
+        options,
+    )
     print("")
 
 

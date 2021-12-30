@@ -18,6 +18,21 @@ register_matplotlib_converters()
 # pylint: disable=inconsistent-return-statements
 # pylint: disable=C0302, too-many-lines
 
+TWEETS_FILTERS = ["date", "user_name", "status", "retweet_count", "like_count"]
+
+EVENTS_FILTERS = ["date", "date_to", "name", "description", "is_conference"]
+
+EX_FILTERS = ["id", "name", "adjusted_volume_24h_share", "fiats"]
+
+MARKET_FILTERS = [
+    "pct_volume_share",
+    "exchange",
+    "pair",
+    "trust_score",
+    "volume",
+    "price",
+]
+
 CURRENCIES = [
     "BTC",
     "ETH",

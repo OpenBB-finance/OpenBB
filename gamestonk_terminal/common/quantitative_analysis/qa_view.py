@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import os
+import warnings
 from typing import Any
 
 import matplotlib.pyplot as plt
@@ -405,7 +406,8 @@ def display_normality(df: pd.DataFrame, target: str, export: str = ""):
     """
     data = df[target]
     normal = qa_model.get_normality(data)
-    stats1 = normal.copy()
+    stats1 = normal.copy().T
+    print(stats1)
     stats1.loc[:, stats1.iloc[1, :] > 0.05] = stats1.loc[
         :, stats1.iloc[1, :] > 0.05
     ].apply(lambda x: color_red(x[0]), axis=1)
@@ -443,6 +445,8 @@ def display_qqplot(name: str, df: pd.DataFrame, target: str):
     target : str
         Column in data to look at
     """
+    # Statsmodels has a UserWarning for marker kwarg-- which we dont use
+    warnings.filterwarnings(category=UserWarning, action="ignore")
     data = df[target]
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     qqplot(data, stats.distributions.norm, fit=True, line="45", ax=ax)

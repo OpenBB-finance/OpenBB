@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 from typing import List, Dict
-from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -88,59 +87,6 @@ def get_articles_html(url_articles: str) -> str:
     ).text
 
     return articles_html
-
-
-def get_article_list(start_date: datetime, num: int) -> List[dict]:
-    """Returns a list of latest articles
-
-    Parameters
-    ----------
-    start_date : datetime
-        Starting date
-    num : int
-        Number of articles
-
-    Returns
-    -------
-    list
-        Latest articles list
-    """
-
-    articles: List[dict] = []
-    page = 1
-    url_articles = f"https://seekingalpha.com/market-news/{page}"
-    while len(articles) < num:
-        text_soup_articles = BeautifulSoup(
-            get_articles_html(url_articles),
-            "lxml",
-        )
-
-        for item_row in text_soup_articles.findAll("li", {"class": "item"}):
-            item = item_row.find("a", {"class": "add-source-assigned"})
-            if item is None:
-                continue
-            article_url = item["href"]
-            if not article_url.startswith("/news/"):
-                continue
-            article_id = article_url.split("/")[2].split("-")[0]
-            article_date = datetime.strptime(
-                item_row["data-last-date"], "%Y-%m-%d %H:%M:%S %z"
-            )
-            if start_date.date() < article_date.date():
-                continue
-            articles.append(
-                {
-                    "title": item.text,
-                    "publishedAt": article_date.strftime("%Y-%m-%d %H:%M:%S"),
-                    "url": "https://seekingalpha.com" + article_url,
-                    "id": article_id,
-                }
-            )
-
-        page += 1
-        url_articles = f"https://seekingalpha.com/market-news/{page}"
-
-    return articles
 
 
 def get_trending_list(num: int) -> list:

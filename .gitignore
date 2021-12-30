@@ -1,4 +1,5 @@
 __pycache__/
+logs/
 *.pyc
 .DS_Store
 *.env
@@ -16,6 +17,7 @@ exports/*
 htmlcov
 gamestonk_terminal/reports/stored/*
 gamestonk_terminal/portfolio/portfolios/*
+.ipynb_checkpoints/*
 
 # Jupyter Lab Extension build files
 jupyterlab/*/*.bundle.*

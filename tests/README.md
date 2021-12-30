@@ -43,9 +43,7 @@ If you dont want to install the `dev-dependencies` you will have to add the opti
 poetry install --no-dev
 ```
 
-## 2.2. How to run tests ?
-
-## 2.3. How to run `tests` : by `module` ?
+## 2.2. How to run `tests` : by `module` ?
 
 You can run tests on a specific package/module by specifying the path of this package/module, like this :
 
@@ -54,7 +52,7 @@ pytest tests/gamestonk_terminal/some_package
 pytest tests/gamestonk_terminal/some_package/some_module.py
 ```
 
-## 2.4. How to run `tests` : by `name` ?
+## 2.3. How to run `tests` : by `name` ?
 
 You can run tests by their name :
 
@@ -63,7 +61,7 @@ pytest -k "test_function1"
 ```
 
 
-## 2.5. How to run `tests` : by `markers` ?
+## 2.4. How to run `tests` : by `markers` ?
 
 You can run tests only on specific markers, like this :
 
@@ -77,6 +75,31 @@ You can list the available markers using this command :
 
 ```
 pytest --markers
+```
+
+## 2.5. How to skip tests function ?
+
+```python
+import pytest
+
+@pytest.skip
+def test_some_function(mocker):
+    pass
+
+@pytest.skip("This time with a comment")
+def test_another_function(mocker):
+    pass
+```
+
+## 2.6. How to skip tests modules ?
+
+```python
+import pytest
+
+pytest.skip(msg="Some optional comment.", allow_module_level=True)
+
+def test_some_function(mocker):
+    pass
 ```
 
 # 3. Build `unit tests`
@@ -188,7 +211,20 @@ You can find the available helpers inside the following package/module :
 - `tests/helpers/`
 - `tests/conftest.py`
 
-## 3.6. Which `markers` are available ?
+See also the `pytest fixtures` which are autoloaded helpers.
+
+## 3.6. Which `fixtures` are available ?
+
+You can list all the available `pytest fixtures` using the following command :
+
+```
+pytest --fixtures
+```
+
+More on custom fixtures here :
+ - [FIXTURES](FIXTURES.md)
+
+## 3.7. Which `markers` are available ?
 
 You can list the available markers using this command :
 
@@ -200,7 +236,7 @@ More information on markers location are available in pytest documentation :
 - https://docs.pytest.org/en/6.2.x/mark.html#mark
 
 
-## 3.7. Known `issue` / `solution`
+## 3.8. Known `issue` / `solution`
 
 **YFINANCE**
 
@@ -224,7 +260,54 @@ def vcr_config():
 You can also refactor this method to let access to `stard/end` dates.
 
 
-## 3.8. List of useful `vscode` tools for `unit tests`
+**USER-AGENT**
+
+Some function uses a random `User-Agent` on the `HTTP HEADER` when fetching data from an `API`.
+
+Here is how to filter this random `User-Agent`.
+
+```python
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("User-Agent", None)],
+    }
+```
+
+**YFINANCE**
+
+If you do something like this with `yfinance` library.
+
+```python
+import yfinance as yf
+
+yf.download(tickers="VCYT QSI")
+```
+
+Chances are you requests will be multi-threaded.
+
+Issues : as for now `vcrpy` seems to be incompatible with multi-threading.
+
+The library `vcrpy` is used to record `cassettes` (`network` calls into `yaml` files).
+
+Here is a solution to still combine `yfinance` and `vcrpy` :
+```python
+import pytest
+import yfinance
+
+yf_download = yf.download
+def mock_yf_download(*args, **kwargs):
+    kwargs["threads"] = False
+    return yf_download(*args, **kwargs)
+
+@pytest.mark.vcr
+def test_ark_orders_view(kwargs_dict, mocker, use_color):
+    mocker.patch("yfinance.download", side_effect=mock_yf_download)
+    
+    yf.download(tickers="VCYT QSI")
+```
+
+## 3.9. List of useful `vscode` tools for `unit tests`
 
 **VSCODE TESTING**
 
@@ -235,7 +318,7 @@ It's a convenient way to see what's inside your `test` while running.
 More information on this tool are available here :
 - https://code.visualstudio.com/docs/python/testing
 
-## 3.9. How to handle `dev-dependencies` ?
+## 3.10. How to handle `dev-dependencies` ?
 
 **UPDATE PYPROJECT**
 
@@ -255,8 +338,8 @@ flake8 = "^3.9.0"
 
 After updating the `pyproject.toml` you will have to export the `requirements` files using the following commands :
 ```bash
-poetry export -f requirements.txt  -o requirements.txt --without-hashes
-poetry export -f requirements.txt  -o requirements-full.txt --extras prediction --without-hashes
+poetry export -f requirements.txt  -o requirements.txt --without-hashes --dev
+poetry export -f requirements.txt  -o requirements-full.txt --extras prediction --without-hashes --dev
 ```
 
 # 4. Maintain `unit tests`

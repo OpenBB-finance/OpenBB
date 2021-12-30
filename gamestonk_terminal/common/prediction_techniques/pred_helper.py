@@ -157,6 +157,7 @@ def parse_args(prog: str, description: str, other_args: List[str]):
         "default: usually the same as false, uses env/TensorFlow default",
     )
     parser.add_argument(
+        "-l",
         "--loops",
         action="store",
         dest="n_loops",

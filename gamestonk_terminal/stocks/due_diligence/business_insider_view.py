@@ -10,6 +10,8 @@ from gamestonk_terminal.stocks.due_diligence import business_insider_model
 from gamestonk_terminal.helper_funcs import (
     export_data,
 )
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
@@ -48,17 +50,22 @@ def price_target_from_analysts(
 
     if raw:
         df_analyst_data.index = df_analyst_data.index.strftime("%d/%m/%Y")
-        print(
-            tabulate(
-                df_analyst_data.sort_index(ascending=False).head(num),
-                headers=df_analyst_data.columns,
-                floatfmt=".2f",
-                showindex=True,
-                tablefmt="fancy_grid",
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df_analyst_data.sort_index(ascending=False).head(num),
+                    headers=df_analyst_data.columns,
+                    floatfmt=".2f",
+                    showindex=True,
+                    tablefmt="fancy_grid",
+                )
             )
-        )
+        else:
+            print(df_analyst_data.head(num).to_string())
 
     else:
+        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
         # Slice start of ratings
         if start:
             df_analyst_data = df_analyst_data[start:]  # type: ignore
@@ -86,7 +93,7 @@ def price_target_from_analysts(
 
         if gtff.USE_ION:
             plt.ion()
-
+        plt.gcf().autofmt_xdate()
         plt.show()
     print("")
 

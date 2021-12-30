@@ -8,6 +8,11 @@ class GenericCommands(discord.ext.commands.Cog):
     def __init__(self, bot: discord.ext.commands.Bot):
         self.bot = bot
 
+        bot.help_command.cog = self
+
+    def cog_unload(self):
+        self.bot.help_command = None
+
     @discord.ext.commands.command(name="about")
     async def about(self, ctx: discord.ext.commands.Context):
         """About Gamestonk Terminal"""
@@ -48,6 +53,35 @@ class GenericCommands(discord.ext.commands.Cog):
         embed.add_field(name="Disclaimer:", value=disclaimer, inline=False)
 
         await ctx.send(embed=embed)
+
+    @discord.ext.commands.command(name="usage")
+    async def usage(self, ctx: discord.ext.commands.Context):
+        usage_instructions_message = """
+```
+- Every command starts with an exclamation point "!".
+
+- Any command can be triggered from the chat. For example:
+
+  !about
+  or
+  !stocks.dps.spos tsla
+  or
+  !stocks.ta.recom tsla
+
+- Help is available for all menus and functions.
+
+  Call help for individual menus like this:
+  !help DarkPoolShortsCommands
+
+  Call help for individual commands like this:
+  !help stocks.dps
+
+- Call the help command to see the list of available menus:
+
+  !help
+```
+        """
+        await ctx.send(usage_instructions_message)
 
 
 def setup(bot: discord.ext.commands.Bot):

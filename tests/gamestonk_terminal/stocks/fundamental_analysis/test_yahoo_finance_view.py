@@ -1,38 +1,59 @@
-""" fundamental_analysis/yahoo_finance_api.py tests """
-import unittest
+# IMPORTATION STANDARD
 
-import vcr
+# IMPORTATION THIRDPARTY
+import pandas as pd
+import pytest
 
-# pylint: disable=unused-import
-from gamestonk_terminal.stocks.fundamental_analysis.yahoo_finance_view import (  # noqa: F401
-    display_calendar_earnings,
-    display_info,
-    display_sustainability,
+# IMPORTATION INTERNAL
+from gamestonk_terminal.stocks.fundamental_analysis import yahoo_finance_view
+
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [
+            ("period1", "1598220000"),
+            ("period2", "1635980400"),
+        ],
+    }
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "func",
+    [
+        "display_info",
+        "display_shareholders",
+        "display_sustainability",
+        "display_calendar_earnings",
+        "display_dividends",
+    ],
 )
-from tests.helpers import check_print
+@pytest.mark.parametrize(
+    "use_tab",
+    [True, False],
+)
+def test_call_func(func, monkeypatch, use_tab):
+    monkeypatch.setattr(yahoo_finance_view.gtff, "USE_TABULATE_DF", use_tab)
+    getattr(yahoo_finance_view, func)(ticker="PM")
 
 
-class TestFaYahooFinanceApi(unittest.TestCase):
-    @check_print(assert_in="Zip")
-    @vcr.use_cassette(
-        "tests/gamestonk_terminal/stocks/fundamental_analysis/cassettes/test_yahoo_finance_view/info.yaml",
-        record_mode="new_episodes",
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "func, mocked_func",
+    [
+        ("display_sustainability", "get_sustainability"),
+        ("display_calendar_earnings", "get_calendar_earnings"),
+        ("display_dividends", "get_dividends"),
+    ],
+)
+def test_call_func_empty_df(func, mocker, mocked_func):
+    mocker.patch(
+        "gamestonk_terminal.stocks.fundamental_analysis.yahoo_finance_model."
+        + mocked_func,
+        return_value=pd.DataFrame(),
     )
-    def test_info(self):
-        display_info("PLTR")
-
-    @check_print(assert_in="Military contract")
-    @vcr.use_cassette(
-        "tests/gamestonk_terminal/stocks/fundamental_analysis/cassettes/test_yahoo_finance_view/sustainability.yaml",
-        record_mode="new_episodes",
-    )
-    def test_sustainability(self):
-        display_sustainability("AAPL")
-
-    @check_print(assert_in="Earnings Date")
-    @vcr.use_cassette(
-        "tests/gamestonk_terminal/stocks/fundamental_analysis/cassettes/test_yahoo_finance_view/calendar_earnings.yaml",
-        record_mode="new_episodes",
-    )
-    def test_calendar_earnings(self):
-        display_calendar_earnings("GME")
+    getattr(yahoo_finance_view, func)(ticker="PM")

@@ -11,6 +11,7 @@ import pandas as pd
 import seaborn as sns
 from pandas.plotting import register_matplotlib_converters
 from sklearn.preprocessing import MinMaxScaler
+from gamestonk_terminal import feature_flags as gtff
 
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
@@ -76,6 +77,8 @@ def display_historical(
     ax.set_xlim([df_similar.index[0], df_similar.index[-1]])
     plt.gcf().autofmt_xdate()
     fig.tight_layout()
+    if gtff.USE_ION:
+        plt.ion()
     plt.show()
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "historical", df_similar
@@ -96,8 +99,6 @@ def display_volume(
         List of similar tickers
     start : str, optional
         Start date of comparison, by default 1 year ago
-    normalize : bool, optional
-        Boolean to normalize all stock prices using MinMax defaults True
     export : str, optional
         Format to export historical prices, by default ""
     """
@@ -117,6 +118,8 @@ def display_volume(
     ax.set_xlim([df_similar.index[0], df_similar.index[-1]])
     plt.gcf().autofmt_xdate()
     fig.tight_layout()
+    if gtff.USE_ION:
+        plt.ion()
     plt.show()
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "volume", df_similar
@@ -149,8 +152,13 @@ def display_correlation(
         nan_tickers = df_similar.columns[df_similar.isna().sum() >= 1].to_list()
         print(f"NaN values found in: {', '.join(nan_tickers)}.  Backfilling data")
         df_similar = df_similar.fillna(method="bfill")
+
+    df_similar = df_similar.dropna(axis=1, how="all")
+
     mask = np.zeros((df_similar.shape[1], df_similar.shape[1]), dtype=bool)
     mask[np.triu_indices(len(mask))] = True
+
+    plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     sns.heatmap(
         df_similar.corr(),
@@ -162,6 +170,8 @@ def display_correlation(
         vmax=1,
         mask=mask,
     )
-    plt.title("Correlation Heatmap of similar companies")
+    plt.title(f"Correlation Heatmap of similar companies from {start}")
+    if gtff.USE_ION:
+        plt.ion()
     plt.show()
     print("")

@@ -3,12 +3,12 @@ import discord
 from matplotlib import pyplot as plt
 import pandas as pd
 
-import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
-
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.stocks.government import quiverquant_model
 from gamestonk_terminal.helper_funcs import plot_autoscale
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur
 
 
 async def toplobbying_command(ctx, num="", raw=""):

@@ -1,0 +1,4 @@
+Earnings Date Earnings Average Earnings Low Earnings High Revenue Average Revenue Low Revenue High
+   02/02/2022            1.350        1.290         1.430         7.845 B     7.745 B      7.916 B
+   02/07/2022            1.350        1.290         1.430         7.845 B     7.745 B      7.916 B
+

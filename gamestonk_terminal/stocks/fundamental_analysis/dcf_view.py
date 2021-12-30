@@ -12,6 +12,7 @@ from openpyxl import Workbook, worksheet
 from openpyxl.styles import Font
 from sklearn.linear_model import LinearRegression
 from bs4 import BeautifulSoup
+import regex as re
 import yfinance as yf
 import pandas as pd
 import numpy as np
@@ -114,7 +115,7 @@ class CreateExcelFA:
         soup = BeautifulSoup(r.content, "html.parser")
 
         table = soup.find(
-            "table", attrs={"class": "FinancialTable_table_financial__1RhYq"}
+            "table", attrs={"class": re.compile("^FinancialTable_table_financial__.*")}
         )
         head = table.find("thead")
         columns = head.find_all("th")
@@ -1288,7 +1289,7 @@ class CreateExcelFA:
         soup = BeautifulSoup(r.content, "html.parser")
 
         table = soup.find(
-            "table", attrs={"class": "FinancialTable_table_financial__1RhYq"}
+            "table", attrs={"class": re.compile("^FinancialTable_table_financial__.*")}
         )
         head = table.find("thead")
         if head is None:

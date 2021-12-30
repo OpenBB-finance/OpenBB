@@ -1,7 +1,8 @@
 import discord
-import discordbot.config_discordbot as cfg
 
 from gamestonk_terminal.stocks.technical_analysis import tradingview_model
+
+import discordbot.config_discordbot as cfg
 
 
 async def recom_command(ctx, ticker=""):

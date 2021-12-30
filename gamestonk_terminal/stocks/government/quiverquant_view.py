@@ -318,7 +318,7 @@ def display_government_sells(
     fig.tight_layout()
     plt.show()
     print("")
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "top_sells", df_gov)
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "topsells", df_gov)
 
 
 def display_last_contracts(
@@ -386,9 +386,7 @@ def display_last_contracts(
         fig.tight_layout()
         plt.show()
     print("")
-    export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "last_contracts", df
-    )
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "lastcontracts", df)
 
 
 def plot_government(government: pd.DataFrame, ticker: str, gov_type: str):
@@ -431,7 +429,11 @@ def plot_government(government: pd.DataFrame, ticker: str, gov_type: str):
 
 
 def display_government_trading(
-    ticker: str, gov_type: str, past_transactions_months: int = 6, raw: bool = False
+    ticker: str,
+    gov_type: str,
+    past_transactions_months: int = 6,
+    raw: bool = False,
+    export: str = "",
 ):
     """Government trading for specific ticker [Source: quiverquant.com]
 
@@ -445,6 +447,8 @@ def display_government_trading(
         Number of months to get transactions for
     raw: bool
         Show raw output of trades
+    export: str
+        Format to export data
     """
     df_gov = quiverquant_model.get_government_trading(gov_type, ticker)
 
@@ -500,8 +504,10 @@ def display_government_trading(
             )
         else:
             print(df_gov.to_string())
+    else:
+        plot_government(df_gov, ticker, gov_type)
 
-    plot_government(df_gov, ticker, gov_type)
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "gtrades", df_gov)
     print("")
 
 
@@ -535,17 +541,6 @@ def display_contracts(
 
     df_contracts.drop_duplicates(inplace=True)
 
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
-    df_contracts.groupby("Date").sum().div(1000).plot(kind="bar", rot=0, ax=ax)
-    ax.set_ylabel("Amount ($1k)")
-    ax.set_title(f"Sum of latest government contracts to {ticker}")
-    fig.tight_layout()
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "contracts")
-
-    if gtff.USE_ION:
-        plt.ion()
-
     if raw:
         if gtff.USE_TABULATE_DF:
             print(
@@ -560,11 +555,25 @@ def display_contracts(
         else:
             print(df_contracts.to_string())
 
-    plt.show()
+    else:
+        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        df_contracts.groupby("Date").sum().div(1000).plot(kind="bar", rot=0, ax=ax)
+        ax.set_ylabel("Amount ($1k)")
+        ax.set_title(f"Sum of latest government contracts to {ticker}")
+        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
+        plt.gcf().autofmt_xdate()
+        fig.tight_layout()
+        if gtff.USE_ION:
+            plt.ion()
+        plt.show()
+
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "contracts", df_contracts
+    )
     print("")
 
 
-def display_qtr_contracts(analysis: str, num: int, export: str = ""):
+def display_qtr_contracts(analysis: str, num: int, raw: bool = False, export: str = ""):
     """Quarterly contracts [Source: quiverquant.com]
 
     Parameters
@@ -573,6 +582,8 @@ def display_qtr_contracts(analysis: str, num: int, export: str = ""):
         Analysis to perform.  Either 'total', 'upmom' 'downmom'
     num: int
         Number to show
+    raw: bool
+        Flag to display raw data
     export: str
         Format to export data
     """
@@ -583,66 +594,68 @@ def display_qtr_contracts(analysis: str, num: int, export: str = ""):
         return
 
     tickers = quiverquant_model.analyze_qtr_contracts(analysis, num)
-    if analysis in {"upmom", "downmom"}:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    pd.DataFrame(tickers.values),
-                    headers=["tickers"],
-                    tablefmt="fancy_grid",
-                    showindex=False,
+    if analysis in ("upmom", "downmom"):
+        if raw:
+            if gtff.USE_TABULATE_DF:
+                print(
+                    tabulate(
+                        pd.DataFrame(tickers.values),
+                        headers=["tickers"],
+                        tablefmt="fancy_grid",
+                        showindex=False,
+                    )
                 )
-            )
+            else:
+                print(tickers.to_string())
         else:
-            print(tickers.to_string())
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        max_amount = 0
-        quarter_ticks = []
-        for symbol in tickers:
-            amounts = (
-                df_contracts[df_contracts["Ticker"] == symbol]
-                .sort_values(by=["Year", "Qtr"])["Amount"]
-                .values
-            )
+            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            max_amount = 0
+            quarter_ticks = []
+            for symbol in tickers:
+                amounts = (
+                    df_contracts[df_contracts["Ticker"] == symbol]
+                    .sort_values(by=["Year", "Qtr"])["Amount"]
+                    .values
+                )
 
-            qtr = (
-                df_contracts[df_contracts["Ticker"] == symbol]
-                .sort_values(by=["Year", "Qtr"])["Qtr"]
-                .values
-            )
-            year = (
-                df_contracts[df_contracts["Ticker"] == symbol]
-                .sort_values(by=["Year", "Qtr"])["Year"]
-                .values
-            )
+                qtr = (
+                    df_contracts[df_contracts["Ticker"] == symbol]
+                    .sort_values(by=["Year", "Qtr"])["Qtr"]
+                    .values
+                )
+                year = (
+                    df_contracts[df_contracts["Ticker"] == symbol]
+                    .sort_values(by=["Year", "Qtr"])["Year"]
+                    .values
+                )
 
-            ax.plot(np.arange(0, len(amounts)), amounts / 1_000_000, "-*", lw=2, ms=15)
+                ax.plot(
+                    np.arange(0, len(amounts)), amounts / 1_000_000, "-*", lw=2, ms=15
+                )
 
-            if len(amounts) > max_amount:
-                max_amount = len(amounts)
-                quarter_ticks = [
-                    f"{quarter[0]} - Q{quarter[1]} " for quarter in zip(year, qtr)
-                ]
+                if len(amounts) > max_amount:
+                    max_amount = len(amounts)
+                    quarter_ticks = [
+                        f"{quarter[0]} - Q{quarter[1]} " for quarter in zip(year, qtr)
+                    ]
 
-        ax.set_xlim([-0.5, max_amount - 0.5])
-        ax.set_xticks(np.arange(0, max_amount))
-        ax.set_xticklabels(quarter_ticks)
-        ax.grid()
-        ax.legend(tickers)
-        titles = {
-            "upmom": "Highest increasing quarterly Government Contracts",
-            "downmom": "Highest decreasing quarterly Government Contracts",
-        }
-        ax.set_title(titles[analysis])
-        ax.set_xlabel("Date")
-        ax.set_ylabel("Amount ($1M)")
-        fig.tight_layout()
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "qtr_contracts")
+            ax.set_xlim([-0.5, max_amount - 0.5])
+            ax.set_xticks(np.arange(0, max_amount))
+            ax.set_xticklabels(quarter_ticks)
+            ax.grid()
+            ax.legend(tickers)
+            titles = {
+                "upmom": "Highest increasing quarterly Government Contracts",
+                "downmom": "Highest decreasing quarterly Government Contracts",
+            }
+            ax.set_title(titles[analysis])
+            ax.set_xlabel("Date")
+            ax.set_ylabel("Amount ($1M)")
+            fig.tight_layout()
+            if gtff.USE_ION:
+                plt.ion()
 
-        if gtff.USE_ION:
-            plt.ion()
-
-        plt.show()
+            plt.show()
 
     elif analysis == "total":
         if gtff.USE_TABULATE_DF:
@@ -654,16 +667,21 @@ def display_qtr_contracts(analysis: str, num: int, export: str = ""):
         else:
             print(tickers.to_string())
 
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "qtrcontracts", df_contracts
+    )
     print("")
 
 
-def display_hist_contracts(ticker: str, export: str = ""):
+def display_hist_contracts(ticker: str, raw: bool = False, export: str = ""):
     """Show historical quarterly government contracts [Source: quiverquant.com]
 
     Parameters
     ----------
     ticker: str
         Ticker to get congress trading data from
+    raw: bool
+        Flag to display raw data
     export: str
         Format to export data
     """
@@ -683,23 +701,39 @@ def display_hist_contracts(ticker: str, export: str = ""):
     quarter_ticks = [
         f"{quarter[0]}" if quarter[1] == 1 else "" for quarter in zip(year, qtr)
     ]
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-    ax.plot(np.arange(0, len(amounts)), amounts / 1000, "-*", lw=2, ms=15)
+    if raw:
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df_contracts,
+                    headers=df_contracts.columns,
+                    tablefmt="fancy_grid",
+                    showindex=False,
+                )
+            )
+        else:
+            print(df_contracts.to_string())
 
-    ax.set_xlim([-0.5, len(amounts) - 0.5])
-    ax.set_xticks(np.arange(0, len(amounts)))
-    ax.set_xticklabels(quarter_ticks)
-    ax.grid()
-    ax.set_title(f"Historical Quarterly Government Contracts for {ticker.upper()}")
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Amount ($1k)")
-    fig.tight_layout()
-    if gtff.USE_ION:
-        plt.ion()
+    else:
+        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-    plt.show()
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "hist_cont")
+        ax.plot(np.arange(0, len(amounts)), amounts / 1000, "-*", lw=2, ms=15)
+
+        ax.set_xlim([-0.5, len(amounts) - 0.5])
+        ax.set_xticks(np.arange(0, len(amounts)))
+        ax.set_xticklabels(quarter_ticks)
+        ax.grid()
+        ax.set_title(f"Historical Quarterly Government Contracts for {ticker.upper()}")
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Amount ($1k)")
+        fig.tight_layout()
+        if gtff.USE_ION:
+            plt.ion()
+
+        plt.show()
+
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "histcont")
     print("")
 
 
@@ -726,16 +760,6 @@ def display_top_lobbying(num: int, raw: bool = False, export: str = ""):
     lobbying_by_ticker = pd.DataFrame(
         df_lobbying.groupby("Ticker")["Amount"].agg("sum")
     ).sort_values(by="Amount", ascending=False)
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    lobbying_by_ticker.head(num).plot(kind="bar", ax=ax)
-    ax.set_xlabel("Ticker")
-    ax.set_ylabel("Total Amount ($100k)")
-    ax.set_title(f"Corporate Lobbying Spent since {df_lobbying['Date'].min()}")
-    fig.tight_layout()
-    if gtff.USE_ION:
-        plt.ion()
-
-    plt.show()
 
     if raw:
         if gtff.USE_TABULATE_DF:
@@ -750,9 +774,20 @@ def display_top_lobbying(num: int, raw: bool = False, export: str = ""):
             )
         else:
             print(lobbying_by_ticker.head(num).to_string())
+    else:
+        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        lobbying_by_ticker.head(num).plot(kind="bar", ax=ax)
+        ax.set_xlabel("Ticker")
+        ax.set_ylabel("Total Amount ($100k)")
+        ax.set_title(f"Corporate Lobbying Spent since {df_lobbying['Date'].min()}")
+        fig.tight_layout()
+        if gtff.USE_ION:
+            plt.ion()
+
+        plt.show()
     print("")
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "top_lobbying", df_lobbying
+        export, os.path.dirname(os.path.abspath(__file__)), "lobbying", df_lobbying
     )
 
 

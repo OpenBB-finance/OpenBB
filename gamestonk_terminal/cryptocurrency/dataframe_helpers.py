@@ -1,6 +1,7 @@
 """Dataframe helpers"""
 __docformat__ = "numpy"
 
+import re
 from typing import Union, Any
 import textwrap
 import pandas as pd
@@ -118,3 +119,21 @@ def very_long_number_formatter(num: Union[str, int, float]) -> str:
         return f'{formatted_num}{["", "K", "M", "B", "T"][magnitude]}'
 
     return num
+
+
+def prettify_column_names(columns: list) -> list:
+    """Helper method that change column names into more human readable format. E.g.
+        - tradeAmount => Trade amount,
+        - tokenValue => Token value
+        - mediumGasPrice => Medium Gas Price
+
+    Parameters
+    ----------
+    columns: list
+        list of column names
+
+    Returns
+    -------
+    list with reformatted columns
+    """
+    return [" ".join(re.findall(".[^A-Z]*", val)).capitalize() for val in columns]

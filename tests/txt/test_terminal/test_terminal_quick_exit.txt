@@ -1,22 +1,20 @@
 
 Welcome to Gamestonk Terminal Beta
 
-What do you want to do?
-    cls         clear screen
-    ?/help      show this menu again
-    update      update terminal from remote
-    keys        check for defined api keys
-    reset       reset terminal and reload configs
-    about       about us
-    q(uit)      to abandon the program
+USAGE INSTRUCTIONS
 
->>  stocks
->>  crypto
->>  etf
->>  economy
->>  forex
->>  portfolio
->>  reports
->>  resources
-    
+The main commands you should be aware when navigating through the terminal are:
+    cls      clear the screen
+    h / ?    help menu
+    q / ..   quit this menu and go one menu above
+    exit     exit the terminal
+    r        reset the terminal and reload configs from the current location
+    cd       jump into a menu in an absolute way (e.g. if in crypto I can do 'cd stocks/disc/')
+
+Multiple jobs queue (where each '/' denotes a new command). E.g.
+    /stocks $ disc/ugs -n 3/../load tsla/candle
+
+The previous logic also holds for when launching the terminal. E.g.
+    python terminal.py /stocks/disc/ugs -n 3/../load tsla/candle
+
 Quick exit enabled

@@ -2,7 +2,7 @@
 usage: property [-p PROPERTY] [-v VALUE] [--pie] [-h]
 ```
 
-Returns a portfolio that is weighted based on a selected property info
+Suggests a weighting based on a targeted statistic.
 
 ```
 optional arguments:
@@ -26,3 +26,4 @@ optional arguments:
   --pie                 Display a pie chart for weights (default: False)
   -h, --help            show this help message (default: False)
 ```
+<img size="1400" alt="Feature Screenshot - property" src="https://user-images.githubusercontent.com/85772166/147179496-6d1f9ef4-c42e-4bdf-b438-f877169d1de8.png">

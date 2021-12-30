@@ -95,7 +95,7 @@ def prepare_df_financials(
         },
     }
 
-    if statement not in financial_urls.keys():
+    if statement not in financial_urls:
         raise ValueError(f"type {statement} is not in {financial_urls.keys()}")
 
     period = "quarter" if quarter else "annual"

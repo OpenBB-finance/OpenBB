@@ -2,21 +2,21 @@
 """Main Terminal Module"""
 __docformat__ = "numpy"
 
+import os
 import argparse
 import difflib
+import logging
 import sys
+from typing import List, Union
 
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import config_terminal
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
     system_clear,
-    MENU_RESET,
-    MENU_GO_BACK,
-    MENU_QUIT,
 )
+from gamestonk_terminal.loggers import setup_logging
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.terminal_helper import (
     about_us,
@@ -29,26 +29,29 @@ from gamestonk_terminal.terminal_helper import (
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel
 
+logger = logging.getLogger(__name__)
+
 
 class TerminalController:
     """Terminal Controller class"""
 
     CHOICES = [
         "cls",
+        "h",
         "?",
         "help",
         "q",
         "quit",
-    ]
-
-    CHOICES_COMMANDS = [
+        "..",
+        "exit",
+        "r",
         "reset",
+    ]
+    CHOICES_COMMANDS = [
         "update",
         "about",
         "keys",
     ]
-
-    CHOICES_SHORTHAND_MENUS = ["s", "e", "c", "p", "f", "rp", "rs"]
     CHOICES_MENUS = [
         "stocks",
         "economy",
@@ -59,43 +62,67 @@ class TerminalController:
         "reports",
         "resources",
     ]
-
     CHOICES += CHOICES_COMMANDS
     CHOICES += CHOICES_MENUS
-    CHOICES += CHOICES_SHORTHAND_MENUS
 
-    def __init__(self):
+    def __init__(self, jobs_cmds: List[str] = None):
         """Constructor"""
-        self.update_succcess = False
         self.t_parser = argparse.ArgumentParser(add_help=False, prog="terminal")
         self.t_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
-        self.completer = NestedCompleter.from_nested_dict(
-            {c: None for c in self.CHOICES}
-        )
+
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: None for c in self.CHOICES}
+
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        self.queue: List[str] = list()
+
+        if jobs_cmds:
+            # close the eyes if the user forgets the initial `/`
+            if len(jobs_cmds) > 0:
+                if jobs_cmds[0][0] != "/":
+                    jobs_cmds[0] = f"/{jobs_cmds[0]}"
+
+            self.queue = " ".join(jobs_cmds).split("/")
+
+        self.update_succcess = False
 
     def print_help(self):
         """Print help"""
         help_text = """
-What do you want to do?
-    cls         clear screen
-    ?/help      show this menu again
-    update      update terminal from remote
-    keys        check for defined api keys
-    reset       reset terminal and reload configs
-    about       about us
-    q(uit)      to abandon the program
+Multiple jobs queue (where each '/' denotes a new command). E.g.
+    /stocks $ disc/ugs -n 3/../load tsla/candle
 
->>  stocks
->>  crypto
->>  etf
->>  economy
->>  forex
->>  portfolio
->>  reports
->>  resources
+If you want to jump from crypto/ta to stocks you can use an absolute path that starts with a slash (/). E.g.
+    /crypto/ta $ /stocks
+
+The previous logic also holds for when launching the terminal. E.g.
+    $ python terminal.py /stocks/disc/ugs -n 3/../load tsla/candle
+
+The main commands you should be aware when navigating through the terminal are:
+    cls             clear the screen
+    help / h / ?    help menu
+    quit / q / ..   quit this menu and go one menu above
+    exit            exit the terminal
+    reset / r       reset the terminal and reload configs from the current location
+
+    about           about us
+    update          update terminal automatically
+    keys            check for status of API keys
+
+>   stocks
+>   crypto
+>   etf
+>   economy
+>   forex
+>   portfolio
+>   reports
+>   resources
     """
         print(help_text)
 
@@ -104,54 +131,74 @@ What do you want to do?
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
-
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+            # Absolute path is specified.
+            if not actions[0]:
+                # Since we are already in home we can pick up the first instruction
+                an_input = actions[1]
+                idx_to_start = 2
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+                idx_to_start = 1
+
+            # Add all instructions to the queue
+            for cmd in actions[idx_to_start:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.t_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
-
-        return getattr(
-            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
+        getattr(
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+
     def call_help(self, _):
-        """Process Help command"""
+        """Process help command"""
         self.print_help()
 
     def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+        """Process quit menu command"""
+        print("")
+        self.queue.insert(0, "quit")
 
-    def call_q(self, _):
-        """Process Quit command - quit the program"""
-        return True
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        self.queue.insert(0, "quit")
 
-    # COMMANDS
     def call_reset(self, _):
         """Process reset command"""
-        return True
+        # has been dealt with before
 
     def call_update(self, _):
         """Process update command"""
         self.update_succcess = not update_terminal()
-        return True
 
     def call_keys(self, _):
         """Process keys command"""
@@ -161,172 +208,165 @@ What do you want to do?
         """Process about command"""
         about_us()
 
-    # MENUS
     def call_stocks(self, _):
         """Process stocks command"""
         from gamestonk_terminal.stocks import stocks_controller
 
-        return stocks_controller.menu()
-
-    def call_s(self, _):
-        """Process stocks command"""
-        return self.call_stocks(_)
+        self.queue = stocks_controller.menu("", self.queue)
 
     def call_crypto(self, _):
         """Process crypto command"""
         from gamestonk_terminal.cryptocurrency import crypto_controller
 
-        return crypto_controller.menu()
-
-    def call_c(self, _):
-        """Process crypto command"""
-        return self.call_crypto(_)
+        self.queue = crypto_controller.menu(queue=self.queue)
 
     def call_economy(self, _):
         """Process economy command"""
         from gamestonk_terminal.economy import economy_controller
 
-        return economy_controller.menu()
-
-    def call_e(self, _):
-        """Process economy command"""
-        return self.call_economy(_)
+        self.queue = economy_controller.menu(self.queue)
 
     def call_etf(self, _):
         """Process etf command"""
         from gamestonk_terminal.etf import etf_controller
 
-        return etf_controller.menu()
+        self.queue = etf_controller.menu(self.queue)
 
     def call_forex(self, _):
         """Process forex command"""
         from gamestonk_terminal.forex import forex_controller
 
-        return forex_controller.menu()
-
-    def call_f(self, _):
-        """Process forex command"""
-        return self.call_forex(_)
+        self.queue = forex_controller.menu(self.queue)
 
     def call_reports(self, _):
         """Process reports command"""
         from gamestonk_terminal.reports import reports_controller
 
-        return reports_controller.menu()
-
-    def call_rp(self, _):
-        """Process reports command"""
-        return self.call_reports(_)
+        self.queue = reports_controller.menu(self.queue)
 
     def call_resources(self, _):
         """Process resources command"""
         from gamestonk_terminal.resources import resources_controller
 
-        return resources_controller.menu()
-
-    def call_rs(self, _):
-        """Process resources command"""
-        return self.call_resources(_)
+        self.queue = resources_controller.menu(self.queue)
 
     def call_portfolio(self, _):
         """Process portfolio command"""
         from gamestonk_terminal.portfolio import portfolio_controller
 
-        return portfolio_controller.menu()
-
-    def call_p(self, _):
-        """Process portfolio command"""
-        return self.call_portfolio(_)
+        self.queue = portfolio_controller.menu(self.queue)
 
 
-def terminal(menu_prior_to_reset=""):
+def terminal(jobs_cmds: List[str] = None):
     """Terminal Menu"""
+    setup_logging()
 
-    bootup()
-    process_input = False
-    t_controller = TerminalController()
+    logger.info("Terminal started")
 
-    if config_terminal.DEFAULT_CONTEXT or menu_prior_to_reset:
-        if (
-            config_terminal.DEFAULT_CONTEXT in t_controller.CHOICES_MENUS
-            or menu_prior_to_reset in t_controller.CHOICES_MENUS
-        ):
-            try:
+    ret_code = 1
+    t_controller = TerminalController(jobs_cmds)
+    an_input = ""
+
+    if not jobs_cmds:
+        bootup()
+
+    while ret_code:
+        if gtff.ENABLE_QUICK_EXIT:
+            print("Quick exit enabled")
+            break
+
+        # There is a command in the queue
+        if t_controller.queue and len(t_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
+            if t_controller.queue[0] in ("q", "..", "quit"):
                 print("")
-                process_input = t_controller.switch(
-                    menu_prior_to_reset or config_terminal.DEFAULT_CONTEXT.lower()
-                )
-                # Check if the user wants to reset application
-                if process_input == MENU_RESET:
-                    ret_code = reset(menu_prior_to_reset)
-                    if ret_code != 0:
-                        print_goodbye()
+                if len(t_controller.queue) > 1:
+                    return t_controller.queue[1:]
+                return []
 
-            except SystemExit:
-                print("")
+            # Consume 1 element from the queue
+            an_input = t_controller.queue[0]
+            t_controller.queue = t_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
+            if an_input and an_input.split(" ")[0] in t_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} / $ {an_input}")
+
+        # Get input command from user
         else:
-            print("\nInvalid DEFAULT_CONTEXT config selected!", "\n")
+            # Display help menu when entering on this menu from a level above
+            if not an_input:
+                t_controller.print_help()
 
-    if process_input not in (MENU_QUIT, MENU_RESET):
-        t_controller.print_help()
-
-        while True:
-            if gtff.ENABLE_QUICK_EXIT:
-                print("Quick exit enabled")
-                break
-
+            # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT:
                 an_input = session.prompt(
-                    f"{get_flair()}> ", completer=t_controller.completer
+                    f"{get_flair()} / $ ",
+                    completer=t_controller.completer,
+                    search_ignore_case=True,
                 )
-
+            # Get input from user without auto-completion
             else:
-                an_input = input(f"{get_flair()}> ")
+                an_input = input(f"{get_flair()} / $ ")
 
-            # Is command empty
-            if not an_input:
-                print("")
-                continue
+        try:
+            # Process the input command
+            t_controller.queue = t_controller.switch(an_input)
 
-            # Process list of commands selected by user
-            try:
-                process_input = t_controller.switch(an_input)
-                # MENU_GO_BACK - Show main context menu again
-                # MENU_QUIT - Quit terminal
-                # MENU_RESET - Reset terminal and go back to same previous menu
+            if an_input in ("q", "quit", "..", "exit"):
+                print_goodbye()
+                break
 
-                if process_input == MENU_GO_BACK:
-                    t_controller.print_help()
-                elif process_input in (MENU_QUIT, MENU_RESET):
-                    break
-
-            except SystemExit:
-                print("The command selected doesn't exist\n")
-                similar_cmd = difflib.get_close_matches(
-                    an_input, t_controller.CHOICES, n=1, cutoff=0.7
-                )
-                if similar_cmd:
-                    print(f"Did you mean '{similar_cmd[0]}'?\n")
-                    continue
-
-        if not gtff.ENABLE_QUICK_EXIT:
             # Check if the user wants to reset application
-            if (
-                an_input == "reset"
-                or t_controller.update_succcess
-                or process_input == MENU_RESET
-            ):
-                ret_code = reset(an_input if an_input != "reset" else "")
+            if an_input in ("r", "reset") or t_controller.update_succcess:
+                ret_code = reset(
+                    t_controller.queue if len(t_controller.queue) > 0 else []
+                )
                 if ret_code != 0:
                     print_goodbye()
+                    break
+
+        except SystemExit:
+            print(f"\nThe command '{an_input}' doesn't exist on the / menu", end="")
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                t_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
+            if similar_cmd:
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        t_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
+                else:
+                    an_input = similar_cmd[0]
+
+                print(f" Replacing by '{an_input}'.")
+                t_controller.queue.insert(0, an_input)
             else:
-                print_goodbye()
-    else:
-        print_goodbye()
+                print("\n")
 
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        terminal(sys.argv[1])
+        if ".gst" in sys.argv[1]:
+            if os.path.isfile(sys.argv[1]):
+                with open(sys.argv[1]) as fp:
+                    simulate_argv = f"/{'/'.join([line.rstrip() for line in fp])}"
+                    terminal(simulate_argv.replace("//", "/home/").split())
+            else:
+                print(
+                    f"The file '{sys.argv[1]}' doesn't exist. Launching terminal without any configuration.\n"
+                )
+                terminal()
+        else:
+            terminal(sys.argv[1:])
     else:
         terminal()

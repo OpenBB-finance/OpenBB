@@ -27,7 +27,6 @@ def display_big_mac_index(
     export : str, optional
         Format data, by default ""
     """
-    big_mac = pd.DataFrame()
     df_cols = ["Date"]
     df_cols.extend(country_codes)
     big_mac = pd.DataFrame(columns=df_cols)
@@ -37,8 +36,10 @@ def display_big_mac_index(
         big_mac["Date"] = df1["Date"]
     big_mac.set_index("Date", inplace=True)
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    big_mac.plot(ax=ax)
+    big_mac.plot(ax=ax, marker="o")
+    ax.legend(bbox_to_anchor=(1, 1))
     ax.set_title("Big Mac Index (USD)")
+    ax.set_ylabel("Price of Big Mac in USD")
     ax.grid("on")
     if gtff.USE_ION:
         plt.ion()
@@ -47,11 +48,7 @@ def display_big_mac_index(
 
     if raw:
         if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    big_mac.head(20), headers=big_mac.columns, tablefmt="fancy_grid"
-                )
-            )
+            print(tabulate(big_mac, headers=big_mac.columns, tablefmt="fancy_grid"))
         else:
             print(big_mac.head(20).to_string())
 

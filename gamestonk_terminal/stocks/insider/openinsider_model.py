@@ -889,7 +889,7 @@ def check_open_insider_industry(d_industry: Dict) -> str:
         error message. If empty, no error.
     """
     industry = d_industry["SectorSubsectorIndustry"]
-    if industry not in d_SectorSubsectorIndustry.keys():
+    if industry not in d_SectorSubsectorIndustry:
         return f"Invalid Industry.SectorSubsectorIndustry '{industry}'. See comments at the end of template.ini file.\n"
 
     return ""

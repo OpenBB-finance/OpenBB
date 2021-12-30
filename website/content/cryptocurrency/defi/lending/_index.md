@@ -1,12 +1,12 @@
 ```
-usage: lending [-t TOP] [--current] [--export {csv,json,xlsx}] [-h]
+usage: lending [-l N] [--current] [--export {csv,json,xlsx}] [-h]
 ```
 
 Display DeFi lending rates. [Source: https://defirate.com/]
 
 ```
 optional arguments:
-  -t TOP, --top TOP     top N number records (default: 15)
+  -l N, --limit N       display N records (default: 10)
   --current             Show Current Lending Rates or Last 30 Days Average
                         (default: True)
   --export {csv,json,xlsx}
