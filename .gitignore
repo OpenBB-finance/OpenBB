@@ -8,7 +8,6 @@ __pycache__/
 env/
 venv/
 !notebooks/reports/.gitkeep
-!jupyterlab/dashboards/*.ipynb
 .python-version
 iframe_figures/
 exports/*
@@ -29,6 +28,7 @@ jupyterlab/*/.ipynb_checkpoints
 jupyterlab/*/*.tsbuildinfo
 jupyterlab/*/ui-tests/test-results/
 jupyterlab/*/ui-tests/tests/*.ts-snapshots/
+!jupyterlab/dashboards/stocks_interactive.ipynb
 
 # Sphinx documentation build files
 docs/_build
