@@ -77,7 +77,6 @@ class OnchainController:
         "th",
         "prices",
         "address",
-        "active",
         "lt",
         "dvcp",
         "tv",
@@ -358,9 +357,8 @@ class OnchainController:
             required="-h" not in other_args,
         )
 
-        if other_args:
-            if not other_args[0][0] == "-":
-                other_args.insert(0, "--address")
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "--address")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -1412,18 +1410,16 @@ def menu(queue: List[str] = None):
                     candidate_input = (
                         f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
                     )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        onchain_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
                 else:
-                    candidate_input = similar_cmd[0]
-
-                if candidate_input == an_input:
-                    an_input = ""
-                    onchain_controller.queue = []
-                    print("\n")
-                    continue
+                    an_input = similar_cmd[0]
 
                 print(f" Replacing by '{an_input}'.")
                 onchain_controller.queue.insert(0, an_input)
             else:
                 print("\n")
-                an_input = ""
-                onchain_controller.queue = []

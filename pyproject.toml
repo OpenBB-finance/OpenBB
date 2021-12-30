@@ -83,6 +83,7 @@ rich = "^10.16.1"
 investpy = "^1.0.7"
 dnspython = "^2.1.0"
 
+
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
 pylint = "^2.7.2"

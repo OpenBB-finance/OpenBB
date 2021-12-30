@@ -1,6 +1,7 @@
 crypto
 load btc
 dd
+nonzero
 info
 market
 ath
