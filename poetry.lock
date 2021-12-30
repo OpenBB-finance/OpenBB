@@ -3712,7 +3712,7 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "83357bb0d86aba5173632ee2b3afc7a464904266db55a101ad710b9623a5092c"
+content-hash = "1d15aef6409a8e00f1570f98276997208c7ceb877cc7a611101fc8720b611a4e"
 
 [metadata.files]
 absl-py = [
@@ -4057,21 +4057,19 @@ cssselect = [
     {file = "cssselect-1.1.0.tar.gz", hash = "sha256:f95f8dedd925fd8f54edb3d2dfb44c190d9d18512377d3c1e2388d16126879bc"},
 ]
 cvxpy = [
-    {file = "cvxpy-1.1.18-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:80018d9a4478253cc27d6d87677c4ba35908bf52e71a94e4beba5639c39f283d"},
-    {file = "cvxpy-1.1.18-cp310-cp310-manylinux_2_24_x86_64.whl", hash = "sha256:d3c35f47032ba15af0ae5b7d4b44ed8dd287e27101f1a264295dd4885f8aea70"},
-    {file = "cvxpy-1.1.18-cp310-cp310-win_amd64.whl", hash = "sha256:20b9f214f092ff5dec8e8b56ddb365690d8e02f6bd005ee9b59367150e3efd05"},
-    {file = "cvxpy-1.1.18-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:d853b73aca9223901b1de4dcd8c71d9732e7d38e915008956aa13fa2920d2652"},
-    {file = "cvxpy-1.1.18-cp36-cp36m-manylinux_2_24_x86_64.whl", hash = "sha256:254683742bcd4427eaa17ca44675b540690e043782d467c4c68d1d4ef003c062"},
-    {file = "cvxpy-1.1.18-cp36-cp36m-win_amd64.whl", hash = "sha256:6d2dd80550b9ab5f36a3961c64b51d70f364bd375565400534af65b5cf590787"},
-    {file = "cvxpy-1.1.18-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:e634c5afa8d4c7db9691d2fb9f982fcf9be41bf3fb8c781e47816fa290acbdbb"},
-    {file = "cvxpy-1.1.18-cp37-cp37m-manylinux_2_24_x86_64.whl", hash = "sha256:d84fb6de19c998a4db8e442d2d5d5c155b983ca4f1833fd79fb6ad47c092f349"},
-    {file = "cvxpy-1.1.18-cp37-cp37m-win_amd64.whl", hash = "sha256:d21d81ab76f6fae44090c19b9a802e42e8af440d9a505be892c1e6766621e4a6"},
-    {file = "cvxpy-1.1.18-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:ec5371c339cd35cb47fc8e9f7e6dff22e20612fdfa6b17dc508fc513130337ba"},
-    {file = "cvxpy-1.1.18-cp38-cp38-manylinux_2_24_x86_64.whl", hash = "sha256:2699db1cc889fd2e0ea459f022866fcc1182241f4520c5550ca5136ef06c5246"},
-    {file = "cvxpy-1.1.18-cp38-cp38-win_amd64.whl", hash = "sha256:022c8d9c82d2f00535e1d08761e88aa5c1729ee685dfb2ea60465693f54550c1"},
-    {file = "cvxpy-1.1.18-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:9f82ca609e34577062940d5c32bc1f687fcf83d39ca92ec0d04fb1f290b43355"},
-    {file = "cvxpy-1.1.18-cp39-cp39-manylinux_2_24_x86_64.whl", hash = "sha256:569f7298539a2bd8704209628af11ecf1bca0cff2d5e27c46b57ffea921a01cf"},
-    {file = "cvxpy-1.1.18-cp39-cp39-win_amd64.whl", hash = "sha256:2eb079877d23f03494141102d6cf9d3139edf5e1dc07bfa3f767f4c79e837ecb"},
+    {file = "cvxpy-1.1.17-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:f612f2a07550eaf286dc79ddbafde74504d10e218d5efab0e8e4c022b97d90b5"},
+    {file = "cvxpy-1.1.17-cp36-cp36m-manylinux_2_24_x86_64.whl", hash = "sha256:8af6aaae658471f05856555847363e68140169f164c5b0b184e85bc296b69a20"},
+    {file = "cvxpy-1.1.17-cp36-cp36m-win_amd64.whl", hash = "sha256:4fec0b03c2b995d6191b9176f51b1f1fdd057c89d5b5ca12ef4263ad19214a03"},
+    {file = "cvxpy-1.1.17-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:6ae101311b28a9e7c501ff6aefb03c588d5cce6803865b6df1bfbd80b969f9f8"},
+    {file = "cvxpy-1.1.17-cp37-cp37m-manylinux_2_24_x86_64.whl", hash = "sha256:5d217c25e970c2f2a55ee607822823e91aaa07522913f7c61c7f9d4d0d1de885"},
+    {file = "cvxpy-1.1.17-cp37-cp37m-win_amd64.whl", hash = "sha256:8269bf471f5e015cec6289dfad64e5f7c50e7f35d2d0823490a4c3ea278f1a20"},
+    {file = "cvxpy-1.1.17-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:1fa6768bcefe4b5c8e413e20547f914b8e3c908f06fc833a003dde0ea1aeb56d"},
+    {file = "cvxpy-1.1.17-cp38-cp38-manylinux_2_24_x86_64.whl", hash = "sha256:472c1fb6568a7bedc874f10b234d569cd16290fb9467dc2768d06dfa1c2dbc7f"},
+    {file = "cvxpy-1.1.17-cp38-cp38-win_amd64.whl", hash = "sha256:c0f23c57c4afe9ab5afa9bf408d8b0c8ffc3c8c57d54e81ab56b7dfe0bf9c34b"},
+    {file = "cvxpy-1.1.17-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:06136af30d1ea605ca8093a8664edc8f963155a8765214a430973259450b489e"},
+    {file = "cvxpy-1.1.17-cp39-cp39-manylinux_2_24_x86_64.whl", hash = "sha256:ea4381c55dd4f7c0a140a59dfa777c7bb09d6fa513d14a7f5381948d1540b966"},
+    {file = "cvxpy-1.1.17-cp39-cp39-win_amd64.whl", hash = "sha256:cdd9cfb864bcae5233a52fa4060bbeb7c81b29a23d82acafa071e372b23f6f0b"},
+    {file = "cvxpy-1.1.17.tar.gz", hash = "sha256:3397d3b89d770ea9f0fc359b1c9b3afede6a0d3bea1cff20e2653b13451cdb8a"},
 ]
 cycler = [
     {file = "cycler-0.11.0-py3-none-any.whl", hash = "sha256:3a27e95f763a428a739d2add979fa7494c912a32c17c4c38c4d5f082cad165a3"},
