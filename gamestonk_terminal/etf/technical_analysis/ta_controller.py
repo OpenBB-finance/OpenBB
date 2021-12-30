@@ -110,7 +110,7 @@ class TechnicalAnalysisController:
         """Print help"""
         help_str = f"""
 
-ETF: {self.etf}
+ETF: {self.ticker}
 
 Overlap:
     ema         exponential moving average
@@ -222,7 +222,7 @@ Custom:
         self.queue.insert(0, "ta")
         if self.ticker:
             self.queue.insert(0, f"load {self.ticker}")
-        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "etf")
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")

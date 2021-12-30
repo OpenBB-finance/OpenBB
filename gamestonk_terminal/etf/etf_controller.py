@@ -120,9 +120,9 @@ Major holdings: {', '.join(self.etf_holdings)}
     holdings      top company holdings [StockAnalysis]
     weights       sector weights allocation [Yfinance]
     summary       summary description of the ETF [Yfinance]
-
     candle        view a candle chart for ETF
     news          latest news of the company [News API]
+
     pir           create passive investor excel report (for one or more ETFs)
     compare       compare multiple different ETFs
 
@@ -730,7 +730,7 @@ Major holdings: {', '.join(self.etf_holdings)}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="compare",
-            description="Compare selected ETFs",
+            description="Compare selected ETFs [Source: StockAnalysis]",
         )
         parser.add_argument(
             "-e",
