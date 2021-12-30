@@ -65,7 +65,7 @@ def get_fund_symbol_from_name(name: str) -> Tuple[str, str]:
     name_search_results = investpy.search_funds(by="name", value=name)
     if name_search_results.empty:
         return "", ""
-    symbol = name_search_results.loc[:, "name"][0]
+    symbol = name_search_results.loc[:, "symbol"][0]
     country = name_search_results.country.values[0]
     console.print(
         f"Name: [cyan][italic]{symbol.upper()}[/italic][/cyan] found for {name} in country: {country.title()}\n"
@@ -152,10 +152,17 @@ def get_fund_historical(
     """
     if name:
         fund_name = fund
-        fund_symbol, matching_country = get_fund_symbol_from_name(fund)
+        try:
+            fund_symbol, matching_country = get_fund_symbol_from_name(fund)
+        except RuntimeError:
+            return pd.DataFrame(), fund, "", country
     else:
-        fund_name, matching_country = get_fund_name_from_symbol(fund)
         fund_symbol = fund
+        try:
+            fund_name, matching_country = get_fund_name_from_symbol(fund)
+        except RuntimeError:
+            return pd.DataFrame(), "", fund, country
+
     # Note that dates for investpy need to be in the format dd/mm/yyyy
     from_date = start_date.strftime("%d/%m/%Y")
     to_date = end_date.strftime("%d/%m/%Y")

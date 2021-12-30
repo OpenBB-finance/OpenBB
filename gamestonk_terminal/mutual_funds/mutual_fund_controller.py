@@ -15,6 +15,8 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    check_non_negative_float,
     check_positive,
     get_flair,
     parse_known_args_and_warn,
@@ -80,7 +82,7 @@ class FundController:
         self.fund_symbol = ""
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
-            choices["country"]["-n"] = {c: None for c in self.fund_countries}
+            choices["country"] = {c: None for c in self.fund_countries}
             choices["search"]["-b"] = {c: None for c in self.search_by_choices}
             choices["search"]["--by"] = {c: None for c in self.search_by_choices}
             choices["search"]["-s"] = {c: None for c in self.search_cols}
@@ -111,13 +113,13 @@ Investing.com[/italic]:
     load          load historical fund data
 
 Current Fund: [cyan] {fund_string}[/cyan]
-[italic]
-Investing.com[/italic]:{'[dim]' if not self.fund_symbol else ''}
+[italic]{'[dim]' if not self.fund_symbol else ''}
+Investing.com[/italic]:
     info          get fund information
     plot          plot loaded historical fund data{'[/dim]' if not self.fund_symbol else ''}
-[italic]
-Yahoo Finance[/italic] [dim]currently only united states supported[/dim]:
-    {'[dim]' if not self.fund_symbol or self.country!='united states' else ''}sector        sector weightings
+[italic]{'[dim]' if not self.fund_symbol or self.country!='united states' else ''}
+Yahoo Finance[/italic]:
+    sector        sector weightings
     equity        equity holdings
     {'[/dim]' if not self.fund_symbol or self.country!='united states' else ''}
     """
@@ -224,7 +226,7 @@ Yahoo Finance[/italic] [dim]currently only united states supported[/dim]:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.country = " ".join(ns_parser.name)
-        console.print("")
+        console.print("\n")
         return self.queue
 
     @try_except
@@ -250,6 +252,7 @@ Yahoo Finance[/italic] [dim]currently only united states supported[/dim]:
             help="Fund string to search for",
             dest="fund",
             type=str,
+            nargs="+",
             required="-h" not in other_args,
         )
         parser.add_argument(
@@ -280,9 +283,10 @@ Yahoo Finance[/italic] [dim]currently only united states supported[/dim]:
             other_args.insert(0, "-f")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            search_string = " ".join(ns_parser.fund)
             investpy_view.display_search(
                 by=ns_parser.by,
-                value=ns_parser.fund,
+                value=search_string,
                 country=self.country,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
@@ -327,6 +331,11 @@ Yahoo Finance[/italic] [dim]currently only united states supported[/dim]:
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if not self.fund_name:
+                console.print(
+                    "No fund loaded.  Please use `load` first to plot.\n", style="bold"
+                )
+                return self.queue
             investpy_view.display_fund_info(self.fund_name, country=self.country)
         return self.queue
 
@@ -389,7 +398,15 @@ Yahoo Finance[/italic] [dim]currently only united states supported[/dim]:
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,
             )
-
+            if self.data.empty:
+                console.print(
+                    """No data found.
+Potential errors
+    -- Incorrect country specified
+    -- ISIN supplied instead of symbol
+    -- Name used, but --name flag not passed"""
+                )
+        console.print("\n")
         return self.queue
 
     @try_except
@@ -425,8 +442,18 @@ Yahoo Finance[/italic] [dim]currently only united states supported[/dim]:
             prog="sector",
             description="Show fund sector weighting.",
         )
+        parser.add_argument(
+            "-m",
+            "--min",
+            type=check_non_negative_float,
+            dest="min",
+            help="Minimum positive float to display sector",
+            default=5,
+        )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
         if ns_parser:
             if self.country != "united states":
                 console.print(
@@ -438,7 +465,11 @@ Yahoo Finance[/italic] [dim]currently only united states supported[/dim]:
                     "No fund loaded.  Please use `load` first to plot.\n", style="bold"
                 )
                 return self.queue
-            yfinance_view.display_sector(self.fund_symbol)
+            yfinance_view.display_sector(
+                self.fund_symbol,
+                min_pct_to_display=ns_parser.min,
+                export=ns_parser.export,
+            )
 
         return self.queue
 
@@ -489,7 +520,7 @@ def menu(queue: List[str] = None):
 
             # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input.split(" ")[0] in fund_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /fund/ $ {an_input}")
+                print(f"{get_flair()} /funds/ $ {an_input}")
 
         # Get input command from user
         else:
@@ -501,14 +532,14 @@ def menu(queue: List[str] = None):
             # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and fund_controller.completer:
                 an_input = session.prompt(
-                    f"{get_flair()} /fund/ $ ",
+                    f"{get_flair()} /funds/ $ ",
                     completer=fund_controller.completer,
                     search_ignore_case=True,
                 )
 
             # Get input from user without auto-completion
             else:
-                an_input = input(f"{get_flair()} /fund/ $ ")
+                an_input = input(f"{get_flair()} /funds/ $ ")
 
         try:
             # Process the input command
@@ -516,7 +547,7 @@ def menu(queue: List[str] = None):
 
         except SystemExit:
             print(
-                f"\nThe command '{an_input}' doesn't exist on the /fund menu.", end=""
+                f"\nThe command '{an_input}' doesn't exist on the /funds/ menu.", end=""
             )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,

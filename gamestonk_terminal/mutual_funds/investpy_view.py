@@ -70,7 +70,7 @@ def display_search(
         )
     else:
         console.print(searches.head(limit).to_string())
-    console.print("")
+    console.print("\n")
 
 
 def display_overview(country: str = "united states", limit: int = 10, export: str = ""):
@@ -102,7 +102,7 @@ def display_overview(country: str = "united states", limit: int = 10, export: st
         f"overview_{country.replace(' ','_')}",
         overview,
     )
-    console.print("")
+    console.print("\n")
 
 
 def display_fund_info(fund_name: str, country: str = "united states"):
@@ -118,7 +118,7 @@ def display_fund_info(fund_name: str, country: str = "united states"):
     info = (
         investpy_model.get_fund_info(fund_name, country)
         .reset_index(drop=False)
-        .fillna(0)
+        .dropna()
     )
     if gtff.USE_TABULATE_DF:
         console.print(
@@ -131,7 +131,7 @@ def display_fund_info(fund_name: str, country: str = "united states"):
         )
     else:
         console.print(info.to_string())
-    console.print("")
+    console.print("\n")
 
 
 def display_historical(data: pd.DataFrame, fund: str = "", export: str = ""):

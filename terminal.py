@@ -238,7 +238,7 @@ The main commands you should be aware when navigating through the terminal are:
         """Process etf command"""
         from gamestonk_terminal.mutual_funds import mutual_fund_controller
 
-        return mutual_fund_controller.menu(self.queue)
+        self.queue = mutual_fund_controller.menu(self.queue)
 
     def call_forex(self, _):
         """Process forex command"""
