@@ -23,13 +23,13 @@ async def opt_command(ctx, ticker="", expiration="", strike="", put=""):
         print(f"!stocks.opt {ticker} {expiration} {strike} {put}")
 
     if ticker:
+        current = 1
         hist = (
             f"7️⃣ !stocks.opt.hist {ticker} (strike*) (c/p*) {expiration}\n\n* Required"
         )
-        hist_emoji = "❌"
         if strike and put:
             hist = f"7️⃣ !stocks.opt.hist {ticker} {strike} {put} {expiration}"
-            hist_emoji = "7️⃣"
+            current = 2
         text = (
             "```0️⃣ !stocks.opt.unu\n"
             f"1️⃣ !stocks.opt.exp {ticker}\n"
@@ -54,7 +54,10 @@ async def opt_command(ctx, ticker="", expiration="", strike="", put=""):
     )
     msg = await ctx.send(embed=embed, delete_after=60.0)
 
-    emoji_list = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", hist_emoji]
+    if current == 1:
+        emoji_list = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣"]
+    if current == 2:
+        emoji_list = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣"]
 
     for emoji in emoji_list:
         await msg.add_reaction(emoji)

@@ -318,17 +318,18 @@ class OptionsCommands(discord.ext.commands.Cog):
             current = 2
             exp = int(expiration.replace("-", ""))
             if exp > 9 and (expiration not in dates) and (exp not in index_dates):
+                call_arg = (strike, put)
                 func_cmd = opt_command
                 expiry = None
-                await expiry_dates_reaction(ctx, ticker, expiry, func_cmd)
+                await expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg)
                 return
             if exp in index_dates:
                 expiration = dates[int(expiration)]
+
             hist = f"7️⃣ !stocks.opt.hist {ticker} (strike*) (c/p*) {expiration}\n\n* Required"
-            hist_emoji = "❌"
             if strike and put:
                 hist = f"7️⃣ !stocks.opt.hist {ticker} {strike} {put} {expiration}"
-                hist_emoji = "7️⃣"
+                current = 3
 
             text = (
                 "```0️⃣ !stocks.opt.unu\n"
@@ -356,12 +357,12 @@ class OptionsCommands(discord.ext.commands.Cog):
 
         if current == 0:
             emoji_list = ["0️⃣"]
-
         if current == 1:
             emoji_list = ["0️⃣", "1️⃣", "2️⃣"]
-
         if current == 2:
-            emoji_list = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", hist_emoji]
+            emoji_list = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣"]
+        if current == 3:
+            emoji_list = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣"]
 
         for emoji in emoji_list:
             await msg.add_reaction(emoji)
