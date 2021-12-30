@@ -38,7 +38,7 @@ async def hist_command(
 
         if strike is None or put == "":
             raise Exception(
-                'A strike and c/p is required\n```bash\n"!hist {ticker} {strike} {c/p}"```'
+                'A strike and c/p is required\n```bash\n"!stocks.opt.hist {ticker} {strike} {c/p}"```'
             )
 
         chain_id = None
@@ -78,7 +78,7 @@ async def hist_command(
 
         if cfg.DEBUG:
             print(f"Image: {imagefile}")
-        title = " " + ticker.upper() + " Options: History"
+        title = f"{ticker.upper()} {strike} {op_type} expiring {expiry} Historical"
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_image(url="attachment://opt_hist.png")
         embed.set_author(
