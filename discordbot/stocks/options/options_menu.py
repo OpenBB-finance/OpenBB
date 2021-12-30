@@ -22,9 +22,7 @@ class OptionsCommands(discord.ext.commands.Cog):
         self.bot = bot
 
     @discord.ext.commands.command(name="stocks.opt.iv", usage="[ticker]")
-    async def iv(self, ctx: discord.ext.commands.Context, ticker: str= None):
-     async with ctx.typing():
-        await asyncio.sleep(0.2)
+    async def iv(self, ctx: discord.ext.commands.Context, ticker: str = None):
         """Displays ticker options IV [Barchart]
 
         Parameters
@@ -32,12 +30,17 @@ class OptionsCommands(discord.ext.commands.Cog):
         ticker: str
             ticker,
         """
-        await iv_command(ctx, ticker)
+        async with ctx.typing():
+            await asyncio.sleep(0.2)
+
+            await iv_command(ctx, ticker)
 
     @discord.ext.commands.command(name="stocks.opt.unu", usage="[ticker]")
-    async def unu(self, ctx: discord.ext.commands.Context, num: int= None,):
-     async with ctx.typing():
-        await asyncio.sleep(0.2)        
+    async def unu(
+        self,
+        ctx: discord.ext.commands.Context,
+        num: int = None,
+    ):
         """Unusual Options
 
         Parameters
@@ -45,8 +48,11 @@ class OptionsCommands(discord.ext.commands.Cog):
         ticker: str
             ticker
         """
-        await unu_command(ctx, num)
-    
+        async with ctx.typing():
+            await asyncio.sleep(0.2)
+
+            await unu_command(ctx, num)
+
     @discord.ext.commands.command(name="stocks.opt.exp", usage="[ticker]")
     async def expirations(self, ctx: discord.ext.commands.Context, ticker=""):
         """Get available expirations [yfinance]
@@ -58,10 +64,13 @@ class OptionsCommands(discord.ext.commands.Cog):
         """
         await expirations_command(ctx, ticker)
 
-    @discord.ext.commands.command(name="stocks.opt.calls", usage="[ticker] [expiration 0 - 9 (weeks out) or YYYY-MM-DD]")
-    async def calls(self, ctx: discord.ext.commands.Context, ticker:str = None, expiry: str = None):
-     async with ctx.typing():
-        await asyncio.sleep(0.2)
+    @discord.ext.commands.command(
+        name="stocks.opt.calls",
+        usage="[ticker] [expiration 0 - 9 (weeks out) or YYYY-MM-DD]",
+    )
+    async def calls(
+        self, ctx: discord.ext.commands.Context, ticker: str = None, expiry: str = None
+    ):
         """Get call options for ticker and given expiration
 
         Parameters
@@ -69,24 +78,27 @@ class OptionsCommands(discord.ext.commands.Cog):
         ticker: str
             Stock ticker
         expiry: str
-            accepts 0-9 or YYYY-MM-DD 
-            0 being weeklies
-            1+ for weeks out
+            accepts 0-9 or YYYY-MM-DD
+            0 weeklies, 1+ for weeks out
             prompts reaction helper if empty
         """
-        if cfg.DEBUG:
-            print(f"!stocks.opt.calls {ticker} {expiry}")
-        
-        func_cmd= calls_command
-    
+        async with ctx.typing():
+            await asyncio.sleep(0.2)
 
-        await expiry_dates_reaction(ctx, ticker, expiry, func_cmd)
+            if cfg.DEBUG:
+                print(f"!stocks.opt.calls {ticker} {expiry}")
 
-    @discord.ext.commands.command(name="stocks.opt.puts", usage="[ticker] [expiration 0 - 9 (weeks out) or YYYY-MM-DD]")
-    async def puts(self, ctx: discord.ext.commands.Context, ticker: str= None, expiry: str = None):
-     async with ctx.typing():
-        await asyncio.sleep(0.2)
-        
+            func_cmd = calls_command
+
+            await expiry_dates_reaction(ctx, ticker, expiry, func_cmd)
+
+    @discord.ext.commands.command(
+        name="stocks.opt.puts",
+        usage="[ticker] [expiration 0 - 9 (weeks out) or YYYY-MM-DD]",
+    )
+    async def puts(
+        self, ctx: discord.ext.commands.Context, ticker: str = None, expiry: str = None
+    ):
         """Get put options for ticker and given expiration
 
         Parameters
@@ -94,157 +106,159 @@ class OptionsCommands(discord.ext.commands.Cog):
         ticker: str
             Stock ticker
         expiry: str
-            accepts 0-9 or YYYY-MM-DD 
-            0 being weeklies
-            1+ for weeks out
+            accepts 0-9 or YYYY-MM-DD
+            0 weeklies, 1+ for weeks out
             prompts reaction helper if empty
         """
-        if cfg.DEBUG:
-            print(f"!stocks.opt.puts {ticker} {expiry}")
-        
-        func_cmd= puts_command
-    
+        async with ctx.typing():
+            await asyncio.sleep(0.2)
 
-        await expiry_dates_reaction(ctx, ticker, expiry, func_cmd)
-    
-    @discord.ext.commands.command(name="stocks.opt.oi", usage="[ticker] [expiration 0 - 9 (weeks out) or YYYY-MM-DD] [min strike] [max strike]")
-    async def oi(self, ctx: discord.ext.commands.Context, ticker: str= None, expiry: str= None, min_sp: float= None, max_sp: float= None):
-     async with ctx.typing():
-        await asyncio.sleep(0.2)
-        """Open Interest
-        
+            if cfg.DEBUG:
+                print(f"!stocks.opt.puts {ticker} {expiry}")
+
+            func_cmd = puts_command
+
+            await expiry_dates_reaction(ctx, ticker, expiry, func_cmd)
+
+    @discord.ext.commands.command(
+        name="stocks.opt.oi",
+        usage="[ticker] [expiration 0 - 9 (weeks out) or YYYY-MM-DD] [min strike] [max strike]",
+    )
+    async def oi(
+        self,
+        ctx: discord.ext.commands.Context,
+        ticker: str = None,
+        expiry: str = None,
+        min_sp: float = None,
+        max_sp: float = None,
+    ):
+        """Display options open interest for ticker and given expiration [Max Pain]
+
         Parameters
         -----------
         ticker: str
             ticker
         strike: float
-            strike 
+            strike
         expiry: str
-            accepts 0-9 or YYYY-MM-DD 
+            accepts 0-9 or YYYY-MM-DD
         min_sp: float
             min strike price
         max_sp:float
             max strike price
-            
-        Example:
-        (It's a Monday)
-        !stocks.opt.oi gme 0 500 1000
-            returns GME End of Week expiry strike prices 500-1000
-        
-        expiry = 0-9 or YYYY-MM-DD 
-                 0 being weeklies, 1+ for weeks out
 
-        if empty
-        
-        Sends a message to the discord user with the expiry dates.
+        Sends a message to the discord user with the expiry dates if empty.
         The user can then select a reaction to trigger the selected date.
         """
+        async with ctx.typing():
+            await asyncio.sleep(0.2)
 
-        if cfg.DEBUG:
-            print(f"!stocks.opt.oi {ticker} {expiry} {min_sp} {max_sp}")
-        
-        call_arg = (min_sp, max_sp)
-        func_cmd= oi_command
-    
+            if cfg.DEBUG:
+                print(f"!stocks.opt.oi {ticker} {expiry} {min_sp} {max_sp}")
 
-        await expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg)
+            call_arg = (min_sp, max_sp)
+            func_cmd = oi_command
 
-    @discord.ext.commands.command(name="stocks.opt.hist", usage="[ticker] [strike] [c or p (call/put)] [expiration 0 - 9 (weeks out) or YYYY-MM-DD]")
-    async def hist(self, ctx: discord.ext.commands.Context, ticker: str= None, strike: float= None, put="", expiry: str= None):
-     async with ctx.typing():
-        await asyncio.sleep(0.2)        
-        """Historical Options
+            await expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg)
+
+    @discord.ext.commands.command(
+        name="stocks.opt.hist",
+        usage="[ticker] [strike] [c or p (call/put)] [expiration 0 - 9 (weeks out) or YYYY-MM-DD]",
+    )
+    async def hist(
+        self,
+        ctx: discord.ext.commands.Context,
+        ticker: str = None,
+        strike: float = None,
+        put="",
+        expiry: str = None,
+    ):
+        """Display chart of given option historical price [Tradier]
 
         Parameters
         -----------
         ticker: str
             ticker
         strike: float
-            strike 
+            strike
         put: bool
             c for call
             p for put
         expiry: str
             accepts 0-9 or YYYY-MM-DD
-            
-        Example:
-        (It's a Monday)
-        !stocks.opt.hist gme 500 c 0
-            returns GME 500 calls End of Week expiry
-            
-        expiry = 0-9 or YYYY-MM-DD 
-                 0 being weeklies, 1+ for weeks out
 
-        if empty
-        
-        Sends a message to the discord user with the expiry dates.
-        The user can then select a reaction to trigger the selected date.            
+        Sends a message to the discord user with the expiry dates if empty.
+        The user can then select a reaction to trigger the selected date.
         """
-        if cfg.DEBUG:
-            print(f"!stocks.opt.hist {ticker} {strike} {put} {expiry}")
-        
-        if strike is None or put =="":
-            embed = discord.Embed(
-                title="ERROR Options: History",
-                colour=cfg.COLOR,
-                description="A strike and c/p is required\n```bash\n\"!stocks.opt.hist {ticker} {strike} {c/p}\"```",
+        async with ctx.typing():
+            await asyncio.sleep(0.2)
+
+            if cfg.DEBUG:
+                print(f"!stocks.opt.hist {ticker} {strike} {put} {expiry}")
+
+            if strike is None or put == "":
+                embed = discord.Embed(
+                    title="ERROR Options: History",
+                    colour=cfg.COLOR,
+                    description='A strike and c/p is required\n```bash\n"!stocks.opt.hist {ticker} {strike} {c/p}"```',
+                )
+
+                await ctx.send(embed=embed)
+                return
+
+            if put == "p":
+                put = bool(True)
+            if put == "c":
+                put = bool(False)
+
+            call_arg = (
+                strike,
+                put,
             )
+            func_cmd = hist_command
 
-            await ctx.send(embed=embed)
-            return
+            await expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg)
 
-        if put == "p":
-            put = bool(True)
-        if put == "c":
-            put = bool(False)
-        
-        call_arg = (strike, put,)
-        func_cmd= hist_command
-    
+    @discord.ext.commands.command(
+        name="stocks.opt.vol",
+        usage="[ticker] [expiration 0 - 9 (weeks out) or YYYY-MM-DD] [min strike] [max strike]",
+    )
+    async def vol(
+        self,
+        ctx: discord.ext.commands.Context,
+        ticker: str = None,
+        expiry: str = None,
+        min_sp: float = None,
+        max_sp: float = None,
+    ):
+        """Display options volume for ticker and given expiration
 
-        await expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg)
-
-    @discord.ext.commands.command(name="stocks.opt.vol", usage="[ticker] [expiration 0 - 9 (weeks out) or YYYY-MM-DD] [min strike] [max strike]")
-    async def vol(self, ctx: discord.ext.commands.Context, ticker: str= None, expiry: str= None, min_sp: float= None, max_sp: float= None):
-     async with ctx.typing():
-        await asyncio.sleep(0.2)
-        """Options Volume
-        
         Parameters
         -----------
         ticker: str
             ticker
         strike: float
-            strike 
+            strike
         expiry: str
             accepts 0-9 or YYYY-MM-DD
         min_sp: float
             min strike price
         max_sp:float
             max strike price
-            
-        Example:
-        (It's a Monday)
-        !stocks.opt.vol gme 0 500 1000
-            returns GME End of Week expiry strike prices 500-1000
-        
-        expiry = 0-9 or YYYY-MM-DD 
-                 0 being weeklies, 1+ for weeks out
 
-        if empty
-        
-        Sends a message to the discord user with the expiry dates.
+        Sends a message to the discord user with the expiry dates if empty.
         The user can then select a reaction to trigger the selected date.
         """
+        async with ctx.typing():
+            await asyncio.sleep(0.2)
 
-        if cfg.DEBUG:
-            print(f"!stocks.opt.vol {ticker} {expiry} {min_sp} {max_sp}")
-        
-        call_arg = (min_sp, max_sp)
-        func_cmd= vol_command
-    
+            if cfg.DEBUG:
+                print(f"!stocks.opt.vol {ticker} {expiry} {min_sp} {max_sp}")
 
-        await expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg)
+            call_arg = (min_sp, max_sp)
+            func_cmd = vol_command
+
+            await expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg)
 
     @discord.ext.commands.command(name="stocks.opt")
     async def opt(self, ctx: discord.ext.commands.Context, ticker="", expiration=""):

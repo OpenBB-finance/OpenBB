@@ -1,28 +1,25 @@
-import asyncio
 import discord
-import discordbot.config_discordbot as cfg
 import numpy as np
 import pandas as pd
 import requests
 from tabulate import tabulate
+
+import discordbot.config_discordbot as cfg
 from gamestonk_terminal.helper_funcs import get_user_agent
 
 
-async def unu_command(ctx, num: int= None):
- async with ctx.typing():
-    await asyncio.sleep(0.2)
+async def unu_command(ctx, num: int = None):
     """Unusual Options"""
-    
     try:
 
         # Debug
         if cfg.DEBUG:
             print(f"!stocks.opt.unu {num}")
-       
+
         # Check for argument
         if num is None:
             num = 10
-        
+
         pages = np.arange(0, num // 20 + 1)
         data_list = []
         for page_num in pages:
@@ -73,10 +70,19 @@ async def unu_command(ctx, num: int= None):
             }
         )
 
-        df = df.replace({'2021-', '2022-'},'', regex=True)
+        df = df.replace({"2021-", "2022-"}, "", regex=True)
 
-        
-        report = "```" + tabulate(df, headers=["T", "Exp", "ST", "C/P", "V/O", "Vol", "OI"], tablefmt="fancy_grid", showindex=False, floatfmt=["", "", ".1f", "", ".1f", ".0f", ".0f", ".2f", ".2f"],) + "```"
+        report = (
+            "```"
+            + tabulate(
+                df,
+                headers=["T", "Exp", "ST", "C/P", "V/O", "Vol", "OI"],
+                tablefmt="fancy_grid",
+                showindex=False,
+                floatfmt=["", "", ".1f", "", ".1f", ".0f", ".0f", ".2f", ".2f"],
+            )
+            + "```"
+        )
         embed = discord.Embed(
             title="Unusual Options",
             description=report,
@@ -85,7 +91,7 @@ async def unu_command(ctx, num: int= None):
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
-        )        
+        )
 
         await ctx.send(embed=embed)
 
@@ -98,6 +104,6 @@ async def unu_command(ctx, num: int= None):
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
-        )   
+        )
 
         await ctx.send(embed=embed)

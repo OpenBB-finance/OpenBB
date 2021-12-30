@@ -579,8 +579,8 @@ Stocks Menus:
                 self.interval,
                 self.queue,
             )
-
-        print("Use 'load <ticker>' prior to this command!", "\n")
+        else:
+            print("Use 'load <ticker>' prior to this command!", "\n")
 
     def call_dd(self, _):
         """Process dd command"""
@@ -590,8 +590,8 @@ Stocks Menus:
             self.queue = dd_controller.menu(
                 self.ticker, self.start, self.interval, self.stock, self.queue
             )
-
-        print("Use 'load <ticker>' prior to this command!", "\n")
+        else:
+            print("Use 'load <ticker>' prior to this command!", "\n")
 
     def call_ca(self, _):
         """Process ca command"""
@@ -610,8 +610,8 @@ Stocks Menus:
             self.queue = fa_controller.menu(
                 self.ticker, self.start, self.interval, self.suffix, self.queue
             )
-
-        print("Use 'load <ticker>' prior to this command!", "\n")
+        else:
+            print("Use 'load <ticker>' prior to this command!", "\n")
 
     def call_bt(self, _):
         """Process bt command"""
@@ -619,8 +619,8 @@ Stocks Menus:
             from gamestonk_terminal.stocks.backtesting import bt_controller
 
             self.queue = bt_controller.menu(self.ticker, self.stock, self.queue)
-
-        print("Use 'load <ticker>' prior to this command!", "\n")
+        else:
+            print("Use 'load <ticker>' prior to this command!", "\n")
 
     def call_ta(self, _):
         """Process ta command"""

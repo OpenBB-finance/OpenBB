@@ -88,7 +88,7 @@ def display_chains(
     max_sp: float,
     calls_only: bool,
     puts_only: bool,
-    export: str,
+    export: str = "",
 ):
     """Display option chain
 
@@ -204,7 +204,7 @@ def plot_oi(
     max_sp: float,
     calls_only: bool,
     puts_only: bool,
-    export: str,
+    export: str = "",
 ):
     """Plot open interest
 
@@ -308,7 +308,7 @@ def plot_vol(
     max_sp: float,
     calls_only: bool,
     puts_only: bool,
-    export: str,
+    export: str = "",
 ):
     """Plot volume
 
@@ -403,7 +403,7 @@ def plot_volume_open_interest(
     min_sp: float,
     max_sp: float,
     min_vol: float,
-    export: str,
+    export: str = "",
 ):
     """Plot volume and open interest
 
@@ -590,9 +590,9 @@ def display_historical(
     expiry: str,
     strike: float,
     put: bool,
-    export: str,
     raw: bool,
     chain_id: str,
+    export: str = "",
 ):
     """Plot historical option prices
 
@@ -606,12 +606,12 @@ def display_historical(
         Option strike price
     put: bool
         Is this a put option?
-    export: str
-        Format of export file
     raw: bool
         Print raw data
     chain_id: str
         OCC option symbol
+    export: str
+        Format of export file
     """
 
     df_hist = tradier_model.get_historical_options(

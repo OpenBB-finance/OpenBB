@@ -1,14 +1,11 @@
-import asyncio
 import discord
-import discordbot.config_discordbot as cfg
 from tabulate import tabulate
+
+import discordbot.config_discordbot as cfg
 from gamestonk_terminal.stocks.options import barchart_model
 
 
-
-async def iv_command(ctx, ticker: str= None):
- async with ctx.typing():
-    await asyncio.sleep(0.2)
+async def iv_command(ctx, ticker: str = None):
     """Options IV"""
 
     try:
@@ -20,10 +17,9 @@ async def iv_command(ctx, ticker: str= None):
         # Check for argument
         if ticker is None:
             raise Exception("Stock ticker is required")
-        
 
         df = barchart_model.get_options_info(ticker)
-        tickerr= ticker.upper()
+        tickerr = ticker.upper()
 
         report = "```" + tabulate(df, tablefmt="fancy_grid", showindex=False) + "```"
         embed = discord.Embed(
@@ -32,9 +28,9 @@ async def iv_command(ctx, ticker: str= None):
             colour=cfg.COLOR,
         )
         embed.set_author(
-        name=cfg.AUTHOR_NAME,
-        icon_url=cfg.AUTHOR_ICON_URL,
-        )        
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
+        )
 
         await ctx.send(embed=embed)
 
@@ -45,8 +41,8 @@ async def iv_command(ctx, ticker: str= None):
             description=e,
         )
         embed.set_author(
-        name=cfg.AUTHOR_NAME,
-        icon_url=cfg.AUTHOR_ICON_URL,
-        ) 
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
+        )
 
         await ctx.send(embed=embed)
