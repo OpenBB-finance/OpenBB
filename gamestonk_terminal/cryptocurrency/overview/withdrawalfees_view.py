@@ -11,16 +11,16 @@ from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal import feature_flags as gtff
 
 
-def display_overall_withdrawal_fees(export: str, top: int) -> None:
+def display_overall_withdrawal_fees(top: int, export: str = "") -> None:
     """Top coins withdrawal fees
     [Source: https://withdrawalfees.com/]
 
     Parameters
     ----------
-    export : str
-        Export dataframe data to csv,json,xlsx file
     top: int
         Number of coins to search
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
 
     df_fees = get_overall_withdrawal_fees(top)
@@ -91,16 +91,16 @@ def display_overall_exchange_withdrawal_fees(export: str) -> None:
         )
 
 
-def display_crypto_withdrawal_fees(export: str, symbol: str) -> None:
+def display_crypto_withdrawal_fees(symbol: str, export: str = "") -> None:
     """Coin withdrawal fees per exchange
     [Source: https://withdrawalfees.com/]
 
     Parameters
     ----------
-    export : str
-        Export dataframe data to csv,json,xlsx file
     symbol: str
         Coin to check withdrawal fees
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
 
     res = get_crypto_withdrawal_fees(symbol)

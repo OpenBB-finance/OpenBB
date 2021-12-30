@@ -24,7 +24,7 @@ def view_ma(
     df_stock: pd.DataFrame,
     length: List[int],
     offset: int,
-    export: str,
+    export: str = "",
 ) -> pd.DataFrame:
     """Plots MA technical indicator
 

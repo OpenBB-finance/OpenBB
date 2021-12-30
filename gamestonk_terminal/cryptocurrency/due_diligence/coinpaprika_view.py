@@ -245,7 +245,7 @@ def display_markets(
     sortby: str,
     descend: bool,
     links: bool,
-    export: str,
+    export: str = "",
 ) -> None:
     """Get all markets for given coin id. [Source: CoinPaprika]
 

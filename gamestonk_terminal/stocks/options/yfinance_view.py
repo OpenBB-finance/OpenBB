@@ -37,7 +37,7 @@ def plot_oi(
     max_sp: float,
     calls_only: bool,
     puts_only: bool,
-    export: str,
+    export: str = "",
 ):
     """Plot open interest
 
@@ -140,7 +140,7 @@ def plot_vol(
     max_sp: float,
     calls_only: bool,
     puts_only: bool,
-    export: str,
+    export: str = "",
 ):
     """Plot volume
 
@@ -234,7 +234,7 @@ def plot_volume_open_interest(
     min_sp: float,
     max_sp: float,
     min_vol: float,
-    export: str,
+    export: str = "",
 ):
     """Plot volume and open interest
 
