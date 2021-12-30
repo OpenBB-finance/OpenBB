@@ -1,8 +1,8 @@
 """ opensea.io Model """
 
+from datetime import datetime
 import requests
 import pandas as pd
-from datetime import datetime
 
 API_URL = "https://api.opensea.io/api/v1"
 

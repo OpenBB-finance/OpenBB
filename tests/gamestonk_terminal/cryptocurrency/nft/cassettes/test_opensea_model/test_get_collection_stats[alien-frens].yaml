@@ -71,11 +71,11 @@ interactions:
         P3TTQP5Q0lEqSc1JTS9KzEUOh5LyzJKS1CKMgMjMKy5JhChGkynPzM5EmFBbCwCBhMnKthYAAA==
     headers:
       Allow:
-      - GET, OPTIONS
+      - OPTIONS, GET
       CF-Cache-Status:
       - EXPIRED
       CF-RAY:
-      - 6c5a5f8ebf8b5d3b-LIS
+      - 6c5a69d7cc8903c2-LIS
       Connection:
       - keep-alive
       Content-Encoding:
@@ -83,26 +83,26 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 30 Dec 2021 09:52:05 GMT
+      - Thu, 30 Dec 2021 09:59:06 GMT
       Expect-CT:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       Last-Modified:
-      - Thu, 30 Dec 2021 09:49:51 GMT
+      - Thu, 30 Dec 2021 09:52:05 GMT
       Referrer-Policy:
       - same-origin
       - strict-origin
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=40CP2g2bukbhmNByim7MZ_6SyGEfTKTUrE5izp31_X8-1640857925-0-AfHCusCiXX+6XGDoV9r8NqFFZnrCtXJUPyITbjDP3p0/dV18r+qLP8k2l5zxZ21sgn+2W57/4ZYwdNEzP2xXesM=;
-        path=/; expires=Thu, 30-Dec-21 10:22:05 GMT; domain=.opensea.io; HttpOnly;
+      - __cf_bm=cj00iA3acg47evs76jmnCaHXJFWoaADinsgZQ3RYhzU-1640858346-0-AYnDCMLFfLDGIwF2HQM4re38rxCcKhwUqojfKeaDrTt+gnlPPHqBUN7v0OI9ZS1PyNilkXJKGc058xJa45Sogzw=;
+        path=/; expires=Thu, 30-Dec-21 10:29:06 GMT; domain=.opensea.io; HttpOnly;
         Secure; SameSite=None
       Transfer-Encoding:
       - chunked
       Vary:
       - Accept, Origin, Accept-Encoding
       Via:
-      - 1.1 vegur
+      - 1.1 spaces-router (279557a225d7)
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -110,7 +110,7 @@ interactions:
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Trace-Id:
-      - '11383578880921307276'
+      - '12033911049466675596'
       X-Xss-Protection:
       - '0'
     status:
