@@ -73,7 +73,6 @@ class TerminalController:
             "cmd",
             choices=self.CHOICES,
         )
-
         self.completer: Union[None, NestedCompleter] = None
 
         if session and gtff.USE_PROMPT_TOOLKIT:
@@ -287,10 +286,8 @@ def terminal(jobs_cmds: List[str] = None):
         if t_controller.queue and len(t_controller.queue) > 0:
             # If the command is quitting the menu we want to return in here
             if t_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(t_controller.queue) > 1:
-                    return t_controller.queue[1:]
-                return []
+                print_goodbye()
+                break
 
             # Consume 1 element from the queue
             an_input = t_controller.queue[0]
@@ -308,11 +305,15 @@ def terminal(jobs_cmds: List[str] = None):
 
             # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT:
-                an_input = session.prompt(
-                    f"{get_flair()} / $ ",
-                    completer=t_controller.completer,
-                    search_ignore_case=True,
-                )
+                try:
+                    an_input = session.prompt(
+                        f"{get_flair()} / $ ",
+                        completer=t_controller.completer,
+                        search_ignore_case=True,
+                    )
+                except KeyboardInterrupt:
+                    print_goodbye()
+                    break
             # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} / $ ")
@@ -320,7 +321,6 @@ def terminal(jobs_cmds: List[str] = None):
         try:
             # Process the input command
             t_controller.queue = t_controller.switch(an_input)
-
             if an_input in ("q", "quit", "..", "exit"):
                 print_goodbye()
                 break

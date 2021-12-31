@@ -441,11 +441,15 @@ def menu(ticker: str, expiration: str, queue: List[str] = None):
                         str(c): {} for c in range(len(payoff_controller.options))
                     }
                 completer = NestedCompleter.from_nested_dict(payoff_controller.choices)
-                an_input = session.prompt(
-                    f"{get_flair()} /stocks/options/payoff/ $ ",
-                    completer=completer,
-                    search_ignore_case=True,
-                )
+                try:
+                    an_input = session.prompt(
+                        f"{get_flair()} /stocks/options/payoff/ $ ",
+                        completer=completer,
+                        search_ignore_case=True,
+                    )
+                except KeyboardInterrupt:
+                    # Exit in case of keyboard interrupt
+                    an_input = "exit"
             # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /stocks/options/payoff/ $ ")
