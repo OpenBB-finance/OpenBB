@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import os
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 from rich import console
 
@@ -118,6 +119,7 @@ def display_fund_info(fund_name: str, country: str = "united states"):
     info = (
         investpy_model.get_fund_info(fund_name, country)
         .reset_index(drop=False)
+        .applymap(lambda x: np.nan if not x else x)
         .dropna()
     )
     if gtff.USE_TABULATE_DF:

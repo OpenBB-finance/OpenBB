@@ -68,7 +68,7 @@ def get_fund_symbol_from_name(name: str) -> Tuple[str, str]:
     symbol = name_search_results.loc[:, "symbol"][0]
     country = name_search_results.country.values[0]
     console.print(
-        f"Name: [cyan][italic]{symbol.upper()}[/italic][/cyan] found for {name} in country: {country.title()}\n"
+        f"Name: [cyan][italic]{symbol.upper()}[/italic][/cyan] found for {name} in country: {country.title()}."
     )
     return symbol, country
 
@@ -94,7 +94,7 @@ def get_fund_name_from_symbol(symbol: str) -> Tuple[str, str]:
     name = symbol_search_results.loc[:, "name"][0]
     country = symbol_search_results.loc[:, "country"][0]
     console.print(
-        f"Name: [cyan][italic]{name.title()}[/italic][/cyan] found for {symbol} in country: {country.title()}\n"
+        f"Name: [cyan][italic]{name.title()}[/italic][/cyan] found for {symbol} in country: {country.title()}."
     )
     return name, country
 

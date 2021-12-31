@@ -225,8 +225,14 @@ Yahoo Finance[/italic]:
             other_args.insert(0, "-n")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            self.country = " ".join(ns_parser.name)
-        console.print("\n")
+            country_candidate = " ".join(ns_parser.name)
+            if country_candidate.lower() in self.fund_countries:
+                self.country = " ".join(ns_parser.name)
+            else:
+                console.print(
+                    f"{country_candidate.lower()} not a valid country to select."
+                )
+        console.print("")
         return self.queue
 
     @try_except
@@ -309,7 +315,7 @@ Yahoo Finance[/italic]:
             help="Number of search results to show",
             type=check_positive,
             dest="limit",
-            default=20,
+            default=10,
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -358,6 +364,7 @@ Yahoo Finance[/italic]:
             required="-h" not in other_args,
         )
         parser.add_argument(
+            "-n",
             "--name",
             action="store_true",
             default=False,
@@ -406,7 +413,7 @@ Potential errors
     -- ISIN supplied instead of symbol
     -- Name used, but --name flag not passed"""
                 )
-        console.print("\n")
+                console.print("")
         return self.queue
 
     @try_except
@@ -520,7 +527,7 @@ def menu(queue: List[str] = None):
 
             # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input.split(" ")[0] in fund_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /funds/ $ {an_input}")
+                console.print(f"{get_flair()} /funds/ $ {an_input}")
 
         # Get input command from user
         else:
@@ -546,8 +553,8 @@ def menu(queue: List[str] = None):
             fund_controller.queue = fund_controller.switch(an_input)
 
         except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /funds/ menu.", end=""
+            console.print(
+                f"\nThe command '{an_input}' doesn't exist on the /funds/ menu."
             )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
@@ -563,13 +570,13 @@ def menu(queue: List[str] = None):
                     if candidate_input == an_input:
                         an_input = ""
                         fund_controller.queue = []
-                        print("\n")
+                        console.print("")
                         continue
                     an_input = candidate_input
                 else:
                     an_input = similar_cmd[0]
 
-                print(f" Replacing by '{an_input}'.")
+                print(f" Replacing by '{an_input}'.\n")
                 fund_controller.queue.insert(0, an_input)
             else:
-                print("\n")
+                console.print("")
