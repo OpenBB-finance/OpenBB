@@ -323,14 +323,14 @@ class OptionsCommands(discord.ext.commands.Cog):
             index_dates = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
             if cfg.DEBUG:
-                print(f"!opt {ticker} {expiration} {strike} {put}")
+                print(f"!stocks.opt {ticker} {expiration} {strike} {put}")
 
             if not ticker:
                 current = 0
                 text = (
                     "```0️⃣ !stocks.opt.unu```\n"
                     "Provide a ticker and expiration date with this menu,\n"
-                    "\ne.g.\n!opt TSLA 0-9\n!opt TSLA 2021-06-04"
+                    "\ne.g.\n!stocks.opt TSLA 0-9\n!stocks.opt TSLA 2021-06-04"
                 )
 
             if (ticker != "") and (expiration == ""):
