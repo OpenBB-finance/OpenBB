@@ -286,9 +286,8 @@ CoinMarketCap:
             choices=CRYPTO_SOURCES.keys(),
         )
 
-        if other_args:
-            if not other_args[0][0] == "-":
-                other_args.insert(0, "-c")
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-c")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED

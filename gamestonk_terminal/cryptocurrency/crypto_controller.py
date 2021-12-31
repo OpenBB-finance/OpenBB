@@ -93,6 +93,7 @@ class CryptoController:
         self.current_df = pd.DataFrame()
         self.current_currency = ""
         self.source = ""
+        self.coin_map_df = pd.DataFrame()
 
         self.completer: Union[None, NestedCompleter] = None
 
@@ -223,7 +224,7 @@ class CryptoController:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load crypto currency to perform analysis on. "
+            description="Load crypto currency to perform analysis on."
             "Available data sources are CoinGecko, CoinPaprika, Binance, Coinbase"
             "By default main source used for analysis is CoinGecko (cg). To change it use --source flag",
         )
@@ -254,7 +255,8 @@ class CryptoController:
                 if arg in other_args:
                     other_args.remove(arg)
 
-            self.current_coin, self.source, self.symbol = load(
+            # TODO: protections in case None is returned
+            self.current_coin, self.source, self.symbol, self.coin_map_df = load(
                 coin=ns_parser.coin, source=ns_parser.source
             )
 
@@ -712,7 +714,11 @@ class CryptoController:
             from gamestonk_terminal.cryptocurrency.due_diligence import dd_controller
 
             self.queue = dd_controller.menu(
-                self.current_coin, self.source, self.symbol, queue=self.queue
+                self.current_coin,
+                self.source,
+                self.symbol,
+                self.coin_map_df,
+                queue=self.queue,
             )
         else:
             print(

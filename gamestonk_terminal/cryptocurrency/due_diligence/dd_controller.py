@@ -6,7 +6,6 @@ import argparse
 import difflib
 from typing import List, Union
 from datetime import datetime, timedelta
-from colorama.ansi import Style
 import pandas as pd
 from binance.client import Client
 from prompt_toolkit.completion import NestedCompleter
@@ -86,10 +85,10 @@ class DueDiligenceController:
             "dev",
         ],
         "bin": [
-            "book",
+            "binbook",
             "balance",
         ],
-        "cb": ["book", "trades", "stats"],
+        "cb": ["cbbook", "trades", "stats"],
     }
 
     DD_VIEWS_MAPPING = {
@@ -98,7 +97,14 @@ class DueDiligenceController:
         "bin": binance_view,
     }
 
-    def __init__(self, coin=None, source=None, symbol=None, queue: List[str] = None):
+    def __init__(
+        self,
+        coin=None,
+        source=None,
+        symbol=None,
+        coin_map_df: pd.DataFrame = None,
+        queue: List[str] = None,
+    ):
         """CONSTRUCTOR"""
 
         self.dd_parser = argparse.ArgumentParser(add_help=False, prog="dd")
@@ -108,6 +114,7 @@ class DueDiligenceController:
         self.current_df = pd.DataFrame()
         self.source = source
         self.symbol = symbol
+        self.coin_map_df = coin_map_df
 
         for _, value in self.SPECIFIC_CHOICES.items():
             self.CHOICES.extend(value)
@@ -167,16 +174,14 @@ Glassnode:
    change          30d change of supply held on exchange wallets
    eb              total balance held on exchanges (in percentage and units)
 Coinglass:
-   oi              open interest per exchange"""
-        help_text += f"""{Style.DIM if self.source not in ("cp", "cg") else ""}
+   oi              open interest per exchange
 CoinPaprika:
    basic           basic information about loaded coin
    ps              price and supply related metrics for loaded coin
    mkt             all markets for loaded coin
    ex              all exchanges where loaded coin is listed
    twitter         tweets for loaded coin
-   events          events related to loaded coin{Style.RESET_ALL if self.source not in ("cp", "cg") else ""}"""
-        help_text += f"""{Style.DIM if self.source != "cg" else ""}
+   events          events related to loaded coin
 CoinGecko:
    info            basic information about loaded coin
    market          market stats about loaded coin
@@ -186,16 +191,14 @@ CoinGecko:
    social          social portals urls for loaded coin, e.g reddit, twitter
    score           different kind of scores for loaded coin, e.g developer score, sentiment score
    dev             github, bitbucket coin development statistics
-   bc              links to blockchain explorers for loaded coin{Style.RESET_ALL if self.source != "cg" else ""}"""
-        help_text += f"""{Style.DIM if self.source != "bin" else ""}
+   bc              links to blockchain explorers for loaded coin
 Binance:
-   book            show order book
-   balance         show coin balance{Style.RESET_ALL if self.source != "bin" else ""}"""
-        help_text += f"""{Style.DIM if self.source != "cb" else ""}
+   binbook         show order book
+   balance         show coin balance
 Coinbase:
-   book            show order book
+   cbbook          show order book
    trades          show last trades
-   stats           show coin stats{Style.DIM if self.source != "cb" else ""}
+   stats           show coin stats
 """
         print(help_text)
 
@@ -329,7 +332,7 @@ Coinbase:
                 if arg in other_args:
                     other_args.remove(arg)
 
-            self.current_coin, self.source, self.symbol = load(
+            self.current_coin, self.source, self.symbol, self.coin_map_df = load(
                 coin=ns_parser.coin, source=ns_parser.source
             )
 
@@ -661,7 +664,7 @@ Coinbase:
 
         if ns_parser:
             pycoingecko_view.display_info(
-                coin=self.current_coin, export=ns_parser.export
+                symbol=self.coin_map_df["CoinGecko"], export=ns_parser.export
             )
 
     @try_except
@@ -830,82 +833,87 @@ Coinbase:
             pycoingecko_view.display_bc(self.current_coin, ns_parser.export)
 
     @try_except
-    def call_book(self, other_args):
-        """Process book command"""
+    def call_binbook(self, other_args):
+        """Process binbook command"""
         parser = argparse.ArgumentParser(
-            prog="book",
+            prog="binbook",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Get the order book for selected coin",
         )
 
-        if self.source == "bin":
-            limit_list = [5, 10, 20, 50, 100, 500, 1000, 5000]
-            _, quotes = binance_model.show_available_pairs_for_given_symbol(
-                self.current_coin
-            )
-            parser.add_argument(
-                "-l",
-                "--limit",
-                dest="limit",
-                help="Limit parameter.  Adjusts the weight",
-                default=100,
-                type=int,
-                choices=limit_list,
-            )
+        limit_list = [5, 10, 20, 50, 100, 500, 1000, 5000]
+        coin = self.coin_map_df["Binance"]
+        _, quotes = binance_model.show_available_pairs_for_given_symbol(coin)
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            help="Limit parameter.  Adjusts the weight",
+            default=100,
+            type=int,
+            choices=limit_list,
+        )
 
-            parser.add_argument(
-                "--vs",
-                help="Quote currency (what to view coin vs)",
-                dest="vs",
-                type=str,
-                default="USDT",
-                choices=quotes,
-            )
-
-        if self.source == "cb":
-            _, quotes = coinbase_model.show_available_pairs_for_given_symbol(
-                self.current_coin
-            )
-            if len(quotes) < 0:
-                print(
-                    f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
-                )
-
-            parser.add_argument(
-                "--vs",
-                help="Quote currency (what to view coin vs)",
-                dest="vs",
-                type=str,
-                default="USDT" if "USDT" in quotes else quotes[0],
-                choices=quotes,
-            )
+        parser.add_argument(
+            "--vs",
+            help="Quote currency (what to view coin vs)",
+            dest="vs",
+            type=str,
+            default="USDT",
+            choices=quotes,
+        )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            if self.source == "bin":
-                binance_view.display_order_book(
-                    coin=self.current_coin,
-                    limit=ns_parser.limit,
-                    currency=ns_parser.vs,
-                    export=ns_parser.export,
-                )
+            binance_view.display_order_book(
+                coin=coin,
+                limit=ns_parser.limit,
+                currency=ns_parser.vs,
+                export=ns_parser.export,
+            )
 
-            elif self.source == "cb":
-                pair = f"{self.current_coin.upper()}-{ns_parser.vs.upper()}"
-                coinbase_view.display_order_book(
-                    product_id=pair,
-                    export=ns_parser.export,
-                )
+    @try_except
+    def call_cbbook(self, other_args):
+        """Process cbbook command"""
+        coin = self.coin_map_df["Coinbase"]
+        parser = argparse.ArgumentParser(
+            prog="cbbook",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="Get the order book for selected coin",
+        )
+
+        _, quotes = coinbase_model.show_available_pairs_for_given_symbol(coin)
+        if len(quotes) < 0:
+            print(f"Couldn't find any quoted coins for provided symbol {coin}")
+
+        parser.add_argument(
+            "--vs",
+            help="Quote currency (what to view coin vs)",
+            dest="vs",
+            type=str,
+            default="USDT" if "USDT" in quotes else quotes[0],
+            choices=quotes,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            pair = f"{coin}-{ns_parser.vs.upper()}"
+            coinbase_view.display_order_book(
+                product_id=pair,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_balance(self, other_args):
         """Process balance command"""
-        _, quotes = binance_model.show_available_pairs_for_given_symbol(
-            self.current_coin
-        )
+        coin = self.coin_map_df["Binance"]
+        _, quotes = binance_model.show_available_pairs_for_given_symbol(coin)
 
         parser = argparse.ArgumentParser(
             prog="balance",
@@ -929,7 +937,7 @@ Coinbase:
 
         if ns_parser:
             binance_view.display_balance(
-                coin=self.current_coin, currency=ns_parser.vs, export=ns_parser.export
+                coin=coin, currency=ns_parser.vs, export=ns_parser.export
             )
 
     @try_except
@@ -941,10 +949,8 @@ Coinbase:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Show last trades on Coinbase",
         )
-
-        _, quotes = coinbase_model.show_available_pairs_for_given_symbol(
-            self.current_coin
-        )
+        coin = self.coin_map_df["Coinbase"]
+        _, quotes = coinbase_model.show_available_pairs_for_given_symbol(coin)
         if len(quotes) < 0:
             print(
                 f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
@@ -982,7 +988,7 @@ Coinbase:
         )
 
         if ns_parser:
-            pair = f"{self.current_coin.upper()}-{ns_parser.vs.upper()}"
+            pair = f"{coin}-{ns_parser.vs.upper()}"
             if ns_parser.side.upper() == "all":
                 side = None
             else:
@@ -995,9 +1001,8 @@ Coinbase:
     @try_except
     def call_stats(self, other_args):
         """Process stats command"""
-        _, quotes = coinbase_model.show_available_pairs_for_given_symbol(
-            self.current_coin
-        )
+        coin = self.coin_map_df["Binance"]
+        _, quotes = coinbase_model.show_available_pairs_for_given_symbol(coin)
 
         parser = argparse.ArgumentParser(
             prog="stats",
@@ -1020,7 +1025,7 @@ Coinbase:
         )
 
         if ns_parser:
-            pair = f"{self.current_coin.upper()}-{ns_parser.vs.upper()}"
+            pair = f"{coin}-{ns_parser.vs.upper()}"
             coinbase_view.display_stats(pair, ns_parser.export)
 
     @try_except
@@ -1235,9 +1240,7 @@ Coinbase:
         )
         if ns_parser:
             coinpaprika_view.display_basic(
-                f"{self.symbol}-{self.current_coin}"
-                if self.source == "cg"
-                else self.current_coin,
+                self.coin_map_df["CoinPaprika"],
                 ns_parser.export,
             )
 
@@ -1500,12 +1503,18 @@ Coinbase:
             )
 
 
-def menu(coin=None, source=None, symbol=None, queue: List[str] = None):
+def menu(
+    coin=None,
+    source=None,
+    symbol=None,
+    coin_map_df: pd.DataFrame = None,
+    queue: List[str] = None,
+):
     """Due Dilligence Menu"""
 
     source = source if source else "cg"
     dd_controller = DueDiligenceController(
-        coin=coin, source=source, symbol=symbol, queue=queue
+        coin=coin, source=source, symbol=symbol, queue=queue, coin_map_df=coin_map_df
     )
     an_input = "HELP_ME"
     while True:

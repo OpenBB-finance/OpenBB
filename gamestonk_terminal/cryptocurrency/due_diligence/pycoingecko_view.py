@@ -17,16 +17,18 @@ register_matplotlib_converters()
 # pylint: disable=R0904, C0302
 
 
-def display_info(coin: gecko.Coin, export: str) -> None:
+def display_info(symbol: str, export: str) -> None:
     """Shows basic information about loaded coin. [Source: CoinGecko]
 
     Parameters
     ----------
-    coin : gecko_coin.Coin
+    symbol : str
         Cryptocurrency
     export : str
         Export dataframe data to csv,json,xlsx file
     """
+
+    coin = gecko.Coin(symbol)
 
     df = wrap_text_in_df(coin.get_base_info, w=80)
 

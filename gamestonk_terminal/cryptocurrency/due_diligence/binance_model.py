@@ -119,7 +119,7 @@ def show_available_pairs_for_given_symbol(
     for k, v in pairs.items():
         if k == symbol_upper:
             return k, v
-    print(f"Couldn't find anything for symbol {symbol_upper}")
+    print(f"Couldn't find anything for symbol {symbol_upper}\n")
     return None, []
 
 

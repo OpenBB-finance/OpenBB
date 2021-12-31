@@ -91,6 +91,19 @@ def _load_coin_map(file_name: str) -> pd.DataFrame:
     return coins_df
 
 
+def load_coins_list(file_name: str, return_raw: bool = False) -> pd.DataFrame:
+    if file_name.split(".")[1] != "json":
+        raise TypeError("Please load json file")
+
+    current_dir = os.path.dirname(os.path.abspath(__file__))  # replace with __file__
+    path = os.path.join(current_dir, "data", file_name)
+    with open(path, encoding="utf8") as f:
+        coins = json.load(f)
+    if return_raw:
+        return coins
+    return pd.DataFrame(coins)
+
+
 def load_binance_map():
     return _load_coin_map("binance_gecko_map.json")
 
@@ -116,8 +129,11 @@ def prepare_all_coins_df() -> pd.DataFrame:
         Symbol: uni
     """
 
-    gecko_coins_df = get_coin_list()
-    paprika_coins_df = get_list_of_coins()
+    gecko_coins_df = load_coins_list("coingecko_coins.json")
+
+    paprika_coins_df = load_coins_list("coinpaprika_coins.json")
+    paprika_coins_df = paprika_coins_df[paprika_coins_df["is_active"]]
+    paprika_coins_df = paprika_coins_df[["rank", "id", "name", "symbol", "type"]]
 
     # TODO: Think about scheduled job, that once a day will update data
 
@@ -186,7 +202,12 @@ def _create_closest_match_df(
 def load(
     coin: str,
     source: str,
-) -> Tuple[Union[Optional[str], pycoingecko_model.Coin], Optional[Any], Optional[Any]]:
+) -> Tuple[
+    Union[Optional[str], pycoingecko_model.Coin],
+    Optional[Any],
+    Optional[Any],
+    Optional[Any],
+]:
     """Load cryptocurrency from given source. Available sources are: CoinGecko, CoinPaprika, Coinbase and Binance.
 
     Loading coin from Binance and CoinPaprika means validation if given coins exists in chosen source,
@@ -207,41 +228,60 @@ def load(
         - str or Coin object for provided coin
         - str with source of the loaded data. CoinGecko, CoinPaprika, or Binance
         - str with symbol
+        - Dataframe with coin map to different sources
     """
 
     current_coin = ""  # type: Optional[Any]
 
+    coins_map_df = prepare_all_coins_df().set_index("Symbol")
     if source == "cg":
         coingecko = pycoingecko_model.Coin(coin)
-        return coingecko, source, coingecko.symbol
+        print(f"Coin found: {coingecko}\n")
+        return (
+            str(coingecko),
+            source,
+            coingecko.symbol,
+            coins_map_df.loc[coingecko.symbol],
+        )
 
     if source == "bin":
+        # TODO: convert bitcoin to btc before searching pairs
         parsed_coin = coin.upper()
         current_coin, pairs = show_available_pairs_for_given_symbol(parsed_coin)
         if len(pairs) > 0:
             print(f"Coin found : {current_coin}\n")
-        else:
-            print(f"Couldn't find coin with symbol {current_coin}\n")
-        return current_coin, source, parsed_coin
+            return (
+                current_coin,
+                source,
+                parsed_coin,
+                coins_map_df.loc[parsed_coin.lower()],
+            )
+        return current_coin, None, None, None
 
     if source == "cp":
         paprika_coins = get_list_of_coins()
         paprika_coins_dict = dict(zip(paprika_coins.id, paprika_coins.symbol))
         current_coin, symbol = coinpaprika_model.validate_coin(coin, paprika_coins_dict)
-        return current_coin, source, symbol
+        return (
+            current_coin,
+            source,
+            symbol,
+            coins_map_df.loc[symbol.lower() if symbol is not None else symbol],
+        )
 
     if source == "cb":
+        # TODO: convert bitcoin to btc before searching pairs
         coinbase_coin = coin.upper()
         current_coin, pairs = coinbase_model.show_available_pairs_for_given_symbol(
             coinbase_coin
         )
         if len(pairs) > 0:
             print(f"Coin found : {current_coin}\n")
-        else:
-            print(f"Couldn't find coin with symbol {current_coin}\n")
-        return current_coin, source, coin
+            return current_coin, source, coin, coins_map_df.loc[coin]
+        print(f"Couldn't find coin with symbol {current_coin}\n")
+        return current_coin, None, None, None
 
-    return current_coin, None, None
+    return current_coin, None, None, None
 
 
 FIND_KEYS = ["id", "symbol", "name"]

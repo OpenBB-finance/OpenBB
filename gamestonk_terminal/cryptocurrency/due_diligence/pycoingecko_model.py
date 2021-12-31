@@ -74,7 +74,7 @@ class Coin:
             if search_coin.lower() in list(dct.values()):
                 coin = dct.get("id")
                 symbol = dct.get("symbol")
-                print(f"Coin found : {coin} with symbol {symbol}\n")
+                # print(f"Coin found : {coin} with symbol {symbol}\n")
                 break
         if not coin:
             raise ValueError(f"Could not find coin with the given id: {symbol}\n")
