@@ -112,7 +112,7 @@ async def hist_command(
                 '```bash\n"!stocks.opt {ticker} {expiration} {strike} {c/p}"```'
             )
         except Exception as e:
-            error = e
+            error = str(e)
 
         finally:
             if error != "":
