@@ -2,9 +2,9 @@ import os
 import asyncio
 import discord
 
+import mplfinance as mpf
 from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 from gamestonk_terminal.stocks.options import tradier_model
-import mplfinance as mpf
 import discordbot.config_discordbot as cfg
 
 
