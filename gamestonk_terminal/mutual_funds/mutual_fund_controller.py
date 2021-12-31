@@ -413,7 +413,7 @@ Potential errors
     -- ISIN supplied instead of symbol
     -- Name used, but --name flag not passed"""
                 )
-                console.print("")
+        console.print("")
         return self.queue
 
     @try_except
