@@ -72,7 +72,6 @@ class TerminalController:
             "cmd",
             choices=self.CHOICES,
         )
-
         self.completer: Union[None, NestedCompleter] = None
 
         if session and gtff.USE_PROMPT_TOOLKIT:
@@ -300,11 +299,15 @@ def terminal(jobs_cmds: List[str] = None):
 
             # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT:
-                an_input = session.prompt(
-                    f"{get_flair()} / $ ",
-                    completer=t_controller.completer,
-                    search_ignore_case=True,
-                )
+                try:
+                    an_input = session.prompt(
+                        f"{get_flair()} / $ ",
+                        completer=t_controller.completer,
+                        search_ignore_case=True,
+                    )
+                except KeyboardInterrupt:
+                    print_goodbye()
+                    break
             # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} / $ ")
