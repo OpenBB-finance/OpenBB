@@ -1232,14 +1232,13 @@ qtconsole = "*"
 
 [[package]]
 name = "jupyter-client"
-version = "7.1.0"
+version = "6.2.0"
 description = "Jupyter protocol implementation and client libraries"
 category = "main"
 optional = false
 python-versions = ">=3.6.1"
 
 [package.dependencies]
-entrypoints = "*"
 jupyter-core = ">=4.6.0"
 nest-asyncio = ">=1.5"
 python-dateutil = ">=2.1"
@@ -1248,8 +1247,8 @@ tornado = ">=4.1"
 traitlets = "*"
 
 [package.extras]
-doc = ["myst-parser", "sphinx (>=1.3.6)", "sphinx-rtd-theme", "sphinxcontrib-github-alt"]
-test = ["codecov", "coverage", "ipykernel", "ipython", "mock", "mypy", "pre-commit", "pytest", "pytest-asyncio", "pytest-cov", "pytest-timeout", "jedi (<0.18)"]
+doc = ["sphinx (>=1.3.6)", "sphinx-rtd-theme", "sphinxcontrib-github-alt"]
+test = ["async-generator", "ipykernel", "ipython", "mock", "pytest-asyncio", "pytest-timeout", "pytest", "mypy", "pre-commit", "jedi (<0.18)"]
 
 [[package]]
 name = "jupyter-console"
@@ -3531,18 +3530,17 @@ testing = ["coverage (>=4)", "coverage-enable-subprocess (>=1)", "flaky (>=3)", 
 
 [[package]]
 name = "voila"
-version = "0.3.0"
+version = "0.2.16"
 description = "Voilà turns Jupyter notebooks into standalone web applications"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-jupyter-client = ">=6.1.3,<8"
+jupyter-client = ">=6.1.3,<7"
 jupyter-server = ">=0.3.0,<2.0.0"
 nbclient = ">=0.4.0,<0.6"
 nbconvert = ">=6.0.0,<7"
-websockets = ">=9.0"
 
 [package.extras]
 dev = ["black", "bump2version", "jupyter-releaser (>=0.6,<1.0)"]
@@ -3674,7 +3672,7 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "5a623b59095b85f93faa96aaea109f5a65647cc502e5c17aafd27e3b6c108868"
+content-hash = "a6409d4740f2cadcb2d56d649db69c2faa686b2d33235260ca0442b93fb2451f"
 
 [metadata.files]
 absl-py = [
@@ -4411,8 +4409,8 @@ jupyter = [
     {file = "jupyter-1.0.0.zip", hash = "sha256:3e1f86076bbb7c8c207829390305a2b1fe836d471ed54be66a3b8c41e7f46cc7"},
 ]
 jupyter-client = [
-    {file = "jupyter_client-7.1.0-py3-none-any.whl", hash = "sha256:64d93752d8cbfba0c1030c3335c3f0d9797cd1efac012652a14aac1653db11a3"},
-    {file = "jupyter_client-7.1.0.tar.gz", hash = "sha256:a5f995a73cffb314ed262713ae6dfce53c6b8216cea9f332071b8ff44a6e1654"},
+    {file = "jupyter_client-6.2.0-py3-none-any.whl", hash = "sha256:9715152067e3f7ea3b56f341c9a0f9715c8c7cc316ee0eb13c3c84f5ca0065f5"},
+    {file = "jupyter_client-6.2.0.tar.gz", hash = "sha256:e2ab61d79fbf8b56734a4c2499f19830fbd7f6fefb3e87868ef0545cb3c17eb9"},
 ]
 jupyter-console = [
     {file = "jupyter_console-6.4.0-py3-none-any.whl", hash = "sha256:7799c4ea951e0e96ba8260575423cb323ea5a03fcf5503560fa3e15748869e27"},
@@ -6149,8 +6147,8 @@ virtualenv = [
     {file = "virtualenv-20.10.0.tar.gz", hash = "sha256:576d05b46eace16a9c348085f7d0dc8ef28713a2cabaa1cf0aea41e8f12c9218"},
 ]
 voila = [
-    {file = "voila-0.3.0-py3-none-any.whl", hash = "sha256:e843f51cf93997f712ad07d2491019a2afdf09fcda30db520985e1084e059017"},
-    {file = "voila-0.3.0.tar.gz", hash = "sha256:97ae429ca4b16a7a3fcf553d795b052ebe92d5db2113553a00b13e68eb4b7528"},
+    {file = "voila-0.2.16-py3-none-any.whl", hash = "sha256:87405c4a1c924574a2482106a9e123f255500af34967b852a5ec4ab881aebb90"},
+    {file = "voila-0.2.16.tar.gz", hash = "sha256:be0612f95b87f99c6caaac70cd7af15b5b9331a985d0f95503f6ebc17a083c8f"},
 ]
 wcwidth = [
     {file = "wcwidth-0.2.5-py2.py3-none-any.whl", hash = "sha256:beb4802a9cebb9144e99086eff703a642a13d6a0052920003a230f3294bbe784"},
