@@ -381,6 +381,8 @@ main:
       - name: backtesting
         ref: "/stocks/backtesting"
         sub:
+          - name: whatif
+            ref: "/stocks/backtesting/whatif"
           - name: ema
             ref: "/stocks/backtesting/ema"
           - name: ema_cross
