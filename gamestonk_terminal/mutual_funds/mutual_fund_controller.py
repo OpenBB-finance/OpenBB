@@ -27,7 +27,7 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.mutual_funds import investpy_model, investpy_view, yfinance_view
 
-console = console.Console()
+t_console = console.Console()
 
 
 class FundController:
@@ -123,7 +123,7 @@ Yahoo Finance[/italic]:
     equity        equity holdings
     {'[/dim]' if not self.fund_symbol or self.country!='united states' else ''}
     """
-        console.print(help_str)
+        t_console.print(help_str)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -229,10 +229,10 @@ Yahoo Finance[/italic]:
             if country_candidate.lower() in self.fund_countries:
                 self.country = " ".join(ns_parser.name)
             else:
-                console.print(
+                t_console.print(
                     f"{country_candidate.lower()} not a valid country to select."
                 )
-        console.print("")
+        t_console.print("")
         return self.queue
 
     @try_except
@@ -338,7 +338,7 @@ Yahoo Finance[/italic]:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if not self.fund_name:
-                console.print(
+                t_console.print(
                     "No fund loaded.  Please use `load` first to plot.\n", style="bold"
                 )
                 return self.queue
@@ -406,14 +406,14 @@ Yahoo Finance[/italic]:
                 end_date=ns_parser.end,
             )
             if self.data.empty:
-                console.print(
+                t_console.print(
                     """No data found.
 Potential errors
     -- Incorrect country specified
     -- ISIN supplied instead of symbol
     -- Name used, but --name flag not passed"""
                 )
-        console.print("")
+        t_console.print("")
         return self.queue
 
     @try_except
@@ -431,7 +431,7 @@ Potential errors
         )
         if ns_parser:
             if not self.fund_symbol:
-                console.print(
+                t_console.print(
                     "No fund loaded.  Please use `load` first to plot.\n", style="bold"
                 )
                 return self.queue
@@ -463,12 +463,12 @@ Potential errors
         )
         if ns_parser:
             if self.country != "united states":
-                console.print(
+                t_console.print(
                     "YFinance implementation currently only supports funds from united states"
                 )
                 return self.queue
             if not self.fund_symbol or not self.fund_name:
-                console.print(
+                t_console.print(
                     "No fund loaded.  Please use `load` first to plot.\n", style="bold"
                 )
                 return self.queue
@@ -493,12 +493,12 @@ Potential errors
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.country != "united states":
-                console.print(
+                t_console.print(
                     "YFinance implementation currently only supports funds from united states"
                 )
                 return self.queue
             if not self.fund_symbol or not self.fund_name:
-                console.print(
+                t_console.print(
                     "No fund loaded.  Please use `load` first to plot.\n", style="bold"
                 )
                 return self.queue
@@ -527,7 +527,7 @@ def menu(queue: List[str] = None):
 
             # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input.split(" ")[0] in fund_controller.CHOICES_COMMANDS:
-                console.print(f"{get_flair()} /funds/ $ {an_input}")
+                t_console.print(f"{get_flair()} /funds/ $ {an_input}")
 
         # Get input command from user
         else:
@@ -553,7 +553,7 @@ def menu(queue: List[str] = None):
             fund_controller.queue = fund_controller.switch(an_input)
 
         except SystemExit:
-            console.print(
+            t_console.print(
                 f"\nThe command '{an_input}' doesn't exist on the /funds/ menu."
             )
             similar_cmd = difflib.get_close_matches(
@@ -570,7 +570,7 @@ def menu(queue: List[str] = None):
                     if candidate_input == an_input:
                         an_input = ""
                         fund_controller.queue = []
-                        console.print("")
+                        t_console.print("")
                         continue
                     an_input = candidate_input
                 else:
@@ -579,4 +579,4 @@ def menu(queue: List[str] = None):
                 print(f" Replacing by '{an_input}'.\n")
                 fund_controller.queue.insert(0, an_input)
             else:
-                console.print("")
+                t_console.print("")
