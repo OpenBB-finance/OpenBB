@@ -11,12 +11,14 @@ from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
+    check_non_negative_float,
     check_positive,
     get_flair,
     parse_known_args_and_warn,
     try_except,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     system_clear,
+    valid_date,
 )
 from gamestonk_terminal.menu import session
 
@@ -47,7 +49,7 @@ class BacktestingController:
         "r",
         "reset",
     ]
-    CHOICES_COMMANDS = ["ema", "ema_cross", "rsi"]
+    CHOICES_COMMANDS = ["ema", "ema_cross", "rsi", "whatif"]
     CHOICES += CHOICES_COMMANDS
 
     def __init__(self, ticker: str, stock: pd.DataFrame, queue: List[str] = None):
@@ -69,8 +71,9 @@ class BacktestingController:
     def print_help(self):
         """Print help"""
         help_text = f"""
-Backtesting:
 Ticker: {self.ticker.upper()}
+
+    whatif      what if you had bought X shares on day Y
 
     ema         buy when price exceeds EMA(l)
     ema_cross   buy when EMA(short) > EMA(long)
@@ -159,6 +162,41 @@ Ticker: {self.ticker.upper()}
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
+
+    @try_except
+    def call_whatif(self, other_args: List[str]):
+        """Call whatif"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="whatif",
+            description="Displays what if scenario of having bought X shares at date Y",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            default=None,
+            dest="date_shares_acquired",
+            type=valid_date,
+            help="Date at which the shares were acquired",
+        )
+        parser.add_argument(
+            "-n",
+            "--number",
+            default=1.0,
+            type=check_non_negative_float,
+            help="Number of shares acquired",
+            dest="num_shares_acquired",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-d")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            bt_view.display_whatif_scenario(
+                ticker=self.ticker,
+                num_shares_acquired=ns_parser.num_shares_acquired,
+                date_shares_acquired=ns_parser.date_shares_acquired,
+            )
 
     @try_except
     def call_ema(self, other_args: List[str]):
