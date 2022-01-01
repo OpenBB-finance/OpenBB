@@ -1,0 +1,12 @@
+
+    view          view available presets (or one in particular)
+    set           set one of the available presets
+
+PRESET: high_IV
+
+    scr            screen data from this preset
+[2m
+Last screened tickers: 
+>   ca             take these to comparison analysis menu
+>   po             take these to portoflio optimization menu[0m
+        
