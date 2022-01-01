@@ -10,6 +10,8 @@ from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    parse_known_args_and_warn,
     get_flair,
     system_clear,
 )
@@ -140,13 +142,33 @@ Dashboards:
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
 
-    def call_stocks(self, _):
+    def call_stocks(self, other_args: List[str]):
         """Process stocks command"""
-        # path = pathlib.Path(__file__).parent.resolve()
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="stocks",
+            description="""Shows an interactive stock dashboard""",
+        )
+        parser.add_argument(
+            "-v",
+            "--voila",
+            action="store_true",
+            default=False,
+            dest="voila",
+            help="Voila dashboard flag.",
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            cmd = "voila" if ns_parser.voila else "jupyter-lab"
+            file = "gamestonk_terminal/jupyter/dashboards/stocks.ipynb"
         subprocess.run(
-            ["jupyter-lab", "gamestonk_terminal/jupyter/dashboards/stocks.ipynb"],
+            [cmd, file],
             stdout=subprocess.PIPE,
-            universal_newlines=True,
             check=True,
         )
 
