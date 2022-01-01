@@ -19,15 +19,22 @@ from _pytest.mark.structures import Mark
 
 # pylint: disable=redefined-outer-name
 
+EXTENSIONS_ALLOWED = ["csv", "json", "txt"]
+EXTENSIONS_MATCHING = {
+    "csv": (pd.DataFrame, pd.Series),
+    "json": (bool, dict, float, int, list, tuple),
+    "txt": (str),
+}
+
 
 class Record:
     @staticmethod
     def extract_string(data: Any) -> str:
-        if isinstance(data, str):
+        if isinstance(data, EXTENSIONS_MATCHING["txt"]):
             string_value = data
-        elif isinstance(data, (pd.DataFrame, pd.Series)):
+        elif isinstance(data, EXTENSIONS_MATCHING["csv"]):
             string_value = data.to_csv(encoding="utf-8", line_terminator="\n")
-        elif isinstance(data, (dict, list, tuple)):
+        elif isinstance(data, EXTENSIONS_MATCHING["json"]):
             string_value = json.dumps(data)
         else:
             raise AttributeError(f"Unsupported type : {type(data)}")
@@ -109,20 +116,10 @@ class Record:
 
 
 class PathTemplate:
-    EXTENSIONS_ALLOWED = ["csv", "json", "txt"]
-    EXTENSIONS_MATCHING = {
-        dict: "json",
-        list: "json",
-        pd.DataFrame: "csv",
-        pd.Series: "csv",
-        str: "txt",
-        tuple: "json",
-    }
-
-    @classmethod
-    def find_extension(cls, data: Any):
-        for data_type, extension in cls.EXTENSIONS_MATCHING.items():
-            if isinstance(data, data_type):
+    @staticmethod
+    def find_extension(data: Any):
+        for extension, type_list in EXTENSIONS_MATCHING.items():
+            if isinstance(data, type_list):
                 return extension
         raise Exception(f"No extension found for this type : {type(data)}")
 
@@ -132,7 +129,7 @@ class PathTemplate:
         self.__test_name = test_name
 
     def build_path_by_extension(self, extension: str, index: int = 0):
-        if extension not in self.EXTENSIONS_ALLOWED:
+        if extension not in EXTENSIONS_ALLOWED:
             raise Exception(f"Unsupported extension : {extension}")
 
         path = os.path.join(
@@ -197,7 +194,14 @@ class Recorder:
         record_list = self.__record_list
 
         for record in record_list:
-            assert not record.record_changed
+            if record.record_changed:
+                raise Exception(
+                    (
+                        "Change detected\n"
+                        f"Expected  : {record.recorded}\n"
+                        f"Actual    : {record.captured}\n"
+                    )
+                )
 
     def assert_in_list(self, in_list: List[str]):
         record_list = self.__record_list
