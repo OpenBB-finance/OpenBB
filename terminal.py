@@ -61,6 +61,7 @@ class TerminalController:
         "etf",
         "reports",
         "resources",
+        "funds",
     ]
     CHOICES += CHOICES_COMMANDS
     CHOICES += CHOICES_MENUS
@@ -120,6 +121,7 @@ The main commands you should be aware when navigating through the terminal are:
 >   etf
 >   economy
 >   forex
+>   funds
 >   portfolio
 >   reports
 >   resources
@@ -231,6 +233,12 @@ The main commands you should be aware when navigating through the terminal are:
         from gamestonk_terminal.etf import etf_controller
 
         self.queue = etf_controller.menu(self.queue)
+
+    def call_funds(self, _):
+        """Process etf command"""
+        from gamestonk_terminal.mutual_funds import mutual_fund_controller
+
+        self.queue = mutual_fund_controller.menu(self.queue)
 
     def call_forex(self, _):
         """Process forex command"""

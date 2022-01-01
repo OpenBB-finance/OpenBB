@@ -943,6 +943,23 @@ main:
         ref: "/etf/pir"
       - name: fds
         ref: "/etf/fds"
+  - name: funds
+    ref: "/funds"
+    sub:
+      - name: search
+        ref: "/funds/search"
+      - name: country
+        ref: "/funds/country"
+      - name: info
+        ref: "/funds/info"
+      - name: load
+        ref: "/funds/load"
+      - name: overview
+        ref: "/funds/overview"
+      - name: plot
+        ref: "/funds/plot"
+      - name: sector
+        ref: "/funds/sector"
   - name: portfolio
     ref: "/portfolio"
     sub:
