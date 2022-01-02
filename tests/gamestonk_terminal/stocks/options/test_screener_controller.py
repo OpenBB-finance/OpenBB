@@ -142,136 +142,136 @@ def test_switch(an_input, expected_queue):
     assert queue == expected_queue
 
 
-@pytest.mark.vcr(record_mode="none")
-def test_call_cls(mocker):
-    mocker.patch("os.system")
-    controller = screener_controller.ScreenerController(queue=None)
-    controller.call_cls([])
+# @pytest.mark.vcr(record_mode="none")
+# def test_call_cls(mocker):
+#     mocker.patch("os.system")
+#     controller = screener_controller.ScreenerController(queue=None)
+#     controller.call_cls([])
 
-    assert controller.queue == []
-    os.system.assert_called_once_with("cls||clear")
-
-
-@pytest.mark.vcr(record_mode="none")
-@pytest.mark.parametrize(
-    "func, queue, expected_queue",
-    [
-        (
-            "call_exit",
-            [],
-            ["quit", "quit", "quit", "quit"],
-        ),
-        ("call_exit", ["help"], ["quit", "quit", "quit", "quit", "help"]),
-        ("call_home", [], ["quit", "quit", "quit"]),
-        ("call_help", [], []),
-        ("call_quit", [], ["quit"]),
-        ("call_quit", ["help"], ["quit", "help"]),
-        (
-            "call_reset",
-            [],
-            [
-                "quit",
-                "quit",
-                "quit",
-                "reset",
-                "stocks",
-                "options",
-                "screen",
-            ],
-        ),
-        (
-            "call_reset",
-            ["help"],
-            [
-                "quit",
-                "quit",
-                "quit",
-                "reset",
-                "stocks",
-                "options",
-                "screen",
-                "help",
-            ],
-        ),
-    ],
-)
-def test_call_func_expect_queue(expected_queue, func, mocker, queue):
-    controller = screener_controller.ScreenerController(queue=queue)
-    result = getattr(controller, func)([])
-
-    assert result is None
-    assert controller.queue == expected_queue
+#     assert controller.queue == []
+#     os.system.assert_called_once_with("cls||clear")
 
 
-@pytest.mark.vcr(record_mode="none")
-@pytest.mark.parametrize(
-    "tested_func, other_args, mocked_func, called_args, called_kwargs",
-    [
-        (
-            "call_view",
-            [
-                "high_IV",
-            ],
-            "syncretism_view.view_available_presets",
-            [],
-            dict(),
-        ),
-        (
-            "call_set",
-            [
-                "high_IV",
-            ],
-            "",
-            [],
-            dict(),
-        ),
-        (
-            "call_scr",
-            [
-                "high_IV",
-                "--limit=1",
-            ],
-            "syncretism_view.view_screener_output",
-            [],
-            dict(),
-        ),
-        (
-            "call_ca",
-            [],
-            "",
-            [],
-            dict(),
-        ),
-        (
-            "call_po",
-            [],
-            "",
-            [],
-            dict(),
-        ),
-    ],
-)
-def test_call_func_test(
-    tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
-):
-    path_controller = "gamestonk_terminal.stocks.options.screener_controller"
+# @pytest.mark.vcr(record_mode="none")
+# @pytest.mark.parametrize(
+#     "func, queue, expected_queue",
+#     [
+#         (
+#             "call_exit",
+#             [],
+#             ["quit", "quit", "quit", "quit"],
+#         ),
+#         ("call_exit", ["help"], ["quit", "quit", "quit", "quit", "help"]),
+#         ("call_home", [], ["quit", "quit", "quit"]),
+#         ("call_help", [], []),
+#         ("call_quit", [], ["quit"]),
+#         ("call_quit", ["help"], ["quit", "help"]),
+#         (
+#             "call_reset",
+#             [],
+#             [
+#                 "quit",
+#                 "quit",
+#                 "quit",
+#                 "reset",
+#                 "stocks",
+#                 "options",
+#                 "screen",
+#             ],
+#         ),
+#         (
+#             "call_reset",
+#             ["help"],
+#             [
+#                 "quit",
+#                 "quit",
+#                 "quit",
+#                 "reset",
+#                 "stocks",
+#                 "options",
+#                 "screen",
+#                 "help",
+#             ],
+#         ),
+#     ],
+# )
+# def test_call_func_expect_queue(expected_queue, func, queue):
+#     controller = screener_controller.ScreenerController(queue=queue)
+#     result = getattr(controller, func)([])
 
-    if mocked_func:
-        mock = mocker.Mock()
-        mocker.patch(
-            target=f"{path_controller}.{mocked_func}",
-            new=mock,
-        )
+#     assert result is None
+#     assert controller.queue == expected_queue
 
-        controller = screener_controller.ScreenerController(queue=None)
-        controller.screen_tickers = ["PM"]
-        getattr(controller, tested_func)(other_args)
 
-        if called_args or called_kwargs:
-            mock.assert_called_once_with(*called_args, **called_kwargs)
-        else:
-            mock.assert_called_once()
-    else:
-        controller = screener_controller.ScreenerController(queue=None)
-        controller.screen_tickers = ["PM"]
-        getattr(controller, tested_func)(other_args)
+# @pytest.mark.vcr(record_mode="none")
+# @pytest.mark.parametrize(
+#     "tested_func, other_args, mocked_func, called_args, called_kwargs",
+#     [
+#         (
+#             "call_view",
+#             [
+#                 "high_IV",
+#             ],
+#             "syncretism_view.view_available_presets",
+#             [],
+#             dict(),
+#         ),
+#         (
+#             "call_set",
+#             [
+#                 "high_IV",
+#             ],
+#             "",
+#             [],
+#             dict(),
+#         ),
+#         (
+#             "call_scr",
+#             [
+#                 "high_IV",
+#                 "--limit=1",
+#             ],
+#             "syncretism_view.view_screener_output",
+#             [],
+#             dict(),
+#         ),
+#         (
+#             "call_ca",
+#             [],
+#             "",
+#             [],
+#             dict(),
+#         ),
+#         (
+#             "call_po",
+#             [],
+#             "",
+#             [],
+#             dict(),
+#         ),
+#     ],
+# )
+# def test_call_func_test(
+#     tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
+# ):
+#     path_controller = "gamestonk_terminal.stocks.options.screener_controller"
+
+#     if mocked_func:
+#         mock = mocker.Mock()
+#         mocker.patch(
+#             target=f"{path_controller}.{mocked_func}",
+#             new=mock,
+#         )
+
+#         controller = screener_controller.ScreenerController(queue=None)
+#         controller.screen_tickers = ["PM"]
+#         getattr(controller, tested_func)(other_args)
+
+#         if called_args or called_kwargs:
+#             mock.assert_called_once_with(*called_args, **called_kwargs)
+#         else:
+#             mock.assert_called_once()
+#     else:
+#         controller = screener_controller.ScreenerController(queue=None)
+#         controller.screen_tickers = ["PM"]
+#         getattr(controller, tested_func)(other_args)
