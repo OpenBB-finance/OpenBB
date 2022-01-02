@@ -882,111 +882,111 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
 #         getattr(controller, tested_func)(other_args)
 
 
-# @pytest.mark.vcr(record_mode="none")
-# @pytest.mark.parametrize(
-#     "func",
-#     [
-#         "call_info",
-#         "call_pcr",
-#         "call_exp",
-#         "call_vol",
-#         "call_voi",
-#         "call_oi",
-#         "call_hist",
-#         "call_chains",
-#         "call_grhist",
-#         "call_plot",
-#         "call_parity",
-#         "call_binom",
-#         "call_payoff",
-#         "call_pricing",
-#     ],
-# )
-# def test_call_func_no_ticker(func, mocker):
-#     mocker.patch(
-#         "gamestonk_terminal.stocks.options.options_controller.parse_known_args_and_warn",
-#         return_value=True,
-#     )
-#     controller = options_controller.OptionsController(ticker=None)
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "func",
+    [
+        "call_info",
+        "call_pcr",
+        "call_exp",
+        "call_vol",
+        "call_voi",
+        "call_oi",
+        "call_hist",
+        "call_chains",
+        "call_grhist",
+        "call_plot",
+        "call_parity",
+        "call_binom",
+        "call_payoff",
+        "call_pricing",
+    ],
+)
+def test_call_func_no_ticker(func, mocker):
+    mocker.patch(
+        "gamestonk_terminal.stocks.options.options_controller.parse_known_args_and_warn",
+        return_value=True,
+    )
+    controller = options_controller.OptionsController(ticker=None)
 
-#     func_result = getattr(controller, func)(list())
-#     assert func_result is None
-#     assert controller.queue == []
-
-
-# @pytest.mark.vcr(record_mode="none")
-# @pytest.mark.parametrize(
-#     "func",
-#     [
-#         "call_grhist",
-#         "call_hist",
-#         "call_chains",
-#         "call_voi",
-#         "call_oi",
-#         "call_vol",
-#         "call_plot",
-#         "call_parity",
-#         "call_binom",
-#         "call_payoff",
-#         "call_pricing",
-#     ],
-# )
-# def test_call_func_no_selected_date(func, mocker):
-#     path_controller = "gamestonk_terminal.stocks.options.options_controller"
-
-#     # MOCK OPTION_EXPIRATIONS + CHAIN
-#     mocker.patch(
-#         target=f"{path_controller}.yfinance_model.option_expirations",
-#         return_value=[],
-#     )
-#     mocker.patch(
-#         target=f"{path_controller}.tradier_model.option_expirations",
-#         return_value=[],
-#     )
-#     mocker.patch(
-#         target=f"{path_controller}.yfinance_model.get_option_chain",
-#         return_value=None,
-#     )
-
-#     # MOCK PARSE_KNOWN_ARGS_AND_WARN
-#     mocker.patch(
-#         "gamestonk_terminal.stocks.options.options_controller.parse_known_args_and_warn",
-#         return_value=True,
-#     )
-
-#     controller = options_controller.OptionsController(ticker="MOCK_TICKER")
-
-#     func_result = getattr(controller, func)(list())
-#     assert func_result is None
-#     assert controller.selected_date == ""
+    func_result = getattr(controller, func)(list())
+    assert func_result is None
+    assert controller.queue == []
 
 
-# @pytest.mark.vcr(record_mode="none")
-# @pytest.mark.parametrize(
-#     "other_args",
-#     [
-#         ["TSLA"],
-#         ["TSLA", "--source=yf"],
-#     ],
-# )
-# def test_call_load(mocker, other_args):
-#     path_controller = "gamestonk_terminal.stocks.options.options_controller"
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "func",
+    [
+        "call_grhist",
+        "call_hist",
+        "call_chains",
+        "call_voi",
+        "call_oi",
+        "call_vol",
+        "call_plot",
+        "call_parity",
+        "call_binom",
+        "call_payoff",
+        "call_pricing",
+    ],
+)
+def test_call_func_no_selected_date(func, mocker):
+    path_controller = "gamestonk_terminal.stocks.options.options_controller"
 
-#     # MOCK OPTION_EXPIRATIONS + CHAIN
-#     mocker.patch(
-#         target=f"{path_controller}.yfinance_model.option_expirations",
-#         return_value=EXPIRY_DATES,
-#     )
-#     mocker.patch(
-#         target=f"{path_controller}.tradier_model.option_expirations",
-#         return_value=EXPIRY_DATES,
-#     )
-#     mocker.patch(
-#         target=f"{path_controller}.yfinance_model.get_option_chain",
-#         return_value=CHAIN,
-#     )
+    # MOCK OPTION_EXPIRATIONS + CHAIN
+    mocker.patch(
+        target=f"{path_controller}.yfinance_model.option_expirations",
+        return_value=[],
+    )
+    mocker.patch(
+        target=f"{path_controller}.tradier_model.option_expirations",
+        return_value=[],
+    )
+    mocker.patch(
+        target=f"{path_controller}.yfinance_model.get_option_chain",
+        return_value=None,
+    )
 
-#     controller = options_controller.OptionsController(ticker=None)
-#     old_expiry_dates = controller.expiry_dates
-#     controller.call_load(other_args=other_args)
-#     assert old_expiry_dates != controller.expiry_dates
+    # MOCK PARSE_KNOWN_ARGS_AND_WARN
+    mocker.patch(
+        "gamestonk_terminal.stocks.options.options_controller.parse_known_args_and_warn",
+        return_value=True,
+    )
+
+    controller = options_controller.OptionsController(ticker="MOCK_TICKER")
+
+    func_result = getattr(controller, func)(list())
+    assert func_result is None
+    assert controller.selected_date == ""
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "other_args",
+    [
+        ["TSLA"],
+        ["TSLA", "--source=yf"],
+    ],
+)
+def test_call_load(mocker, other_args):
+    path_controller = "gamestonk_terminal.stocks.options.options_controller"
+
+    # MOCK OPTION_EXPIRATIONS + CHAIN
+    mocker.patch(
+        target=f"{path_controller}.yfinance_model.option_expirations",
+        return_value=EXPIRY_DATES,
+    )
+    mocker.patch(
+        target=f"{path_controller}.tradier_model.option_expirations",
+        return_value=EXPIRY_DATES,
+    )
+    mocker.patch(
+        target=f"{path_controller}.yfinance_model.get_option_chain",
+        return_value=CHAIN,
+    )
+
+    controller = options_controller.OptionsController(ticker=None)
+    old_expiry_dates = controller.expiry_dates
+    controller.call_load(other_args=other_args)
+    assert old_expiry_dates != controller.expiry_dates
