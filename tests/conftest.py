@@ -197,6 +197,7 @@ class Recorder:
             if record.record_changed:
                 raise Exception(
                     "Change detected\n"
+                    f"Record Path  : {record.record_path}\n"
                     f"Expected  : {record.recorded}\n"
                     f"Actual    : {record.captured}\n"
                 )
