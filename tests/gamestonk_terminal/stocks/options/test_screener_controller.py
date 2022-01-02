@@ -203,75 +203,75 @@ def test_call_func_expect_queue(expected_queue, func, queue):
     assert controller.queue == expected_queue
 
 
-# @pytest.mark.vcr(record_mode="none")
-# @pytest.mark.parametrize(
-#     "tested_func, other_args, mocked_func, called_args, called_kwargs",
-#     [
-#         (
-#             "call_view",
-#             [
-#                 "high_IV",
-#             ],
-#             "syncretism_view.view_available_presets",
-#             [],
-#             dict(),
-#         ),
-#         (
-#             "call_set",
-#             [
-#                 "high_IV",
-#             ],
-#             "",
-#             [],
-#             dict(),
-#         ),
-#         (
-#             "call_scr",
-#             [
-#                 "high_IV",
-#                 "--limit=1",
-#             ],
-#             "syncretism_view.view_screener_output",
-#             [],
-#             dict(),
-#         ),
-#         (
-#             "call_ca",
-#             [],
-#             "",
-#             [],
-#             dict(),
-#         ),
-#         (
-#             "call_po",
-#             [],
-#             "",
-#             [],
-#             dict(),
-#         ),
-#     ],
-# )
-# def test_call_func_test(
-#     tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
-# ):
-#     path_controller = "gamestonk_terminal.stocks.options.screener_controller"
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "tested_func, other_args, mocked_func, called_args, called_kwargs",
+    [
+        (
+            "call_view",
+            [
+                "high_IV",
+            ],
+            "syncretism_view.view_available_presets",
+            [],
+            dict(),
+        ),
+        (
+            "call_set",
+            [
+                "high_IV",
+            ],
+            "",
+            [],
+            dict(),
+        ),
+        (
+            "call_scr",
+            [
+                "high_IV",
+                "--limit=1",
+            ],
+            "syncretism_view.view_screener_output",
+            [],
+            dict(),
+        ),
+        (
+            "call_ca",
+            [],
+            "",
+            [],
+            dict(),
+        ),
+        (
+            "call_po",
+            [],
+            "",
+            [],
+            dict(),
+        ),
+    ],
+)
+def test_call_func_test(
+    tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
+):
+    path_controller = "gamestonk_terminal.stocks.options.screener_controller"
 
-#     if mocked_func:
-#         mock = mocker.Mock()
-#         mocker.patch(
-#             target=f"{path_controller}.{mocked_func}",
-#             new=mock,
-#         )
+    if mocked_func:
+        mock = mocker.Mock()
+        mocker.patch(
+            target=f"{path_controller}.{mocked_func}",
+            new=mock,
+        )
 
-#         controller = screener_controller.ScreenerController(queue=None)
-#         controller.screen_tickers = ["PM"]
-#         getattr(controller, tested_func)(other_args)
+        controller = screener_controller.ScreenerController(queue=None)
+        controller.screen_tickers = ["PM"]
+        getattr(controller, tested_func)(other_args)
 
-#         if called_args or called_kwargs:
-#             mock.assert_called_once_with(*called_args, **called_kwargs)
-#         else:
-#             mock.assert_called_once()
-#     else:
-#         controller = screener_controller.ScreenerController(queue=None)
-#         controller.screen_tickers = ["PM"]
-#         getattr(controller, tested_func)(other_args)
+        if called_args or called_kwargs:
+            mock.assert_called_once_with(*called_args, **called_kwargs)
+        else:
+            mock.assert_called_once()
+    else:
+        controller = screener_controller.ScreenerController(queue=None)
+        controller.screen_tickers = ["PM"]
+        getattr(controller, tested_func)(other_args)
