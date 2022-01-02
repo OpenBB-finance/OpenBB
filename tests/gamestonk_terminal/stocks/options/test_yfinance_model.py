@@ -32,7 +32,16 @@ def test_option_expirations_no_dates(mocker):
 
 
 @pytest.mark.vcr
-def test_get_option_chain(recorder):
+def test_get_option_chain(recorder, mocker):
+    # FORCE SINGLE THREADING
+    yf_download = yfinance_model.yf.download
+
+    def mock_yf_download(*args, **kwargs):
+        kwargs["threads"] = False
+        return yf_download(*args, **kwargs)
+
+    mocker.patch("yfinance.download", side_effect=mock_yf_download)
+
     result_tuple = yfinance_model.get_option_chain(
         ticker="PM",
         expiration="2022-01-07",
