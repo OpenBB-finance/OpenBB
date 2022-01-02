@@ -19,8 +19,8 @@ from _pytest.mark.structures import Mark
 
 # pylint: disable=redefined-outer-name
 
-EXTENSIONS_ALLOWED:List[str] = ["csv", "json", "txt"]
-EXTENSIONS_MATCHING:Dict[str, List[Type]] = {
+EXTENSIONS_ALLOWED: List[str] = ["csv", "json", "txt"]
+EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
     "csv": [pd.DataFrame, pd.Series],
     "json": [bool, dict, float, int, list, tuple],
     "txt": [str],
