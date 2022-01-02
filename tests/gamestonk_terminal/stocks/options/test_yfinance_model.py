@@ -31,7 +31,9 @@ def test_option_expirations_no_dates(mocker):
     yfinance_model.option_expirations(ticker="PM")
 
 
-@pytest.mark.skip("Something wrong with 'lastTradeDate' format while running on the server")
+@pytest.mark.skip(
+    "Something wrong with 'lastTradeDate' format while running on the server"
+)
 @pytest.mark.vcr
 def test_get_option_chain(recorder):
     result_tuple = yfinance_model.get_option_chain(
