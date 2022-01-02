@@ -8,6 +8,7 @@ import requests
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.options import syncretism_model
 
+
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
@@ -18,6 +19,7 @@ def vcr_config():
             ("date", "MOCK_DATE"),
         ],
     }
+
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
