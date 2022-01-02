@@ -125,7 +125,8 @@ Portfolio: {self.portfolio_name or None}
             prog="load",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="Function to get portfolio from predefined csv/json/xlsx file inside portfolios folder",
+            description="Function to get portfolio from predefined "
+                        "csv/json/xlsx file inside portfolios folder",
             epilog="usage: load file_name",
         )
         parser.add_argument(
@@ -235,7 +236,8 @@ Portfolio: {self.portfolio_name or None}
                 )
             else:
                 print(
-                    "'value' column not in portfolio.  Either add manually or load without --no_last_price flag\n"
+                    "'value' column not in portfolio.  "
+                    "Either add manually or load without --no_last_price flag\n"
                 )
 
     @try_except

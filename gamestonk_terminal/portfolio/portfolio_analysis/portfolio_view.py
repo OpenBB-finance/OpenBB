@@ -6,7 +6,9 @@ from tabulate import tabulate
 import gamestonk_terminal.feature_flags as gtff
 
 
-def display_group_holdings(portfolio: pd.DataFrame, group_column: str, allocation: bool):
+def display_group_holdings(portfolio: pd.DataFrame,
+                           group_column: str,
+                           allocation: bool,):
     """Display portfolio holdings based on grouping
 
     Parameters
