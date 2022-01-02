@@ -196,9 +196,9 @@ class Recorder:
         for record in record_list:
             if record.record_changed:
                 raise Exception(
-                        "Change detected\n"
-                        f"Expected  : {record.recorded}\n"
-                        f"Actual    : {record.captured}\n"
+                    "Change detected\n"
+                    f"Expected  : {record.recorded}\n"
+                    f"Actual    : {record.captured}\n"
                 )
 
     def assert_in_list(self, in_list: List[str]):
