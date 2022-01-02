@@ -406,123 +406,123 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
     assert controller.queue == expected_queue
 
 
-# @pytest.mark.vcr(record_mode="none")
-# @pytest.mark.parametrize(
-#     "tested_func, other_args, mocked_func, called_args, called_kwargs",
-#     [
-#         (
-#             "call_list",
-#             [],
-#             "",
-#             [],
-#             dict(),
-#         ),
-#         (
-#             "call_add",
-#             [
-#                 "0",
-#                 "--put",
-#                 "--short",
-#             ],
-#             "",
-#             [],
-#             dict(),
-#         ),
-#         (
-#             "call_rmv",
-#             [
-#                 "0",
-#                 "--all",
-#             ],
-#             "",
-#             [],
-#             dict(),
-#         ),
-#         (
-#             "call_rmv",
-#             [
-#                 "0",
-#             ],
-#             "",
-#             [],
-#             dict(),
-#         ),
-#         (
-#             "call_pick",
-#             ["--type=long"],
-#             "",
-#             [],
-#             dict(),
-#         ),
-#         (
-#             "call_pick",
-#             ["--type=none"],
-#             "",
-#             [],
-#             dict(),
-#         ),
-#         (
-#             "call_pick",
-#             ["--type=short"],
-#             "",
-#             [],
-#             dict(),
-#         ),
-#         (
-#             "call_plot",
-#             [],
-#             "",
-#             [],
-#             dict(),
-#         ),
-#         (
-#             "call_sop",
-#             [],
-#             "",
-#             [],
-#             dict(),
-#         ),
-#     ],
-# )
-# def test_call_func_test(
-#     tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
-# ):
-#     path_controller = "gamestonk_terminal.stocks.options.payoff_controller"
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "tested_func, other_args, mocked_func, called_args, called_kwargs",
+    [
+        (
+            "call_list",
+            [],
+            "",
+            [],
+            dict(),
+        ),
+        (
+            "call_add",
+            [
+                "0",
+                "--put",
+                "--short",
+            ],
+            "",
+            [],
+            dict(),
+        ),
+        (
+            "call_rmv",
+            [
+                "0",
+                "--all",
+            ],
+            "",
+            [],
+            dict(),
+        ),
+        (
+            "call_rmv",
+            [
+                "0",
+            ],
+            "",
+            [],
+            dict(),
+        ),
+        (
+            "call_pick",
+            ["--type=long"],
+            "",
+            [],
+            dict(),
+        ),
+        (
+            "call_pick",
+            ["--type=none"],
+            "",
+            [],
+            dict(),
+        ),
+        (
+            "call_pick",
+            ["--type=short"],
+            "",
+            [],
+            dict(),
+        ),
+        (
+            "call_plot",
+            [],
+            "",
+            [],
+            dict(),
+        ),
+        (
+            "call_sop",
+            [],
+            "",
+            [],
+            dict(),
+        ),
+    ],
+)
+def test_call_func_test(
+    tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
+):
+    path_controller = "gamestonk_terminal.stocks.options.payoff_controller"
 
-#     # MOCK CHAIN + PRICE
-#     mocker.patch(
-#         target=f"{path_controller}.get_option_chain",
-#         return_value=CHAIN,
-#     )
-#     mocker.patch(
-#         target=f"{path_controller}.get_price",
-#         return_value=95.0,
-#     )
+    # MOCK CHAIN + PRICE
+    mocker.patch(
+        target=f"{path_controller}.get_option_chain",
+        return_value=CHAIN,
+    )
+    mocker.patch(
+        target=f"{path_controller}.get_price",
+        return_value=95.0,
+    )
 
-#     if mocked_func:
-#         mock = mocker.Mock()
-#         mocker.patch(
-#             target=f"{path_controller}.{mocked_func}",
-#             new=mock,
-#         )
+    if mocked_func:
+        mock = mocker.Mock()
+        mocker.patch(
+            target=f"{path_controller}.{mocked_func}",
+            new=mock,
+        )
 
-#         controller = payoff_controller.PayoffController(
-#             ticker="MOCK_TICKER",
-#             expiration="2022-01-07",
-#             queue=None,
-#         )
-#         controller.call_add(["0", "--put", "--short"])
-#         getattr(controller, tested_func)(other_args)
+        controller = payoff_controller.PayoffController(
+            ticker="MOCK_TICKER",
+            expiration="2022-01-07",
+            queue=None,
+        )
+        controller.call_add(["0", "--put", "--short"])
+        getattr(controller, tested_func)(other_args)
 
-#         if called_args or called_kwargs:
-#             mock.assert_called_once_with(*called_args, **called_kwargs)
-#         else:
-#             mock.assert_called_once()
-#     else:
-#         controller = payoff_controller.PayoffController(
-#             ticker="MOCK_TICKER",
-#             expiration="2022-01-07",
-#             queue=None,
-#         )
-#         controller.call_add(["0", "--put", "--short"])
-#         getattr(controller, tested_func)(other_args)
+        if called_args or called_kwargs:
+            mock.assert_called_once_with(*called_args, **called_kwargs)
+        else:
+            mock.assert_called_once()
+    else:
+        controller = payoff_controller.PayoffController(
+            ticker="MOCK_TICKER",
+            expiration="2022-01-07",
+            queue=None,
+        )
+        controller.call_add(["0", "--put", "--short"])
+        getattr(controller, tested_func)(other_args)
