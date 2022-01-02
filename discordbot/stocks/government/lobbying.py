@@ -1,8 +1,8 @@
 import discord
-import discordbot.config_discordbot as cfg
-from discordbot.helpers import pagination
 
 from gamestonk_terminal.stocks.government import quiverquant_model
+import discordbot.config_discordbot as cfg
+from discordbot.helpers import pagination
 
 
 async def lobbying_command(ctx, ticker="", num=""):

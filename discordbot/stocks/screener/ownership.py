@@ -2,18 +2,18 @@ import difflib
 import discord
 import pandas as pd
 
+from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 import discordbot.config_discordbot as cfg
 from discordbot.helpers import pagination
+from discordbot.stocks.screener import screener_options as so
 
-from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 
-
-async def ownership_command(
-    ctx, preset="template", sort="", limit="25", ascend="False"
-):
+async def ownership_command(ctx, preset="template", sort="", limit="5", ascend="False"):
     """Displays stocks based on own share float and ownership data [Finviz]"""
     try:
-        preset_error = False
+        # Check for argument
+        if preset == "template" or preset not in so.all_presets:
+            raise Exception("Invalid preset selected!")
 
         # Debug
         if cfg.DEBUG:
@@ -36,33 +36,12 @@ async def ownership_command(
             raise Exception("ascend argument has to be true or false")
 
         # Output Data
-        preset_error = True
         df_screen = get_screener_data(
             preset,
-            "overview",
+            "ownership",
             limit,
             ascend,
         )
-        preset_error = False
-
-        d_cols_to_sort = {
-            "ownership": [
-                "Ticker",
-                "Market Cap",
-                "Outstanding",
-                "Float",
-                "Insider Own",
-                "Insider Trans",
-                "Inst Own",
-                "Inst Trans",
-                "Float Short",
-                "Short Ratio",
-                "Avg Volume",
-                "Price",
-                "Change",
-                "Volume",
-            ],
-        }
 
         description = ""
 
@@ -73,7 +52,7 @@ async def ownership_command(
             df_screen = df_screen.dropna(axis="columns", how="all")
 
             if sort:
-                if " ".join(sort) in d_cols_to_sort["ownership"]:
+                if " ".join(sort) in so.d_cols_to_sort["ownership"]:
                     df_screen = df_screen.sort_values(
                         by=[" ".join(sort)],
                         ascending=ascend,
@@ -82,7 +61,7 @@ async def ownership_command(
                 else:
                     similar_cmd = difflib.get_close_matches(
                         " ".join(sort),
-                        d_cols_to_sort["ownership"],
+                        so.d_cols_to_sort["ownership"],
                         n=1,
                         cutoff=0.7,
                     )
@@ -95,7 +74,7 @@ async def ownership_command(
                         )
                     else:
                         raise ValueError(
-                            f"Wrong sort column provided! Provide one of these: {', '.join(d_cols_to_sort['ownership'])}"
+                            f"Wrong sort column provided! Select from: {', '.join(so.d_cols_to_sort['ownership'])}"
                         )
 
             df_screen = df_screen.fillna("")
@@ -137,19 +116,11 @@ async def ownership_command(
             await pagination(columns, ctx)
 
     except Exception as e:
-        if not preset_error:
-            embed = discord.Embed(
-                title="ERROR Stocks: [Finviz] Ownership Screener",
-                colour=cfg.COLOR,
-                description=e,
-            )
-        else:
-            embed = discord.Embed(
-                title="ERROR Stocks: [Finviz] Ownership Screener",
-                colour=cfg.COLOR,
-                description=f"Wrong preset parameter entered. Use the command '{cfg.COMMAND_PREFIX}stocks.scr.presets' "
-                "in order to see the available presets.",
-            )
+        embed = discord.Embed(
+            title="ERROR Stocks: [Finviz] Ownership Screener",
+            colour=cfg.COLOR,
+            description=e,
+        )
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,

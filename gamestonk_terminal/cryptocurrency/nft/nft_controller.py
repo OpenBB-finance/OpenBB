@@ -14,7 +14,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
 
-from gamestonk_terminal.cryptocurrency.nft import nftcalendar_view
+from gamestonk_terminal.cryptocurrency.nft import nftcalendar_view, opensea_view
 
 
 class NFTController:
@@ -34,12 +34,7 @@ class NFTController:
         "reset",
     ]
 
-    CHOICES_COMMANDS = [
-        "today",
-        "upcoming",
-        "ongoing",
-        "newest",
-    ]
+    CHOICES_COMMANDS = ["today", "upcoming", "ongoing", "newest", "stats"]
 
     CHOICES += CHOICES_COMMANDS
 
@@ -64,13 +59,13 @@ class NFTController:
         """Print help"""
 
         help_text = """
-Non Fungible Tokens Menu:
-
 nftcalendar.io:
     today       today's NFT drops
     upcoming    upcoming NFT drops
     ongoing     Ongoing NFT drops
     newest      Recently NFTs added
+opensea.io
+    stats       check open sea collection stats
 """
         print(help_text)
 
@@ -84,10 +79,8 @@ nftcalendar.io:
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
         # Empty command
         if not an_input:
@@ -121,56 +114,79 @@ nftcalendar.io:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
 
-        return self.queue
-
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "nft")
-            self.queue.insert(0, "crypto")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "reset", "crypto", "nft"]
+        self.queue.insert(0, "nft")
+        self.queue.insert(0, "crypto")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+
+    @try_except
+    def call_stats(self, other_args: List[str]):
+        """Process stats command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="info",
+            description="""
+                Display stats about an opensea nft collection. e.g. alien-frens
+                [Source: opensea.io]
+            """,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--slug",
+            type=str,
+            help="Opensea collection slug (e.g., mutant-ape-yacht-club)",
+            dest="slug",
+            required=True,
+        )
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "--slug")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            opensea_view.display_collection_stats(
+                slug=ns_parser.slug,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_today(self, other_args: List[str]):
@@ -197,7 +213,6 @@ nftcalendar.io:
                 num=ns_parser.limit,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_upcoming(self, other_args: List[str]):
@@ -224,7 +239,6 @@ nftcalendar.io:
                 num=ns_parser.limit,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_ongoing(self, other_args: List[str]):
@@ -251,7 +265,6 @@ nftcalendar.io:
                 num=ns_parser.limit,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_newest(self, other_args: List[str]):
@@ -278,7 +291,6 @@ nftcalendar.io:
                 num=ns_parser.limit,
                 export=ns_parser.export,
             )
-        return self.queue
 
 
 def menu(queue: List[str] = None):
@@ -340,18 +352,16 @@ def menu(queue: List[str] = None):
                     candidate_input = (
                         f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
                     )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        nft_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
                 else:
-                    candidate_input = similar_cmd[0]
-
-                if candidate_input == an_input:
-                    an_input = ""
-                    nft_controller.queue = []
-                    print("\n")
-                    continue
+                    an_input = similar_cmd[0]
 
                 print(f" Replacing by '{an_input}'.")
                 nft_controller.queue.insert(0, an_input)
             else:
                 print("\n")
-                an_input = ""
-                nft_controller.queue = []

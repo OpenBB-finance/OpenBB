@@ -11,12 +11,14 @@ from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
+    check_non_negative_float,
     check_positive,
     get_flair,
     parse_known_args_and_warn,
     try_except,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     system_clear,
+    valid_date,
 )
 from gamestonk_terminal.menu import session
 
@@ -47,7 +49,7 @@ class BacktestingController:
         "r",
         "reset",
     ]
-    CHOICES_COMMANDS = ["ema", "ema_cross", "rsi"]
+    CHOICES_COMMANDS = ["ema", "ema_cross", "rsi", "whatif"]
     CHOICES += CHOICES_COMMANDS
 
     def __init__(self, ticker: str, stock: pd.DataFrame, queue: List[str] = None):
@@ -69,8 +71,9 @@ class BacktestingController:
     def print_help(self):
         """Print help"""
         help_text = f"""
-Backtesting:
 Ticker: {self.ticker.upper()}
+
+    whatif      what if you had bought X shares on day Y
 
     ema         buy when price exceeds EMA(l)
     ema_cross   buy when EMA(short) > EMA(long)
@@ -118,62 +121,82 @@ Ticker: {self.ticker.upper()}
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "bt")
-            if self.ticker:
-                self.queue.insert(0, f"load {self.ticker}")
-            self.queue.insert(0, "stocks")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-
-        reset_commands = ["quit", "quit", "reset", "stocks"]
+        self.queue.insert(0, "bt")
         if self.ticker:
-            reset_commands.append(f"load {self.ticker}")
-        reset_commands.append("bt")
-        return reset_commands
+            self.queue.insert(0, f"load {self.ticker}")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+
+    @try_except
+    def call_whatif(self, other_args: List[str]):
+        """Call whatif"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="whatif",
+            description="Displays what if scenario of having bought X shares at date Y",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            default=None,
+            dest="date_shares_acquired",
+            type=valid_date,
+            help="Date at which the shares were acquired",
+        )
+        parser.add_argument(
+            "-n",
+            "--number",
+            default=1.0,
+            type=check_non_negative_float,
+            help="Number of shares acquired",
+            dest="num_shares_acquired",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-d")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            bt_view.display_whatif_scenario(
+                ticker=self.ticker,
+                num_shares_acquired=ns_parser.num_shares_acquired,
+                date_shares_acquired=ns_parser.date_shares_acquired,
+            )
 
     @try_except
     def call_ema(self, other_args: List[str]):
@@ -218,7 +241,6 @@ Ticker: {self.ticker.upper()}
                 no_bench=ns_parser.no_bench,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_ema_cross(self, other_args: List[str]):
@@ -274,7 +296,6 @@ Ticker: {self.ticker.upper()}
 
             if ns_parser.long < ns_parser.short:
                 print("Short EMA period is longer than Long EMA period\n")
-                return self.queue
 
             bt_view.display_ema_cross(
                 ticker=self.ticker,
@@ -286,7 +307,6 @@ Ticker: {self.ticker.upper()}
                 shortable=ns_parser.shortable,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_rsi(self, other_args: List[str]):
@@ -349,7 +369,6 @@ Ticker: {self.ticker.upper()}
         if ns_parser:
             if ns_parser.high < ns_parser.low:
                 print("Low RSI value is higher than Low RSI value\n")
-                return self.queue
 
             bt_view.display_rsi_strategy(
                 ticker=self.ticker,
@@ -362,7 +381,6 @@ Ticker: {self.ticker.upper()}
                 shortable=ns_parser.shortable,
                 export=ns_parser.export,
             )
-        return self.queue
 
 
 def menu(ticker: str, stock: pd.DataFrame, queue: List[str] = None):

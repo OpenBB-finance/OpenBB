@@ -75,7 +75,6 @@ def test_check_output(func, kwargs_dict, monkeypatch, use_tab):
     getattr(av_view, func)(**kwargs_dict)
 
 
-@pytest.mark.skip
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(

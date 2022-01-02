@@ -88,7 +88,7 @@ def display_chains(
     max_sp: float,
     calls_only: bool,
     puts_only: bool,
-    export: str,
+    export: str = "",
 ):
     """Display option chain
 
@@ -204,7 +204,7 @@ def plot_oi(
     max_sp: float,
     calls_only: bool,
     puts_only: bool,
-    export: str,
+    export: str = "",
 ):
     """Plot open interest
 
@@ -277,21 +277,19 @@ def plot_oi(
             ls="-",
             c="g",
         )
-        ax.axvline(
-            current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.7
-        )
-        ax.axvline(max_pain, lw=3, c="k", label=f"Max Pain: {max_pain}", alpha=0.7)
-        ax.grid("on")
-        ax.set_xlabel("Strike Price")
-        ax.set_ylabel("Open Interest (1k) ")
-        ax.set_xlim(min_strike, max_strike)
+    ax.axvline(current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.7)
+    ax.axvline(max_pain, lw=3, c="k", label=f"Max Pain: {max_pain}", alpha=0.7)
+    ax.grid("on")
+    ax.set_xlabel("Strike Price")
+    ax.set_ylabel("Open Interest (1k) ")
+    ax.set_xlim(min_strike, max_strike)
 
-        if gtff.USE_ION:
-            plt.ion()
+    if gtff.USE_ION:
+        plt.ion()
 
-        ax.set_title(f"Open Interest for {ticker.upper()} expiring {expiry}")
-        plt.legend(loc=0)
-        fig.tight_layout(pad=1)
+    ax.set_title(f"Open Interest for {ticker.upper()} expiring {expiry}")
+    plt.legend(loc=0)
+    fig.tight_layout(pad=1)
 
     plt.show()
     export_data(
@@ -310,7 +308,7 @@ def plot_vol(
     max_sp: float,
     calls_only: bool,
     puts_only: bool,
-    export: str,
+    export: str = "",
 ):
     """Plot volume
 
@@ -405,7 +403,7 @@ def plot_volume_open_interest(
     min_sp: float,
     max_sp: float,
     min_vol: float,
-    export: str,
+    export: str = "",
 ):
     """Plot volume and open interest
 
@@ -592,9 +590,9 @@ def display_historical(
     expiry: str,
     strike: float,
     put: bool,
-    export: str,
     raw: bool,
     chain_id: str,
+    export: str = "",
 ):
     """Plot historical option prices
 
@@ -608,12 +606,12 @@ def display_historical(
         Option strike price
     put: bool
         Is this a put option?
-    export: str
-        Format of export file
     raw: bool
         Print raw data
     chain_id: str
         OCC option symbol
+    export: str
+        Format of export file
     """
 
     df_hist = tradier_model.get_historical_options(

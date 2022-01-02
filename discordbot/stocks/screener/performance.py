@@ -2,18 +2,20 @@ import difflib
 import discord
 import pandas as pd
 
+from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 import discordbot.config_discordbot as cfg
 from discordbot.helpers import pagination
-
-from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
+from discordbot.stocks.screener import screener_options as so
 
 
 async def performance_command(
-    ctx, preset="template", sort="", limit="25", ascend="False"
+    ctx, preset="template", sort="", limit="5", ascend="False"
 ):
     """Displays stocks and sort by performance categories [Finviz]"""
     try:
-        preset_error = False
+        # Check for argument
+        if preset == "template" or preset not in so.all_presets:
+            raise Exception("Invalid preset selected!")
 
         # Debug
         if cfg.DEBUG:
@@ -36,14 +38,12 @@ async def performance_command(
             raise Exception("ascend argument has to be true or false")
 
         # Output Data
-        preset_error = True
         df_screen = get_screener_data(
             preset,
-            "overview",
+            "performance",
             limit,
             ascend,
         )
-        preset_error = False
 
         d_cols_to_sort = {
             "performance": [
@@ -139,19 +139,11 @@ async def performance_command(
             await pagination(columns, ctx)
 
     except Exception as e:
-        if not preset_error:
-            embed = discord.Embed(
-                title="ERROR Stocks: [Finviz] Performance Screener",
-                colour=cfg.COLOR,
-                description=e,
-            )
-        else:
-            embed = discord.Embed(
-                title="ERROR Stocks: [Finviz] Performance Screener",
-                colour=cfg.COLOR,
-                description=f"Wrong preset parameter entered. Use the command '{cfg.COMMAND_PREFIX}stocks.scr.presets' "
-                "in order to see the available presets.",
-            )
+        embed = discord.Embed(
+            title="ERROR Stocks: [Finviz] Performance Screener",
+            colour=cfg.COLOR,
+            description=e,
+        )
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,

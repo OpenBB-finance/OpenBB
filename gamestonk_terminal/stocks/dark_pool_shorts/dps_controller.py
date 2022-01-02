@@ -159,60 +159,47 @@ NYSE:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            if self.ticker:
-                self.queue.insert(0, f"load {self.ticker}")
-            self.queue.insert(0, "dps")
-            self.queue.insert(0, "stocks")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        reset_commands = ["quit", "quit", "reset", "stocks", "dps"]
         if self.ticker:
-            reset_commands.append(f"load {self.ticker}")
-        return reset_commands
+            self.queue.insert(0, f"load {self.ticker}")
+        self.queue.insert(0, "dps")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -258,8 +245,6 @@ NYSE:
                 else:
                     self.ticker = ns_parser.ticker.upper()
 
-        return self.queue
-
     @try_except
     def call_shorted(self, other_args: List[str]):
         """Process shorted command"""
@@ -288,8 +273,6 @@ NYSE:
                 num_stocks=ns_parser.limit,
                 export=ns_parser.export,
             )
-
-        return self.queue
 
     @try_except
     def call_hsi(self, other_args: List[str]):
@@ -323,8 +306,6 @@ NYSE:
                 num=ns_parser.limit,
                 export=ns_parser.export,
             )
-
-        return self.queue
 
     @try_except
     def call_prom(self, other_args: List[str]):
@@ -376,8 +357,6 @@ NYSE:
                 export=ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_pos(self, other_args: List[str]):
         """Process pos command"""
@@ -426,8 +405,6 @@ NYSE:
                 export=ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_sidtc(self, other_args: List[str]):
         """Process sidtc command"""
@@ -465,8 +442,6 @@ NYSE:
                 export=ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_dpotc(self, other_args: List[str]):
         """Process dpotc command"""
@@ -487,8 +462,6 @@ NYSE:
                 )
             else:
                 print("No ticker loaded.\n")
-
-        return self.queue
 
     @try_except
     def call_ftd(self, other_args: List[str]):
@@ -549,8 +522,6 @@ NYSE:
             else:
                 print("No ticker loaded.\n")
 
-        return self.queue
-
     @try_except
     def call_spos(self, other_args: List[str]):
         """Process spos command"""
@@ -588,8 +559,6 @@ NYSE:
                 )
             else:
                 print("No ticker loaded.\n")
-
-        return self.queue
 
     @try_except
     def call_psi(self, other_args: List[str]):
@@ -653,8 +622,6 @@ NYSE:
             else:
                 print("No ticker loaded.\n")
 
-        return self.queue
-
     @try_except
     def call_volexch(self, other_args: List[str]):
         """Process volexch command"""
@@ -711,8 +678,6 @@ NYSE:
                 )
             else:
                 print("No ticker loaded.  Use `load ticker` first.")
-
-        return self.queue
 
 
 def menu(

@@ -186,8 +186,8 @@ Expiry: {self.selected_date or None}
     plot          plot variables provided by the user [Yfinance]
     parity        shows whether options are above or below expected price [Yfinance]
     binom         shows the value of an option using binomial options pricing [Yfinance]
-
->   screen        screens tickers based on preset [Syncretism.io]
+{Style.RESET_ALL if not colored else ''}
+>   screen        screens tickers based on preset [Syncretism.io]{"" if colored else Style.DIM}
 >   payoff        shows payoff diagram for a selection of options [Yfinance]
 >   pricing       shows options pricing and risk neutral valuation [Yfinance]
 {Style.RESET_ALL if not colored else ''}"""
@@ -233,66 +233,49 @@ Expiry: {self.selected_date or None}
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            if self.selected_date:
-                self.queue.insert(0, f"exp {self.selected_date}")
-            if self.ticker:
-                self.queue.insert(0, f"load {self.ticker}")
-            self.queue.insert(0, "options")
-            self.queue.insert(0, "stocks")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-
-        reset_commands = ["quit", "quit", "reset", "stocks", "options"]
-        if self.ticker:
-            reset_commands.append(f"load {self.ticker}")
         if self.selected_date:
-            reset_commands.append(f"exp -d {self.selected_date}")
-
-        return reset_commands
+            self.queue.insert(0, f"exp -d {self.selected_date}")
+        if self.ticker:
+            self.queue.insert(0, f"load {self.ticker}")
+        self.queue.insert(0, "options")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_calc(self, other_args: List[str]):
@@ -366,8 +349,6 @@ Expiry: {self.selected_date or None}
                 **pars,
             )
 
-        return self.queue
-
     @try_except
     def call_unu(self, other_args: List[str]):
         """Process act command"""
@@ -438,8 +419,6 @@ Expiry: {self.selected_date or None}
                     puts_only=ns_parser.puts_only,
                 )
 
-        return self.queue
-
     @try_except
     def call_pcr(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
@@ -480,8 +459,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded.\n")
 
-        return self.queue
-
     def call_info(self, other_args: List[str]):
         """Process info command"""
         parser = argparse.ArgumentParser(
@@ -500,8 +477,6 @@ Expiry: {self.selected_date or None}
                 )
             else:
                 print("No ticker loaded.\n")
-
-        return self.queue
 
     @try_except
     def call_grhist(self, other_args: List[str]):
@@ -571,11 +546,11 @@ Expiry: {self.selected_date or None}
                     if (
                         ns_parser.put
                         and self.chain
-                        and ns_parser.strike in self.chain.puts["strike"]
+                        and ns_parser.strike in self.chain.puts["strike"].values
                     ) or (
                         not ns_parser.put
                         and self.chain
-                        and ns_parser.strike in self.chain.calls["strike"]
+                        and ns_parser.strike in self.chain.calls["strike"].values
                     ):
                         syncretism_view.view_historical_greeks(
                             ticker=self.ticker,
@@ -594,8 +569,6 @@ Expiry: {self.selected_date or None}
                     print("No expiry loaded. First use `exp <expiry date>`\n")
             else:
                 print("No ticker loaded. First use `load <ticker>` \n")
-
-        return self.queue
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -638,8 +611,6 @@ Expiry: {self.selected_date or None}
                 self.chain = yfinance_model.get_option_chain(
                     self.ticker, self.selected_date
                 )
-
-        return self.queue
 
     @try_except
     def call_exp(self, other_args: List[str]):
@@ -698,8 +669,6 @@ Expiry: {self.selected_date or None}
                 self.chain = yfinance_model.get_option_chain(
                     self.ticker, self.selected_date
                 )
-
-        return self.queue
 
     @try_except
     def call_hist(self, other_args: List[str]):
@@ -773,12 +742,12 @@ Expiry: {self.selected_date or None}
                     ):
                         if ns_parser.source.lower() == "ce":
                             chartexchange_view.display_raw(
-                                ns_parser.export,
                                 self.ticker,
                                 self.selected_date,
                                 not ns_parser.put,
                                 ns_parser.strike,
                                 ns_parser.limit,
+                                ns_parser.export,
                             )
 
                         else:
@@ -788,9 +757,9 @@ Expiry: {self.selected_date or None}
                                     expiry=self.selected_date,
                                     strike=ns_parser.strike,
                                     put=ns_parser.put,
-                                    export=ns_parser.export,
                                     raw=ns_parser.raw,
                                     chain_id=ns_parser.chain_id,
+                                    export=ns_parser.export,
                                 )
                             else:
                                 print("TRADIER TOKEN not supplied. \n")
@@ -800,8 +769,6 @@ Expiry: {self.selected_date or None}
                     print("No expiry loaded. First use `exp <expiry date>` \n")
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
-
-        return self.queue
 
     @try_except
     def call_chains(self, other_args: List[str]):
@@ -876,8 +843,6 @@ Expiry: {self.selected_date or None}
                     print("No expiry loaded. First use `exp {expiry date}`\n")
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
-
-        return self.queue
 
     @try_except
     def call_vol(self, other_args: List[str]):
@@ -960,8 +925,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
 
-        return self.queue
-
     @try_except
     def call_voi(self, other_args: List[str]):
         """Process voi command"""
@@ -1032,8 +995,6 @@ Expiry: {self.selected_date or None}
                     print("No expiry loaded. First use `exp {expiry date}`\n")
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
-
-        return self.queue
 
     @try_except
     def call_oi(self, other_args: List[str]):
@@ -1116,8 +1077,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
 
-        return self.queue
-
     @try_except
     def call_plot(self, other_args: List[str]):
         """Process plot command"""
@@ -1194,8 +1153,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
 
-        return self.queue
-
     @try_except
     def call_parity(self, other_args: List[str]):
         """Process parity command"""
@@ -1256,8 +1213,6 @@ Expiry: {self.selected_date or None}
                     print("No expiry loaded. First use `exp {expiry date}`\n")
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
-
-        return self.queue
 
     @try_except
     def call_binom(self, other_args: List[str]):
@@ -1336,44 +1291,38 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
 
-        return self.queue
-
     @try_except
     def call_payoff(self, _):
         """Process payoff command"""
         if self.ticker:
             if self.selected_date:
-                return payoff_controller.menu(
+                self.queue = payoff_controller.menu(
                     self.ticker, self.selected_date, self.queue
                 )
-
-            print("No expiry loaded. First use `exp {expiry date}`\n")
+            else:
+                print("No expiry loaded. First use `exp {expiry date}`\n")
 
         else:
             print("No ticker loaded. First use `load <ticker>`\n")
-
-        return self.queue
 
     @try_except
     def call_pricing(self, _):
         """Process pricing command"""
         if self.ticker:
             if self.selected_date:
-                return pricing_controller.menu(
+                self.queue = pricing_controller.menu(
                     self.ticker, self.selected_date, self.prices, self.queue
                 )
-
-            print("No expiry loaded. First use `exp {expiry date}`\n")
+            else:
+                print("No expiry loaded. First use `exp {expiry date}`\n")
 
         else:
             print("No ticker loaded. First use `load <ticker>`\n")
 
-        return self.queue
-
     @try_except
     def call_screen(self, _):
         """Process screen command"""
-        return screener_controller.menu(self.queue)
+        self.queue = screener_controller.menu(self.queue)
 
 
 def menu(ticker: str = "", queue: List[str] = None):

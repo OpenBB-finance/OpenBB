@@ -1,9 +1,5 @@
 
-Financial Modeling Prep:
-    cls           clear screen
-    ?/help        show this menu again
-    q             quit this menu, and shows back to main menu
-    quit          quit to abandon program
+Financial Modeling Prep Menu:
 
 Ticker: 
 

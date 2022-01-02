@@ -2,18 +2,18 @@ import difflib
 import discord
 import pandas as pd
 
+from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 import discordbot.config_discordbot as cfg
 from discordbot.helpers import pagination
+from discordbot.stocks.screener import screener_options as so
 
-from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 
-
-async def valuation_command(
-    ctx, preset="template", sort="", limit="25", ascend="False"
-):
+async def valuation_command(ctx, preset="template", sort="", limit="5", ascend="False"):
     """Displays results from chosen preset focusing on valuation metrics [Finviz]"""
     try:
-        preset_error = False
+        # Check for argument
+        if preset == "template" or preset not in so.all_presets:
+            raise Exception("Invalid preset selected!")
 
         # Debug
         if cfg.DEBUG:
@@ -36,36 +36,12 @@ async def valuation_command(
             raise Exception("ascend argument has to be true or false")
 
         # Output Data
-        preset_error = True
         df_screen = get_screener_data(
             preset,
-            "overview",
+            "valuation",
             limit,
             ascend,
         )
-        preset_error = False
-
-        d_cols_to_sort = {
-            "valuation": [
-                "Ticker",
-                "Market Cap",
-                "P/E",
-                "Fwd P/E",
-                "PEG",
-                "P/S",
-                "P/B",
-                "P/C",
-                "P/FCF",
-                "EPS this Y",
-                "EPS next Y",
-                "EPS past 5Y",
-                "EPS next 5Y",
-                "Sales past 5Y",
-                "Price",
-                "Change",
-                "Volume",
-            ],
-        }
 
         description = ""
 
@@ -76,7 +52,7 @@ async def valuation_command(
             df_screen = df_screen.dropna(axis="columns", how="all")
 
             if sort:
-                if " ".join(sort) in d_cols_to_sort["valuation"]:
+                if " ".join(sort) in so.d_cols_to_sort["valuation"]:
                     df_screen = df_screen.sort_values(
                         by=[" ".join(sort)],
                         ascending=ascend,
@@ -85,7 +61,7 @@ async def valuation_command(
                 else:
                     similar_cmd = difflib.get_close_matches(
                         " ".join(sort),
-                        d_cols_to_sort["valuation"],
+                        so.d_cols_to_sort["valuation"],
                         n=1,
                         cutoff=0.7,
                     )
@@ -98,7 +74,7 @@ async def valuation_command(
                         )
                     else:
                         raise ValueError(
-                            f"Wrong sort column provided! Provide one of these: {', '.join(d_cols_to_sort['valuation'])}"
+                            f"Wrong sort column provided! Select from: {', '.join(so.d_cols_to_sort['valuation'])}"
                         )
 
             df_screen = df_screen.fillna("")
@@ -140,19 +116,11 @@ async def valuation_command(
             await pagination(columns, ctx)
 
     except Exception as e:
-        if not preset_error:
-            embed = discord.Embed(
-                title="ERROR Stocks: [Finviz] Valuation Screener",
-                colour=cfg.COLOR,
-                description=e,
-            )
-        else:
-            embed = discord.Embed(
-                title="ERROR Stocks: [Finviz] Valuation Screener",
-                colour=cfg.COLOR,
-                description=f"Wrong preset parameter entered. Use the command '{cfg.COMMAND_PREFIX}stocks.scr.presets' "
-                "in order to see the available presets.",
-            )
+        embed = discord.Embed(
+            title="ERROR Stocks: [Finviz] Valuation Screener",
+            colour=cfg.COLOR,
+            description=e,
+        )
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,

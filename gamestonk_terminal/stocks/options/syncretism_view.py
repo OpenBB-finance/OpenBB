@@ -80,7 +80,7 @@ def view_screener_output(
     )
 
     if n_show > 0:
-        df_res = df_res.sample(n_show)
+        df_res = df_res.head(n_show)
 
     if gtff.USE_TABULATE_DF:
         print(
@@ -110,7 +110,7 @@ def view_historical_greeks(
     put: bool,
     raw: bool,
     n_show: int,
-    export: str,
+    export: str = "",
 ):
     """Plots historical greeks for a given option
 

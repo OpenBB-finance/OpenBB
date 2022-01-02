@@ -77,7 +77,6 @@ class OnchainController:
         "th",
         "prices",
         "address",
-        "active",
         "lt",
         "dvcp",
         "tv",
@@ -181,56 +180,45 @@ class OnchainController:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command"""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
 
-        return self.queue
-
     def call_help(self, _):
         """Process help command"""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command"""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "onchain")
-            self.queue.insert(0, "crypto")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "reset", "crypto", "onchain"]
+        self.queue.insert(0, "onchain")
+        self.queue.insert(0, "crypto")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_gwei(self, other_args: List[str]):
@@ -251,8 +239,6 @@ class OnchainController:
 
         if ns_parser:
             ethgasstation_view.display_gwei_fees(export=ns_parser.export)
-
-        return self.queue
 
     @try_except
     def call_whales(self, other_args: List[str]):
@@ -324,7 +310,6 @@ class OnchainController:
                 show_address=ns_parser.address,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_address(self, other_args: List[str]):
@@ -372,9 +357,8 @@ class OnchainController:
             required="-h" not in other_args,
         )
 
-        if other_args:
-            if not other_args[0][0] == "-":
-                other_args.insert(0, "--address")
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "--address")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -387,7 +371,6 @@ class OnchainController:
                     f"Token or account address should be 42 characters long. "
                     f"Transaction hash should be 66 characters long\n"
                 )
-                return self.queue
 
             if ns_parser.account:
                 address_type = "account"
@@ -403,8 +386,6 @@ class OnchainController:
 
             self.address = ns_parser.address
             self.address_type = address_type
-
-        return self.queue
 
     @try_except
     def call_balance(self, other_args: List[str]):
@@ -460,7 +441,6 @@ class OnchainController:
             )
         else:
             print("You need to set an ethereum address\n")
-        return self.queue
 
     @try_except
     def call_hist(self, other_args: List[str]):
@@ -517,7 +497,6 @@ class OnchainController:
             )
         else:
             print("You need to set an ethereum address\n")
-        return self.queue
 
     @try_except
     def call_holders(self, other_args: List[str]):
@@ -574,8 +553,6 @@ class OnchainController:
         else:
             print("You need to set an ethereum address\n")
 
-        return self.queue
-
     @try_except
     def call_top(self, other_args: List[str]):
         """Process top command"""
@@ -627,7 +604,6 @@ class OnchainController:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_info(self, other_args: List[str]):
@@ -662,8 +638,6 @@ class OnchainController:
             )
         else:
             print("You need to set an ethereum address\n")
-
-        return self.queue
 
     @try_except
     def call_th(self, other_args: List[str]):
@@ -729,7 +703,6 @@ class OnchainController:
             )
         else:
             print("You need to set an ethereum address\n")
-        return self.queue
 
     @try_except
     def call_tx(self, other_args: List[str]):
@@ -756,7 +729,6 @@ class OnchainController:
             )
         else:
             print("You need to set an ethereum address\n")
-        return self.queue
 
     @try_except
     def call_prices(self, other_args: List[str]):
@@ -812,7 +784,6 @@ class OnchainController:
             )
         else:
             print("You need to set an ethereum address\n")
-        return self.queue
 
     @try_except
     def call_lt(self, other_args: List[str]):
@@ -898,8 +869,6 @@ class OnchainController:
                 export=ns_parser.export,
             )
 
-        return self.queue
-
     @try_except
     def call_dvcp(self, other_args: List[str]):
         """Process dvcp command"""
@@ -978,7 +947,6 @@ class OnchainController:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_tv(self, other_args: List[str]):
@@ -1054,7 +1022,6 @@ class OnchainController:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_ueat(self, other_args: List[str]):
@@ -1121,7 +1088,6 @@ class OnchainController:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_ttcp(self, other_args: List[str]):
@@ -1214,12 +1180,12 @@ class OnchainController:
                         )
                         if similar_cmd:
                             print(f"Did you mean '{similar_cmd[0]}'?")
-                            return self.queue
+
                         print(
                             f"Couldn't find any exchange with provided name: {ns_parser.exchange}. "
                             f"Please choose one from list: {bitquery_model.DECENTRALIZED_EXCHANGES}\n"
                         )
-                        return self.queue
+
             else:
                 print("Exchange not provided setting default to Uniswap.\n")
 
@@ -1231,7 +1197,6 @@ class OnchainController:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_baas(self, other_args: List[str]):
@@ -1338,7 +1303,6 @@ class OnchainController:
 
             else:
                 print("You didn't provide coin symbol.\n")
-        return self.queue
 
     def print_help(self):
         """Print help"""
@@ -1446,18 +1410,16 @@ def menu(queue: List[str] = None):
                     candidate_input = (
                         f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
                     )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        onchain_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
                 else:
-                    candidate_input = similar_cmd[0]
-
-                if candidate_input == an_input:
-                    an_input = ""
-                    onchain_controller.queue = []
-                    print("\n")
-                    continue
+                    an_input = similar_cmd[0]
 
                 print(f" Replacing by '{an_input}'.")
                 onchain_controller.queue.insert(0, an_input)
             else:
                 print("\n")
-                an_input = ""
-                onchain_controller.queue = []

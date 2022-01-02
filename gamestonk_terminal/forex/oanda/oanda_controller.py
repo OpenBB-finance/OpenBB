@@ -170,55 +170,45 @@ class OandaController:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command."""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command."""
         self.queue.insert(0, "quit")
-        return self.queue
 
     def call_help(self, _):
         """Process help command."""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command."""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command."""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command."""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "oanda")
-            self.queue.insert(0, "forex")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "reset", "forex", "oanda"]
+        self.queue.insert(0, "oanda")
+        self.queue.insert(0, "forex")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
-    # COMMANDS
     @try_except
     def call_to(self, other_args: List[str]):
         """Process 'to' command."""
@@ -251,7 +241,6 @@ class OandaController:
             print(
                 f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
             )
-        return self.queue
 
     @try_except
     def call_from(self, other_args: List[str]):
@@ -286,7 +275,6 @@ class OandaController:
             print(
                 f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
             )
-        return self.queue
 
     @try_except
     def call_price(self, other_args):
@@ -299,7 +287,6 @@ class OandaController:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             oanda_view.get_fx_price(account, self.instrument)
-        return self.queue
 
     @try_except
     def call_summary(self, other_args):
@@ -312,7 +299,6 @@ class OandaController:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             oanda_view.get_account_summary(account)
-        return self.queue
 
     @try_except
     def call_orderbook(self, other_args):
@@ -325,7 +311,6 @@ class OandaController:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             oanda_view.get_order_book(account, self.instrument)
-        return self.queue
 
     @try_except
     def call_positionbook(self, other_args):
@@ -338,7 +323,6 @@ class OandaController:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             oanda_view.get_position_book(account, self.instrument)
-        return self.queue
 
     @try_except
     def call_list(self, other_args: List[str]):
@@ -373,7 +357,6 @@ class OandaController:
             order_state = ns_parser.state.upper()
             order_count = ns_parser.limit
             oanda_view.list_orders(account, order_state, order_count)
-        return self.queue
 
     @try_except
     def call_order(self, other_args: List[str]):
@@ -407,7 +390,6 @@ class OandaController:
             price = ns_parser.price
             units = ns_parser.units
             oanda_view.create_order(account, self.instrument, price, units)
-        return self.queue
 
     @try_except
     def call_cancel(self, other_args: List[str]):
@@ -433,7 +415,6 @@ class OandaController:
         if ns_parser:
             orderID = ns_parser.orderID
             oanda_view.cancel_pending_order(account, orderID)
-        return self.queue
 
     @try_except
     def call_positions(self, other_args):
@@ -446,7 +427,6 @@ class OandaController:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             oanda_view.get_open_positions(account)
-        return self.queue
 
     @try_except
     def call_pending(self, other_args):
@@ -459,7 +439,6 @@ class OandaController:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             oanda_view.get_pending_orders(account)
-        return self.queue
 
     @try_except
     def call_trades(self, other_args):
@@ -472,7 +451,6 @@ class OandaController:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             oanda_view.get_open_trades(account)
-        return self.queue
 
     @try_except
     def call_closetrade(self, other_args: List[str]):
@@ -508,7 +486,6 @@ class OandaController:
             orderID = ns_parser.orderID
             units = ns_parser.units
             oanda_view.close_trade(account, orderID, units)
-        return self.queue
 
     @try_except
     def call_candles(self, other_args: List[str]):
@@ -613,7 +590,6 @@ class OandaController:
                     "vwap": ns_parser.vwap,
                 },
             )
-        return self.queue
 
     @try_except
     def call_calendar(self, other_args: List[str]):
@@ -638,7 +614,6 @@ class OandaController:
         if ns_parser:
             days = ns_parser.days
             oanda_view.calendar(self.instrument, days)
-        return self.queue
 
 
 def menu(queue: List[str] = None):

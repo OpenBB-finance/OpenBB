@@ -1,0 +1,24 @@
+Other available quarterly timeframes are: 30-Sep-2020, 31-Dec-2020, 31-Mar-2021, 30-Jun-2021, 30-Sep-2021
+
+                                       31-Dec-2020         
+                                              TSLA       GM
+Item                                                       
+Net Income before Extraordinaries             296M    2.93B
+Net Income Growth                      [31m    -19.78% [0m[31m -24.49%[0m
+Depreciation, Depletion & Amortization        618M     3.2B
+Depreciation and Depletion                       -        -
+Amortization of Intangible Assets                -        -
+Deferred Taxes & Investment Tax Credit           -        -
+Deferred Taxes                                   -     225M
+Investment Tax Credit                            -        -
+Other Funds                                   863M      32M
+Funds from Operations                        1.78B    6.39B
+Extraordinaries                                  -        -
+Changes in Working Capital                   1.24B     303M
+Receivables                            [31m     (102M) [0m       -
+Accounts Payable                             1.34B        -
+Other Assets/Liabilities                      259M     823M
+Net Operating Cash Flow                      3.02B    6.69B
+Net Operating Cash Flow Growth         [32m     25.79% [0m[31m -40.41%[0m
+Net Operating Cash Flow / Sales        [32m     28.10% [0m[32m  17.84%[0m 
+

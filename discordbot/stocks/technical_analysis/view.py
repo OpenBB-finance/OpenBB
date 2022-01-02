@@ -4,13 +4,12 @@ import discord
 import matplotlib.pyplot as plt
 from PIL import Image
 
-import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
-
 from gamestonk_terminal.helper_funcs import plot_autoscale
-
 from gamestonk_terminal.stocks.technical_analysis import finviz_model
 from gamestonk_terminal.config_plot import PLOT_DPI
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur
 
 
 async def view_command(ctx, ticker=""):

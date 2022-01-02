@@ -13,3 +13,4 @@ optional arguments:
   --pie                 Display a pie chart for weights (default: False)
   -h, --help            show this help message (default: False)
 ```
+<img width="1400" alt="Feature Screenshot - minvol" src="https://user-images.githubusercontent.com/85772166/147485096-cac6c072-6bcc-4bbf-b0f6-85e899fe1ac9.png">

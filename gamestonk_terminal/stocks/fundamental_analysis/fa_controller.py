@@ -79,10 +79,8 @@ class FundamentalAnalysisController:
         "divs",
         "earnings",
         "fraud",
+        "dcf",
     ]
-    # TODO: These commands either don't work or work inconsistently.
-    # They have been excluded from the CHOICES list until they are fixed:
-    # "dcf",
 
     CHOICES_MENUS = [
         "fmp",
@@ -220,63 +218,47 @@ Other Sources:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        return getattr(
+        getattr(
             self,
             "call_" + known_args.cmd,
             lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
     def call_cls(self, _):
         """Process cls command."""
         system_clear()
-        return self.queue
 
     def call_home(self, _):
         """Process home command."""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
 
-        return self.queue
-
     def call_help(self, _):
         """Process help command."""
         self.print_help()
-        return self.queue
 
     def call_quit(self, _):
         """Process quit menu command."""
         print("")
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit"]
+        self.queue.insert(0, "quit")
 
     def call_exit(self, _):
         """Process exit terminal command."""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-        return ["quit", "quit", "quit"]
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command."""
-        if len(self.queue) > 0:
-            self.queue.insert(0, "fa")
-            if self.ticker:
-                self.queue.insert(0, f"load {self.ticker}")
-            self.queue.insert(0, "stocks")
-            self.queue.insert(0, "reset")
-            self.queue.insert(0, "quit")
-            self.queue.insert(0, "quit")
-            return self.queue
-
-        reset_commands = ["quit", "quit", "reset", "stocks"]
+        self.queue.insert(0, "fa")
         if self.ticker:
-            reset_commands.append(f"load {self.ticker}")
-        reset_commands.append("fa")
-        return reset_commands
+            self.queue.insert(0, f"load {self.ticker}")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -346,7 +328,6 @@ Other Sources:
                     self.ticker = ns_parser.ticker.upper().split(".")[0]
                 else:
                     self.ticker = ns_parser.ticker.upper()
-        return self.queue
 
     @try_except
     def call_analysis(self, other_args: List[str]):
@@ -362,7 +343,6 @@ Other Sources:
         )
         if ns_parser:
             eclect_us_view.display_analysis(self.ticker)
-        return self.queue
 
     @try_except
     def call_mgmt(self, other_args: List[str]):
@@ -384,7 +364,6 @@ Other Sources:
             business_insider_view.display_management(
                 ticker=self.ticker, export=ns_parser.export
             )
-        return self.queue
 
     @try_except
     def call_data(self, other_args: List[str]):
@@ -413,7 +392,6 @@ Other Sources:
         )
         if ns_parser:
             finviz_view.display_screen_data(self.ticker)
-        return self.queue
 
     @try_except
     def call_score(self, other_args: List[str]):
@@ -466,7 +444,6 @@ Other Sources:
         )
         if ns_parser:
             yahoo_finance_view.display_info(self.ticker)
-        return self.queue
 
     @try_except
     def call_shrs(self, other_args: List[str]):
@@ -484,7 +461,6 @@ Other Sources:
 
         if ns_parser:
             yahoo_finance_view.display_shareholders(self.ticker)
-        return self.queue
 
     @try_except
     def call_sust(self, other_args: List[str]):
@@ -507,7 +483,6 @@ Other Sources:
         )
         if ns_parser:
             yahoo_finance_view.display_sustainability(self.ticker)
-        return self.queue
 
     @try_except
     def call_cal(self, other_args: List[str]):
@@ -526,7 +501,6 @@ Other Sources:
         )
         if ns_parser:
             yahoo_finance_view.display_calendar_earnings(ticker=self.ticker)
-        return self.queue
 
     @try_except
     def call_web(self, other_args: List[str]):
@@ -544,7 +518,6 @@ Other Sources:
         )
         if ns_parser:
             yahoo_finance_view.open_web(self.ticker)
-        return self.queue
 
     @try_except
     def call_hq(self, other_args: List[str]):
@@ -562,7 +535,6 @@ Other Sources:
         )
         if ns_parser:
             yahoo_finance_view.open_headquarters_map(self.ticker)
-        return self.queue
 
     @try_except
     def call_divs(self, other_args: List[str]):
@@ -599,7 +571,6 @@ Other Sources:
                 plot=ns_parser.plot,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_overview(self, other_args: List[str]):
@@ -631,7 +602,6 @@ Other Sources:
         )
         if ns_parser:
             av_view.display_overview(self.ticker)
-        return self.queue
 
     @try_except
     def call_key(self, other_args: List[str]):
@@ -653,7 +623,6 @@ Other Sources:
         )
         if ns_parser:
             av_view.display_key(self.ticker)
-        return self.queue
 
     @try_except
     def call_income(self, other_args: List[str]):
@@ -700,7 +669,6 @@ Other Sources:
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_balance(self, other_args: List[str]):
@@ -753,7 +721,6 @@ Other Sources:
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_cash(self, other_args: List[str]):
@@ -804,7 +771,6 @@ Other Sources:
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
             )
-        return self.queue
 
     @try_except
     def call_earnings(self, other_args: List[str]):
@@ -844,7 +810,6 @@ Other Sources:
                 limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
             )
-        return self.queue
 
     @try_except
     def call_fraud(self, other_args: List[str]):
@@ -894,7 +859,6 @@ Other Sources:
         )
         if ns_parser:
             av_view.display_fraud(self.ticker)
-        return self.queue
 
     @try_except
     def call_dcf(self, other_args: List[str]):
@@ -920,11 +884,9 @@ Other Sources:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        # TODO: This does not work for the following example tickers: AA, TSLA
         if ns_parser:
             dcf = dcf_view.CreateExcelFA(self.ticker, ns_parser.audit)
             dcf.create_workbook()
-        return self.queue
 
     @try_except
     def call_warnings(self, other_args: List[str]):
@@ -956,11 +918,11 @@ Other Sources:
                 ticker=self.ticker, debug=ns_parser.b_debug
             )
 
-        return self.queue
-
     def call_fmp(self, _):
         """Process fmp command."""
-        return fmp_controller.menu(self.ticker, self.start, self.interval, self.queue)
+        self.queue = fmp_controller.menu(
+            self.ticker, self.start, self.interval, self.queue
+        )
 
 
 @try_except
@@ -1057,18 +1019,16 @@ def menu(
                     candidate_input = (
                         f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
                     )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        fa_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
                 else:
-                    candidate_input = similar_cmd[0]
-
-                if candidate_input == an_input:
-                    an_input = ""
-                    fa_controller.queue = []
-                    print("\n")
-                    continue
+                    an_input = similar_cmd[0]
 
                 print(f" Replacing by '{an_input}'.")
                 fa_controller.queue.insert(0, an_input)
             else:
                 print("\n")
-                an_input = ""
-                fa_controller.queue = []
