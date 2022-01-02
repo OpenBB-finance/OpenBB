@@ -13,8 +13,6 @@ from gamestonk_terminal.stocks.options import payoff_controller
 # pylint: disable=W0603
 # pylint: disable=E1111
 
-pytest.skip(allow_module_level=True)
-
 EXPIRY_DATES = [
     "2022-01-07",
     "2022-01-14",
