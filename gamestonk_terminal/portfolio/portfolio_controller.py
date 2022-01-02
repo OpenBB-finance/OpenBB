@@ -54,6 +54,7 @@ class PortfolioController:
     CHOICES_MENUS = [
         "bro",
         "po",
+        "pa",
     ]
     CHOICES_COMMANDS = [
         "load",
@@ -219,6 +220,12 @@ Graphs:
         """Process po command"""
         return po_controller.menu([], self.queue)
 
+    def call_pa(self, _):
+        """Process pa command"""
+        from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
+
+        return pa_controller.menu()
+
     @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -310,7 +317,7 @@ Graphs:
             "--type",
             dest="type",
             type=lambda s: s.lower(),
-            choices=["stock", "cash"],  # "bond", "option", "crypto",
+            choices=["stock", "cash", "etf"],  # "bond", "option", "crypto",
             default="stock",
             help="Type of asset to add",
         )
@@ -455,7 +462,7 @@ Graphs:
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if self.portfolio.empty:
+            if not self.portfolio.empty:
                 val, _ = portfolio_model.convert_df(self.portfolio)
                 if not val.empty:
                     df_m = yfinance_model.get_market(val.index[0], ns_parser.market)

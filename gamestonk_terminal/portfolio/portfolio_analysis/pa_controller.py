@@ -137,6 +137,14 @@ Portfolio: {self.portfolio_name or None}
             dest="sector",
         )
         parser.add_argument(
+            "-c",
+            "--country",
+            action="store_true",
+            default=False,
+            help="Add country to dataframe",
+            dest="country",
+        )
+        parser.add_argument(
             "--no_last_price",
             action="store_false",
             default=True,
@@ -168,6 +176,7 @@ Portfolio: {self.portfolio_name or None}
             self.portfolio = portfolio_model.load_portfolio(
                 full_path=os.path.join(portfolios_path, ns_parser.path),
                 sector=ns_parser.sector,
+                country=ns_parser.country,
                 last_price=ns_parser.last_price,
                 show_nan=ns_parser.show_nan,
             )
@@ -194,6 +203,14 @@ Portfolio: {self.portfolio_name or None}
             choices=self.portfolio.columns,
             help="Column to group by",
         )
+        parser.add_argument(
+            "-a",
+            "--allocation",
+            action="store_true",
+            default=False,
+            help="Add allocation column in % to dataframe",
+            dest="allocation",
+        )
 
         # The following arguments will be used in a later PR for customizable 'reports'
 
@@ -214,7 +231,7 @@ Portfolio: {self.portfolio_name or None}
         if ns_parser:
             if "value" in self.portfolio.columns:
                 portfolio_view.display_group_holdings(
-                    portfolio=self.portfolio, group_column=ns_parser.group
+                    portfolio=self.portfolio, group_column=ns_parser.group, allocation=allocation
                 )
             else:
                 print(
