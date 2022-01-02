@@ -120,7 +120,7 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://query2.finance.yahoo.com/v7/finance/options/PM?date=1641513600
+    uri: https://query2.finance.yahoo.com/v7/finance/options/PM?date=MOCK_DATE
   response:
     body:
       string: !!binary |

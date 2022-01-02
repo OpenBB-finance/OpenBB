@@ -14,6 +14,7 @@ def vcr_config():
         "filter_query_parameters": [
             ("period1", "MOCK_PERIOD_1"),
             ("period2", "MOCK_PERIOD_2"),
+            ("date", "MOCK_DATE"),
         ],
     }
 
@@ -52,7 +53,7 @@ def test_get_option_chain(recorder):
         "get_closing",
     ],
 )
-def testget_closing(func, recorder):
+def test_get_closing(func, recorder):
     result = getattr(yfinance_model, func)(ticker="PM")
 
     recorder.capture(result)

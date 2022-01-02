@@ -8,6 +8,16 @@ import pandas as pd
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.options import syncretism_view
 
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [
+            ("period1", "MOCK_PERIOD_1"),
+            ("period2", "MOCK_PERIOD_2"),
+            ("date", "MOCK_DATE"),
+        ],
+    }
 
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout

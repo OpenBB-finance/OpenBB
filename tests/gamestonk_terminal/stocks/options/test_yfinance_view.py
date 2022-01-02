@@ -15,6 +15,7 @@ def vcr_config():
         "filter_query_parameters": [
             ("period1", "MOCK_PERIOD_1"),
             ("period2", "MOCK_PERIOD_2"),
+            ("date", "MOCK_DATE"),
         ],
     }
 
