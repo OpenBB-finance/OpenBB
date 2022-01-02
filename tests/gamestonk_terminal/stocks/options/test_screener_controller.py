@@ -1,5 +1,5 @@
 # IMPORTATION STANDARD
-import os
+# import os
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -12,7 +12,7 @@ from gamestonk_terminal.stocks.options import screener_controller
 # pylint: disable=W0603
 # pylint: disable=E1111
 
-pytest.skip(allow_module_level=True)
+# pytest.skip(allow_module_level=True)
 
 PRICES = pd.DataFrame(data={"Price": [11.0, 12.0], "Chance": [0.2, 0.8]})
 
