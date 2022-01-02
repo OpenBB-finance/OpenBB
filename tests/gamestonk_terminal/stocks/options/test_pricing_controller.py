@@ -12,8 +12,6 @@ from gamestonk_terminal.stocks.options import pricing_controller
 # pylint: disable=W0603
 # pylint: disable=E1111
 
-pytest.skip(allow_module_level=True)
-
 PRICES = pd.DataFrame(data={"Price": [11.0, 12.0], "Chance": [0.2, 0.8]})
 
 
