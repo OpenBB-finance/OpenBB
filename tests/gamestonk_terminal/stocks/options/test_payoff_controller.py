@@ -78,7 +78,8 @@ PUTS = pd.DataFrame(
     }
 )
 
-CHAIN = namedtuple("Options", ["calls", "puts"])(calls=CALLS, puts=PUTS)
+Options = namedtuple("Options", ["calls", "puts"])
+CHAIN = Options(calls=CALLS, puts=PUTS)
 
 
 @pytest.fixture(scope="module")

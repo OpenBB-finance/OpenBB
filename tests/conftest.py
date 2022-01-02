@@ -2,7 +2,7 @@
 import json
 import os
 import pathlib
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Type
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -19,22 +19,22 @@ from _pytest.mark.structures import Mark
 
 # pylint: disable=redefined-outer-name
 
-EXTENSIONS_ALLOWED = ["csv", "json", "txt"]
-EXTENSIONS_MATCHING = {
-    "csv": (pd.DataFrame, pd.Series),
-    "json": (bool, dict, float, int, list, tuple),
-    "txt": (str),
+EXTENSIONS_ALLOWED:List[str] = ["csv", "json", "txt"]
+EXTENSIONS_MATCHING:Dict[str, List[Type]] = {
+    "csv": [pd.DataFrame, pd.Series],
+    "json": [bool, dict, float, int, list, tuple],
+    "txt": [str],
 }
 
 
 class Record:
     @staticmethod
     def extract_string(data: Any) -> str:
-        if isinstance(data, EXTENSIONS_MATCHING["txt"]):
+        if isinstance(data, tuple(EXTENSIONS_MATCHING["txt"])):
             string_value = data
-        elif isinstance(data, EXTENSIONS_MATCHING["csv"]):
+        elif isinstance(data, tuple(EXTENSIONS_MATCHING["csv"])):
             string_value = data.to_csv(encoding="utf-8", line_terminator="\n")
-        elif isinstance(data, EXTENSIONS_MATCHING["json"]):
+        elif isinstance(data, tuple(EXTENSIONS_MATCHING["json"])):
             string_value = json.dumps(data)
         else:
             raise AttributeError(f"Unsupported type : {type(data)}")
@@ -119,7 +119,7 @@ class PathTemplate:
     @staticmethod
     def find_extension(data: Any):
         for extension, type_list in EXTENSIONS_MATCHING.items():
-            if isinstance(data, type_list):
+            if isinstance(data, tuple(type_list)):
                 return extension
         raise Exception(f"No extension found for this type : {type(data)}")
 
