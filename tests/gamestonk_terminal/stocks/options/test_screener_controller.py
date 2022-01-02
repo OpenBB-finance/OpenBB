@@ -1,5 +1,5 @@
 # IMPORTATION STANDARD
-# import os
+import os
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -142,65 +142,65 @@ def test_switch(an_input, expected_queue):
     assert queue == expected_queue
 
 
-# @pytest.mark.vcr(record_mode="none")
-# def test_call_cls(mocker):
-#     mocker.patch("os.system")
-#     controller = screener_controller.ScreenerController(queue=None)
-#     controller.call_cls([])
+@pytest.mark.vcr(record_mode="none")
+def test_call_cls(mocker):
+    mocker.patch("os.system")
+    controller = screener_controller.ScreenerController(queue=None)
+    controller.call_cls([])
 
-#     assert controller.queue == []
-#     os.system.assert_called_once_with("cls||clear")
+    assert controller.queue == []
+    os.system.assert_called_once_with("cls||clear")
 
 
-# @pytest.mark.vcr(record_mode="none")
-# @pytest.mark.parametrize(
-#     "func, queue, expected_queue",
-#     [
-#         (
-#             "call_exit",
-#             [],
-#             ["quit", "quit", "quit", "quit"],
-#         ),
-#         ("call_exit", ["help"], ["quit", "quit", "quit", "quit", "help"]),
-#         ("call_home", [], ["quit", "quit", "quit"]),
-#         ("call_help", [], []),
-#         ("call_quit", [], ["quit"]),
-#         ("call_quit", ["help"], ["quit", "help"]),
-#         (
-#             "call_reset",
-#             [],
-#             [
-#                 "quit",
-#                 "quit",
-#                 "quit",
-#                 "reset",
-#                 "stocks",
-#                 "options",
-#                 "screen",
-#             ],
-#         ),
-#         (
-#             "call_reset",
-#             ["help"],
-#             [
-#                 "quit",
-#                 "quit",
-#                 "quit",
-#                 "reset",
-#                 "stocks",
-#                 "options",
-#                 "screen",
-#                 "help",
-#             ],
-#         ),
-#     ],
-# )
-# def test_call_func_expect_queue(expected_queue, func, queue):
-#     controller = screener_controller.ScreenerController(queue=queue)
-#     result = getattr(controller, func)([])
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "func, queue, expected_queue",
+    [
+        (
+            "call_exit",
+            [],
+            ["quit", "quit", "quit", "quit"],
+        ),
+        ("call_exit", ["help"], ["quit", "quit", "quit", "quit", "help"]),
+        ("call_home", [], ["quit", "quit", "quit"]),
+        ("call_help", [], []),
+        ("call_quit", [], ["quit"]),
+        ("call_quit", ["help"], ["quit", "help"]),
+        (
+            "call_reset",
+            [],
+            [
+                "quit",
+                "quit",
+                "quit",
+                "reset",
+                "stocks",
+                "options",
+                "screen",
+            ],
+        ),
+        (
+            "call_reset",
+            ["help"],
+            [
+                "quit",
+                "quit",
+                "quit",
+                "reset",
+                "stocks",
+                "options",
+                "screen",
+                "help",
+            ],
+        ),
+    ],
+)
+def test_call_func_expect_queue(expected_queue, func, queue):
+    controller = screener_controller.ScreenerController(queue=queue)
+    result = getattr(controller, func)([])
 
-#     assert result is None
-#     assert controller.queue == expected_queue
+    assert result is None
+    assert controller.queue == expected_queue
 
 
 # @pytest.mark.vcr(record_mode="none")
