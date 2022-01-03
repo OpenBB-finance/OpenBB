@@ -265,10 +265,14 @@ def menu():
             completer = NestedCompleter.from_nested_dict(
                 {c: None for c in pa_controller.CHOICES}
             )
-            an_input = session.prompt(
-                f"{get_flair()} (portfolio)>(pa)> ",
-                completer=completer,
-            )
+            try:
+                an_input = session.prompt(
+                    f"{get_flair()} (portfolio)>(pa)> ",
+                    completer=completer,
+                )
+            except KeyboardInterrupt:
+                # Exit in case of keyboard interrupt
+                an_input = "exit"
         else:
             an_input = input(f"{get_flair()} (portfolio)>(pa)> ")
 

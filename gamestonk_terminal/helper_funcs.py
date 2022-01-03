@@ -10,6 +10,7 @@ import random
 import re
 import sys
 import pandas as pd
+from rich.table import Table
 from pytz import timezone
 import iso8601
 
@@ -41,6 +42,59 @@ EXPORT_BOTH_RAW_DATA_AND_FIGURES = 3
 MENU_GO_BACK = 0
 MENU_QUIT = 1
 MENU_RESET = 2
+
+
+def rich_table_from_df(
+    df: pd.DataFrame,
+    show_index: bool = False,
+    title: str = "",
+    index_name: str = "",
+    headers: List[str] = None,
+    floatfmt: str = ".2f",
+) -> Table:
+    """Prepare a table from df in rich
+
+    Parameters
+    ----------
+    df: pd.DataFrame
+        Dataframe to turn into table
+    show_index: bool
+        Whether to include index
+    title: str
+        Title for table
+    index_name : str
+        Title for index column
+    headers: List[str]
+        Titles for columns
+    floatfmt: str
+        String to
+    Returns
+    -------
+    Table
+        rich table
+    """
+    table = Table(title=title, show_lines=True)
+
+    if show_index:
+        table.add_column(index_name)
+
+    if headers:
+        if len(headers) != len(df.columns):
+            raise ValueError("Length of headers does not match length of DataFrame")
+        for header in headers:
+            table.add_column(str(header))
+    else:
+        for column in df.columns:
+            table.add_column(str(column))
+
+    for idx, values in zip(df.index.tolist(), df.values.tolist()):
+        row = [str(idx)] if show_index else []
+        row += [
+            str(x) if not isinstance(x, float) else f"{x:{floatfmt}}" for x in values
+        ]
+        table.add_row(*row)
+
+    return table
 
 
 def check_int_range(mini: int, maxi: int):

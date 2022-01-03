@@ -281,7 +281,7 @@ Coinbase:
         """Process reset command"""
         self.queue.insert(0, "dd")
         if self.current_coin:
-            self.queue.insert(0, f"load {self.current_coin}")
+            self.queue.insert(0, f"load {self.current_coin} --source {self.source}")
         self.queue.insert(0, "crypto")
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
@@ -1533,11 +1533,15 @@ def menu(coin=None, source=None, symbol=None, queue: List[str] = None):
 
             # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and dd_controller.completer:
-                an_input = session.prompt(
-                    f"{get_flair()} /crypto/dd/ $ ",
-                    completer=dd_controller.completer,
-                    search_ignore_case=True,
-                )
+                try:
+                    an_input = session.prompt(
+                        f"{get_flair()} /crypto/dd/ $ ",
+                        completer=dd_controller.completer,
+                        search_ignore_case=True,
+                    )
+                except KeyboardInterrupt:
+                    # Exit in case of keyboard interrupt
+                    an_input = "exit"
             # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /crypto/dd/ $ ")

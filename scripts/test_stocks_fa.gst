@@ -69,4 +69,5 @@ key
 income
 balance
 cash
+dcf
 exit
