@@ -17,7 +17,6 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common import newsapi_view
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    b_is_stock_market_open,
     check_positive,
     export_data,
     get_flair,
@@ -109,7 +108,10 @@ class StocksController:
 
     def print_help(self):
         """Print help"""
-
+        if self.suffix:
+            symbol = f"{self.ticker}.{self.suffix}"
+        else:
+            symbol = self.ticker
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.ticker and self.start:
             stock_text = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
@@ -120,10 +122,11 @@ class StocksController:
         help_text = f"""
     search      search a specific stock ticker for analysis
     load        load a specific stock ticker for analysis
-
-{stock_text}
-Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 {dim_if_no_ticker}
+{stock_text}
+
+{stocks_helper.additional_info_about_ticker(symbol)}
+
     quote       view the current price for a specific stock ticker
     candle      view a candle chart for a specific stock ticker
     news        latest news of the company [News API]
@@ -220,6 +223,11 @@ Stocks Menus:
 
     def call_reset(self, _):
         """Process reset command"""
+        if self.ticker:
+            if self.suffix:
+                self.queue.insert(0, f"load {self.ticker}.{self.suffix}")
+            else:
+                self.queue.insert(0, f"load {self.ticker}")
         self.queue.insert(0, "stocks")
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
@@ -341,6 +349,7 @@ Stocks Menus:
             )
             if not df_stock_candidate.empty:
                 self.stock = df_stock_candidate
+                print(stocks_helper.additional_info_about_ticker(ns_parser.ticker))
                 if "." in ns_parser.ticker:
                     self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
                 else:
@@ -352,6 +361,7 @@ Stocks Menus:
                 else:
                     self.start = ns_parser.start
                 self.interval = f"{ns_parser.interval}min"
+                print("")
 
     def call_quote(self, other_args: List[str]):
         """Process quote command"""
