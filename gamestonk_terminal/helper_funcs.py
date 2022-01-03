@@ -12,7 +12,6 @@ import sys
 import pytz
 import pandas as pd
 from rich.table import Table
-from pytz import timezone
 import iso8601
 
 import matplotlib
