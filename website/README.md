@@ -1,6 +1,6 @@
 # Hugo Server
 
-The current features can be found in [Gamestonk Terminal Features](https://gamestonkterminal.github.io/GamestonkTerminal/).
+The current features can be found in [Gamestonk Terminal Features](https://gamestonkterminal.github.io/).
 
 <!-- TABLE OF CONTENTS -->
 <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
@@ -14,7 +14,6 @@ The current features can be found in [Gamestonk Terminal Features](https://games
     </ul>
 </ol>
 
-
 ## Install Hugo
 
 Install [Hugo](https://gohugo.io/getting-started/installing/).
@@ -22,16 +21,19 @@ Install [Hugo](https://gohugo.io/getting-started/installing/).
 ## Run Locally
 
 Go into `website` directory with:
+
 ```
 cd website
 ```
 
 And run:
+
 ```
 hugo server -D
 ```
 
 If everything is working well, the following should appear:
+
 ```
 13:58 $ hugo server -D
 Start building sites …
@@ -54,20 +56,20 @@ Watching for config changes in /Users/DidierRodriguesLopes/Documents/git/Gamesto
 Environment: "development"
 Serving pages from memory
 Running in Fast Render Mode. For full rebuilds on change: hugo server --disableFastRender
-Web Server is available at http://localhost:1313/GamestonkTerminal/ (bind address 127.0.0.1)
+Web Server is available at http://localhost:1313/ (bind address 127.0.0.1)
 Press Ctrl+C to stop
 ```
 
-And you should be able to access your local version at http://localhost:1313/GamestonkTerminal/.
+And you should be able to access your local version at http://localhost:1313/.
 
 This will be important for the addiiton of features to the Hugo Server.
-
 
 ## Adding Features
 
 ### Structure
 
 This is the structure that the documentation follows:
+
 ```
 website/content/_index.md
                /stocks/_index.md
@@ -99,21 +101,24 @@ Note that the `common` folder holds features that are common across contexts, e.
 To add a new command, there are two main actions that need to be done:
 
 1. Create a directory with the name of the command and a `_index.md` file within. Examples:
-    * When adding `ipo`, since this command belongs to context `stocks` and category `discovery`, we added a `ipo` folder with a `_index.md` file within to `website/content/stocks/discovery`.
-    * When adding `candle`, since this command belongs to context `stocks`, we added a `candle` folder with a `_index.md` file within to `website/content/stocks/`.
+
+   - When adding `ipo`, since this command belongs to context `stocks` and category `discovery`, we added a `ipo` folder with a `_index.md` file within to `website/content/stocks/discovery`.
+   - When adding `candle`, since this command belongs to context `stocks`, we added a `candle` folder with a `_index.md` file within to `website/content/stocks/`.
 
 2. The `_index.md` file should have the output of the `command -h` followed by a screenshot example (with white background) of what the user can expect. Note that you can now drag and drop the images while editing the readme file on the remote web version of your PR branch. Github will create a link for it with format (https://user-images.githubusercontent.com/***/***.file_format).
 
 Example:
 
 ---
+
 ```shell
 usage: ipo [-p PAST_DAYS] [-f FUTURE_DAYS]
 ```
 
 Past and future IPOs. [Source: https://finnhub.io]
-* -p : Number of past days to look for IPOs. Default 0.
-* -f : Number of future days to look for IPOs. Default 10.
+
+- -p : Number of past days to look for IPOs. Default 0.
+- -f : Number of future days to look for IPOs. Default 10.
 
 <IMAGE HERE - Use drag and drop hint mentioned above>
 
@@ -138,4 +143,4 @@ main:
             ref: "/stocks/discovery/ipo"
           - name: map
             ref: "/stocks/discovery/map"
- ```
+```
