@@ -17,6 +17,8 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 
+# pylint: disable=consider-using-with
+
 
 class DashboardsController:
     """Dashboards Controller class"""
@@ -174,10 +176,11 @@ Dashboards:
             response = input("Would you like us to run the server for you? y/n\n")
             if response.lower() == "y":
 
-                subprocess.run(
-                    [cmd, file],
+                subprocess.Popen(
+                    f"{cmd} {file}",
                     stdout=subprocess.PIPE,
-                    check=True,
+                    stderr=subprocess.STDOUT,
+                    shell=True,
                 )
             else:
                 print(
