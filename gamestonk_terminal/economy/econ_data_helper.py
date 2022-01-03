@@ -53,7 +53,7 @@ def draw_graph(
                 (datetime.now() - timedelta(days=time_delta)).strftime("%Y-%m-%d"),
             )
             df_stock = stocks_helper.find_trendline(df_stock, "OC_High", "high")
-            df_stock = stocks_helper.find_trendline(df_stock, "OC_Low", "how")
+            df_stock = stocks_helper.find_trendline(df_stock, "OC_Low", "low")
             df_stock.to_pickle(df_stock_cache)
 
     else:
@@ -61,7 +61,7 @@ def draw_graph(
             ticker, (datetime.now() - timedelta(days=time_delta)).strftime("%Y-%m-%d")
         )
         df_stock = stocks_helper.find_trendline(df_stock, "OC_High", "high")
-        df_stock = stocks_helper.find_trendline(df_stock, "OC_Low", "how")
+        df_stock = stocks_helper.find_trendline(df_stock, "OC_Low", "low")
 
     mc = mpf.make_marketcolors(
         up="green", down="red", edge="black", wick="black", volume="in", ohlc="i"

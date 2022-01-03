@@ -215,7 +215,7 @@ class CreateExcelFA:
                     self.ws1,
                     f"{dcf_model.letters[column]}{rowI}",
                     m,
-                    num_form=dcf_model.fmt_acct,
+                    num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
                 )
             column += 1
 
@@ -366,7 +366,7 @@ class CreateExcelFA:
                 self.ws1,
                 f"{dcf_model.letters[col+i]}{rer}",
                 f"={dcf_model.letters[col+i]}{nir}+{dcf_model.letters[col+i-1]}{rer}",
-                num_form=dcf_model.fmt_acct,
+                num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
             )
 
         self.get_linear("Revenue", "Comprehensive Income")
@@ -400,9 +400,10 @@ class CreateExcelFA:
         self.ws2["A8"] = "Preferred Dividends"
         self.ws2["A9"] = "Free Cash Flows"
         r = 4
-        c1 = dcf_model.letters[self.len_data + 3]
-        c2 = dcf_model.letters[self.len_data + 4]
-        c3 = dcf_model.letters[self.len_data + 5]
+
+        c1 = dcf_model.letters[self.len_pred + 3]
+        c2 = dcf_model.letters[self.len_pred + 4]
+        c3 = dcf_model.letters[self.len_pred + 5]
         for i in range(self.len_pred):
             j = 1 + i + self.len_data
             cols = dcf_model.letters
@@ -416,7 +417,7 @@ class CreateExcelFA:
                 self.ws2,
                 f"{cols[1+i]}5",
                 f"=Financials!{cols[j]}{self.title_to_row('Net Income')}",
-                num_form=dcf_model.fmt_acct,
+                num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
             )
 
             dcf_model.set_cell(
@@ -428,7 +429,7 @@ class CreateExcelFA:
                     f"-Financials!{cols[j]}{self.title_to_row('Total Current Liabilities')}"
                     f"+Financials!{cols[j-1]}{self.title_to_row('Total Current Liabilities')}"
                 ),
-                num_form=dcf_model.fmt_acct,
+                num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
             )
             dcf_model.set_cell(
                 self.ws2,
@@ -437,19 +438,19 @@ class CreateExcelFA:
                     f"=Financials!{cols[j]}{self.title_to_row('Total Long-Term Assets')}"
                     f"-Financials!{cols[j-1]}{self.title_to_row('Total Long-Term Assets')}"
                 ),
-                num_form=dcf_model.fmt_acct,
+                num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
             )
             dcf_model.set_cell(
                 self.ws2,
                 f"{dcf_model.letters[1+i]}8",
                 f"=Financials!{cols[j]}{self.title_to_row('Preferred Dividends')}",
-                num_form=dcf_model.fmt_acct,
+                num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
             )
             dcf_model.set_cell(
                 self.ws2,
                 f"{cols[1+i]}9",
                 f"={cols[1+i]}5-{cols[1+i]}6-{cols[1+i]}7-{cols[1+i]}8",
-                num_form=dcf_model.fmt_acct,
+                num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
                 font=dcf_model.bold_font,
                 border=dcf_model.thin_border_top,
             )
@@ -457,7 +458,7 @@ class CreateExcelFA:
                 self.ws2,
                 f"{cols[1+self.len_pred]}9",
                 f"=({cols[self.len_pred]}9*(1+{c2}" f"{r+15}))/({c2}{r+11}-{c2}{r+15})",
-                num_form=dcf_model.fmt_acct,
+                num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
             )
 
         dcf_model.set_cell(
@@ -566,23 +567,28 @@ class CreateExcelFA:
             self.ws2,
             "B11",
             f"=NPV({c2}{r+11},B9:{dcf_model.letters[self.len_pred+1]}9)",
-            num_form=dcf_model.fmt_acct,
+            num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
         )
         dcf_model.set_cell(self.ws2, "A12", "Cash and Cash Equivalents")
         dcf_model.set_cell(
             self.ws2,
             "B12",
             f"=financials!{dcf_model.letters[self.len_data]}{self.title_to_row('Cash & Cash Equivalents')}",
-            num_form=dcf_model.fmt_acct,
+            num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
         )
         dcf_model.set_cell(self.ws2, "A13", "Intrinsic Value (sum)")
-        dcf_model.set_cell(self.ws2, "B13", "=B11+B12", num_form=dcf_model.fmt_acct)
+        dcf_model.set_cell(
+            self.ws2,
+            "B13",
+            "=B11+B12",
+            num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
+        )
         dcf_model.set_cell(self.ws2, "A14", "Debt Obligations")
         dcf_model.set_cell(
             self.ws2,
             "B14",
             f"=financials!{dcf_model.letters[self.len_data]}{self.title_to_row('Total Long-Term Liabilities')}",
-            num_form=dcf_model.fmt_acct,
+            num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
         )
         dcf_model.set_cell(self.ws2, "A15", "Firm value without debt")
         dcf_model.set_cell(
@@ -593,7 +599,7 @@ class CreateExcelFA:
                 f"Financials!{dcf_model.letters[self.len_data]}{self.title_to_row('Total Assets')}"
                 f"-Financials!{dcf_model.letters[self.len_data]}{self.title_to_row('Total Liabilities')})"
             ),
-            num_form=dcf_model.fmt_acct,
+            num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
         )
         dcf_model.set_cell(
             self.ws2,
@@ -611,7 +617,10 @@ class CreateExcelFA:
         dcf_model.set_cell(self.ws2, "B16", int(self.info["sharesOutstanding"]))
         dcf_model.set_cell(self.ws2, "A17", "Shares Price")
         dcf_model.set_cell(
-            self.ws2, "B17", f"=(B15*{self.rounding})/B16", num_form=dcf_model.fmt_acct
+            self.ws2,
+            "B17",
+            f"=(B15*{self.rounding})/B16",
+            num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
         )
         dcf_model.set_cell(self.ws2, "A18", "Actual Price")
         dcf_model.set_cell(self.ws2, "B18", float(self.info["regularMarketPrice"]))
@@ -1173,7 +1182,7 @@ class CreateExcelFA:
                 self.ws1,
                 f"{dcf_model.letters[col+i]}{row1}",
                 f"=max({base},0)" if no_neg else f"={base}",
-                num_form=dcf_model.fmt_acct,
+                num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
             )
 
         self.letter += 1
@@ -1199,7 +1208,7 @@ class CreateExcelFA:
                 self.ws1,
                 f"{dcf_model.letters[col+i]}{rowI}",
                 sum_formula,
-                num_form=dcf_model.fmt_acct,
+                num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
             )
         if text:
             self.custom_exp(row, text)
@@ -1253,7 +1262,7 @@ class CreateExcelFA:
         self.letter += 1
 
     def get_sister_dfs(self):
-        # Once mcap is added to this, we can add as an additional filters for more comparative results
+        # TODO: Once mcap is added to this, we can add as an additional filters for more comparative results
         sisters = self.sisters
         random.shuffle(sisters)
         i = 0
@@ -1285,6 +1294,8 @@ class CreateExcelFA:
         r = requests.get(URL, headers=dcf_model.headers)
 
         if "404 - Page Not Found" in r.text:
+            # TODO: add better handling
+            print("Unable to find requested sister ticker for ration analysis")
             raise ValueError("The ticker given is not in the stock analysis website.")
         soup = BeautifulSoup(r.content, "html.parser")
 
