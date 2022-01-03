@@ -26,72 +26,34 @@ def display_holdings_overview(coin: str, export: str) -> None:
         Export dataframe data to csv,json,xlsx
     """
 
-    df = gecko.get_holdings_overview(endpoint=coin)
+    res = gecko.get_holdings_overview(coin)
+    stats_string = res[0]
+    df = res[1]
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+    if df.empty:
+        print("\nZero companies holding this crypto\n")
+    else:
+        print(f"\n{stats_string}\n")
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df,
+                    headers=df.columns,
+                    floatfmt=".2f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "hold",
+            df,
         )
-    else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "hold",
-        df,
-    )
-
-
-def display_holdings_companies_list(coin: str, links: bool, export: str) -> None:
-    """Shows Ethereum/Bitcoin Holdings by Public Companies [Source: CoinGecko]
-
-    Track publicly traded companies around the world that are buying ethereum as part of corporate treasury
-
-    Parameters
-    ----------
-    coin: str
-        Cryptocurrency: ethereum or bitcoin
-    links: bool
-        Display urls
-    export: str
-        Export dataframe data to csv,json,xlsx
-    """
-
-    df = gecko.get_companies_assets(endpoint=coin)
-
-    if links is True:
-        df = df[["Rank", "Company", "Url"]]
-    else:
-        df.drop("Url", axis=1, inplace=True)
-
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "companies",
-        df,
-    )
 
 
 def display_nft_of_the_day(export: str) -> None:

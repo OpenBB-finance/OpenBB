@@ -1128,4 +1128,86 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://api.coingecko.com/api/v3/companies/public_treasury/bitcoin
+  response:
+    body:
+      string: !!binary |
+        H4sIAHH80mEAA5yYXW/iRhSG/4rFVStRNB8ez4zvjGGB8uFd7I0SVRXywhSsEJsaExWt9r/3uE2i
+        cbA9znIVxRP0vMfvec+ZfO8VWREfN4fsuEvS/bnnEswJlQPHYaL/8vA5Pl7U5nLe9VyMCBcMO0Kw
+        AbUxdUi/9xTnj6rYbOPTZpc9JWmcbhWcHGDW722zp1OcJgq++I/vvTR+gie9ZbLNs7DI40Ltr9Ys
+        3Q56/d75+vQtO8LTlReOvC/uMozWvfILLmmRX+H3X8Ne/4YWE4xs+/X3qjyq41LGbRuVn9cj20ue
+        wzH9EOOEI8k5he85qXwLj+O92mR/bf7/k/PldDoCARow7vzov8mI1PkY15BbUbjwzOi20LBuyDFD
+        L58WckI4RgI5EpvICZEa+SQ+xv9crVGyT+CYNX1l0rRE4didLO4fKjp8r+4VODYizTqobZTBuYNs
+        jqUwqUBcaCrCvy9xrpr8E34xvwIBbm4kJ8T8AiiXXCJJjfVHVCdfxuD9Q5Zan6EF0sKa5NnlVNcD
+        3rqTkTA1+6jdRtDzmFGjCkI1FdNLYQlrmaSAYflZfqr6596FA78Js4FsTpo7uJ2bMggAs/sRIRq3
+        nyXpt/is6lrXD2arDhW3RUvFKcLGipe5JW3eoeJYI1+N74MVlNpaFLtKsR8C16IOkxX032OI3rqG
+        5bjZ9bhD7AhMqIAaGOGRbvq77Arn8rfUWUQjXYMPgXP3MFl3CByYT438XEImCtIW98Ih4HhkptfD
+        fp1khTU8ZtvH7SFO0n5T7KxnQdRhbGHOmiUQ48RiTNq4nL0fkeA9QvW90LN+CZUqlIKff9UVBAvX
+        m4+rL2AV1NM3Dy4mmJQ2a8eHucw6tG0Ff6mS4qLzTucTaDbGK8DTeQ2wtJt5bclM5bZt2HhsaW5W
+        ZOvlzveZ5hjr88LX6RfByvXWw6pXauGp07zfcEEloqwVnggHdUiaCnyZkZYPfbpTx9LqFZ9E/nIe
+        ha7vRwuz1VnbcBI24LflpE04LKTGxQyhSsBfTweVny7p49tq815DmTbWNBhVBfhxGu/iGhGUtRje
+        odxxaIsK7EC/SqfDK9BVeLvncpPeWcOk2JavI1LbQ5odsz2s05Y30eV4w8h9F52jcY0OwponLYG2
+        lly06SAIc4E69K0+tIazyeQt9L3zWRXnm/D0V7AulAfN6d8W/sSBZhC8TQJMZ4GE/JiEBkMN3jvq
+        1lD1CpqzHzvUEEYYPkLQDtmvK3ip/33FNFDzke9XgL2vdcC4GVhw2IXa8geDZ8B2HZYFnXeaPCst
+        PCuFvoNCz+7GHQqN8U/tlVJCfeUHK/wpy4tcnc8N1LAP37mfgnVkxsZOc2K2X6MIdrpkpY4dHaDO
+        eZaVu8HNNWQ4n7vDdRDMK9DRtHYpa74DOo75Ci7gEv7BYFlmO2VNjtm3hitsOWGXwWhsHrGi2d+S
+        s//ionm+worOETOi62u8OhWXVL0PxfIKNbjxjDXywqnZNC37ZOsFFjqTdZhMutHXy+CW9XUpKJ+a
+        l4KfdDiRAvEOe1hlayzy7Ck51t72lrPF2AxLWuLaeFfCWDoYmbOk4mtYHJv+KxZMgg4JIhqJmWS2
+        tFuAy//usQ52/vPHvwAAAP//AwDWnc6LPBQAAA==
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization
+      Access-Control-Allow-Methods:
+      - POST, PUT, DELETE, GET, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - link, per-page, total
+      Access-Control-Request-Method:
+      - '*'
+      Alternate-Protocol:
+      - 443:npn-spdy/2
+      CF-Cache-Status:
+      - MISS
+      CF-RAY:
+      - 6c7ca161ac09da76-LIS
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jan 2022 13:38:57 GMT
+      ETag:
+      - W/"deb2491bd36d86006fa76a1d7cd1ce50"
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, Origin
+      X-Request-Id:
+      - 3d618648-b14b-424f-93d3-6aad2ac3ea0b
+      X-Runtime:
+      - '0.056096'
+    status:
+      code: 200
+      message: OK
 version: 1
