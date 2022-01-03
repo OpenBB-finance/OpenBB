@@ -388,20 +388,20 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 max=4,
             ),
         ),
-        (
-            "call_unu",
-            [
-                "1",
-                "--sortby=Vol",
-                "--ascending",
-                "--puts_only",
-                "--calls_only",
-                "--export=csv",
-            ],
-            "",
-            [],
-            dict(),
-        ),
+        # (
+        #     "call_unu",
+        #     [
+        #         "1",
+        #         "--sortby=Vol",
+        #         "--ascending",
+        #         "--puts_only",
+        #         "--calls_only",
+        #         "--export=csv",
+        #     ],
+        #     "",
+        #     [],
+        #     dict(),
+        # ),
         # (
         #     "call_unu",
         #     [
