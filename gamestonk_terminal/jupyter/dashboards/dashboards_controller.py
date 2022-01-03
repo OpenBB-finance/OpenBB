@@ -167,11 +167,12 @@ Dashboards:
         if ns_parser:
             cmd = "jupyter-lab" if ns_parser.jupyter else "voila"
             file = "gamestonk_terminal/jupyter/dashboards/stocks.ipynb"
-        subprocess.run(
-            [cmd, file],
-            stdout=subprocess.PIPE,
-            check=True,
-        )
+            subprocess.run(
+                [cmd, file],
+                stdout=subprocess.PIPE,
+                check=True,
+            )
+        print("")
 
 
 def menu(queue: List[str] = None):
