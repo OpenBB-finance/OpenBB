@@ -468,13 +468,13 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             [],
             dict(),
         ),
-        # (
-        #     "call_plot",
-        #     [],
-        #     "",
-        #     [],
-        #     dict(),
-        # ),
+        (
+            "call_plot",
+            [],
+            "",
+            [],
+            dict(),
+        ),
         (
             "call_sop",
             [],
