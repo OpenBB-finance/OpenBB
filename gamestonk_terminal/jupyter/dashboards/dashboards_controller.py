@@ -167,11 +167,23 @@ Dashboards:
         if ns_parser:
             cmd = "jupyter-lab" if ns_parser.jupyter else "voila"
             file = "gamestonk_terminal/jupyter/dashboards/stocks.ipynb"
-            subprocess.run(
-                [cmd, file],
-                stdout=subprocess.PIPE,
-                check=True,
+
+            print(
+                f"Warning: this command will open a port on your computer to run a {cmd} server."
             )
+            response = input("Would you like us to run the server for you? y/n\n")
+            if response.lower() == "y":
+
+                subprocess.run(
+                    [cmd, file],
+                    stdout=subprocess.PIPE,
+                    check=True,
+                )
+            else:
+                print(
+                    f"To run manually type: {cmd} {file}\ninto a terminal after"
+                    " entering the environment you use to run the terminal."
+                )
         print("")
 
 
