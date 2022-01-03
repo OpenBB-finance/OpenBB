@@ -23,7 +23,9 @@
 
       <main class="flex flex-even">
         {{ if $navEnabled }}
-        <aside class="gdoc-nav">{{ partial "menu" . }}</aside>
+        <aside class="gdoc-nav" style="background-color: #151515">
+          {{ partial "menu" . }}
+        </aside>
         {{ end }}
 
         <div
