@@ -2,7 +2,7 @@
 usage: ftd [-s START] [-e END] [-n N_NUM] [--raw] [--export {csv,json,xlsx}] [-h]
 ```
 
-Display Fails to Deliver statistics for the [loaded ticker](https://gamestonkterminal.github.io/stocks/load/). Source: https://www.sec.gov/data/foiadocsfailsdatahtm
+Display Fails to Deliver statistics for the [loaded ticker](https://gamestonkterminal.github.io/GamestonkTerminal/stocks/load/). Source: https://www.sec.gov/data/foiadocsfailsdatahtm
 
 For an in-depth look at the complex iregularities of the securities settlement process, review this PDF:
 [Naked Short Sales and Fails to Deliver: An Overview of Clearing and Settlement Procedures for Stock Trades in the US](https://github.com/deeleeramone/GamestonkTerminal/files/7489219/Naked.Short.Sales.and.Fails.to.Deliver.pdf)

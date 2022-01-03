@@ -2,7 +2,7 @@
 usage: load [-t S_TICKER] [-s S_START_DATE] [-i {1,5,15,30,60}] [--source {yf,av,iex}] [-p] [-h]
 ```
 
-See: [load](https://gamestonkterminal.github.io/stocks/load/)
+See: [load](https://gamestonkterminal.github.io/GamestonkTerminal/stocks/load/)
 
 ```
 optional arguments:
