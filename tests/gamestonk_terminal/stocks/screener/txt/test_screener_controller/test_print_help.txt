@@ -2,7 +2,7 @@
     view          view available presets (defaults and customs)
     set           set one of the available presets
 
-    PRESET: top_gainers
+PRESET: top_gainers
 
     historical     view historical price
     overview       overview (e.g. Sector, Industry, Market Cap, Volume)
