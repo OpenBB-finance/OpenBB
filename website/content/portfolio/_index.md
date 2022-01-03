@@ -1,3 +1,9 @@
+---
+geekdocCollapseSection: true
+---
+
+{{< toc-tree >}}
+
 ```text
 (✨) / $ portfolio
 
@@ -19,9 +25,3 @@ Reports:
 Graphs:
     rmr         graph your returns versus the market's returns
 ```
-
----
-geekdocCollapseSection: true
----
-
-{{< toc-tree >}}
