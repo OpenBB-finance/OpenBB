@@ -195,7 +195,7 @@ Select one of the following reports:
                 print("")
 
             notebook_template = os.path.join(
-                "gamestonk_terminal", "reports", report_to_run
+                "gamestonk_terminal", "jupyter", "reports", report_to_run
             )
             args_to_output = f"_{'_'.join(other_args)}" if "_".join(other_args) else ""
             report_output_name = (
@@ -205,6 +205,7 @@ Select one of the following reports:
             )
             notebook_output = os.path.join(
                 "gamestonk_terminal",
+                "jupyter",
                 "reports",
                 "stored",
                 report_output_name,
@@ -264,6 +265,7 @@ Select one of the following reports:
 
     def call_reset(self, _):
         """Process reset command."""
+        self.queue.insert(0, "reports")
         self.queue.insert(0, "jupyter")
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
@@ -291,7 +293,7 @@ def menu(queue: List[str] = None):
             # Print the current location because this was an instruction
             # and we want user to know what was the action
             if an_input and an_input.split(" ")[0] in report_controller.CHOICES:
-                print(f"{get_flair()} /reports/ $ {an_input}")
+                print(f"{get_flair()} /jupyter/reports/ $ {an_input}")
 
         # Get input command from user
         else:
@@ -303,7 +305,7 @@ def menu(queue: List[str] = None):
             if session and gtff.USE_PROMPT_TOOLKIT and report_controller.completer:
                 try:
                     an_input = session.prompt(
-                        f"{get_flair()} /reports/ $ ",
+                        f"{get_flair()} /jupyter/reports/ $ ",
                         completer=report_controller.completer,
                         search_ignore_case=True,
                     )
@@ -312,7 +314,7 @@ def menu(queue: List[str] = None):
                     an_input = "exit"
             # Get input from user without auto-completion
             else:
-                an_input = input(f"{get_flair()} /reports/ $ ")
+                an_input = input(f"{get_flair()} /jupyter/reports/ $ ")
 
         try:
             # Process the input command

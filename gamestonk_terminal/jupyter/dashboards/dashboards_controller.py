@@ -138,6 +138,7 @@ Dashboards:
 
     def call_reset(self, _):
         """Process reset command"""
+        self.queue.insert(0, "dashboards")
         self.queue.insert(0, "jupyter")
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
@@ -151,12 +152,12 @@ Dashboards:
             description="""Shows an interactive stock dashboard""",
         )
         parser.add_argument(
-            "-v",
-            "--voila",
+            "-j",
+            "--jupyter",
             action="store_true",
             default=False,
-            dest="voila",
-            help="Voila dashboard flag.",
+            dest="jupyter",
+            help="Shows dashboard in jupyter-lab.",
         )
 
         ns_parser = parse_known_args_and_warn(
@@ -164,7 +165,7 @@ Dashboards:
         )
 
         if ns_parser:
-            cmd = "voila" if ns_parser.voila else "jupyter-lab"
+            cmd = "jupyter-lab" if ns_parser.jupyter else "voila"
             file = "gamestonk_terminal/jupyter/dashboards/stocks.ipynb"
         subprocess.run(
             [cmd, file],
