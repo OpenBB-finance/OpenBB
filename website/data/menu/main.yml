@@ -684,8 +684,6 @@ main:
             ref: "/cryptocurrency/overview/cgcategories"
           - name: cghold
             ref: "/cryptocurrency/overview/cghold"
-          - name: cgcompanies
-            ref: "/cryptocurrency/overview/cgcompanies"
           - name: cpglobal
             ref: "/cryptocurrency/overview/cpglobal"
           - name: cpinfo
@@ -911,7 +909,7 @@ main:
         ref: "/economy/fred"
         sub:
           - name: search
-            ref : "/economy/fred/search"
+            ref: "/economy/fred/search"
           - name: add
             ref: "/economy/fred/add"
           - name: rmv
