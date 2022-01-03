@@ -16,6 +16,7 @@ from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     export_data,
+    try_except,
 )
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.cryptocurrency.due_diligence import (
@@ -200,9 +201,10 @@ def _create_closest_match_df(
     return df.merge(coins, on="id")
 
 
+@try_except
 def load(
     coin: str,
-    source: str,
+    source: str = "cg",
 ) -> Tuple[
     Union[Optional[str], pycoingecko_model.Coin],
     Optional[Any],
