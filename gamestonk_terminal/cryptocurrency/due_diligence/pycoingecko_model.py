@@ -1,6 +1,8 @@
 """CoinGecko model"""
 __docformat__ = "numpy"
 
+import os
+import json
 from typing import Tuple, Union, Any, Dict, List, Optional
 import regex as re
 import pandas as pd
@@ -38,12 +40,23 @@ BASE_INFO = [
 ]
 
 
+def load_coins_list(file_name: str) -> pd.DataFrame:
+    if file_name.split(".")[1] != "json":
+        raise TypeError("Please load json file")
+
+    par_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    path = os.path.join(par_dir, "data", file_name)
+    with open(path, encoding="utf8") as f:
+        coins = json.load(f)
+    return coins
+
+
 class Coin:
     """Coin class, it holds loaded coin"""
 
     def __init__(self, symbol: str):
         self.client = CoinGeckoAPI()
-        self._coin_list = self.client.get_coins_list()
+        self._coin_list = load_coins_list("coingecko_coins.json")
         self.coin_symbol, self.symbol = self._validate_coin(symbol)
 
         if self.coin_symbol:

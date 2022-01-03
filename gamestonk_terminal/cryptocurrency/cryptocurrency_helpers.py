@@ -1,5 +1,6 @@
 """Cryptocurrency helpers"""
 __docformat__ = "numpy"
+# pylint: disable=C0301
 
 import os
 import json
@@ -95,7 +96,7 @@ def load_coins_list(file_name: str, return_raw: bool = False) -> pd.DataFrame:
     if file_name.split(".")[1] != "json":
         raise TypeError("Please load json file")
 
-    current_dir = os.path.dirname(os.path.abspath(__file__))  # replace with __file__
+    current_dir = os.path.dirname(os.path.abspath(__file__))
     path = os.path.join(current_dir, "data", file_name)
     with open(path, encoding="utf8") as f:
         coins = json.load(f)
@@ -521,13 +522,13 @@ def display_all_coins(
 
 
 def load_ta_data(
-    coin: Union[str, pycoingecko_model.Coin], source: str, currency: str, **kwargs: Any
+    coin_map_df: pd.DataFrame, source: str, currency: str, **kwargs: Any
 ) -> Tuple[pd.DataFrame, str]:
     """Load data for Technical Analysis
 
     Parameters
     ----------
-    coin: str
+    coin_map_df: pd.DataFrame
         Cryptocurrency
     source: str
         Source of data: CoinGecko, Binance, CoinPaprika
@@ -572,11 +573,12 @@ def load_ta_data(
             "1month": client.KLINE_INTERVAL_1MONTH,
         }
 
-        assert isinstance(coin, str)
-        pair = coin + currency
+        symbol_binance = coin_map_df["Binance"]
+
+        pair = symbol_binance + currency
 
         if check_valid_binance_str(pair):
-            print(f"{coin} loaded vs {currency.upper()}")
+            print(f"{symbol_binance} loaded vs {currency.upper()}")
 
             candles = client.get_klines(
                 symbol=pair,
@@ -600,7 +602,10 @@ def load_ta_data(
         return pd.DataFrame(), currency
 
     if source == "cp":
-        df = coinpaprika_model.get_ohlc_historical(str(coin), currency.upper(), days)
+        symbol_coinpaprika = coin_map_df["CoinPaprika"]
+        df = coinpaprika_model.get_ohlc_historical(
+            symbol_coinpaprika, currency.upper(), days
+        )
 
         if df.empty:
             print("No data found", "\n")
@@ -619,7 +624,8 @@ def load_ta_data(
         return df, currency
 
     if source == "cg":
-        assert isinstance(coin, pycoingecko_model.Coin)
+        symbol_coingecko = coin_map_df["CoinGecko"]
+        coin = pycoingecko_model.Coin(symbol_coingecko)
         df = coin.get_coin_market_chart(currency, days)
         df = df["price"].resample("1D").ohlc().ffill()
         df.columns = [
@@ -632,8 +638,8 @@ def load_ta_data(
         return df, currency
 
     if source == "cb":
-        assert isinstance(coin, str)
-        coin, currency = coin.upper(), currency.upper()
+        symbol_coinbase = coin_map_df["Coinbase"]
+        coin, currency = symbol_coinbase.upper(), currency.upper()
         pair = f"{coin}-{currency}"
 
         if coinbase_model.check_validity_of_product(pair):
@@ -654,13 +660,13 @@ def load_ta_data(
 
 
 def plot_chart(
-    coin: Union[str, pycoingecko_model.Coin], source: str, currency: str, **kwargs: Any
+    coin_map_df: pd.DataFrame, source: str, currency: str, **kwargs: Any
 ) -> None:
     """Load data for Technical Analysis
 
     Parameters
     ----------
-    coin: str
+    coin_map_df: pd.DataFrame
         Cryptocurrency
     source: str
         Source of data: CoinGecko, Binance, CoinPaprika
@@ -705,11 +711,12 @@ def plot_chart(
             "1month": client.KLINE_INTERVAL_1MONTH,
         }
 
-        assert isinstance(coin, str)
-        pair = coin + currency
+        symbol_binance = coin_map_df["Binance"]
+
+        pair = symbol_binance + currency
 
         if check_valid_binance_str(pair):
-            print(f"{coin} loaded vs {currency.upper()}")
+            print(f"{symbol_binance} loaded vs {currency.upper()}")
 
             candles = client.get_klines(
                 symbol=pair,
@@ -731,12 +738,15 @@ def plot_chart(
 
             plot_candles(
                 df_coin,
-                f"{coin + currency} from {df_coin.index[0].strftime('%Y/%m/%d')} to "
+                f"{symbol_binance + currency} from {df_coin.index[0].strftime('%Y/%m/%d')} to "
                 f"{df_coin.index[-1].strftime('%Y/%m/%d')}",
             )
 
     if source == "cp":
-        df = coinpaprika_model.get_ohlc_historical(str(coin), currency.upper(), days)
+        symbol_coinpaprika = coin_map_df["CoinPaprika"]
+        df = coinpaprika_model.get_ohlc_historical(
+            str(symbol_coinpaprika), currency.upper(), days
+        )
 
         if df.empty:
             print("There is not data to plot chart\n")
@@ -753,7 +763,7 @@ def plot_chart(
         ]
         df = df.set_index(pd.to_datetime(df["date"])).drop("date", axis=1)
         title = (
-            f"\n{coin}/{currency} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}",
+            f"\n{symbol_coinpaprika}/{currency} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}",  # noqa: E501
         )
         df["Volume"] = df["Volume"] / 1_000_000
         mpf.plot(
@@ -778,7 +788,8 @@ def plot_chart(
         print("")
 
     if source == "cg":
-        assert isinstance(coin, pycoingecko_model.Coin)
+        symbol_coingecko = coin_map_df["CoinGecko"]
+        coin = pycoingecko_model.Coin(symbol_coingecko)
         df = coin.get_coin_market_chart(currency, days)
         df = df["price"].resample("1D").ohlc().ffill()
 
@@ -790,7 +801,7 @@ def plot_chart(
         ]
 
         title = (
-            f"\n{coin.coin_symbol}/{currency} from {df.index[0].strftime('%Y/%m/%d')} "
+            f"\n{symbol_coingecko}/{currency} from {df.index[0].strftime('%Y/%m/%d')} "
             f"to {df.index[-1].strftime('%Y/%m/%d')}",
         )
 
@@ -815,8 +826,8 @@ def plot_chart(
         print("")
 
     if source == "cb":
-        assert isinstance(coin, str)
-        coin, currency = coin.upper(), currency.upper()
+        symbol_coinbase = coin_map_df["Coinbase"]
+        coin, currency = symbol_coinbase.upper(), currency.upper()
         pair = f"{coin}-{currency}"
 
         if coinbase_model.check_validity_of_product(pair):
@@ -868,7 +879,6 @@ def plot_order_book(bids: np.ndarray, asks: np.ndarray, coin: str) -> None:
         array of asks with columns: price, size, cumulative size
     coin : str
         Coin being plotted
-
     """
 
     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)

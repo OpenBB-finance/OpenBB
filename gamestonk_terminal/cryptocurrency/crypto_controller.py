@@ -415,7 +415,7 @@ class CryptoController:
                     days = ns_parser.days
 
                 plot_chart(
-                    coin=self.current_coin,
+                    coin_map_df=self.coin_map_df,
                     limit=limit,
                     interval=interval,
                     days=days,
@@ -632,7 +632,7 @@ class CryptoController:
                     days = ns_parser.days
 
                 self.current_df, self.current_currency = load_ta_data(
-                    coin=self.current_coin,
+                    coin_map_df=self.coin_map_df,
                     source=self.source,
                     currency=ns_parser.vs,
                     days=days,

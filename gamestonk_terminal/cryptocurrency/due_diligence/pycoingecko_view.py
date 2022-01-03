@@ -54,16 +54,18 @@ def display_info(symbol: str, export: str) -> None:
     )
 
 
-def display_web(coin: gecko.Coin, export: str) -> None:
+def display_web(symbol: str, export: str) -> None:
     """Shows found websites corresponding to loaded coin. [Source: CoinGecko]
 
     Parameters
     ----------
-    coin : gecko_coin.Coin
+    symbol : str
         Cryptocurrency
     export : str
         Export dataframe data to csv,json,xlsx file
     """
+
+    coin = gecko.Coin(symbol)
 
     df = coin.get_websites
 
@@ -89,17 +91,17 @@ def display_web(coin: gecko.Coin, export: str) -> None:
     )
 
 
-def display_social(coin: gecko.Coin, export: str) -> None:
+def display_social(symbol: str, export: str) -> None:
     """Shows social media corresponding to loaded coin. [Source: CoinGecko]
 
     Parameters
     ----------
-    coin : gecko_coin.Coin
+    symbol : str
         Cryptocurrency
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-
+    coin = gecko.Coin(symbol)
     df = coin.get_social_media
 
     if gtff.USE_TABULATE_DF:
@@ -124,16 +126,17 @@ def display_social(coin: gecko.Coin, export: str) -> None:
     )
 
 
-def display_dev(coin: gecko.Coin, export: str) -> None:
+def display_dev(symbol: str, export: str) -> None:
     """Shows developers data for loaded coin. [Source: CoinGecko]
 
     Parameters
     ----------
-    coin : gecko_coin.Coin
+    symbol : str
         Cryptocurrency
     export : str
         Export dataframe data to csv,json,xlsx file
     """
+    coin = gecko.Coin(symbol)
 
     df = coin.get_developers_data
 
@@ -159,12 +162,12 @@ def display_dev(coin: gecko.Coin, export: str) -> None:
     )
 
 
-def display_ath(coin: gecko.Coin, currency: str, export: str) -> None:
+def display_ath(symbol: str, currency: str, export: str) -> None:
     """Shows all time high data for loaded coin. [Source: CoinGecko]
 
     Parameters
     ----------
-    coin : gecko_coin.Coin
+    symbol : str
         Cryptocurrency
 
     currency: str
@@ -172,6 +175,7 @@ def display_ath(coin: gecko.Coin, currency: str, export: str) -> None:
     export : str
         Export dataframe data to csv,json,xlsx file
     """
+    coin = gecko.Coin(symbol)
 
     df = coin.get_all_time_high(currency=currency)
 
@@ -197,12 +201,12 @@ def display_ath(coin: gecko.Coin, currency: str, export: str) -> None:
     )
 
 
-def display_atl(coin: gecko.Coin, currency: str, export: str) -> None:
+def display_atl(symbol: str, currency: str, export: str) -> None:
     """Shows all time low data for loaded coin. [Source: CoinGecko]
 
     Parameters
     ----------
-    coin : gecko_coin.Coin
+    symbol : str
         Cryptocurrency
 
     currency: str
@@ -210,6 +214,7 @@ def display_atl(coin: gecko.Coin, currency: str, export: str) -> None:
     export : str
         Export dataframe data to csv,json,xlsx file
     """
+    coin = gecko.Coin(symbol)
 
     df = coin.get_all_time_low(currency=currency)
 
@@ -235,16 +240,17 @@ def display_atl(coin: gecko.Coin, currency: str, export: str) -> None:
     )
 
 
-def display_score(coin: gecko.Coin, export: str) -> None:
+def display_score(symbol: str, export: str) -> None:
     """Shows different kind of scores for loaded coin. [Source: CoinGecko]
 
     Parameters
     ----------
-    coin : gecko_coin.Coin
+    symbol : str
         Cryptocurrency
     export : str
         Export dataframe data to csv,json,xlsx file
     """
+    coin = gecko.Coin(symbol)
 
     df = coin.get_scores
 
@@ -270,16 +276,17 @@ def display_score(coin: gecko.Coin, export: str) -> None:
     )
 
 
-def display_bc(coin: gecko.Coin, export: str) -> None:
+def display_bc(symbol: str, export: str) -> None:
     """Shows urls to blockchain explorers. [Source: CoinGecko]
 
     Parameters
     ----------
-    coin : gecko_coin.Coin
+    symbol : str
         Cryptocurrency
     export : str
         Export dataframe data to csv,json,xlsx file
     """
+    coin = gecko.Coin(symbol)
 
     df = coin.get_blockchain_explorers
 
@@ -305,16 +312,17 @@ def display_bc(coin: gecko.Coin, export: str) -> None:
     )
 
 
-def display_market(coin: gecko.Coin, export: str) -> None:
+def display_market(symbol: str, export: str) -> None:
     """Shows market data for loaded coin. [Source: CoinGecko]
 
     Parameters
     ----------
-    coin : gecko_coin.Coin
+    symbol : str
         Cryptocurrency
     export : str
         Export dataframe data to csv,json,xlsx file
     """
+    coin = gecko.Coin(symbol)
 
     df = coin.get_market_data
 

@@ -682,7 +682,9 @@ Coinbase:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            pycoingecko_view.display_market(self.current_coin, ns_parser.export)
+            pycoingecko_view.display_market(
+                self.coin_map_df["CoinGecko"], ns_parser.export
+            )
 
     @try_except
     def call_web(self, other_args):
@@ -700,7 +702,9 @@ Coinbase:
         )
 
         if ns_parser:
-            pycoingecko_view.display_web(self.current_coin, export=ns_parser.export)
+            pycoingecko_view.display_web(
+                self.coin_map_df["CoinGecko"], export=ns_parser.export
+            )
 
     @try_except
     def call_social(self, other_args):
@@ -717,7 +721,9 @@ Coinbase:
         )
 
         if ns_parser:
-            pycoingecko_view.display_social(self.current_coin, export=ns_parser.export)
+            pycoingecko_view.display_social(
+                self.coin_map_df["CoinGecko"], export=ns_parser.export
+            )
 
     @try_except
     def call_dev(self, other_args):
@@ -737,7 +743,9 @@ Coinbase:
         )
 
         if ns_parser:
-            pycoingecko_view.display_dev(self.current_coin, ns_parser.export)
+            pycoingecko_view.display_dev(
+                self.coin_map_df["CoinGecko"], ns_parser.export
+            )
 
     @try_except
     def call_ath(self, other_args):
@@ -763,7 +771,7 @@ Coinbase:
 
         if ns_parser:
             pycoingecko_view.display_ath(
-                self.current_coin, ns_parser.vs, ns_parser.export
+                self.coin_map_df["CoinGecko"], ns_parser.vs, ns_parser.export
             )
 
     @try_except
@@ -789,7 +797,7 @@ Coinbase:
 
         if ns_parser:
             pycoingecko_view.display_atl(
-                self.current_coin, ns_parser.vs, ns_parser.export
+                self.coin_map_df["CoinGecko"], ns_parser.vs, ns_parser.export
             )
 
     @try_except
@@ -811,7 +819,9 @@ Coinbase:
         )
 
         if ns_parser:
-            pycoingecko_view.display_score(self.current_coin, ns_parser.export)
+            pycoingecko_view.display_score(
+                self.coin_map_df["CoinGecko"], ns_parser.export
+            )
 
     @try_except
     def call_bc(self, other_args):
@@ -830,7 +840,7 @@ Coinbase:
         )
 
         if ns_parser:
-            pycoingecko_view.display_bc(self.current_coin, ns_parser.export)
+            pycoingecko_view.display_bc(self.coin_map_df["CoinGecko"], ns_parser.export)
 
     @try_except
     def call_binbook(self, other_args):
@@ -1185,7 +1195,7 @@ Coinbase:
                 days = ns_parser.days
 
             plot_chart(
-                coin=self.current_coin,
+                coin_map_df=self.coin_map_df,
                 limit=limit,
                 interval=interval,
                 days=days,
@@ -1217,9 +1227,7 @@ Coinbase:
         )
         if ns_parser:
             coinpaprika_view.display_price_supply(
-                f"{self.symbol}-{self.current_coin}"
-                if self.source == "cg"
-                else self.current_coin,
+                self.coin_map_df["CoinPaprika"],
                 ns_parser.vs,
                 ns_parser.export,
             )
@@ -1310,9 +1318,7 @@ Coinbase:
         )
         if ns_parser:
             coinpaprika_view.display_markets(
-                coin_id=f"{self.symbol}-{self.current_coin}"
-                if self.source == "cg"
-                else self.current_coin,
+                coin_id=self.coin_map_df["CoinPaprika"],
                 currency=ns_parser.vs,
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
@@ -1368,9 +1374,7 @@ Coinbase:
         )
         if ns_parser:
             coinpaprika_view.display_exchanges(
-                coin_id=f"{self.symbol}-{self.current_coin}"
-                if self.source == "cg"
-                else self.current_coin,
+                coin_id=self.coin_map_df["CoinPaprika"],
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
@@ -1435,9 +1439,7 @@ Coinbase:
         )
         if ns_parser:
             coinpaprika_view.display_events(
-                coin_id=f"{self.symbol}-{self.current_coin}"
-                if self.source == "cg"
-                else self.current_coin,
+                coin_id=self.coin_map_df["CoinPaprika"],
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
@@ -1493,9 +1495,7 @@ Coinbase:
         )
         if ns_parser:
             coinpaprika_view.display_twitter(
-                coin_id=f"{self.symbol}-{self.current_coin}"
-                if self.source == "cg"
-                else self.current_coin,
+                coin_id=self.coin_map_df["CoinPaprika"],
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
