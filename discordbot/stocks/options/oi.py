@@ -45,7 +45,7 @@ async def oi_command(
             min_strike = min_sp
 
         if max_sp is None:
-            max_strike = 1.90 * current_price
+            max_strike = 1.25 * current_price
         else:
             max_strike = max_sp
 
@@ -98,7 +98,7 @@ async def oi_command(
 
         if cfg.DEBUG:
             print(f"Image {imagefile}")
-        title = " " + ticker.upper() + " Options: Open Interest"
+        title = f"Open Interest for {ticker.upper()} expiring {expiry}"
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_image(url="attachment://opt_oi.png")
         embed.set_author(

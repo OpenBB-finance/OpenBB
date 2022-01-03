@@ -1624,11 +1624,15 @@ def menu(queue: List[str] = None):
                     c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS
                 }
                 completer = NestedCompleter.from_nested_dict(choices)
-                an_input = session.prompt(
-                    f"{get_flair()} /crypto/ov/ $ ",
-                    completer=completer,
-                    search_ignore_case=True,
-                )
+                try:
+                    an_input = session.prompt(
+                        f"{get_flair()} /crypto/ov/ $ ",
+                        completer=completer,
+                        search_ignore_case=True,
+                    )
+                except KeyboardInterrupt:
+                    # Exit in case of keyboard interrupt
+                    an_input = "exit"
             # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /crypto/ov/ $ ")
