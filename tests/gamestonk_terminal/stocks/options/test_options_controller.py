@@ -497,22 +497,22 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 export="csv",
             ),
         ),
-        (
-            # DISPLAYS : "No correct strike input\n"
-            "call_grhist",
-            [
-                "1",
-                # "--put",
-                "--greek=theta",
-                "--chain=MOCK_CHAIN_ID",
-                "--raw",
-                "--limit=2",
-                "--export=csv",
-            ],
-            "",
-            [],
-            dict(),
-        ),
+        # (
+        #     # DISPLAYS : "No correct strike input\n"
+        #     "call_grhist",
+        #     [
+        #         "1",
+        #         # "--put",
+        #         "--greek=theta",
+        #         "--chain=MOCK_CHAIN_ID",
+        #         "--raw",
+        #         "--limit=2",
+        #         "--export=csv",
+        #     ],
+        #     "",
+        #     [],
+        #     dict(),
+        # ),
         (
             "call_load",
             ["MOCK_TICKER"],
