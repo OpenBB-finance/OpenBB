@@ -2,7 +2,7 @@
 usage: candle [-m] [--export {csv,json,xlsx}] [--sort {AdjClose,Open,Close,High,Low,Volume,Returns,LogRet}] [-d] [--raw] [-n NUM] [-h]
 ```
 
-Shows historic data for the [loaded ticker](https://gamestonkterminal.github.io/stocks/load/) in an interactive chart that loads in a web browser. Static charts are also available through the optional '-m' argument. There is also the ability to retrieve and sort raw data sets based on the intraday interval and date window selected through the load command.
+Shows historic data for the [loaded ticker](https://gamestonkterminal.github.io/GamestonkTerminal/stocks/load/) in an interactive chart that loads in a web browser. Static charts are also available through the optional '-m' argument. There is also the ability to retrieve and sort raw data sets based on the intraday interval and date window selected through the load command.
 
 ```
 optional arguments:
