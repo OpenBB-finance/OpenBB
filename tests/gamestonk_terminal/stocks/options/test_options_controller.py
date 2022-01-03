@@ -362,16 +362,23 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
     [
         (
             "call_calc",
-            ["--put", "--sell", "--strike=1", "--prenium=2", "--min=3", "--max=4"],
-            "",
+            [
+                "--put",
+                "--sell",
+                "--strike=1",
+                "--premium=2",
+                "--min=3",
+                "--max=4",
+            ],
+            "calculator_view.view_calculator",
             [],
             dict(
-                strike=1,
-                premium=2,
+                strike=1.0,
+                premium=2.0,
                 put=True,
                 sell=True,
-                min=3,
-                max=4,
+                x_min=3.0,
+                x_max=4.0,
             ),
         ),
         # (
