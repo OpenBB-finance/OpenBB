@@ -4,16 +4,25 @@ __docformat__ = "numpy"
 # pylint: disable=C0302
 
 import argparse
+from datetime import datetime, timedelta
 import difflib
 from typing import List, Union
 
 from colorama.ansi import Style
-
 from prompt_toolkit.completion import NestedCompleter
+
+from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
+    GLASSNODE_SUPPORTED_HASHRATE_ASSETS,
+    INTERVALS,
+)
+from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_view import (
+    display_hashrate,
+)
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     get_flair,
     parse_known_args_and_warn,
     check_positive,
@@ -21,6 +30,7 @@ from gamestonk_terminal.helper_funcs import (
     try_except,
     system_clear,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    valid_date,
 )
 
 from gamestonk_terminal.cryptocurrency.onchain import (
@@ -66,6 +76,7 @@ class OnchainController:
     }
 
     CHOICES_COMMANDS = [
+        "hr",
         "gwei",
         "whales",
         "balance",
@@ -101,6 +112,12 @@ class OnchainController:
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
             choices["whales"]["-s"] = {c: None for c in whale_alert_model.FILTERS}
+            choices["hr"] = {c: None for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}
+            choices["hr"]["-c"] = {c: None for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}
+            choices["hr"]["--coin"] = {
+                c: None for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS
+            }
+            choices["hr"]["-i"] = {c: None for c in INTERVALS}
             choices["ttcp"] = {c: None for c in bitquery_model.DECENTRALIZED_EXCHANGES}
             choices["baas"]["-c"] = {c: None for c in bitquery_model.POSSIBLE_CRYPTOS}
             choices["baas"]["--coin"] = {
@@ -219,6 +236,74 @@ class OnchainController:
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
+
+    @try_except
+    def call_hr(self, other_args: List[str]):
+        """Process hr command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="hr",
+            description="""
+                Display mean hashrate for a certain blockchain (ETH or BTC)
+                [Source: https://glassnode.org]
+            """,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--coin",
+            dest="coin",
+            type=str,
+            help="Coin to check hashrate (BTC or ETH)",
+            default="BTC",
+            choices=GLASSNODE_SUPPORTED_HASHRATE_ASSETS,
+        )
+
+        parser.add_argument(
+            "-i",
+            "--interval",
+            dest="interval",
+            type=str,
+            help="Frequency interval. Default: 24h",
+            default="24h",
+            choices=INTERVALS,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--since",
+            dest="since",
+            type=valid_date,
+            help="Initial date. Default: 2020-01-01",
+            default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
+        )
+
+        parser.add_argument(
+            "-u",
+            "--until",
+            dest="until",
+            type=valid_date,
+            help="Final date. Default: 2021-01-01",
+            default=(datetime.now()).strftime("%Y-%m-%d"),
+        )
+
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-c")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            display_hashrate(
+                asset=ns_parser.coin,
+                interval=ns_parser.interval,
+                since=int(datetime.timestamp(ns_parser.since)),
+                until=int(datetime.timestamp(ns_parser.until)),
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_gwei(self, other_args: List[str]):
@@ -1309,6 +1394,8 @@ class OnchainController:
         help_text = """
 Onchain Menu:
 
+Glassnode:
+    hr              check blockchain hashrate over time (BTC or ETH)
 Eth Gas Station:
     gwei             check current eth gas fees
 Whale Alert:
