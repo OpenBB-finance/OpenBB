@@ -866,7 +866,17 @@ def try_except(f):
 def menu_decorator(path, context):
     def decorator(function):
         def wrapper(*args, **kwargs):
-            controller = context(args[0], args[1])
+            # Anyone know a more efficient way to do this???
+            if len(args) == 1:
+                controller = context(args[0])
+            elif len(args) == 2:
+                controller = context(args[0], args[1])
+            elif len(args) == 3:
+                controller = context(args[0], args[1], args[2])
+            elif len(args) == 4:
+                controller = context(args[0], args[1], args[2], args[3])
+            elif len(args) == 5:
+                controller = context(args[0], args[1], args[2], args[3], args[4])
             an_input = "HELP_ME"
 
             while True:

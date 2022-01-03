@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
 from typing import List, Union
 from datetime import datetime, timedelta
 from pandas.core.frame import DataFrame
@@ -19,10 +18,10 @@ from gamestonk_terminal.stocks.due_diligence import (
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
-    get_flair,
     parse_known_args_and_warn,
     check_positive,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    menu_decorator,
     try_except,
     system_clear,
     valid_date,
@@ -532,6 +531,7 @@ cathiesark.com
             )
 
 
+@menu_decorator("/stocks/dd/", DueDiligenceController)
 def menu(
     ticker: str,
     start: str,
@@ -554,78 +554,3 @@ def menu(
     queue: List[str]
         List with commands in queue to run
     """
-
-    dd_controller = DueDiligenceController(ticker, start, interval, stock, queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if dd_controller.queue and len(dd_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if dd_controller.queue[0] in ("q", "..", "quit"):
-                if len(dd_controller.queue) > 1:
-                    return dd_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = dd_controller.queue[0]
-            dd_controller.queue = dd_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in dd_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /stocks/dd/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                dd_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and dd_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/dd/ $ ",
-                        completer=dd_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/dd/ $ ")
-
-        try:
-            # Process the input command
-            dd_controller.queue = dd_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                dd_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        dd_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                dd_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

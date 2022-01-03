@@ -1052,6 +1052,7 @@ Finviz:
             print("Please make sure there are more than 1 similar tickers selected. \n")
 
 
+# Handle
 def menu(
     similar: List,
     queue: List[str] = None,

@@ -1325,6 +1325,7 @@ Expiry: {self.selected_date or None}
         self.queue = screener_controller.menu(self.queue)
 
 
+# Handle
 def menu(ticker: str = "", queue: List[str] = None):
     """Options Menu"""
     op_controller = OptionsController(ticker, queue)

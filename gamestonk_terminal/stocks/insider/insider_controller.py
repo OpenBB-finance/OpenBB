@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import os
 import argparse
-import difflib
 import configparser
 from typing import List, Union
 import pandas as pd
@@ -11,7 +10,7 @@ from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    get_flair,
+    menu_decorator,
     parse_known_args_and_warn,
     check_positive,
     try_except,
@@ -28,7 +27,7 @@ from gamestonk_terminal.stocks.insider import (
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
-# pylint: disable=C0302,inconsistent-return-statements,too-many-public-methods
+# pylint: disable=C0302,inconsistent-return-statements,too-many-public-methods,W0613
 
 
 class InsiderController:
@@ -1093,82 +1092,8 @@ Top Insiders:
                 print("No ticker loaded. First use `load {ticker}`\n")
 
 
+@menu_decorator("/stocks/ins/", InsiderController)
 def menu(
     ticker: str, start: str, interval: str, stock: pd.DataFrame, queue: List[str] = None
 ):
     """Insider Menu"""
-    ins_controller = InsiderController(ticker, start, interval, stock, queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if ins_controller.queue and len(ins_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if ins_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(ins_controller.queue) > 1:
-                    return ins_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = ins_controller.queue[0]
-            ins_controller.queue = ins_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in ins_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /stocks/ins/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                ins_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and ins_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/ins/ $ ",
-                        completer=ins_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/ins/ $ ")
-
-        try:
-            # Process the input command
-            ins_controller.queue = ins_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/ins menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                ins_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        ins_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                ins_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

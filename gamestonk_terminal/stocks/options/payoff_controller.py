@@ -2,14 +2,13 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
 from typing import List, Dict, Union
 from prompt_toolkit.completion import NestedCompleter
 from colorama import Style
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     check_non_negative,
-    get_flair,
+    menu_decorator,
     parse_known_args_and_warn,
     try_except,
     system_clear,
@@ -19,7 +18,7 @@ from gamestonk_terminal.stocks.options.yfinance_model import get_option_chain, g
 from gamestonk_terminal.stocks.options.yfinance_view import plot_payoff
 
 
-# pylint: disable=R0902
+# pylint: disable=R0902,W0613
 
 
 class PayoffController:
@@ -402,88 +401,6 @@ Underlying Asset: {text}
             )
 
 
+@menu_decorator("/stocks/options/payoff/", PayoffController)
 def menu(ticker: str, expiration: str, queue: List[str] = None):
     """Payoff Menu"""
-    payoff_controller = PayoffController(ticker, expiration, queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if payoff_controller.queue and len(payoff_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if payoff_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(payoff_controller.queue) > 1:
-                    return payoff_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = payoff_controller.queue[0]
-            payoff_controller.queue = payoff_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if (
-                an_input
-                and an_input.split(" ")[0] in payoff_controller.CHOICES_COMMANDS
-            ):
-                print(f"{get_flair()} /stocks/options/payoff/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                payoff_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and payoff_controller.choices:
-                if payoff_controller.options:
-                    payoff_controller.choices["rmv"] = {
-                        str(c): {} for c in range(len(payoff_controller.options))
-                    }
-                completer = NestedCompleter.from_nested_dict(payoff_controller.choices)
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/options/payoff/ $ ",
-                        completer=completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/options/payoff/ $ ")
-
-        try:
-            # Process the input command
-            payoff_controller.queue = payoff_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/options/payoff menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                payoff_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        payoff_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                payoff_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

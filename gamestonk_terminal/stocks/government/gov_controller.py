@@ -2,17 +2,16 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
 from datetime import datetime, timedelta
 from typing import List, Union
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.government import quiverquant_view
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
+    menu_decorator,
     check_positive,
     try_except,
     system_clear,
@@ -676,80 +675,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                 print("No ticker loaded. Use `load <ticker>` first.\n")
 
 
+@menu_decorator("/stocks/gov/", GovController)
 def menu(ticker: str, queue: List[str] = None):
     """Government Menu"""
-    gov_controller = GovController(ticker, queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if gov_controller.queue and len(gov_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if gov_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(gov_controller.queue) > 1:
-                    return gov_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = gov_controller.queue[0]
-            gov_controller.queue = gov_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in gov_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /stocks/gov/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                gov_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and gov_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/gov/ $ ",
-                        completer=gov_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/gov/ $ ")
-
-        try:
-            # Process the input command
-            gov_controller.queue = gov_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/gov menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                gov_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        gov_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                gov_controller.queue.insert(0, an_input)
-            else:
-                print("\n")
