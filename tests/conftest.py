@@ -19,6 +19,7 @@ from _pytest.mark.structures import Mark
 
 # pylint: disable=redefined-outer-name
 
+DISPLAY_LIMIT: int = 500
 EXTENSIONS_ALLOWED: List[str] = ["csv", "json", "txt"]
 EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
     "csv": [pd.DataFrame, pd.Series],
@@ -156,6 +157,14 @@ class PathTemplate:
 
 class Recorder:
     @property
+    def display_limit(self) -> int:
+        return self.__display_limit
+
+    @display_limit.setter
+    def display_limit(self, display_limit: int):
+        self.__display_limit = display_limit
+
+    @property
     def path_template(self) -> PathTemplate:
         return self.__path_template
 
@@ -171,9 +180,11 @@ class Recorder:
         self,
         path_template: PathTemplate,
         record_mode: str,
+        display_limit: int = DISPLAY_LIMIT,
     ) -> None:
         self.__path_template = path_template
         self.__record_mode = record_mode
+        self.__display_limit = display_limit
 
         self.__record_list: List[Record] = list()
 
@@ -202,8 +213,8 @@ class Recorder:
                 raise Exception(
                     "Change detected\n"
                     f"Record Path  : {record.record_path}\n"
-                    f"Expected  : {record.recorded}\n"
-                    f"Actual    : {record.captured}\n"
+                    f"Expected  : {record.recorded[:self.display_limit]}\n"
+                    f"Actual    : {record.captured[:self.display_limit]}\n"
                 )
 
     def assert_in_list(self, in_list: List[str]):
@@ -318,6 +329,7 @@ def record_stdout_format_kwargs(
 
     formatted_fields = dict()
     formatted_fields["assert_in_list"] = kwargs.get("assert_in_list", list())
+    formatted_fields["display_limit"] = kwargs.get("display_limit", DISPLAY_LIMIT)
     formatted_fields["record_mode"] = kwargs.get("record_mode", record_mode)
     formatted_fields["record_name"] = kwargs.get("record_name", test_name)
     formatted_fields["save_record"] = kwargs.get("save_record", True)
@@ -357,7 +369,9 @@ def record_stdout(
             test_name=formatted_kwargs["record_name"],
         )
         recorder = Recorder(
-            path_template=path_template, record_mode=formatted_kwargs["record_mode"]
+            path_template=path_template,
+            record_mode=formatted_kwargs["record_mode"],
+            display_limit=formatted_kwargs["display_limit"],
         )
 
         # CAPTURE STDOUT
@@ -377,7 +391,8 @@ def record_stdout(
             capsys = request.getfixturevalue("capsys")
             yield
             recorder.capture(
-                captured=capsys.readouterr().out, strip=formatted_kwargs["strip"]
+                captured=capsys.readouterr().out,
+                strip=formatted_kwargs["strip"],
             )
 
         # SAVE/CHECK RECORD
