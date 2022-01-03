@@ -264,7 +264,7 @@ Select one of the following reports:
 
     def call_reset(self, _):
         """Process reset command."""
-        self.queue.insert(0, "reports")
+        self.queue.insert(0, "jupyter")
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
 

@@ -59,7 +59,6 @@ class TerminalController:
         "portfolio",
         "forex",
         "etf",
-        "reports",
         "resources",
         "jupyter",
     ]
@@ -122,7 +121,6 @@ The main commands you should be aware when navigating through the terminal are:
 >   economy
 >   forex
 >   portfolio
->   reports
 >   jupyter
 >   resources
     """

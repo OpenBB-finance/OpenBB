@@ -138,7 +138,7 @@ Dashboards:
 
     def call_reset(self, _):
         """Process reset command"""
-        self.queue.insert(0, "resources")
+        self.queue.insert(0, "jupyter")
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
 
@@ -197,7 +197,7 @@ def menu(queue: List[str] = None):
                 an_input
                 and an_input.split(" ")[0] in dashboard_controller.CHOICES_COMMANDS
             ):
-                print(f"{get_flair()} /dashboard/ $ {an_input}")
+                print(f"{get_flair()} /jupyter/dashboard/ $ {an_input}")
 
         # Get input command from user
         else:
@@ -208,14 +208,14 @@ def menu(queue: List[str] = None):
             # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and dashboard_controller.completer:
                 an_input = session.prompt(
-                    f"{get_flair()} /dashboard/ $ ",
+                    f"{get_flair()} /jupyter/dashboard/ $ ",
                     completer=dashboard_controller.completer,
                     search_ignore_case=True,
                 )
 
             # Get input from user without auto-completion
             else:
-                an_input = input(f"{get_flair()} /dashboard/ $ ")
+                an_input = input(f"{get_flair()} /jupyter/dashboard/ $ ")
 
         try:
             # Process the input command

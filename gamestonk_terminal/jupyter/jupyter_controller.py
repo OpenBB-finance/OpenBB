@@ -38,11 +38,6 @@ class JupyterController:
     CHOICES_COMMANDS = [
         "reports",
         "dashboards",
-        "finra",
-        "edgar",
-        "fred",
-        "learn",
-        "econiverse",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -67,8 +62,8 @@ class JupyterController:
         """Print help"""
         help_str = """
 Jupyter:
-   reports       creates jupyter reports
-   dashboards    shows interactive jupyter dashboards
+>   reports     creates jupyter reports
+>   dashboards  shows interactive jupyter dashboards
         """
         print(help_str)
 
@@ -144,7 +139,7 @@ Jupyter:
 
     def call_reset(self, _):
         """Process reset command"""
-        self.queue.insert(0, "resources")
+        self.queue.insert(0, "jupyter")
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
 
