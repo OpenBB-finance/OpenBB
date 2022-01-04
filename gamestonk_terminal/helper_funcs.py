@@ -864,19 +864,12 @@ def try_except(f):
 
 
 def menu_decorator(path, context):
-    def decorator(function):
+    def decorator(_):
         def wrapper(*args, **kwargs):
             # Anyone know a more efficient way to do this???
-            context_dict = {
-                0: lambda _: context(),
-                1: lambda x: context(x[0]),
-                2: lambda x: context(x[0], x[1]),
-                3: lambda x: context(x[0], x[1], x[2]),
-                4: lambda x: context(x[0], x[1], x[2], x[3]),
-                5: lambda x: context(x[0], x[1], x[2], x[3], x[4]),
-                6: lambda x: context(x[0], x[1], x[2], x[3], x[4], x[6]),
-            }
-            controller = context_dict[len(args)](args)
+
+            controller = context(*args, **kwargs)
+
             an_input = "HELP_ME"
 
             while True:
@@ -954,8 +947,8 @@ def menu_decorator(path, context):
                         controller.queue.insert(0, an_input)
                     else:
                         print("\n")
-                    result = function(*args, **kwargs)
-                    return result
+                    # result = function(*args, **kwargs)
+                    # return result
 
         return wrapper
 

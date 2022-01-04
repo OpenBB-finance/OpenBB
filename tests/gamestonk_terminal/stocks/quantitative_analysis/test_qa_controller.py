@@ -91,15 +91,15 @@ def test_menu_with_queue(expected, mocker, queue):
 def test_menu_without_queue_completion(mocker):
     # DISABLE AUTO-COMPLETION
     mocker.patch.object(
-        target=qa_controller.gtff,
+        target=qa_controller.helper_funcs.gtff,
         attribute="USE_PROMPT_TOOLKIT",
         new=True,
     )
     mocker.patch(
-        target="gamestonk_terminal.stocks.quantitative_analysis.qa_controller.session",
+        target="gamestonk_terminal.stocks.quantitative_analysis.qa_controller.helper_funcs.session",
     )
     mocker.patch(
-        target="gamestonk_terminal.stocks.quantitative_analysis.qa_controller.session.prompt",
+        target="gamestonk_terminal.stocks.quantitative_analysis.qa_controller.helper_funcs.session.prompt",
         return_value="quit",
     )
 
