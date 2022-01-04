@@ -922,6 +922,27 @@ main:
             ref: "/economy/fred/rmv"
           - name: plot
             ref: "/economy/fred/plot"
+          - name: prediction techniques
+            ref: "/common/prediction_techniques"
+            sub:
+              - name: ets
+                ref: "/common/prediction_techniques/ets"
+              - name: knn
+                ref: "/common/prediction_techniques/knn"
+              - name: regression
+                ref: "/common/prediction_techniques/regression"
+              - name: arima
+                ref: "/common/prediction_techniques/arima"
+              - name: mlp
+                ref: "/common/prediction_techniques/mlp"
+              - name: rnn
+                ref: "/common/prediction_techniques/rnn"
+              - name: lstm
+                ref: "/common/prediction_techniques/lstm"
+              - name: conv1d
+                ref: "/common/prediction_techniques/conv1d"
+              - name: mc
+                ref: "/common/prediction_techniques/mc"
   - name: etf
     ref: "/etf"
     sub:
