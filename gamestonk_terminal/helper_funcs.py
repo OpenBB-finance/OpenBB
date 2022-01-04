@@ -867,16 +867,15 @@ def menu_decorator(path, context):
     def decorator(function):
         def wrapper(*args, **kwargs):
             # Anyone know a more efficient way to do this???
-            if len(args) == 1:
-                controller = context(args[0])
-            elif len(args) == 2:
-                controller = context(args[0], args[1])
-            elif len(args) == 3:
-                controller = context(args[0], args[1], args[2])
-            elif len(args) == 4:
-                controller = context(args[0], args[1], args[2], args[3])
-            elif len(args) == 5:
-                controller = context(args[0], args[1], args[2], args[3], args[4])
+            context_dict = {
+                0: lambda _: context(),
+                1: lambda x: context(x[0]),
+                2: lambda x: context(x[0], x[1]),
+                3: lambda x: context(x[0], x[1], x[2]),
+                4: lambda x: context(x[0], x[1], x[2], x[3]),
+                5: lambda x: context(x[0], x[1], x[2], x[3], x[4])
+            }
+            controller = context_dict[len(args)](args)
             an_input = "HELP_ME"
 
             while True:

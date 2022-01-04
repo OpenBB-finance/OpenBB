@@ -691,5 +691,6 @@ Stocks Menus:
 
 
 @menu_decorator("/stocks/", StocksController)
+
 def menu(ticker: str = "", queue: List[str] = None):
     """Stocks Menu"""
