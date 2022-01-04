@@ -23,6 +23,8 @@ from gamestonk_terminal.menu import session
 
 t_console = Console()
 
+# pylint:disable=import-outside-toplevel
+
 
 class FredController:
     """FRED Controller Class"""
@@ -43,8 +45,9 @@ class FredController:
     ]
 
     CHOICES_COMMANDS = ["search", "add", "rmv", "plot"]
+    CHOICES_MENUS = ["pred"]
 
-    CHOICES += CHOICES_COMMANDS
+    CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -54,7 +57,7 @@ class FredController:
             choices=self.CHOICES,
         )
         self.current_series: Dict = dict()
-        self.current_long_id = 0
+        self.long_id = 0
 
         self.completer: Union[None, NestedCompleter] = None
 
@@ -72,7 +75,12 @@ class FredController:
         """Print help"""
         id_string = ""
         for s_id, sub_dict in self.current_series.items():
-            id_string += f"    {s_id.upper()}{(self.current_long_id-len(s_id)) * ' '} : {sub_dict['title']}\n"
+            id_string += (
+                f"    [blue]{s_id.upper()}{(self.long_id-len(s_id)) * ' '}[/blue] :"
+                f" [italic]{sub_dict['title']}[/italic]\n"
+            )
+        if not id_string:
+            id_string += "    [bold][red]None[/red][/bold]\n"
         help_text = f"""
     search        search FRED series notes
     add           add series ID to list
@@ -81,6 +89,8 @@ class FredController:
 Current Series IDs:
 {id_string}{'[dim]'if not self.current_series else ""}
     plot          plot selected series {'[/dim]'if not self.current_series else ""}
+{'[dim]'if len(self.current_series.keys())!=1 else ""}
+>   pred          prediction techniques (single SeriesID){'[/dim]'if len(self.current_series.keys())!=1 else ""}
         """
         t_console.print(help_text)
 
@@ -228,10 +238,12 @@ Current Series IDs:
                         "title": information["seriess"][0]["title"],
                         "units": information["seriess"][0]["units_short"],
                     }
-                    self.current_long_id = max(self.current_long_id, len(s_id))
+                    self.long_id = max(self.long_id, len(s_id))
+                else:
+                    t_console.print(f"[red]{s_id} not found[/red].")
 
             t_console.print(
-                f"Current Series: {', '.join(self.current_series.keys()) .upper() or None}\n"
+                f"Current Series:[blue] {', '.join(self.current_series.keys()) .upper() or None}[/blue]\n"
             )
 
     @try_except
@@ -275,12 +287,12 @@ Current Series IDs:
         if ns_parser:
             if ns_parser.all:
                 self.current_series = {}
-                self.current_long_id = 0
-                t_console.print("\n")
+                self.long_id = 0
+                t_console.print("")
 
             self.current_series.pop(ns_parser.series_id)
             t_console.print(
-                f"Current Series Ids: {', '.join(self.current_series.keys()) or None}\n"
+                f"Current Series Ids: [blue]{', '.join(self.current_series.keys()) or None}[/blue]\n"
             )
 
     @try_except
@@ -316,6 +328,19 @@ Current Series IDs:
                 ns_parser.raw,
                 ns_parser.export,
             )
+
+    @try_except
+    def call_pred(self, _):
+        """Process pred command"""
+        if not self.current_series:
+            t_console.print("Please select 1 Series to use.\n")
+            return
+        if len(self.current_series.keys()) != 1:
+            t_console.print("Only 1 Series can be input into prediction.\n")
+            return
+        from gamestonk_terminal.economy.fred.prediction import pred_controller
+
+        self.queue = pred_controller.menu(self.current_series, self.queue)
 
 
 def menu(queue: List[str] = None):
