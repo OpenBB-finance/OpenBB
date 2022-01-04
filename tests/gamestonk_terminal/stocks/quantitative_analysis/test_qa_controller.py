@@ -89,17 +89,30 @@ def test_menu_with_queue(expected, mocker, queue):
 
 @pytest.mark.vcr(record_mode="none")
 def test_menu_without_queue_completion(mocker):
-    # DISABLE AUTO-COMPLETION
+    # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    mocker.patch(
+        target="gamestonk_terminal.feature_flags.USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.helper_funcs.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.helper_funcs.session.prompt",
+        return_value="quit",
+    )
+
+    # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch.object(
-        target=qa_controller.helper_funcs.gtff,
+        target=qa_controller.gtff,
         attribute="USE_PROMPT_TOOLKIT",
         new=True,
     )
     mocker.patch(
-        target="gamestonk_terminal.stocks.quantitative_analysis.qa_controller.helper_funcs.session",
+        target="gamestonk_terminal.stocks.quantitative_analysis.qa_controller.session",
     )
     mocker.patch(
-        target="gamestonk_terminal.stocks.quantitative_analysis.qa_controller.helper_funcs.session.prompt",
+        target="gamestonk_terminal.stocks.quantitative_analysis.qa_controller.session.prompt",
         return_value="quit",
     )
 

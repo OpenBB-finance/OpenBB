@@ -15,9 +15,9 @@ from gamestonk_terminal.common.quantitative_analysis import (
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.stocks import stocks_helper
-from gamestonk_terminal import helper_funcs
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    menu_decorator,
     check_positive,
     check_proportion_range,
     parse_known_args_and_warn,
@@ -874,7 +874,7 @@ Other:
             capm_view(self.ticker)
 
 
-@helper_funcs.menu_decorator("/stocks/qa/", QaController)
+@menu_decorator("/stocks/qa/", QaController)
 def menu(
     ticker: str,
     start: datetime,
