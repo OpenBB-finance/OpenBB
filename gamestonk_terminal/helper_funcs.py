@@ -896,6 +896,8 @@ def menu_decorator(path, context):
                     if an_input == "HELP_ME":
                         controller.print_help()
 
+                    #function(*args, **kwargs) this is what we need to figure out
+
                     # Get input from user using auto-completion
                     if session and gtff.USE_PROMPT_TOOLKIT and controller.completer:
                         try:
