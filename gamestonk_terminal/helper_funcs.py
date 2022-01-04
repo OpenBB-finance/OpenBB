@@ -686,7 +686,7 @@ def get_flair() -> str:
     if flair.get(gtff.USE_FLAIR):
         if gtff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
             dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
-                "%Y %b %d, %H:%m:%S"
+                "%Y %b %d, %H:%m"
             )
             return f"{dtime} {flair[gtff.USE_FLAIR]}"
         return flair[gtff.USE_FLAIR]
