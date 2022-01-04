@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 import os
 from typing import List, Union
 
+from rich.console import Console
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
@@ -29,7 +30,6 @@ from gamestonk_terminal.helper_funcs import (
     system_clear,
 )
 from gamestonk_terminal.menu import session
-
 
 class EconomyController:
     """Economy Controller"""
@@ -223,7 +223,7 @@ NASDAQ DataLink (formerly Quandl):
 
 >   fred          Federal Reserve Economic Data submenu
 """
-        print(help_text)
+        t_console.print(help_text)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -235,7 +235,7 @@ NASDAQ DataLink (formerly Quandl):
         """
         # Empty command
         if not an_input:
-            print("")
+            t_console.print("")
             return self.queue
 
         # Navigation slash is being used
@@ -287,7 +287,6 @@ NASDAQ DataLink (formerly Quandl):
 
     def call_quit(self, _):
         """Process quit menu command"""
-        print("")
         self.queue.insert(0, "quit")
 
     def call_exit(self, _):
@@ -1134,7 +1133,9 @@ NASDAQ DataLink (formerly Quandl):
                 file = os.path.join(
                     os.path.dirname(__file__), "NASDAQ_CountryCodes.csv"
                 )
-                print(pd.read_csv(file, index_col=0).to_string(index=False), "\n")
+                t_console.print(
+                    pd.read_csv(file, index_col=0).to_string(index=False), "\n"
+                )
             else:
                 nasdaq_view.display_big_mac_index(
                     country_codes=ns_parser.countries,
