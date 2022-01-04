@@ -5,7 +5,7 @@ import argparse
 import difflib
 from typing import List, Union, Dict
 
-from colorama import Style
+from rich.console import Console
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
@@ -20,6 +20,8 @@ from gamestonk_terminal.helper_funcs import (
     system_clear,
 )
 from gamestonk_terminal.menu import session
+
+t_console = Console()
 
 
 class FredController:
@@ -77,10 +79,10 @@ class FredController:
     rmv           remove series ID from list
 
 Current Series IDs:
-{id_string}{Style.DIM if not self.current_series else ""}
-    plot          plot selected series {Style.RESET_ALL}
+{id_string}{'[dim]'if not self.current_series else ""}
+    plot          plot selected series {'[/dim]'if not self.current_series else ""}
         """
-        print(help_text)
+        t_console.print(help_text)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -92,7 +94,7 @@ Current Series IDs:
         """
         # Empty command
         if not an_input:
-            print("")
+            t_console.print("\n")
             return self.queue
 
         # Navigation slash is being used
@@ -145,13 +147,9 @@ Current Series IDs:
 
     def call_quit(self, _):
         """Process quit menu command"""
-        print("")
         self.queue.insert(0, "quit")
 
-        return ["quit"]
-
     def call_exit(self, _):
-        print("")
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
@@ -232,7 +230,7 @@ Current Series IDs:
                     }
                     self.current_long_id = max(self.current_long_id, len(s_id))
 
-            print(
+            t_console.print(
                 f"Current Series: {', '.join(self.current_series.keys()) .upper() or None}\n"
             )
 
@@ -278,10 +276,10 @@ Current Series IDs:
             if ns_parser.all:
                 self.current_series = {}
                 self.current_long_id = 0
-                print("")
+                t_console.print("\n")
 
             self.current_series.pop(ns_parser.series_id)
-            print(
+            t_console.print(
                 f"Current Series Ids: {', '.join(self.current_series.keys()) or None}\n"
             )
 
@@ -330,7 +328,7 @@ def menu(queue: List[str] = None):
         if fred_controller.queue and len(fred_controller.queue) > 0:
             # If the command is quitting the menu we want to return in here
             if fred_controller.queue[0] in ("q", "..", "quit"):
-                print("")
+                t_console.print("")
                 if len(fred_controller.queue) > 1:
                     return fred_controller.queue[1:]
                 return []
@@ -341,7 +339,7 @@ def menu(queue: List[str] = None):
 
             # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input.split(" ")[0] in fred_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /economy/fred/ $ {an_input}")
+                t_console.print(f"{get_flair()} /economy/fred/ $ {an_input}")
 
         # Get input command from user
         else:
@@ -369,7 +367,7 @@ def menu(queue: List[str] = None):
             fred_controller.queue = fred_controller.switch(an_input)
 
         except SystemExit:
-            print(
+            t_console.print(
                 f"\nThe command '{an_input}' doesn't exist on the /economy/fred menu.",
                 end="",
             )
@@ -387,13 +385,13 @@ def menu(queue: List[str] = None):
                     if candidate_input == an_input:
                         an_input = ""
                         fred_controller.queue = []
-                        print("\n")
+                        t_console.print("\n")
                         continue
                     an_input = candidate_input
                 else:
                     an_input = similar_cmd[0]
 
-                print(f" Replacing by '{an_input}'.")
+                t_console.print(f" Replacing by '{an_input}'.")
                 fred_controller.queue.insert(0, an_input)
             else:
-                print("\n")
+                t_console.print("\n")
