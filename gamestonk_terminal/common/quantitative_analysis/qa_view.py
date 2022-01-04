@@ -15,17 +15,19 @@ import pandas as pd
 from rich.console import Console
 import seaborn as sns
 import statsmodels.api as sm
-from colorama import Fore, Style
 from detecta import detect_cusum
 from pandas.plotting import register_matplotlib_converters
 from scipy import stats
 from statsmodels.graphics.gofplots import qqplot
-from tabulate import tabulate
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.quantitative_analysis import qa_model
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    rich_table_from_df,
+)
 
 register_matplotlib_converters()
 t_console = Console()
@@ -36,7 +38,9 @@ t_console = Console()
 
 def color_red(val: Any) -> str:
     """Adds red to dataframe value"""
-    return Fore.RED + str(val) + Style.RESET_ALL
+    if val > 0.05:
+        return f"[red]{round(val,4)}[/red]"
+    return round(val, 4)
 
 
 def display_summary(df: pd.DataFrame, export: str):
@@ -51,12 +55,16 @@ def display_summary(df: pd.DataFrame, export: str):
     """
     summary = qa_model.get_summary(df)
 
-    print(
-        tabulate(
-            summary, headers=summary.columns, tablefmt="fancy_grid", floatfmt=".3f"
-        ),
-        "\n",
+    t_console.print(
+        rich_table_from_df(
+            summary,
+            headers=list(summary.columns),
+            floatfmt=".3f",
+            show_index=True,
+            title="[bold]Summary Statistics[/bold]",
+        )
     )
+    t_console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
@@ -99,7 +107,7 @@ def display_hist(
         plt.ion()
     fig.tight_layout()
     plt.show()
-    print("")
+    t_console.print("")
 
 
 def display_cdf(
@@ -173,7 +181,7 @@ def display_cdf(
         plt.ion()
 
     plt.show()
-    print("")
+    t_console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
@@ -239,7 +247,7 @@ def display_bw(
         plt.ion()
 
     plt.show()
-    print("")
+    t_console.print("")
 
 
 def display_acf(name: str, df: pd.DataFrame, target: str, lags: int):
@@ -289,7 +297,7 @@ def display_acf(name: str, df: pd.DataFrame, target: str, lags: int):
         plt.ion()
 
     plt.show()
-    print("")
+    t_console.print("")
 
 
 def display_cusum(df: pd.DataFrame, target: str, threshold: float, drift: float):
@@ -310,7 +318,7 @@ def display_cusum(df: pd.DataFrame, target: str, threshold: float, drift: float)
     if gtff.USE_ION:
         plt.ion()
     plt.show()
-    print("")
+    t_console.print("")
 
 
 def display_seasonal(
@@ -374,20 +382,20 @@ def display_seasonal(
         plt.ion()
 
     plt.show()
-    print("")
+    t_console.print("")
 
     # From  # https://otexts.com/fpp2/seasonal-strength.html
 
-    print("Time-Series Level is " + str(round(data.mean(), 2)))
+    t_console.print("Time-Series Level is " + str(round(data.mean(), 2)))
 
     Ft = max(0, 1 - np.var(result.resid)) / np.var(result.trend + result.resid)
-    print(f"Strength of Trend: {Ft:.4f}")
+    t_console.print(f"Strength of Trend: {Ft:.4f}")
 
     Fs = max(
         0,
         1 - np.var(result.resid) / np.var(result.seasonal + result.resid),
     )
-    print(f"Strength of Seasonality: {Fs:.4f}\n")
+    t_console.print(f"Strength of Seasonality: {Fs:.4f}\n")
 
     export_data(
         export,
@@ -412,23 +420,21 @@ def display_normality(df: pd.DataFrame, target: str, export: str = ""):
     data = df[target]
     normal = qa_model.get_normality(data)
     stats1 = normal.copy().T
-    print(stats1)
-    stats1.loc[:, stats1.iloc[1, :] > 0.05] = stats1.loc[
-        :, stats1.iloc[1, :] > 0.05
-    ].apply(lambda x: color_red(x[0]), axis=1)
+    stats1.iloc[:, 1] = stats1.iloc[:, 1].apply(lambda x: color_red(x))
+
     if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
+        t_console.print(
+            rich_table_from_df(
                 stats1,
-                showindex=True,
-                headers=normal.columns,
-                tablefmt="fancy_grid",
+                show_index=True,
+                headers=["Statistic", "p-value"],
                 floatfmt=".4f",
-            ),
-            "\n",
+                title="[bold]Normality Statistics[/bold]",
+            )
         )
+        t_console.print("")
     else:
-        print(normal.round(4).to_string(), "\n")
+        t_console.print(normal.round(4).to_string(), "\n")
 
     export_data(
         export,
@@ -464,7 +470,7 @@ def display_qqplot(name: str, df: pd.DataFrame, target: str):
         plt.ion()
     fig.tight_layout(pad=1)
     plt.show()
-    print("")
+    t_console.print("")
 
 
 def display_unitroot(
@@ -488,19 +494,18 @@ def display_unitroot(
     df = df[target]
     data = qa_model.get_unitroot(df, fuller_reg, kpss_reg)
     if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
+        t_console.print(
+            rich_table_from_df(
                 data,
-                showindex=True,
-                headers=data.columns,
-                tablefmt="fancy_grid",
+                show_index=True,
+                headers=list(data.columns),
+                title="[bold]Unit Root Calculation[/bold]",
                 floatfmt=".4f",
-            ),
-            "\n",
+            )
         )
     else:
-        print(data.round(4).to_string(), "\n")
-
+        t_console.print(data.round(4).to_string(), "\n")
+    t_console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
@@ -540,21 +545,21 @@ def display_raw(
 
     if sort:
         df = df.sort_values(by=sort, ascending=des)
-
+    df.index = [x.strftime("%Y-%m-%d") for x in df.index]
     if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
+        t_console.print(
+            rich_table_from_df(
                 df.tail(num),
                 headers=[x.title() if x != "" else "Date" for x in df.columns],
-                tablefmt="fancy_grid",
-                showindex=True,
-                floatfmt=".2f",
+                title="[bold]Raw Data[/bold]",
+                show_index=True,
+                floatfmt=".3f",
             )
         )
     else:
-        print(df.to_string(index=False))
+        t_console.print(df.to_string(index=False))
 
-    print("")
+    t_console.print("")
 
 
 def display_line(
