@@ -101,6 +101,7 @@ class StocksController:
         self.ticker = ticker
         self.start = ""
         self.interval = "1440min"
+        self.add_info = stocks_helper.additional_info_about_ticker("")
         if queue:
             self.queue = queue
         else:
@@ -108,10 +109,6 @@ class StocksController:
 
     def print_help(self):
         """Print help"""
-        if self.suffix:
-            symbol = f"{self.ticker}.{self.suffix}"
-        else:
-            symbol = self.ticker
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.ticker and self.start:
             stock_text = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
@@ -121,11 +118,10 @@ class StocksController:
         reset_style_if_no_ticker = Style.RESET_ALL if not self.ticker else ""
         help_text = f"""
     search      search a specific stock ticker for analysis
-    load        load a specific stock ticker for analysis
+    load        load a specific stock ticker and additional info for analysis
 {dim_if_no_ticker}
 {stock_text}
-
-{stocks_helper.additional_info_about_ticker(symbol)}
+{self.add_info}
 
     quote       view the current price for a specific stock ticker
     candle      view a candle chart for a specific stock ticker
@@ -349,7 +345,10 @@ Stocks Menus:
             )
             if not df_stock_candidate.empty:
                 self.stock = df_stock_candidate
-                print(stocks_helper.additional_info_about_ticker(ns_parser.ticker))
+                self.add_info = stocks_helper.additional_info_about_ticker(
+                    ns_parser.ticker
+                )
+                print(self.add_info)
                 if "." in ns_parser.ticker:
                     self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
                 else:

@@ -261,7 +261,7 @@ def load(
 
     print(
         f"Loading {s_intraday} {ticker.upper()} stock "
-        f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis.\n"
+        f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis."
     )
 
     return df_stock_candidate
@@ -710,25 +710,33 @@ def additional_info_about_ticker(ticker: str) -> str:
     if ticker:
         ticker_info = yf.Ticker(ticker).info
 
-        extra_info += "Exchange: "
-        if "exchange" in ticker_info and ticker_info["exchange"]:
-            exchange_name = ticker_info["exchange"]
-            extra_info += exchange_name
-        else:
-            extra_info += "?"
-        if "currency" in ticker_info and ticker_info["currency"]:
-            extra_info += f" (in {ticker_info['currency']})"
+        extra_info += "\nDatetime: "
         if (
             "exchangeTimezoneName" in ticker_info
             and ticker_info["exchangeTimezoneName"]
         ):
             dtime = datetime.now(
                 pytz.timezone(ticker_info["exchangeTimezoneName"])
-            ).strftime("%d %b %Y %H:%M:%S")
-            extra_info += f"\n{dtime} [{ticker_info['exchangeTimezoneName']}]"
+            ).strftime("%Y %b %d %H:%m:%S")
+            extra_info += dtime
+            extra_info += "\nTimezone: "
+            extra_info += ticker_info["exchangeTimezoneName"]
+        else:
+            extra_info += "\nDatetime: "
+            extra_info += "\nTimezone: "
 
+        extra_info += "\nExchange: "
         if "exchange" in ticker_info and ticker_info["exchange"]:
+            exchange_name = ticker_info["exchange"]
+            extra_info += exchange_name
             exchange_name = exchange_name.replace("NMS", "NASDAQ")
+
+        extra_info += "\nCurrency: "
+        if "currency" in ticker_info and ticker_info["currency"]:
+            extra_info += ticker_info["currency"]
+
+        extra_info += "\nMarket:   "
+        if "exchange" in ticker_info and ticker_info["exchange"]:
             if exchange_name in mcal.get_calendar_names():
                 calendar = mcal.get_calendar(exchange_name)
                 sch = calendar.schedule(
@@ -746,8 +754,15 @@ def additional_info_about_ticker(ticker: str) -> str:
                         ),
                     )
                     if is_market_open:
-                        extra_info += "\nMarket: OPEN"
+                        extra_info += "OPEN"
                     else:
-                        extra_info += "\nMarket: CLOSED"
+                        extra_info += "CLOSED"
+
+    else:
+        extra_info += "\nDatetime: "
+        extra_info += "\nTimezone: "
+        extra_info += "\nExchange: "
+        extra_info += "\nMarket: "
+        extra_info += "\nCurrency: "
 
     return extra_info
