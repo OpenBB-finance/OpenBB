@@ -9,21 +9,21 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.stlouisfed.org/fred/series?api_key=fb5b79cf3a0e39c4b383e24425fe5ddb&file_type=json&series_id=DGS5
+    uri: https://api.stlouisfed.org/fred/series?api_key=MOCK_API_KEY&file_type=json&series_id=DGS5
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0jUw1DUwVtJByKbmpaDLFacWZaYWFytZ
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0jUw1DUwUdJByKbmpaDLFacWZaYWFytZ
         RVcrZYJkXdyDTZH1kGxiSWZJTqqSlZJvYlF2aolCZGZqTopCfp5CqF6wnkJIUWpicWlRpUJwanJp
         UWZJZmqxQmKJgqluZGpikYJzfl5xSWJeiYJvYglItlJJRyk/qTi1qCyxJDM/D+47Q0sziO+M0BTA
         PWioa2ika2yopKOUVpRaWJqal1ypZKXkkpiZAzITLhZfnJFfBAovFyUdpdK8zJJiJSulgNSi5NS8
         EpgIXI2qko5ScWpicX5eYk58YkpWaXFJLkidlZJffolCMFQmp1LBESyXmoJdPdw8v2BHJR2lnMTi
-        kvjSgpTEklRQ8CMiTsHQ1MrI2MrAXNfATElHqSC/oDQnsSizpFLJytxURykvvyQV5Fq3/CKFtNKi
-        kozUIoXMvLT8olxwWCkUpaYnFqVk5qUrlMDCPBkWvLnQ4FVISSxJ1FEoyElNLE5VKEpNSy1SKMlX
-        KMlIVXDKTyxKUchPU3DPL0styssvKlbQyCgpKbCK0Y/RLy8v10tLTUktSswpSgVFT6peen5ZjH5R
-        Ktik4hj9DEPTGP3k0qKi1LwSME+vICVNUyExLwVsOjwZoJoJcynMtOL80qLkVF1QbKQWxeiDXKub
-        nJFYVAIXyswrSS1KLS7RLUosSS2O0Q9ITAdRlaBEB1huaklGfopeYnFBhaaeUm1sLQBEidLtKAMA
-        AA==
+        kvjSgpTEklRQ8MMjzljB0NTKyNjKwFzXwExJR6kgv6A0J7Eos6RSycrcTEcpL78kFeRat/wihbTS
+        opKM1CKFzLy0/KJccFgpFKWmJxalZOalK5TAwjwZFry50OBVSEksSdRRKMhJTSxOVShKTUstUijJ
+        VyjJSFVwyk8sSlHIT1Nwzy9LLcrLLypW0MgoKSmwitGP0S8vL9dLS01JLUrMKUoFRU+qXnp+WYx+
+        USrYpOIY/QxD0xj95NKiotS8EjBPryAlTVMhMS8FbDo8GaCaCXMpzLTi/NKi5FRdUGykFsXog1yr
+        m5yRWFQCF8rMK0ktSi0u0S1KLEktjtEPSEwHUZWgRAdYbmpJRn6KXmJxQYWmnlJtbC0ADtZggygD
+        AAA=
     headers:
       Accept-Ranges:
       - bytes
@@ -32,23 +32,23 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '571'
+      - '572'
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Tue, 04 Jan 2022 03:57:32 GMT
+      - Tue, 04 Jan 2022 18:25:02 GMT
       Expires:
-      - Tue, 04 Jan 2022 03:58:32 GMT
+      - Tue, 04 Jan 2022 18:26:02 GMT
       Last-Modified:
       - Mon, 03 Jan 2022 21:23:07 GMT
       Set-Cookie:
-      - cookiesession1=592B9379TGZGZKUI4EKJNK6GQP765026;Path=/;HttpOnly
+      - cookiesession1=2CECED77WVBCAL3CUTVE2RDV8K4R837F;Path=/;HttpOnly
       Vary:
       - Accept-Encoding
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '119'
+      - '120'
     status:
       code: 200
       message: OK
