@@ -866,10 +866,7 @@ def try_except(f):
 def menu_decorator(path, context):
     def decorator(_):
         def wrapper(*args, **kwargs):
-            # Anyone know a more efficient way to do this???
-
             controller = context(*args, **kwargs)
-
             an_input = "HELP_ME"
 
             while True:
@@ -947,8 +944,6 @@ def menu_decorator(path, context):
                         controller.queue.insert(0, an_input)
                     else:
                         print("\n")
-                    # result = function(*args, **kwargs)
-                    # return result
 
         return wrapper
 
