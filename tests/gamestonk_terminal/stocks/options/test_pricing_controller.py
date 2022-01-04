@@ -45,7 +45,20 @@ def test_menu_with_queue(expected, mocker, queue):
 def test_menu_without_queue_completion(mocker):
     path_controller = "gamestonk_terminal.stocks.options.pricing_controller"
 
-    # DISABLE AUTO-COMPLETION
+    # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    mocker.patch(
+        target="gamestonk_terminal.feature_flags.USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.helper_funcs.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.helper_funcs.session.prompt",
+        return_value="quit",
+    )
+
+    # ENABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch.object(
         target=pricing_controller.gtff,
         attribute="USE_PROMPT_TOOLKIT",

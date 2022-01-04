@@ -1,4 +1,4 @@
-# IMPORTATION STANDARD
+    # IMPORTATION STANDARD
 import os
 from collections import namedtuple
 
@@ -141,7 +141,20 @@ def test_menu_without_queue_completion(mocker):
         return_value=95.0,
     )
 
-    # DISABLE AUTO-COMPLETION
+    # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    mocker.patch(
+        target="gamestonk_terminal.feature_flags.USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.helper_funcs.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.helper_funcs.session.prompt",
+        return_value="quit",
+    )
+
+    # ENABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch.object(
         target=payoff_controller.gtff,
         attribute="USE_PROMPT_TOOLKIT",
