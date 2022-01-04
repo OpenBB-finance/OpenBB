@@ -4,14 +4,14 @@ import argparse
 import functools
 import logging
 from typing import List
-from datetime import datetime, timedelta, time as Time
+from datetime import datetime, timedelta
 import os
 import random
 import re
 import sys
+import pytz
 import pandas as pd
 from rich.table import Table
-from pytz import timezone
 import iso8601
 
 import matplotlib
@@ -362,26 +362,6 @@ def us_market_holidays(years) -> list:
     return valid_holidays
 
 
-def b_is_stock_market_open() -> bool:
-    """Checks if the stock market is open"""
-    # Get current US time
-    now = datetime.now(timezone("US/Eastern"))
-    # Check if it is a weekend
-    if now.date().weekday() > 4:
-        return False
-    # Check if it is a holiday
-    if now.strftime("%Y-%m-%d") in us_market_holidays(now.year):
-        return False
-    # Check if it hasn't open already
-    if now.time() < Time(hour=9, minute=30, second=0):
-        return False
-    # Check if it has already closed
-    if now.time() > Time(hour=16, minute=0, second=0):
-        return False
-    # Otherwise, Stock Market is open!
-    return True
-
-
 def long_number_format(num) -> str:
     """Format a long number"""
     if isinstance(num, float):
@@ -704,9 +684,86 @@ def get_flair() -> str:
     }
 
     if flair.get(gtff.USE_FLAIR):
+        if gtff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
+            dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
+                "%Y %b %d, %H:%m"
+            )
+            return f"{dtime} {flair[gtff.USE_FLAIR]}"
         return flair[gtff.USE_FLAIR]
-
     return ""
+
+
+def is_timezone_valid(user_tz: str) -> bool:
+    """Check whether user timezone is valid
+
+    Parameters
+    ----------
+    user_tz: str
+        Timezone to check for validity
+
+    Returns
+    -------
+    bool
+        True if timezone provided is valid
+    """
+    return user_tz in pytz.all_timezones
+
+
+def get_user_timezone() -> str:
+    """Get user timezone if it is a valid one
+
+    Returns
+    -------
+    str
+        user timezone based on timezone.gst file
+    """
+    filename = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "timezone.gst",
+    )
+    if os.path.isfile(filename):
+        with open(filename) as f:
+            return f.read()
+    return ""
+
+
+def get_user_timezone_or_invalid() -> str:
+    """Get user timezone if it is a valid one
+
+    Returns
+    -------
+    str
+        user timezone based on timezone.gst file or INVALID
+    """
+    user_tz = get_user_timezone()
+    if is_timezone_valid(user_tz):
+        return f"{user_tz}"
+    return "INVALID"
+
+
+def replace_user_timezone(user_tz: str) -> None:
+    """Replace user timezone
+
+    Parameters
+    ----------
+    user_tz: str
+        User timezone to set
+    """
+    filename = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "timezone.gst",
+    )
+    if os.path.isfile(filename):
+        with open(filename, "w") as f:
+            if is_timezone_valid(user_tz):
+                if f.write(user_tz):
+                    print("Timezone successfully updated", "\n")
+                else:
+                    print("Timezone not set successfully", "\n")
+            else:
+                print("Timezone selected is not valid", "\n")
+    else:
+        print("timezone.gst file does not exist", "\n")
 
 
 def str_to_bool(value) -> bool:

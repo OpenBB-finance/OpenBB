@@ -8,6 +8,7 @@ import difflib
 import logging
 import sys
 from typing import List, Union
+import pytz
 
 from prompt_toolkit.completion import NestedCompleter
 
@@ -15,6 +16,8 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
     system_clear,
+    get_user_timezone_or_invalid,
+    replace_user_timezone,
 )
 from gamestonk_terminal.loggers import setup_logging
 from gamestonk_terminal.menu import session
@@ -51,6 +54,7 @@ class TerminalController:
         "update",
         "about",
         "keys",
+        "tz",
     ]
     CHOICES_MENUS = [
         "stocks",
@@ -66,6 +70,8 @@ class TerminalController:
     CHOICES += CHOICES_COMMANDS
     CHOICES += CHOICES_MENUS
 
+    all_timezones = pytz.all_timezones
+
     def __init__(self, jobs_cmds: List[str] = None):
         """Constructor"""
         self.t_parser = argparse.ArgumentParser(add_help=False, prog="terminal")
@@ -77,7 +83,7 @@ class TerminalController:
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: None for c in self.CHOICES}
-
+            choices["tz"] = {c: None for c in self.all_timezones}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         self.queue: List[str] = list()
@@ -94,7 +100,7 @@ class TerminalController:
 
     def print_help(self):
         """Print help"""
-        help_text = """
+        help_text = f"""
 Multiple jobs queue (where each '/' denotes a new command). E.g.
     /stocks $ disc/ugs -n 3/../load tsla/candle
 
@@ -114,6 +120,9 @@ The main commands you should be aware when navigating through the terminal are:
     about           about us
     update          update terminal automatically
     keys            check for status of API keys
+    tz              set different timezone
+
+Timezone: {get_user_timezone_or_invalid()}
 
 >   stocks
 >   crypto
@@ -262,6 +271,12 @@ The main commands you should be aware when navigating through the terminal are:
         from gamestonk_terminal.portfolio import portfolio_controller
 
         self.queue = portfolio_controller.menu(self.queue)
+
+    def call_tz(self, other_args: List[str]):
+        """Process tz command"""
+        other_args.append(self.queue[0])
+        self.queue = self.queue[1:]
+        replace_user_timezone("/".join(other_args))
 
 
 def terminal(jobs_cmds: List[str] = None):

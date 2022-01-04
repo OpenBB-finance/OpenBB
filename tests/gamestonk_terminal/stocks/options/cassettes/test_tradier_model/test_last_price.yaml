@@ -1,0 +1,54 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - MOCK_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://sandbox.tradier.com/v1/markets/quotes?symbols=PM&includeAllRoots=true&strikes=false
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAF1RW5LCIBC8ijXfVAoIicYb+OHW7glSSChDiZAF1HUt774TcF/+dc90zzTDDd5P
+        PukI61tBM4jX485bWMPrFggMOqpgpmS8m0ujsWZabH0IJi42Lung5NyTFplCvf5QIwpfEKbrhAMh
+        Jq8OSK2MCdadqOqGgBql22OXVrQjcPb2dETGBGUrTsBP2mUpZwRGsx8zaQQO8ZeMGWJlfUSTO1lL
+        YGeGMrwmIOPhaVE/6aC0S7LsZBRFZx2Q9t+7xYpzLuqS86fKKEpTkIPuBznfh7WCdi1vu65bYmsK
+        +vzIMcdtCVy0PvQN70tsRtuqYb/VnH+5qmqRI0fziU6e8eNyb5DZ/3VLikFoflmxsIz/WJA9W3i2
+        BO9TX/40lk+93+9f/79XPPkBAAA=
+    headers:
+      Access-Control-Allow-Headers:
+      - accept, authorization
+      Access-Control-Allow-Methods:
+      - GET, PUT, POST, DELETE
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Fri, 31 Dec 2021 15:13:24 GMT
+      Transfer-Encoding:
+      - chunked
+      X-Ratelimit-Allowed:
+      - '200'
+      X-Ratelimit-Available:
+      - '197'
+      X-Ratelimit-Expiry:
+      - '1640963640000'
+      X-Ratelimit-Used:
+      - '3'
+    status:
+      code: 200
+      message: OK
+version: 1

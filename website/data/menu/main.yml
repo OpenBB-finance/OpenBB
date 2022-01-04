@@ -768,6 +768,8 @@ main:
         sub:
           - name: gwei
             ref: "/cryptocurrency/onchain/gwei"
+          - name: hr
+            ref: "/cryptocurrency/onchain/hr"
           - name: address
             ref: "/cryptocurrency/onchain/address"
           - name: balance
@@ -913,7 +915,7 @@ main:
         ref: "/economy/fred"
         sub:
           - name: search
-            ref : "/economy/fred/search"
+            ref: "/economy/fred/search"
           - name: add
             ref: "/economy/fred/add"
           - name: rmv

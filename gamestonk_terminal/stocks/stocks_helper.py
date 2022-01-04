@@ -8,6 +8,7 @@ from typing import List, Union
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 import pandas as pd
+import pandas_market_calendars as mcal
 import plotly.graph_objects as go
 import pyEX
 import pytz
@@ -25,6 +26,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     plot_autoscale,
     try_except,
+    get_user_timezone_or_invalid,
 )
 
 # pylint: disable=no-member,too-many-branches,C0302
@@ -259,7 +261,7 @@ def load(
 
     print(
         f"Loading {s_intraday} {ticker.upper()} stock "
-        f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis.\n"
+        f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis."
     )
 
     return df_stock_candidate
@@ -644,10 +646,8 @@ def find_trendline(
     ----------
     df_data : DataFrame
         The stock ticker data frame with at least date_id, y_key columns.
-
     y_key : str
         Column name to base the trend line on.
-
     high_low: str, optional
         Either "high" or "low". High is the default.
 
@@ -691,3 +691,78 @@ def find_trendline(
     df_data[f"{y_key}_trend"] = reg[0] * df_data["date_id"] + reg[1]
 
     return df_data
+
+
+def additional_info_about_ticker(ticker: str) -> str:
+    """Additional information about trading the ticker such as exchange, currency, timezone and market status
+
+    Parameters
+    ----------
+    ticker : str
+        The stock ticker to extract if stock market is open or not
+
+    Returns
+    -------
+    str
+        Additional information about trading the ticker
+    """
+    extra_info = ""
+    if ticker:
+        ticker_info = yf.Ticker(ticker).info
+
+        extra_info += "\nDatetime: "
+        if (
+            "exchangeTimezoneName" in ticker_info
+            and ticker_info["exchangeTimezoneName"]
+        ):
+            dtime = datetime.now(
+                pytz.timezone(ticker_info["exchangeTimezoneName"])
+            ).strftime("%Y %b %d %H:%m:%S")
+            extra_info += dtime
+            extra_info += "\nTimezone: "
+            extra_info += ticker_info["exchangeTimezoneName"]
+        else:
+            extra_info += "\nDatetime: "
+            extra_info += "\nTimezone: "
+
+        extra_info += "\nExchange: "
+        if "exchange" in ticker_info and ticker_info["exchange"]:
+            exchange_name = ticker_info["exchange"]
+            extra_info += exchange_name
+            exchange_name = exchange_name.replace("NMS", "NASDAQ")
+
+        extra_info += "\nCurrency: "
+        if "currency" in ticker_info and ticker_info["currency"]:
+            extra_info += ticker_info["currency"]
+
+        extra_info += "\nMarket:   "
+        if "exchange" in ticker_info and ticker_info["exchange"]:
+            if exchange_name in mcal.get_calendar_names():
+                calendar = mcal.get_calendar(exchange_name)
+                sch = calendar.schedule(
+                    start_date=(datetime.now() - timedelta(days=3)).strftime(
+                        "%Y-%m-%d"
+                    ),
+                    end_date=(datetime.now() + timedelta(days=3)).strftime("%Y-%m-%d"),
+                )
+                user_tz = get_user_timezone_or_invalid()
+                if user_tz != "INVALID":
+                    is_market_open = calendar.open_at_time(
+                        sch,
+                        pd.Timestamp(
+                            datetime.now().strftime("%Y-%m-%d %H:%M"), tz=user_tz
+                        ),
+                    )
+                    if is_market_open:
+                        extra_info += "OPEN"
+                    else:
+                        extra_info += "CLOSED"
+
+    else:
+        extra_info += "\nDatetime: "
+        extra_info += "\nTimezone: "
+        extra_info += "\nExchange: "
+        extra_info += "\nMarket: "
+        extra_info += "\nCurrency: "
+
+    return extra_info
