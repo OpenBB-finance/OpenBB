@@ -80,6 +80,7 @@ def display_fred_series(
     start_date: str,
     raw: bool = False,
     export: str = "",
+    limit: int = 10,
 ):
     """Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
 
@@ -93,6 +94,8 @@ def display_fred_series(
         Output only raw data
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
+    limit: int
+        Number of raw data rows to show
     """
     series_ids = list(d_series.keys())
     data = pd.DataFrame()
@@ -144,14 +147,14 @@ def display_fred_series(
         if gtff.USE_TABULATE_DF:
             t_console.print(
                 rich_table_from_df(
-                    data.tail(20),
+                    data.tail(limit),
                     headers=list(data.columns),
                     show_index=True,
                     index_name="Date",
                 )
             )
         else:
-            t_console.print(data.tail(20).to_string())
+            t_console.print(data.tail(limit).to_string())
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),

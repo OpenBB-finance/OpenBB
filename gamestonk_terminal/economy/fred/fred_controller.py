@@ -265,7 +265,7 @@ Current Series IDs:
         parser.add_argument(
             "-i",
             "--id",
-            type=str,
+            type=lambda x: x.lower(),
             choices=self.current_series.keys(),
             required="-h" not in other_args
             and "-a" not in other_args
@@ -317,6 +317,14 @@ Current Series IDs:
             action="store_true",
             default=False,
         )
+        parser.add_argument(
+            "-l",
+            "--lim",
+            dest="limit",
+            help="Number of rows to show for limit",
+            type=check_positive,
+            default=10,
+        )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -327,6 +335,7 @@ Current Series IDs:
                 ns_parser.start_date,
                 ns_parser.raw,
                 ns_parser.export,
+                ns_parser.LIMIT,
             )
 
     @try_except

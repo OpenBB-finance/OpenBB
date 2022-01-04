@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import difflib
 from typing import List, Union, Dict
+import logging
 
 from prompt_toolkit.completion import NestedCompleter
 from rich.console import Console
@@ -35,6 +36,7 @@ from gamestonk_terminal.common.prediction_techniques import (
 from gamestonk_terminal.economy.fred import fred_model
 
 
+logger = logging.getLogger(__name__)
 t_console = Console()
 
 
@@ -438,17 +440,27 @@ Models:
             parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
-            knn_view.display_k_nearest_neighbors(
-                ticker=self.current_id,
-                data=self.data,
-                n_neighbors=ns_parser.n_neighbors,
-                n_input_days=ns_parser.n_inputs,
-                n_predict_days=ns_parser.n_days,
-                test_size=ns_parser.valid_split,
-                end_date=ns_parser.s_end_date,
-                no_shuffle=ns_parser.no_shuffle,
-                time_res=self.resolution,
-            )
+            if ns_parser.n_inputs > len(self.data):
+                t_console.print(
+                    f"[red]Data only contains {len(self.data)} samples and the model is trying "
+                    f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
+                    f" an earlier start date[/red]\n"
+                )
+                return
+            try:
+                knn_view.display_k_nearest_neighbors(
+                    ticker=self.current_id,
+                    data=self.data,
+                    n_neighbors=ns_parser.n_neighbors,
+                    n_input_days=ns_parser.n_inputs,
+                    n_predict_days=ns_parser.n_days,
+                    test_size=ns_parser.valid_split,
+                    end_date=ns_parser.s_end_date,
+                    no_shuffle=ns_parser.no_shuffle,
+                    time_res=self.resolution,
+                )
+            except ValueError:
+                t_console.print("The loaded data does not have enough data")
 
     @try_except
     def call_regression(self, other_args: List[str]):
@@ -463,7 +475,6 @@ Models:
                 and the other is considered to be a dependent variable.
             """,
         )
-
         parser.add_argument(
             "-i",
             "--input",
@@ -525,6 +536,7 @@ Models:
                     t_console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
+                    return
 
                 if ns_parser.s_end_date < get_next_stock_market_days(
                     last_stock_day=self.data.index[0],
@@ -533,18 +545,29 @@ Models:
                     t_console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
+                    return
 
-            regression_view.display_regression(
-                dataset=self.current_id,
-                values=self.data,
-                poly_order=ns_parser.n_polynomial,
-                n_input=ns_parser.n_inputs,
-                n_predict=ns_parser.n_days,
-                n_jumps=ns_parser.n_jumps,
-                s_end_date=ns_parser.s_end_date,
-                export=ns_parser.export,
-                time_res=self.resolution,
-            )
+            try:
+                if ns_parser.n_inputs > len(self.data):
+                    t_console.print(
+                        f"[red]Data only contains {len(self.data)} samples and the model is trying "
+                        f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
+                        f" an earlier start date[/red]\n"
+                    )
+                    return
+                regression_view.display_regression(
+                    dataset=self.current_id,
+                    values=self.data,
+                    poly_order=ns_parser.n_polynomial,
+                    n_input=ns_parser.n_inputs,
+                    n_predict=ns_parser.n_days,
+                    n_jumps=ns_parser.n_jumps,
+                    s_end_date=ns_parser.s_end_date,
+                    export=ns_parser.export,
+                    time_res=self.resolution,
+                )
+            except ValueError as e:
+                t_console.print(e)
 
     @try_except
     def call_arima(self, other_args: List[str]):
@@ -627,6 +650,7 @@ Models:
                     t_console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
+                    return
 
                 if ns_parser.s_end_date < get_next_stock_market_days(
                     last_stock_day=self.data.index[0],
@@ -635,6 +659,7 @@ Models:
                     t_console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
+                    return
 
             arima_view.display_arima(
                 dataset=self.current_id,
@@ -659,6 +684,13 @@ Models:
                 other_args=other_args,
             )
             if ns_parser:
+                if ns_parser.n_inputs > len(self.data):
+                    t_console.print(
+                        f"[red]Data only contains {len(self.data)} samples and the model is trying "
+                        f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
+                        f" an earlier start date[/red]\n"
+                    )
+                    return
                 neural_networks_view.display_mlp(
                     dataset=self.current_id,
                     data=self.data,
@@ -687,6 +719,13 @@ Models:
                 other_args=other_args,
             )
             if ns_parser:
+                if ns_parser.n_inputs > len(self.data):
+                    t_console.print(
+                        f"[red]Data only contains {len(self.data)} samples and the model is trying "
+                        f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
+                        f" an earlier start date[/red]\n"
+                    )
+                    return
                 neural_networks_view.display_rnn(
                     dataset=self.current_id,
                     data=self.data,
@@ -702,7 +741,7 @@ Models:
                 )
 
         except Exception as e:
-            t_console.print(e, "\n")
+            t_console.print(e)
 
         finally:
             pred_helper.restore_env()
@@ -716,6 +755,13 @@ Models:
                 other_args=other_args,
             )
             if ns_parser:
+                if ns_parser.n_inputs > len(self.data):
+                    t_console.print(
+                        f"[red]Data only contains {len(self.data)} samples and the model is trying "
+                        f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
+                        f" an earlier start date[/red]\n"
+                    )
+                    return
                 neural_networks_view.display_lstm(
                     dataset=self.current_id,
                     data=self.data,
@@ -745,6 +791,13 @@ Models:
                 other_args=other_args,
             )
             if ns_parser:
+                if ns_parser.n_inputs > len(self.data):
+                    t_console.print(
+                        f"[red]Data only contains {len(self.data)} samples and the model is trying "
+                        f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
+                        f" an earlier start date[/red]\n"
+                    )
+                    return
                 neural_networks_view.display_conv1d(
                     dataset=self.current_id,
                     data=self.data,
