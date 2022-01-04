@@ -74,11 +74,10 @@ def convert(orig: str, to: str) -> float:
     number : float
         Decimal value of string
     """
+    clean = orig.replace("%", "").replace("+", "").replace(",", "")
     if to == "%":
-        clean = orig.replace("%", "").replace("+", "")
         return float(clean) / 100
     if to == ",":
-        clean = orig.replace(",", "")
         return float(clean)
     raise ValueError("Invalid to format, please use '%' or ','.")
 
