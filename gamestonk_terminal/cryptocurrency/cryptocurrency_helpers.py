@@ -313,6 +313,8 @@ def load(
         )
 
     if source == "bin":
+        if vs == "usd":
+            vs = "USDT"
         if interval not in SOURCES_INTERVALS["bin"]:
             print(
                 "Interval not available on binance. Run command again with one supported (e.g., -i 1day):\n",
@@ -372,6 +374,8 @@ def load(
         return (current_coin, source, symbol, coin_map_df, None, None)
 
     if source == "cb":
+        if vs == "usd":
+            vs = "USDT"
         if interval not in SOURCES_INTERVALS["cb"]:
             print(
                 "Interval not available on coinbase. Run command again with one supported (e.g., -i 1day):\n",

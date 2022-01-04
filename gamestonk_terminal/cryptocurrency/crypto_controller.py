@@ -263,6 +263,7 @@ class CryptoController:
             "--vs",
             help="Quote currency (what to view coin vs)",
             dest="vs",
+            default="usd",
             type=str,
         )
 
