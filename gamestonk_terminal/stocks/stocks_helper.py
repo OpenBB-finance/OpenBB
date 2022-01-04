@@ -731,7 +731,6 @@ def additional_info_about_ticker(ticker: str) -> str:
             if "exchange" in ticker_info and ticker_info["exchange"]:
                 exchange_name = ticker_info["exchange"]
                 extra_info += exchange_name
-                exchange_name = exchange_name.replace("NMS", "NASDAQ")
 
             extra_info += "\nCurrency: "
             if "currency" in ticker_info and ticker_info["currency"]:
