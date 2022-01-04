@@ -30,6 +30,7 @@ from gamestonk_terminal import config_plot as cfgPlot
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.menu import session
 
+# pylint: disable=C0302
 
 logger = logging.getLogger(__name__)
 
