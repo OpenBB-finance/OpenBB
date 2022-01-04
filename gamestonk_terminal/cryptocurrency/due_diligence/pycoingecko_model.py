@@ -54,9 +54,12 @@ def load_coins_list(file_name: str) -> pd.DataFrame:
 class Coin:
     """Coin class, it holds loaded coin"""
 
-    def __init__(self, symbol: str):
+    def __init__(self, symbol: str, load_from_api: bool = False):
         self.client = CoinGeckoAPI()
-        self._coin_list = load_coins_list("coingecko_coins.json")
+        if load_from_api:
+            self._coin_list = self.client.get_coins_list()
+        else:
+            self._coin_list = load_coins_list("coingecko_coins.json")
         self.coin_symbol, self.symbol = self._validate_coin(symbol)
 
         if self.coin_symbol:

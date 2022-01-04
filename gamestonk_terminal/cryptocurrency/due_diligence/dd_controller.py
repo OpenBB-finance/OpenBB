@@ -332,9 +332,11 @@ Coinbase:
                 if arg in other_args:
                     other_args.remove(arg)
 
-            self.current_coin, self.source, self.symbol, self.coin_map_df = load(
+            self.current_coin, self.source, self.symbol, self.coin_map_df, _, _ = load(
                 coin=ns_parser.coin, source=ns_parser.source
             )
+            if self.symbol:
+                print(f"\nLoaded {self.current_coin} from source {self.source}\n")
 
     @try_except
     def call_nonzero(self, other_args: List[str]):

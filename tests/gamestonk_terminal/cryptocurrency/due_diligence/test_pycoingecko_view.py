@@ -28,7 +28,7 @@ def get_bitcoin(mock_load):
     ) as f:
         sample_return = json.load(f)
     mock_load.return_value = sample_return
-    coin, _, symbol, _ = load(coin="bitcoin", source="cg")
+    coin, _, symbol, _, _, _ = load(coin="bitcoin", source="cg")
     return coin, symbol
 
 

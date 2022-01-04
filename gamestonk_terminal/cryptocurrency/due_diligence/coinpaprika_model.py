@@ -340,7 +340,7 @@ def validate_coin(coin: str, coins_dct: dict) -> Tuple[str, Optional[Any]]:
 
     if not coin_found:
         raise ValueError(f"Could not find coin with given id: {coin}\n")
-    print(f"Coin found : {coin_found} with symbol {symbol}\n")
+    # print(f"Coin found : {coin_found} with symbol {symbol}\n")
     return coin_found, symbol
 
 

@@ -1,10 +1,10 @@
 """Cryptocurrency helpers"""
 __docformat__ = "numpy"
-# pylint: disable=C0301
+# pylint: disable=C0301,R0911,C0302
 
 import os
 import json
-from typing import Tuple, Any, Optional, Union
+from typing import Tuple, Any, Optional
 import difflib
 import pandas as pd
 import numpy as np
@@ -42,6 +42,35 @@ from gamestonk_terminal import feature_flags as gtff
 # Currently adding this function to helpers for implementing prediction menu
 
 INTERVALS = ["1H", "3H", "6H", "1D"]
+
+SOURCES_INTERVALS = {
+    "bin": [
+        "1day",
+        "3day",
+        "1hour",
+        "2hour",
+        "4hour",
+        "6hour",
+        "8hour",
+        "12hour",
+        "1week",
+        "1min",
+        "3min",
+        "5min",
+        "15min",
+        "30min",
+        "1month",
+    ],
+    "cb": [
+        "1min",
+        "5min",
+        "15min",
+        "1hour",
+        "6hour",
+        "24hour",
+        "1day",
+    ],
+}
 
 
 def load_cg_coin_data(
@@ -201,12 +230,19 @@ def _create_closest_match_df(
     return df.merge(coins, on="id")
 
 
+# TODO: verify vs, interval, days, depending on source
 @try_except
 def load(
     coin: str,
     source: str = "cg",
+    days: int = 60,
+    vs: str = "usd",
+    interval: str = "1day",
+    should_load_ta_data: bool = False,
 ) -> Tuple[
-    Union[Optional[str], pycoingecko_model.Coin],
+    Optional[Any],
+    Optional[Any],
+    Optional[Any],
     Optional[Any],
     Optional[Any],
     Optional[Any],
@@ -233,58 +269,146 @@ def load(
         - str with symbol
         - Dataframe with coin map to different sources
     """
+    if source in ("cg", "cp"):
+        if vs not in ("USD", "BTC", "usd", "btc"):
+            print("You can only compare with usd or btc (e.g., --vs usd)\n")
+            return None, None, None, None, None, None
+        if interval != "1day":
+            print(
+                "Only daily data is supported for coingecko and coinpaprika (e.g., -i 1day)\n"
+            )
+            return None, None, None, None, None, None
 
     current_coin = ""  # type: Optional[Any]
 
     coins_map_df = prepare_all_coins_df().set_index("Symbol")
+
     if source == "cg":
-        coingecko = pycoingecko_model.Coin(coin)
-        print(f"Coin found: {coingecko}\n")
+        coingecko = pycoingecko_model.Coin(coin, True)
+        coin_map_df = coins_map_df.loc[coingecko.symbol]
+        if should_load_ta_data:
+            df_prices, currency = load_ta_data(
+                coin_map_df=coin_map_df,
+                source=source,
+                currency=vs,
+                days=days,
+                limit=0,
+                interval=interval,
+            )
+            return (
+                str(coingecko),
+                source,
+                coingecko.symbol,
+                coin_map_df,
+                df_prices,
+                currency,
+            )
         return (
             str(coingecko),
             source,
             coingecko.symbol,
-            coins_map_df.loc[coingecko.symbol],
+            coin_map_df,
+            None,
+            None,
         )
 
     if source == "bin":
+        if interval not in SOURCES_INTERVALS["bin"]:
+            print(
+                "Interval not available on binance. Run command again with one supported (e.g., -i 1day):\n",
+                SOURCES_INTERVALS["bin"],
+            )
+            return None, None, None, None, None, None
+
         # TODO: convert bitcoin to btc before searching pairs
         parsed_coin = coin.upper()
         current_coin, pairs = show_available_pairs_for_given_symbol(parsed_coin)
         if len(pairs) > 0:
-            print(f"Coin found : {current_coin}\n")
-            return (
-                current_coin,
-                source,
-                parsed_coin,
-                coins_map_df.loc[parsed_coin.lower()],
-            )
-        return current_coin, None, None, None
+            if vs not in pairs:
+                print(
+                    "vs specified not supported by binance. Run command again with one supported (e.g., --vs USDT):\n",
+                    pairs,
+                )
+                return None, None, None, None, None, None
+            coin_map_df = coins_map_df.loc[parsed_coin.lower()]
+            # print(f"Coin found : {current_coin}\n")
+            if should_load_ta_data:
+                df_prices, currency = load_ta_data(
+                    coin_map_df=coin_map_df,
+                    source=source,
+                    currency=vs,
+                    days=0,
+                    limit=days,
+                    interval=interval,
+                )
+                return (
+                    current_coin,
+                    source,
+                    parsed_coin,
+                    coin_map_df,
+                    df_prices,
+                    currency,
+                )
+            return (current_coin, source, parsed_coin, coin_map_df, None, None)
+        return None, None, None, None, None, None
 
     if source == "cp":
         paprika_coins = get_list_of_coins()
         paprika_coins_dict = dict(zip(paprika_coins.id, paprika_coins.symbol))
         current_coin, symbol = coinpaprika_model.validate_coin(coin, paprika_coins_dict)
-        return (
-            current_coin,
-            source,
-            symbol,
-            coins_map_df.loc[symbol.lower() if symbol is not None else symbol],
-        )
+        coin_map_df = coins_map_df.loc[symbol.lower() if symbol is not None else symbol]
+
+        if should_load_ta_data:
+            df_prices, currency = load_ta_data(
+                coin_map_df=coin_map_df,
+                source=source,
+                currency=vs,
+                days=days,
+                limit=0,
+                interval=interval,
+            )
+
+            return (current_coin, source, symbol, coin_map_df, df_prices, currency)
+        return (current_coin, source, symbol, coin_map_df, None, None)
 
     if source == "cb":
+        if interval not in SOURCES_INTERVALS["cb"]:
+            print(
+                "Interval not available on coinbase. Run command again with one supported (e.g., -i 1day):\n",
+                SOURCES_INTERVALS["cb"],
+            )
+            return None, None, None, None, None, None
+
         # TODO: convert bitcoin to btc before searching pairs
         coinbase_coin = coin.upper()
         current_coin, pairs = coinbase_model.show_available_pairs_for_given_symbol(
             coinbase_coin
         )
+        if vs not in pairs:
+            print(
+                "vs specified not supported by coinbase. Run command again with one supported (e.g., --vs USDT):\n",
+                pairs,
+            )
+            return None, None, None, None, None, None
         if len(pairs) > 0:
-            print(f"Coin found : {current_coin}\n")
-            return current_coin, source, coin, coins_map_df.loc[coin]
-        print(f"Couldn't find coin with symbol {current_coin}\n")
-        return current_coin, None, None, None
+            # print(f"Coin found : {current_coin}\n")
 
-    return current_coin, None, None, None
+            coin_map_df = coins_map_df.loc[coin]
+            if should_load_ta_data:
+                df_prices, currency = load_ta_data(
+                    coin_map_df=coin_map_df,
+                    source=source,
+                    currency=vs,
+                    days=0,
+                    limit=days,
+                    interval=interval,
+                )
+                return (current_coin, source, coin, coin_map_df, df_prices, currency)
+            return (current_coin, source, coin, coin_map_df, None, None)
+        print(f"Couldn't find coin with symbol {current_coin}\n")
+        return None, None, None, None, None, None
+
+    return None, None, None, None, None, None
 
 
 FIND_KEYS = ["id", "symbol", "name"]
@@ -577,10 +701,10 @@ def load_ta_data(
 
         symbol_binance = coin_map_df["Binance"]
 
-        pair = symbol_binance + currency
+        pair = symbol_binance + currency.upper()
 
         if check_valid_binance_str(pair):
-            print(f"{symbol_binance} loaded vs {currency.upper()}")
+            # print(f"{symbol_binance} loaded vs {currency.upper()}")
 
             candles = client.get_klines(
                 symbol=pair,
@@ -645,7 +769,7 @@ def load_ta_data(
         pair = f"{coin}-{currency}"
 
         if coinbase_model.check_validity_of_product(pair):
-            print(f"{coin} loaded vs {currency}")
+            # print(f"{coin} loaded vs {currency}")
 
             df = coinbase_model.get_candles(
                 product_id=pair,
