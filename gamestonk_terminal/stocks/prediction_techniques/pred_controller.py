@@ -2,6 +2,8 @@
 __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 
+# pylint: disable=W0613
+
 import argparse
 import difflib
 from typing import List, Union

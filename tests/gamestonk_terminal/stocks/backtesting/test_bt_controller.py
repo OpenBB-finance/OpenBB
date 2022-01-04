@@ -156,7 +156,7 @@ def test_call_cls(mocker):
     )
     controller.call_cls([])
 
-    assert controller.queue == []
+    assert not controller.queue
     os.system.assert_called_once_with("cls||clear")
 
 
@@ -310,5 +310,5 @@ def test_call_func_no_parser(func, mocker):
 
     func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
-    assert controller.queue == []
+    assert not controller.queue
     getattr(bt_controller, "parse_known_args_and_warn").assert_called_once()

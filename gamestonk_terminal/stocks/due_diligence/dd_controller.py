@@ -29,6 +29,8 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks import stocks_helper
 
+# pylint: disable=W0613
+
 
 class DueDiligenceController:
     """Due Diligence Controller"""

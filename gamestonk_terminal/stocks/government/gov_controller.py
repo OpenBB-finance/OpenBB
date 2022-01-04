@@ -23,6 +23,8 @@ from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
 )
 
+# pylint: disable=W0613
+
 
 class GovController:
     """Gov Controller class"""
