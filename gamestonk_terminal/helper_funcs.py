@@ -873,7 +873,8 @@ def menu_decorator(path, context):
                 2: lambda x: context(x[0], x[1]),
                 3: lambda x: context(x[0], x[1], x[2]),
                 4: lambda x: context(x[0], x[1], x[2], x[3]),
-                5: lambda x: context(x[0], x[1], x[2], x[3], x[4])
+                5: lambda x: context(x[0], x[1], x[2], x[3], x[4]),
+                6: lambda x: context(x[0], x[1], x[2], x[3], x[4], x[6]),
             }
             controller = context_dict[len(args)](args)
             an_input = "HELP_ME"
