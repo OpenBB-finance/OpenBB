@@ -717,7 +717,7 @@ def additional_info_about_ticker(ticker: str) -> str:
         ):
             dtime = datetime.now(
                 pytz.timezone(ticker_info["exchangeTimezoneName"])
-            ).strftime("%Y %b %d %H:%m:%S")
+            ).strftime("%Y %b %d %H:%M")
             extra_info += dtime
             extra_info += "\nTimezone: "
             extra_info += ticker_info["exchangeTimezoneName"]
