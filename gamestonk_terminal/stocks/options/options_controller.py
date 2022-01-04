@@ -714,7 +714,7 @@ Expiry: {self.selected_date or None}
             dest="source",
             type=str,
             choices=self.hist_source_choices,
-            default="ce" if TRADIER_TOKEN == "REPLACE_ME" else "td",
+            default="ce",
             help="Choose Tradier(TD) or ChartExchange (CE), only affects raw data",
         )
         parser.add_argument(
