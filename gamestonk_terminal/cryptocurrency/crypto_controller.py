@@ -6,9 +6,9 @@ import argparse
 from datetime import datetime, timedelta
 import difflib
 from typing import List, Union
-from colorama.ansi import Fore, Style
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
+from rich import console
 from binance.client import Client
 
 from gamestonk_terminal import feature_flags as gtff
@@ -49,6 +49,8 @@ CRYPTO_SOURCES = {
     "cp": "CoinPaprika",
     "cb": "Coinbase",
 }
+
+t_console = console.Console()
 
 
 class CryptoController:
@@ -134,18 +136,17 @@ class CryptoController:
     chart       view a candle chart for a specific cryptocurrency
     headlines   crypto sentiment from 15+ major news headlines [Finbrain]
     """
-        dim = Style.DIM if not self.current_coin else ""
         help_text += f"""
 >    disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
 >    ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
 >    onchain     information on different blockchains,   e.g.: eth gas fees, whale alerts, DEXes info
 >    defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
->    nft         non-fungible tokens,                    e.g.: today drops{dim}
+>    nft         non-fungible tokens,                    e.g.: today drops{'[dim]' if not self.current_coin else ''}
 >    dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
 >    ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
->    pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo{Style.RESET_ALL if not self.current_coin else ""}
+>    pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo{'[/dim]' if not self.current_coin else ''}
 """  # noqa
-        print(help_text)
+        t_console.print(help_text)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -310,11 +311,11 @@ class CryptoController:
                 second_last_price = self.current_df["Close"].iloc[-2]
                 interval_change = calc_change(last_price, second_last_price)
                 since_start_change = calc_change(last_price, first_price)
-                self.price_str = f"""Current Price: {round(last_price,2)}
-Performance in interval ({self.current_interval}): {Fore.GREEN if interval_change > 0 else Fore.RED}{round(interval_change,2)}%{Style.RESET_ALL}
-Performance since specified start date ({ns_parser.start}): {Fore.GREEN if since_start_change > 0 else Fore.RED}{round(since_start_change,2)}%{Style.RESET_ALL}"""  # noqa
+                self.price_str = f"""Current Price: {round(last_price,2)} {self.current_currency}
+Performance in interval ({self.current_interval}): {'[green]' if interval_change > 0 else "[red]"}{round(interval_change,2)}%{'[/green]' if interval_change > 0 else "[/red]"}
+Performance since specified start date ({ns_parser.start}): {'[green]' if since_start_change > 0 else "[red]"}{round(since_start_change,2)}%{'[/green]' if since_start_change > 0 else "[/red]"}"""  # noqa
 
-                print(
+                t_console.print(
                     f"""
 Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[self.source]} source
 
