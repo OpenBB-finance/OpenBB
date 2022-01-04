@@ -15,7 +15,7 @@ exports/*
 .idea
 .coverage
 htmlcov
-gamestonk_terminal/reports/stored/*
+gamestonk_terminal/jupyter/stored/*
 gamestonk_terminal/portfolio/portfolios/*
 .ipynb_checkpoints/*
 

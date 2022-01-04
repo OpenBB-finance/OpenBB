@@ -18,11 +18,11 @@ DF_EMPTY = pd.DataFrame()
 @pytest.mark.parametrize(
     "from_submenu, queue, expected",
     [
-        (False, ["historical", "help"], []),
-        (True, ["q", ".."], ["q", ".."]),
+        (["historical", "help"], []),
+        (["q", ".."], ["q", ".."]),
     ],
 )
-def test_menu_with_queue(expected, from_submenu, mocker, queue):
+def test_menu_with_queue(expected, mocker, queue):
     mocker.patch(
         target=(
             "gamestonk_terminal.stocks.comparison_analysis.ca_controller."
@@ -33,7 +33,6 @@ def test_menu_with_queue(expected, from_submenu, mocker, queue):
     result_menu = ca_controller.menu(
         similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
         queue=queue,
-        from_submenu=from_submenu,
     )
 
     assert result_menu == expected
@@ -71,7 +70,6 @@ def test_menu_without_queue_completion(mocker):
     result_menu = ca_controller.menu(
         similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
         queue=None,
-        from_submenu=False,
     )
 
     assert result_menu == []
@@ -120,7 +118,6 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     result_menu = ca_controller.menu(
         similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
         queue=None,
-        from_submenu=False,
     )
 
     assert result_menu == []

@@ -294,9 +294,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
     def call_ca(self, _):
         """Call the comparison analysis menu with selected tickers"""
         if self.screen_tickers:
-            self.queue = ca_controller.menu(
-                self.screen_tickers, self.queue, from_submenu=True
-            )
+            self.queue = ca_controller.menu(self.screen_tickers, self.queue)
         else:
             print("Some tickers must be screened first through one of the presets!\n")
 
