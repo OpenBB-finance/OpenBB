@@ -1,1 +1,7 @@
-Menu for accessing Federal Reserve Economic Datat (FRED)
+---
+geekdocCollapseSection: true
+---
+
+{{< toc-tree >}}
+
+Menu for accessing Federal Reserve Economic Data (FRED)
