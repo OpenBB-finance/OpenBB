@@ -2,7 +2,7 @@
 import json
 import os
 import pathlib
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Type
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -19,15 +19,27 @@ from _pytest.mark.structures import Mark
 
 # pylint: disable=redefined-outer-name
 
+DISPLAY_LIMIT: int = 500
+EXTENSIONS_ALLOWED: List[str] = ["csv", "json", "txt"]
+EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
+    "csv": [pd.DataFrame, pd.Series],
+    "json": [bool, dict, float, int, list, tuple],
+    "txt": [str],
+}
+
 
 class Record:
     @staticmethod
     def extract_string(data: Any) -> str:
-        if isinstance(data, str):
+        if isinstance(data, tuple(EXTENSIONS_MATCHING["txt"])):
             string_value = data
-        elif isinstance(data, (pd.DataFrame, pd.Series)):
-            string_value = data.to_csv(encoding="utf-8", line_terminator="\n")
-        elif isinstance(data, (dict, list, tuple)):
+        elif isinstance(data, tuple(EXTENSIONS_MATCHING["csv"])):
+            string_value = data.to_csv(
+                encoding="utf-8",
+                line_terminator="\n",
+                # date_format="%Y-%m-%d %H:%M:%S",
+            )
+        elif isinstance(data, tuple(EXTENSIONS_MATCHING["json"])):
             string_value = json.dumps(data)
         else:
             raise AttributeError(f"Unsupported type : {type(data)}")
@@ -109,20 +121,10 @@ class Record:
 
 
 class PathTemplate:
-    EXTENSIONS_ALLOWED = ["csv", "json", "txt"]
-    EXTENSIONS_MATCHING = {
-        dict: "json",
-        list: "json",
-        pd.DataFrame: "csv",
-        pd.Series: "csv",
-        str: "txt",
-        tuple: "json",
-    }
-
-    @classmethod
-    def find_extension(cls, data: Any):
-        for data_type, extension in cls.EXTENSIONS_MATCHING.items():
-            if isinstance(data, data_type):
+    @staticmethod
+    def find_extension(data: Any):
+        for extension, type_list in EXTENSIONS_MATCHING.items():
+            if isinstance(data, tuple(type_list)):
                 return extension
         raise Exception(f"No extension found for this type : {type(data)}")
 
@@ -132,7 +134,7 @@ class PathTemplate:
         self.__test_name = test_name
 
     def build_path_by_extension(self, extension: str, index: int = 0):
-        if extension not in self.EXTENSIONS_ALLOWED:
+        if extension not in EXTENSIONS_ALLOWED:
             raise Exception(f"Unsupported extension : {extension}")
 
         path = os.path.join(
@@ -155,6 +157,14 @@ class PathTemplate:
 
 class Recorder:
     @property
+    def display_limit(self) -> int:
+        return self.__display_limit
+
+    @display_limit.setter
+    def display_limit(self, display_limit: int):
+        self.__display_limit = display_limit
+
+    @property
     def path_template(self) -> PathTemplate:
         return self.__path_template
 
@@ -170,9 +180,11 @@ class Recorder:
         self,
         path_template: PathTemplate,
         record_mode: str,
+        display_limit: int = DISPLAY_LIMIT,
     ) -> None:
         self.__path_template = path_template
         self.__record_mode = record_mode
+        self.__display_limit = display_limit
 
         self.__record_list: List[Record] = list()
 
@@ -197,7 +209,13 @@ class Recorder:
         record_list = self.__record_list
 
         for record in record_list:
-            assert not record.record_changed
+            if record.record_changed:
+                raise Exception(
+                    "Change detected\n"
+                    f"Record Path  : {record.record_path}\n"
+                    f"Expected  : {record.recorded[:self.display_limit]}\n"
+                    f"Actual    : {record.captured[:self.display_limit]}\n"
+                )
 
     def assert_in_list(self, in_list: List[str]):
         record_list = self.__record_list
@@ -311,6 +329,7 @@ def record_stdout_format_kwargs(
 
     formatted_fields = dict()
     formatted_fields["assert_in_list"] = kwargs.get("assert_in_list", list())
+    formatted_fields["display_limit"] = kwargs.get("display_limit", DISPLAY_LIMIT)
     formatted_fields["record_mode"] = kwargs.get("record_mode", record_mode)
     formatted_fields["record_name"] = kwargs.get("record_name", test_name)
     formatted_fields["save_record"] = kwargs.get("save_record", True)
@@ -350,7 +369,9 @@ def record_stdout(
             test_name=formatted_kwargs["record_name"],
         )
         recorder = Recorder(
-            path_template=path_template, record_mode=formatted_kwargs["record_mode"]
+            path_template=path_template,
+            record_mode=formatted_kwargs["record_mode"],
+            display_limit=formatted_kwargs["display_limit"],
         )
 
         # CAPTURE STDOUT
@@ -370,7 +391,8 @@ def record_stdout(
             capsys = request.getfixturevalue("capsys")
             yield
             recorder.capture(
-                captured=capsys.readouterr().out, strip=formatted_kwargs["strip"]
+                captured=capsys.readouterr().out,
+                strip=formatted_kwargs["strip"],
             )
 
         # SAVE/CHECK RECORD

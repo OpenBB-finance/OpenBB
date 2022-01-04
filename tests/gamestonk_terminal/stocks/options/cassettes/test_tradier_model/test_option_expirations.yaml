@@ -1,0 +1,50 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - MOCK_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://sandbox.tradier.com/v1/markets/options/expirations?symbol=PM&includeAllRoots=true&strikes=false
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAKtWSq0oyCxKLMnMzytWsqpWSkksSVWyilYyMjAy1DU00jU2VNIBcYx0DQx1DcyR
+        OIYmSBwjZGVGFnAOEJkgcQwNkTkIZcbIHDNdQ6g9xmDTDCAcE7CllkqxtbUAydy+qbYAAAA=
+    headers:
+      Access-Control-Allow-Headers:
+      - accept, authorization
+      Access-Control-Allow-Methods:
+      - GET, PUT, POST, DELETE
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Fri, 31 Dec 2021 15:13:22 GMT
+      Transfer-Encoding:
+      - chunked
+      X-Ratelimit-Allowed:
+      - '200'
+      X-Ratelimit-Available:
+      - '198'
+      X-Ratelimit-Expiry:
+      - '1640963640000'
+      X-Ratelimit-Used:
+      - '2'
+    status:
+      code: 200
+      message: OK
+version: 1
