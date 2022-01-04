@@ -31,6 +31,9 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 
+t_console = Console
+
+
 class EconomyController:
     """Economy Controller"""
 
