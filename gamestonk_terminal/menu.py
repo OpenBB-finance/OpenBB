@@ -1,3 +1,4 @@
+import logging
 import os
 
 from matplotlib import pyplot
@@ -5,13 +6,15 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.eventloop.inputhook import set_eventloop_with_inputhook
 from prompt_toolkit.history import FileHistory
 
+logger = logging.getLogger(__name__)
+
 
 def inputhook(inputhook_context):
     while not inputhook_context.input_is_ready():
         try:
             pyplot.pause(0.1)
-        # pylint: disable=unused-variable
-        except Exception:  # noqa: F841
+        except Exception as exp:
+            logger.exception("%s", type(exp).__name__)
             continue
     return False
 
@@ -23,6 +26,7 @@ try:
     set_eventloop_with_inputhook(inputhook)
 # pylint: disable=unused-variable
 except Exception as e:  # noqa: F841
+    logger.exception("%s", type(e).__name__)
     print(
         "WARNING: Prompt toolkit is turned on but did not initialize successfully. Falling back to input()..."
     )

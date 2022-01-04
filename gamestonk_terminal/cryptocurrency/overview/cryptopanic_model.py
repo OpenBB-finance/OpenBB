@@ -11,6 +11,28 @@ import requests
 
 import gamestonk_terminal.config_terminal as cfg
 
+CATEGORIES = ["news", "media"]
+
+SORT_FILTERS = [
+    "published_at",
+    "domain",
+    "title",
+    "negative_votes",
+    "positive_votes",
+]
+
+FILTERS = [
+    "rising",
+    "hot",
+    "bullish",
+    "bearish",
+    "important",
+    "saved",
+    "lol",
+]
+
+REGIONS = ["en", "de", "es", "fr", "nl", "it", "pt", "ru"]
+
 
 class ApiKeyException(Exception):
     """Api Key Exception object"""
@@ -59,7 +81,7 @@ def make_request(**kwargs: Any) -> dict:
     ]:
         url += f"&filter={filter_}"
 
-    if region and region in ["en", "de", "es", "fr", "nl", "it", "pt", "ru"]:
+    if region and region in REGIONS:
         url += f"&regions={region}"
 
     response = requests.get(url)
@@ -124,7 +146,7 @@ def get_news(
         DataFrame with recent news from different sources filtered by provided parameters.
     """
 
-    if post_kind not in ["news", "media"]:
+    if post_kind not in CATEGORIES:
         post_kind = "news"
 
     results = []

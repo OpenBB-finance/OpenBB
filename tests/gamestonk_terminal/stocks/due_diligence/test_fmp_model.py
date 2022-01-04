@@ -1,7 +1,6 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
-import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
@@ -18,10 +17,7 @@ def vcr_config():
 
 
 @pytest.mark.vcr
-def test_get_rating(default_csv_path):
+def test_get_rating(recorder):
     result_df = fmp_model.get_rating(ticker="TSLA")
 
-    # result_df.to_csv(default_csv_path, index=True)
-    expected_df = pd.read_csv(default_csv_path, index_col="date")
-
-    pd.testing.assert_frame_equal(result_df, expected_df)
+    recorder.capture(result_df)

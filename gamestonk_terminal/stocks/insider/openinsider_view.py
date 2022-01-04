@@ -1,6 +1,5 @@
-import argparse
+import os
 import textwrap
-from typing import List
 import itertools
 from bs4 import BeautifulSoup
 import requests
@@ -9,10 +8,8 @@ import pandas as pd
 from tabulate import tabulate
 from colorama import Fore, Style
 from gamestonk_terminal.helper_funcs import (
-    check_positive,
-    parse_known_args_and_warn,
     patch_pandas_text_adjustment,
-    try_except,
+    export_data,
 )
 from gamestonk_terminal.stocks.insider.openinsider_model import (
     get_open_insider_link,
@@ -125,37 +122,18 @@ def green_highlight(values):
     return [f"{Fore.GREEN}{val}{Style.RESET_ALL}" for val in values]
 
 
-@try_except
-def print_insider_data(other_args: List[str], type_insider: str):
+def print_insider_data(type_insider: str, limit: int = 10, export: str = ""):
     """Print insider data
 
     Parameters
     ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
     type_insider: str
         Insider type of data
+    limit: int
+        Limit of data rows to display
+    export: str
+        Export data format
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog=type_insider,
-        description=f"Print {d_open_insider[type_insider].replace('-', ' ')} [Source: OpenInsider]",
-    )
-    parser.add_argument(
-        "-n",
-        "--num",
-        action="store",
-        dest="num",
-        type=check_positive,
-        default=20,
-        help="Number of datarows to display",
-    )
-
-    ns_parser = parse_known_args_and_warn(parser, other_args)
-    if not ns_parser:
-        return
-
     response = requests.get(f"http://openinsider.com/{d_open_insider[type_insider]}")
     soup = BeautifulSoup(response.text, "html.parser")
     table = soup.find("table", {"class": "tinytable"})
@@ -172,7 +150,7 @@ def print_insider_data(other_args: List[str], type_insider: str):
         row = [tr.text.strip() for tr in td if tr.text.strip()]
         res.append(row)
 
-    df = pd.DataFrame(res).dropna().head(n=ns_parser.num)
+    df = pd.DataFrame(res).dropna().head(n=limit)
 
     df.columns = [
         "X",
@@ -208,15 +186,21 @@ def print_insider_data(other_args: List[str], type_insider: str):
             lambda x: "\n".join(textwrap.wrap(x, width=20)) if isinstance(x, str) else x
         )
 
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            tablefmt="fancy_grid",
-            stralign="right",
-            showindex=False,
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                tablefmt="fancy_grid",
+                stralign="right",
+                showindex=False,
+            )
         )
-    )
+    else:
+        print(df.to_string())
+
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), type_insider, df)
+
     l_chars = [list(chars) for chars in df["X"].values]
     l_uchars = np.unique(list(itertools.chain(*l_chars)))
 
@@ -225,56 +209,30 @@ def print_insider_data(other_args: List[str], type_insider: str):
     print("")
 
 
-@try_except
-def print_insider_filter(other_args: List[str], preset_loaded: str):
-    """Print insider filter based on loaded preset
+def print_insider_filter(
+    preset_loaded: str,
+    ticker: str,
+    limit: int = 10,
+    links: bool = False,
+    export: str = "",
+):
+    """Print insider filter based on loaded preset. [Source: OpenInsider]
 
     Parameters
     ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
-    preset_loaded: str
+    preset_loaded : str
         Loaded preset filter
+    ticker : str
+        Stock ticker
+    limit : int
+        Limit of rows of data to display
+    links : bool
+        Flag to show hyperlinks
+    export : str
+        Format to export data
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="filter",
-        description="Print open insider filtered data using loaded preset, or selected ticker. [Source: OpenInsider]",
-    )
-    parser.add_argument(
-        "-n",
-        "--num",
-        action="store",
-        dest="num",
-        type=check_positive,
-        default=20,
-        help="Number of datarows to display",
-    )
-    parser.add_argument(
-        "-t",
-        "--ticker",
-        action="store",
-        dest="ticker",
-        type=str,
-        default="",
-        help="Filter latest insiders from this ticker",
-    )
-    parser.add_argument(
-        "-l",
-        "--links",
-        action="store_true",
-        default=False,
-        help="Flag to show hyperlinks",
-        dest="links",
-    )
-
-    ns_parser = parse_known_args_and_warn(parser, other_args)
-    if not ns_parser:
-        return
-
-    if ns_parser.ticker:
-        link = f"http://openinsider.com/screener?s={ns_parser.ticker}"
+    if ticker:
+        link = f"http://openinsider.com/screener?s={ticker}"
     else:
         link = get_open_insider_link(preset_loaded)
 
@@ -282,25 +240,23 @@ def print_insider_filter(other_args: List[str], preset_loaded: str):
         print("")
         return
 
-    df_insider = get_open_insider_data(
-        link, has_company_name=bool(not ns_parser.ticker)
-    )
+    df_insider = get_open_insider_data(link, has_company_name=bool(not ticker))
     df_insider_orig = df_insider.copy()
 
     if df_insider.empty:
-        print("")
+        print("No insider data found\n")
         return
 
-    if ns_parser.links:
+    if links:
         df_insider = df_insider[["Ticker Link", "Insider Link", "Filing Link"]].head(
-            ns_parser.num
+            limit
         )
     else:
         df_insider = df_insider.drop(
             columns=["Filing Link", "Ticker Link", "Insider Link"]
-        ).head(ns_parser.num)
+        ).head(limit)
 
-    if gtff.USE_COLOR and not ns_parser.links:
+    if gtff.USE_COLOR and not links:
         if not df_insider[df_insider["Trade Type"] == "S - Sale"].empty:
             df_insider[df_insider["Trade Type"] == "S - Sale"] = df_insider[
                 df_insider["Trade Type"] == "S - Sale"
@@ -330,9 +286,26 @@ def print_insider_filter(other_args: List[str], preset_loaded: str):
         df_insider = df_insider.drop(columns=["Filing Date"])
 
     print("")
-    print(df_insider.to_string(index=False))
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df_insider,
+                headers=df_insider.columns,
+                tablefmt="fancy_grid",
+            )
+        )
+    else:
+        print(df_insider.to_string(index=False))
 
-    if not ns_parser.links:
+    if export:
+        if preset_loaded:
+            cmd = "filter"
+        if ticker:
+            cmd = "lis"
+
+        export_data(export, os.path.dirname(os.path.abspath(__file__)), cmd, df_insider)
+
+    if not links:
         l_chars = [list(chars) for chars in df_insider_orig["X"].values]
         l_uchars = np.unique(list(itertools.chain(*l_chars)))
         print("")

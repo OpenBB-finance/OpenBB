@@ -1,5 +1,5 @@
 ```
-usage: cpsearch [-q QUERY] [-c {currencies,exchanges,icos,people,tags,all}] [-t TOP] [-s {category,id,name}] [--descend] [--export {csv,json,xlsx}] [-h]
+usage: cpsearch [-q QUERY] [-c {currencies,exchanges,icos,people,tags,all}] [-l N] [-s {category,id,name}] [--descend] [--export {csv,json,xlsx}] [-h]
 ```
 
 Search over CoinPaprika API You can display only top N number of results with --top parameter. You can sort data by id, name , category --sort
@@ -12,7 +12,7 @@ optional arguments:
                         phrase for search (default: None)
   -c {currencies,exchanges,icos,people,tags,all}, --cat {currencies,exchanges,icos,people,tags,all}
                         Categories to search: currencies|exchanges|icos|people|tags|all. Default: all (default: all)
-  -t TOP, --top TOP     Limit of records (default: 10)
+  -l N, --limit N       display N records (default: 10)
   -s {category,id,name}, --sort {category,id,name}
                         Sort by given column. Default: id (default: id)
   --descend             Flag to sort in descending order (lowest first) (default: True)

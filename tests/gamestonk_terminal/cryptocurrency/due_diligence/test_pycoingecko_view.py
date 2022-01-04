@@ -8,7 +8,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence import (
 )
 
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import load
-from tests.helpers import check_print
+from tests.helpers.helpers import check_print
 
 # pylint: disable=unused-import
 

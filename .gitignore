@@ -1,4 +1,5 @@
 __pycache__/
+logs/
 *.pyc
 .DS_Store
 *.env
@@ -9,12 +10,14 @@ env/
 venv/
 !notebooks/reports/.gitkeep
 .python-version
+iframe_figures/
 exports/*
 .idea
 .coverage
 htmlcov
 gamestonk_terminal/reports/stored/*
 gamestonk_terminal/portfolio/portfolios/*
+.ipynb_checkpoints/*
 
 # Jupyter Lab Extension build files
 jupyterlab/*/*.bundle.*
@@ -27,6 +30,7 @@ jupyterlab/*/.ipynb_checkpoints
 jupyterlab/*/*.tsbuildinfo
 jupyterlab/*/ui-tests/test-results/
 jupyterlab/*/ui-tests/tests/*.ts-snapshots/
+!jupyterlab/dashboards/stocks_interactive.ipynb
 
 # Sphinx documentation build files
 docs/_build

@@ -3,7 +3,7 @@ import unittest
 from unittest import mock
 
 # pylint: disable=unused-import
-from gamestonk_terminal.test_helper import (  # noqa: F401
+from tests.helpers.tools import (  # noqa: F401
     parameterize_from_file,
     pytest_generate_tests,
 )
@@ -15,7 +15,7 @@ assertions = unittest.TestCase("__init__")
 class TestThoughtOfTheDay:
     @parameterize_from_file(
         "test_get_urls",
-        "../tests/gamestonk_terminal/yaml/test_thought_of_the_day/thought_of_the_day.yaml",
+        "../../tests/gamestonk_terminal/yaml/test_thought_of_the_day/thought_of_the_day.yaml",
     )
     def test_get_urls(self, urls):
         a_totd = thought_of_the_day.ThoughtOfTheDay(urls)
@@ -25,7 +25,7 @@ class TestThoughtOfTheDay:
     @mock.patch("gamestonk_terminal.thought_of_the_day.requests")
     @parameterize_from_file(
         "test_get_metadata",
-        "../tests/gamestonk_terminal/yaml/test_thought_of_the_day/thought_of_the_day.yaml",
+        "../../tests/gamestonk_terminal/yaml/test_thought_of_the_day/thought_of_the_day.yaml",
     )
     def test_get_metadata(
         self, mock_request_get, urls, mock_goodreads_page, expected_result

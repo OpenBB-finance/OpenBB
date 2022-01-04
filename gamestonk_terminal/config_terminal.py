@@ -6,14 +6,35 @@ env_files = [f for f in os.listdir() if f.endswith(".env")]
 if env_files:
     load_dotenv(env_files[0])
 
-# Choose one of: stocks, options, crypto, economy, etf, portfolio, forex
-DEFAULT_CONTEXT = ""
-
-# Choose one of: developer, user
+# Set to True to see full stack traces for debugging/error reporting
 DEBUG_MODE = False
 
 # By default the jupyter notebook will be run on port 8888
 PAPERMILL_NOTEBOOK_REPORT_PORT = "8888"
+
+# Logging settings
+
+# 0 - INFO
+# 1 - DEBUG for terminal, INFO for libraries
+# 2 - DEBUG for terminal, DEBUG for libraries
+
+LOGGING_VERBOSITY = 2
+
+if tmp_verbosity := os.getenv("GT_LOGGING_VERBOSITY"):
+    print(f"Setting verbosity to {tmp_verbosity}")
+    try:
+        LOGGING_VERBOSITY = int(tmp_verbosity)
+    except ValueError:
+        LOGGING_VERBOSITY = 2
+
+# stdout, stderr, file, noop
+LOGGING_HANDLERS = os.getenv("GT_LOGGING_HANDLERS") or "file"
+
+LOGGING_ID = os.getenv("GT_LOGGING_ID") or None
+
+LOGGING_FILE = ""
+
+LOGGING_VERSION = os.getenv("GT_LOGGING_VERSION") or "ver:1.0.0"
 
 # https://www.alphavantage.co
 API_KEY_ALPHAVANTAGE = os.getenv("GT_API_KEY_ALPHAVANTAGE") or "REPLACE_ME"
@@ -111,3 +132,6 @@ API_ETHPLORER_KEY = os.getenv("GT_API_ETHPLORER_KEY") or "freekey"
 
 # https://cryptopanic.com/developers/api/
 API_CRYPTO_PANIC_KEY = os.getenv("GT_API_CRYPTO_PANIC_KEY") or "REPLACE_ME"
+
+# https://bitquery.io/pricing
+API_BITQUERY_KEY = os.getenv("GT_API_BITQUERY_KEY") or "REPLACE_ME"

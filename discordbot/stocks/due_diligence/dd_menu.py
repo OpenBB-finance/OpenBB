@@ -19,92 +19,94 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
     def __init__(self, bot: discord.ext.commands.Bot):
         self.bot = bot
 
-    @discord.ext.commands.command(name="stocks.dd.analyst")
+    @discord.ext.commands.command(name="stocks.dd.analyst", usage="[ticker]")
     async def analyst(self, ctx: discord.ext.commands.Context, ticker=""):
         """Displays analyst recommendations [Finviz]
 
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         """
         await analyst_command(ctx, ticker)
 
-    @discord.ext.commands.command(name="stocks.dd.pt")
+    @discord.ext.commands.command(name="stocks.dd.pt", usage="[ticker] [raw] [start]")
     async def pt(self, ctx: discord.ext.commands.Context, ticker="", raw="", start=""):
         """Displays chart with price targets [Business Insiders]
 
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         raw: boolean
              True or false
         start:
-            date (in date format for start date)
+            Starting date in YYYY-MM-DD format
         """
         await pt_command(ctx, ticker, raw, start)
 
-    @discord.ext.commands.command(name="stocks.dd.est")
+    @discord.ext.commands.command(name="stocks.dd.est", usage="[ticker]")
     async def est(self, ctx: discord.ext.commands.Context, ticker=""):
         """Displays earning estimates [Business Insider]
 
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         """
         await est_command(ctx, ticker)
 
-    @discord.ext.commands.command(name="stocks.dd.sec")
+    @discord.ext.commands.command(name="stocks.dd.sec", usage="[ticker]")
     async def sec(self, ctx: discord.ext.commands.Context, ticker=""):
         """Displays sec filings [Market Watch]
 
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         """
         await sec_command(ctx, ticker)
 
-    @discord.ext.commands.command(name="stocks.dd.supplier")
+    @discord.ext.commands.command(name="stocks.dd.supplier", usage="[ticker]")
     async def supplier(self, ctx: discord.ext.commands.Context, ticker=""):
         """Displays suppliers of the company [CSIMarket]
 
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         """
         await supplier_command(ctx, ticker)
 
-    @discord.ext.commands.command(name="stocks.dd.customer")
+    @discord.ext.commands.command(name="stocks.dd.customer", usage="[ticker]")
     async def customer(self, ctx: discord.ext.commands.Context, ticker=""):
         """Displays customers of the company [CSIMarket]
 
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         """
         await customer_command(ctx, ticker)
 
-    @discord.ext.commands.command(name="stocks.dd.arktrades")
+    @discord.ext.commands.command(name="stocks.dd.arktrades", usage="[ticker] [num]")
     async def arktrades(self, ctx: discord.ext.commands.Context, ticker="", num=""):
         """Displays trades made by ark [cathiesark.com]
 
         Parameters
         -----------
         ticker: str
-            ticker, -h or help
+            ticker
         num: int
             number of rows displayed
         """
         await arktrades_command(ctx, ticker, num)
 
     @discord.ext.commands.command(name="stocks.dd")
-    async def economy(self, ctx: discord.ext.commands.Context, ticker=""):
-        """Economy Context Menu
+    async def due_diligence(self, ctx: discord.ext.commands.Context, ticker=""):
+        """Due Diligence Context Menu
+
+        Run `!help DueDiligenceCommands` to see the list of available commands.
 
         Returns
         -------
@@ -191,15 +193,16 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         except asyncio.TimeoutError:
             for emoji in emoji_list:
                 await msg.remove_reaction(emoji, ctx.bot.user)
-            embed = discord.Embed(
-                description="Error timeout - you snooze you lose! 😋",
-                colour=cfg.COLOR,
-                title="TIMEOUT Stocks: Due Diligence (DD) Menu",
-            ).set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
-            )
-            await ctx.send(embed=embed)
+            if cfg.DEBUG:
+                embed = discord.Embed(
+                    description="Error timeout - you snooze you lose! 😋",
+                    colour=cfg.COLOR,
+                    title="TIMEOUT Stocks: Due Diligence (DD) Menu",
+                ).set_author(
+                    name=cfg.AUTHOR_NAME,
+                    icon_url=cfg.AUTHOR_ICON_URL,
+                )
+                await ctx.send(embed=embed)
 
 
 def setup(bot: discord.ext.commands.Bot):

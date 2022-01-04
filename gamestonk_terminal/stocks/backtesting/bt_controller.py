@@ -3,23 +3,24 @@ __docformat__ = "numpy"
 
 import argparse
 import difflib
-from typing import List
+from typing import List, Union
 
 import matplotlib as mpl
-import matplotlib.pyplot as plt
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
+    check_non_negative_float,
     check_positive,
     get_flair,
     parse_known_args_and_warn,
     try_except,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     system_clear,
+    valid_date,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.stocks.stocks_helper import load
 
 # This code below aims to fix an issue with the fnn module, used by bt module
 # which forces matplotlib backend to be 'agg' which doesn't allow to plot
@@ -35,11 +36,23 @@ mpl.use(default_backend)
 class BacktestingController:
     """Backtesting Class"""
 
-    CHOICES = ["?", "cls", "help", "q", "quit", "load"]
-    CHOICES_COMMANDS = ["ema", "ema_cross", "rsi"]
+    CHOICES = [
+        "cls",
+        "home",
+        "h",
+        "?",
+        "help",
+        "q",
+        "quit",
+        "..",
+        "exit",
+        "r",
+        "reset",
+    ]
+    CHOICES_COMMANDS = ["ema", "ema_cross", "rsi", "whatif"]
     CHOICES += CHOICES_COMMANDS
 
-    def __init__(self, ticker: str, stock: pd.DataFrame):
+    def __init__(self, ticker: str, stock: pd.DataFrame, queue: List[str] = None):
         self.ticker = ticker
         self.stock = stock
         self.bt_parser = argparse.ArgumentParser(add_help=False, prog="bt")
@@ -47,18 +60,20 @@ class BacktestingController:
             "cmd",
             choices=self.CHOICES,
         )
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        self.queue = queue if queue else list()
 
     def print_help(self):
         """Print help"""
         help_text = f"""
-Backtesting:
-    cls         clear screen
-    ?/help      show this menu again
-    q           quit this menu, and shows back to main menu
-    quit        quit to abandon program
-    load        load new ticker to analyze
-
 Ticker: {self.ticker.upper()}
+
+    whatif      what if you had bought X shares on day Y
 
     ema         buy when price exceeds EMA(l)
     ema_cross   buy when EMA(short) > EMA(long)
@@ -71,52 +86,117 @@ Ticker: {self.ticker.upper()}
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
-
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.bt_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
-
-        return getattr(
-            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
+        getattr(
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+
     def call_help(self, _):
-        """Process Help command"""
+        """Process help command"""
         self.print_help()
 
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return False
-
     def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+        """Process quit menu command"""
+        print("")
+        self.queue.insert(0, "quit")
 
-    def call_load(self, other_args: List[str]):
-        """Process load command"""
-        self.ticker, _, _, self.stock = load(
-            other_args, self.ticker, "", "1440", pd.DataFrame()
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+
+    def call_reset(self, _):
+        """Process reset command"""
+        self.queue.insert(0, "bt")
+        if self.ticker:
+            self.queue.insert(0, f"load {self.ticker}")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+
+    @try_except
+    def call_whatif(self, other_args: List[str]):
+        """Call whatif"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="whatif",
+            description="Displays what if scenario of having bought X shares at date Y",
         )
-        if "." in self.ticker:
-            self.ticker = self.ticker.split(".")[0]
+        parser.add_argument(
+            "-d",
+            "--date",
+            default=None,
+            dest="date_shares_acquired",
+            type=valid_date,
+            help="Date at which the shares were acquired",
+        )
+        parser.add_argument(
+            "-n",
+            "--number",
+            default=1.0,
+            type=check_non_negative_float,
+            help="Number of shares acquired",
+            dest="num_shares_acquired",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-d")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            bt_view.display_whatif_scenario(
+                ticker=self.ticker,
+                num_shares_acquired=ns_parser.num_shares_acquired,
+                date_shares_acquired=ns_parser.date_shares_acquired,
+            )
 
     @try_except
     def call_ema(self, other_args: List[str]):
@@ -148,27 +228,19 @@ Ticker: {self.ticker.upper()}
             help="Flag to not show buy and hold comparison",
             dest="no_bench",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        bt_view.display_simple_ema(
-            ticker=self.ticker,
-            df_stock=self.stock,
-            ema_length=ns_parser.length,
-            spy_bt=ns_parser.spy,
-            no_bench=ns_parser.no_bench,
-            export=ns_parser.export,
-        )
+            bt_view.display_simple_ema(
+                ticker=self.ticker,
+                df_stock=self.stock,
+                ema_length=ns_parser.length,
+                spy_bt=ns_parser.spy,
+                no_bench=ns_parser.no_bench,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_ema_cross(self, other_args: List[str]):
@@ -216,33 +288,25 @@ Ticker: {self.ticker.upper()}
             dest="shortable",
             help="Flag that disables the short sell",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+            if ns_parser.long < ns_parser.short:
+                print("Short EMA period is longer than Long EMA period\n")
 
-        if ns_parser.long < ns_parser.short:
-            print("Short EMA period is longer than Long EMA period\n")
-            return
-
-        bt_view.display_ema_cross(
-            ticker=self.ticker,
-            df_stock=self.stock,
-            short_ema=ns_parser.short,
-            long_ema=ns_parser.long,
-            spy_bt=ns_parser.spy,
-            no_bench=ns_parser.no_bench,
-            shortable=ns_parser.shortable,
-            export=ns_parser.export,
-        )
+            bt_view.display_ema_cross(
+                ticker=self.ticker,
+                df_stock=self.stock,
+                short_ema=ns_parser.short,
+                long_ema=ns_parser.long,
+                spy_bt=ns_parser.spy,
+                no_bench=ns_parser.no_bench,
+                shortable=ns_parser.shortable,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_rsi(self, other_args: List[str]):
@@ -299,69 +363,100 @@ Ticker: {self.ticker.upper()}
             dest="shortable",
             help="Flag that disables the short sell",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            if ns_parser.high < ns_parser.low:
+                print("Low RSI value is higher than Low RSI value\n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if ns_parser.high < ns_parser.low:
-            print("Low RSI value is higher than Low RSI value\n")
-            return
-
-        bt_view.display_rsi_strategy(
-            ticker=self.ticker,
-            df_stock=self.stock,
-            periods=ns_parser.periods,
-            low_rsi=ns_parser.low,
-            high_rsi=ns_parser.high,
-            spy_bt=ns_parser.spy,
-            no_bench=ns_parser.no_bench,
-            shortable=ns_parser.shortable,
-            export=ns_parser.export,
-        )
+            bt_view.display_rsi_strategy(
+                ticker=self.ticker,
+                df_stock=self.stock,
+                periods=ns_parser.periods,
+                low_rsi=ns_parser.low,
+                high_rsi=ns_parser.high,
+                spy_bt=ns_parser.spy,
+                no_bench=ns_parser.no_bench,
+                shortable=ns_parser.shortable,
+                export=ns_parser.export,
+            )
 
 
-def menu(ticker: str, stock: pd.DataFrame):
+def menu(ticker: str, stock: pd.DataFrame, queue: List[str] = None):
     """Backtesting Menu"""
-    plt.close("all")
-    bt_controller = BacktestingController(ticker, stock)
-    bt_controller.call_help(None)
+    bt_controller = BacktestingController(ticker, stock, queue)
+    an_input = "HELP_ME"
 
     while True:
+        # There is a command in the queue
+        if bt_controller.queue and len(bt_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
+            if bt_controller.queue[0] in ("q", "..", "quit"):
+                print("")
+                if len(bt_controller.queue) > 1:
+                    return bt_controller.queue[1:]
+                return []
+
+            # Consume 1 element from the queue
+            an_input = bt_controller.queue[0]
+            bt_controller.queue = bt_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
+            if an_input and an_input.split(" ")[0] in bt_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /stocks/bt/ $ {an_input}")
+
         # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in bt_controller.CHOICES}
-            )
-            an_input = session.prompt(
-                f"{get_flair()} (stocks)>(bt)> ",
-                completer=completer,
-            )
         else:
-            an_input = input(f"{get_flair()} (stocks)>(bt)> ")
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
+                bt_controller.print_help()
+
+            # Get input from user using auto-completion
+            if session and gtff.USE_PROMPT_TOOLKIT and bt_controller.completer:
+                try:
+                    an_input = session.prompt(
+                        f"{get_flair()} /stocks/bt/ $ ",
+                        completer=bt_controller.completer,
+                        search_ignore_case=True,
+                    )
+                except KeyboardInterrupt:
+                    # Exit in case of keyboard interrupt
+                    an_input = "exit"
+            # Get input from user without auto-completion
+            else:
+                an_input = input(f"{get_flair()} /stocks/bt/ $ ")
 
         try:
-            plt.close("all")
-
-            process_input = bt_controller.switch(an_input)
-            if process_input is not None:
-                return process_input
+            # Process the input command
+            bt_controller.queue = bt_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            similar_cmd = difflib.get_close_matches(
-                an_input, bt_controller.CHOICES, n=1, cutoff=0.7
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/bt menu.",
+                end="",
             )
-
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                bt_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        bt_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
+                else:
+                    an_input = similar_cmd[0]
 
-            continue
+                print(f" Replacing by '{an_input}'.")
+                bt_controller.queue.insert(0, an_input)
+            else:
+                print("\n")

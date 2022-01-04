@@ -54,6 +54,37 @@ main:
             ref: "/stocks/discovery/fds"
           - name: rtat
             ref: "/stocks/discovery/rtat"
+      - name: Sector and Industry Analysis (SIA)
+        ref: "/stocks/sia"
+        sub:
+          - name: load
+            ref: "/stocks/sia/load"
+          - name: clear
+            ref: "/stocks/sia/clear"
+          - name: industry
+            ref: "/stocks/sia/industry"
+          - name: sector
+            ref: "/stocks/sia/sector"
+          - name: country
+            ref: "/stocks/sia/country"
+          - name: mktcap
+            ref: "/stocks/sia/mktcap"
+          - name: exchange
+            ref: "/stocks/sia/exchange"
+          - name: cps
+            ref: "/stocks/sia/cps"
+          - name: cpic
+            ref: "/stocks/sia/cpic"
+          - name: cpis
+            ref: "/stocks/sia/cpis"
+          - name: cpcs
+            ref: "/stocks/sia/cpcs"
+          - name: cpci
+            ref: "/stocks/sia/cpci"
+          - name: sama
+            ref: "/stocks/sia/sama"
+          - name: metric
+            ref: "/stocks/sia/metric"
       - name: dark pool shorts
         ref: "/stocks/dark_pool_shorts"
         sub:
@@ -203,6 +234,8 @@ main:
             ref: "/stocks/fundamental_analysis/web"
           - name: hq
             ref: "/stocks/fundamental_analysis/hq"
+          - name: divs
+            ref: "/stocks/fundamental_analysis/divs"
           - name: overview
             ref: "/stocks/fundamental_analysis/overview"
           - name: key
@@ -348,6 +381,8 @@ main:
       - name: backtesting
         ref: "/stocks/backtesting"
         sub:
+          - name: whatif
+            ref: "/stocks/backtesting/whatif"
           - name: ema
             ref: "/stocks/backtesting/ema"
           - name: ema_cross
@@ -389,6 +424,8 @@ main:
             ref: "/portfolio/portfolio_optimization"
           - name: parity
             ref: "/stocks/options/parity"
+          - name: binom
+            ref: "/stocks/options/binom"
           - name: payoff
             ref: "/stocks/options/payoff"
             sub:
@@ -669,6 +706,12 @@ main:
             ref: "/cryptocurrency/overview/cbpairs"
           - name: news
             ref: "/cryptocurrency/overview/news"
+          - name: wf
+            ref: "/cryptocurrency/overview/wf"
+          - name: ewf
+            ref: "/cryptocurrency/overview/ewf"
+          - name: wfpe
+            ref: "/cryptocurrency/overview/wfpe"
       - name: due diligence
         ref: "/cryptocurrency/due_diligence"
         sub:
@@ -725,6 +768,40 @@ main:
         sub:
           - name: gwei
             ref: "/cryptocurrency/onchain/gwei"
+          - name: hr
+            ref: "/cryptocurrency/onchain/hr"
+          - name: address
+            ref: "/cryptocurrency/onchain/address"
+          - name: balance
+            ref: "/cryptocurrency/onchain/balance"
+          - name: hist
+            ref: "/cryptocurrency/onchain/hist"
+          - name: holders
+            ref: "/cryptocurrency/onchain/holders"
+          - name: info
+            ref: "/cryptocurrency/onchain/info"
+          - name: ttcp
+            ref: "/cryptocurrency/onchain/ttcp"
+          - name: prices
+            ref: "/cryptocurrency/onchain/prices"
+          - name: ueat
+            ref: "/cryptocurrency/onchain/ueat"
+          - name: baas
+            ref: "/cryptocurrency/onchain/baas"
+          - name: th
+            ref: "/cryptocurrency/onchain/th"
+          - name: top
+            ref: "/cryptocurrency/onchain/top"
+          - name: lt
+            ref: "/cryptocurrency/onchain/lt"
+          - name: tx
+            ref: "/cryptocurrency/onchain/tx"
+          - name: dvcp
+            ref: "/cryptocurrency/onchain/dvcp"
+          - name: tv
+            ref: "/cryptocurrency/onchain/tv"
+          - name: whales
+            ref: "/cryptocurrency/onchain/whales"
       - name: nft
         ref: "/cryptocurrency/nft"
         sub:
@@ -832,12 +909,19 @@ main:
         ref: "/economy/tyld"
       - name: unemp
         ref: "/economy/unemp"
-      - name: search
-        ref: "/economy/search"
-      - name: series
-        ref: "/economy/series"
       - name: bigmac
         ref: "/economy/bigmac"
+      - name: fred
+        ref: "/economy/fred"
+        sub:
+          - name: search
+            ref: "/economy/fred/search"
+          - name: add
+            ref: "/economy/fred/add"
+          - name: rmv
+            ref: "/economy/fred/rmv"
+          - name: plot
+            ref: "/economy/fred/plot"
   - name: etf
     ref: "/etf"
     sub:
@@ -861,6 +945,23 @@ main:
         ref: "/etf/pir"
       - name: fds
         ref: "/etf/fds"
+  - name: funds
+    ref: "/funds"
+    sub:
+      - name: search
+        ref: "/funds/search"
+      - name: country
+        ref: "/funds/country"
+      - name: info
+        ref: "/funds/info"
+      - name: load
+        ref: "/funds/load"
+      - name: overview
+        ref: "/funds/overview"
+      - name: plot
+        ref: "/funds/plot"
+      - name: sector
+        ref: "/funds/sector"
   - name: portfolio
     ref: "/portfolio"
     sub:
@@ -898,8 +999,6 @@ main:
                 ref: "/portfolio/brokers/robinhood/history"
               - name: holdings
                 ref: "/portfolio/brokers/robinhood/holdings"
-      - name: portfolio analysis
-        ref: "/portfolio/portfolio_analysis"
       - name: portfolio optimization
         ref: "/portfolio/portfolio_optimization"
         sub:
@@ -929,6 +1028,20 @@ main:
             ref: "/portfolio/portfolio_optimization/effrisk"
           - name: ef
             ref: "/portfolio/portfolio_optimization/ef"
+      - name: load
+        ref: "/portfolio/load"
+      - name: save
+        ref: "/portfolio/save"
+      - name: show
+        ref: "/portfolio/show"
+      - name: add
+        ref: "/portfolio/add"
+      - name: rmv
+        ref: "/portfolio/rmv"
+      - name: ar
+        ref: "/portfolio/ar"
+      - name: rmr
+        ref: "/portfolio/rmr"
   - name: forex
     ref: "/forex"
     sub:

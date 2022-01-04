@@ -6,6 +6,17 @@ from gamestonk_terminal.cryptocurrency.coinbase_helpers import (
     make_coinbase_request,
 )
 
+PAIRS_FILTERS = [
+    "id",
+    "display_name",
+    "base_currency",
+    "quote_currency",
+    "base_min_size",
+    "base_max_size",
+    "min_market_funds",
+    "max_market_funds",
+]
+
 
 def get_trading_pairs() -> pd.DataFrame:
     """Get a list of available currency pairs for trading. [Source: Coinbase]

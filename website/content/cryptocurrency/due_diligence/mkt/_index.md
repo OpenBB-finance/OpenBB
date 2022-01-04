@@ -1,11 +1,11 @@
 ```
 usage: mkt
            [--vs {BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK}]
-           [-t TOP] [-s {pct_volume_share,exchange,pair,trust_score,volume,price}] [--descend] [-l] [--export {csv,json,xlsx}] [-h]
+           [-l N] [-s {pct_volume_share,exchange,pair,trust_score,volume,price}] [--descend] [-u] [--export {csv,json,xlsx}] [-h]
 ```
 
-Get all markets found for given coin. You can display only top N number of markets with --top parameter. You can sort data by pct_volume_share,
-exchange, pair, trust_score, volume, price --sort parameter and also with --descend flag to sort descending. You can use additional flag --links to
+Get all markets found for given coin. You can display only N number of markets with --limit parameter. You can sort data by pct_volume_share,
+exchange, pair, trust_score, volume, price --sort parameter and also with --descend flag to sort descending. You can use additional flag --urls to
 see urls for each market Displays: exchange, pair, trust_score, volume, price, pct_volume_share,
 
 ```
@@ -16,7 +16,7 @@ optional arguments:
   -s {pct_volume_share,exchange,pair,trust_score,volume,price}, --sort {pct_volume_share,exchange,pair,trust_score,volume,price}
                         Sort by given column. Default: pct_volume_share (default: pct_volume_share)
   --descend             Flag to sort in descending order (lowest first) (default: False)
-  -l, --links           Flag to show urls. If you will use that flag you will see only: exchange, pair, trust_score, market_url columns (default:
+  -u, --urls           Flag to show urls. If you will use that flag you will see only: exchange, pair, trust_score, market_url columns (default:
                         False)
   --export {csv,json,xlsx}
                         Export dataframe data to csv,json,xlsx file (default: )

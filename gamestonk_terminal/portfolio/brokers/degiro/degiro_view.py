@@ -44,10 +44,6 @@ class DegiroView:
     def help_display():
         print(
             "\nDegiro:\n"
-            "   help         show this help menu again\n"
-            "   q            quit degiro standalone menu\n"
-            "   quit         quit the app\n"
-            "\n"
             "   login        connect to degiro's api\n"
             "   logout       disconnect from degiro's api\n"
             "\n"

@@ -1,0 +1,23 @@
+Symbol                                               PM
+Name                   Philip Morris International Inc.
+Price                                             89.38
+Changes percentage                             1.753189
+Change                                         1.540001
+Day low                                           87.95
+Day high                                          89.51
+Year high                                        106.51
+Year low                                          78.34
+Market cap                                    139.149 B
+Price avg50                                     94.4176
+Price avg200                                    95.7881
+Volume                                          7.368 M
+Avg volume                                      4520317
+Exchange                                           NYSE
+Open                                              88.63
+Previous close                                    87.84
+Eps                                                5.74
+Pe                                            15.571428
+Earnings announcement               2022-02-02 13:30:00
+Shares outstanding                              1.557 B
+Timestamp                                    1638620747
+

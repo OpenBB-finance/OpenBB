@@ -3,7 +3,8 @@ __docformat__ = "numpy"
 
 import argparse
 import difflib
-from typing import List
+from typing import List, Union
+from datetime import datetime, timedelta
 from pandas.core.frame import DataFrame
 from prompt_toolkit.completion import NestedCompleter
 
@@ -24,18 +25,32 @@ from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     try_except,
     system_clear,
+    valid_date,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.stocks.stocks_helper import load
+from gamestonk_terminal.stocks import stocks_helper
 
 
 class DueDiligenceController:
     """Due Diligence Controller"""
 
     # Command choices
-    CHOICES = ["?", "cls", "help", "q", "quit", "load"]
+    CHOICES = [
+        "cls",
+        "home",
+        "h",
+        "?",
+        "help",
+        "q",
+        "quit",
+        "..",
+        "exit",
+        "r",
+        "reset",
+    ]
 
     CHOICES_COMMANDS = [
+        "load",
         "sec",
         "rating",
         "pt",
@@ -49,20 +64,15 @@ class DueDiligenceController:
 
     CHOICES += CHOICES_COMMANDS
 
-    def __init__(self, ticker: str, start: str, interval: str, stock: DataFrame):
-        """Constructor
-
-        Parameters
-        ----------
-        ticker : str
-            Due diligence ticker symbol
-        start : str
-            Start date of the stock data
-        interval : str
-            Stock data interval
-        stock : DataFrame
-            Due diligence stock dataframe
-        """
+    def __init__(
+        self,
+        ticker: str,
+        start: str,
+        interval: str,
+        stock: DataFrame,
+        queue: List[str] = None,
+    ):
+        """Constructor"""
         self.ticker = ticker
         self.start = start
         self.interval = interval
@@ -73,17 +83,21 @@ class DueDiligenceController:
             "cmd",
             choices=self.CHOICES,
         )
+        self.completer: Union[None, NestedCompleter] = None
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            choices["load"]["-i"] = {c: {} for c in stocks_helper.INTERVALS}
+            choices["load"]["-s"] = {c: {} for c in stocks_helper.SOURCES}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
 
     def print_help(self):
         """Print help"""
         help_text = f"""
-Due Diligence:
-    cls           clear screen
-    ?/help        show this menu again
-    q             quit this menu, and shows back to main menu
-    quit          quit to abandon program
-    load          load new ticker
-
 Ticker: {self.ticker}
 
 Finviz:
@@ -107,53 +121,156 @@ cathiesark.com
 
     def switch(self, an_input: str):
         """Process and dispatch input
-
+        Parameters
+        -------
+        an_input : str
+            string with input arguments
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        List[str]
+            List of commands in the queue to execute
         """
 
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.dd_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
-
-        return getattr(
-            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
+        getattr(
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+
     def call_help(self, _):
-        """Process Help command"""
+        """Process help command"""
         self.print_help()
 
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return False
-
     def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+        """Process quit menu command"""
+        print("")
+        self.queue.insert(0, "quit")
+
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
+
+    def call_reset(self, _):
+        """Process reset command"""
+        self.queue.insert(0, "dd")
+        if self.ticker:
+            self.queue.insert(0, f"load {self.ticker}")
+        self.queue.insert(0, "stocks")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
-        self.ticker, self.start, self.interval, self.stock = load(
-            other_args, self.ticker, self.start, "1440min", self.stock
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
+            " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
+            " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
         )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="ticker",
+            required="-h" not in other_args,
+            help="Stock ticker",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the stock",
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            action="store",
+            dest="interval",
+            type=int,
+            default=1440,
+            choices=stocks_helper.INTERVALS,
+            help="Intraday stock minutes",
+        )
+        parser.add_argument(
+            "--source",
+            action="store",
+            dest="source",
+            choices=stocks_helper.SOURCES,
+            default="yf",
+            help="Source of historical data.",
+        )
+        # For the case where a user uses: 'load BB'
+        if other_args and "-t" not in other_args and "-h" not in other_args:
+            other_args.insert(0, "-t")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            df_stock_candidate = stocks_helper.load(
+                ticker=ns_parser.ticker,
+                start=ns_parser.start,
+                interval=ns_parser.interval,
+                source=ns_parser.source,
+            )
+
+            if not df_stock_candidate.empty:
+                self.stock = df_stock_candidate
+                self.start = ns_parser.start
+                if "." in ns_parser.ticker:
+                    self.ticker = ns_parser.ticker.upper().split(".")[0]
+                else:
+                    self.ticker = ns_parser.ticker.upper()
 
     @try_except
     def call_analyst(self, other_args: List[str]):
@@ -166,19 +283,12 @@ cathiesark.com
                 date, analyst, category, price from, price to, and rating. [Source: Finviz]
             """,
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
 
-        finviz_view.analyst(ticker=self.ticker, export=ns_parser.export)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            finviz_view.analyst(ticker=self.ticker, export=ns_parser.export)
 
     @try_except
     def call_pt(self, other_args: List[str]):
@@ -195,35 +305,30 @@ cathiesark.com
             help="Only output raw data",
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=10,
-            help="Number of latest price targets from analysts to print.",
+            help="Limit of latest price targets from analysts to print.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
 
-        business_insider_view.price_target_from_analysts(
-            ticker=self.ticker,
-            start=self.start,
-            interval=self.interval,
-            stock=self.stock,
-            num=ns_parser.n_num,
-            raw=ns_parser.raw,
-            export=ns_parser.export,
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            business_insider_view.price_target_from_analysts(
+                ticker=self.ticker,
+                start=self.start,
+                interval=self.interval,
+                stock=self.stock,
+                num=ns_parser.limit,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_est(self, other_args: List[str]):
@@ -233,22 +338,15 @@ cathiesark.com
             prog="est",
             description="""Yearly estimates and quarter earnings/revenues. [Source: Business Insider]""",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
 
-        business_insider_view.estimates(
-            ticker=self.ticker,
-            export=ns_parser.export,
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            business_insider_view.estimates(
+                ticker=self.ticker,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_rot(self, other_args: List[str]):
@@ -261,13 +359,13 @@ cathiesark.com
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=10,
-            help="number of last months",
+            help="Limit of last months",
         )
         parser.add_argument(
             "--raw",
@@ -275,28 +373,20 @@ cathiesark.com
             dest="raw",
             help="Only output raw data",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
 
-        finnhub_view.rating_over_time(
-            ticker=self.ticker,
-            num=ns_parser.n_num,
-            raw=ns_parser.raw,
-            export=ns_parser.export,
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            finnhub_view.rating_over_time(
+                ticker=self.ticker,
+                num=ns_parser.limit,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_rating(self, other_args: List[str]):
@@ -311,35 +401,27 @@ cathiesark.com
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=10,
-            help="number of last days to display ratings",
+            help="limit of last days to display ratings",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
 
-        fmp_view.rating(
-            ticker=self.ticker,
-            num=ns_parser.n_num,
-            export=ns_parser.export,
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            fmp_view.rating(
+                ticker=self.ticker,
+                num=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_sec(self, other_args: List[str]):
@@ -353,35 +435,27 @@ cathiesark.com
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=5,
             help="number of latest SEC filings.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
 
-        marketwatch_view.sec_filings(
-            ticker=self.ticker,
-            num=ns_parser.n_num,
-            export=ns_parser.export,
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            marketwatch_view.sec_filings(
+                ticker=self.ticker,
+                num=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_supplier(self, other_args: List[str]):
@@ -391,22 +465,15 @@ cathiesark.com
             add_help=False,
             description="List of suppliers from ticker provided. [Source: CSIMarket]",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
 
-        csimarket_view.suppliers(
-            ticker=self.ticker,
-            export=ns_parser.export,
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            csimarket_view.suppliers(
+                ticker=self.ticker,
+                export=ns_parser.export,
+            )
 
     def call_customer(self, other_args: List[str]):
         """Process customer command"""
@@ -415,22 +482,15 @@ cathiesark.com
             add_help=False,
             description="List of customers from ticker provided. [Source: CSIMarket]",
         )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
 
-        csimarket_view.customers(
-            ticker=self.ticker,
-            export=ns_parser.export,
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            csimarket_view.customers(
+                ticker=self.ticker,
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_arktrades(self, other_args):
@@ -443,12 +503,12 @@ cathiesark.com
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
-            help="Number of rows to show",
-            dest="num",
-            default=20,
-            type=int,
+            "-l",
+            "--limi",
+            help="Limit of rows to show",
+            dest="limit",
+            default=10,
+            type=check_positive,
         )
         parser.add_argument(
             "-s",
@@ -458,20 +518,27 @@ cathiesark.com
             help="Flag to show ticker in table",
             dest="show_ticker",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not ns_parser:
-            return
-        ark_view.display_ark_trades(
-            ticker=self.ticker,
-            num=ns_parser.num,
-            export=ns_parser.export,
-            show_ticker=ns_parser.show_ticker,
-        )
+        if ns_parser:
+            ark_view.display_ark_trades(
+                ticker=self.ticker,
+                num=ns_parser.limit,
+                export=ns_parser.export,
+                show_ticker=ns_parser.show_ticker,
+            )
 
 
-def menu(ticker: str, start: str, interval: str, stock: DataFrame):
+def menu(
+    ticker: str,
+    start: str,
+    interval: str,
+    stock: DataFrame,
+    queue: List[str] = None,
+):
     """Due Diligence Menu
 
     Parameters
@@ -484,37 +551,81 @@ def menu(ticker: str, start: str, interval: str, stock: DataFrame):
         Stock data interval
     stock : DataFrame
         Due diligence stock dataframe
+    queue: List[str]
+        List with commands in queue to run
     """
 
-    dd_controller = DueDiligenceController(ticker, start, interval, stock)
-    dd_controller.call_help(None)
+    dd_controller = DueDiligenceController(ticker, start, interval, stock, queue)
+    an_input = "HELP_ME"
 
     while True:
-        # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in dd_controller.CHOICES}
-            )
+        # There is a command in the queue
+        if dd_controller.queue and len(dd_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
+            if dd_controller.queue[0] in ("q", "..", "quit"):
+                if len(dd_controller.queue) > 1:
+                    return dd_controller.queue[1:]
+                return []
 
-            an_input = session.prompt(
-                f"{get_flair()} (stocks)>(dd)> ",
-                completer=completer,
-            )
+            # Consume 1 element from the queue
+            an_input = dd_controller.queue[0]
+            dd_controller.queue = dd_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
+            if an_input and an_input.split(" ")[0] in dd_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /stocks/dd/ $ {an_input}")
+
+        # Get input command from user
         else:
-            an_input = input(f"{get_flair()} (stocks)>(dd)> ")
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
+                dd_controller.print_help()
+
+            # Get input from user using auto-completion
+            if session and gtff.USE_PROMPT_TOOLKIT and dd_controller.completer:
+                try:
+                    an_input = session.prompt(
+                        f"{get_flair()} /stocks/dd/ $ ",
+                        completer=dd_controller.completer,
+                        search_ignore_case=True,
+                    )
+                except KeyboardInterrupt:
+                    # Exit in case of keyboard interrupt
+                    an_input = "exit"
+            # Get input from user without auto-completion
+            else:
+                an_input = input(f"{get_flair()} /stocks/dd/ $ ")
 
         try:
-            process_input = dd_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            # Process the input command
+            dd_controller.queue = dd_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exist\n")
-            similar_cmd = difflib.get_close_matches(
-                an_input, dd_controller.CHOICES, n=1, cutoff=0.7
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
+                end="",
             )
-
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                dd_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
-            continue
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        dd_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
+                else:
+                    an_input = similar_cmd[0]
+
+                print(f" Replacing by '{an_input}'.")
+                dd_controller.queue.insert(0, an_input)
+            else:
+                print("\n")

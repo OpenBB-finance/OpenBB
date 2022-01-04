@@ -2,14 +2,16 @@
 __docformat__ = "numpy"
 import argparse
 import functools
+import logging
 from typing import List
-from datetime import datetime, timedelta, time as Time
+from datetime import datetime, timedelta
 import os
 import random
 import re
 import sys
+import pytz
 import pandas as pd
-from pytz import timezone
+from rich.table import Table
 import iso8601
 
 import matplotlib
@@ -26,6 +28,8 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_plot as cfgPlot
 import gamestonk_terminal.config_terminal as cfg
 
+logger = logging.getLogger(__name__)
+
 register_matplotlib_converters()
 if cfgPlot.BACKEND is not None:
     matplotlib.use(cfgPlot.BACKEND)
@@ -38,6 +42,59 @@ EXPORT_BOTH_RAW_DATA_AND_FIGURES = 3
 MENU_GO_BACK = 0
 MENU_QUIT = 1
 MENU_RESET = 2
+
+
+def rich_table_from_df(
+    df: pd.DataFrame,
+    show_index: bool = False,
+    title: str = "",
+    index_name: str = "",
+    headers: List[str] = None,
+    floatfmt: str = ".2f",
+) -> Table:
+    """Prepare a table from df in rich
+
+    Parameters
+    ----------
+    df: pd.DataFrame
+        Dataframe to turn into table
+    show_index: bool
+        Whether to include index
+    title: str
+        Title for table
+    index_name : str
+        Title for index column
+    headers: List[str]
+        Titles for columns
+    floatfmt: str
+        String to
+    Returns
+    -------
+    Table
+        rich table
+    """
+    table = Table(title=title, show_lines=True)
+
+    if show_index:
+        table.add_column(index_name)
+
+    if headers:
+        if len(headers) != len(df.columns):
+            raise ValueError("Length of headers does not match length of DataFrame")
+        for header in headers:
+            table.add_column(str(header))
+    else:
+        for column in df.columns:
+            table.add_column(str(column))
+
+    for idx, values in zip(df.index.tolist(), df.values.tolist()):
+        row = [str(idx)] if show_index else []
+        row += [
+            str(x) if not isinstance(x, float) else f"{x:{floatfmt}}" for x in values
+        ]
+        table.add_row(*row)
+
+    return table
 
 
 def check_int_range(mini: int, maxi: int):
@@ -89,6 +146,14 @@ def check_int_range(mini: int, maxi: int):
 def check_non_negative(value) -> int:
     """Argparse type to check non negative int"""
     new_value = int(value)
+    if new_value < 0:
+        raise argparse.ArgumentTypeError(f"{value} is negative")
+    return new_value
+
+
+def check_non_negative_float(value) -> float:
+    """Argparse type to check non negative int"""
+    new_value = float(value)
     if new_value < 0:
         raise argparse.ArgumentTypeError(f"{value} is negative")
     return new_value
@@ -186,6 +251,7 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
         print(
             "Encountered an error trying to open a chart window. Check your X server configuration."
         )
+        logging.exception("%s", type(e).__name__)
         return
 
     # In order to make nice Volume plot, make the bar width = interval
@@ -294,26 +360,6 @@ def us_market_holidays(years) -> list:
     for year in years:
         valid_holidays.append(datetime.strptime(good_fridays[year], "%Y-%m-%d").date())
     return valid_holidays
-
-
-def b_is_stock_market_open() -> bool:
-    """Checks if the stock market is open"""
-    # Get current US time
-    now = datetime.now(timezone("US/Eastern"))
-    # Check if it is a weekend
-    if now.date().weekday() > 4:
-        return False
-    # Check if it is a holiday
-    if now.strftime("%Y-%m-%d") in us_market_holidays(now.year):
-        return False
-    # Check if it hasn't open already
-    if now.time() < Time(hour=9, minute=30, second=0):
-        return False
-    # Check if it has already closed
-    if now.time() > Time(hour=16, minute=0, second=0):
-        return False
-    # Otherwise, Stock Market is open!
-    return True
 
 
 def long_number_format(num) -> str:
@@ -566,7 +612,12 @@ def parse_known_args_and_warn(
     if gtff.USE_CLEAR_AFTER_CMD:
         system_clear()
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
+    except SystemExit:
+        # In case the command has required argument that isn't specified
+        print("")
+        return None
 
     if ns_parser.help:
         parser.print_help()
@@ -633,9 +684,86 @@ def get_flair() -> str:
     }
 
     if flair.get(gtff.USE_FLAIR):
+        if gtff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
+            dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
+                "%Y %b %d, %H:%m"
+            )
+            return f"{dtime} {flair[gtff.USE_FLAIR]}"
         return flair[gtff.USE_FLAIR]
-
     return ""
+
+
+def is_timezone_valid(user_tz: str) -> bool:
+    """Check whether user timezone is valid
+
+    Parameters
+    ----------
+    user_tz: str
+        Timezone to check for validity
+
+    Returns
+    -------
+    bool
+        True if timezone provided is valid
+    """
+    return user_tz in pytz.all_timezones
+
+
+def get_user_timezone() -> str:
+    """Get user timezone if it is a valid one
+
+    Returns
+    -------
+    str
+        user timezone based on timezone.gst file
+    """
+    filename = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "timezone.gst",
+    )
+    if os.path.isfile(filename):
+        with open(filename) as f:
+            return f.read()
+    return ""
+
+
+def get_user_timezone_or_invalid() -> str:
+    """Get user timezone if it is a valid one
+
+    Returns
+    -------
+    str
+        user timezone based on timezone.gst file or INVALID
+    """
+    user_tz = get_user_timezone()
+    if is_timezone_valid(user_tz):
+        return f"{user_tz}"
+    return "INVALID"
+
+
+def replace_user_timezone(user_tz: str) -> None:
+    """Replace user timezone
+
+    Parameters
+    ----------
+    user_tz: str
+        User timezone to set
+    """
+    filename = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "timezone.gst",
+    )
+    if os.path.isfile(filename):
+        with open(filename, "w") as f:
+            if is_timezone_valid(user_tz):
+                if f.write(user_tz):
+                    print("Timezone successfully updated", "\n")
+                else:
+                    print("Timezone not set successfully", "\n")
+            else:
+                print("Timezone selected is not valid", "\n")
+    else:
+        print("timezone.gst file does not exist", "\n")
 
 
 def str_to_bool(value) -> bool:
@@ -784,7 +912,8 @@ def try_except(f):
         try:
             return f(*args, **kwargs)
         except Exception as e:
-            print(e, "\n")
+            logger.exception("%s", type(e).__name__)
+            return []
 
     return inner
 

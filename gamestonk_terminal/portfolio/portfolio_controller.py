@@ -6,7 +6,7 @@ import difflib
 import os
 from os import listdir
 from os.path import isfile, join
-from typing import List
+from typing import List, Union
 from datetime import datetime
 
 from prompt_toolkit.completion import NestedCompleter
@@ -15,18 +15,13 @@ import pandas as pd
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
-    MENU_GO_BACK,
-    MENU_QUIT,
-    MENU_RESET,
     try_except,
     valid_date,
     check_positive_float,
     system_clear,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.portfolio.brokers import bro_controller
 
-# from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
 from gamestonk_terminal.portfolio import (
     portfolio_view,
@@ -36,7 +31,7 @@ from gamestonk_terminal.portfolio import (
 )
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
-# pylint: disable=R1710,E1101
+# pylint: disable=R1710,E1101,C0415
 
 
 class PortfolioController:
@@ -44,17 +39,23 @@ class PortfolioController:
 
     CHOICES = [
         "cls",
+        "home",
+        "h",
         "?",
         "help",
         "q",
         "quit",
+        "..",
+        "exit",
+        "r",
         "reset",
     ]
 
     CHOICES_MENUS = [
         "bro",
-        # "pa",
         "po",
+    ]
+    CHOICES_COMMANDS = [
         "load",
         "save",
         "show",
@@ -64,18 +65,26 @@ class PortfolioController:
         "rmr",
     ]
 
-    CHOICES += CHOICES_MENUS
+    CHOICES += CHOICES_MENUS + CHOICES_COMMANDS
 
-    def __init__(self):
+    def __init__(self, queue: List[str] = None):
         """Constructor"""
         self.port_parser = argparse.ArgumentParser(add_help=False, prog="portfolio")
         self.port_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
-        self.completer = NestedCompleter.from_nested_dict(
-            {c: None for c in self.CHOICES}
-        )
+        self.completer: Union[None, NestedCompleter] = None
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.CHOICES}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+        if queue:
+            self.queue = queue
+        else:
+            self.queue = list()
+
         self.portfolio = pd.DataFrame(
             columns=[
                 "Name",
@@ -93,13 +102,8 @@ class PortfolioController:
         """Print help"""
         help_text = """
 What do you want to do?
-    cls         clear screen
-    ?/help      show this menu again
-    q           quit this menu, and shows back to main menu
-    quit        quit to abandon the program
-    reset       reset terminal and reload configs
 
->   bro         brokers holdings, \t\t supports: robinhood, ally, degiro
+>   bro         brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
 >   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt
 
 Portfolio:
@@ -122,73 +126,87 @@ Graphs:
 
         Returns
         -------
-        MENU_GO_BACK, MENU_QUIT, MENU_RESET
-            MENU_GO_BACK - Show main context menu again
-            MENU_QUIT - Quit terminal
-            MENU_RESET - Reset terminal and go back to same previous menu
+        List[str]
+            List of commands in the queue to execute
         """
-
         # Empty command
         if not an_input:
             print("")
-            return None
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
 
         (known_args, other_args) = self.port_parser.parse_known_args(an_input.split())
 
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return None
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
 
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return None
-
-        return getattr(
-            self, "call_" + known_args.cmd, lambda: "command not recognized!"
+        getattr(
+            self,
+            "call_" + known_args.cmd,
+            lambda _: "Command not recognized!",
         )(other_args)
 
+        return self.queue
+
+    def call_home(self, _):
+        """Process home command"""
+        self.queue.insert(0, "quit")
+
+    def call_cls(self, _):
+        """Process cls command"""
+        system_clear()
+
     def call_help(self, _):
-        """Process Help Command"""
+        """Process help command"""
         self.print_help()
 
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-        return MENU_GO_BACK
-
     def call_quit(self, _):
-        """Process Quit command - exit the program"""
-        return MENU_QUIT
+        """Process quit menu command"""
+        print("")
+        self.queue.insert(0, "quit")
+
+    def call_exit(self, _):
+        """Process exit terminal command"""
+        print("")
+        self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
-        """Process Reset command - reset the program"""
-        return MENU_RESET
+        """Process reset command"""
+        self.queue.insert(0, "portfolio")
+        self.queue.insert(0, "reset")
+        self.queue.insert(0, "quit")
 
-    # MENUS
     def call_bro(self, _):
         """Process bro command"""
-        ret = bro_controller.menu()
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        from gamestonk_terminal.portfolio.brokers import bro_controller
 
-    # def call_pa(self, _):
-    #    """Process pa command"""
-    #    ret = pa_controller.menu()
-    #    if ret is False:
-    #        self.print_help()
-    #    else:
-    #        return True
+        self.queue = bro_controller.menu(self.queue)
 
     def call_po(self, _):
         """Process po command"""
-        ret = po_controller.menu([])
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+        self.queue = po_controller.menu([], self.queue)
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -215,11 +233,9 @@ Graphs:
                 other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        self.portfolio = portfolio_model.load_df(ns_parser.name)
-        print("")
+        if ns_parser:
+            self.portfolio = portfolio_model.load_df(ns_parser.name)
+            print("")
 
     @try_except
     def call_save(self, other_args: List[str]):
@@ -242,19 +258,17 @@ Graphs:
             other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if (
-            ".csv" not in ns_parser.name
-            and ".xlsx" not in ns_parser.name
-            and ".json" not in ns_parser.name
-        ):
-            print(
-                "Please submit as 'filename.filetype' with filetype being csv, xlsx, or json\n"
-            )
-
-        portfolio_model.save_df(self.portfolio, ns_parser.name)
+        if ns_parser:
+            if (
+                ".csv" in ns_parser.name
+                or ".xlsx" in ns_parser.name
+                or ".json" in ns_parser.name
+            ):
+                portfolio_model.save_df(self.portfolio, ns_parser.name)
+            else:
+                print(
+                    "Please submit as 'filename.filetype' with filetype being csv, xlsx, or json\n"
+                )
 
     def call_show(self, _):
         """Process show command"""
@@ -316,13 +330,7 @@ Graphs:
             type=check_positive_float,
             help="Fees paid for transaction",
         )
-        # parser.add_argument(
-        #     "-r",
-        #     "--premium",
-        #     dest="premium",
-        #     type=check_positive_float,
-        #     help="Premium paid/received for the option",
-        # )
+
         parser.add_argument(
             "-a",
             "--action",
@@ -397,18 +405,18 @@ Graphs:
             default="SPY",
             help="Choose a ticker to be the market asset",
         )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if self.portfolio.empty:
-            print("Please add items to the portfolio\n")
-            return
-
-        val, hist = portfolio_model.convert_df(self.portfolio)
-        if not val.empty:
-            portfolio_view.Report(val, hist, ns_parser.market, 365).generate_report()
+        if ns_parser:
+            if not self.portfolio.empty:
+                val, hist = portfolio_model.convert_df(self.portfolio)
+                if not val.empty:
+                    portfolio_view.Report(
+                        val, hist, ns_parser.market, 365
+                    ).generate_report()
+                else:
+                    print("Cannot generate a graph from an empty dataframe\n")
+            else:
+                print("Please add items to the portfolio\n")
 
     @try_except
     def call_rmr(self, other_args: List[str]):
@@ -416,7 +424,7 @@ Graphs:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ret",
+            prog="rmr",
             description="Graph of portfolio returns versus market returns",
         )
         parser.add_argument(
@@ -427,53 +435,94 @@ Graphs:
             default="SPY",
             help="Choose a ticker to be the market asset",
         )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if self.portfolio.empty:
-            print("Please add items to the portfolio\n")
-            return
-
-        val, _ = portfolio_model.convert_df(self.portfolio)
-        if not val.empty:
-            df_m = yfinance_model.get_market(val.index[0], ns_parser.market)
-            returns, _ = portfolio_model.get_return(val, df_m, 365)
-            portfolio_view.plot_overall_return(returns, ns_parser.market, True)
-        else:
-            print("Cannot generate a graph from an empty dataframe\n")
+        if ns_parser:
+            if self.portfolio.empty:
+                val, _ = portfolio_model.convert_df(self.portfolio)
+                if not val.empty:
+                    df_m = yfinance_model.get_market(val.index[0], ns_parser.market)
+                    returns, _ = portfolio_model.get_return(val, df_m, 365)
+                    portfolio_view.plot_overall_return(returns, ns_parser.market, True)
+                else:
+                    print("Cannot generate a graph from an empty dataframe\n")
+            else:
+                print("Please add items to the portfolio\n")
 
 
-def menu():
+def menu(queue: List[str] = None):
     """Portfolio Menu"""
-    portfolio_controller = PortfolioController()
-    portfolio_controller.call_help(None)
-    while True:
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in portfolio_controller.CHOICES}
-            )
+    port_controller = PortfolioController(queue)
+    an_input = "HELP_ME"
 
-            an_input = session.prompt(
-                f"{get_flair()} (portfolio)> ",
-                completer=completer,
-            )
+    while True:
+        # There is a command in the queue
+        if port_controller.queue and len(port_controller.queue) > 0:
+            # If the command is quitting the menu we want to return in here
+            if port_controller.queue[0] in ("q", "..", "quit"):
+                print("")
+                if len(port_controller.queue) > 1:
+                    return port_controller.queue[1:]
+                return []
+
+            # Consume 1 element from the queue
+            an_input = port_controller.queue[0]
+            port_controller.queue = port_controller.queue[1:]
+
+            # Print the current location because this was an instruction and we want user to know what was the action
+            if an_input and an_input.split(" ")[0] in port_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /portfolio/ $ {an_input}")
+
+        # Get input command from user
         else:
-            an_input = input(f"{get_flair()} (portfolio)> ")
+            # Display help menu when entering on this menu from a level above
+            if an_input == "HELP_ME":
+                port_controller.print_help()
+
+            # Get input from user using auto-completion
+            if session and gtff.USE_PROMPT_TOOLKIT and port_controller.completer:
+                try:
+                    an_input = session.prompt(
+                        f"{get_flair()} /portfolio/ $ ",
+                        completer=port_controller.completer,
+                        search_ignore_case=True,
+                    )
+                except KeyboardInterrupt:
+                    # Exit in case of keyboard interrupt
+                    an_input = "exit"
+            # Get input from user without auto-completion
+            else:
+                an_input = input(f"{get_flair()} /portfolio/ $ ")
 
         try:
-            process_input = portfolio_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
+            # Process the input command
+            port_controller.queue = port_controller.switch(an_input)
 
         except SystemExit:
-            print("The command selected doesn't exit\n")
-            similar_cmd = difflib.get_close_matches(
-                an_input, portfolio_controller.CHOICES, n=1, cutoff=0.7
+            print(
+                f"\nThe command '{an_input}' doesn't exist on the /portfolio menu.",
+                end="",
             )
-
+            similar_cmd = difflib.get_close_matches(
+                an_input.split(" ")[0] if " " in an_input else an_input,
+                port_controller.CHOICES,
+                n=1,
+                cutoff=0.7,
+            )
             if similar_cmd:
-                print(f"Did you mean '{similar_cmd[0]}'?\n")
-            continue
+                if " " in an_input:
+                    candidate_input = (
+                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                    )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        port_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
+                else:
+                    an_input = similar_cmd[0]
+
+                print(f" Replacing by '{an_input}'.")
+                port_controller.queue.insert(0, an_input)
+            else:
+                print("\n")

@@ -1,11 +1,13 @@
 """Terminal helper"""
 __docformat__ = "numpy"
 import hashlib
+import logging
 import os
 import random
 import subprocess  # nosec
 import sys
 from datetime import datetime
+from typing import List
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -24,12 +26,9 @@ from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import thought_of_the_day as thought
 
-# import git
+# pylint: disable=too-many-statements,no-member,too-many-branches,C0302
 
-# pylint: disable=no-member,too-many-branches,C0302
-
-
-# pylint: disable=too-many-statements
+logger = logging.getLogger(__name__)
 
 
 def check_api_keys():
@@ -240,7 +239,27 @@ def check_api_keys():
         key_dict["BINANCE"] = "Not defined"
     else:
         key_dict["BINANCE"] = "defined, not tested"
-
+    # BitQuery keys
+    bitquery = cfg.API_BITQUERY_KEY
+    if "REPLACE_ME" in bitquery:
+        key_dict["BITQUERY"] = "Not defined"
+    else:
+        headers = {"x-api-key": cfg.API_BITQUERY_KEY}
+        query = """
+        {
+        ethereum {
+        dexTrades(options: {limit: 10, desc: "count"}) {
+            count
+            protocol
+        }}}
+        """
+        r = requests.post(
+            "https://graphql.bitquery.io", json={"query": query}, headers=headers
+        )
+        if r.status_code == 200:
+            key_dict["BITQUERY"] = "defined, test passed"
+        else:
+            key_dict["BITQUERY"] = "defined, test failed"
     # SentimentInvestor keys
     si_keys = [cfg.API_SENTIMENTINVESTOR_KEY, cfg.API_SENTIMENTINVESTOR_TOKEN]
     if "REPLACE_ME" in si_keys:
@@ -295,6 +314,8 @@ def print_goodbye():
         goodbye_msg[random.randint(0, len(goodbye_msg) - 1)] + goodbye_msg_time + "\n"
     )
 
+    logger.info("Terminal stopped")
+
 
 def sha256sum(filename):
     h = hashlib.sha256()
@@ -335,7 +356,7 @@ def update_terminal():
 def about_us():
     """Prints an about us section"""
     print(
-        f"\n{Fore.GREEN}Thanks for using Gamestonk Terminal. This is our way!{Style.RESET_ALL}\n"
+        f"{Fore.GREEN}Thanks for using Gamestonk Terminal. This is our way!{Style.RESET_ALL}\n"
         "\n"
         f"{Fore.CYAN}Join our community on discord: {Style.RESET_ALL}https://discord.gg/Up2QGbMKHY\n"
         f"{Fore.CYAN}Follow our twitter for updates: {Style.RESET_ALL}https://twitter.com/gamestonkt\n"
@@ -352,8 +373,7 @@ def about_us():
         "markets, carefully consider your investment objectives, level of experience, and risk appetite, and seek "
         "professional advice where needed. The data contained in Gamestonk Terminal (GST) is not necessarily accurate. "
         "GST and any provider of the data contained in this website will not accept liability for any loss or damage "
-        "as a result of your trading, or your reliance on the information displayed."
-        f"\n{Style.RESET_ALL}"
+        f"as a result of your trading, or your reliance on the information displayed.{Style.RESET_ALL}"
     )
 
 
@@ -369,10 +389,11 @@ def bootup():
             # pylint: disable=E1101
             sys.stdout.reconfigure(encoding="utf-8")
     except Exception as e:
+        logger.exception("%s", type(e).__name__)
         print(e, "\n")
 
     # Print first welcome message and help
-    print("\nWelcome to Gamestonk Terminal Beta")
+    print("\nWelcome to Gamestonk Terminal Beta\n")
 
     # The commit has was commented out because the terminal was crashing due to git import for multiple users
     # ({str(git.Repo('.').head.commit)[:7]})
@@ -382,19 +403,26 @@ def bootup():
         try:
             thought.get_thought_of_the_day()
         except Exception as e:
+            logger.exception("%s", type(e).__name__)
             print(e)
         print("")
 
 
-def reset(menu_prior_to_reset=""):
+def reset(queue: List[str] = None):
     """Resets the terminal.  Allows for checking code or keys without quitting"""
     print("resetting...")
     plt.close("all")
 
-    arg = f" {menu_prior_to_reset}" if menu_prior_to_reset else ""
-    completed_process = subprocess.run(  # nosec
-        f"{sys.executable} terminal.py{arg}", shell=True, check=False
-    )
+    if queue and len(queue) > 0:
+        completed_process = subprocess.run(  # nosec
+            f"{sys.executable} terminal.py {'/'.join(queue) if len(queue) > 0 else ''}",
+            shell=True,
+            check=False,
+        )
+    else:
+        completed_process = subprocess.run(  # nosec
+            f"{sys.executable} terminal.py", shell=True, check=False
+        )
     if completed_process.returncode != 0:
         print("Unfortunately, resetting wasn't possible!\n")
 

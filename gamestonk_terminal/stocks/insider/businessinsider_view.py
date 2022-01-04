@@ -23,7 +23,7 @@ def insider_activity(
     interval: str,
     num: int,
     raw: bool,
-    export: str,
+    export: str = "",
 ):
     """Display insider activity. [Source: Business Insider]
 
