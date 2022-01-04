@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 
 import numpy as np
 import pandas as pd
-
+from rich.console import Console
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.common.quantitative_analysis import (
     qa_view,
@@ -29,6 +29,8 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.quantitative_analysis.factors_view import capm_view
+
+t_console = Console()
 
 
 class QaController:
@@ -95,11 +97,12 @@ class QaController:
         stock["LogPrice"] = np.log(stock["Adj Close"])
         stock = stock.rename(columns={"Adj Close": "AdjClose"})
         stock = stock.dropna()
+        stock.columns = [x.lower() for x in stock.columns]
         self.stock = stock
         self.ticker = ticker
         self.start = start
         self.interval = interval
-        self.target = "Returns"
+        self.target = "returns"
         self.df_columns = list(stock.columns)
         self.qa_parser = argparse.ArgumentParser(add_help=False, prog="qa")
         self.qa_parser.add_argument(
@@ -126,17 +129,17 @@ class QaController:
         """Print help"""
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.start:
-            stock_str = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            stock_str = f"{s_intraday} Stock: [cyan]{self.ticker}[/cyan] (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            stock_str = f"{s_intraday} Stock: {self.ticker}"
-        help_str = f"""
-Quantitative Analysis:
+            stock_str = f"{s_intraday} Stock: [cyan]{self.ticker}[/cyan]"
+        help_str = f"""[bold]
+Quantitative Analysis[/bold]:
 
    load        load new ticker
    pick        pick target column for analysis
 
 {stock_str}
-Target Column: {self.target}
+Target Column: [green]{self.target}[/green]
 
 Statistics:
     summary     brief summary statistics of loaded stock.
@@ -161,7 +164,7 @@ Other:
     cusum       detects abrupt changes using cumulative sum algorithm of prices
     capm        capital asset pricing model
         """
-        print(help_str)
+        t_console.print(help_str)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -173,7 +176,7 @@ Other:
         """
         # Empty command
         if not an_input:
-            print("")
+            t_console.print("")
             return self.queue
 
         # Navigation slash is being used
@@ -226,7 +229,7 @@ Other:
 
     def call_quit(self, _):
         """Process quit menu command"""
-        print("")
+        t_console.print("")
         self.queue.insert(0, "quit")
 
     def call_exit(self, _):
@@ -355,6 +358,7 @@ Other:
             "-t",
             "--target",
             dest="target",
+            type=lambda x: x.lower(),
             choices=list(self.stock.columns),
             help="Select variable to analyze",
         )
@@ -364,7 +368,7 @@ Other:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.target = ns_parser.target
-        print("")
+        t_console.print("")
 
     @try_except
     def call_raw(self, other_args: List[str]):
@@ -377,12 +381,12 @@ Other:
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             help="Number to show",
             type=check_positive,
             default=20,
-            dest="num",
+            dest="limit",
         )
         parser.add_argument(
             "-d",
@@ -399,7 +403,7 @@ Other:
         if ns_parser:
             qa_view.display_raw(
                 self.stock[self.target],
-                num=ns_parser.num,
+                num=ns_parser.limit,
                 sort="",
                 des=ns_parser.descend,
                 export=ns_parser.export,
@@ -621,7 +625,7 @@ Other:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.target != "AdjClose":
-                print(
+                t_console.print(
                     "Target not AdjClose.  For best results, use `pick AdjClose` first."
                 )
 
@@ -925,7 +929,7 @@ def menu(
         if qa_controller.queue and len(qa_controller.queue) > 0:
             # If the command is quitting the menu we want to return in here
             if qa_controller.queue[0] in ("q", "..", "quit"):
-                print("")
+                t_console.print("")
                 if len(qa_controller.queue) > 1:
                     return qa_controller.queue[1:]
                 return []
@@ -936,7 +940,7 @@ def menu(
 
             # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input.split(" ")[0] in qa_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /stocks/qa/ $ {an_input}")
+                t_console.print(f"{get_flair()} /stocks/qa/ $ {an_input}")
 
         # Get input command from user
         else:
@@ -964,7 +968,7 @@ def menu(
             qa_controller.queue = qa_controller.switch(an_input)
 
         except SystemExit:
-            print(
+            t_console.print(
                 f"\nThe command '{an_input}' doesn't exist on the /stocks/qa menu.",
                 end="",
             )
@@ -982,13 +986,13 @@ def menu(
                     if candidate_input == an_input:
                         an_input = ""
                         qa_controller.queue = []
-                        print("\n")
+                        t_console.print("")
                         continue
                     an_input = candidate_input
                 else:
                     an_input = similar_cmd[0]
 
-                print(f" Replacing by '{an_input}'.")
+                t_console.print(f" Replacing by '{an_input}'.")
                 qa_controller.queue.insert(0, an_input)
             else:
-                print("\n")
+                t_console.print("")
