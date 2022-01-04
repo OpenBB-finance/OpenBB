@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
 import os
 from os import listdir
 from os.path import isfile, join
@@ -14,7 +13,7 @@ import pandas as pd
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
-    get_flair,
+    menu_decorator,
     try_except,
     valid_date,
     check_positive_float,
@@ -31,7 +30,7 @@ from gamestonk_terminal.portfolio import (
 )
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
-# pylint: disable=R1710,E1101,C0415
+# pylint: disable=R1710,E1101,C0415,W0613
 
 
 class PortfolioController:
@@ -449,80 +448,6 @@ Graphs:
                 print("Please add items to the portfolio\n")
 
 
+@menu_decorator("/portfolio/", PortfolioController)
 def menu(queue: List[str] = None):
     """Portfolio Menu"""
-    port_controller = PortfolioController(queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if port_controller.queue and len(port_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if port_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(port_controller.queue) > 1:
-                    return port_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = port_controller.queue[0]
-            port_controller.queue = port_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in port_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /portfolio/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                port_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and port_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /portfolio/ $ ",
-                        completer=port_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /portfolio/ $ ")
-
-        try:
-            # Process the input command
-            port_controller.queue = port_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /portfolio menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                port_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        port_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                port_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

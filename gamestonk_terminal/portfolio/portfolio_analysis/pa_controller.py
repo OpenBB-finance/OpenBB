@@ -5,20 +5,19 @@ import argparse
 import os
 
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
-    get_flair,
+    menu_decorator,
     parse_known_args_and_warn,
     try_except,
     system_clear,
 )
-from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.portfolio_analysis import (
     portfolio_model,
     portfolio_view,
 )
+
+# pylint: disable=W0613
 
 portfolios_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "portfolios")
 possible_paths = [
@@ -254,31 +253,6 @@ Portfolio: {self.portfolio_name or None}
             print("")
 
 
+@menu_decorator("/portfolio/pa/", PortfolioController)
 def menu():
     """Portfolio Analysis Menu"""
-    pa_controller = PortfolioController()
-    pa_controller.print_help()
-
-    while True:
-        # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in pa_controller.CHOICES}
-            )
-            try:
-                an_input = session.prompt(
-                    f"{get_flair()} (portfolio)>(pa)> ",
-                    completer=completer,
-                )
-            except KeyboardInterrupt:
-                # Exit in case of keyboard interrupt
-                an_input = "exit"
-        else:
-            an_input = input(f"{get_flair()} (portfolio)>(pa)> ")
-
-        try:
-            pa_controller.switch(an_input)
-
-        except SystemExit:
-            print("The command selected doesn't exist\n")
-            continue

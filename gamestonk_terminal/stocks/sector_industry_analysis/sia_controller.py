@@ -9,7 +9,7 @@ from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-    get_flair,
+    menu_decorator,
     parse_known_args_and_warn,
     try_except,
     system_clear,
@@ -26,7 +26,7 @@ from gamestonk_terminal.stocks.sector_industry_analysis import (
 from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 
 
-# pylint: disable=inconsistent-return-statements,too-many-public-methods,C0302,R0902
+# pylint: disable=inconsistent-return-statements,too-many-public-methods,C0302,R0902,W0613
 
 
 class SectorIndustryAnalysisController:
@@ -1055,102 +1055,6 @@ Returned tickers: {', '.join(self.tickers)}
             print("No main ticker loaded to go into comparison analysis menu", "\n")
 
 
-def menu(
-    ticker: str,
-    queue: List[str] = None,
-):
+@menu_decorator("/stocks/sia/", SectorIndustryAnalysisController)
+def menu(ticker: str, queue: List[str] = None):
     """Sector and Industry Analysis Menu"""
-    sia_controller = SectorIndustryAnalysisController(ticker, queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if sia_controller.queue and len(sia_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if sia_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(sia_controller.queue) > 1:
-                    return sia_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = sia_controller.queue[0]
-            sia_controller.queue = sia_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in sia_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /stocks/sia/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                sia_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and sia_controller.choices:
-                sia_controller.choices["industry"] = {
-                    i: None
-                    for i in financedatabase_model.get_industries(
-                        country=sia_controller.country, sector=sia_controller.sector
-                    )
-                }
-                sia_controller.choices["sector"] = {
-                    s: None
-                    for s in financedatabase_model.get_sectors(
-                        industry=sia_controller.industry, country=sia_controller.country
-                    )
-                }
-                sia_controller.choices["country"] = {
-                    c: None
-                    for c in financedatabase_model.get_countries(
-                        industry=sia_controller.industry, sector=sia_controller.sector
-                    )
-                }
-                completer = NestedCompleter.from_nested_dict(sia_controller.choices)
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/sia/ $ ",
-                        completer=completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/sia/ $ ")
-
-        try:
-            # Process the input command
-            sia_controller.queue = sia_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/sia menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                sia_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        sia_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                sia_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

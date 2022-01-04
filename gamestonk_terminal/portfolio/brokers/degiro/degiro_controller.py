@@ -1,22 +1,20 @@
-# IMPORTATION STANDARD
 import argparse
 from typing import List, Union
-import difflib
 
-# IMPORTATION THIRDPARTY
 from prompt_toolkit.completion import NestedCompleter
 
-# IMPORTATION INTERNAL
 import gamestonk_terminal.config_terminal as config
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
-    get_flair,
+    menu_decorator,
     parse_known_args_and_warn,
     system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers.degiro.degiro_view import DegiroView
+
+# pylint: disable=W0613
 
 
 class DegiroController:
@@ -425,83 +423,6 @@ class DegiroController:
         self.__degiro_view.update(ns_parser=ns_parser)
 
 
+@menu_decorator("/portfolio/bro/degiro/", DegiroController)
 def menu(queue: List[str] = None):
     """Degiro Menu"""
-    degiro_controller = DegiroController(queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if degiro_controller.queue and len(degiro_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if degiro_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(degiro_controller.queue) > 1:
-                    return degiro_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = degiro_controller.queue[0]
-            degiro_controller.queue = degiro_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if (
-                an_input
-                and an_input.split(" ")[0] in degiro_controller.CHOICES_COMMANDS
-            ):
-                print(f"{get_flair()} /portfolio/bro/degiro/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                DegiroView.help_display()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and degiro_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /portfolio/bro/degiro/ $ ",
-                        completer=degiro_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /portfolio/bro/degiro/ $ ")
-
-        try:
-            # Process the input command
-            degiro_controller.queue = degiro_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /portfolio/bro/degiro menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                degiro_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        degiro_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                degiro_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

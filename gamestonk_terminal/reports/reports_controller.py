@@ -1,9 +1,8 @@
 """Reports Controller Module."""
 __docformat__ = "numpy"
 
-# pylint: disable=R1732
+# pylint: disable=R1732,W0613
 import argparse
-import difflib
 import os
 from typing import List, Union
 import webbrowser
@@ -14,7 +13,7 @@ import papermill as pm
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.helper_funcs import get_flair, system_clear
+from gamestonk_terminal.helper_funcs import menu_decorator, system_clear
 
 
 class ReportController:
@@ -269,81 +268,6 @@ Select one of the following reports:
         self.queue.insert(0, "quit")
 
 
+@menu_decorator("/reports/", ReportController)
 def menu(queue: List[str] = None):
     """Report Menu."""
-    report_controller = ReportController(queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if report_controller.queue and len(report_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if report_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(report_controller.queue) > 1:
-                    return report_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = report_controller.queue[0]
-            report_controller.queue = report_controller.queue[1:]
-
-            # Print the current location because this was an instruction
-            # and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in report_controller.CHOICES:
-                print(f"{get_flair()} /reports/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                report_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and report_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /reports/ $ ",
-                        completer=report_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /reports/ $ ")
-
-        try:
-            # Process the input command
-            report_controller.queue = report_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /reports menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                report_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        report_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                report_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

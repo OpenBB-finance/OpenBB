@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
 from datetime import timedelta, datetime
 from typing import List, Union
 
@@ -14,7 +13,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.forex import av_view, av_model
 
 from gamestonk_terminal.helper_funcs import (
-    get_flair,
+    menu_decorator,
     parse_known_args_and_warn,
     valid_date,
     try_except,
@@ -22,7 +21,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 
-# pylint: disable=R1710,import-outside-toplevel
+# pylint: disable=R1710,import-outside-toplevel,W0613
 
 
 class ForexController:
@@ -336,80 +335,6 @@ Forex brokerages:
     # d0e51033f7d5d4da6386b9e0b787892979924dce
 
 
+@menu_decorator("/forex/", ForexController)
 def menu(queue: List[str] = None):
     """Forex Menu."""
-    forex_controller = ForexController(queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if forex_controller.queue and len(forex_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if forex_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(forex_controller.queue) > 1:
-                    return forex_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = forex_controller.queue[0]
-            forex_controller.queue = forex_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in forex_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /forex/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                forex_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and forex_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /forex/ $ ",
-                        completer=forex_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /forex/ $ ")
-
-        try:
-            # Process the input command
-            forex_controller.queue = forex_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /forex menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                forex_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        forex_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                forex_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

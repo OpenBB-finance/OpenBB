@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
 from typing import List, Union
 from prompt_toolkit.completion import NestedCompleter
 
@@ -11,7 +10,7 @@ from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep impo
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
-    get_flair,
+    menu_decorator,
     parse_known_args_and_warn,
     check_positive,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -19,6 +18,8 @@ from gamestonk_terminal.helper_funcs import (
     system_clear,
 )
 from gamestonk_terminal.menu import session
+
+# pylint: disable=W0613
 
 
 class FinancialModelingPrepController:
@@ -635,6 +636,7 @@ Ticker: {self.ticker}
             )
 
 
+@menu_decorator("/stocks/fa/fmp/", FinancialModelingPrepController)
 def menu(
     ticker: str,
     start: str,
@@ -652,78 +654,3 @@ def menu(
     interval : str
         Stock data interval
     """
-
-    fmp_controller = FinancialModelingPrepController(ticker, start, interval, queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if fmp_controller.queue and len(fmp_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if fmp_controller.queue[0] in ("q", "..", "quit"):
-                if len(fmp_controller.queue) > 1:
-                    return fmp_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = fmp_controller.queue[0]
-            fmp_controller.queue = fmp_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in fmp_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /stocks/fa/fmp/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                fmp_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and fmp_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/fa/fmp/ $ ",
-                        completer=fmp_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/fa/fmp/ $ ")
-
-        try:
-            # Process the input command
-            fmp_controller.queue = fmp_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                fmp_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        fmp_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                fmp_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

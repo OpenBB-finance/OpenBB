@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
 from typing import List, Union, Dict
 
 from colorama import Style
@@ -13,13 +12,15 @@ from gamestonk_terminal.economy.fred import fred_view, fred_model
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     check_positive,
-    get_flair,
+    menu_decorator,
     parse_known_args_and_warn,
     valid_date,
     try_except,
     system_clear,
 )
 from gamestonk_terminal.menu import session
+
+# pylint: disable=W0613
 
 
 class FredController:
@@ -320,80 +321,6 @@ Current Series IDs:
             )
 
 
+@menu_decorator("/economy/fred/", FredController)
 def menu(queue: List[str] = None):
     """Fred Menu"""
-    fred_controller = FredController(queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if fred_controller.queue and len(fred_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if fred_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(fred_controller.queue) > 1:
-                    return fred_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = fred_controller.queue[0]
-            fred_controller.queue = fred_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in fred_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /economy/fred/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                fred_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and fred_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /economy/fred/ $ ",
-                        completer=fred_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /economy/fred/ $ ")
-
-        try:
-            # Process the input command
-            fred_controller.queue = fred_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /economy/fred menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                fred_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        fred_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                fred_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

@@ -1,5 +1,4 @@
 import argparse
-import difflib
 from typing import List, Union
 
 from prompt_toolkit.completion import NestedCompleter
@@ -9,12 +8,14 @@ from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     try_except,
     system_clear,
-    get_flair,
+    menu_decorator,
     check_positive,
     parse_known_args_and_warn,
 )
 
 from gamestonk_terminal.cryptocurrency.nft import nftcalendar_view, opensea_view
+
+# pylint: disable=W0613
 
 
 class NFTController:
@@ -293,79 +294,6 @@ opensea.io
             )
 
 
+@menu_decorator("/crypto/nft", NFTController)
 def menu(queue: List[str] = None):
     """NFT Menu"""
-    nft_controller = NFTController(queue=queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if nft_controller.queue and len(nft_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if nft_controller.queue[0] in ("q", "..", "quit"):
-                if len(nft_controller.queue) > 1:
-                    return nft_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = nft_controller.queue[0]
-            nft_controller.queue = nft_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in nft_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /crypto/nft/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                nft_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and nft_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /crypto/nft/ $ ",
-                        completer=nft_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /crypto/nft/ $ ")
-
-        try:
-            # Process the input command
-            nft_controller.queue = nft_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                nft_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        nft_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                nft_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

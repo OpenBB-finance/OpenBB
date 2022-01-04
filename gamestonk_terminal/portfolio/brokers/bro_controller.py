@@ -1,15 +1,14 @@
 __docformat__ = "numpy"
 
-# pylint: disable=R1710
+# pylint: disable=R1710,W0613
 
 import argparse
 from typing import List, Union, Set
-import difflib
 from prompt_toolkit.completion import NestedCompleter
 
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair, system_clear
+from gamestonk_terminal.helper_funcs import system_clear, menu_decorator
 from gamestonk_terminal.menu import session
 
 from gamestonk_terminal.portfolio.brokers.ally import ally_controller
@@ -191,6 +190,7 @@ Crypto Brokers:
     #            print(f"{broker} not supported")
 
 
+@menu_decorator("/portfolio/bro/", BrokersController)
 def menu(queue: List[str] = None):
     """Brokers Menu"""
     print(
@@ -203,79 +203,3 @@ def menu(queue: List[str] = None):
         "is impossible for us to check the coding standards and security of each of these modules. "
         "Hence why adding this disclaimer here."
     )
-
-    bro_controller = BrokersController(queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if bro_controller.queue and len(bro_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if bro_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(bro_controller.queue) > 1:
-                    return bro_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = bro_controller.queue[0]
-            bro_controller.queue = bro_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in bro_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /portfolio/bro/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                bro_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and bro_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /portfolio/bro/ $ ",
-                        completer=bro_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /portfolio/bro/ $ ")
-
-        try:
-            # Process the input command
-            bro_controller.queue = bro_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /portfolio/bro menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                bro_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        bro_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                bro_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

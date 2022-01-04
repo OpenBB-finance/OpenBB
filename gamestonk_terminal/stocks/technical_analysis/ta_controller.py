@@ -1,10 +1,8 @@
 """Technical Analysis Controller Module"""
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines
-# pylint:disable=R0904,C0201
+# pylint:disable=too-many-lines,R0904,C0201,W0613
 
 import argparse
-import difflib
 from typing import List, Union
 from datetime import datetime, timedelta
 
@@ -16,7 +14,7 @@ from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    get_flair,
+    menu_decorator,
     parse_known_args_and_warn,
     check_positive_list,
     check_positive,
@@ -1526,6 +1524,7 @@ Custom:
             )
 
 
+@menu_decorator("/stocks/ta/", TechnicalAnalysisController)
 def menu(
     ticker: str,
     start: datetime,
@@ -1534,78 +1533,3 @@ def menu(
     queue: List[str] = None,
 ):
     """Technical Analysis Menu"""
-
-    ta_controller = TechnicalAnalysisController(ticker, start, interval, stock, queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if ta_controller.queue and len(ta_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if ta_controller.queue[0] in ("q", "..", "quit"):
-                if len(ta_controller.queue) > 1:
-                    return ta_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = ta_controller.queue[0]
-            ta_controller.queue = ta_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in ta_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /stocks/ta/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                ta_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and ta_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/ta/ $ ",
-                        completer=ta_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/ta/ $ ")
-
-        try:
-            # Process the input command
-            ta_controller.queue = ta_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                ta_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        ta_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                ta_controller.queue.insert(0, an_input)
-            else:
-                print("\n")
