@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
 import os
 from datetime import datetime, timedelta
 from typing import List, Union
@@ -16,7 +15,7 @@ from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    get_flair,
+    menu_decorator,
     parse_known_args_and_warn,
     try_except,
     valid_date,
@@ -39,7 +38,7 @@ from gamestonk_terminal.stocks.options import (
     screener_controller,
 )
 
-# pylint: disable=R1710,C0302,R0916
+# pylint: disable=R1710,C0302,R0916,W0613
 
 
 class OptionsController:
@@ -543,17 +542,14 @@ Expiry: {self.selected_date or None}
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    if self.chain and (
-                        (
-                            ns_parser.put
-                            and ns_parser.strike
-                            in [float(strike) for strike in self.chain.puts["strike"]]
-                        )
-                        or (
-                            not ns_parser.put
-                            and ns_parser.strike
-                            in [float(strike) for strike in self.chain.calls["strike"]]
-                        )
+                    if (
+                        ns_parser.put
+                        and self.chain
+                        and ns_parser.strike in self.chain.puts["strike"].values
+                    ) or (
+                        not ns_parser.put
+                        and self.chain
+                        and ns_parser.strike in self.chain.calls["strike"].values
                     ):
                         syncretism_view.view_historical_greeks(
                             ticker=self.ticker,
@@ -665,13 +661,13 @@ Expiry: {self.selected_date or None}
                     expiry_date = self.expiry_dates[ns_parser.index]
                     print(f"Expiration set to {expiry_date} \n")
                     self.selected_date = expiry_date
-
-                if self.selected_date:
-                    self.chain = yfinance_model.get_option_chain(
-                        self.ticker, self.selected_date
-                    )
             else:
                 print("Please load a ticker using `load <ticker>`.\n")
+
+            if self.selected_date:
+                self.chain = yfinance_model.get_option_chain(
+                    self.ticker, self.selected_date
+                )
 
     @try_except
     def call_hist(self, other_args: List[str]):
@@ -714,7 +710,7 @@ Expiry: {self.selected_date or None}
             dest="source",
             type=str,
             choices=self.hist_source_choices,
-            default="ce",
+            default="ce" if TRADIER_TOKEN == "REPLACE_ME" else "td",
             help="Choose Tradier(TD) or ChartExchange (CE), only affects raw data",
         )
         parser.add_argument(
@@ -724,6 +720,7 @@ Expiry: {self.selected_date or None}
             type=int,
             help="Limit of data rows to display",
         )
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
         ns_parser = parse_known_args_and_warn(
@@ -735,13 +732,11 @@ Expiry: {self.selected_date or None}
                     if self.chain and (
                         (
                             ns_parser.put
-                            and ns_parser.strike
-                            in [float(strike) for strike in self.chain.puts["strike"]]
+                            and ns_parser.strike in self.chain.puts["strike"]
                         )
                         or (
                             not ns_parser.put
-                            and ns_parser.strike
-                            in [float(strike) for strike in self.chain.calls["strike"]]
+                            and ns_parser.strike in self.chain.calls["strike"]
                         )
                     ):
                         if ns_parser.source.lower() == "ce":
@@ -1329,109 +1324,36 @@ Expiry: {self.selected_date or None}
         self.queue = screener_controller.menu(self.queue)
 
 
+def choices(controller):
+    """Defines dynamic choices"""
+    if controller.expiry_dates:
+        controller.choices["exp"] = {
+            str(c): {} for c in range(len(controller.expiry_dates))
+        }
+        controller.choices["exp"]["-d"] = {
+            c: {} for c in controller.expiry_dates + [""]
+        }
+        if controller.chain:
+            controller.choices["hist"] = {
+                str(c): {}
+                for c in controller.chain.puts["strike"]
+                + controller.chain.calls["strike"]
+            }
+            controller.choices["grhist"] = {
+                str(c): {}
+                for c in controller.chain.puts["strike"]
+                + controller.chain.calls["strike"]
+            }
+            controller.choices["binom"] = {
+                str(c): {}
+                for c in controller.chain.puts["strike"]
+                + controller.chain.calls["strike"]
+            }
+
+    return NestedCompleter.from_nested_dict(controller.choices)
+
+
 # Handle
+@menu_decorator("/stocks/options/", OptionsController, choices)
 def menu(ticker: str = "", queue: List[str] = None):
     """Options Menu"""
-    op_controller = OptionsController(ticker, queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if op_controller.queue and len(op_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if op_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(op_controller.queue) > 1:
-                    return op_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = op_controller.queue[0]
-            op_controller.queue = op_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in op_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /stocks/options/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                op_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and op_controller.choices:
-
-                if op_controller.expiry_dates:
-                    op_controller.choices["exp"] = {
-                        str(c): {} for c in range(len(op_controller.expiry_dates))
-                    }
-                    op_controller.choices["exp"]["-d"] = {
-                        c: {} for c in op_controller.expiry_dates + [""]
-                    }
-                    if op_controller.chain:
-                        op_controller.choices["hist"] = {
-                            str(c): {}
-                            for c in op_controller.chain.puts["strike"]
-                            + op_controller.chain.calls["strike"]
-                        }
-                        op_controller.choices["grhist"] = {
-                            str(c): {}
-                            for c in op_controller.chain.puts["strike"]
-                            + op_controller.chain.calls["strike"]
-                        }
-                        op_controller.choices["binom"] = {
-                            str(c): {}
-                            for c in op_controller.chain.puts["strike"]
-                            + op_controller.chain.calls["strike"]
-                        }
-
-                completer = NestedCompleter.from_nested_dict(op_controller.choices)
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/options/ $ ",
-                        completer=completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/options/ $ ")
-
-        try:
-            # Process the input command
-            op_controller.queue = op_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                op_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        op_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                op_controller.queue.insert(0, an_input)
-            else:
-                print("\n")
-                an_input = ""
-                op_controller.queue = []

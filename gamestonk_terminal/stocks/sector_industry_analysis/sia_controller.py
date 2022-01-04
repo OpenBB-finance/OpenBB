@@ -1055,6 +1055,29 @@ Returned tickers: {', '.join(self.tickers)}
             print("No main ticker loaded to go into comparison analysis menu", "\n")
 
 
-@menu_decorator("/stocks/sia/", SectorIndustryAnalysisController)
+def choices(controller):
+    """Defines dynamic choices"""
+    controller.choices["industry"] = {
+        i: None
+        for i in financedatabase_model.get_industries(
+            country=controller.country, sector=controller.sector
+        )
+    }
+    controller.choices["sector"] = {
+        s: None
+        for s in financedatabase_model.get_sectors(
+            industry=controller.industry, country=controller.country
+        )
+    }
+    controller.choices["country"] = {
+        c: None
+        for c in financedatabase_model.get_countries(
+            industry=controller.industry, sector=controller.sector
+        )
+    }
+    return NestedCompleter.from_nested_dict(controller.choices)
+
+
+@menu_decorator("/stocks/sia/", SectorIndustryAnalysisController, choices)
 def menu(ticker: str, queue: List[str] = None):
     """Sector and Industry Analysis Menu"""

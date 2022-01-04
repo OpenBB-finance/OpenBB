@@ -30,6 +30,7 @@ from gamestonk_terminal import config_plot as cfgPlot
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.menu import session
 
+
 logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
@@ -920,7 +921,18 @@ def try_except(f):
     return inner
 
 
-def menu_decorator(path, context):
+def menu_decorator(path: str, context, choices_function=None):
+    """
+    This decortator allows users to create context menus with three lines of code.
+
+    path: str
+        The path to display
+    context: class
+        The context class to use
+    choices_function: function
+        A function that defines dynamic autofill options for users
+    """
+
     def decorator(_):
         def wrapper(*args, **kwargs):
             controller = context(*args, **kwargs)
@@ -940,7 +952,7 @@ def menu_decorator(path, context):
                     an_input = controller.queue[0]
                     controller.queue = controller.queue[1:]
 
-                    # Print location because this was an instruction and we want user to know what was the action
+                    # Print location because this was an instruction and we want user to know the action
                     if (
                         an_input
                         and an_input.split(" ")[0] in controller.CHOICES_COMMANDS
@@ -953,14 +965,20 @@ def menu_decorator(path, context):
                     if an_input == "HELP_ME":
                         controller.print_help()
 
-                    # function(*args, **kwargs) this is what we need to figure out
-
                     # Get input from user using auto-completion
                     if session and gtff.USE_PROMPT_TOOLKIT and controller.completer:
+                        completer = None
+
+                        # Get dynamic options if a function is provided
+                        if choices_function is not None:
+                            # THIS DOES NOT WORK, CANNOT FIGURE OUT WHY
+                            completer = choices_function(controller)
                         try:
                             an_input = session.prompt(
                                 f"{get_flair()} {path} $ ",
-                                completer=controller.completer,
+                                completer=completer
+                                if completer
+                                else controller.completer,
                                 search_ignore_case=True,
                             )
                         except KeyboardInterrupt:
