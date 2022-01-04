@@ -685,6 +685,26 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "exchange-calendars"
+version = "3.5"
+description = "exchange_calendars is a Python library with securities exchange calendars"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+korean_lunar_calendar = "*"
+numpy = "*"
+pandas = ">=1.1"
+pyluach = "*"
+python-dateutil = "*"
+pytz = "*"
+toolz = "*"
+
+[package.extras]
+dev = ["flake8", "pytest", "pytest-benchmark", "pytest-xdist", "pip-tools", "hypothesis"]
+
+[[package]]
 name = "fear-greed-index"
 version = "0.1.3"
 description = "CNN Fear and Greed Index"
@@ -1939,6 +1959,20 @@ pandas = ">=0.23"
 requests = ">=2.19.0"
 
 [[package]]
+name = "pandas-market-calendars"
+version = "3.2"
+description = "Market and exchange trading calendars for pandas"
+category = "dev"
+optional = false
+python-versions = ">=3.7.0"
+
+[package.dependencies]
+exchange-calendars = ">=3.3"
+pandas = ">=0.18"
+python-dateutil = "*"
+pytz = "*"
+
+[[package]]
 name = "pandas-ta"
 version = "0.3.14b"
 description = "An easy to use Python 3 Pandas Extension with 130+ Technical Analysis Indicators. Can be called from a Pandas DataFrame or standalone like TA-Lib. Correlation tested with TA-Lib."
@@ -2366,6 +2400,14 @@ mccabe = ">=0.6,<0.7"
 platformdirs = ">=2.2.0"
 toml = ">=0.9.2"
 typing-extensions = {version = ">=3.10.0", markers = "python_version < \"3.10\""}
+
+[[package]]
+name = "pyluach"
+version = "1.3.0"
+description = "Pyluach is a Python package for manipulating Hebrew dates,                     Gregorian-Hebrew calendar conversions, getting the weekly                     parsha, and other Jewish calendar related calculations."
+category = "dev"
+optional = false
+python-versions = ">=3.4"
 
 [[package]]
 name = "pymeeus"
@@ -3353,6 +3395,14 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "toolz"
+version = "0.11.2"
+description = "List processing tools and functional utilities"
+category = "dev"
+optional = false
+python-versions = ">=3.5"
+
+[[package]]
 name = "tornado"
 version = "6.1"
 description = "Tornado is a Python web framework and asynchronous networking library, originally developed at FriendFeed."
@@ -3712,7 +3762,7 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "83357bb0d86aba5173632ee2b3afc7a464904266db55a101ad710b9623a5092c"
+content-hash = "a3cf2a88480398985f7a1009d8e01d90cd8363597a7813b40a53b2f211f9087b"
 
 [metadata.files]
 absl-py = [
@@ -4202,13 +4252,24 @@ docutils = [
     {file = "docutils-0.16.tar.gz", hash = "sha256:c2de3a60e9e7d07be26b7f2b00ca0309c207e06c100f9cc2a94931fc75a478fc"},
 ]
 ecos = [
+    {file = "ecos-2.0.8-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:daddb8c86bbf9d8ddd8143de4ea1c49e348f06965e62a6af606428615e5383de"},
+    {file = "ecos-2.0.8-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:301e7243cdb4fd5554ea31f353a6ef579b053ed841e341b26fea0046688770b5"},
+    {file = "ecos-2.0.8-cp310-cp310-musllinux_1_1_i686.whl", hash = "sha256:425bdcbe56f6439b80f04771933bb1a0b9bd9dd4b0c793c5a8fc163aed90f42f"},
+    {file = "ecos-2.0.8-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:6800afed16f7948f855acf971caa31e0d521c8a0e657a38b491d629f5920d51d"},
+    {file = "ecos-2.0.8-cp310-cp310-win_amd64.whl", hash = "sha256:6112488f6dcc0b20a8b48d34697990c9151dc872031a95900acac01876dc0d89"},
     {file = "ecos-2.0.8-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:f87d00e55c660c4a832bbc2ff2737fb0692416da1395602b902131db7f009bc6"},
     {file = "ecos-2.0.8-cp36-cp36m-manylinux2014_x86_64.whl", hash = "sha256:642df202f99366c757f08661219f900f5fc2a52c92763d33d6a2f03870cca5d1"},
+    {file = "ecos-2.0.8-cp36-cp36m-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:53c66b39aaa1f0b81fa4d53a465ecd70df5bdbe46b5501fadbbc21b914e7684c"},
     {file = "ecos-2.0.8-cp36-cp36m-manylinux_2_24_x86_64.whl", hash = "sha256:5cbee91c94c57652b539f3bc08e6a1e3bd83001563ac714c48e3f6aa71c87dd5"},
+    {file = "ecos-2.0.8-cp36-cp36m-musllinux_1_1_i686.whl", hash = "sha256:6ff997f5159f3d5006fa6ea3e4ad021ed254d17789e74d6c617b77d2282ea865"},
+    {file = "ecos-2.0.8-cp36-cp36m-musllinux_1_1_x86_64.whl", hash = "sha256:9f13e49236d04c0fbd470c0a09d794fef1b3b26414199d1375902e5d3a44ff9f"},
     {file = "ecos-2.0.8-cp36-cp36m-win_amd64.whl", hash = "sha256:5aabb2455cf71431565343ce89ad2cbe26bf3c48fbc25bdf4bd58d024b2760d7"},
     {file = "ecos-2.0.8-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:99dfdc91b228ab274ad34b7b1fa852baf3c16e75ac27559dc285d630e77fdd0c"},
     {file = "ecos-2.0.8-cp37-cp37m-manylinux2014_x86_64.whl", hash = "sha256:f4b19afb3c3820252876d442a2dabf45bb1ee6c543e4032d9889cc991e3f81ce"},
+    {file = "ecos-2.0.8-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:98f56db0ceee6670a2c1a7b819b1b52e1b5a40021745ff69274eea06017671ac"},
     {file = "ecos-2.0.8-cp37-cp37m-manylinux_2_24_x86_64.whl", hash = "sha256:f5fc6534ec6bd685663cf441160bfdd3273cd7fa8151855e82b433f1bb5cfbaf"},
+    {file = "ecos-2.0.8-cp37-cp37m-musllinux_1_1_i686.whl", hash = "sha256:1144df5be066e1a3f062a6980b990d7c1521cd9756ee33d29b24c6e74f9d40e0"},
+    {file = "ecos-2.0.8-cp37-cp37m-musllinux_1_1_x86_64.whl", hash = "sha256:acb04a59091d6ffcd3a13264787dc35d33f0fdbfa43a4971bcb5f80f40201b03"},
     {file = "ecos-2.0.8-cp37-cp37m-win_amd64.whl", hash = "sha256:23686273b2b605971f390a78b6e6fa5d330f082483f681b144c318eaf4ef7861"},
     {file = "ecos-2.0.8-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:fb47cd6680f28eee7eaaf93d25fa5f1446d2ef9840fa4af6ea1971c229ecbfdc"},
     {file = "ecos-2.0.8-cp38-cp38-manylinux2014_x86_64.whl", hash = "sha256:539329054b2af511dabe1f39b3f5aac3d2b4319bb6c9efeacd8c5dd71a3845b8"},
@@ -4216,7 +4277,10 @@ ecos = [
     {file = "ecos-2.0.8-cp38-cp38-win_amd64.whl", hash = "sha256:0b93020d6ab7ca50f144e1391ae0a9d2f9c193746cb1e7eb79179bdd8393c2d6"},
     {file = "ecos-2.0.8-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:a1be3894962b3a0dc97266e13fbb6a749db1e78a6991f6631e436ec5b3836b7e"},
     {file = "ecos-2.0.8-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:0310f9cec0262b2a4bb5bad98f1c47afbca5f42a894059a0cbbea2ed93165db5"},
+    {file = "ecos-2.0.8-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:6bc3356c7503e4b4ee530248ecaa02f4b75301a376808f9edc3534b67338dc6f"},
     {file = "ecos-2.0.8-cp39-cp39-manylinux_2_24_x86_64.whl", hash = "sha256:252a2b0873a730ae6e56f66349667d61202a9cf8a326164b4f9466a55d971f26"},
+    {file = "ecos-2.0.8-cp39-cp39-musllinux_1_1_i686.whl", hash = "sha256:ed7c80b3da2e1a30f6120be48da8e244e221a703982944222a456f11e9d43aef"},
+    {file = "ecos-2.0.8-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:b67f5d9e3c0d1e09c80e49cb39273e0e92f46fbfcf0d6877d3e6884cdbf21cf6"},
     {file = "ecos-2.0.8-cp39-cp39-win_amd64.whl", hash = "sha256:980442422f99a766be6b625904f772d792126aba0e5889eefcd3391a6d2ef2a8"},
     {file = "ecos-2.0.8.tar.gz", hash = "sha256:0b8e3f6468c15d62967bfa4f9ef5bbd62fd0b455d547eacc0afc15aceb65197b"},
 ]
@@ -4227,6 +4291,9 @@ entrypoints = [
 et-xmlfile = [
     {file = "et_xmlfile-1.1.0-py3-none-any.whl", hash = "sha256:a2ba85d1d6a74ef63837eed693bcb89c3f752169b0e3e7ae5b16ca5e1b3deada"},
     {file = "et_xmlfile-1.1.0.tar.gz", hash = "sha256:8eb9e2bc2f8c97e37a2dc85a09ecdcdec9d8a396530a6d5a33b30b9a92da0c5c"},
+]
+exchange-calendars = [
+    {file = "exchange_calendars-3.5.tar.gz", hash = "sha256:1c132a9cf744ce27ce1e70c631810bbb881a64cbb1c28a166b984e383d434e41"},
 ]
 fear-greed-index = [
     {file = "fear-greed-index-0.1.3.tar.gz", hash = "sha256:5ba5286ee29b2b35147a93da353899e30abf1715decf943183399e4f057a2d87"},
@@ -5041,6 +5108,10 @@ pandas-datareader = [
     {file = "pandas-datareader-0.10.0.tar.gz", hash = "sha256:9fc3c63d39bc0c10c2683f1c6d503ff625020383e38f6cbe14134826b454d5a6"},
     {file = "pandas_datareader-0.10.0-py3-none-any.whl", hash = "sha256:0b95ff3635bc3ee1a6073521b557ab0e3c39d219f4a3b720b6b0bc6e8cdb4bb7"},
 ]
+pandas-market-calendars = [
+    {file = "pandas_market_calendars-3.2-py3-none-any.whl", hash = "sha256:bf7509d1d40c918b6b91d261adde1e8ac7bf640f4403f45a8ac9f4d4fe47154b"},
+    {file = "pandas_market_calendars-3.2.tar.gz", hash = "sha256:5c67ec7158c298aa3efc6913d0c53b82239de779611d5eec23333ff5a2927cf2"},
+]
 pandas-ta = [
     {file = "pandas_ta-0.3.14b.tar.gz", hash = "sha256:0fa35aec831d2815ea30b871688a8d20a76b288a7be2d26cc00c35cd8c09a993"},
 ]
@@ -5276,6 +5347,10 @@ pyimgur = [
 pylint = [
     {file = "pylint-2.12.2-py3-none-any.whl", hash = "sha256:daabda3f7ed9d1c60f52d563b1b854632fd90035bcf01443e234d3dc794e3b74"},
     {file = "pylint-2.12.2.tar.gz", hash = "sha256:9d945a73640e1fec07ee34b42f5669b770c759acd536ec7b16d7e4b87a9c9ff9"},
+]
+pyluach = [
+    {file = "pyluach-1.3.0-py3-none-any.whl", hash = "sha256:43977d47c86695d66789f3d24c411c4d110363f760331136009e43ac9af61b1e"},
+    {file = "pyluach-1.3.0.tar.gz", hash = "sha256:9cf95eaa600cc904d1adb015036ab135e0d732ca2a30253db92b676ee3415dea"},
 ]
 pymeeus = [
     {file = "PyMeeus-0.5.11.tar.gz", hash = "sha256:bb9d670818d8b0594317b48a7dadea02a0594e5344263bf2054e1a011c8fed55"},
@@ -6046,6 +6121,10 @@ toml = [
 tomli = [
     {file = "tomli-1.2.3-py3-none-any.whl", hash = "sha256:e3069e4be3ead9668e21cb9b074cd948f7b3113fd9c8bba083f48247aab8b11c"},
     {file = "tomli-1.2.3.tar.gz", hash = "sha256:05b6166bff487dc068d322585c7ea4ef78deed501cc124060e0f238e89a9231f"},
+]
+toolz = [
+    {file = "toolz-0.11.2-py3-none-any.whl", hash = "sha256:a5700ce83414c64514d82d60bcda8aabfde092d1c1a8663f9200c07fdcc6da8f"},
+    {file = "toolz-0.11.2.tar.gz", hash = "sha256:6b312d5e15138552f1bda8a4e66c30e236c831b612b2bf0005f8a1df10a4bc33"},
 ]
 tornado = [
     {file = "tornado-6.1-cp35-cp35m-macosx_10_9_x86_64.whl", hash = "sha256:d371e811d6b156d82aa5f9a4e08b58debf97c302a35714f6f45e35139c332e32"},
