@@ -1,4 +1,4 @@
-    # IMPORTATION STANDARD
+# IMPORTATION STANDARD
 import os
 from collections import namedtuple
 
