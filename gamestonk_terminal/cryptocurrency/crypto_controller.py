@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 # pylint: disable=R0904, C0302, R1710, W0622, C0201
 
 import argparse
-import difflib
 from typing import List, Union
 import pandas as pd
 from colorama import Style
@@ -14,7 +13,6 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    get_flair,
     menu_decorator,
     parse_known_args_and_warn,
     check_positive,
@@ -39,7 +37,7 @@ from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
 )
 import gamestonk_terminal.config_terminal as cfg
 
-# pylint: disable=import-outside-toplevel
+# pylint: disable=import-outside-toplevel,W0613
 
 
 CRYPTO_SOURCES = {
@@ -830,5 +828,7 @@ class CryptoController:
                 export=ns_parser.export,
             )
 
-menu_decorator("/crypto/", CryptoController)
+
+@menu_decorator("/crypto/", CryptoController)
 def menu(queue: List[str] = None):
+    """Crypto menu"""
