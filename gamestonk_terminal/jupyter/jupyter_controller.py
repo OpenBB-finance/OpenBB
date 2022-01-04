@@ -61,7 +61,6 @@ class JupyterController:
     def print_help():
         """Print help"""
         help_str = """
-Jupyter:
 >   reports     creates jupyter reports
 >   dashboards  shows interactive jupyter dashboards
         """

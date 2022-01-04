@@ -63,7 +63,6 @@ class DashboardsController:
     def print_help():
         """Print help"""
         help_str = """
-Dashboards:
    stocks        interactive dashboard with ticker information
         """
         print(help_str)
