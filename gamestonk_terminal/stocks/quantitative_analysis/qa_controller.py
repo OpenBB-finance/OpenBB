@@ -18,6 +18,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    EXPORT_ONLY_FIGURES_ALLOWED,
     get_flair,
     check_positive,
     check_proportion_range,
@@ -53,6 +54,7 @@ class QaController:
         "pick",
         "raw",
         "summary",
+        "line",
         "hist",
         "cdf",
         "bw",
@@ -90,6 +92,7 @@ class QaController:
         stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(
             stock["Adj Close"].shift(1)
         )
+        stock["LogPrice"] = np.log(stock["Adj Close"])
         stock = stock.rename(columns={"Adj Close": "AdjClose"})
         stock = stock.dropna()
         self.stock = stock
@@ -128,6 +131,10 @@ class QaController:
             stock_str = f"{s_intraday} Stock: {self.ticker}"
         help_str = f"""
 Quantitative Analysis:
+
+   load        load new ticker
+   pick        pick target column for analysis
+
 {stock_str}
 Target Column: {self.target}
 
@@ -136,6 +143,7 @@ Statistics:
     normality   normality statistics and tests
     unitroot    unit root test for stationarity (ADF, KPSS)
 Plots:
+    line        line plot of selected target
     hist        histogram with density plot
     cdf         cumulative distribution function
     bw          box and whisker plot
@@ -259,7 +267,7 @@ Other:
             "-s",
             "--start",
             type=valid_date,
-            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            default=(datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d"),
             dest="start",
             help="The starting date (format YYYY-MM-DD) of the stock",
         )
@@ -328,6 +336,7 @@ Other:
                 self.stock["LogRet"] = np.log(self.stock["Adj Close"]) - np.log(
                     self.stock["Adj Close"].shift(1)
                 )
+                self.stock["LogPrice"] = np.log(self.stock["Adj Close"])
                 self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
                 self.stock = self.stock.dropna()
 
@@ -412,6 +421,33 @@ Other:
         )
         if ns_parser:
             qa_view.display_summary(df=self.stock, export=ns_parser.export)
+
+    @try_except
+    def call_line(self, other_args: List[str]):
+        """Process line command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="line",
+            description="Show line plot of selected data",
+        )
+        parser.add_argument(
+            "--log",
+            help="Plot with y on log scale",
+            dest="log",
+            action="store_true",
+            default=False,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            qa_view.display_line(
+                self.stock[self.target],
+                title=f"{self.ticker} {self.target}",
+                log_y=ns_parser.log,
+            )
 
     @try_except
     def call_hist(self, other_args: List[str]):

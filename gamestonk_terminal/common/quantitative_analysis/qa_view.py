@@ -6,13 +6,17 @@ import warnings
 from typing import Any
 
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from matplotlib import ticker
+from matplotlib import gridspec
+
 import numpy as np
 import pandas as pd
+from rich.console import Console
 import seaborn as sns
 import statsmodels.api as sm
 from colorama import Fore, Style
 from detecta import detect_cusum
-from matplotlib import gridspec
 from pandas.plotting import register_matplotlib_converters
 from scipy import stats
 from statsmodels.graphics.gofplots import qqplot
@@ -24,6 +28,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 
 register_matplotlib_converters()
+t_console = Console()
 
 # TODO : Since these are common/ they should be independent of 'stock' info.
 # df_stock should be replaced with a generic df and a column variable
@@ -550,3 +555,49 @@ def display_raw(
         print(df.to_string(index=False))
 
     print("")
+
+
+def display_line(
+    data: pd.Series, title: str = "", log_y: bool = True, export: str = ""
+):
+    """Display line plot of data
+
+    Parameters
+    ----------
+    data: pd.Series
+        Data to plot
+    title: str
+        Title for plot
+    log_y: bool
+        Flag for showing y on log scale
+    export: str
+        Format to export data
+    """
+    t_console.print("")
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+    if log_y:
+        ax.semilogy(data.index, data.values)
+        ax.yaxis.set_major_locator(plt.MaxNLocator(10))
+        ax.yaxis.set_major_formatter(ticker.FormatStrFormatter("$%.2f"))
+        ax.yaxis.set_minor_formatter(ticker.FormatStrFormatter("$%.2f"))
+    else:
+        ax.plot(data.index, data.values)
+
+    ax.grid("on")
+    dateFmt = mdates.DateFormatter("%m/%d/%Y")
+    ax.xaxis.set_major_formatter(dateFmt)
+    ax.tick_params(axis="x", labelrotation=45)
+    ax.set_xlabel("Date")
+    if title:
+        fig.suptitle(title)
+    fig.tight_layout(pad=2)
+    if gtff.USE_ION:
+        plt.ion()
+    plt.show()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "line",
+    )
