@@ -16,7 +16,7 @@ DF_EMPTY = pd.DataFrame()
 
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
-    "from_submenu, queue, expected",
+    "queue, expected",
     [
         (["historical", "help"], []),
         (["q", ".."], ["q", ".."]),
