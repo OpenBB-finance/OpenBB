@@ -75,7 +75,7 @@ class CryptoController:
         "find",
     ]
 
-    CHOICES_MENUS = ["ta", "dd", "ov", "disc", "onchain", "defi", "nft", "pred", "tpr"]
+    CHOICES_MENUS = ["ta", "dd", "ov", "disc", "onchain", "defi", "nft", "pred", "prt"]
 
     DD_VIEWS_MAPPING = {
         "cg": pycoingecko_view,
@@ -225,16 +225,37 @@ class CryptoController:
         self.queue.insert(0, "quit")
 
     @try_except
-    def call_prt(self, _):
+    def call_prt(self, other_args):
         """Process prt command"""
         if self.current_coin:
             from gamestonk_terminal.cryptocurrency.potential_returns_tool import (
                 prt_controller,
             )
 
-            self.queue = prt_controller.menu(
-                self.queue,
+            parser = argparse.ArgumentParser(
+                add_help=False,
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                prog="prt",
+                description="Load crypto currency to perform analysis on."
+                "Available data sources are CoinGecko, CoinPaprika, Binance, Coinbase"
+                "By default main source used for analysis is CoinGecko (cg). To change it use --source flag",
             )
+            parser.add_argument(
+                "--vs",
+                help="Coin to compare with",
+                dest="vs",
+                type=str,
+                required="-h" not in other_args,
+            )
+            if other_args and "-" not in other_args[0][0]:
+                other_args.insert(0, "--vs")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if ns_parser:
+                self.queue = prt_controller.menu(
+                    self.queue,
+                )
         else:
             print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
@@ -320,6 +341,7 @@ class CryptoController:
             )
             if self.symbol:
                 self.current_interval = ns_parser.interval
+                print(self.current_df.tail())
                 first_price = self.current_df["Close"].iloc[0]
                 last_price = self.current_df["Close"].iloc[-1]
                 second_last_price = self.current_df["Close"].iloc[-2]
