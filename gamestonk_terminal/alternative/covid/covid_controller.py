@@ -17,6 +17,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     system_clear,
     try_except,
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
 )
 from gamestonk_terminal.menu import session
 
@@ -43,7 +44,7 @@ class CovidController:
         "reset",
     ]
 
-    CHOICES_COMMANDS = ["country", "ov"]
+    CHOICES_COMMANDS = ["country", "ov", "deaths", "cases", "rates"]
 
     CHOICES += CHOICES_COMMANDS
 
@@ -69,8 +70,12 @@ class CovidController:
     def print_help(self):
         """Print help"""
         help_str = f"""
-Country: {self.country}
+Country: [cyan]{self.country}[/cyan]
+
         ov          get overview (cases and deaths) for selected country
+        deaths      get deaths for selected country
+        cases       get cases for selected country
+        rates       get death/cases rate for selected country
         """
         t_console.print(help_str)
 
@@ -152,6 +157,7 @@ Country: {self.country}
         self.queue.insert(0, "alternative")
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_country(self, other_args: List[str]):
         """Process country command"""
@@ -178,6 +184,7 @@ Country: {self.country}
                 t_console.print(f"{country} not a valid selection.\n")
                 return
             self.country = country
+        t_console.print("")
 
     @try_except
     def call_ov(self, other_args: List[str]):
@@ -188,9 +195,95 @@ Country: {self.country}
             prog="ov",
             description="Show historical cases and deaths by country.",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
+            limit=10,
+        )
         if ns_parser:
-            covid_view.display_covid_ov(self.country)
+            covid_view.display_covid_ov(
+                self.country,
+                raw=ns_parser.raw,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+            )
+
+    @try_except
+    def call_rates(self, other_args: List[str]):
+        """Process hist command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rates",
+            description="Show historical rates country.",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
+            limit=10,
+        )
+        if ns_parser:
+            covid_view.display_covid_stat(
+                self.country,
+                stat="rates",
+                raw=ns_parser.raw,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+            )
+
+    @try_except
+    def call_deaths(self, other_args: List[str]):
+        """Process deaths command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="deaths",
+            description="Show historical deaths by country.",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
+            limit=10,
+        )
+        if ns_parser:
+            covid_view.display_covid_stat(
+                self.country,
+                stat="deaths",
+                raw=ns_parser.raw,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+            )
+
+    @try_except
+    def call_cases(self, other_args: List[str]):
+        """Process cases command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cases",
+            description="Show historical cases for country.",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
+            limit=10,
+        )
+        if ns_parser:
+            covid_view.display_covid_stat(
+                self.country,
+                stat="cases",
+                raw=ns_parser.raw,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
 
 def menu(queue: List[str] = None):
