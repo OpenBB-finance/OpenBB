@@ -150,9 +150,9 @@ Timezone: {get_user_timezone_or_invalid()}
 
     def call_etf(self, _):
         """Process etf command"""
-        from gamestonk_terminal.etf import etf_controller
+        from gamestonk_terminal.etf.etf_controller import ETFController
 
-        self.queue = etf_controller.menu(self.queue)
+        self.queue = ETFController(self.queue).menu()
 
     def call_funds(self, _):
         """Process etf command"""

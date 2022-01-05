@@ -14,7 +14,8 @@ from gamestonk_terminal.helper_funcs import system_clear
 from gamestonk_terminal.helper_funcs import get_flair
 
 # Do before merging
-# remove pylint: disable=W0613
+# remove W0613
+# remove menu_decorator
 
 
 class BaseController:

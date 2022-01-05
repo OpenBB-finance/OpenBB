@@ -30,7 +30,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 
-t_console = Console
+t_console = Console()
 
 
 class EconomyController(BaseController):
@@ -200,6 +200,7 @@ NASDAQ DataLink (formerly Quandl):
 
 >   fred          Federal Reserve Economic Data submenu
 """
+        print(type(help_text))
         t_console.print(help_text)
 
     @try_except
@@ -1047,6 +1048,6 @@ NASDAQ DataLink (formerly Quandl):
 
     def call_fred(self, _):
         """Process fred command"""
-        from gamestonk_terminal.economy.fred import fred_controller
+        from gamestonk_terminal.economy.fred.fred_controller import FredController
 
-        self.queue = fred_controller.menu(self.queue)
+        self.queue = FredController(self.queue).menu()

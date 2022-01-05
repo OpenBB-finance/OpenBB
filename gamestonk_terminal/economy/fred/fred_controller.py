@@ -2,12 +2,13 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List, Union, Dict
+from typing import List, Dict
 
 from rich.console import Console
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.decorators import try_except, menu_decorator
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.economy.fred import fred_view, fred_model
 from gamestonk_terminal.helper_funcs import (
@@ -15,49 +16,28 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     parse_known_args_and_warn,
     valid_date,
-    system_clear,
 )
 from gamestonk_terminal.menu import session
 
-# pylint: disable=W0613,import-outside-toplevel
+# pylint: disable=import-outside-toplevel
 
 t_console = Console()
 
 
-class FredController:
+class FredController(BaseController):
     """FRED Controller Class"""
-
-    CHOICES = [
-        "cls",
-        "cd",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-        "home",
-    ]
 
     CHOICES_COMMANDS = ["search", "add", "rmv", "plot"]
     CHOICES_MENUS = ["pred"]
 
-    CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
+    BaseController.CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        self.fred_parser = argparse.ArgumentParser(add_help=False, prog="fred")
-        self.fred_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        super().__init__("/economy/fred/", self.CHOICES_COMMANDS, queue)
+
         self.current_series: Dict = dict()
         self.long_id = 0
-
-        self.completer: Union[None, NestedCompleter] = None
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
@@ -91,84 +71,6 @@ Current Series IDs:
 >   pred          prediction techniques (single SeriesID){'[/dim]'if len(self.current_series.keys())!=1 else ""}
         """
         t_console.print(help_text)
-
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            t_console.print("\n")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.fred_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "fred")
-        self.queue.insert(0, "economy")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
 
     @try_except
     def call_search(self, other_args: List[str]):
@@ -345,11 +247,10 @@ Current Series IDs:
         if len(self.current_series.keys()) != 1:
             t_console.print("Only 1 Series can be input into prediction.\n")
             return
-        from gamestonk_terminal.economy.fred.prediction import pred_controller
+        from gamestonk_terminal.economy.fred.prediction.pred_controller import (
+            PredictionTechniquesController,
+        )
 
-        self.queue = pred_controller.menu(self.current_series, self.queue)
-
-
-@menu_decorator("/economy/fred/", FredController)
-def menu(queue: List[str] = None):
-    """Fred Menu"""
+        self.queue = PredictionTechniquesController(
+            self.current_series, self.queue
+        ).menu()

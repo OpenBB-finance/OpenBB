@@ -2,13 +2,14 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List, Union, Dict
+from typing import List, Dict
 import logging
 
 from prompt_toolkit.completion import NestedCompleter
 from rich.console import Console
 
-from gamestonk_terminal.decorators import try_except, menu_decorator
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
@@ -16,7 +17,6 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     get_next_stock_market_days,
     EXPORT_ONLY_FIGURES_ALLOWED,
-    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.prediction_techniques import (
@@ -33,29 +33,12 @@ from gamestonk_terminal.common.prediction_techniques import (
 )
 from gamestonk_terminal.economy.fred import fred_model
 
-# pylint: disable=W0613
-
 logger = logging.getLogger(__name__)
 t_console = Console()
 
 
-class PredictionTechniquesController:
+class PredictionTechniquesController(BaseController):
     """Prediction Techniques Controller class"""
-
-    # Command choices
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
 
     CHOICES_COMMANDS = [
         "load",
@@ -69,7 +52,7 @@ class PredictionTechniquesController:
         "conv1d",
         "mc",
     ]
-    CHOICES += CHOICES_COMMANDS
+    BaseController.CHOICES += CHOICES_COMMANDS
 
     def __init__(
         self,
@@ -77,11 +60,8 @@ class PredictionTechniquesController:
         queue: List[str] = None,
     ):
         """Constructor"""
-        self.pred_parser = argparse.ArgumentParser(add_help=False, prog="pred")
-        self.pred_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        super().__init__("/economy/fred/pred/", self.CHOICES_COMMANDS, queue)
+
         self.start_date = "2020-01-01"
         self.current_series = current_series
         self.current_id = list(current_series.keys())[0].upper()
@@ -89,7 +69,6 @@ class PredictionTechniquesController:
             list(current_series.keys())[0], self.start_date
         ).dropna()
         self.resolution = ""  # For the views
-        self.completer: Union[None, NestedCompleter] = None
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
             choices["ets"]["-t"] = {c: {} for c in ets_model.TRENDS}
@@ -129,95 +108,10 @@ Models:
         """
         t_console.print(help_string)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Parameters
-        -------
-        an_input : str
-            string with input arguments
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-
-        # Empty command
-        if not an_input:
-            t_console.print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.pred_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "pred")
+    def custom_reset(self, _):
+        """Class specific component of reset command"""
         if self.current_series:
-            self.queue.insert(0, f"add {list(self.current_series.keys())[0]}")
-        self.queue.insert(0, "fred")
-        self.queue.insert(0, "economy")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            self.queue.insert(6, f"add {list(self.current_series.keys())[0]}")
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -865,8 +759,3 @@ Models:
                 export=ns_parser.export,
                 fig_title=f"Monte Carlo Forecast for {self.current_id}",
             )
-
-
-@menu_decorator("/economy/fred/pred/", PredictionTechniquesController)
-def menu(series: Dict, queue: List[str] = None):
-    """Prediction Techniques Menu"""
