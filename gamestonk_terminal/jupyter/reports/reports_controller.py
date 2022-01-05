@@ -225,7 +225,7 @@ Select one of the following reports:
 
             if gtff.OPEN_REPORT_AS_HTML:
                 report_output_path = os.path.join(
-                    os.path.dirname(__file__), "..", "..", f"{notebook_output}.html"
+                    os.path.abspath(os.path.join(".")), notebook_output + ".html"
                 )
                 webbrowser.open(f"file://{report_output_path}")
 
