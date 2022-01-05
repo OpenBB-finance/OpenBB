@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import difflib
+import logging
 import pathlib
 from typing import List, Union
 
@@ -23,6 +24,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 
+logger = logging.getLogger(__name__)
 t_console = Console()
 
 country_file = pathlib.Path(__file__).parent.joinpath("countries.txt")
@@ -73,6 +75,7 @@ class CovidController:
         """Print help"""
         help_str = f"""
         slopes      get countries with highest slope in cases
+        country     select country for data
 
 Country: [cyan]{self.country}[/cyan]
 
@@ -112,6 +115,7 @@ Country: [cyan]{self.country}[/cyan]
                 if cmd:
                     self.queue.insert(0, cmd)
 
+        logger.info(an_input)
         (known_args, other_args) = self.covid_parser.parse_known_args(an_input.split())
 
         # Redirect commands to their correct functions
@@ -334,10 +338,10 @@ Country: [cyan]{self.country}[/cyan]
 
 
 def menu(queue: List[str] = None):
-    """Resoualte Collection Menu"""
+    """Covid Menu"""
     covid_controller = CovidController(queue)
     an_input = "HELP_ME"
-
+    logger.info("CovidMenu")
     while True:
         # There is a command in the queue
         if covid_controller.queue and len(covid_controller.queue) > 0:

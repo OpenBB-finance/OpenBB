@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import difflib
+import logging
 from typing import List, Union
 
 from prompt_toolkit.completion import NestedCompleter
@@ -14,6 +15,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 
+logger = logging.getLogger(__name__)
 # pylint:disable=import-outside-toplevel
 
 
@@ -91,7 +93,7 @@ Alternative Data:
             for cmd in actions[1:][::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
-
+        logger.info(an_input)
         (known_args, other_args) = self.alt_parser.parse_known_args(an_input.split())
 
         # Redirect commands to their correct functions
@@ -150,6 +152,7 @@ def menu(queue: List[str] = None):
     """Resoualte Collection Menu"""
     alt_controller = AlternativeDataController(queue)
     an_input = "HELP_ME"
+    logger.info("AlternativeMenu")
 
     while True:
         # There is a command in the queue
