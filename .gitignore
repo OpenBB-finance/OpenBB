@@ -8,7 +8,7 @@ logs/
 *.ipynb
 env/
 venv/
-!notebooks/reports/.gitkeep
+!notebooks/jupyter/.gitkeep
 .python-version
 iframe_figures/
 exports/*
@@ -17,6 +17,8 @@ exports/*
 htmlcov
 gamestonk_terminal/jupyter/reports/stored/*
 !gamestonk_terminal/jupyter/reports/stored/.gitkeep
+!gamestonk_terminal/jupyter/dashboards/*.ipynb
+!gamestonk_terminal/jupyter/reports/*.ipynb
 gamestonk_terminal/portfolio/portfolios/*
 .ipynb_checkpoints/*
 
@@ -31,7 +33,6 @@ jupyterlab/*/.ipynb_checkpoints
 jupyterlab/*/*.tsbuildinfo
 jupyterlab/*/ui-tests/test-results/
 jupyterlab/*/ui-tests/tests/*.ts-snapshots/
-!jupyterlab/dashboards/stocks_interactive.ipynb
 
 # Sphinx documentation build files
 docs/_build
