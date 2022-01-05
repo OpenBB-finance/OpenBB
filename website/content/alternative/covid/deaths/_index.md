@@ -12,3 +12,5 @@ optional arguments:
   -l LIMIT, --limit LIMIT
                         Number of entries to show in data. (default: 10)
 ```
+
+![deaths](https://user-images.githubusercontent.com/18151143/148297683-7f263f7c-9db5-496b-831b-254c9324e660.png)
