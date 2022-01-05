@@ -75,7 +75,7 @@ class CryptoController:
         "find",
     ]
 
-    CHOICES_MENUS = ["ta", "dd", "ov", "disc", "onchain", "defi", "nft", "pred"]
+    CHOICES_MENUS = ["ta", "dd", "ov", "disc", "onchain", "defi", "nft", "pred", "tpr"]
 
     DD_VIEWS_MAPPING = {
         "cg": pycoingecko_view,
@@ -143,7 +143,8 @@ class CryptoController:
 >    nft         non-fungible tokens,                    e.g.: today drops{'[dim]' if not self.current_coin else ''}
 >    dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
 >    ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
->    pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo{'[/dim]' if not self.current_coin else ''}
+>    pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
+>    prt         potential returns tool                  e.g.: check how much upside if eth reaches btc market cap{'[/dim]' if not self.current_coin else ''}
 """  # noqa
         t_console.print(help_text)
 
@@ -222,6 +223,22 @@ class CryptoController:
         self.queue.insert(0, "crypto")
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
+
+    @try_except
+    def call_prt(self, _):
+        """Process prt command"""
+        if self.current_coin:
+            from gamestonk_terminal.cryptocurrency.potential_returns_tool import (
+                prt_controller,
+            )
+
+            self.queue = prt_controller.menu(
+                self.queue,
+            )
+        else:
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
     @try_except
     def call_load(self, other_args):

@@ -10,15 +10,12 @@ from gamestonk_terminal.helper_funcs import (
     try_except,
     system_clear,
     get_flair,
-    check_positive,
     parse_known_args_and_warn,
 )
 
-from gamestonk_terminal.cryptocurrency.nft import nftcalendar_view, opensea_view
 
-
-class NFTController:
-    """NFT Controller class"""
+class PRTController:
+    """PRT Controller class"""
 
     CHOICES = [
         "cls",
@@ -34,13 +31,13 @@ class NFTController:
         "reset",
     ]
 
-    CHOICES_COMMANDS = ["today", "upcoming", "ongoing", "newest", "stats"]
+    CHOICES_COMMANDS = ["load"]
 
     CHOICES += CHOICES_COMMANDS
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        self.nft_parser = argparse.ArgumentParser(add_help=False, prog="nft")
+        self.nft_parser = argparse.ArgumentParser(add_help=False, prog="prt")
         self.nft_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
@@ -59,13 +56,7 @@ class NFTController:
         """Print help"""
 
         help_text = """
-nftcalendar.io:
-    today       today's NFT drops
-    upcoming    upcoming NFT drops
-    ongoing     Ongoing NFT drops
-    newest      Recently NFTs added
-opensea.io
-    stats       check open sea collection stats
+temporary
 """
         print(help_text)
 
@@ -148,7 +139,7 @@ opensea.io
 
     def call_reset(self, _):
         """Process reset command"""
-        self.queue.insert(0, "nft")
+        self.queue.insert(0, "prt")
         self.queue.insert(0, "crypto")
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
@@ -183,150 +174,43 @@ opensea.io
         )
 
         if ns_parser:
-            opensea_view.display_collection_stats(
-                slug=ns_parser.slug,
-                export=ns_parser.export,
-            )
-
-    @try_except
-    def call_today(self, other_args: List[str]):
-        """Process today command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="today",
-            description="Today's NFT drops [Source: nftcalendar.io]",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            type=check_positive,
-            help="Number of NFT collections to display",
-            dest="limit",
-            default=5,
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            nftcalendar_view.display_nft_today_drops(
-                num=ns_parser.limit,
-                export=ns_parser.export,
-            )
-
-    @try_except
-    def call_upcoming(self, other_args: List[str]):
-        """Process upcoming command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="upcoming",
-            description="Upcoming's NFT drops [Source: nftcalendar.io]",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            type=check_positive,
-            help="Number of NFT collections to display",
-            dest="limit",
-            default=5,
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            nftcalendar_view.display_nft_upcoming_drops(
-                num=ns_parser.limit,
-                export=ns_parser.export,
-            )
-
-    @try_except
-    def call_ongoing(self, other_args: List[str]):
-        """Process ongoing command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ongoing",
-            description="Ongoing's NFT drops [Source: nftcalendar.io]",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            type=check_positive,
-            help="Number of NFT collections to display",
-            dest="limit",
-            default=5,
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            nftcalendar_view.display_nft_ongoing_drops(
-                num=ns_parser.limit,
-                export=ns_parser.export,
-            )
-
-    @try_except
-    def call_newest(self, other_args: List[str]):
-        """Process newest command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="newest",
-            description="Newest's NFT drops [Source: nftcalendar.io]",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            type=check_positive,
-            help="Number of NFT collections to display",
-            dest="limit",
-            default=5,
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            nftcalendar_view.display_nft_newest_drops(
-                num=ns_parser.limit,
-                export=ns_parser.export,
-            )
+            pass
 
 
 def menu(queue: List[str] = None):
-    """NFT Menu"""
-    nft_controller = NFTController(queue=queue)
+    """PRT Menu"""
+    prt_controller = PRTController(queue=queue)
     an_input = "HELP_ME"
 
     while True:
         # There is a command in the queue
-        if nft_controller.queue and len(nft_controller.queue) > 0:
+        if prt_controller.queue and len(prt_controller.queue) > 0:
             # If the command is quitting the menu we want to return in here
-            if nft_controller.queue[0] in ("q", "..", "quit"):
-                if len(nft_controller.queue) > 1:
-                    return nft_controller.queue[1:]
+            if prt_controller.queue[0] in ("q", "..", "quit"):
+                if len(prt_controller.queue) > 1:
+                    return prt_controller.queue[1:]
                 return []
 
             # Consume 1 element from the queue
-            an_input = nft_controller.queue[0]
-            nft_controller.queue = nft_controller.queue[1:]
+            an_input = prt_controller.queue[0]
+            prt_controller.queue = prt_controller.queue[1:]
 
             # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in nft_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /crypto/nft/ $ {an_input}")
+            if an_input and an_input.split(" ")[0] in prt_controller.CHOICES_COMMANDS:
+                print(f"{get_flair()} /crypto/prt/ $ {an_input}")
 
         # Get input command from user
         else:
             # Display help menu when entering on this menu from a level above
             if an_input == "HELP_ME":
-                nft_controller.print_help()
+                prt_controller.print_help()
 
             # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and nft_controller.completer:
+            if session and gtff.USE_PROMPT_TOOLKIT and prt_controller.completer:
                 try:
                     an_input = session.prompt(
-                        f"{get_flair()} /crypto/nft/ $ ",
-                        completer=nft_controller.completer,
+                        f"{get_flair()} /crypto/prt/ $ ",
+                        completer=prt_controller.completer,
                         search_ignore_case=True,
                     )
                 except KeyboardInterrupt:
@@ -334,20 +218,20 @@ def menu(queue: List[str] = None):
                     an_input = "exit"
             # Get input from user without auto-completion
             else:
-                an_input = input(f"{get_flair()} /crypto/nft/ $ ")
+                an_input = input(f"{get_flair()} /crypto/prt/ $ ")
 
         try:
             # Process the input command
-            nft_controller.queue = nft_controller.switch(an_input)
+            prt_controller.queue = prt_controller.switch(an_input)
 
         except SystemExit:
             print(
-                f"\nThe command '{an_input}' doesn't exist on the /crypto/nft menu.",
+                f"\nThe command '{an_input}' doesn't exist on the /crypto/prt menu.",
                 end="",
             )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
-                nft_controller.CHOICES,
+                prt_controller.CHOICES,
                 n=1,
                 cutoff=0.7,
             )
@@ -358,7 +242,7 @@ def menu(queue: List[str] = None):
                     )
                     if candidate_input == an_input:
                         an_input = ""
-                        nft_controller.queue = []
+                        prt_controller.queue = []
                         print("\n")
                         continue
                     an_input = candidate_input
@@ -366,6 +250,6 @@ def menu(queue: List[str] = None):
                     an_input = similar_cmd[0]
 
                 print(f" Replacing by '{an_input}'.")
-                nft_controller.queue.insert(0, an_input)
+                prt_controller.queue.insert(0, an_input)
             else:
                 print("\n")
