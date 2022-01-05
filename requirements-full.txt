@@ -287,10 +287,11 @@ vadersentiment==3.3.2
 valinvest==0.0.2; python_version >= "3.6"
 vcrpy==4.1.1; python_version >= "3.5"
 virtualenv==20.13.0; python_full_version >= "3.6.1"
-wcwidth==0.2.5; python_version >= "3.6" and python_full_version >= "3.6.2"
+voila==0.3.0; python_version >= "3.6"
+wcwidth==0.2.5; python_version >= "3.7" and python_full_version >= "3.6.2"
 webencodings==0.5.1; python_version >= "3.7"
 websocket-client==1.2.3; python_version >= "3.8" and python_version < "4.0"
-websockets==9.1; python_full_version >= "3.6.1"
+websockets==9.1; python_full_version >= "3.6.1" and python_version >= "3.6"
 werkzeug==2.0.2; python_version >= "3.6"
 widgetsnbextension==3.5.2
 wrapt==1.13.3; python_full_version >= "3.7.1" and python_full_version < "4.0.0" and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0") and (python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.5")
