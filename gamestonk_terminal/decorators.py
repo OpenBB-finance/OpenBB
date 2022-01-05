@@ -34,12 +34,10 @@ def try_except(f):
     return inner
 
 
-def menu_decorator(path: str, controller_class, dynamic_completer=None):
+def menu_decorator(controller_class, dynamic_completer=None):
     """
     This decortator allows users to create context menus with three lines of code.
 
-    path: str
-        The path to display
     controller_class: class
         The context class to use
     dynamic_completer: function
@@ -70,7 +68,7 @@ def menu_decorator(path: str, controller_class, dynamic_completer=None):
                         an_input
                         and an_input.split(" ")[0] in controller.CHOICES_COMMANDS
                     ):
-                        print(f"{get_flair()} {path} $ {an_input}")
+                        print(f"{get_flair()} {controller_class.PATH} $ {an_input}")
 
                 # Get input command from user
                 else:
@@ -86,7 +84,7 @@ def menu_decorator(path: str, controller_class, dynamic_completer=None):
                             controller.completer = dynamic_completer(controller)
                         try:
                             an_input = session.prompt(
-                                f"{get_flair()} {path} $ ",
+                                f"{get_flair()} {controller_class.PATH} $ ",
                                 completer=controller.completer,
                                 search_ignore_case=True,
                             )
@@ -95,7 +93,7 @@ def menu_decorator(path: str, controller_class, dynamic_completer=None):
                             an_input = "exit"
                     # Get input from user without auto-completion
                     else:
-                        an_input = input(f"{get_flair()} {path} $ ")
+                        an_input = input(f"{get_flair()} {controller_class.PATH} $ ")
 
                 try:
                     # Process the input command
@@ -103,7 +101,7 @@ def menu_decorator(path: str, controller_class, dynamic_completer=None):
 
                 except SystemExit:
                     print(
-                        f"\nThe command '{an_input}' doesn't exist on the {path[:-1]} menu.",
+                        f"\nThe command '{an_input}' doesn't exist on the {controller_class.PATH[:-1]} menu.",
                         end="",
                     )
                     similar_cmd = difflib.get_close_matches(
