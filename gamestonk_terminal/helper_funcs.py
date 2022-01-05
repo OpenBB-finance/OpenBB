@@ -922,21 +922,21 @@ def try_except(f):
     return inner
 
 
-def menu_decorator(path: str, context, choices_function=None):
+def menu_decorator(path: str, controller_class, dynamic_completer=None):
     """
     This decortator allows users to create context menus with three lines of code.
 
     path: str
         The path to display
-    context: class
+    controller_class: class
         The context class to use
-    choices_function: function
+    dynamic_completer: function
         A function that defines dynamic autofill options for users
     """
 
     def decorator(_):
         def wrapper(*args, **kwargs):
-            controller = context(*args, **kwargs)
+            controller = controller_class(*args, **kwargs)
             an_input = "HELP_ME"
 
             while True:
@@ -971,7 +971,7 @@ def menu_decorator(path: str, context, choices_function=None):
                         # Possible arguments is not yet finalized
                         if not controller.completer:
                             # Complete dynamic arguments that change at each iteration
-                            controller.completer = choices_function(controller)
+                            controller.completer = dynamic_completer(controller)
                         try:
                             an_input = session.prompt(
                                 f"{get_flair()} {path} $ ",

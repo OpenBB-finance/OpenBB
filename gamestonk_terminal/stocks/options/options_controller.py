@@ -1353,7 +1353,6 @@ def choices(controller):
     return NestedCompleter.from_nested_dict(controller.choices)
 
 
-# Handle
 @menu_decorator("/stocks/options/", OptionsController, choices)
 def menu(ticker: str = "", queue: List[str] = None):
     """Options Menu"""
