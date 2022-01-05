@@ -27,6 +27,7 @@ from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     rich_table_from_df,
+    LineAnnotateDrawer,
 )
 
 register_matplotlib_converters()
@@ -597,8 +598,12 @@ def display_line(
     if title:
         fig.suptitle(title)
     fig.tight_layout(pad=2)
+
     if gtff.USE_ION:
         plt.ion()
+
+    LineAnnotateDrawer(ax).draw_lines_and_annotate()
+
     plt.show()
 
     export_data(
