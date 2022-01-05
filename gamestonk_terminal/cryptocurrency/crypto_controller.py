@@ -341,7 +341,6 @@ class CryptoController:
             )
             if self.symbol:
                 self.current_interval = ns_parser.interval
-                print(self.current_df.tail())
                 first_price = self.current_df["Close"].iloc[0]
                 last_price = self.current_df["Close"].iloc[-1]
                 second_last_price = self.current_df["Close"].iloc[-2]
