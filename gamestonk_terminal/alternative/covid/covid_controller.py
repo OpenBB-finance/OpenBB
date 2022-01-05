@@ -18,6 +18,8 @@ from gamestonk_terminal.helper_funcs import (
     system_clear,
     try_except,
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_positive,
 )
 from gamestonk_terminal.menu import session
 
@@ -44,7 +46,7 @@ class CovidController:
         "reset",
     ]
 
-    CHOICES_COMMANDS = ["country", "ov", "deaths", "cases", "rates"]
+    CHOICES_COMMANDS = ["country", "ov", "deaths", "cases", "rates", "slopes"]
 
     CHOICES += CHOICES_COMMANDS
 
@@ -76,6 +78,8 @@ Country: [cyan]{self.country}[/cyan]
         deaths      get deaths for selected country
         cases       get cases for selected country
         rates       get death/cases rate for selected country
+
+        slopes      get countries with highest slope in cases
         """
         t_console.print(help_str)
 
@@ -283,6 +287,37 @@ Country: [cyan]{self.country}[/cyan]
                 raw=ns_parser.raw,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+            )
+
+    @try_except
+    def call_slopes(self, other_args: List[str]):
+        """Process cases command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="slopes",
+            description="Show countries with highest slopes.",
+        )
+        parser.add_argument(
+            "-d",
+            "--days",
+            type=check_positive,
+            help="Number of days back to look",
+            dest="days",
+        )
+        parser.add_argument(
+            "-a",
+            "--ascend",
+            action="store_true",
+            default=False,
+            help="Show in ascending order",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
+        )
+        if ns_parser:
+            covid_view.display_country_slopes(
+                days_back=ns_parser.days, limit=ns_parser.limit, ascend=ns_parser.ascend
             )
 
 

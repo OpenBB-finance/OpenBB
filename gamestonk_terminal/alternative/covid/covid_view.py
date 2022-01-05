@@ -154,3 +154,33 @@ def display_covid_stat(
 
     if export:
         export_data(export, os.path.dirname(os.path.abspath(__file__)), stat, data)
+
+
+def display_country_slopes(days_back: int = 30, limit: int = 10, ascend: bool = False):
+    """
+
+    Parameters
+    ----------
+    days_back
+    limit
+    ascend
+
+    Returns
+    -------
+
+    """
+    hist_slope = covid_model.get_case_slopes(days_back).sort_values(
+        by="Slope", ascending=ascend
+    )
+    if gtff.USE_TABULATE_DF:
+        t_console.print(
+            rich_table_from_df(
+                hist_slope.head(limit),
+                show_index=True,
+                index_name="Country",
+                title=f"[bold]{('Highest','Lowest')[ascend]} Sloping Cases[/bold]",
+            )
+        )
+    else:
+        t_console.print(hist_slope.head(limit).to_string())
+    t_console.print("")
