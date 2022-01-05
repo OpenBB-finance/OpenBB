@@ -139,6 +139,7 @@ class OptionsController:
             self.choices["plot"]["-x"] = {c: {} for c in self.plot_vars_choices}
             self.choices["plot"]["-y"] = {c: {} for c in self.plot_vars_choices}
             self.choices["plot"]["-c"] = {c: {} for c in self.plot_custom_choices}
+            # self.completer = NestedCompleter.from_nested_dict(self.choices)
 
         self.ticker = ticker
         self.prices = pd.DataFrame(columns=["Price", "Chance"])

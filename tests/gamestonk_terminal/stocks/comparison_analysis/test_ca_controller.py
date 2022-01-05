@@ -19,7 +19,7 @@ DF_EMPTY = pd.DataFrame()
     "queue, expected",
     [
         (["historical", "help"], []),
-        (["q", ".."], ["q", ".."]),
+        (["q", ".."], [".."]),
     ],
 )
 def test_menu_with_queue(expected, mocker, queue):
@@ -538,7 +538,7 @@ def test_call_po(mocker):
 
     controller = ca_controller.ComparisonAnalysisController(similar=similar)
     controller.call_po([])
-    mock.assert_called_once_with(similar, [], from_submenu=True)
+    mock.assert_called_once_with(similar, [])
 
     controller = ca_controller.ComparisonAnalysisController()
     controller.call_po([])

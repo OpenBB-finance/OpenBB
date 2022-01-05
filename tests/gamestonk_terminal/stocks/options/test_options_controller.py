@@ -148,7 +148,20 @@ def test_menu_without_queue_completion(mocker):
         return_value=CHAIN,
     )
 
-    # DISABLE AUTO-COMPLETION
+    # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    mocker.patch(
+        target="gamestonk_terminal.feature_flags.USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.decorators.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.decorators.session.prompt",
+        return_value="quit",
+    )
+
+    # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch.object(
         target=options_controller.gtff,
         attribute="USE_PROMPT_TOOLKIT",
