@@ -136,6 +136,7 @@ class DashboardsController:
         """Process exit terminal command"""
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command"""

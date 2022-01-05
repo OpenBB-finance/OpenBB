@@ -262,6 +262,7 @@ Select one of the following reports:
         print("")
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command."""
