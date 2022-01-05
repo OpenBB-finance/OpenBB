@@ -12,10 +12,10 @@ import pytz
 
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
-    system_clear,
     get_user_timezone_or_invalid,
     replace_user_timezone,
 )
@@ -35,21 +35,11 @@ from gamestonk_terminal.terminal_helper import (
 logger = logging.getLogger(__name__)
 
 
-class TerminalController:
+class TerminalController(BaseController):
     """Terminal Controller class"""
 
-    CHOICES = [
-        "cls",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
+    PATH = "/"
+
     CHOICES_COMMANDS = [
         "update",
         "about",
@@ -67,15 +57,15 @@ class TerminalController:
         "jupyter",
         "funds",
     ]
-    CHOICES += CHOICES_COMMANDS
-    CHOICES += CHOICES_MENUS
+    BaseController.CHOICES += CHOICES_COMMANDS
+    BaseController.CHOICES += CHOICES_MENUS
 
     all_timezones = pytz.all_timezones
 
     def __init__(self, jobs_cmds: List[str] = None):
         """Constructor"""
-        self.t_parser = argparse.ArgumentParser(add_help=False, prog="terminal")
-        self.t_parser.add_argument(
+        self.parser = argparse.ArgumentParser(add_help=False, prog="terminal")
+        self.parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
@@ -135,76 +125,6 @@ Timezone: {get_user_timezone_or_invalid()}
 >   resources
     """
         print(help_text)
-
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-            # Absolute path is specified.
-            if not actions[0]:
-                # Since we are already in home we can pick up the first instruction
-                an_input = actions[1]
-                idx_to_start = 2
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-                idx_to_start = 1
-
-            # Add all instructions to the queue
-            for cmd in actions[idx_to_start:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.t_parser.parse_known_args(an_input.split())
-
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        # has been dealt with before
 
     def call_update(self, _):
         """Process update command"""

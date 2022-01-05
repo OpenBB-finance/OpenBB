@@ -5,6 +5,7 @@ from gamestonk_terminal.helper_funcs import system_clear
 
 # pylint: disable=no-member
 
+
 class BaseController:
     CHOICES = [
         "cls",
@@ -89,3 +90,16 @@ class BaseController:
         """Process exit terminal command"""
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
+
+    def call_reset(self, _):
+        """Process reset command. If you would like to have customization in the
+        reset process define a methom `custom_reset` in the child class.
+        """
+        if self.PATH != "/":
+            if hasattr(self, "custom_reset"):
+                self.custom_reset(None)
+            for val in [x for x in self.PATH.split("/") if x != ""]:
+                self.queue.insert(0, val)
+            self.queue.insert(0, "reset")
+            for _ in range(self.PATH.count("/") - 1):
+                self.queue.insert(0, "quit")

@@ -134,16 +134,13 @@ Stocks Menus:
 {reset_style_if_no_ticker}"""
         print(help_text)
 
-    def call_reset(self, _):
-        """Process reset command"""
+    def custom_reset(self, _):
+        """Class specific component of reset command"""
         if self.ticker:
             if self.suffix:
                 self.queue.insert(0, f"load {self.ticker}.{self.suffix}")
             else:
                 self.queue.insert(0, f"load {self.ticker}")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
 
     @try_except
     def call_search(self, other_args: List[str]):
