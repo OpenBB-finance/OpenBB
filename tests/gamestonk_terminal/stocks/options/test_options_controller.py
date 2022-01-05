@@ -12,6 +12,7 @@ from gamestonk_terminal.stocks.options import options_controller
 # pylint: disable=E1101
 # pylint: disable=W0603
 # pylint: disable=E1111
+# pylint: disable=C0302
 
 EXPIRY_DATES = [
     "2022-01-07",
