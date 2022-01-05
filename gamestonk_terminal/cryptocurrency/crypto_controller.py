@@ -119,8 +119,8 @@ class CryptoController:
     def print_help(self):
         """Print help"""
         help_text = """
-    load        load a specific cryptocurrency for analysis
-    find        alternate way to search for coins
+     load        load a specific cryptocurrency for analysis
+     find        alternate way to search for coins
 """
         help_text += (
             f"\nCoin: {self.current_coin}" if self.current_coin != "" else "\nCoin: ?"
@@ -130,11 +130,10 @@ class CryptoController:
             if self.source != ""
             else "\nSource: ?\n"
         )
-        help_text += self.price_str
+        help_text += self.price_str + "\n"
         help_text += """
-
-    chart       view a candle chart for a specific cryptocurrency
-    headlines   crypto sentiment from 15+ major news headlines [Finbrain]
+     chart       view a candle chart for a specific cryptocurrency
+     headlines   crypto sentiment from 15+ major news headlines [Finbrain]
     """
         help_text += f"""
 >    disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
@@ -259,7 +258,6 @@ class CryptoController:
             dest="start",
             help="The starting date (format YYYY-MM-DD) of the crypto",
         )
-
         parser.add_argument(
             "--vs",
             help="Quote currency (what to view coin vs)",
@@ -267,7 +265,6 @@ class CryptoController:
             default="usd",
             type=str,
         )
-
         parser.add_argument(
             "-i",
             "--interval",
@@ -311,17 +308,18 @@ class CryptoController:
                 second_last_price = self.current_df["Close"].iloc[-2]
                 interval_change = calc_change(last_price, second_last_price)
                 since_start_change = calc_change(last_price, first_price)
-                self.price_str = f"""Current Price: {round(last_price,2)} {self.current_currency}
+                if isinstance(self.current_currency, str):
+                    self.price_str = f"""Current Price: {round(last_price,2)} {self.current_currency.upper()}
 Performance in interval ({self.current_interval}): {'[green]' if interval_change > 0 else "[red]"}{round(interval_change,2)}%{'[/green]' if interval_change > 0 else "[/red]"}
-Performance since specified start date ({ns_parser.start}): {'[green]' if since_start_change > 0 else "[red]"}{round(since_start_change,2)}%{'[/green]' if since_start_change > 0 else "[/red]"}"""  # noqa
+Performance since {ns_parser.start.strftime('%Y-%m-%d')}: {'[green]' if since_start_change > 0 else "[red]"}{round(since_start_change,2)}%{'[/green]' if since_start_change > 0 else "[/red]"}"""  # noqa
 
-                t_console.print(
-                    f"""
+                    t_console.print(
+                        f"""
 Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[self.source]} source
 
 {self.price_str}
 """
-                )  # noqa
+                    )  # noqa
 
     @try_except
     def call_chart(self, other_args):
@@ -344,7 +342,6 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
                     choices=["usd", "btc", "BTC", "USD"],
                     type=str,
                 )
-
                 parser.add_argument(
                     "-d",
                     "--days",
@@ -358,7 +355,6 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
                 parser.add_argument(
                     "--vs", default="usd", dest="vs", help="Currency to display vs coin"
                 )
-
                 parser.add_argument(
                     "-d",
                     "--days",
@@ -399,7 +395,6 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
                     default="USDT",
                     choices=quotes,
                 )
-
                 parser.add_argument(
                     "-i",
                     "--interval",
@@ -409,7 +404,6 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
                     default="1day",
                     type=str,
                 )
-
                 parser.add_argument(
                     "-l",
                     "--limit",
@@ -487,7 +481,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
                 )
 
     @try_except
-    def call_ta(self):
+    def call_ta(self, _):
         """Process ta command"""
         from gamestonk_terminal.cryptocurrency.technical_analysis import ta_controller
 
@@ -737,7 +731,7 @@ def menu(queue: List[str] = None):
             crypto_controller.queue = crypto_controller.switch(an_input)
         except SystemExit:
             print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
+                f"\nThe command '{an_input}' doesn't exist on the /crypto menu.",
                 end="",
             )
             similar_cmd = difflib.get_close_matches(

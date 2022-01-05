@@ -739,8 +739,6 @@ main:
             ref: "/cryptocurrency/due_diligence/dev"
           - name: bc
             ref: "/cryptocurrency/due_diligence/bc"
-          - name: chart
-            ref: "/cryptocurrency/due_diligence/chart"
           - name: basic
             ref: "/cryptocurrency/due_diligence/basic"
           - name: ps
