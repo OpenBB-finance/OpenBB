@@ -113,8 +113,7 @@ class QaController:
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
-            choices["pick"]["-t"] = {c: None for c in self.df_columns}
-            choices["pick"]["--target"] = {c: None for c in self.df_columns}
+            choices["pick"] = {c: None for c in self.df_columns}
             choices["load"]["-i"] = {c: None for c in self.stock_interval}
             choices["load"]["--interval"] = {c: None for c in self.stock_interval}
             choices["load"]["--source"] = {c: None for c in self.stock_sources}
@@ -132,9 +131,7 @@ class QaController:
             stock_str = f"{s_intraday} Stock: [cyan]{self.ticker}[/cyan] (from {self.start.strftime('%Y-%m-%d')})"
         else:
             stock_str = f"{s_intraday} Stock: [cyan]{self.ticker}[/cyan]"
-        help_str = f"""[bold]
-Quantitative Analysis[/bold]:
-
+        help_str = f"""
    load        load new ticker
    pick        pick target column for analysis
 

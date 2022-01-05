@@ -1,6 +1,4 @@
 
-Quantitative Analysis:
-
    load        load new ticker
    pick        pick target column for analysis
 
