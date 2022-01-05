@@ -400,6 +400,14 @@ Underlying Asset: {text}
             )
 
 
-@menu_decorator("/stocks/options/payoff/", PayoffController)
+def choices(controller):
+    """Defines dynamic choices"""
+    if controller.options:
+        controller.choices["rmv"] = {str(c): {} for c in range(len(controller.options))}
+
+    return NestedCompleter.from_nested_dict(controller.choices)
+
+
+@menu_decorator("/stocks/options/payoff/", PayoffController, choices)
 def menu(ticker: str, expiration: str, queue: List[str] = None):
     """Payoff Menu"""

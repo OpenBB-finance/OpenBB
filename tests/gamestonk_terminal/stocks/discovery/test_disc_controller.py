@@ -43,10 +43,10 @@ def test_menu_without_queue_completion(mocker):
         new=True,
     )
     mocker.patch(
-        target="gamestonk_terminal.helper_funcs.session",
+        target="gamestonk_terminal.decorators.session",
     )
     mocker.patch(
-        target="gamestonk_terminal.helper_funcs.session.prompt",
+        target="gamestonk_terminal.decorators.session.prompt",
         return_value="quit",
     )
 
