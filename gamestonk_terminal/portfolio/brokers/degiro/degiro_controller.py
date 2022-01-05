@@ -6,8 +6,8 @@ from prompt_toolkit.completion import NestedCompleter
 import gamestonk_terminal.config_terminal as config
 
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import menu_decorator
 from gamestonk_terminal.helper_funcs import (
-    menu_decorator,
     parse_known_args_and_warn,
     system_clear,
 )

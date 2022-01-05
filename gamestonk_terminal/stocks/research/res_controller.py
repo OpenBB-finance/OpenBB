@@ -7,7 +7,8 @@ from typing import List, Union
 from datetime import datetime
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import menu_decorator, system_clear, try_except
+from gamestonk_terminal.decorators import try_except, menu_decorator
+from gamestonk_terminal.helper_funcs import system_clear
 from gamestonk_terminal.menu import session
 
 # pylint: disable=W0613

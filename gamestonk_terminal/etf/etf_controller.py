@@ -13,6 +13,8 @@ from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 
 from thepassiveinvestor import create_ETF_report
+
+from gamestonk_terminal.decorators import try_except, menu_decorator
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.etf import (
     stockanalysis_view,
@@ -26,10 +28,8 @@ from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_non_negative_float,
     check_positive,
-    menu_decorator,
     valid_date,
     parse_known_args_and_warn,
-    try_except,
     system_clear,
     plot_autoscale,
     export_data,

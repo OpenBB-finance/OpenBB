@@ -11,12 +11,12 @@ from typing import List
 import pandas as pd
 from tabulate import tabulate
 
+from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     financials_colored_values,
     parse_known_args_and_warn,
     patch_pandas_text_adjustment,
-    try_except,
 )
 from gamestonk_terminal.stocks.fundamental_analysis import market_watch_model as mwm
 

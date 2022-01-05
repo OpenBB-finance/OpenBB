@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 from pandas.core.frame import DataFrame
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.decorators import try_except, menu_decorator
 from gamestonk_terminal.stocks.due_diligence import (
     fmp_view,
     business_insider_view,
@@ -21,8 +22,6 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    menu_decorator,
-    try_except,
     system_clear,
     valid_date,
 )

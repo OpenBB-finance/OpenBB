@@ -20,12 +20,12 @@ from plotly.subplots import make_subplots
 from scipy import stats
 from tabulate import tabulate
 
+from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     plot_autoscale,
-    try_except,
     get_user_timezone_or_invalid,
 )
 

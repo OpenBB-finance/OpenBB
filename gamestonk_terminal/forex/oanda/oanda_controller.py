@@ -12,10 +12,8 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.forex import av_model
 from gamestonk_terminal.forex.oanda import oanda_view
 
-# from gamestonk_terminal.forex.exploratory_data_analysis import eda_controller
+from gamestonk_terminal.decorators import try_except, menu_decorator
 from gamestonk_terminal.helper_funcs import (
-    menu_decorator,
-    try_except,
     parse_known_args_and_warn,
     system_clear,
     check_non_negative_float,
