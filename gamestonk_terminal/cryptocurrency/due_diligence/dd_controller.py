@@ -3,13 +3,14 @@ __docformat__ = "numpy"
 
 # pylint: disable=R0904, C0302, W0622, C0201
 import argparse
-from typing import List, Union
+from typing import List
 from datetime import datetime, timedelta
 from colorama.ansi import Style
 import pandas as pd
 from binance.client import Client
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.decorators import try_except, menu_decorator
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.cryptocurrency.due_diligence import (
     coinglass_model,
     glassnode_model,
@@ -33,7 +34,6 @@ from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     parse_known_args_and_warn,
     check_positive,
-    system_clear,
     valid_date,
 )
 
@@ -45,25 +45,11 @@ import gamestonk_terminal.config_terminal as cfg
 FILTERS_VS_USD_BTC = ["usd", "btc"]
 
 
-class DueDiligenceController:
-
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
+class DueDiligenceController(BaseController):
 
     CHOICES_COMMANDS = ["load", "oi", "active", "change", "nonzero", "eb", "chart"]
 
-    CHOICES += CHOICES_COMMANDS
+    BaseController.CHOICES += CHOICES_COMMANDS
 
     SPECIFIC_CHOICES = {
         "cp": [
@@ -101,8 +87,7 @@ class DueDiligenceController:
     def __init__(self, coin=None, source=None, symbol=None, queue: List[str] = None):
         """CONSTRUCTOR"""
 
-        self.dd_parser = argparse.ArgumentParser(add_help=False, prog="dd")
-        self.dd_parser.add_argument("cmd", choices=self.CHOICES)
+        super().__init__("/crypto/dd/", self.CHOICES_COMMANDS, queue)
 
         self.current_coin = coin
         self.current_df = pd.DataFrame()
@@ -112,7 +97,6 @@ class DueDiligenceController:
         for _, value in self.SPECIFIC_CHOICES.items():
             self.CHOICES.extend(value)
 
-        self.completer: Union[None, NestedCompleter] = None
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
             choices["load"]["--source"] = {c: None for c in CRYPTO_SOURCES.keys()}
@@ -138,11 +122,6 @@ class DueDiligenceController:
             }
             choices["ps"]["--vs"] = {c: None for c in coinpaprika_view.CURRENCIES}
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
     def print_help(self):
         """Print help"""
@@ -199,93 +178,10 @@ Coinbase:
 """
         print(help_text)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Parameters
-        -------
-        an_input : str
-            string with input arguments
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.dd_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "dd")
+    def custom_reset(self, _):
+        """Class specific component of reset command"""
         if self.current_coin:
-            self.queue.insert(0, f"load {self.current_coin} --source {self.source}")
-        self.queue.insert(0, "crypto")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            self.queue.insert(4, f"load {self.current_coin} --source {self.source}")
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -1498,8 +1394,3 @@ Coinbase:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-
-
-@menu_decorator("/crypto/dd/", DueDiligenceController)
-def menu(coin=None, source="cg", symbol=None, queue: List[str] = None):
-    """Due Dilligence Menu"""

@@ -3,17 +3,17 @@ __docformat__ = "numpy"
 
 import argparse
 
-from typing import List, Union
+from typing import List
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.decorators import try_except, menu_decorator
+from gamestonk_terminal.decorators import try_except
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.cryptocurrency.defi import graph_model
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
-    system_clear,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
 )
@@ -30,22 +30,8 @@ from gamestonk_terminal.cryptocurrency.defi import (
 # pylint: disable=W0613
 
 
-class DefiController:
+class DefiController(BaseController):
     """Defi Controller class"""
-
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
 
     CHOICES_COMMANDS = [
         "dpi",
@@ -62,16 +48,12 @@ class DefiController:
         "stats",
     ]
 
-    CHOICES += CHOICES_COMMANDS
+    BaseController.CHOICES += CHOICES_COMMANDS
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        self.defi_parser = argparse.ArgumentParser(add_help=False, prog="defi")
-        self.defi_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-        self.completer: Union[None, NestedCompleter] = None
+        super().__init__("/crypto/defi/", self.CHOICES_COMMANDS, queue)
+
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
             choices["llama"]["-s"] = {c: {} for c in llama_model.LLAMA_FILTERS}
@@ -81,95 +63,27 @@ class DefiController:
             choices["swaps"]["-s"] = {c: {} for c in graph_model.SWAPS_FILTERS}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
+    def print_help(self):
+        """Print help"""
+        help_text = """
+Decentralized Finance Menu:
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Parameters
-        -------
-        an_input : str
-            string with input arguments
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.defi_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "defi")
-        self.queue.insert(0, "crypto")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+Overview:
+    llama         DeFi protocols listed on DeFi Llama
+    tvl           Total value locked of DeFi protocols
+    newsletter    Recent DeFi related newsletters
+    dpi           DeFi protocols listed on DefiPulse
+    funding       Funding reates - current or last 30 days average
+    borrow        DeFi borrow rates - current or last 30 days average
+    lending       DeFi ending rates - current or last 30 days average
+Uniswap:
+    tokens        Tokens trade-able on Uniswap
+    stats         Base statistics about Uniswap
+    pairs         Recently added pairs on Uniswap
+    pools         Pools by volume on Uniswap
+    swaps         Recent swaps done on Uniswap
+"""
+        print(help_text)
 
     @try_except
     def call_dpi(self, other_args: List[str]):
@@ -725,30 +639,3 @@ class DefiController:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-
-    def print_help(self):
-        """Print help"""
-        help_text = """
-Decentralized Finance Menu:
-
-Overview:
-    llama         DeFi protocols listed on DeFi Llama
-    tvl           Total value locked of DeFi protocols
-    newsletter    Recent DeFi related newsletters
-    dpi           DeFi protocols listed on DefiPulse
-    funding       Funding reates - current or last 30 days average
-    borrow        DeFi borrow rates - current or last 30 days average
-    lending       DeFi ending rates - current or last 30 days average
-Uniswap:
-    tokens        Tokens trade-able on Uniswap
-    stats         Base statistics about Uniswap
-    pairs         Recently added pairs on Uniswap
-    pools         Pools by volume on Uniswap
-    swaps         Recent swaps done on Uniswap
-"""
-        print(help_text)
-
-
-@menu_decorator("/crypto/defi/", DefiController)
-def menu(queue: List[str] = None):
-    """Defi Menu"""

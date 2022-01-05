@@ -325,7 +325,9 @@ class CryptoController(BaseController):
     @try_except
     def call_ta(self, other_args):
         """Process ta command"""
-        from gamestonk_terminal.cryptocurrency.technical_analysis import ta_controller
+        from gamestonk_terminal.cryptocurrency.technical_analysis.ta_controller import (
+            TechnicalAnalysisController,
+        )
 
         # TODO: Play with this to get correct usage
         if self.current_coin:
@@ -540,39 +542,43 @@ class CryptoController(BaseController):
                 )
 
             if self.current_currency != "" and not self.current_df.empty:
-                self.queue = ta_controller.menu(
+                self.queue = TechnicalAnalysisController(
                     stock=self.current_df,
                     ticker=self.current_coin,
                     start=self.current_df.index[0],
                     interval="",
                     queue=self.queue,
-                )
+                ).menu()
 
         else:
-            print(
-                "No coin selected. Use 'load' to load the coin you want to look at.\n"
-            )
+            print("No coin selected. Use 'load' to load a coin.\n")
 
     @try_except
     def call_disc(self, _):
         """Process disc command"""
-        from gamestonk_terminal.cryptocurrency.discovery import discovery_controller
+        from gamestonk_terminal.cryptocurrency.discovery.discovery_controller import (
+            DiscoveryController,
+        )
 
-        self.queue = discovery_controller.menu(queue=self.queue)
+        self.queue = DiscoveryController(queue=self.queue).menu()
 
     @try_except
     def call_ov(self, _):
         """Process ov command"""
-        from gamestonk_terminal.cryptocurrency.overview import overview_controller
+        from gamestonk_terminal.cryptocurrency.overview.overview_controller import (
+            OverviewController,
+        )
 
-        self.queue = overview_controller.menu(queue=self.queue)
+        self.queue = OverviewController(queue=self.queue).menu()
 
     @try_except
     def call_defi(self, _):
         """Process defi command"""
-        from gamestonk_terminal.cryptocurrency.defi import defi_controller
+        from gamestonk_terminal.cryptocurrency.defi.defi_controller import (
+            DefiController,
+        )
 
-        self.queue = defi_controller.menu(queue=self.queue)
+        self.queue = DefiController(queue=self.queue).menu()
 
     @try_except
     def call_headlines(self, other_args):
@@ -610,15 +616,15 @@ class CryptoController(BaseController):
     def call_dd(self, _):
         """Process dd command"""
         if self.current_coin:
-            from gamestonk_terminal.cryptocurrency.due_diligence import dd_controller
+            from gamestonk_terminal.cryptocurrency.due_diligence.dd_controller import (
+                DueDiligenceController,
+            )
 
-            self.queue = dd_controller.menu(
+            self.queue = DueDiligenceController(
                 self.current_coin, self.source, self.symbol, queue=self.queue
-            )
+            ).menu()
         else:
-            print(
-                "No coin selected. Use 'load' to load the coin you want to look at.\n"
-            )
+            print("No coin selected. Use 'load' to load a coin.\n")
 
     @try_except
     def call_pred(self, _):
@@ -629,18 +635,18 @@ class CryptoController(BaseController):
                 return
 
             if self.current_coin:
-                from gamestonk_terminal.cryptocurrency.prediction_techniques import (
-                    pred_controller,
+                from gamestonk_terminal.cryptocurrency.prediction_techniques.pred_controller import (
+                    PredictionTechniquesController,
                 )
                 from gamestonk_terminal.cryptocurrency import (
                     cryptocurrency_helpers as c_help,
                 )
 
-                self.queue = pred_controller.menu(
+                self.queue = PredictionTechniquesController(
                     self.current_coin,
                     c_help.load_cg_coin_data(self.current_coin, "USD", 365, "1D"),
                     self.queue,
-                )
+                ).menu()
         else:
             print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
@@ -649,16 +655,18 @@ class CryptoController(BaseController):
     @try_except
     def call_onchain(self, _):
         """Process onchain command"""
-        from gamestonk_terminal.cryptocurrency.onchain import onchain_controller
+        from gamestonk_terminal.cryptocurrency.onchain.onchain_controller import (
+            OnchainController,
+        )
 
-        self.queue = onchain_controller.menu(queue=self.queue)
+        self.queue = OnchainController(queue=self.queue).menu()
 
     @try_except
     def call_nft(self, _):
         """Process nft command"""
-        from gamestonk_terminal.cryptocurrency.nft import nft_controller
+        from gamestonk_terminal.cryptocurrency.nft.nft_controller import NFTController
 
-        self.queue = nft_controller.menu(queue=self.queue)
+        self.queue = NFTController(queue=self.queue).menu()
 
     @try_except
     def call_find(self, other_args):

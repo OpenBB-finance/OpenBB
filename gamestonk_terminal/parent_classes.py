@@ -13,6 +13,9 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import system_clear
 from gamestonk_terminal.helper_funcs import get_flair
 
+# Do before merging
+# remove pylint: disable=W0613
+
 
 class BaseController:
     __metaclass__ = ABCMeta
@@ -133,13 +136,13 @@ class BaseController:
         reset process define a methom `custom_reset` in the child class.
         """
         if self.path != "/":
-            if hasattr(self, "custom_reset"):
-                self.custom_reset(None)
-            for val in self.PATH:
+            for val in self.PATH[::-1]:
                 self.queue.insert(0, val)
             self.queue.insert(0, "reset")
             for _ in range(len(self.PATH)):
                 self.queue.insert(0, "quit")
+            if hasattr(self, "custom_reset"):
+                self.custom_reset(None)
 
     def menu(self):
         an_input = "HELP_ME"

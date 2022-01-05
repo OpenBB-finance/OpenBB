@@ -8,7 +8,8 @@ import pandas as pd
 import numpy as np
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.decorators import try_except, menu_decorator
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
@@ -16,7 +17,6 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     get_next_stock_market_days,
     EXPORT_ONLY_FIGURES_ALLOWED,
-    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.prediction_techniques import (
@@ -33,26 +33,9 @@ from gamestonk_terminal.common.prediction_techniques import (
 )
 from gamestonk_terminal.cryptocurrency import cryptocurrency_helpers as c_help
 
-# pylint: disable=W0613
 
-
-class PredictionTechniquesController:
+class PredictionTechniquesController(BaseController):
     """Prediction Techniques Controller class"""
-
-    # Command choices
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
 
     CHOICES_COMMANDS = [
         "pick",
@@ -67,7 +50,7 @@ class PredictionTechniquesController:
         "conv1d",
         "mc",
     ]
-    CHOICES += CHOICES_COMMANDS
+    BaseController.CHOICES += CHOICES_COMMANDS
     sampling_map = {"H": "Hour", "D": "Day"}
 
     def __init__(
@@ -77,11 +60,8 @@ class PredictionTechniquesController:
         queue: List[str] = None,
     ):
         """Constructor"""
-        self.pred_parser = argparse.ArgumentParser(add_help=False, prog="pred")
-        self.pred_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        super().__init__("/crypto/pred/", self.CHOICES_COMMANDS, queue)
+
         data["Returns"] = data["Close"].pct_change()
         data["LogRet"] = np.log(data["Close"]) - np.log(data["Close"].shift(1))
         data = data.dropna()
@@ -101,11 +81,6 @@ class PredictionTechniquesController:
             choices["arima"]["-i"] = {c: {} for c in arima_model.ICS}
             choices["mc"]["--dist"] = {c: {} for c in mc_model.DISTRIBUTIONS}
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
     def print_help(self):
         """Print help"""
@@ -132,93 +107,10 @@ Models:
         """
         print(help_string)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Parameters
-        -------
-        an_input : str
-            string with input arguments
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.pred_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "pred")
+    def custom_reset(self, _):
+        """Class specific component of reset command"""
         if self.coin:
-            self.queue.insert(0, f"load {self.coin}")
-        self.queue.insert(0, "crypto")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            self.queue.insert(4, f"load {self.coin}")
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -854,8 +746,3 @@ Models:
                 export=ns_parser.export,
                 time_res=self.resolution,
             )
-
-
-@menu_decorator("/crypto/pred/", PredictionTechniquesController)
-def menu(coin: str, data: pd.DataFrame, queue: List[str] = None):
-    """Prediction Techniques Menu"""

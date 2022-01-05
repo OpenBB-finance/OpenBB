@@ -144,9 +144,9 @@ Timezone: {get_user_timezone_or_invalid()}
 
     def call_economy(self, _):
         """Process economy command"""
-        from gamestonk_terminal.economy import economy_controller
+        from gamestonk_terminal.economy.economy_controller import EconomyController
 
-        self.queue = economy_controller.menu(self.queue)
+        self.queue = EconomyController(self.queue).menu()
 
     def call_etf(self, _):
         """Process etf command"""
