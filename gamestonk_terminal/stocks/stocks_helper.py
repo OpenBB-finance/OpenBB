@@ -708,55 +708,82 @@ def additional_info_about_ticker(ticker: str) -> str:
     """
     extra_info = ""
     if ticker:
-        ticker_info = yf.Ticker(ticker).info
+        # outside US exchange
+        if "." in ticker:
+            ticker_info = yf.Ticker(ticker).info
 
-        extra_info += "\nDatetime: "
-        if (
-            "exchangeTimezoneName" in ticker_info
-            and ticker_info["exchangeTimezoneName"]
-        ):
-            dtime = datetime.now(
-                pytz.timezone(ticker_info["exchangeTimezoneName"])
-            ).strftime("%Y %b %d %H:%M")
-            extra_info += dtime
-            extra_info += "\nTimezone: "
-            extra_info += ticker_info["exchangeTimezoneName"]
-        else:
             extra_info += "\nDatetime: "
-            extra_info += "\nTimezone: "
+            if (
+                "exchangeTimezoneName" in ticker_info
+                and ticker_info["exchangeTimezoneName"]
+            ):
+                dtime = datetime.now(
+                    pytz.timezone(ticker_info["exchangeTimezoneName"])
+                ).strftime("%Y %b %d %H:%M")
+                extra_info += dtime
+                extra_info += "\nTimezone: "
+                extra_info += ticker_info["exchangeTimezoneName"]
+            else:
+                extra_info += "\nDatetime: "
+                extra_info += "\nTimezone: "
 
-        extra_info += "\nExchange: "
-        if "exchange" in ticker_info and ticker_info["exchange"]:
-            exchange_name = ticker_info["exchange"]
-            extra_info += exchange_name
-            exchange_name = exchange_name.replace("NMS", "NASDAQ")
+            extra_info += "\nExchange: "
+            if "exchange" in ticker_info and ticker_info["exchange"]:
+                exchange_name = ticker_info["exchange"]
+                extra_info += exchange_name
 
-        extra_info += "\nCurrency: "
-        if "currency" in ticker_info and ticker_info["currency"]:
-            extra_info += ticker_info["currency"]
+            extra_info += "\nCurrency: "
+            if "currency" in ticker_info and ticker_info["currency"]:
+                extra_info += ticker_info["currency"]
 
-        extra_info += "\nMarket:   "
-        if "exchange" in ticker_info and ticker_info["exchange"]:
-            if exchange_name in mcal.get_calendar_names():
-                calendar = mcal.get_calendar(exchange_name)
-                sch = calendar.schedule(
-                    start_date=(datetime.now() - timedelta(days=3)).strftime(
-                        "%Y-%m-%d"
-                    ),
-                    end_date=(datetime.now() + timedelta(days=3)).strftime("%Y-%m-%d"),
-                )
-                user_tz = get_user_timezone_or_invalid()
-                if user_tz != "INVALID":
-                    is_market_open = calendar.open_at_time(
-                        sch,
-                        pd.Timestamp(
-                            datetime.now().strftime("%Y-%m-%d %H:%M"), tz=user_tz
+            extra_info += "\nMarket:   "
+            if "exchange" in ticker_info and ticker_info["exchange"]:
+                if exchange_name in mcal.get_calendar_names():
+                    calendar = mcal.get_calendar(exchange_name)
+                    sch = calendar.schedule(
+                        start_date=(datetime.now() - timedelta(days=3)).strftime(
+                            "%Y-%m-%d"
+                        ),
+                        end_date=(datetime.now() + timedelta(days=3)).strftime(
+                            "%Y-%m-%d"
                         ),
                     )
-                    if is_market_open:
-                        extra_info += "OPEN"
-                    else:
-                        extra_info += "CLOSED"
+                    user_tz = get_user_timezone_or_invalid()
+                    if user_tz != "INVALID":
+                        is_market_open = calendar.open_at_time(
+                            sch,
+                            pd.Timestamp(
+                                datetime.now().strftime("%Y-%m-%d %H:%M"), tz=user_tz
+                            ),
+                        )
+                        if is_market_open:
+                            extra_info += "OPEN"
+                        else:
+                            extra_info += "CLOSED"
+        else:
+            extra_info += "\nDatetime: "
+            dtime = datetime.now(pytz.timezone("America/New_York")).strftime(
+                "%Y %b %d %H:%M"
+            )
+            extra_info += dtime
+            extra_info += "\nTimezone: America/New_York"
+            extra_info += "\nCurrency: USD"
+            extra_info += "\nMarket:   "
+            calendar = mcal.get_calendar("NYSE")
+            sch = calendar.schedule(
+                start_date=(datetime.now() - timedelta(days=3)).strftime("%Y-%m-%d"),
+                end_date=(datetime.now() + timedelta(days=3)).strftime("%Y-%m-%d"),
+            )
+            user_tz = get_user_timezone_or_invalid()
+            if user_tz != "INVALID":
+                is_market_open = calendar.open_at_time(
+                    sch,
+                    pd.Timestamp(datetime.now().strftime("%Y-%m-%d %H:%M"), tz=user_tz),
+                )
+                if is_market_open:
+                    extra_info += "OPEN"
+                else:
+                    extra_info += "CLOSED"
 
     else:
         extra_info += "\nDatetime: "
