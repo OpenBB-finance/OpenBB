@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from typing import List, Union
+from typing import List
 
 from datetime import datetime, timedelta
 import yfinance as yf
@@ -15,7 +15,7 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common import newsapi_view
-from gamestonk_terminal.decorators import try_except, menu_decorator
+from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
@@ -35,8 +35,6 @@ logger = logging.getLogger(__name__)
 
 class StocksController(BaseController):
     """Stocks Controller class"""
-
-    PATH = "/stocks/"
 
     # To hold suffix for Yahoo Finance
     suffix = ""
@@ -71,13 +69,7 @@ class StocksController(BaseController):
 
     def __init__(self, ticker, queue: List[str] = None):
         """Constructor"""
-        self.parser = argparse.ArgumentParser(add_help=False, prog="stocks")
-        self.parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-
-        self.completer: Union[None, NestedCompleter] = None
+        super().__init__("/stocks/", self.CHOICES_COMMANDS, queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
@@ -89,10 +81,6 @@ class StocksController(BaseController):
         self.start = ""
         self.interval = "1440min"
         self.add_info = stocks_helper.additional_info_about_ticker("")
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
     def print_help(self):
         """Print help"""
@@ -612,8 +600,3 @@ Stocks Menus:
                 "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
                 "\n",
             )
-
-
-@menu_decorator(StocksController)
-def menu(ticker: str = "", queue: List[str] = None):
-    """Stocks Menu"""

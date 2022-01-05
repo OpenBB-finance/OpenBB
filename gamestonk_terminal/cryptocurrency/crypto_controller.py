@@ -3,14 +3,14 @@ __docformat__ = "numpy"
 # pylint: disable=R0904, C0302, R1710, W0622, C0201
 
 import argparse
-from typing import List, Union
+from typing import List
 import pandas as pd
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 from binance.client import Client
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except, menu_decorator
+from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -48,7 +48,6 @@ CRYPTO_SOURCES = {
 
 
 class CryptoController(BaseController):
-    PATH = "/crypto/"
 
     CHOICES_COMMANDS = [
         "headlines",
@@ -71,16 +70,13 @@ class CryptoController(BaseController):
     def __init__(self, queue: List[str] = None):
         """CONSTRUCTOR"""
 
-        self.parser = argparse.ArgumentParser(add_help=False, prog="crypto")
-        self.parser.add_argument("cmd", choices=self.CHOICES)
+        super().__init__("/crypto/", self.CHOICES_COMMANDS, queue)
 
         self.symbol = ""
         self.current_coin = ""
         self.current_df = pd.DataFrame()
         self.current_currency = ""
         self.source = ""
-
-        self.completer: Union[None, NestedCompleter] = None
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
@@ -89,11 +85,6 @@ class CryptoController(BaseController):
             choices["find"]["-k"] = {c: {} for c in FIND_KEYS}
             choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
     def print_help(self):
         """Print help"""
@@ -738,8 +729,3 @@ class CryptoController(BaseController):
                 top=ns_parser.limit,
                 export=ns_parser.export,
             )
-
-
-@menu_decorator(CryptoController)
-def menu(queue: List[str] = None):
-    """Crypto menu"""

@@ -68,7 +68,7 @@ def menu_decorator(controller_class, dynamic_completer=None):
                         an_input
                         and an_input.split(" ")[0] in controller.CHOICES_COMMANDS
                     ):
-                        print(f"{get_flair()} {controller_class.PATH} $ {an_input}")
+                        print(f"{get_flair()} {controller.path} $ {an_input}")
 
                 # Get input command from user
                 else:
@@ -84,7 +84,7 @@ def menu_decorator(controller_class, dynamic_completer=None):
                             controller.completer = dynamic_completer(controller)
                         try:
                             an_input = session.prompt(
-                                f"{get_flair()} {controller_class.PATH} $ ",
+                                f"{get_flair()} {controller.path} $ ",
                                 completer=controller.completer,
                                 search_ignore_case=True,
                             )
@@ -93,7 +93,7 @@ def menu_decorator(controller_class, dynamic_completer=None):
                             an_input = "exit"
                     # Get input from user without auto-completion
                     else:
-                        an_input = input(f"{get_flair()} {controller_class.PATH} $ ")
+                        an_input = input(f"{get_flair()} {controller.path} $ ")
 
                 try:
                     # Process the input command

@@ -1,12 +1,22 @@
 """Parent Classes"""
 __docformat__ = "numpy"
 
-from gamestonk_terminal.helper_funcs import system_clear
+from abc import ABCMeta, abstractmethod
+import argparse
+import difflib
+from typing import Union, List
 
-# pylint: disable=no-member
+from prompt_toolkit.completion import NestedCompleter
+
+from gamestonk_terminal.menu import session
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.helper_funcs import system_clear
+from gamestonk_terminal.helper_funcs import get_flair
 
 
 class BaseController:
+    __metaclass__ = ABCMeta
+
     CHOICES = [
         "cls",
         "home",
@@ -20,6 +30,33 @@ class BaseController:
         "r",
         "reset",
     ]
+
+    def __init__(
+        self,
+        path: str,
+        choice_commands=None,
+        queue: List[str] = None,
+        dynamic_completer=None,
+    ) -> None:
+        self.choice_commands = choice_commands
+        self.path = path
+        self.dynamic_completer = dynamic_completer
+        self.PATH = [x for x in path.split("/") if x != ""]
+        name = self.PATH[-1] if path != "/" else "terminal"
+        self.parser = argparse.ArgumentParser(add_help=False, prog=name)
+        self.parser.add_argument("cmd", choices=self.CHOICES)
+
+        self.completer: Union[None, NestedCompleter] = None
+
+        if path != "/":
+            if queue:
+                self.queue = queue
+            else:
+                self.queue = list()
+
+    @abstractmethod
+    def print_help(self):
+        raise NotImplementedError("Must override print_help")
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -88,18 +125,98 @@ class BaseController:
 
     def call_exit(self, _):
         """Process exit terminal command"""
-        for _ in range(self.PATH.count("/")):
+        for _ in range(self.path.count("/")):
             self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command. If you would like to have customization in the
         reset process define a methom `custom_reset` in the child class.
         """
-        if self.PATH != "/":
+        if self.path != "/":
             if hasattr(self, "custom_reset"):
                 self.custom_reset(None)
-            for val in [x for x in self.PATH.split("/") if x != ""]:
+            for val in self.PATH:
                 self.queue.insert(0, val)
             self.queue.insert(0, "reset")
-            for _ in range(self.PATH.count("/") - 1):
+            for _ in range(len(self.PATH)):
                 self.queue.insert(0, "quit")
+
+    def menu(self):
+        an_input = "HELP_ME"
+
+        while True:
+            # There is a command in the queue
+            if self.queue and len(self.queue) > 0:
+                # If the command is quitting the menu we want to return in here
+                if self.queue[0] in ("q", "..", "quit"):
+                    print("")
+                    if len(self.queue) > 1:
+                        return self.queue[1:]
+                    return []
+
+                # Consume 1 element from the queue
+                an_input = self.queue[0]
+                self.queue = self.queue[1:]
+
+                # Print location because this was an instruction and we want user to know the action
+                if an_input and an_input.split(" ")[0] in self.choice_commands:
+                    print(f"{get_flair()} {self.path} $ {an_input}")
+
+            # Get input command from user
+            else:
+                # Display help menu when entering on this menu from a level above
+                if an_input == "HELP_ME":
+                    self.print_help()
+
+                # Get input from user using auto-completion
+                if session and gtff.USE_PROMPT_TOOLKIT:
+                    # Possible arguments is not yet finalized
+                    if not self.completer:
+                        # Complete dynamic arguments that change at each iteration
+                        self.completer = self.dynamic_completer(self)
+                    try:
+                        an_input = session.prompt(
+                            f"{get_flair()} {self.path} $ ",
+                            completer=self.completer,
+                            search_ignore_case=True,
+                        )
+                    except KeyboardInterrupt:
+                        # Exit in case of keyboard interrupt
+                        an_input = "exit"
+                # Get input from user without auto-completion
+                else:
+                    an_input = input(f"{get_flair()} {self.path} $ ")
+
+            try:
+                # Process the input command
+                self.queue = self.switch(an_input)
+
+            except SystemExit:
+                print(
+                    f"\nThe command '{an_input}' doesn't exist on the {self.PATH[:-1]} menu.",
+                    end="",
+                )
+                similar_cmd = difflib.get_close_matches(
+                    an_input.split(" ")[0] if " " in an_input else an_input,
+                    self.CHOICES,
+                    n=1,
+                    cutoff=0.7,
+                )
+                if similar_cmd:
+                    if " " in an_input:
+                        candidate_input = (
+                            f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
+                        )
+                        if candidate_input == an_input:
+                            an_input = ""
+                            self.queue = []
+                            print("\n")
+                            continue
+                        an_input = candidate_input
+                    else:
+                        an_input = similar_cmd[0]
+
+                    print(f" Replacing by '{an_input}'.")
+                    self.queue.insert(0, an_input)
+                else:
+                    print("\n")

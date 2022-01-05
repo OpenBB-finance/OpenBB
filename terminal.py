@@ -3,11 +3,10 @@
 __docformat__ = "numpy"
 
 import os
-import argparse
 import difflib
 import logging
 import sys
-from typing import List, Union
+from typing import List
 import pytz
 
 from prompt_toolkit.completion import NestedCompleter
@@ -38,8 +37,6 @@ logger = logging.getLogger(__name__)
 class TerminalController(BaseController):
     """Terminal Controller class"""
 
-    PATH = "/"
-
     CHOICES_COMMANDS = [
         "update",
         "about",
@@ -64,12 +61,7 @@ class TerminalController(BaseController):
 
     def __init__(self, jobs_cmds: List[str] = None):
         """Constructor"""
-        self.parser = argparse.ArgumentParser(add_help=False, prog="terminal")
-        self.parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-        self.completer: Union[None, NestedCompleter] = None
+        super().__init__("/", jobs_cmds)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: None for c in self.CHOICES}
@@ -140,15 +132,15 @@ Timezone: {get_user_timezone_or_invalid()}
 
     def call_stocks(self, _):
         """Process stocks command"""
-        from gamestonk_terminal.stocks import stocks_controller
+        from gamestonk_terminal.stocks.stocks_controller import StocksController
 
-        self.queue = stocks_controller.menu("", self.queue)
+        self.queue = StocksController("", self.queue).menu()
 
     def call_crypto(self, _):
         """Process crypto command"""
-        from gamestonk_terminal.cryptocurrency import crypto_controller
+        from gamestonk_terminal.cryptocurrency.crypto_controller import CryptoController
 
-        self.queue = crypto_controller.menu(queue=self.queue)
+        self.queue = CryptoController(self.queue).menu()
 
     def call_economy(self, _):
         """Process economy command"""
