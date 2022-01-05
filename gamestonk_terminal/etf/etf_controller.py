@@ -596,17 +596,17 @@ Major holdings: {', '.join(self.etf_holdings)}
         if gtff.ENABLE_PREDICT:
             if self.etf_name:
                 try:
-                    from gamestonk_terminal.stocks.prediction_techniques import (
+                    from gamestonk_terminal.etf.prediction_techniques import (
                         pred_controller,
                     )
 
-                    self.queue = pred_controller.menu(
+                    self.queue = pred_controller.PredictionTechniquesController(
                         self.etf_name,
                         self.etf_data.index[0],
                         "1440min",
                         self.etf_data,
                         self.queue,
-                    )
+                    ).menu()
                 except ModuleNotFoundError as e:
                     print(
                         "One of the optional packages seems to be missing: ",
@@ -635,7 +635,7 @@ Major holdings: {', '.join(self.etf_holdings)}
     @try_except
     def call_disc(self, _):
         """Process disc command"""
-        self.queue = disc_controller.menu(self.queue)
+        self.queue = disc_controller.DiscoveryController(self.queue).menu()
 
     @try_except
     def call_compare(self, other_args):

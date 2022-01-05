@@ -577,13 +577,13 @@ Stocks Menus:
                             pred_controller,
                         )
 
-                        self.queue = pred_controller.menu(
+                        self.queue = pred_controller.PredictionTechniquesController(
                             self.ticker,
                             self.start,
                             self.interval,
                             self.stock,
                             self.queue,
-                        )
+                        ).menu()
                     except ModuleNotFoundError as e:
                         print(
                             "One of the optional packages seems to be missing: ",

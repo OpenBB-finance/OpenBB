@@ -16,6 +16,7 @@ from gamestonk_terminal.helper_funcs import get_flair
 # Do before merging
 # remove W0613
 # remove menu_decorator
+# remove if queue:
 
 
 class BaseController:
