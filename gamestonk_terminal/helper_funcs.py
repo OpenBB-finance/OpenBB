@@ -967,19 +967,15 @@ def menu_decorator(path: str, context, choices_function=None):
                         controller.print_help()
 
                     # Get input from user using auto-completion
-                    if session and gtff.USE_PROMPT_TOOLKIT and controller.completer:
-                        completer = None
-
-                        # Get dynamic options if a function is provided
-                        if choices_function is not None:
-                            # THIS DOES NOT WORK, CANNOT FIGURE OUT WHY
-                            completer = choices_function(controller)
+                    if session and gtff.USE_PROMPT_TOOLKIT:
+                        # Possible arguments is not yet finalized
+                        if not controller.completer:
+                            # Complete dynamic arguments that change at each iteration
+                            controller.completer = choices_function(controller)
                         try:
                             an_input = session.prompt(
                                 f"{get_flair()} {path} $ ",
-                                completer=completer
-                                if completer
-                                else controller.completer,
+                                completer=controller.completer,
                                 search_ignore_case=True,
                             )
                         except KeyboardInterrupt:
