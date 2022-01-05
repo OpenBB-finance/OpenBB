@@ -1,13 +1,16 @@
 
-Quantitative Analysis:
+   load        load new ticker
+   pick        pick target column for analysis
+
 Intraday  Stock: 
-Target Column: Returns
+Target Column: returns
 
 Statistics:
     summary     brief summary statistics of loaded stock.
     normality   normality statistics and tests
     unitroot    unit root test for stationarity (ADF, KPSS)
 Plots:
+    line        line plot of selected target
     hist        histogram with density plot
     cdf         cumulative distribution function
     bw          box and whisker plot

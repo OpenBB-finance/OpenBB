@@ -194,7 +194,7 @@ Select one of the following reports:
                 print("")
 
             notebook_template = os.path.join(
-                "gamestonk_terminal", "reports", report_to_run
+                "gamestonk_terminal", "jupyter", "reports", report_to_run
             )
             args_to_output = f"_{'_'.join(other_args)}" if "_".join(other_args) else ""
             report_output_name = (
@@ -204,6 +204,7 @@ Select one of the following reports:
             )
             notebook_output = os.path.join(
                 "gamestonk_terminal",
+                "jupyter",
                 "reports",
                 "stored",
                 report_output_name,
@@ -223,7 +224,7 @@ Select one of the following reports:
 
             if gtff.OPEN_REPORT_AS_HTML:
                 report_output_path = os.path.join(
-                    os.path.dirname(__file__), "..", "..", f"{notebook_output}.html"
+                    os.path.abspath(os.path.join(".")), notebook_output + ".html"
                 )
                 webbrowser.open(f"file://{report_output_path}")
 
@@ -260,10 +261,12 @@ Select one of the following reports:
         print("")
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
+        self.queue.insert(0, "quit")
 
     def call_reset(self, _):
         """Process reset command."""
         self.queue.insert(0, "reports")
+        self.queue.insert(0, "jupyter")
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
 

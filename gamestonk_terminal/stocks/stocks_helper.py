@@ -93,7 +93,7 @@ def search(
 @try_except
 def load(
     ticker: str,
-    start: datetime = (datetime.now() - timedelta(days=366)),
+    start: datetime = (datetime.now() - timedelta(days=1100)),
     interval: int = 1440,
     end: datetime = datetime.now(),
     prepost: bool = False,
