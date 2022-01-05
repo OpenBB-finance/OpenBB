@@ -152,24 +152,32 @@ def display_covid_stat(
 
         t_console.print("")
 
-    if export:
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), stat, data)
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), stat, data)
 
 
-def display_country_slopes(days_back: int = 30, limit: int = 10, ascend: bool = False):
+def display_country_slopes(
+    days_back: int = 30,
+    limit: int = 10,
+    ascend: bool = False,
+    threshold: int = 10000,
+    export: str = "",
+):
     """
 
     Parameters
     ----------
-    days_back
-    limit
-    ascend
-
-    Returns
-    -------
-
+    days_back: int
+        Number of historical days to get slope for
+    limit: int
+        Number to show in table
+    ascend: bool
+        Boolean to sort in ascending order
+    threshold: int
+        Threshold for total cases over period
+    export : str
+        Format to export data
     """
-    hist_slope = covid_model.get_case_slopes(days_back).sort_values(
+    hist_slope = covid_model.get_case_slopes(days_back, threshold).sort_values(
         by="Slope", ascending=ascend
     )
     if gtff.USE_TABULATE_DF:
@@ -184,3 +192,10 @@ def display_country_slopes(days_back: int = 30, limit: int = 10, ascend: bool = 
     else:
         t_console.print(hist_slope.head(limit).to_string())
     t_console.print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"slopes_{days_back}day",
+        hist_slope,
+    )

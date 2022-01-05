@@ -72,14 +72,14 @@ class CovidController:
     def print_help(self):
         """Print help"""
         help_str = f"""
+        slopes      get countries with highest slope in cases
+
 Country: [cyan]{self.country}[/cyan]
 
         ov          get overview (cases and deaths) for selected country
         deaths      get deaths for selected country
         cases       get cases for selected country
         rates       get death/cases rate for selected country
-
-        slopes      get countries with highest slope in cases
         """
         t_console.print(help_str)
 
@@ -304,6 +304,7 @@ Country: [cyan]{self.country}[/cyan]
             type=check_positive,
             help="Number of days back to look",
             dest="days",
+            default=30,
         )
         parser.add_argument(
             "-a",
@@ -312,12 +313,23 @@ Country: [cyan]{self.country}[/cyan]
             default=False,
             help="Show in ascending order",
         )
+        parser.add_argument(
+            "-t",
+            "--threshold",
+            default=10000,
+            dest="threshold",
+            help="Threshold for total cases over period",
+            type=check_positive,
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
         )
         if ns_parser:
             covid_view.display_country_slopes(
-                days_back=ns_parser.days, limit=ns_parser.limit, ascend=ns_parser.ascend
+                days_back=ns_parser.days,
+                limit=ns_parser.limit,
+                ascend=ns_parser.ascend,
+                threshold=ns_parser.threshold,
             )
 
 

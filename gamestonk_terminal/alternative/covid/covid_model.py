@@ -1,8 +1,10 @@
 """Covid Model"""
 __docformat__ = "numpy"
 
+import warnings
 import pandas as pd
 import numpy as np
+
 
 global_cases_time_series = (
     "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_"
@@ -70,28 +72,37 @@ def get_global_deaths(country: str) -> pd.DataFrame:
     return deaths
 
 
-def get_case_slopes(days_back: int = 30) -> pd.DataFrame:
+def get_case_slopes(days_back: int = 30, threshold: int = 10000) -> pd.DataFrame:
     """Load cases and find slope over period
 
     Parameters
     ----------
     days_back: int
         Number of historical days to consider
+    threshold: int
+        Threshold for total number of cases
     Returns
     -------
     pd.DataFrame
         Dataframe containing slopes
     """
+    # Ignore the pandas warning for setting a slace with a value
+    warnings.filterwarnings("ignore")
     cases = pd.read_csv(global_cases_time_series)
     cases = cases.rename(columns={"Country/Region": "Country"})
     cases = (
-        cases.drop(columns=["Province/State", "Lat", "Long"])
-        .groupby("Country")
-        .agg("sum")
+        (
+            cases.drop(columns=["Province/State", "Lat", "Long"])
+            .groupby("Country")
+            .agg("sum")
+        )
+        .diff()
+        .dropna()
     )
     hist = cases.iloc[:, -days_back:]
+    hist["Sum"] = hist.sum(axis=1)
+    hist = hist[hist.Sum > threshold].drop(columns="Sum")
     hist["Slope"] = hist.apply(
         lambda x: np.polyfit(np.arange(days_back), x, 1)[0], axis=1
     )
-    print(hist.T["US"])
     return pd.DataFrame(hist["Slope"])
