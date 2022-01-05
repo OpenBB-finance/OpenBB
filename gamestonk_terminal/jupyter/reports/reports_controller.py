@@ -13,7 +13,8 @@ import papermill as pm
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.helper_funcs import menu_decorator, system_clear
+from gamestonk_terminal.decorators import menu_decorator
+from gamestonk_terminal.helper_funcs import system_clear
 
 
 class ReportController:

@@ -8,8 +8,8 @@ from typing import List, Union
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import menu_decorator
 from gamestonk_terminal.helper_funcs import (
-    menu_decorator,
     system_clear,
 )
 from gamestonk_terminal.menu import session
