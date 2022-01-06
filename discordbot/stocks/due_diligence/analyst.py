@@ -1,6 +1,6 @@
 import discord
 import discordbot.config_discordbot as cfg
-
+from discordbot.run_discordbot import logger
 from gamestonk_terminal.stocks.due_diligence import finviz_model
 
 
@@ -11,7 +11,7 @@ async def analyst_command(ctx, ticker=""):
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.dd.analyst {ticker}")
+            logger.debug("!stocks.dd.analyst %s", ticker)
 
         # Check for argument
         if ticker == "":

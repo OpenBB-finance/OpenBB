@@ -1,7 +1,7 @@
 import discord
 import discordbot.config_discordbot as cfg
 from discordbot.helpers import pagination
-
+from discordbot.run_discordbot import logger
 from gamestonk_terminal.stocks.due_diligence import business_insider_model
 
 
@@ -12,7 +12,7 @@ async def est_command(ctx, ticker=""):
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.dd.est {ticker}")
+            logger.debug("!stocks.dd.est %s", ticker)
 
         # Check for argument
         if ticker == "":
@@ -33,9 +33,9 @@ async def est_command(ctx, ticker=""):
 
         # Debug user output
         if cfg.DEBUG:
-            print(df_year_estimates.to_string())
-            print(df_quarter_earnings.to_string())
-            print(df_quarter_revenues.to_string())
+            logger.debug(df_year_estimates.to_string())
+            logger.debug(df_quarter_earnings.to_string())
+            logger.debug(df_quarter_revenues.to_string())
 
         # Output data
         cols = []

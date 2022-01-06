@@ -1,6 +1,6 @@
 import discord
 import discordbot.config_discordbot as cfg
-
+from discordbot.run_discordbot import logger
 from gamestonk_terminal.stocks.due_diligence import csimarket_model
 
 
@@ -10,7 +10,7 @@ async def customer_command(ctx, ticker=""):
     try:
         # Debug user input
         if cfg.DEBUG:
-            print(f"!stocks.dd.customer {ticker}")
+            logger.debug("!stocks.dd.customer %s", ticker)
 
         if ticker == "":
             raise Exception("A ticker is required")
@@ -22,7 +22,7 @@ async def customer_command(ctx, ticker=""):
 
         # Debug user output
         if cfg.DEBUG:
-            print(tickers)
+            logger.debug(tickers)
 
         # Output data
         embed = discord.Embed(
