@@ -1,7 +1,7 @@
 import discord
 import discordbot.config_discordbot as cfg
 from discordbot.helpers import pagination
-
+from discordbot.run_discordbot import logger
 from gamestonk_terminal.economy import finviz_model
 
 
@@ -29,12 +29,12 @@ async def performance_command(ctx, economy_group="sector"):
     try:
         # Debug user input
         if cfg.DEBUG:
-            print(f"\n!economy.performance {economy_group}")
+            logger.debug("!economy.performance %s", economy_group)
 
         # Select default group
         if not economy_group:
             if cfg.DEBUG:
-                print("Use default economy_group: 'sector'")
+                logger.debug("Use default economy_group: 'sector'")
             economy_group = "sector"
 
         # Check for argument
@@ -51,7 +51,7 @@ async def performance_command(ctx, economy_group="sector"):
 
         # Debug user output
         if cfg.DEBUG:
-            print(df_group.to_string())
+            logger.debug(df_group.to_string())
 
         # Output data
         future_column_name = df_group["Name"]

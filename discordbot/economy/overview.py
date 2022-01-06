@@ -1,6 +1,6 @@
 import discord
 import discordbot.config_discordbot as cfg
-
+from discordbot.run_discordbot import logger
 from gamestonk_terminal.economy import wsj_model
 
 
@@ -10,14 +10,14 @@ async def overview_command(ctx):
     try:
         # Debug user input
         if cfg.DEBUG:
-            print("\n!economy.overview")
+            logger.debug("!economy.overview")
 
         # Retrieve data
         df_data = wsj_model.market_overview()
 
         # Debug user output
         if cfg.DEBUG:
-            print(df_data.to_string())
+            logger.debug(df_data.to_string())
 
         # Output data
         if df_data.empty:

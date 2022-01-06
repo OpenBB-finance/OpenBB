@@ -1,11 +1,11 @@
-import os
 import datetime
-import matplotlib.pyplot as plt
-import discord
+import os
 
-from gamestonk_terminal.economy import cnn_view, cnn_model
-from discordbot.run_discordbot import gst_imgur, logger
+import discord
+import matplotlib.pyplot as plt
 import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur, logger
+from gamestonk_terminal.economy import cnn_model, cnn_view
 
 
 async def feargreed_command(ctx, indicator=""):

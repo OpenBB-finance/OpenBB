@@ -1,7 +1,7 @@
 import discord
 import pandas as pd
 import discordbot.config_discordbot as cfg
-
+from discordbot.run_discordbot import logger
 from gamestonk_terminal.economy import finviz_model
 
 
@@ -11,7 +11,7 @@ async def softs_command(ctx):
     try:
         # Debug user input
         if cfg.DEBUG:
-            print("\n!economy.softs")
+            logger.debug("!economy.softs")
 
         # Retrieve data
         d_futures = finviz_model.get_futures()
@@ -22,7 +22,7 @@ async def softs_command(ctx):
 
         # Debug user output
         if cfg.DEBUG:
-            print(df.to_string())
+            logger.debug(df.to_string())
 
         # Output data
         if df.empty:

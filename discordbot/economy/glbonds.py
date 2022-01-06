@@ -1,5 +1,4 @@
 import discord
-
 import discordbot.config_discordbot as cfg
 from discordbot.run_discordbot import logger
 from gamestonk_terminal.economy import wsj_model

@@ -1,8 +1,7 @@
 import discord
 import pandas as pd
-from discordbot.run_discordbot import logger
 import discordbot.config_discordbot as cfg
-
+from discordbot.run_discordbot import logger
 from gamestonk_terminal.economy import finviz_model
 
 
