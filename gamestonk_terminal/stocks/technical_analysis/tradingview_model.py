@@ -48,36 +48,32 @@ def get_tradingview_recommendation(
         result = requests.get(s_req, stream=True)
         exchange = result.json()["Exchange"]
 
-    if not interval:
-        df_recommendation = pd.DataFrame()
-        index_recommendation = []
-        for an_interval in ["1M", "1W", "1d", "4h", "1h", "15m", "5m", "1m"]:
-            # If the returned data was successful
-            if result.status_code == 200:
-                stock_recommendation = TA_Handler(
-                    symbol=ticker,
-                    screener=screener,
-                    exchange=exchange,
-                    interval=an_interval,
-                )
-                d_recommendation = stock_recommendation.get_analysis().summary
-                df_recommendation = df_recommendation.append(
-                    d_recommendation, ignore_index=True
-                )
-                index_recommendation.append(INTERVALS[an_interval])
-            df_recommendation.index = index_recommendation
-            df_recommendation[["BUY", "NEUTRAL", "SELL"]] = df_recommendation[
-                ["BUY", "NEUTRAL", "SELL"]
-            ].astype(int)
-
-        df_recommendation.index.name = "Interval"
-
+    if interval:
+        intervals = [interval]
     else:
-        stock_recommendation = TA_Handler(
-            symbol=ticker, screener=screener, exchange=exchange, interval=interval
-        )
-        d_recommendation = stock_recommendation.get_analysis().summary
-        df_recommendation = pd.DataFrame.from_dict(d_recommendation, orient="index").T
-        df_recommendation.index = INTERVALS[interval]
+        intervals = ["1M", "1W", "1d", "4h", "1h", "15m", "5m", "1m"]
+
+    df_recommendation = pd.DataFrame()
+    index_recommendation = []
+    for an_interval in intervals:
+        # If the returned data was successful
+        if result.status_code == 200:
+            stock_recommendation = TA_Handler(
+                symbol=ticker,
+                screener=screener,
+                exchange=exchange,
+                interval=an_interval,
+            )
+            d_recommendation = stock_recommendation.get_analysis().summary
+            df_recommendation = df_recommendation.append(
+                d_recommendation, ignore_index=True
+            )
+            index_recommendation.append(INTERVALS[an_interval])
+        df_recommendation.index = index_recommendation
+        df_recommendation[["BUY", "NEUTRAL", "SELL"]] = df_recommendation[
+            ["BUY", "NEUTRAL", "SELL"]
+        ].astype(int)
+
+    df_recommendation.index.name = "Interval"
 
     return df_recommendation

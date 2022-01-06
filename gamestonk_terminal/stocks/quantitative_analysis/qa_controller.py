@@ -31,6 +31,8 @@ from gamestonk_terminal.stocks.quantitative_analysis.factors_view import capm_vi
 # pylint: disable=W0613
 t_console = Console()
 
+# pylint: disable=C0302
+
 
 class QaController:
     """Quantitative Analysis Controller class"""
@@ -438,6 +440,14 @@ Other:
             action="store_true",
             default=False,
         )
+        parser.add_argument(
+            "-d",
+            "--draw",
+            help="Draw lines and annotate on the plot",
+            dest="draw",
+            action="store_true",
+            default=False,
+        )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
@@ -447,6 +457,7 @@ Other:
                 self.stock[self.target],
                 title=f"{self.ticker} {self.target}",
                 log_y=ns_parser.log,
+                draw=ns_parser.draw,
             )
 
     @try_except
