@@ -53,6 +53,7 @@ class TerminalController(BaseController):
         "resources",
         "jupyter",
         "funds",
+        "alternative",
     ]
 
     all_timezones = pytz.all_timezones
@@ -116,6 +117,7 @@ Timezone: {get_user_timezone_or_invalid()}
 >   portfolio
 >   jupyter
 >   resources
+>   alternative
     """
         print(help_text)
 
@@ -182,6 +184,12 @@ Timezone: {get_user_timezone_or_invalid()}
         )
 
         self.queue = ResourceCollectionController(self.queue).menu()
+
+    def call_alternative(self, _):
+        """Process resources command"""
+        from gamestonk_terminal.alternative import alt_controller
+
+        self.queue = alt_controller.menu(self.queue)
 
     def call_portfolio(self, _):
         """Process portfolio command"""
