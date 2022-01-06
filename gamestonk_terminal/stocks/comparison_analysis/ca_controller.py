@@ -3,19 +3,19 @@ __docformat__ = "numpy"
 
 import argparse
 import random
-from typing import List, Union
+from typing import List
 from datetime import datetime, timedelta
 import yfinance as yf
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.decorators import try_except, menu_decorator
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     check_non_negative,
     check_positive,
     parse_known_args_and_warn,
-    system_clear,
     valid_date,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
@@ -36,22 +36,9 @@ from gamestonk_terminal.stocks.comparison_analysis import (
 # pylint: disable=E1121,C0302,R0904,W0613
 
 
-class ComparisonAnalysisController:
+class ComparisonAnalysisController(BaseController):
     """Comparison Analysis Controller class"""
 
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
     CHOICES_COMMANDS = [
         "ticker",
         "getpoly",
@@ -79,21 +66,11 @@ class ComparisonAnalysisController:
     CHOICES_MENUS = [
         "po",
     ]
-    CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
+    BaseController.CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
 
-    def __init__(
-        self,
-        similar: List[str] = None,
-        queue: List[str] = None,
-    ):
+    def __init__(self, similar: List[str] = None, queue: List[str] = None):
         """Constructor"""
-        self.ca_parser = argparse.ArgumentParser(add_help=False, prog="ca")
-        self.ca_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-
-        self.completer: Union[None, NestedCompleter] = None
+        super().__init__("/stocks/ca/", self.CHOICES_COMMANDS, queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
 
@@ -109,11 +86,6 @@ class ComparisonAnalysisController:
                 self.ticker = self.similar[0].upper()
         else:
             self.similar = []
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
     def print_help(self):
         """Print help"""
@@ -156,89 +128,10 @@ Finviz:
         """
         print(help_text)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.ca_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        # additional quit for when we come to this menu through a relative path
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
+    def custom_reset(self, _):
+        """Class specific component of reset command"""
         if self.similar:
-            self.queue.insert(0, f"set {','.join(self.similar)}")
-        self.queue.insert(0, "ca")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            self.queue.insert(5, f"set {','.join(self.similar)}")
 
     @try_except
     def call_ticker(self, other_args: List[str]):
@@ -1048,8 +941,3 @@ Finviz:
             self.queue = po_controller.menu(self.similar, self.queue)
         else:
             print("Please make sure there are more than 1 similar tickers selected. \n")
-
-
-@menu_decorator("/stocks/ca/", ComparisonAnalysisController)
-def menu(similar: List, queue: List[str] = None):
-    """Comparison Analysis Menu"""

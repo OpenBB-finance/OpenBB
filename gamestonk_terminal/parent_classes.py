@@ -17,6 +17,9 @@ from gamestonk_terminal.helper_funcs import get_flair
 # remove W0613
 # remove menu_decorator
 # remove if queue:
+# remove too-many-lines
+# remove CHOICES
+# remove call_home
 
 
 class BaseController:
@@ -54,10 +57,7 @@ class BaseController:
         self.completer: Union[None, NestedCompleter] = None
 
         if path != "/":
-            if queue:
-                self.queue = queue
-            else:
-                self.queue = list()
+            self.queue = queue if queue else list()
 
     @abstractmethod
     def print_help(self):
@@ -117,7 +117,8 @@ class BaseController:
 
     def call_home(self, _):
         """Process home command"""
-        self.queue.insert(0, "quit")
+        for _ in range(self.path.count("/") - 1):
+            self.queue.insert(0, "quit")
 
     def call_help(self, _):
         """Process help command"""

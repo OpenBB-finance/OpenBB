@@ -2,37 +2,21 @@
 __docformat__ = "numpy"
 
 # pylint: disable=R1732,W0613
-import argparse
 import os
-from typing import List, Union
+from typing import List
 import webbrowser
 from datetime import datetime
 from ast import literal_eval
 from prompt_toolkit.completion import NestedCompleter
 import papermill as pm
 
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.decorators import menu_decorator
-from gamestonk_terminal.helper_funcs import system_clear
 
 
-class ReportController:
+class ReportController(BaseController):
     """Report Controller class."""
-
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
 
     reports_folder = os.path.dirname(os.path.abspath(__file__))
 
@@ -44,8 +28,8 @@ class ReportController:
 
     ids_reports = [str(val + 1) for val in range(len(report_names))]
 
-    CHOICES += report_names + ids_reports
-
+    BaseController.CHOICES += report_names + ids_reports
+    
     d_id_to_report_name = {}
     for id_report, report_name in enumerate(report_names):
         d_id_to_report_name[str(id_report + 1)] = report_name
@@ -93,22 +77,11 @@ class ReportController:
 
     def __init__(self, queue: List[str] = None):
         """Construct the Reports Controller."""
-        self.report_parser = argparse.ArgumentParser(add_help=False, prog="reports")
-        self.report_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-
-        self.completer: Union[None, NestedCompleter] = None
+        super().__init__("/jupyter/reports/", self.report_names + self.ids_reports, queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
     def print_help(self):
         """Print help."""
@@ -152,7 +125,7 @@ Select one of the following reports:
                 if cmd:
                     self.queue.insert(0, cmd)
 
-        (known_args, other_args) = self.report_parser.parse_known_args(an_input.split())
+        (known_args, other_args) = self.parser.parse_known_args(an_input.split())
 
         # Redirect commands to their correct functions
         if known_args.cmd:
@@ -239,39 +212,3 @@ Select one of the following reports:
             )
 
         return self.queue
-
-    def call_home(self, _):
-        """Process home command."""
-        self.queue.insert(0, "quit")
-
-    def call_cls(self, _):
-        """Process cls command."""
-        system_clear()
-
-    def call_help(self, _):
-        """Process help command."""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command."""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command."""
-        print("")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command."""
-        self.queue.insert(0, "reports")
-        self.queue.insert(0, "jupyter")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-
-
-@menu_decorator("/reports/", ReportController)
-def menu(queue: List[str] = None):
-    """Report Menu."""

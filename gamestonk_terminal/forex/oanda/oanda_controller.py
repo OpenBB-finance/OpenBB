@@ -11,36 +11,19 @@ from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.forex import av_model
 from gamestonk_terminal.forex.oanda import oanda_view
-
-from gamestonk_terminal.decorators import try_except, menu_decorator
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
-    system_clear,
     check_non_negative_float,
 )
 from gamestonk_terminal.menu import session
 
-# pylint: disable=W0613
-
 account = cfg.OANDA_ACCOUNT
 
 
-class OandaController:
+class OandaController(BaseController):
     """Oanda menu controller."""
-
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
 
     CHOICES_COMMANDS = [
         "from",
@@ -61,17 +44,11 @@ class OandaController:
         # "news",
         # "reddit",
     ]
-    CHOICES += CHOICES_COMMANDS
+    BaseController.CHOICES += CHOICES_COMMANDS
 
     def __init__(self, queue: List[str] = None):
         """Construct Data."""
-        self.fx_parser = argparse.ArgumentParser(add_help=False, prog="oanda")
-        self.fx_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-
-        self.completer: Union[None, NestedCompleter] = None
+        super().__init__("/forex/oanda/", self.CHOICES_COMMANDS, queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
@@ -92,11 +69,6 @@ class OandaController:
         self.to_symbol = ""
 
         self.instrument: Union[str, None] = None
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
     def print_help(self):
         """Print help."""
@@ -127,85 +99,6 @@ class OandaController:
 
     """
         print(help_text)
-
-    def switch(self, an_input: str):
-        """Process and dispatch input.
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.fx_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command."""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command."""
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command."""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command."""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command."""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command."""
-        self.queue.insert(0, "oanda")
-        self.queue.insert(0, "forex")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
 
     @try_except
     def call_to(self, other_args: List[str]):
@@ -612,8 +505,3 @@ class OandaController:
         if ns_parser:
             days = ns_parser.days
             oanda_view.calendar(self.instrument, days)
-
-
-@menu_decorator("/forex/oanda/", OandaController)
-def menu(queue: List[str] = None):
-    """Oanda Forex Menu."""

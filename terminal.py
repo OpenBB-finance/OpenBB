@@ -156,33 +156,33 @@ Timezone: {get_user_timezone_or_invalid()}
 
     def call_funds(self, _):
         """Process etf command"""
-        from gamestonk_terminal.mutual_funds import mutual_fund_controller
+        from gamestonk_terminal.mutual_funds.mutual_fund_controller import FundController
 
-        self.queue = mutual_fund_controller.menu(self.queue)
+        self.queue = FundController(self.queue).menu()
 
     def call_forex(self, _):
         """Process forex command"""
-        from gamestonk_terminal.forex import forex_controller
+        from gamestonk_terminal.forex.forex_controller import ForexController
 
-        self.queue = forex_controller.menu(self.queue)
+        self.queue = ForexController(self.queue).menu()
 
     def call_jupyter(self, _):
         """Process jupyter command"""
-        from gamestonk_terminal.jupyter import jupyter_controller
+        from gamestonk_terminal.jupyter.jupyter_controller import JupyterController
 
-        self.queue = jupyter_controller.menu(self.queue)
+        self.queue = JupyterController(self.queue).menu()
 
     def call_resources(self, _):
         """Process resources command"""
-        from gamestonk_terminal.resources import resources_controller
+        from gamestonk_terminal.resources.resources_controller import ResourceCollectionController
 
-        self.queue = resources_controller.menu(self.queue)
+        self.queue = ResourceCollectionController(self.queue).menu()
 
     def call_portfolio(self, _):
         """Process portfolio command"""
-        from gamestonk_terminal.portfolio import portfolio_controller
+        from gamestonk_terminal.portfolio.portfolio_controller import PortfolioController
 
-        self.queue = portfolio_controller.menu(self.queue)
+        self.queue = PortfolioController(self.queue).menu()
 
     def call_tz(self, other_args: List[str]):
         """Process tz command"""

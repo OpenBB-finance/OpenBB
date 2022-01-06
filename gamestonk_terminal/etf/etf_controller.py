@@ -584,9 +584,9 @@ Major holdings: {', '.join(self.etf_holdings)}
     def call_ta(self, _):
         """Process ta command"""
         if self.etf_name:
-            self.queue = ta_controller.menu(
+            self.queue = ta_controller.TechnicalAnalysisController(
                 self.etf_name, self.etf_data.index[0], self.etf_data, self.queue
-            )
+            ).menu()
         else:
             print("Use 'load <ticker>' prior to this command!", "\n")
 
@@ -625,12 +625,12 @@ Major holdings: {', '.join(self.etf_holdings)}
     def call_ca(self, _):
         """Process ca command"""
         if len(self.etf_holdings) > 0:
-            self.queue = ca_controller.menu(self.etf_holdings, self.queue)
+            self.queue = ca_controller.ComparisonAnalysisController(self.etf_holdings, self.queue).menu()
 
     @try_except
     def call_scr(self, _):
         """Process scr command"""
-        self.queue = screener_controller.menu(self.queue)
+        self.queue = screener_controller.ScreenerController(self.queue).menu()
 
     @try_except
     def call_disc(self, _):
