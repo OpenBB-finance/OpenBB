@@ -1,0 +1,138 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://www.alphavantage.co/query?apikey=MOCK_API_KEY&function=OVERVIEW&symbol=AAPL
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3RUTW/jNhC9768YBAXaAo5A0ZI/elMcJevWtryxskWOtDSWiVCkS1J2vUX/e0HJ
+        khInFXSa94bzhvM4/3wBALjZnMutEje/wU0UrRc3gyYaGYM2PR/QATNVlkrCxqrstSWsWFlj0eEg
+        EOYya4F7NJnmB8uVfId7wA0wCVGJmmdMQlkJyyVzRCbAYraXSqjiDJkqD0yewe6ZBXPAjDPBf6AB
+        LiFT0lQlakCBmdVK8swM6ozKogajdvbENA6AyRyUFFwiGNRHnqHxoBHDDdg9wklpkf9sQDBdoLGf
+        KdieQeMRZYXwi1WWCcFlAT/RceCFsOVCcCWdKkoo+dWVHIDhMkP4ncmK6bMD/MG7aqUyFo5MVGwr
+        sC3kQWRA7S70T1XuVKXt/rYVu57BEWWutNNYSW7BMIGm6fuKa0qm7WGvJELJZLVjma00ag/m1lVx
+        cbWri93xAh74EfshcblTuqyH9PGCeF1QKFnAids9RCX7oeQAHpUqBA5gyTOt3EgaWQ8sw61Sr15r
+        ldn8D2eRISX+dNgG47+zPZNFba5VtLmPvnX0SmuU2dkhz5v7LqwqafUlGrXRDWZWaRdM49nXVbJI
+        Hl9abC7zylxS4kU8S5+S1XwGs2S5fk7jp033CPJcozGOlqximK8e5qt5GsMiSdYDmD2v46d0vkoG
+        MIsG8NylPXCTMfGCTMcyd8kbPFgst6hbxoJZNPZbxbTFWqMb/C2Z3g5JS1ky/Yp2xg7cOvez9j3R
+        aTChQ0KoT0hHju/m6X3kYJ8SOhwS8hZdx08uvblqjwz7+GMPeJOQtsCdUq/fmajwggR+97j5keco
+        8zXqzZ7pmkC8SXiNv3AUeQMSEkw6neuNC4beqDvxqXlf7YFpuqy79L1pJ1OrHbdLpgsumyNp2IHJ
+        ATWzXBYNfkknHp1O+gq20jKR9UozPYPQa0b8V8Xt+cLwvWAcXKm8QMNROPHHhARvLvlRK2Maqe0B
+        IZ0MR6T++vsRlcU8Xm8upLdXcfGDOMdMSy4L86jVye5fkpdG8WhEP1Avwq6YdNJ1H0kmzsambhfY
+        teZZPTN/HHrjUctJNeNus63jDx55UPrEdN4jYT8WnmGqNm7t1Da6dDTxyOiK4/zUOS0YeaNxZ4jv
+        qbq00ORS+hbqfU0Dr3fhHVrWjIj2SkP6J+LrV17sa2hCvWnwHluoUw354RsFIbln56U6cllER9Ss
+        WTz+iHrjrlVKPicFgUe7Xmv7mqSyxjKZc1k05wRkFFxZoHki98xi9/R99/cb8P84JLz58u9/AAAA
+        //8DAEu54Re4BwAA
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6c9370712e280857-CDG
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 06 Jan 2022 08:05:05 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Cookie
+      Via:
+      - 1.1 vegur
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"symbols": {"tickers": ["NASDAQ:AAPL"], "query": {"types": []}}, "columns":
+      ["Recommend.Other", "Recommend.All", "Recommend.MA", "RSI", "RSI[1]", "Stoch.K",
+      "Stoch.D", "Stoch.K[1]", "Stoch.D[1]", "CCI20", "CCI20[1]", "ADX", "ADX+DI",
+      "ADX-DI", "ADX+DI[1]", "ADX-DI[1]", "AO", "AO[1]", "Mom", "Mom[1]", "MACD.macd",
+      "MACD.signal", "Rec.Stoch.RSI", "Stoch.RSI.K", "Rec.WR", "W.R", "Rec.BBPower",
+      "BBPower", "Rec.UO", "UO", "close", "EMA5", "SMA5", "EMA10", "SMA10", "EMA20",
+      "SMA20", "EMA30", "SMA30", "EMA50", "SMA50", "EMA100", "SMA100", "EMA200", "SMA200",
+      "Rec.Ichimoku", "Ichimoku.BLine", "Rec.VWMA", "VWMA", "Rec.HullMA9", "HullMA9",
+      "Pivot.M.Classic.S3", "Pivot.M.Classic.S2", "Pivot.M.Classic.S1", "Pivot.M.Classic.Middle",
+      "Pivot.M.Classic.R1", "Pivot.M.Classic.R2", "Pivot.M.Classic.R3", "Pivot.M.Fibonacci.S3",
+      "Pivot.M.Fibonacci.S2", "Pivot.M.Fibonacci.S1", "Pivot.M.Fibonacci.Middle",
+      "Pivot.M.Fibonacci.R1", "Pivot.M.Fibonacci.R2", "Pivot.M.Fibonacci.R3", "Pivot.M.Camarilla.S3",
+      "Pivot.M.Camarilla.S2", "Pivot.M.Camarilla.S1", "Pivot.M.Camarilla.Middle",
+      "Pivot.M.Camarilla.R1", "Pivot.M.Camarilla.R2", "Pivot.M.Camarilla.R3", "Pivot.M.Woodie.S3",
+      "Pivot.M.Woodie.S2", "Pivot.M.Woodie.S1", "Pivot.M.Woodie.Middle", "Pivot.M.Woodie.R1",
+      "Pivot.M.Woodie.R2", "Pivot.M.Woodie.R3", "Pivot.M.Demark.S1", "Pivot.M.Demark.Middle",
+      "Pivot.M.Demark.R1", "open", "P.SAR", "BB.lower", "BB.upper", "AO[2]", "volume",
+      "change", "low", "high"]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1444'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - tradingview_ta/3.2.10
+    method: POST
+    uri: https://scanner.tradingview.com/america/scan
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAy1Su44UQQz8l4l7rfbb3mwFIUIgQnTBSoSIC1ii0/075dmbCbrttqury/V2PF4f
+        99+fXv/9eRxXXsev++N+XH++HX+P6/H19uPz7fv1dvv25cAR8pdNXM9/bdom54+txPnlciVrljCL
+        FUy9WXy7rFSqlK7gXplUks6avWpTFkt32cqiLaqbc13UySNZhFc28U4uVVnGJCqixbyUCRXJxrY4
+        KdO2KftSo27BRVWLmdjQwBmrgd5cor4YjLm3uvQCScVZ+zJi0dhZs83YzZlrL1Ax11DziS7OVLtQ
+        5Ipw8F1Lw6eyKBlNOlckaAiWxMJlkA1Bkc2SEAlcOp65ednUl3gX72kO0g6sTCkWAuYIhDaHzrc4
+        gnyLzfMRQN2GCl7E+DANYPgpYS62JPUNVoFSwzVQM4cv5yaF2EinYz5pUKSecYF2M2gDSQAPdAM6
+        4EJQerLBUSWBeweVLshMDNIfdY5Xhm0kQE+2D0E8YZrwqj5P0O56njwhhlFlC4rgGN6YylBTbRD+
+        6IYfau8pKQiiI1cZHLinBAY51bce/yARTqcaY8ATpDDrge0igQuXsJEOWiQFRn8O7sTq0XsSTaMc
+        ZuGW0ByD5wAKfG1lCMCjCrcxHAJrVYthgr56fGPYXITC4fE6hTMKSAHnc768v7z/B9QpzBCFAwAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-UserId,X-UserExchanges,X-CSRFToken
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 06 Jan 2022 08:05:05 GMT
+      Server:
+      - tv
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - 192.108.254.126:443
+    status:
+      code: 200
+      message: OK
+version: 1
