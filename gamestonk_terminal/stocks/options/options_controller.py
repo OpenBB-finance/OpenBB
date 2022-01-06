@@ -1,6 +1,8 @@
 """ Options Controller Module """
 __docformat__ = "numpy"
 
+# pylint: disable=R1710,R0916,too-many-lines
+
 import argparse
 import os
 from datetime import datetime, timedelta
@@ -36,8 +38,6 @@ from gamestonk_terminal.stocks.options import (
     pricing_controller,
     screener_controller,
 )
-
-# pylint: disable=R1710,R0916
 
 
 class OptionsController(BaseController):
@@ -1230,9 +1230,7 @@ def choices(controller):
         controller.extras["exp"] = {
             str(c): {} for c in range(len(controller.expiry_dates))
         }
-        controller.extras["exp"]["-d"] = {
-            c: {} for c in controller.expiry_dates + [""]
-        }
+        controller.extras["exp"]["-d"] = {c: {} for c in controller.expiry_dates + [""]}
         if controller.chain:
             controller.extras["hist"] = {
                 str(c): {}

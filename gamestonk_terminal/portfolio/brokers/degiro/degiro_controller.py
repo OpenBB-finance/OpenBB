@@ -38,6 +38,11 @@ class DegiroController(BaseController):
             choices: dict = {c: {} for c in self.CHOICES}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
+    def print_help(self):
+        """Print help."""
+        help_text = "Derigo brokerage menu"
+        print(help_text)
+
     def cancel(self, other_args: List[str]):
         """Cancel an order using the `id`."""
 

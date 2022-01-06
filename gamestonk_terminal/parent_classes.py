@@ -14,11 +14,8 @@ from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import system_clear, get_flair
 
 # Do before merging
-# comment in detail on base controller
-# remove menu_decorator
 # remove try_except
 # add try_except to all switches
-# custom not for custom_reset (times 2 + 1)
 
 
 class BaseController:
@@ -44,6 +41,17 @@ class BaseController:
         queue: List[str] = None,
         dynamic_completer: Callable[..., NestedCompleter] = None,
     ) -> None:
+        """
+        This is the base class for any controller in the codebase. Use it to
+        quickly create a working context and menu.
+
+        path: str
+            Where the current context is located in the terminal
+        queue: List[str]
+            The current queue
+        dynamic_completer:
+            Allows a function for dynamic completing
+        """
         self.choices = self.CHOICES
         self.path = path
         self.dynamic_completer = dynamic_completer
@@ -58,9 +66,16 @@ class BaseController:
         if path != "/":
             self.queue = queue if queue else list()
 
-    @abstractmethod
     def custom_reset(self):
-        pass
+        """
+        This will be replace by any children with custom_reset functions
+
+        When you replace this function be careful where insert the function.
+        Making the insert parameter 0 makes it the first command executed, to
+        make the command the last one executed set it to the number of levels
+        it is deep multiplied by two plus one. For example, If your new context
+        was /stocks/network/ it would be 2 X 2 + 1 or 5.
+        """
 
     @abstractmethod
     def print_help(self):
