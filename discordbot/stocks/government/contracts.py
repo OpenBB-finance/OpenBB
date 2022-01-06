@@ -1,14 +1,13 @@
 import os
+
 import discord
-from matplotlib import pyplot as plt
 import pandas as pd
-
-from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.stocks.government import quiverquant_model
-from gamestonk_terminal.helper_funcs import plot_autoscale
-
+from matplotlib import pyplot as plt
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal.stocks.government import quiverquant_model
 
 
 async def contracts_command(ctx, ticker="", past_transaction_days="", raw=""):
@@ -16,7 +15,9 @@ async def contracts_command(ctx, ticker="", past_transaction_days="", raw=""):
     try:
         # Debug user input
         if cfg.DEBUG:
-            print(f"!stocks.gov.contracts {ticker} {past_transaction_days} {raw}")
+            logger.debug(
+                "!stocks.gov.contracts %s %s %s", ticker, past_transaction_days, raw
+            )
 
         if past_transaction_days == "":
             past_transaction_days = 10
@@ -65,7 +66,7 @@ async def contracts_command(ctx, ticker="", past_transaction_days="", raw=""):
         uploaded_image = gst_imgur.upload_image("gov_contracts.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = f"Stocks: [quiverquant.com] Contracts by {ticker}"
         if raw:
             description = df_contracts.to_string()

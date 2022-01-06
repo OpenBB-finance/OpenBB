@@ -1,8 +1,8 @@
 import discord
-
-from gamestonk_terminal.stocks.government import quiverquant_model
 import discordbot.config_discordbot as cfg
 from discordbot.helpers import pagination
+from discordbot.run_discordbot import logger
+from gamestonk_terminal.stocks.government import quiverquant_model
 
 
 async def lasttrades_command(
@@ -12,8 +12,11 @@ async def lasttrades_command(
     try:
         # Debug user input
         if cfg.DEBUG:
-            print(
-                f"!stocks.gov.lasttrades {gov_type} {past_transactions_days} {representative}"
+            logger.debug(
+                "!stocks.gov.lasttrades %s %s %s",
+                gov_type,
+                past_transactions_days,
+                representative,
             )
 
         if past_transactions_days == "":
