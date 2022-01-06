@@ -70,6 +70,7 @@ def get_coin_potential_returns(
     COLUMNS = [
         "Coin",
         "Current Price ($)",
+        "Current Market Cap ($)",
         "Target Coin",
         "Potential Price ($)",
         "Potential Market Cap ($)",
@@ -100,6 +101,7 @@ def get_coin_potential_returns(
                 [
                     main_coin,
                     main_coin_data["usd"],
+                    main_coin_data["usd_market_cap"],
                     coin["id"],
                     future_price,
                     coin["market_cap"],
@@ -135,6 +137,7 @@ def get_coin_potential_returns(
                     [
                         main_coin,
                         main_coin_data["usd"],
+                        main_coin_data["usd_market_cap"],
                         vs,
                         future_price,
                         vs_coin_data["usd_market_cap"],
@@ -169,6 +172,7 @@ def get_coin_potential_returns(
                     [
                         main_coin,
                         main_coin_data["usd"],
+                        main_coin_data["usd_market_cap"],
                         "",
                         future_price,
                         final_market_cap,

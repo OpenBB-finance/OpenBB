@@ -44,6 +44,9 @@ def display_coin_potential_returns(
     df["Potential Market Cap ($)"] = df.apply(
         lambda x: "{:,}".format(int(x["Potential Market Cap ($)"])), axis=1
     )
+    df["Current Market Cap ($)"] = df.apply(
+        lambda x: "{:,}".format(int(x["Current Market Cap ($)"])), axis=1
+    )
 
     if gtff.USE_TABULATE_DF:
         print(
