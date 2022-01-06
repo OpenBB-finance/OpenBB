@@ -43,12 +43,16 @@ class JupyterController(BaseController):
 
     def call_reports(self, _):
         """Process reports command"""
-        from gamestonk_terminal.jupyter.reports.reports_controller import ReportController
+        from gamestonk_terminal.jupyter.reports.reports_controller import (
+            ReportController,
+        )
 
         self.queue = ReportController(self.queue).menu()
 
     def call_dashboards(self, _):
         """Process dashboards command"""
-        from gamestonk_terminal.jupyter.dashboards.dashboards_controller import DashboardsController
+        from gamestonk_terminal.jupyter.dashboards.dashboards_controller import (
+            DashboardsController,
+        )
 
         self.queue = DashboardsController(self.queue).menu()

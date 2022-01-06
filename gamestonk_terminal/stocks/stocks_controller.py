@@ -507,7 +507,9 @@ Stocks Menus:
     def call_ca(self, _):
         """Process ca command"""
 
-        from gamestonk_terminal.stocks.comparison_analysis.ca_controller import ComparisonAnalysisController
+        from gamestonk_terminal.stocks.comparison_analysis.ca_controller import (
+            ComparisonAnalysisController,
+        )
 
         self.queue = ComparisonAnalysisController(
             [self.ticker] if self.ticker else "", self.queue

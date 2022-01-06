@@ -58,7 +58,7 @@ class ScreenerController(BaseController):
         "N_Hold",
     ]
 
-    def __init__(self,queue: List[str] = None):
+    def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__("/etf/scr/", self.CHOICES_COMMANDS, queue)
         self.completer: Union[None, NestedCompleter] = None

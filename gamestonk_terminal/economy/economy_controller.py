@@ -238,7 +238,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
         parser = argparse.ArgumentParser(

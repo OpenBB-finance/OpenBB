@@ -625,7 +625,9 @@ Major holdings: {', '.join(self.etf_holdings)}
     def call_ca(self, _):
         """Process ca command"""
         if len(self.etf_holdings) > 0:
-            self.queue = ca_controller.ComparisonAnalysisController(self.etf_holdings, self.queue).menu()
+            self.queue = ca_controller.ComparisonAnalysisController(
+                self.etf_holdings, self.queue
+            ).menu()
 
     @try_except
     def call_scr(self, _):

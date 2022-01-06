@@ -50,7 +50,6 @@ Resource Collection:
         """
         print(help_str)
 
-
     def call_hfletters(self, _):
         """Process hfletters command"""
         webbrowser.open("https://miltonfmr.com/hedge-fund-letters/")

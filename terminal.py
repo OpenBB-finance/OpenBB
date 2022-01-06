@@ -156,7 +156,9 @@ Timezone: {get_user_timezone_or_invalid()}
 
     def call_funds(self, _):
         """Process etf command"""
-        from gamestonk_terminal.mutual_funds.mutual_fund_controller import FundController
+        from gamestonk_terminal.mutual_funds.mutual_fund_controller import (
+            FundController,
+        )
 
         self.queue = FundController(self.queue).menu()
 
@@ -174,13 +176,17 @@ Timezone: {get_user_timezone_or_invalid()}
 
     def call_resources(self, _):
         """Process resources command"""
-        from gamestonk_terminal.resources.resources_controller import ResourceCollectionController
+        from gamestonk_terminal.resources.resources_controller import (
+            ResourceCollectionController,
+        )
 
         self.queue = ResourceCollectionController(self.queue).menu()
 
     def call_portfolio(self, _):
         """Process portfolio command"""
-        from gamestonk_terminal.portfolio.portfolio_controller import PortfolioController
+        from gamestonk_terminal.portfolio.portfolio_controller import (
+            PortfolioController,
+        )
 
         self.queue = PortfolioController(self.queue).menu()
 

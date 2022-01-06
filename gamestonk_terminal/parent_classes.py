@@ -10,8 +10,8 @@ from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import system_clear
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.decorators import try_except
+from gamestonk_terminal.helper_funcs import system_clear, get_flair
 
 # Do before merging
 # remove W0613
@@ -20,6 +20,8 @@ from gamestonk_terminal.helper_funcs import get_flair
 # remove too-many-lines
 # remove CHOICES
 # remove call_home
+# remove try_except
+# add try_except to all switches
 
 
 class BaseController:
@@ -63,6 +65,7 @@ class BaseController:
     def print_help(self):
         raise NotImplementedError("Must override print_help")
 
+    @try_except
     def switch(self, an_input: str):
         """Process and dispatch input
 

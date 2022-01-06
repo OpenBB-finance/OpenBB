@@ -96,9 +96,11 @@ Graphs:
 
     def call_bro(self, _):
         """Process bro command"""
-        from gamestonk_terminal.portfolio.brokers import bro_controller
+        from gamestonk_terminal.portfolio.brokers.bro_controller import (
+            BrokersController,
+        )
 
-        self.queue = bro_controller.menu(self.queue)
+        self.queue = BrokersController(self.queue).menu()
 
     def call_po(self, _):
         """Process po command"""

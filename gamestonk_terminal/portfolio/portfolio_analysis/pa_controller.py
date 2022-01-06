@@ -1,22 +1,21 @@
 """Portfolio Analysis Controller"""
 __docformat__ = "numpy"
 
+from typing import List
 import argparse
 import os
 
 import pandas as pd
 
-from gamestonk_terminal.decorators import try_except, menu_decorator
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
-    system_clear,
 )
 from gamestonk_terminal.portfolio.portfolio_analysis import (
     portfolio_model,
     portfolio_view,
 )
-
-# pylint: disable=W0613
 
 portfolios_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "portfolios")
 possible_paths = [
@@ -26,27 +25,19 @@ possible_paths = [
 ]
 
 
-class PortfolioController:
+class PortfolioController(BaseController):
     """Portfolio Controller"""
 
-    CHOICES = [
-        "cls",
-        "?",
-        "help",
-        "q",
-        "quit",
-    ]
     CHOICES_COMMANDS = [
         "view",
         "load",
         "group",
     ]
 
-    CHOICES += CHOICES_COMMANDS
+    BaseController.CHOICES += CHOICES_COMMANDS
 
-    def __init__(self):
-        self.pa_parser = argparse.ArgumentParser(add_help=False, prog="pa")
-        self.pa_parser.add_argument("cmd", choices=self.CHOICES)
+    def __init__(self, queue: List[str] = None):
+        super().__init__("/portfolio/pa/", self.CHOICES_COMMANDS, queue)
         self.portfolio_name = ""
         self.portfolio = pd.DataFrame()
 
@@ -69,52 +60,6 @@ Portfolio: {self.portfolio_name or None}
     group         view holdings grouped by parameter
             """
         print(help_string)
-
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
-        """
-
-        # Empty command
-        if not an_input:
-            print("")
-            return
-
-        (known_args, other_args) = self.pa_parser.parse_known_args(an_input.split())
-
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return
-
-    def call_help(self, _):
-        """Process Help command"""
-        self.print_help()
-
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-
-    def call_quit(self, _):
-        """Process Quit command - quit the program"""
 
     @try_except
     def call_load(self, other_args):
@@ -250,8 +195,3 @@ Portfolio: {self.portfolio_name or None}
             for port in available_ports:
                 print(port)
             print("")
-
-
-@menu_decorator("/portfolio/pa/", PortfolioController)
-def menu():
-    """Portfolio Analysis Menu"""
