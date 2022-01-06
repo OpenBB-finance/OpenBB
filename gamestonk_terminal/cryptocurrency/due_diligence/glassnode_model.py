@@ -160,7 +160,7 @@ GLASSNODE_SUPPORTED_ASSETS = [
     "ZRX",
 ]
 
-INTERVALS = ["1h", "24h", "10m", "1w", "1month"]
+INTERVALS = ["24h", "10m", "1w", "1month"]
 
 
 def get_non_zero_addresses(
