@@ -1,7 +1,7 @@
 import discord
 from tabulate import tabulate
-
 import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import logger
 from gamestonk_terminal.stocks.options import barchart_model
 
 
@@ -9,10 +9,9 @@ async def iv_command(ctx, ticker: str = None):
     """Options IV"""
 
     try:
-
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.opt.iv {ticker}")
+            logger.debug("!stocks.opt.iv %s", ticker)
 
         # Check for argument
         if ticker is None:

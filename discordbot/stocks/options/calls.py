@@ -1,9 +1,9 @@
 import discord
 import yfinance as yf
 from tabulate import tabulate
-
 import discordbot.config_discordbot as cfg
 from discordbot.helpers import pagination
+from discordbot.run_discordbot import logger
 
 
 async def calls_command(ctx, ticker: str = "", expiration_date: str = ""):
@@ -11,7 +11,7 @@ async def calls_command(ctx, ticker: str = "", expiration_date: str = ""):
     try:
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.opt.calls {ticker.upper()} {expiration_date}")
+            logger.debug("!stocks.opt.calls %s %s", ticker, expiration_date)
 
         # Check for argument
         if ticker == "":
