@@ -90,7 +90,9 @@ def get_historical_options(
         print("No historical data available")
         return pd.DataFrame()
 
-    df_hist = pd.DataFrame(data["day"]).set_index("date")
+    df_hist = pd.DataFrame(data["day"], index=[data["day"]["date"]]).drop(
+        ["date"], axis=1
+    )
     df_hist.index = pd.DatetimeIndex(df_hist.index)
     return df_hist
 
@@ -184,9 +186,23 @@ def process_chains(response: requests.models.Response) -> pd.DataFrame:
 
     opt_chain = pd.DataFrame(columns=df_columns)
     for idx, option in enumerate(options):
-        data = [option[col] for col in option_columns]
-        data += [option["greeks"][col] for col in greek_columns]
-        opt_chain.loc[idx, :] = data
+        # initialize empty dictionary
+        d = {}
+        for col in df_columns:
+            d[col] = ""
+
+        # populate main dictionary values
+        for col in option_columns:
+            if col in option:
+                d[col] = option[col]
+
+        # populate greek dictionary values
+        if option["greeks"]:
+            for col in greek_columns:
+                if col in option["greeks"]:
+                    d[col] = option["greeks"][col]
+
+        opt_chain.loc[idx, :] = d
 
     return opt_chain
 

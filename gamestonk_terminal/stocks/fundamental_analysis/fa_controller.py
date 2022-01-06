@@ -79,10 +79,8 @@ class FundamentalAnalysisController:
         "divs",
         "earnings",
         "fraud",
+        "dcf",
     ]
-    # TODO: These commands either don't work or work inconsistently.
-    # They have been excluded from the CHOICES list until they are fixed:
-    # "dcf",
 
     CHOICES_MENUS = [
         "fmp",
@@ -886,7 +884,6 @@ Other Sources:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        # TODO: This does not work for the following example tickers: AA, TSLA
         if ns_parser:
             dcf = dcf_view.CreateExcelFA(self.ticker, ns_parser.audit)
             dcf.create_workbook()
@@ -993,11 +990,15 @@ def menu(
 
             # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and fa_controller.completer:
-                an_input = session.prompt(
-                    f"{get_flair()} /stocks/fa/ $ ",
-                    completer=fa_controller.completer,
-                    search_ignore_case=True,
-                )
+                try:
+                    an_input = session.prompt(
+                        f"{get_flair()} /stocks/fa/ $ ",
+                        completer=fa_controller.completer,
+                        search_ignore_case=True,
+                    )
+                except KeyboardInterrupt:
+                    # Exit in case of keyboard interrupt
+                    an_input = "exit"
             # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /stocks/fa/ $ ")
@@ -1022,18 +1023,16 @@ def menu(
                     candidate_input = (
                         f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
                     )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        fa_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
                 else:
-                    candidate_input = similar_cmd[0]
-
-                if candidate_input == an_input:
-                    an_input = ""
-                    fa_controller.queue = []
-                    print("\n")
-                    continue
+                    an_input = similar_cmd[0]
 
                 print(f" Replacing by '{an_input}'.")
                 fa_controller.queue.insert(0, an_input)
             else:
                 print("\n")
-                an_input = ""
-                fa_controller.queue = []

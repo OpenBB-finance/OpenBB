@@ -84,7 +84,7 @@ main:
           - name: sama
             ref: "/stocks/sia/sama"
           - name: metric
-            ref: "/stocks/sia/metric"            
+            ref: "/stocks/sia/metric"
       - name: dark pool shorts
         ref: "/stocks/dark_pool_shorts"
         sub:
@@ -381,6 +381,8 @@ main:
       - name: backtesting
         ref: "/stocks/backtesting"
         sub:
+          - name: whatif
+            ref: "/stocks/backtesting/whatif"
           - name: ema
             ref: "/stocks/backtesting/ema"
           - name: ema_cross
@@ -587,6 +589,8 @@ main:
             ref: "/common/quantitative_analysis/capm"
           - name: data
             ref: "/common/quantitative_analysis/data"
+          - name: line
+            ref: "/common/quantitative_analysis/line"
       - name: prediction techniques
         ref: "/common/prediction_techniques"
         sub:
@@ -766,6 +770,8 @@ main:
         sub:
           - name: gwei
             ref: "/cryptocurrency/onchain/gwei"
+          - name: hr
+            ref: "/cryptocurrency/onchain/hr"
           - name: address
             ref: "/cryptocurrency/onchain/address"
           - name: balance
@@ -911,13 +917,34 @@ main:
         ref: "/economy/fred"
         sub:
           - name: search
-            ref : "/economy/fred/search"
+            ref: "/economy/fred/search"
           - name: add
             ref: "/economy/fred/add"
           - name: rmv
             ref: "/economy/fred/rmv"
           - name: plot
             ref: "/economy/fred/plot"
+          - name: prediction techniques
+            ref: "/common/prediction_techniques"
+            sub:
+              - name: ets
+                ref: "/common/prediction_techniques/ets"
+              - name: knn
+                ref: "/common/prediction_techniques/knn"
+              - name: regression
+                ref: "/common/prediction_techniques/regression"
+              - name: arima
+                ref: "/common/prediction_techniques/arima"
+              - name: mlp
+                ref: "/common/prediction_techniques/mlp"
+              - name: rnn
+                ref: "/common/prediction_techniques/rnn"
+              - name: lstm
+                ref: "/common/prediction_techniques/lstm"
+              - name: conv1d
+                ref: "/common/prediction_techniques/conv1d"
+              - name: mc
+                ref: "/common/prediction_techniques/mc"
   - name: etf
     ref: "/etf"
     sub:
@@ -941,6 +968,23 @@ main:
         ref: "/etf/pir"
       - name: fds
         ref: "/etf/fds"
+  - name: funds
+    ref: "/funds"
+    sub:
+      - name: search
+        ref: "/funds/search"
+      - name: country
+        ref: "/funds/country"
+      - name: info
+        ref: "/funds/info"
+      - name: load
+        ref: "/funds/load"
+      - name: overview
+        ref: "/funds/overview"
+      - name: plot
+        ref: "/funds/plot"
+      - name: sector
+        ref: "/funds/sector"
   - name: portfolio
     ref: "/portfolio"
     sub:
@@ -978,8 +1022,6 @@ main:
                 ref: "/portfolio/brokers/robinhood/history"
               - name: holdings
                 ref: "/portfolio/brokers/robinhood/holdings"
-      - name: portfolio analysis
-        ref: "/portfolio/portfolio_analysis"
       - name: portfolio optimization
         ref: "/portfolio/portfolio_optimization"
         sub:
@@ -1009,6 +1051,20 @@ main:
             ref: "/portfolio/portfolio_optimization/effrisk"
           - name: ef
             ref: "/portfolio/portfolio_optimization/ef"
+      - name: load
+        ref: "/portfolio/load"
+      - name: save
+        ref: "/portfolio/save"
+      - name: show
+        ref: "/portfolio/show"
+      - name: add
+        ref: "/portfolio/add"
+      - name: rmv
+        ref: "/portfolio/rmv"
+      - name: ar
+        ref: "/portfolio/ar"
+      - name: rmr
+        ref: "/portfolio/rmr"
   - name: forex
     ref: "/forex"
     sub:
@@ -1020,3 +1076,19 @@ main:
         ref: "/forex/candle"
   - name: resources
     ref: "/resources"
+  - name: alternative
+    ref: "/alternative"
+    sub:
+      - name: covid
+        ref: "/alternative/covid"
+        sub:
+          - name: slopes
+            ref: "/alternative/covid/slopes"
+          - name: ov
+            ref: "/alternative/covid/ov"
+          - name: deaths
+            ref: "/alternative/covid/deaths"
+          - name: cases
+            ref: "/alternative/covid/cases"
+          - name: rates
+            ref: "/alternative/covid/rates"

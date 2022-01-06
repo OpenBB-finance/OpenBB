@@ -22,7 +22,7 @@ def plot_adx(
     length: int,
     scalar: int,
     drift: int,
-    export: str,
+    export: str = "",
 ):
     """Plot ADX indicator
 
@@ -94,7 +94,7 @@ def plot_aroon(
     df_stock: pd.DataFrame,
     length: int,
     scalar: int,
-    export: str,
+    export: str = "",
 ):
     """Plot Aroon indicator
 

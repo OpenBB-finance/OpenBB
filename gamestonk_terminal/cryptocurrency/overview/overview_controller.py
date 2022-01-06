@@ -249,7 +249,7 @@ WithdrawalFees:
 
         if ns_parser:
             withdrawalfees_view.display_overall_withdrawal_fees(
-                export=ns_parser.export, top=ns_parser.limit
+                top=ns_parser.limit, export=ns_parser.export
             )
 
     @try_except
@@ -307,7 +307,7 @@ WithdrawalFees:
             if ns_parser.coin:
                 if ns_parser.coin in withdrawalfees_model.POSSIBLE_CRYPTOS:
                     withdrawalfees_view.display_crypto_withdrawal_fees(
-                        export=ns_parser.export, symbol=ns_parser.coin
+                        symbol=ns_parser.coin, export=ns_parser.export
                     )
                 else:
                     print(f"Coin '{ns_parser.coin}' does not exist.")
@@ -321,7 +321,7 @@ WithdrawalFees:
                     if similar_cmd:
                         print(f"Replacing by '{similar_cmd[0]}'")
                         withdrawalfees_view.display_crypto_withdrawal_fees(
-                            export=ns_parser.export, symbol=similar_cmd[0]
+                            symbol=similar_cmd[0], export=ns_parser.export
                         )
                     else:
                         similar_cmd = difflib.get_close_matches(
@@ -1624,11 +1624,15 @@ def menu(queue: List[str] = None):
                     c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS
                 }
                 completer = NestedCompleter.from_nested_dict(choices)
-                an_input = session.prompt(
-                    f"{get_flair()} /crypto/ov/ $ ",
-                    completer=completer,
-                    search_ignore_case=True,
-                )
+                try:
+                    an_input = session.prompt(
+                        f"{get_flair()} /crypto/ov/ $ ",
+                        completer=completer,
+                        search_ignore_case=True,
+                    )
+                except KeyboardInterrupt:
+                    # Exit in case of keyboard interrupt
+                    an_input = "exit"
             # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /crypto/ov/ $ ")
@@ -1653,18 +1657,16 @@ def menu(queue: List[str] = None):
                     candidate_input = (
                         f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
                     )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        overview_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
                 else:
-                    candidate_input = similar_cmd[0]
-
-                if candidate_input == an_input:
-                    an_input = ""
-                    overview_controller.queue = []
-                    print("\n")
-                    continue
+                    an_input = similar_cmd[0]
 
                 print(f" Replacing by '{an_input}'.")
                 overview_controller.queue.insert(0, an_input)
             else:
                 print("\n")
-                an_input = ""
-                overview_controller.queue = []

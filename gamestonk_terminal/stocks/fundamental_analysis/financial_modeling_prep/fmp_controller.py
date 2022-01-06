@@ -681,11 +681,15 @@ def menu(
 
             # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and fmp_controller.completer:
-                an_input = session.prompt(
-                    f"{get_flair()} /stocks/fa/fmp/ $ ",
-                    completer=fmp_controller.completer,
-                    search_ignore_case=True,
-                )
+                try:
+                    an_input = session.prompt(
+                        f"{get_flair()} /stocks/fa/fmp/ $ ",
+                        completer=fmp_controller.completer,
+                        search_ignore_case=True,
+                    )
+                except KeyboardInterrupt:
+                    # Exit in case of keyboard interrupt
+                    an_input = "exit"
             # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /stocks/fa/fmp/ $ ")
@@ -710,18 +714,16 @@ def menu(
                     candidate_input = (
                         f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
                     )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        fmp_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
                 else:
-                    candidate_input = similar_cmd[0]
-
-                if candidate_input == an_input:
-                    an_input = ""
-                    fmp_controller.queue = []
-                    print("\n")
-                    continue
+                    an_input = similar_cmd[0]
 
                 print(f" Replacing by '{an_input}'.")
                 fmp_controller.queue.insert(0, an_input)
             else:
                 print("\n")
-                an_input = ""
-                fmp_controller.queue = []

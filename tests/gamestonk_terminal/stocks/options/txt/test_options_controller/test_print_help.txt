@@ -1,0 +1,26 @@
+
+    unu           show unusual options activity [fdscanner.com]
+    calc          basic call/put PnL calculator
+
+    load          load new ticker
+    exp           see and set expiration dates
+
+Ticker: None
+Expiry: None
+[2m
+    pcr           display put call ratio for ticker [AlphaQuery.com][2m
+    info          display option information (volatility, IV rank etc) [Barchart.com]
+    chains        display option chains with greeks [Tradier]
+    oi            plot open interest [Tradier/YF]
+    vol           plot volume [Tradier/YF]
+    voi           plot volume and open interest [Tradier/YF]
+    hist          plot option history [Tradier]
+    grhist        plot option greek history [Syncretism.io]
+    plot          plot variables provided by the user [Yfinance]
+    parity        shows whether options are above or below expected price [Yfinance]
+    binom         shows the value of an option using binomial options pricing [Yfinance]
+[0m
+>   screen        screens tickers based on preset [Syncretism.io][2m
+>   payoff        shows payoff diagram for a selection of options [Yfinance]
+>   pricing       shows options pricing and risk neutral valuation [Yfinance]
+[0m

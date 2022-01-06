@@ -8,13 +8,17 @@ logs/
 *.ipynb
 env/
 venv/
-!notebooks/reports/.gitkeep
+!notebooks/jupyter/.gitkeep
 .python-version
+iframe_figures/
 exports/*
 .idea
 .coverage
 htmlcov
-gamestonk_terminal/reports/stored/*
+gamestonk_terminal/jupyter/reports/stored/*
+!gamestonk_terminal/jupyter/reports/stored/.gitkeep
+!gamestonk_terminal/jupyter/dashboards/*.ipynb
+!gamestonk_terminal/jupyter/reports/*.ipynb
 gamestonk_terminal/portfolio/portfolios/*
 .ipynb_checkpoints/*
 

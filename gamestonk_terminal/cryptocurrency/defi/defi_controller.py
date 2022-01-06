@@ -779,11 +779,15 @@ def menu(queue: List[str] = None):
 
             # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and defi_controller.completer:
-                an_input = session.prompt(
-                    f"{get_flair()} /crypto/defi/ $ ",
-                    completer=defi_controller.completer,
-                    search_ignore_case=True,
-                )
+                try:
+                    an_input = session.prompt(
+                        f"{get_flair()} /crypto/defi/ $ ",
+                        completer=defi_controller.completer,
+                        search_ignore_case=True,
+                    )
+                except KeyboardInterrupt:
+                    # Exit in case of keyboard interrupt
+                    an_input = "exit"
             # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /crypto/defi/ $ ")
@@ -808,18 +812,16 @@ def menu(queue: List[str] = None):
                     candidate_input = (
                         f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
                     )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        defi_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
                 else:
-                    candidate_input = similar_cmd[0]
-
-                if candidate_input == an_input:
-                    an_input = ""
-                    defi_controller.queue = []
-                    print("\n")
-                    continue
+                    an_input = similar_cmd[0]
 
                 print(f" Replacing by '{an_input}'.")
                 defi_controller.queue.insert(0, an_input)
             else:
                 print("\n")
-                an_input = ""
-                defi_controller.queue = []

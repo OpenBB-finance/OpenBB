@@ -11,14 +11,12 @@ from gamestonk_terminal.stocks.options import chartexchange_model
 
 
 def display_raw(
-    export: str, ticker: str, date: str, call: bool, price: str, num: int = 20
+    ticker: str, date: str, call: bool, price: str, num: int = 20, export: str = ""
 ) -> None:
     """Return raw stock data[chartexchange]
 
     Parameters
     ----------
-    export : str
-        Export data as CSV, JSON, XLSX
     ticker : str
         Ticker for the given option
     date : str
@@ -29,6 +27,8 @@ def display_raw(
         The strike of the expiration
     num : int
         Number of rows to show
+    export : str
+        Export data as CSV, JSON, XLSX
     """
 
     df = chartexchange_model.get_option_history(ticker, date, call, price)

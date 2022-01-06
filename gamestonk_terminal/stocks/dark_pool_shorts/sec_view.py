@@ -19,7 +19,7 @@ def fails_to_deliver(
     end: datetime,
     num: int,
     raw: bool,
-    export: str,
+    export: str = "",
 ):
     """Display fails-to-deliver data for a given ticker. [Source: SEC]
 

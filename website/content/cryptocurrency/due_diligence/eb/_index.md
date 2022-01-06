@@ -14,7 +14,7 @@ Supported assets: BTC, ETH, LTC, AAVE, ABT, AMPL, ANT, ARMOR, BADGER, BAL, BAND,
 Supported exchanges: aggregated, binance, bittrex, coinex, gate.io, gemini, huobi, kucoin, poloniex, bibox, bigone, bitfinex, hitbtc, kraken, okex, bithumb, zb.com, cobinhood, bitmex, bitstamp, coinbase, coincheck, luno
 
 ```
-optional arguments:
+arguments:
   -e EXCHANGE                   Exchange to check (default: aggregated)
   -p {True, False}              Show percentage instead of stacked value (default: False)
   -s DATE --since DATE          Start date (default: 3 years before, e.g., 2018-10-22)

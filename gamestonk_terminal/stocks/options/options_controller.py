@@ -543,14 +543,17 @@ Expiry: {self.selected_date or None}
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    if (
-                        ns_parser.put
-                        and self.chain
-                        and ns_parser.strike in self.chain.puts["strike"].values
-                    ) or (
-                        not ns_parser.put
-                        and self.chain
-                        and ns_parser.strike in self.chain.calls["strike"].values
+                    if self.chain and (
+                        (
+                            ns_parser.put
+                            and ns_parser.strike
+                            in [float(strike) for strike in self.chain.puts["strike"]]
+                        )
+                        or (
+                            not ns_parser.put
+                            and ns_parser.strike
+                            in [float(strike) for strike in self.chain.calls["strike"]]
+                        )
                     ):
                         syncretism_view.view_historical_greeks(
                             ticker=self.ticker,
@@ -662,13 +665,13 @@ Expiry: {self.selected_date or None}
                     expiry_date = self.expiry_dates[ns_parser.index]
                     print(f"Expiration set to {expiry_date} \n")
                     self.selected_date = expiry_date
+
+                if self.selected_date:
+                    self.chain = yfinance_model.get_option_chain(
+                        self.ticker, self.selected_date
+                    )
             else:
                 print("Please load a ticker using `load <ticker>`.\n")
-
-            if self.selected_date:
-                self.chain = yfinance_model.get_option_chain(
-                    self.ticker, self.selected_date
-                )
 
     @try_except
     def call_hist(self, other_args: List[str]):
@@ -711,7 +714,7 @@ Expiry: {self.selected_date or None}
             dest="source",
             type=str,
             choices=self.hist_source_choices,
-            default="ce" if TRADIER_TOKEN == "REPLACE_ME" else "td",
+            default="ce",
             help="Choose Tradier(TD) or ChartExchange (CE), only affects raw data",
         )
         parser.add_argument(
@@ -721,7 +724,6 @@ Expiry: {self.selected_date or None}
             type=int,
             help="Limit of data rows to display",
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
         ns_parser = parse_known_args_and_warn(
@@ -733,21 +735,23 @@ Expiry: {self.selected_date or None}
                     if self.chain and (
                         (
                             ns_parser.put
-                            and ns_parser.strike in self.chain.puts["strike"]
+                            and ns_parser.strike
+                            in [float(strike) for strike in self.chain.puts["strike"]]
                         )
                         or (
                             not ns_parser.put
-                            and ns_parser.strike in self.chain.calls["strike"]
+                            and ns_parser.strike
+                            in [float(strike) for strike in self.chain.calls["strike"]]
                         )
                     ):
                         if ns_parser.source.lower() == "ce":
                             chartexchange_view.display_raw(
-                                ns_parser.export,
                                 self.ticker,
                                 self.selected_date,
                                 not ns_parser.put,
                                 ns_parser.strike,
                                 ns_parser.limit,
+                                ns_parser.export,
                             )
 
                         else:
@@ -757,9 +761,9 @@ Expiry: {self.selected_date or None}
                                     expiry=self.selected_date,
                                     strike=ns_parser.strike,
                                     put=ns_parser.put,
-                                    export=ns_parser.export,
                                     raw=ns_parser.raw,
                                     chain_id=ns_parser.chain_id,
+                                    export=ns_parser.export,
                                 )
                             else:
                                 print("TRADIER TOKEN not supplied. \n")
@@ -1382,12 +1386,15 @@ def menu(ticker: str = "", queue: List[str] = None):
                         }
 
                 completer = NestedCompleter.from_nested_dict(op_controller.choices)
-
-                an_input = session.prompt(
-                    f"{get_flair()} /stocks/options/ $ ",
-                    completer=completer,
-                    search_ignore_case=True,
-                )
+                try:
+                    an_input = session.prompt(
+                        f"{get_flair()} /stocks/options/ $ ",
+                        completer=completer,
+                        search_ignore_case=True,
+                    )
+                except KeyboardInterrupt:
+                    # Exit in case of keyboard interrupt
+                    an_input = "exit"
             # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /stocks/options/ $ ")

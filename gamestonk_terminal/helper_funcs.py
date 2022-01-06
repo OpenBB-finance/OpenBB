@@ -4,13 +4,14 @@ import argparse
 import functools
 import logging
 from typing import List
-from datetime import datetime, timedelta, time as Time
+from datetime import datetime, timedelta
 import os
 import random
 import re
 import sys
+import pytz
 import pandas as pd
-from pytz import timezone
+from rich.table import Table
 import iso8601
 
 import matplotlib
@@ -41,6 +42,59 @@ EXPORT_BOTH_RAW_DATA_AND_FIGURES = 3
 MENU_GO_BACK = 0
 MENU_QUIT = 1
 MENU_RESET = 2
+
+
+def rich_table_from_df(
+    df: pd.DataFrame,
+    show_index: bool = False,
+    title: str = "",
+    index_name: str = "",
+    headers: List[str] = None,
+    floatfmt: str = ".2f",
+) -> Table:
+    """Prepare a table from df in rich
+
+    Parameters
+    ----------
+    df: pd.DataFrame
+        Dataframe to turn into table
+    show_index: bool
+        Whether to include index
+    title: str
+        Title for table
+    index_name : str
+        Title for index column
+    headers: List[str]
+        Titles for columns
+    floatfmt: str
+        String to
+    Returns
+    -------
+    Table
+        rich table
+    """
+    table = Table(title=title, show_lines=True)
+
+    if show_index:
+        table.add_column(index_name)
+
+    if headers:
+        if len(headers) != len(df.columns):
+            raise ValueError("Length of headers does not match length of DataFrame")
+        for header in headers:
+            table.add_column(str(header))
+    else:
+        for column in df.columns:
+            table.add_column(str(column))
+
+    for idx, values in zip(df.index.tolist(), df.values.tolist()):
+        row = [str(idx)] if show_index else []
+        row += [
+            str(x) if not isinstance(x, float) else f"{x:{floatfmt}}" for x in values
+        ]
+        table.add_row(*row)
+
+    return table
 
 
 def check_int_range(mini: int, maxi: int):
@@ -308,26 +362,6 @@ def us_market_holidays(years) -> list:
     return valid_holidays
 
 
-def b_is_stock_market_open() -> bool:
-    """Checks if the stock market is open"""
-    # Get current US time
-    now = datetime.now(timezone("US/Eastern"))
-    # Check if it is a weekend
-    if now.date().weekday() > 4:
-        return False
-    # Check if it is a holiday
-    if now.strftime("%Y-%m-%d") in us_market_holidays(now.year):
-        return False
-    # Check if it hasn't open already
-    if now.time() < Time(hour=9, minute=30, second=0):
-        return False
-    # Check if it has already closed
-    if now.time() > Time(hour=16, minute=0, second=0):
-        return False
-    # Otherwise, Stock Market is open!
-    return True
-
-
 def long_number_format(num) -> str:
     """Format a long number"""
     if isinstance(num, float):
@@ -531,6 +565,8 @@ def parse_known_args_and_warn(
     parser: argparse.ArgumentParser,
     other_args: List[str],
     export_allowed: int = NO_EXPORT,
+    raw: bool = False,
+    limit: int = 0,
 ):
     """Parses list of arguments into the supplied parser
 
@@ -543,7 +579,10 @@ def parse_known_args_and_warn(
     export_allowed: int
         Choose from NO_EXPORT, EXPORT_ONLY_RAW_DATA_ALLOWED,
         EXPORT_ONLY_FIGURES_ALLOWED and EXPORT_BOTH_RAW_DATA_AND_FIGURES
-
+    raw: bool
+        Add the --raw flag
+    limit: int
+        Add a --limit flag with this number default
     Returns
     -------
     ns_parser:
@@ -573,6 +612,24 @@ def parse_known_args_and_warn(
             type=str,
             dest="export",
             help=help_export,
+        )
+
+    if raw:
+        parser.add_argument(
+            "--raw",
+            dest="raw",
+            action="store_true",
+            default=False,
+            help="Flag to display raw data",
+        )
+    if limit > 0:
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            default=limit,
+            help="Number of entries to show in data.",
+            type=int,
         )
 
     if gtff.USE_CLEAR_AFTER_CMD:
@@ -650,9 +707,86 @@ def get_flair() -> str:
     }
 
     if flair.get(gtff.USE_FLAIR):
+        if gtff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
+            dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
+                "%Y %b %d, %H:%M"
+            )
+            return f"{dtime} {flair[gtff.USE_FLAIR]}"
         return flair[gtff.USE_FLAIR]
-
     return ""
+
+
+def is_timezone_valid(user_tz: str) -> bool:
+    """Check whether user timezone is valid
+
+    Parameters
+    ----------
+    user_tz: str
+        Timezone to check for validity
+
+    Returns
+    -------
+    bool
+        True if timezone provided is valid
+    """
+    return user_tz in pytz.all_timezones
+
+
+def get_user_timezone() -> str:
+    """Get user timezone if it is a valid one
+
+    Returns
+    -------
+    str
+        user timezone based on timezone.gst file
+    """
+    filename = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "timezone.gst",
+    )
+    if os.path.isfile(filename):
+        with open(filename) as f:
+            return f.read()
+    return ""
+
+
+def get_user_timezone_or_invalid() -> str:
+    """Get user timezone if it is a valid one
+
+    Returns
+    -------
+    str
+        user timezone based on timezone.gst file or INVALID
+    """
+    user_tz = get_user_timezone()
+    if is_timezone_valid(user_tz):
+        return f"{user_tz}"
+    return "INVALID"
+
+
+def replace_user_timezone(user_tz: str) -> None:
+    """Replace user timezone
+
+    Parameters
+    ----------
+    user_tz: str
+        User timezone to set
+    """
+    filename = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "timezone.gst",
+    )
+    if os.path.isfile(filename):
+        with open(filename, "w") as f:
+            if is_timezone_valid(user_tz):
+                if f.write(user_tz):
+                    print("Timezone successfully updated", "\n")
+                else:
+                    print("Timezone not set successfully", "\n")
+            else:
+                print("Timezone selected is not valid", "\n")
+    else:
+        print("timezone.gst file does not exist", "\n")
 
 
 def str_to_bool(value) -> bool:
@@ -805,6 +939,46 @@ def try_except(f):
             return []
 
     return inner
+
+
+class LineAnnotateDrawer:
+    def __init__(self, ax: matplotlib.axes = None):
+        self.ax = ax
+
+    def draw_lines_and_annotate(self):
+
+        # ymin, _ = self.ax.get_ylim()
+        # xmin, _ = self.ax.get_xlim()
+        # self.ax.plot(
+        #     [xmin, xmin],
+        #     [ymin, ymin],
+        #     lw=0,
+        #     color="white",
+        #     label="X - leave interactive mode\nClick twice for annotation",
+        # )
+        # self.ax.legend(handlelength=0, handletextpad=0, fancybox=True, loc=2)
+        # self.ax.figure.canvas.draw()
+
+        print("Click twice for annotation.\nClose window to keep using terminal.\n")
+
+        while True:
+            xy = plt.ginput(2)
+            # Check whether the user has closed the window or not
+            if not plt.get_fignums():
+                print("")
+                return
+
+            if len(xy) == 2:
+                x = [p[0] for p in xy]
+                y = [p[1] for p in xy]
+
+                if (x[0] == x[1]) and (y[0] == y[1]):
+                    txt = input("Annotation: ")
+                    self.ax.annotate(txt, (x[0], y[1]), ha="center", va="center")
+                else:
+                    self.ax.plot(x, y)
+
+                self.ax.figure.canvas.draw()
 
 
 def system_clear():

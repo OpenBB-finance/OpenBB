@@ -61,7 +61,7 @@ class DueDiligenceController:
         "reset",
     ]
 
-    CHOICES_COMMANDS = ["load", "oi", "active", "change", "eb", "chart"]
+    CHOICES_COMMANDS = ["load", "oi", "active", "change", "nonzero", "eb", "chart"]
 
     CHOICES += CHOICES_COMMANDS
 
@@ -121,6 +121,7 @@ class DueDiligenceController:
                 c: None for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
             }
             choices["change"]["-i"] = {c: None for c in glassnode_model.INTERVALS}
+            choices["nonzero"]["-i"] = {c: None for c in glassnode_model.INTERVALS}
             choices["eb"] = {
                 c: None for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
             }
@@ -162,6 +163,7 @@ Overview:
    chart           show chart for loaded coin
 Glassnode:
    active          active addresses
+   nonzero         addresses with non-zero balances
    change          30d change of supply held on exchange wallets
    eb              total balance held on exchanges (in percentage and units)
 Coinglass:
@@ -279,7 +281,7 @@ Coinbase:
         """Process reset command"""
         self.queue.insert(0, "dd")
         if self.current_coin:
-            self.queue.insert(0, f"load {self.current_coin}")
+            self.queue.insert(0, f"load {self.current_coin} --source {self.source}")
         self.queue.insert(0, "crypto")
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
@@ -330,6 +332,66 @@ Coinbase:
             self.current_coin, self.source, self.symbol = load(
                 coin=ns_parser.coin, source=ns_parser.source
             )
+
+    @try_except
+    def call_nonzero(self, other_args: List[str]):
+        """Process nonzero command"""
+
+        if self.symbol.upper() in glassnode_model.GLASSNODE_SUPPORTED_ASSETS:
+            parser = argparse.ArgumentParser(
+                add_help=False,
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                prog="nonzero",
+                description="""
+                    Display addresses with nonzero assets in a certain blockchain
+                    [Source: https://glassnode.org]
+                """,
+            )
+
+            parser.add_argument(
+                "-i",
+                "--interval",
+                dest="interval",
+                type=str,
+                help="Frequency interval. Default: 24h",
+                default="24h",
+                choices=glassnode_model.INTERVALS,
+            )
+
+            # TODO: tell users that free api key only data with 1y lag
+            parser.add_argument(
+                "-s",
+                "--since",
+                dest="since",
+                type=valid_date,
+                help="Initial date. Default: 2020-01-01",
+                default=(datetime.now() - timedelta(days=365 * 2)).strftime("%Y-%m-%d"),
+            )
+
+            parser.add_argument(
+                "-u",
+                "--until",
+                dest="until",
+                type=valid_date,
+                help="Final date. Default: 2021-01-01",
+                default=(datetime.now() - timedelta(days=367)).strftime("%Y-%m-%d"),
+            )
+
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            )
+
+            if ns_parser:
+                glassnode_view.display_non_zero_addresses(
+                    asset=self.symbol.upper(),
+                    interval=ns_parser.interval,
+                    since=int(datetime.timestamp(ns_parser.since)),
+                    until=int(datetime.timestamp(ns_parser.until)),
+                    export=ns_parser.export,
+                )
+
+        else:
+            print("Glassnode source does not support this symbol\n")
 
     @try_except
     def call_active(self, other_args: List[str]):
@@ -1471,11 +1533,15 @@ def menu(coin=None, source=None, symbol=None, queue: List[str] = None):
 
             # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and dd_controller.completer:
-                an_input = session.prompt(
-                    f"{get_flair()} /crypto/dd/ $ ",
-                    completer=dd_controller.completer,
-                    search_ignore_case=True,
-                )
+                try:
+                    an_input = session.prompt(
+                        f"{get_flair()} /crypto/dd/ $ ",
+                        completer=dd_controller.completer,
+                        search_ignore_case=True,
+                    )
+                except KeyboardInterrupt:
+                    # Exit in case of keyboard interrupt
+                    an_input = "exit"
             # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /crypto/dd/ $ ")
@@ -1500,18 +1566,16 @@ def menu(coin=None, source=None, symbol=None, queue: List[str] = None):
                     candidate_input = (
                         f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
                     )
+                    if candidate_input == an_input:
+                        an_input = ""
+                        dd_controller.queue = []
+                        print("\n")
+                        continue
+                    an_input = candidate_input
                 else:
-                    candidate_input = similar_cmd[0]
-
-                if candidate_input == an_input:
-                    an_input = ""
-                    dd_controller.queue = []
-                    print("\n")
-                    continue
+                    an_input = similar_cmd[0]
 
                 print(f" Replacing by '{an_input}'.")
                 dd_controller.queue.insert(0, an_input)
             else:
                 print("\n")
-                an_input = ""
-                dd_controller.queue = []
