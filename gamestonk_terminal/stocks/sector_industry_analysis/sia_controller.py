@@ -959,22 +959,22 @@ Returned tickers: {', '.join(self.tickers)}
 
 def choices(controller):
     """Defines dynamic choices"""
-    controller.choices["industry"] = {
+    controller.extras["industry"] = {
         i: None
         for i in financedatabase_model.get_industries(
             country=controller.country, sector=controller.sector
         )
     }
-    controller.choices["sector"] = {
+    controller.extras["sector"] = {
         s: None
         for s in financedatabase_model.get_sectors(
             industry=controller.industry, country=controller.country
         )
     }
-    controller.choices["country"] = {
+    controller.extras["country"] = {
         c: None
         for c in financedatabase_model.get_countries(
             industry=controller.industry, sector=controller.sector
         )
     }
-    return NestedCompleter.from_nested_dict(controller.choices)
+    return NestedCompleter.from_nested_dict(controller.extras)

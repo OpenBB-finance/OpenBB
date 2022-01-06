@@ -40,7 +40,6 @@ class PayoffController(BaseController):
 
         self.choices += self.CHOICES_COMMANDS
 
-
         self.chain = get_option_chain(ticker, expiration)
         self.calls = list(
             zip(
@@ -303,6 +302,6 @@ Underlying Asset: {text}
 def choices(controller):
     """Defines dynamic choices"""
     if controller.options:
-        controller.choices["rmv"] = {str(c): {} for c in range(len(controller.options))}
+        controller.extras["rmv"] = {str(c): {} for c in range(len(controller.options))}
 
-    return NestedCompleter.from_nested_dict(controller.choices)
+    return NestedCompleter.from_nested_dict(controller.extras)

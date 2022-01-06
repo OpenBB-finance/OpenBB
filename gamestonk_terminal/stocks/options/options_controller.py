@@ -1227,27 +1227,27 @@ Expiry: {self.selected_date or None}
 def choices(controller):
     """Defines dynamic choices"""
     if controller.expiry_dates:
-        controller.choices["exp"] = {
+        controller.extras["exp"] = {
             str(c): {} for c in range(len(controller.expiry_dates))
         }
-        controller.choices["exp"]["-d"] = {
+        controller.extras["exp"]["-d"] = {
             c: {} for c in controller.expiry_dates + [""]
         }
         if controller.chain:
-            controller.choices["hist"] = {
+            controller.extras["hist"] = {
                 str(c): {}
                 for c in controller.chain.puts["strike"]
                 + controller.chain.calls["strike"]
             }
-            controller.choices["grhist"] = {
+            controller.extras["grhist"] = {
                 str(c): {}
                 for c in controller.chain.puts["strike"]
                 + controller.chain.calls["strike"]
             }
-            controller.choices["binom"] = {
+            controller.extras["binom"] = {
                 str(c): {}
                 for c in controller.chain.puts["strike"]
                 + controller.chain.calls["strike"]
             }
 
-    return NestedCompleter.from_nested_dict(controller.choices)
+    return NestedCompleter.from_nested_dict(controller.extras)
