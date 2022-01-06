@@ -77,11 +77,6 @@ class PredictionTechniquesController(BaseController):
             choices["mc"]["--dist"] = {c: {} for c in mc_model.DISTRIBUTIONS}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
-
     def print_help(self):
         """Print help"""
         id_string = ""
@@ -108,7 +103,7 @@ Models:
         """
         t_console.print(help_string)
 
-    def custom_reset(self, _):
+    def custom_reset(self):
         """Class specific component of reset command"""
         if self.current_series:
             self.queue.insert(6, f"add {list(self.current_series.keys())[0]}")

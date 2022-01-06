@@ -27,8 +27,6 @@ from gamestonk_terminal.cryptocurrency.defi import (
     graph_view,
 )
 
-# pylint: disable=W0613
-
 
 class DefiController(BaseController):
     """Defi Controller class"""

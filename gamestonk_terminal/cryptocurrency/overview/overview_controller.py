@@ -1,7 +1,7 @@
 """Cryptocurrency Overview Controller"""
 __docformat__ = "numpy"
 
-# pylint: disable=R0904, C0302, W0622, W0613
+# pylint: disable=R0904, C0302, W0622
 import argparse
 import difflib
 from typing import List
@@ -120,11 +120,6 @@ class OverviewController(BaseController):
             choices["wfpe"] = {c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
     def print_help(self):
         """Print help"""

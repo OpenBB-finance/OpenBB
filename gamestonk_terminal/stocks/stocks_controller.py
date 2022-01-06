@@ -123,7 +123,7 @@ Stocks Menus:
 {reset_style_if_no_ticker}"""
         print(help_text)
 
-    def custom_reset(self, _):
+    def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
             if self.suffix:

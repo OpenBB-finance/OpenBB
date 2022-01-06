@@ -14,8 +14,6 @@ from gamestonk_terminal.helper_funcs import (
 
 from gamestonk_terminal.cryptocurrency.nft import nftcalendar_view, opensea_view
 
-# pylint: disable=W0613
-
 
 class NFTController(BaseController):
     """NFT Controller class"""

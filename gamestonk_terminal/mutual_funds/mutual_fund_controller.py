@@ -103,7 +103,7 @@ Yahoo Finance[/italic]:
     """
         t_console.print(help_str)
 
-    def custom_reset(self, _):
+    def custom_reset(self):
         """Class specific component of reset command"""
         if self.fund_name:
             self.queue.insert(4, f"load {self.fund_name} --name")

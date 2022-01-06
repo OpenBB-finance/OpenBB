@@ -3,15 +3,15 @@ __docformat__ = "numpy"
 
 import argparse
 import difflib
-from typing import List, Union
+from typing import List
 import yfinance as yf
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.decorators import try_except, menu_decorator
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     parse_known_args_and_warn,
-    system_clear,
     check_positive,
     check_proportion_range,
 )
@@ -25,25 +25,12 @@ from gamestonk_terminal.stocks.sector_industry_analysis import (
 from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 
 
-# pylint: disable=inconsistent-return-statements,too-many-public-methods,C0302,R0902,W0613
+# pylint: disable=inconsistent-return-statements,C0302,R0902
 
 
-class SectorIndustryAnalysisController:
+class SectorIndustryAnalysisController(BaseController):
     """Sector Industry Analysis Controller class"""
 
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
     CHOICES_COMMANDS = [
         "load",
         "clear",
@@ -63,7 +50,6 @@ class SectorIndustryAnalysisController:
     CHOICES_MENUS = [
         "ca",
     ]
-    CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
 
     metric_choices = [
         "roa",
@@ -143,24 +129,16 @@ class SectorIndustryAnalysisController:
         queue: List[str] = None,
     ):
         """Constructor"""
-        self.sia_parser = argparse.ArgumentParser(add_help=False, prog="sia")
-        self.sia_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        super().__init__("/stocks/sia/", queue, choices)
 
-        self.completer: Union[None, NestedCompleter] = None
+        self.choices += self.CHOICES_COMMANDS
+        self.choices += self.CHOICES_MENUS
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            self.choices: dict = {c: {} for c in self.CHOICES}
-            self.choices["mktcap"] = {c: None for c in self.mktcap_choices}
-            self.choices["clear"] = {c: None for c in self.clear_choices}
-            self.choices["metric"] = {c: None for c in self.metric_choices}
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
+            self.extras: dict = {c: {} for c in BaseController.CHOICES}
+            self.extras["mktcap"] = {c: None for c in self.mktcap_choices}
+            self.extras["clear"] = {c: None for c in self.clear_choices}
+            self.extras["metric"] = {c: None for c in self.metric_choices}
 
         self.country = "United States"
         self.sector = "Financial Services"
@@ -256,87 +234,10 @@ Returned tickers: {', '.join(self.tickers)}
 {r if len(self.tickers) == 0 else ''}"""
         print(help_text)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.sia_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
+    def custom_reset(self):
+        """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(0, f"load {self.ticker}")
-        self.queue.insert(0, "sia")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            self.queue.insert(5, f"load {self.ticker}")
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -1049,7 +950,9 @@ Returned tickers: {', '.join(self.tickers)}
     def call_ca(self, _):
         """Call the comparison analysis menu with selected tickers"""
         if self.tickers:
-            self.queue = ca_controller.menu(self.tickers, self.queue)
+            self.queue = ca_controller.ComparisonAnalysisController(
+                self.tickers, self.queue
+            ).menu()
         else:
             print("No main ticker loaded to go into comparison analysis menu", "\n")
 
@@ -1075,8 +978,3 @@ def choices(controller):
         )
     }
     return NestedCompleter.from_nested_dict(controller.choices)
-
-
-@menu_decorator("/stocks/sia/", SectorIndustryAnalysisController, choices)
-def menu(ticker: str, queue: List[str] = None):
-    """Sector and Industry Analysis Menu"""

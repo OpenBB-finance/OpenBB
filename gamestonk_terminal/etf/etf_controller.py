@@ -41,7 +41,7 @@ from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 from gamestonk_terminal.etf.screener import screener_controller
 from gamestonk_terminal.etf.discovery import disc_controller
 
-# pylint: disable=C0415,C0302,W0613
+# pylint: disable=C0415,C0302
 
 
 class ETFController(BaseController):
@@ -79,11 +79,6 @@ class ETFController(BaseController):
             choices: dict = {c: {} for c in self.CHOICES}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
-
         self.etf_name = ""
         self.etf_data = ""
         self.etf_holdings: List = list()
@@ -118,7 +113,7 @@ Major holdings: {', '.join(self.etf_holdings)}
 {Style.RESET_ALL}"""
         print(help_txt)
 
-    def custom_reset(self, _):
+    def custom_reset(self):
         """Class specific component of reset command"""
         if self.etf_name:
             self.queue.insert(3, f"load {self.etf_name}")

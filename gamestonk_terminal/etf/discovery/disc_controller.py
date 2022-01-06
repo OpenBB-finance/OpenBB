@@ -17,8 +17,6 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.etf.discovery import wsj_view
 
-# pylint: disable=W0613
-
 
 class DiscoveryController(BaseController):
     """Discovery Controller class"""
@@ -38,11 +36,6 @@ class DiscoveryController(BaseController):
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
     def print_help(self):
         """Print help"""

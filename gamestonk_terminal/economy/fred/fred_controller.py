@@ -44,11 +44,6 @@ class FredController(BaseController):
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
-
     def print_help(self):
         """Print help"""
         id_string = ""

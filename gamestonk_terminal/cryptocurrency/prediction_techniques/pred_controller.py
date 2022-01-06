@@ -107,7 +107,7 @@ Models:
         """
         print(help_string)
 
-    def custom_reset(self, _):
+    def custom_reset(self):
         """Class specific component of reset command"""
         if self.coin:
             self.queue.insert(4, f"load {self.coin}")

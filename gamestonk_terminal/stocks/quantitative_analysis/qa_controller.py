@@ -2,14 +2,15 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List, Union
+from typing import List
 from datetime import datetime, timedelta
 
 import numpy as np
 import pandas as pd
 from rich.console import Console
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.decorators import try_except, menu_decorator
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.common.quantitative_analysis import (
     qa_view,
     rolling_view,
@@ -22,35 +23,16 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     check_proportion_range,
     parse_known_args_and_warn,
-    system_clear,
     valid_date,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.quantitative_analysis.factors_view import capm_view
 
-# pylint: disable=W0613
 t_console = Console()
 
-# pylint: disable=C0302
 
-
-class QaController:
+class QaController(BaseController):
     """Quantitative Analysis Controller class"""
-
-    # Command choices
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
 
     CHOICES_COMMANDS = [
         "load",
@@ -77,8 +59,6 @@ class QaController:
         "capm",
     ]
 
-    CHOICES += CHOICES_COMMANDS
-
     stock_interval = [1, 5, 15, 30, 60]
     stock_sources = ["yf", "av", "iex"]
 
@@ -91,6 +71,10 @@ class QaController:
         queue: List[str] = None,
     ):
         """Constructor"""
+        super().__init__("/stocks/qa/", queue)
+
+        self.choices += self.CHOICES_COMMANDS
+
         stock["Returns"] = stock["Adj Close"].pct_change()
         stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(
             stock["Adj Close"].shift(1)
@@ -105,12 +89,6 @@ class QaController:
         self.interval = interval
         self.target = "returns"
         self.df_columns = list(stock.columns)
-        self.qa_parser = argparse.ArgumentParser(add_help=False, prog="qa")
-        self.qa_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-        self.completer: Union[None, NestedCompleter] = None
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
@@ -119,11 +97,6 @@ class QaController:
             choices["load"]["--interval"] = {c: None for c in self.stock_interval}
             choices["load"]["--source"] = {c: None for c in self.stock_sources}
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
     def print_help(self):
         """Print help"""
@@ -164,87 +137,10 @@ Other:
         """
         t_console.print(help_str)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            t_console.print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.qa_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        t_console.print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "qa")
+    def custom_reset(self):
+        """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(0, f"load {self.ticker}")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            self.queue.insert(4, f"load {self.ticker}")
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -918,14 +814,3 @@ Other:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             capm_view(self.ticker)
-
-
-@menu_decorator("/stocks/qa/", QaController)
-def menu(
-    ticker: str,
-    start: datetime,
-    interval: str,
-    stock: pd.DataFrame,
-    queue: List[str] = None,
-):
-    """Quantitative Analysis Menu"""

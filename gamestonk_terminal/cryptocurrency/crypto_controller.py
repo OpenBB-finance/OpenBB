@@ -36,7 +36,7 @@ from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
 )
 import gamestonk_terminal.config_terminal as cfg
 
-# pylint: disable=import-outside-toplevel,W0613
+# pylint: disable=import-outside-toplevel
 
 
 CRYPTO_SOURCES = {

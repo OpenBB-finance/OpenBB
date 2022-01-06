@@ -137,7 +137,7 @@ Top Insiders:
 """
         print(help_text)
 
-    def custom_reset(self, _):
+    def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
             self.queue.insert(5, f"load {self.ticker}")

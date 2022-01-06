@@ -5,18 +5,18 @@ import argparse
 import configparser
 import os
 import datetime
-from typing import List, Union
+from typing import List
 
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.decorators import try_except, menu_decorator
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     parse_known_args_and_warn,
-    system_clear,
     valid_date,
 )
 from gamestonk_terminal.menu import session
@@ -30,26 +30,12 @@ from gamestonk_terminal.stocks.screener import (
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
-# pylint: disable=E1121,W0613
+# pylint: disable=E1121
 
 
-class ScreenerController:
+class ScreenerController(BaseController):
     """Screener Controller class"""
 
-    # Command choices
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
     CHOICES_COMMANDS = [
         "view",
         "set",
@@ -63,7 +49,6 @@ class ScreenerController:
         "po",
         "ca",
     ]
-    CHOICES += CHOICES_COMMANDS
 
     preset_choices = [
         preset.split(".")[0]
@@ -75,13 +60,9 @@ class ScreenerController:
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        self.scr_parser = argparse.ArgumentParser(add_help=False, prog="scr")
-        self.scr_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        super().__init__("/stocks/scr/", queue)
 
-        self.completer: Union[None, NestedCompleter] = None
+        self.choices += self.CHOICES_COMMANDS
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
@@ -116,11 +97,6 @@ class ScreenerController:
         self.preset = "top_gainers"
         self.screen_tickers: List = list()
 
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
-
     def print_help(self):
         """Print help"""
         help_text = f"""
@@ -142,87 +118,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
 >   po             take these to portfolio optimization menu{Style.RESET_ALL}
         """
         print(help_text)
-
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.scr_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        # additional quit for when we come to this menu through a relative path
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "scr")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
 
     @try_except
     def call_view(self, other_args: List[str]):
@@ -744,7 +639,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
         if self.screen_tickers:
-            self.queue = po_controller.menu(self.screen_tickers)
+            self.queue = po_controller.PortfolioOptimization(self.screen_tickers).menu()
         else:
             print("Some tickers must be screened first through one of the presets!\n")
 
@@ -752,11 +647,8 @@ Last screened tickers: {', '.join(self.screen_tickers)}
     def call_ca(self, _):
         """Call the comparison analysis menu with selected tickers"""
         if self.screen_tickers:
-            self.queue = ca_controller.menu(self.screen_tickers, self.queue)
+            self.queue = ca_controller.ComparisonAnalysisController(
+                self.screen_tickers, self.queue
+            ).menu()
         else:
             print("Some tickers must be screened first through one of the presets!\n")
-
-
-@menu_decorator("/stocks/scr/", ScreenerController)
-def menu(queue: List[str] = None):
-    """Screener Menu"""

@@ -14,17 +14,11 @@ from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import system_clear, get_flair
 
 # Do before merging
-# don't send choice_commands
 # comment in detail on base controller
-# remove W0613
-# remove BaseController.CHOICES
 # remove menu_decorator
-# remove if queue:
-# remove too-many-lines
-# remove CHOICES
-# remove call_home
 # remove try_except
 # add try_except to all switches
+# custom not for custom_reset (times 2 + 1)
 
 
 class BaseController:
@@ -63,6 +57,10 @@ class BaseController:
 
         if path != "/":
             self.queue = queue if queue else list()
+
+    @abstractmethod
+    def custom_reset(self):
+        pass
 
     @abstractmethod
     def print_help(self):
@@ -150,8 +148,7 @@ class BaseController:
             self.queue.insert(0, "reset")
             for _ in range(len(self.PATH)):
                 self.queue.insert(0, "quit")
-            if hasattr(self, "custom_reset"):
-                self.custom_reset(None)
+            self.custom_reset()
 
     def menu(self):
         an_input = "HELP_ME"

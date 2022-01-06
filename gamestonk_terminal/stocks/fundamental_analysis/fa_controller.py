@@ -146,7 +146,7 @@ Other Sources:
         # print("   balance       balance sheet of the company")
         # print("   cash          cash flow statement of the company")
 
-    def custom_reset(self, _):
+    def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
             self.queue.insert(4, f"load {self.ticker}")

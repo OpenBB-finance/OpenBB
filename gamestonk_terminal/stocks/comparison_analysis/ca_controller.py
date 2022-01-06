@@ -33,7 +33,7 @@ from gamestonk_terminal.stocks.comparison_analysis import (
 )
 
 
-# pylint: disable=E1121,C0302,R0904,W0613
+# pylint: disable=E1121,C0302,R0904
 
 
 class ComparisonAnalysisController(BaseController):
@@ -129,7 +129,7 @@ Finviz:
         """
         print(help_text)
 
-    def custom_reset(self, _):
+    def custom_reset(self):
         """Class specific component of reset command"""
         if self.similar:
             self.queue.insert(5, f"set {','.join(self.similar)}")

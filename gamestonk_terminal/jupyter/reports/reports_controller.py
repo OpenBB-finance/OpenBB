@@ -1,7 +1,7 @@
 """Reports Controller Module."""
 __docformat__ = "numpy"
 
-# pylint: disable=R1732,W0613
+# pylint: disable=R1732
 import os
 from typing import List
 import webbrowser

@@ -4,13 +4,13 @@ __docformat__ = "numpy"
 import argparse
 import os
 from datetime import datetime, timedelta
-from typing import List, Union
+from typing import List
 from colorama import Style
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.decorators import try_except, menu_decorator
+from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -18,9 +18,9 @@ from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     parse_known_args_and_warn,
     valid_date,
-    system_clear,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.stocks.options import (
     barchart_view,
     calculator_view,
@@ -37,25 +37,12 @@ from gamestonk_terminal.stocks.options import (
     screener_controller,
 )
 
-# pylint: disable=R1710,C0302,R0916,W0613
+# pylint: disable=R1710,R0916
 
 
-class OptionsController:
+class OptionsController(BaseController):
     """Options Controller class"""
 
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
     CHOICES_COMMANDS = [
         "calc",
         "yf",
@@ -80,7 +67,6 @@ class OptionsController:
         "pricing",
         "screen",
     ]
-    CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
 
     PRESET_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -117,29 +103,25 @@ class OptionsController:
 
     def __init__(self, ticker: str, queue: List[str] = None):
         """Constructor"""
-        self.op_parser = argparse.ArgumentParser(add_help=False, prog="op")
-        self.op_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-
-        self.completer: Union[None, NestedCompleter] = None
+        super().__init__("/stocks/options/", queue, choices)
+        self.choices += self.CHOICES_COMMANDS
+        self.choices += self.CHOICES_MENUS
 
         if session and gtff.USE_PROMPT_TOOLKIT:
 
-            self.choices: dict = {c: {} for c in self.CHOICES}
-            self.choices["unu"]["-s"] = {c: {} for c in self.unu_sortby_choices}
-            self.choices["pcr"] = {c: {} for c in self.pcr_length_choices}
-            self.choices["disp"] = {c: {} for c in self.presets}
-            self.choices["scr"] = {c: {} for c in self.presets}
-            self.choices["grhist"]["-g"] = {c: {} for c in self.grhist_greeks_choices}
-            self.choices["load"]["-s"] = {c: {} for c in self.load_source_choices}
-            self.choices["load"]["--source"] = {c: {} for c in self.hist_source_choices}
-            self.choices["load"]["-s"] = {c: {} for c in self.voi_source_choices}
-            self.choices["plot"]["-x"] = {c: {} for c in self.plot_vars_choices}
-            self.choices["plot"]["-y"] = {c: {} for c in self.plot_vars_choices}
-            self.choices["plot"]["-c"] = {c: {} for c in self.plot_custom_choices}
-            # self.completer = NestedCompleter.from_nested_dict(self.choices)
+            self.extras: dict = {c: {} for c in BaseController.CHOICES}
+            self.extras["unu"]["-s"] = {c: {} for c in self.unu_sortby_choices}
+            self.extras["pcr"] = {c: {} for c in self.pcr_length_choices}
+            self.extras["disp"] = {c: {} for c in self.presets}
+            self.extras["scr"] = {c: {} for c in self.presets}
+            self.extras["grhist"]["-g"] = {c: {} for c in self.grhist_greeks_choices}
+            self.extras["load"]["-s"] = {c: {} for c in self.load_source_choices}
+            self.extras["load"]["--source"] = {c: {} for c in self.hist_source_choices}
+            self.extras["load"]["-s"] = {c: {} for c in self.voi_source_choices}
+            self.extras["plot"]["-x"] = {c: {} for c in self.plot_vars_choices}
+            self.extras["plot"]["-y"] = {c: {} for c in self.plot_vars_choices}
+            self.extras["plot"]["-c"] = {c: {} for c in self.plot_custom_choices}
+            self.completer = NestedCompleter.from_nested_dict(self.extras)
 
         self.ticker = ticker
         self.prices = pd.DataFrame(columns=["Price", "Chance"])
@@ -155,11 +137,6 @@ class OptionsController:
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
         else:
             self.expiry_dates = []
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
     def print_help(self):
         """Print help."""
@@ -192,89 +169,12 @@ Expiry: {self.selected_date or None}
 {Style.RESET_ALL if not colored else ''}"""
         print(help_text)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.op_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
+    def custom_reset(self):
+        """Class specific component of reset command"""
         if self.selected_date:
-            self.queue.insert(0, f"exp -d {self.selected_date}")
+            self.queue.insert(5, f"exp -d {self.selected_date}")
         if self.ticker:
-            self.queue.insert(0, f"load {self.ticker}")
-        self.queue.insert(0, "options")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            self.queue.insert(5, f"load {self.ticker}")
 
     @try_except
     def call_calc(self, other_args: List[str]):
@@ -1295,9 +1195,9 @@ Expiry: {self.selected_date or None}
         """Process payoff command"""
         if self.ticker:
             if self.selected_date:
-                self.queue = payoff_controller.menu(
+                self.queue = payoff_controller.PayoffController(
                     self.ticker, self.selected_date, self.queue
-                )
+                ).menu()
             else:
                 print("No expiry loaded. First use `exp {expiry date}`\n")
 
@@ -1309,9 +1209,9 @@ Expiry: {self.selected_date or None}
         """Process pricing command"""
         if self.ticker:
             if self.selected_date:
-                self.queue = pricing_controller.menu(
+                self.queue = pricing_controller.PricingController(
                     self.ticker, self.selected_date, self.prices, self.queue
-                )
+                ).menu()
             else:
                 print("No expiry loaded. First use `exp {expiry date}`\n")
 
@@ -1321,7 +1221,7 @@ Expiry: {self.selected_date or None}
     @try_except
     def call_screen(self, _):
         """Process screen command"""
-        self.queue = screener_controller.menu(self.queue)
+        self.queue = screener_controller.ScreenerController(self.queue).menu()
 
 
 def choices(controller):
@@ -1351,8 +1251,3 @@ def choices(controller):
             }
 
     return NestedCompleter.from_nested_dict(controller.choices)
-
-
-@menu_decorator("/stocks/options/", OptionsController, choices)
-def menu(ticker: str = "", queue: List[str] = None):
-    """Options Menu"""

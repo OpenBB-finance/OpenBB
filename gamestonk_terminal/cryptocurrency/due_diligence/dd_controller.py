@@ -40,8 +40,6 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_chart, load
 import gamestonk_terminal.config_terminal as cfg
 
-# pylint: disable=W0613
-
 FILTERS_VS_USD_BTC = ["usd", "btc"]
 
 
@@ -178,7 +176,7 @@ Coinbase:
 """
         print(help_text)
 
-    def custom_reset(self, _):
+    def custom_reset(self):
         """Class specific component of reset command"""
         if self.current_coin:
             self.queue.insert(4, f"load {self.current_coin} --source {self.source}")

@@ -1,7 +1,7 @@
 """Onchain Controller Module"""
 __docformat__ = "numpy"
 
-# pylint: disable=C0302,W0613
+# pylint: disable=C0302
 
 import argparse
 import difflib

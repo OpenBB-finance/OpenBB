@@ -1,15 +1,16 @@
 """Technical Analysis Controller Module"""
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines,R0904,C0201,W0613
+# pylint:disable=too-many-lines,R0904,C0201
 
 import argparse
-from typing import List, Union
+from typing import List
 from datetime import datetime, timedelta
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.decorators import try_except, menu_decorator
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -19,7 +20,6 @@ from gamestonk_terminal.helper_funcs import (
     check_positive_list,
     check_positive,
     valid_date,
-    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.technical_analysis import (
@@ -42,23 +42,8 @@ from gamestonk_terminal.common.technical_analysis import (
 from gamestonk_terminal.stocks import stocks_helper
 
 
-class TechnicalAnalysisController:
+class TechnicalAnalysisController(BaseController):
     """Technical Analysis Controller class"""
-
-    # Command choices
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
 
     CHOICES_COMMANDS = [
         "load",
@@ -88,8 +73,6 @@ class TechnicalAnalysisController:
         "fib",
     ]
 
-    CHOICES += CHOICES_COMMANDS
-
     def __init__(
         self,
         ticker: str,
@@ -99,17 +82,14 @@ class TechnicalAnalysisController:
         queue: List[str] = None,
     ):
         """Constructor"""
+        super().__init__("/stocks/ta/", queue)
+
+        self.choices += self.CHOICES_COMMANDS
         self.ticker = ticker
         self.start = start
         self.interval = interval
         self.stock = stock
 
-        self.ta_parser = argparse.ArgumentParser(add_help=False, prog="ta")
-        self.ta_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-        self.completer: Union[None, NestedCompleter] = None
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
             choices["load"]["-i"] = {c: {} for c in stocks_helper.INTERVALS}
@@ -118,11 +98,6 @@ class TechnicalAnalysisController:
             choices["recom"]["-s"] = {c: {} for c in tradingview_model.SCREENERS}
             choices["kc"]["-m"] = {c: {} for c in volatility_model.MAMODES}
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
     def print_help(self):
         """Print help"""
@@ -171,91 +146,10 @@ Custom:
 """
         print(help_str)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-        Parameters
-        -------
-        an_input : str
-            string with input arguments
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.ta_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "ta")
+    def custom_reset(self):
+        """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(0, f"load {self.ticker}")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            self.queue.insert(4, f"load {self.ticker}")
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -1521,14 +1415,3 @@ Custom:
                 end_date=ns_parser.end,
                 export=ns_parser.export,
             )
-
-
-@menu_decorator("/stocks/ta/", TechnicalAnalysisController)
-def menu(
-    ticker: str,
-    start: datetime,
-    interval: str,
-    stock: pd.DataFrame,
-    queue: List[str] = None,
-):
-    """Technical Analysis Menu"""

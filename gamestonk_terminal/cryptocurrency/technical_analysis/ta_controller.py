@@ -1,6 +1,6 @@
 """Crypto Technical Analysis Controller Module"""
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines,W0613
+# pylint:disable=too-many-lines
 
 import argparse
 from typing import List
@@ -71,11 +71,6 @@ class TechnicalAnalysisController(BaseController):
             choices: dict = {c: {} for c in self.CHOICES}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
-
         self.ticker = ticker
         self.start = start
         self.interval = interval
@@ -125,7 +120,7 @@ Custom:
 """
         print(help_str)
 
-    def custom_reset(self, _):
+    def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
             self.queue.insert(4, f"load {self.ticker}")
