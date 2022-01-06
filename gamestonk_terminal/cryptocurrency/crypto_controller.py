@@ -33,6 +33,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence import (
 )
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
     FIND_KEYS,
+    display_all_coins,
     load,
     find,
     plot_chart,
@@ -72,6 +73,7 @@ class CryptoController:
         "headlines",
         "chart",
         "load",
+        "coins",
         "find",
     ]
 
@@ -105,6 +107,7 @@ class CryptoController:
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
+            choices["coins"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
             choices["load"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
             choices["find"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
             choices["find"]["-k"] = {c: {} for c in FIND_KEYS}
@@ -120,7 +123,8 @@ class CryptoController:
         """Print help"""
         help_text = """
      load        load a specific cryptocurrency for analysis
-     find        alternate way to search for coins
+     find        find coins in a certain source
+     coins       find coins and check map across multiple sources
 """
         help_text += (
             f"\nCoin: {self.current_coin}" if self.current_coin != "" else "\nCoin: ?"
@@ -222,6 +226,75 @@ class CryptoController:
         self.queue.insert(0, "crypto")
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
+
+    @try_except
+    def call_coins(self, other_args):
+        """Process coins command"""
+        parser = argparse.ArgumentParser(
+            prog="coins",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Shows list of coins available on CoinGecko, CoinPaprika and Binance.If you provide name of
+            coin then in result you will see ids of coins with best match for all mentioned services.
+            If you provide ALL keyword in your search query, then all coins will be displayed. To move over coins you
+            can use pagination mechanism with skip, top params. E.g. coins ALL --skip 100 --limit 30 then all coins
+            from 100 to 130 will be displayed. By default skip = 0, limit = 10.
+            If you won't provide source of the data everything will be displayed (CoinGecko, CoinPaprika, Binance).
+            If you want to search only in given source then use --source flag. E.g. if you want to find coin with name
+            uniswap on CoinPaprika then use: coins uniswap --source cp --limit 10
+                """,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--coin",
+            help="Coin you search for",
+            dest="coin",
+            required="-h" not in other_args,
+            type=str,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--skip",
+            default=0,
+            dest="skip",
+            help="Skip n of records",
+            type=check_positive,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--limit",
+            default=10,
+            dest="limit",
+            help="Limit of records",
+            type=check_positive,
+        )
+
+        parser.add_argument(
+            "--source",
+            dest="source",
+            help="Source of data.",
+            type=str,
+            choices=CRYPTO_SOURCES.keys(),
+        )
+
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-c")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            display_all_coins(
+                coin=ns_parser.coin,
+                source=ns_parser.source,
+                top=ns_parser.limit,
+                skip=ns_parser.skip,
+                show_all=bool("ALL" in other_args),
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_load(self, other_args):
