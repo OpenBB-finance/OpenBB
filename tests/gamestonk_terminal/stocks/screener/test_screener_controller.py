@@ -32,7 +32,7 @@ def test_menu_with_queue(expected, mocker, queue):
         target=f"{path_controller}.ScreenerController.switch",
         return_value=["quit"],
     )
-    result_menu = screener_controller.menu(queue=queue)
+    result_menu = screener_controller.ScreenerController(queue=queue).menu()
 
     assert result_menu == expected
 
@@ -68,7 +68,7 @@ def test_menu_without_queue_completion(mocker):
         return_value="quit",
     )
 
-    result_menu = screener_controller.menu(queue=None)
+    result_menu = screener_controller.ScreenerController(queue=None).menu()
 
     assert result_menu == []
 
@@ -112,7 +112,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         new=mock_switch,
     )
 
-    result_menu = screener_controller.menu(queue=None)
+    result_menu = screener_controller.ScreenerController(queue=None).menu()
 
     assert result_menu == []
 

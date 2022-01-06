@@ -31,11 +31,11 @@ def test_menu_with_queue(expected, mocker, queue):
         ),
         return_value=["quit"],
     )
-    result_menu = bt_controller.menu(
+    result_menu = bt_controller.BacktestingController(
         ticker="TSLA",
         stock=pd.DataFrame(),
         queue=queue,
-    )
+    ).menu()
 
     assert result_menu == expected
 
@@ -69,11 +69,11 @@ def test_menu_without_queue_completion(mocker):
         return_value="quit",
     )
 
-    result_menu = bt_controller.menu(
+    result_menu = bt_controller.BacktestingController(
         ticker="TSLA",
         stock=pd.DataFrame(),
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -118,11 +118,11 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         new=mock_switch,
     )
 
-    result_menu = bt_controller.menu(
+    result_menu = bt_controller.BacktestingController(
         ticker="TSLA",
         stock=pd.DataFrame(),
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 

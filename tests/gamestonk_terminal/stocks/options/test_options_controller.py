@@ -123,10 +123,10 @@ def test_menu_with_queue(expected, mocker, queue):
         target=f"{path_controller}.OptionsController.switch",
         return_value=["quit"],
     )
-    result_menu = options_controller.menu(
+    result_menu = options_controller.OptionsController(
         ticker="TSLA",
         queue=queue,
-    )
+    ).menu()
 
     assert result_menu == expected
 
@@ -182,10 +182,10 @@ def test_menu_without_queue_completion(mocker):
         target=f"{path_controller}.OptionsController",
         return_value=controller,
     )
-    result_menu = options_controller.menu(
+    result_menu = options_controller.OptionsController(
         ticker="MOCK_TICKER",
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -243,10 +243,10 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         new=mock_switch,
     )
 
-    result_menu = options_controller.menu(
+    result_menu = options_controller.OptionsController(
         ticker="MOCK_TICKER",
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 

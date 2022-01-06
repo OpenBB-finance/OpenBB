@@ -513,9 +513,9 @@ Stocks Menus:
         if self.ticker:
             from gamestonk_terminal.stocks.due_diligence import dd_controller
 
-            self.queue = dd_controller.menu(
+            self.queue = dd_controller.DueDiligenceController(
                 self.ticker, self.start, self.interval, self.stock, self.queue
-            )
+            ).menu()
         else:
             print("Use 'load <ticker>' prior to this command!", "\n")
 
@@ -535,9 +535,9 @@ Stocks Menus:
         if self.ticker:
             from gamestonk_terminal.stocks.fundamental_analysis import fa_controller
 
-            self.queue = fa_controller.menu(
+            self.queue = fa_controller.FundamentalAnalysisController(
                 self.ticker, self.start, self.interval, self.suffix, self.queue
-            )
+            ).menu()
         else:
             print("Use 'load <ticker>' prior to this command!", "\n")
 
@@ -546,7 +546,9 @@ Stocks Menus:
         if self.ticker:
             from gamestonk_terminal.stocks.backtesting import bt_controller
 
-            self.queue = bt_controller.menu(self.ticker, self.stock, self.queue)
+            self.queue = bt_controller.BacktestingController(
+                self.ticker, self.stock, self.queue
+            ).menu()
         else:
             print("Use 'load <ticker>' prior to this command!", "\n")
 
@@ -555,9 +557,9 @@ Stocks Menus:
         if self.ticker:
             from gamestonk_terminal.stocks.technical_analysis import ta_controller
 
-            self.queue = ta_controller.menu(
+            self.queue = ta_controller.TechnicalAnalysisController(
                 self.ticker, self.start, self.interval, self.stock, self.queue
-            )
+            ).menu()
         else:
             print("Use 'load <ticker>' prior to this command!", "\n")
 
@@ -565,7 +567,9 @@ Stocks Menus:
         """Process ba command"""
         from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
 
-        self.queue = ba_controller.menu(self.ticker, self.start, self.queue)
+        self.queue = ba_controller.BehaviouralAnalysisController(
+            self.ticker, self.start, self.queue
+        ).menu()
 
     def call_qa(self, _):
         """Process qa command"""
@@ -575,9 +579,9 @@ Stocks Menus:
                     qa_controller,
                 )
 
-                self.queue = qa_controller.menu(
+                self.queue = qa_controller.QaController(
                     self.ticker, self.start, self.interval, self.stock, self.queue
-                )
+                ).menu()
             # TODO: This menu should work regardless of data being daily or not!
             print("Load daily data to use this menu!", "\n")
         else:

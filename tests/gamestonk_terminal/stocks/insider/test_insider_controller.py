@@ -43,13 +43,13 @@ def test_menu_with_queue(expected, mocker, queue):
         return_value=["quit"],
     )
     stock = pd.DataFrame()
-    result_menu = insider_controller.menu(
+    result_menu = insider_controller.InsiderController(
         ticker="TSLA",
         start="2021-10-25",
         interval="1440min",
         stock=stock,
         queue=queue,
-    )
+    ).menu()
 
     assert result_menu == expected
 
@@ -84,13 +84,13 @@ def test_menu_without_queue_completion(mocker):
     )
 
     stock = pd.DataFrame()
-    result_menu = insider_controller.menu(
+    result_menu = insider_controller.InsiderController(
         ticker="TSLA",
         start="2021-10-25",
         interval="1440min",
         stock=stock,
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -136,13 +136,13 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     )
 
     stock = pd.DataFrame()
-    result_menu = insider_controller.menu(
+    result_menu = insider_controller.InsiderController(
         ticker="TSLA",
         start="2021-10-25",
         interval="1440min",
         stock=stock,
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 

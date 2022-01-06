@@ -175,7 +175,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
         if self.screen_tickers:
-            self.queue = po_controller.menu(self.screen_tickers)
+            self.queue = po_controller.PortfolioOptimization(self.screen_tickers).menu()
         else:
             print("Some tickers must be screened first through one of the presets!\n")
 

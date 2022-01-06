@@ -43,11 +43,11 @@ def test_menu_with_queue(expected, mocker, queue):
         ),
         return_value=["quit"],
     )
-    result_menu = ba_controller.menu(
+    result_menu = ba_controller.BehaviouralAnalysisController(
         ticker="TSLA",
         start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
         queue=queue,
-    )
+    ).menu()
 
     assert result_menu == expected
 
@@ -81,11 +81,11 @@ def test_menu_without_queue_completion(mocker):
         return_value="quit",
     )
 
-    result_menu = ba_controller.menu(
+    result_menu = ba_controller.BehaviouralAnalysisController(
         ticker="TSLA",
         start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -130,11 +130,11 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         new=mock_switch,
     )
 
-    result_menu = ba_controller.menu(
+    result_menu = ba_controller.BehaviouralAnalysisController(
         ticker="TSLA",
         start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 

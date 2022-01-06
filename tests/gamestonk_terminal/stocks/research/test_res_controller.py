@@ -32,12 +32,12 @@ def test_menu_with_queue(expected, mocker, queue):
         target=f"{path_controller}.ResearchController.switch",
         return_value=["quit"],
     )
-    result_menu = res_controller.menu(
+    result_menu = res_controller.ResearchController(
         ticker="MOCK_TICKER",
         start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
         interval="MOCK_INTERVAL",
         queue=queue,
-    )
+    ).menu()
 
     assert result_menu == expected
 
@@ -73,12 +73,12 @@ def test_menu_without_queue_completion(mocker):
         return_value="quit",
     )
 
-    result_menu = res_controller.menu(
+    result_menu = res_controller.ResearchController(
         ticker="MOCK_TICKER",
         start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
         interval="MOCK_INTERVAL",
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -122,12 +122,12 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         new=mock_switch,
     )
 
-    result_menu = res_controller.menu(
+    result_menu = res_controller.ResearchController(
         ticker="MOCK_TICKER",
         start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
         interval="MOCK_INTERVAL",
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 

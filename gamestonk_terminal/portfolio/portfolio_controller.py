@@ -104,7 +104,7 @@ Graphs:
 
     def call_po(self, _):
         """Process po command"""
-        self.queue = po_controller.menu([], self.queue)
+        self.queue = po_controller.PortfolioOptimization([], self.queue).menu()
 
     @try_except
     def call_load(self, other_args: List[str]):
