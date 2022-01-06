@@ -1076,3 +1076,19 @@ main:
         ref: "/forex/candle"
   - name: resources
     ref: "/resources"
+  - name: alternative
+    ref: "/alternative"
+    sub:
+      - name: covid
+        ref: "/alternative/covid"
+        sub:
+          - name: slopes
+            ref: "/alternative/covid/slopes"
+          - name: ov
+            ref: "/alternative/covid/ov"
+          - name: deaths
+            ref: "/alternative/covid/deaths"
+          - name: cases
+            ref: "/alternative/covid/cases"
+          - name: rates
+            ref: "/alternative/covid/rates"

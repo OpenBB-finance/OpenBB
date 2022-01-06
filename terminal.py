@@ -66,6 +66,7 @@ class TerminalController:
         "resources",
         "jupyter",
         "funds",
+        "alternative",
     ]
     CHOICES += CHOICES_COMMANDS
     CHOICES += CHOICES_MENUS
@@ -133,6 +134,7 @@ Timezone: {get_user_timezone_or_invalid()}
 >   portfolio
 >   jupyter
 >   resources
+>   alternative
     """
         print(help_text)
 
@@ -265,6 +267,12 @@ Timezone: {get_user_timezone_or_invalid()}
         from gamestonk_terminal.resources import resources_controller
 
         self.queue = resources_controller.menu(self.queue)
+
+    def call_alternative(self, _):
+        """Process resources command"""
+        from gamestonk_terminal.alternative import alt_controller
+
+        self.queue = alt_controller.menu(self.queue)
 
     def call_portfolio(self, _):
         """Process portfolio command"""
