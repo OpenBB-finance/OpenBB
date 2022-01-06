@@ -892,6 +892,7 @@ def get_rf() -> float:
     except Exception:
         return 0.02
 
+
 class LineAnnotateDrawer:
     def __init__(self, ax: matplotlib.axes = None):
         self.ax = ax
@@ -930,6 +931,7 @@ class LineAnnotateDrawer:
                     self.ax.plot(x, y)
 
                 self.ax.figure.canvas.draw()
+
 
 def system_clear():
     """Clear screen"""
