@@ -284,7 +284,7 @@ def load(
     coins_map_df = prepare_all_coins_df().set_index("Symbol")
 
     if source == "cg":
-        coingecko = pycoingecko_model.Coin(coin, True)
+        coingecko = pycoingecko_model.Coin(coin.lower(), True)
         coin_map_df = coins_map_df.loc[coingecko.symbol]
         if should_load_ta_data:
             df_prices, currency = load_ta_data(
@@ -754,9 +754,10 @@ def load_ta_data(
         return df, currency
 
     if source == "cg":
-        symbol_coingecko = coin_map_df["CoinGecko"]
-        coin = pycoingecko_model.Coin(symbol_coingecko)
-        df = coin.get_coin_market_chart(currency, days)
+        coin_id = coin_map_df["CoinGecko"]
+        print(coin_map_df)
+        # coin = pycoingecko_model.Coin(symbol_coingecko)
+        df = pycoingecko_model.get_coin_market_chart(coin_id, currency, days)
         df = df["price"].resample("1D").ohlc().ffill()
         df.columns = [
             "Open",
