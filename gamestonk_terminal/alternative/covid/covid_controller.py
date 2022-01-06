@@ -161,6 +161,7 @@ Country: [cyan]{self.country}[/cyan]
 
     def call_reset(self, _):
         """Process reset command"""
+        self.queue.insert(0, f"country {self.country}")
         self.queue.insert(0, "covid")
         self.queue.insert(0, "alternative")
         self.queue.insert(0, "reset")
@@ -187,12 +188,15 @@ Country: [cyan]{self.country}[/cyan]
             other_args.insert(0, "-c")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            country = " ".join(ns_parser.country)
-            if country not in self.COUNTRY_LIST:
-                t_console.print(f"{country} not a valid selection.\n")
-                return
-            self.country = country
-        t_console.print("")
+            if ns_parser.country:
+                country = " ".join(ns_parser.country)
+                if country not in self.COUNTRY_LIST:
+                    t_console.print(f"[red]{country} not a valid selection.[/red]\n")
+                    return
+                self.country = country
+                t_console.print(f"[cyan]{country}[/cyan] loaded\n")
+            else:
+                t_console.print("[red]Please input a country.[/red]\n")
 
     @try_except
     def call_ov(self, other_args: List[str]):

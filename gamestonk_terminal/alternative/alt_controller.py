@@ -7,7 +7,7 @@ import logging
 from typing import List, Union
 
 from prompt_toolkit.completion import NestedCompleter
-
+from rich.console import Console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
@@ -15,6 +15,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 
+t_console = Console()
 logger = logging.getLogger(__name__)
 # pylint:disable=import-outside-toplevel
 
@@ -60,10 +61,9 @@ class AlternativeDataController:
     def print_help():
         """Print help"""
         help_str = """
-Alternative Data:
->   covid
+>   covid           cases, deaths, rates
         """
-        print(help_str)
+        t_console.print(help_str)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -75,7 +75,7 @@ Alternative Data:
         """
         # Empty command
         if not an_input:
-            print("")
+            t_console.print("")
             return self.queue
 
         # Navigation slash is being used
@@ -127,7 +127,7 @@ Alternative Data:
 
     def call_quit(self, _):
         """Process quit menu command"""
-        print("")
+        t_console.print("")
         self.queue.insert(0, "quit")
 
     def call_exit(self, _):
@@ -159,7 +159,7 @@ def menu(queue: List[str] = None):
         if alt_controller.queue and len(alt_controller.queue) > 0:
             # If the command is quitting the menu we want to return in here
             if alt_controller.queue[0] in ("q", "..", "quit"):
-                print("")
+                t_console.print("")
                 if len(alt_controller.queue) > 1:
                     return alt_controller.queue[1:]
                 return []
@@ -170,7 +170,7 @@ def menu(queue: List[str] = None):
 
             # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input.split(" ")[0] in alt_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /alternative/ $ {an_input}")
+                t_console.print(f"{get_flair()} /alternative/ $ {an_input}")
 
         # Get input command from user
         else:
@@ -198,9 +198,8 @@ def menu(queue: List[str] = None):
             alt_controller.queue = alt_controller.switch(an_input)
 
         except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /alternative menu.",
-                end="",
+            t_console.print(
+                f"\nThe command '{an_input}' doesn't exist on the /alternative menu.\n"
             )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
@@ -216,13 +215,13 @@ def menu(queue: List[str] = None):
                     if candidate_input == an_input:
                         an_input = ""
                         alt_controller.queue = []
-                        print("\n")
+                        t_console.print("")
                         continue
                     an_input = candidate_input
                 else:
                     an_input = similar_cmd[0]
 
-                print(f" Replacing by '{an_input}'.")
+                t_console.print(f" Replacing by '{an_input}'.")
                 alt_controller.queue.insert(0, an_input)
             else:
-                print("\n")
+                print("")
