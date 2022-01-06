@@ -1,11 +1,12 @@
 import difflib
+
 import discord
 import pandas as pd
-
-from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 import discordbot.config_discordbot as cfg
 from discordbot.helpers import pagination
+from discordbot.run_discordbot import logger
 from discordbot.stocks.screener import screener_options as so
+from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 
 
 async def ownership_command(ctx, preset="template", sort="", limit="5", ascend="False"):
@@ -17,7 +18,9 @@ async def ownership_command(ctx, preset="template", sort="", limit="5", ascend="
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.scr.ownership {preset} {sort} {limit} {ascend}")
+            logger.debug(
+                "!stocks.scr.ownership %s %s %s %s", preset, sort, limit, ascend
+            )
 
         # Check for argument
         if not limit.lstrip("-").isnumeric():
