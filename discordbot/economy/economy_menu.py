@@ -35,7 +35,7 @@ class EconomyCommands(discord.ext.commands.Cog):
         Parameters
         ----------
         indicator: str
-            Possible indicatores are: jbd, mv, pco, mm, sps, spb, shd. Which stand for
+            Possible indicators are: jbd, mv, pco, mm, sps, spb, shd. Which stand for
             Junk Bond Demand, Market Volatility, Put and Call Options, Market Momentum,
             Stock Price Strength, Stock Price Breadth, Safe Heaven Demand.
         """
@@ -118,6 +118,7 @@ class EconomyCommands(discord.ext.commands.Cog):
             consumer_cyclical, consumer_defensive, energy, financial, healthcare, industrials,
             real_estate, technology, utilities, country, capitalization.
         """
+        logger.info("economy.valuation")
         await valuation_command(ctx, economy_group)
 
     @discord.ext.commands.command(name="economy.performance")
@@ -131,6 +132,7 @@ class EconomyCommands(discord.ext.commands.Cog):
             consumer_cyclical, consumer_defensive, energy, financial, healthcare, industrials,
             real_estate, technology, utilities, country, capitalization.
         """
+        logger.info("economy.performance")
         await performance_command(ctx, economy_group)
 
     @discord.ext.commands.command(name="economy")
