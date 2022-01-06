@@ -17,11 +17,11 @@ register_matplotlib_converters()
 
 def plot_adx(
     s_ticker: str,
-    s_interval: str,
     df_stock: pd.DataFrame,
-    length: int,
-    scalar: int,
-    drift: int,
+    length: int = 14,
+    scalar: int = 100,
+    drift: int = 1,
+    s_interval: str = "1440min",
     export: str = "",
 ):
     """Plot ADX indicator
@@ -30,8 +30,7 @@ def plot_adx(
     ----------
     s_ticker : str
         Ticker
-    s_interval : str
-        Interval for data
+
     df_stock : pd.DataFrame
         Dataframe of prices
     length : int
@@ -40,6 +39,8 @@ def plot_adx(
         Scalar variable
     drift : int
         Drift variable
+    s_interval : str
+        Interval for data
     export: str
         Format to export data
     """
@@ -90,10 +91,10 @@ def plot_adx(
 
 def plot_aroon(
     s_ticker: str,
-    s_interval: str,
     df_stock: pd.DataFrame,
-    length: int,
-    scalar: int,
+    length: int = 25,
+    scalar: int = 100,
+    s_interval: str = "1440min",
     export: str = "",
 ):
     """Plot Aroon indicator
@@ -102,12 +103,12 @@ def plot_aroon(
     ----------
     s_ticker : str
         Ticker
-    s_interval: str
-        Interval of price data
     df_stock : pd.DataFrame.length
         Dataframe of prices
     length:int
         Length of window
+    s_interval: str
+        Interval of price data
     scalar : int
         Scalar variable
     """

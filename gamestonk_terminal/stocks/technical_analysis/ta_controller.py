@@ -812,7 +812,6 @@ Custom:
                 should be above zero for a buy, and below zero for a sell.
             """,
         )
-
         parser.add_argument(
             "-f",
             "--fast",
@@ -931,7 +930,6 @@ Custom:
                 for crossover signals.
             """,
         )
-
         parser.add_argument(
             "-k",
             "--fastkperiod",
@@ -988,7 +986,6 @@ Custom:
                 helps show the trend and isolate the price waves within a trend.
             """,
         )
-
         parser.add_argument(
             "-l",
             "--length",
@@ -1029,7 +1026,6 @@ Custom:
                 price change of the asset.
             """,
         )
-
         parser.add_argument(
             "-l",
             "--length",

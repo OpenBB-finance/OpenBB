@@ -18,10 +18,10 @@ register_matplotlib_converters()
 
 def plot_cci(
     s_ticker: str,
-    s_interval: str,
     df_stock: pd.DataFrame,
-    length: int,
-    scalar: float,
+    length: int = 14,
+    scalar: float = 0.0015,
+    s_interval: str = "1440min",
     export: str = "",
 ):
     """Display CCI Indicator
@@ -30,14 +30,14 @@ def plot_cci(
     ----------
     s_ticker : str
         Stock ticker
-    s_interval : str
-        Interval of stock data
     df_stock : pd.DataFrame
         Dataframe of prices
     length : int
         Length of window
     scalar : float
         Scalar variable
+    s_interval : str
+        Interval of stock data
     export : str
         Format to export data
     """
@@ -87,11 +87,11 @@ def plot_cci(
 
 def view_macd(
     s_ticker: str,
-    s_interval: str,
     df_stock: pd.DataFrame,
-    n_fast: int,
-    n_slow: int,
-    n_signal: int,
+    n_fast: int = 12,
+    n_slow: int = 26,
+    n_signal: int = 9,
+    s_interval: str = "1440min",
     export: str = "",
 ):
     """Plot MACD signal
@@ -100,8 +100,6 @@ def view_macd(
     ----------
     s_ticker : str
         Stock ticker
-    s_interval : str
-        Interval of data
     df_stock : pd.DataFrame
         Dataframe of prices
     n_fast : int
@@ -110,6 +108,8 @@ def view_macd(
         Slow period
     n_signal : int
         Signal period
+    s_interval : str
+        Interval of data
     export : str
         Format to export data
     """
@@ -159,11 +159,11 @@ def view_macd(
 
 def view_rsi(
     s_ticker: str,
-    s_interval: str,
     df_stock: pd.DataFrame,
-    length: int,
-    scalar: float,
-    drift: int,
+    length: int = 14,
+    scalar: float = 100.0,
+    drift: int = 1,
+    s_interval: str = "1440min",
     export: str = "",
 ):
     """Display RSI Indicator
@@ -172,8 +172,7 @@ def view_rsi(
     ----------
     s_ticker : str
         Stock ticker
-    s_interval : str
-        Interval of stock data
+
     df_stock : pd.DataFrame
         Dataframe of prices
     length : int
@@ -182,6 +181,8 @@ def view_rsi(
         Scalar variable
     drift : int
         Drift variable
+    s_interval : str
+        Interval of stock data
     export : str
         Format to export data
     """
@@ -230,11 +231,11 @@ def view_rsi(
 
 def view_stoch(
     s_ticker: str,
-    s_interval: str,
     df_stock: pd.DataFrame,
-    fastkperiod: int,
-    slowdperiod: int,
-    slowkperiod: int,
+    fastkperiod: int = 14,
+    slowdperiod: int = 3,
+    slowkperiod: int = 3,
+    s_interval: str = "1440min",
     export: str = "",
 ):
     """Plot stochastic oscillator signal
@@ -243,8 +244,6 @@ def view_stoch(
     ----------
     s_ticker : str
         Stock ticker
-    s_interval : str
-        Interval of data
     df_stock : pd.DataFrame
         Dataframe of prices
     fastkperiod : int
@@ -253,6 +252,8 @@ def view_stoch(
         Slow d period
     slowkperiod : int
         Slow k period
+    s_interval : str
+        Interval of data
     export : str
         Format to export data
     """
@@ -306,20 +307,24 @@ def view_stoch(
 
 
 def view_fisher(
-    s_ticker: str, s_interval: str, df_stock: pd.DataFrame, length: int, export: str
+    s_ticker: str,
+    df_stock: pd.DataFrame,
+    length: int = 14,
+    s_interval: str = "1440min",
+    export: str = "",
 ):
     """Display Fisher Indicator
 
     Parameters
     ----------
     s_ticker : str
-        Stock ticker
-    s_interval : str
-        Interval of stock data
+
     df_stock : pd.DataFrame
         Dataframe of prices
     length : int
         Length of window
+    s_interval : str
+        Interval of stock data
     export : str
         Format to export data
     """
@@ -386,7 +391,11 @@ def view_fisher(
 
 
 def view_cg(
-    s_ticker: str, s_interval: str, df_stock: pd.DataFrame, length: int, export: str
+    s_ticker: str,
+    df_stock: pd.DataFrame,
+    length: int = 14,
+    s_interval: str = "1440min",
+    export: str = "",
 ):
     """Display Fisher Indicator
 
@@ -394,12 +403,13 @@ def view_cg(
     ----------
     s_ticker : str
         Stock ticker
-    s_interval : str
-        Interval of stock data
+
     df_stock : pd.DataFrame
         Dataframe of prices
     length : int
         Length of window
+    s_interval : str
+        Interval of stock data
     export : str
         Format to export data
     """

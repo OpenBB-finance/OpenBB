@@ -16,7 +16,11 @@ register_matplotlib_converters()
 
 
 def plot_ad(
-    s_ticker: str, s_interval: str, df_stock: pd.DataFrame, use_open: bool, export: str
+    s_ticker: str,
+    df_stock: pd.DataFrame,
+    use_open: bool = False,
+    s_interval: str = "1440min",
+    export: str = "",
 ):
     """Plot AD technical indicator
 
@@ -24,12 +28,12 @@ def plot_ad(
     ----------
     s_ticker : str
         Ticker
-    s_interval : str
-        Interval of data
     df_stock : pd.DataFrame
         Dataframe of prices
     use_open : bool
         Whether to use open prices in calculation
+    s_interval : str
+        Interval of data
     export: str
         Format to export data as
     """
@@ -112,11 +116,11 @@ def plot_ad(
 
 def plot_adosc(
     s_ticker: str,
-    s_interval: str,
     df_stock: pd.DataFrame,
-    fast: int,
-    slow: int,
-    use_open: bool,
+    fast: int = 3,
+    slow: int = 10,
+    use_open: bool = False,
+    s_interval: str = "1440min",
     export: str = "",
 ):
     """Display AD Osc Indicator
@@ -125,8 +129,6 @@ def plot_adosc(
     ----------
     s_ticker : str
         Stock ticker
-    s_interval : str
-        Interval of stock data
     df_stock : pd.DataFrame
         Dataframe of prices
     use_open : bool
@@ -135,6 +137,8 @@ def plot_adosc(
          Length of fast window
     slow : int
         Length of slow window
+    s_interval : str
+        Interval of stock data
     export : str
         Format to export data
     """
@@ -213,17 +217,19 @@ def plot_adosc(
     )
 
 
-def plot_obv(s_ticker: str, s_interval: str, df_stock: pd.DataFrame, export: str):
+def plot_obv(
+    s_ticker: str, df_stock: pd.DataFrame, s_interval: str = "1440min", export: str = ""
+):
     """Plot OBV technical indicator
 
     Parameters
     ----------
     s_ticker : str
         Ticker
-    s_interval : str
-        Interval of data
     df_stock : pd.DataFrame
         Dataframe of prices
+    s_interval : str
+        Interval of data
     export: str
         Format to export data as
     """

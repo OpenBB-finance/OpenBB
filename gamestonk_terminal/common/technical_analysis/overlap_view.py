@@ -18,28 +18,28 @@ register_matplotlib_converters()
 
 
 def view_ma(
-    ma_type: str,
     s_ticker: str,
-    s_interval: str,
     df_stock: pd.DataFrame,
-    length: List[int],
-    offset: int,
+    length: List[int] = None,
+    offset: int = 0,
+    ma_type: str = "EMA",
+    s_interval: str = "1440min",
     export: str = "",
 ) -> pd.DataFrame:
     """Plots MA technical indicator
 
     Parameters
     ----------
-    ma_type: str
-        Type of moving average.  Either "EMA" "ZLMA" or "SMA"
     s_ticker : str
         Ticker
-    s_interval : str
-        Interval of data
     df_stock : pd.DataFrame
         Dataframe of prices
     length : List[int]
         Length of EMA window
+    ma_type: str
+        Type of moving average.  Either "EMA" "ZLMA" or "SMA"
+    s_interval : str
+        Interval of data
     export : str
         Format to export data
     """
@@ -53,6 +53,9 @@ def view_ma(
         )
 
     l_legend = [s_ticker]
+    if not length:
+        length = [20, 50]
+
     for win in length:
         if ma_type == "EMA":
             df_ta = overlap_model.ema(s_interval, df_stock, win, offset)
@@ -105,7 +108,11 @@ def view_ma(
 
 
 def view_vwap(
-    s_ticker: str, s_interval: str, df_stock: pd.DataFrame, offset: int, export: str
+    s_ticker: str,
+    df_stock: pd.DataFrame,
+    offset: int = 0,
+    s_interval: str = "",
+    export: str = "",
 ):
     """Plots EMA technical indicator
 
@@ -113,10 +120,12 @@ def view_vwap(
     ----------
     s_ticker : str
         Ticker
-    s_interval : str
-        Interval of data
     df_stock : pd.DataFrame
         Dataframe of prices
+    offset : int
+        Offset variable
+    s_interval : str
+        Interval of data
     export : str
         Format to export data
     """

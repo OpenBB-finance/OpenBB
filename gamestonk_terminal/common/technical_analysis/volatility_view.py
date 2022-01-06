@@ -17,11 +17,11 @@ register_matplotlib_converters()
 
 def view_bbands(
     ticker: str,
-    s_interval: str,
     df_stock: pd.DataFrame,
-    length: int,
-    n_std: float,
-    mamode: str,
+    length: int = 5,
+    n_std: float = 2,
+    mamode: str = "sma",
+    s_interval: str = "1440min",
     export: str = "",
 ):
     """Show bollinger bands
@@ -30,8 +30,6 @@ def view_bbands(
     ----------
     ticker : str
         Ticker
-    s_interval : str
-        Interval of stock data
     df_stock : pd.DataFrame
         Dataframe of stock prices
     length : int
@@ -40,6 +38,8 @@ def view_bbands(
         Number of standard deviations to show
     mamode : str
         Method of calculating average
+    s_interval : str
+        Interval of stock data
     export : str
         Format of export file
     """
@@ -87,10 +87,10 @@ def view_bbands(
 
 def view_donchian(
     ticker: str,
-    s_interval: str,
     df_stock: pd.DataFrame,
-    upper_length: int,
-    lower_length: int,
+    upper_length: int = 20,
+    lower_length: int = 20,
+    s_interval: str = "1440min",
     export: str = "",
 ):
     """Show donchian channels
@@ -99,14 +99,14 @@ def view_donchian(
     ----------
     ticker : str
         Ticker
-    s_interval : str
-        Interval of stock data
     df_stock : pd.DataFrame
         Dataframe of stock prices
     upper_length : int
         Length of window to calculate upper channel
     lower_length : int
         Length of window to calculate lower channel
+    s_interval : str
+        Interval of stock data
     export : str
         Format of export file
     """
@@ -156,12 +156,12 @@ def view_donchian(
 
 def view_kc(
     s_ticker: str,
-    s_interval: str,
     df_stock: pd.DataFrame,
-    length: int,
-    scalar: float,
-    mamode: str,
-    offset: int,
+    length: int = 20,
+    scalar: float = 2,
+    mamode: str = "ema",
+    offset: int = 0,
+    s_interval: str = "1440min",
     export: str = "",
 ):
     """View Keltner Channels Indicator
@@ -170,8 +170,6 @@ def view_kc(
     ----------
     s_ticker : str
         Ticker
-    s_interval : str
-        Interval of data
     df_stock : pd.DataFrame
         Dataframe of stock prices
     length : int
@@ -180,6 +178,8 @@ def view_kc(
         Type of filter
     offset : int
         Offset value
+    s_interval : str
+        Interval of data
     export : str
         Format to export data
     """

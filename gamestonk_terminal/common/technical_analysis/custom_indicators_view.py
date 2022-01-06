@@ -17,9 +17,9 @@ from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 def fibonacci_retracement(
     s_ticker: str,
     df_stock: pd.DataFrame,
-    period: int,
-    start_date: Any,
-    end_date: Any,
+    period: int = 120,
+    start_date: Any = None,
+    end_date: Any = None,
     export: str = "",
 ):
     """Calculate fibonacci retracement levels
