@@ -4,7 +4,8 @@ __docformat__ = "numpy"
 
 import os
 import json
-from typing import Tuple, Any, Optional
+import math
+from typing import Tuple, Any, Optional, Union
 import difflib
 import pandas as pd
 import numpy as np
@@ -71,6 +72,29 @@ SOURCES_INTERVALS = {
         "1day",
     ],
 }
+
+
+def millify(n: Union[float, int]) -> str:
+    millnames = ["", "K", "M", "B", "T"]
+    n = float(n)
+    millidx = max(
+        0,
+        min(
+            len(millnames) - 1, int(math.floor(0 if n == 0 else math.log10(abs(n)) / 3))
+        ),
+    )
+
+    return f"{n / 10 ** (3 * millidx):.0f}{millnames[millidx]}"
+
+
+def calc_change(current: Union[float, int], previous: Union[float, int]):
+    """Calculates change between two different values"""
+    if current == previous:
+        return 0
+    try:
+        return ((current - previous) / previous) * 100.0
+    except ZeroDivisionError:
+        return float("inf")
 
 
 def load_cg_coin_data(
