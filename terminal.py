@@ -187,9 +187,11 @@ Timezone: {get_user_timezone_or_invalid()}
 
     def call_alternative(self, _):
         """Process resources command"""
-        from gamestonk_terminal.alternative import alt_controller
+        from gamestonk_terminal.alternative.alt_controller import (
+            AlternativeDataController,
+        )
 
-        self.queue = alt_controller.menu(self.queue)
+        self.queue = AlternativeDataController(self.queue).menu()
 
     def call_portfolio(self, _):
         """Process portfolio command"""
