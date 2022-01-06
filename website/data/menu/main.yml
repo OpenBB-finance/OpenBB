@@ -620,13 +620,13 @@ main:
         ref: "/cryptocurrency/chart"
       - name: find
         ref: "/cryptocurrency/find"
+      - name: coins
+        ref: "/cryptocurrency/coins"
       - name: headlines
         ref: "/cryptocurrency/headlines"
       - name: discovery
         ref: "/cryptocurrency/discovery"
         sub:
-          - name: coins
-            ref: "/cryptocurrency/discovery/coins"
           - name: cgtrending
             ref: "/cryptocurrency/discovery/cgtrending"
           - name: cgvoted
