@@ -9,7 +9,7 @@ from gamestonk_terminal.stocks.technical_analysis import finviz_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 
 
 async def view_command(ctx, ticker=""):
@@ -19,7 +19,7 @@ async def view_command(ctx, ticker=""):
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.view {ticker}")
+            logger.debug("!stocks.ta.view %s", ticker)
 
         # Check for argument
         if ticker == "":
@@ -38,7 +38,7 @@ async def view_command(ctx, ticker=""):
         uploaded_image = gst_imgur.upload_image("ta_view.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: [Finviz] Trendlines & Data " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

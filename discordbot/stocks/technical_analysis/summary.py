@@ -3,6 +3,7 @@ import discord
 from gamestonk_terminal.stocks.technical_analysis import finbrain_model
 
 import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import logger
 
 
 async def summary_command(ctx, ticker=""):
@@ -12,7 +13,7 @@ async def summary_command(ctx, ticker=""):
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.summary {ticker}")
+            logger.debug("!stocks.ta.summary %s", ticker)
 
         # Check for argument
         if ticker == "":
