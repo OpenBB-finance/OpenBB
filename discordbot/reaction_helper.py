@@ -8,7 +8,7 @@ import discordbot.config_discordbot as cfg
 
 
 async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple = None):
-    if TRADIER_TOKEN == "REPLACE_ME":
+    if TRADIER_TOKEN == "REPLACE_ME":  # nosec
         dates = yfinance_model.option_expirations(ticker)
     else:
         dates = tradier_model.option_expirations(ticker)

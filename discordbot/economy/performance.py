@@ -41,7 +41,8 @@ async def performance_command(ctx, economy_group="sector"):
         possible_groups = list(d_economy_group.keys())
 
         if economy_group not in possible_groups:
-            raise Exception(f"Select a valid group from {', '.join(possible_groups)}")
+            possible_group_list = ", ".join(possible_groups)
+            raise Exception(f"Select a valid group from {possible_group_list}")  # nosec
 
         group = d_economy_group[economy_group]
 
