@@ -64,12 +64,13 @@ class StocksController(BaseController):
         "ca",
         "options",
     ]
-    BaseController.CHOICES += CHOICES_COMMANDS
-    BaseController.CHOICES += CHOICES_MENUS
 
     def __init__(self, ticker, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/", self.CHOICES_COMMANDS, queue)
+        super().__init__("/stocks/", queue)
+
+        self.choices += self.CHOICES_COMMANDS
+        self.choices += self.CHOICES_MENUS
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
@@ -431,65 +432,63 @@ Stocks Menus:
 
     def call_disc(self, _):
         """Process disc command"""
-        from gamestonk_terminal.stocks.discovery import disc_controller
+        from gamestonk_terminal.stocks.discovery.disc_controller import DiscoveryController
 
-        self.queue = disc_controller.menu(self.queue)
+        self.queue = DiscoveryController(self.queue).menu()
 
     def call_dps(self, _):
         """Process dps command"""
-        from gamestonk_terminal.stocks.dark_pool_shorts import dps_controller
+        from gamestonk_terminal.stocks.dark_pool_shorts.dps_controller import DarkPoolShortsController
 
-        self.queue = dps_controller.menu(
-            self.ticker, self.start, self.stock, self.queue
-        )
+        self.queue = DarkPoolShortsController(self.ticker, self.start, self.stock, self.queue).menu()
 
     def call_scr(self, _):
         """Process scr command"""
-        from gamestonk_terminal.stocks.screener import screener_controller
+        from gamestonk_terminal.stocks.screener.screener_controller import ScreenerController
 
-        self.queue = screener_controller.menu(self.queue)
+        self.queue = ScreenerController(self.queue).menu()
 
     def call_sia(self, _):
         """Process ins command"""
-        from gamestonk_terminal.stocks.sector_industry_analysis import sia_controller
+        from gamestonk_terminal.stocks.sector_industry_analysis.sia_controller import SectorIndustryAnalysisController
 
-        self.queue = sia_controller.menu(self.ticker, self.queue)
+        self.queue = SectorIndustryAnalysisController(self.ticker, self.queue).menu()
 
     def call_ins(self, _):
         """Process ins command"""
-        from gamestonk_terminal.stocks.insider import insider_controller
+        from gamestonk_terminal.stocks.insider.insider_controller import InsiderController
 
-        self.queue = insider_controller.menu(
+        self.queue = InsiderController(
             self.ticker,
             self.start,
             self.interval,
             self.stock,
             self.queue,
-        )
+        ).menu()
 
     def call_gov(self, _):
         """Process gov command"""
-        from gamestonk_terminal.stocks.government import gov_controller
+        from gamestonk_terminal.stocks.government.gov_controller import GovController
 
-        self.queue = gov_controller.menu(self.ticker, self.queue)
+        self.queue = GovController(self.ticker, self.queue).menu()
 
     def call_options(self, _):
         """Process options command"""
-        from gamestonk_terminal.stocks.options import options_controller
+        from gamestonk_terminal.stocks.options.options_controller import OptionsController
 
-        self.queue = options_controller.menu(self.ticker, self.queue)
+        self.queue = OptionsController(self.ticker, self.queue).menu()
 
     def call_res(self, _):
         """Process res command"""
         if self.ticker:
-            from gamestonk_terminal.stocks.research import res_controller
+            from gamestonk_terminal.stocks.research.res_controller import ResearchController
 
-            self.queue = res_controller.menu(
+            self.queue = ResearchController(
                 self.ticker,
                 self.start,
                 self.interval,
                 self.queue,
-            )
+            ).menu()
         else:
             print("Use 'load <ticker>' prior to this command!", "\n")
 

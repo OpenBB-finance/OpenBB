@@ -30,12 +30,11 @@ class ForexController(BaseController):
 
     CHOICES_MENUS = ["oanda"]
 
-    BaseController.CHOICES += CHOICES_COMMANDS
-    BaseController.CHOICES += CHOICES_MENUS
-
     def __init__(self, queue: List[str] = None):
         """Construct Data."""
-        super().__init__("/forex/", self.CHOICES_COMMANDS, queue)
+        super().__init__("/forex/", queue)
+        self.choices += self.CHOICES_COMMANDS
+        self.choices += self.CHOICES_MENUS
 
         self.completer: Union[None, NestedCompleter] = None
 

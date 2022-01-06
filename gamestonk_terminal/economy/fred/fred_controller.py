@@ -30,11 +30,11 @@ class FredController(BaseController):
     CHOICES_COMMANDS = ["search", "add", "rmv", "plot"]
     CHOICES_MENUS = ["pred"]
 
-    BaseController.CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
-
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/economy/fred/", self.CHOICES_COMMANDS, queue)
+        super().__init__("/economy/fred/", queue)
+        self.choices += self.CHOICES_COMMANDS
+        self.choices += self.CHOICES_MENUS
 
         self.current_series: Dict = dict()
         self.long_id = 0

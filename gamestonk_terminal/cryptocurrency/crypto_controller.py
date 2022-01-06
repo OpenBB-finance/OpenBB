@@ -64,13 +64,13 @@ class CryptoController(BaseController):
         "bin": binance_view,
     }
 
-    BaseController.CHOICES += CHOICES_COMMANDS
-    BaseController.CHOICES += CHOICES_MENUS
-
     def __init__(self, queue: List[str] = None):
         """CONSTRUCTOR"""
 
-        super().__init__("/crypto/", self.CHOICES_COMMANDS, queue)
+        super().__init__("/crypto/", queue)
+
+        self.choices += self.CHOICES_COMMANDS
+        self.choices += self.CHOICES_MENUS
 
         self.symbol = ""
         self.current_coin = ""

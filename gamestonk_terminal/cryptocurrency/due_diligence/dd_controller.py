@@ -49,8 +49,6 @@ class DueDiligenceController(BaseController):
 
     CHOICES_COMMANDS = ["load", "oi", "active", "change", "nonzero", "eb", "chart"]
 
-    BaseController.CHOICES += CHOICES_COMMANDS
-
     SPECIFIC_CHOICES = {
         "cp": [
             "events",
@@ -87,7 +85,9 @@ class DueDiligenceController(BaseController):
     def __init__(self, coin=None, source=None, symbol=None, queue: List[str] = None):
         """CONSTRUCTOR"""
 
-        super().__init__("/crypto/dd/", self.CHOICES_COMMANDS, queue)
+        super().__init__("/crypto/dd/", queue)
+
+        self.choices += self.CHOICES_COMMANDS
 
         self.current_coin = coin
         self.current_df = pd.DataFrame()

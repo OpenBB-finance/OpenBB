@@ -81,12 +81,11 @@ class OnchainController(BaseController):
         "baas",
     ]
 
-    BaseController.CHOICES += CHOICES_COMMANDS
-
     def __init__(self, queue: List[str] = None):
         """Constructor"""
 
-        super().__init__("/crypto/onchain/", self.CHOICES_COMMANDS, queue)
+        super().__init__("/crypto/onchain/", queue)
+        self.choices += self.CHOICES_COMMANDS
 
         self.address = ""
         self.address_type = ""

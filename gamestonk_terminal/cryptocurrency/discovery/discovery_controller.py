@@ -47,12 +47,11 @@ class DiscoveryController(BaseController):
         "cgnft",
     ]
 
-    BaseController.CHOICES += CHOICES_COMMANDS
-
     def __init__(self, queue: List[str] = None):
         """CONSTRUCTOR"""
 
-        super().__init__("/crypto/disc/", self.CHOICES_COMMANDS, queue)
+        super().__init__("/crypto/disc/", queue)
+        self.choices += self.CHOICES_COMMANDS
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}

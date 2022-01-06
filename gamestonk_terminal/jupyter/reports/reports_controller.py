@@ -28,8 +28,6 @@ class ReportController(BaseController):
 
     ids_reports = [str(val + 1) for val in range(len(report_names))]
 
-    BaseController.CHOICES += report_names + ids_reports
-
     d_id_to_report_name = {}
     for id_report, report_name in enumerate(report_names):
         d_id_to_report_name[str(id_report + 1)] = report_name
@@ -77,9 +75,9 @@ class ReportController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Construct the Reports Controller."""
-        super().__init__(
-            "/jupyter/reports/", self.report_names + self.ids_reports, queue
-        )
+        super().__init__("/jupyter/reports/", queue)
+        self.choices += self.report_names
+        self.choices += self.ids_reports
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}

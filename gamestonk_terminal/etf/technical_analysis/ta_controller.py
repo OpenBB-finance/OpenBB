@@ -60,8 +60,6 @@ class TechnicalAnalysisController(BaseController):
         "fib",
     ]
 
-    BaseController.CHOICES += CHOICES_COMMANDS
-
     def __init__(
         self,
         ticker: str,
@@ -74,7 +72,8 @@ class TechnicalAnalysisController(BaseController):
         self.start = start
         self.data = data
 
-        super().__init__("/etf/ta/", self.CHOICES_COMMANDS, queue)
+        super().__init__("/etf/ta/", queue)
+        self.choices += self.CHOICES_COMMANDS
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}

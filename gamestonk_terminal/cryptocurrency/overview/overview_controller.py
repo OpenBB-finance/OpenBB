@@ -65,11 +65,10 @@ class OverviewController(BaseController):
         "wfpe",
     ]
 
-    BaseController.CHOICES += CHOICES_COMMANDS
-
     def __init__(self, queue: List[str] = None):
         """CONSTRUCTOR"""
-        super().__init__("/crypto/ov/", self.CHOICES_COMMANDS, queue)
+        super().__init__("/crypto/ov/", queue)
+        self.choices += self.CHOICES_COMMANDS
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}

@@ -34,8 +34,6 @@ class ScreenerController(BaseController):
         "sbc",
     ]
 
-    BaseController.CHOICES += CHOICES_COMMANDS
-
     presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
     preset_choices = [
         f.split(".")[0] for f in os.listdir(presets_path) if f.endswith(".ini")
@@ -60,7 +58,8 @@ class ScreenerController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/etf/scr/", self.CHOICES_COMMANDS, queue)
+        super().__init__("/etf/scr/", queue)
+        self.choices += self.CHOICES_COMMANDS
         self.completer: Union[None, NestedCompleter] = None
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}

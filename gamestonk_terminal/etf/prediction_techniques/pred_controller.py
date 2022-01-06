@@ -50,7 +50,6 @@ class PredictionTechniquesController(BaseController):
         "conv1d",
         "mc",
     ]
-    BaseController.CHOICES += CHOICES_COMMANDS
 
     def __init__(
         self,
@@ -61,7 +60,9 @@ class PredictionTechniquesController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/etf/pred/", self.CHOICES_COMMANDS, queue)
+        super().__init__("/etf/pred/", queue)
+        self.choices += self.CHOICES_COMMANDS
+
         stock["Returns"] = stock["Adj Close"].pct_change()
         stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(
             stock["Adj Close"].shift(1)

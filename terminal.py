@@ -54,14 +54,15 @@ class TerminalController(BaseController):
         "jupyter",
         "funds",
     ]
-    BaseController.CHOICES += CHOICES_COMMANDS
-    BaseController.CHOICES += CHOICES_MENUS
 
     all_timezones = pytz.all_timezones
 
     def __init__(self, jobs_cmds: List[str] = None):
         """Constructor"""
         super().__init__("/", jobs_cmds)
+
+        self.choices += self.CHOICES_COMMANDS
+        self.choices += self.CHOICES_MENUS
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: None for c in self.CHOICES}

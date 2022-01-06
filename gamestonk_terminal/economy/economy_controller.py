@@ -122,11 +122,12 @@ class EconomyController(BaseController):
         "bigmac",
     ]
 
-    BaseController.CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
-
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/economy/", self.CHOICES_COMMANDS, queue)
+        super().__init__("/economy/", queue)
+
+        self.choices += self.CHOICES_COMMANDS
+        self.choices += self.CHOICES_MENUS
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}

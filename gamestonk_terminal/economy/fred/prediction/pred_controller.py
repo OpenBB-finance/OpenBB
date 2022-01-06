@@ -52,7 +52,6 @@ class PredictionTechniquesController(BaseController):
         "conv1d",
         "mc",
     ]
-    BaseController.CHOICES += CHOICES_COMMANDS
 
     def __init__(
         self,
@@ -60,7 +59,8 @@ class PredictionTechniquesController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/economy/fred/pred/", self.CHOICES_COMMANDS, queue)
+        super().__init__("/economy/fred/pred/", queue)
+        self.choices += self.CHOICES_COMMANDS
 
         self.start_date = "2020-01-01"
         self.current_series = current_series

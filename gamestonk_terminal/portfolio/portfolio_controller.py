@@ -48,11 +48,11 @@ class PortfolioController(BaseController):
         "rmr",
     ]
 
-    BaseController.CHOICES += CHOICES_MENUS + CHOICES_COMMANDS
-
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/portfolio/", self.CHOICES_COMMANDS, queue)
+        super().__init__("/portfolio/", queue)
+        self.choices += self.CHOICES_COMMANDS
+        self.choices += self.CHOICES_MENUS
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}

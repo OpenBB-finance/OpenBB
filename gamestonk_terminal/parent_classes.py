@@ -14,7 +14,10 @@ from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import system_clear, get_flair
 
 # Do before merging
+# don't send choice_commands
+# comment in detail on base controller
 # remove W0613
+# remove BaseController.CHOICES
 # remove menu_decorator
 # remove if queue:
 # remove too-many-lines
@@ -44,14 +47,14 @@ class BaseController:
     def __init__(
         self,
         path: str,
-        choice_commands=None,
         queue: List[str] = None,
-        dynamic_completer=None,
+        dynamic_completer = None,
     ) -> None:
-        self.choice_commands = choice_commands
+        self.choices = self.CHOICES
         self.path = path
         self.dynamic_completer = dynamic_completer
         self.PATH = [x for x in path.split("/") if x != ""]
+
         name = self.PATH[-1] if path != "/" else "terminal"
         self.parser = argparse.ArgumentParser(add_help=False, prog=name)
         self.parser.add_argument("cmd", choices=self.CHOICES)
@@ -168,7 +171,7 @@ class BaseController:
                 self.queue = self.queue[1:]
 
                 # Print location because this was an instruction and we want user to know the action
-                if an_input and an_input.split(" ")[0] in self.choice_commands:
+                if an_input and an_input.split(" ")[0] in self.choices:
                     print(f"{get_flair()} {self.path} $ {an_input}")
 
             # Get input command from user

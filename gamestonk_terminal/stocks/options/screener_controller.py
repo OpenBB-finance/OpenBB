@@ -31,7 +31,6 @@ class ScreenerController(BaseController):
         "ca",
         "po",
     ]
-    BaseController.CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
 
     presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
     preset_choices = [
@@ -40,7 +39,9 @@ class ScreenerController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/options/screen/", self.CHOICES_COMMANDS, queue)
+        super().__init__("/stocks/options/screen/", queue)
+        self.choices += self.CHOICES_COMMANDS
+        self.choices += self.CHOICES_MENUS
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}

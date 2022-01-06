@@ -28,10 +28,10 @@ class DegiroController(BaseController):
         "topnews",
         "update",
     ]
-    BaseController.CHOICES += CHOICES_COMMANDS
 
     def __init__(self, queue: List[str] = None):
-        super().__init__("/portfolio/bro/derigo/", self.CHOICES_COMMANDS, queue)
+        super().__init__("/portfolio/bro/derigo/", queue)
+        self.choices += self.CHOICES_COMMANDS
         self.__degiro_view = DegiroView()
 
         if session and gtff.USE_PROMPT_TOOLKIT:

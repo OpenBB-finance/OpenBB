@@ -22,14 +22,14 @@ from gamestonk_terminal.helper_funcs import (
 class RobinhoodController(BaseController):
 
     CHOICES_COMMANDS = ["holdings", "history", "login"]
-    BaseController.CHOICES += CHOICES_COMMANDS
 
     valid_span = ["day", "week", "month", "3month", "year", "5year", "all"]
     valid_interval = ["5minute", "10minute", "hour", "day", "week"]
 
     def __init__(self, queue: List[str] = None):
         """CONSTRUCTOR"""
-        super().__init__("/portfolio/bro/rh/", self.CHOICES_COMMANDS, queue)
+        super().__init__("/portfolio/bro/rh/", queue)
+        self.choices += self.CHOICES_COMMANDS
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}

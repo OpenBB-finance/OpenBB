@@ -19,7 +19,6 @@ from gamestonk_terminal.helper_funcs import (
 class AllyController(BaseController):
 
     CHOICES_COMMANDS = ["holdings", "history", "balances", "quote", "movers"]
-    BaseController.CHOICES += CHOICES_COMMANDS
     list_choices = [
         "toplosers",
         "toppctlosers",
@@ -31,7 +30,8 @@ class AllyController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """CONSTRUCTOR"""
-        super().__init__("/portfolio/bro/ally/", self.CHOICES_COMMANDS, queue)
+        super().__init__("/portfolio/bro/ally/", queue)
+        self.choices += self.CHOICES_COMMANDS
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}

@@ -22,10 +22,10 @@ class BrokersController(BaseController):
     CHOICES_COMMANDS: List = []
     BROKERS = ["cb", "ally", "rh", "degiro"]
 
-    BaseController.CHOICES += BROKERS + CHOICES_COMMANDS
-
     def __init__(self, queue: List[str] = None):
-        super().__init__("/portfolio/bro/", self.CHOICES_COMMANDS, queue)
+        super().__init__("/portfolio/bro/", queue)
+        self.choices += self.CHOICES_COMMANDS
+        self.choices += self.BROKERS
 
         self.broker_list: Set = set()
         self.merged_holdings = None

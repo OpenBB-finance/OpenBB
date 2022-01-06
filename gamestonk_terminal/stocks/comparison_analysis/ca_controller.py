@@ -66,11 +66,12 @@ class ComparisonAnalysisController(BaseController):
     CHOICES_MENUS = [
         "po",
     ]
-    BaseController.CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
 
     def __init__(self, similar: List[str] = None, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/ca/", self.CHOICES_COMMANDS, queue)
+        super().__init__("/stocks/ca/", queue)
+        self.choices += self.CHOICES_COMMANDS
+        self.choices += self.CHOICES_MENUS
 
         if session and gtff.USE_PROMPT_TOOLKIT:
 
