@@ -1,11 +1,9 @@
 """Yfinance model"""
 __docformat__ = "numpy"
 
-from typing import List
-from datetime import datetime, timedelta
-
+import difflib
 import yfinance as yf
-import pandas as pd
+from gamestonk_terminal.stocks.sector_industry_analysis import financedatabase_model
 
 
 def get_country(ticker):
@@ -14,7 +12,7 @@ def get_country(ticker):
 
     if "summaryProfile" in data:
         country = data["summaryProfile"]["country"]
-        if self.country not in financedatabase_model.get_countries():
+        if country not in financedatabase_model.get_countries():
             similar_cmd = difflib.get_close_matches(
                 country,
                 financedatabase_model.get_countries(),

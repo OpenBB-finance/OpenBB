@@ -126,7 +126,7 @@ Portfolio: {self.portfolio_name or None}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Function to get portfolio from predefined "
-                        "csv/json/xlsx file inside portfolios folder",
+            "csv/json/xlsx file inside portfolios folder",
             epilog="usage: load file_name",
         )
         parser.add_argument(
@@ -232,7 +232,9 @@ Portfolio: {self.portfolio_name or None}
         if ns_parser:
             if "value" in self.portfolio.columns:
                 portfolio_view.display_group_holdings(
-                    portfolio=self.portfolio, group_column=ns_parser.group, allocation=allocation
+                    portfolio=self.portfolio,
+                    group_column=ns_parser.group,
+                    allocation=ns_parser.allocation,
                 )
             else:
                 print(
