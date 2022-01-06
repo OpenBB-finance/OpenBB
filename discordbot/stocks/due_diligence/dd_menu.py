@@ -2,9 +2,7 @@ import asyncio
 import discord
 
 import discordbot.config_discordbot as cfg
-
 from discordbot.run_discordbot import gst_bot, logger
-
 from discordbot.stocks.due_diligence.analyst import analyst_command
 from discordbot.stocks.due_diligence.pt import pt_command
 from discordbot.stocks.due_diligence.est import est_command

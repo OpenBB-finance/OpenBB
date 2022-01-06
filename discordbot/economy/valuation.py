@@ -1,9 +1,10 @@
 import discord
+
+from gamestonk_terminal.economy import finviz_model
+
 import discordbot.config_discordbot as cfg
 from discordbot.run_discordbot import logger
 from discordbot.helpers import pagination
-
-from gamestonk_terminal.economy import finviz_model
 
 
 async def valuation_command(ctx, economy_group="sector"):

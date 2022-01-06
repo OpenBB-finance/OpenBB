@@ -1,8 +1,10 @@
 import discord
 import pandas as pd
+
+from gamestonk_terminal.economy import finviz_model
+
 import discordbot.config_discordbot as cfg
 from discordbot.run_discordbot import logger
-from gamestonk_terminal.economy import finviz_model
 
 
 async def metals_command(ctx):

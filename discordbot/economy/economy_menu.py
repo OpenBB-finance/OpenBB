@@ -2,7 +2,9 @@ import asyncio
 
 import discord
 import discord_components
+
 import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_bot, logger
 from discordbot.economy.currencies import currencies_command
 from discordbot.economy.energy import energy_command
 from discordbot.economy.feargreed import feargreed_command
@@ -17,7 +19,6 @@ from discordbot.economy.performance import performance_command
 from discordbot.economy.softs import softs_command
 from discordbot.economy.usbonds import usbonds_command
 from discordbot.economy.valuation import valuation_command
-from discordbot.run_discordbot import gst_bot, logger
 
 
 class EconomyCommands(discord.ext.commands.Cog):

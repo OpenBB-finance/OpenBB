@@ -5,11 +5,13 @@ import discord
 import yfinance as yf
 import matplotlib.dates as mdates
 from matplotlib import pyplot as plt
-import discordbot.helpers
-import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur, logger
+
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.stocks.dark_pool_shorts import sec_model
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur, logger
+import discordbot.helpers
 
 
 async def ftd_command(ctx, ticker="", start="", end=""):

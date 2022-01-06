@@ -3,9 +3,7 @@ import discord
 import yfinance as yf
 
 import discordbot.config_discordbot as cfg
-
 from discordbot.run_discordbot import gst_bot, logger
-
 from discordbot.stocks.dark_pool_shorts.shorted import shorted_command
 from discordbot.stocks.dark_pool_shorts.ftd import ftd_command
 from discordbot.stocks.dark_pool_shorts.dpotc import dpotc_command

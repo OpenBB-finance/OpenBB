@@ -3,9 +3,11 @@ import numpy as np
 import pandas as pd
 import requests
 from tabulate import tabulate
+
+from gamestonk_terminal.helper_funcs import get_user_agent
+
 import discordbot.config_discordbot as cfg
 from discordbot.run_discordbot import logger
-from gamestonk_terminal.helper_funcs import get_user_agent
 
 
 async def unu_command(ctx, num: int = None):

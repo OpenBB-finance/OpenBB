@@ -1,7 +1,9 @@
 import discord
+
+from gamestonk_terminal.stocks.due_diligence import csimarket_model
+
 import discordbot.config_discordbot as cfg
 from discordbot.run_discordbot import logger
-from gamestonk_terminal.stocks.due_diligence import csimarket_model
 
 
 async def supplier_command(ctx, ticker=""):

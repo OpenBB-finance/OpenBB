@@ -3,9 +3,11 @@ import os
 
 import discord
 import matplotlib.pyplot as plt
+
+from gamestonk_terminal.economy import cnn_model, cnn_view
+
 import discordbot.config_discordbot as cfg
 from discordbot.run_discordbot import gst_imgur, logger
-from gamestonk_terminal.economy import cnn_model, cnn_view
 
 
 async def feargreed_command(ctx, indicator=""):

@@ -4,10 +4,12 @@ import discord
 import matplotlib.dates as mdates
 import yfinance as yf
 from matplotlib import pyplot as plt
-import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur, logger
+
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.stocks.dark_pool_shorts import finra_model
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur, logger
 
 
 async def dpotc_command(ctx, ticker=""):

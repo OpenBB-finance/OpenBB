@@ -2,9 +2,7 @@ import asyncio
 import discord
 
 import discordbot.config_discordbot as cfg
-
 from discordbot.run_discordbot import gst_bot, logger
-
 from discordbot.stocks.government.lasttrades import lasttrades_command
 from discordbot.stocks.government.topbuys import topbuys_command
 from discordbot.stocks.government.topsells import topsells_command

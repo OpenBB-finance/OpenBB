@@ -2,6 +2,7 @@ import os
 import random
 from datetime import datetime, timedelta
 import configparser
+
 import discord
 from matplotlib import pyplot as plt
 import yfinance as yf

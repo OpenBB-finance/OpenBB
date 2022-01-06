@@ -2,9 +2,7 @@ import asyncio
 import discord
 
 import discordbot.config_discordbot as cfg
-
 from discordbot.run_discordbot import gst_bot, logger
-
 from discordbot.stocks.screener.historical import historical_command
 from discordbot.stocks.screener.overview import overview_command
 from discordbot.stocks.screener.presets_custom import presets_custom_command

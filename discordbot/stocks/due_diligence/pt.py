@@ -3,11 +3,13 @@ from datetime import datetime, timedelta
 
 import discord
 from matplotlib import pyplot as plt
-import discordbot.config_discordbot as cfg
-import discordbot.helpers
-from discordbot.run_discordbot import gst_imgur, logger
+
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.stocks.due_diligence import business_insider_model
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur, logger
+import discordbot.helpers
 
 
 async def pt_command(ctx, ticker="", raw="", start=""):

@@ -2,11 +2,13 @@ import difflib
 
 import discord
 import pandas as pd
-import discordbot.config_discordbot as cfg
-from discordbot.helpers import pagination
-from discordbot.run_discordbot import logger
-from discordbot.stocks.screener import screener_options as so
+
 from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import logger
+from discordbot.helpers import pagination
+from discordbot.stocks.screener import screener_options as so
 
 
 async def financial_command(ctx, preset="template", sort="", limit="5", ascend="False"):

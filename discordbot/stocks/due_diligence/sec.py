@@ -1,8 +1,9 @@
 import discord
-import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import logger
 
 from gamestonk_terminal.stocks.due_diligence import marketwatch_model
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import logger
 
 
 async def sec_command(ctx, ticker=""):

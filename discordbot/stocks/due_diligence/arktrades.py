@@ -1,9 +1,11 @@
 import discord
 import pandas as pd
-import discordbot.config_discordbot as cfg
-from discordbot.helpers import pagination
-from discordbot.run_discordbot import logger
+
 from gamestonk_terminal.stocks.due_diligence import ark_model
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import logger
+from discordbot.helpers import pagination
 
 
 async def arktrades_command(ctx, ticker="", num=""):

@@ -1,7 +1,9 @@
 import discord
+
+from gamestonk_terminal.economy import wsj_model
+
 import discordbot.config_discordbot as cfg
 from discordbot.run_discordbot import logger
-from gamestonk_terminal.economy import wsj_model
 
 
 async def futures_command(ctx):

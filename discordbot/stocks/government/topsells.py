@@ -4,11 +4,13 @@ from datetime import datetime, timedelta
 import discord
 import pandas as pd
 from matplotlib import pyplot as plt
-import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur, logger
+
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.stocks.government import quiverquant_model
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur, logger
 
 
 async def topsells_command(

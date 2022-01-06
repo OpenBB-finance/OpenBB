@@ -2,11 +2,13 @@ import os
 
 import discord
 import matplotlib.pyplot as plt
-import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import logger
+
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.stocks.options import yfinance_model
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import logger
 
 
 async def vol_command(

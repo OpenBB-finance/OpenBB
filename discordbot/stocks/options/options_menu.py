@@ -5,12 +5,8 @@ from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 from gamestonk_terminal.stocks.options import tradier_model, yfinance_model
 
 import discordbot.config_discordbot as cfg
-
 from discordbot.run_discordbot import gst_bot, logger
 from discordbot.reaction_helper import expiry_dates_reaction
-
-# pylint: disable=C0412
-
 from discordbot.stocks.options.calls import calls_command
 from discordbot.stocks.options.expirations import expirations_command
 from discordbot.stocks.options.hist import hist_command

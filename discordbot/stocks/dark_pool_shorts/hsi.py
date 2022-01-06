@@ -1,8 +1,10 @@
 import discord
-import discordbot.config_discordbot as cfg
-from discordbot.helpers import pagination
-from discordbot.run_discordbot import logger
+
 from gamestonk_terminal.stocks.dark_pool_shorts import shortinterest_model
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import logger
+from discordbot.helpers import pagination
 
 
 async def hsi_command(ctx, num="10"):
