@@ -7,7 +7,6 @@ from prompt_toolkit.completion import NestedCompleter
 from colorama import Style
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import (
     check_non_negative,
     parse_known_args_and_warn,
@@ -104,7 +103,6 @@ Underlying Asset: {text}
         if self.ticker:
             self.queue.insert(6, f"load {self.ticker}")
 
-    @try_except
     def call_list(self, other_args):
         """Lists available calls and puts"""
         parser = argparse.ArgumentParser(
@@ -122,7 +120,6 @@ Underlying Asset: {text}
                 print(f"{i}\t{call}\t{put}")
             print("")
 
-    @try_except
     def call_add(self, other_args: List[str]):
         """Process add command"""
         parser = argparse.ArgumentParser(
@@ -186,7 +183,6 @@ Underlying Asset: {text}
             else:
                 print("Please use a valid index\n")
 
-    @try_except
     def call_rmv(self, other_args: List[str]):
         """Process rmv command"""
         parser = argparse.ArgumentParser(
@@ -262,7 +258,6 @@ Underlying Asset: {text}
 
         print("")
 
-    @try_except
     def call_sop(self, other_args):
         """Process sop command"""
         parser = argparse.ArgumentParser(
@@ -279,7 +274,6 @@ Underlying Asset: {text}
                 print(f"{i}\t{o['type']}\t{sign}\t{o['strike']}\t{o['cost']}")
             print("")
 
-    @try_except
     def call_plot(self, other_args):
         """Process plot command"""
         parser = argparse.ArgumentParser(

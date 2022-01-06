@@ -6,7 +6,6 @@ import argparse
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -122,7 +121,6 @@ CoinMarketCap:
 """
         print(help_text)
 
-    @try_except
     def call_coins(self, other_args):
         """Process coins command"""
         parser = argparse.ArgumentParser(
@@ -192,7 +190,6 @@ CoinMarketCap:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cggainers(self, other_args):
         """Process gainers command"""
         parser = argparse.ArgumentParser(
@@ -268,7 +265,6 @@ CoinMarketCap:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cglosers(self, other_args):
         """Process losers command"""
         parser = argparse.ArgumentParser(
@@ -344,7 +340,6 @@ CoinMarketCap:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cgtrending(self, other_args):
         """Process trending command"""
         parser = argparse.ArgumentParser(
@@ -408,7 +403,6 @@ CoinMarketCap:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cgvoted(self, other_args):
         """Process voted command"""
         parser = argparse.ArgumentParser(
@@ -473,7 +467,6 @@ CoinMarketCap:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cgrecently(self, other_args):
         """Process recently command"""
         parser = argparse.ArgumentParser(
@@ -535,7 +528,6 @@ CoinMarketCap:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cgvisited(self, other_args):
         """Process most_visited command"""
         parser = argparse.ArgumentParser(
@@ -601,7 +593,6 @@ CoinMarketCap:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cgsentiment(self, other_args):
         """Process sentiment command"""
         parser = argparse.ArgumentParser(
@@ -667,7 +658,6 @@ CoinMarketCap:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cgyfarms(self, other_args):
         """Process yfarms command"""
         parser = argparse.ArgumentParser(
@@ -722,7 +712,6 @@ CoinMarketCap:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cgvolume(self, other_args):
         """Process volume command"""
         parser = argparse.ArgumentParser(
@@ -774,7 +763,6 @@ CoinMarketCap:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cgdefi(self, other_args):
         """Process defi command"""
         parser = argparse.ArgumentParser(
@@ -838,7 +826,6 @@ CoinMarketCap:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cgdex(self, other_args):
         """Process dex command"""
         parser = argparse.ArgumentParser(
@@ -892,7 +879,6 @@ CoinMarketCap:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cgnft(self, other_args):
         """Process nft command"""
         parser = argparse.ArgumentParser(
@@ -957,7 +943,6 @@ CoinMarketCap:
                 links=ns_parser.urls,
             )
 
-    @try_except
     def call_cmctop(self, other_args):
         """Process cmctop command"""
         parser = argparse.ArgumentParser(
@@ -1005,7 +990,6 @@ CoinMarketCap:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cpsearch(self, other_args):
         """Process search command"""
         parser = argparse.ArgumentParser(

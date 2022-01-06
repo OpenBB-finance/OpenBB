@@ -10,7 +10,6 @@ import pandas as pd
 from binance.client import Client
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.cryptocurrency.due_diligence import (
     coinglass_model,
     glassnode_model,
@@ -181,7 +180,6 @@ Coinbase:
         if self.current_coin:
             self.queue.insert(4, f"load {self.current_coin} --source {self.source}")
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -227,7 +225,6 @@ Coinbase:
                 coin=ns_parser.coin, source=ns_parser.source
             )
 
-    @try_except
     def call_nonzero(self, other_args: List[str]):
         """Process nonzero command"""
 
@@ -287,7 +284,6 @@ Coinbase:
         else:
             print("Glassnode source does not support this symbol\n")
 
-    @try_except
     def call_active(self, other_args: List[str]):
         """Process active command"""
 
@@ -346,7 +342,6 @@ Coinbase:
         else:
             print("Glassnode source does not support this symbol\n")
 
-    @try_except
     def call_change(self, other_args: List[str]):
         """Process change command"""
 
@@ -419,7 +414,6 @@ Coinbase:
         else:
             print("Glassnode source does not support this symbol\n")
 
-    @try_except
     def call_eb(self, other_args: List[str]):
         """Process eb command"""
 
@@ -501,7 +495,6 @@ Coinbase:
         else:
             print("Glassnode source does not support this symbol\n")
 
-    @try_except
     def call_oi(self, other_args):
         """Process oi command"""
         assert isinstance(self.symbol, str)
@@ -536,7 +529,6 @@ Coinbase:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_info(self, other_args):
         """Process info command"""
         parser = argparse.ArgumentParser(
@@ -558,7 +550,6 @@ Coinbase:
                 coin=self.current_coin, export=ns_parser.export
             )
 
-    @try_except
     def call_market(self, other_args):
         """Process market command"""
         parser = argparse.ArgumentParser(
@@ -575,7 +566,6 @@ Coinbase:
         if ns_parser:
             pycoingecko_view.display_market(self.current_coin, ns_parser.export)
 
-    @try_except
     def call_web(self, other_args):
         """Process web command"""
         parser = argparse.ArgumentParser(
@@ -593,7 +583,6 @@ Coinbase:
         if ns_parser:
             pycoingecko_view.display_web(self.current_coin, export=ns_parser.export)
 
-    @try_except
     def call_social(self, other_args):
         """Process social command"""
         parser = argparse.ArgumentParser(
@@ -610,7 +599,6 @@ Coinbase:
         if ns_parser:
             pycoingecko_view.display_social(self.current_coin, export=ns_parser.export)
 
-    @try_except
     def call_dev(self, other_args):
         """Process dev command"""
         parser = argparse.ArgumentParser(
@@ -630,7 +618,6 @@ Coinbase:
         if ns_parser:
             pycoingecko_view.display_dev(self.current_coin, ns_parser.export)
 
-    @try_except
     def call_ath(self, other_args):
         """Process ath command"""
         parser = argparse.ArgumentParser(
@@ -657,7 +644,6 @@ Coinbase:
                 self.current_coin, ns_parser.vs, ns_parser.export
             )
 
-    @try_except
     def call_atl(self, other_args):
         """Process atl command"""
         parser = argparse.ArgumentParser(
@@ -683,7 +669,6 @@ Coinbase:
                 self.current_coin, ns_parser.vs, ns_parser.export
             )
 
-    @try_except
     def call_score(self, other_args):
         """Process score command"""
         parser = argparse.ArgumentParser(
@@ -704,7 +689,6 @@ Coinbase:
         if ns_parser:
             pycoingecko_view.display_score(self.current_coin, ns_parser.export)
 
-    @try_except
     def call_bc(self, other_args):
         """Process bc command"""
         parser = argparse.ArgumentParser(
@@ -723,7 +707,6 @@ Coinbase:
         if ns_parser:
             pycoingecko_view.display_bc(self.current_coin, ns_parser.export)
 
-    @try_except
     def call_book(self, other_args):
         """Process book command"""
         parser = argparse.ArgumentParser(
@@ -794,7 +777,6 @@ Coinbase:
                     export=ns_parser.export,
                 )
 
-    @try_except
     def call_balance(self, other_args):
         """Process balance command"""
         _, quotes = binance_model.show_available_pairs_for_given_symbol(
@@ -826,7 +808,6 @@ Coinbase:
                 coin=self.current_coin, currency=ns_parser.vs, export=ns_parser.export
             )
 
-    @try_except
     def call_trades(self, other_args):
         """Process trades command"""
         parser = argparse.ArgumentParser(
@@ -886,7 +867,6 @@ Coinbase:
                 product_id=pair, limit=ns_parser.top, side=side, export=ns_parser.export
             )
 
-    @try_except
     def call_stats(self, other_args):
         """Process stats command"""
         _, quotes = coinbase_model.show_available_pairs_for_given_symbol(
@@ -917,7 +897,6 @@ Coinbase:
             pair = f"{self.current_coin.upper()}-{ns_parser.vs.upper()}"
             coinbase_view.display_stats(pair, ns_parser.export)
 
-    @try_except
     def call_chart(self, other_args):
         """Process chart command"""
         parser = argparse.ArgumentParser(
@@ -1083,7 +1062,7 @@ Coinbase:
             )
 
     # paprika
-    @try_except
+
     def call_ps(self, other_args):
         """Process ps command"""
         parser = argparse.ArgumentParser(
@@ -1113,7 +1092,6 @@ Coinbase:
                 ns_parser.export,
             )
 
-    @try_except
     def call_basic(self, other_args):
         """Process basic command"""
         parser = argparse.ArgumentParser(
@@ -1135,7 +1113,6 @@ Coinbase:
                 ns_parser.export,
             )
 
-    @try_except
     def call_mkt(self, other_args):
         """Process mkt command"""
         parser = argparse.ArgumentParser(
@@ -1212,7 +1189,6 @@ Coinbase:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_ex(self, other_args):
         """Process ex command"""
         parser = argparse.ArgumentParser(
@@ -1268,7 +1244,6 @@ Coinbase:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_events(self, other_args):
         """Process events command"""
         parser = argparse.ArgumentParser(
@@ -1336,7 +1311,6 @@ Coinbase:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_twitter(self, other_args):
         """Process twitter command"""
         parser = argparse.ArgumentParser(

@@ -14,7 +14,6 @@ from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import system_clear, get_flair
 
 # Do before merging
-# remove try_except
 # add try_except to all switches
 
 

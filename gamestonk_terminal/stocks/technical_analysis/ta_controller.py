@@ -10,7 +10,6 @@ import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -151,7 +150,6 @@ Custom:
         if self.ticker:
             self.queue.insert(4, f"load {self.ticker}")
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -241,7 +239,7 @@ Custom:
                 self.interval = f"{ns_parser.interval}min"
 
     # SPECIFIC
-    @try_except
+
     def call_view(self, other_args: List[str]):
         """Process view command"""
 
@@ -257,7 +255,6 @@ Custom:
         if ns_parser:
             finviz_view.view(self.ticker)
 
-    @try_except
     def call_summary(self, other_args: List[str]):
         """Process summary command"""
         parser = argparse.ArgumentParser(
@@ -277,7 +274,6 @@ Custom:
         if ns_parser:
             finbrain_view.technical_summary_report(self.ticker)
 
-    @try_except
     def call_recom(self, other_args: List[str]):
         """Process recom command"""
 
@@ -336,7 +332,7 @@ Custom:
 
     # COMMON
     # TODO: Go through all models and make sure all needed columns are in dfs
-    @try_except
+
     def call_ema(self, other_args: List[str]):
         """Process ema command"""
         parser = argparse.ArgumentParser(
@@ -390,7 +386,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_sma(self, other_args: List[str]):
         """Process sma command"""
         parser = argparse.ArgumentParser(
@@ -443,7 +438,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_wma(self, other_args: List[str]):
         """Process wma command"""
         parser = argparse.ArgumentParser(
@@ -493,7 +487,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_hma(self, other_args: List[str]):
         """Process hma command"""
         parser = argparse.ArgumentParser(
@@ -543,7 +536,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_zlma(self, other_args: List[str]):
         """Process zlma command"""
         parser = argparse.ArgumentParser(
@@ -596,7 +588,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_vwap(self, other_args: List[str]):
         """Process vwap command"""
         parser = argparse.ArgumentParser(
@@ -635,7 +626,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cci(self, other_args: List[str]):
         """Process cci command"""
 
@@ -684,7 +674,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_macd(self, other_args: List[str]):
         """Process macd command"""
         parser = argparse.ArgumentParser(
@@ -745,7 +734,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_rsi(self, other_args: List[str]):
         """Process rsi command"""
         parser = argparse.ArgumentParser(
@@ -806,7 +794,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_stoch(self, other_args: List[str]):
         """Process stoch command"""
         parser = argparse.ArgumentParser(
@@ -864,7 +851,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_fisher(self, other_args: List[str]):
         """Process fisher command"""
         parser = argparse.ArgumentParser(
@@ -905,7 +891,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cg(self, other_args: List[str]):
         """Process cg command"""
         parser = argparse.ArgumentParser(
@@ -946,7 +931,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_adx(self, other_args: List[str]):
         """Process adx command"""
         parser = argparse.ArgumentParser(
@@ -1004,7 +988,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_aroon(self, other_args: List[str]):
         """Process aroon command"""
         parser = argparse.ArgumentParser(
@@ -1060,7 +1043,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_bbands(self, other_args: List[str]):
         """Process bbands command"""
         parser = argparse.ArgumentParser(
@@ -1125,7 +1107,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_donchian(self, other_args: List[str]):
         """Process donchian command"""
         parser = argparse.ArgumentParser(
@@ -1173,7 +1154,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_kc(self, other_args: List[str]):
         """Process kc command"""
         parser = argparse.ArgumentParser(
@@ -1243,7 +1223,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_ad(self, other_args: List[str]):
         """Process ad command"""
         parser = argparse.ArgumentParser(
@@ -1283,7 +1262,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_adosc(self, other_args: List[str]):
         """Process adosc command"""
         parser = argparse.ArgumentParser(
@@ -1368,7 +1346,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_fib(self, other_args: List[str]):
         """Process fib command"""
         parser = argparse.ArgumentParser(

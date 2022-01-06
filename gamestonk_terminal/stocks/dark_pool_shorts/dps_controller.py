@@ -8,7 +8,6 @@ from colorama import Style
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
@@ -93,7 +92,6 @@ NYSE:
 {Style.RESET_ALL if not self.ticker else ''}"""
         print(help_text)
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -137,7 +135,6 @@ NYSE:
                 else:
                     self.ticker = ns_parser.ticker.upper()
 
-    @try_except
     def call_shorted(self, other_args: List[str]):
         """Process shorted command"""
         parser = argparse.ArgumentParser(
@@ -166,7 +163,6 @@ NYSE:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_hsi(self, other_args: List[str]):
         """Process hsi command"""
         parser = argparse.ArgumentParser(
@@ -199,7 +195,6 @@ NYSE:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_prom(self, other_args: List[str]):
         """Process prom command"""
         parser = argparse.ArgumentParser(
@@ -249,7 +244,6 @@ NYSE:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_pos(self, other_args: List[str]):
         """Process pos command"""
         parser = argparse.ArgumentParser(
@@ -297,7 +291,6 @@ NYSE:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_sidtc(self, other_args: List[str]):
         """Process sidtc command"""
         parser = argparse.ArgumentParser(
@@ -334,7 +327,6 @@ NYSE:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_dpotc(self, other_args: List[str]):
         """Process dpotc command"""
         parser = argparse.ArgumentParser(
@@ -355,7 +347,6 @@ NYSE:
             else:
                 print("No ticker loaded.\n")
 
-    @try_except
     def call_ftd(self, other_args: List[str]):
         """Process ftd command"""
         parser = argparse.ArgumentParser(
@@ -414,7 +405,6 @@ NYSE:
             else:
                 print("No ticker loaded.\n")
 
-    @try_except
     def call_spos(self, other_args: List[str]):
         """Process spos command"""
         parser = argparse.ArgumentParser(
@@ -452,7 +442,6 @@ NYSE:
             else:
                 print("No ticker loaded.\n")
 
-    @try_except
     def call_psi(self, other_args: List[str]):
         """Process psi command"""
         parser = argparse.ArgumentParser(
@@ -514,7 +503,6 @@ NYSE:
             else:
                 print("No ticker loaded.\n")
 
-    @try_except
     def call_volexch(self, other_args: List[str]):
         """Process volexch command"""
         parser = argparse.ArgumentParser(

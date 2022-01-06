@@ -6,7 +6,6 @@ from typing import List
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers.ally import ally_view
@@ -54,7 +53,6 @@ Stock Information:
 
         print(help_text)
 
-    @try_except
     def call_holdings(self, other_args: List[str]):
         """Process holdings command"""
         parser = argparse.ArgumentParser(
@@ -69,7 +67,6 @@ Stock Information:
         if ns_parser:
             ally_view.display_holdings(export=ns_parser.export)
 
-    @try_except
     def call_history(self, other_args: List[str]):
         """Process history command"""
         parser = argparse.ArgumentParser(
@@ -94,7 +91,6 @@ Stock Information:
                 n_to_show=ns_parser.limit, export=ns_parser.export
             )
 
-    @try_except
     def call_balances(self, other_args: List[str]):
         """Process balances command"""
         parser = argparse.ArgumentParser(
@@ -109,7 +105,6 @@ Stock Information:
         if ns_parser:
             ally_view.display_balances(export=ns_parser.export)
 
-    @try_except
     def call_quote(self, other_args: List[str]):
         """Process balances command"""
         parser = argparse.ArgumentParser(
@@ -132,7 +127,6 @@ Stock Information:
         if ns_parser:
             ally_view.display_stock_quote(ns_parser.ticker)
 
-    @try_except
     def call_movers(self, other_args: List[str]):
         """Process movers command"""
         parser = argparse.ArgumentParser(

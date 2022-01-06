@@ -8,7 +8,6 @@ from rich.console import Console
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.economy.fred import fred_view, fred_model
 from gamestonk_terminal.helper_funcs import (
@@ -67,7 +66,6 @@ Current Series IDs:
         """
         t_console.print(help_text)
 
-    @try_except
     def call_search(self, other_args: List[str]):
         """Process search command"""
         parser = argparse.ArgumentParser(
@@ -105,7 +103,6 @@ Current Series IDs:
                 num=ns_parser.num,
             )
 
-    @try_except
     def call_add(self, other_args: List[str]):
         """Process add command"""
         parser = argparse.ArgumentParser(
@@ -141,7 +138,6 @@ Current Series IDs:
                 f"Current Series:[blue] {', '.join(self.current_series.keys()) .upper() or None}[/blue]\n"
             )
 
-    @try_except
     def call_rmv(self, other_args: List[str]):
         """Process rmv command"""
         parser = argparse.ArgumentParser(
@@ -190,7 +186,6 @@ Current Series IDs:
                 f"Current Series Ids: [blue]{', '.join(self.current_series.keys()) or None}[/blue]\n"
             )
 
-    @try_except
     def call_plot(self, other_args):
         """Process plot command"""
         parser = argparse.ArgumentParser(
@@ -233,7 +228,6 @@ Current Series IDs:
                 ns_parser.LIMIT,
             )
 
-    @try_except
     def call_pred(self, _):
         """Process pred command"""
         if not self.current_series:

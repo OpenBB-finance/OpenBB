@@ -10,7 +10,6 @@ import pandas as pd
 from rich.console import Console
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.common.quantitative_analysis import (
     qa_view,
     rolling_view,
@@ -237,7 +236,6 @@ Other:
                 self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
                 self.stock = self.stock.dropna()
 
-    @try_except
     def call_pick(self, other_args: List[str]):
         """Process pick command"""
         parser = argparse.ArgumentParser(
@@ -264,7 +262,6 @@ Other:
             self.target = ns_parser.target
         t_console.print("")
 
-    @try_except
     def call_raw(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -303,7 +300,6 @@ Other:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_summary(self, other_args: List[str]):
         """Process summary command"""
         parser = argparse.ArgumentParser(
@@ -320,7 +316,6 @@ Other:
         if ns_parser:
             qa_view.display_summary(df=self.stock, export=ns_parser.export)
 
-    @try_except
     def call_line(self, other_args: List[str]):
         """Process line command"""
         parser = argparse.ArgumentParser(
@@ -356,7 +351,6 @@ Other:
                 draw=ns_parser.draw,
             )
 
-    @try_except
     def call_hist(self, other_args: List[str]):
         """Process hist command"""
         parser = argparse.ArgumentParser(
@@ -379,7 +373,6 @@ Other:
                 bins=ns_parser.n_bins,
             )
 
-    @try_except
     def call_cdf(self, other_args: List[str]):
         """Process cdf command"""
         parser = argparse.ArgumentParser(
@@ -401,7 +394,6 @@ Other:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_bw(self, other_args: List[str]):
         """Process bwy command"""
         parser = argparse.ArgumentParser(
@@ -429,7 +421,6 @@ Other:
                 yearly=ns_parser.year,
             )
 
-    @try_except
     def call_decompose(self, other_args: List[str]):
         """Process decompose command"""
         parser = argparse.ArgumentParser(
@@ -462,7 +453,6 @@ Other:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cusum(self, other_args: List[str]):
         """Process cusum command"""
         parser = argparse.ArgumentParser(
@@ -506,7 +496,6 @@ Other:
                 drift=ns_parser.drift,
             )
 
-    @try_except
     def call_acf(self, other_args: List[str]):
         """Process acf command"""
         parser = argparse.ArgumentParser(
@@ -539,7 +528,6 @@ Other:
                 lags=ns_parser.lags,
             )
 
-    @try_except
     def call_rolling(self, other_args: List[str]):
         """Process rolling command"""
         parser = argparse.ArgumentParser(
@@ -571,7 +559,6 @@ Other:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_spread(self, other_args: List[str]):
         """Process spread command"""
         parser = argparse.ArgumentParser(
@@ -602,7 +589,6 @@ Other:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_quantile(self, other_args: List[str]):
         """Process quantile command"""
         parser = argparse.ArgumentParser(
@@ -651,7 +637,6 @@ Other:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_skew(self, other_args: List[str]):
         """Process skew command"""
         parser = argparse.ArgumentParser(
@@ -688,7 +673,6 @@ Other:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_kurtosis(self, other_args: List[str]):
         """Process kurtosis command"""
         parser = argparse.ArgumentParser(
@@ -725,7 +709,6 @@ Other:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_normality(self, other_args: List[str]):
         """Process normality command"""
         parser = argparse.ArgumentParser(
@@ -744,7 +727,6 @@ Other:
                 df=self.stock, target=self.target, export=ns_parser.export
             )
 
-    @try_except
     def call_qqplot(self, other_args: List[str]):
         """Process qqplot command"""
         parser = argparse.ArgumentParser(
@@ -759,7 +741,6 @@ Other:
         if ns_parser:
             qa_view.display_qqplot(name=self.ticker, df=self.stock, target=self.target)
 
-    @try_except
     def call_unitroot(self, other_args: List[str]):
         """Process unitroot command"""
         parser = argparse.ArgumentParser(
@@ -800,7 +781,6 @@ Other:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_capm(self, other_args: List[str]):
         """Process capm command"""
         parser = argparse.ArgumentParser(

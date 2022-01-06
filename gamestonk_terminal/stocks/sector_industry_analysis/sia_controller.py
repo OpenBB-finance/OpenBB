@@ -8,7 +8,6 @@ import yfinance as yf
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     parse_known_args_and_warn,
@@ -239,7 +238,6 @@ Returned tickers: {', '.join(self.tickers)}
         if self.ticker:
             self.queue.insert(5, f"load {self.ticker}")
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -321,7 +319,6 @@ Returned tickers: {', '.join(self.tickers)}
 
                 self.stocks_data = {}
 
-    @try_except
     def call_industry(self, other_args: List[str]):
         """Process industry command"""
         parser = argparse.ArgumentParser(
@@ -384,7 +381,6 @@ Returned tickers: {', '.join(self.tickers)}
             self.stocks_data = {}
             print("")
 
-    @try_except
     def call_sector(self, other_args: List[str]):
         """Process sector command"""
         parser = argparse.ArgumentParser(
@@ -442,7 +438,6 @@ Returned tickers: {', '.join(self.tickers)}
             self.stocks_data = {}
             print("")
 
-    @try_except
     def call_country(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -497,7 +492,6 @@ Returned tickers: {', '.join(self.tickers)}
             self.stocks_data = {}
             print("")
 
-    @try_except
     def call_mktcap(self, other_args: List[str]):
         """Process mktcap command"""
         parser = argparse.ArgumentParser(
@@ -526,7 +520,6 @@ Returned tickers: {', '.join(self.tickers)}
             self.stocks_data = {}
             print("")
 
-    @try_except
     def call_exchange(self, other_args: List[str]):
         """Process exchange command"""
         parser = argparse.ArgumentParser(
@@ -546,7 +539,6 @@ Returned tickers: {', '.join(self.tickers)}
         self.stocks_data = {}
         print("")
 
-    @try_except
     def call_clear(self, other_args: List[str]):
         """Process clear command"""
         parser = argparse.ArgumentParser(
@@ -587,7 +579,6 @@ Returned tickers: {', '.join(self.tickers)}
             self.stocks_data = {}
             print("")
 
-    @try_except
     def call_sama(self, other_args: List[str]):
         """Process sama command"""
         parser = argparse.ArgumentParser(
@@ -635,7 +626,6 @@ Returned tickers: {', '.join(self.tickers)}
             """
             print(help_text)
 
-    @try_except
     def call_metric(self, other_args: List[str]):
         """Process metric command"""
         parser = argparse.ArgumentParser(
@@ -692,7 +682,6 @@ Returned tickers: {', '.join(self.tickers)}
                 self.stocks_data,
             )
 
-    @try_except
     def call_cps(self, other_args: List[str]):
         """Process cps command"""
         parser = argparse.ArgumentParser(
@@ -743,7 +732,6 @@ Returned tickers: {', '.join(self.tickers)}
                     ns_parser.min_pct_to_display_sector,
                 )
 
-    @try_except
     def call_cpic(self, other_args: List[str]):
         """Process cpic command"""
         parser = argparse.ArgumentParser(
@@ -794,7 +782,6 @@ Returned tickers: {', '.join(self.tickers)}
                     ns_parser.min_pct_to_display_industry,
                 )
 
-    @try_except
     def call_cpis(self, other_args: List[str]):
         """Process cpis command"""
         parser = argparse.ArgumentParser(
@@ -845,7 +832,6 @@ Returned tickers: {', '.join(self.tickers)}
                     ns_parser.min_pct_to_display_industry,
                 )
 
-    @try_except
     def call_cpcs(self, other_args: List[str]):
         """Process cpcs command"""
         parser = argparse.ArgumentParser(
@@ -896,7 +882,6 @@ Returned tickers: {', '.join(self.tickers)}
                     ns_parser.min_pct_to_display_country,
                 )
 
-    @try_except
     def call_cpci(self, other_args: List[str]):
         """Process cpci command"""
         parser = argparse.ArgumentParser(

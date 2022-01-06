@@ -12,7 +12,6 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.forex import av_model
 from gamestonk_terminal.forex.oanda import oanda_view
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_non_negative_float,
@@ -100,7 +99,6 @@ class OandaController(BaseController):
     """
         print(help_text)
 
-    @try_except
     def call_to(self, other_args: List[str]):
         """Process 'to' command."""
         parser = argparse.ArgumentParser(
@@ -133,7 +131,6 @@ class OandaController(BaseController):
                 f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
             )
 
-    @try_except
     def call_from(self, other_args: List[str]):
         """Process 'from' command."""
         parser = argparse.ArgumentParser(
@@ -167,7 +164,6 @@ class OandaController(BaseController):
                 f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
             )
 
-    @try_except
     def call_price(self, other_args):
         """Process Price Command."""
         parser = argparse.ArgumentParser(
@@ -179,7 +175,6 @@ class OandaController(BaseController):
         if ns_parser:
             oanda_view.get_fx_price(account, self.instrument)
 
-    @try_except
     def call_summary(self, other_args):
         """Process account summary command."""
         parser = argparse.ArgumentParser(
@@ -191,7 +186,6 @@ class OandaController(BaseController):
         if ns_parser:
             oanda_view.get_account_summary(account)
 
-    @try_except
     def call_orderbook(self, other_args):
         """Process Oanda Order Book."""
         parser = argparse.ArgumentParser(
@@ -203,7 +197,6 @@ class OandaController(BaseController):
         if ns_parser:
             oanda_view.get_order_book(account, self.instrument)
 
-    @try_except
     def call_positionbook(self, other_args):
         """Process Oanda Position Book."""
         parser = argparse.ArgumentParser(
@@ -215,7 +208,6 @@ class OandaController(BaseController):
         if ns_parser:
             oanda_view.get_position_book(account, self.instrument)
 
-    @try_except
     def call_list(self, other_args: List[str]):
         """Process list orders command."""
         parser = argparse.ArgumentParser(
@@ -249,7 +241,6 @@ class OandaController(BaseController):
             order_count = ns_parser.limit
             oanda_view.list_orders(account, order_state, order_count)
 
-    @try_except
     def call_order(self, other_args: List[str]):
         """Place limit order."""
         parser = argparse.ArgumentParser(
@@ -282,7 +273,6 @@ class OandaController(BaseController):
             units = ns_parser.units
             oanda_view.create_order(account, self.instrument, price, units)
 
-    @try_except
     def call_cancel(self, other_args: List[str]):
         """Cancel pending order by ID."""
         parser = argparse.ArgumentParser(
@@ -307,7 +297,6 @@ class OandaController(BaseController):
             orderID = ns_parser.orderID
             oanda_view.cancel_pending_order(account, orderID)
 
-    @try_except
     def call_positions(self, other_args):
         """Get Open Positions."""
         parser = argparse.ArgumentParser(
@@ -319,7 +308,6 @@ class OandaController(BaseController):
         if ns_parser:
             oanda_view.get_open_positions(account)
 
-    @try_except
     def call_pending(self, other_args):
         """See up to 25 pending orders."""
         parser = argparse.ArgumentParser(
@@ -331,7 +319,6 @@ class OandaController(BaseController):
         if ns_parser:
             oanda_view.get_pending_orders(account)
 
-    @try_except
     def call_trades(self, other_args):
         """List open trades."""
         parser = argparse.ArgumentParser(
@@ -343,7 +330,6 @@ class OandaController(BaseController):
         if ns_parser:
             oanda_view.get_open_trades(account)
 
-    @try_except
     def call_closetrade(self, other_args: List[str]):
         """Close a trade by id."""
         parser = argparse.ArgumentParser(
@@ -378,7 +364,6 @@ class OandaController(BaseController):
             units = ns_parser.units
             oanda_view.close_trade(account, orderID, units)
 
-    @try_except
     def call_candles(self, other_args: List[str]):
         """Plot candle chart for a loaded currency pair."""
         parser = argparse.ArgumentParser(
@@ -482,7 +467,6 @@ class OandaController(BaseController):
                 },
             )
 
-    @try_except
     def call_calendar(self, other_args: List[str]):
         """Call calendar."""
         parser = argparse.ArgumentParser(

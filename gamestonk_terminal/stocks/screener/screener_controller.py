@@ -10,7 +10,6 @@ from typing import List
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -119,7 +118,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
         """
         print(help_text)
 
-    @try_except
     def call_view(self, other_args: List[str]):
         """Process view command"""
         parser = argparse.ArgumentParser(
@@ -180,7 +178,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                     print(f"   {signame}{(50-len(signame)) * ' '}{sigdesc}")
                 print("")
 
-    @try_except
     def call_set(self, other_args: List[str]):
         """Process set command"""
         parser = argparse.ArgumentParser(
@@ -205,7 +202,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
             self.preset = ns_parser.preset
         print("")
 
-    @try_except
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
         parser = argparse.ArgumentParser(
@@ -263,7 +259,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 ns_parser.export,
             )
 
-    @try_except
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
         parser = argparse.ArgumentParser(
@@ -325,7 +320,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_valuation(self, other_args: List[str]):
         """Process valuation command"""
         parser = argparse.ArgumentParser(
@@ -387,7 +381,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_financial(self, other_args: List[str]):
         """Process financial command"""
         parser = argparse.ArgumentParser(
@@ -449,7 +442,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_ownership(self, other_args: List[str]):
         """Process ownership command"""
         parser = argparse.ArgumentParser(
@@ -511,7 +503,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_performance(self, other_args: List[str]):
         """Process performance command"""
         parser = argparse.ArgumentParser(
@@ -573,7 +564,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_technical(self, other_args: List[str]):
         """Process technical command"""
         parser = argparse.ArgumentParser(
@@ -635,7 +625,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
         if self.screen_tickers:
@@ -643,7 +632,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
         else:
             print("Some tickers must be screened first through one of the presets!\n")
 
-    @try_except
     def call_ca(self, _):
         """Call the comparison analysis menu with selected tickers"""
         if self.screen_tickers:

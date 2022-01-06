@@ -7,7 +7,6 @@ from typing import List
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -46,7 +45,6 @@ class DiscoveryController(BaseController):
 """
         print(help_str)
 
-    @try_except
     def call_gainers(self, other_args):
         """Process gainers command"""
         parser = argparse.ArgumentParser(

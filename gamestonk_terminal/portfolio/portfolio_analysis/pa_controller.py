@@ -8,7 +8,6 @@ import os
 import pandas as pd
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
@@ -60,7 +59,6 @@ Portfolio: {self.portfolio_name or None}
             """
         print(help_string)
 
-    @try_except
     def call_load(self, other_args):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -116,7 +114,6 @@ Portfolio: {self.portfolio_name or None}
             if not self.portfolio.empty:
                 print(f"Successfully loaded: {self.portfolio_name}\n")
 
-    @try_except
     def call_group(self, other_args):
         """Process group command"""
         parser = argparse.ArgumentParser(
@@ -163,7 +160,6 @@ Portfolio: {self.portfolio_name or None}
                     "'value' column not in portfolio.  Either add manually or load without --no_last_price flag\n"
                 )
 
-    @try_except
     def call_view(self, other_args):
         parser = argparse.ArgumentParser(
             prog="view",

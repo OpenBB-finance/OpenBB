@@ -10,7 +10,6 @@ from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.forex import av_view, av_model
 
@@ -70,7 +69,6 @@ Forex brokerages:
  """
         print(help_text)
 
-    @try_except
     def call_to(self, other_args: List[str]):
         """Process 'to' command."""
         parser = argparse.ArgumentParser(
@@ -103,7 +101,6 @@ Forex brokerages:
                 f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
             )
 
-    @try_except
     def call_from(self, other_args: List[str]):
         """Process 'from' command."""
         parser = argparse.ArgumentParser(
@@ -135,7 +132,6 @@ Forex brokerages:
                 f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
             )
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process select command."""
         parser = argparse.ArgumentParser(
@@ -186,7 +182,6 @@ Forex brokerages:
             else:
                 print("\nMake sure both a to symbol and a from symbol are supplied\n")
 
-    @try_except
     def call_candle(self, other_args: List[str]):
         """Process quote command."""
         parser = argparse.ArgumentParser(
@@ -202,7 +197,6 @@ Forex brokerages:
             else:
                 print("No forex historical data loaded.  Load first using <load>.\n")
 
-    @try_except
     def call_quote(self, other_args: List[str]):
         """Process quote command."""
         parser = argparse.ArgumentParser(

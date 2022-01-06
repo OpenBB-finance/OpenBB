@@ -8,7 +8,6 @@ from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.government import quiverquant_view
@@ -96,7 +95,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
         if self.ticker:
             self.queue.insert(4, f"load {self.ticker}")
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -136,7 +134,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
             else:
                 print("Ticker selected does not exist!", "\n")
 
-    @try_except
     def call_lasttrades(self, other_args: List[str]):
         """Process lasttrades command"""
         parser = argparse.ArgumentParser(
@@ -184,7 +181,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_topbuys(self, other_args: List[str]):
         """Process topbuys command"""
         parser = argparse.ArgumentParser(
@@ -240,7 +236,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_topsells(self, other_args: List[str]):
         """Process topsells command"""
         parser = argparse.ArgumentParser(
@@ -296,7 +291,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_lastcontracts(self, other_args: List[str]):
         """Process lastcontracts command"""
         parser = argparse.ArgumentParser(
@@ -344,7 +338,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_qtrcontracts(self, other_args: List[str]):
         """Process qtrcontracts command"""
         parser = argparse.ArgumentParser(
@@ -393,7 +386,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_toplobbying(self, other_args: List[str]):
         """Process toplobbying command"""
         parser = argparse.ArgumentParser(
@@ -426,7 +418,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                 num=ns_parser.limit, raw=ns_parser.raw, export=ns_parser.export
             )
 
-    @try_except
     def call_gtrades(self, other_args: List[str]):
         """Process gtrades command"""
         parser = argparse.ArgumentParser(
@@ -476,7 +467,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
             else:
                 print("No ticker loaded. Use `load <ticker>` first.\n")
 
-    @try_except
     def call_contracts(self, other_args: List[str]):
         """Process contracts command"""
         parser = argparse.ArgumentParser(
@@ -517,7 +507,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
             else:
                 print("No ticker loaded. Use `load <ticker>` first.\n")
 
-    @try_except
     def call_histcont(self, other_args: List[str]):
         """Process histcont command"""
         parser = argparse.ArgumentParser(
@@ -544,7 +533,6 @@ Ticker: {self.ticker or None}{dim_no_ticker}
             else:
                 print("No ticker loaded. Use `load <ticker>` first.\n")
 
-    @try_except
     def call_lobbying(self, other_args: List[str]):
         """Process lobbying command"""
         parser = argparse.ArgumentParser(

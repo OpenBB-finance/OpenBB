@@ -7,7 +7,6 @@ from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_non_negative,
@@ -207,7 +206,6 @@ Mean Variance Optimization:
         """Process rmv command"""
         self.rmv_stocks(other_args)
 
-    @try_except
     def call_equal(self, other_args: List[str]):
         """Process equal command"""
         parser = argparse.ArgumentParser(
@@ -241,7 +239,6 @@ Mean Variance Optimization:
                 stocks=self.tickers, value=ns_parser.value, pie=ns_parser.pie
             )
 
-    @try_except
     def call_mktcap(self, other_args: List[str]):
         """Process mktcap command"""
         parser = argparse.ArgumentParser(
@@ -277,7 +274,6 @@ Mean Variance Optimization:
                 pie=ns_parser.pie,
             )
 
-    @try_except
     def call_dividend(self, other_args: List[str]):
         """Process dividend command"""
         parser = argparse.ArgumentParser(
@@ -313,7 +309,6 @@ Mean Variance Optimization:
                 pie=ns_parser.pie,
             )
 
-    @try_except
     def call_property(self, other_args: List[str]):
         """Process property command"""
         parser = argparse.ArgumentParser(
@@ -358,7 +353,6 @@ Mean Variance Optimization:
                 pie=ns_parser.pie,
             )
 
-    @try_except
     def call_maxsharpe(self, other_args: List[str]):
         """Process maxsharpe command"""
         parser = argparse.ArgumentParser(
@@ -413,7 +407,6 @@ Mean Variance Optimization:
                 pie=ns_parser.pie,
             )
 
-    @try_except
     def call_minvol(self, other_args: List[str]):
         """Process minvol command"""
         parser = argparse.ArgumentParser(
@@ -458,7 +451,6 @@ Mean Variance Optimization:
                 pie=ns_parser.pie,
             )
 
-    @try_except
     def call_maxquadutil(self, other_args: List[str]):
         """Process maxquadutil command"""
         parser = argparse.ArgumentParser(
@@ -527,7 +519,6 @@ Mean Variance Optimization:
                 pie=ns_parser.pie,
             )
 
-    @try_except
     def call_effrisk(self, other_args: List[str]):
         """Process effrisk command"""
         parser = argparse.ArgumentParser(
@@ -601,7 +592,6 @@ Mean Variance Optimization:
                 pie=ns_parser.pie,
             )
 
-    @try_except
     def call_effret(self, other_args: List[str]):
         """Process effret command"""
         parser = argparse.ArgumentParser(
@@ -673,7 +663,6 @@ Mean Variance Optimization:
                 pie=ns_parser.pie,
             )
 
-    @try_except
     def call_ef(self, other_args):
         """Process ef command"""
         parser = argparse.ArgumentParser(
@@ -727,7 +716,6 @@ Mean Variance Optimization:
         print("DFV YOLO")
         print("GME: ALL", "\n")
 
-    @try_except
     def add_stocks(self, other_args: List[str]):
         """Add ticker or Select tickers for portfolio to be optimized"""
         parser = argparse.ArgumentParser(
@@ -761,7 +749,6 @@ Mean Variance Optimization:
             self.tickers = list(tickers)
             print("")
 
-    @try_except
     def rmv_stocks(self, other_args: List[str]):
         """Remove one of the tickers to be optimized"""
         parser = argparse.ArgumentParser(

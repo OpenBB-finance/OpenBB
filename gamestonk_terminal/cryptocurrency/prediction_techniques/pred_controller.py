@@ -9,7 +9,6 @@ import numpy as np
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
@@ -112,7 +111,6 @@ Models:
         if self.coin:
             self.queue.insert(4, f"load {self.coin}")
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -169,7 +167,6 @@ Models:
                 f"{ns_parser.days} Days of {self.coin} vs {ns_parser.currency} loaded with {res} resolution.\n"
             )
 
-    @try_except
     def call_pick(self, other_args: List[str]):
         """Process pick command"""
         parser = argparse.ArgumentParser(
@@ -195,7 +192,6 @@ Models:
             self.target = ns_parser.target
             print("")
 
-    @try_except
     def call_ets(self, other_args: List[str]):
         """Process ets command"""
         parser = argparse.ArgumentParser(
@@ -293,7 +289,6 @@ Models:
                 time_res=self.resolution,
             )
 
-    @try_except
     def call_knn(self, other_args: List[str]):
         """Process knn command"""
         parser = argparse.ArgumentParser(
@@ -382,7 +377,6 @@ Models:
                 time_res=self.resolution,
             )
 
-    @try_except
     def call_regression(self, other_args: List[str]):
         """Process linear command"""
         parser = argparse.ArgumentParser(
@@ -478,7 +472,6 @@ Models:
                 time_res=self.resolution,
             )
 
-    @try_except
     def call_arima(self, other_args: List[str]):
         """Process arima command"""
         parser = argparse.ArgumentParser(
@@ -581,7 +574,6 @@ Models:
                 time_res=self.resolution,
             )
 
-    @try_except
     def call_mlp(self, other_args: List[str]):
         """Process mlp command"""
         try:
@@ -697,7 +689,6 @@ Models:
         finally:
             pred_helper.restore_env()
 
-    @try_except
     def call_mc(self, other_args: List[str]):
         """Process mc command"""
         parser = argparse.ArgumentParser(

@@ -12,7 +12,6 @@ import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -176,7 +175,6 @@ Expiry: {self.selected_date or None}
         if self.ticker:
             self.queue.insert(5, f"load {self.ticker}")
 
-    @try_except
     def call_calc(self, other_args: List[str]):
         """Process calc command"""
         parser = argparse.ArgumentParser(
@@ -248,7 +246,6 @@ Expiry: {self.selected_date or None}
                 **pars,
             )
 
-    @try_except
     def call_unu(self, other_args: List[str]):
         """Process act command"""
         parser = argparse.ArgumentParser(
@@ -318,7 +315,6 @@ Expiry: {self.selected_date or None}
                     puts_only=ns_parser.puts_only,
                 )
 
-    @try_except
     def call_pcr(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -377,7 +373,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded.\n")
 
-    @try_except
     def call_grhist(self, other_args: List[str]):
         """Process grhist command"""
         parser = argparse.ArgumentParser(
@@ -469,7 +464,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>` \n")
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -511,7 +505,6 @@ Expiry: {self.selected_date or None}
                     self.ticker, self.selected_date
                 )
 
-    @try_except
     def call_exp(self, other_args: List[str]):
         """Process exp command"""
         parser = argparse.ArgumentParser(
@@ -569,7 +562,6 @@ Expiry: {self.selected_date or None}
                     self.ticker, self.selected_date
                 )
 
-    @try_except
     def call_hist(self, other_args: List[str]):
         """Process hist command"""
         parser = argparse.ArgumentParser(
@@ -669,7 +661,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
 
-    @try_except
     def call_chains(self, other_args: List[str]):
         """Process chains command"""
         parser = argparse.ArgumentParser(
@@ -743,7 +734,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
 
-    @try_except
     def call_vol(self, other_args: List[str]):
         """Process vol command"""
         parser = argparse.ArgumentParser(
@@ -824,7 +814,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
 
-    @try_except
     def call_voi(self, other_args: List[str]):
         """Process voi command"""
         parser = argparse.ArgumentParser(
@@ -895,7 +884,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
 
-    @try_except
     def call_oi(self, other_args: List[str]):
         """Process oi command"""
         parser = argparse.ArgumentParser(
@@ -976,7 +964,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
 
-    @try_except
     def call_plot(self, other_args: List[str]):
         """Process plot command"""
         parser = argparse.ArgumentParser(
@@ -1052,7 +1039,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
 
-    @try_except
     def call_parity(self, other_args: List[str]):
         """Process parity command"""
         parser = argparse.ArgumentParser(
@@ -1113,7 +1099,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
 
-    @try_except
     def call_binom(self, other_args: List[str]):
         """Process binom command"""
         parser = argparse.ArgumentParser(
@@ -1190,7 +1175,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
 
-    @try_except
     def call_payoff(self, _):
         """Process payoff command"""
         if self.ticker:
@@ -1204,7 +1188,6 @@ Expiry: {self.selected_date or None}
         else:
             print("No ticker loaded. First use `load <ticker>`\n")
 
-    @try_except
     def call_pricing(self, _):
         """Process pricing command"""
         if self.ticker:
@@ -1218,7 +1201,6 @@ Expiry: {self.selected_date or None}
         else:
             print("No ticker loaded. First use `load <ticker>`\n")
 
-    @try_except
     def call_screen(self, _):
         """Process screen command"""
         self.queue = screener_controller.ScreenerController(self.queue).menu()

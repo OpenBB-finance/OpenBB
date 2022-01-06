@@ -11,7 +11,6 @@ from datetime import datetime
 from prompt_toolkit.completion import NestedCompleter
 import pandas as pd
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     valid_date,
@@ -106,7 +105,6 @@ Graphs:
         """Process po command"""
         self.queue = po_controller.PortfolioOptimization([], self.queue).menu()
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         path = os.path.dirname(os.path.abspath(__file__))
@@ -135,7 +133,6 @@ Graphs:
             self.portfolio = portfolio_model.load_df(ns_parser.name)
             print("")
 
-    @try_except
     def call_save(self, other_args: List[str]):
         """Process save command"""
         parser = argparse.ArgumentParser(
@@ -286,7 +283,6 @@ Graphs:
                 f"Invalid index please use an integer between 0 and {len(self.portfolio.index)-1}\n"
             )
 
-    @try_except
     def call_ar(self, other_args: List[str]):
         """Process ar command"""
         parser = argparse.ArgumentParser(
@@ -316,7 +312,6 @@ Graphs:
             else:
                 print("Please add items to the portfolio\n")
 
-    @try_except
     def call_rmr(self, other_args: List[str]):
         """Process rmr command"""
         parser = argparse.ArgumentParser(

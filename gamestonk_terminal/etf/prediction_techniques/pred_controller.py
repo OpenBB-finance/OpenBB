@@ -9,7 +9,6 @@ import numpy as np
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
@@ -220,7 +219,6 @@ Models:
                 self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
                 self.stock = self.stock.dropna()
 
-    @try_except
     def call_pick(self, other_args: List[str]):
         """Process pick command"""
         parser = argparse.ArgumentParser(
@@ -248,7 +246,6 @@ Models:
             self.target = ns_parser.target
             print("")
 
-    @try_except
     def call_ets(self, other_args: List[str]):
         """Process ets command"""
         parser = argparse.ArgumentParser(
@@ -347,7 +344,6 @@ Models:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_knn(self, other_args: List[str]):
         """Process knn command"""
         parser = argparse.ArgumentParser(
@@ -435,7 +431,6 @@ Models:
                 no_shuffle=ns_parser.no_shuffle,
             )
 
-    @try_except
     def call_regression(self, other_args: List[str]):
         """Process linear command"""
         parser = argparse.ArgumentParser(
@@ -530,7 +525,6 @@ Models:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_arima(self, other_args: List[str]):
         """Process arima command"""
         parser = argparse.ArgumentParser(
@@ -633,7 +627,6 @@ Models:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_mlp(self, other_args: List[str]):
         """Process mlp command"""
         try:
@@ -745,7 +738,6 @@ Models:
         finally:
             pred_helper.restore_env()
 
-    @try_except
     def call_mc(self, other_args: List[str]):
         """Process mc command"""
         parser = argparse.ArgumentParser(

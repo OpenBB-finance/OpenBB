@@ -10,7 +10,6 @@ from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     check_non_negative,
@@ -134,7 +133,6 @@ Finviz:
         if self.similar:
             self.queue.insert(5, f"set {','.join(self.similar)}")
 
-    @try_except
     def call_ticker(self, other_args: List[str]):
         """Process ticker command"""
         parser = argparse.ArgumentParser(
@@ -168,7 +166,6 @@ Finviz:
                     self.ticker = ns_parser.ticker.upper()
             print("")
 
-    @try_except
     def call_tsne(self, other_args: List[str]):
         """Process tsne command"""
         parser = argparse.ArgumentParser(
@@ -214,7 +211,6 @@ Finviz:
             else:
                 print("You need to 'set' a ticker to get similar companies from first!")
 
-    @try_except
     def call_getfinviz(self, other_args: List[str]):
         """Process getfinviz command"""
         parser = argparse.ArgumentParser(
@@ -273,7 +269,6 @@ Finviz:
             else:
                 print("You need to 'set' a ticker to get similar companies from first!")
 
-    @try_except
     def call_getpoly(self, other_args: List[str]):
         """Process get command"""
         parser = argparse.ArgumentParser(
@@ -328,7 +323,6 @@ Finviz:
             else:
                 print("You need to 'set' a ticker to get similar companies from first!")
 
-    @try_except
     def call_getfinnhub(self, other_args: List[str]):
         """Process get command"""
         parser = argparse.ArgumentParser(
@@ -375,7 +369,6 @@ Finviz:
             else:
                 print("You need to 'set' a ticker to get similar companies from first!")
 
-    @try_except
     def call_add(self, other_args: List[str]):
         """Process add command"""
         parser = argparse.ArgumentParser(
@@ -404,7 +397,6 @@ Finviz:
 
             print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
 
-    @try_except
     def call_rmv(self, other_args: List[str]):
         """Process rmv command"""
         parser = argparse.ArgumentParser(
@@ -442,7 +434,6 @@ Finviz:
             print("")
             self.user = "Custom"
 
-    @try_except
     def call_set(self, other_args: List[str]):
         """Process set command"""
         parser = argparse.ArgumentParser(
@@ -467,7 +458,6 @@ Finviz:
             self.user = "Custom"
             print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
 
-    @try_except
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
         parser = argparse.ArgumentParser(
@@ -522,7 +512,6 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-    @try_except
     def call_hcorr(self, other_args: List[str]):
         """Process historical correlation command"""
         parser = argparse.ArgumentParser(
@@ -564,7 +553,6 @@ Finviz:
             else:
                 print("Please make sure there are similar tickers selected. \n")
 
-    @try_except
     def call_income(self, other_args: List[str]):
         """Process income command"""
         parser = argparse.ArgumentParser(
@@ -604,7 +592,6 @@ Finviz:
                 quarter=ns_parser.b_quarter,
             )
 
-    @try_except
     def call_volume(self, other_args: List[str]):
         """Process volume command"""
         parser = argparse.ArgumentParser(
@@ -638,7 +625,6 @@ Finviz:
             else:
                 print("Please make sure there are similar tickers selected. \n")
 
-    @try_except
     def call_balance(self, other_args: List[str]):
         """Process balance command"""
         parser = argparse.ArgumentParser(
@@ -676,7 +662,6 @@ Finviz:
                 quarter=ns_parser.b_quarter,
             )
 
-    @try_except
     def call_cashflow(self, other_args: List[str]):
         """Process cashflow command"""
         parser = argparse.ArgumentParser(
@@ -714,7 +699,6 @@ Finviz:
                 quarter=ns_parser.b_quarter,
             )
 
-    @try_except
     def call_sentiment(self, other_args: List[str]):
         """Process sentiment command"""
         parser = argparse.ArgumentParser(
@@ -748,7 +732,6 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-    @try_except
     def call_scorr(self, other_args: List[str]):
         """Process sentiment correlation command"""
         parser = argparse.ArgumentParser(
@@ -780,7 +763,6 @@ Finviz:
             else:
                 print("Please make sure there are similar tickers selected. \n")
 
-    @try_except
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
         parser = argparse.ArgumentParser(
@@ -806,7 +788,6 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-    @try_except
     def call_valuation(self, other_args: List[str]):
         """Process valuation command"""
         parser = argparse.ArgumentParser(
@@ -832,7 +813,6 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-    @try_except
     def call_financial(self, other_args: List[str]):
         """Process financial command"""
         parser = argparse.ArgumentParser(
@@ -858,7 +838,6 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-    @try_except
     def call_ownership(self, other_args: List[str]):
         """Process ownership command"""
         parser = argparse.ArgumentParser(
@@ -884,7 +863,6 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-    @try_except
     def call_performance(self, other_args: List[str]):
         """Process performance command"""
         parser = argparse.ArgumentParser(
@@ -910,7 +888,6 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-    @try_except
     def call_technical(self, other_args: List[str]):
         """Process technical command"""
         parser = argparse.ArgumentParser(

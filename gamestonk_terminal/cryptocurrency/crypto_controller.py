@@ -10,7 +10,6 @@ from prompt_toolkit.completion import NestedCompleter
 from binance.client import Client
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -117,7 +116,6 @@ class CryptoController(BaseController):
 """  # noqa
         print(help_text)
 
-    @try_except
     def call_load(self, other_args):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -159,7 +157,6 @@ class CryptoController(BaseController):
                 coin=ns_parser.coin, source=ns_parser.source
             )
 
-    @try_except
     def call_chart(self, other_args):
         """Process chart command"""
         if self.current_coin:
@@ -322,7 +319,6 @@ class CryptoController(BaseController):
                     source=self.source,
                 )
 
-    @try_except
     def call_ta(self, other_args):
         """Process ta command"""
         from gamestonk_terminal.cryptocurrency.technical_analysis.ta_controller import (
@@ -553,7 +549,6 @@ class CryptoController(BaseController):
         else:
             print("No coin selected. Use 'load' to load a coin.\n")
 
-    @try_except
     def call_disc(self, _):
         """Process disc command"""
         from gamestonk_terminal.cryptocurrency.discovery.discovery_controller import (
@@ -562,7 +557,6 @@ class CryptoController(BaseController):
 
         self.queue = DiscoveryController(queue=self.queue).menu()
 
-    @try_except
     def call_ov(self, _):
         """Process ov command"""
         from gamestonk_terminal.cryptocurrency.overview.overview_controller import (
@@ -571,7 +565,6 @@ class CryptoController(BaseController):
 
         self.queue = OverviewController(queue=self.queue).menu()
 
-    @try_except
     def call_defi(self, _):
         """Process defi command"""
         from gamestonk_terminal.cryptocurrency.defi.defi_controller import (
@@ -580,7 +573,6 @@ class CryptoController(BaseController):
 
         self.queue = DefiController(queue=self.queue).menu()
 
-    @try_except
     def call_headlines(self, other_args):
         """Process sentiment command"""
         parser = argparse.ArgumentParser(
@@ -612,7 +604,6 @@ class CryptoController(BaseController):
                 coin=ns_parser.coin, export=ns_parser.export
             )
 
-    @try_except
     def call_dd(self, _):
         """Process dd command"""
         if self.current_coin:
@@ -626,7 +617,6 @@ class CryptoController(BaseController):
         else:
             print("No coin selected. Use 'load' to load a coin.\n")
 
-    @try_except
     def call_pred(self, _):
         """Process pred command"""
         if self.current_coin:
@@ -652,7 +642,6 @@ class CryptoController(BaseController):
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
             )
 
-    @try_except
     def call_onchain(self, _):
         """Process onchain command"""
         from gamestonk_terminal.cryptocurrency.onchain.onchain_controller import (
@@ -661,14 +650,12 @@ class CryptoController(BaseController):
 
         self.queue = OnchainController(queue=self.queue).menu()
 
-    @try_except
     def call_nft(self, _):
         """Process nft command"""
         from gamestonk_terminal.cryptocurrency.nft.nft_controller import NFTController
 
         self.queue = NFTController(queue=self.queue).menu()
 
-    @try_except
     def call_find(self, other_args):
         """Process find command"""
         parser = argparse.ArgumentParser(

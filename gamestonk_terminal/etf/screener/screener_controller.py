@@ -10,7 +10,6 @@ from typing import List, Union
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -87,7 +86,6 @@ PRESET: {self.preset}
 """
         print(help_str)
 
-    @try_except
     def call_view(self, other_args: List[str]):
         """Process view command"""
         parser = argparse.ArgumentParser(
@@ -158,7 +156,6 @@ PRESET: {self.preset}
                     )
                 print("")
 
-    @try_except
     def call_set(self, other_args: List[str]):
         """Process set command"""
         parser = argparse.ArgumentParser(
@@ -183,7 +180,6 @@ PRESET: {self.preset}
             self.preset = ns_parser.preset
         print("")
 
-    @try_except
     def call_screen(self, other_args):
         """Process screen command"""
         parser = argparse.ArgumentParser(
@@ -230,7 +226,6 @@ PRESET: {self.preset}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_sbc(self, other_args: List[str]):
         """Process sbc command"""
         parser = argparse.ArgumentParser(

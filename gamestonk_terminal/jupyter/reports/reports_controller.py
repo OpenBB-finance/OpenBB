@@ -8,6 +8,7 @@ import webbrowser
 from datetime import datetime
 from ast import literal_eval
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.decorators import try_except
 import papermill as pm
 
 from gamestonk_terminal.parent_classes import BaseController
@@ -91,6 +92,7 @@ Select one of the following reports:
 {self.reports_opts}"""
         print(help_text)
 
+    @try_except
     def switch(self, an_input: str):
         """Process and dispatch input.
 

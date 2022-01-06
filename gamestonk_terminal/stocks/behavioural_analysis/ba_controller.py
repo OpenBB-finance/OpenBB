@@ -9,7 +9,6 @@ from prompt_toolkit.completion import NestedCompleter
 from colorama import Style
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -134,7 +133,6 @@ SentimentInvestor:
         """
         print(help_txt)
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -178,7 +176,6 @@ SentimentInvestor:
             else:
                 print("Provide a valid ticker")
 
-    @try_except
     def call_watchlist(self, other_args: List[str]):
         """Process watchlist command"""
         parser = argparse.ArgumentParser(
@@ -202,7 +199,6 @@ SentimentInvestor:
         if ns_parser:
             reddit_view.display_watchlist(num=ns_parser.limit)
 
-    @try_except
     def call_spac(self, other_args: List[str]):
         """Process spac command"""
         parser = argparse.ArgumentParser(
@@ -226,7 +222,6 @@ SentimentInvestor:
         if ns_parser:
             reddit_view.display_spac(limit=ns_parser.n_limit)
 
-    @try_except
     def call_spac_c(self, other_args: List[str]):
         """Process spac_c command"""
         parser = argparse.ArgumentParser(
@@ -260,7 +255,6 @@ SentimentInvestor:
                 limit=ns_parser.n_limit, popular=ns_parser.b_popular
             )
 
-    @try_except
     def call_wsb(self, other_args: List[str]):
         """Process wsb command"""
         parser = argparse.ArgumentParser(
@@ -293,7 +287,6 @@ SentimentInvestor:
                 limit=ns_parser.n_limit, new=ns_parser.b_new
             )
 
-    @try_except
     def call_popular(self, other_args: List[str]):
         """Process popular command"""
         parser = argparse.ArgumentParser(
@@ -342,7 +335,6 @@ SentimentInvestor:
                 subreddits=ns_parser.s_subreddit,
             )
 
-    @try_except
     def call_getdd(self, other_args: List[str]):
         """Process getdd command"""
         parser = argparse.ArgumentParser(
@@ -394,7 +386,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_bullbear(self, other_args: List[str]):
         """Process bullbear command"""
         parser = argparse.ArgumentParser(
@@ -413,7 +404,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_messages(self, other_args: List[str]):
         """Process messages command"""
         parser = argparse.ArgumentParser(
@@ -442,7 +432,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_trending(self, other_args: List[str]):
         """Process trending command"""
         parser = argparse.ArgumentParser(
@@ -455,7 +444,6 @@ SentimentInvestor:
         if ns_parser:
             stocktwits_view.display_trending()
 
-    @try_except
     def call_stalker(self, other_args: List[str]):
         """Process stalker command"""
         parser = argparse.ArgumentParser(
@@ -492,7 +480,6 @@ SentimentInvestor:
                 user=ns_parser.s_user, limit=ns_parser.limit
             )
 
-    @try_except
     def call_mentions(self, other_args: List[str]):
         """Process mentions command"""
         parser = argparse.ArgumentParser(
@@ -524,7 +511,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_regions(self, other_args: List[str]):
         """Process regions command"""
         parser = argparse.ArgumentParser(
@@ -555,7 +541,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_queries(self, other_args: List[str]):
         """Process queries command"""
         parser = argparse.ArgumentParser(
@@ -586,7 +571,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_rise(self, other_args: List[str]):
         """Process rise command"""
         parser = argparse.ArgumentParser(
@@ -617,7 +601,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_infer(self, other_args: List[str]):
         """Process infer command"""
         parser = argparse.ArgumentParser(
@@ -650,7 +633,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_sentiment(self, other_args: List[str]):
         """Process sentiment command"""
         parser = argparse.ArgumentParser(
@@ -699,7 +681,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_headlines(self, other_args: List[str]):
         """Process finbrain command"""
         parser = argparse.ArgumentParser(
@@ -724,7 +705,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_stats(self, other_args: List[str]):
         """Process stats command"""
         parser = argparse.ArgumentParser(
@@ -748,7 +728,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_metrics(self, other_args: List[str]):
         """Process metrics command"""
         command_description = f"""
@@ -799,7 +778,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_social(self, other_args: List[str]):
         """Process social command"""
         command_description = f"""
@@ -828,7 +806,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
         command_description = f"""
@@ -916,7 +893,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_popularsi(self, other_args: List[str]):
         """Process popular command"""
         command_description = f"""
@@ -955,7 +931,6 @@ SentimentInvestor:
             print("Currently under maintenance by the new Sentiment Investor team.\n")
             # sentimentinvestor_view.display_top(metric="AHI", limit=ns_parser.limit)
 
-    @try_except
     def call_emerging(self, other_args: List[str]):
         """Process emerging command"""
         command_description = f"""

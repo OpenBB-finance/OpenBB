@@ -11,7 +11,6 @@ import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.economy import (
     alphavantage_view,
@@ -204,7 +203,6 @@ NASDAQ DataLink (formerly Quandl):
         print(type(help_text))
         t_console.print(help_text)
 
-    @try_except
     def call_feargreed(self, other_args: List[str]):
         """Process feargreed command"""
         parser = argparse.ArgumentParser(
@@ -256,7 +254,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_indices(self, other_args: List[str]):
         """Process indices command"""
         parser = argparse.ArgumentParser(
@@ -273,7 +270,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_futures(self, other_args: List[str]):
         """Process futures command"""
         parser = argparse.ArgumentParser(
@@ -290,7 +286,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_usbonds(self, other_args: List[str]):
         """Process usbonds command"""
         parser = argparse.ArgumentParser(
@@ -307,7 +302,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_glbonds(self, other_args: List[str]):
         """Process glbonds command"""
         parser = argparse.ArgumentParser(
@@ -324,7 +318,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_currencies(self, other_args: List[str]):
         """Process currencies command"""
         parser = argparse.ArgumentParser(
@@ -342,7 +335,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_energy(self, other_args: List[str]):
         """Process energy command"""
         parser = argparse.ArgumentParser(
@@ -378,7 +370,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_metals(self, other_args: List[str]):
         """Process metals command"""
         parser = argparse.ArgumentParser(
@@ -414,7 +405,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_meats(self, other_args: List[str]):
         """Process meats command"""
         parser = argparse.ArgumentParser(
@@ -450,7 +440,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_grains(self, other_args: List[str]):
         """Process grains command"""
         parser = argparse.ArgumentParser(
@@ -486,7 +475,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_softs(self, other_args: List[str]):
         """Process softs command"""
         parser = argparse.ArgumentParser(
@@ -522,7 +510,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_map(self, other_args: List[str]):
         """Process map command"""
         parser = argparse.ArgumentParser(
@@ -561,7 +548,6 @@ NASDAQ DataLink (formerly Quandl):
                 map_type=ns_parser.s_type,
             )
 
-    @try_except
     def call_valuation(self, other_args: List[str]):
         """Process valuation command"""
         parser = argparse.ArgumentParser(
@@ -617,7 +603,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_performance(self, other_args: List[str]):
         """Process performance command"""
         parser = argparse.ArgumentParser(
@@ -671,7 +656,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_spectrum(self, other_args: List[str]):
         """Process spectrum command"""
         parser = argparse.ArgumentParser(
@@ -709,7 +693,6 @@ NASDAQ DataLink (formerly Quandl):
         # after saving it and displaying it to the user
         os.remove(self.d_GROUPS[group] + ".jpg")
 
-    @try_except
     def call_rtps(self, other_args: List[str]):
         """Process rtps command"""
         parser = argparse.ArgumentParser(
@@ -736,7 +719,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_gdp(self, other_args: List[str]):
         """Process gdp command"""
         parser = argparse.ArgumentParser(
@@ -785,7 +767,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_gdpc(self, other_args: List[str]):
         """Process gdpc command"""
         parser = argparse.ArgumentParser(
@@ -821,7 +802,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_inf(self, other_args: List[str]):
         """Process inf command"""
         parser = argparse.ArgumentParser(
@@ -857,7 +837,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cpi(self, other_args: List[str]):
         """Process cpi command"""
         parser = argparse.ArgumentParser(
@@ -902,7 +881,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_tyld(self, other_args: List[str]):
         """Process tyld command"""
         parser = argparse.ArgumentParser(
@@ -959,7 +937,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_unemp(self, other_args: List[str]):
         """Process unemp command"""
         parser = argparse.ArgumentParser(
@@ -995,7 +972,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_bigmac(self, other_args: List[str]):
         """Process bigmac command"""
         parser = argparse.ArgumentParser(

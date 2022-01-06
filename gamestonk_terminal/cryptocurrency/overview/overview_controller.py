@@ -7,7 +7,6 @@ import difflib
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
@@ -162,7 +161,6 @@ WithdrawalFees:
 
         print(help_text)
 
-    @try_except
     def call_wf(self, other_args: List[str]):
         """Process wf command"""
         parser = argparse.ArgumentParser(
@@ -193,7 +191,6 @@ WithdrawalFees:
                 top=ns_parser.limit, export=ns_parser.export
             )
 
-    @try_except
     def call_ewf(self, other_args: List[str]):
         """Process ewf command"""
         parser = argparse.ArgumentParser(
@@ -215,7 +212,6 @@ WithdrawalFees:
                 export=ns_parser.export
             )
 
-    @try_except
     def call_wfpe(self, other_args: List[str]):
         """Process wfpe command"""
         parser = argparse.ArgumentParser(
@@ -279,7 +275,6 @@ WithdrawalFees:
                     f"Please choose one from list: {withdrawalfees_model.POSSIBLE_CRYPTOS}\n"
                 )
 
-    @try_except
     def call_cghold(self, other_args):
         """Process hold command"""
         parser = argparse.ArgumentParser(
@@ -314,7 +309,6 @@ WithdrawalFees:
                 coin=ns_parser.coin, export=ns_parser.export
             )
 
-    @try_except
     def call_cgcompanies(self, other_args):
         """Process companies command"""
         parser = argparse.ArgumentParser(
@@ -359,7 +353,6 @@ WithdrawalFees:
                 coin=ns_parser.coin, export=ns_parser.export, links=ns_parser.urls
             )
 
-    @try_except
     def call_cgnews(self, other_args):
         """Process news command"""
         parser = argparse.ArgumentParser(
@@ -420,7 +413,6 @@ WithdrawalFees:
                 links=ns_parser.urls,
             )
 
-    @try_except
     def call_cgcategories(self, other_args):
         """Process top_categories command"""
         parser = argparse.ArgumentParser(
@@ -482,7 +474,6 @@ WithdrawalFees:
                 links=ns_parser.urls,
             )
 
-    @try_except
     def call_cgstables(self, other_args):
         """Process stables command"""
         parser = argparse.ArgumentParser(
@@ -546,7 +537,6 @@ WithdrawalFees:
                 links=ns_parser.urls,
             )
 
-    @try_except
     def call_cgnft(self, other_args):
         """Process nft command"""
 
@@ -567,7 +557,6 @@ WithdrawalFees:
         if ns_parser:
             pycoingecko_view.display_nft_market_status(export=ns_parser.export)
 
-    @try_except
     def call_cgnftday(self, other_args):
         """Process nftday command"""
         parser = argparse.ArgumentParser(
@@ -587,7 +576,6 @@ WithdrawalFees:
         if ns_parser:
             pycoingecko_view.display_nft_of_the_day(export=ns_parser.export)
 
-    @try_except
     def call_cgproducts(self, other_args):
         """Process products command"""
         parser = argparse.ArgumentParser(
@@ -639,7 +627,6 @@ WithdrawalFees:
                 descend=ns_parser.descend,
             )
 
-    @try_except
     def call_cgplatforms(self, other_args):
         """Process platforms command"""
         parser = argparse.ArgumentParser(
@@ -692,7 +679,6 @@ WithdrawalFees:
                 descend=ns_parser.descend,
             )
 
-    @try_except
     def call_cgexchanges(self, other_args):
         """Process exchanges command"""
         parser = argparse.ArgumentParser(
@@ -754,7 +740,6 @@ WithdrawalFees:
                 links=ns_parser.urls,
             )
 
-    @try_except
     def call_cgexrates(self, other_args):
         """Process exchange_rates command"""
         parser = argparse.ArgumentParser(
@@ -805,7 +790,6 @@ WithdrawalFees:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cgindexes(self, other_args):
         """Process indexes command"""
         parser = argparse.ArgumentParser(
@@ -859,7 +843,6 @@ WithdrawalFees:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cgderivatives(self, other_args):
         """Process derivatives command"""
         parser = argparse.ArgumentParser(
@@ -915,7 +898,6 @@ WithdrawalFees:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cgglobal(self, other_args):
         """Process global command"""
         parser = argparse.ArgumentParser(
@@ -931,7 +913,6 @@ WithdrawalFees:
         if ns_parser:
             pycoingecko_view.display_global_market_info(export=ns_parser.export)
 
-    @try_except
     def call_cgdefi(self, other_args):
         """Process defi command"""
         parser = argparse.ArgumentParser(
@@ -951,7 +932,6 @@ WithdrawalFees:
         if ns_parser:
             pycoingecko_view.display_global_defi_info(export=ns_parser.export)
 
-    @try_except
     def call_cpglobal(self, other_args):
         """Process global command"""
 
@@ -969,7 +949,6 @@ WithdrawalFees:
         if ns_parser:
             coinpaprika_view.display_global_market(export=ns_parser.export)
 
-    @try_except
     def call_cpmarkets(self, other_args):
         """Process markets command"""
         parser = argparse.ArgumentParser(
@@ -1034,7 +1013,6 @@ WithdrawalFees:
                 sortby=ns_parser.sortby,
             )
 
-    @try_except
     def call_cpexmarkets(self, other_args):
         """Process exmarkets command"""
         parser = argparse.ArgumentParser(
@@ -1113,7 +1091,6 @@ WithdrawalFees:
                 links=ns_parser.urls,
             )
 
-    @try_except
     def call_cpinfo(self, other_args):
         """Process info command"""
         parser = argparse.ArgumentParser(
@@ -1178,7 +1155,6 @@ WithdrawalFees:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cpexchanges(self, other_args):
         """Process coins_market command"""
         parser = argparse.ArgumentParser(
@@ -1243,7 +1219,6 @@ WithdrawalFees:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cpplatforms(self, other_args):
         """Process platforms command"""
         parser = argparse.ArgumentParser(
@@ -1259,7 +1234,6 @@ WithdrawalFees:
         if ns_parser:
             coinpaprika_view.display_all_platforms(export=ns_parser.export)
 
-    @try_except
     def call_cpcontracts(self, other_args):
         """Process contracts command"""
         platforms = get_all_contract_platforms()["platform_id"].tolist()
@@ -1331,7 +1305,6 @@ WithdrawalFees:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cbpairs(self, other_args):
         """Process news command"""
         parser = argparse.ArgumentParser(
@@ -1379,7 +1352,6 @@ WithdrawalFees:
                 descend=ns_parser.descend,
             )
 
-    @try_except
     def call_news(self, other_args):
         """Process news command"""
         parser = argparse.ArgumentParser(

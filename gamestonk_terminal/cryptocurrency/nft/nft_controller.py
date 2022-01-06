@@ -3,7 +3,6 @@ from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
@@ -44,7 +43,6 @@ opensea.io
 """
         print(help_text)
 
-    @try_except
     def call_stats(self, other_args: List[str]):
         """Process stats command"""
         parser = argparse.ArgumentParser(
@@ -78,7 +76,6 @@ opensea.io
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_today(self, other_args: List[str]):
         """Process today command"""
         parser = argparse.ArgumentParser(
@@ -104,7 +101,6 @@ opensea.io
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_upcoming(self, other_args: List[str]):
         """Process upcoming command"""
         parser = argparse.ArgumentParser(
@@ -130,7 +126,6 @@ opensea.io
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_ongoing(self, other_args: List[str]):
         """Process ongoing command"""
         parser = argparse.ArgumentParser(
@@ -156,7 +151,6 @@ opensea.io
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_newest(self, other_args: List[str]):
         """Process newest command"""
         parser = argparse.ArgumentParser(

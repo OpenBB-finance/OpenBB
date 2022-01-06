@@ -11,7 +11,6 @@ from prompt_toolkit.completion import NestedCompleter
 from rich import console
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
@@ -108,7 +107,6 @@ Yahoo Finance[/italic]:
         if self.fund_name:
             self.queue.insert(4, f"load {self.fund_name} --name")
 
-    @try_except
     def call_country(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -139,7 +137,6 @@ Yahoo Finance[/italic]:
         t_console.print("")
         return self.queue
 
-    @try_except
     def call_search(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -204,7 +201,6 @@ Yahoo Finance[/italic]:
             )
         return self.queue
 
-    @try_except
     def call_overview(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -230,7 +226,6 @@ Yahoo Finance[/italic]:
             )
         return self.queue
 
-    @try_except
     def call_info(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -249,7 +244,6 @@ Yahoo Finance[/italic]:
             investpy_view.display_fund_info(self.fund_name, country=self.country)
         return self.queue
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -320,7 +314,6 @@ Potential errors
         t_console.print("")
         return self.queue
 
-    @try_except
     def call_plot(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -344,7 +337,6 @@ Potential errors
             )
         return self.queue
 
-    @try_except
     def call_sector(self, other_args: List[str]):
         """Process sector command"""
         parser = argparse.ArgumentParser(
@@ -384,7 +376,6 @@ Potential errors
 
         return self.queue
 
-    @try_except
     def call_equity(self, other_args: List[str]):
         """Process sector command"""
         parser = argparse.ArgumentParser(

@@ -15,7 +15,6 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common import newsapi_view
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
@@ -131,7 +130,6 @@ Stocks Menus:
             else:
                 self.queue.insert(3, f"load {self.ticker}")
 
-    @try_except
     def call_search(self, other_args: List[str]):
         """Process search command"""
         parser = argparse.ArgumentParser(
@@ -163,7 +161,6 @@ Stocks Menus:
         if ns_parser:
             stocks_helper.search(query=ns_parser.query, amount=ns_parser.amount)
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -271,7 +268,6 @@ Stocks Menus:
             other_args, self.ticker + "." + self.suffix if self.suffix else self.ticker
         )
 
-    @try_except
     def call_candle(self, other_args: List[str]):
         """Process candle command"""
         parser = argparse.ArgumentParser(
@@ -363,7 +359,6 @@ Stocks Menus:
             else:
                 print("No ticker loaded. First use `load {ticker}`\n")
 
-    @try_except
     def call_news(self, other_args: List[str]):
         """Process news command"""
         if not self.ticker:
@@ -587,7 +582,6 @@ Stocks Menus:
         else:
             print("Use 'load <ticker>' prior to this command!", "\n")
 
-    @try_except
     def call_pred(self, _):
         """Process pred command"""
         if gtff.ENABLE_PREDICT:

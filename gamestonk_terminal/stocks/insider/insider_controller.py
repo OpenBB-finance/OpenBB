@@ -9,7 +9,6 @@ import pandas as pd
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     parse_known_args_and_warn,
@@ -142,7 +141,6 @@ Top Insiders:
         if self.ticker:
             self.queue.insert(5, f"load {self.ticker}")
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -178,7 +176,6 @@ Top Insiders:
                 self.start = self.stock.index[0].strftime("%Y-%m-%d")
                 self.interval = "1440min"
 
-    @try_except
     def call_view(self, other_args: List[str]):
         """Process view command"""
         parser = argparse.ArgumentParser(
@@ -242,7 +239,6 @@ Top Insiders:
                     print(description.split("Description: ")[1].replace("#", ""))
                 print("")
 
-    @try_except
     def call_set(self, other_args: List[str]):
         """Process set command"""
         parser = argparse.ArgumentParser(
@@ -267,7 +263,6 @@ Top Insiders:
             self.preset = ns_parser.preset
             print("")
 
-    @try_except
     def call_filter(self, other_args: List[str]):
         """Process filter command"""
         parser = argparse.ArgumentParser(
@@ -307,7 +302,6 @@ Top Insiders:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_stats(self, other_args: List[str]):
         """Process stats command"""
         parser = argparse.ArgumentParser(
@@ -350,7 +344,6 @@ Top Insiders:
             else:
                 print("Please use `load <ticker>` before.\n")
 
-    @try_except
     def call_lcb(self, other_args: List[str]):
         """Process latest-cluster-buys"""
         parser = argparse.ArgumentParser(
@@ -378,7 +371,6 @@ Top Insiders:
                 "lcb", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_lpsb(self, other_args: List[str]):
         """Process latest-penny-stock-buys"""
         parser = argparse.ArgumentParser(
@@ -406,7 +398,6 @@ Top Insiders:
                 "lpsb", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_lit(self, other_args: List[str]):
         """Process latest-insider-trading"""
         parser = argparse.ArgumentParser(
@@ -434,7 +425,6 @@ Top Insiders:
                 "lit", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_lip(self, other_args: List[str]):
         """Process insider-purchases"""
         parser = argparse.ArgumentParser(
@@ -462,7 +452,6 @@ Top Insiders:
                 "lip", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_blip(self, other_args: List[str]):
         """Process latest-insider-purchases-25k"""
         parser = argparse.ArgumentParser(
@@ -490,7 +479,6 @@ Top Insiders:
                 "blip", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_blop(self, other_args: List[str]):
         """Process latest-officer-purchases-25k"""
         parser = argparse.ArgumentParser(
@@ -518,7 +506,6 @@ Top Insiders:
                 "blop", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_blcp(self, other_args: List[str]):
         """Process latest-ceo-cfo-purchases-25k"""
         parser = argparse.ArgumentParser(
@@ -546,7 +533,6 @@ Top Insiders:
                 "blcp", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_lis(self, other_args: List[str]):
         """Process insider-sales"""
         parser = argparse.ArgumentParser(
@@ -574,7 +560,6 @@ Top Insiders:
                 "lis", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_blis(self, other_args: List[str]):
         """Process latest-insider-sales-100k"""
         parser = argparse.ArgumentParser(
@@ -602,7 +587,6 @@ Top Insiders:
                 "blis", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_blos(self, other_args: List[str]):
         """Process latest-officer-sales-100k"""
         parser = argparse.ArgumentParser(
@@ -630,7 +614,6 @@ Top Insiders:
                 "blos", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_blcs(self, other_args: List[str]):
         """Process latest-ceo-cfo-sales-100k"""
         parser = argparse.ArgumentParser(
@@ -658,7 +641,6 @@ Top Insiders:
                 "blcs", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_topt(self, other_args: List[str]):
         """Process top-officer-purchases-of-the-day"""
         parser = argparse.ArgumentParser(
@@ -686,7 +668,6 @@ Top Insiders:
                 "topt", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_toppw(self, other_args: List[str]):
         """Process top-officer-purchases-of-the-week"""
         parser = argparse.ArgumentParser(
@@ -714,7 +695,6 @@ Top Insiders:
                 "toppw", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_toppm(self, other_args: List[str]):
         """Process top-officer-purchases-of-the-month"""
         parser = argparse.ArgumentParser(
@@ -742,7 +722,6 @@ Top Insiders:
                 "toppm", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_tipt(self, other_args: List[str]):
         """Process top-insider-purchases-of-the-day"""
         parser = argparse.ArgumentParser(
@@ -770,7 +749,6 @@ Top Insiders:
                 "tipt", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_tippw(self, other_args: List[str]):
         """Process top-insider-purchases-of-the-week"""
         parser = argparse.ArgumentParser(
@@ -798,7 +776,6 @@ Top Insiders:
                 "tippw", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_tippm(self, other_args: List[str]):
         """Process top-insider-purchases-of-the-month"""
         parser = argparse.ArgumentParser(
@@ -826,7 +803,6 @@ Top Insiders:
                 "tippm", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_tist(self, other_args: List[str]):
         """Process top-insider-sales-of-the-day"""
         parser = argparse.ArgumentParser(
@@ -854,7 +830,6 @@ Top Insiders:
                 "tist", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_tispw(self, other_args: List[str]):
         """Process top-insider-sales-of-the-week"""
         parser = argparse.ArgumentParser(
@@ -882,7 +857,6 @@ Top Insiders:
                 "tispw", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_tispm(self, other_args: List[str]):
         """Process top-insider-sales-of-the-month"""
         parser = argparse.ArgumentParser(
@@ -910,7 +884,6 @@ Top Insiders:
                 "tispm", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_act(self, other_args: List[str]):
         """Process act command"""
         parser = argparse.ArgumentParser(
@@ -953,7 +926,6 @@ Top Insiders:
             else:
                 print("No ticker loaded. First use `load {ticker}`\n")
 
-    @try_except
     def call_lins(self, other_args: List[str]):
         """Process lins command"""
         parser = argparse.ArgumentParser(

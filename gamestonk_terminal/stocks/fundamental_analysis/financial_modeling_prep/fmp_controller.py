@@ -6,7 +6,6 @@ from typing import List
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
     fmp_view,
 )
@@ -91,7 +90,6 @@ Ticker: {self.ticker}
         if self.ticker:
             self.queue.insert(5, f"load {self.ticker}")
 
-    @try_except
     def call_profile(self, other_args: List[str]):
         """Process profile command"""
         parser = argparse.ArgumentParser(
@@ -111,7 +109,6 @@ Ticker: {self.ticker}
         if ns_parser:
             fmp_view.display_profile(self.ticker)
 
-    @try_except
     def call_quote(self, other_args: List[str]):
         """Process quote command"""
         parser = argparse.ArgumentParser(
@@ -131,7 +128,6 @@ Ticker: {self.ticker}
         if ns_parser:
             fmp_view.display_quote(self.ticker)
 
-    @try_except
     def call_enterprise(self, other_args: List[str]):
         """Process income command"""
         parser = argparse.ArgumentParser(
@@ -173,7 +169,6 @@ Ticker: {self.ticker}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_dcf(self, other_args: List[str]):
         """Process dcf command"""
         parser = argparse.ArgumentParser(
@@ -214,7 +209,6 @@ Ticker: {self.ticker}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_income(self, other_args: List[str]):
         """Process income command"""
         parser = argparse.ArgumentParser(
@@ -261,7 +255,6 @@ Ticker: {self.ticker}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_balance(self, other_args: List[str]):
         """Process balance command"""
         parser = argparse.ArgumentParser(
@@ -313,7 +306,6 @@ Ticker: {self.ticker}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cash(self, other_args: List[str]):
         """Process cash command"""
         parser = argparse.ArgumentParser(
@@ -363,7 +355,6 @@ Ticker: {self.ticker}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_metrics(self, other_args: List[str]):
         """Process metrics command"""
         parser = argparse.ArgumentParser(
@@ -418,7 +409,6 @@ Ticker: {self.ticker}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_ratios(self, other_args: List[str]):
         """Process cash command"""
         parser = argparse.ArgumentParser(
@@ -474,7 +464,6 @@ Ticker: {self.ticker}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_growth(self, other_args: List[str]):
         """Process cash command"""
         parser = argparse.ArgumentParser(

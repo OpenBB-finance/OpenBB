@@ -9,7 +9,6 @@ import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     check_non_negative_float,
@@ -64,7 +63,6 @@ Ticker: {self.ticker.upper()}
         if self.ticker:
             self.queue.insert(4, f"load {self.ticker}")
 
-    @try_except
     def call_whatif(self, other_args: List[str]):
         """Call whatif"""
         parser = argparse.ArgumentParser(
@@ -99,7 +97,6 @@ Ticker: {self.ticker.upper()}
                 date_shares_acquired=ns_parser.date_shares_acquired,
             )
 
-    @try_except
     def call_ema(self, other_args: List[str]):
         """Call EMA strategy"""
         parser = argparse.ArgumentParser(
@@ -143,7 +140,6 @@ Ticker: {self.ticker.upper()}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_ema_cross(self, other_args: List[str]):
         """Call EMA Cross strategy"""
         parser = argparse.ArgumentParser(
@@ -209,7 +205,6 @@ Ticker: {self.ticker.upper()}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_rsi(self, other_args: List[str]):
         """Call RSI Strategy"""
         parser = argparse.ArgumentParser(

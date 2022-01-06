@@ -8,7 +8,6 @@ from pandas.core.frame import DataFrame
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.stocks.due_diligence import (
     fmp_view,
     business_insider_view,
@@ -165,7 +164,6 @@ cathiesark.com
                 else:
                     self.ticker = ns_parser.ticker.upper()
 
-    @try_except
     def call_analyst(self, other_args: List[str]):
         """Process analyst command"""
         parser = argparse.ArgumentParser(
@@ -183,7 +181,6 @@ cathiesark.com
         if ns_parser:
             finviz_view.analyst(ticker=self.ticker, export=ns_parser.export)
 
-    @try_except
     def call_pt(self, other_args: List[str]):
         """Process pt command"""
         parser = argparse.ArgumentParser(
@@ -223,7 +220,6 @@ cathiesark.com
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_est(self, other_args: List[str]):
         """Process est command"""
         parser = argparse.ArgumentParser(
@@ -241,7 +237,6 @@ cathiesark.com
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_rot(self, other_args: List[str]):
         """Process rot command"""
         parser = argparse.ArgumentParser(
@@ -281,7 +276,6 @@ cathiesark.com
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_rating(self, other_args: List[str]):
         """Process rating command"""
         parser = argparse.ArgumentParser(
@@ -316,7 +310,6 @@ cathiesark.com
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_sec(self, other_args: List[str]):
         """Process sec command"""
         parser = argparse.ArgumentParser(
@@ -350,7 +343,6 @@ cathiesark.com
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_supplier(self, other_args: List[str]):
         """Process supplier command"""
         parser = argparse.ArgumentParser(
@@ -385,7 +377,6 @@ cathiesark.com
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_arktrades(self, other_args):
         """Process arktrades command"""
         parser = argparse.ArgumentParser(

@@ -9,7 +9,6 @@ from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
@@ -69,7 +68,6 @@ Expiry: {self.selected_date or None}
         if self.ticker:
             self.queue.insert(6, f"load {self.ticker}")
 
-    @try_except
     def call_add(self, other_args: List[str]):
         """Process add command"""
         parser = argparse.ArgumentParser(
@@ -108,7 +106,6 @@ Expiry: {self.selected_date or None}
             self.prices = df.sort_values("Price")
             print("")
 
-    @try_except
     def call_rmv(self, other_args: List[str]):
         """Process rmv command"""
         parser = argparse.ArgumentParser(
@@ -143,7 +140,6 @@ Expiry: {self.selected_date or None}
                 self.prices = self.prices[(self.prices["Price"] != ns_parser.price)]
             print("")
 
-    @try_except
     def call_show(self, other_args):
         """Process show command"""
         parser = argparse.ArgumentParser(
@@ -169,7 +165,6 @@ Expiry: {self.selected_date or None}
             else:
                 print(self.prices.to_string, "\n")
 
-    @try_except
     def call_rnval(self, other_args: List[str]):
         """Process rnval command"""
         parser = argparse.ArgumentParser(

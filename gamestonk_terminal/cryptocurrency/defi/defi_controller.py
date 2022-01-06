@@ -6,7 +6,6 @@ import argparse
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.cryptocurrency.defi import graph_model
 from gamestonk_terminal import feature_flags as gtff
@@ -83,7 +82,6 @@ Uniswap:
 """
         print(help_text)
 
-    @try_except
     def call_dpi(self, other_args: List[str]):
         """Process dpi command"""
         parser = argparse.ArgumentParser(
@@ -135,7 +133,6 @@ Uniswap:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_llama(self, other_args: List[str]):
         """Process llama command"""
         parser = argparse.ArgumentParser(
@@ -196,7 +193,6 @@ Uniswap:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_tvl(self, other_args: List[str]):
         """Process tvl command"""
         parser = argparse.ArgumentParser(
@@ -225,7 +221,6 @@ Uniswap:
         if ns_parser:
             llama_view.display_defi_tvl(top=ns_parser.limit, export=ns_parser.export)
 
-    @try_except
     def call_funding(self, other_args: List[str]):
         """Process funding command"""
         parser = argparse.ArgumentParser(
@@ -264,7 +259,6 @@ Uniswap:
                 top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
             )
 
-    @try_except
     def call_borrow(self, other_args: List[str]):
         """Process borrow command"""
         parser = argparse.ArgumentParser(
@@ -303,7 +297,6 @@ Uniswap:
                 top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
             )
 
-    @try_except
     def call_lending(self, other_args: List[str]):
         """Process lending command"""
         parser = argparse.ArgumentParser(
@@ -342,7 +335,6 @@ Uniswap:
                 top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
             )
 
-    @try_except
     def call_newsletter(self, other_args: List[str]):
         """Process newsletter command"""
         parser = argparse.ArgumentParser(
@@ -373,7 +365,6 @@ Uniswap:
                 top=ns_parser.limit, export=ns_parser.export
             )
 
-    @try_except
     def call_tokens(self, other_args: List[str]):
         """Process tokens command"""
         parser = argparse.ArgumentParser(
@@ -433,7 +424,6 @@ Uniswap:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_stats(self, other_args: List[str]):
         """Process stats command"""
         parser = argparse.ArgumentParser(
@@ -453,7 +443,6 @@ Uniswap:
         if ns_parser:
             graph_view.display_uni_stats(export=ns_parser.export)
 
-    @try_except
     def call_pairs(self, other_args: List[str]):
         """Process pairs command"""
         parser = argparse.ArgumentParser(
@@ -534,7 +523,6 @@ Uniswap:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_pools(self, other_args: List[str]):
         """Process pools command"""
         parser = argparse.ArgumentParser(
@@ -586,7 +574,6 @@ Uniswap:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_swaps(self, other_args: List[str]):
         """Process swaps command"""
         parser = argparse.ArgumentParser(

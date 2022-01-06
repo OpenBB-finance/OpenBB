@@ -15,7 +15,6 @@ from prompt_toolkit.completion import NestedCompleter
 from thepassiveinvestor import create_ETF_report
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.etf import (
     stockanalysis_view,
@@ -118,7 +117,6 @@ Major holdings: {', '.join(self.etf_holdings)}
         if self.etf_name:
             self.queue.insert(3, f"load {self.etf_name}")
 
-    @try_except
     def call_ln(self, other_args: List[str]):
         """Process ln command"""
         parser = argparse.ArgumentParser(
@@ -177,7 +175,6 @@ Major holdings: {', '.join(self.etf_holdings)}
             else:
                 print("Wrong source choice!\n")
 
-    @try_except
     def call_ld(self, other_args: List[str]):
         """Process ld command"""
         parser = argparse.ArgumentParser(
@@ -218,7 +215,6 @@ Major holdings: {', '.join(self.etf_holdings)}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -288,7 +284,6 @@ Major holdings: {', '.join(self.etf_holdings)}
 
             print("")
 
-    @try_except
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
         parser = argparse.ArgumentParser(
@@ -306,7 +301,6 @@ Major holdings: {', '.join(self.etf_holdings)}
                 symbol=self.etf_name, export=ns_parser.export
             )
 
-    @try_except
     def call_holdings(self, other_args: List[str]):
         """Process holdings command"""
         parser = argparse.ArgumentParser(
@@ -336,7 +330,6 @@ Major holdings: {', '.join(self.etf_holdings)}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_news(self, other_args: List[str]):
         """Process news command"""
         parser = argparse.ArgumentParser(
@@ -403,7 +396,6 @@ Major holdings: {', '.join(self.etf_holdings)}
             else:
                 print("Use 'load <ticker>' prior to this command!", "\n")
 
-    @try_except
     def call_candle(self, other_args: List[str]):
         """Process candle command"""
         parser = argparse.ArgumentParser(
@@ -475,7 +467,6 @@ Major holdings: {', '.join(self.etf_holdings)}
             else:
                 print("No ticker loaded. First use `load {ticker}`\n")
 
-    @try_except
     def call_pir(self, other_args):
         """Process pir command"""
         parser = argparse.ArgumentParser(
@@ -520,7 +511,6 @@ Major holdings: {', '.join(self.etf_holdings)}
                     f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
                 )
 
-    @try_except
     def call_weights(self, other_args: List[str]):
         """Process weights command"""
         parser = argparse.ArgumentParser(
@@ -557,7 +547,6 @@ Major holdings: {', '.join(self.etf_holdings)}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_summary(self, other_args: List[str]):
         """Process summary command"""
         parser = argparse.ArgumentParser(
@@ -575,7 +564,6 @@ Major holdings: {', '.join(self.etf_holdings)}
                 name=self.etf_name,
             )
 
-    @try_except
     def call_ta(self, _):
         """Process ta command"""
         if self.etf_name:
@@ -585,7 +573,6 @@ Major holdings: {', '.join(self.etf_holdings)}
         else:
             print("Use 'load <ticker>' prior to this command!", "\n")
 
-    @try_except
     def call_pred(self, _):
         """Process pred command"""
         if gtff.ENABLE_PREDICT:
@@ -616,7 +603,6 @@ Major holdings: {', '.join(self.etf_holdings)}
                 "\n",
             )
 
-    @try_except
     def call_ca(self, _):
         """Process ca command"""
         if len(self.etf_holdings) > 0:
@@ -624,17 +610,14 @@ Major holdings: {', '.join(self.etf_holdings)}
                 self.etf_holdings, self.queue
             ).menu()
 
-    @try_except
     def call_scr(self, _):
         """Process scr command"""
         self.queue = screener_controller.ScreenerController(self.queue).menu()
 
-    @try_except
     def call_disc(self, _):
         """Process disc command"""
         self.queue = disc_controller.DiscoveryController(self.queue).menu()
 
-    @try_except
     def call_compare(self, other_args):
         """Process compare command"""
         parser = argparse.ArgumentParser(

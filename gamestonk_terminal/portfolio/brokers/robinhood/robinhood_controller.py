@@ -12,7 +12,6 @@ from gamestonk_terminal.portfolio.brokers.robinhood import (
     robinhood_model,
 )
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -51,12 +50,10 @@ Robinhood:
 
         print(help_text)
 
-    @try_except
     def call_login(self, _):
         """Process login"""
         robinhood_model.login()
 
-    @try_except
     def call_holdings(self, other_args: List[str]):
         """Process holdings command"""
         parser = argparse.ArgumentParser(
@@ -71,7 +68,6 @@ Robinhood:
         if ns_parser:
             robinhood_view.display_holdings(export=ns_parser.export)
 
-    @try_except
     def call_history(self, other_args: List[str]):
         """Process history command"""
         parser = argparse.ArgumentParser(

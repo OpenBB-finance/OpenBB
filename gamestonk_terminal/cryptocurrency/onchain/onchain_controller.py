@@ -12,7 +12,6 @@ from colorama.ansi import Style
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
     GLASSNODE_SUPPORTED_HASHRATE_ASSETS,
     INTERVALS,
@@ -127,7 +126,6 @@ class OnchainController(BaseController):
             choices["baas"]["-s"] = {c: None for c in bitquery_model.BAAS_FILTERS}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-    @try_except
     def call_hr(self, other_args: List[str]):
         """Process hr command"""
 
@@ -195,7 +193,6 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_gwei(self, other_args: List[str]):
         """Process gwei command"""
         parser = argparse.ArgumentParser(
@@ -215,7 +212,6 @@ class OnchainController(BaseController):
         if ns_parser:
             ethgasstation_view.display_gwei_fees(export=ns_parser.export)
 
-    @try_except
     def call_whales(self, other_args: List[str]):
         """Process whales command"""
         parser = argparse.ArgumentParser(
@@ -286,7 +282,6 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_address(self, other_args: List[str]):
         """Process address command"""
         parser = argparse.ArgumentParser(
@@ -362,7 +357,6 @@ class OnchainController(BaseController):
             self.address = ns_parser.address
             self.address_type = address_type
 
-    @try_except
     def call_balance(self, other_args: List[str]):
         """Process balance command"""
         parser = argparse.ArgumentParser(
@@ -417,7 +411,6 @@ class OnchainController(BaseController):
         else:
             print("You need to set an ethereum address\n")
 
-    @try_except
     def call_hist(self, other_args: List[str]):
         """Process hist command"""
         parser = argparse.ArgumentParser(
@@ -473,7 +466,6 @@ class OnchainController(BaseController):
         else:
             print("You need to set an ethereum address\n")
 
-    @try_except
     def call_holders(self, other_args: List[str]):
         """Process holders command"""
         parser = argparse.ArgumentParser(
@@ -528,7 +520,6 @@ class OnchainController(BaseController):
         else:
             print("You need to set an ethereum address\n")
 
-    @try_except
     def call_top(self, other_args: List[str]):
         """Process top command"""
         parser = argparse.ArgumentParser(
@@ -580,7 +571,6 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_info(self, other_args: List[str]):
         """Process info command"""
         parser = argparse.ArgumentParser(
@@ -614,7 +604,6 @@ class OnchainController(BaseController):
         else:
             print("You need to set an ethereum address\n")
 
-    @try_except
     def call_th(self, other_args: List[str]):
         """Process th command"""
         parser = argparse.ArgumentParser(
@@ -679,7 +668,6 @@ class OnchainController(BaseController):
         else:
             print("You need to set an ethereum address\n")
 
-    @try_except
     def call_tx(self, other_args: List[str]):
         """Process tx command"""
         parser = argparse.ArgumentParser(
@@ -705,7 +693,6 @@ class OnchainController(BaseController):
         else:
             print("You need to set an ethereum address\n")
 
-    @try_except
     def call_prices(self, other_args: List[str]):
         """Process prices command"""
         parser = argparse.ArgumentParser(
@@ -760,7 +747,6 @@ class OnchainController(BaseController):
         else:
             print("You need to set an ethereum address\n")
 
-    @try_except
     def call_lt(self, other_args: List[str]):
         """Process lt command"""
         parser = argparse.ArgumentParser(
@@ -844,7 +830,6 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_dvcp(self, other_args: List[str]):
         """Process dvcp command"""
         parser = argparse.ArgumentParser(
@@ -923,7 +908,6 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_tv(self, other_args: List[str]):
         """Process tv command"""
         parser = argparse.ArgumentParser(
@@ -998,7 +982,6 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_ueat(self, other_args: List[str]):
         """Process ueat command"""
         parser = argparse.ArgumentParser(
@@ -1064,7 +1047,6 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_ttcp(self, other_args: List[str]):
         """Process ttcp command"""
         parser = argparse.ArgumentParser(
@@ -1173,7 +1155,6 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_baas(self, other_args: List[str]):
         """Process baas command"""
         parser = argparse.ArgumentParser(

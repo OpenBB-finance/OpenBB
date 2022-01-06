@@ -6,7 +6,6 @@ import argparse
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers.coinbase import (
@@ -60,7 +59,6 @@ Coinbase:
 """
         print(help_text)
 
-    @try_except
     def call_account(self, other_args):
         """Process account command"""
         parser = argparse.ArgumentParser(
@@ -98,7 +96,6 @@ Coinbase:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_history(self, other_args):
         """Process account command"""
         parser = argparse.ArgumentParser(
@@ -137,7 +134,6 @@ Coinbase:
                 ns_parser.account, ns_parser.export, ns_parser.limit
             )
 
-    @try_except
     def call_orders(self, other_args):
         """Process orders command"""
         parser = argparse.ArgumentParser(
@@ -182,7 +178,6 @@ Coinbase:
                 ns_parser.limit, ns_parser.sortby, ns_parser.descend, ns_parser.export
             )
 
-    @try_except
     def call_deposits(self, other_args):
         """Process deposits command"""
         parser = argparse.ArgumentParser(

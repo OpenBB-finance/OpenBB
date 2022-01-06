@@ -8,7 +8,6 @@ from prompt_toolkit.completion import NestedCompleter
 from colorama import Style
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
     fmp_controller,
     fmp_view,
@@ -151,7 +150,6 @@ Other Sources:
         if self.ticker:
             self.queue.insert(4, f"load {self.ticker}")
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command."""
         parser = argparse.ArgumentParser(
@@ -220,7 +218,6 @@ Other Sources:
                 else:
                     self.ticker = ns_parser.ticker.upper()
 
-    @try_except
     def call_analysis(self, other_args: List[str]):
         """Process analysis command."""
         parser = argparse.ArgumentParser(
@@ -235,7 +232,6 @@ Other Sources:
         if ns_parser:
             eclect_us_view.display_analysis(self.ticker)
 
-    @try_except
     def call_mgmt(self, other_args: List[str]):
         """Process mgmt command."""
         parser = argparse.ArgumentParser(
@@ -256,7 +252,6 @@ Other Sources:
                 ticker=self.ticker, export=ns_parser.export
             )
 
-    @try_except
     def call_data(self, other_args: List[str]):
         """Process screener command."""
         parser = argparse.ArgumentParser(
@@ -284,7 +279,6 @@ Other Sources:
         if ns_parser:
             finviz_view.display_screen_data(self.ticker)
 
-    @try_except
     def call_score(self, other_args: List[str]):
         """Process score command."""
         parser = argparse.ArgumentParser(
@@ -302,7 +296,6 @@ Other Sources:
         if ns_parser:
             fmp_view.valinvest_score(self.ticker)
 
-    @try_except
     def call_info(self, other_args: List[str]):
         """Process info command."""
         parser = argparse.ArgumentParser(
@@ -336,7 +329,6 @@ Other Sources:
         if ns_parser:
             yahoo_finance_view.display_info(self.ticker)
 
-    @try_except
     def call_shrs(self, other_args: List[str]):
         """Process shrs command."""
         parser = argparse.ArgumentParser(
@@ -353,7 +345,6 @@ Other Sources:
         if ns_parser:
             yahoo_finance_view.display_shareholders(self.ticker)
 
-    @try_except
     def call_sust(self, other_args: List[str]):
         """Process sust command."""
         parser = argparse.ArgumentParser(
@@ -375,7 +366,6 @@ Other Sources:
         if ns_parser:
             yahoo_finance_view.display_sustainability(self.ticker)
 
-    @try_except
     def call_cal(self, other_args: List[str]):
         """Process cal command."""
         parser = argparse.ArgumentParser(
@@ -393,7 +383,6 @@ Other Sources:
         if ns_parser:
             yahoo_finance_view.display_calendar_earnings(ticker=self.ticker)
 
-    @try_except
     def call_web(self, other_args: List[str]):
         """Process web command."""
         parser = argparse.ArgumentParser(
@@ -410,7 +399,6 @@ Other Sources:
         if ns_parser:
             yahoo_finance_view.open_web(self.ticker)
 
-    @try_except
     def call_hq(self, other_args: List[str]):
         """Process hq command."""
         parser = argparse.ArgumentParser(
@@ -427,7 +415,6 @@ Other Sources:
         if ns_parser:
             yahoo_finance_view.open_headquarters_map(self.ticker)
 
-    @try_except
     def call_divs(self, other_args: List[str]):
         """Process divs command."""
         parser = argparse.ArgumentParser(
@@ -463,7 +450,6 @@ Other Sources:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_overview(self, other_args: List[str]):
         """Process overview command."""
         parser = argparse.ArgumentParser(
@@ -494,7 +480,6 @@ Other Sources:
         if ns_parser:
             av_view.display_overview(self.ticker)
 
-    @try_except
     def call_key(self, other_args: List[str]):
         """Process overview command."""
         parser = argparse.ArgumentParser(
@@ -515,7 +500,6 @@ Other Sources:
         if ns_parser:
             av_view.display_key(self.ticker)
 
-    @try_except
     def call_income(self, other_args: List[str]):
         """Process income command."""
         parser = argparse.ArgumentParser(
@@ -561,7 +545,6 @@ Other Sources:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_balance(self, other_args: List[str]):
         """Process balance command."""
         parser = argparse.ArgumentParser(
@@ -613,7 +596,6 @@ Other Sources:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cash(self, other_args: List[str]):
         """Process cash command."""
         parser = argparse.ArgumentParser(
@@ -663,7 +645,6 @@ Other Sources:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_earnings(self, other_args: List[str]):
         """Process earnings command."""
         parser = argparse.ArgumentParser(
@@ -702,7 +683,6 @@ Other Sources:
                 quarterly=ns_parser.b_quarter,
             )
 
-    @try_except
     def call_fraud(self, other_args: List[str]):
         """Process fraud command."""
         parser = argparse.ArgumentParser(
@@ -751,7 +731,6 @@ Other Sources:
         if ns_parser:
             av_view.display_fraud(self.ticker)
 
-    @try_except
     def call_dcf(self, other_args: List[str]):
         """Process dcf command."""
         parser = argparse.ArgumentParser(
@@ -779,7 +758,6 @@ Other Sources:
             dcf = dcf_view.CreateExcelFA(self.ticker, ns_parser.audit)
             dcf.create_workbook()
 
-    @try_except
     def call_warnings(self, other_args: List[str]):
         """Process warnings command."""
         parser = argparse.ArgumentParser(
@@ -816,7 +794,6 @@ Other Sources:
         ).menu()
 
 
-@try_except
 def key_metrics_explained(other_args: List[str]):
     """Key metrics explained.
 

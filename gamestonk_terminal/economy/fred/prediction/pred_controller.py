@@ -9,7 +9,6 @@ from prompt_toolkit.completion import NestedCompleter
 from rich.console import Console
 
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
@@ -108,7 +107,6 @@ Models:
         if self.current_series:
             self.queue.insert(6, f"add {list(self.current_series.keys())[0]}")
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process add command"""
         parser = argparse.ArgumentParser(
@@ -153,7 +151,6 @@ Models:
                 f"Current Series: {', '.join(self.current_series.keys()).upper() or None}\n"
             )
 
-    @try_except
     def call_ets(self, other_args: List[str]):
         """Process ets command"""
         parser = argparse.ArgumentParser(
@@ -251,7 +248,6 @@ Models:
                 time_res=self.resolution,
             )
 
-    @try_except
     def call_knn(self, other_args: List[str]):
         """Process knn command"""
         parser = argparse.ArgumentParser(
@@ -350,7 +346,6 @@ Models:
             except ValueError:
                 t_console.print("The loaded data does not have enough data")
 
-    @try_except
     def call_regression(self, other_args: List[str]):
         """Process linear command"""
         parser = argparse.ArgumentParser(
@@ -457,7 +452,6 @@ Models:
             except ValueError as e:
                 t_console.print(e)
 
-    @try_except
     def call_arima(self, other_args: List[str]):
         """Process arima command"""
         parser = argparse.ArgumentParser(
@@ -562,7 +556,6 @@ Models:
                 time_res=self.resolution,
             )
 
-    @try_except
     def call_mlp(self, other_args: List[str]):
         """Process mlp command"""
         try:
@@ -706,7 +699,6 @@ Models:
         finally:
             pred_helper.restore_env()
 
-    @try_except
     def call_mc(self, other_args: List[str]):
         """Process mc command"""
         parser = argparse.ArgumentParser(
