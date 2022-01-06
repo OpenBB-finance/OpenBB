@@ -2,12 +2,13 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List, Union
+from typing import List
 from datetime import datetime, timedelta
 from pandas.core.frame import DataFrame
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.decorators import try_except, menu_decorator
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.stocks.due_diligence import (
     fmp_view,
     business_insider_view,
@@ -22,32 +23,14 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    system_clear,
     valid_date,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks import stocks_helper
 
-# pylint: disable=W0613
 
-
-class DueDiligenceController:
+class DueDiligenceController(BaseController):
     """Due Diligence Controller"""
-
-    # Command choices
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
 
     CHOICES_COMMANDS = [
         "load",
@@ -61,8 +44,6 @@ class DueDiligenceController:
         "customer",
         "arktrades",
     ]
-
-    CHOICES += CHOICES_COMMANDS
 
     def __init__(
         self,
@@ -78,22 +59,15 @@ class DueDiligenceController:
         self.interval = interval
         self.stock = stock
 
-        self.dd_parser = argparse.ArgumentParser(add_help=False, prog="dd")
-        self.dd_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-        self.completer: Union[None, NestedCompleter] = None
+        super().__init__("/stocks/dd/", queue)
+
+        self.choices += self.CHOICES_COMMANDS
+
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
             choices["load"]["-i"] = {c: {} for c in stocks_helper.INTERVALS}
             choices["load"]["-s"] = {c: {} for c in stocks_helper.SOURCES}
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
     def print_help(self):
         """Print help"""
@@ -119,91 +93,10 @@ cathiesark.com
         """
         print(help_text)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-        Parameters
-        -------
-        an_input : str
-            string with input arguments
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.dd_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "dd")
+    def custom_reset(self, _):
+        """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(0, f"load {self.ticker}")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            self.queue.insert(4, f"load {self.ticker}")
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -530,28 +423,3 @@ cathiesark.com
                 export=ns_parser.export,
                 show_ticker=ns_parser.show_ticker,
             )
-
-
-@menu_decorator("/stocks/dd/", DueDiligenceController)
-def menu(
-    ticker: str,
-    start: str,
-    interval: str,
-    stock: DataFrame,
-    queue: List[str] = None,
-):
-    """Due Diligence Menu
-
-    Parameters
-    ----------
-    ticker : str
-        Due diligence ticker symbol
-    start : str
-        Start date of the stock data
-    interval : str
-        Stock data interval
-    stock : DataFrame
-        Due diligence stock dataframe
-    queue: List[str]
-        List with commands in queue to run
-    """

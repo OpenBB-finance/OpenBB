@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 from abc import ABCMeta, abstractmethod
 import argparse
 import difflib
-from typing import Union, List
+from typing import Union, List, Callable
 
 from prompt_toolkit.completion import NestedCompleter
 
@@ -48,7 +48,7 @@ class BaseController:
         self,
         path: str,
         queue: List[str] = None,
-        dynamic_completer = None,
+        dynamic_completer: Callable[..., NestedCompleter] = None,
     ) -> None:
         self.choices = self.CHOICES
         self.path = path

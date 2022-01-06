@@ -1,14 +1,14 @@
 """Fundamental Analysis Controller."""
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines
 
 import argparse
 from datetime import datetime, timedelta
-from typing import List, Union
+from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from colorama import Style
 
-from gamestonk_terminal.decorators import try_except, menu_decorator
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
     fmp_controller,
     fmp_view,
@@ -27,31 +27,16 @@ from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     parse_known_args_and_warn,
     check_positive,
-    system_clear,
     valid_date,
 )
 from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.menu import session
 
-# pylint: disable=inconsistent-return-statements,W0613
+# pylint: disable=inconsistent-return-statements
 
 
-class FundamentalAnalysisController:
+class FundamentalAnalysisController(BaseController):
     """Fundamental Analysis Controller."""
-
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
 
     CHOICES_COMMANDS = [
         "load",
@@ -84,9 +69,6 @@ class FundamentalAnalysisController:
         "fmp",
     ]
 
-    CHOICES += CHOICES_COMMANDS
-    CHOICES += CHOICES_MENUS
-
     def __init__(
         self,
         ticker: str,
@@ -115,22 +97,15 @@ class FundamentalAnalysisController:
         self.interval = interval
         self.suffix = suffix
 
-        self.fa_parser = argparse.ArgumentParser(add_help=False, prog="fa")
-        self.fa_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-        self.completer: Union[None, NestedCompleter] = None
+        super().__init__("/stocks/fa/", queue)
+        self.choices += self.CHOICES_COMMANDS
+        self.choices += self.CHOICES_MENUS
+
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
             choices["load"]["-i"] = {c: {} for c in stocks_helper.INTERVALS}
             choices["load"]["-s"] = {c: {} for c in stocks_helper.SOURCES}
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
     def print_help(self):
         """Print help."""
@@ -171,92 +146,10 @@ Other Sources:
         # print("   balance       balance sheet of the company")
         # print("   cash          cash flow statement of the company")
 
-    def switch(self, an_input: str):
-        """Process and dispatch input.
-
-        Parameters
-        ----------
-        an_input : str
-            string with input arguments
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.fa_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command."""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command."""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command."""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command."""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command."""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command."""
-        self.queue.insert(0, "fa")
+    def custom_reset(self, _):
+        """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(0, f"load {self.ticker}")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            self.queue.insert(4, f"load {self.ticker}")
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -918,9 +811,9 @@ Other Sources:
 
     def call_fmp(self, _):
         """Process fmp command."""
-        self.queue = fmp_controller.menu(
+        self.queue = fmp_controller.FinancialModelingPrepController(
             self.ticker, self.start, self.interval, self.queue
-        )
+        ).menu()
 
 
 @try_except
@@ -952,10 +845,3 @@ def key_metrics_explained(other_args: List[str]):
                 print(f"{line.strip()}")
                 line = fp.readline()
             print("")
-
-
-@menu_decorator("/stocks/fa/", FundamentalAnalysisController)
-def menu(
-    ticker: str, start: str, interval: str, suffix: str = "", queue: List[str] = None
-):
-    """Fundamental Analysis Menu."""

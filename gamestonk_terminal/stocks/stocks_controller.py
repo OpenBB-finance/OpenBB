@@ -28,7 +28,7 @@ from gamestonk_terminal.stocks import stocks_helper
 
 from gamestonk_terminal.common.quantitative_analysis import qa_view
 
-# pylint: disable=R1710,import-outside-toplevel,W0613
+# pylint: disable=R1710,import-outside-toplevel
 
 logger = logging.getLogger(__name__)
 
@@ -432,31 +432,43 @@ Stocks Menus:
 
     def call_disc(self, _):
         """Process disc command"""
-        from gamestonk_terminal.stocks.discovery.disc_controller import DiscoveryController
+        from gamestonk_terminal.stocks.discovery.disc_controller import (
+            DiscoveryController,
+        )
 
         self.queue = DiscoveryController(self.queue).menu()
 
     def call_dps(self, _):
         """Process dps command"""
-        from gamestonk_terminal.stocks.dark_pool_shorts.dps_controller import DarkPoolShortsController
+        from gamestonk_terminal.stocks.dark_pool_shorts.dps_controller import (
+            DarkPoolShortsController,
+        )
 
-        self.queue = DarkPoolShortsController(self.ticker, self.start, self.stock, self.queue).menu()
+        self.queue = DarkPoolShortsController(
+            self.ticker, self.start, self.stock, self.queue
+        ).menu()
 
     def call_scr(self, _):
         """Process scr command"""
-        from gamestonk_terminal.stocks.screener.screener_controller import ScreenerController
+        from gamestonk_terminal.stocks.screener.screener_controller import (
+            ScreenerController,
+        )
 
         self.queue = ScreenerController(self.queue).menu()
 
     def call_sia(self, _):
         """Process ins command"""
-        from gamestonk_terminal.stocks.sector_industry_analysis.sia_controller import SectorIndustryAnalysisController
+        from gamestonk_terminal.stocks.sector_industry_analysis.sia_controller import (
+            SectorIndustryAnalysisController,
+        )
 
         self.queue = SectorIndustryAnalysisController(self.ticker, self.queue).menu()
 
     def call_ins(self, _):
         """Process ins command"""
-        from gamestonk_terminal.stocks.insider.insider_controller import InsiderController
+        from gamestonk_terminal.stocks.insider.insider_controller import (
+            InsiderController,
+        )
 
         self.queue = InsiderController(
             self.ticker,
@@ -474,14 +486,18 @@ Stocks Menus:
 
     def call_options(self, _):
         """Process options command"""
-        from gamestonk_terminal.stocks.options.options_controller import OptionsController
+        from gamestonk_terminal.stocks.options.options_controller import (
+            OptionsController,
+        )
 
         self.queue = OptionsController(self.ticker, self.queue).menu()
 
     def call_res(self, _):
         """Process res command"""
         if self.ticker:
-            from gamestonk_terminal.stocks.research.res_controller import ResearchController
+            from gamestonk_terminal.stocks.research.res_controller import (
+                ResearchController,
+            )
 
             self.queue = ResearchController(
                 self.ticker,
