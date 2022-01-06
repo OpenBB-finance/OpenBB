@@ -1,7 +1,7 @@
 import discord
 import discordbot.config_discordbot as cfg
 from discordbot.helpers import pagination
-
+from discordbot.run_discordbot import logger
 from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
 
 
@@ -11,7 +11,7 @@ async def sidtc_command(ctx, sort="float", num="10"):
     try:
         # Debug
         if cfg.DEBUG:
-            print(f"\n!stocks.dps.sidtc {sort} {num}")
+            logger.debug("!stocks.dps.sidtc %s %s", sort, num)
 
         # Check for argument
         possible_sorts = ("float", "dtc", "si")
@@ -33,7 +33,7 @@ async def sidtc_command(ctx, sort="float", num="10"):
 
         # Debug user output
         if cfg.DEBUG:
-            print(df.to_string())
+            logger.debug(df.to_string())
 
         # Output data
         dp_date = df["Date"].values[0]

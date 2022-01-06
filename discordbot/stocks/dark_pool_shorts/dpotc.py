@@ -1,12 +1,12 @@
 import os
-import matplotlib.dates as mdates
-import discord
-from matplotlib import pyplot as plt
-import yfinance as yf
-import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
-from gamestonk_terminal.config_plot import PLOT_DPI
 
+import discord
+import matplotlib.dates as mdates
+import yfinance as yf
+from matplotlib import pyplot as plt
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur, logger
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.stocks.dark_pool_shorts import finra_model
 
 
@@ -16,7 +16,7 @@ async def dpotc_command(ctx, ticker=""):
     try:
         # Debug user input
         if cfg.DEBUG:
-            print(f"\n!stocks.dps.dpotc {ticker}")
+            logger.debug("!stocks.dps.dpotc %s", ticker)
 
         # Check for argument
         if ticker == "":
@@ -33,8 +33,8 @@ async def dpotc_command(ctx, ticker=""):
 
         # Debug user output
         if cfg.DEBUG:
-            print(ats.to_string())
-            print(otc.to_string())
+            logger.debug(ats.to_string())
+            logger.debug(otc.to_string())
 
         # Output data
         title = f"Stocks: [FINRA] Dark Pools (ATS) vs OTC {ticker}"
