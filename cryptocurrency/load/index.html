@@ -9,8 +9,8 @@
 
 
 
-    <meta name="description" content="usage: load [-c COIN] [-s {cp,cg,bin,cb}] [-h] Load crypto currency to perform analysis on. Available data sources are CoinGecko, CoinPaprika, Binance, CoinbaseBy default main source used for analysis is CoinGecko (cg). To change it use &ndash;source flag
-optional arguments: -c COIN, --coin COIN Coin to get (default: None) -s {cp,cg,bin,cb}, --source {cp,cg,bin,cb} Source of data (default: cg) -h, --help show this help message (default: False) ">
+    <meta name="description" content="usage: load [-c COIN] [--source {cp,cg,bin,cb}] [-s --start S_START_DATE] [-i --interval {1day,1hour,...}] [--vs {USD,BTC,...}] [-h] Load crypto currency to perform analysis on. Available data sources are CoinGecko, CoinPaprika, Binance, Coinbase. By default main source used for analysis is CoinGecko (cg). To change it use &ndash;source flag.
+arguments: -c COIN, --coin COIN Coin to get (default: None) -s {cp,cg,bin,cb}, --source {cp,cg,bin,cb} Source of data (default: cg) -s/--start: The starting date (format YYYY-MM-DD) of the crypto (e.">
 
 
 
@@ -9773,6 +9773,37 @@ optional arguments: -c COIN, --coin COIN Coin to get (default: None) -s {cp,cg,b
             
             <span class="flex">
                 
+                <a href="/GamestonkTerminal/cryptocurrency/coins/"
+                    class="gdoc-nav__entry ">
+                    coins
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
                 <a href="/GamestonkTerminal/cryptocurrency/headlines/"
                     class="gdoc-nav__entry ">
                     headlines
@@ -9825,37 +9856,6 @@ optional arguments: -c COIN, --coin COIN Coin to get (default: None) -s {cp,cg,b
 
 
 <ul class="gdoc-nav__list">
-
-    
-    
-
-    <li style="margin-top: 15px;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/cryptocurrency/discovery/coins/"
-                    class="gdoc-nav__entry ">
-                    coins
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
 
     
     
@@ -10791,37 +10791,6 @@ optional arguments: -c COIN, --coin COIN Coin to get (default: None) -s {cp,cg,b
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/cryptocurrency/overview/cgcompanies/"
-                    class="gdoc-nav__entry ">
-                    cgcompanies
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
                 <a href="/GamestonkTerminal/cryptocurrency/overview/cpglobal/"
                     class="gdoc-nav__entry ">
                     cpglobal
@@ -11616,37 +11585,6 @@ optional arguments: -c COIN, --coin COIN Coin to get (default: None) -s {cp,cg,b
                 <a href="/GamestonkTerminal/cryptocurrency/due_diligence/bc/"
                     class="gdoc-nav__entry ">
                     bc
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/cryptocurrency/due_diligence/chart/"
-                    class="gdoc-nav__entry ">
-                    chart
                 </a>
             </span>
             
@@ -17226,14 +17164,24 @@ optional arguments: -c COIN, --coin COIN Coin to get (default: None) -s {cp,cg,b
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Load</h1>
-        <pre><code>usage: load [-c COIN] [-s {cp,cg,bin,cb}] [-h]
-</code></pre><p>Load crypto currency to perform analysis on. Available data sources are CoinGecko, CoinPaprika, Binance, CoinbaseBy default main source used for
-analysis is CoinGecko (cg). To change it use &ndash;source flag</p>
-<pre><code>optional arguments:
+        <pre><code>usage: load [-c COIN] [--source {cp,cg,bin,cb}] [-s  --start S_START_DATE] [-i --interval {1day,1hour,...}] [--vs {USD,BTC,...}] [-h]
+</code></pre><p>Load crypto currency to perform analysis on. Available data sources are CoinGecko, CoinPaprika, Binance, Coinbase. By default main source used for analysis is CoinGecko (cg). To change it use &ndash;source flag.</p>
+<pre><code>arguments:
   -c COIN, --coin COIN  Coin to get (default: None)
   -s {cp,cg,bin,cb}, --source {cp,cg,bin,cb}
                         Source of data (default: cg)
+  -s/--start: The starting date (format YYYY-MM-DD) of the crypto (e.g.,: 2020-11-07)
   -h, --help            show this help message (default: False)
+</code></pre><p>All the sources share the arguments specified above but <code>--interval</code> and <code>--vs</code> differ from source to source.</p>
+<p>For CoinPaprika and CoinGecko are similar:</p>
+<pre><code>  --vs VS              The currency to look the loaded coin against. Both USD and BTC are supported. Default: `USD`
+  -i/--interval        Interval to look data for. These two sources only support daily data. Default: `1day`
+</code></pre><p>For Coinbase:</p>
+<pre><code>  --vs VS              The currency to look the loaded coin against. Depends on the crypto loaded. Default: `USDT`
+  -i/--interval        Interval to look data for. Default is `1day` but support all of the following: ['1min', '5min', '15min', '1hour', '6hour', '24hour', '1day']
+</code></pre><p>For Binance:</p>
+<pre><code>  --vs VS             The currency to look the loaded coin against. Depends on the crypto loaded. Default: `USDT`
+  -i/--interval       Interval to look data for. Default is `1day` but support all of the following: ['1day', '3day', '1hour', '2hour', '4hour', '6hour', '8hour', '12hour', '1week', '1min', '3min', '5min', '15min', '30min', '1month']
 </code></pre>
     </article>
  
@@ -23136,10 +23084,6 @@ analysis is CoinGecko (cg). To change it use &ndash;source flag</p>
 
         
         
-            
-    
-    
-
     
         
         
@@ -23159,25 +23103,10 @@ analysis is CoinGecko (cg). To change it use &ndash;source flag</p>
 
         
         
+            
     
-        
-        
+    
 
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
     
         
         
@@ -23426,6 +23355,25 @@ analysis is CoinGecko (cg). To change it use &ndash;source flag</p>
         
         
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
 
         
     
@@ -23451,25 +23399,6 @@ analysis is CoinGecko (cg). To change it use &ndash;source flag</p>
     
     
 
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
     
         
         
@@ -23990,25 +23919,6 @@ analysis is CoinGecko (cg). To change it use &ndash;source flag</p>
     
     
 
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
     
         
         
