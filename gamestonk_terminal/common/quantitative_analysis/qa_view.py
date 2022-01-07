@@ -7,7 +7,7 @@ from typing import Any
 
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-from matplotlib import ticker
+import matplotlib
 from matplotlib import gridspec
 
 import numpy as np
@@ -590,9 +590,15 @@ def display_line(
 
     if log_y:
         ax.semilogy(data.index, data.values)
-        ax.yaxis.set_major_locator(plt.MaxNLocator(10))
-        ax.yaxis.set_major_formatter(ticker.FormatStrFormatter("$%.2f"))
-        ax.yaxis.set_minor_formatter(ticker.FormatStrFormatter("$%.2f"))
+        ax.yaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter())
+
+        ax.yaxis.set_major_locator(matplotlib.ticker.LogLocator(base=10))
+        ax.yaxis.set_minor_locator(
+            matplotlib.ticker.LogLocator(base=10, subs=[2.0, 5.0])
+        )
+        ax.yaxis.set_minor_formatter(matplotlib.ticker.ScalarFormatter())
+        ax.ticklabel_format(style="plain", axis="y")
+
     else:
         ax.plot(data.index, data.values)
 
