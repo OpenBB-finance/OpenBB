@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import os
 from datetime import datetime, timedelta
+from prompt_toolkit.completion import NestedCompleter
 from typing import List
 from colorama import Style
 import pandas as pd
@@ -101,14 +102,14 @@ class OptionsController(BaseController):
 
     def __init__(self, ticker: str, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/options/", queue)
+        super().__init__("/stocks/options/", queue, choices)
 
         self.choices += self.CHOICES_COMMANDS
         self.choices += self.CHOICES_MENUS
 
         if session and gtff.USE_PROMPT_TOOLKIT:
 
-            self.extras: dict = {c: {} for c in self.extras}
+            self.extras: dict = {c: {} for c in self.choices}
             self.extras["unu"]["-s"] = {c: {} for c in self.unu_sortby_choices}
             self.extras["pcr"] = {c: {} for c in self.pcr_length_choices}
             self.extras["disp"] = {c: {} for c in self.presets}
@@ -1207,3 +1208,30 @@ Expiry: {self.selected_date or None}
     def call_screen(self, _):
         """Process screen command"""
         self.queue = screener_controller.ScreenerController(self.queue).menu()
+
+
+def choices(controller):
+    """Defines dynamic choices"""
+    if controller.expiry_dates:
+        controller.extras["exp"] = {
+            str(c): {} for c in range(len(controller.expiry_dates))
+        }
+        controller.extras["exp"]["-d"] = {c: {} for c in controller.expiry_dates + [""]}
+        if controller.chain:
+            controller.extras["hist"] = {
+                str(c): {}
+                for c in controller.chain.puts["strike"]
+                + controller.chain.calls["strike"]
+            }
+            controller.extras["grhist"] = {
+                str(c): {}
+                for c in controller.chain.puts["strike"]
+                + controller.chain.calls["strike"]
+            }
+            controller.extras["binom"] = {
+                str(c): {}
+                for c in controller.chain.puts["strike"]
+                + controller.chain.calls["strike"]
+            }
+
+    return NestedCompleter.from_nested_dict(controller.extras)
