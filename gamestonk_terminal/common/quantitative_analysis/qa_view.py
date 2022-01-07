@@ -603,7 +603,7 @@ def display_line(
         ax.plot(data.index, data.values)
 
     ax.grid("on")
-    dateFmt = mdates.DateFormatter("%m/%d/%Y")
+    dateFmt = mdates.DateFormatter("%Y-%m-%d")
     ax.xaxis.set_major_formatter(dateFmt)
     ax.tick_params(axis="x", labelrotation=45)
     ax.set_xlabel("Date")
