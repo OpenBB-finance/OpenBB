@@ -1,16 +1,14 @@
 """ Options Controller Module """
 __docformat__ = "numpy"
 
-# pylint: disable=R1710,R0916,too-many-lines
-
 import argparse
 import os
 from datetime import datetime, timedelta
 from typing import List
 from colorama import Style
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 from gamestonk_terminal.helper_funcs import (
@@ -21,7 +19,6 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.stocks.options import (
     barchart_view,
     calculator_view,
@@ -37,6 +34,8 @@ from gamestonk_terminal.stocks.options import (
     pricing_controller,
     screener_controller,
 )
+
+# pylint: disable=R1710,C0302,R0916
 
 
 class OptionsController(BaseController):
@@ -102,13 +101,14 @@ class OptionsController(BaseController):
 
     def __init__(self, ticker: str, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/options/", queue, choices)
+        super().__init__("/stocks/options/", queue)
+
         self.choices += self.CHOICES_COMMANDS
         self.choices += self.CHOICES_MENUS
 
         if session and gtff.USE_PROMPT_TOOLKIT:
 
-            self.extras: dict = {c: {} for c in BaseController.CHOICES}
+            self.extras: dict = {c: {} for c in self.extras}
             self.extras["unu"]["-s"] = {c: {} for c in self.unu_sortby_choices}
             self.extras["pcr"] = {c: {} for c in self.pcr_length_choices}
             self.extras["disp"] = {c: {} for c in self.presets}
@@ -120,7 +120,6 @@ class OptionsController(BaseController):
             self.extras["plot"]["-x"] = {c: {} for c in self.plot_vars_choices}
             self.extras["plot"]["-y"] = {c: {} for c in self.plot_vars_choices}
             self.extras["plot"]["-c"] = {c: {} for c in self.plot_custom_choices}
-            self.completer = NestedCompleter.from_nested_dict(self.extras)
 
         self.ticker = ticker
         self.prices = pd.DataFrame(columns=["Price", "Chance"])
@@ -437,14 +436,17 @@ Expiry: {self.selected_date or None}
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    if (
-                        ns_parser.put
-                        and self.chain
-                        and ns_parser.strike in self.chain.puts["strike"].values
-                    ) or (
-                        not ns_parser.put
-                        and self.chain
-                        and ns_parser.strike in self.chain.calls["strike"].values
+                    if self.chain and (
+                        (
+                            ns_parser.put
+                            and ns_parser.strike
+                            in [float(strike) for strike in self.chain.puts["strike"]]
+                        )
+                        or (
+                            not ns_parser.put
+                            and ns_parser.strike
+                            in [float(strike) for strike in self.chain.calls["strike"]]
+                        )
                     ):
                         syncretism_view.view_historical_greeks(
                             ticker=self.ticker,
@@ -554,13 +556,13 @@ Expiry: {self.selected_date or None}
                     expiry_date = self.expiry_dates[ns_parser.index]
                     print(f"Expiration set to {expiry_date} \n")
                     self.selected_date = expiry_date
+
+                if self.selected_date:
+                    self.chain = yfinance_model.get_option_chain(
+                        self.ticker, self.selected_date
+                    )
             else:
                 print("Please load a ticker using `load <ticker>`.\n")
-
-            if self.selected_date:
-                self.chain = yfinance_model.get_option_chain(
-                    self.ticker, self.selected_date
-                )
 
     def call_hist(self, other_args: List[str]):
         """Process hist command"""
@@ -602,7 +604,7 @@ Expiry: {self.selected_date or None}
             dest="source",
             type=str,
             choices=self.hist_source_choices,
-            default="ce" if TRADIER_TOKEN == "REPLACE_ME" else "td",
+            default="ce",
             help="Choose Tradier(TD) or ChartExchange (CE), only affects raw data",
         )
         parser.add_argument(
@@ -612,7 +614,6 @@ Expiry: {self.selected_date or None}
             type=int,
             help="Limit of data rows to display",
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
         ns_parser = parse_known_args_and_warn(
@@ -624,11 +625,13 @@ Expiry: {self.selected_date or None}
                     if self.chain and (
                         (
                             ns_parser.put
-                            and ns_parser.strike in self.chain.puts["strike"]
+                            and ns_parser.strike
+                            in [float(strike) for strike in self.chain.puts["strike"]]
                         )
                         or (
                             not ns_parser.put
-                            and ns_parser.strike in self.chain.calls["strike"]
+                            and ns_parser.strike
+                            in [float(strike) for strike in self.chain.calls["strike"]]
                         )
                     ):
                         if ns_parser.source.lower() == "ce":
@@ -1179,9 +1182,9 @@ Expiry: {self.selected_date or None}
         """Process payoff command"""
         if self.ticker:
             if self.selected_date:
-                self.queue = payoff_controller.PayoffController(
+                self.queue = payoff_controller.menu(
                     self.ticker, self.selected_date, self.queue
-                ).menu()
+                )
             else:
                 print("No expiry loaded. First use `exp {expiry date}`\n")
 
@@ -1192,9 +1195,9 @@ Expiry: {self.selected_date or None}
         """Process pricing command"""
         if self.ticker:
             if self.selected_date:
-                self.queue = pricing_controller.PricingController(
+                self.queue = pricing_controller.menu(
                     self.ticker, self.selected_date, self.prices, self.queue
-                ).menu()
+                )
             else:
                 print("No expiry loaded. First use `exp {expiry date}`\n")
 
@@ -1203,31 +1206,4 @@ Expiry: {self.selected_date or None}
 
     def call_screen(self, _):
         """Process screen command"""
-        self.queue = screener_controller.ScreenerController(self.queue).menu()
-
-
-def choices(controller):
-    """Defines dynamic choices"""
-    if controller.expiry_dates:
-        controller.extras["exp"] = {
-            str(c): {} for c in range(len(controller.expiry_dates))
-        }
-        controller.extras["exp"]["-d"] = {c: {} for c in controller.expiry_dates + [""]}
-        if controller.chain:
-            controller.extras["hist"] = {
-                str(c): {}
-                for c in controller.chain.puts["strike"]
-                + controller.chain.calls["strike"]
-            }
-            controller.extras["grhist"] = {
-                str(c): {}
-                for c in controller.chain.puts["strike"]
-                + controller.chain.calls["strike"]
-            }
-            controller.extras["binom"] = {
-                str(c): {}
-                for c in controller.chain.puts["strike"]
-                + controller.chain.calls["strike"]
-            }
-
-    return NestedCompleter.from_nested_dict(controller.extras)
+        self.queue = screener_controller.menu(self.queue)
