@@ -591,12 +591,9 @@ def display_line(
     if log_y:
         ax.semilogy(data.index, data.values)
         ax.yaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter())
-
-        ax.yaxis.set_major_locator(matplotlib.ticker.LogLocator(base=10))
-        ax.yaxis.set_minor_locator(
-            matplotlib.ticker.LogLocator(base=10, subs=[2.0, 5.0])
+        ax.yaxis.set_major_locator(
+            matplotlib.ticker.LogLocator(base=10, subs=[1.0, 2.0, 5.0, 10.0])
         )
-        ax.yaxis.set_minor_formatter(matplotlib.ticker.ScalarFormatter())
         ax.ticklabel_format(style="plain", axis="y")
 
     else:
