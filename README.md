@@ -64,7 +64,7 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#docker-installation---new-and-improved">Docker Installation - new and improved</a></li>
+        <li><a href="#docker-installation">Docker Installation</a></li>
         <li><a href="#local-install---anaconda-and-python">Local Install - Anaconda and Python</a></li>
         <li><a href="#advanced-user-install---machine-learning">Advanced User Install - Machine Learning</a></li>
         <li><a href="#update-terminal">Update Terminal</a></li>
@@ -101,7 +101,7 @@ Star the project
 
 <img width="1272" alt="Github starts" src="https://user-images.githubusercontent.com/25267873/115989986-e20cfe80-a5b8-11eb-8182-d6d87d092252.png">
 
-### Docker Installation - _new and improved_
+### Docker Installation
 
 1. First step is to make sure docker desktop is installed. Install links can be found [here](https://www.docker.com/products/docker-desktop).
    To confirm that your docker desktop is downloaded and running, open a command prompt or terminal and enter
