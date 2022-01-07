@@ -133,7 +133,7 @@ WithdrawalFees:
     wf                overall withdrawal fees
     ewf               overall exchange withdrawal fees
     wfpe              crypto withdrawal fees per exchange
-BlockchainCentral:
+BlockchainCenter:
     altindex          displays altcoin season index (if 75% of top 50 coins perform better than btc)
 """
 
