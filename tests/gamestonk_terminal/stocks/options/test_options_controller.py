@@ -853,7 +853,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             "call_screen",
             [],
             "screener_controller.ScreenerController.menu",
-            [list()],
+            [],
             dict(),
         ),
     ],
