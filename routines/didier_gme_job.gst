@@ -19,7 +19,7 @@ rsi
 fib
 ../pred
 mc
-lstm -l 3 --epochs 200 -d 20
+lstm -l 3 --epochs 20 -d 20
 ../options
 exp 0
 info

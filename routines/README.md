@@ -4,5 +4,5 @@ This folder introduces the concept of routines, which are meant for the user to 
 
 Try out with:
 ```
-python terminal.pyp routines/didier_gme_job.gst
+python terminal.py routines/didier_gme_job.gst
 ```
