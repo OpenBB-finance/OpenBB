@@ -1182,9 +1182,9 @@ Expiry: {self.selected_date or None}
         """Process payoff command"""
         if self.ticker:
             if self.selected_date:
-                self.queue = payoff_controller.menu(
+                self.queue = payoff_controller.PayoffController(
                     self.ticker, self.selected_date, self.queue
-                )
+                ).menu()
             else:
                 print("No expiry loaded. First use `exp {expiry date}`\n")
 
@@ -1195,9 +1195,9 @@ Expiry: {self.selected_date or None}
         """Process pricing command"""
         if self.ticker:
             if self.selected_date:
-                self.queue = pricing_controller.menu(
+                self.queue = pricing_controller.PricingController(
                     self.ticker, self.selected_date, self.prices, self.queue
-                )
+                ).menu()
             else:
                 print("No expiry loaded. First use `exp {expiry date}`\n")
 
@@ -1206,4 +1206,4 @@ Expiry: {self.selected_date or None}
 
     def call_screen(self, _):
         """Process screen command"""
-        self.queue = screener_controller.menu(self.queue)
+        self.queue = screener_controller.ScreenerController(self.queue).menu()
