@@ -19,6 +19,9 @@ USE_COLOR = strtobool(os.getenv("GTFF_USE_COLOR", "True"))
 # Select console flair (choose from config_terminal.py list)
 USE_FLAIR = os.getenv("GTFF_USE_FLAIR") or "stars"
 
+# Add date and time to command line
+USE_DATETIME = strtobool(os.getenv("GTFF_USE_DATETIME", "True"))
+
 # Enable interactive matplotlib mode
 USE_ION = strtobool(os.getenv("GTFF_USE_ION", "True"))
 

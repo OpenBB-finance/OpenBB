@@ -1,0 +1,17 @@
+reports
+h
+help
+?
+q
+jupter
+..
+jupyer
+..
+jupyter
+quit
+jupyter
+r
+reset
+home
+jupyter
+exit

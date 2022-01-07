@@ -25,6 +25,7 @@ def display_mc_forecast(
     n_future: int,
     n_sims: int,
     use_log=True,
+    fig_title: str = "",
     export: str = "",
     time_res: str = "",
 ):
@@ -40,6 +41,8 @@ def display_mc_forecast(
         Number of simulations to run
     use_log : bool, optional
         Flag to use lognormal, by default True
+    fig_title : str
+        Figure title
     export: str
         Format to export data
     time_res : str
@@ -63,13 +66,14 @@ def display_mc_forecast(
     ax[0].grid("on")
 
     sns.histplot(predicted_values[-1, :], ax=ax[1], kde=True)
-    ax[1].set_xlabel("Price")
+    ax[1].set_xlabel("Final Value")
     ax[1].axvline(x=data.values[-1], c="k", label="Last Value", lw=3, ls="-")  # type: ignore
     ax[1].set_title(f"Distribution of final values after {n_future} steps.")
     ax[1].set_xlim(np.min(predicted_values[-1, :]), np.max(predicted_values[-1, :]))
     ax[1].grid("on")
     ax[1].legend()
-
+    if fig_title:
+        fig.suptitle(fig_title)
     fig.tight_layout(pad=2)
 
     if gtff.USE_ION:

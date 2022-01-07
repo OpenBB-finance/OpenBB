@@ -163,6 +163,9 @@ def display_exponential_smoothing(
         linestyle="--",
         color="k",
     )
+    dateFmt = mdates.DateFormatter("%m/%d/%Y")
+    ax.xaxis.set_major_formatter(dateFmt)
+    ax.tick_params(axis="x", labelrotation=45)
 
     # BACKTESTING
     if s_end_date:

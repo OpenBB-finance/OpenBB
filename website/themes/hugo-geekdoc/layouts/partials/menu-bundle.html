@@ -11,7 +11,7 @@
     {{ $current.Scratch.Set "current" $current }}
     {{ $current.Scratch.Set "site" $site }}
 
-    <li>
+    <li style="margin-top: 15px;">
         {{ $ref := default false .ref }}
         {{ if $ref}}
             {{ $site := $current.Scratch.Get "site" }}

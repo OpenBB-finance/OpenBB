@@ -90,6 +90,7 @@ def scrape_gecko_data(url: str) -> BeautifulSoup:
     try:
         req = session.get(url, headers=headers, timeout=5)
     except Exception as error:
+        print(error)
         raise RetryError(
             "Connection error. Couldn't connect to CoinGecko and scrape the data. "
             "Please visit CoinGecko site, and check if it's not under maintenance"

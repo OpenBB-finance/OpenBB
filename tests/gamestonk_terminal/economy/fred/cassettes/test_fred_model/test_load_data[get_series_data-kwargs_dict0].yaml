@@ -1,0 +1,740 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - api.stlouisfed.org
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&observation_start=2020-01-01&series_id=DGS10
+  response:
+    body:
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" observation_start=\"2020-01-01\" observation_end=\"9999-12-31\"
+        units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
+        sort_order=\"asc\" count=\"523\" offset=\"0\" limit=\"100000\">\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-01-01\"
+        value=\".\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-01-02\" value=\"1.88\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-01-03\" value=\"1.80\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-01-06\"
+        value=\"1.81\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-01-07\" value=\"1.83\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-01-08\" value=\"1.87\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-01-09\"
+        value=\"1.85\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-01-10\" value=\"1.83\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-01-13\" value=\"1.85\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-01-14\"
+        value=\"1.82\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-01-15\" value=\"1.79\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-01-16\" value=\"1.81\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-01-17\"
+        value=\"1.84\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-01-20\" value=\".\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-01-21\" value=\"1.78\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-01-22\"
+        value=\"1.77\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-01-23\" value=\"1.74\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-01-24\" value=\"1.70\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-01-27\"
+        value=\"1.61\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-01-28\" value=\"1.65\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-01-29\" value=\"1.60\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-01-30\"
+        value=\"1.57\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-01-31\" value=\"1.51\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-02-03\" value=\"1.54\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-02-04\"
+        value=\"1.61\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-02-05\" value=\"1.66\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-02-06\" value=\"1.65\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-02-07\"
+        value=\"1.59\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-02-10\" value=\"1.56\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-02-11\" value=\"1.59\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-02-12\"
+        value=\"1.62\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-02-13\" value=\"1.61\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-02-14\" value=\"1.59\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-02-17\"
+        value=\".\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-02-18\" value=\"1.55\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-02-19\" value=\"1.56\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-02-20\"
+        value=\"1.52\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-02-21\" value=\"1.46\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-02-24\" value=\"1.38\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-02-25\"
+        value=\"1.33\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-02-26\" value=\"1.33\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-02-27\" value=\"1.30\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-02-28\"
+        value=\"1.13\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-03-02\" value=\"1.10\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-03-03\" value=\"1.02\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-03-04\"
+        value=\"1.02\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-03-05\" value=\"0.92\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-03-06\" value=\"0.74\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-03-09\"
+        value=\"0.54\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-03-10\" value=\"0.76\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-03-11\" value=\"0.82\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-03-12\"
+        value=\"0.88\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-03-13\" value=\"0.94\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-03-16\" value=\"0.73\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-03-17\"
+        value=\"1.02\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-03-18\" value=\"1.18\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-03-19\" value=\"1.12\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-03-20\"
+        value=\"0.92\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-03-23\" value=\"0.76\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-03-24\" value=\"0.84\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-03-25\"
+        value=\"0.88\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-03-26\" value=\"0.83\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-03-27\" value=\"0.72\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-03-30\"
+        value=\"0.70\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-03-31\" value=\"0.70\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-04-01\" value=\"0.62\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-04-02\"
+        value=\"0.63\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-04-03\" value=\"0.62\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-04-06\" value=\"0.67\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-04-07\"
+        value=\"0.75\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-04-08\" value=\"0.77\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-04-09\" value=\"0.73\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-04-10\"
+        value=\".\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-04-13\" value=\"0.76\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-04-14\" value=\"0.76\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-04-15\"
+        value=\"0.63\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-04-16\" value=\"0.61\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-04-17\" value=\"0.65\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-04-20\"
+        value=\"0.63\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-04-21\" value=\"0.58\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-04-22\" value=\"0.63\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-04-23\"
+        value=\"0.61\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-04-24\" value=\"0.60\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-04-27\" value=\"0.67\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-04-28\"
+        value=\"0.62\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-04-29\" value=\"0.63\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-04-30\" value=\"0.64\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-05-01\"
+        value=\"0.64\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-05-04\" value=\"0.64\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-05-05\" value=\"0.66\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-05-06\"
+        value=\"0.72\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-05-07\" value=\"0.63\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-05-08\" value=\"0.69\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-05-11\"
+        value=\"0.73\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-05-12\" value=\"0.69\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-05-13\" value=\"0.64\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-05-14\"
+        value=\"0.63\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-05-15\" value=\"0.64\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-05-18\" value=\"0.73\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-05-19\"
+        value=\"0.70\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-05-20\" value=\"0.68\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-05-21\" value=\"0.68\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-05-22\"
+        value=\"0.66\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-05-25\" value=\".\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-05-26\" value=\"0.69\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-05-27\"
+        value=\"0.68\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-05-28\" value=\"0.70\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-05-29\" value=\"0.65\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-06-01\"
+        value=\"0.66\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-06-02\" value=\"0.68\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-06-03\" value=\"0.77\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-06-04\"
+        value=\"0.82\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-06-05\" value=\"0.91\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-06-08\" value=\"0.88\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-06-09\"
+        value=\"0.84\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-06-10\" value=\"0.75\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-06-11\" value=\"0.66\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-06-12\"
+        value=\"0.71\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-06-15\" value=\"0.71\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-06-16\" value=\"0.75\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-06-17\"
+        value=\"0.74\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-06-18\" value=\"0.71\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-06-19\" value=\"0.70\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-06-22\"
+        value=\"0.71\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-06-23\" value=\"0.72\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-06-24\" value=\"0.69\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-06-25\"
+        value=\"0.68\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-06-26\" value=\"0.64\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-06-29\" value=\"0.64\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-06-30\"
+        value=\"0.66\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-07-01\" value=\"0.69\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-07-02\" value=\"0.68\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-07-03\"
+        value=\".\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-07-06\" value=\"0.69\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-07-07\" value=\"0.65\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-07-08\"
+        value=\"0.67\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-07-09\" value=\"0.62\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-07-10\" value=\"0.65\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-07-13\"
+        value=\"0.64\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-07-14\" value=\"0.63\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-07-15\" value=\"0.64\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-07-16\"
+        value=\"0.62\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-07-17\" value=\"0.64\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-07-20\" value=\"0.62\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-07-21\"
+        value=\"0.61\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-07-22\" value=\"0.60\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-07-23\" value=\"0.59\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-07-24\"
+        value=\"0.59\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-07-27\" value=\"0.62\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-07-28\" value=\"0.59\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-07-29\"
+        value=\"0.58\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-07-30\" value=\"0.55\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-07-31\" value=\"0.55\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-08-03\"
+        value=\"0.56\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-08-04\" value=\"0.52\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-08-05\" value=\"0.55\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-08-06\"
+        value=\"0.55\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-08-07\" value=\"0.57\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-08-10\" value=\"0.59\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-08-11\"
+        value=\"0.64\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-08-12\" value=\"0.69\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-08-13\" value=\"0.71\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-08-14\"
+        value=\"0.71\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-08-17\" value=\"0.69\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-08-18\" value=\"0.67\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-08-19\"
+        value=\"0.68\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-08-20\" value=\"0.65\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-08-21\" value=\"0.64\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-08-24\"
+        value=\"0.65\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-08-25\" value=\"0.69\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-08-26\" value=\"0.69\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-08-27\"
+        value=\"0.74\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-08-28\" value=\"0.74\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-08-31\" value=\"0.72\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-09-01\"
+        value=\"0.68\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-09-02\" value=\"0.66\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-09-03\" value=\"0.63\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-09-04\"
+        value=\"0.72\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-09-07\" value=\".\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-09-08\" value=\"0.69\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-09-09\"
+        value=\"0.71\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-09-10\" value=\"0.68\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-09-11\" value=\"0.67\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-09-14\"
+        value=\"0.68\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-09-15\" value=\"0.68\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-09-16\" value=\"0.69\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-09-17\"
+        value=\"0.69\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-09-18\" value=\"0.70\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-09-21\" value=\"0.68\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-09-22\"
+        value=\"0.68\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-09-23\" value=\"0.68\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-09-24\" value=\"0.67\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-09-25\"
+        value=\"0.66\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-09-28\" value=\"0.67\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-09-29\" value=\"0.66\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-09-30\"
+        value=\"0.69\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-10-01\" value=\"0.68\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-10-02\" value=\"0.70\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-10-05\"
+        value=\"0.78\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-10-06\" value=\"0.76\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-10-07\" value=\"0.81\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-10-08\"
+        value=\"0.78\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-10-09\" value=\"0.79\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-10-12\" value=\".\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-10-13\"
+        value=\"0.74\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-10-14\" value=\"0.73\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-10-15\" value=\"0.74\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-10-16\"
+        value=\"0.76\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-10-19\" value=\"0.78\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-10-20\" value=\"0.81\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-10-21\"
+        value=\"0.83\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-10-22\" value=\"0.87\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-10-23\" value=\"0.85\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-10-26\"
+        value=\"0.81\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-10-27\" value=\"0.79\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-10-28\" value=\"0.79\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-10-29\"
+        value=\"0.85\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-10-30\" value=\"0.88\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-11-02\" value=\"0.87\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-11-03\"
+        value=\"0.90\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-11-04\" value=\"0.78\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-11-05\" value=\"0.79\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-11-06\"
+        value=\"0.83\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-11-09\" value=\"0.96\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-11-10\" value=\"0.98\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-11-11\"
+        value=\".\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-11-12\" value=\"0.88\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-11-13\" value=\"0.89\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-11-16\"
+        value=\"0.91\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-11-17\" value=\"0.87\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-11-18\" value=\"0.88\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-11-19\"
+        value=\"0.86\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-11-20\" value=\"0.83\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-11-23\" value=\"0.86\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-11-24\"
+        value=\"0.88\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-11-25\" value=\"0.88\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-11-26\" value=\".\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-11-27\"
+        value=\"0.84\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-11-30\" value=\"0.84\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-12-01\" value=\"0.92\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-12-02\"
+        value=\"0.95\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-12-03\" value=\"0.92\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-12-04\" value=\"0.97\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-12-07\"
+        value=\"0.94\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-12-08\" value=\"0.92\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-12-09\" value=\"0.95\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-12-10\"
+        value=\"0.92\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-12-11\" value=\"0.90\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-12-14\" value=\"0.90\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-12-15\"
+        value=\"0.92\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-12-16\" value=\"0.92\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-12-17\" value=\"0.94\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-12-18\"
+        value=\"0.95\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-12-21\" value=\"0.95\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-12-22\" value=\"0.93\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-12-23\"
+        value=\"0.96\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-12-24\" value=\"0.94\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-12-25\" value=\".\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-12-28\"
+        value=\"0.94\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2020-12-29\" value=\"0.94\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2020-12-30\" value=\"0.93\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2020-12-31\"
+        value=\"0.93\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-01-01\" value=\".\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-01-04\" value=\"0.93\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-01-05\"
+        value=\"0.96\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-01-06\" value=\"1.04\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-01-07\" value=\"1.08\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-01-08\"
+        value=\"1.13\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-01-11\" value=\"1.15\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-01-12\" value=\"1.15\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-01-13\"
+        value=\"1.10\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-01-14\" value=\"1.15\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-01-15\" value=\"1.11\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-01-18\"
+        value=\".\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-01-19\" value=\"1.10\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-01-20\" value=\"1.10\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-01-21\"
+        value=\"1.12\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-01-22\" value=\"1.10\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-01-25\" value=\"1.05\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-01-26\"
+        value=\"1.05\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-01-27\" value=\"1.04\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-01-28\" value=\"1.07\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-01-29\"
+        value=\"1.11\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-02-01\" value=\"1.09\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-02-02\" value=\"1.12\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-02-03\"
+        value=\"1.15\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-02-04\" value=\"1.15\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-02-05\" value=\"1.19\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-02-08\"
+        value=\"1.19\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-02-09\" value=\"1.18\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-02-10\" value=\"1.15\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-02-11\"
+        value=\"1.16\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-02-12\" value=\"1.20\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-02-15\" value=\".\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-02-16\"
+        value=\"1.30\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-02-17\" value=\"1.29\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-02-18\" value=\"1.29\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-02-19\"
+        value=\"1.34\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-02-22\" value=\"1.37\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-02-23\" value=\"1.37\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-02-24\"
+        value=\"1.38\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-02-25\" value=\"1.54\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-02-26\" value=\"1.44\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-03-01\"
+        value=\"1.45\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-03-02\" value=\"1.42\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-03-03\" value=\"1.47\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-03-04\"
+        value=\"1.54\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-03-05\" value=\"1.56\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-03-08\" value=\"1.59\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-03-09\"
+        value=\"1.55\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-03-10\" value=\"1.53\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-03-11\" value=\"1.54\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-03-12\"
+        value=\"1.64\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-03-15\" value=\"1.62\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-03-16\" value=\"1.62\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-03-17\"
+        value=\"1.63\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-03-18\" value=\"1.71\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-03-19\" value=\"1.74\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-03-22\"
+        value=\"1.69\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-03-23\" value=\"1.63\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-03-24\" value=\"1.62\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-03-25\"
+        value=\"1.63\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-03-26\" value=\"1.67\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-03-29\" value=\"1.73\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-03-30\"
+        value=\"1.73\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-03-31\" value=\"1.74\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-04-01\" value=\"1.69\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-04-02\"
+        value=\"1.72\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-04-05\" value=\"1.73\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-04-06\" value=\"1.67\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-04-07\"
+        value=\"1.68\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-04-08\" value=\"1.64\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-04-09\" value=\"1.67\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-04-12\"
+        value=\"1.69\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-04-13\" value=\"1.64\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-04-14\" value=\"1.64\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-04-15\"
+        value=\"1.56\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-04-16\" value=\"1.59\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-04-19\" value=\"1.61\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-04-20\"
+        value=\"1.58\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-04-21\" value=\"1.57\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-04-22\" value=\"1.57\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-04-23\"
+        value=\"1.58\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-04-26\" value=\"1.58\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-04-27\" value=\"1.63\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-04-28\"
+        value=\"1.63\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-04-29\" value=\"1.65\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-04-30\" value=\"1.65\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-05-03\"
+        value=\"1.63\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-05-04\" value=\"1.61\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-05-05\" value=\"1.59\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-05-06\"
+        value=\"1.58\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-05-07\" value=\"1.60\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-05-10\" value=\"1.63\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-05-11\"
+        value=\"1.64\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-05-12\" value=\"1.69\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-05-13\" value=\"1.66\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-05-14\"
+        value=\"1.63\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-05-17\" value=\"1.64\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-05-18\" value=\"1.64\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-05-19\"
+        value=\"1.68\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-05-20\" value=\"1.63\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-05-21\" value=\"1.63\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-05-24\"
+        value=\"1.61\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-05-25\" value=\"1.56\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-05-26\" value=\"1.58\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-05-27\"
+        value=\"1.61\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-05-28\" value=\"1.58\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-05-31\" value=\".\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-06-01\"
+        value=\"1.62\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-06-02\" value=\"1.59\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-06-03\" value=\"1.63\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-06-04\"
+        value=\"1.56\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-06-07\" value=\"1.57\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-06-08\" value=\"1.53\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-06-09\"
+        value=\"1.50\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-06-10\" value=\"1.45\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-06-11\" value=\"1.47\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-06-14\"
+        value=\"1.51\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-06-15\" value=\"1.51\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-06-16\" value=\"1.57\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-06-17\"
+        value=\"1.52\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-06-18\" value=\"1.45\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-06-21\" value=\"1.50\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-06-22\"
+        value=\"1.48\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-06-23\" value=\"1.50\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-06-24\" value=\"1.49\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-06-25\"
+        value=\"1.54\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-06-28\" value=\"1.49\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-06-29\" value=\"1.49\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-06-30\"
+        value=\"1.45\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-07-01\" value=\"1.48\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-07-02\" value=\"1.44\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-07-05\"
+        value=\".\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-07-06\" value=\"1.37\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-07-07\" value=\"1.33\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-07-08\"
+        value=\"1.30\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-07-09\" value=\"1.37\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-07-12\" value=\"1.38\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-07-13\"
+        value=\"1.42\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-07-14\" value=\"1.37\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-07-15\" value=\"1.31\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-07-16\"
+        value=\"1.31\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-07-19\" value=\"1.19\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-07-20\" value=\"1.23\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-07-21\"
+        value=\"1.30\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-07-22\" value=\"1.27\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-07-23\" value=\"1.30\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-07-26\"
+        value=\"1.29\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-07-27\" value=\"1.25\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-07-28\" value=\"1.26\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-07-29\"
+        value=\"1.28\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-07-30\" value=\"1.24\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-08-02\" value=\"1.20\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-08-03\"
+        value=\"1.19\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-08-04\" value=\"1.19\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-08-05\" value=\"1.23\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-08-06\"
+        value=\"1.31\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-08-09\" value=\"1.33\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-08-10\" value=\"1.36\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-08-11\"
+        value=\"1.35\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-08-12\" value=\"1.36\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-08-13\" value=\"1.29\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-08-16\"
+        value=\"1.26\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-08-17\" value=\"1.26\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-08-18\" value=\"1.27\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-08-19\"
+        value=\"1.24\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-08-20\" value=\"1.26\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-08-23\" value=\"1.25\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-08-24\"
+        value=\"1.29\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-08-25\" value=\"1.35\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-08-26\" value=\"1.34\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-08-27\"
+        value=\"1.31\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-08-30\" value=\"1.29\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-08-31\" value=\"1.30\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-09-01\"
+        value=\"1.31\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-09-02\" value=\"1.29\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-09-03\" value=\"1.33\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-09-06\"
+        value=\".\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-09-07\" value=\"1.38\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-09-08\" value=\"1.35\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-09-09\"
+        value=\"1.30\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-09-10\" value=\"1.35\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-09-13\" value=\"1.33\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-09-14\"
+        value=\"1.28\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-09-15\" value=\"1.31\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-09-16\" value=\"1.34\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-09-17\"
+        value=\"1.37\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-09-20\" value=\"1.31\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-09-21\" value=\"1.33\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-09-22\"
+        value=\"1.32\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-09-23\" value=\"1.41\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-09-24\" value=\"1.47\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-09-27\"
+        value=\"1.48\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-09-28\" value=\"1.54\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-09-29\" value=\"1.55\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-09-30\"
+        value=\"1.52\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-10-01\" value=\"1.48\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-10-04\" value=\"1.49\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-10-05\"
+        value=\"1.54\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-10-06\" value=\"1.53\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-10-07\" value=\"1.58\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-10-08\"
+        value=\"1.61\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-10-11\" value=\".\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-10-12\" value=\"1.59\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-10-13\"
+        value=\"1.56\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-10-14\" value=\"1.52\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-10-15\" value=\"1.59\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-10-18\"
+        value=\"1.59\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-10-19\" value=\"1.65\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-10-20\" value=\"1.65\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-10-21\"
+        value=\"1.68\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-10-22\" value=\"1.66\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-10-25\" value=\"1.64\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-10-26\"
+        value=\"1.63\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-10-27\" value=\"1.54\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-10-28\" value=\"1.57\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-10-29\"
+        value=\"1.55\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-11-01\" value=\"1.58\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-11-02\" value=\"1.56\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-11-03\"
+        value=\"1.60\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-11-04\" value=\"1.53\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-11-05\" value=\"1.45\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-11-08\"
+        value=\"1.51\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-11-09\" value=\"1.46\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-11-10\" value=\"1.56\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-11-11\"
+        value=\".\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-11-12\" value=\"1.58\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-11-15\" value=\"1.63\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-11-16\"
+        value=\"1.63\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-11-17\" value=\"1.60\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-11-18\" value=\"1.59\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-11-19\"
+        value=\"1.54\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-11-22\" value=\"1.63\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-11-23\" value=\"1.67\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-11-24\"
+        value=\"1.64\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-11-25\" value=\".\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-11-26\" value=\"1.48\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-11-29\"
+        value=\"1.52\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-11-30\" value=\"1.43\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-12-01\" value=\"1.43\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-12-02\"
+        value=\"1.44\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-12-03\" value=\"1.35\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-12-06\" value=\"1.43\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-12-07\"
+        value=\"1.48\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-12-08\" value=\"1.52\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-12-09\" value=\"1.49\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-12-10\"
+        value=\"1.48\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-12-13\" value=\"1.42\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-12-14\" value=\"1.44\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-12-15\"
+        value=\"1.47\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-12-16\" value=\"1.44\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-12-17\" value=\"1.41\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-12-20\"
+        value=\"1.43\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-12-21\" value=\"1.48\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-12-22\" value=\"1.46\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-12-23\"
+        value=\"1.50\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-12-24\" value=\".\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-12-27\" value=\"1.48\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-12-28\"
+        value=\"1.49\"/>\n  <observation realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\"
+        date=\"2021-12-29\" value=\"1.55\"/>\n  <observation realtime_start=\"2022-01-04\"
+        realtime_end=\"2022-01-04\" date=\"2021-12-30\" value=\"1.52\"/>\n  <observation
+        realtime_start=\"2022-01-04\" realtime_end=\"2022-01-04\" date=\"2021-12-31\"
+        value=\"1.52\"/>\n</observations>\n\n\n\n"
+    headers:
+      Connection:
+      - close
+      - Transfer-Encoding
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Date:
+      - Tue, 04 Jan 2022 18:25:03 GMT
+      Expires:
+      - Tue, 04 Jan 2022 18:26:03 GMT
+      Last-Modified:
+      - Mon, 03 Jan 2022 21:23:02 GMT
+      Set-Cookie:
+      - cookiesession1=2CECED77U9LKBIEI0QLXAOPW5WA64BB9;Path=/;HttpOnly
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '117'
+    status:
+      code: 200
+      message: OK
+version: 1

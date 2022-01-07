@@ -8,6 +8,7 @@ import difflib
 import logging
 import sys
 from typing import List, Union
+import pytz
 
 from prompt_toolkit.completion import NestedCompleter
 
@@ -15,6 +16,8 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
     system_clear,
+    get_user_timezone_or_invalid,
+    replace_user_timezone,
 )
 from gamestonk_terminal.loggers import setup_logging
 from gamestonk_terminal.menu import session
@@ -51,6 +54,7 @@ class TerminalController:
         "update",
         "about",
         "keys",
+        "tz",
     ]
     CHOICES_MENUS = [
         "stocks",
@@ -59,11 +63,15 @@ class TerminalController:
         "portfolio",
         "forex",
         "etf",
-        "reports",
         "resources",
+        "jupyter",
+        "funds",
+        "alternative",
     ]
     CHOICES += CHOICES_COMMANDS
     CHOICES += CHOICES_MENUS
+
+    all_timezones = pytz.all_timezones
 
     def __init__(self, jobs_cmds: List[str] = None):
         """Constructor"""
@@ -72,12 +80,11 @@ class TerminalController:
             "cmd",
             choices=self.CHOICES,
         )
-
         self.completer: Union[None, NestedCompleter] = None
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: None for c in self.CHOICES}
-
+            choices["tz"] = {c: None for c in self.all_timezones}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         self.queue: List[str] = list()
@@ -94,7 +101,7 @@ class TerminalController:
 
     def print_help(self):
         """Print help"""
-        help_text = """
+        help_text = f"""
 Multiple jobs queue (where each '/' denotes a new command). E.g.
     /stocks $ disc/ugs -n 3/../load tsla/candle
 
@@ -114,15 +121,20 @@ The main commands you should be aware when navigating through the terminal are:
     about           about us
     update          update terminal automatically
     keys            check for status of API keys
+    tz              set different timezone
+
+Timezone: {get_user_timezone_or_invalid()}
 
 >   stocks
 >   crypto
 >   etf
 >   economy
 >   forex
+>   funds
 >   portfolio
->   reports
+>   jupyter
 >   resources
+>   alternative
     """
         print(help_text)
 
@@ -232,17 +244,23 @@ The main commands you should be aware when navigating through the terminal are:
 
         self.queue = etf_controller.menu(self.queue)
 
+    def call_funds(self, _):
+        """Process etf command"""
+        from gamestonk_terminal.mutual_funds import mutual_fund_controller
+
+        self.queue = mutual_fund_controller.menu(self.queue)
+
     def call_forex(self, _):
         """Process forex command"""
         from gamestonk_terminal.forex import forex_controller
 
         self.queue = forex_controller.menu(self.queue)
 
-    def call_reports(self, _):
-        """Process reports command"""
-        from gamestonk_terminal.reports import reports_controller
+    def call_jupyter(self, _):
+        """Process jupyter command"""
+        from gamestonk_terminal.jupyter import jupyter_controller
 
-        self.queue = reports_controller.menu(self.queue)
+        self.queue = jupyter_controller.menu(self.queue)
 
     def call_resources(self, _):
         """Process resources command"""
@@ -250,11 +268,23 @@ The main commands you should be aware when navigating through the terminal are:
 
         self.queue = resources_controller.menu(self.queue)
 
+    def call_alternative(self, _):
+        """Process resources command"""
+        from gamestonk_terminal.alternative import alt_controller
+
+        self.queue = alt_controller.menu(self.queue)
+
     def call_portfolio(self, _):
         """Process portfolio command"""
         from gamestonk_terminal.portfolio import portfolio_controller
 
         self.queue = portfolio_controller.menu(self.queue)
+
+    def call_tz(self, other_args: List[str]):
+        """Process tz command"""
+        other_args.append(self.queue[0])
+        self.queue = self.queue[1:]
+        replace_user_timezone("/".join(other_args))
 
 
 def terminal(jobs_cmds: List[str] = None):
@@ -279,10 +309,8 @@ def terminal(jobs_cmds: List[str] = None):
         if t_controller.queue and len(t_controller.queue) > 0:
             # If the command is quitting the menu we want to return in here
             if t_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(t_controller.queue) > 1:
-                    return t_controller.queue[1:]
-                return []
+                print_goodbye()
+                break
 
             # Consume 1 element from the queue
             an_input = t_controller.queue[0]
@@ -300,11 +328,15 @@ def terminal(jobs_cmds: List[str] = None):
 
             # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT:
-                an_input = session.prompt(
-                    f"{get_flair()} / $ ",
-                    completer=t_controller.completer,
-                    search_ignore_case=True,
-                )
+                try:
+                    an_input = session.prompt(
+                        f"{get_flair()} / $ ",
+                        completer=t_controller.completer,
+                        search_ignore_case=True,
+                    )
+                except KeyboardInterrupt:
+                    print_goodbye()
+                    break
             # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} / $ ")
@@ -312,7 +344,6 @@ def terminal(jobs_cmds: List[str] = None):
         try:
             # Process the input command
             t_controller.queue = t_controller.switch(an_input)
-
             if an_input in ("q", "quit", "..", "exit"):
                 print_goodbye()
                 break

@@ -47,7 +47,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
                 name=cfg.AUTHOR_NAME,
                 icon_url=cfg.AUTHOR_ICON_URL,
             )
-            await ctx.send(embed=embed)
+            await ctx.send(embed=embed, delete_after=10.0)
             return
 
     if not dates:
@@ -61,7 +61,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=10.0)
         return
 
     text = (
@@ -84,7 +84,7 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
         icon_url=cfg.AUTHOR_ICON_URL,
     )
 
-    msg = await ctx.send(embed=embed)
+    msg = await ctx.send(embed=embed, delete_after=15.0)
 
     emoji_list = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"]
 
@@ -123,4 +123,4 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
         )
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=10.0)

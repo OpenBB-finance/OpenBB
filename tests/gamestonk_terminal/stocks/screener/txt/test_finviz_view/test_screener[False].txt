@@ -1,0 +1,4 @@
+    Ticker                        Company              Sector                       Industry Country   Market Cap P/E  Price  Change     Volume
+50    AACG          ATA Creativity Global  Consumer Defensive  Education & Training Services   China   33070000.0       1.23   0.149   123934.0
+142   ADVM  Adverum Biotechnologies, Inc.          Healthcare                  Biotechnology     USA  170910000.0       1.95   0.107  5952435.0
+
