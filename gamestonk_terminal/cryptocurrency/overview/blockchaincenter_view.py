@@ -3,12 +3,17 @@ import os
 from matplotlib import pyplot as plt
 
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.cryptocurrency.overview.blockchaincenter_model import get_altcoin_index, DAYS
+from gamestonk_terminal.cryptocurrency.overview.blockchaincenter_model import (
+    get_altcoin_index,
+    DAYS,
+)
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal import feature_flags as gtff
 
 
-def display_altcoin_index(period: int, since: int, until: int, export: str = "") -> None:
+def display_altcoin_index(
+    period: int, since: int, until: int, export: str = ""
+) -> None:
     """Displays altcoin index overtime
      [Source: https://blockchaincenter.net]
 
@@ -33,15 +38,15 @@ def display_altcoin_index(period: int, since: int, until: int, export: str = "")
             print("\nError scraping blockchain central\n")
         else:
             plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
+            plt.ylabel("Altcoin Index")
+            plt.axhline(y=75, color="b", label="Altcoin Season (75)")
+            plt.axhline(y=25, color="orange", label="Bitcoin Season (25)")
+            plt.title(f"Altcoin Index (comparing with {period}-day performance)")
             plt.plot(df.index, df["Value"], label="Altcoin Index", color="k")
+            plt.legend()
             plt.xlabel("Time")
             plt.xlim(df.index.iloc[0], df.index.iloc[-1])
             plt.gcf().autofmt_xdate()
-            plt.ylabel(f"Altcoin Index (comparing with {period}-day performance)")
-            plt.axhline(y=75, color='b', label="Altcoin Season")
-            plt.axhline(y=25, color='orange', label="Bitcoin Season")
-            plt.title("Altcoin Index")
             if gtff.USE_ION:
                 plt.ion()
             plt.show()

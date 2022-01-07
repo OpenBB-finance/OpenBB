@@ -17,7 +17,7 @@ from gamestonk_terminal.helper_funcs import (
     system_clear,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     valid_date,
-    EXPORT_BOTH_RAW_DATA_AND_FIGURES
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.overview import (
@@ -30,7 +30,8 @@ from gamestonk_terminal.cryptocurrency.overview import (
     withdrawalfees_view,
     coinpaprika_model,
     coinbase_model,
-    coinbase_view, blockchaincenter_view,
+    coinbase_view,
+    blockchaincenter_view,
 )
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_view import CURRENCIES
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
@@ -81,7 +82,7 @@ class OverviewController:
         "wf",
         "ewf",
         "wfpe",
-        "altindex"
+        "altindex",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -248,7 +249,7 @@ BlockchainCenter:
             help="Period of time to check if how altcoins have performed against btc (30, 90, 365)",
             dest="period",
             default=365,
-            choices=DAYS
+            choices=DAYS,
         )
 
         parser.add_argument(
@@ -269,14 +270,19 @@ BlockchainCenter:
             default=(datetime.now()).strftime("%Y-%m-%d"),
         )
 
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
+
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
         if ns_parser:
             blockchaincenter_view.display_altcoin_index(
-                since=ns_parser.since, until=ns_parser.until,
-                period=ns_parser.period, export=ns_parser.export
+                since=ns_parser.since.timestamp(),
+                until=ns_parser.until.timestamp(),
+                period=ns_parser.period,
+                export=ns_parser.export,
             )
 
     @try_except
@@ -1635,6 +1641,10 @@ def menu(queue: List[str] = None):
                 choices["wfpe"] = {
                     c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS
                 }
+
+                choices["altindex"] = {c: None for c in map(str, DAYS)}
+                choices["altindex"]["-p"] = {c: None for c in map(str, DAYS)}
+
                 completer = NestedCompleter.from_nested_dict(choices)
                 try:
                     an_input = session.prompt(
