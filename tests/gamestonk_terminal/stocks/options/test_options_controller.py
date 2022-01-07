@@ -834,7 +834,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
         (
             "call_payoff",
             [],
-            "payoff_controller.PayoffController.menu",
+            "payoff_controller.PayoffController",
             [
                 "MOCK_TICKER",
                 "2022-01-07",
@@ -845,14 +845,14 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
         (
             "call_pricing",
             [],
-            "pricing_controller.PricingController.menu",
+            "pricing_controller.PricingController",
             [],
             dict(),
         ),
         (
             "call_screen",
             [],
-            "screener_controller.ScreenerController.menu",
+            "screener_controller.ScreenerController",
             [],
             dict(),
         ),
@@ -885,7 +885,7 @@ def test_call_func_test(
     )
 
     if mocked_func:
-        mock = mocker.Mock()
+        mock = mocker.MagicMock()
         mocker.patch(
             target=f"{path_controller}.{mocked_func}",
             new=mock,
