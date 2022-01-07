@@ -8,7 +8,7 @@ from gamestonk_terminal.common.technical_analysis import volatility_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
 
 
@@ -21,7 +21,16 @@ async def bbands_command(
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.bbands {ticker} {length} {n_std} {mamode} {start} {end}")
+            # pylint: disable=logging-too-many-args
+            logger.debug(
+                "!stocks.ta.bbands %s %s %s %s %s %s",
+                ticker,
+                length,
+                n_std,
+                mamode,
+                start,
+                end,
+            )
 
         # Check for argument
         possible_ma = [
@@ -105,7 +114,7 @@ async def bbands_command(
         uploaded_image = gst_imgur.upload_image("ta_bbands.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: Bollinger-Bands " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

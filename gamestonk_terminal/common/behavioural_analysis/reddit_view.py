@@ -30,7 +30,7 @@ def print_and_record_reddit_post(
     """
     # Refactor data
     s_datetime = datetime.utcfromtimestamp(submission.created_utc).strftime(
-        "%d/%m/%Y %H:%M:%S"
+        "%Y-%m-%d %H:%M:%S"
     )
     s_link = f"https://old.reddit.com{submission.permalink}"
     s_all_awards = "".join(

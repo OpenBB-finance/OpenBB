@@ -3,6 +3,7 @@ import pandas as pd
 import yfinance as yf
 
 import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import logger
 
 
 async def expirations_command(ctx, ticker: str = ""):
@@ -10,7 +11,7 @@ async def expirations_command(ctx, ticker: str = ""):
     try:
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.opt.exp {ticker.upper()}")
+            logger.debug("!stocks.opt.exp %s", ticker)
 
         # Check for argument
         if ticker == "":

@@ -1,11 +1,14 @@
-import os
 import asyncio
-import discord
+import os
 
+import discord
 import mplfinance as mpf
+
 from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 from gamestonk_terminal.stocks.options import tradier_model
+
 import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import logger
 
 
 async def hist_command(
@@ -35,10 +38,12 @@ async def hist_command(
 
             # Debug
             if cfg.DEBUG:
-                print(f"!stocks.opt.hist {ticker} {strike} {put} {expiry}")
+                logger.debug(
+                    "!stocks.opt.hist %s %s %s %s", ticker, strike, put, expiry
+                )
 
             error = ""
-            if TRADIER_TOKEN == "REPLACE_ME":
+            if TRADIER_TOKEN == "REPLACE_ME":  # nosec
                 raise Exception("Tradier Token is required")
 
             # Check for argument
@@ -94,7 +99,7 @@ async def hist_command(
             image = discord.File(imagefile)
 
             if cfg.DEBUG:
-                print(f"Image: {imagefile}")
+                logger.debug("Image: %s", imagefile)
             title = f"{ticker.upper()} {strike} {op_type} expiring {expiry} Historical"
             embed = discord.Embed(title=title, colour=cfg.COLOR)
             embed.set_image(url="attachment://opt_hist.png")

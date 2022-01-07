@@ -8,7 +8,7 @@ from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
 
 
@@ -19,7 +19,7 @@ async def fisher_command(ctx, ticker="", length="14", start="", end=""):
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.fisher {ticker} {length} {start} {end}")
+            logger.debug("!stocks.ta.fisher %s %s %s %s", ticker, length, start, end)
 
         # Check for argument
         if ticker == "":
@@ -97,7 +97,7 @@ async def fisher_command(ctx, ticker="", length="14", start="", end=""):
         uploaded_image = gst_imgur.upload_image("ta_fisher.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: Fisher-Transform " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
