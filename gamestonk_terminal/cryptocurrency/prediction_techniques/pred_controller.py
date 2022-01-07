@@ -180,7 +180,7 @@ Models:
                     other_args.remove(arg)
 
             # self.data = c_help.load_cg_coin_data(
-            #    ns_parser.coin, ns_parser.currency, ns_parser.days, ns_parser.resolution
+            #   ns_parser.coin, ns_parser.currency, ns_parser.days, ns_parser.resolution
             # )
             res = ns_parser.resolution if delta < 90 else "1D"
             self.resolution = res

@@ -237,14 +237,7 @@ def load(
     vs: str = "usd",
     interval: str = "1day",
     should_load_ta_data: bool = False,
-) -> Tuple[
-    Optional[Any],
-    Optional[Any],
-    Optional[Any],
-    Optional[Any],
-    Optional[Any],
-    Optional[Any],
-]:
+):
     """Load cryptocurrency from given source. Available sources are: CoinGecko, CoinPaprika, Coinbase and Binance.
 
     Loading coin from Binance and CoinPaprika means validation if given coins exists in chosen source,
