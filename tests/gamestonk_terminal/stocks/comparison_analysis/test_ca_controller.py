@@ -170,10 +170,9 @@ def test_call_cls(mocker):
                 "quit",
                 "quit",
                 "quit",
-                "quit",
             ],
         ),
-        ("call_exit", ["help"], ["quit", "quit", "quit", "quit", "help"]),
+        ("call_exit", ["help"], ["quit", "quit", "quit", "help"]),
         ("call_home", [], ["quit", "quit"]),
         ("call_help", [], []),
         ("call_quit", [], ["quit"]),
@@ -538,7 +537,7 @@ def test_call_po(mocker):
 
     controller = ca_controller.ComparisonAnalysisController(similar=similar)
     controller.call_po([])
-    mock.assert_called_once_with(similar, [])
+    mock.assert_called_once()
 
     controller = ca_controller.ComparisonAnalysisController()
     controller.call_po([])
