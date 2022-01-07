@@ -4,11 +4,11 @@ __docformat__ = "numpy"
 import argparse
 import os
 from datetime import datetime, timedelta
-from prompt_toolkit.completion import NestedCompleter
 from typing import List
 from colorama import Style
 import pandas as pd
 
+from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_terminal import TRADIER_TOKEN
