@@ -20,9 +20,9 @@ def display_altcoin_index(
     Parameters
     ----------
     since : int
-        Initial date timestamp (e.g., 1_614_556_800)
+        Initial date timestamp (e.g., 1_609_459_200)
     until : int
-        End date timestamp (e.g., 1_614_556_800)
+        End date timestamp (e.g., 1_641_588_030)
     period: int
         Number of days to check the performance of coins and calculate the altcoin index.
         E.g., 365 will check yearly performance (365 days), 90 will check seasonal performance (90 days),
@@ -43,10 +43,10 @@ def display_altcoin_index(
             plt.axhline(y=25, color="orange", label="Bitcoin Season (25)")
             plt.title(f"Altcoin Index (comparing with {period}-day performance)")
             plt.plot(df.index, df["Value"], label="Altcoin Index", color="k")
+            plt.grid()
             plt.legend()
             plt.xlabel("Time")
-            plt.xlim(df.index.iloc[0], df.index.iloc[-1])
-            plt.gcf().autofmt_xdate()
+            plt.xlim(df.index[0], df.index[-1])
             if gtff.USE_ION:
                 plt.ion()
             plt.show()

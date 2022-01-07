@@ -257,7 +257,7 @@ BlockchainCenter:
             "--since",
             dest="since",
             type=valid_date,
-            help="Initial date. Default: 2020-01-01",
+            help="Start date (default: 1 year before, e.g., 2021-01-01)",
             default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
         )
 
@@ -266,7 +266,7 @@ BlockchainCenter:
             "--until",
             dest="until",
             type=valid_date,
-            help="Final date. E.g.,: 2021-01-01",
+            help="End date (default: current day, e.g., 2022-01-01)",
             default=(datetime.now()).strftime("%Y-%m-%d"),
         )
 

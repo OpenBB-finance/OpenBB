@@ -16,14 +16,14 @@ def get_altcoin_index(period: int, since: int, until: int) -> pd.DataFrame:
 
     Parameters
     ----------
-    days: int
-       Number of days to check the performance of coins and calculate the altcoin index.
+    period: int
+       Number of days {30,90,365} to check the performance of coins and calculate the altcoin index.
        E.g., 365 will check yearly performance (365 days), 90 will check seasonal performance (90 days),
        30 will check monthly performance (30 days).
     since : int
-       Initial date timestamp (e.g., 1_614_556_800)
+        Initial date timestamp (e.g., 1_609_459_200)
     until : int
-       End date timestamp (e.g., 1_614_556_800)
+        End date timestamp (e.g., 1_641_588_030)
 
     Returns
     -------
