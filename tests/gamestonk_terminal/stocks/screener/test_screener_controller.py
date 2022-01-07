@@ -391,10 +391,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_ca",
             [],
             "ca_controller.ComparisonAnalysisController.menu",
-            [
-                ["MOCK_TICKER_1", "MOCK_TICKER_2"],
-                [],
-            ],
+            [],
             dict(),
         ),
     ],
