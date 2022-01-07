@@ -834,7 +834,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
         (
             "call_payoff",
             [],
-            "payoff_controller.menu",
+            "payoff_controller.PayoffController.menu",
             [
                 "MOCK_TICKER",
                 "2022-01-07",
@@ -845,14 +845,14 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
         (
             "call_pricing",
             [],
-            "pricing_controller.menu",
+            "pricing_controller.PricingController.menu",
             [],
             dict(),
         ),
         (
             "call_screen",
             [],
-            "screener_controller.menu",
+            "screener_controller.ScreenerController.menu",
             [list()],
             dict(),
         ),

@@ -416,7 +416,10 @@ def test_key_metrics_explained_no_parser(mocker):
 @pytest.mark.vcr(record_mode="none")
 def test_call_fmp(mocker):
     mocker.patch(
-        "gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_controller.menu",
+        (
+            "gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep."
+            "fmp_controller.FinancialModelingPrepController.menu"
+        ),
         return_value=["quit"],
     )
 

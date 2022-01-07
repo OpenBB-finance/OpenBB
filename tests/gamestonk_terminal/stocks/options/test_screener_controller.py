@@ -249,14 +249,14 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_ca",
             [],
-            "ca_controller.menu",
+            "ca_controller.ComparisonAnalysisController.menu",
             [],
             dict(),
         ),
         (
             "call_po",
             [],
-            "po_controller.menu",
+            "po_controller.PortfolioOptimization.menu",
             [],
             dict(),
         ),

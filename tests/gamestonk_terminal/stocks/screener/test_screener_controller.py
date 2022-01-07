@@ -383,14 +383,14 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_po",
             [],
-            "po_controller.menu",
+            "po_controller.PortfolioOptimization.menu",
             [],
             dict(),
         ),
         (
             "call_ca",
             [],
-            "ca_controller.menu",
+            "ca_controller.ComparisonAnalysisController.menu",
             [
                 ["MOCK_TICKER_1", "MOCK_TICKER_2"],
                 [],
