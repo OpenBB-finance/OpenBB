@@ -1,23 +1,21 @@
 import discord
-import discordbot.config_discordbot as cfg
 
 from gamestonk_terminal.economy import wsj_model
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import logger
 
 
 async def glbonds_command(ctx):
     """Global bonds overview [Wall St. Journal]"""
 
     try:
-        # Debug user input
-        if cfg.DEBUG:
-            print("\n!economy.glbonds")
-
         # Retrieve data
         df_data = wsj_model.global_bonds()
 
         # Debug user output
         if cfg.DEBUG:
-            print(df_data.to_string())
+            logger.debug(df_data.to_string())
 
         # Output data
         if df_data.empty:

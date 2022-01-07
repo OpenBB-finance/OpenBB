@@ -1,7 +1,9 @@
 import discord
 
 from gamestonk_terminal.stocks.government import quiverquant_model
+
 import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import logger
 from discordbot.helpers import pagination
 
 
@@ -11,7 +13,7 @@ async def lobbying_command(ctx, ticker="", num=""):
     try:
         # Debug user input
         if cfg.DEBUG:
-            print(f"!stocks.gov.lobbying {ticker}")
+            logger.debug("!stocks.gov.lobbying %s", ticker)
 
         if ticker == "":
             raise Exception("A ticker is required")
@@ -29,7 +31,7 @@ async def lobbying_command(ctx, ticker="", num=""):
         )
 
         if df_lobbying.empty:
-            print("No corporate lobbying found\n")
+            logger.debug("No corporate lobbying found")
             return
 
         # Output Data

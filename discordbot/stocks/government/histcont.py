@@ -1,14 +1,15 @@
 import os
+
 import discord
-from matplotlib import pyplot as plt
 import numpy as np
+from matplotlib import pyplot as plt
 
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.stocks.government import quiverquant_model
 from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal.stocks.government import quiverquant_model
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 
 
 async def histcont_command(ctx, ticker=""):
@@ -16,7 +17,7 @@ async def histcont_command(ctx, ticker=""):
     try:
         # Debug user input
         if cfg.DEBUG:
-            print(f"!stocks.gov.histcont {ticker}")
+            logger.debug("!stocks.gov.histcont %s", ticker)
 
         if ticker == "":
             raise Exception("A ticker is required")
@@ -27,7 +28,7 @@ async def histcont_command(ctx, ticker=""):
         )
 
         if df_contracts.empty:
-            print("No quarterly government contracts found\n")
+            logger.debug("No quarterly government contracts found")
             return
 
         # Output Data
@@ -56,7 +57,7 @@ async def histcont_command(ctx, ticker=""):
         uploaded_image = gst_imgur.upload_image("gov_histcont.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: Historical Quarterly Government Contract " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
