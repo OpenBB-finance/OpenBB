@@ -274,7 +274,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_raw",
-            ["--num=1", "--descend", "--export=csv"],
+            ["--limit=1", "--descend", "--export=csv"],
             "qa_view.display_raw",
             [QA_CONTROLLER.stock[QA_CONTROLLER.target]],
             dict(

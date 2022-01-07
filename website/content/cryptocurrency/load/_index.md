@@ -18,20 +18,20 @@ All the sources share the arguments specified above but `--interval` and `--vs` 
 For CoinPaprika and CoinGecko are similar:
 
 ```
-  --vs: The currency to look the loaded coin against. Both USD and BTC are supported. Default: `USD`
-  -i/--interval. Interval to look data for. These two sources only support daily data. Default: `1day`
+  --vs VS              The currency to look the loaded coin against. Both USD and BTC are supported. Default: `USD`
+  -i/--interval        Interval to look data for. These two sources only support daily data. Default: `1day`
 ```
 
 For Coinbase:
 
 ```
-  --vs: The currency to look the loaded coin against. Depends on the crypto loaded. Default: `USDT`
-  -i/--interval. Interval to look data for. Default is `1day` but support all of the following: ['1min', '5min', '15min', '1hour', '6hour', '24hour', '1day']
+  --vs VS              The currency to look the loaded coin against. Depends on the crypto loaded. Default: `USDT`
+  -i/--interval        Interval to look data for. Default is `1day` but support all of the following: ['1min', '5min', '15min', '1hour', '6hour', '24hour', '1day']
 ```
 
 For Binance:
 
 ```
-  --vs: The currency to look the loaded coin against. Depends on the crypto loaded. Default: `USDT`
-  -i/--interval. Interval to look data for. Default is `1day` but support all of the following: ['1day', '3day', '1hour', '2hour', '4hour', '6hour', '8hour', '12hour', '1week', '1min', '3min', '5min', '15min', '30min', '1month']
+  --vs VS             The currency to look the loaded coin against. Depends on the crypto loaded. Default: `USDT`
+  -i/--interval       Interval to look data for. Default is `1day` but support all of the following: ['1day', '3day', '1hour', '2hour', '4hour', '6hour', '8hour', '12hour', '1week', '1min', '3min', '5min', '15min', '30min', '1month']
 ```

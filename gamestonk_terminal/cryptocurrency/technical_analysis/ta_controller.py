@@ -5,12 +5,13 @@ __docformat__ = "numpy"
 import argparse
 import difflib
 from typing import List, Union
-from datetime import datetime
+from datetime import datetime, timedelta
 from colorama import Style
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import load
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -21,6 +22,7 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     try_except,
     system_clear,
+    valid_date_in_past,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.technical_analysis import (
@@ -52,6 +54,7 @@ class TechnicalAnalysisController:
     ]
 
     CHOICES_COMMANDS = [
+        "load",
         "ema",
         "sma",
         "vwap",
@@ -102,6 +105,7 @@ class TechnicalAnalysisController:
         self.interval = interval
         self.stock = stock
         self.stock["Adj Close"] = stock["Close"]
+        self.currency = ""
 
     def print_help(self):
         """Print help"""
@@ -109,9 +113,9 @@ class TechnicalAnalysisController:
             self.interval == "1440min"
         ]
         if self.start:
-            crypto_str = f"{s_intraday}\nCrypto: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            crypto_str = f"{s_intraday}\nCoin Loaded: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            crypto_str = f"{s_intraday}\nCrypto: {self.ticker}"
+            crypto_str = f"{s_intraday}\nCoin Loaded: {self.ticker}"
 
         dim = Style.DIM if "Volume" not in self.stock else ""
         not_dim = Style.RESET_ALL if "Volume" not in self.stock else ""
@@ -233,6 +237,79 @@ Custom:
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
+
+    @try_except
+    def call_load(self, other_args):
+        """Process load command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load crypto currency to perform analysis on."
+            "Available data sources are CoinGecko, CoinPaprika, Binance, Coinbase"
+            "By default main source used for analysis is CoinGecko (cg). To change it use --source flag",
+        )
+        parser.add_argument(
+            "-c",
+            "--coin",
+            help="Coin to get",
+            dest="coin",
+            type=str,
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "--source",
+            help="Source of data",
+            dest="source",
+            choices=("cp", "cg", "bin", "cb"),
+            default="cg",
+            required=False,
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date_in_past,
+            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the crypto",
+        )
+        parser.add_argument(
+            "--vs",
+            help="Quote currency (what to view coin vs)",
+            dest="vs",
+            default="usd",
+            type=str,
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            help="Interval to get data (Only available on binance/coinbase)",
+            dest="interval",
+            default="1day",
+            type=str,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        delta = (datetime.now() - ns_parser.start).days
+        if ns_parser:
+            source = ns_parser.source
+            for arg in ["--source", source]:
+                if arg in other_args:
+                    other_args.remove(arg)
+
+            # TODO: protections in case None is returned
+            (self.ticker, _, _, _, self.stock, self.currency) = load(
+                coin=ns_parser.coin,
+                source=ns_parser.source,
+                should_load_ta_data=True,
+                days=delta,
+                interval=ns_parser.interval,
+                vs=ns_parser.vs,
+            )
+            print(f"{delta} Days of {self.ticker} vs {self.currency} loaded\n")
 
     # TODO: Go through all models and make sure all needed columns are in dfs
     @try_except

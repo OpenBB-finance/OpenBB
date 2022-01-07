@@ -63,9 +63,10 @@ class TerminalController:
         "portfolio",
         "forex",
         "etf",
-        "reports",
         "resources",
+        "jupyter",
         "funds",
+        "alternative",
     ]
     CHOICES += CHOICES_COMMANDS
     CHOICES += CHOICES_MENUS
@@ -131,8 +132,9 @@ Timezone: {get_user_timezone_or_invalid()}
 >   forex
 >   funds
 >   portfolio
->   reports
+>   jupyter
 >   resources
+>   alternative
     """
         print(help_text)
 
@@ -254,17 +256,23 @@ Timezone: {get_user_timezone_or_invalid()}
 
         self.queue = forex_controller.menu(self.queue)
 
-    def call_reports(self, _):
-        """Process reports command"""
-        from gamestonk_terminal.reports import reports_controller
+    def call_jupyter(self, _):
+        """Process jupyter command"""
+        from gamestonk_terminal.jupyter import jupyter_controller
 
-        self.queue = reports_controller.menu(self.queue)
+        self.queue = jupyter_controller.menu(self.queue)
 
     def call_resources(self, _):
         """Process resources command"""
         from gamestonk_terminal.resources import resources_controller
 
         self.queue = resources_controller.menu(self.queue)
+
+    def call_alternative(self, _):
+        """Process resources command"""
+        from gamestonk_terminal.alternative import alt_controller
+
+        self.queue = alt_controller.menu(self.queue)
 
     def call_portfolio(self, _):
         """Process portfolio command"""

@@ -358,14 +358,14 @@ def test_call_func_no_ticker(func, mocker):
         return_value=True,
     )
     controller = pricing_controller.PricingController(
-        ticker="MOCK_TICKER",
+        ticker=None,
         selected_date="2022-01-07",
         prices=PRICES,
         queue=None,
     )
 
     func_result = getattr(controller, func)(list())
-    assert func_result == []
+    assert func_result is None
     assert controller.queue == []
 
 
@@ -385,11 +385,11 @@ def test_call_func_no_selected_date(func, mocker):
 
     controller = pricing_controller.PricingController(
         ticker="MOCK_TICKER",
-        selected_date="2022-01-07",
+        selected_date=None,
         prices=PRICES,
         queue=None,
     )
 
     func_result = getattr(controller, func)(list())
-    assert func_result == []
-    assert controller.selected_date == "2022-01-07"
+    assert func_result is None
+    assert controller.selected_date is None

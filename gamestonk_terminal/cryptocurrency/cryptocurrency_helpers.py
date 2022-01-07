@@ -4,8 +4,7 @@ __docformat__ = "numpy"
 
 import os
 import json
-import math
-from typing import Tuple, Any, Optional, Union
+from typing import Tuple, Any, Optional
 import difflib
 import pandas as pd
 import numpy as np
@@ -72,29 +71,6 @@ SOURCES_INTERVALS = {
         "1day",
     ],
 }
-
-
-def millify(n: Union[float, int]) -> str:
-    millnames = ["", "K", "M", "B", "T"]
-    n = float(n)
-    millidx = max(
-        0,
-        min(
-            len(millnames) - 1, int(math.floor(0 if n == 0 else math.log10(abs(n)) / 3))
-        ),
-    )
-
-    return f"{n / 10 ** (3 * millidx):.0f}{millnames[millidx]}"
-
-
-def calc_change(current: Union[float, int], previous: Union[float, int]):
-    """Calculates change between two different values"""
-    if current == previous:
-        return 0
-    try:
-        return ((current - previous) / previous) * 100.0
-    except ZeroDivisionError:
-        return float("inf")
 
 
 def load_cg_coin_data(
@@ -305,11 +281,16 @@ def load(
 
     current_coin = ""  # type: Optional[Any]
 
-    coins_map_df = prepare_all_coins_df().set_index("Symbol")
+    coins_map_df = prepare_all_coins_df().set_index("Symbol").dropna(thresh=2)
 
     if source == "cg":
-        coingecko = pycoingecko_model.Coin(coin, True)
+        coingecko = pycoingecko_model.Coin(coin.lower(), True)
         coin_map_df = coins_map_df.loc[coingecko.symbol]
+        coin_map_df = (
+            coin_map_df.iloc[0]
+            if isinstance(coin_map_df, pd.DataFrame)
+            else coin_map_df
+        )  # TODO: improve to choose the row that matches better; if it is dataframe, it means that found more than 1 coin
         if should_load_ta_data:
             df_prices, currency = load_ta_data(
                 coin_map_df=coin_map_df,
@@ -335,7 +316,29 @@ def load(
             None,
             None,
         )
+    if source == "cp":
+        paprika_coins = get_list_of_coins()
+        paprika_coins_dict = dict(zip(paprika_coins.id, paprika_coins.symbol))
+        current_coin, symbol = coinpaprika_model.validate_coin(coin, paprika_coins_dict)
+        coin_map_df = coins_map_df.loc[symbol.lower() if symbol is not None else symbol]
+        coin_map_df = (
+            coin_map_df.iloc[0]
+            if isinstance(coin_map_df, pd.DataFrame)
+            else coin_map_df
+        )
 
+        if should_load_ta_data:
+            df_prices, currency = load_ta_data(
+                coin_map_df=coin_map_df,
+                source=source,
+                currency=vs,
+                days=days,
+                limit=0,
+                interval=interval,
+            )
+
+            return (current_coin, source, symbol, coin_map_df, df_prices, currency)
+        return (current_coin, source, symbol, coin_map_df, None, None)
     if source == "bin":
         if vs == "usd":
             vs = "USDT"
@@ -357,6 +360,11 @@ def load(
                 )
                 return None, None, None, None, None, None
             coin_map_df = coins_map_df.loc[parsed_coin.lower()]
+            coin_map_df = (
+                coin_map_df.iloc[0]
+                if isinstance(coin_map_df, pd.DataFrame)
+                else coin_map_df
+            )
             # print(f"Coin found : {current_coin}\n")
             if should_load_ta_data:
                 df_prices, currency = load_ta_data(
@@ -377,25 +385,6 @@ def load(
                 )
             return (current_coin, source, parsed_coin, coin_map_df, None, None)
         return None, None, None, None, None, None
-
-    if source == "cp":
-        paprika_coins = get_list_of_coins()
-        paprika_coins_dict = dict(zip(paprika_coins.id, paprika_coins.symbol))
-        current_coin, symbol = coinpaprika_model.validate_coin(coin, paprika_coins_dict)
-        coin_map_df = coins_map_df.loc[symbol.lower() if symbol is not None else symbol]
-
-        if should_load_ta_data:
-            df_prices, currency = load_ta_data(
-                coin_map_df=coin_map_df,
-                source=source,
-                currency=vs,
-                days=days,
-                limit=0,
-                interval=interval,
-            )
-
-            return (current_coin, source, symbol, coin_map_df, df_prices, currency)
-        return (current_coin, source, symbol, coin_map_df, None, None)
 
     if source == "cb":
         if vs == "usd":
@@ -422,6 +411,11 @@ def load(
             # print(f"Coin found : {current_coin}\n")
 
             coin_map_df = coins_map_df.loc[coin]
+            coin_map_df = (
+                coin_map_df.iloc[0]
+                if isinstance(coin_map_df, pd.DataFrame)
+                else coin_map_df
+            )
             if should_load_ta_data:
                 df_prices, currency = load_ta_data(
                     coin_map_df=coin_map_df,
@@ -656,7 +650,7 @@ def display_all_coins(
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
-                df,
+                df.fillna("N/A"),
                 headers=df.columns,
                 floatfmt=".1f",
                 showindex=False,
@@ -665,7 +659,7 @@ def display_all_coins(
         )
 
     else:
-        print(df.to_string, "\n")
+        print(df.fillna("N/A").to_string, "\n")
 
     export_data(
         export,
@@ -778,9 +772,9 @@ def load_ta_data(
         return df, currency
 
     if source == "cg":
-        symbol_coingecko = coin_map_df["CoinGecko"]
-        coin = pycoingecko_model.Coin(symbol_coingecko)
-        df = coin.get_coin_market_chart(currency, days)
+        coin_id = coin_map_df["CoinGecko"]
+        # coin = pycoingecko_model.Coin(symbol_coingecko)
+        df = pycoingecko_model.get_coin_market_chart(coin_id, currency, days)
         df = df["price"].resample("1D").ohlc().ffill()
         df.columns = [
             "Open",
@@ -870,7 +864,7 @@ def plot_chart(
         pair = symbol_binance + currency
 
         if check_valid_binance_str(pair):
-            print(f"{symbol_binance} loaded vs {currency.upper()}")
+            # print(f"{symbol_binance} loaded vs {currency.upper()}")
 
             candles = client.get_klines(
                 symbol=pair,
@@ -985,7 +979,7 @@ def plot_chart(
         pair = f"{coin}-{currency}"
 
         if coinbase_model.check_validity_of_product(pair):
-            print(f"{coin} loaded vs {currency}")
+            # print(f"{coin} loaded vs {currency}")
 
             df = coinbase_model.get_candles(
                 product_id=pair,

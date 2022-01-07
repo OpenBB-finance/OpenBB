@@ -7,7 +7,6 @@ from typing import Tuple, Union, Any, Dict, List, Optional
 import regex as re
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
-from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import calc_change
 from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
     remove_keys,
     filter_list,
@@ -15,6 +14,7 @@ from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
     rename_columns_in_dct,
     create_dictionary_with_prefixes,
     DENOMINATION,
+    calc_change,
 )
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     replace_underscores_in_column_names,
@@ -206,6 +206,35 @@ def load_coins_list(file_name: str) -> pd.DataFrame:
     return coins
 
 
+def get_coin_market_chart(
+    coin_id: str = "", vs_currency: str = "usd", days: int = 30, **kwargs: Any
+) -> pd.DataFrame:
+    """Get prices for given coin. [Source: CoinGecko]
+
+    Parameters
+    ----------
+    vs_currency: str
+        currency vs which display data
+    days: int
+        number of days to display the data
+    kwargs
+
+    Returns
+    -------
+    pandas.DataFrame
+        Prices for given coin
+        Columns: time, price, currency
+    """
+    client = CoinGeckoAPI()
+    prices = client.get_coin_market_chart_by_id(coin_id, vs_currency, days, **kwargs)
+    prices = prices["prices"]
+    df = pd.DataFrame(data=prices, columns=["time", "price"])
+    df["time"] = pd.to_datetime(df.time, unit="ms")
+    df = df.set_index("time")
+    df["currency"] = vs_currency
+    return df
+
+
 class Coin:
     """Coin class, it holds loaded coin"""
 
@@ -242,14 +271,14 @@ class Coin:
         coin = None
         symbol = None
         for dct in self._coin_list:
-            if search_coin.lower() in list(dct.values()):
+            if search_coin.lower() in [
+                dct["id"],
+                dct["symbol"],
+            ]:
                 coin = dct.get("id")
                 symbol = dct.get("symbol")
-                # print(f"Coin found : {coin} with symbol {symbol}\n")
-                break
-        if not coin:
-            raise ValueError(f"Could not find coin with the given id: {symbol}\n")
-        return coin, symbol
+                return coin, symbol
+        raise ValueError(f"Could not find coin with the given id: {search_coin}\n")
 
     def coin_list(self) -> list:
         """List all available coins [Source: CoinGecko]

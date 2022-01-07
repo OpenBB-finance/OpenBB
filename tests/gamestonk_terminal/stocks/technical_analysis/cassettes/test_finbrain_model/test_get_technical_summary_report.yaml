@@ -1,0 +1,53 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://api.finbrain.tech/v0/technicalSummary/PM
+  response:
+    body:
+      string: '{"ticker":"PM","name":"Philip Morris International","technicalSummary":"PM
+        price has changed 1.52% in the last 3 days and 0.77% yesterday. RSI is greater
+        than 70 and the indicator is pointing downwards. Asset is in the overbought
+        area. MACD is in the Bullish area and the histogram is moving upwards. PM
+        price is trading below the 200-day SMA line and the SMA is trending down.
+        The asset price is between the Upper and the Middle Bollinger Bands. "}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '449'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 04 Jan 2022 15:12:35 GMT
+      X-Amzn-Trace-Id:
+      - Root=1-61d463e1-2e2d72d622605cdf3ab32737;Sampled=0
+      access-control-allow-origin:
+      - '*'
+      etag:
+      - W/"1c1-EACVzPrzEagu0uqKANW4Jruo9OU"
+      x-amz-apigw-id:
+      - LbSLVGO7IAMFjkg=
+      x-amzn-Remapped-connection:
+      - close
+      x-amzn-Remapped-content-length:
+      - '449'
+      x-amzn-Remapped-date:
+      - Tue, 04 Jan 2022 15:12:35 GMT
+      x-amzn-RequestId:
+      - 97de8046-896f-430d-b9c3-aef31736e30b
+      x-powered-by:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

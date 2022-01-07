@@ -589,6 +589,8 @@ main:
             ref: "/common/quantitative_analysis/capm"
           - name: data
             ref: "/common/quantitative_analysis/data"
+          - name: line
+            ref: "/common/quantitative_analysis/line"
       - name: prediction techniques
         ref: "/common/prediction_techniques"
         sub:
@@ -620,6 +622,8 @@ main:
         ref: "/cryptocurrency/chart"
       - name: find
         ref: "/cryptocurrency/find"
+      - name: coins
+        ref: "/cryptocurrency/coins"
       - name: headlines
         ref: "/cryptocurrency/headlines"
       - name: prt
@@ -627,8 +631,6 @@ main:
       - name: discovery
         ref: "/cryptocurrency/discovery"
         sub:
-          - name: coins
-            ref: "/cryptocurrency/discovery/coins"
           - name: cgtrending
             ref: "/cryptocurrency/discovery/cgtrending"
           - name: cgvoted
@@ -1072,3 +1074,19 @@ main:
         ref: "/forex/candle"
   - name: resources
     ref: "/resources"
+  - name: alternative
+    ref: "/alternative"
+    sub:
+      - name: covid
+        ref: "/alternative/covid"
+        sub:
+          - name: slopes
+            ref: "/alternative/covid/slopes"
+          - name: ov
+            ref: "/alternative/covid/ov"
+          - name: deaths
+            ref: "/alternative/covid/deaths"
+          - name: cases
+            ref: "/alternative/covid/cases"
+          - name: rates
+            ref: "/alternative/covid/rates"
