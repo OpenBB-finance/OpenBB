@@ -3,9 +3,10 @@
 This document is part of the `Gamestonk Terminal` library documentation.
 
 It aims to provide necessary information in order :
-  - Run `unit tests`
-  - Build `unit tests`
-  - Maintain `unit tests`
+
+- Run `unit tests`
+- Build `unit tests`
+- Maintain `unit tests`
 
 ## 1.1. Why having unit tests ?
 
@@ -14,6 +15,7 @@ Here `Unit tests` purpose is to allow : update without fear.
 Insuring with enough confidence that : addition, removal or update of a `module/function` won't break other parts of the code.
 
 To do that we need `unit tests` to be :
+
 - fast to write
 - fast to run
 
@@ -34,11 +36,13 @@ In this section we will explain every think you need to run the `unit tests` on 
 To run the tests you will need the `dev-dependencies`.
 
 By default poetry installs the `dev-dependencies` when you run this command :
+
 ```bash
 poetry install
 ```
 
 If you dont want to install the `dev-dependencies` you will have to add the option `--no-dev` like this :
+
 ```bash
 poetry install --no-dev
 ```
@@ -59,7 +63,6 @@ You can run tests by their name :
 ```
 pytest -k "test_function1"
 ```
-
 
 ## 2.4. How to run `tests` : by `markers` ?
 
@@ -113,9 +116,11 @@ There should be at most one `test module` for each `module` of `Gamestonk Termin
 Each `test module` should follow the same path than the `module` it is `testing`.
 
 For instance to `test` the following module :
+
 - `gamestonk_terminal/stocks/due_diligence/dd_controller.py`
 
 A `test module` should be added here :
+
 - `tests/gamestonk_terminal/stocks/due_diligence/test_dd_controller.py`
 
 ## 3.2. How to record network ?
@@ -176,6 +181,7 @@ def vcr_config():
 ```
 
 More information about `vcr_config` fixture in the documentation of `pytest-recording` :
+
 - https://github.com/kiwicom/pytest-recording
 
 ## 3.4. How to `mock` ?
@@ -185,12 +191,14 @@ More information about `vcr_config` fixture in the documentation of `pytest-reco
 A `mocker` fixture is available through the package `pytest-mock`.
 
 Here is an example on how to `mocker` fixture can be used :
+
 ```python
 def test_something(mocker):
     mocker.patch("some_package.some_module")
 ```
 
 More information about `pytest-mock` are available here :
+
 - https://pypi.org/project/pytest-mock/
 
 **MOCKEYPATCH**
@@ -203,11 +211,13 @@ def test_double(monkeypatch):
 ```
 
 More information about `monkeypatch` are available here :
+
 - https://docs.pytest.org/en/6.2.x/monkeypatch.html
 
 ## 3.5. Which `helpers` are available ?
 
 You can find the available helpers inside the following package/module :
+
 - `tests/helpers/`
 - `tests/conftest.py`
 
@@ -222,7 +232,8 @@ pytest --fixtures
 ```
 
 More on custom fixtures here :
- - [FIXTURES](FIXTURES.md)
+
+- [FIXTURES](FIXTURES.md)
 
 ## 3.7. Which `markers` are available ?
 
@@ -233,8 +244,8 @@ pytest --markers
 ```
 
 More information on markers location are available in pytest documentation :
-- https://docs.pytest.org/en/6.2.x/mark.html#mark
 
+- https://docs.pytest.org/en/6.2.x/mark.html#mark
 
 ## 3.8. Known `issue` / `solution`
 
@@ -258,7 +269,6 @@ def vcr_config():
 ```
 
 You can also refactor this method to let access to `stard/end` dates.
-
 
 **USER-AGENT**
 
@@ -291,6 +301,7 @@ Issues : as for now `vcrpy` seems to be incompatible with multi-threading.
 The library `vcrpy` is used to record `cassettes` (`network` calls into `yaml` files).
 
 Here is a solution to still combine `yfinance` and `vcrpy` :
+
 ```python
 import pytest
 import yfinance
@@ -303,7 +314,7 @@ def mock_yf_download(*args, **kwargs):
 @pytest.mark.vcr
 def test_ark_orders_view(kwargs_dict, mocker, use_color):
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
-    
+
     yf.download(tickers="VCYT QSI")
 ```
 
@@ -316,6 +327,7 @@ The default testing tool from `vscode` should let you add breakpoints and run de
 It's a convenient way to see what's inside your `test` while running.
 
 More information on this tool are available here :
+
 - https://code.visualstudio.com/docs/python/testing
 
 ## 3.10. How to handle `dev-dependencies` ?
@@ -337,14 +349,17 @@ flake8 = "^3.9.0"
 **EXPORT REQUIREMENTS**
 
 After updating the `pyproject.toml` you will have to export the `requirements` files using the following commands :
+
 ```bash
 poetry export -f requirements.txt  -o requirements.txt --without-hashes --dev
 poetry export -f requirements.txt  -o requirements-full.txt --extras prediction --without-hashes --dev
+poetry export -f requirements.txt  -o discordbot/requirements.txt --extras discord --without-hashes --dev
 ```
 
 # 4. Maintain `unit tests`
 
 ## 4.1. What is the PR process ? (in progress)
+
 Here are the steps to write proper tests for Gamestonk :
 
     A. Find right place
@@ -360,17 +375,18 @@ Put the code following the same module and package structure than `gamestonk_ter
 Once you made your `PullRequest` an automation will let you know whether or not you have the proper amount of tests coverage.
 
 You can also run the following command to check your coverage manually :
+
 - `pytest --cov --cov-fail-under=90`
 
 **C. Set the right markers**
 
 If parts of your have specificities like :
+
 - being `slow`
 - requiring `network` connectivity
 - requiring `authentication` to `APIs`
 
 Then the proper markers should be sent on each test.
-
 
 The rests of this document is there to provide a deeper comprehension of this steps.
 
@@ -398,6 +414,7 @@ You should be able to see the code coverage on comment of your `Pull Requests`.
 **MANUALLY**
 
 This is how to manually check code coverage.
+
 ```bash
 pytest --cov=gamestonk_terminal --cov=terminal --cov-report term-missing
 ```
@@ -405,6 +422,7 @@ pytest --cov=gamestonk_terminal --cov=terminal --cov-report term-missing
 You can also select a specific package/module with the option `--cov`.
 
 Here is an example where we select only the package `stocks\due_diligence` :
+
 ```bash
 pytest --cov=gamestonk_terminal\stocks\due_diligence --cov-report term-missing
 ```

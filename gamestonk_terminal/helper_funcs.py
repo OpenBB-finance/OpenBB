@@ -214,6 +214,19 @@ def check_proportion_range(num) -> float:
     return num
 
 
+def valid_date_in_past(s: str) -> datetime:
+    """Argparse type to check date is in valid format"""
+    try:
+        delta = datetime.now() - datetime.strptime(s, "%Y-%m-%d")
+        if delta.days < 1:
+            raise argparse.ArgumentTypeError(
+                f"Not a valid date: {s}. Must be earlier than today"
+            )
+        return datetime.strptime(s, "%Y-%m-%d")
+    except ValueError as value_error:
+        raise argparse.ArgumentTypeError(f"Not a valid date: {s}") from value_error
+
+
 def valid_date(s: str) -> datetime:
     """Argparse type to check date is in valid format"""
     try:

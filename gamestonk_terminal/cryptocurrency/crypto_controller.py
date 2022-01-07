@@ -1,13 +1,14 @@
 """Cryptocurrency Context Controller"""
 __docformat__ = "numpy"
-# pylint: disable=R0904, C0302, R1710, W0622, C0201
+# pylint: disable=R0904, C0302, R1710, W0622, C0201, C0301
 
 import argparse
+from datetime import datetime, timedelta
 import difflib
 from typing import List, Union
 import pandas as pd
-from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
+from rich import console
 from binance.client import Client
 
 from gamestonk_terminal import feature_flags as gtff
@@ -19,6 +20,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     system_clear,
     try_except,
+    valid_date_in_past,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.due_diligence import (
@@ -31,12 +33,13 @@ from gamestonk_terminal.cryptocurrency.due_diligence import (
 )
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
     FIND_KEYS,
+    display_all_coins,
     load,
     find,
-    load_ta_data,
     plot_chart,
 )
 import gamestonk_terminal.config_terminal as cfg
+from tests.helpers.helpers import calc_change
 
 # pylint: disable=import-outside-toplevel
 
@@ -47,6 +50,8 @@ CRYPTO_SOURCES = {
     "cp": "CoinPaprika",
     "cb": "Coinbase",
 }
+
+t_console = console.Console()
 
 
 class CryptoController:
@@ -68,6 +73,7 @@ class CryptoController:
         "headlines",
         "chart",
         "load",
+        "coins",
         "find",
     ]
 
@@ -93,11 +99,15 @@ class CryptoController:
         self.current_df = pd.DataFrame()
         self.current_currency = ""
         self.source = ""
+        self.coin_map_df = pd.DataFrame()
+        self.current_interval = ""
+        self.price_str = ""
 
         self.completer: Union[None, NestedCompleter] = None
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
+            choices["coins"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
             choices["load"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
             choices["find"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
             choices["find"]["-k"] = {c: {} for c in FIND_KEYS}
@@ -112,8 +122,9 @@ class CryptoController:
     def print_help(self):
         """Print help"""
         help_text = """
-    load        load a specific cryptocurrency for analysis
-    find        alternate way to search for coins
+     load        load a specific cryptocurrency for analysis
+     find        find coins in a certain source
+     coins       find coins and check map across multiple sources
 """
         help_text += (
             f"\nCoin: {self.current_coin}" if self.current_coin != "" else "\nCoin: ?"
@@ -123,22 +134,22 @@ class CryptoController:
             if self.source != ""
             else "\nSource: ?\n"
         )
+        help_text += self.price_str + "\n"
         help_text += """
-    chart       view a candle chart for a specific cryptocurrency
-    headlines   crypto sentiment from 15+ major news headlines [Finbrain]
+     chart       view a candle chart for a specific cryptocurrency
+     headlines   crypto sentiment from 15+ major news headlines [Finbrain]
     """
-        dim = Style.DIM if not self.current_coin else ""
         help_text += f"""
 >    disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
 >    ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
 >    onchain     information on different blockchains,   e.g.: eth gas fees, whale alerts, DEXes info
 >    defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
->    nft         non-fungible tokens,                    e.g.: today drops{dim}
+>    nft         non-fungible tokens,                    e.g.: today drops{'[dim]' if not self.current_coin else ''}
 >    dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
 >    ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
->    pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo{Style.RESET_ALL if not self.current_coin else ""}
+>    pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo{'[/dim]' if not self.current_coin else ''}
 """  # noqa
-        print(help_text)
+        t_console.print(help_text)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -217,13 +228,82 @@ class CryptoController:
         self.queue.insert(0, "quit")
 
     @try_except
+    def call_coins(self, other_args):
+        """Process coins command"""
+        parser = argparse.ArgumentParser(
+            prog="coins",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Shows list of coins available on CoinGecko, CoinPaprika and Binance.If you provide name of
+            coin then in result you will see ids of coins with best match for all mentioned services.
+            If you provide ALL keyword in your search query, then all coins will be displayed. To move over coins you
+            can use pagination mechanism with skip, top params. E.g. coins ALL --skip 100 --limit 30 then all coins
+            from 100 to 130 will be displayed. By default skip = 0, limit = 10.
+            If you won't provide source of the data everything will be displayed (CoinGecko, CoinPaprika, Binance).
+            If you want to search only in given source then use --source flag. E.g. if you want to find coin with name
+            uniswap on CoinPaprika then use: coins uniswap --source cp --limit 10
+                """,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--coin",
+            help="Coin you search for",
+            dest="coin",
+            required="-h" not in other_args,
+            type=str,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--skip",
+            default=0,
+            dest="skip",
+            help="Skip n of records",
+            type=check_positive,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--limit",
+            default=10,
+            dest="limit",
+            help="Limit of records",
+            type=check_positive,
+        )
+
+        parser.add_argument(
+            "--source",
+            dest="source",
+            help="Source of data.",
+            type=str,
+            choices=CRYPTO_SOURCES.keys(),
+        )
+
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-c")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            display_all_coins(
+                coin=ns_parser.coin,
+                source=ns_parser.source,
+                top=ns_parser.limit,
+                skip=ns_parser.skip,
+                show_all=bool("ALL" in other_args),
+                export=ns_parser.export,
+            )
+
+    @try_except
     def call_load(self, other_args):
         """Process load command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load crypto currency to perform analysis on. "
+            description="Load crypto currency to perform analysis on."
             "Available data sources are CoinGecko, CoinPaprika, Binance, Coinbase"
             "By default main source used for analysis is CoinGecko (cg). To change it use --source flag",
         )
@@ -236,7 +316,6 @@ class CryptoController:
             required="-h" not in other_args,
         )
         parser.add_argument(
-            "-s",
             "--source",
             help="Source of data",
             dest="source",
@@ -244,19 +323,76 @@ class CryptoController:
             default="cg",
             required=False,
         )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date_in_past,
+            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the crypto",
+        )
+        parser.add_argument(
+            "--vs",
+            help="Quote currency (what to view coin vs)",
+            dest="vs",
+            default="usd",
+            type=str,
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            help="Interval to get data (Only available on binance/coinbase)",
+            dest="interval",
+            default="1day",
+            type=str,
+        )
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
+        delta = (datetime.now() - ns_parser.start).days
         if ns_parser:
             source = ns_parser.source
             for arg in ["--source", source]:
                 if arg in other_args:
                     other_args.remove(arg)
 
-            self.current_coin, self.source, self.symbol = load(
-                coin=ns_parser.coin, source=ns_parser.source
+            # TODO: protections in case None is returned
+            (
+                self.current_coin,
+                self.source,
+                self.symbol,
+                self.coin_map_df,
+                self.current_df,
+                self.current_currency,
+            ) = load(
+                coin=ns_parser.coin,
+                source=ns_parser.source,
+                should_load_ta_data=True,
+                days=delta,
+                interval=ns_parser.interval,
+                vs=ns_parser.vs,
             )
+            if self.symbol:
+                self.current_interval = ns_parser.interval
+                first_price = self.current_df["Close"].iloc[0]
+                last_price = self.current_df["Close"].iloc[-1]
+                second_last_price = self.current_df["Close"].iloc[-2]
+                interval_change = calc_change(last_price, second_last_price)
+                since_start_change = calc_change(last_price, first_price)
+                if isinstance(self.current_currency, str):
+                    self.price_str = f"""Current Price: {round(last_price,2)} {self.current_currency.upper()}
+Performance in interval ({self.current_interval}): {'[green]' if interval_change > 0 else "[red]"}{round(interval_change,2)}%{'[/green]' if interval_change > 0 else "[/red]"}
+Performance since {ns_parser.start.strftime('%Y-%m-%d')}: {'[green]' if since_start_change > 0 else "[red]"}{round(since_start_change,2)}%{'[/green]' if since_start_change > 0 else "[/red]"}"""  # noqa
+
+                    t_console.print(
+                        f"""
+Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[self.source]} source
+
+{self.price_str}
+"""
+                    )  # noqa
 
     @try_except
     def call_chart(self, other_args):
@@ -279,7 +415,6 @@ class CryptoController:
                     choices=["usd", "btc", "BTC", "USD"],
                     type=str,
                 )
-
                 parser.add_argument(
                     "-d",
                     "--days",
@@ -293,7 +428,6 @@ class CryptoController:
                 parser.add_argument(
                     "--vs", default="usd", dest="vs", help="Currency to display vs coin"
                 )
-
                 parser.add_argument(
                     "-d",
                     "--days",
@@ -334,7 +468,6 @@ class CryptoController:
                     default="USDT",
                     choices=quotes,
                 )
-
                 parser.add_argument(
                     "-i",
                     "--interval",
@@ -344,7 +477,6 @@ class CryptoController:
                     default="1day",
                     type=str,
                 )
-
                 parser.add_argument(
                     "-l",
                     "--limit",
@@ -413,7 +545,7 @@ class CryptoController:
                     days = ns_parser.days
 
                 plot_chart(
-                    coin=self.current_coin,
+                    coin_map_df=self.coin_map_df,
                     limit=limit,
                     interval=interval,
                     days=days,
@@ -422,222 +554,12 @@ class CryptoController:
                 )
 
     @try_except
-    def call_ta(self, other_args):
+    def call_ta(self, _):
         """Process ta command"""
         from gamestonk_terminal.cryptocurrency.technical_analysis import ta_controller
 
         # TODO: Play with this to get correct usage
         if self.current_coin:
-            parser = argparse.ArgumentParser(
-                add_help=False,
-                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-                prog="ta",
-                description="""Loads data for technical analysis. You can specify currency vs which you want
-                                   to show chart and also number of days to get data for.
-                                   By default currency: usd and days: 60.
-                                   E.g. if you loaded in previous step Ethereum and you want to see it's price vs btc
-                                   in last 90 days range use `ta --vs btc --days 90`""",
-            )
-
-            if self.source == "cp":
-                parser.add_argument(
-                    "--vs",
-                    default="usd",
-                    dest="vs",
-                    help="Currency to display vs coin",
-                    choices=["usd", "btc", "BTC", "USD"],
-                    type=str,
-                )
-
-                parser.add_argument(
-                    "-d",
-                    "--days",
-                    default=60,
-                    dest="days",
-                    help="Number of days to get data for",
-                    type=check_positive,
-                )
-
-            if self.source == "cg":
-                parser.add_argument(
-                    "--vs", default="usd", dest="vs", help="Currency to display vs coin"
-                )
-
-                parser.add_argument(
-                    "-d",
-                    "--days",
-                    default=60,
-                    dest="days",
-                    help="Number of days to get data for",
-                )
-
-            if self.source == "bin":
-                client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
-                interval_map = {
-                    "1day": client.KLINE_INTERVAL_1DAY,
-                    "3day": client.KLINE_INTERVAL_3DAY,
-                    "1hour": client.KLINE_INTERVAL_1HOUR,
-                    "2hour": client.KLINE_INTERVAL_2HOUR,
-                    "4hour": client.KLINE_INTERVAL_4HOUR,
-                    "6hour": client.KLINE_INTERVAL_6HOUR,
-                    "8hour": client.KLINE_INTERVAL_8HOUR,
-                    "12hour": client.KLINE_INTERVAL_12HOUR,
-                    "1week": client.KLINE_INTERVAL_1WEEK,
-                    "1min": client.KLINE_INTERVAL_1MINUTE,
-                    "3min": client.KLINE_INTERVAL_3MINUTE,
-                    "5min": client.KLINE_INTERVAL_5MINUTE,
-                    "15min": client.KLINE_INTERVAL_15MINUTE,
-                    "30min": client.KLINE_INTERVAL_30MINUTE,
-                    "1month": client.KLINE_INTERVAL_1MONTH,
-                }
-
-                _, quotes = binance_model.show_available_pairs_for_given_symbol(
-                    self.current_coin
-                )
-                parser.add_argument(
-                    "--vs",
-                    help="Quote currency (what to view coin vs)",
-                    dest="vs",
-                    type=str,
-                    default="USDT",
-                    choices=quotes,
-                )
-
-                parser.add_argument(
-                    "-i",
-                    "--interval",
-                    help="Interval to get data",
-                    choices=list(interval_map.keys()),
-                    dest="interval",
-                    default="1day",
-                    type=str,
-                )
-
-                parser.add_argument(
-                    "-l",
-                    "--limit",
-                    dest="limit",
-                    default=100,
-                    help="Number to get",
-                    type=check_positive,
-                )
-
-                if self.source == "cb":
-                    interval_map = {
-                        "1min": 60,
-                        "5min": 300,
-                        "15min": 900,
-                        "1hour": 3600,
-                        "6hour": 21600,
-                        "24hour": 86400,
-                        "1day": 86400,
-                    }
-
-                    _, quotes = coinbase_model.show_available_pairs_for_given_symbol(
-                        self.current_coin
-                    )
-                    if len(quotes) < 0:
-                        print(
-                            f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
-                        )
-                        return
-
-                    parser.add_argument(
-                        "--vs",
-                        help="Quote currency (what to view coin vs)",
-                        dest="vs",
-                        type=str,
-                        default="USDT" if "USDT" in quotes else quotes[0],
-                        choices=quotes,
-                    )
-
-                    parser.add_argument(
-                        "-i",
-                        "--interval",
-                        help="Interval to get data",
-                        choices=list(interval_map.keys()),
-                        dest="interval",
-                        default="1day",
-                        type=str,
-                    )
-
-                    parser.add_argument(
-                        "-l",
-                        "--limit",
-                        dest="limit",
-                        default=100,
-                        help="Number to get",
-                        type=check_positive,
-                    )
-
-            if self.source == "cb":
-                interval_map = {
-                    "1min": 60,
-                    "5min": 300,
-                    "15min": 900,
-                    "1hour": 3600,
-                    "6hour": 21600,
-                    "24hour": 86400,
-                    "1day": 86400,
-                }
-
-                _, quotes = coinbase_model.show_available_pairs_for_given_symbol(
-                    self.current_coin
-                )
-                if len(quotes) < 0:
-                    print(
-                        f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
-                    )
-                    return
-
-                parser.add_argument(
-                    "--vs",
-                    help="Quote currency (what to view coin vs)",
-                    dest="vs",
-                    type=str,
-                    default="USDT" if "USDT" in quotes else quotes[0],
-                    choices=quotes,
-                )
-
-                parser.add_argument(
-                    "-i",
-                    "--interval",
-                    help="Interval to get data",
-                    choices=list(interval_map.keys()),
-                    dest="interval",
-                    default="1day",
-                    type=str,
-                )
-
-                parser.add_argument(
-                    "-l",
-                    "--limit",
-                    dest="limit",
-                    default=100,
-                    help="Number to get",
-                    type=check_positive,
-                )
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-
-            if ns_parser:
-                if self.source in ["bin", "cb"]:
-                    limit = ns_parser.limit
-                    interval = ns_parser.interval
-                    days = 0
-                else:
-                    limit = 0
-                    interval = "1day"
-                    days = ns_parser.days
-
-                self.current_df, self.current_currency = load_ta_data(
-                    coin=self.current_coin,
-                    source=self.source,
-                    currency=ns_parser.vs,
-                    days=days,
-                    limit=limit,
-                    interval=interval,
-                )
-
             if self.current_currency != "" and not self.current_df.empty:
                 self.queue = ta_controller.menu(
                     stock=self.current_df,
@@ -712,7 +634,11 @@ class CryptoController:
             from gamestonk_terminal.cryptocurrency.due_diligence import dd_controller
 
             self.queue = dd_controller.menu(
-                self.current_coin, self.source, self.symbol, queue=self.queue
+                self.current_coin,
+                self.source,
+                self.symbol,
+                self.coin_map_df,
+                queue=self.queue,
             )
         else:
             print(
@@ -723,21 +649,16 @@ class CryptoController:
     def call_pred(self, _):
         """Process pred command"""
         if self.current_coin:
-            if self.source != "cg":
-                print("Currently only supports CoinGecko source.\n")
-                return
+            from gamestonk_terminal.cryptocurrency.prediction_techniques import (
+                pred_controller,
+            )
 
-            if self.current_coin:
-                from gamestonk_terminal.cryptocurrency.prediction_techniques import (
-                    pred_controller,
-                )
-                from gamestonk_terminal.cryptocurrency import (
-                    cryptocurrency_helpers as c_help,
-                )
-
+            if self.current_interval != "1day":
+                print("Only interval `1day` is possible for now.\n")
+            else:
                 self.queue = pred_controller.menu(
                     self.current_coin,
-                    c_help.load_cg_coin_data(self.current_coin, "USD", 365, "1D"),
+                    self.current_df,
                     self.queue,
                 )
         else:
@@ -883,7 +804,7 @@ def menu(queue: List[str] = None):
             crypto_controller.queue = crypto_controller.switch(an_input)
         except SystemExit:
             print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
+                f"\nThe command '{an_input}' doesn't exist on the /crypto menu.",
                 end="",
             )
             similar_cmd = difflib.get_close_matches(

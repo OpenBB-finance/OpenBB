@@ -622,13 +622,13 @@ main:
         ref: "/cryptocurrency/chart"
       - name: find
         ref: "/cryptocurrency/find"
+      - name: coins
+        ref: "/cryptocurrency/coins"
       - name: headlines
         ref: "/cryptocurrency/headlines"
       - name: discovery
         ref: "/cryptocurrency/discovery"
         sub:
-          - name: coins
-            ref: "/cryptocurrency/discovery/coins"
           - name: cgtrending
             ref: "/cryptocurrency/discovery/cgtrending"
           - name: cgvoted
@@ -688,8 +688,6 @@ main:
             ref: "/cryptocurrency/overview/cgcategories"
           - name: cghold
             ref: "/cryptocurrency/overview/cghold"
-          - name: cgcompanies
-            ref: "/cryptocurrency/overview/cgcompanies"
           - name: cpglobal
             ref: "/cryptocurrency/overview/cpglobal"
           - name: cpinfo
@@ -743,8 +741,6 @@ main:
             ref: "/cryptocurrency/due_diligence/dev"
           - name: bc
             ref: "/cryptocurrency/due_diligence/bc"
-          - name: chart
-            ref: "/cryptocurrency/due_diligence/chart"
           - name: basic
             ref: "/cryptocurrency/due_diligence/basic"
           - name: ps
