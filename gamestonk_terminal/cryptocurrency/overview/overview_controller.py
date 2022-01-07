@@ -49,7 +49,6 @@ class OverviewController(BaseController):
         "cgderivatives",
         "cgcategories",
         "cghold",
-        "cgcompanies",
         "cpglobal",
         "cpmarkets",
         "cpexmarkets",
@@ -140,7 +139,6 @@ CoinGecko:
     cgderivatives     crypto derivatives
     cgcategories      crypto categories
     cghold            ethereum, bitcoin holdings overview statistics
-    cgcompanies       ethereum, bitcoin holdings by public companies
 CoinPaprika:
     cpglobal          global crypto market info
     cpinfo            basic info about all coins available on CoinPaprika
@@ -307,50 +305,6 @@ WithdrawalFees:
         if ns_parser:
             pycoingecko_view.display_holdings_overview(
                 coin=ns_parser.coin, export=ns_parser.export
-            )
-
-    def call_cgcompanies(self, other_args):
-        """Process companies command"""
-        parser = argparse.ArgumentParser(
-            prog="cgcompanies",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Track publicly traded companies around the world that
-            are buying ethereum or bitcoin as part of corporate treasury:
-            Rank, Company, Ticker, Country, Total_Btc, Entry_Value, Today_Value, Pct_Supply, Url
-            You can use additional flag --urls to see urls to announcement about buying btc or eth by given company.
-            In this case you will see only columns like rank, company, url
-            """,
-        )
-
-        parser.add_argument(
-            "-c",
-            "--coin",
-            dest="coin",
-            type=str,
-            help="companies with ethereum or bitcoin",
-            default="bitcoin",
-            choices=pycoingecko_model.HOLD_COINS,
-        )
-
-        parser.add_argument(
-            "-u",
-            "--urls",
-            dest="urls",
-            action="store_true",
-            help="Flag to show urls. If you will use that flag you will see only rank, company, url columns",
-            default=False,
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-c")
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            pycoingecko_view.display_holdings_companies_list(
-                coin=ns_parser.coin, export=ns_parser.export, links=ns_parser.urls
             )
 
     def call_cgnews(self, other_args):

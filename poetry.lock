@@ -2315,7 +2315,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "pycoingecko"
-version = "1.4.1"
+version = "2.2.0"
 description = "Python wrapper around the CoinGecko API"
 category = "main"
 optional = false
@@ -5340,8 +5340,8 @@ pycodestyle = [
     {file = "pycodestyle-2.7.0.tar.gz", hash = "sha256:c389c1d06bf7904078ca03399a4816f974a1d590090fecea0c63ec26ebaf1cef"},
 ]
 pycoingecko = [
-    {file = "pycoingecko-1.4.1-py3-none-any.whl", hash = "sha256:289e5d129872439c7d76cb60037078e72a84f6d24b6034dde12bb5dc87fccb82"},
-    {file = "pycoingecko-1.4.1.tar.gz", hash = "sha256:de754cccc398feaf9230f710f93a15500af7457e86192fbceedf96ddfe8cabd4"},
+    {file = "pycoingecko-2.2.0-py3-none-any.whl", hash = "sha256:3646968c8c6936ca4e94b5f562328a763c12a0e9644141cb0215089dda59fe01"},
+    {file = "pycoingecko-2.2.0.tar.gz", hash = "sha256:9add73085729b1f10f93c7948490b09e8cd47c29bebe47dccb319e8b49502d0c"},
 ]
 pycparser = [
     {file = "pycparser-2.21-py2.py3-none-any.whl", hash = "sha256:8ee45429555515e1f6b185e78100aea234072576aa43ab53aefcae078162fca9"},

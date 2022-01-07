@@ -1,16 +1,28 @@
 from unittest import mock, TestCase
 import json
 import os
+import pytest
 
 import vcr
 from gamestonk_terminal.cryptocurrency.due_diligence import (
     pycoingecko_view as dd_pycoingecko_view,
 )
 
-from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import load
+from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
+    load,
+    prepare_all_coins_df,
+)
 from tests.helpers.helpers import check_print
 
 # pylint: disable=unused-import
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+def test_display_collection_stats():
+    dd_pycoingecko_view.display_coin_potential_returns(
+        main_coin="algorand", vs="bitcoin"
+    )
 
 
 @mock.patch(
@@ -25,14 +37,15 @@ def get_bitcoin(mock_load):
     ) as f:
         sample_return = json.load(f)
     mock_load.return_value = sample_return
-    coin, _, _ = load(coin="bitcoin", source="cg")
-    return coin
+    coin, _, symbol, _, _, _ = load(coin="bitcoin", source="cg")
+    return coin, symbol
 
 
 # pylint: disable=R0904
 class TestCoinGeckoAPI(TestCase):
     # pylint: disable = no-value-for-parameter
-    coin = get_bitcoin()
+    coin, symbol = get_bitcoin()
+    coin_map_df = prepare_all_coins_df().set_index("Symbol").loc[symbol]
 
     @check_print(assert_in="Market Cap Rank")
     @vcr.use_cassette(
