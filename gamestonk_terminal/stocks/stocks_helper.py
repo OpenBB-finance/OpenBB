@@ -261,7 +261,7 @@ def load(
 
     print(
         f"Loading {s_intraday} {ticker.upper()} stock "
-        f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis."
+        f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis.",
     )
 
     return df_stock_candidate
