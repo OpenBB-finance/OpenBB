@@ -121,10 +121,8 @@ Star the project
    docker pull ghcr.io/gamestonkterminal/gst-poetry:latest
    ```
 
-   Upon running this the first time, you should see the various layers downloading (note the random series of letters
-   numbers will vary). The first time this is run, it will take a few minutes. Subsequent updates will be much faster,
-   as the changes will be in the MB instead of GB.
-   
+   Upon running this the first time, you should see the various layers downloading (note the random series of letters numbers will vary). The first time this is run, it will take a few minutes. Subsequent updates will be much faster, as the changes will be in the MB instead of GB.
+
    ![Screen Shot 2021-09-08 at 10 41 08 AM](https://user-images.githubusercontent.com/18151143/132531075-7d7f7e71-4fcb-435c-9bb3-466d7077eba4.png)
 
    Once the download is complete, confirm that the image has been created by doing `docker images`. You should see
@@ -293,7 +291,7 @@ git stash pop
 
 The project is build around several different API calls, whether it is to access historical data or financials. The table below shows the ones where a key is necessary. The environment variable names are shown explicitly, for the variable name in the code one just needs to remove the "GT_", this can be found in [config_terminal.py](/gamestonk_terminal/config_terminal.py).
 
-| Website                                                                         | Environment Variables                                                                                                                                         |
+| Website | Environment Variables |
 | :------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------ |
 | [Alpha Vantage](https://www.alphavantage.co)                                    | GT_API_KEY_ALPHAVANTAGE                                                                                                                           |
 | [Binance](https://binance.com)                                                  | GT_API_BINANCE_KEY <br/> GT_API_BINANCE_SECRET                                                                                                    |
@@ -403,8 +401,9 @@ Feel free to share loss porn, memes or any questions at:
 - Twitter: [@gamestonkt](https://twitter.com/gamestonkt)
 
 ### Contributors
+
 <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=GamestonkTerminal/GamestonkTerminal" height="276"/>
+   <img src="https://contributors-img.web.app/image?repo=GamestonkTerminal/GamestonkTerminal" height="276"/>
 </a>
 
 ## Acknowledgments
