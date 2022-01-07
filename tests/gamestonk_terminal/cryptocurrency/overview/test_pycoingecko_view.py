@@ -12,6 +12,7 @@ from tests.helpers.helpers import check_print
 
 # pylint: disable=R0904
 class TestCoinGeckoAPI(TestCase):
+    @vcr.mark.skip
     @check_print(assert_in="companies hold a total of ")
     @vcr.use_cassette(
         "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/overview.yaml",
