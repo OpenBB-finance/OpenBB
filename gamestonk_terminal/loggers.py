@@ -176,7 +176,7 @@ def setup_logging() -> None:
         else:
             logger.debug("Unknown loghandler")
 
-    library_loggers(verbosity)
+    library_loggers(int(cfg.LOGGING_VERBOSITY))
 
     logger.info("Logging configuration finished")
     logger.info("Logging set to %s", cfg.LOGGING_HANDLERS)
