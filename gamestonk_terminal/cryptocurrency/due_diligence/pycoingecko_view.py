@@ -1,7 +1,8 @@
 """CoinGecko view"""
 __docformat__ = "numpy"
-
+# pylint: disable=C0209
 import os
+from typing import Union
 from pandas.plotting import register_matplotlib_converters
 from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import (
@@ -15,6 +16,58 @@ register_matplotlib_converters()
 
 # pylint: disable=inconsistent-return-statements
 # pylint: disable=R0904, C0302
+
+
+def display_coin_potential_returns(
+    main_coin: str,
+    vs: Union[str, None] = None,
+    top: Union[int, None] = None,
+    price: Union[int, None] = None,
+    export: str = "",
+) -> None:
+    """Displays potential returns of a certain coin. [Source: CoinGecko]
+
+    Parameters
+    ----------
+    main_coin   : str
+        Coin loaded to check potential returns for (e.g., algorand)
+    vs          : str | None
+        Coin to compare main_coin with (e.g., bitcoin)
+    top         : int | None
+        Number of coins with highest market cap to compare main_coin with (e.g., 5)
+    price
+        Target price of main_coin to check potential returns (e.g., 5)
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+    df = gecko.get_coin_potential_returns(main_coin, vs, top, price)
+    df["Potential Market Cap ($)"] = df.apply(
+        lambda x: "{:,}".format(int(x["Potential Market Cap ($)"])), axis=1
+    )
+    df["Current Market Cap ($)"] = df.apply(
+        lambda x: "{:,}".format(int(x["Current Market Cap ($)"])), axis=1
+    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "prt",
+        df,
+    )
 
 
 def display_info(symbol: str, export: str) -> None:

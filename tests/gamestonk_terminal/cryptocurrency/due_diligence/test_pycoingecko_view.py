@@ -1,6 +1,7 @@
 from unittest import mock, TestCase
 import json
 import os
+import pytest
 
 import vcr
 from gamestonk_terminal.cryptocurrency.due_diligence import (
@@ -14,6 +15,14 @@ from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
 from tests.helpers.helpers import check_print
 
 # pylint: disable=unused-import
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+def test_display_collection_stats():
+    dd_pycoingecko_view.display_coin_potential_returns(
+        main_coin="algorand", vs="bitcoin"
+    )
 
 
 @mock.patch(

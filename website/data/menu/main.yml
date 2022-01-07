@@ -626,6 +626,8 @@ main:
         ref: "/cryptocurrency/coins"
       - name: headlines
         ref: "/cryptocurrency/headlines"
+      - name: prt
+        ref: "/cryptocurrency/prt"
       - name: discovery
         ref: "/cryptocurrency/discovery"
         sub:

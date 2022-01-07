@@ -11,6 +11,8 @@ from prompt_toolkit.completion import NestedCompleter
 from rich import console
 from binance.client import Client
 
+from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import calc_change
+from gamestonk_terminal.cryptocurrency.due_diligence import pycoingecko_model
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -39,7 +41,6 @@ from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
     plot_chart,
 )
 import gamestonk_terminal.config_terminal as cfg
-from tests.helpers.helpers import calc_change
 
 # pylint: disable=import-outside-toplevel
 
@@ -112,6 +113,7 @@ class CryptoController:
             choices["find"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
             choices["find"]["-k"] = {c: {} for c in FIND_KEYS}
             choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
+            # choices["prt"]["--vs"] = {c: {} for c in coingecko_coin_ids} # list is huge. makes typing buggy
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         if queue:
@@ -135,10 +137,11 @@ class CryptoController:
             else "\nSource: ?\n"
         )
         help_text += self.price_str + "\n"
-        help_text += """
+        help_text += f"""
+     headlines   crypto sentiment from 15+ major news headlines [Finbrain]{'[dim]' if not self.current_coin else ''}
      chart       view a candle chart for a specific cryptocurrency
-     headlines   crypto sentiment from 15+ major news headlines [Finbrain]
-    """
+     prt         potential returns tool                  e.g.: check how much upside if eth reaches btc market cap{'[/dim]' if not self.current_coin else ''}
+    """  # noqa
         help_text += f"""
 >    disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
 >    ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
@@ -228,6 +231,62 @@ class CryptoController:
         self.queue.insert(0, "quit")
 
     @try_except
+    def call_prt(self, other_args):
+        """Process prt command"""
+        if self.current_coin:
+            parser = argparse.ArgumentParser(
+                add_help=False,
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                prog="prt",
+                description="Potential Returns Tool"
+                "Tool to check returns if loaded coin reaches provided price or other crypto market cap"
+                "Uses CoinGecko to grab coin data (price and market cap).",
+            )
+            group = parser.add_mutually_exclusive_group(required=True)
+            group.add_argument(
+                "--vs", help="Coin to compare with", dest="vs", type=str, default=None
+            )
+            group.add_argument(
+                "-p",
+                "--price",
+                help="Desired price",
+                dest="price",
+                type=int,
+                default=None,
+            )
+            group.add_argument(
+                "-t",
+                "--top",
+                help="Compare with top N coins",
+                dest="top",
+                type=int,
+                default=None,
+            )
+            if other_args and "-" not in other_args[0][0]:
+                other_args.insert(0, "--vs")
+
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            )
+
+            if ns_parser:
+                if ns_parser.vs:
+                    coin_found = pycoingecko_model.check_coin(ns_parser.vs)
+                    if not coin_found:
+                        print(f"VS Coin '{ns_parser.vs}' not found in CoinGecko\n")
+                        return
+                pycoingecko_view.display_coin_potential_returns(
+                    self.coin_map_df["CoinGecko"],
+                    ns_parser.vs,
+                    ns_parser.top,
+                    ns_parser.price,
+                )
+
+        else:
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
+
     def call_coins(self, other_args):
         """Process coins command"""
         parser = argparse.ArgumentParser(
