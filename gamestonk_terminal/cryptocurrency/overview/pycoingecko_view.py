@@ -394,23 +394,14 @@ def display_categories(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = gecko.get_top_crypto_categories()
-
+    df = gecko.get_crypto_categories(sortby)
     if not df.empty:
-        df = df.sort_values(by=sortby, ascending=descend)
-        df_data = df.copy()
-
-        if not links:
-            df.drop("Url", axis=1, inplace=True)
-        else:
-            df = df[["Rank", "Name", "Url"]]
-
         if gtff.USE_TABULATE_DF:
             print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,
-                    floatfmt=".0f",
+                    floatfmt=".2f",
                     showindex=False,
                     tablefmt="fancy_grid",
                 ),
@@ -423,7 +414,7 @@ def display_categories(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "categories",
-            df_data,
+            df,
         )
     else:
         print("")

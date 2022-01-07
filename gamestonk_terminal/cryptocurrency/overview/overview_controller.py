@@ -462,7 +462,7 @@ WithdrawalFees:
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=pycoingecko_model.CATEGORIES_FILTERS,
+            choices=pycoingecko_model.SORT_VALUES,
         )
 
         parser.add_argument(
@@ -1524,7 +1524,7 @@ def menu(queue: List[str] = None):
                     c: None for c in pycoingecko_model.NEWS_FILTERS
                 }
                 choices["cgcategories"]["-s"] = {
-                    c: None for c in pycoingecko_model.CATEGORIES_FILTERS
+                    c: None for c in pycoingecko_model.SORT_VALUES
                 }
                 choices["cgstables"]["-s"] = {
                     c: None for c in pycoingecko_model.STABLES_FILTERS
