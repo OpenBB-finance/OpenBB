@@ -7,9 +7,9 @@ from typing import List
 from datetime import datetime, timedelta
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
 from binance.client import Client
 
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import calc_change
 from gamestonk_terminal.cryptocurrency.due_diligence import pycoingecko_model

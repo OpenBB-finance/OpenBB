@@ -7,13 +7,13 @@ from datetime import datetime, timedelta
 
 import numpy as np
 import pandas as pd
-from gamestonk_terminal.rich_config import console
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.common.quantitative_analysis import (
     qa_view,
     rolling_view,
 )
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.helper_funcs import (

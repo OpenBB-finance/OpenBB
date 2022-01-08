@@ -5,10 +5,10 @@ import argparse
 from datetime import datetime, timedelta
 import os
 from typing import List
-from gamestonk_terminal.rich_config import console
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.economy import (

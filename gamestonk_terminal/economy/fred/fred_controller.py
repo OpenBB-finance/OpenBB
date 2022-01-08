@@ -4,9 +4,9 @@ __docformat__ = "numpy"
 import argparse
 from typing import List, Dict
 
-from gamestonk_terminal.rich_config import console
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.economy.fred import fred_view, fred_model
