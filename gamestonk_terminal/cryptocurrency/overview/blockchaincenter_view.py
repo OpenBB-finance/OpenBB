@@ -1,7 +1,6 @@
 """Blockchain Center View"""
 import os
-from matplotlib import pyplot as plt
-
+from matplotlib import pyplot as plt, dates as mdates
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.cryptocurrency.overview.blockchaincenter_model import (
     get_altcoin_index,
@@ -47,6 +46,10 @@ def display_altcoin_index(
             ax.legend()
             ax.set_xlabel("Time")
             ax.set_xlim(df.index[0], df.index[-1])
+            dateFmt = mdates.DateFormatter("%m/%d/%Y")
+
+            ax.xaxis.set_major_formatter(dateFmt)
+            ax.tick_params(axis="x", labelrotation=45)
             if gtff.USE_ION:
                 plt.ion()
             plt.show()
