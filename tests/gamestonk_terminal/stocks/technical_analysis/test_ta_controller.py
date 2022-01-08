@@ -33,13 +33,13 @@ def test_menu_with_queue(expected, mocker, queue):
         return_value=["quit"],
     )
 
-    result_menu = ta_controller.menu(
+    result_menu = ta_controller.TechnicalAnalysisController(
         ticker="MOCK_TICKER",
         start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
         interval="MOCK_INTERVAL",
         stock=EMPTY_DF,
         queue=queue,
-    )
+    ).menu()
 
     assert result_menu == expected
 
@@ -47,6 +47,21 @@ def test_menu_with_queue(expected, mocker, queue):
 @pytest.mark.vcr(record_mode="none")
 def test_menu_without_queue_completion(mocker):
     path_controller = "gamestonk_terminal.stocks.technical_analysis.ta_controller"
+
+    # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    mocker.patch(
+        target="gamestonk_terminal.feature_flags.USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session.prompt",
+        return_value="quit",
+    )
+
+    # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
 
     # DISABLE AUTO-COMPLETION
     mocker.patch.object(
@@ -62,13 +77,13 @@ def test_menu_without_queue_completion(mocker):
         return_value="quit",
     )
 
-    result_menu = ta_controller.menu(
+    result_menu = ta_controller.TechnicalAnalysisController(
         ticker="MOCK_TICKER",
         start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
         interval="MOCK_INTERVAL",
         stock=EMPTY_DF,
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -112,13 +127,13 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         new=mock_switch,
     )
 
-    result_menu = ta_controller.menu(
+    result_menu = ta_controller.TechnicalAnalysisController(
         ticker="MOCK_TICKER",
         start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
         interval="MOCK_INTERVAL",
         stock=EMPTY_DF,
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -745,6 +760,7 @@ def test_call_func(
         getattr(controller, tested_func)(other_args)
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 def test_call_load(mocker):
     # FORCE SINGLE THREADING

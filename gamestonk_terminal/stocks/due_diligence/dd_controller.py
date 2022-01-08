@@ -2,12 +2,12 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
-from typing import List, Union
+from typing import List
 from datetime import datetime, timedelta
 from pandas.core.frame import DataFrame
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.stocks.due_diligence import (
     fmp_view,
     business_insider_view,
@@ -19,35 +19,17 @@ from gamestonk_terminal.stocks.due_diligence import (
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
-    get_flair,
     parse_known_args_and_warn,
     check_positive,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    try_except,
-    system_clear,
     valid_date,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks import stocks_helper
 
 
-class DueDiligenceController:
-    """Due Diligence Controller"""
-
-    # Command choices
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
+class DueDiligenceController(BaseController):
+    """Due Diligence Controller class"""
 
     CHOICES_COMMANDS = [
         "load",
@@ -62,8 +44,6 @@ class DueDiligenceController:
         "arktrades",
     ]
 
-    CHOICES += CHOICES_COMMANDS
-
     def __init__(
         self,
         ticker: str,
@@ -73,27 +53,18 @@ class DueDiligenceController:
         queue: List[str] = None,
     ):
         """Constructor"""
+        super().__init__("/stocks/dd/", queue)
+
         self.ticker = ticker
         self.start = start
         self.interval = interval
         self.stock = stock
 
-        self.dd_parser = argparse.ArgumentParser(add_help=False, prog="dd")
-        self.dd_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-        self.completer: Union[None, NestedCompleter] = None
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["-i"] = {c: {} for c in stocks_helper.INTERVALS}
             choices["load"]["-s"] = {c: {} for c in stocks_helper.SOURCES}
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
     def print_help(self):
         """Print help"""
@@ -119,91 +90,11 @@ cathiesark.com
         """
         print(help_text)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-        Parameters
-        -------
-        an_input : str
-            string with input arguments
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.dd_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "dd")
+    def custom_reset(self) -> List[str]:
+        """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(0, f"load {self.ticker}")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            return ["stocks", f"load {self.ticker}", "dd"]
+        return []
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -272,7 +163,6 @@ cathiesark.com
                 else:
                     self.ticker = ns_parser.ticker.upper()
 
-    @try_except
     def call_analyst(self, other_args: List[str]):
         """Process analyst command"""
         parser = argparse.ArgumentParser(
@@ -290,7 +180,6 @@ cathiesark.com
         if ns_parser:
             finviz_view.analyst(ticker=self.ticker, export=ns_parser.export)
 
-    @try_except
     def call_pt(self, other_args: List[str]):
         """Process pt command"""
         parser = argparse.ArgumentParser(
@@ -330,7 +219,6 @@ cathiesark.com
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_est(self, other_args: List[str]):
         """Process est command"""
         parser = argparse.ArgumentParser(
@@ -348,7 +236,6 @@ cathiesark.com
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_rot(self, other_args: List[str]):
         """Process rot command"""
         parser = argparse.ArgumentParser(
@@ -388,7 +275,6 @@ cathiesark.com
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_rating(self, other_args: List[str]):
         """Process rating command"""
         parser = argparse.ArgumentParser(
@@ -423,7 +309,6 @@ cathiesark.com
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_sec(self, other_args: List[str]):
         """Process sec command"""
         parser = argparse.ArgumentParser(
@@ -457,7 +342,6 @@ cathiesark.com
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_supplier(self, other_args: List[str]):
         """Process supplier command"""
         parser = argparse.ArgumentParser(
@@ -492,7 +376,6 @@ cathiesark.com
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_arktrades(self, other_args):
         """Process arktrades command"""
         parser = argparse.ArgumentParser(
@@ -530,102 +413,3 @@ cathiesark.com
                 export=ns_parser.export,
                 show_ticker=ns_parser.show_ticker,
             )
-
-
-def menu(
-    ticker: str,
-    start: str,
-    interval: str,
-    stock: DataFrame,
-    queue: List[str] = None,
-):
-    """Due Diligence Menu
-
-    Parameters
-    ----------
-    ticker : str
-        Due diligence ticker symbol
-    start : str
-        Start date of the stock data
-    interval : str
-        Stock data interval
-    stock : DataFrame
-        Due diligence stock dataframe
-    queue: List[str]
-        List with commands in queue to run
-    """
-
-    dd_controller = DueDiligenceController(ticker, start, interval, stock, queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if dd_controller.queue and len(dd_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if dd_controller.queue[0] in ("q", "..", "quit"):
-                if len(dd_controller.queue) > 1:
-                    return dd_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = dd_controller.queue[0]
-            dd_controller.queue = dd_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in dd_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /stocks/dd/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                dd_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and dd_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/dd/ $ ",
-                        completer=dd_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/dd/ $ ")
-
-        try:
-            # Process the input command
-            dd_controller.queue = dd_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/dd menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                dd_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        dd_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                dd_controller.queue.insert(0, an_input)
-            else:
-                print("\n")
