@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 from abc import ABCMeta, abstractmethod
 import argparse
+import re
 import difflib
 from typing import Union, List
 
@@ -54,6 +55,7 @@ class BaseController:
             Menu choices of the particular menu (including menu and commands)
             E.g. ["load", "search", "ta", "pred"]
         """
+        self.check_path(path)
         self.path = path
         self.PATH = [x for x in path.split("/") if x != ""]
         self.reset_level = len(self.path) + 1
@@ -72,15 +74,25 @@ class BaseController:
         )
         self.parser.add_argument("cmd", choices=self.controller_choices)
 
-    def custom_reset(self):
+    def check_path(self, path: str) -> None:
+        if path[0] != "/":
+            raise ValueError("Path must begin with a '/' character.")
+        if path[-1] != "/":
+            raise ValueError("Path must end with a '/' character.")
+        if not re.match("^[a-z/]*$", path):
+            raise ValueError(
+                "Path must only contain lowercase letters and '/' characters."
+            )
+
+    def custom_reset(self) -> None:
         """This will be replaced by any children with custom_reset functions"""
 
     @abstractmethod
-    def print_help(self):
+    def print_help(self) -> None:
         raise NotImplementedError("Must override print_help")
 
     @try_except
-    def switch(self, an_input: str):
+    def switch(self, an_input: str) -> List[str]:
         """Process and dispatch input
 
         Returns
@@ -132,26 +144,26 @@ class BaseController:
         """Process cls command"""
         system_clear()
 
-    def call_home(self, _):
+    def call_home(self, _) -> None:
         """Process home command"""
         for _ in range(self.path.count("/") - 1):
             self.queue.insert(0, "quit")
 
-    def call_help(self, _):
+    def call_help(self, _) -> None:
         """Process help command"""
         self.print_help()
 
-    def call_quit(self, _):
+    def call_quit(self, _) -> None:
         """Process quit menu command"""
         print("")
         self.queue.insert(0, "quit")
 
-    def call_exit(self, _):
+    def call_exit(self, _) -> None:
         """Process exit terminal command"""
         for _ in range(self.path.count("/")):
             self.queue.insert(0, "quit")
 
-    def call_reset(self, _):
+    def call_reset(self, _) -> None:
         """Process reset command. If you would like to have customization in the
         reset process define a methom `custom_reset` in the child class.
         """
@@ -194,7 +206,7 @@ class BaseController:
                 # Display help menu when entering on this menu from a level above
                 if an_input == "HELP_ME":
                     self.print_help()
-
+                    
                 try:
                     # Get input from user using auto-completion
                     if session and gtff.USE_PROMPT_TOOLKIT:
