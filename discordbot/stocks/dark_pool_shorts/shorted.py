@@ -1,8 +1,10 @@
 import discord
-import discordbot.config_discordbot as cfg
-from discordbot.helpers import pagination
 
 from gamestonk_terminal.stocks.dark_pool_shorts import yahoofinance_model
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import logger
+from discordbot.helpers import pagination
 
 
 async def shorted_command(ctx, num="10"):
@@ -11,7 +13,7 @@ async def shorted_command(ctx, num="10"):
     try:
         # Debug user input
         if cfg.DEBUG:
-            print(f"\n!stocks.dps.shorted {num}")
+            logger.debug("!stocks.dps.shorted %s", num)
 
         # Check for argument
         if not num.lstrip("-").isnumeric():
@@ -27,7 +29,7 @@ async def shorted_command(ctx, num="10"):
 
         # Debug user output
         if cfg.DEBUG:
-            print(df.to_string())
+            logger.debug(df.to_string())
 
         # Output data
         df.dropna(how="all", axis=1, inplace=True)

@@ -1,14 +1,15 @@
 import os
+
 import discord
-from matplotlib import pyplot as plt
 import pandas as pd
+from matplotlib import pyplot as plt
 
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.stocks.government import quiverquant_model
 from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal.stocks.government import quiverquant_model
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 
 
 async def toplobbying_command(ctx, num="", raw=""):
@@ -16,7 +17,7 @@ async def toplobbying_command(ctx, num="", raw=""):
     try:
         # Debug user input
         if cfg.DEBUG:
-            print(f"!stocks.gov.toplobbying {num} {raw}")
+            logger.debug("!stocks.gov.toplobbying %s %s", num, raw)
 
         if num == "":
             num = 10
@@ -56,7 +57,7 @@ async def toplobbying_command(ctx, num="", raw=""):
         uploaded_image = gst_imgur.upload_image("ta_toplobbying.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: [quiverquant.com] Top Lobbying Firms"
         if raw:
             description = lobbying_by_ticker.head(num).to_string()

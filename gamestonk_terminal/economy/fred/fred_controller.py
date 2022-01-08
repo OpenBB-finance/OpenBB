@@ -222,7 +222,7 @@ Current Series IDs:
                 ns_parser.start_date,
                 ns_parser.raw,
                 ns_parser.export,
-                ns_parser.LIMIT,
+                ns_parser.limit,
             )
 
     def call_pred(self, _):

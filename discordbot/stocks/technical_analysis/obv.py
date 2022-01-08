@@ -8,7 +8,7 @@ from gamestonk_terminal.common.technical_analysis import volume_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
 
 
@@ -19,7 +19,12 @@ async def obv_command(ctx, ticker="", start="", end=""):
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.obv {ticker} {start} {end}")
+            logger.debug(
+                "!stocks.ta.obv %s %s %s",
+                ticker,
+                start,
+                end,
+            )
 
         # Check for argument
         if ticker == "":
@@ -99,7 +104,7 @@ async def obv_command(ctx, ticker="", start="", end=""):
         uploaded_image = gst_imgur.upload_image("ta_obv.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: On-Balance-Volume " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
