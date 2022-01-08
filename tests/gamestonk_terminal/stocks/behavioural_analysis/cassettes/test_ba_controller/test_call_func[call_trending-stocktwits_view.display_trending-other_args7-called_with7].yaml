@@ -1,0 +1,78 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stocktwits.com/api/2/trending/symbols.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6xXXWvjOBT9K0IP+5Qptvydt8RNk9BMY+Km0+kyFNVRY1FHykpyO6b0vy8OHbiG
+        HcEq8xgTc46Ozjn3+h0rpo9SaIbH71gbalqNx8TzPkZYd4cn2Wg8/vsd8x0e+0GWeb8e4zG+vskv
+        7vEIG24a1v/unphCN8y8SfWCR5g2nGrWv/9jhLl+fJZNI9+42OPxM200G+E3aqq64do8VrIVBo8D
+        PwlGuKb68ah4dfqrUS37GH0yiEiSAQbrm9mAwYKqgxSdG7Yf+nFmAScB8QkAX6y3G4gtW4VWUh7R
+        UlRuDNLQs+AnhIQAvlxNAXpZ1U17eGJqzxRa8QM3bOcog+f3x/wtjSj1A0BjeXUFaCyFYUpQw6Wg
+        Dbpq6KtUGv2FrhTdKyoqpnt1LtyYxZnNG2E0uJ3pogC8posCTXnTcCMFWpmdI4OABDZp/CBOYsDh
+        YTYMyENFde14dp/4FuQ4jWAuimIFYItihXKpjlKdLsbRFlkcW5MZelD+2/s5YOB7P+dMyAOvtCN6
+        6iUW9CCMIxiN6RbKXhqqntrqRZ+vQhaSMLJlNEkhkW/fAY1vrGOqpqzVTKFcOlqQEM9WUpk3cGBZ
+        rG+hEkdp+HOHbllVC9nIfYfKi8mQCS6L2z7S/avLq+/4f3S3vTiyOPYBtfwBtmdOmaZKo1lfIIZy
+        cWDCjM4oC98jxDpKgtBPYF/MBn2hpHx55qzZoQ0T7I0+NQwVVBnBlEarwo1T6GWRvT7iFFC6nJSL
+        QX9cOtdH6iU21yRRDEfL9msOULeiHyboK6+UZA2rjJKCV38gTFHQH/f3csRZCteNYl0uYKtJXR+o
+        86KRJLZZGyfRAHoOvVoouVdMa/7KTiK4OjT2fOvxPVgll8syv4Ze4LqSr0x1KJeHQyt4dboJPXJf
+        P3zi2zRJSQI1ye9mML9MyNe2zy9T++6M3AZZmFlVIQNTLOcT6NXlHE2qf1queS/G6XZcl0HP1mUh
+        SeG0m8zXgMRE61axHZq3VFFhunMWjtTaYakfDebe9WrQF+X1ZDX7tZCjXHLHoJIssNEIghheyWZ2
+        A2fOhgmDTM3QphVv9GQN9AWt1Y4LqjpU1lQxjb6gvKFao4kjw9SzLidBCLv+erMt4XfLdjNB5bZc
+        LNG2dCQQx1a7pNFg9JXwlvLy/pwaiaLI1qJZEMCj320mAPqOKYqmiu4a1qFLpvn+s0BcK40Etkoj
+        hGTw22G6vF0Pe/XTDVNuKskFKo2ihu07NDutJC6Dj6S2tTUiHlRntoEfM32XHZv2D0w6PyT25Zl4
+        g61tvR0GuaipMFQfKMpr6primPynT358/AsAAP//AwASdQhjBBAAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6ca6107f9e2e2a75-ORD
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 08 Jan 2022 14:20:04 GMT
+      ETag:
+      - W/"8bcf73d3171803012d0c5c04add9eea4"
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - session_visits_count=1; path=/; expires=Wed, 08 Jan 2042 14:20:04 -0000; secure
+      - session_visit_counted=true; path=/; expires=Sat, 08 Jan 2022 14:50:04 -0000;
+        secure
+      Strict-Transport-Security:
+      - max-age=31536000
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Rack-Cache:
+      - miss
+      X-Request-Id:
+      - 66559a3f-b3e3-47af-b41d-5e957ecc63ab
+      X-Runtime:
+      - '0.034432'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
