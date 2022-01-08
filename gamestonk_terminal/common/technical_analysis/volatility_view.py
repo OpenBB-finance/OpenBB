@@ -15,13 +15,12 @@ from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 register_matplotlib_converters()
 
 
-def view_bbands(
-    ticker: str,
+def display_bbands(
     df_stock: pd.DataFrame,
-    length: int = 5,
+    length: int = 15,
     n_std: float = 2,
     mamode: str = "sma",
-    s_interval: str = "1440min",
+    ticker: str = "",
     export: str = "",
 ):
     """Show bollinger bands
@@ -43,13 +42,10 @@ def view_bbands(
     export : str
         Format of export file
     """
-    df_ta = volatility_model.bbands(s_interval, df_stock, length, n_std, mamode)
+    df_ta = volatility_model.bbands(df_stock["Adj Close"], length, n_std, mamode)
 
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    if s_interval == "1440min":
-        ax.plot(df_stock.index, df_stock["Adj Close"].values, color="k", lw=3)
-    else:
-        ax.plot(df_stock.index, df_stock["Close"].values, color="k", lw=3)
+    ax.plot(df_stock.index, df_stock["Adj Close"].values, color="k", lw=3)
     ax.plot(df_ta.index, df_ta.iloc[:, 0].values, "r", lw=2)
     ax.plot(df_ta.index, df_ta.iloc[:, 1].values, "b", lw=1.5, ls="--")
     ax.plot(df_ta.index, df_ta.iloc[:, 2].values, "g", lw=2)
@@ -85,12 +81,11 @@ def view_bbands(
     )
 
 
-def view_donchian(
-    ticker: str,
+def display_donchian(
     df_stock: pd.DataFrame,
     upper_length: int = 20,
     lower_length: int = 20,
-    s_interval: str = "1440min",
+    ticker: str = "",
     export: str = "",
 ):
     """Show donchian channels
@@ -110,13 +105,12 @@ def view_donchian(
     export : str
         Format of export file
     """
-    df_ta = volatility_model.donchian(df_stock, upper_length, lower_length)
+    df_ta = volatility_model.donchian(
+        df_stock["High"], df_stock["Low"], upper_length, lower_length
+    )
 
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    if s_interval == "1440min":
-        ax.plot(df_stock.index, df_stock["Adj Close"].values, color="k", lw=3)
-    else:
-        ax.plot(df_stock.index, df_stock["Close"].values, color="k", lw=3)
+    ax.plot(df_stock.index, df_stock["Adj Close"].values, color="k", lw=3)
     ax.plot(df_ta.index, df_ta.iloc[:, 0].values, "b", lw=1.5, label="upper")
     ax.plot(df_ta.index, df_ta.iloc[:, 1].values, "b", lw=1.5, ls="--")
     ax.plot(df_ta.index, df_ta.iloc[:, 2].values, "b", lw=1.5, label="lower")
@@ -155,21 +149,19 @@ def view_donchian(
 
 
 def view_kc(
-    s_ticker: str,
     df_stock: pd.DataFrame,
     length: int = 20,
     scalar: float = 2,
     mamode: str = "ema",
     offset: int = 0,
-    s_interval: str = "1440min",
+    s_ticker: str = "",
     export: str = "",
 ):
     """View Keltner Channels Indicator
 
     Parameters
     ----------
-    s_ticker : str
-        Ticker
+
     df_stock : pd.DataFrame
         Dataframe of stock prices
     length : int
@@ -178,17 +170,22 @@ def view_kc(
         Type of filter
     offset : int
         Offset value
-    s_interval : str
-        Interval of data
+    s_ticker : str
+        Ticker
     export : str
         Format to export data
     """
-    df_ta = volatility_model.kc(s_interval, df_stock, length, scalar, mamode, offset)
+    df_ta = volatility_model.kc(
+        df_stock["High"],
+        df_stock["Low"],
+        df_stock["Adj Close"],
+        length,
+        scalar,
+        mamode,
+        offset,
+    )
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    if s_interval == "1440min":
-        ax.plot(df_stock.index, df_stock["Adj Close"].values, color="fuchsia")
-    else:
-        ax.plot(df_stock.index, df_stock["Close"].values, color="fuchsia")
+    ax.plot(df_stock.index, df_stock["Adj Close"].values, color="fuchsia")
     ax.plot(df_ta.index, df_ta.iloc[:, 0].values, "b", lw=1.5, label="upper")
     ax.plot(df_ta.index, df_ta.iloc[:, 1].values, "b", lw=1.5, ls="--")
     ax.plot(df_ta.index, df_ta.iloc[:, 2].values, "b", lw=1.5, label="lower")

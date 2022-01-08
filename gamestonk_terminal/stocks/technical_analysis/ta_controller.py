@@ -1050,7 +1050,7 @@ Custom:
             action="store",
             dest="n_length",
             type=check_positive,
-            default=5,
+            default=15,
             help="length",
         )
         parser.add_argument(
@@ -1078,9 +1078,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            volatility_view.view_bbands(
+            volatility_view.display_bbands(
                 ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
                 n_std=ns_parser.n_std,
@@ -1126,9 +1125,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            volatility_view.view_donchian(
+            volatility_view.display_donchian(
                 ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 upper_length=ns_parser.n_length_upper,
                 lower_length=ns_parser.n_length_lower,
@@ -1195,7 +1193,6 @@ Custom:
         if ns_parser:
             volatility_view.view_kc(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,

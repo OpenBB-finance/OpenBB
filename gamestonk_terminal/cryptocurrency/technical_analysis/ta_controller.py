@@ -863,9 +863,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            volatility_view.view_bbands(
+            volatility_view.display_bbands(
                 ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
                 n_std=ns_parser.n_std,
@@ -913,9 +912,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            volatility_view.view_donchian(
+            volatility_view.display_donchian(
                 ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 upper_length=ns_parser.n_length_upper,
                 lower_length=ns_parser.n_length_lower,
