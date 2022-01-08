@@ -3,17 +3,20 @@ __docformat__ = "numpy"
 
 # pylint: disable=R0904, C0302, W0622
 import argparse
+from datetime import datetime
 import difflib
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     get_flair,
     parse_known_args_and_warn,
     check_positive,
     try_except,
     system_clear,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    valid_date,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.overview import (
@@ -31,6 +34,9 @@ from gamestonk_terminal.cryptocurrency.overview import (
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_view import CURRENCIES
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
     get_all_contract_platforms,
+)
+from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_view import (
+    display_btc_rainbow,
 )
 
 
@@ -77,6 +83,7 @@ class OverviewController:
         "wf",
         "ewf",
         "wfpe",
+        "btcrb",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -95,8 +102,8 @@ class OverviewController:
     def print_help(self):
         """Print help"""
         help_text = """
-Overview Menu:
-
+Overall:
+    btcrb             display bitcoin rainbow price chart (logarithmic regression)
 CoinGecko:
     cgglobal          global crypto market info
     cgnews            last news available on CoinGecko
@@ -218,6 +225,45 @@ WithdrawalFees:
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
+
+    @try_except
+    def call_btcrb(self, other_args: List[str]):
+        """Process btcrb command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="btcrb",
+            description="""Display bitcoin rainbow chart overtime including halvings.
+            [Price data from source: https://glassnode.com]
+            [Inspired by: https://blockchaincenter.net]""",
+        )
+        parser.add_argument(
+            "-s",
+            "--since",
+            dest="since",
+            type=valid_date,
+            help="Initial date. Default is initial BTC date: 2010-01-01",
+            default=datetime(2010, 1, 1).strftime("%Y-%m-%d"),
+        )
+
+        parser.add_argument(
+            "-u",
+            "--until",
+            dest="until",
+            type=valid_date,
+            help="Final date. Default is current date",
+            default=datetime.now().strftime("%Y-%m-%d"),
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            display_btc_rainbow(
+                since=int(ns_parser.since.timestamp()),
+                until=int(ns_parser.until.timestamp()),
+                export=ns_parser.export,
+            )
 
     @try_except
     def call_wf(self, other_args: List[str]):
