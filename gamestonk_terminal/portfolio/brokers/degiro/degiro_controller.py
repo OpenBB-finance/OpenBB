@@ -14,6 +14,7 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     system_clear,
+    try_except
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers.degiro.degiro_view import DegiroView
@@ -48,6 +49,10 @@ class DegiroController:
     ]
     CHOICES += CHOICES_COMMANDS
 
+    ERROR_MAP = {
+        "Connection required.": "You haven't logged in Degiro"
+    }
+
     def __init__(self, queue: List[str] = None):
         self.__degiro_view = DegiroView()
         self.__degiro_parser = argparse.ArgumentParser(
@@ -62,6 +67,22 @@ class DegiroController:
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         self.queue = queue if queue else list()
+    
+    @try_except
+    def command_call(self, known_args, other_args):
+        try:
+            getattr(
+                self,
+                "call_" + known_args.cmd,
+                lambda _: "Command not recognized!",
+            )(other_args)
+        except Exception as e:
+            error = str(e)
+            err_map = DegiroController.ERROR_MAP
+            if error in err_map:
+                print(err_map[error])
+            else:
+                raise e
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -105,11 +126,7 @@ class DegiroController:
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
+        self.command_call(known_args, other_args)
 
         return self.queue
 
