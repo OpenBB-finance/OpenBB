@@ -83,13 +83,13 @@ class DegiroController:
                 "call_" + known_args.cmd,
                 lambda _: "Command not recognized!",
             )(other_args)
-        except Exception as e:
-            error = str(e)
+        except Exception as exception:
+            error = str(exception)
             err_map = DegiroController.ERROR_MAP
             if error in err_map:
                 print(err_map[error])
             else:
-                raise e
+                raise exception
 
     def switch(self, an_input: str):
         """Process and dispatch input
