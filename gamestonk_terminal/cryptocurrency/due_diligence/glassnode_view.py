@@ -115,11 +115,12 @@ def display_btc_rainbow(since: int, until: int, export: str = ""):
 
         ax.grid(alpha=0.2)
         ax.minorticks_off()
-        ax.yaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter())
+        ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(
+            lambda x, _: int(x) if x >= 1 else x
+        ))
         ax.yaxis.set_major_locator(
             matplotlib.ticker.LogLocator(base=100, subs=[1.0, 2.0, 5.0, 10.0])
         )
-        ax.ticklabel_format(style="plain", axis="y")
 
         if gtff.USE_ION:
             plt.ion()
