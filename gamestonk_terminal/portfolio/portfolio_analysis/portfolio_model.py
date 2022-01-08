@@ -55,10 +55,8 @@ def load_portfolio(
         )
 
     if country:
-        df["country"] = df.apply(
-            lambda row: yfinance_model.get_country(row.Ticker),
-            axis=1,
-        )
+        country_dict = {tick: yfinance_model.get_country(tick) for tick in df.Ticker.unique()}
+        df["Country"] = df["Ticker"].map(country_dict)
 
     if last_price:
         df["last_price"] = df.apply(

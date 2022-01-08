@@ -106,6 +106,7 @@ What do you want to do?
 
 >   bro         brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
 >   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt
+>   pa          portfolio analysis, \t\t analyse portfolios
 
 Portfolio:
     load        load data into the portfolio

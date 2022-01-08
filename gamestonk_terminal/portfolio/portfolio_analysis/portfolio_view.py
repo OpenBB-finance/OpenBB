@@ -25,8 +25,8 @@ def display_group_holdings(
 
     if allocation:
         total_value = grouped_df["value"].sum()
-        grouped_df["% allocation"] = grouped_df["value"] / total_value * 100
-        headers.append("% allocation")
+        grouped_df["pct_allocation"] = grouped_df["value"] / total_value * 100
+        headers.append("pct_allocation")
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
