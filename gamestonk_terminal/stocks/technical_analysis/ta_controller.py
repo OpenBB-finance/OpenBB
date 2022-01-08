@@ -353,7 +353,6 @@ Custom:
     @try_except
     def call_view(self, other_args: List[str]):
         """Process view command"""
-
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -389,7 +388,6 @@ Custom:
     @try_except
     def call_recom(self, other_args: List[str]):
         """Process recom command"""
-
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -492,8 +490,7 @@ Custom:
             overlap_view.view_ma(
                 ma_type="EMA",
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                prices=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -545,8 +542,7 @@ Custom:
             overlap_view.view_ma(
                 ma_type="SMA",
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                prices=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -595,8 +591,7 @@ Custom:
             overlap_view.view_ma(
                 ma_type="WMA",
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                prices=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -645,8 +640,7 @@ Custom:
             overlap_view.view_ma(
                 ma_type="HMA",
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                prices=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -698,8 +692,7 @@ Custom:
             overlap_view.view_ma(
                 ma_type="ZLMA",
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                prices=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,

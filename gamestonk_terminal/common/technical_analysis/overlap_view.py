@@ -18,12 +18,11 @@ register_matplotlib_converters()
 
 
 def view_ma(
-    s_ticker: str,
-    df_stock: pd.DataFrame,
+    prices: pd.Series,
     length: List[int] = None,
     offset: int = 0,
     ma_type: str = "EMA",
-    s_interval: str = "1440min",
+    s_ticker: str = "",
     export: str = "",
 ) -> pd.DataFrame:
     """Plots MA technical indicator
@@ -32,47 +31,37 @@ def view_ma(
     ----------
     s_ticker : str
         Ticker
-    df_stock : pd.DataFrame
-        Dataframe of prices
+    prices : pd.Series
+        Series of prices
     length : List[int]
         Length of EMA window
     ma_type: str
         Type of moving average.  Either "EMA" "ZLMA" or "SMA"
-    s_interval : str
-        Interval of data
     export : str
         Format to export data
     """
-    if s_interval == "1440min":
-        price_df = pd.DataFrame(
-            df_stock["Adj Close"].values, columns=["Price"], index=df_stock.index
-        )
-    else:
-        price_df = pd.DataFrame(
-            df_stock["Close"].values, columns=["Price"], index=df_stock.index
-        )
-
+    price_df = pd.DataFrame(prices)
+    price_df.columns = ["values"]
     l_legend = [s_ticker]
     if not length:
         length = [20, 50]
 
     for win in length:
         if ma_type == "EMA":
-            df_ta = overlap_model.ema(s_interval, df_stock, win, offset)
+            df_ta = overlap_model.ema(price_df, win, offset)
             l_legend.append(f"EMA {win}")
         elif ma_type == "SMA":
-            df_ta = overlap_model.sma(s_interval, df_stock, win, offset)
+            df_ta = overlap_model.sma(price_df, win, offset)
             l_legend.append(f"SMA {win}")
         elif ma_type == "WMA":
-            df_ta = overlap_model.wma(s_interval, df_stock, win, offset)
+            df_ta = overlap_model.wma(price_df, win, offset)
             l_legend.append(f"WMA {win}")
         elif ma_type == "HMA":
-            df_ta = overlap_model.hma(s_interval, df_stock, win, offset)
+            df_ta = overlap_model.hma(price_df, win, offset)
             l_legend.append(f"HMA {win}")
         elif ma_type == "ZLMA":
-            df_ta = overlap_model.zlma(s_interval, df_stock, win, offset)
+            df_ta = overlap_model.zlma(price_df, win, offset)
             l_legend.append(f"ZLMA {win}")
-
         price_df = price_df.join(df_ta)
 
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
