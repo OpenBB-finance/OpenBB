@@ -38,9 +38,6 @@ import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.feature_flags import USE_ION as ion
 from gamestonk_terminal import feature_flags as gtff
 
-# TODO: Improve implementation of coin loading
-# Currently adding this function to helpers for implementing prediction menu
-
 INTERVALS = ["1H", "3H", "6H", "1D"]
 
 SOURCES_INTERVALS = {
@@ -230,7 +227,6 @@ def _create_closest_match_df(
     return df.merge(coins, on="id")
 
 
-# TODO: verify vs, interval, days, depending on source
 @try_except
 def load(
     coin: str,
