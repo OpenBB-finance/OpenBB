@@ -79,6 +79,7 @@ python-binance = "^1.0.15"
 python-coinmarketcap = "^0.3"
 pyally = "^1.1.2"
 degiro-connector = "^2.0.13"
+dnspython = "^2.1.0"
 
 
 [tool.poetry.dev-dependencies]

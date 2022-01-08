@@ -38,6 +38,7 @@ defusedxml==0.7.1; python_version >= "3.7" and python_full_version < "3.0.0" or 
 degiro-connector==2.0.13; python_full_version >= "3.7.1" and python_full_version < "4.0.0"
 deprecation==2.1.0
 detecta==0.0.5; python_version >= "3.6"
+dnspython==2.1.0; python_version >= "3.6"
 docutils==0.16; python_full_version >= "3.6.8" and python_full_version < "4.0.0" and python_version >= "3.6"
 ecos==2.0.8; python_full_version >= "3.6.1" and python_full_version < "4.0.0" and python_version >= "3.6"
 entrypoints==0.3; python_full_version >= "3.6.1" and python_version >= "3.7"
