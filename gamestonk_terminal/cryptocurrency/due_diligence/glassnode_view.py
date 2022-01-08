@@ -53,17 +53,23 @@ def display_btc_rainbow(since: int, until: int, export: str = ""):
     y6 = [10 ** ((2.815 * ln_x) - 19.463) for ln_x in [np.log(val + 1250) for val in x]]
     y7 = [10 ** ((2.801 * ln_x) - 19.463) for ln_x in [np.log(val + 1225) for val in x]]
     y8 = [10 ** ((2.788 * ln_x) - 19.463) for ln_x in [np.log(val + 1200) for val in x]]
-    ax.fill_between(df_data.index, y0, y1, color="red")
-    ax.fill_between(df_data.index, y1, y2, color="orange")
-    ax.fill_between(df_data.index, y2, y3, color="yellow")
-    ax.fill_between(df_data.index, y3, y4, color="green")
-    ax.fill_between(df_data.index, y4, y5, color="blue")
-    ax.fill_between(df_data.index, y5, y6, color="violet")
-    ax.fill_between(df_data.index, y6, y7, color="indigo")
-    ax.fill_between(df_data.index, y7, y8, color="purple")
+    ax.fill_between(df_data.index, y0, y1, color="red", alpha=0.7)
+    ax.fill_between(df_data.index, y1, y2, color="orange", alpha=0.7)
+    ax.fill_between(df_data.index, y2, y3, color="yellow", alpha=0.7)
+    ax.fill_between(df_data.index, y3, y4, color="green", alpha=0.7)
+    ax.fill_between(df_data.index, y4, y5, color="blue", alpha=0.7)
+    ax.fill_between(df_data.index, y5, y6, color="violet", alpha=0.7)
+    ax.fill_between(df_data.index, y6, y7, color="indigo", alpha=0.7)
+    ax.fill_between(df_data.index, y7, y8, color="purple", alpha=0.7)
 
-    ax.semilogy(df_data.index, df_data["v"].values, c="k", lw=2)
+    ax.semilogy(df_data.index, df_data["v"].values, c="k", lw=1.2)
     ax.set_xlim(df_data.index[0], df_data.index[-1])
+    ax.set_title("Bitcoin Rainbow Chart")
+    ax.set_xlabel("Time")
+    dateFmt = mdates.DateFormatter("%m/%d/%Y")
+    ax.set_ylabel("Price ($)")
+    ax.xaxis.set_major_formatter(dateFmt)
+    ax.tick_params(axis="x", labelrotation=45)
 
     ax.legend(
         [
