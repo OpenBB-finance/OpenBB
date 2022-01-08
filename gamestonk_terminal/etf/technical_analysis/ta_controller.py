@@ -58,6 +58,7 @@ class TechnicalAnalysisController(BaseController):
         "obv",
         "fib",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(
         self,
@@ -67,15 +68,14 @@ class TechnicalAnalysisController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
+        super().__init__("/etf/ta/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS)
+
         self.ticker = ticker
         self.start = start
         self.data = data
 
-        super().__init__("/etf/ta/", queue)
-        self.choices += self.CHOICES_COMMANDS
-
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -116,7 +116,7 @@ Custom:
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(4, f"load {self.ticker}")
+            self.queue.insert(self.reset_level, f"load {self.ticker}")
 
     def call_ema(self, other_args: List[str]):
         """Process ema command"""

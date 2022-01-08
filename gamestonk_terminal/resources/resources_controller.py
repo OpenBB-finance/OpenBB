@@ -23,19 +23,19 @@ class ResourceCollectionController(BaseController):
         "learn",
         "econiverse",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/resources/", queue)
-        self.choices += self.CHOICES_COMMANDS
+        super().__init__(
+            "/resources/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-
+            choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-    @staticmethod
-    def print_help():
+    def print_help(self):
         """Print help"""
         help_str = """
 Resource Collection:

@@ -43,31 +43,28 @@ class OandaController(BaseController):
         # "news",
         # "reddit",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(self, queue: List[str] = None):
         """Construct Data."""
-        super().__init__("/forex/oanda/", queue)
-        self.choices += self.CHOICES_COMMANDS
+        super().__init__(
+            "/forex/oanda/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
+
+        self.from_symbol = ""
+        self.to_symbol = ""
+        self.instrument: Union[str, None] = None
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-
-            # HELP WANTED!
-            # TODO:
-            # We currently use the Alpha Vantage currency list for autocompletion
+            choices: dict = {c: {} for c in self.controller_choices}
+            # TODO: We currently use the Alpha Vantage currency list for autocompletion
             # This leads to messages like `USD_EUR is not a valid instrument.`
             # In Oanda they have their own list of available instruments. It would be
             # Great to fetch these lists and store them locally like it's done for
             # other currency codes (see ./av_forex_currencies.csv and how it's handled).
             choices["to"] = {c: None for c in av_model.CURRENCY_LIST}
             choices["from"] = {c: None for c in av_model.CURRENCY_LIST}
-
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        self.from_symbol = ""
-        self.to_symbol = ""
-
-        self.instrument: Union[str, None] = None
 
     def print_help(self):
         """Print help."""

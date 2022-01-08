@@ -51,6 +51,7 @@ class PredictionTechniquesController(BaseController):
         "conv1d",
         "mc",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(
         self,
@@ -58,8 +59,9 @@ class PredictionTechniquesController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/economy/fred/pred/", queue)
-        self.choices += self.CHOICES_COMMANDS
+        super().__init__(
+            "/economy/fred/pred/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         self.start_date = "2020-01-01"
         self.current_series = current_series
@@ -68,8 +70,9 @@ class PredictionTechniquesController(BaseController):
             list(current_series.keys())[0], self.start_date
         ).dropna()
         self.resolution = ""  # For the views
+
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["ets"]["-t"] = {c: {} for c in ets_model.TRENDS}
             choices["ets"]["-s"] = {c: {} for c in ets_model.SEASONS}
             choices["arima"]["-i"] = {c: {} for c in arima_model.ICS}
@@ -105,7 +108,9 @@ Models:
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.current_series:
-            self.queue.insert(6, f"add {list(self.current_series.keys())[0]}")
+            self.queue.insert(
+                self.reset_level, f"add {list(self.current_series.keys())[0]}"
+            )
 
     def call_load(self, other_args: List[str]):
         """Process add command"""

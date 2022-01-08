@@ -59,7 +59,6 @@ class ETFController(BaseController):
         "summary",
         "compare",
     ]
-
     CHOICES_MENUS = [
         "ta",
         "pred",
@@ -70,17 +69,15 @@ class ETFController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/etf/", queue)
-        self.choices += self.CHOICES_COMMANDS
-        self.choices += self.CHOICES_MENUS
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-            self.completer = NestedCompleter.from_nested_dict(choices)
+        super().__init__("/etf/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS)
 
         self.etf_name = ""
         self.etf_data = ""
         self.etf_holdings: List = list()
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
@@ -115,7 +112,7 @@ Major holdings: {', '.join(self.etf_holdings)}
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.etf_name:
-            self.queue.insert(3, f"load {self.etf_name}")
+            self.queue.insert(self.reset_level, f"load {self.etf_name}")
 
     def call_ln(self, other_args: List[str]):
         """Process ln command"""
@@ -608,7 +605,7 @@ Major holdings: {', '.join(self.etf_holdings)}
         if len(self.etf_holdings) > 0:
             self.queue = ca_controller.ComparisonAnalysisController(
                 self.etf_holdings, self.queue
-            ).menu()
+            ).menu(custom_path_menu_above="/stocks/")
 
     def call_scr(self, _):
         """Process scr command"""

@@ -21,17 +21,18 @@ from gamestonk_terminal.helper_funcs import (
 class RobinhoodController(BaseController):
 
     CHOICES_COMMANDS = ["holdings", "history", "login"]
-
+    CHOICES_MENUS: List[str] = []
     valid_span = ["day", "week", "month", "3month", "year", "5year", "all"]
     valid_interval = ["5minute", "10minute", "hour", "day", "week"]
 
     def __init__(self, queue: List[str] = None):
-        """CONSTRUCTOR"""
-        super().__init__("/portfolio/bro/rh/", queue)
-        self.choices += self.CHOICES_COMMANDS
+        """Constructor"""
+        super().__init__(
+            "/portfolio/bro/rh/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["history"]["-i"] = {c: None for c in self.valid_interval}
             choices["history"]["--interval"] = {c: None for c in self.valid_interval}
             choices["history"]["-s"] = {c: None for c in self.valid_span}
@@ -47,7 +48,6 @@ Robinhood:
     holdings    show account holdings in stocks
     history     show equity history of your account
 """
-
         print(help_text)
 
     def call_login(self, _):

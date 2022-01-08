@@ -55,6 +55,7 @@ class DiscoveryController(BaseController):
         "cnews",
         "rtat",
     ]
+    CHOICES_MENUS: List[str] = []
 
     arkord_sortby_choices = [
         "date",
@@ -97,13 +98,12 @@ class DiscoveryController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/disc/", queue)
-
-        self.choices += self.CHOICES_COMMANDS
+        super().__init__(
+            "/stocks/disc/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["arkord"]["-s"] = {c: None for c in self.arkord_sortby_choices}
             choices["arkord"]["--sortby"] = {
                 c: None for c in self.arkord_sortby_choices

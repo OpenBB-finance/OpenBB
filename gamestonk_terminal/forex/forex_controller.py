@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 from datetime import timedelta, datetime
-from typing import List, Union
+from typing import List
 
 import pandas as pd
 from colorama import Style
@@ -26,28 +26,21 @@ class ForexController(BaseController):
     """Forex Controller class."""
 
     CHOICES_COMMANDS = ["to", "from", "load", "quote", "candle"]
-
     CHOICES_MENUS = ["oanda"]
 
     def __init__(self, queue: List[str] = None):
         """Construct Data."""
-        super().__init__("/forex/", queue)
-        self.choices += self.CHOICES_COMMANDS
-        self.choices += self.CHOICES_MENUS
-
-        self.completer: Union[None, NestedCompleter] = None
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-
-            choices["to"] = {c: None for c in av_model.CURRENCY_LIST}
-            choices["from"] = {c: None for c in av_model.CURRENCY_LIST}
-
-            self.completer = NestedCompleter.from_nested_dict(choices)
+        super().__init__("/forex/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS)
 
         self.from_symbol = "USD"
         self.to_symbol = ""
         self.data = pd.DataFrame()
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["to"] = {c: None for c in av_model.CURRENCY_LIST}
+            choices["from"] = {c: None for c in av_model.CURRENCY_LIST}
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help."""

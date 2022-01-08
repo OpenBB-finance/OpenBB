@@ -44,15 +44,16 @@ class DefiController(BaseController):
         "swaps",
         "stats",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/crypto/defi/", queue)
-
-        self.choices += self.CHOICES_COMMANDS
+        super().__init__(
+            "/crypto/defi/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["llama"]["-s"] = {c: {} for c in llama_model.LLAMA_FILTERS}
             choices["tokens"]["-s"] = {c: {} for c in graph_model.TOKENS_FILTERS}
             choices["pairs"]["-s"] = {c: {} for c in graph_model.PAIRS_FILTERS}

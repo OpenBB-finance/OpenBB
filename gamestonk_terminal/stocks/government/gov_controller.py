@@ -39,6 +39,7 @@ class GovController(BaseController):
         "histcont",
         "lobbying",
     ]
+    CHOICES_MENUS: List[str] = []
 
     gov_type_choices = ["congress", "senate", "house"]
     analysis_choices = ["total", "upmom", "downmom"]
@@ -49,12 +50,14 @@ class GovController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/stocks/gov/", queue)
+        super().__init__(
+            "/stocks/gov/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
-        self.choices += self.CHOICES_COMMANDS
+        self.ticker = ticker
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["lasttrades"] = {c: {} for c in self.gov_type_choices}
             choices["topbuys"] = {c: {} for c in self.gov_type_choices}
             choices["topsells"] = {c: {} for c in self.gov_type_choices}
@@ -63,8 +66,6 @@ class GovController(BaseController):
                 c: {} for c in self.analysis_choices
             }
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        self.ticker = ticker
 
     def print_help(self):
         """Print help"""
@@ -93,7 +94,7 @@ Ticker: {self.ticker or None}{dim_no_ticker}
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(4, f"load {self.ticker}")
+            self.queue.insert(self.reset_level, f"load {self.ticker}")
 
     def call_load(self, other_args: List[str]):
         """Process load command"""

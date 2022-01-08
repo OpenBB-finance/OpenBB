@@ -5,7 +5,7 @@ from abc import ABCMeta, abstractmethod
 import argparse
 import re
 import difflib
-from typing import Union, List, Callable
+from typing import Union, List
 
 from prompt_toolkit.completion import NestedCompleter
 
@@ -21,7 +21,7 @@ from gamestonk_terminal.helper_funcs import system_clear, get_flair
 class BaseController:
     __metaclass__ = ABCMeta
 
-    CHOICES = [
+    COMMON_CHOICES = [
         "cls",
         "home",
         "h",
@@ -39,33 +39,40 @@ class BaseController:
         self,
         path: str,
         queue: List[str] = None,
-        dynamic_completer: Callable[..., NestedCompleter] = None,
+        controller_choices: List[str] = None,
     ) -> None:
         """
-        This is the base class for any controller in the codebase. Use it to
-        quickly create a working context and menu.
+        This is the base class for any controller in the codebase.
+        It's used to simplify the creation of menus.
 
         path: str
-            Where the current context is located in the terminal
+            Menu location with regards to root of the terminal separated by "/"
+            E.g. /stocks/dps
         queue: List[str]
-            The current queue
-        dynamic_completer:
-            Allows a function for dynamic completing
+            The current queue of jobs to process separated by "/"
+            E.g. /stocks/load gme/dps/sidtc/../exit
+        controller_choices: List[str]
+            Menu choices of the particular menu (including menu and commands)
+            E.g. ["load", "search", "ta", "pred"]
         """
         self.check_path(path)
-        self.choices = self.CHOICES
         self.path = path
-        self.dynamic_completer = dynamic_completer
         self.PATH = [x for x in path.split("/") if x != ""]
+        self.reset_level = len(self.path) + 1
 
-        name = self.PATH[-1] if path != "/" else "terminal"
-        self.parser = argparse.ArgumentParser(add_help=False, prog=name)
-        self.parser.add_argument("cmd", choices=self.CHOICES)
+        self.queue = queue if (queue and path != "/") else list()
+
+        if controller_choices:
+            self.controller_choices = controller_choices + self.COMMON_CHOICES
+        else:
+            self.controller_choices = self.COMMON_CHOICES
 
         self.completer: Union[None, NestedCompleter] = None
 
-        if path != "/":
-            self.queue = queue if queue else list()
+        self.parser = argparse.ArgumentParser(
+            add_help=False, prog=self.PATH[-1] if path != "/" else "terminal"
+        )
+        self.parser.add_argument("cmd", choices=self.controller_choices)
 
     def check_path(self, path: str) -> None:
         if path[0] != "/":
@@ -78,15 +85,7 @@ class BaseController:
             )
 
     def custom_reset(self) -> None:
-        """
-        This will be replace by any children with custom_reset functions
-
-        When you replace this function be careful where insert the function.
-        Making the insert parameter 0 makes it the first command executed, to
-        make the command the last one executed set it to the number of levels
-        it is deep multiplied by two plus one. For example, If your new context
-        was /stocks/network/ it would be 2 X 2 + 1 or 5.
-        """
+        """This will be replaced by any children with custom_reset functions"""
 
     @abstractmethod
     def print_help(self) -> None:
@@ -176,7 +175,7 @@ class BaseController:
                 self.queue.insert(0, "quit")
             self.custom_reset()
 
-    def menu(self) -> List[str]:
+    def menu(self, custom_path_menu_above: str = ""):
         an_input = "HELP_ME"
 
         while True:
@@ -185,6 +184,11 @@ class BaseController:
                 # If the command is quitting the menu we want to return in here
                 if self.queue[0] in ("q", "..", "quit"):
                     print("")
+                    # Go back to the root in order to go to the right directory because
+                    # there was a jump between indirect menus
+                    if custom_path_menu_above:
+                        self.queue.insert(1, custom_path_menu_above)
+
                     if len(self.queue) > 1:
                         return self.queue[1:]
                     return []
@@ -194,7 +198,7 @@ class BaseController:
                 self.queue = self.queue[1:]
 
                 # Print location because this was an instruction and we want user to know the action
-                if an_input and an_input.split(" ")[0] in self.choices:
+                if an_input and an_input.split(" ")[0] in self.controller_choices:
                     print(f"{get_flair()} {self.path} $ {an_input}")
 
             # Get input command from user
@@ -202,25 +206,21 @@ class BaseController:
                 # Display help menu when entering on this menu from a level above
                 if an_input == "HELP_ME":
                     self.print_help()
-
-                # Get input from user using auto-completion
-                if session and gtff.USE_PROMPT_TOOLKIT:
-                    # Possible arguments is not yet finalized
-                    if not self.completer and self.dynamic_completer:
-                        # Complete dynamic arguments that change at each iteration
-                        self.completer = self.dynamic_completer(self)
-                    try:
+                    
+                try:
+                    # Get input from user using auto-completion
+                    if session and gtff.USE_PROMPT_TOOLKIT:
                         an_input = session.prompt(
                             f"{get_flair()} {self.path} $ ",
                             completer=self.completer,
                             search_ignore_case=True,
                         )
-                    except KeyboardInterrupt:
-                        # Exit in case of keyboard interrupt
-                        an_input = "exit"
-                # Get input from user without auto-completion
-                else:
-                    an_input = input(f"{get_flair()} {self.path} $ ")
+                    # Get input from user without auto-completion
+                    else:
+                        an_input = input(f"{get_flair()} {self.path} $ ")
+                except KeyboardInterrupt:
+                    # Exit in case of keyboard interrupt
+                    an_input = "exit"
 
             try:
                 # Process the input command
@@ -228,12 +228,12 @@ class BaseController:
 
             except SystemExit:
                 print(
-                    f"\nThe command '{an_input}' doesn't exist on the {self.PATH[:-1]} menu.",
+                    f"\nThe command '{an_input}' doesn't exist on the {self.path} menu.",
                     end="",
                 )
                 similar_cmd = difflib.get_close_matches(
                     an_input.split(" ")[0] if " " in an_input else an_input,
-                    self.CHOICES,
+                    self.controller_choices,
                     n=1,
                     cutoff=0.7,
                 )

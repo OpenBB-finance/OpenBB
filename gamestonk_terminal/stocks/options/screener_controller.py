@@ -38,18 +38,18 @@ class ScreenerController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/options/screen/", queue)
-        self.choices += self.CHOICES_COMMANDS
-        self.choices += self.CHOICES_MENUS
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-            choices["view"] = {c: None for c in self.preset_choices}
-            choices["set"] = {c: None for c in self.preset_choices}
-            self.completer = NestedCompleter.from_nested_dict(choices)
+        super().__init__(
+            "/stocks/options/screen/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         self.preset = "high_IV"
         self.screen_tickers: List = list()
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["view"] = {c: None for c in self.preset_choices}
+            choices["set"] = {c: None for c in self.preset_choices}
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
@@ -170,7 +170,9 @@ Last screened tickers: {', '.join(self.screen_tickers)}
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
         if self.screen_tickers:
-            self.queue = po_controller.PortfolioOptimization(self.screen_tickers).menu()
+            self.queue = po_controller.PortfolioOptimization(self.screen_tickers).menu(
+                custom_path_menu_above="/portfolio/"
+            )
         else:
             print("Some tickers must be screened first through one of the presets!\n")
 
@@ -179,6 +181,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
         if self.screen_tickers:
             self.queue = ca_controller.ComparisonAnalysisController(
                 self.screen_tickers, self.queue
-            ).menu()
+            ).menu(custom_path_menu_above="/stocks/")
         else:
             print("Some tickers must be screened first through one of the presets!\n")

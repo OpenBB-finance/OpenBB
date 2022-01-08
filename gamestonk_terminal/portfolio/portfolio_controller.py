@@ -33,10 +33,6 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 class PortfolioController(BaseController):
     """Portfolio Controller class"""
 
-    CHOICES_MENUS = [
-        "bro",
-        "po",
-    ]
     CHOICES_COMMANDS = [
         "load",
         "save",
@@ -46,16 +42,16 @@ class PortfolioController(BaseController):
         "ar",
         "rmr",
     ]
+    CHOICES_MENUS = [
+        "bro",
+        "po",
+    ]
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/portfolio/", queue)
-        self.choices += self.CHOICES_COMMANDS
-        self.choices += self.CHOICES_MENUS
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-            self.completer = NestedCompleter.from_nested_dict(choices)
+        super().__init__(
+            "/portfolio/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         self.portfolio = pd.DataFrame(
             columns=[
@@ -69,6 +65,10 @@ class PortfolioController(BaseController):
                 "Side",
             ]
         )
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""

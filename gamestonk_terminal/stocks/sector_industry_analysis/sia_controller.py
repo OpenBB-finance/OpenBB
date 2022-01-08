@@ -128,16 +128,9 @@ class SectorIndustryAnalysisController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/stocks/sia/", queue, choices)
-
-        self.choices += self.CHOICES_COMMANDS
-        self.choices += self.CHOICES_MENUS
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            self.extras: dict = {c: {} for c in BaseController.CHOICES}
-            self.extras["mktcap"] = {c: None for c in self.mktcap_choices}
-            self.extras["clear"] = {c: None for c in self.clear_choices}
-            self.extras["metric"] = {c: None for c in self.metric_choices}
+        super().__init__(
+            "/stocks/sia/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         self.country = "United States"
         self.sector = "Financial Services"
@@ -193,6 +186,37 @@ class SectorIndustryAnalysisController(BaseController):
                 else:
                     self.mktcap = "Mid"
 
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["mktcap"] = {c: None for c in self.mktcap_choices}
+            choices["clear"] = {c: None for c in self.clear_choices}
+            choices["metric"] = {c: None for c in self.metric_choices}
+            # This menu contains dynamic choices that may change during runtime
+            self.choices = choices
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def update_runtime_choices(self):
+        """Update runtime choices"""
+        self.choices["industry"] = {
+            i: None
+            for i in financedatabase_model.get_industries(
+                country=self.country, sector=self.sector
+            )
+        }
+        self.choices["sector"] = {
+            s: None
+            for s in financedatabase_model.get_sectors(
+                industry=self.industry, country=self.country
+            )
+        }
+        self.choices["country"] = {
+            c: None
+            for c in financedatabase_model.get_countries(
+                industry=self.industry, sector=self.sector
+            )
+        }
+        return NestedCompleter.from_nested_dict(self.choices)
+
     def print_help(self):
         """Print help"""
         params = not any([self.industry, self.sector, self.country])
@@ -236,7 +260,7 @@ Returned tickers: {', '.join(self.tickers)}
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(5, f"load {self.ticker}")
+            self.queue.insert(self.reset_level, f"load {self.ticker}")
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -318,6 +342,7 @@ Returned tickers: {', '.join(self.tickers)}
                         self.mktcap = "Mid"
 
                 self.stocks_data = {}
+                self.update_runtime_choices()
 
     def call_industry(self, other_args: List[str]):
         """Process industry command"""
@@ -350,6 +375,7 @@ Returned tickers: {', '.join(self.tickers)}
                     self.sector = financedatabase_model.get_sectors(
                         industry=self.industry
                     )[0]
+                    self.update_runtime_choices()
                 else:
                     print(f"Industry '{' '.join(ns_parser.name)}' does not exist.")
                     similar_cmd = difflib.get_close_matches(
@@ -365,6 +391,7 @@ Returned tickers: {', '.join(self.tickers)}
                         self.sector = financedatabase_model.get_sectors(
                             industry=self.industry
                         )[0]
+                        self.update_runtime_choices()
                     else:
                         similar_cmd = difflib.get_close_matches(
                             " ".join(ns_parser.name),
@@ -407,6 +434,7 @@ Returned tickers: {', '.join(self.tickers)}
             if ns_parser.name:
                 if " ".join(ns_parser.name) in possible_sectors:
                     self.sector = " ".join(ns_parser.name)
+                    self.update_runtime_choices()
                 else:
                     print(f"Sector '{' '.join(ns_parser.name)}' does not exist.")
 
@@ -420,7 +448,7 @@ Returned tickers: {', '.join(self.tickers)}
                     if similar_cmd:
                         print(f"Replacing by '{similar_cmd[0]}'")
                         self.sector = similar_cmd[0]
-
+                        self.update_runtime_choices()
                     else:
                         similar_cmd = difflib.get_close_matches(
                             " ".join(ns_parser.name),
@@ -464,6 +492,7 @@ Returned tickers: {', '.join(self.tickers)}
             if ns_parser.name:
                 if " ".join(ns_parser.name) in possible_countries:
                     self.country = " ".join(ns_parser.name)
+                    self.update_runtime_choices()
                 else:
                     print(f"Country '{' '.join(ns_parser.name)}' does not exist.")
                     similar_cmd = difflib.get_close_matches(
@@ -475,7 +504,7 @@ Returned tickers: {', '.join(self.tickers)}
                     if similar_cmd:
                         print(f"Replacing by '{similar_cmd[0]}'")
                         self.country = similar_cmd[0]
-
+                        self.update_runtime_choices()
                     else:
                         similar_cmd = difflib.get_close_matches(
                             " ".join(ns_parser.name),
@@ -575,7 +604,7 @@ Returned tickers: {', '.join(self.tickers)}
 
             self.exclude_exhanges = True
             self.ticker = ""
-
+            self.update_runtime_choices()
             self.stocks_data = {}
             print("")
 
@@ -937,29 +966,6 @@ Returned tickers: {', '.join(self.tickers)}
         if self.tickers:
             self.queue = ca_controller.ComparisonAnalysisController(
                 self.tickers, self.queue
-            ).menu()
+            ).menu(custom_path_menu_above="/stocks/")
         else:
             print("No main ticker loaded to go into comparison analysis menu", "\n")
-
-
-def choices(controller):
-    """Defines dynamic choices"""
-    controller.extras["industry"] = {
-        i: None
-        for i in financedatabase_model.get_industries(
-            country=controller.country, sector=controller.sector
-        )
-    }
-    controller.extras["sector"] = {
-        s: None
-        for s in financedatabase_model.get_sectors(
-            industry=controller.industry, country=controller.country
-        )
-    }
-    controller.extras["country"] = {
-        c: None
-        for c in financedatabase_model.get_countries(
-            industry=controller.industry, sector=controller.sector
-        )
-    }
-    return NestedCompleter.from_nested_dict(controller.extras)

@@ -43,15 +43,16 @@ class DiscoveryController(BaseController):
         "cgdex",
         "cgnft",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(self, queue: List[str] = None):
-        """CONSTRUCTOR"""
-
-        super().__init__("/crypto/disc/", queue)
-        self.choices += self.CHOICES_COMMANDS
+        """Constructor"""
+        super().__init__(
+            "/crypto/disc/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["cggainers"]["-p"] = {
                 c: {} for c in pycoingecko_model.PERIODS.keys()
             }

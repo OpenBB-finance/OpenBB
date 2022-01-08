@@ -71,6 +71,7 @@ class TechnicalAnalysisController(BaseController):
         "obv",
         "fib",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(
         self,
@@ -81,16 +82,17 @@ class TechnicalAnalysisController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/stocks/ta/", queue)
+        super().__init__(
+            "/stocks/ta/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
-        self.choices += self.CHOICES_COMMANDS
         self.ticker = ticker
         self.start = start
         self.interval = interval
         self.stock = stock
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["-i"] = {c: {} for c in stocks_helper.INTERVALS}
             choices["load"]["-s"] = {c: {} for c in stocks_helper.SOURCES}
             choices["recom"]["-i"] = {c: {} for c in tradingview_model.INTERVALS.keys()}
@@ -145,10 +147,10 @@ Custom:
 """
         print(help_str)
 
-    def custom_reset(self):
+    def reset(self):
         """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(4, f"load {self.ticker}")
+            self.queue.insert(self.reset_level, f"load {self.ticker}")
 
     def call_load(self, other_args: List[str]):
         """Process load command"""

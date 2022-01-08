@@ -34,8 +34,7 @@ class PortfolioController(BaseController):
     ]
 
     def __init__(self, queue: List[str] = None):
-        super().__init__("/portfolio/pa/", queue)
-        self.choices += self.CHOICES_COMMANDS
+        super().__init__("/portfolio/pa/", queue, self.CHOICES_COMMANDS)
         self.portfolio_name = ""
         self.portfolio = pd.DataFrame()
 

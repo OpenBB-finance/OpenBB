@@ -60,6 +60,7 @@ class InsiderController(BaseController):
         "lins",
         "stats",
     ]
+    CHOICES_MENUS: List[str] = []
 
     preset_choices = [
         preset.split(".")[0]
@@ -76,22 +77,21 @@ class InsiderController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/stocks/ins/", queue)
-
-        self.choices += self.CHOICES_COMMANDS
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-            choices["view"] = {c: None for c in self.preset_choices}
-            choices["set"] = {c: None for c in self.preset_choices}
-            self.completer = NestedCompleter.from_nested_dict(choices)
+        super().__init__(
+            "/stocks/ins/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         self.ticker = ticker
         self.start = start
         self.interval = interval
         self.stock = stock
-
         self.preset = "whales"
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["view"] = {c: None for c in self.preset_choices}
+            choices["set"] = {c: None for c in self.preset_choices}
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
@@ -139,7 +139,7 @@ Top Insiders:
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(5, f"load {self.ticker}")
+            self.queue.insert(self.reset_level, f"load {self.ticker}")
 
     def call_load(self, other_args: List[str]):
         """Process load command"""

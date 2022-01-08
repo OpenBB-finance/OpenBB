@@ -25,6 +25,7 @@ class PricingController(BaseController):
         "show",
         "rnval",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(
         self,
@@ -33,19 +34,20 @@ class PricingController(BaseController):
         prices: pd.DataFrame,
         queue: List[str] = None,
     ):
-        """Construct"""
-        super().__init__("/stocks/options/pricing/", queue)
-
-        self.choices += self.CHOICES_COMMANDS
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-
-            choices: dict = {c: {} for c in self.CHOICES}
-            self.completer = NestedCompleter.from_nested_dict(choices)
+        """Constructor"""
+        super().__init__(
+            "/stocks/options/pricing/",
+            queue,
+            self.CHOICES_COMMANDS + self.CHOICES_MENUS,
+        )
 
         self.ticker = ticker
         self.selected_date = selected_date
         self.prices = prices
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
@@ -63,10 +65,10 @@ Expiry: {self.selected_date or None}
 
     def custom_reset(self):
         """Class specific component of reset command"""
-        if self.selected_date:
-            self.queue.insert(6, f"exp {self.selected_date}")
         if self.ticker:
-            self.queue.insert(6, f"load {self.ticker}")
+            self.queue.insert(self.reset_level, f"load {self.ticker}")
+        if self.selected_date:
+            self.queue.insert(self.reset_level, f"exp {self.selected_date}")
 
     def call_add(self, other_args: List[str]):
         """Process add command"""

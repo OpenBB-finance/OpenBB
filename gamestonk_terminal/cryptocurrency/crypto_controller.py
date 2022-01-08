@@ -53,6 +53,7 @@ t_console = console.Console()
 
 
 class CryptoController(BaseController):
+    """Crypto Controller"""
 
     CHOICES_COMMANDS = [
         "headlines",
@@ -61,7 +62,6 @@ class CryptoController(BaseController):
         "coins",
         "find",
     ]
-
     CHOICES_MENUS = ["ta", "dd", "ov", "disc", "onchain", "defi", "nft", "pred"]
 
     DD_VIEWS_MAPPING = {
@@ -71,12 +71,8 @@ class CryptoController(BaseController):
     }
 
     def __init__(self, queue: List[str] = None):
-        """CONSTRUCTOR"""
-
-        super().__init__("/crypto/", queue)
-
-        self.choices += self.CHOICES_COMMANDS
-        self.choices += self.CHOICES_MENUS
+        """Constructor"""
+        super().__init__("/crypto/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS)
 
         self.symbol = ""
         self.current_coin = ""
@@ -88,7 +84,7 @@ class CryptoController(BaseController):
         self.price_str = ""
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["coins"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
             choices["load"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
             choices["find"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}

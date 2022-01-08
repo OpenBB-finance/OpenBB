@@ -60,13 +60,10 @@ class TerminalController(BaseController):
 
     def __init__(self, jobs_cmds: List[str] = None):
         """Constructor"""
-        super().__init__("/", jobs_cmds)
-
-        self.choices += self.CHOICES_COMMANDS
-        self.choices += self.CHOICES_MENUS
+        super().__init__("/", jobs_cmds, self.CHOICES_COMMANDS + self.CHOICES_MENUS)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: None for c in self.CHOICES}
+            choices: dict = {c: None for c in self.controller_choices}
             choices["tz"] = {c: None for c in self.all_timezones}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -137,7 +134,7 @@ Timezone: {get_user_timezone_or_invalid()}
         """Process stocks command"""
         from gamestonk_terminal.stocks.stocks_controller import StocksController
 
-        self.queue = StocksController("", self.queue).menu()
+        self.queue = StocksController(self.queue).menu()
 
     def call_crypto(self, _):
         """Process crypto command"""
@@ -238,7 +235,7 @@ def terminal(jobs_cmds: List[str] = None):
             t_controller.queue = t_controller.queue[1:]
 
             # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in t_controller.CHOICES_COMMANDS:
+            if an_input and an_input.split(" ")[0] in t_controller.controller_choices:
                 print(f"{get_flair()} / $ {an_input}")
 
         # Get input command from user
@@ -282,7 +279,7 @@ def terminal(jobs_cmds: List[str] = None):
             print(f"\nThe command '{an_input}' doesn't exist on the / menu", end="")
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
-                t_controller.CHOICES,
+                t_controller.controller_choices,
                 n=1,
                 cutoff=0.7,
             )

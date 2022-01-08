@@ -30,14 +30,15 @@ class PayoffController(BaseController):
         "plot",
         "sop",
     ]
+    CHOICES_MENUS: List[str] = []
 
     underlying_asset_choices = ["long", "short", "none"]
 
     def __init__(self, ticker: str, expiration: str, queue: List[str] = None):
-        """Construct"""
-        super().__init__("/stocks/options/payoff/", queue, choices)
-
-        self.choices += self.CHOICES_COMMANDS
+        """Constructor"""
+        super().__init__(
+            "/stocks/options/payoff/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         self.chain = get_option_chain(ticker, expiration)
         self.calls = list(
@@ -57,17 +58,25 @@ class PayoffController(BaseController):
         self.expiration = expiration
         self.options: List[Dict[str, str]] = []
         self.underlying = 0
-
         self.call_index_choices = range(len(self.calls))
         self.put_index_choices = range(len(self.puts))
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-
-            self.extras: dict = {c: {} for c in BaseController.CHOICES}
-            self.extras["pick"] = {c: {} for c in self.underlying_asset_choices}
-            self.extras["add"] = {
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["pick"] = {c: {} for c in self.underlying_asset_choices}
+            choices["add"] = {
                 str(c): {} for c in list(range(max(len(self.puts), len(self.calls))))
             }
+            # This menu contains dynamic choices that may change during runtime
+            self.choices = choices
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def update_runtime_choices(self):
+        """Update runtime choices"""
+        if self.options:
+            self.choices["rmv"] = {str(c): {} for c in range(len(self.options))}
+
+        return NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help"""
@@ -98,10 +107,11 @@ Underlying Asset: {text}
 
     def custom_reset(self):
         """Class specific component of reset command"""
-        if self.expiration:
-            self.queue.insert(6, f"exp {self.expiration}")
         if self.ticker:
-            self.queue.insert(6, f"load {self.ticker}")
+            self.queue.insert(self.reset_level, f"load {self.ticker}")
+            self.update_runtime_choices()
+        if self.expiration:
+            self.queue.insert(self.reset_level, f"exp {self.expiration}")
 
     def call_list(self, other_args):
         """Lists available calls and puts"""
@@ -173,6 +183,7 @@ Underlying Asset: {text}
                     "cost": cost,
                 }
                 self.options.append(option)
+                self.update_runtime_choices()
 
                 print("#\tType\tHold\tStrike\tCost")
                 for i, o in enumerate(self.options):
@@ -217,6 +228,7 @@ Underlying Asset: {text}
                 else:
                     if ns_parser.index < len(self.options):
                         del self.options[ns_parser.index]
+                        self.update_runtime_choices()
                     else:
                         print("Please use a valid index.\n")
 
@@ -291,11 +303,3 @@ Underlying Asset: {text}
                 self.ticker,
                 self.expiration,
             )
-
-
-def choices(controller):
-    """Defines dynamic choices"""
-    if controller.options:
-        controller.extras["rmv"] = {str(c): {} for c in range(len(controller.options))}
-
-    return NestedCompleter.from_nested_dict(controller.extras)

@@ -25,15 +25,16 @@ class DiscoveryController(BaseController):
         "decliners",
         "active",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/etf/disc/", queue)
-
-        self.choices += self.CHOICES_COMMANDS
+        super().__init__(
+            "/etf/disc/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

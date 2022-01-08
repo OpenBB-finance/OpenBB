@@ -55,6 +55,7 @@ class TechnicalAnalysisController(BaseController):
         "obv",
         "fib",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(
         self,
@@ -65,13 +66,9 @@ class TechnicalAnalysisController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/crypto/ta/", queue)
-
-        self.choices += self.CHOICES_COMMANDS
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-            self.completer = NestedCompleter.from_nested_dict(choices)
+        super().__init__(
+            "/crypto/ta/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         self.ticker = ticker
         self.start = start
@@ -79,6 +76,10 @@ class TechnicalAnalysisController(BaseController):
         self.stock = stock
         self.stock["Adj Close"] = stock["Close"]
         self.currency = ""
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
@@ -126,7 +127,7 @@ Custom:
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(4, f"load {self.ticker}")
+            self.queue.insert(self.reset_level, f"load {self.ticker}")
 
     def call_load(self, other_args):
         """Process load command"""

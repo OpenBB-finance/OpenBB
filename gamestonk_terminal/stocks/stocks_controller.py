@@ -35,9 +35,6 @@ logger = logging.getLogger(__name__)
 class StocksController(BaseController):
     """Stocks Controller class"""
 
-    # To hold suffix for Yahoo Finance
-    suffix = ""
-
     CHOICES_COMMANDS = [
         "search",
         "load",
@@ -64,23 +61,20 @@ class StocksController(BaseController):
         "options",
     ]
 
-    def __init__(self, ticker, queue: List[str] = None):
+    def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/", queue)
-
-        self.choices += self.CHOICES_COMMANDS
-        self.choices += self.CHOICES_MENUS
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-
-            self.completer = NestedCompleter.from_nested_dict(choices)
+        super().__init__("/stocks/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS)
 
         self.stock = pd.DataFrame()
-        self.ticker = ticker
+        self.ticker = ""
+        self.suffix = ""  # To hold suffix for Yahoo Finance
         self.start = ""
         self.interval = "1440min"
         self.add_info = stocks_helper.additional_info_about_ticker("")
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
@@ -126,9 +120,9 @@ Stocks Menus:
         """Class specific component of reset command"""
         if self.ticker:
             if self.suffix:
-                self.queue.insert(3, f"load {self.ticker}.{self.suffix}")
+                self.queue.insert(self.reset_level, f"load {self.ticker}.{self.suffix}")
             else:
-                self.queue.insert(3, f"load {self.ticker}")
+                self.queue.insert(self.reset_level, f"load {self.ticker}")
 
     def call_search(self, other_args: List[str]):
         """Process search command"""
@@ -517,11 +511,9 @@ Stocks Menus:
     def call_ca(self, _):
         """Process ca command"""
 
-        from gamestonk_terminal.stocks.comparison_analysis.ca_controller import (
-            ComparisonAnalysisController,
-        )
+        from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 
-        self.queue = ComparisonAnalysisController(
+        self.queue = ca_controller.ComparisonAnalysisController(
             [self.ticker] if self.ticker else "", self.queue
         ).menu()
 

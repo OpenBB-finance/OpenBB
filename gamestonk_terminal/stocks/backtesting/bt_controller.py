@@ -31,18 +31,22 @@ mpl.use(default_backend)
 
 
 class BacktestingController(BaseController):
-    """Backtesting Class"""
+    """Backtesting Controller class"""
 
     CHOICES_COMMANDS = ["ema", "ema_cross", "rsi", "whatif"]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(self, ticker: str, stock: pd.DataFrame, queue: List[str] = None):
-        super().__init__("/stocks/bt/", queue)
-        self.choices += self.CHOICES_COMMANDS
+        """Constructor"""
+        super().__init__(
+            "/stocks/bt/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
+
         self.ticker = ticker
         self.stock = stock
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -61,7 +65,7 @@ Ticker: {self.ticker.upper()}
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(4, f"load {self.ticker}")
+            self.queue.insert(self.reset_level, f"load {self.ticker}")
 
     def call_whatif(self, other_args: List[str]):
         """Call whatif"""

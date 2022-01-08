@@ -33,6 +33,7 @@ from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
 
 
 class OverviewController(BaseController):
+    """Overview Controller class"""
 
     CHOICES_COMMANDS = [
         "cgglobal",
@@ -62,14 +63,16 @@ class OverviewController(BaseController):
         "ewf",
         "wfpe",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(self, queue: List[str] = None):
-        """CONSTRUCTOR"""
-        super().__init__("/crypto/ov/", queue)
-        self.choices += self.CHOICES_COMMANDS
+        """Constructor"""
+        super().__init__(
+            "/crypto/ov/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["cghold"] = {c: None for c in pycoingecko_model.HOLD_COINS}
             choices["cgcompanies"] = {c: None for c in pycoingecko_model.HOLD_COINS}
             choices["cgnews"]["-s"] = {c: None for c in pycoingecko_model.NEWS_FILTERS}

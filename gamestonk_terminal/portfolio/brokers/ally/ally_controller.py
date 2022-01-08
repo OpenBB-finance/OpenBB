@@ -16,8 +16,11 @@ from gamestonk_terminal.helper_funcs import (
 
 
 class AllyController(BaseController):
+    """Ally Controller class"""
 
     CHOICES_COMMANDS = ["holdings", "history", "balances", "quote", "movers"]
+    CHOICES_MENUS: List[str] = []
+
     list_choices = [
         "toplosers",
         "toppctlosers",
@@ -28,14 +31,14 @@ class AllyController(BaseController):
     ]
 
     def __init__(self, queue: List[str] = None):
-        """CONSTRUCTOR"""
-        super().__init__("/portfolio/bro/ally/", queue)
-        self.choices += self.CHOICES_COMMANDS
+        """Constructor"""
+        super().__init__(
+            "/portfolio/bro/ally/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["movers"]["-t"] = {c: None for c in self.list_choices}
-
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

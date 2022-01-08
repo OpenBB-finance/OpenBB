@@ -48,6 +48,7 @@ class ScreenerController(BaseController):
         "po",
         "ca",
     ]
+    CHOICES_MENUS: List[str] = []
 
     preset_choices = [
         preset.split(".")[0]
@@ -59,12 +60,15 @@ class ScreenerController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/scr/", queue)
+        super().__init__(
+            "/stocks/scr/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
-        self.choices += self.CHOICES_COMMANDS
+        self.preset = "top_gainers"
+        self.screen_tickers: List = list()
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["view"] = {c: None for c in self.preset_choices}
             choices["set"] = {
                 c: None
@@ -92,9 +96,6 @@ class ScreenerController(BaseController):
                 c: None for c in finviz_view.d_cols_to_sort["technical"]
             }
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        self.preset = "top_gainers"
-        self.screen_tickers: List = list()
 
     def print_help(self):
         """Print help"""
@@ -628,7 +629,9 @@ Last screened tickers: {', '.join(self.screen_tickers)}
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
         if self.screen_tickers:
-            self.queue = po_controller.PortfolioOptimization(self.screen_tickers).menu()
+            self.queue = po_controller.PortfolioOptimization(self.screen_tickers).menu(
+                custom_path_menu_above="/portfolio/"
+            )
         else:
             print("Some tickers must be screened first through one of the presets!\n")
 
@@ -637,6 +640,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
         if self.screen_tickers:
             self.queue = ca_controller.ComparisonAnalysisController(
                 self.screen_tickers, self.queue
-            ).menu()
+            ).menu(custom_path_menu_above="/stocks/")
         else:
             print("Some tickers must be screened first through one of the presets!\n")

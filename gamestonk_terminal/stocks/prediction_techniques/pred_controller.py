@@ -49,6 +49,7 @@ class PredictionTechniquesController(BaseController):
         "conv1d",
         "mc",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(
         self,
@@ -59,8 +60,9 @@ class PredictionTechniquesController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/stocks/pred/", queue)
-        self.choices += self.CHOICES_COMMANDS
+        super().__init__(
+            "/stocks/pred/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         stock["Returns"] = stock["Adj Close"].pct_change()
         stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(
@@ -76,9 +78,9 @@ class PredictionTechniquesController(BaseController):
         self.target = "AdjClose"
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["-r"] = {c: {} for c in stocks_helper.INTERVALS}
-            choices["pick"] = {c: {} for c in self.stock.columns}
+            choices["pick"] = {c: {} for c in stock.columns}
             choices["ets"]["-t"] = {c: {} for c in ets_model.TRENDS}
             choices["ets"]["-s"] = {c: {} for c in ets_model.SEASONS}
             choices["arima"]["-i"] = {c: {} for c in arima_model.ICS}
@@ -118,7 +120,7 @@ Models:
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(4, f"load {self.ticker}")
+            self.queue.insert(self.reset_level, f"load {self.ticker}")
 
     def call_load(self, other_args: List[str]):
         """Process load command"""

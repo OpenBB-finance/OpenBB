@@ -24,6 +24,7 @@ from gamestonk_terminal.helper_funcs import get_rf
 
 
 class PortfolioOptimization(BaseController):
+    """Portfolio Optimization Controller class"""
 
     CHOICES_COMMANDS = [
         "select",
@@ -41,6 +42,8 @@ class PortfolioOptimization(BaseController):
         "ef",
         "yolo",
     ]
+    CHOICES_MENUS: List[str] = []
+
     period_choices = [
         "1d",
         "5d",
@@ -148,17 +151,19 @@ class PortfolioOptimization(BaseController):
         "regularMarketPrice",
     ]
 
-    # pylint: disable=dangerous-default-value
+    def __init__(self, tickers: List[str] = None, queue: List[str] = None):
+        """Constructor"""
+        super().__init__(
+            "/portfolio/po/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
-    def __init__(self, tickers: List[str], queue: List[str] = None):
-        """Construct Portfolio Optimization"""
-        super().__init__("/portfolio/po/", queue)
+        if tickers:
+            self.tickers = list(set(tickers))
+        else:
+            self.tickers = list()
 
-        self.choices += self.CHOICES_COMMANDS
-
-        self.tickers = list(set(tickers))
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["property"]["-p"] = {c: None for c in self.yf_info_choices}
             choices["property"]["--property"] = {c: None for c in self.yf_info_choices}
             for fn in ["maxsharpe", "minvol", "maxquadutil", "effret", "effrisk", "ef"]:

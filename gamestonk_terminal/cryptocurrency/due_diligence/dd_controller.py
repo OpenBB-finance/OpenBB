@@ -41,8 +41,10 @@ FILTERS_VS_USD_BTC = ["usd", "btc"]
 
 
 class DueDiligenceController(BaseController):
+    """Due Diligence Controller class"""
 
     CHOICES_COMMANDS = ["load", "oi", "active", "change", "nonzero", "eb"]
+    CHOICES_MENUS: List[str] = []
 
     SPECIFIC_CHOICES = {
         "cp": [
@@ -85,11 +87,13 @@ class DueDiligenceController(BaseController):
         coin_map_df: pd.DataFrame = None,
         queue: List[str] = None,
     ):
-        """CONSTRUCTOR"""
+        """Constructor"""
+        super().__init__(
+            "/crypto/dd/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
-        super().__init__("/crypto/dd/", queue)
-
-        self.choices += self.CHOICES_COMMANDS
+        for _, value in self.SPECIFIC_CHOICES.items():
+            self.controller_choices.extend(value)
 
         self.current_coin = coin
         self.current_df = pd.DataFrame()
@@ -97,11 +101,8 @@ class DueDiligenceController(BaseController):
         self.symbol = symbol
         self.coin_map_df = coin_map_df
 
-        for _, value in self.SPECIFIC_CHOICES.items():
-            self.CHOICES.extend(value)
-
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["--source"] = {c: None for c in CRYPTO_SOURCES.keys()}
             choices["active"]["-i"] = {c: None for c in glassnode_model.INTERVALS}
             choices["change"] = {
@@ -178,7 +179,9 @@ Coinbase:
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.current_coin:
-            self.queue.insert(4, f"load {self.current_coin} --source {self.source}")
+            self.queue.insert(
+                self.reset_level, f"load {self.current_coin} --source {self.source}"
+            )
 
     def call_load(self, other_args: List[str]):
         """Process load command"""

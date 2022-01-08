@@ -75,13 +75,13 @@ class ReportController(BaseController):
         )
 
     def __init__(self, queue: List[str] = None):
-        """Construct the Reports Controller."""
-        super().__init__("/jupyter/reports/", queue)
-        self.choices += self.report_names
-        self.choices += self.ids_reports
+        """Constructor"""
+        super().__init__(
+            "/jupyter/reports/", queue, self.report_names + self.ids_reports
+        )
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

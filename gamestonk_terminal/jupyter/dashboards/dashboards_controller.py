@@ -24,19 +24,19 @@ class DashboardsController(BaseController):
     CHOICES_COMMANDS = [
         "stocks",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/jupyter/dashboard/", queue)
-        self.choices += self.CHOICES_COMMANDS
+        super().__init__(
+            "/jupyter/dashboard/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-
+            choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-    @staticmethod
-    def print_help():
+    def print_help(self):
         """Print help"""
         help_str = """
    stocks        interactive dashboard with ticker information

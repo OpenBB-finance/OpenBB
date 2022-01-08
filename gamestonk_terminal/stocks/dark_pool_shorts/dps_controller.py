@@ -46,26 +46,28 @@ class DarkPoolShortsController(BaseController):
         "spos",
         "volexch",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(
         self, ticker: str, start: str, stock: pd.DataFrame, queue: List[str] = None
     ):
-        super().__init__("/stocks/dps/", queue)
-
-        self.choices += self.CHOICES_COMMANDS
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-            self.completer = NestedCompleter.from_nested_dict(choices)
+        """Constructor"""
+        super().__init__(
+            "/stocks/dps/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         self.ticker = ticker
         self.start = start
         self.stock = stock
 
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(5, f"load {self.ticker}")
+            self.queue.insert(self.reset_level, f"load {self.ticker}")
 
     def print_help(self):
         """Print help"""

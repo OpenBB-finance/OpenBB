@@ -19,8 +19,11 @@ from gamestonk_terminal.helper_funcs import (
 
 
 class CoinbaseController(BaseController):
+    """Coinbase Controller class"""
 
     CHOICES_COMMANDS = ["account", "history", "orders", "deposits"]
+    CHOICES_MENUS: List[str] = []
+
     order_sortby = [
         "product_id",
         "side",
@@ -36,12 +39,13 @@ class CoinbaseController(BaseController):
     ]
 
     def __init__(self, queue: List[str] = None):
-        """CONSTRUCTOR"""
-        super().__init__("/portfolio/bro/cb/", queue)
-        self.choices += self.CHOICES_COMMANDS
+        """Constructor"""
+        super().__init__(
+            "/portfolio/bro/cb/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["orders"]["-s"] = {c: None for c in self.order_sortby}
             choices["orders"]["--sortby"] = {c: None for c in self.order_sortby}
             choices["deposits"]["-s"] = {c: None for c in self.deposit_sort}
