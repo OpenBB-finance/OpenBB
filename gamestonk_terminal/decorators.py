@@ -9,13 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 def try_except(f):
-    """Adds a try except block if the user is not in development mode
-
-    Parameters
-    -------
-    f: function
-        The function to be wrapped
-    """
+    """Adds a try except block if the user is not in development mode"""
     # pylint: disable=inconsistent-return-statements
     @functools.wraps(f)
     def inner(*args, **kwargs):

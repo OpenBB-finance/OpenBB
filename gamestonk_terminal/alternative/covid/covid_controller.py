@@ -34,7 +34,7 @@ class CovidController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/", queue)
+        super().__init__("/alternative/covid/", queue)
 
         self.country = "US"
         self.COUNTRY_LIST = pd.read_csv(country_file, sep="\n", index_col=None)[

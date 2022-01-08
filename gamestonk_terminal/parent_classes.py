@@ -17,7 +17,7 @@ from gamestonk_terminal.helper_funcs import system_clear, get_flair
 
 class BaseController(metaclass=ABCMeta):
 
-    COMMON_CHOICES = [
+    CHOICES_COMMON = [
         "cls",
         "home",
         "h",
@@ -54,9 +54,9 @@ class BaseController(metaclass=ABCMeta):
 
         controller_choices = self.CHOICES_COMMANDS + self.CHOICES_MENUS
         if controller_choices:
-            self.controller_choices = controller_choices + self.COMMON_CHOICES
+            self.controller_choices = controller_choices + self.CHOICES_COMMON
         else:
-            self.controller_choices = self.COMMON_CHOICES
+            self.controller_choices = self.CHOICES_COMMON
 
         self.completer: Union[None, NestedCompleter] = None
 
