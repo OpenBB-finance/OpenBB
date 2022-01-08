@@ -31,6 +31,10 @@ class DegiroController(BaseController):
         "update",
     ]
 
+    ERROR_MAP = {
+        "Connection required.": "You haven't logged in Degiro"
+    }
+
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__("/portfolio/bro/derigo/", queue)
@@ -43,8 +47,7 @@ class DegiroController(BaseController):
 
     def print_help(self):
         """Print help."""
-        help_text = "Derigo brokerage menu"
-        print(help_text)
+        DegiroView.help_display()
 
     def call_cancel(self, other_args: List[str]):
         """Cancel an order using the `id`."""
