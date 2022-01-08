@@ -149,7 +149,7 @@ class DegiroController:
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
 
-    def cancel(self, other_args: List[str]):
+    def call_cancel(self, other_args: List[str]):
         """Cancel an order using the `id`."""
 
         # PARSE ARGS
@@ -166,7 +166,7 @@ class DegiroController:
 
         self.__degiro_view.cancel(ns_parser=ns_parser)
 
-    def companynews(self, other_args: List[str]):
+    def call_companynews(self, other_args: List[str]):
         """Display news related to a company using its ISIN."""
 
         # PARSE ARGS
@@ -183,7 +183,7 @@ class DegiroController:
 
         self.__degiro_view.companynews(ns_parser=ns_parser)
 
-    def create(self, other_args: List[str]):
+    def call_create(self, other_args: List[str]):
         """Create an order."""
 
         # PARSE ARGS
@@ -261,7 +261,7 @@ class DegiroController:
 
         self.__degiro_view.create(ns_parser=ns_parser)
 
-    def hold(self, other_args):
+    def call_hold(self, other_args):
         """Display held products."""
 
         # PARSE ARGS
@@ -273,7 +273,7 @@ class DegiroController:
 
         self.__degiro_view.hold(ns_parser=ns_parser)
 
-    def lastnews(self, other_args: List[str]):
+    def call_lastnews(self, other_args: List[str]):
         """Display latest news."""
 
         # PARSE ARGS
@@ -293,7 +293,7 @@ class DegiroController:
 
         self.__degiro_view.lastnews(ns_parser=ns_parser)
 
-    def login(self, other_args: List[str]):
+    def call_login(self, other_args: List[str]):
         """Connect to Degiro's API."""
 
         # PARSE ARGS
@@ -333,7 +333,7 @@ class DegiroController:
 
         self.__degiro_view.login(ns_parser=ns_parser)
 
-    def logout(self, other_args: List[str]):
+    def call_logout(self, other_args: List[str]):
         """Log out from Degiro's API."""
 
         # PARSE ARGS
@@ -345,7 +345,7 @@ class DegiroController:
 
         self.__degiro_view.logout(ns_parser=ns_parser)
 
-    def lookup(self, other_args: List[str]):
+    def call_lookup(self, other_args: List[str]):
         """Search for products by their name."""
 
         # PARSING ARGS
@@ -376,7 +376,7 @@ class DegiroController:
 
         self.__degiro_view.lookup(ns_parser=ns_parser)
 
-    def pending(self, other_args: List[str]):
+    def call_pending(self, other_args: List[str]):
         """Display pending orders."""
 
         # PARSING ARGS
@@ -388,7 +388,7 @@ class DegiroController:
 
         self.__degiro_view.pending(ns_parser=ns_parser)
 
-    def topnews(self, other_args: List[str]):
+    def call_topnews(self, other_args: List[str]):
         """Display top news."""
 
         # PARSING ARGS
@@ -400,7 +400,7 @@ class DegiroController:
 
         self.__degiro_view.topnews(ns_parser=ns_parser)
 
-    def update(self, other_args: List[str]):
+    def call_update(self, other_args: List[str]):
         """Update an order."""
 
         # PARSING ARGS
