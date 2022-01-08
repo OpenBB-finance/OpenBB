@@ -65,7 +65,10 @@ class BaseController:
         if path != "/":
             self.queue = queue if queue else list()
 
-    def custom_reset(self):
+    def check_path(self, path: str) -> bool:
+        pass
+
+    def custom_reset(self) -> None:
         """
         This will be replace by any children with custom_reset functions
 
@@ -77,11 +80,11 @@ class BaseController:
         """
 
     @abstractmethod
-    def print_help(self):
+    def print_help(self) -> None:
         raise NotImplementedError("Must override print_help")
 
     @try_except
-    def switch(self, an_input: str):
+    def switch(self, an_input: str) -> List[str]:
         """Process and dispatch input
 
         Returns
@@ -164,7 +167,7 @@ class BaseController:
                 self.queue.insert(0, "quit")
             self.custom_reset()
 
-    def menu(self):
+    def menu(self) -> List[str]:
         an_input = "HELP_ME"
 
         while True:
@@ -194,7 +197,7 @@ class BaseController:
                 # Get input from user using auto-completion
                 if session and gtff.USE_PROMPT_TOOLKIT:
                     # Possible arguments is not yet finalized
-                    if not self.completer:
+                    if not self.completer and self.dynamic_completer:
                         # Complete dynamic arguments that change at each iteration
                         self.completer = self.dynamic_completer(self)
                     try:
