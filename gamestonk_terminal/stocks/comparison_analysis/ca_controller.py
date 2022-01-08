@@ -68,14 +68,9 @@ class ComparisonAnalysisController(BaseController):
 
     def __init__(self, similar: List[str] = None, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/ca/", queue)
-        self.choices += self.CHOICES_COMMANDS
-        self.choices += self.CHOICES_MENUS
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-
-            choices: dict = {c: {} for c in self.CHOICES}
-            self.completer = NestedCompleter.from_nested_dict(choices)
+        super().__init__(
+            "/stocks/ca/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         self.ticker = ""
         self.user = ""
@@ -86,6 +81,10 @@ class ComparisonAnalysisController(BaseController):
                 self.ticker = self.similar[0].upper()
         else:
             self.similar = []
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""

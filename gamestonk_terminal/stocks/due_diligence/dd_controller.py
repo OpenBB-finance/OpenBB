@@ -29,7 +29,7 @@ from gamestonk_terminal.stocks import stocks_helper
 
 
 class DueDiligenceController(BaseController):
-    """Due Diligence Controller"""
+    """Due Diligence Controller class"""
 
     CHOICES_COMMANDS = [
         "load",
@@ -43,6 +43,7 @@ class DueDiligenceController(BaseController):
         "customer",
         "arktrades",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(
         self,
@@ -53,17 +54,17 @@ class DueDiligenceController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
+        super().__init__(
+            "/stocks/dd/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
+
         self.ticker = ticker
         self.start = start
         self.interval = interval
         self.stock = stock
 
-        super().__init__("/stocks/dd/", queue)
-
-        self.choices += self.CHOICES_COMMANDS
-
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["-i"] = {c: {} for c in stocks_helper.INTERVALS}
             choices["load"]["-s"] = {c: {} for c in stocks_helper.SOURCES}
             self.completer = NestedCompleter.from_nested_dict(choices)

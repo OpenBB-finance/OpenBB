@@ -58,6 +58,7 @@ class TechnicalAnalysisController(BaseController):
         "obv",
         "fib",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(
         self,
@@ -67,15 +68,14 @@ class TechnicalAnalysisController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
+        super().__init__("/etf/ta/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS)
+
         self.ticker = ticker
         self.start = start
         self.data = data
 
-        super().__init__("/etf/ta/", queue)
-        self.choices += self.CHOICES_COMMANDS
-
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

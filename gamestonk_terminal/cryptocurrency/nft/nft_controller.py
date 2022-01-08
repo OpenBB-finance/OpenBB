@@ -18,15 +18,16 @@ class NFTController(BaseController):
     """NFT Controller class"""
 
     CHOICES_COMMANDS = ["today", "upcoming", "ongoing", "newest", "stats"]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/crypto/nft/", queue)
-
-        self.choices += self.CHOICES_COMMANDS
+        super().__init__(
+            "/crypto/nft/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

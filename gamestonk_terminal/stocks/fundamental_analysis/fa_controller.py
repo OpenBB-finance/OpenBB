@@ -35,7 +35,7 @@ from gamestonk_terminal.menu import session
 
 
 class FundamentalAnalysisController(BaseController):
-    """Fundamental Analysis Controller."""
+    """Fundamental Analysis Controller class"""
 
     CHOICES_COMMANDS = [
         "load",
@@ -76,32 +76,18 @@ class FundamentalAnalysisController(BaseController):
         suffix: str = "",
         queue: List[str] = None,
     ):
-        """Construct Fundamental Analysis Controller.
+        """Constructor"""
+        super().__init__(
+            "/stocks/fa/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
-        Parameters
-        ----------
-        ticker : str
-            Fundamental analysis ticker symbol
-        start : str
-            Stat date of the stock data
-        interval : str
-            Stock data interval
-        suffix : str, optional
-            Exchange suffix, by default ""
-        queue : List[str], optional
-            Command queue, by default None
-        """
         self.ticker = f"{ticker}.{suffix}" if suffix else ticker
         self.start = start
         self.interval = interval
         self.suffix = suffix
 
-        super().__init__("/stocks/fa/", queue)
-        self.choices += self.CHOICES_COMMANDS
-        self.choices += self.CHOICES_MENUS
-
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["-i"] = {c: {} for c in stocks_helper.INTERVALS}
             choices["load"]["-s"] = {c: {} for c in stocks_helper.SOURCES}
             self.completer = NestedCompleter.from_nested_dict(choices)

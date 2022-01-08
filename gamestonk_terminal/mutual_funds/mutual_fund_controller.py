@@ -40,6 +40,7 @@ class FundController(BaseController):
         "sector",
         "equity",
     ]
+    CHOICES_MENUS: List[str] = []
 
     fund_countries = investpy.funds.get_fund_countries()
     search_by_choices = ["name", "issuer", "isin", "symbol"]
@@ -56,14 +57,15 @@ class FundController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/funds/", queue)
-        self.choices += self.CHOICES_COMMANDS
+        super().__init__("/funds/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS)
+
         self.country = "united states"
         self.data = pd.DataFrame()
         self.fund_name = ""
         self.fund_symbol = ""
+
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["country"] = {c: None for c in self.fund_countries}
             choices["search"]["-b"] = {c: None for c in self.search_by_choices}
             choices["search"]["--by"] = {c: None for c in self.search_by_choices}

@@ -59,7 +59,6 @@ class ETFController(BaseController):
         "summary",
         "compare",
     ]
-
     CHOICES_MENUS = [
         "ta",
         "pred",
@@ -70,17 +69,15 @@ class ETFController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/etf/", queue)
-        self.choices += self.CHOICES_COMMANDS
-        self.choices += self.CHOICES_MENUS
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-            self.completer = NestedCompleter.from_nested_dict(choices)
+        super().__init__("/etf/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS)
 
         self.etf_name = ""
         self.etf_data = ""
         self.etf_holdings: List = list()
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""

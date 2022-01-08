@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 import os
 import argparse
 import configparser
-from typing import List, Union
+from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
 
@@ -32,6 +32,7 @@ class ScreenerController(BaseController):
         "screen",
         "sbc",
     ]
+    CHOICES_MENUS: List[str] = []
 
     presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
     preset_choices = [
@@ -57,20 +58,19 @@ class ScreenerController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/etf/scr/", queue)
-        self.choices += self.CHOICES_COMMANDS
-        self.completer: Union[None, NestedCompleter] = None
+        super().__init__("/etf/scr/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS)
+
+        self.preset = "etf_config"
+        self.screen_tickers: List = list()
+
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["view"] = {c: None for c in self.preset_choices}
             choices["set"] = {c: None for c in self.preset_choices}
             choices["sbc"] = {
                 c: None for c in financedatabase_model.get_etfs_categories()
             }
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        self.preset = "etf_config"
-        self.screen_tickers: List = list()
 
     def print_help(self):
         """Print help"""

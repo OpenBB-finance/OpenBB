@@ -51,6 +51,8 @@ class PredictionTechniquesController(BaseController):
         "conv1d",
         "mc",
     ]
+    CHOICES_MENUS: List[str] = []
+
     sampling_map = {"H": "Hour", "D": "Day"}
 
     def __init__(
@@ -60,9 +62,9 @@ class PredictionTechniquesController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/crypto/pred/", queue)
-
-        self.choices += self.CHOICES_COMMANDS
+        super().__init__(
+            "/crypto/pred/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         data["Returns"] = data["Close"].pct_change()
         data["LogRet"] = np.log(data["Close"]) - np.log(data["Close"].shift(1))
@@ -80,7 +82,7 @@ class PredictionTechniquesController(BaseController):
         self.price_str = ""
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["-r"] = {c: {} for c in c_help.INTERVALS}
             choices["pick"] = {c: {} for c in self.data.columns}
             choices["ets"]["-t"] = {c: {} for c in ets_model.TRENDS}

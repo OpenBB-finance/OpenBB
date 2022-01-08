@@ -49,6 +49,7 @@ class PredictionTechniquesController(BaseController):
         "conv1d",
         "mc",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(
         self,
@@ -59,8 +60,9 @@ class PredictionTechniquesController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/etf/pred/", queue)
-        self.choices += self.CHOICES_COMMANDS
+        super().__init__(
+            "/etf/pred/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         stock["Returns"] = stock["Adj Close"].pct_change()
         stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(
@@ -74,13 +76,9 @@ class PredictionTechniquesController(BaseController):
         self.start = start
         self.interval = interval
         self.target = "AdjClose"
-        self.pred_parser = argparse.ArgumentParser(add_help=False, prog="pred")
-        self.pred_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["-r"] = {c: {} for c in stocks_helper.INTERVALS}
             choices["pick"] = {c: {} for c in self.stock.columns}
             choices["ets"]["-t"] = {c: {} for c in ets_model.TRENDS}

@@ -71,6 +71,7 @@ class TechnicalAnalysisController(BaseController):
         "obv",
         "fib",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(
         self,
@@ -81,16 +82,17 @@ class TechnicalAnalysisController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/stocks/ta/", queue)
+        super().__init__(
+            "/stocks/ta/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
-        self.choices += self.CHOICES_COMMANDS
         self.ticker = ticker
         self.start = start
         self.interval = interval
         self.stock = stock
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["-i"] = {c: {} for c in stocks_helper.INTERVALS}
             choices["load"]["-s"] = {c: {} for c in stocks_helper.SOURCES}
             choices["recom"]["-i"] = {c: {} for c in tradingview_model.INTERVALS.keys()}

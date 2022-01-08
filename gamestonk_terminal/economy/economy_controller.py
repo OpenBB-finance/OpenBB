@@ -33,7 +33,37 @@ t_console = Console()
 
 
 class EconomyController(BaseController):
-    """Economy Controller"""
+    """Economy Controller class"""
+
+    CHOICES_COMMANDS = [
+        "feargreed",
+        "overview",
+        "indices",
+        "futures",
+        "usbonds",
+        "glbonds",
+        "futures",
+        "currencies",
+        "energy",
+        "metals",
+        "meats",
+        "grains",
+        "softs",
+        "valuation",
+        "performance",
+        "spectrum",
+        "map",
+        "rtps",
+        "gdp",
+        "gdpc",
+        "inf",
+        "cpi",
+        "tyld",
+        "unemp",
+        "industry",
+        "bigmac",
+    ]
+    CHOICES_MENUS = ["fred"]
 
     fear_greed_indicators = ["jbd", "mv", "pco", "mm", "sps", "spb", "shd", "index"]
     wsj_sortby_cols_dict = {c: None for c in ["ticker", "last", "change", "prevClose"]}
@@ -90,46 +120,13 @@ class EconomyController(BaseController):
         "country": "Country (U.S. listed stocks only)",
         "capitalization": "Capitalization",
     }
-    CHOICES_MENUS = ["fred"]
-
-    CHOICES_COMMANDS = [
-        "feargreed",
-        "overview",
-        "indices",
-        "futures",
-        "usbonds",
-        "glbonds",
-        "futures",
-        "currencies",
-        "energy",
-        "metals",
-        "meats",
-        "grains",
-        "softs",
-        "valuation",
-        "performance",
-        "spectrum",
-        "map",
-        "rtps",
-        "gdp",
-        "gdpc",
-        "inf",
-        "cpi",
-        "tyld",
-        "unemp",
-        "industry",
-        "bigmac",
-    ]
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/economy/", queue)
-
-        self.choices += self.CHOICES_COMMANDS
-        self.choices += self.CHOICES_MENUS
+        super().__init__("/economy/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["feargreed"]["-i"] = {c: None for c in self.fear_greed_indicators}
             choices["feargreed"]["--indicator"] = {
                 c: None for c in self.fear_greed_indicators

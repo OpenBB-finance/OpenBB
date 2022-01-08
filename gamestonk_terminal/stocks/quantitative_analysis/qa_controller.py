@@ -57,6 +57,7 @@ class QaController(BaseController):
         "unitroot",
         "capm",
     ]
+    CHOICES_MENUS: List[str] = []
 
     stock_interval = [1, 5, 15, 30, 60]
     stock_sources = ["yf", "av", "iex"]
@@ -70,9 +71,9 @@ class QaController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/stocks/qa/", queue)
-
-        self.choices += self.CHOICES_COMMANDS
+        super().__init__(
+            "/stocks/qa/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         stock["Returns"] = stock["Adj Close"].pct_change()
         stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(
@@ -82,16 +83,16 @@ class QaController(BaseController):
         stock = stock.rename(columns={"Adj Close": "AdjClose"})
         stock = stock.dropna()
         stock.columns = [x.lower() for x in stock.columns]
+
         self.stock = stock
         self.ticker = ticker
         self.start = start
         self.interval = interval
         self.target = "returns"
-        self.df_columns = list(stock.columns)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-            choices["pick"] = {c: None for c in self.df_columns}
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["pick"] = {c: None for c in list(stock.columns)}
             choices["load"]["-i"] = {c: None for c in self.stock_interval}
             choices["load"]["--interval"] = {c: None for c in self.stock_interval}
             choices["load"]["--source"] = {c: None for c in self.stock_sources}
@@ -236,7 +237,6 @@ Other:
                 self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
                 self.stock = self.stock.dropna()
                 self.stock.columns = [x.lower() for x in self.stock.columns]
-                self.df_columns = list(self.stock.columns)
                 print("")
 
     def call_pick(self, other_args: List[str]):

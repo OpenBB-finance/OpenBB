@@ -6,7 +6,7 @@ __docformat__ = "numpy"
 import argparse
 import difflib
 from datetime import datetime, timedelta
-from typing import List, Union
+from typing import List
 
 from colorama.ansi import Style
 from prompt_toolkit.completion import NestedCompleter
@@ -79,19 +79,19 @@ class OnchainController(BaseController):
         "ttcp",
         "baas",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-
-        super().__init__("/crypto/onchain/", queue)
-        self.choices += self.CHOICES_COMMANDS
+        super().__init__(
+            "/crypto/onchain/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         self.address = ""
         self.address_type = ""
 
-        self.completer: Union[None, NestedCompleter] = None
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["whales"]["-s"] = {c: None for c in whale_alert_model.FILTERS}
             choices["hr"] = {c: None for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}
             choices["hr"]["-c"] = {c: None for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}

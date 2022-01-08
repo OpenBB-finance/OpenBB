@@ -30,14 +30,15 @@ class PayoffController(BaseController):
         "plot",
         "sop",
     ]
+    CHOICES_MENUS: List[str] = []
 
     underlying_asset_choices = ["long", "short", "none"]
 
     def __init__(self, ticker: str, expiration: str, queue: List[str] = None):
-        """Construct"""
-        super().__init__("/stocks/options/payoff/", queue, choices)
-
-        self.choices += self.CHOICES_COMMANDS
+        """Constructor"""
+        super().__init__(
+            "/stocks/options/payoff/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         self.chain = get_option_chain(ticker, expiration)
         self.calls = list(
@@ -57,13 +58,11 @@ class PayoffController(BaseController):
         self.expiration = expiration
         self.options: List[Dict[str, str]] = []
         self.underlying = 0
-
         self.call_index_choices = range(len(self.calls))
         self.put_index_choices = range(len(self.puts))
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-
-            self.extras: dict = {c: {} for c in BaseController.CHOICES}
+            self.extras: dict = {c: {} for c in self.controller_choices}
             self.extras["pick"] = {c: {} for c in self.underlying_asset_choices}
             self.extras["add"] = {
                 str(c): {} for c in list(range(max(len(self.puts), len(self.calls))))

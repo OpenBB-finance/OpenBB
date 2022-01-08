@@ -19,7 +19,7 @@ from gamestonk_terminal.menu import session
 
 
 class FinancialModelingPrepController(BaseController):
-    """Financial Modeling Prep Controller"""
+    """Financial Modeling Prep Controller class"""
 
     CHOICES_COMMANDS = [
         "profile",
@@ -33,6 +33,7 @@ class FinancialModelingPrepController(BaseController):
         "ratios",
         "growth",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(
         self,
@@ -41,28 +42,17 @@ class FinancialModelingPrepController(BaseController):
         interval: str,
         queue: List[str] = None,
     ):
-        """Constructor
-
-        Parameters
-        ----------
-        ticker : str
-            Fundamental analysis ticker symbol
-        start : str
-            Stat date of the stock data
-        interval : str
-            Stock data interval
-        """
+        """Constructor"""
+        super().__init__(
+            "/stocks/fa/fmp/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         self.ticker = ticker
         self.start = start
         self.interval = interval
-        self.fmp_parser = argparse.ArgumentParser(add_help=False, prog="fmp")
-        super().__init__("/stocks/fa/fmp/", queue)
-
-        self.choices += self.CHOICES_COMMANDS
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

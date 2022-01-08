@@ -15,6 +15,8 @@ from gamestonk_terminal.portfolio.brokers.degiro.degiro_view import DegiroView
 
 
 class DegiroController(BaseController):
+    """Degiro Controller class"""
+
     CHOICES_COMMANDS = [
         "cancel",
         "companynews",
@@ -28,14 +30,18 @@ class DegiroController(BaseController):
         "topnews",
         "update",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(self, queue: List[str] = None):
-        super().__init__("/portfolio/bro/derigo/", queue)
-        self.choices += self.CHOICES_COMMANDS
+        """Constructor"""
+        super().__init__(
+            "/portfolio/bro/derigo/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
+
         self.__degiro_view = DegiroView()
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

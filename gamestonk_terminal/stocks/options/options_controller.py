@@ -102,25 +102,11 @@ class OptionsController(BaseController):
 
     def __init__(self, ticker: str, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/options/", queue, choices)
-
-        self.choices += self.CHOICES_COMMANDS
-        self.choices += self.CHOICES_MENUS
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-
-            self.extras: dict = {c: {} for c in self.choices}
-            self.extras["unu"]["-s"] = {c: {} for c in self.unu_sortby_choices}
-            self.extras["pcr"] = {c: {} for c in self.pcr_length_choices}
-            self.extras["disp"] = {c: {} for c in self.presets}
-            self.extras["scr"] = {c: {} for c in self.presets}
-            self.extras["grhist"]["-g"] = {c: {} for c in self.grhist_greeks_choices}
-            self.extras["load"]["-s"] = {c: {} for c in self.load_source_choices}
-            self.extras["load"]["--source"] = {c: {} for c in self.hist_source_choices}
-            self.extras["load"]["-s"] = {c: {} for c in self.voi_source_choices}
-            self.extras["plot"]["-x"] = {c: {} for c in self.plot_vars_choices}
-            self.extras["plot"]["-y"] = {c: {} for c in self.plot_vars_choices}
-            self.extras["plot"]["-c"] = {c: {} for c in self.plot_custom_choices}
+        super().__init__(
+            "/stocks/options/",
+            queue,
+            self.CHOICES_COMMANDS + self.CHOICES_MENUS,
+        )
 
         self.ticker = ticker
         self.prices = pd.DataFrame(columns=["Price", "Chance"])
@@ -136,6 +122,20 @@ class OptionsController(BaseController):
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
         else:
             self.expiry_dates = []
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            self.extras: dict = {c: {} for c in self.controller_choices}
+            self.extras["unu"]["-s"] = {c: {} for c in self.unu_sortby_choices}
+            self.extras["pcr"] = {c: {} for c in self.pcr_length_choices}
+            self.extras["disp"] = {c: {} for c in self.presets}
+            self.extras["scr"] = {c: {} for c in self.presets}
+            self.extras["grhist"]["-g"] = {c: {} for c in self.grhist_greeks_choices}
+            self.extras["load"]["-s"] = {c: {} for c in self.load_source_choices}
+            self.extras["load"]["--source"] = {c: {} for c in self.hist_source_choices}
+            self.extras["load"]["-s"] = {c: {} for c in self.voi_source_choices}
+            self.extras["plot"]["-x"] = {c: {} for c in self.plot_vars_choices}
+            self.extras["plot"]["-y"] = {c: {} for c in self.plot_vars_choices}
+            self.extras["plot"]["-c"] = {c: {} for c in self.plot_custom_choices}
 
     def print_help(self):
         """Print help."""

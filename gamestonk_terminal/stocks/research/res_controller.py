@@ -33,22 +33,23 @@ class ResearchController(BaseController):
         "newsfilter",
         "stockanalysis",
     ]
+    CHOICES_MENUS: List[str] = []
 
     def __init__(
         self, ticker: str, start: datetime, interval: str, queue: List[str] = None
     ):
         """Constructor"""
-        super().__init__("/stocks/res/", queue)
-        self.choices += self.CHOICES_COMMANDS
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-
-            choices: dict = {c: {} for c in self.CHOICES}
-            self.completer = NestedCompleter.from_nested_dict(choices)
+        super().__init__(
+            "/stocks/res/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         self.ticker = ticker
         self.start = start
         self.interval = interval
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""

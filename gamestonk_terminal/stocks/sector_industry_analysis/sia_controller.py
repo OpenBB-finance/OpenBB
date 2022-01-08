@@ -128,16 +128,9 @@ class SectorIndustryAnalysisController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/stocks/sia/", queue, choices)
-
-        self.choices += self.CHOICES_COMMANDS
-        self.choices += self.CHOICES_MENUS
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            self.extras: dict = {c: {} for c in BaseController.CHOICES}
-            self.extras["mktcap"] = {c: None for c in self.mktcap_choices}
-            self.extras["clear"] = {c: None for c in self.clear_choices}
-            self.extras["metric"] = {c: None for c in self.metric_choices}
+        super().__init__(
+            "/stocks/sia/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         self.country = "United States"
         self.sector = "Financial Services"
@@ -192,6 +185,12 @@ class SectorIndustryAnalysisController(BaseController):
                     self.mktcap = "Large"
                 else:
                     self.mktcap = "Mid"
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            self.extras: dict = {c: {} for c in self.controller_choices}
+            self.extras["mktcap"] = {c: None for c in self.mktcap_choices}
+            self.extras["clear"] = {c: None for c in self.clear_choices}
+            self.extras["metric"] = {c: None for c in self.metric_choices}
 
     def print_help(self):
         """Print help"""

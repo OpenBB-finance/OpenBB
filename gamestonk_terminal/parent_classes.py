@@ -20,7 +20,7 @@ from gamestonk_terminal.helper_funcs import system_clear, get_flair
 class BaseController:
     __metaclass__ = ABCMeta
 
-    CHOICES = [
+    COMMON_CHOICES = [
         "cls",
         "home",
         "h",
@@ -38,32 +38,43 @@ class BaseController:
         self,
         path: str,
         queue: List[str] = None,
+        controller_choices: List[str] = None,
         dynamic_completer: Callable[..., NestedCompleter] = None,
     ) -> None:
         """
-        This is the base class for any controller in the codebase. Use it to
-        quickly create a working context and menu.
+        This is the base class for any controller in the codebase.
+        It's used to simplify the creation of menus.
 
         path: str
-            Where the current context is located in the terminal
+            Menu location with regards to root of the terminal separated by "/"
+            E.g. /stocks/dps
         queue: List[str]
-            The current queue
+            The current queue of jobs to process separated by "/"
+            E.g. /stocks/load gme/dps/sidtc/../exit
+        controller_choices: List[str]
+            Menu choices of the particular menu (including menu and commands)
+            E.g. ["load", "search", "ta", "pred"]
         dynamic_completer:
-            Allows a function for dynamic completing
+            Allows a function for dynamic auto completer in case the auto-completion
+            changes at every loop based on user options
         """
-        self.choices = self.CHOICES
         self.path = path
-        self.dynamic_completer = dynamic_completer
         self.PATH = [x for x in path.split("/") if x != ""]
 
-        name = self.PATH[-1] if path != "/" else "terminal"
-        self.parser = argparse.ArgumentParser(add_help=False, prog=name)
-        self.parser.add_argument("cmd", choices=self.CHOICES)
+        self.queue = queue if (queue and path != "/") else list()
+
+        if controller_choices:
+            self.controller_choices = controller_choices + self.COMMON_CHOICES
+        else:
+            self.controller_choices = self.COMMON_CHOICES
 
         self.completer: Union[None, NestedCompleter] = None
+        self.dynamic_completer = dynamic_completer
 
-        if path != "/":
-            self.queue = queue if queue else list()
+        self.parser = argparse.ArgumentParser(
+            add_help=False, prog=self.PATH[-1] if path != "/" else "terminal"
+        )
+        self.parser.add_argument("cmd", choices=self.controller_choices)
 
     def custom_reset(self):
         """
@@ -182,7 +193,7 @@ class BaseController:
                 self.queue = self.queue[1:]
 
                 # Print location because this was an instruction and we want user to know the action
-                if an_input and an_input.split(" ")[0] in self.choices:
+                if an_input and an_input.split(" ")[0] in self.controller_choices:
                     print(f"{get_flair()} {self.path} $ {an_input}")
 
             # Get input command from user
@@ -216,12 +227,12 @@ class BaseController:
 
             except SystemExit:
                 print(
-                    f"\nThe command '{an_input}' doesn't exist on the {self.PATH[:-1]} menu.",
+                    f"\nThe command '{an_input}' doesn't exist on the {self.path} menu.",
                     end="",
                 )
                 similar_cmd = difflib.get_close_matches(
                     an_input.split(" ")[0] if " " in an_input else an_input,
-                    self.CHOICES,
+                    self.controller_choices,
                     n=1,
                     cutoff=0.7,
                 )

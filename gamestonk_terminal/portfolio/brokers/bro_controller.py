@@ -17,33 +17,31 @@ from gamestonk_terminal.portfolio.brokers.coinbase import coinbase_controller
 
 
 class BrokersController(BaseController):
-    """Brokers Controller"""
+    """Brokers Controller class"""
 
     CHOICES_COMMANDS: List = []
-    BROKERS = ["cb", "ally", "rh", "degiro"]
+    CHOICES_MENUS = ["cb", "ally", "rh", "degiro"]
 
     def __init__(self, queue: List[str] = None):
-        super().__init__("/portfolio/bro/", queue)
-        self.choices += self.CHOICES_COMMANDS
-        self.choices += self.BROKERS
+        """Constructor"""
+        super().__init__(
+            "/portfolio/bro/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         self.broker_list: Set = set()
         self.merged_holdings = None
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
         help_string = """
-
-Brokers:
 >   ally         Ally Invest Menu
 >   degiro       Degiro Menu
 >   rh           Robinhood Menu
 
-Crypto Brokers:
 >   cb           Coinbase Pro Menu
     """
         print(help_string)

@@ -31,16 +31,15 @@ class FredController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/economy/fred/", queue)
-        self.choices += self.CHOICES_COMMANDS
-        self.choices += self.CHOICES_MENUS
+        super().__init__(
+            "/economy/fred/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        )
 
         self.current_series: Dict = dict()
         self.long_id = 0
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-
+            choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
