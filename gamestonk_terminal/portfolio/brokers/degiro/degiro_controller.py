@@ -31,9 +31,7 @@ class DegiroController(BaseController):
         "update",
     ]
 
-    ERROR_MAP = {
-        "Connection required.": "You haven't logged in Degiro"
-    }
+    ERROR_MAP = {"Connection required.": "You haven't logged in Degiro"}
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
