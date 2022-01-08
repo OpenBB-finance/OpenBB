@@ -604,11 +604,11 @@ def check_dates(d_date: Dict) -> str:
     else:
         if d_date["FilingDate"] == "Custom":
             try:
-                datetime.strptime(d_date["FilingDateFrom"], "%d/%m/%Y")
+                datetime.strptime(d_date["FilingDateFrom"], "%Y-%m-%d")
             except ValueError:
                 error += f"Invalid FilingDateFrom '{d_date['FilingDateFrom']}' (format: dd/mm/yyyy).\n"
             try:
-                datetime.strptime(d_date["FilingDateTo"], "%d/%m/%Y")
+                datetime.strptime(d_date["FilingDateTo"], "%Y-%m-%d")
             except ValueError:
                 error += f"Invalid FilingDateTo '{d_date['FilingDateTo']}' (format: dd/mm/yyyy).\n"
 
@@ -620,12 +620,12 @@ def check_dates(d_date: Dict) -> str:
     else:
         if d_date["TradingDate"] == "Custom":
             try:
-                datetime.strptime(d_date["TradingDateFrom"], "%d/%m/%Y")
+                datetime.strptime(d_date["TradingDateFrom"], "%Y-%m-%d")
             except ValueError:
                 error += f"Invalid TradingDateFrom '{d_date['TradingDateFrom']}' (format: dd/mm/yyyy).\n"
 
             try:
-                datetime.strptime(d_date["TradingDateTo"], "%d/%m/%Y")
+                datetime.strptime(d_date["TradingDateTo"], "%Y-%m-%d")
             except ValueError:
                 error += f"Invalid TradingDateTo '{d_date['TradingDateTo']}' (format: dd/mm/yyyy).\n"
 

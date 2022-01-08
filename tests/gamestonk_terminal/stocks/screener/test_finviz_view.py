@@ -80,7 +80,7 @@ def test_screener_no_data(data, mocker):
         ["MOCK_SORT"],
     ],
 )
-@pytest.mark.record_stdout(record_mode="rewrite")
+@pytest.mark.record_stdout
 def test_screener_sort_matches(sort, mocker):
     # MOCK CHARTS
     mocker.patch.object(

@@ -1,14 +1,12 @@
 import asyncio
 import discord
 
-import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_bot
-from discordbot.reaction_helper import expiry_dates_reaction
 from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 from gamestonk_terminal.stocks.options import tradier_model, yfinance_model
 
-# pylint: disable=C0412
-
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_bot, logger
+from discordbot.reaction_helper import expiry_dates_reaction
 from discordbot.stocks.options.calls import calls_command
 from discordbot.stocks.options.expirations import expirations_command
 from discordbot.stocks.options.hist import hist_command
@@ -35,6 +33,7 @@ class OptionsCommands(discord.ext.commands.Cog):
         ticker: str
             ticker,
         """
+        logger.info("stocks.opt.iv")
         async with ctx.typing():
             await asyncio.sleep(0.2)
 
@@ -53,6 +52,7 @@ class OptionsCommands(discord.ext.commands.Cog):
         ticker: str
             ticker
         """
+        logger.info("stocks.opt.unu")
         async with ctx.typing():
             await asyncio.sleep(0.2)
 
@@ -67,6 +67,7 @@ class OptionsCommands(discord.ext.commands.Cog):
         ticker: str
             Stock ticker
         """
+        logger.info("stocks.opt.exp")
         await expirations_command(ctx, ticker)
 
     @discord.ext.commands.command(
@@ -87,11 +88,9 @@ class OptionsCommands(discord.ext.commands.Cog):
             0 weeklies, 1+ for weeks out
             prompts reaction helper if empty
         """
+        logger.info("!stocks.opt.calls %s %s", ticker, expiry)
         async with ctx.typing():
             await asyncio.sleep(0.2)
-
-            if cfg.DEBUG:
-                print(f"!stocks.opt.calls {ticker} {expiry}")
 
             func_cmd = calls_command
 
@@ -115,11 +114,9 @@ class OptionsCommands(discord.ext.commands.Cog):
             0 weeklies, 1+ for weeks out
             prompts reaction helper if empty
         """
+        logger.info("!stocks.opt.puts %s %s", ticker, expiry)
         async with ctx.typing():
             await asyncio.sleep(0.2)
-
-            if cfg.DEBUG:
-                print(f"!stocks.opt.puts {ticker} {expiry}")
 
             func_cmd = puts_command
 
@@ -155,11 +152,9 @@ class OptionsCommands(discord.ext.commands.Cog):
         Sends a message to the discord user with the expiry dates if empty.
         The user can then select a reaction to trigger the selected date.
         """
+        logger.info("!stocks.opt.oi %s %s %s %s", ticker, expiry, min_sp, max_sp)
         async with ctx.typing():
             await asyncio.sleep(0.2)
-
-            if cfg.DEBUG:
-                print(f"!stocks.opt.oi {ticker} {expiry} {min_sp} {max_sp}")
 
             call_arg = (min_sp, max_sp)
             func_cmd = oi_command
@@ -195,15 +190,12 @@ class OptionsCommands(discord.ext.commands.Cog):
         Sends a message to the discord user with the expiry dates if empty.
         The user can then select a reaction to trigger the selected date.
         """
+        logger.info("!stocks.opt.hist %s %s %s %s", ticker, strike, put, expiry)
         async with ctx.typing():
             await asyncio.sleep(0.2)
             try:
-
-                if cfg.DEBUG:
-                    print(f"!stocks.opt.hist {ticker} {strike} {put} {expiry}")
-
                 error = ""
-                if TRADIER_TOKEN == "REPLACE_ME":
+                if TRADIER_TOKEN == "REPLACE_ME":  # nosec
                     raise Exception("Tradier Token is required")
 
                 if expiry in ("c", "p"):
@@ -236,9 +228,9 @@ class OptionsCommands(discord.ext.commands.Cog):
                 )
             except Exception as e:
                 error = str(e)
-
             finally:
                 if error:
+                    logger.error(error)
                     embed = discord.Embed(
                         title="ERROR Options: History",
                         colour=cfg.COLOR,
@@ -281,11 +273,9 @@ class OptionsCommands(discord.ext.commands.Cog):
         Sends a message to the discord user with the expiry dates if empty.
         The user can then select a reaction to trigger the selected date.
         """
+        logger.info("stocks.opt.vol %s %s %s %s", ticker, expiry, min_sp, max_sp)
         async with ctx.typing():
             await asyncio.sleep(0.2)
-
-            if cfg.DEBUG:
-                print(f"!stocks.opt.vol {ticker} {expiry} {min_sp} {max_sp}")
 
             call_arg = (min_sp, max_sp)
             func_cmd = vol_command
@@ -312,18 +302,16 @@ class OptionsCommands(discord.ext.commands.Cog):
         Sends a message to the discord user with the commands from the stocks/options context.
         The user can then select a reaction to trigger a command.
         """
+        logger.info("!stocks.opt %s %s %s %s", ticker, expiration, strike, put)
         async with ctx.typing():
             await asyncio.sleep(0.2)
 
-            if TRADIER_TOKEN == "REPLACE_ME":
+            if TRADIER_TOKEN == "REPLACE_ME":  # nosec
                 dates = yfinance_model.option_expirations(ticker)
             else:
                 dates = tradier_model.option_expirations(ticker)
 
             index_dates = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-            if cfg.DEBUG:
-                print(f"!stocks.opt {ticker} {expiration} {strike} {put}")
 
             if not ticker:
                 current = 0
@@ -402,36 +390,28 @@ class OptionsCommands(discord.ext.commands.Cog):
                     "reaction_add", timeout=cfg.MENU_TIMEOUT, check=check
                 )
                 if reaction.emoji == "0️⃣":
-                    if cfg.DEBUG:
-                        print("Reaction selected: 0")
+                    logger.info("Reaction selected: 0")
                     await unu_command(ctx)
                 elif reaction.emoji == "1️⃣":
-                    if cfg.DEBUG:
-                        print("Reaction selected: 1")
+                    logger.info("Reaction selected: 1")
                     await expirations_command(ctx, ticker)
                 elif reaction.emoji == "2️⃣":
-                    if cfg.DEBUG:
-                        print("Reaction selected: 2")
+                    logger.info("Reaction selected: 2")
                     await iv_command(ctx, ticker)
                 elif reaction.emoji == "3️⃣":
-                    if cfg.DEBUG:
-                        print("Reaction selected: 3")
+                    logger.info("Reaction selected: 3")
                     await calls_command(ctx, ticker, expiration)
                 elif reaction.emoji == "4️⃣":
-                    if cfg.DEBUG:
-                        print("Reaction selected: 4")
+                    logger.info("Reaction selected: 4")
                     await puts_command(ctx, ticker, expiration)
                 elif reaction.emoji == "5️⃣":
-                    if cfg.DEBUG:
-                        print("Reaction selected: 5")
+                    logger.info("Reaction selected: 5")
                     await oi_command(ctx, ticker, expiration)
                 elif reaction.emoji == "6️⃣":
-                    if cfg.DEBUG:
-                        print("Reaction selected: 6")
+                    logger.info("Reaction selected: 6")
                     await vol_command(ctx, ticker, expiration)
                 elif reaction.emoji == "7️⃣":
-                    if cfg.DEBUG:
-                        print("Reaction selected: 7")
+                    logger.info("Reaction selected: 7")
                     strike = float(strike)
                     await hist_command(ctx, ticker, expiration, strike, put)
 

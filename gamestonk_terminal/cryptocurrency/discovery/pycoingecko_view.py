@@ -270,37 +270,40 @@ def display_top_defi_coins(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = pycoingecko_model.get_top_defi_coins().sort_values(
-        by=sortby, ascending=descend
-    )
-
-    df_data = df.copy()
-
-    if links is True:
-        df = df[["Rank", "Name", "Symbol", "Url"]]
+    res = pycoingecko_model.get_top_defi_coins()
+    stats_str = res[0]
+    df = res[1].sort_values(by=sortby, ascending=descend)
+    if df.empty:
+        print("No available data\n")
     else:
-        df.drop("Url", axis=1, inplace=True)
+        df_data = df.copy()
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".4f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+        if links is True:
+            df = df[["Rank", "Name", "Symbol", "Url"]]
+        else:
+            df.drop("Url", axis=1, inplace=True)
+
+        print("\n", stats_str, "\n")
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df.head(top),
+                    headers=df.columns,
+                    floatfmt=".4f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "defi",
+            df_data,
         )
-    else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "defi",
-        df_data,
-    )
 
 
 def display_top_dex(top: int, sortby: str, descend: bool, export: str) -> None:

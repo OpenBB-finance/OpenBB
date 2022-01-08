@@ -214,6 +214,19 @@ def check_proportion_range(num) -> float:
     return num
 
 
+def valid_date_in_past(s: str) -> datetime:
+    """Argparse type to check date is in valid format"""
+    try:
+        delta = datetime.now() - datetime.strptime(s, "%Y-%m-%d")
+        if delta.days < 1:
+            raise argparse.ArgumentTypeError(
+                f"Not a valid date: {s}. Must be earlier than today"
+            )
+        return datetime.strptime(s, "%Y-%m-%d")
+    except ValueError as value_error:
+        raise argparse.ArgumentTypeError(f"Not a valid date: {s}") from value_error
+
+
 def valid_date(s: str) -> datetime:
     """Argparse type to check date is in valid format"""
     try:
@@ -565,6 +578,8 @@ def parse_known_args_and_warn(
     parser: argparse.ArgumentParser,
     other_args: List[str],
     export_allowed: int = NO_EXPORT,
+    raw: bool = False,
+    limit: int = 0,
 ):
     """Parses list of arguments into the supplied parser
 
@@ -577,7 +592,10 @@ def parse_known_args_and_warn(
     export_allowed: int
         Choose from NO_EXPORT, EXPORT_ONLY_RAW_DATA_ALLOWED,
         EXPORT_ONLY_FIGURES_ALLOWED and EXPORT_BOTH_RAW_DATA_AND_FIGURES
-
+    raw: bool
+        Add the --raw flag
+    limit: int
+        Add a --limit flag with this number default
     Returns
     -------
     ns_parser:
@@ -607,6 +625,24 @@ def parse_known_args_and_warn(
             type=str,
             dest="export",
             help=help_export,
+        )
+
+    if raw:
+        parser.add_argument(
+            "--raw",
+            dest="raw",
+            action="store_true",
+            default=False,
+            help="Flag to display raw data",
+        )
+    if limit > 0:
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            default=limit,
+            help="Number of entries to show in data.",
+            type=int,
         )
 
     if gtff.USE_CLEAR_AFTER_CMD:
@@ -686,7 +722,7 @@ def get_flair() -> str:
     if flair.get(gtff.USE_FLAIR):
         if gtff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
             dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
-                "%Y %b %d, %H:%m"
+                "%Y %b %d, %H:%M"
             )
             return f"{dtime} {flair[gtff.USE_FLAIR]}"
         return flair[gtff.USE_FLAIR]
@@ -916,6 +952,46 @@ def try_except(f):
             return []
 
     return inner
+
+
+class LineAnnotateDrawer:
+    def __init__(self, ax: matplotlib.axes = None):
+        self.ax = ax
+
+    def draw_lines_and_annotate(self):
+
+        # ymin, _ = self.ax.get_ylim()
+        # xmin, _ = self.ax.get_xlim()
+        # self.ax.plot(
+        #     [xmin, xmin],
+        #     [ymin, ymin],
+        #     lw=0,
+        #     color="white",
+        #     label="X - leave interactive mode\nClick twice for annotation",
+        # )
+        # self.ax.legend(handlelength=0, handletextpad=0, fancybox=True, loc=2)
+        # self.ax.figure.canvas.draw()
+
+        print("Click twice for annotation.\nClose window to keep using terminal.\n")
+
+        while True:
+            xy = plt.ginput(2)
+            # Check whether the user has closed the window or not
+            if not plt.get_fignums():
+                print("")
+                return
+
+            if len(xy) == 2:
+                x = [p[0] for p in xy]
+                y = [p[1] for p in xy]
+
+                if (x[0] == x[1]) and (y[0] == y[1]):
+                    txt = input("Annotation: ")
+                    self.ax.annotate(txt, (x[0], y[1]), ha="center", va="center")
+                else:
+                    self.ax.plot(x, y)
+
+                self.ax.figure.canvas.draw()
 
 
 def system_clear():

@@ -210,9 +210,9 @@ class Recorder:
 
         for record in record_list:
             if record.record_changed:
-                raise Exception(
+                raise AssertionError(
                     "Change detected\n"
-                    f"Record Path  : {record.record_path}\n"
+                    f"Record    : {record.record_path}\n"
                     f"Expected  : {record.recorded[:self.display_limit]}\n"
                     f"Actual    : {record.captured[:self.display_limit]}\n"
                 )

@@ -283,7 +283,7 @@ Stocks Menus:
             "-s",
             "--start",
             type=valid_date,
-            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            default=(datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d"),
             dest="start",
             help="The starting date (format YYYY-MM-DD) of the stock",
         )

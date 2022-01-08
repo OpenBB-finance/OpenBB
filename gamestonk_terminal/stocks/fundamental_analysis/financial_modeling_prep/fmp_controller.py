@@ -700,7 +700,7 @@ def menu(
 
         except SystemExit:
             print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
+                f"\nThe command '{an_input}' doesn't exist on the /stocks/fa/fmp menu.",
                 end="",
             )
             similar_cmd = difflib.get_close_matches(

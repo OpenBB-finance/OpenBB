@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 import os
 from typing import List, Union
 
+from rich.console import Console
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
@@ -31,6 +32,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 
+t_console = Console()
 # pylint: disable=R1710,R0904,C0415
 
 
@@ -226,7 +228,7 @@ NASDAQ DataLink (formerly Quandl):
 
 >   fred          Federal Reserve Economic Data submenu
 """
-        print(help_text)
+        t_console.print(help_text)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -238,7 +240,7 @@ NASDAQ DataLink (formerly Quandl):
         """
         # Empty command
         if not an_input:
-            print("")
+            t_console.print("")
             return self.queue
 
         # Navigation slash is being used
@@ -290,7 +292,6 @@ NASDAQ DataLink (formerly Quandl):
 
     def call_quit(self, _):
         """Process quit menu command"""
-        print("")
         self.queue.insert(0, "quit")
 
     def call_exit(self, _):
@@ -1137,7 +1138,9 @@ NASDAQ DataLink (formerly Quandl):
                 file = os.path.join(
                     os.path.dirname(__file__), "NASDAQ_CountryCodes.csv"
                 )
-                print(pd.read_csv(file, index_col=0).to_string(index=False), "\n")
+                t_console.print(
+                    pd.read_csv(file, index_col=0).to_string(index=False), "\n"
+                )
             else:
                 nasdaq_view.display_big_mac_index(
                     country_codes=ns_parser.countries,
@@ -1162,7 +1165,7 @@ def menu(queue: List[str] = None):
         if econ_controller.queue and len(econ_controller.queue) > 0:
             # If the command is quitting the menu we want to return in here
             if econ_controller.queue[0] in ("q", "..", "quit"):
-                print("")
+                t_console.print("")
                 if len(econ_controller.queue) > 1:
                     return econ_controller.queue[1:]
                 return []
@@ -1173,7 +1176,7 @@ def menu(queue: List[str] = None):
 
             # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input.split(" ")[0] in econ_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /economy/ $ {an_input}")
+                t_console.print(f"{get_flair()} /economy/ $ {an_input}")
 
         # Get input command from user
         else:
@@ -1201,7 +1204,7 @@ def menu(queue: List[str] = None):
             econ_controller.queue = econ_controller.switch(an_input)
 
         except SystemExit:
-            print(
+            t_console.print(
                 f"\nThe command '{an_input}' doesn't exist on the /economy menu.",
                 end="",
             )
@@ -1219,13 +1222,13 @@ def menu(queue: List[str] = None):
                     if candidate_input == an_input:
                         an_input = ""
                         econ_controller.queue = []
-                        print("\n")
+                        t_console.print("")
                         continue
                     an_input = candidate_input
                 else:
                     an_input = similar_cmd[0]
 
-                print(f" Replacing by '{an_input}'.")
+                t_console.print(f" Replacing by '{an_input}'.")
                 econ_controller.queue.insert(0, an_input)
             else:
-                print("\n")
+                t_console.print("")

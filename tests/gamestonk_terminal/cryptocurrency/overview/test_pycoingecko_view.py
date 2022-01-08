@@ -12,23 +12,13 @@ from tests.helpers.helpers import check_print
 
 # pylint: disable=R0904
 class TestCoinGeckoAPI(TestCase):
-    @check_print(assert_in="Total Bitcoin Holdings")
+    @check_print(assert_in="companies hold a total of ")
     @vcr.use_cassette(
         "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/overview.yaml",
         record_mode="new_episodes",
     )
     def test_coin_holdings_overview(self):
         ov_pycoingecko_view.display_holdings_overview(coin="bitcoin", export="")
-
-    @check_print(assert_in="═══════")
-    @vcr.use_cassette(
-        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/holding_companies.yaml",
-        record_mode="new_episodes",
-    )
-    def test_coin_holdings_companies_list(self):
-        ov_pycoingecko_view.display_holdings_companies_list(
-            coin="ethereum", export="", links=False
-        )
 
     @check_print(assert_in="═════════════")
     @vcr.use_cassette(

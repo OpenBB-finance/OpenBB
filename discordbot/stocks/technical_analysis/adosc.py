@@ -8,7 +8,7 @@ from gamestonk_terminal.common.technical_analysis import volume_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
 
 
@@ -18,10 +18,18 @@ async def adosc_command(
     """Displays chart with chaikin oscillator [Yahoo Finance]"""
 
     try:
-
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.adosc {ticker} {is_open} {fast} {slow} {start} {end}")
+            # pylint: disable=logging-too-many-args
+            logger.debug(
+                "!stocks.ta.adosc %s %s %s %s %s",
+                ticker,
+                is_open,
+                fast,
+                slow,
+                start,
+                end,
+            )
 
         # Check for argument
         if ticker == "":
@@ -113,7 +121,7 @@ async def adosc_command(
         uploaded_image = gst_imgur.upload_image("ta_adosc.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: Accumulation/Distribution Oscillator " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
