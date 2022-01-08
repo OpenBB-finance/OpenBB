@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 from abc import ABCMeta, abstractmethod
 import argparse
 import difflib
-from typing import Union, List, Callable
+from typing import Union, List
 
 from prompt_toolkit.completion import NestedCompleter
 
@@ -39,7 +39,6 @@ class BaseController:
         path: str,
         queue: List[str] = None,
         controller_choices: List[str] = None,
-        dynamic_completer: Callable[..., NestedCompleter] = None,
     ) -> None:
         """
         This is the base class for any controller in the codebase.
@@ -54,9 +53,6 @@ class BaseController:
         controller_choices: List[str]
             Menu choices of the particular menu (including menu and commands)
             E.g. ["load", "search", "ta", "pred"]
-        dynamic_completer:
-            Allows a function for dynamic auto completer in case the auto-completion
-            changes at every loop based on user options
         """
         self.path = path
         self.PATH = [x for x in path.split("/") if x != ""]
@@ -69,7 +65,6 @@ class BaseController:
             self.controller_choices = self.COMMON_CHOICES
 
         self.completer: Union[None, NestedCompleter] = None
-        self.dynamic_completer = dynamic_completer
 
         self.parser = argparse.ArgumentParser(
             add_help=False, prog=self.PATH[-1] if path != "/" else "terminal"
@@ -202,24 +197,20 @@ class BaseController:
                 if an_input == "HELP_ME":
                     self.print_help()
 
-                # Get input from user using auto-completion
-                if session and gtff.USE_PROMPT_TOOLKIT:
-                    # Possible arguments is not yet finalized
-                    if not self.completer:
-                        # Complete dynamic arguments that change at each iteration
-                        self.completer = self.dynamic_completer(self)
-                    try:
+                try:
+                    # Get input from user using auto-completion
+                    if session and gtff.USE_PROMPT_TOOLKIT:
                         an_input = session.prompt(
                             f"{get_flair()} {self.path} $ ",
                             completer=self.completer,
                             search_ignore_case=True,
                         )
-                    except KeyboardInterrupt:
-                        # Exit in case of keyboard interrupt
-                        an_input = "exit"
-                # Get input from user without auto-completion
-                else:
-                    an_input = input(f"{get_flair()} {self.path} $ ")
+                    # Get input from user without auto-completion
+                    else:
+                        an_input = input(f"{get_flair()} {self.path} $ ")
+                except KeyboardInterrupt:
+                    # Exit in case of keyboard interrupt
+                    an_input = "exit"
 
             try:
                 # Process the input command

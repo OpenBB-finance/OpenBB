@@ -62,11 +62,21 @@ class PayoffController(BaseController):
         self.put_index_choices = range(len(self.puts))
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            self.extras: dict = {c: {} for c in self.controller_choices}
-            self.extras["pick"] = {c: {} for c in self.underlying_asset_choices}
-            self.extras["add"] = {
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["pick"] = {c: {} for c in self.underlying_asset_choices}
+            choices["add"] = {
                 str(c): {} for c in list(range(max(len(self.puts), len(self.calls))))
             }
+            # This menu contains dynamic choices that may change during runtime
+            self.choices = choices
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def update_runtime_choices(self):
+        """Update runtime choices"""
+        if self.options:
+            self.choices["rmv"] = {str(c): {} for c in range(len(self.options))}
+
+        return NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help"""
@@ -172,6 +182,7 @@ Underlying Asset: {text}
                     "cost": cost,
                 }
                 self.options.append(option)
+                self.update_runtime_choices()
 
                 print("#\tType\tHold\tStrike\tCost")
                 for i, o in enumerate(self.options):
@@ -216,6 +227,7 @@ Underlying Asset: {text}
                 else:
                     if ns_parser.index < len(self.options):
                         del self.options[ns_parser.index]
+                        self.update_runtime_choices()
                     else:
                         print("Please use a valid index.\n")
 
@@ -290,11 +302,3 @@ Underlying Asset: {text}
                 self.ticker,
                 self.expiration,
             )
-
-
-def choices(controller):
-    """Defines dynamic choices"""
-    if controller.options:
-        controller.extras["rmv"] = {str(c): {} for c in range(len(controller.options))}
-
-    return NestedCompleter.from_nested_dict(controller.extras)

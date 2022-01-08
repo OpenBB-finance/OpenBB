@@ -124,18 +124,42 @@ class OptionsController(BaseController):
             self.expiry_dates = []
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            self.extras: dict = {c: {} for c in self.controller_choices}
-            self.extras["unu"]["-s"] = {c: {} for c in self.unu_sortby_choices}
-            self.extras["pcr"] = {c: {} for c in self.pcr_length_choices}
-            self.extras["disp"] = {c: {} for c in self.presets}
-            self.extras["scr"] = {c: {} for c in self.presets}
-            self.extras["grhist"]["-g"] = {c: {} for c in self.grhist_greeks_choices}
-            self.extras["load"]["-s"] = {c: {} for c in self.load_source_choices}
-            self.extras["load"]["--source"] = {c: {} for c in self.hist_source_choices}
-            self.extras["load"]["-s"] = {c: {} for c in self.voi_source_choices}
-            self.extras["plot"]["-x"] = {c: {} for c in self.plot_vars_choices}
-            self.extras["plot"]["-y"] = {c: {} for c in self.plot_vars_choices}
-            self.extras["plot"]["-c"] = {c: {} for c in self.plot_custom_choices}
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["unu"]["-s"] = {c: {} for c in self.unu_sortby_choices}
+            choices["pcr"] = {c: {} for c in self.pcr_length_choices}
+            choices["disp"] = {c: {} for c in self.presets}
+            choices["scr"] = {c: {} for c in self.presets}
+            choices["grhist"]["-g"] = {c: {} for c in self.grhist_greeks_choices}
+            choices["load"]["-s"] = {c: {} for c in self.load_source_choices}
+            choices["load"]["--source"] = {c: {} for c in self.hist_source_choices}
+            choices["load"]["-s"] = {c: {} for c in self.voi_source_choices}
+            choices["plot"]["-x"] = {c: {} for c in self.plot_vars_choices}
+            choices["plot"]["-y"] = {c: {} for c in self.plot_vars_choices}
+            choices["plot"]["-c"] = {c: {} for c in self.plot_custom_choices}
+            # This menu contains dynamic choices that may change during runtime
+            self.choices = choices
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def update_runtime_choices(self):
+        """Update runtime choices"""
+        if self.expiry_dates:
+            self.choices["exp"] = {str(c): {} for c in range(len(self.expiry_dates))}
+            self.choices["exp"]["-d"] = {c: {} for c in self.expiry_dates + [""]}
+            if self.chain:
+                self.choices["hist"] = {
+                    str(c): {}
+                    for c in self.chain.puts["strike"] + self.chain.calls["strike"]
+                }
+                self.choices["grhist"] = {
+                    str(c): {}
+                    for c in self.chain.puts["strike"] + self.chain.calls["strike"]
+                }
+                self.choices["binom"] = {
+                    str(c): {}
+                    for c in self.chain.puts["strike"] + self.chain.calls["strike"]
+                }
+
+        self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help."""
@@ -496,6 +520,7 @@ Expiry: {self.selected_date or None}
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.ticker = ns_parser.ticker.upper()
+            self.update_runtime_choices()
 
             if TRADIER_TOKEN == "REPLACE_ME" or ns_parser.source == "yf":
                 self.expiry_dates = yfinance_model.option_expirations(self.ticker)
@@ -551,17 +576,20 @@ Expiry: {self.selected_date or None}
                     if ns_parser.date in self.expiry_dates:
                         print(f"Expiration set to {ns_parser.date} \n")
                         self.selected_date = ns_parser.date
+                        self.update_runtime_choices()
                     else:
                         print("Expiration not an option")
                 else:
                     expiry_date = self.expiry_dates[ns_parser.index]
                     print(f"Expiration set to {expiry_date} \n")
                     self.selected_date = expiry_date
+                    self.update_runtime_choices()
 
                 if self.selected_date:
                     self.chain = yfinance_model.get_option_chain(
                         self.ticker, self.selected_date
                     )
+                    self.update_runtime_choices()
             else:
                 print("Please load a ticker using `load <ticker>`.\n")
 
@@ -1208,30 +1236,3 @@ Expiry: {self.selected_date or None}
     def call_screen(self, _):
         """Process screen command"""
         self.queue = screener_controller.ScreenerController(self.queue).menu()
-
-
-def choices(controller):
-    """Defines dynamic choices"""
-    if controller.expiry_dates:
-        controller.extras["exp"] = {
-            str(c): {} for c in range(len(controller.expiry_dates))
-        }
-        controller.extras["exp"]["-d"] = {c: {} for c in controller.expiry_dates + [""]}
-        if controller.chain:
-            controller.extras["hist"] = {
-                str(c): {}
-                for c in controller.chain.puts["strike"]
-                + controller.chain.calls["strike"]
-            }
-            controller.extras["grhist"] = {
-                str(c): {}
-                for c in controller.chain.puts["strike"]
-                + controller.chain.calls["strike"]
-            }
-            controller.extras["binom"] = {
-                str(c): {}
-                for c in controller.chain.puts["strike"]
-                + controller.chain.calls["strike"]
-            }
-
-    return NestedCompleter.from_nested_dict(controller.extras)
