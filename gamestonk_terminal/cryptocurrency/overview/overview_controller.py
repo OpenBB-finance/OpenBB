@@ -3,19 +3,20 @@ __docformat__ = "numpy"
 
 # pylint: disable=R0904, C0302, W0622
 import argparse
-from datetime import datetime
 import difflib
+from datetime import datetime, timedelta
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.cryptocurrency.overview.blockchaincenter_model import DAYS
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     get_flair,
     parse_known_args_and_warn,
     check_positive,
     try_except,
     system_clear,
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
     valid_date,
 )
 from gamestonk_terminal.menu import session
@@ -30,6 +31,7 @@ from gamestonk_terminal.cryptocurrency.overview import (
     coinpaprika_model,
     coinbase_model,
     coinbase_view,
+    blockchaincenter_view,
 )
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_view import CURRENCIES
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
@@ -84,6 +86,7 @@ class OverviewController:
         "ewf",
         "wfpe",
         "btcrb",
+        "altindex",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -102,8 +105,6 @@ class OverviewController:
     def print_help(self):
         """Print help"""
         help_text = """
-Overall:
-    btcrb             display bitcoin rainbow price chart (logarithmic regression)
 CoinGecko:
     cgglobal          global crypto market info
     cgnews            last news available on CoinGecko
@@ -135,6 +136,9 @@ WithdrawalFees:
     wf                overall withdrawal fees
     ewf               overall exchange withdrawal fees
     wfpe              crypto withdrawal fees per exchange
+BlockchainCenter:
+    altindex          displays altcoin season index (if 75% of top 50 coins perform better than btc)
+    btcrb             display bitcoin rainbow price chart (logarithmic regression)
 """
 
         print(help_text)
@@ -254,7 +258,6 @@ WithdrawalFees:
             help="Final date. Default is current date",
             default=datetime.now().strftime("%Y-%m-%d"),
         )
-
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -262,6 +265,63 @@ WithdrawalFees:
             display_btc_rainbow(
                 since=int(ns_parser.since.timestamp()),
                 until=int(ns_parser.until.timestamp()),
+                export=ns_parser.export,
+            )
+
+    def call_altindex(self, other_args: List[str]):
+        """Process altindex command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="altindex",
+            description="""Display altcoin index overtime.
+                    If 75% of the Top 50 coins performed better than Bitcoin over periods of time
+                    (30, 90 or 365 days) it is Altcoin Season. Excluded from the Top 50 are
+                    Stablecoins (Tether, DAI…) and asset backed tokens (WBTC, stETH, cLINK,…)
+                    [Source: https://blockchaincenter.net]
+                """,
+        )
+
+        parser.add_argument(
+            "-p",
+            "--period",
+            type=int,
+            help="Period of time to check if how altcoins have performed against btc (30, 90, 365)",
+            dest="period",
+            default=365,
+            choices=DAYS,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--since",
+            dest="since",
+            type=valid_date,
+            help="Start date (default: 1 year before, e.g., 2021-01-01)",
+            default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
+        )
+
+        parser.add_argument(
+            "-u",
+            "--until",
+            dest="until",
+            type=valid_date,
+            help="Final date. Default is current date",
+            default=datetime.now().strftime("%Y-%m-%d"),
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            blockchaincenter_view.display_altcoin_index(
+                since=ns_parser.since.timestamp(),
+                until=ns_parser.until.timestamp(),
+                period=ns_parser.period,
                 export=ns_parser.export,
             )
 
@@ -1621,6 +1681,10 @@ def menu(queue: List[str] = None):
                 choices["wfpe"] = {
                     c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS
                 }
+
+                choices["altindex"] = {c: None for c in map(str, DAYS)}
+                choices["altindex"]["-p"] = {c: None for c in map(str, DAYS)}
+
                 completer = NestedCompleter.from_nested_dict(choices)
                 try:
                     an_input = session.prompt(
