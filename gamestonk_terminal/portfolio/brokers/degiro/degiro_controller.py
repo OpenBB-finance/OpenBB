@@ -67,7 +67,7 @@ class DegiroController:
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         self.queue = queue if queue else list()
-    
+
     @try_except
     def command_call(self, known_args, other_args):
         try:
