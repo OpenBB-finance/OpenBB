@@ -108,7 +108,9 @@ Models:
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.current_series:
-            self.queue.insert(6, f"add {list(self.current_series.keys())[0]}")
+            self.queue.insert(
+                self.reset_level, f"add {list(self.current_series.keys())[0]}"
+            )
 
     def call_load(self, other_args: List[str]):
         """Process add command"""

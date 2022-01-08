@@ -194,10 +194,11 @@ Expiry: {self.selected_date or None}
 
     def custom_reset(self):
         """Class specific component of reset command"""
-        if self.selected_date:
-            self.queue.insert(5, f"exp -d {self.selected_date}")
         if self.ticker:
-            self.queue.insert(5, f"load {self.ticker}")
+            self.queue.insert(self.reset_level, f"load {self.ticker}")
+            self.update_runtime_choices()
+        if self.selected_date:
+            self.queue.insert(self.reset_level, f"exp -d {self.selected_date}")
 
     def call_calc(self, other_args: List[str]):
         """Process calc command"""

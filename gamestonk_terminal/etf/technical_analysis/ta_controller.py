@@ -116,7 +116,7 @@ Custom:
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(4, f"load {self.ticker}")
+            self.queue.insert(self.reset_level, f"load {self.ticker}")
 
     def call_ema(self, other_args: List[str]):
         """Process ema command"""

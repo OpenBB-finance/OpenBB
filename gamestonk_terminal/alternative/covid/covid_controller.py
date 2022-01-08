@@ -64,7 +64,7 @@ Country: [cyan]{self.country}[/cyan]
 
     def custom_reset(self):
         """Class specific component of reset command"""
-        self.queue.insert(5, f"country {self.country}")
+        self.queue.insert(self.reset_level, f"country {self.country}")
 
     def call_country(self, other_args: List[str]):
         """Process country command"""

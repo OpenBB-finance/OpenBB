@@ -56,6 +56,7 @@ class BaseController:
         """
         self.path = path
         self.PATH = [x for x in path.split("/") if x != ""]
+        self.reset_level = len(self.path) + 1
 
         self.queue = queue if (queue and path != "/") else list()
 
@@ -72,15 +73,7 @@ class BaseController:
         self.parser.add_argument("cmd", choices=self.controller_choices)
 
     def custom_reset(self):
-        """
-        This will be replace by any children with custom_reset functions
-
-        When you replace this function be careful where insert the function.
-        Making the insert parameter 0 makes it the first command executed, to
-        make the command the last one executed set it to the number of levels
-        it is deep multiplied by two plus one. For example, If your new context
-        was /stocks/network/ it would be 2 X 2 + 1 or 5.
-        """
+        """This will be replaced by any children with custom_reset functions"""
 
     @abstractmethod
     def print_help(self):

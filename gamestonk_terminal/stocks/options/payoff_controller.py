@@ -107,10 +107,11 @@ Underlying Asset: {text}
 
     def custom_reset(self):
         """Class specific component of reset command"""
-        if self.expiration:
-            self.queue.insert(6, f"exp {self.expiration}")
         if self.ticker:
-            self.queue.insert(6, f"load {self.ticker}")
+            self.queue.insert(self.reset_level, f"load {self.ticker}")
+            self.update_runtime_choices()
+        if self.expiration:
+            self.queue.insert(self.reset_level, f"exp {self.expiration}")
 
     def call_list(self, other_args):
         """Lists available calls and puts"""

@@ -130,7 +130,7 @@ Finviz:
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.similar:
-            self.queue.insert(5, f"set {','.join(self.similar)}")
+            self.queue.insert(self.reset_level, f"set {','.join(self.similar)}")
 
     def call_ticker(self, other_args: List[str]):
         """Process ticker command"""
