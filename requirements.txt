@@ -137,7 +137,7 @@ pyally==1.1.2
 pycoingecko==2.2.0
 pycparser==2.21; implementation_name == "pypy" and python_version >= "3.7" and python_full_version >= "3.6.1"
 pyex==0.5.0
-pygments==2.11.1; python_version >= "3.5"
+pygments==2.11.2; python_version >= "3.5"
 pymeeus==0.5.11; python_version >= "3.6"
 pymongo==3.11.0; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.4.0")
 pyobjc-core==8.1; python_version >= "3.6" and sys_platform == "darwin"
