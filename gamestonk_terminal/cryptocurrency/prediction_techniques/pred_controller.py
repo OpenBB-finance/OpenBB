@@ -116,7 +116,8 @@ Models:
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.coin:
-            self.queue.insert(self.reset_level, f"load {self.coin}")
+            return ["crypto", f"load {self.coin}", "pred"]
+        return []
 
     def call_load(self, other_args: List[str]):
         """Process load command"""

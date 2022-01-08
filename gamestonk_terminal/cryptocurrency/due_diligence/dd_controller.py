@@ -176,9 +176,8 @@ Coinbase:
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.current_coin:
-            self.queue.insert(
-                self.reset_level, f"load {self.current_coin} --source {self.source}"
-            )
+            return ["crypto", f"load {self.current_coin} --source {self.source}"]
+        return []
 
     def call_load(self, other_args: List[str]):
         """Process load command"""

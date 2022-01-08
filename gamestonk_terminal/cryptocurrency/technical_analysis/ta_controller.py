@@ -124,7 +124,8 @@ Custom:
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(self.reset_level, f"load {self.ticker}")
+            return ["crypto", f"load {self.ticker}", "ta"]
+        return []
 
     def call_load(self, other_args):
         """Process load command"""

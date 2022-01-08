@@ -112,7 +112,8 @@ Major holdings: {', '.join(self.etf_holdings)}
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.etf_name:
-            self.queue.insert(self.reset_level, f"load {self.etf_name}")
+            return ["etf", f"load {self.etf_name}"]
+        return []
 
     def call_ln(self, other_args: List[str]):
         """Process ln command"""

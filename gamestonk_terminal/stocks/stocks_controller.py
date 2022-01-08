@@ -119,10 +119,13 @@ Stocks Menus:
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
-            if self.suffix:
-                self.queue.insert(self.reset_level, f"load {self.ticker}.{self.suffix}")
-            else:
-                self.queue.insert(self.reset_level, f"load {self.ticker}")
+            return [
+                "stocks",
+                f"load {self.ticker}.{self.suffix}"
+                if self.suffix
+                else f"load {self.ticker}",
+            ]
+        return []
 
     def call_search(self, other_args: List[str]):
         """Process search command"""

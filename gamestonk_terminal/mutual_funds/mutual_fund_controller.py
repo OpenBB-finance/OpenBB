@@ -106,7 +106,8 @@ Yahoo Finance[/italic]:
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.fund_name:
-            self.queue.insert(self.reset_level, f"load {self.fund_name} --name")
+            return ["funds", f"load {self.fund_name} --name"]
+        return []
 
     def call_country(self, other_args: List[str]):
         """Process country command"""

@@ -62,7 +62,8 @@ Ticker: {self.ticker.upper()}
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(self.reset_level, f"load {self.ticker}")
+            return ["stocks", f"load {self.ticker}", "bt"]
+        return []
 
     def call_whatif(self, other_args: List[str]):
         """Call whatif"""

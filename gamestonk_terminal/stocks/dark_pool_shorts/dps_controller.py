@@ -64,7 +64,8 @@ class DarkPoolShortsController(BaseController):
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(self.reset_level, f"load {self.ticker}")
+            return ["stocks", f"load {self.ticker}", "dps"]
+        return []
 
     def print_help(self):
         """Print help"""

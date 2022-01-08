@@ -75,7 +75,8 @@ Ticker: {self.ticker}
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(self.reset_level, f"load {self.ticker}")
+            return ["stocks", f"load {self.ticker}", "fa", "fmp"]
+        return []
 
     def call_profile(self, other_args: List[str]):
         """Process profile command"""
