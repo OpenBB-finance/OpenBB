@@ -917,6 +917,6 @@ Finviz:
         if self.similar and len(self.similar) > 1:
             self.queue = po_controller.PortfolioOptimization(
                 self.similar, self.queue
-            ).menu()
+            ).menu(custom_path_menu_above="/portfolio/")
         else:
             print("Please make sure there are more than 1 similar tickers selected. \n")

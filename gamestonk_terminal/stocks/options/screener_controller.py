@@ -170,7 +170,9 @@ Last screened tickers: {', '.join(self.screen_tickers)}
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
         if self.screen_tickers:
-            self.queue = po_controller.PortfolioOptimization(self.screen_tickers).menu()
+            self.queue = po_controller.PortfolioOptimization(self.screen_tickers).menu(
+                custom_path_menu_above="/portfolio/"
+            )
         else:
             print("Some tickers must be screened first through one of the presets!\n")
 
@@ -179,6 +181,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
         if self.screen_tickers:
             self.queue = ca_controller.ComparisonAnalysisController(
                 self.screen_tickers, self.queue
-            ).menu()
+            ).menu(custom_path_menu_above="/stocks/")
         else:
             print("Some tickers must be screened first through one of the presets!\n")

@@ -966,6 +966,6 @@ Returned tickers: {', '.join(self.tickers)}
         if self.tickers:
             self.queue = ca_controller.ComparisonAnalysisController(
                 self.tickers, self.queue
-            ).menu()
+            ).menu(custom_path_menu_above="/stocks/")
         else:
             print("No main ticker loaded to go into comparison analysis menu", "\n")

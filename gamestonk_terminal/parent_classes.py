@@ -163,7 +163,7 @@ class BaseController:
                 self.queue.insert(0, "quit")
             self.custom_reset()
 
-    def menu(self):
+    def menu(self, custom_path_menu_above: str = ""):
         an_input = "HELP_ME"
 
         while True:
@@ -172,6 +172,11 @@ class BaseController:
                 # If the command is quitting the menu we want to return in here
                 if self.queue[0] in ("q", "..", "quit"):
                     print("")
+                    # Go back to the root in order to go to the right directory because
+                    # there was a jump between indirect menus
+                    if custom_path_menu_above:
+                        self.queue.insert(1, custom_path_menu_above)
+
                     if len(self.queue) > 1:
                         return self.queue[1:]
                     return []

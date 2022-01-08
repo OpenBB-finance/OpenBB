@@ -605,7 +605,7 @@ Major holdings: {', '.join(self.etf_holdings)}
         if len(self.etf_holdings) > 0:
             self.queue = ca_controller.ComparisonAnalysisController(
                 self.etf_holdings, self.queue
-            ).menu()
+            ).menu(custom_path_menu_above="/stocks/")
 
     def call_scr(self, _):
         """Process scr command"""
