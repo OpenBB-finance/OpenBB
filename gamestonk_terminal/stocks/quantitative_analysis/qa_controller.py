@@ -137,6 +137,8 @@ Other:
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
+            if self.target:
+                return ["stocks", f"load {self.ticker}", "qa", f"pick {self.target}"]
             return ["stocks", f"load {self.ticker}", "qa"]
         return []
 

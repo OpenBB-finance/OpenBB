@@ -251,12 +251,29 @@ def test_call_cls(mocker):
         (
             "call_reset",
             [],
-            ["quit", "quit", "reset", "stocks", "load MOCK_TICKER", "qa"],
+            [
+                "quit",
+                "quit",
+                "reset",
+                "stocks",
+                "load MOCK_TICKER",
+                "qa",
+                "pick returns",
+            ],
         ),
         (
             "call_reset",
             ["help"],
-            ["quit", "quit", "reset", "stocks", "load MOCK_TICKER", "qa", "help"],
+            [
+                "quit",
+                "quit",
+                "reset",
+                "stocks",
+                "load MOCK_TICKER",
+                "qa",
+                "pick returns",
+                "help",
+            ],
         ),
     ],
 )
