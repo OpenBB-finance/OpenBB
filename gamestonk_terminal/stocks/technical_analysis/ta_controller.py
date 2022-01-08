@@ -961,9 +961,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            trend_indicators_view.plot_adx(
+            trend_indicators_view.display_adx(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
@@ -1017,9 +1016,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            trend_indicators_view.plot_aroon(
+            trend_indicators_view.display_aroon(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,

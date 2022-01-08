@@ -57,7 +57,9 @@ async def aroon_command(ctx, ticker="", length="25", scalar="100", start="", end
         # Retrieve Data
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
-        df_ta = trend_indicators_model.aroon(df_stock, length, scalar)
+        df_ta = trend_indicators_model.aroon(
+            df_stock["High"], df_stock["Low"], length, scalar
+        )
 
         fig, ax = plt.subplots(3, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
         ax0 = ax[0]
