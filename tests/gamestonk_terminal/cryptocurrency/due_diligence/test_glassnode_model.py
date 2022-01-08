@@ -3,6 +3,16 @@ import pytest
 from gamestonk_terminal.cryptocurrency.due_diligence import glassnode_model
 
 
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [
+            ("api_key", "MOCK_API_KEY"),
+        ],
+    }
+
+
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "asset,interval,since,until",
