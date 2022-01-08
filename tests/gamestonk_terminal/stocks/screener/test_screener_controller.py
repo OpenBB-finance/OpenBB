@@ -32,7 +32,7 @@ def test_menu_with_queue(expected, mocker, queue):
         target=f"{path_controller}.ScreenerController.switch",
         return_value=["quit"],
     )
-    result_menu = screener_controller.menu(queue=queue)
+    result_menu = screener_controller.ScreenerController(queue=queue).menu()
 
     assert result_menu == expected
 
@@ -41,7 +41,20 @@ def test_menu_with_queue(expected, mocker, queue):
 def test_menu_without_queue_completion(mocker):
     path_controller = "gamestonk_terminal.stocks.screener.screener_controller"
 
-    # DISABLE AUTO-COMPLETION
+    # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    mocker.patch(
+        target="gamestonk_terminal.feature_flags.USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session.prompt",
+        return_value="quit",
+    )
+
+    # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch.object(
         target=screener_controller.gtff,
         attribute="USE_PROMPT_TOOLKIT",
@@ -55,7 +68,7 @@ def test_menu_without_queue_completion(mocker):
         return_value="quit",
     )
 
-    result_menu = screener_controller.menu(queue=None)
+    result_menu = screener_controller.ScreenerController(queue=None).menu()
 
     assert result_menu == []
 
@@ -99,7 +112,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         new=mock_switch,
     )
 
-    result_menu = screener_controller.menu(queue=None)
+    result_menu = screener_controller.ScreenerController(queue=None).menu()
 
     assert result_menu == []
 
@@ -370,21 +383,16 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_po",
             [],
-            "po_controller.menu",
+            "po_controller.PortfolioOptimization.menu",
             [],
             dict(),
         ),
         (
             "call_ca",
             [],
-            "ca_controller.menu",
-            [
-                ["MOCK_TICKER_1", "MOCK_TICKER_2"],
-                [],
-            ],
-            dict(
-                from_submenu=True,
-            ),
+            "ca_controller.ComparisonAnalysisController.menu",
+            [],
+            dict(),
         ),
     ],
 )

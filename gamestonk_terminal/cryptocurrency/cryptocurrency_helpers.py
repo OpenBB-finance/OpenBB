@@ -16,7 +16,6 @@ from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     export_data,
-    try_except,
 )
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.cryptocurrency.due_diligence import (
@@ -227,7 +226,7 @@ def _create_closest_match_df(
     return df.merge(coins, on="id")
 
 
-@try_except
+# TODO: verify vs, interval, days, depending on source
 def load(
     coin: str,
     source: str = "cg",
@@ -235,14 +234,7 @@ def load(
     vs: str = "usd",
     interval: str = "1day",
     should_load_ta_data: bool = False,
-) -> Tuple[
-    Optional[Any],
-    Optional[Any],
-    Optional[Any],
-    Optional[Any],
-    Optional[Any],
-    Optional[Any],
-]:
+):
     """Load cryptocurrency from given source. Available sources are: CoinGecko, CoinPaprika, Coinbase and Binance.
 
     Loading coin from Binance and CoinPaprika means validation if given coins exists in chosen source,

@@ -16,7 +16,6 @@ from gamestonk_terminal.helper_funcs import (
     financials_colored_values,
     parse_known_args_and_warn,
     patch_pandas_text_adjustment,
-    try_except,
 )
 from gamestonk_terminal.stocks.fundamental_analysis import market_watch_model as mwm
 
@@ -24,7 +23,6 @@ from gamestonk_terminal.stocks.fundamental_analysis import market_watch_model as
 # pylint: disable=too-many-branches
 
 
-@try_except
 def income(other_args: List[str], ticker: str):
     """Market Watch ticker income statement
 
@@ -89,7 +87,6 @@ def income(other_args: List[str], ticker: str):
     print("")
 
 
-@try_except
 def balance(other_args: List[str], ticker: str):
     """Market Watch ticker balance statement
 
@@ -166,7 +163,6 @@ def balance(other_args: List[str], ticker: str):
     print("")
 
 
-@try_except
 def cash(other_args: List[str], ticker: str):
     """Market Watch ticker cash flow statement
 

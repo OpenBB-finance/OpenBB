@@ -2,25 +2,22 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
 import os
 from datetime import datetime, timedelta
-from typing import List, Union
+from typing import List
 from colorama import Style
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
 
+from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    get_flair,
     parse_known_args_and_warn,
-    try_except,
     valid_date,
-    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.options import (
@@ -42,22 +39,9 @@ from gamestonk_terminal.stocks.options import (
 # pylint: disable=R1710,C0302,R0916
 
 
-class OptionsController:
+class OptionsController(BaseController):
     """Options Controller class"""
 
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
     CHOICES_COMMANDS = [
         "calc",
         "yf",
@@ -82,7 +66,6 @@ class OptionsController:
         "pricing",
         "screen",
     ]
-    CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
 
     PRESET_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -119,28 +102,7 @@ class OptionsController:
 
     def __init__(self, ticker: str, queue: List[str] = None):
         """Constructor"""
-        self.op_parser = argparse.ArgumentParser(add_help=False, prog="op")
-        self.op_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-
-        self.completer: Union[None, NestedCompleter] = None
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-
-            self.choices: dict = {c: {} for c in self.CHOICES}
-            self.choices["unu"]["-s"] = {c: {} for c in self.unu_sortby_choices}
-            self.choices["pcr"] = {c: {} for c in self.pcr_length_choices}
-            self.choices["disp"] = {c: {} for c in self.presets}
-            self.choices["scr"] = {c: {} for c in self.presets}
-            self.choices["grhist"]["-g"] = {c: {} for c in self.grhist_greeks_choices}
-            self.choices["load"]["-s"] = {c: {} for c in self.load_source_choices}
-            self.choices["load"]["--source"] = {c: {} for c in self.hist_source_choices}
-            self.choices["load"]["-s"] = {c: {} for c in self.voi_source_choices}
-            self.choices["plot"]["-x"] = {c: {} for c in self.plot_vars_choices}
-            self.choices["plot"]["-y"] = {c: {} for c in self.plot_vars_choices}
-            self.choices["plot"]["-c"] = {c: {} for c in self.plot_custom_choices}
+        super().__init__("/stocks/options/", queue)
 
         self.ticker = ticker
         self.prices = pd.DataFrame(columns=["Price", "Chance"])
@@ -157,10 +119,43 @@ class OptionsController:
         else:
             self.expiry_dates = []
 
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["unu"]["-s"] = {c: {} for c in self.unu_sortby_choices}
+            choices["pcr"] = {c: {} for c in self.pcr_length_choices}
+            choices["disp"] = {c: {} for c in self.presets}
+            choices["scr"] = {c: {} for c in self.presets}
+            choices["grhist"]["-g"] = {c: {} for c in self.grhist_greeks_choices}
+            choices["load"]["-s"] = {c: {} for c in self.load_source_choices}
+            choices["load"]["--source"] = {c: {} for c in self.hist_source_choices}
+            choices["load"]["-s"] = {c: {} for c in self.voi_source_choices}
+            choices["plot"]["-x"] = {c: {} for c in self.plot_vars_choices}
+            choices["plot"]["-y"] = {c: {} for c in self.plot_vars_choices}
+            choices["plot"]["-c"] = {c: {} for c in self.plot_custom_choices}
+            # This menu contains dynamic choices that may change during runtime
+            self.choices = choices
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def update_runtime_choices(self):
+        """Update runtime choices"""
+        if self.expiry_dates and session and gtff.USE_PROMPT_TOOLKIT:
+            self.choices["exp"] = {str(c): {} for c in range(len(self.expiry_dates))}
+            self.choices["exp"]["-d"] = {c: {} for c in self.expiry_dates + [""]}
+            if self.chain:
+                self.choices["hist"] = {
+                    str(c): {}
+                    for c in self.chain.puts["strike"] + self.chain.calls["strike"]
+                }
+                self.choices["grhist"] = {
+                    str(c): {}
+                    for c in self.chain.puts["strike"] + self.chain.calls["strike"]
+                }
+                self.choices["binom"] = {
+                    str(c): {}
+                    for c in self.chain.puts["strike"] + self.chain.calls["strike"]
+                }
+
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help."""
@@ -193,91 +188,19 @@ Expiry: {self.selected_date or None}
 {Style.RESET_ALL if not colored else ''}"""
         print(help_text)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.op_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        if self.selected_date:
-            self.queue.insert(0, f"exp -d {self.selected_date}")
+    def custom_reset(self):
+        """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(0, f"load {self.ticker}")
-        self.queue.insert(0, "options")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            if self.selected_date:
+                return [
+                    "stocks",
+                    f"load {self.ticker}",
+                    "options",
+                    f"exp -d {self.selected_date}",
+                ]
+            return ["stocks", f"load {self.ticker}", "options"]
+        return []
 
-    @try_except
     def call_calc(self, other_args: List[str]):
         """Process calc command"""
         parser = argparse.ArgumentParser(
@@ -349,7 +272,6 @@ Expiry: {self.selected_date or None}
                 **pars,
             )
 
-    @try_except
     def call_unu(self, other_args: List[str]):
         """Process act command"""
         parser = argparse.ArgumentParser(
@@ -419,7 +341,6 @@ Expiry: {self.selected_date or None}
                     puts_only=ns_parser.puts_only,
                 )
 
-    @try_except
     def call_pcr(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -478,7 +399,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded.\n")
 
-    @try_except
     def call_grhist(self, other_args: List[str]):
         """Process grhist command"""
         parser = argparse.ArgumentParser(
@@ -573,7 +493,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>` \n")
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -603,6 +522,7 @@ Expiry: {self.selected_date or None}
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.ticker = ns_parser.ticker.upper()
+            self.update_runtime_choices()
 
             if TRADIER_TOKEN == "REPLACE_ME" or ns_parser.source == "yf":
                 self.expiry_dates = yfinance_model.option_expirations(self.ticker)
@@ -615,7 +535,6 @@ Expiry: {self.selected_date or None}
                     self.ticker, self.selected_date
                 )
 
-    @try_except
     def call_exp(self, other_args: List[str]):
         """Process exp command"""
         parser = argparse.ArgumentParser(
@@ -659,21 +578,23 @@ Expiry: {self.selected_date or None}
                     if ns_parser.date in self.expiry_dates:
                         print(f"Expiration set to {ns_parser.date} \n")
                         self.selected_date = ns_parser.date
+                        self.update_runtime_choices()
                     else:
                         print("Expiration not an option")
                 else:
                     expiry_date = self.expiry_dates[ns_parser.index]
                     print(f"Expiration set to {expiry_date} \n")
                     self.selected_date = expiry_date
+                    self.update_runtime_choices()
 
                 if self.selected_date:
                     self.chain = yfinance_model.get_option_chain(
                         self.ticker, self.selected_date
                     )
+                    self.update_runtime_choices()
             else:
                 print("Please load a ticker using `load <ticker>`.\n")
 
-    @try_except
     def call_hist(self, other_args: List[str]):
         """Process hist command"""
         parser = argparse.ArgumentParser(
@@ -774,7 +695,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
 
-    @try_except
     def call_chains(self, other_args: List[str]):
         """Process chains command"""
         parser = argparse.ArgumentParser(
@@ -848,7 +768,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
 
-    @try_except
     def call_vol(self, other_args: List[str]):
         """Process vol command"""
         parser = argparse.ArgumentParser(
@@ -929,7 +848,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
 
-    @try_except
     def call_voi(self, other_args: List[str]):
         """Process voi command"""
         parser = argparse.ArgumentParser(
@@ -1000,7 +918,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
 
-    @try_except
     def call_oi(self, other_args: List[str]):
         """Process oi command"""
         parser = argparse.ArgumentParser(
@@ -1081,7 +998,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
 
-    @try_except
     def call_plot(self, other_args: List[str]):
         """Process plot command"""
         parser = argparse.ArgumentParser(
@@ -1157,7 +1073,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
 
-    @try_except
     def call_parity(self, other_args: List[str]):
         """Process parity command"""
         parser = argparse.ArgumentParser(
@@ -1218,7 +1133,6 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
 
-    @try_except
     def call_binom(self, other_args: List[str]):
         """Process binom command"""
         parser = argparse.ArgumentParser(
@@ -1295,142 +1209,32 @@ Expiry: {self.selected_date or None}
             else:
                 print("No ticker loaded. First use `load <ticker>`\n")
 
-    @try_except
     def call_payoff(self, _):
         """Process payoff command"""
         if self.ticker:
             if self.selected_date:
-                self.queue = payoff_controller.menu(
+                self.queue = payoff_controller.PayoffController(
                     self.ticker, self.selected_date, self.queue
-                )
+                ).menu()
             else:
                 print("No expiry loaded. First use `exp {expiry date}`\n")
 
         else:
             print("No ticker loaded. First use `load <ticker>`\n")
 
-    @try_except
     def call_pricing(self, _):
         """Process pricing command"""
         if self.ticker:
             if self.selected_date:
-                self.queue = pricing_controller.menu(
+                self.queue = pricing_controller.PricingController(
                     self.ticker, self.selected_date, self.prices, self.queue
-                )
+                ).menu()
             else:
                 print("No expiry loaded. First use `exp {expiry date}`\n")
 
         else:
             print("No ticker loaded. First use `load <ticker>`\n")
 
-    @try_except
     def call_screen(self, _):
         """Process screen command"""
-        self.queue = screener_controller.menu(self.queue)
-
-
-def menu(ticker: str = "", queue: List[str] = None):
-    """Options Menu"""
-    op_controller = OptionsController(ticker, queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if op_controller.queue and len(op_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if op_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(op_controller.queue) > 1:
-                    return op_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = op_controller.queue[0]
-            op_controller.queue = op_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in op_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /stocks/options/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                op_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and op_controller.choices:
-
-                if op_controller.expiry_dates:
-                    op_controller.choices["exp"] = {
-                        str(c): {} for c in range(len(op_controller.expiry_dates))
-                    }
-                    op_controller.choices["exp"]["-d"] = {
-                        c: {} for c in op_controller.expiry_dates + [""]
-                    }
-                    if op_controller.chain:
-                        op_controller.choices["hist"] = {
-                            str(c): {}
-                            for c in op_controller.chain.puts["strike"]
-                            + op_controller.chain.calls["strike"]
-                        }
-                        op_controller.choices["grhist"] = {
-                            str(c): {}
-                            for c in op_controller.chain.puts["strike"]
-                            + op_controller.chain.calls["strike"]
-                        }
-                        op_controller.choices["binom"] = {
-                            str(c): {}
-                            for c in op_controller.chain.puts["strike"]
-                            + op_controller.chain.calls["strike"]
-                        }
-
-                completer = NestedCompleter.from_nested_dict(op_controller.choices)
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/options/ $ ",
-                        completer=completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/options/ $ ")
-
-        try:
-            # Process the input command
-            op_controller.queue = op_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                op_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        op_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                op_controller.queue.insert(0, an_input)
-            else:
-                print("\n")
-                an_input = ""
-                op_controller.queue = []
+        self.queue = screener_controller.ScreenerController(self.queue).menu()

@@ -3,11 +3,11 @@ __docformat__ = "numpy"
 
 # pylint: disable=R0904, C0302, W0622, C0201
 import argparse
-import difflib
-from typing import List, Union
+from typing import List
 from datetime import datetime, timedelta
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.cryptocurrency.due_diligence import (
     coinglass_model,
     glassnode_model,
@@ -29,11 +29,8 @@ from gamestonk_terminal.cryptocurrency.due_diligence import (
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    get_flair,
     parse_known_args_and_warn,
     check_positive,
-    try_except,
-    system_clear,
     valid_date,
 )
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
@@ -43,25 +40,10 @@ from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
 FILTERS_VS_USD_BTC = ["usd", "btc"]
 
 
-class DueDiligenceController:
-
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
+class DueDiligenceController(BaseController):
+    """Due Diligence Controller class"""
 
     CHOICES_COMMANDS = ["load", "oi", "active", "change", "nonzero", "eb"]
-
-    CHOICES += CHOICES_COMMANDS
 
     SPECIFIC_CHOICES = {
         "cp": [
@@ -104,10 +86,11 @@ class DueDiligenceController:
         coin_map_df: pd.DataFrame = None,
         queue: List[str] = None,
     ):
-        """CONSTRUCTOR"""
+        """Constructor"""
+        super().__init__("/crypto/dd/", queue)
 
-        self.dd_parser = argparse.ArgumentParser(add_help=False, prog="dd")
-        self.dd_parser.add_argument("cmd", choices=self.CHOICES)
+        for _, value in self.SPECIFIC_CHOICES.items():
+            self.controller_choices.extend(value)
 
         self.current_coin = coin
         self.current_df = pd.DataFrame()
@@ -115,12 +98,8 @@ class DueDiligenceController:
         self.symbol = symbol
         self.coin_map_df = coin_map_df
 
-        for _, value in self.SPECIFIC_CHOICES.items():
-            self.CHOICES.extend(value)
-
-        self.completer: Union[None, NestedCompleter] = None
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["--source"] = {c: None for c in CRYPTO_SOURCES.keys()}
             choices["active"]["-i"] = {c: None for c in glassnode_model.INTERVALS}
             choices["change"] = {
@@ -144,11 +123,6 @@ class DueDiligenceController:
             }
             choices["ps"]["--vs"] = {c: None for c in coinpaprika_view.CURRENCIES}
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
     def print_help(self):
         """Print help"""
@@ -199,95 +173,12 @@ Coinbase:
 """
         print(help_text)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Parameters
-        -------
-        an_input : str
-            string with input arguments
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.dd_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "dd")
+    def custom_reset(self):
+        """Class specific component of reset command"""
         if self.current_coin:
-            self.queue.insert(0, f"load {self.current_coin} --source {self.source}")
-        self.queue.insert(0, "crypto")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            return ["crypto", f"load {self.current_coin} --source {self.source}"]
+        return []
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -335,7 +226,6 @@ Coinbase:
             if self.symbol:
                 print(f"\nLoaded {self.current_coin} from source {self.source}\n")
 
-    @try_except
     def call_nonzero(self, other_args: List[str]):
         """Process nonzero command"""
 
@@ -395,7 +285,6 @@ Coinbase:
         else:
             print("Glassnode source does not support this symbol\n")
 
-    @try_except
     def call_active(self, other_args: List[str]):
         """Process active command"""
 
@@ -454,7 +343,6 @@ Coinbase:
         else:
             print("Glassnode source does not support this symbol\n")
 
-    @try_except
     def call_change(self, other_args: List[str]):
         """Process change command"""
 
@@ -527,7 +415,6 @@ Coinbase:
         else:
             print("Glassnode source does not support this symbol\n")
 
-    @try_except
     def call_eb(self, other_args: List[str]):
         """Process eb command"""
 
@@ -609,7 +496,6 @@ Coinbase:
         else:
             print("Glassnode source does not support this symbol\n")
 
-    @try_except
     def call_oi(self, other_args):
         """Process oi command"""
         assert isinstance(self.symbol, str)
@@ -644,7 +530,6 @@ Coinbase:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_info(self, other_args):
         """Process info command"""
         parser = argparse.ArgumentParser(
@@ -666,7 +551,6 @@ Coinbase:
                 symbol=self.coin_map_df["CoinGecko"], export=ns_parser.export
             )
 
-    @try_except
     def call_market(self, other_args):
         """Process market command"""
         parser = argparse.ArgumentParser(
@@ -685,7 +569,6 @@ Coinbase:
                 self.coin_map_df["CoinGecko"], ns_parser.export
             )
 
-    @try_except
     def call_web(self, other_args):
         """Process web command"""
         parser = argparse.ArgumentParser(
@@ -705,7 +588,6 @@ Coinbase:
                 self.coin_map_df["CoinGecko"], export=ns_parser.export
             )
 
-    @try_except
     def call_social(self, other_args):
         """Process social command"""
         parser = argparse.ArgumentParser(
@@ -724,7 +606,6 @@ Coinbase:
                 self.coin_map_df["CoinGecko"], export=ns_parser.export
             )
 
-    @try_except
     def call_dev(self, other_args):
         """Process dev command"""
         parser = argparse.ArgumentParser(
@@ -746,7 +627,6 @@ Coinbase:
                 self.coin_map_df["CoinGecko"], ns_parser.export
             )
 
-    @try_except
     def call_ath(self, other_args):
         """Process ath command"""
         parser = argparse.ArgumentParser(
@@ -773,7 +653,6 @@ Coinbase:
                 self.coin_map_df["CoinGecko"], ns_parser.vs, ns_parser.export
             )
 
-    @try_except
     def call_atl(self, other_args):
         """Process atl command"""
         parser = argparse.ArgumentParser(
@@ -799,7 +678,6 @@ Coinbase:
                 self.coin_map_df["CoinGecko"], ns_parser.vs, ns_parser.export
             )
 
-    @try_except
     def call_score(self, other_args):
         """Process score command"""
         parser = argparse.ArgumentParser(
@@ -822,7 +700,6 @@ Coinbase:
                 self.coin_map_df["CoinGecko"], ns_parser.export
             )
 
-    @try_except
     def call_bc(self, other_args):
         """Process bc command"""
         parser = argparse.ArgumentParser(
@@ -841,9 +718,8 @@ Coinbase:
         if ns_parser:
             pycoingecko_view.display_bc(self.coin_map_df["CoinGecko"], ns_parser.export)
 
-    @try_except
-    def call_binbook(self, other_args):
-        """Process binbook command"""
+    def call_book(self, other_args):
+        """Process book command"""
         parser = argparse.ArgumentParser(
             prog="binbook",
             add_help=False,
@@ -884,7 +760,6 @@ Coinbase:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cbbook(self, other_args):
         """Process cbbook command"""
         coin = self.coin_map_df["Coinbase"]
@@ -918,7 +793,6 @@ Coinbase:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_balance(self, other_args):
         """Process balance command"""
         coin = self.coin_map_df["Binance"]
@@ -949,7 +823,6 @@ Coinbase:
                 coin=coin, currency=ns_parser.vs, export=ns_parser.export
             )
 
-    @try_except
     def call_trades(self, other_args):
         """Process trades command"""
         parser = argparse.ArgumentParser(
@@ -1007,7 +880,6 @@ Coinbase:
                 product_id=pair, limit=ns_parser.top, side=side, export=ns_parser.export
             )
 
-    @try_except
     def call_stats(self, other_args):
         """Process stats command"""
         coin = self.coin_map_df["Binance"]
@@ -1037,8 +909,6 @@ Coinbase:
             pair = f"{coin}-{ns_parser.vs.upper()}"
             coinbase_view.display_stats(pair, ns_parser.export)
 
-    # paprika
-    @try_except
     def call_ps(self, other_args):
         """Process ps command"""
         parser = argparse.ArgumentParser(
@@ -1066,7 +936,6 @@ Coinbase:
                 ns_parser.export,
             )
 
-    @try_except
     def call_basic(self, other_args):
         """Process basic command"""
         parser = argparse.ArgumentParser(
@@ -1086,7 +955,6 @@ Coinbase:
                 ns_parser.export,
             )
 
-    @try_except
     def call_mkt(self, other_args):
         """Process mkt command"""
         parser = argparse.ArgumentParser(
@@ -1161,7 +1029,6 @@ Coinbase:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_ex(self, other_args):
         """Process ex command"""
         parser = argparse.ArgumentParser(
@@ -1215,7 +1082,6 @@ Coinbase:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_events(self, other_args):
         """Process events command"""
         parser = argparse.ArgumentParser(
@@ -1281,7 +1147,6 @@ Coinbase:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_twitter(self, other_args):
         """Process twitter command"""
         parser = argparse.ArgumentParser(
@@ -1335,90 +1200,3 @@ Coinbase:
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-
-
-def menu(
-    coin=None,
-    source=None,
-    symbol=None,
-    coin_map_df: pd.DataFrame = None,
-    queue: List[str] = None,
-):
-    """Due Dilligence Menu"""
-
-    source = source if source else "cg"
-    dd_controller = DueDiligenceController(
-        coin=coin, source=source, symbol=symbol, queue=queue, coin_map_df=coin_map_df
-    )
-    an_input = "HELP_ME"
-    while True:
-        # There is a command in the queue
-        if dd_controller.queue and len(dd_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if dd_controller.queue[0] in ("q", "..", "quit"):
-                if len(dd_controller.queue) > 1:
-                    return dd_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = dd_controller.queue[0]
-            dd_controller.queue = dd_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in dd_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /crypto/dd/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                dd_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and dd_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /crypto/dd/ $ ",
-                        completer=dd_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /crypto/dd/ $ ")
-
-        try:
-            # Process the input command
-            dd_controller.queue = dd_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /crypto/dd menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                dd_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        dd_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                dd_controller.queue.insert(0, an_input)
-            else:
-                print("\n")
