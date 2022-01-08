@@ -14,7 +14,7 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     system_clear,
-    try_except
+    try_except,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers.degiro.degiro_view import DegiroView
@@ -49,9 +49,7 @@ class DegiroController:
     ]
     CHOICES += CHOICES_COMMANDS
 
-    ERROR_MAP = {
-        "Connection required.": "You haven't logged in Degiro"
-    }
+    ERROR_MAP = {"Connection required.": "You haven't logged in Degiro"}
 
     def __init__(self, queue: List[str] = None):
         self.__degiro_view = DegiroView()
@@ -70,6 +68,15 @@ class DegiroController:
 
     @try_except
     def command_call(self, known_args, other_args):
+        """Wrapper function that handles exceptions in an informative way
+
+        Parameters
+        ----------
+        known_args : argparse.Namespace
+            Known arguments from the prompt
+        other_args : argparse.Namespace
+            Unknown arguments from the prompt
+        """
         try:
             getattr(
                 self,
