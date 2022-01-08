@@ -49,7 +49,6 @@ class BaseController(metaclass=ABCMeta):
         self.check_path(path)
         self.path = path
         self.PATH = [x for x in path.split("/") if x != ""]
-        self.reset_level = len(self.path) + 1
 
         self.queue = queue if (queue and path != "/") else list()
 
@@ -76,8 +75,9 @@ class BaseController(metaclass=ABCMeta):
                 "Path must only contain lowercase letters and '/' characters."
             )
 
-    def custom_reset(self) -> None:
+    def custom_reset(self) -> List[str]:
         """This will be replaced by any children with custom_reset functions"""
+        return []
 
     @abstractmethod
     def print_help(self) -> None:
@@ -160,12 +160,14 @@ class BaseController(metaclass=ABCMeta):
         reset process define a methom `custom_reset` in the child class.
         """
         if self.path != "/":
-            for val in self.PATH[::-1]:
-                self.queue.insert(0, val)
+            if self.custom_reset():
+                self.queue = self.custom_reset() + self.queue
+            else:
+                for val in self.PATH[::-1]:
+                    self.queue.insert(0, val)
             self.queue.insert(0, "reset")
             for _ in range(len(self.PATH)):
                 self.queue.insert(0, "quit")
-            self.custom_reset()
 
     def menu(self, custom_path_menu_above: str = ""):
         an_input = "HELP_ME"

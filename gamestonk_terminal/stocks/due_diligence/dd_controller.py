@@ -90,10 +90,11 @@ cathiesark.com
         """
         print(help_text)
 
-    def custom_reset(self):
+    def custom_reset(self) -> List[str]:
         """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(self.reset_level, f"load {self.ticker}")
+            return ["stocks", f"load {self.ticker}", "dd"]
+        return []
 
     def call_load(self, other_args: List[str]):
         """Process load command"""

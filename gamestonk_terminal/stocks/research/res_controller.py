@@ -77,7 +77,8 @@ Ticker: {self.ticker}
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(self.reset_level, f"load {self.ticker}")
+            return ["stocks", f"load {self.ticker}", "res"]
+        return []
 
     def call_macroaxis(self, _):
         """Process macroaxis command"""

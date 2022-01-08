@@ -64,9 +64,16 @@ Expiry: {self.selected_date or None}
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(self.reset_level, f"load {self.ticker}")
-        if self.selected_date:
-            self.queue.insert(self.reset_level, f"exp {self.selected_date}")
+            if self.selected_date:
+                return [
+                    "stocks",
+                    f"load {self.ticker}",
+                    "options",
+                    f"exp -d {self.selected_date}",
+                    "payoff",
+                ]
+            return ["stocks", f"load {self.ticker}", "options", "payoff"]
+        return []
 
     def call_add(self, other_args: List[str]):
         """Process add command"""
