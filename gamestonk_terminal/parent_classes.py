@@ -136,26 +136,26 @@ class BaseController:
         """Process cls command"""
         system_clear()
 
-    def call_home(self, _):
+    def call_home(self, _) -> None:
         """Process home command"""
         for _ in range(self.path.count("/") - 1):
             self.queue.insert(0, "quit")
 
-    def call_help(self, _):
+    def call_help(self, _) -> None:
         """Process help command"""
         self.print_help()
 
-    def call_quit(self, _):
+    def call_quit(self, _) -> None:
         """Process quit menu command"""
         print("")
         self.queue.insert(0, "quit")
 
-    def call_exit(self, _):
+    def call_exit(self, _) -> None:
         """Process exit terminal command"""
         for _ in range(self.path.count("/")):
             self.queue.insert(0, "quit")
 
-    def call_reset(self, _):
+    def call_reset(self, _) -> None:
         """Process reset command. If you would like to have customization in the
         reset process define a methom `custom_reset` in the child class.
         """
