@@ -138,7 +138,7 @@ class OptionsController(BaseController):
 
     def update_runtime_choices(self):
         """Update runtime choices"""
-        if self.expiry_dates:
+        if self.expiry_dates and session and gtff.USE_PROMPT_TOOLKIT:
             self.choices["exp"] = {str(c): {} for c in range(len(self.expiry_dates))}
             self.choices["exp"]["-d"] = {c: {} for c in self.expiry_dates + [""]}
             if self.chain:
@@ -155,7 +155,7 @@ class OptionsController(BaseController):
                     for c in self.chain.puts["strike"] + self.chain.calls["strike"]
                 }
 
-        self.completer = NestedCompleter.from_nested_dict(self.choices)
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help."""

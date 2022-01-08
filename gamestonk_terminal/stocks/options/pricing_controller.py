@@ -34,10 +34,7 @@ class PricingController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__(
-            "/stocks/options/pricing/",
-            queue,
-        )
+        super().__init__("/stocks/options/pricing/", queue)
 
         self.ticker = ticker
         self.selected_date = selected_date
@@ -70,7 +67,7 @@ Expiry: {self.selected_date or None}
                     f"load {self.ticker}",
                     "options",
                     f"exp -d {self.selected_date}",
-                    "payoff",
+                    "pricing",
                 ]
             return ["stocks", f"load {self.ticker}", "options", "payoff"]
         return []

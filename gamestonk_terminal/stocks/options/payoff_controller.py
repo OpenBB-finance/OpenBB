@@ -70,10 +70,9 @@ class PayoffController(BaseController):
 
     def update_runtime_choices(self):
         """Update runtime choices"""
-        if self.options:
+        if self.options and session and gtff.USE_PROMPT_TOOLKIT:
             self.choices["rmv"] = {str(c): {} for c in range(len(self.options))}
-
-        return NestedCompleter.from_nested_dict(self.choices)
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help"""

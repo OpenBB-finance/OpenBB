@@ -195,25 +195,26 @@ class SectorIndustryAnalysisController(BaseController):
 
     def update_runtime_choices(self):
         """Update runtime choices"""
-        self.choices["industry"] = {
-            i: None
-            for i in financedatabase_model.get_industries(
-                country=self.country, sector=self.sector
-            )
-        }
-        self.choices["sector"] = {
-            s: None
-            for s in financedatabase_model.get_sectors(
-                industry=self.industry, country=self.country
-            )
-        }
-        self.choices["country"] = {
-            c: None
-            for c in financedatabase_model.get_countries(
-                industry=self.industry, sector=self.sector
-            )
-        }
-        return NestedCompleter.from_nested_dict(self.choices)
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            self.choices["industry"] = {
+                i: None
+                for i in financedatabase_model.get_industries(
+                    country=self.country, sector=self.sector
+                )
+            }
+            self.choices["sector"] = {
+                s: None
+                for s in financedatabase_model.get_sectors(
+                    industry=self.industry, country=self.country
+                )
+            }
+            self.choices["country"] = {
+                c: None
+                for c in financedatabase_model.get_countries(
+                    industry=self.industry, sector=self.sector
+                )
+            }
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help"""
