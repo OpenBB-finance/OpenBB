@@ -67,7 +67,7 @@ def view_ma(
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax.set_title(f"{s_ticker} {ma_type.upper()}")
 
-    ax.plot(price_df.index, price_df["Price"], lw=3, c="k")
+    ax.plot(price_df.index, price_df["values"], lw=3, c="k")
 
     ax.set_xlabel("Time")
     ax.set_xlim([price_df.index[0], price_df.index[-1]])

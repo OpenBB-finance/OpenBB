@@ -63,7 +63,7 @@ async def stoch_command(
         # Retrieve Data
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
-        df_ta = momentum_model.stoch("1440min", df_stock, fast_k, slow_d, slow_k)
+        df_ta = momentum_model.stoch(df_stock, fast_k, slow_d, slow_k)
 
         # Output Data
         fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)

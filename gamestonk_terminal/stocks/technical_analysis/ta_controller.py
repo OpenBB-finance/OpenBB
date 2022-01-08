@@ -660,8 +660,7 @@ Custom:
         if ns_parser:
             momentum_view.plot_cci(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                ohlc_df=self.stock,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
@@ -718,8 +717,7 @@ Custom:
         if ns_parser:
             momentum_view.view_macd(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                prices=self.stock["Adj Close"],
                 n_fast=ns_parser.n_fast,
                 n_slow=ns_parser.n_slow,
                 n_signal=ns_parser.n_signal,
@@ -778,8 +776,7 @@ Custom:
         if ns_parser:
             momentum_view.view_rsi(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                prices=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
@@ -834,7 +831,6 @@ Custom:
         if ns_parser:
             momentum_view.view_stoch(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 fastkperiod=ns_parser.n_fastkperiod,
                 slowdperiod=ns_parser.n_slowdperiod,
@@ -875,7 +871,6 @@ Custom:
         if ns_parser:
             momentum_view.view_fisher(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
                 export=ns_parser.export,
@@ -914,8 +909,7 @@ Custom:
         if ns_parser:
             momentum_view.view_cg(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                prices=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )

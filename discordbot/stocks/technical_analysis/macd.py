@@ -64,7 +64,7 @@ async def macd_command(
         # Retrieve Data
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
-        df_ta = momentum_model.macd("1440min", df_stock, fast, slow, signal)
+        df_ta = momentum_model.macd(df_stock["Adj Close"], fast, slow, signal)
 
         # Output Data
         fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)

@@ -409,8 +409,7 @@ Custom:
         if ns_parser:
             momentum_view.plot_cci(
                 s_ticker=self.ticker,
-                s_interval="1440min",
-                df_stock=self.data,
+                ohlc_df=self.data,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
@@ -434,7 +433,6 @@ Custom:
                 should be above zero for a buy, and below zero for a sell.
             """,
         )
-
         parser.add_argument(
             "-f",
             "--fast",
@@ -468,8 +466,7 @@ Custom:
         if ns_parser:
             momentum_view.view_macd(
                 s_ticker=self.ticker,
-                s_interval="1440min",
-                df_stock=self.data,
+                prices=self.data["Adj Close"],
                 n_fast=ns_parser.n_fast,
                 n_slow=ns_parser.n_slow,
                 n_signal=ns_parser.n_signal,
@@ -528,8 +525,7 @@ Custom:
         if ns_parser:
             momentum_view.view_rsi(
                 s_ticker=self.ticker,
-                s_interval="1440min",
-                df_stock=self.data,
+                prices=self.data["Adj Close"],
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
@@ -551,7 +547,6 @@ Custom:
                 for crossover signals.
             """,
         )
-
         parser.add_argument(
             "-k",
             "--fastkperiod",
@@ -585,7 +580,6 @@ Custom:
         if ns_parser:
             momentum_view.view_stoch(
                 s_ticker=self.ticker,
-                s_interval="1440min",
                 df_stock=self.data,
                 fastkperiod=ns_parser.n_fastkperiod,
                 slowdperiod=ns_parser.n_slowdperiod,
@@ -607,7 +601,6 @@ Custom:
                 helps show the trend and isolate the price waves within a trend.
             """,
         )
-
         parser.add_argument(
             "-l",
             "--length",
@@ -627,7 +620,6 @@ Custom:
         if ns_parser:
             momentum_view.view_fisher(
                 s_ticker=self.ticker,
-                s_interval="1440min",
                 df_stock=self.data,
                 length=ns_parser.n_length,
                 export=ns_parser.export,
@@ -647,7 +639,6 @@ Custom:
                 price change of the asset.
             """,
         )
-
         parser.add_argument(
             "-l",
             "--length",
@@ -667,8 +658,7 @@ Custom:
         if ns_parser:
             momentum_view.view_cg(
                 s_ticker=self.ticker,
-                s_interval="1440min",
-                df_stock=self.data,
+                prices=self.data["Adj Close"],
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
