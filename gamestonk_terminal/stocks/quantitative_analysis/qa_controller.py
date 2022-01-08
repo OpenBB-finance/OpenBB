@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 
 import numpy as np
 import pandas as pd
-from rich.console import Console
+from gamestonk_terminal.rich_config import console
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.common.quantitative_analysis import (
@@ -26,8 +26,6 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.quantitative_analysis.factors_view import capm_view
-
-t_console = Console()
 
 
 class QaController(BaseController):
@@ -132,7 +130,7 @@ Other:
     cusum       detects abrupt changes using cumulative sum algorithm of prices
     capm        capital asset pricing model
         """
-        t_console.print(help_str)
+        console.print(help_str)
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -263,7 +261,7 @@ Other:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.target = ns_parser.target
-        t_console.print("")
+        console.print("")
 
     def call_raw(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
@@ -520,7 +518,7 @@ Other:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.target != "AdjClose":
-                t_console.print(
+                console.print(
                     "Target not AdjClose.  For best results, use `pick AdjClose` first."
                 )
 

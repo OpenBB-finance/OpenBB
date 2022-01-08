@@ -11,7 +11,7 @@ import pytz
 
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.rich import t_console
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -117,7 +117,7 @@ Timezone: {get_user_timezone_or_invalid()}
 >   resources
 >   alternative
     """
-        t_console.print(help_text)
+        console.print(help_text)
 
     def call_update(self, _):
         """Process update command"""
@@ -221,7 +221,7 @@ def terminal(jobs_cmds: List[str] = None):
 
     while ret_code:
         if gtff.ENABLE_QUICK_EXIT:
-            t_console.print("Quick exit enabled")
+            console.print("Quick exit enabled")
             break
 
         # There is a command in the queue
@@ -237,7 +237,7 @@ def terminal(jobs_cmds: List[str] = None):
 
             # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input.split(" ")[0] in t_controller.CHOICES_COMMANDS:
-                t_console.print(f"{get_flair()} / $ {an_input}")
+                console.print(f"{get_flair()} / $ {an_input}")
 
         # Get input command from user
         else:
@@ -277,7 +277,7 @@ def terminal(jobs_cmds: List[str] = None):
                     break
 
         except SystemExit:
-            t_console.print(
+            console.print(
                 f"\nThe command '{an_input}' doesn't exist on the / menu", end=""
             )
             similar_cmd = difflib.get_close_matches(
@@ -294,16 +294,16 @@ def terminal(jobs_cmds: List[str] = None):
                     if candidate_input == an_input:
                         an_input = ""
                         t_controller.queue = []
-                        t_console.print("\n")
+                        console.print("\n")
                         continue
                     an_input = candidate_input
                 else:
                     an_input = similar_cmd[0]
 
-                t_console.print(f" Replacing by '{an_input}'.")
+                console.print(f" Replacing by '{an_input}'.")
                 t_controller.queue.insert(0, an_input)
             else:
-                t_console.print("\n")
+                console.print("\n")
 
 
 if __name__ == "__main__":
@@ -314,7 +314,7 @@ if __name__ == "__main__":
                     simulate_argv = f"/{'/'.join([line.rstrip() for line in fp])}"
                     terminal(simulate_argv.replace("//", "/home/").split())
             else:
-                t_console.print(
+                console.print(
                     f"The file '{sys.argv[1]}' doesn't exist. Launching terminal without any configuration.\n"
                 )
                 terminal()

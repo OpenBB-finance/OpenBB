@@ -5,4 +5,5 @@ from rich.console import Console, Theme
 
 custom_theme = Theme({"context": "red", "function": "blue", "noticker": "dim"})
 
-t_console = Console(theme=custom_theme)
+# Obviouse setup to make sure it works
+console = Console(theme=custom_theme, style="bold white on blue")

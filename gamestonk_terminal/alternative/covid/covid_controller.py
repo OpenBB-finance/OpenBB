@@ -8,7 +8,7 @@ from typing import List
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from rich.console import Console
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -22,7 +22,6 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.menu import session
 
 logger = logging.getLogger(__name__)
-t_console = Console()
 
 country_file = pathlib.Path(__file__).parent.joinpath("countries.txt")
 
@@ -59,7 +58,7 @@ Country: [cyan]{self.country}[/cyan]
         cases       get cases for selected country
         rates       get death/cases rate for selected country
         """
-        t_console.print(help_str)
+        console.print(help_str)
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -88,12 +87,12 @@ Country: [cyan]{self.country}[/cyan]
             if ns_parser.country:
                 country = " ".join(ns_parser.country)
                 if country not in self.COUNTRY_LIST:
-                    t_console.print(f"[red]{country} not a valid selection.[/red]\n")
+                    console.print(f"[red]{country} not a valid selection.[/red]\n")
                     return
                 self.country = country
-                t_console.print(f"[cyan]{country}[/cyan] loaded\n")
+                console.print(f"[cyan]{country}[/cyan] loaded\n")
             else:
-                t_console.print("[red]Please input a country.[/red]\n")
+                console.print("[red]Please input a country.[/red]\n")
 
     def call_ov(self, other_args: List[str]):
         """Process hist command"""

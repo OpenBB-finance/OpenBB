@@ -7,7 +7,7 @@ from typing import List
 from datetime import datetime, timedelta
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from rich import console
+from gamestonk_terminal.rich_config import console
 from binance.client import Client
 
 from gamestonk_terminal.parent_classes import BaseController
@@ -48,8 +48,6 @@ CRYPTO_SOURCES = {
     "cp": "CoinPaprika",
     "cb": "Coinbase",
 }
-
-t_console = console.Console()
 
 
 class CryptoController(BaseController):
@@ -124,7 +122,7 @@ class CryptoController(BaseController):
 >    ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
 >    pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo{'[/dim]' if not self.current_coin else ''}
 """  # noqa
-        t_console.print(help_text)
+        console.print(help_text)
 
     def call_prt(self, other_args):
         """Process prt command"""
@@ -339,7 +337,7 @@ class CryptoController(BaseController):
 Performance in interval ({self.current_interval}): {'[green]' if interval_change > 0 else "[red]"}{round(interval_change,2)}%{'[/green]' if interval_change > 0 else "[/red]"}
 Performance since {ns_parser.start.strftime('%Y-%m-%d')}: {'[green]' if since_start_change > 0 else "[red]"}{round(since_start_change,2)}%{'[/green]' if since_start_change > 0 else "[/red]"}"""  # noqa
 
-                    t_console.print(
+                    console.print(
                         f"""
 Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[self.source]} source
 

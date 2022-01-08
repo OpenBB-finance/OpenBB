@@ -6,9 +6,7 @@ from typing import Tuple
 
 import investpy
 import pandas as pd
-from rich.console import Console
-
-console = Console()
+from gamestonk_terminal.rich_config import console
 
 
 def search_funds(by: str = "name", value: str = "") -> pd.DataFrame:

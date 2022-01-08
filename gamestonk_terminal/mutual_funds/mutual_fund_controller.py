@@ -8,7 +8,7 @@ from typing import List
 import investpy
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from rich import console
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -23,8 +23,6 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.mutual_funds import investpy_model, investpy_view, yfinance_view
-
-t_console = console.Console()
 
 
 class FundController(BaseController):
@@ -101,7 +99,7 @@ Yahoo Finance[/italic]:
     equity        equity holdings
     {'[/dim]' if not self.fund_symbol or self.country!='united states' else ''}
     """
-        t_console.print(help_str)
+        console.print(help_str)
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -133,10 +131,10 @@ Yahoo Finance[/italic]:
             if country_candidate.lower() in self.fund_countries:
                 self.country = " ".join(ns_parser.name)
             else:
-                t_console.print(
+                console.print(
                     f"{country_candidate.lower()} not a valid country to select."
                 )
-        t_console.print("")
+        console.print("")
         return self.queue
 
     def call_search(self, other_args: List[str]):
@@ -239,7 +237,7 @@ Yahoo Finance[/italic]:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if not self.fund_name:
-                t_console.print(
+                console.print(
                     "No fund loaded.  Please use `load` first to plot.\n", style="bold"
                 )
                 return self.queue
@@ -306,14 +304,14 @@ Yahoo Finance[/italic]:
                 end_date=ns_parser.end,
             )
             if self.data.empty:
-                t_console.print(
+                console.print(
                     """No data found.
 Potential errors
     -- Incorrect country specified
     -- ISIN supplied instead of symbol
     -- Name used, but --name flag not passed"""
                 )
-        t_console.print("")
+        console.print("")
         return self.queue
 
     def call_plot(self, other_args: List[str]):
@@ -330,7 +328,7 @@ Potential errors
         )
         if ns_parser:
             if not self.fund_symbol:
-                t_console.print(
+                console.print(
                     "No fund loaded.  Please use `load` first to plot.\n", style="bold"
                 )
                 return self.queue
@@ -361,12 +359,12 @@ Potential errors
         )
         if ns_parser:
             if self.country != "united states":
-                t_console.print(
+                console.print(
                     "YFinance implementation currently only supports funds from united states"
                 )
                 return self.queue
             if not self.fund_symbol or not self.fund_name:
-                t_console.print(
+                console.print(
                     "No fund loaded.  Please use `load` first to plot.\n", style="bold"
                 )
                 return self.queue
@@ -390,12 +388,12 @@ Potential errors
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.country != "united states":
-                t_console.print(
+                console.print(
                     "YFinance implementation currently only supports funds from united states"
                 )
                 return self.queue
             if not self.fund_symbol or not self.fund_name:
-                t_console.print(
+                console.print(
                     "No fund loaded.  Please use `load` first to plot.\n", style="bold"
                 )
                 return self.queue

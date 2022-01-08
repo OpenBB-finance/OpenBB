@@ -5,8 +5,7 @@ import argparse
 from datetime import datetime, timedelta
 import os
 from typing import List
-
-from rich.console import Console
+from gamestonk_terminal.rich_config import console
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
@@ -28,8 +27,6 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
 )
 from gamestonk_terminal.menu import session
-
-t_console = Console()
 
 
 class EconomyController(BaseController):
@@ -198,7 +195,7 @@ NASDAQ DataLink (formerly Quandl):
 >   fred          Federal Reserve Economic Data submenu
 """
         print(type(help_text))
-        t_console.print(help_text)
+        console.print(help_text)
 
     def call_feargreed(self, other_args: List[str]):
         """Process feargreed command"""
@@ -1009,7 +1006,7 @@ NASDAQ DataLink (formerly Quandl):
                 file = os.path.join(
                     os.path.dirname(__file__), "NASDAQ_CountryCodes.csv"
                 )
-                t_console.print(
+                console.print(
                     pd.read_csv(file, index_col=0).to_string(index=False), "\n"
                 )
             else:
