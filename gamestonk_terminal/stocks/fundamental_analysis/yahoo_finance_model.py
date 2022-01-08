@@ -33,7 +33,7 @@ def get_info(ticker: str) -> pd.DataFrame:
     if "Last split date" in df_info.index and df_info.loc["Last split date"].values[0]:
         df_info.loc["Last split date"].values[0] = datetime.fromtimestamp(
             df_info.loc["Last split date"].values[0]
-        ).strftime("%d/%m/%Y")
+        ).strftime("%Y-%m-%d")
 
     df_info = df_info.mask(df_info["Value"].astype(str).eq("[]")).dropna()
     df_info[df_info.index != "Zip"] = df_info[df_info.index != "Zip"].applymap(

@@ -5,6 +5,9 @@ import discord
 import discord_components
 
 import discordbot.config_discordbot as cfg
+
+from discordbot.run_discordbot import gst_bot, logger
+
 import discordbot.helpers
 
 from discordbot.stocks.technical_analysis.ema import ema_command
@@ -30,7 +33,6 @@ from discordbot.stocks.technical_analysis.fib import fib_command
 from discordbot.stocks.technical_analysis.view import view_command
 from discordbot.stocks.technical_analysis.summary import summary_command
 from discordbot.stocks.technical_analysis.recom import recom_command
-from discordbot.run_discordbot import gst_bot
 
 
 class TechnicalAnalysisCommands(discord.ext.commands.Cog):
@@ -66,7 +68,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         end:
             Ending date in YYYY-MM-DD format
         """
-
+        logger.info("stocks.ta.ema")
         await ema_command(ctx, ticker, window, offset, start, end)
 
     @discord.ext.commands.command(
@@ -96,7 +98,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         end:
             Ending date in YYYY-MM-DD format
         """
-
+        logger.info("stocks.ta.sma")
         await sma_command(ctx, ticker, window, offset, start, end)
 
     @discord.ext.commands.command(
@@ -126,7 +128,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         end:
             Ending date in YYYY-MM-DD format
         """
-
+        logger.info("stocks.ta.wma")
         await wma_command(ctx, ticker, window, offset, start, end)
 
     @discord.ext.commands.command(
@@ -156,7 +158,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         end:
             Ending date in YYYY-MM-DD format
         """
-
+        logger.info("stocks.ta.hma")
         await hma_command(ctx, ticker, window, offset, start, end)
 
     @discord.ext.commands.command(
@@ -186,7 +188,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         end:
             Ending date in YYYY-MM-DD format
         """
-
+        logger.info("stocks.ta.zlma")
         await zlma_command(ctx, ticker, window, offset, start, end)
 
     @discord.ext.commands.command(
@@ -216,7 +218,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         end:
             Ending date in YYYY-MM-DD format
         """
-
+        logger.info("stocks.ta.cci")
         await cci_command(ctx, ticker, length, scalar, start, end)
 
     @discord.ext.commands.command(
@@ -249,7 +251,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         end:
             Ending date in YYYY-MM-DD format
         """
-
+        logger.info("stocks.ta.macd")
         await macd_command(ctx, ticker, fast, slow, signal, start, end)
 
     @discord.ext.commands.command(
@@ -282,7 +284,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         end:
             Ending date in YYYY-MM-DD format
         """
-
+        logger.info("stocks.ta.rsi")
         await rsi_command(ctx, ticker, length, scalar, drift, start, end)
 
     @discord.ext.commands.command(
@@ -316,7 +318,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         end:
             Ending date in YYYY-MM-DD format
         """
-
+        logger.info("stocks.ta.stoch")
         await stoch_command(ctx, ticker, fast_k, slow_d, slow_k, start, end)
 
     @discord.ext.commands.command(
@@ -343,7 +345,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         end:
             Ending date in YYYY-MM-DD format
         """
-
+        logger.info("stocks.ta.fisher")
         await fisher_command(ctx, ticker, length, start, end)
 
     @discord.ext.commands.command(
@@ -370,7 +372,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         end:
             Ending date in YYYY-MM-DD format
         """
-
+        logger.info("stocks.ta.cg")
         await cg_command(ctx, ticker, length, start, end)
 
     @discord.ext.commands.command(
@@ -403,7 +405,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         end:
             Ending date in YYYY-MM-DD format
         """
-
+        logger.info("stocks.ta.adx")
         await adx_command(ctx, ticker, length, scalar, drift, start, end)
 
     @discord.ext.commands.command(
@@ -433,7 +435,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         end:
             Ending date in YYYY-MM-DD format
         """
-
+        logger.info("stocks.ta.aroon")
         await aroon_command(ctx, ticker, length, scalar, start, end)
 
     @discord.ext.commands.command(
@@ -466,7 +468,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         end:
             Ending date in YYYY-MM-DD format
         """
-
+        logger.info("stocks.ta.bbands")
         await bbands_command(ctx, ticker, length, std, ma_mode, start, end)
 
     @discord.ext.commands.command(
@@ -497,10 +499,11 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         end:
             Ending date in YYYY-MM-DD format
         """
-
+        logger.info("stocks.ta.donchian")
         await donchian_command(ctx, ticker, upper_length, lower_length, start, end)
 
     # pylint: disable=too-many-arguments
+
     @discord.ext.commands.command(
         name="stocks.ta.kc",
         usage="[ticker] [length] [scalar] [ma_mode] [offset] [start] [end]",
@@ -535,7 +538,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         end:
             Ending date in YYYY-MM-DD format
         """
-
+        logger.info("stocks.ta.kc")
         await kc_command(ctx, ticker, length, scalar, ma_mode, offset, start, end)
 
     @discord.ext.commands.command(
@@ -562,7 +565,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         end:
             Ending date in YYYY-MM-DD format
         """
-
+        logger.info("stocks.ta.ad")
         await ad_command(ctx, ticker, is_open, start, end)
 
     @discord.ext.commands.command(
@@ -595,7 +598,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         end:
             Ending date in YYYY-MM-DD format
         """
-
+        logger.info("stocks.ta.adosc")
         await adosc_command(ctx, ticker, is_open, fast, slow, start, end)
 
     @discord.ext.commands.command(name="stocks.ta.obv", usage="[ticker] [start] [end]")
@@ -611,7 +614,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         end:
             Ending date in YYYY-MM-DD format
         """
-
+        logger.info("stocks.ta.obv")
         await obv_command(ctx, ticker, start, end)
 
     @discord.ext.commands.command(name="stocks.ta.fib", usage="[ticker] [start] [end]")
@@ -627,7 +630,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         end:
             Ending date in YYYY-MM-DD format
         """
-
+        logger.info("stocks.ta.fib")
         await fib_command(ctx, ticker, start, end)
 
     @discord.ext.commands.command(name="stocks.ta.view")
@@ -639,7 +642,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         ticker: str
             ticker
         """
-
+        logger.info("stocks.ta.view")
         await view_command(ctx, ticker)
 
     @discord.ext.commands.command(name="stocks.ta.summary", usage="[ticker]")
@@ -651,7 +654,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         ticker: str
             ticker
         """
-
+        logger.info("stocks.ta.summary")
         await summary_command(ctx, ticker)
 
     @discord.ext.commands.command(name="stocks.ta.recom", usage="[ticker]")
@@ -663,7 +666,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         ticker: str
             ticker
         """
-
+        logger.info("stocks.ta.recom")
         await recom_command(ctx, ticker)
 
     # pylint: disable=too-many-statements
@@ -678,9 +681,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
         Sends a message to the discord user with the commands from the stocks.ta context.
         The user can then select a reaction to trigger a command.
         """
-
-        if cfg.DEBUG:
-            print(f"!stocks.ta {ticker}")
+        logger.info("!stocks.ta %s", ticker)
 
         cols_temp = []
         cols = []
@@ -844,8 +845,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
                 async def on_reaction_add(reaction, user):
                     if user == ctx.message.author and str(reaction.emoji) in emoji_list:
                         if reaction.emoji == "0️⃣":
-                            if cfg.DEBUG:
-                                print("Reaction selected: 0")
+                            logger.info("!stocks.ta. Reaction selected: 0")
                             if current == 0:
                                 await view_command(ctx, ticker)
                             elif current == 1:
@@ -853,8 +853,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
                             elif current == 2:
                                 await adosc_command(ctx, ticker)
                         elif reaction.emoji == "1️⃣":
-                            if cfg.DEBUG:
-                                print("Reaction selected: 1")
+                            logger.info("!stocks.ta. Reaction selected: 1")
                             if current == 0:
                                 await summary_command(ctx, ticker)
                             elif current == 1:
@@ -862,8 +861,7 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
                             elif current == 2:
                                 await obv_command(ctx, ticker)
                         elif reaction.emoji == "2️⃣":
-                            if cfg.DEBUG:
-                                print("Reaction selected: 2")
+                            logger.info("!stocks.ta. Reaction selected: 2")
                             if current == 0:
                                 await recom_command(ctx, ticker)
                             elif current == 1:
@@ -871,50 +869,43 @@ class TechnicalAnalysisCommands(discord.ext.commands.Cog):
                             elif current == 2:
                                 await fib_command(ctx, ticker)
                         elif reaction.emoji == "3️⃣":
-                            if cfg.DEBUG:
-                                print("Reaction selected: 3")
+                            logger.info("!stocks.ta. Reaction selected: 3")
                             if current == 0:
                                 await ema_command(ctx, ticker)
                             elif current == 1:
                                 await cg_command(ctx, ticker)
                         elif reaction.emoji == "4️⃣":
-                            if cfg.DEBUG:
-                                print("Reaction selected: 4")
+                            logger.info("!stocks.ta. Reaction selected: 4")
                             if current == 0:
                                 await sma_command(ctx, ticker)
                             elif current == 1:
                                 await adx_command(ctx, ticker)
                         elif reaction.emoji == "5️⃣":
-                            if cfg.DEBUG:
-                                print("Reaction selected: 5")
+                            logger.info("!stocks.ta. Reaction selected: 5")
                             if current == 0:
                                 await wma_command(ctx, ticker)
                             elif current == 1:
                                 await aroon_command(ctx, ticker)
                         elif reaction.emoji == "6️⃣":
-                            if cfg.DEBUG:
-                                print("Reaction selected: 6")
+                            logger.info("!stocks.ta. Reaction selected: 6")
                             if current == 0:
                                 await hma_command(ctx, ticker)
                             elif current == 1:
                                 await bbands_command(ctx, ticker)
                         elif reaction.emoji == "7️⃣":
-                            if cfg.DEBUG:
-                                print("Reaction selected: 7")
+                            logger.info("!stocks.ta. Reaction selected: 7")
                             if current == 0:
                                 await zlma_command(ctx, ticker)
                             elif current == 1:
                                 await donchian_command(ctx, ticker)
                         elif reaction.emoji == "8️⃣":
-                            if cfg.DEBUG:
-                                print("Reaction selected: 8")
+                            logger.info("!stocks.ta. Reaction selected: 8")
                             if current == 0:
                                 await cci_command(ctx, ticker)
                             elif current == 1:
                                 await kc_command(ctx, ticker)
                         elif reaction.emoji == "9️⃣":
-                            if cfg.DEBUG:
-                                print("Reaction selected: 9")
+                            logger.info("!stocks.ta. Reaction selected: 9")
                             if current == 0:
                                 await macd_command(ctx, ticker)
                             elif current == 1:

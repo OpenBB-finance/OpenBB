@@ -1,12 +1,14 @@
 import os
-import discord
-from matplotlib import pyplot as plt
-import yfinance as yf
-import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
-from gamestonk_terminal.config_plot import PLOT_DPI
 
+import discord
+import yfinance as yf
+from matplotlib import pyplot as plt
+
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur, logger
 
 
 async def spos_command(ctx, ticker=""):
@@ -15,7 +17,7 @@ async def spos_command(ctx, ticker=""):
     try:
         # Debug user input
         if cfg.DEBUG:
-            print(f"\n!stocks.dps.spos {ticker}")
+            logger.debug("!stocks.dps.spos %s", ticker)
 
         # Check for argument
         if ticker == "":
@@ -32,7 +34,7 @@ async def spos_command(ctx, ticker=""):
 
         # Debug user output
         if cfg.DEBUG:
-            print(df.to_string())
+            logger.debug(df.to_string())
 
         # Output data
         title = f"Stocks: [Stockgrid] Net Short vs Position {ticker}"
