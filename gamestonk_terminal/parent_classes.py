@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 from abc import ABCMeta, abstractmethod
 import argparse
+import re
 import difflib
 from typing import Union, List, Callable
 
@@ -51,6 +52,7 @@ class BaseController:
         dynamic_completer:
             Allows a function for dynamic completing
         """
+        self.check_path(path)
         self.choices = self.CHOICES
         self.path = path
         self.dynamic_completer = dynamic_completer
@@ -65,8 +67,15 @@ class BaseController:
         if path != "/":
             self.queue = queue if queue else list()
 
-    def check_path(self, path: str) -> bool:
-        pass
+    def check_path(self, path: str) -> None:
+        if path[0] != "/":
+            raise ValueError("Path must begin with a '/' character.")
+        if path[-1] != "/":
+            raise ValueError("Path must end with a '/' character.")
+        if not re.match("^[a-z/]*$", path):
+            raise ValueError(
+                "Path must only contain lowercase letters and '/' characters."
+            )
 
     def custom_reset(self) -> None:
         """
