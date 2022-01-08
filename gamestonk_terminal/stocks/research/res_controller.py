@@ -33,15 +33,12 @@ class ResearchController(BaseController):
         "newsfilter",
         "stockanalysis",
     ]
-    CHOICES_MENUS: List[str] = []
 
     def __init__(
         self, ticker: str, start: datetime, interval: str, queue: List[str] = None
     ):
         """Constructor"""
-        super().__init__(
-            "/stocks/res/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/stocks/res/", queue)
 
         self.ticker = ticker
         self.start = start

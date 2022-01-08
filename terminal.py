@@ -60,7 +60,7 @@ class TerminalController(BaseController):
 
     def __init__(self, jobs_cmds: List[str] = None):
         """Constructor"""
-        super().__init__("/", jobs_cmds, self.CHOICES_COMMANDS + self.CHOICES_MENUS)
+        super().__init__("/", jobs_cmds)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: None for c in self.controller_choices}

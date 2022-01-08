@@ -43,13 +43,10 @@ class OandaController(BaseController):
         # "news",
         # "reddit",
     ]
-    CHOICES_MENUS: List[str] = []
 
     def __init__(self, queue: List[str] = None):
         """Construct Data."""
-        super().__init__(
-            "/forex/oanda/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/forex/oanda/", queue)
 
         self.from_symbol = ""
         self.to_symbol = ""

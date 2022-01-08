@@ -38,9 +38,7 @@ class ScreenerController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__(
-            "/stocks/options/screen/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/stocks/options/screen/", queue)
 
         self.preset = "high_IV"
         self.screen_tickers: List = list()

@@ -48,7 +48,6 @@ class ScreenerController(BaseController):
         "po",
         "ca",
     ]
-    CHOICES_MENUS: List[str] = []
 
     preset_choices = [
         preset.split(".")[0]
@@ -60,9 +59,7 @@ class ScreenerController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__(
-            "/stocks/scr/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/stocks/scr/", queue)
 
         self.preset = "top_gainers"
         self.screen_tickers: List = list()

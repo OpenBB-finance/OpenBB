@@ -22,7 +22,6 @@ class CoinbaseController(BaseController):
     """Coinbase Controller class"""
 
     CHOICES_COMMANDS = ["account", "history", "orders", "deposits"]
-    CHOICES_MENUS: List[str] = []
 
     order_sortby = [
         "product_id",
@@ -40,9 +39,7 @@ class CoinbaseController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__(
-            "/portfolio/bro/cb/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/portfolio/bro/cb/", queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}

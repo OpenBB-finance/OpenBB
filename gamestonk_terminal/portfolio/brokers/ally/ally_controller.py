@@ -19,7 +19,6 @@ class AllyController(BaseController):
     """Ally Controller class"""
 
     CHOICES_COMMANDS = ["holdings", "history", "balances", "quote", "movers"]
-    CHOICES_MENUS: List[str] = []
 
     list_choices = [
         "toplosers",
@@ -32,9 +31,7 @@ class AllyController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__(
-            "/portfolio/bro/ally/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/portfolio/bro/ally/", queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}

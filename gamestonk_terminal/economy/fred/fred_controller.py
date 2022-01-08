@@ -31,9 +31,7 @@ class FredController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__(
-            "/economy/fred/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/economy/fred/", queue)
 
         self.current_series: Dict = dict()
         self.long_id = 0

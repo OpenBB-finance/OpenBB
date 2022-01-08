@@ -46,15 +46,12 @@ class DarkPoolShortsController(BaseController):
         "spos",
         "volexch",
     ]
-    CHOICES_MENUS: List[str] = []
 
     def __init__(
         self, ticker: str, start: str, stock: pd.DataFrame, queue: List[str] = None
     ):
         """Constructor"""
-        super().__init__(
-            "/stocks/dps/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/stocks/dps/", queue)
 
         self.ticker = ticker
         self.start = start

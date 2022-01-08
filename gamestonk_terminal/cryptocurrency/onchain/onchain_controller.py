@@ -79,13 +79,10 @@ class OnchainController(BaseController):
         "ttcp",
         "baas",
     ]
-    CHOICES_MENUS: List[str] = []
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__(
-            "/crypto/onchain/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/crypto/onchain/", queue)
 
         self.address = ""
         self.address_type = ""

@@ -14,12 +14,8 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import system_clear, get_flair
 
-# Do before merging
-# add try_except to all switches
 
-
-class BaseController:
-    __metaclass__ = ABCMeta
+class BaseController(metaclass=ABCMeta):
 
     COMMON_CHOICES = [
         "cls",
@@ -35,12 +31,10 @@ class BaseController:
         "reset",
     ]
 
-    def __init__(
-        self,
-        path: str,
-        queue: List[str] = None,
-        controller_choices: List[str] = None,
-    ) -> None:
+    CHOICES_COMMANDS: List[str] = []
+    CHOICES_MENUS: List[str] = []
+
+    def __init__(self, path: str, queue: List[str] = None) -> None:
         """
         This is the base class for any controller in the codebase.
         It's used to simplify the creation of menus.
@@ -51,9 +45,6 @@ class BaseController:
         queue: List[str]
             The current queue of jobs to process separated by "/"
             E.g. /stocks/load gme/dps/sidtc/../exit
-        controller_choices: List[str]
-            Menu choices of the particular menu (including menu and commands)
-            E.g. ["load", "search", "ta", "pred"]
         """
         self.check_path(path)
         self.path = path
@@ -62,6 +53,7 @@ class BaseController:
 
         self.queue = queue if (queue and path != "/") else list()
 
+        controller_choices = self.CHOICES_COMMANDS + self.CHOICES_MENUS
         if controller_choices:
             self.controller_choices = controller_choices + self.COMMON_CHOICES
         else:
@@ -140,7 +132,7 @@ class BaseController:
 
         return self.queue
 
-    def call_cls(self, _):
+    def call_cls(self, _) -> None:
         """Process cls command"""
         system_clear()
 
@@ -206,7 +198,7 @@ class BaseController:
                 # Display help menu when entering on this menu from a level above
                 if an_input == "HELP_ME":
                     self.print_help()
-                    
+
                 try:
                     # Get input from user using auto-completion
                     if session and gtff.USE_PROMPT_TOOLKIT:

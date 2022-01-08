@@ -60,7 +60,6 @@ class InsiderController(BaseController):
         "lins",
         "stats",
     ]
-    CHOICES_MENUS: List[str] = []
 
     preset_choices = [
         preset.split(".")[0]
@@ -77,9 +76,7 @@ class InsiderController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__(
-            "/stocks/ins/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/stocks/ins/", queue)
 
         self.ticker = ticker
         self.start = start

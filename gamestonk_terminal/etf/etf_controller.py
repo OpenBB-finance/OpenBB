@@ -69,7 +69,7 @@ class ETFController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/etf/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS)
+        super().__init__("/etf/", queue)
 
         self.etf_name = ""
         self.etf_data = ""

@@ -102,11 +102,7 @@ class OptionsController(BaseController):
 
     def __init__(self, ticker: str, queue: List[str] = None):
         """Constructor"""
-        super().__init__(
-            "/stocks/options/",
-            queue,
-            self.CHOICES_COMMANDS + self.CHOICES_MENUS,
-        )
+        super().__init__("/stocks/options/", queue)
 
         self.ticker = ticker
         self.prices = pd.DataFrame(columns=["Price", "Chance"])

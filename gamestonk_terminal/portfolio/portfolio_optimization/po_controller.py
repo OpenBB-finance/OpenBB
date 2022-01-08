@@ -42,7 +42,6 @@ class PortfolioOptimization(BaseController):
         "ef",
         "yolo",
     ]
-    CHOICES_MENUS: List[str] = []
 
     period_choices = [
         "1d",
@@ -153,9 +152,7 @@ class PortfolioOptimization(BaseController):
 
     def __init__(self, tickers: List[str] = None, queue: List[str] = None):
         """Constructor"""
-        super().__init__(
-            "/portfolio/po/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/portfolio/po/", queue)
 
         if tickers:
             self.tickers = list(set(tickers))

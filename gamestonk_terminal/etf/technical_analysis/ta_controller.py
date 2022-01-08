@@ -58,7 +58,6 @@ class TechnicalAnalysisController(BaseController):
         "obv",
         "fib",
     ]
-    CHOICES_MENUS: List[str] = []
 
     def __init__(
         self,
@@ -68,7 +67,7 @@ class TechnicalAnalysisController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/etf/ta/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS)
+        super().__init__("/etf/ta/", queue)
 
         self.ticker = ticker
         self.start = start

@@ -68,9 +68,7 @@ class ComparisonAnalysisController(BaseController):
 
     def __init__(self, similar: List[str] = None, queue: List[str] = None):
         """Constructor"""
-        super().__init__(
-            "/stocks/ca/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/stocks/ca/", queue)
 
         self.ticker = ""
         self.user = ""

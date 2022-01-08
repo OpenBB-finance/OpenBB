@@ -62,7 +62,6 @@ class BehaviouralAnalysisController(BaseController):
         "popularsi",
         "getdd",
     ]
-    CHOICES_MENUS: List[str] = []
 
     historical_sort = ["date", "value"]
     historical_direction = ["asc", "desc"]
@@ -70,9 +69,7 @@ class BehaviouralAnalysisController(BaseController):
 
     def __init__(self, ticker: str, start: datetime, queue: List[str] = None):
         """Constructor"""
-        super().__init__(
-            "/stocks/ba/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/stocks/ba/", queue)
 
         self.ticker = ticker
         self.start = start

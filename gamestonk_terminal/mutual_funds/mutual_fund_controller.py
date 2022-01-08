@@ -40,7 +40,6 @@ class FundController(BaseController):
         "sector",
         "equity",
     ]
-    CHOICES_MENUS: List[str] = []
 
     fund_countries = investpy.funds.get_fund_countries()
     search_by_choices = ["name", "issuer", "isin", "symbol"]
@@ -57,7 +56,7 @@ class FundController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/funds/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS)
+        super().__init__("/funds/", queue)
 
         self.country = "united states"
         self.data = pd.DataFrame()

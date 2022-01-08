@@ -57,7 +57,6 @@ class QaController(BaseController):
         "unitroot",
         "capm",
     ]
-    CHOICES_MENUS: List[str] = []
 
     stock_interval = [1, 5, 15, 30, 60]
     stock_sources = ["yf", "av", "iex"]
@@ -71,9 +70,7 @@ class QaController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__(
-            "/stocks/qa/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/stocks/qa/", queue)
 
         stock["Returns"] = stock["Adj Close"].pct_change()
         stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(

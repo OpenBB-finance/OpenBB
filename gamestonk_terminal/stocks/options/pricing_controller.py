@@ -25,7 +25,6 @@ class PricingController(BaseController):
         "show",
         "rnval",
     ]
-    CHOICES_MENUS: List[str] = []
 
     def __init__(
         self,
@@ -38,7 +37,6 @@ class PricingController(BaseController):
         super().__init__(
             "/stocks/options/pricing/",
             queue,
-            self.CHOICES_COMMANDS + self.CHOICES_MENUS,
         )
 
         self.ticker = ticker

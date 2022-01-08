@@ -49,9 +49,7 @@ class PortfolioController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__(
-            "/portfolio/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/portfolio/", queue)
 
         self.portfolio = pd.DataFrame(
             columns=[

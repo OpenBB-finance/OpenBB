@@ -44,7 +44,6 @@ class DueDiligenceController(BaseController):
     """Due Diligence Controller class"""
 
     CHOICES_COMMANDS = ["load", "oi", "active", "change", "nonzero", "eb"]
-    CHOICES_MENUS: List[str] = []
 
     SPECIFIC_CHOICES = {
         "cp": [
@@ -88,9 +87,7 @@ class DueDiligenceController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__(
-            "/crypto/dd/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/crypto/dd/", queue)
 
         for _, value in self.SPECIFIC_CHOICES.items():
             self.controller_choices.extend(value)

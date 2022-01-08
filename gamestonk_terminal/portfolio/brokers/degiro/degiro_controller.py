@@ -30,13 +30,10 @@ class DegiroController(BaseController):
         "topnews",
         "update",
     ]
-    CHOICES_MENUS: List[str] = []
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__(
-            "/portfolio/bro/derigo/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/portfolio/bro/derigo/", queue)
 
         self.__degiro_view = DegiroView()
 

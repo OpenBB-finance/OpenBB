@@ -34,13 +34,10 @@ class BacktestingController(BaseController):
     """Backtesting Controller class"""
 
     CHOICES_COMMANDS = ["ema", "ema_cross", "rsi", "whatif"]
-    CHOICES_MENUS: List[str] = []
 
     def __init__(self, ticker: str, stock: pd.DataFrame, queue: List[str] = None):
         """Constructor"""
-        super().__init__(
-            "/stocks/bt/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/stocks/bt/", queue)
 
         self.ticker = ticker
         self.stock = stock

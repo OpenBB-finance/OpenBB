@@ -31,11 +31,10 @@ class CovidController(BaseController):
     """Covid Controller class"""
 
     CHOICES_COMMANDS = ["country", "ov", "deaths", "cases", "rates", "slopes"]
-    CHOICES_MENUS: List[str] = []
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS)
+        super().__init__("/stocks/", queue)
 
         self.country = "US"
         self.COUNTRY_LIST = pd.read_csv(country_file, sep="\n", index_col=None)[

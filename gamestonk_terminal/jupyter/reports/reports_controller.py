@@ -73,12 +73,11 @@ class ReportController(BaseController):
             + f"{(max_len_name-len(report_to_run))*' '} "
             + f"{args if args != '<>' else ''}\n"
         )
+    CHOICES_MENUS = report_names + ids_reports
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__(
-            "/jupyter/reports/", queue, self.report_names + self.ids_reports
-        )
+        super().__init__("/jupyter/reports/", queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}

@@ -43,7 +43,6 @@ class DueDiligenceController(BaseController):
         "customer",
         "arktrades",
     ]
-    CHOICES_MENUS: List[str] = []
 
     def __init__(
         self,
@@ -54,9 +53,7 @@ class DueDiligenceController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__(
-            "/stocks/dd/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/stocks/dd/", queue)
 
         self.ticker = ticker
         self.start = start

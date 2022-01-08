@@ -72,7 +72,7 @@ class CryptoController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/crypto/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS)
+        super().__init__("/crypto/", queue)
 
         self.symbol = ""
         self.current_coin = ""

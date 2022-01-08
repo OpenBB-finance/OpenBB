@@ -30,15 +30,12 @@ class PayoffController(BaseController):
         "plot",
         "sop",
     ]
-    CHOICES_MENUS: List[str] = []
 
     underlying_asset_choices = ["long", "short", "none"]
 
     def __init__(self, ticker: str, expiration: str, queue: List[str] = None):
         """Constructor"""
-        super().__init__(
-            "/stocks/options/payoff/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/stocks/options/payoff/", queue)
 
         self.chain = get_option_chain(ticker, expiration)
         self.calls = list(

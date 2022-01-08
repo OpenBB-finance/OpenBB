@@ -128,9 +128,7 @@ class SectorIndustryAnalysisController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__(
-            "/stocks/sia/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/stocks/sia/", queue)
 
         self.country = "United States"
         self.sector = "Financial Services"

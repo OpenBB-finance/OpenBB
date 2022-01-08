@@ -30,7 +30,7 @@ class ForexController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Construct Data."""
-        super().__init__("/forex/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS)
+        super().__init__("/forex/", queue)
 
         self.from_symbol = "USD"
         self.to_symbol = ""

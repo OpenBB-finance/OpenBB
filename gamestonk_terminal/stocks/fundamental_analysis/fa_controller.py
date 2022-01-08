@@ -77,9 +77,7 @@ class FundamentalAnalysisController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__(
-            "/stocks/fa/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/stocks/fa/", queue)
 
         self.ticker = f"{ticker}.{suffix}" if suffix else ticker
         self.start = start

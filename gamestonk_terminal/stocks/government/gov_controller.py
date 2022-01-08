@@ -39,7 +39,6 @@ class GovController(BaseController):
         "histcont",
         "lobbying",
     ]
-    CHOICES_MENUS: List[str] = []
 
     gov_type_choices = ["congress", "senate", "house"]
     analysis_choices = ["total", "upmom", "downmom"]
@@ -50,9 +49,7 @@ class GovController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__(
-            "/stocks/gov/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/stocks/gov/", queue)
 
         self.ticker = ticker
 

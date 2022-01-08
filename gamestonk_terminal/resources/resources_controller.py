@@ -23,13 +23,10 @@ class ResourceCollectionController(BaseController):
         "learn",
         "econiverse",
     ]
-    CHOICES_MENUS: List[str] = []
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__(
-            "/resources/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        )
+        super().__init__("/resources/", queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}

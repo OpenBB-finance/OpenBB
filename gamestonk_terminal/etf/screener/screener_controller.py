@@ -32,7 +32,6 @@ class ScreenerController(BaseController):
         "screen",
         "sbc",
     ]
-    CHOICES_MENUS: List[str] = []
 
     presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
     preset_choices = [
@@ -58,7 +57,7 @@ class ScreenerController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/etf/scr/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS)
+        super().__init__("/etf/scr/", queue)
 
         self.preset = "etf_config"
         self.screen_tickers: List = list()

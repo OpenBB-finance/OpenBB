@@ -20,11 +20,10 @@ class JupyterController(BaseController):
         "reports",
         "dashboards",
     ]
-    CHOICES_MENUS: List[str] = []
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/jupyter/", queue, self.CHOICES_COMMANDS + self.CHOICES_MENUS)
+        super().__init__("/jupyter/", queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
