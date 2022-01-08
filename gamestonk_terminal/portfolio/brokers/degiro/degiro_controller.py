@@ -14,7 +14,6 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     system_clear,
-    try_except,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers.degiro.degiro_view import DegiroView
@@ -66,7 +65,6 @@ class DegiroController:
 
         self.queue = queue if queue else list()
 
-    @try_except
     def command_call(self, known_args, other_args):
         """Wrapper function that handles exceptions in an informative way
 
