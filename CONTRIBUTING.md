@@ -268,7 +268,6 @@ of information. E.g.
    * Call the function contained in a `_view.py` file with the arguments parsed by argparse.
 
 ```python
-@try_except
 def call_shorted(self, other_args: List[str]):
         """Process shorted command"""
         parser = argparse.ArgumentParser(

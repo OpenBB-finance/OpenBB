@@ -32,12 +32,12 @@ def test_menu_with_queue(expected, mocker, queue):
         target=f"{path_controller}.ResearchController.switch",
         return_value=["quit"],
     )
-    result_menu = res_controller.menu(
+    result_menu = res_controller.ResearchController(
         ticker="MOCK_TICKER",
         start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
         interval="MOCK_INTERVAL",
         queue=queue,
-    )
+    ).menu()
 
     assert result_menu == expected
 
@@ -46,7 +46,20 @@ def test_menu_with_queue(expected, mocker, queue):
 def test_menu_without_queue_completion(mocker):
     path_controller = "gamestonk_terminal.stocks.research.res_controller"
 
-    # DISABLE AUTO-COMPLETION
+    # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    mocker.patch(
+        target="gamestonk_terminal.feature_flags.USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session.prompt",
+        return_value="quit",
+    )
+
+    # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch.object(
         target=res_controller.gtff,
         attribute="USE_PROMPT_TOOLKIT",
@@ -60,12 +73,12 @@ def test_menu_without_queue_completion(mocker):
         return_value="quit",
     )
 
-    result_menu = res_controller.menu(
+    result_menu = res_controller.ResearchController(
         ticker="MOCK_TICKER",
         start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
         interval="MOCK_INTERVAL",
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -109,12 +122,12 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         new=mock_switch,
     )
 
-    result_menu = res_controller.menu(
+    result_menu = res_controller.ResearchController(
         ticker="MOCK_TICKER",
         start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
         interval="MOCK_INTERVAL",
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 

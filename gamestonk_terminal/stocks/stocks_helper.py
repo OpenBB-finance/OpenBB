@@ -25,7 +25,6 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     plot_autoscale,
-    try_except,
     get_user_timezone_or_invalid,
 )
 
@@ -35,7 +34,6 @@ INTERVALS = [1, 5, 15, 30, 60]
 SOURCES = ["yf", "av", "iex"]
 
 
-@try_except
 def search(
     query: str,
     amount: int,
@@ -90,7 +88,6 @@ def search(
         print(equities_dataframe.iloc[:amount].to_string(), "\n")
 
 
-@try_except
 def load(
     ticker: str,
     start: datetime = (datetime.now() - timedelta(days=1100)),

@@ -123,10 +123,10 @@ def test_menu_with_queue(expected, mocker, queue):
         target=f"{path_controller}.OptionsController.switch",
         return_value=["quit"],
     )
-    result_menu = options_controller.menu(
+    result_menu = options_controller.OptionsController(
         ticker="TSLA",
         queue=queue,
-    )
+    ).menu()
 
     assert result_menu == expected
 
@@ -149,7 +149,20 @@ def test_menu_without_queue_completion(mocker):
         return_value=CHAIN,
     )
 
-    # DISABLE AUTO-COMPLETION
+    # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    mocker.patch(
+        target="gamestonk_terminal.feature_flags.USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session.prompt",
+        return_value="quit",
+    )
+
+    # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch.object(
         target=options_controller.gtff,
         attribute="USE_PROMPT_TOOLKIT",
@@ -169,10 +182,10 @@ def test_menu_without_queue_completion(mocker):
         target=f"{path_controller}.OptionsController",
         return_value=controller,
     )
-    result_menu = options_controller.menu(
+    result_menu = options_controller.OptionsController(
         ticker="MOCK_TICKER",
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -230,10 +243,10 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         new=mock_switch,
     )
 
-    result_menu = options_controller.menu(
+    result_menu = options_controller.OptionsController(
         ticker="MOCK_TICKER",
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -308,8 +321,8 @@ def test_call_cls(mocker):
                 "quit",
                 "reset",
                 "stocks",
-                "options",
                 "load MOCK_TICKER",
+                "options",
                 "exp -d 2022-01-07",
             ],
         ),
@@ -321,8 +334,8 @@ def test_call_cls(mocker):
                 "quit",
                 "reset",
                 "stocks",
-                "options",
                 "load MOCK_TICKER",
+                "options",
                 "exp -d 2022-01-07",
                 "help",
             ],
@@ -821,7 +834,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
         (
             "call_payoff",
             [],
-            "payoff_controller.menu",
+            "payoff_controller.PayoffController",
             [
                 "MOCK_TICKER",
                 "2022-01-07",
@@ -832,15 +845,15 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
         (
             "call_pricing",
             [],
-            "pricing_controller.menu",
+            "pricing_controller.PricingController",
             [],
             dict(),
         ),
         (
             "call_screen",
             [],
-            "screener_controller.menu",
-            [list()],
+            "screener_controller.ScreenerController",
+            [],
             dict(),
         ),
     ],
@@ -872,7 +885,7 @@ def test_call_func_test(
     )
 
     if mocked_func:
-        mock = mocker.Mock()
+        mock = mocker.MagicMock()
         mocker.patch(
             target=f"{path_controller}.{mocked_func}",
             new=mock,

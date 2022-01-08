@@ -17,6 +17,7 @@ from tests.helpers.helpers import check_print
 # pylint: disable=unused-import
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_display_collection_stats():
