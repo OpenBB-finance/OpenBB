@@ -77,6 +77,8 @@ python-dotenv = {version = "^0.19.2", optional = true}
 pandas-ta = "^0.3.14-beta.0"
 python-binance = "^1.0.15"
 python-coinmarketcap = "^0.3"
+pyally = "^1.1.2"
+degiro-connector = "^2.0.13"
 
 
 [tool.poetry.dev-dependencies]
