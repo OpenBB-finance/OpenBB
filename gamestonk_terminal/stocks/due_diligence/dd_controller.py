@@ -26,6 +26,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks import stocks_helper
+from gamestonk_terminal.rich_config import console
 
 
 class DueDiligenceController(BaseController):
@@ -88,7 +89,7 @@ csimarket:
 cathiesark.com
     arktrades     get ARK trades for ticker
         """
-        print(help_text)
+        console.print(help_text)
 
     def custom_reset(self) -> List[str]:
         """Class specific component of reset command"""

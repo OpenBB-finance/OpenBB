@@ -11,6 +11,7 @@ from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep impo
     fmp_model,
 )
 import gamestonk_terminal.feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def valinvest_score(ticker: str):
@@ -24,8 +25,8 @@ def valinvest_score(ticker: str):
         Fundamental analysis ticker symbol
     """
     score = fmp_model.get_score(ticker)
-    print(f"Score: {score:.2f}".rstrip("0").rstrip(".") + " %")
-    print("")
+    console.print(f"Score: {score:.2f}".rstrip("0").rstrip(".") + " %")
+    console.print("")
 
 
 def display_profile(ticker: str):
@@ -40,7 +41,7 @@ def display_profile(ticker: str):
     """
     profile = fmp_model.get_profile(ticker)
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 profile.drop(index=["description", "image"]),
                 headers=[],
@@ -48,11 +49,13 @@ def display_profile(ticker: str):
             )
         )
     else:
-        print(profile.drop(index=["description", "image"]).to_string(header=False))
+        console.print(
+            profile.drop(index=["description", "image"]).to_string(header=False)
+        )
 
-    print(f"\nImage: {profile.loc['image'][0]}")
-    print(f"\nDescription: {profile.loc['description'][0]}")
-    print("")
+    console.print(f"\nImage: {profile.loc['image'][0]}")
+    console.print(f"\nDescription: {profile.loc['description'][0]}")
+    console.print("")
 
 
 def display_quote(ticker: str):
@@ -66,10 +69,10 @@ def display_quote(ticker: str):
 
     quote = fmp_model.get_quote(ticker)
     if gtff.USE_TABULATE_DF:
-        print(tabulate(quote, headers=[], tablefmt="fancy_grid"))
+        console.print(tabulate(quote, headers=[], tablefmt="fancy_grid"))
     else:
-        print(quote.to_string(header=False))
-    print("")
+        console.print(quote.to_string(header=False))
+    console.print("")
 
 
 def display_enterprise(
@@ -91,10 +94,10 @@ def display_enterprise(
     df_fa = fmp_model.get_enterprise(ticker, number, quarterly)
     df_fa = df_fa[df_fa.columns[::-1]]
     if gtff.USE_TABULATE_DF:
-        print(tabulate(df_fa, headers=df_fa.columns, tablefmt="fancy_grid"))
+        console.print(tabulate(df_fa, headers=df_fa.columns, tablefmt="fancy_grid"))
     else:
-        print(df_fa.to_string())
-    print("")
+        console.print(df_fa.to_string())
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "enterprise", df_fa)
 
 
@@ -117,11 +120,11 @@ def display_discounted_cash_flow(
     dcf = fmp_model.get_dcf(ticker, number, quarterly)
     dcf = dcf[dcf.columns[::-1]]
     if gtff.USE_TABULATE_DF:
-        print(tabulate(dcf, headers=[], tablefmt="fancy_grid"))
+        console.print(tabulate(dcf, headers=[], tablefmt="fancy_grid"))
     else:
-        print(dcf.to_string())
+        console.print(dcf.to_string())
 
-    print("")
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "dcf", dcf)
 
 
@@ -144,7 +147,7 @@ def display_income_statement(
     income = fmp_model.get_income(ticker, number, quarterly)
     income = income[income.columns[::-1]]
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 income.drop(index=["Final link", "Link"]),
                 headers=income.columns,
@@ -154,14 +157,14 @@ def display_income_statement(
 
     else:
 
-        print(income.drop(index=["Final link", "Link"]).to_string())
+        console.print(income.drop(index=["Final link", "Link"]).to_string())
 
     pd.set_option("display.max_colwidth", None)
-    print("")
-    print(income.loc["Final link"].to_frame().to_string())
-    print("")
-    print(income.loc["Link"].to_frame().to_string())
-    print("")
+    console.print("")
+    console.print(income.loc["Final link"].to_frame().to_string())
+    console.print("")
+    console.print(income.loc["Link"].to_frame().to_string())
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "income", income)
 
 
@@ -184,7 +187,7 @@ def display_balance_sheet(
     balance = fmp_model.get_balance(ticker, number, quarterly)
     balance = balance[balance.columns[::-1]]
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 balance.drop(index=["Final link", "Link"]),
                 headers=balance.columns,
@@ -193,14 +196,14 @@ def display_balance_sheet(
         )
 
     else:
-        print(balance.drop(index=["Final link", "Link"]).to_string())
+        console.print(balance.drop(index=["Final link", "Link"]).to_string())
 
     pd.set_option("display.max_colwidth", None)
-    print("")
-    print(balance.loc["Final link"].to_frame().to_string())
-    print("")
-    print(balance.loc["Link"].to_frame().to_string())
-    print("")
+    console.print("")
+    console.print(balance.loc["Final link"].to_frame().to_string())
+    console.print("")
+    console.print(balance.loc["Link"].to_frame().to_string())
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "balance", balance)
 
 
@@ -223,7 +226,7 @@ def display_cash_flow(
     cash = fmp_model.get_cash(ticker, number, quarterly)
     cash = cash[cash.columns[::-1]]
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 cash.drop(index=["Final link", "Link"]),
                 headers=cash.columns,
@@ -231,14 +234,14 @@ def display_cash_flow(
             )
         )
     else:
-        print(cash.drop(index=["Final link", "Link"]).to_string())
+        console.print(cash.drop(index=["Final link", "Link"]).to_string())
 
     pd.set_option("display.max_colwidth", None)
-    print("")
-    print(cash.loc["Final link"].to_frame().to_string())
-    print("")
-    print(cash.loc["Link"].to_frame().to_string())
-    print("")
+    console.print("")
+    console.print(cash.loc["Final link"].to_frame().to_string())
+    console.print("")
+    console.print(cash.loc["Link"].to_frame().to_string())
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "cash", cash)
 
 
@@ -261,10 +264,12 @@ def display_key_metrics(
     key_metrics = fmp_model.get_key_metrics(ticker, number, quarterly)
     key_metrics = key_metrics[key_metrics.columns[::-1]]
     if gtff.USE_TABULATE_DF:
-        print(tabulate(key_metrics, headers=key_metrics.columns, tablefmt="fancy_grid"))
+        console.print(
+            tabulate(key_metrics, headers=key_metrics.columns, tablefmt="fancy_grid")
+        )
     else:
-        print(key_metrics.to_string())
-    print("")
+        console.print(key_metrics.to_string())
+    console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "metrics", key_metrics
     )
@@ -289,11 +294,11 @@ def display_financial_ratios(
     ratios = fmp_model.get_key_ratios(ticker, number, quarterly)
     ratios = ratios[ratios.columns[::-1]]
     if gtff.USE_TABULATE_DF:
-        print(tabulate(ratios, headers=ratios.columns, tablefmt="fancy_grid"))
+        console.print(tabulate(ratios, headers=ratios.columns, tablefmt="fancy_grid"))
     else:
 
-        print(ratios.to_string())
-    print("")
+        console.print(ratios.to_string())
+    console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "grratiosowth", ratios
     )
@@ -318,9 +323,9 @@ def display_financial_statement_growth(
     growth = fmp_model.get_financial_growth(ticker, number, quarterly)
     growth = growth[growth.columns[::-1]]
     if gtff.USE_TABULATE_DF:
-        print(tabulate(growth, headers=growth.columns, tablefmt="fancy_grid"))
+        console.print(tabulate(growth, headers=growth.columns, tablefmt="fancy_grid"))
     else:
 
-        print(growth.to_string())
-    print("")
+        console.print(growth.to_string())
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "growth", growth)

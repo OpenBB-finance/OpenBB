@@ -9,6 +9,7 @@ from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.stocks.options import fdscanner_model
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def display_options(
@@ -42,9 +43,9 @@ def display_options(
         data = data[data.Type == "Put"]
     if calls_only:
         data = data[data.Type == "Call"]
-    print(f"Last Updated: {last_update} (EST)")
+    console.print(f"Last Updated: {last_update} (EST)")
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 data[:num],
                 headers=data.columns,
@@ -54,8 +55,8 @@ def display_options(
             )
         )
     else:
-        print(data[:num].to_string())
-    print("")
+        console.print(data[:num].to_string())
+    console.print("")
 
     if export:
         export_data(

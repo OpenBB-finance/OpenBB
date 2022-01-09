@@ -16,6 +16,7 @@ from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.rich_config import console
 
 
 class FinancialModelingPrepController(BaseController):
@@ -70,7 +71,7 @@ Ticker: {self.ticker}
     ratios        financial ratios of the company
     growth        financial statement growth of the company
         """
-        print(help_text)
+        console.print(help_text)
 
     def custom_reset(self):
         """Class specific component of reset command"""

@@ -12,6 +12,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.stocks.insider import businessinsider_model
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -54,7 +55,7 @@ def insider_activity(
     if raw:
         df_insider.index = pd.to_datetime(df_insider.index).date
 
-        print(
+        console.print(
             tabulate(
                 df_insider.sort_index(ascending=False)
                 .head(n=num)
@@ -165,7 +166,7 @@ def insider_activity(
 
         plt.show()
 
-    print("")
+    console.print("")
 
     export_data(
         export,

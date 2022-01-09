@@ -12,6 +12,7 @@ from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.stocks.options import syncretism_model
+from gamestonk_terminal.rich_config import console
 
 
 def view_available_presets(preset: str, presets_path: str):
@@ -29,21 +30,21 @@ def view_available_presets(preset: str, presets_path: str):
         preset_filter.optionxform = str  # type: ignore
         preset_filter.read(os.path.join(presets_path, preset + ".ini"))
         filters_headers = ["FILTER"]
-        print("")
+        console.print("")
 
         for filter_header in filters_headers:
-            print(f" - {filter_header} -")
+            console.print(f" - {filter_header} -")
             d_filters = {**preset_filter[filter_header]}
             d_filters = {k: v for k, v in d_filters.items() if v}
             if d_filters:
                 max_len = len(max(d_filters, key=len)) + 2
                 for key, value in d_filters.items():
-                    print(f"{key}{(max_len-len(key))*' '}: {value}")
-            print("")
+                    console.print(f"{key}{(max_len-len(key))*' '}: {value}")
+            console.print("")
 
     else:
-        print("Please provide a preset template.")
-    print("")
+        console.print("Please provide a preset template.")
+    console.print("")
 
 
 def view_screener_output(
@@ -69,7 +70,7 @@ def view_screener_output(
     """
     df_res, error_msg = syncretism_model.get_screener_output(preset, presets_path)
     if error_msg:
-        print(error_msg, "\n")
+        console.print(error_msg, "\n")
         return []
 
     export_data(
@@ -83,7 +84,7 @@ def view_screener_output(
         df_res = df_res.head(n_show)
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df_res,
                 headers=df_res.columns,
@@ -93,7 +94,7 @@ def view_screener_output(
             "\n",
         )
     else:
-        print(df_res.to_string())
+        console.print(df_res.to_string())
 
     return df_res["S"].values.tolist()
 
@@ -138,7 +139,9 @@ def view_historical_greeks(
     df = syncretism_model.get_historical_greeks(ticker, expiry, chain_id, strike, put)
 
     if raw:
-        print(tabulate(df.tail(n_show), headers=df.columns, tablefmt="fancy_grid"))
+        console.print(
+            tabulate(df.tail(n_show), headers=df.columns, tablefmt="fancy_grid")
+        )
 
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     im1 = ax.plot(df.index, df[greek], c="firebrick", label=greek)
@@ -167,4 +170,4 @@ def view_historical_greeks(
         "grhist",
         df,
     )
-    print("")
+    console.print("")

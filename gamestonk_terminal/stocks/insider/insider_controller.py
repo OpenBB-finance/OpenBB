@@ -22,6 +22,7 @@ from gamestonk_terminal.stocks.insider import (
     businessinsider_view,
     finviz_view,
 )
+from gamestonk_terminal.rich_config import console
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -131,7 +132,7 @@ Top Insiders:
     tispw         top insider sales past week
     tispm         top insider sales past month
 """
-        print(help_text)
+        console.print(help_text)
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -211,16 +212,16 @@ Top Insiders:
                     "CompanyTotals",
                 ]
 
-                print("")
+                console.print("")
                 for filter_header in filters_headers:
-                    print(f" - {filter_header} -")
+                    console.print(f" - {filter_header} -")
                     d_filters = {**preset_filter[filter_header]}
                     d_filters = {k: v for k, v in d_filters.items() if v}
                     if d_filters:
                         max_len = len(max(d_filters, key=len))
                         for key, value in d_filters.items():
-                            print(f"{key}{(max_len-len(key))*' '}: {value}")
-                    print("")
+                            console.print(f"{key}{(max_len-len(key))*' '}: {value}")
+                    console.print("")
 
             else:
                 for preset in self.preset_choices:
@@ -233,9 +234,11 @@ Top Insiders:
                             if line.strip() == "[General]":
                                 break
                             description += line.strip()
-                    print(f"\nPRESET: {preset}")
-                    print(description.split("Description: ")[1].replace("#", ""))
-                print("")
+                    console.print(f"\nPRESET: {preset}")
+                    console.print(
+                        description.split("Description: ")[1].replace("#", "")
+                    )
+                console.print("")
 
     def call_set(self, other_args: List[str]):
         """Process set command"""
@@ -259,7 +262,7 @@ Top Insiders:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.preset = ns_parser.preset
-            print("")
+            console.print("")
 
     def call_filter(self, other_args: List[str]):
         """Process filter command"""
@@ -340,7 +343,7 @@ Top Insiders:
                     export=ns_parser.export,
                 )
             else:
-                print("Please use `load <ticker>` before.\n")
+                console.print("Please use `load <ticker>` before.\n")
 
     def call_lcb(self, other_args: List[str]):
         """Process latest-cluster-buys"""
@@ -922,7 +925,7 @@ Top Insiders:
                     export=ns_parser.export,
                 )
             else:
-                print("No ticker loaded. First use `load {ticker}`\n")
+                console.print("No ticker loaded. First use `load {ticker}`\n")
 
     def call_lins(self, other_args: List[str]):
         """Process lins command"""
@@ -956,4 +959,4 @@ Top Insiders:
                     export=ns_parser.export,
                 )
             else:
-                print("No ticker loaded. First use `load {ticker}`\n")
+                console.print("No ticker loaded. First use `load {ticker}`\n")

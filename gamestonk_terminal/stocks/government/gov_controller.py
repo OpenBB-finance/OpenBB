@@ -21,6 +21,7 @@ from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
 )
+from gamestonk_terminal.rich_config import console
 
 
 class GovController(BaseController):
@@ -86,7 +87,7 @@ Ticker: {self.ticker or None}{dim_no_ticker}
     histcont             show historical quarterly government contracts for ticker
     lobbying             corporate lobbying details for ticker{reset_style}
             """
-        print(help_txt)
+        console.print(help_txt)
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -131,7 +132,7 @@ Ticker: {self.ticker or None}{dim_no_ticker}
             if not df_stock_candidate.empty:
                 self.ticker = ns_parser.ticker.upper()
             else:
-                print("Ticker selected does not exist!", "\n")
+                console.print("Ticker selected does not exist!", "\n")
 
     def call_lasttrades(self, other_args: List[str]):
         """Process lasttrades command"""
@@ -464,7 +465,7 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                     export=ns_parser.export,
                 )
             else:
-                print("No ticker loaded. Use `load <ticker>` first.\n")
+                console.print("No ticker loaded. Use `load <ticker>` first.\n")
 
     def call_contracts(self, other_args: List[str]):
         """Process contracts command"""
@@ -504,7 +505,7 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                     export=ns_parser.export,
                 )
             else:
-                print("No ticker loaded. Use `load <ticker>` first.\n")
+                console.print("No ticker loaded. Use `load <ticker>` first.\n")
 
     def call_histcont(self, other_args: List[str]):
         """Process histcont command"""
@@ -530,7 +531,7 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                     ticker=self.ticker, raw=ns_parser.raw, export=ns_parser.export
                 )
             else:
-                print("No ticker loaded. Use `load <ticker>` first.\n")
+                console.print("No ticker loaded. Use `load <ticker>` first.\n")
 
     def call_lobbying(self, other_args: List[str]):
         """Process lobbying command"""
@@ -559,4 +560,4 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                     num=ns_parser.limit,
                 )
             else:
-                print("No ticker loaded. Use `load <ticker>` first.\n")
+                console.print("No ticker loaded. Use `load <ticker>` first.\n")

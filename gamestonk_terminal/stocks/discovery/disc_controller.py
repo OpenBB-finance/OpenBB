@@ -27,6 +27,7 @@ from gamestonk_terminal.stocks.discovery import (
     geekofwallstreet_view,
     nasdaq_view,
 )
+from gamestonk_terminal.rich_config import console
 
 
 # pylint:disable=C0302
@@ -143,7 +144,7 @@ pennystockflow.com
 NASDAQ Data Link (Formerly Quandl):
     rtat           top 10 retail traded stocks per day
 """
-        print(help_text)
+        console.print(help_text)
 
     def call_rtearn(self, other_args: List[str]):
         """Process rtearn command"""

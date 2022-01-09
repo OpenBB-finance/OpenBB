@@ -13,6 +13,7 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -51,7 +52,7 @@ def price_target_from_analysts(
     if raw:
         df_analyst_data.index = df_analyst_data.index.strftime("%Y-%m-%d")
         if gtff.USE_TABULATE_DF:
-            print(
+            console.print(
                 tabulate(
                     df_analyst_data.sort_index(ascending=False).head(num),
                     headers=df_analyst_data.columns,
@@ -61,7 +62,7 @@ def price_target_from_analysts(
                 )
             )
         else:
-            print(df_analyst_data.head(num).to_string())
+            console.print(df_analyst_data.head(num).to_string())
 
     else:
         plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -95,7 +96,7 @@ def price_target_from_analysts(
             plt.ion()
         plt.gcf().autofmt_xdate()
         plt.show()
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -121,7 +122,7 @@ def estimates(ticker: str, export: str):
         df_quarter_revenues,
     ) = business_insider_model.get_estimates(ticker)
 
-    print(
+    console.print(
         tabulate(
             df_year_estimates,
             headers=df_year_estimates.columns,
@@ -130,8 +131,8 @@ def estimates(ticker: str, export: str):
             tablefmt="fancy_grid",
         ),
     )
-    print("")
-    print(
+    console.print("")
+    console.print(
         tabulate(
             df_quarter_earnings,
             headers=df_quarter_earnings.columns,
@@ -140,8 +141,8 @@ def estimates(ticker: str, export: str):
             tablefmt="fancy_grid",
         ),
     )
-    print("")
-    print(
+    console.print("")
+    console.print(
         tabulate(
             df_quarter_revenues,
             headers=df_quarter_revenues.columns,
@@ -150,7 +151,7 @@ def estimates(ticker: str, export: str):
             tablefmt="fancy_grid",
         )
     )
-    print("")
+    console.print("")
 
     export_data(
         export,

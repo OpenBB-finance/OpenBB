@@ -30,6 +30,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=inconsistent-return-statements
 
@@ -121,13 +122,13 @@ Alpha Vantage:
 Other Sources:
 >   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP{Style.RESET_ALL}
         """
-        print(help_text)
+        console.print(help_text)
         # No longer used, but keep for future:
-        # print("")
-        # print("Market Watch API - DEPRECATED")
-        # print("   income        income statement of the company")
-        # print("   balance       balance sheet of the company")
-        # print("   cash          cash flow statement of the company")
+        # console.print("")
+        # console.print("Market Watch API - DEPRECATED")
+        # console.print("   income        income statement of the company")
+        # console.print("   balance       balance sheet of the company")
+        # console.print("   cash          cash flow statement of the company")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -804,6 +805,6 @@ def key_metrics_explained(other_args: List[str]):
         with open(filepath) as fp:
             line = fp.readline()
             while line:
-                print(f"{line.strip()}")
+                console.print(f"{line.strip()}")
                 line = fp.readline()
-            print("")
+            console.print("")

@@ -235,7 +235,7 @@ Other:
                 self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
                 self.stock = self.stock.dropna()
                 self.stock.columns = [x.lower() for x in self.stock.columns]
-                print("")
+                console.print("")
 
     def call_pick(self, other_args: List[str]):
         """Process pick command"""

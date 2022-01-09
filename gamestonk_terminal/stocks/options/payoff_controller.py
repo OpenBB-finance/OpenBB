@@ -14,6 +14,7 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.options.yfinance_model import get_option_chain, get_price
 from gamestonk_terminal.stocks.options.yfinance_view import plot_payoff
+from gamestonk_terminal.rich_config import console
 
 
 # pylint: disable=R0902
@@ -99,7 +100,7 @@ Underlying Asset: {text}
     sop           selected options
     plot          show the option payoff diagram
         """
-        print(help_text)
+        console.print(help_text)
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -125,12 +126,12 @@ Underlying Asset: {text}
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             length = max(len(self.calls), len(self.puts)) - 1
-            print("#\tcall\tput")
+            console.print("#\tcall\tput")
             for i in range(length):
                 call = self.calls[i][0] if i < len(self.calls) else ""
                 put = self.puts[i][0] if i < len(self.puts) else ""
-                print(f"{i}\t{call}\t{put}")
-            print("")
+                console.print(f"{i}\t{call}\t{put}")
+            console.print("")
 
     def call_add(self, other_args: List[str]):
         """Process add command"""
@@ -187,14 +188,16 @@ Underlying Asset: {text}
                 self.options.append(option)
                 self.update_runtime_choices()
 
-                print("#\tType\tHold\tStrike\tCost")
+                console.print("#\tType\tHold\tStrike\tCost")
                 for i, o in enumerate(self.options):
                     asset: str = "Long" if o["sign"] == 1 else "Short"
-                    print(f"{i}\t{o['type']}\t{asset}\t{o['strike']}\t{o['cost']}")
-                print("")
+                    console.print(
+                        f"{i}\t{o['type']}\t{asset}\t{o['strike']}\t{o['cost']}"
+                    )
+                console.print("")
 
             else:
-                print("Please use a valid index\n")
+                console.print("Please use a valid index\n")
 
     def call_rmv(self, other_args: List[str]):
         """Process rmv command"""
@@ -232,15 +235,19 @@ Underlying Asset: {text}
                         del self.options[ns_parser.index]
                         self.update_runtime_choices()
                     else:
-                        print("Please use a valid index.\n")
+                        console.print("Please use a valid index.\n")
 
-                print("#\tType\tHold\tStrike\tCost")
+                console.print("#\tType\tHold\tStrike\tCost")
                 for i, o in enumerate(self.options):
                     sign = "Long" if o["sign"] == 1 else "Short"
-                    print(f"{i}\t{o['type']}\t{sign}\t{o['strike']}\t{o['cost']}")
-                print("")
+                    console.print(
+                        f"{i}\t{o['type']}\t{sign}\t{o['strike']}\t{o['cost']}"
+                    )
+                console.print("")
         else:
-            print("No options have been selected, removing them is not possible\n")
+            console.print(
+                "No options have been selected, removing them is not possible\n"
+            )
 
     def call_pick(self, other_args: List[str]):
         """Process pick command"""
@@ -270,7 +277,7 @@ Underlying Asset: {text}
             elif ns_parser.underlyingtype == "short":
                 self.underlying = -1
 
-        print("")
+        console.print("")
 
     def call_sop(self, other_args):
         """Process sop command"""
@@ -282,11 +289,11 @@ Underlying Asset: {text}
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            print("#\tType\tHold\tStrike\tCost")
+            console.print("#\tType\tHold\tStrike\tCost")
             for i, o in enumerate(self.options):
                 sign = "Long" if o["sign"] == 1 else "Short"
-                print(f"{i}\t{o['type']}\t{sign}\t{o['strike']}\t{o['cost']}")
-            print("")
+                console.print(f"{i}\t{o['type']}\t{sign}\t{o['strike']}\t{o['cost']}")
+            console.print("")
 
     def call_plot(self, other_args):
         """Process plot command"""

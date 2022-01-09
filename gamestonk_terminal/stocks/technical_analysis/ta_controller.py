@@ -39,6 +39,7 @@ from gamestonk_terminal.common.technical_analysis import (
 )
 
 from gamestonk_terminal.stocks import stocks_helper
+from gamestonk_terminal.rich_config import console
 
 
 class TechnicalAnalysisController(BaseController):
@@ -142,7 +143,7 @@ Volume:
 Custom:
     fib         fibonacci retracement
 """
-        print(help_str)
+        console.print(help_str)
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -615,7 +616,7 @@ Custom:
         if ns_parser:
             # Daily
             if self.interval == "1440min":
-                print("VWAP should be used with intraday data. \n")
+                console.print("VWAP should be used with intraday data. \n")
                 return
 
             overlap_view.view_vwap(

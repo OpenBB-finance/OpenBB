@@ -22,6 +22,7 @@ from gamestonk_terminal.stocks.sector_industry_analysis import (
     financedatabase_view,
 )
 from gamestonk_terminal.stocks.comparison_analysis import ca_controller
+from gamestonk_terminal.rich_config import console
 
 
 # pylint: disable=inconsistent-return-statements,C0302,R0902
@@ -254,7 +255,7 @@ Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
 Returned tickers: {', '.join(self.tickers)}
 >   ca            take these to comparison analysis menu
 {r if len(self.tickers) == 0 else ''}"""
-        print(help_text)
+        console.print(help_text)
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -377,7 +378,9 @@ Returned tickers: {', '.join(self.tickers)}
                     )[0]
                     self.update_runtime_choices()
                 else:
-                    print(f"Industry '{' '.join(ns_parser.name)}' does not exist.")
+                    console.print(
+                        f"Industry '{' '.join(ns_parser.name)}' does not exist."
+                    )
                     similar_cmd = difflib.get_close_matches(
                         " ".join(ns_parser.name),
                         possible_industries,
@@ -385,7 +388,7 @@ Returned tickers: {', '.join(self.tickers)}
                         cutoff=0.75,
                     )
                     if similar_cmd:
-                        print(f"Replacing by '{similar_cmd[0]}'")
+                        console.print(f"Replacing by '{similar_cmd[0]}'")
                         self.industry = similar_cmd[0]
                         # if we get the industry, then we also automatically know the sector
                         self.sector = financedatabase_model.get_sectors(
@@ -400,13 +403,13 @@ Returned tickers: {', '.join(self.tickers)}
                             cutoff=0.5,
                         )
                         if similar_cmd:
-                            print(f"Did you mean '{similar_cmd[0]}'?")
+                            console.print(f"Did you mean '{similar_cmd[0]}'?")
             else:
                 for industry in possible_industries:
-                    print(industry)
+                    console.print(industry)
 
             self.stocks_data = {}
-            print("")
+            console.print("")
 
     def call_sector(self, other_args: List[str]):
         """Process sector command"""
@@ -436,7 +439,9 @@ Returned tickers: {', '.join(self.tickers)}
                     self.sector = " ".join(ns_parser.name)
                     self.update_runtime_choices()
                 else:
-                    print(f"Sector '{' '.join(ns_parser.name)}' does not exist.")
+                    console.print(
+                        f"Sector '{' '.join(ns_parser.name)}' does not exist."
+                    )
 
                     similar_cmd = difflib.get_close_matches(
                         " ".join(ns_parser.name),
@@ -446,7 +451,7 @@ Returned tickers: {', '.join(self.tickers)}
                     )
 
                     if similar_cmd:
-                        print(f"Replacing by '{similar_cmd[0]}'")
+                        console.print(f"Replacing by '{similar_cmd[0]}'")
                         self.sector = similar_cmd[0]
                         self.update_runtime_choices()
                     else:
@@ -457,14 +462,14 @@ Returned tickers: {', '.join(self.tickers)}
                             cutoff=0.5,
                         )
                         if similar_cmd:
-                            print(f"Did you mean '{similar_cmd[0]}'?")
+                            console.print(f"Did you mean '{similar_cmd[0]}'?")
 
             else:
                 for sector in possible_sectors:
-                    print(sector)
+                    console.print(sector)
 
             self.stocks_data = {}
-            print("")
+            console.print("")
 
     def call_country(self, other_args: List[str]):
         """Process country command"""
@@ -494,7 +499,9 @@ Returned tickers: {', '.join(self.tickers)}
                     self.country = " ".join(ns_parser.name)
                     self.update_runtime_choices()
                 else:
-                    print(f"Country '{' '.join(ns_parser.name)}' does not exist.")
+                    console.print(
+                        f"Country '{' '.join(ns_parser.name)}' does not exist."
+                    )
                     similar_cmd = difflib.get_close_matches(
                         " ".join(ns_parser.name),
                         possible_countries,
@@ -502,7 +509,7 @@ Returned tickers: {', '.join(self.tickers)}
                         cutoff=0.75,
                     )
                     if similar_cmd:
-                        print(f"Replacing by '{similar_cmd[0]}'")
+                        console.print(f"Replacing by '{similar_cmd[0]}'")
                         self.country = similar_cmd[0]
                         self.update_runtime_choices()
                     else:
@@ -513,13 +520,13 @@ Returned tickers: {', '.join(self.tickers)}
                             cutoff=0.5,
                         )
                         if similar_cmd:
-                            print(f"Did you mean '{similar_cmd[0]}'?")
+                            console.print(f"Did you mean '{similar_cmd[0]}'?")
             else:
                 for country in possible_countries:
-                    print(country)
+                    console.print(country)
 
             self.stocks_data = {}
-            print("")
+            console.print("")
 
     def call_mktcap(self, other_args: List[str]):
         """Process mktcap command"""
@@ -544,10 +551,10 @@ Returned tickers: {', '.join(self.tickers)}
             if ns_parser.name:
                 self.mktcap = ns_parser.name.capitalize()
             else:
-                print("Select between market cap: Small, Mid and Large")
+                console.print("Select between market cap: Small, Mid and Large")
 
             self.stocks_data = {}
-            print("")
+            console.print("")
 
     def call_exchange(self, other_args: List[str]):
         """Process exchange command"""
@@ -560,13 +567,13 @@ Returned tickers: {', '.join(self.tickers)}
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.exclude_exhanges = not self.exclude_exhanges
-            print(
+            console.print(
                 f"Internationa exchanges {'excluded' if self.exclude_exhanges else 'included'}",
                 "\n",
             )
 
         self.stocks_data = {}
-        print("")
+        console.print("")
 
     def call_clear(self, other_args: List[str]):
         """Process clear command"""
@@ -606,7 +613,7 @@ Returned tickers: {', '.join(self.tickers)}
             self.ticker = ""
             self.update_runtime_choices()
             self.stocks_data = {}
-            print("")
+            console.print("")
 
     def call_sama(self, other_args: List[str]):
         """Process sama command"""
@@ -653,7 +660,7 @@ Returned tickers: {', '.join(self.tickers)}
         ev            enterprise value
         fpe           forward P/E
             """
-            print(help_text)
+            console.print(help_text)
 
     def call_metric(self, other_args: List[str]):
         """Process metric command"""
@@ -749,7 +756,7 @@ Returned tickers: {', '.join(self.tickers)}
         )
         if ns_parser:
             if not self.country:
-                print("The country parameter needs to be selected!\n")
+                console.print("The country parameter needs to be selected!\n")
             else:
                 financedatabase_view.display_companies_per_sector_in_country(
                     self.country,
@@ -799,7 +806,7 @@ Returned tickers: {', '.join(self.tickers)}
         )
         if ns_parser:
             if not self.country:
-                print("The country parameter needs to be selected!\n")
+                console.print("The country parameter needs to be selected!\n")
             else:
                 financedatabase_view.display_companies_per_industry_in_country(
                     self.country,
@@ -849,7 +856,7 @@ Returned tickers: {', '.join(self.tickers)}
         )
         if ns_parser:
             if not self.sector:
-                print("The sector parameter needs to be selected!\n")
+                console.print("The sector parameter needs to be selected!\n")
             else:
                 financedatabase_view.display_companies_per_industry_in_sector(
                     self.sector,
@@ -899,7 +906,7 @@ Returned tickers: {', '.join(self.tickers)}
         )
         if ns_parser:
             if not self.sector:
-                print("The sector parameter needs to be selected!\n")
+                console.print("The sector parameter needs to be selected!\n")
             else:
                 financedatabase_view.display_companies_per_country_in_sector(
                     self.sector,
@@ -949,7 +956,7 @@ Returned tickers: {', '.join(self.tickers)}
         )
         if ns_parser:
             if not self.industry:
-                print("The industry parameter needs to be selected!\n")
+                console.print("The industry parameter needs to be selected!\n")
             else:
                 financedatabase_view.display_companies_per_country_in_industry(
                     self.industry,
@@ -968,4 +975,6 @@ Returned tickers: {', '.join(self.tickers)}
                 self.tickers, self.queue
             ).menu(custom_path_menu_above="/stocks/")
         else:
-            print("No main ticker loaded to go into comparison analysis menu", "\n")
+            console.print(
+                "No main ticker loaded to go into comparison analysis menu", "\n"
+            )

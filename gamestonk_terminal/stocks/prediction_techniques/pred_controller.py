@@ -31,6 +31,7 @@ from gamestonk_terminal.common.prediction_techniques import (
     mc_view,
 )
 from gamestonk_terminal.stocks import stocks_helper
+from gamestonk_terminal.rich_config import console
 
 
 class PredictionTechniquesController(BaseController):
@@ -112,7 +113,7 @@ Models:
     conv1d      1D Convolutional Neural Network
     mc          Monte-Carlo simulations
         """
-        print(help_string)
+        console.print(help_string)
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -240,7 +241,7 @@ Models:
         )
         if ns_parser:
             self.target = ns_parser.target
-            print("")
+            console.print("")
 
     def call_ets(self, other_args: List[str]):
         """Process ets command"""
@@ -317,7 +318,7 @@ Models:
             if ns_parser.s_end_date:
 
                 if ns_parser.s_end_date < self.stock.index[0]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
 
@@ -325,7 +326,7 @@ Models:
                     last_stock_day=self.stock.index[0],
                     n_next_days=5 + ns_parser.n_days,
                 )[-1]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
 
@@ -498,7 +499,7 @@ Models:
             # BACKTESTING CHECK
             if ns_parser.s_end_date:
                 if ns_parser.s_end_date < self.stock.index[0]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
 
@@ -506,7 +507,7 @@ Models:
                     last_stock_day=self.stock.index[0],
                     n_next_days=5 + ns_parser.n_days,
                 )[-1]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
 
@@ -599,7 +600,7 @@ Models:
             if ns_parser.s_end_date:
 
                 if ns_parser.s_end_date < self.stock.index[0]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
 
@@ -607,7 +608,7 @@ Models:
                     last_stock_day=self.stock.index[0],
                     n_next_days=5 + ns_parser.n_days,
                 )[-1]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
 
@@ -645,7 +646,7 @@ Models:
                     no_shuffle=ns_parser.no_shuffle,
                 )
         except Exception as e:
-            print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -673,7 +674,7 @@ Models:
                 )
 
         except Exception as e:
-            print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -701,7 +702,7 @@ Models:
                 )
 
         except Exception as e:
-            print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -729,7 +730,7 @@ Models:
                 )
 
         except Exception as e:
-            print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -772,7 +773,7 @@ Models:
         )
         if ns_parser:
             if self.target != "AdjClose":
-                print("MC Prediction designed for AdjClose prices\n")
+                console.print("MC Prediction designed for AdjClose prices\n")
 
             mc_view.display_mc_forecast(
                 data=self.stock[self.target],

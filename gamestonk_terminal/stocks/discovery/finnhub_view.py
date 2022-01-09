@@ -4,6 +4,7 @@ import pandas as pd
 from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.stocks.discovery import finnhub_model
+from gamestonk_terminal.rich_config import console
 
 
 def past_ipo(num_days_behind: int, export: str) -> pd.DataFrame:
@@ -33,9 +34,9 @@ def past_ipo(num_days_behind: int, export: str) -> pd.DataFrame:
     )
 
     if df_past_ipo.empty:
-        print(f"No IPOs found since the last {num_days_behind} days")
+        console.print(f"No IPOs found since the last {num_days_behind} days")
     else:
-        print(
+        console.print(
             tabulate(
                 df_past_ipo,
                 headers=df_past_ipo.columns,
@@ -44,7 +45,7 @@ def past_ipo(num_days_behind: int, export: str) -> pd.DataFrame:
                 tablefmt="fancy_grid",
             )
         )
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -81,9 +82,9 @@ def future_ipo(num_days_ahead: int, export: str) -> pd.DataFrame:
     )
 
     if df_future_ipo.empty:
-        print(f"No IPOs found for the next {num_days_ahead} days")
+        console.print(f"No IPOs found for the next {num_days_ahead} days")
     else:
-        print(
+        console.print(
             tabulate(
                 df_future_ipo,
                 headers=df_future_ipo.columns,
@@ -92,7 +93,7 @@ def future_ipo(num_days_ahead: int, export: str) -> pd.DataFrame:
                 tablefmt="fancy_grid",
             )
         )
-    print("")
+    console.print("")
 
     export_data(
         export,

@@ -18,6 +18,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
 from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 from gamestonk_terminal.stocks.options import syncretism_view
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=E1121
 
@@ -63,7 +64,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
 >   ca             take these to comparison analysis menu
 >   po             take these to portoflio optimization menu{Style.RESET_ALL}
         """
-        print(help_text)
+        console.print(help_text)
 
     def call_view(self, other_args: List[str]):
         """Process view command"""
@@ -93,8 +94,8 @@ Last screened tickers: {', '.join(self.screen_tickers)}
 
             else:
                 for preset in self.preset_choices:
-                    print(preset)
-                print("")
+                    console.print(preset)
+                console.print("")
 
     def call_set(self, other_args: List[str]):
         """Process set command"""
@@ -118,7 +119,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.preset = ns_parser.preset
-        print("")
+        console.print("")
 
     def call_scr(self, other_args: List[str]):
         """Process scr command"""
@@ -172,7 +173,9 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 custom_path_menu_above="/portfolio/"
             )
         else:
-            print("Some tickers must be screened first through one of the presets!\n")
+            console.print(
+                "Some tickers must be screened first through one of the presets!\n"
+            )
 
     def call_ca(self, _):
         """Call the comparison analysis menu with selected tickers"""
@@ -181,4 +184,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 self.screen_tickers, self.queue
             ).menu(custom_path_menu_above="/stocks/")
         else:
-            print("Some tickers must be screened first through one of the presets!\n")
+            console.print(
+                "Some tickers must be screened first through one of the presets!\n"
+            )

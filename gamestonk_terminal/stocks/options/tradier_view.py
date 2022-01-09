@@ -22,6 +22,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
 )
 from gamestonk_terminal.stocks.options import op_helpers, tradier_model
+from gamestonk_terminal.rich_config import console
 
 column_map = {"mid_iv": "iv", "open_interest": "oi", "volume": "vol"}
 
@@ -126,7 +127,9 @@ def display_chains(
     else:
         max_strike = max_sp
 
-    print(f"The strike prices are displayed between {min_strike} and {max_strike}")
+    console.print(
+        f"The strike prices are displayed between {min_strike} and {max_strike}"
+    )
 
     chains_df = chains_df[chains_df["strike"] >= min_strike]
     chains_df = chains_df[chains_df["strike"] <= max_strike]
@@ -135,7 +138,7 @@ def display_chains(
     puts_df = chains_df[chains_df.option_type == "put"].drop(columns=["option_type"])
 
     if calls_only:
-        print(
+        console.print(
             tabulate(
                 calls_df,
                 headers=calls_df.columns,
@@ -146,7 +149,7 @@ def display_chains(
         )
 
     elif puts_only:
-        print(
+        console.print(
             tabulate(
                 puts_df,
                 headers=puts_df.columns,
@@ -178,7 +181,7 @@ def display_chains(
             else col
             for col in chain_table.columns
         ]
-        print(
+        console.print(
             tabulate(
                 chain_table,
                 headers=headers,
@@ -240,7 +243,7 @@ def plot_oi(
         max_strike = max_sp
 
     if calls_only and puts_only:
-        print("Both flags selected, please select one", "\n")
+        console.print("Both flags selected, please select one", "\n")
         return
 
     calls = options[options.option_type == "call"][["strike", "open_interest"]]
@@ -298,7 +301,7 @@ def plot_oi(
         "oi_tr",
         options,
     )
-    print("")
+    console.print("")
 
 
 def plot_vol(
@@ -344,7 +347,7 @@ def plot_vol(
         max_strike = max_sp
 
     if calls_only and puts_only:
-        print("Both flags selected, please select one", "\n")
+        console.print("Both flags selected, please select one", "\n")
         return
 
     calls = options[options.option_type == "call"][["strike", "volume"]]
@@ -394,7 +397,7 @@ def plot_vol(
         "vol_tr",
         options,
     )
-    print("")
+    console.print("")
 
 
 def plot_volume_open_interest(
@@ -485,7 +488,7 @@ def plot_volume_open_interest(
             df_puts = df_puts[df_puts["strike"] < max_sp]
 
     if df_calls.empty and df_puts.empty:
-        print(
+        console.print(
             "The filtering applied is too strong, there is no data available for such conditions.\n"
         )
         return
@@ -582,7 +585,7 @@ def plot_volume_open_interest(
         "voi_tr",
         options,
     )
-    print("")
+    console.print("")
 
 
 def display_historical(
@@ -619,7 +622,7 @@ def display_historical(
     )
 
     if raw:
-        print(tabulate(df_hist, headers=df_hist.columns, tablefmt="fancy_grid"))
+        console.print(tabulate(df_hist, headers=df_hist.columns, tablefmt="fancy_grid"))
 
     op_type = ["call", "put"][put]
 
@@ -646,7 +649,7 @@ def display_historical(
         ),
     )
 
-    print("")
+    console.print("")
 
     if export:
         export_data(
