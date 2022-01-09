@@ -2,16 +2,15 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
 
-from typing import List, Union
+from typing import List
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.cryptocurrency.defi import graph_model, coindix_model
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
-    get_flair,
     parse_known_args_and_warn,
     check_positive,
     system_clear,
@@ -30,22 +29,8 @@ from gamestonk_terminal.cryptocurrency.defi import (
 )
 
 
-class DefiController:
+class DefiController(BaseController):
     """Defi Controller class"""
-
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
 
     CHOICES_COMMANDS = [
         "dpi",
@@ -63,18 +48,12 @@ class DefiController:
         "vaults",
     ]
 
-    CHOICES += CHOICES_COMMANDS
-
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        self.defi_parser = argparse.ArgumentParser(add_help=False, prog="defi")
-        self.defi_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-        self.completer: Union[None, NestedCompleter] = None
+        super().__init__("/crypto/defi/", queue)
+
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["llama"]["-s"] = {c: {} for c in llama_model.LLAMA_FILTERS}
             choices["tokens"]["-s"] = {c: {} for c in graph_model.TOKENS_FILTERS}
             choices["pairs"]["-s"] = {c: {} for c in graph_model.PAIRS_FILTERS}

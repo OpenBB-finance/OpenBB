@@ -16,7 +16,6 @@ from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     export_data,
-    try_except,
 )
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.cryptocurrency.due_diligence import (
@@ -37,9 +36,6 @@ from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.feature_flags import USE_ION as ion
 from gamestonk_terminal import feature_flags as gtff
-
-# TODO: Improve implementation of coin loading
-# Currently adding this function to helpers for implementing prediction menu
 
 INTERVALS = ["1H", "3H", "6H", "1D"]
 
@@ -231,7 +227,6 @@ def _create_closest_match_df(
 
 
 # TODO: verify vs, interval, days, depending on source
-@try_except
 def load(
     coin: str,
     source: str = "cg",
@@ -239,14 +234,7 @@ def load(
     vs: str = "usd",
     interval: str = "1day",
     should_load_ta_data: bool = False,
-) -> Tuple[
-    Optional[Any],
-    Optional[Any],
-    Optional[Any],
-    Optional[Any],
-    Optional[Any],
-    Optional[Any],
-]:
+):
     """Load cryptocurrency from given source. Available sources are: CoinGecko, CoinPaprika, Coinbase and Binance.
 
     Loading coin from Binance and CoinPaprika means validation if given coins exists in chosen source,

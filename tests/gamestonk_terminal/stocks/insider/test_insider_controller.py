@@ -43,20 +43,33 @@ def test_menu_with_queue(expected, mocker, queue):
         return_value=["quit"],
     )
     stock = pd.DataFrame()
-    result_menu = insider_controller.menu(
+    result_menu = insider_controller.InsiderController(
         ticker="TSLA",
         start="2021-10-25",
         interval="1440min",
         stock=stock,
         queue=queue,
-    )
+    ).menu()
 
     assert result_menu == expected
 
 
 @pytest.mark.vcr(record_mode="none")
 def test_menu_without_queue_completion(mocker):
-    # DISABLE AUTO-COMPLETION
+    # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    mocker.patch(
+        target="gamestonk_terminal.feature_flags.USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session.prompt",
+        return_value="quit",
+    )
+
+    # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch.object(
         target=insider_controller.gtff,
         attribute="USE_PROMPT_TOOLKIT",
@@ -71,13 +84,13 @@ def test_menu_without_queue_completion(mocker):
     )
 
     stock = pd.DataFrame()
-    result_menu = insider_controller.menu(
+    result_menu = insider_controller.InsiderController(
         ticker="TSLA",
         start="2021-10-25",
         interval="1440min",
         stock=stock,
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -123,13 +136,13 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     )
 
     stock = pd.DataFrame()
-    result_menu = insider_controller.menu(
+    result_menu = insider_controller.InsiderController(
         ticker="TSLA",
         start="2021-10-25",
         interval="1440min",
         stock=stock,
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 

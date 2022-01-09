@@ -1,16 +1,16 @@
 """ Econ Controller """
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines
+# pylint:disable=too-many-lines,R1710,R0904,C0415
 import argparse
-import difflib
 from datetime import datetime, timedelta
 import os
-from typing import List, Union
+from typing import List
 
 from rich.console import Console
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.economy import (
     alphavantage_view,
@@ -24,20 +24,46 @@ from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     EXPORT_ONLY_FIGURES_ALLOWED,
-    get_flair,
     parse_known_args_and_warn,
     valid_date,
-    try_except,
-    system_clear,
 )
 from gamestonk_terminal.menu import session
 
 t_console = Console()
-# pylint: disable=R1710,R0904,C0415
 
 
-class EconomyController:
-    """Economy Controller"""
+class EconomyController(BaseController):
+    """Economy Controller class"""
+
+    CHOICES_COMMANDS = [
+        "feargreed",
+        "overview",
+        "indices",
+        "futures",
+        "usbonds",
+        "glbonds",
+        "futures",
+        "currencies",
+        "energy",
+        "metals",
+        "meats",
+        "grains",
+        "softs",
+        "valuation",
+        "performance",
+        "spectrum",
+        "map",
+        "rtps",
+        "gdp",
+        "gdpc",
+        "inf",
+        "cpi",
+        "tyld",
+        "unemp",
+        "industry",
+        "bigmac",
+    ]
+    CHOICES_MENUS = ["fred"]
 
     fear_greed_indicators = ["jbd", "mv", "pco", "mm", "sps", "spb", "shd", "index"]
     wsj_sortby_cols_dict = {c: None for c in ["ticker", "last", "change", "prevClose"]}
@@ -95,64 +121,12 @@ class EconomyController:
         "capitalization": "Capitalization",
     }
 
-    CHOICES = [
-        "cls",
-        "cd",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-        "home",
-    ]
-    CHOICES_MENUS = ["fred"]
-
-    CHOICES_COMMANDS = [
-        "feargreed",
-        "overview",
-        "indices",
-        "futures",
-        "usbonds",
-        "glbonds",
-        "futures",
-        "currencies",
-        "energy",
-        "metals",
-        "meats",
-        "grains",
-        "softs",
-        "valuation",
-        "performance",
-        "spectrum",
-        "map",
-        "rtps",
-        "gdp",
-        "gdpc",
-        "inf",
-        "cpi",
-        "tyld",
-        "unemp",
-        "industry",
-        "bigmac",
-    ]
-
-    CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
-
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        self.econ_parser = argparse.ArgumentParser(add_help=False, prog="economy")
-        self.econ_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-        self.completer: Union[None, NestedCompleter] = None
+        super().__init__("/economy/", queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["feargreed"]["-i"] = {c: None for c in self.fear_greed_indicators}
             choices["feargreed"]["--indicator"] = {
                 c: None for c in self.fear_greed_indicators
@@ -186,11 +160,6 @@ class EconomyController:
             choices["tyld"]["--maturity"] = {c: None for c in self.tyld_maturity}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
     @staticmethod
     def print_help():
@@ -228,84 +197,9 @@ NASDAQ DataLink (formerly Quandl):
 
 >   fred          Federal Reserve Economic Data submenu
 """
+        print(type(help_text))
         t_console.print(help_text)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            t_console.print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.econ_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "economy")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-
-    @try_except
     def call_feargreed(self, other_args: List[str]):
         """Process feargreed command"""
         parser = argparse.ArgumentParser(
@@ -340,7 +234,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
         parser = argparse.ArgumentParser(
@@ -358,7 +251,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_indices(self, other_args: List[str]):
         """Process indices command"""
         parser = argparse.ArgumentParser(
@@ -375,7 +267,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_futures(self, other_args: List[str]):
         """Process futures command"""
         parser = argparse.ArgumentParser(
@@ -392,7 +283,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_usbonds(self, other_args: List[str]):
         """Process usbonds command"""
         parser = argparse.ArgumentParser(
@@ -409,7 +299,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_glbonds(self, other_args: List[str]):
         """Process glbonds command"""
         parser = argparse.ArgumentParser(
@@ -426,7 +315,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_currencies(self, other_args: List[str]):
         """Process currencies command"""
         parser = argparse.ArgumentParser(
@@ -444,7 +332,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_energy(self, other_args: List[str]):
         """Process energy command"""
         parser = argparse.ArgumentParser(
@@ -480,7 +367,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_metals(self, other_args: List[str]):
         """Process metals command"""
         parser = argparse.ArgumentParser(
@@ -516,7 +402,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_meats(self, other_args: List[str]):
         """Process meats command"""
         parser = argparse.ArgumentParser(
@@ -552,7 +437,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_grains(self, other_args: List[str]):
         """Process grains command"""
         parser = argparse.ArgumentParser(
@@ -588,7 +472,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_softs(self, other_args: List[str]):
         """Process softs command"""
         parser = argparse.ArgumentParser(
@@ -624,7 +507,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_map(self, other_args: List[str]):
         """Process map command"""
         parser = argparse.ArgumentParser(
@@ -663,7 +545,6 @@ NASDAQ DataLink (formerly Quandl):
                 map_type=ns_parser.s_type,
             )
 
-    @try_except
     def call_valuation(self, other_args: List[str]):
         """Process valuation command"""
         parser = argparse.ArgumentParser(
@@ -719,7 +600,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_performance(self, other_args: List[str]):
         """Process performance command"""
         parser = argparse.ArgumentParser(
@@ -773,7 +653,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_spectrum(self, other_args: List[str]):
         """Process spectrum command"""
         parser = argparse.ArgumentParser(
@@ -811,7 +690,6 @@ NASDAQ DataLink (formerly Quandl):
         # after saving it and displaying it to the user
         os.remove(self.d_GROUPS[group] + ".jpg")
 
-    @try_except
     def call_rtps(self, other_args: List[str]):
         """Process rtps command"""
         parser = argparse.ArgumentParser(
@@ -838,7 +716,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_gdp(self, other_args: List[str]):
         """Process gdp command"""
         parser = argparse.ArgumentParser(
@@ -887,7 +764,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_gdpc(self, other_args: List[str]):
         """Process gdpc command"""
         parser = argparse.ArgumentParser(
@@ -923,7 +799,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_inf(self, other_args: List[str]):
         """Process inf command"""
         parser = argparse.ArgumentParser(
@@ -959,7 +834,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cpi(self, other_args: List[str]):
         """Process cpi command"""
         parser = argparse.ArgumentParser(
@@ -1004,7 +878,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_tyld(self, other_args: List[str]):
         """Process tyld command"""
         parser = argparse.ArgumentParser(
@@ -1061,7 +934,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_unemp(self, other_args: List[str]):
         """Process unemp command"""
         parser = argparse.ArgumentParser(
@@ -1097,7 +969,6 @@ NASDAQ DataLink (formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_bigmac(self, other_args: List[str]):
         """Process bigmac command"""
         parser = argparse.ArgumentParser(
@@ -1150,85 +1021,6 @@ NASDAQ DataLink (formerly Quandl):
 
     def call_fred(self, _):
         """Process fred command"""
-        from gamestonk_terminal.economy.fred import fred_controller
+        from gamestonk_terminal.economy.fred.fred_controller import FredController
 
-        self.queue = fred_controller.menu(self.queue)
-
-
-def menu(queue: List[str] = None):
-    """Economy Menu"""
-    econ_controller = EconomyController(queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if econ_controller.queue and len(econ_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if econ_controller.queue[0] in ("q", "..", "quit"):
-                t_console.print("")
-                if len(econ_controller.queue) > 1:
-                    return econ_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = econ_controller.queue[0]
-            econ_controller.queue = econ_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in econ_controller.CHOICES_COMMANDS:
-                t_console.print(f"{get_flair()} /economy/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                econ_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and econ_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /economy/ $ ",
-                        completer=econ_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /economy/ $ ")
-
-        try:
-            # Process the input command
-            econ_controller.queue = econ_controller.switch(an_input)
-
-        except SystemExit:
-            t_console.print(
-                f"\nThe command '{an_input}' doesn't exist on the /economy menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                econ_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        econ_controller.queue = []
-                        t_console.print("")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                t_console.print(f" Replacing by '{an_input}'.")
-                econ_controller.queue.insert(0, an_input)
-            else:
-                t_console.print("")
+        self.queue = FredController(self.queue).menu()

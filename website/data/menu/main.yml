@@ -714,6 +714,8 @@ main:
             ref: "/cryptocurrency/overview/ewf"
           - name: wfpe
             ref: "/cryptocurrency/overview/wfpe"
+          - name: altindex
+            ref: "/cryptocurrency/overview/altindex"
       - name: due diligence
         ref: "/cryptocurrency/due_diligence"
         sub:
