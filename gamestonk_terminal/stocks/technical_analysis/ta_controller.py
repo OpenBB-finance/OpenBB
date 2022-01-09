@@ -1232,9 +1232,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            volume_view.plot_ad(
+            volume_view.display_ad(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 use_open=ns_parser.b_use_open,
                 export=ns_parser.export,
@@ -1286,9 +1285,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            volume_view.plot_adosc(
+            volume_view.display_adosc(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 use_open=ns_parser.b_use_open,
                 fast=ns_parser.n_length_fast,
@@ -1317,9 +1315,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            volume_view.plot_obv(
+            volume_view.display_obv(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 export=ns_parser.export,
             )
