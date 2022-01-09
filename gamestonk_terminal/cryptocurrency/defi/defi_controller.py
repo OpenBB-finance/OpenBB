@@ -779,8 +779,8 @@ class DefiController:
         )
 
         parser.add_argument(
-            "-l",
-            "--limit",
+            "-t",
+            "--top",
             dest="limit",
             type=check_positive,
             help="Number of records to display",
@@ -805,6 +805,15 @@ class DefiController:
             default=False,
         )
 
+        parser.add_argument(
+            "-l",
+            "--links",
+            action="store_false",
+            help="Flag to show vault link",
+            dest="link",
+            default=True,
+        )
+
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -817,6 +826,7 @@ class DefiController:
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
+                link=ns_parser.link,
                 export=ns_parser.export,
             )
 

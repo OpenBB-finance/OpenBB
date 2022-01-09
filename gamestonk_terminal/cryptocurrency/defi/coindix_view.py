@@ -17,6 +17,7 @@ def display_defi_vaults(
     top: int = 10,
     sortby: str = "apy",
     descend: bool = False,
+    link: bool = False,
     export: str = "",
 ) -> None:
     """Display Top DeFi Vaults - pools of funds with an assigned strategy which main goal is to
@@ -45,6 +46,8 @@ def display_defi_vaults(
         Key by which to sort data
     descend: bool
         Flag to sort data descending
+    link: bool
+        Flag to show links
     export : str
         Export dataframe data to csv,json,xlsx file
     """
@@ -63,6 +66,11 @@ def display_defi_vaults(
     df["apy"] = df["apy"].apply(
         lambda x: f"{str(round(x * 100, 2))} %" if isinstance(x, (int, float)) else x
     )
+    df.columns = [x.title() for x in df.columns]
+    df.rename(columns={"Apy": "APY (%)", "Tvl": "TVL ($)"}, inplace=True)
+
+    if link is True:
+        df.drop("Link", axis=1, inplace=True)
 
     if gtff.USE_TABULATE_DF:
         print(
@@ -72,6 +80,7 @@ def display_defi_vaults(
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
+                stralign="right",
             ),
             "\n",
         )

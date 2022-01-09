@@ -6,7 +6,7 @@ from typing import Optional
 import requests
 import pandas as pd
 
-VAULTS_FILTERS = ["name", "chain", "protocol", "apy", "tvl", "risk"]
+VAULTS_FILTERS = ["name", "chain", "protocol", "apy", "tvl", "risk", "link"]
 CHAINS = [
     "ethereum",
     "polygon",
@@ -57,7 +57,28 @@ PROTOCOLS = [
     "venus",
     "yearn",
 ]
-VAULT_KINDS = ["lp", "single", "noimploss", "stable"]
+VAULT_KINDS = [
+    "lp",
+    "single",
+    "noimploss",
+    "stable",
+]
+
+
+def _risk_mapper(risk_level: int) -> str:
+    """Helper methods
+    Parameters
+    ----------
+    risk_level: int
+        number from range 0-4 represents risk factor for given vault
+    Returns
+    -------
+    string:
+        text representation of risk
+    """
+
+    mappings = {0: "Non Eligible", 1: "Least", 2: "Low", 3: "Medium", 4: "High"}
+    return mappings.get(risk_level, "Non Eligible")
 
 
 def _prepare_params(**kwargs) -> dict:
@@ -124,7 +145,7 @@ def get_defi_vaults(
         if len(data) == 0:
             return pd.DataFrame()
         df = pd.DataFrame(data)[VAULTS_FILTERS].fillna("NA")
-        df["risk"] = df["risk"].apply(lambda x: "high" if x >= 2 else "low")
+        df["risk"] = df["risk"].apply(lambda x: _risk_mapper(x))
         return df
     except Exception as e:
         raise ValueError(f"Invalid Response: {response.text}") from e
