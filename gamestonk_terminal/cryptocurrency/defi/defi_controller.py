@@ -14,7 +14,6 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     check_positive,
-    try_except,
     system_clear,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -177,7 +176,6 @@ class DefiController:
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
 
-    @try_except
     def call_dpi(self, other_args: List[str]):
         """Process dpi command"""
         parser = argparse.ArgumentParser(
@@ -229,7 +227,6 @@ class DefiController:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_llama(self, other_args: List[str]):
         """Process llama command"""
         parser = argparse.ArgumentParser(
@@ -290,7 +287,6 @@ class DefiController:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_tvl(self, other_args: List[str]):
         """Process tvl command"""
         parser = argparse.ArgumentParser(
@@ -319,7 +315,6 @@ class DefiController:
         if ns_parser:
             llama_view.display_defi_tvl(top=ns_parser.limit, export=ns_parser.export)
 
-    @try_except
     def call_funding(self, other_args: List[str]):
         """Process funding command"""
         parser = argparse.ArgumentParser(
@@ -358,7 +353,6 @@ class DefiController:
                 top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
             )
 
-    @try_except
     def call_borrow(self, other_args: List[str]):
         """Process borrow command"""
         parser = argparse.ArgumentParser(
@@ -397,7 +391,6 @@ class DefiController:
                 top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
             )
 
-    @try_except
     def call_lending(self, other_args: List[str]):
         """Process lending command"""
         parser = argparse.ArgumentParser(
@@ -436,7 +429,6 @@ class DefiController:
                 top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
             )
 
-    @try_except
     def call_newsletter(self, other_args: List[str]):
         """Process newsletter command"""
         parser = argparse.ArgumentParser(
@@ -467,7 +459,6 @@ class DefiController:
                 top=ns_parser.limit, export=ns_parser.export
             )
 
-    @try_except
     def call_tokens(self, other_args: List[str]):
         """Process tokens command"""
         parser = argparse.ArgumentParser(
@@ -527,7 +518,6 @@ class DefiController:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_stats(self, other_args: List[str]):
         """Process stats command"""
         parser = argparse.ArgumentParser(
@@ -547,7 +537,6 @@ class DefiController:
         if ns_parser:
             graph_view.display_uni_stats(export=ns_parser.export)
 
-    @try_except
     def call_pairs(self, other_args: List[str]):
         """Process pairs command"""
         parser = argparse.ArgumentParser(
@@ -628,7 +617,6 @@ class DefiController:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_pools(self, other_args: List[str]):
         """Process pools command"""
         parser = argparse.ArgumentParser(
@@ -680,7 +668,6 @@ class DefiController:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_swaps(self, other_args: List[str]):
         """Process swaps command"""
         parser = argparse.ArgumentParser(
@@ -732,7 +719,6 @@ class DefiController:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_vaults(self, other_args: List[str]):
         """Process swaps command"""
         parser = argparse.ArgumentParser(
@@ -843,7 +829,7 @@ Overview:
     funding       Funding rates - current or last 30 days average
     borrow        DeFi borrow rates - current or last 30 days average
     lending       DeFi ending rates - current or last 30 days average
-    vaults        Top DeFi Vaults on different blockchains
+    vaults        Top DeFi Vaults on different blockchains [Source: Coindix]
 Uniswap:
     tokens        Tokens trade-able on Uniswap
     stats         Base statistics about Uniswap
