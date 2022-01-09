@@ -9,8 +9,8 @@ from typing import List
 from datetime import datetime, timedelta
 import yfinance as yf
 import pandas as pd
-from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -80,23 +80,23 @@ class StocksController(BaseController):
         """Print help"""
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.ticker and self.start:
-            stock_text = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            stock_text = (
+                f"{s_intraday} {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            )
         else:
-            stock_text = f"{s_intraday} Stock: {self.ticker}"
-        dim_if_no_ticker = Style.DIM if not self.ticker else ""
-        reset_style_if_no_ticker = Style.RESET_ALL if not self.ticker else ""
-        help_text = f"""
+            stock_text = f"{s_intraday} {self.ticker}"
+        has_ticker_start = "" if self.ticker else "[dim]"
+        has_ticker_end = "" if self.ticker else "[/dim]"
+        help_text = f"""[cmds]
     search      search a specific stock ticker for analysis
-    load        load a specific stock ticker and additional info for analysis
-{dim_if_no_ticker}
-{stock_text}
+    load        load a specific stock ticker and additional info for analysis[/cmds][info]
+Stock: [/info] {stock_text}
 {self.add_info}
-
+[cmds]
     quote       view the current price for a specific stock ticker
     candle      view a candle chart for a specific stock ticker
-    news        latest news of the company [News API]
-{reset_style_if_no_ticker}
-Stocks Menus:
+    news        latest news of the company [News API][/cmds]
+[menu]
 >   options     options menu,  \t\t\t e.g.: chains, open interest, greeks, parity
 >   disc        discover trending stocks, \t e.g. map, sectors, high short interest
 >   sia         sector and industry analysis, \t e.g. companies per sector, quick ratio per industry and country
@@ -105,7 +105,7 @@ Stocks Menus:
 >   ins         insider trading,         \t e.g.: latest penny stock buys, top officer purchases
 >   gov         government menu, \t\t e.g. house trading, contracts, corporate lobbying
 >   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google
->   ca          comparison analysis,     \t e.g.: get similar, historical, correlation, financials{dim_if_no_ticker}
+>   ca          comparison analysis,     \t e.g.: get similar, historical, correlation, financials{has_ticker_start}
 >   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings
 >   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool
 >   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
@@ -113,8 +113,8 @@ Stocks Menus:
 >   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
 >   qa          quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis
 >   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm
-{reset_style_if_no_ticker}"""
-        print(help_text)
+{has_ticker_end}"""
+        console.print(help_text)
 
     def custom_reset(self):
         """Class specific component of reset command"""
