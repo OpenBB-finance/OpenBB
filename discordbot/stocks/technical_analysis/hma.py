@@ -74,7 +74,7 @@ async def hma_command(ctx, ticker="", window="", offset="", start="", end=""):
         i = 1
         for win in window:
             hma_data = overlap_model.hma(
-                data=stock["Adj Close"], length=win, offset=offset
+                values=stock["Adj Close"], length=win, offset=offset
             )
             price_df = price_df.join(hma_data)
             l_legend.append(f"HMA {win}")

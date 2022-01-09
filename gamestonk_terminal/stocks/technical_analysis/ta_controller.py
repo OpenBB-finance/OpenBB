@@ -377,7 +377,7 @@ Custom:
             overlap_view.view_ma(
                 ma_type="EMA",
                 s_ticker=self.ticker,
-                prices=self.stock["Adj Close"],
+                values=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -428,7 +428,7 @@ Custom:
             overlap_view.view_ma(
                 ma_type="SMA",
                 s_ticker=self.ticker,
-                prices=self.stock["Adj Close"],
+                values=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -476,7 +476,7 @@ Custom:
             overlap_view.view_ma(
                 ma_type="WMA",
                 s_ticker=self.ticker,
-                prices=self.stock["Adj Close"],
+                values=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -524,7 +524,7 @@ Custom:
             overlap_view.view_ma(
                 ma_type="HMA",
                 s_ticker=self.ticker,
-                prices=self.stock["Adj Close"],
+                values=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -575,7 +575,7 @@ Custom:
             overlap_view.view_ma(
                 ma_type="ZLMA",
                 s_ticker=self.ticker,
-                prices=self.stock["Adj Close"],
+                values=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,

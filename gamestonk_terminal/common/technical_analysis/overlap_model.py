@@ -8,12 +8,12 @@ WINDOW_LENGTHS = [20, 50]
 WINDOW_LENGTHS2 = [10, 20]
 
 
-def ema(data: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
+def ema(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     """Gets exponential moving average (EMA) for stock
 
     Parameters
     ----------
-    data: pd.DataFrame
+    values: pd.DataFrame
         Dataframe of dates and prices
     length: int
         Length of EMA window
@@ -25,15 +25,15 @@ def ema(data: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     pd.DataFrame
         Dataframe containing prices and EMA
     """
-    return pd.DataFrame(ta.ema(data["values"], length=length, offset=offset).dropna())
+    return pd.DataFrame(ta.ema(values, length=length, offset=offset)).dropna()
 
 
-def sma(data: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
+def sma(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     """Gets simple moving average (EMA) for stock
 
      Parameters
      ----------
-     data: pd.DataFrame
+     values: pd.DataFrame
          Dataframe of dates and prices
      length: int
          Length of SMA window
@@ -45,17 +45,15 @@ def sma(data: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     pd.DataFrame
          Dataframe containing prices and SMA
     """
-    return pd.DataFrame(ta.sma(data["values"], length=length, offset=offset).dropna())
+    return pd.DataFrame(ta.sma(values, length=length, offset=offset)).dropna()
 
 
-def wma(data: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
+def wma(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     """Gets weighted moving average (WMA) for stock
 
     Parameters
     ----------
-    s_interval: str
-        Data interval
-    df_stock: pd.DataFrame
+    values: pd.DataFrame
         Dataframe of dates and prices
     length: int
         Length of SMA window
@@ -67,15 +65,15 @@ def wma(data: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     df_ta: pd.DataFrame
         Dataframe containing prices and WMA
     """
-    return pd.DataFrame(ta.wma(data["values"], length=length, offset=offset).dropna())
+    return pd.DataFrame(ta.wma(values, length=length, offset=offset)).dropna()
 
 
-def hma(data: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
+def hma(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     """Gets hull moving average (HMA) for stock
 
     Parameters
     ----------
-    data: pd.DataFrame
+    values: pd.DataFrame
         Dataframe of dates and prices
     length: int
         Length of SMA window
@@ -87,10 +85,10 @@ def hma(data: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     df_ta: pd.DataFrame
         Dataframe containing prices and HMA
     """
-    return pd.DataFrame(ta.hma(data["values"], length=length, offset=offset).dropna())
+    return pd.DataFrame(ta.hma(values, length=length, offset=offset)).dropna()
 
 
-def zlma(data: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
+def zlma(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     """Gets zero-lagged exponential moving average (ZLEMA) for stock
 
     Parameters
@@ -107,7 +105,7 @@ def zlma(data: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     df_ta: pd.DataFrame
         Dataframe containing prices and EMA
     """
-    return pd.DataFrame(ta.zlma(data["values"], length=length, offset=offset).dropna())
+    return pd.DataFrame(ta.zlma(values, length=length, offset=offset)).dropna()
 
 
 def vwap(day_df: pd.DataFrame, offset: int) -> pd.DataFrame:
