@@ -48,7 +48,7 @@ def display_ark_trades(
         lambda x: x.strftime("%Y-%m-%d")
     )
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 ark_holdings.head(num),
                 headers=ark_holdings.columns,

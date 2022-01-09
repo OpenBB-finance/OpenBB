@@ -50,9 +50,7 @@ def display_info(ticker: str):
         df_info = df_info.drop(index=["Long business summary"])
 
     if gtff.USE_TABULATE_DF:
-        console.print(
-            tabulate(df_info, headers=[], showindex=True, tablefmt="fancy_grid")
-        )
+        print(tabulate(df_info, headers=[], showindex=True, tablefmt="fancy_grid"))
 
     else:
         console.print(df_info.to_string(header=False))
@@ -108,7 +106,7 @@ def display_sustainability(ticker: str):
         return
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_sustainability,
                 headers=[],
@@ -133,7 +131,7 @@ def display_calendar_earnings(ticker: str):
         console.print("No calendar events found.\n")
         return
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_calendar,
                 showindex=False,

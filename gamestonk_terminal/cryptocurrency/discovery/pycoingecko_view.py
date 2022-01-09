@@ -229,7 +229,7 @@ def display_recently_added(
         df.drop("Url", axis=1, inplace=True)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -326,7 +326,7 @@ def display_top_dex(top: int, sortby: str, descend: bool, export: str) -> None:
     df = pycoingecko_model.get_top_dexes().sort_values(by=sortby, ascending=descend)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,

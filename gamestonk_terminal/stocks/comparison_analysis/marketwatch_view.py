@@ -56,7 +56,7 @@ def display_income_comparison(
         df_financials_compared.index.name = timeframe
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_financials_compared,
                 headers=df_financials_compared.columns,
@@ -109,7 +109,7 @@ def display_balance_comparison(
         df_financials_compared.index.name = timeframe
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_financials_compared,
                 headers=df_financials_compared.columns,
@@ -165,7 +165,7 @@ def display_cashflow_comparison(
         df_financials_compared.index.name = timeframe
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_financials_compared,
                 headers=df_financials_compared.columns,

@@ -55,7 +55,7 @@ def insider_activity(
     if raw:
         df_insider.index = pd.to_datetime(df_insider.index).date
 
-        console.print(
+        print(
             tabulate(
                 df_insider.sort_index(ascending=False)
                 .head(n=num)

@@ -518,7 +518,7 @@ def find(source: str, coin: str, key: str, top: int, export: str) -> None:
         df = pd.DataFrame()
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -637,7 +637,7 @@ def display_all_coins(
         console.print(e)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.fillna("N/A"),
                 headers=df.columns,

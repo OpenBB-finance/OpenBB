@@ -569,9 +569,7 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
                 lambda x: price_prediction_color(x, last_val=last_price)
             )
             console.print("Prediction:")
-            console.print(
-                tabulate(df_pred, headers=["Prediction"], tablefmt="fancy_grid")
-            )
+            print(tabulate(df_pred, headers=["Prediction"], tablefmt="fancy_grid"))
 
         else:
 
@@ -584,9 +582,7 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
             df_pred = pd.DataFrame(df_pred)
             df_pred.columns = ["pred"]
             console.print("Prediction:")
-            console.print(
-                tabulate(df_pred, headers=["Prediction"], tablefmt="fancy_grid")
-            )
+            print(tabulate(df_pred, headers=["Prediction"], tablefmt="fancy_grid"))
         else:
             console.print(f"Actual price: {last_price:.2f} $\n")
             console.print("Prediction:")

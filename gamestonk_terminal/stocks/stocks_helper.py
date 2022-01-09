@@ -76,7 +76,7 @@ def search(
         raise ValueError("No companies found. \n")
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 equities_dataframe.iloc[:amount],
                 showindex=False,
@@ -559,7 +559,7 @@ def quote(other_args: List[str], s_ticker: str):
 
         quote_data = transpose(quote_df)
 
-        console.print(
+        print(
             tabulate(
                 quote_data,
                 headers=quote_data.columns,  # type: ignore

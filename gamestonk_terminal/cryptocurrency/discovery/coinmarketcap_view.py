@@ -42,7 +42,7 @@ def display_cmc_top_coins(top: int, sortby: str, descend: bool, export: str) -> 
     df = df.sort_values(by=sort_map[sortby], ascending=descend)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.iloc[:top, :],
                 headers=df.columns,

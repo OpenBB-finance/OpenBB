@@ -57,7 +57,7 @@ def display_trades(
     df_data = df.copy()
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -95,7 +95,7 @@ def display_candles(product_id: str, interval: str, export) -> None:
     df_data = df.copy()
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -132,7 +132,7 @@ def display_stats(product_id: str, export: str) -> None:
     df_data = df.copy()
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,

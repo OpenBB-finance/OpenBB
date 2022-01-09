@@ -43,7 +43,7 @@ def display_messages(ticker: str, limit: int = 30):
     messages = stocktwits_model.get_messages(ticker, limit)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 pd.DataFrame(messages), headers=[], tablefmt="grid", showindex=False
             )
@@ -57,7 +57,7 @@ def display_trending():
     """Show trensing stocks on stocktwits"""
     df_trending = stocktwits_model.get_trending()
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_trending,
                 headers=df_trending.columns,

@@ -28,7 +28,7 @@ def display_funding_rates(top: int, current: bool = True, export: str = "") -> N
     df_data = df.copy()
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -69,7 +69,7 @@ def display_lending_rates(top: int, current: bool = True, export: str = "") -> N
     df = df.loc[:, ~df.eq("–").all()]
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -111,7 +111,7 @@ def display_borrow_rates(top: int, current: bool = True, export: str = "") -> No
     df = df.loc[:, ~df.eq("–").all()]
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,

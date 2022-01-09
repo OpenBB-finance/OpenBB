@@ -46,7 +46,7 @@ def display_uni_tokens(
     ].applymap(lambda x: very_long_number_formatter(x))
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(limit),
                 headers=df.columns,
@@ -82,7 +82,7 @@ def display_uni_stats(export: str = "") -> None:
     df_data = df.copy()
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -151,7 +151,7 @@ def display_recently_added(
     )
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -197,7 +197,7 @@ def display_uni_pools(
     df_data = df.copy()
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -245,7 +245,7 @@ def display_last_uni_swaps(
     df_data = df.copy()
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,

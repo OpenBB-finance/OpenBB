@@ -45,7 +45,7 @@ def display_options(
         data = data[data.Type == "Call"]
     console.print(f"Last Updated: {last_update} (EST)")
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 data[:num],
                 headers=data.columns,

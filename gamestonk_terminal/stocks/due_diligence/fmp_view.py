@@ -34,7 +34,7 @@ def rating(ticker: str, num: int, export: str):
             for recom in l_recoms
         ]
         l_recoms_show[0] = "Rating"
-        console.print(
+        print(
             tabulate(
                 df[l_recoms].head(num),
                 headers=l_recoms_show,

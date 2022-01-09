@@ -31,7 +31,7 @@ def show_top_mover(sort_type: str, limit: int = 10, export=""):
         return
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 data.iloc[:limit],
                 showindex=False,

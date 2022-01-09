@@ -39,7 +39,7 @@ def display_realtime_earnings(export: str = ""):
     earnings["Market Cap"] = earnings["Market Cap"] / 1_000_000_000
     earnings = earnings.rename(columns={"Market Cap": "Market Cap ($1B)"})
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 earnings,
                 headers=earnings.columns,

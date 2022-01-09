@@ -218,7 +218,7 @@ def display_most_shorted(num_stocks: int, export: str):
     if df.empty:
         console.print("No data found.")
     else:
-        console.print(
+        print(
             tabulate(
                 df.head(num_stocks),
                 headers=df.columns,

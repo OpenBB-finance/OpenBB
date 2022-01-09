@@ -54,7 +54,7 @@ def display_news(
         df = df[["title", "link"]]
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,

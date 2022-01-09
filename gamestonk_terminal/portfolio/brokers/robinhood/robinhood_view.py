@@ -32,9 +32,7 @@ def display_holdings(export: str = ""):
     """
     holdings = robinhood_model.get_holdings()
     if gtff.USE_TABULATE_DF:
-        console.print(
-            tabulate(holdings, headers=holdings.columns, tablefmt="fancy_grid")
-        )
+        print(tabulate(holdings, headers=holdings.columns, tablefmt="fancy_grid"))
     else:
         console.print(holdings.to_string())
     console.print("")

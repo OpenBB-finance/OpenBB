@@ -44,7 +44,7 @@ def display_address_info(
     )
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -94,7 +94,7 @@ def display_top_tokens(
             df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -144,7 +144,7 @@ def display_top_token_holders(
     df["balance"] = df["balance"].apply(lambda x: very_long_number_formatter(x))
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -196,7 +196,7 @@ def display_address_history(
     )
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -245,7 +245,7 @@ def display_token_info(
         df = df[~df["Metric"].isin(socials)]
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -283,7 +283,7 @@ def display_tx_info(
     df = ethplorer_model.get_tx_info(tx_hash)
     df_data = df.copy()
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -345,7 +345,7 @@ def display_token_history(
         df.drop("transactionHash", inplace=True, axis=1)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -403,7 +403,7 @@ def display_token_historical_prices(
     df = df.sort_values(by=sortby, ascending=descend)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,

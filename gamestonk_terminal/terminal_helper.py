@@ -275,7 +275,7 @@ def check_api_keys():
         else:
             key_dict["SENTIMENT_INVESTOR"] = "Defined, test unsuccessful"
 
-    console.print(
+    print(
         tabulate(
             pd.DataFrame(key_dict.items()),
             showindex=False,

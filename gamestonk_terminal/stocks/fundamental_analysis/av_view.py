@@ -26,7 +26,7 @@ def display_overview(ticker: str):
         return
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_fa.drop(index=["Description"]), headers=[], tablefmt="fancy_grid"
             )
@@ -81,9 +81,7 @@ def display_income_statement(
         return
 
     if gtff.USE_TABULATE_DF:
-        console.print(
-            tabulate(df_income, headers=df_income.columns, tablefmt="fancy_grid")
-        )
+        print(tabulate(df_income, headers=df_income.columns, tablefmt="fancy_grid"))
     else:
         console.print(df_income.to_string())
 
@@ -113,9 +111,7 @@ def display_balance_sheet(
         return
 
     if gtff.USE_TABULATE_DF:
-        console.print(
-            tabulate(df_balance, headers=df_balance.columns, tablefmt="fancy_grid")
-        )
+        print(tabulate(df_balance, headers=df_balance.columns, tablefmt="fancy_grid"))
     else:
         console.print(df_balance.to_string())
 
@@ -172,7 +168,7 @@ def display_earnings(ticker: str, limit: int, quarterly: bool = False):
         console.print("No API calls left. Try me later", "\n")
         return
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_fa.head(limit),
                 headers=df_fa.columns,

@@ -30,7 +30,7 @@ def display_account(currency: str = "USD", export: str = "") -> None:
     df_data = df.copy()
     df = df.drop(columns=["id"])
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -74,7 +74,7 @@ def display_history(account: str, export: str = "", limit: int = 20) -> None:
         return
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(limit),
                 headers=df.columns,
@@ -120,7 +120,7 @@ def display_orders(limit: int, sortby: str, descend: bool, export: str = "") -> 
     df = df.sort_values(by=sortby, ascending=descend).head(limit)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -171,7 +171,7 @@ def display_deposits(
     df = df.sort_values(by=sortby, ascending=descend).head(limit)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,

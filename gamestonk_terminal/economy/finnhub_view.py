@@ -68,7 +68,7 @@ def economy_calendar_events(country: str, num: int, impact: str, export: str):
     df_econ_calendar.dropna(how="all", axis=1, inplace=True)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_econ_calendar,
                 headers=df_econ_calendar.columns,

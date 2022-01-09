@@ -74,7 +74,7 @@ def display_performance(
         columns={"Volume": "Volume (1M)", "AvgVolume": "AvgVolume (1M)"}
     )
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_group.fillna(""),
                 showindex=False,
@@ -134,7 +134,7 @@ def display_valuation(
     df_group["Volume"] = df_group["Volume"] / 1_000_000
     df_group = df_group.rename(columns={"Volume": "Volume (1M)"})
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_group.fillna(""),
                 showindex=False,
@@ -204,7 +204,7 @@ def display_future(
     df = df.set_index("label")
     df = df.sort_values(by=sort_col, ascending=ascending)
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df[["prevClose", "last", "change"]].fillna(""),
                 showindex=True,

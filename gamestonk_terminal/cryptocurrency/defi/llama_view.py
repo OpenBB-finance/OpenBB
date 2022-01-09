@@ -56,7 +56,7 @@ def display_defi_protocols(
         ]
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,

@@ -39,7 +39,7 @@ def last_insider_activity(ticker: str, num: int, export: str):
     ]
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(num),
                 tablefmt="fancy_grid",

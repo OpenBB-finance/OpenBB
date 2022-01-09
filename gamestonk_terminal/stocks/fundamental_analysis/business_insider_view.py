@@ -27,7 +27,7 @@ def display_management(ticker: str, export: str = ""):
     names = ["Name"] + list(df_management.columns)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_management.applymap(
                     lambda x: "\n".join(textwrap.wrap(x, width=30))

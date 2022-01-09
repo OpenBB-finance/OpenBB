@@ -36,7 +36,7 @@ def past_ipo(num_days_behind: int, export: str) -> pd.DataFrame:
     if df_past_ipo.empty:
         console.print(f"No IPOs found since the last {num_days_behind} days")
     else:
-        console.print(
+        print(
             tabulate(
                 df_past_ipo,
                 headers=df_past_ipo.columns,
@@ -84,7 +84,7 @@ def future_ipo(num_days_ahead: int, export: str) -> pd.DataFrame:
     if df_future_ipo.empty:
         console.print(f"No IPOs found for the next {num_days_ahead} days")
     else:
-        console.print(
+        print(
             tabulate(
                 df_future_ipo,
                 headers=df_future_ipo.columns,

@@ -43,9 +43,7 @@ def display_top(metric: str, limit: int):
         Number of tickers to get
     """
     table = sentimentinvestor_model.get_top(metric, limit)
-    console.print(
-        tabulate.tabulate(table, headers=["Rank", "Ticker", metric], floatfmt=".3f")
-    )
+    print(tabulate.tabulate(table, headers=["Rank", "Ticker", metric], floatfmt=".3f"))
     console.print("")
 
 
@@ -211,7 +209,7 @@ def display_historical(
         for value in aggregated[metric]
     ]
 
-    console.print(
+    print(
         tabulate.tabulate(
             aggregated,
             headers=["Day", f"average {metric}"],

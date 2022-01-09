@@ -54,7 +54,7 @@ def upcoming_earning_release_dates(num_pages: int, num_earnings: int, export: st
         df_earn.index = df_earn["Ticker"].values
         df_earn.drop(columns=["Ticker"], inplace=True)
 
-        console.print(
+        print(
             tabulate(
                 df_earn,
                 showindex=True,

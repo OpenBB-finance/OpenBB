@@ -68,7 +68,7 @@ def show_df(df: pd.DataFrame, show: bool) -> None:
     df = df.dropna(how="all", axis=1).fillna("")
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,

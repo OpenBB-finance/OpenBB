@@ -60,7 +60,7 @@ def display_dex_trades(
     df.columns = prettify_column_names(df.columns)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -130,7 +130,7 @@ def display_daily_volume_for_given_pair(
     df.columns = prettify_column_names(df.columns)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -194,7 +194,7 @@ def display_dex_volume_for_token(
     df.columns = prettify_column_names(df.columns)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -258,7 +258,7 @@ def display_ethereum_unique_senders(
     df.columns = prettify_column_names(df.columns)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -318,7 +318,7 @@ def display_most_traded_pairs(
     df.columns = prettify_column_names(df.columns)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -378,7 +378,7 @@ def display_spread_for_crypto_pair(
     df.columns = prettify_column_names(df.columns)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,

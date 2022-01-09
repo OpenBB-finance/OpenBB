@@ -116,7 +116,7 @@ def display_queries(ticker: str, num: int = 5, export: str = ""):
     )
     console.print(f"Top {ticker}'s related queries")
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_related_queries,
                 headers=df_related_queries.columns,
@@ -148,7 +148,7 @@ def display_rise(ticker: str, num: int, export: str = ""):
     console.print(f"Top rising {ticker}'s related queries")
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_related_queries,
                 headers=df_related_queries.columns,

@@ -84,7 +84,7 @@ def view_screener_output(
         df_res = df_res.head(n_show)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_res,
                 headers=df_res.columns,
@@ -139,9 +139,7 @@ def view_historical_greeks(
     df = syncretism_model.get_historical_greeks(ticker, expiry, chain_id, strike, put)
 
     if raw:
-        console.print(
-            tabulate(df.tail(n_show), headers=df.columns, tablefmt="fancy_grid")
-        )
+        print(tabulate(df.tail(n_show), headers=df.columns, tablefmt="fancy_grid"))
 
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     im1 = ax.plot(df.index, df[greek], c="firebrick", label=greek)

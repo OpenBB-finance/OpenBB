@@ -253,7 +253,7 @@ def display_sean_seah_warnings(ticker: str, debug: bool = False):
         return
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 financials,
                 headers=financials.columns,

@@ -78,7 +78,7 @@ def fibonacci_retracement(
         plt.ion()
     plt.show()
 
-    console.print(
+    print(
         tabulate(
             df_fib,
             headers=["Fib Level", "Price"],

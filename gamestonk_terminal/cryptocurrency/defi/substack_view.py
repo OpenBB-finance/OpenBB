@@ -26,7 +26,7 @@ def display_newsletters(top: int = 10, export: str = "") -> None:
     df_data = df.copy()
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,

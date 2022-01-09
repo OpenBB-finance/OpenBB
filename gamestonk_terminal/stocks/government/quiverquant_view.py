@@ -364,7 +364,7 @@ def display_last_contracts(
         df_contracts["Description"] = df_contracts["Description"].apply(
             lambda x: "\n".join(textwrap.wrap(x, 50))
         )
-        console.print(
+        print(
             tabulate(
                 df_contracts,
                 headers=df_contracts.columns,

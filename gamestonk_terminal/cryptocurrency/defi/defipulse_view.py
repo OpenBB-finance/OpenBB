@@ -31,7 +31,7 @@ def display_defipulse(top: int, sortby: str, descend: bool, export: str = "") ->
     df = df.sort_values(by=sortby, ascending=descend)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,

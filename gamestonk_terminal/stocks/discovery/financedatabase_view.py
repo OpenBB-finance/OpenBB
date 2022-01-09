@@ -87,7 +87,7 @@ def show_equities(
     ]
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 tabulate_data.iloc[:amount],
                 showindex=True,

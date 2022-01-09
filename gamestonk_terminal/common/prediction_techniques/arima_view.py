@@ -277,7 +277,7 @@ def display_arima(
                 df_pred["Dif"] = (
                     100 * (df_pred.Prediction - df_pred.Real) / df_pred.Real
                 )
-                console.print(
+                print(
                     tabulate(
                         df_pred,
                         headers=["Date", "Predicted", "Actual", "% Difference"],
@@ -301,7 +301,7 @@ def display_arima(
                 df_pred["Dif"] = (
                     100 * (df_pred.Prediction - df_pred.Real) / df_pred.Real
                 )
-                console.print(
+                print(
                     tabulate(
                         df_pred,
                         headers=["Date", "Predicted", "Actual", "% Difference"],

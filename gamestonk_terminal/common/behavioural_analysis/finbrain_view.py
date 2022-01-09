@@ -108,14 +108,12 @@ def display_sentiment_analysis(ticker: str, export: str = ""):
                 data=color_df.values,
                 index=pd.to_datetime(df_sentiment.index).strftime("%Y-%m-%d"),
             )
-            console.print(
-                tabulate(color_df, headers=["Sentiment"], tablefmt="fancy_grid")
-            )
+            print(tabulate(color_df, headers=["Sentiment"], tablefmt="fancy_grid"))
         else:
             console.print(color_df.to_string())
     else:
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     pd.DataFrame(
                         data=df_sentiment.values,

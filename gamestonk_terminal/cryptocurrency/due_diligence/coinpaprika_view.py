@@ -111,7 +111,7 @@ def display_twitter(
         lambda text: "".join(i if ord(i) < 128 else "" for i in text)
     )
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -169,7 +169,7 @@ def display_events(
         df.drop("link", axis=1, inplace=True)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -218,7 +218,7 @@ def display_exchanges(
     df = df.sort_values(by=sortby, ascending=descend)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -287,7 +287,7 @@ def display_markets(
         df.drop("market_url", axis=1, inplace=True)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -331,7 +331,7 @@ def display_price_supply(coin_id: str, currency: str, export: str) -> None:
     df = df.applymap(lambda x: long_number_format_with_type_check(x))
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -371,7 +371,7 @@ def display_basic(coin_id: str, export: str) -> None:
         return
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,

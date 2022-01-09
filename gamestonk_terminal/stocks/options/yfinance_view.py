@@ -604,7 +604,7 @@ def show_parity(
         console.print("Warning: Options with no current ask price not shown.\n")
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 show,
                 headers=[x.title() for x in show.columns],
@@ -683,7 +683,7 @@ def risk_neutral_vals(
     new_df = new_df[new_df["Strike"] <= maxi]
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 new_df,
                 headers=[x.title() for x in new_df.columns],

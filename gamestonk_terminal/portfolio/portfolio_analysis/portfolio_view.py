@@ -20,7 +20,7 @@ def display_group_holdings(portfolio: pd.DataFrame, group_column: str):
 
     grouped_df = pd.DataFrame(portfolio.groupby(group_column).agg(sum)["value"])
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 grouped_df,
                 headers=[group_column, "value"],

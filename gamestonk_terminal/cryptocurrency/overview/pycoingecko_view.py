@@ -72,7 +72,7 @@ def display_nft_of_the_day(export: str) -> None:
     df = gecko.get_nft_of_the_day()
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,

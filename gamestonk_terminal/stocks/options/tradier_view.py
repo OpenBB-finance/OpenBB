@@ -138,7 +138,7 @@ def display_chains(
     puts_df = chains_df[chains_df.option_type == "put"].drop(columns=["option_type"])
 
     if calls_only:
-        console.print(
+        print(
             tabulate(
                 calls_df,
                 headers=calls_df.columns,
@@ -149,7 +149,7 @@ def display_chains(
         )
 
     elif puts_only:
-        console.print(
+        print(
             tabulate(
                 puts_df,
                 headers=puts_df.columns,
@@ -181,7 +181,7 @@ def display_chains(
             else col
             for col in chain_table.columns
         ]
-        console.print(
+        print(
             tabulate(
                 chain_table,
                 headers=headers,

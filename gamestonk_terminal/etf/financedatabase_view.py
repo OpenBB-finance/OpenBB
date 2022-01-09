@@ -38,7 +38,7 @@ def display_etf_by_name(
     tabulate_data_sorted["total_assets"] = tabulate_data_sorted["total_assets"] / 1e6
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 tabulate_data_sorted.iloc[:limit],
                 showindex=True,
@@ -82,7 +82,7 @@ def display_etf_by_description(
     tabulate_data_sorted["total_assets"] = tabulate_data_sorted["total_assets"] / 1e6
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 tabulate_data_sorted.iloc[:limit],
                 showindex=True,
@@ -126,7 +126,7 @@ def display_etf_by_category(
     tabulate_data_sorted["total_assets"] = tabulate_data_sorted["total_assets"] / 1e6
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 tabulate_data_sorted.iloc[:limit],
                 showindex=True,

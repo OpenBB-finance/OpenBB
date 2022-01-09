@@ -188,7 +188,7 @@ def print_insider_data(type_insider: str, limit: int = 10, export: str = ""):
         )
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -288,7 +288,7 @@ def print_insider_filter(
 
     console.print("")
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_insider,
                 headers=df_insider.columns,

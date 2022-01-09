@@ -80,7 +80,7 @@ def display_balance(coin: str, currency: str, export: str) -> None:
     console.print(f"You currently have {total} coins and the breakdown is:")
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(df, headers=df.columns, showindex=True, tablefmt="fancy_grid"),
             "\n",
         )

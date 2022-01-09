@@ -130,7 +130,7 @@ def display_popular_tickers(
     if not popular_tickers_df.empty:
         console.print(f"\nThe following TOP {n_top} tickers have been mentioned:")
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     popular_tickers_df,
                     headers=popular_tickers_df.columns,

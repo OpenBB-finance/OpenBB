@@ -42,7 +42,7 @@ def display_raw(
     )
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(num),
                 headers=df.columns,

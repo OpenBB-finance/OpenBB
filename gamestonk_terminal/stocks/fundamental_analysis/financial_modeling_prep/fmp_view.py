@@ -41,7 +41,7 @@ def display_profile(ticker: str):
     """
     profile = fmp_model.get_profile(ticker)
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 profile.drop(index=["description", "image"]),
                 headers=[],
@@ -147,7 +147,7 @@ def display_income_statement(
     income = fmp_model.get_income(ticker, number, quarterly)
     income = income[income.columns[::-1]]
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 income.drop(index=["Final link", "Link"]),
                 headers=income.columns,
@@ -187,7 +187,7 @@ def display_balance_sheet(
     balance = fmp_model.get_balance(ticker, number, quarterly)
     balance = balance[balance.columns[::-1]]
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 balance.drop(index=["Final link", "Link"]),
                 headers=balance.columns,
@@ -226,7 +226,7 @@ def display_cash_flow(
     cash = fmp_model.get_cash(ticker, number, quarterly)
     cash = cash[cash.columns[::-1]]
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 cash.drop(index=["Final link", "Link"]),
                 headers=cash.columns,
@@ -264,9 +264,7 @@ def display_key_metrics(
     key_metrics = fmp_model.get_key_metrics(ticker, number, quarterly)
     key_metrics = key_metrics[key_metrics.columns[::-1]]
     if gtff.USE_TABULATE_DF:
-        console.print(
-            tabulate(key_metrics, headers=key_metrics.columns, tablefmt="fancy_grid")
-        )
+        print(tabulate(key_metrics, headers=key_metrics.columns, tablefmt="fancy_grid"))
     else:
         console.print(key_metrics.to_string())
     console.print("")

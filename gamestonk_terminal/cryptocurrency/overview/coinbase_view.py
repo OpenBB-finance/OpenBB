@@ -40,7 +40,7 @@ def display_trading_pairs(top: int, sortby: str, descend: bool, export: str) -> 
     df = df.sort_values(by=sortby, ascending=descend).head(top)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,

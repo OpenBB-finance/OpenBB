@@ -156,7 +156,7 @@ def short_interest_volume(ticker: str, num: int, raw: bool, export: str):
 
         df.date = df.date.dt.date
 
-        console.print(
+        print(
             tabulate(
                 df.iloc[:num],
                 tablefmt="fancy_grid",
@@ -276,7 +276,7 @@ def net_short_position(ticker: str, num: int, raw: bool, export: str):
 
         df["dates"] = df["dates"].dt.date
 
-        console.print(
+        print(
             tabulate(
                 df.iloc[:num],
                 tablefmt="fancy_grid",

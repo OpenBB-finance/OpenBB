@@ -22,4 +22,4 @@ custom_theme = Theme(
 )
 
 # Obviouse setup to make sure it works
-console = Console(theme=custom_theme, style="white", highlight=False)
+console = Console(theme=custom_theme, style="white", highlight=False, soft_wrap=False)

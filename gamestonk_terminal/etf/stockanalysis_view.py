@@ -48,7 +48,7 @@ def view_holdings(symbol: str, num_to_show: int, export: str):
 
     data = stockanalysis_model.get_etf_holdings(symbol)
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 data[:num_to_show],
                 headers=data.columns,
@@ -106,7 +106,7 @@ def display_etf_by_name(name: str, limit: int, export: str):
     matching_etfs = stockanalysis_model.get_etfs_by_name(name)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 matching_etfs.head(limit),
                 showindex=False,

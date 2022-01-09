@@ -72,7 +72,7 @@ def fails_to_deliver(
     console.print("")
 
     if raw:
-        console.print(
+        print(
             tabulate(
                 ftds_data,
                 headers=ftds_data.columns,

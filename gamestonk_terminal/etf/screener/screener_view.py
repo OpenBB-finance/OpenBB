@@ -37,7 +37,7 @@ def view_screener(
     screened_data = screened_data.sort_values(by=sortby, ascending=ascend)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 screened_data.head(num_to_show).fillna(""),
                 tablefmt="fancy_grid",

@@ -50,7 +50,7 @@ def display_coin_potential_returns(
     )
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -87,7 +87,7 @@ def display_info(symbol: str, export: str) -> None:
     df = wrap_text_in_df(coin.get_base_info, w=80)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -124,7 +124,7 @@ def display_web(symbol: str, export: str) -> None:
     df = coin.get_websites
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -159,7 +159,7 @@ def display_social(symbol: str, export: str) -> None:
     df = coin.get_social_media
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -195,7 +195,7 @@ def display_dev(symbol: str, export: str) -> None:
     df = coin.get_developers_data
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -234,7 +234,7 @@ def display_ath(symbol: str, currency: str, export: str) -> None:
     df = coin.get_all_time_high(currency=currency)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -273,7 +273,7 @@ def display_atl(symbol: str, currency: str, export: str) -> None:
     df = coin.get_all_time_low(currency=currency)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -309,7 +309,7 @@ def display_score(symbol: str, export: str) -> None:
     df = coin.get_scores
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -345,7 +345,7 @@ def display_bc(symbol: str, export: str) -> None:
     df = coin.get_blockchain_explorers
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -381,7 +381,7 @@ def display_market(symbol: str, export: str) -> None:
     df = coin.get_market_data
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,

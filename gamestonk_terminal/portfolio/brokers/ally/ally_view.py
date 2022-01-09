@@ -13,7 +13,7 @@ def display_history(n_to_show: int = 15, export: str = ""):
     history = ally_model.get_history()
     show_history = history[["amount", "date", "symbol", "transactiontype", "quantity"]]
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 show_history.tail(n_to_show),
                 headers=show_history.columns,
@@ -41,7 +41,7 @@ def display_holdings(export: str = ""):
     holdings = ally_model.get_holdings()
     holdings = holdings.set_index("Symbol")
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 holdings,
                 headers=holdings.columns,
@@ -88,7 +88,7 @@ def display_balances(export: str = ""):
         ]
     ]
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 balances,
                 headers=balances.columns,
@@ -112,7 +112,7 @@ def display_stock_quote(ticker: str):
     """
     quote = ally_model.get_stock_quote(ticker)
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 quote, tablefmt="fancy_grid", headers=quote.columns, showindex=True
             )
@@ -142,7 +142,7 @@ def display_top_lists(
     """
     movers = ally_model.get_top_movers(list_type, exchange)
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 movers.head(num_to_show),
                 headers=movers.columns,

@@ -29,7 +29,7 @@ def high_short_interest(num: int, export: str):
     df_high_short_interest = df_high_short_interest.iloc[1:].head(n=num)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_high_short_interest,
                 headers=df_high_short_interest.columns,

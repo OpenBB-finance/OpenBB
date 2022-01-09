@@ -49,7 +49,7 @@ def display_whales_transactions(
         df[col] = df[col].apply(lambda x: long_number_format(x))
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,

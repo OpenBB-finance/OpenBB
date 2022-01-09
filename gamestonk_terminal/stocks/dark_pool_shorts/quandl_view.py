@@ -110,7 +110,7 @@ def short_interest(ticker: str, nyse: bool, days: int, raw: bool, export: str):
 
         df_short_interest.index = df_short_interest.index.date
 
-        console.print(
+        print(
             tabulate(
                 df_short_interest,
                 headers=df_short_interest.columns,

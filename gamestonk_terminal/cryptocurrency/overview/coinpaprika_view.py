@@ -83,7 +83,7 @@ def display_global_market(export: str) -> None:
     df["Value"] = df["Value"].apply(lambda x: long_number_format_with_type_check(x))
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -141,7 +141,7 @@ def display_all_coins_market_info(
     console.print(f"\nDisplaying data vs {currency}")
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -199,7 +199,7 @@ def display_all_coins_info(
     console.print(f"\nDisplaying data vs {currency}")
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -257,7 +257,7 @@ def display_all_exchanges(
     console.print(f"\nDisplaying data vs {currency}")
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -315,7 +315,7 @@ def display_exchange_markets(
         df.drop("market_url", axis=1, inplace=True)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -348,7 +348,7 @@ def display_all_platforms(export: str) -> None:
     df = paprika.get_all_contract_platforms()
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -397,7 +397,7 @@ def display_contracts(
     df = df.sort_values(by=sortby, ascending=descend)
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df.head(top),
                 headers=df.columns,

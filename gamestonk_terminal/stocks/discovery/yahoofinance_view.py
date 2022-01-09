@@ -25,7 +25,7 @@ def display_gainers(num_stocks: int, export: str):
     if df_gainers.empty:
         console.print("No gainers found.")
     else:
-        console.print(
+        print(
             tabulate(
                 df_gainers.head(num_stocks),
                 headers=df_gainers.columns,
@@ -61,7 +61,7 @@ def display_losers(num_stocks: int, export: str):
     if df_losers.empty:
         console.print("No losers found.")
     else:
-        console.print(
+        print(
             tabulate(
                 df_losers.head(num_stocks),
                 headers=df_losers.columns,
@@ -97,7 +97,7 @@ def display_ugs(num_stocks: int, export: str):
     if df.empty:
         console.print("No data found.")
     else:
-        console.print(
+        print(
             tabulate(
                 df.head(num_stocks),
                 headers=df.columns,
@@ -133,7 +133,7 @@ def display_gtech(num_stocks: int, export: str):
     if df.empty:
         console.print("No data found.")
     else:
-        console.print(
+        print(
             tabulate(
                 df.head(num_stocks),
                 headers=df.columns,
@@ -169,7 +169,7 @@ def display_active(num_stocks: int, export: str):
     if df.empty:
         console.print("No data found.")
     else:
-        console.print(
+        print(
             tabulate(
                 df.head(num_stocks),
                 headers=df.columns,
@@ -205,7 +205,7 @@ def display_ulc(num_stocks: int, export: str):
     if df.empty:
         console.print("No data found.")
     else:
-        console.print(
+        print(
             tabulate(
                 df.head(num_stocks).dropna(),
                 headers=df.columns,
@@ -241,7 +241,7 @@ def display_asc(num_stocks: int, export: str):
     if df.empty:
         console.print("No data found.")
     else:
-        console.print(
+        print(
             tabulate(
                 df.head(num_stocks).dropna(),
                 headers=df.columns,

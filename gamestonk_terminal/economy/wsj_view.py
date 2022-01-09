@@ -25,7 +25,7 @@ def display_overview(export: str):
         return
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_data,
                 showindex=False,
@@ -60,7 +60,7 @@ def display_indices(export: str):
         return
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_data,
                 showindex=False,
@@ -95,7 +95,7 @@ def display_futures(export: str):
         return
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_data,
                 showindex=False,
@@ -130,7 +130,7 @@ def display_usbonds(export: str):
         return
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_data,
                 showindex=False,
@@ -165,7 +165,7 @@ def display_glbonds(export: str):
         return
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_data,
                 showindex=False,
@@ -200,7 +200,7 @@ def display_currencies(export: str):
         return
 
     if gtff.USE_TABULATE_DF:
-        console.print(
+        print(
             tabulate(
                 df_data,
                 showindex=False,
