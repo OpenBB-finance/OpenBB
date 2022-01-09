@@ -25,6 +25,9 @@ USE_DATETIME = strtobool(os.getenv("GTFF_USE_DATETIME", "True"))
 # Enable interactive matplotlib mode
 USE_ION = strtobool(os.getenv("GTFF_USE_ION", "True"))
 
+# Enable watermark in the figures
+USE_WATERMARK = strtobool(os.getenv("GTFF_USE_WATERMARK", "True"))
+
 # Enable Prompt Toolkit
 USE_PROMPT_TOOLKIT = strtobool(os.getenv("GTFF_USE_PROMPT_TOOLKIT", "True"))
 

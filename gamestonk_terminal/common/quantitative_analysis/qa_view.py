@@ -606,9 +606,11 @@ def display_line(
     if title:
         fig.suptitle(title)
     fig.tight_layout(pad=2)
-
+    
     if gtff.USE_ION:
         plt.ion()
+    if gtff.USE_WATERMARK:
+        ax.text(.73, 0.025, 'Gamestonk Terminal', transform=ax.transAxes, fontsize=12, color='gray', alpha=0.5)
 
     if draw:
         LineAnnotateDrawer(ax).draw_lines_and_annotate()
