@@ -25,10 +25,10 @@
 Warnings:
 
 No consistent historical earnings per share
-	EPS: [ 3.42  0.34  7.23  5.38  3.31]
-	Growth: [ -3.08  6.89  -1.85  -2.07] < 0
+        EPS: [ 3.42  0.34  7.23  5.38  3.31]
+        Growth: [ -3.08  6.89  -1.85  -2.07] < 0
 NOT consistently high return on equity
-	ROE: [ 0.16  0.1  0.59  0.76  0.49] < 0.15
+        ROE: [ 0.16  0.1  0.59  0.76  0.49] < 0.15
 NOT consistently high return on assets
-	ROA: [ 0.07  0.05  0.2  0.16  0.09] < 0.07 
+        ROA: [ 0.07  0.05  0.2  0.16  0.09] < 0.07 
 

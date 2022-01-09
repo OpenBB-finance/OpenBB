@@ -5,7 +5,6 @@ import argparse
 import os
 from datetime import datetime, timedelta
 from typing import List
-from colorama import Style
 import pandas as pd
 
 from prompt_toolkit.completion import NestedCompleter
@@ -160,18 +159,20 @@ class OptionsController(BaseController):
 
     def print_help(self):
         """Print help."""
-        colored = self.ticker and self.selected_date
-        help_text = f"""
+        has_ticker_start = "" if self.ticker and self.selected_date else "[dim]"
+        has_ticker_end = "" if self.ticker and self.selected_date else "[/dim]"
+        help_text = f"""[cmds]
     unu           show unusual options activity [fdscanner.com]
     calc          basic call/put PnL calculator
 
     load          load new ticker
-    exp           see and set expiration dates
+    exp           see and set expiration dates[/cmds]
 
-Ticker: {self.ticker or None}
+[info]
+Ticker: [/info] {self.ticker or None}
 Expiry: {self.selected_date or None}
-{"" if self.ticker else Style.DIM}
-    pcr           display put call ratio for ticker [AlphaQuery.com]{Style.DIM if not colored else ''}
+[menu]
+    pcr           display put call ratio for ticker [AlphaQuery.com]
     info          display option information (volatility, IV rank etc) [Barchart.com]
     chains        display option chains with greeks [Tradier]
     oi            plot open interest [Tradier/YF]
@@ -182,11 +183,11 @@ Expiry: {self.selected_date or None}
     plot          plot variables provided by the user [Yfinance]
     parity        shows whether options are above or below expected price [Yfinance]
     binom         shows the value of an option using binomial options pricing [Yfinance]
-{Style.RESET_ALL if not colored else ''}
->   screen        screens tickers based on preset [Syncretism.io]{"" if colored else Style.DIM}
+{has_ticker_start}
+>   screen        screens tickers based on preset [Syncretism.io]
 >   payoff        shows payoff diagram for a selection of options [Yfinance]
 >   pricing       shows options pricing and risk neutral valuation [Yfinance]
-{Style.RESET_ALL if not colored else ''}"""
+{has_ticker_end}"""
         console.print(help_text)
 
     def custom_reset(self):

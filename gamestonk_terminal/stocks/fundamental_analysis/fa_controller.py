@@ -5,7 +5,6 @@ import argparse
 from datetime import datetime, timedelta
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
-from colorama import Style
 
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
@@ -94,15 +93,15 @@ class FundamentalAnalysisController(BaseController):
     def print_help(self):
         """Print help."""
         newline = "\n"
-        help_text = f"""
-Ticker: {self.ticker}
-{f"Note that only Yahoo Finance currently supports foreign exchanges{Style.DIM}{newline}" if self.suffix else ""}
+        help_text = f"""[info]
+Ticker: [/info] {self.ticker} [cmds]
+{f"Note that only Yahoo Finance currently supports foreign exchanges{newline}" if self.suffix else ""}
     data          fundamental and technical data of company [FinViz]
     mgmt          management team of the company [Business Insider]
     analysis      analyse SEC filings with the help of machine learning [Eclect.us]
     score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]
     warnings      company warnings according to Sean Seah book [Market Watch]
-    dcf           advanced Excel customizable discounted cash flow [stockanalysis] {Style.RESET_ALL}
+    dcf           advanced Excel customizable discounted cash flow [stockanalysis]
 Yahoo Finance:
     info          information scope of the company
     shrs          shareholders of the company
@@ -110,7 +109,7 @@ Yahoo Finance:
     cal           calendar earnings and estimates of the company
     web           open web browser of the company
     hq            open HQ location of the company
-    divs          show historical dividends for company {Style.DIM if self.suffix else ""}
+    divs          show historical dividends for company
 Alpha Vantage:
     overview      overview of the company
     key           company key metrics
@@ -120,7 +119,7 @@ Alpha Vantage:
     earnings      earnings dates and reported EPS
     fraud         key fraud ratios
 Other Sources:
->   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP{Style.RESET_ALL}
+>   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP[/cmds]
         """
         console.print(help_text)
         # No longer used, but keep for future:
