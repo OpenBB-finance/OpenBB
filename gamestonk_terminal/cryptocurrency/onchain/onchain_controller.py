@@ -40,6 +40,7 @@ from gamestonk_terminal.cryptocurrency.onchain import (
     bitquery_view,
     bitquery_model,
 )
+from gamestonk_terminal.rich_config import console
 
 
 class OnchainController(BaseController):
@@ -333,7 +334,7 @@ class OnchainController(BaseController):
 
         if ns_parser:
             if len(ns_parser.address) not in [42, 66]:
-                print(
+                console.print(
                     f"Couldn't load address {ns_parser.address}. "
                     f"Token or account address should be 42 characters long. "
                     f"Transaction hash should be 66 characters long\n"
@@ -406,7 +407,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
         else:
-            print("You need to set an ethereum address\n")
+            console.print("You need to set an ethereum address\n")
 
     def call_hist(self, other_args: List[str]):
         """Process hist command"""
@@ -461,7 +462,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
         else:
-            print("You need to set an ethereum address\n")
+            console.print("You need to set an ethereum address\n")
 
     def call_holders(self, other_args: List[str]):
         """Process holders command"""
@@ -515,7 +516,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
         else:
-            print("You need to set an ethereum address\n")
+            console.print("You need to set an ethereum address\n")
 
     def call_top(self, other_args: List[str]):
         """Process top command"""
@@ -599,7 +600,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
         else:
-            print("You need to set an ethereum address\n")
+            console.print("You need to set an ethereum address\n")
 
     def call_th(self, other_args: List[str]):
         """Process th command"""
@@ -663,7 +664,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
         else:
-            print("You need to set an ethereum address\n")
+            console.print("You need to set an ethereum address\n")
 
     def call_tx(self, other_args: List[str]):
         """Process tx command"""
@@ -688,7 +689,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
         else:
-            print("You need to set an ethereum address\n")
+            console.print("You need to set an ethereum address\n")
 
     def call_prices(self, other_args: List[str]):
         """Process prices command"""
@@ -742,7 +743,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
         else:
-            print("You need to set an ethereum address\n")
+            console.print("You need to set an ethereum address\n")
 
     def call_lt(self, other_args: List[str]):
         """Process lt command"""
@@ -1122,7 +1123,7 @@ class OnchainController(BaseController):
                     )
 
                     if similar_cmd:
-                        print(f"Replacing by '{similar_cmd[0]}'")
+                        console.print(f"Replacing by '{similar_cmd[0]}'")
                         exchange = similar_cmd[0]
 
                     else:
@@ -1133,15 +1134,15 @@ class OnchainController(BaseController):
                             cutoff=0.5,
                         )
                         if similar_cmd:
-                            print(f"Did you mean '{similar_cmd[0]}'?")
+                            console.print(f"Did you mean '{similar_cmd[0]}'?")
 
-                        print(
+                        console.print(
                             f"Couldn't find any exchange with provided name: {ns_parser.exchange}. "
                             f"Please choose one from list: {bitquery_model.DECENTRALIZED_EXCHANGES}\n"
                         )
 
             else:
-                print("Exchange not provided setting default to Uniswap.\n")
+                console.print("Exchange not provided setting default to Uniswap.\n")
 
             bitquery_view.display_most_traded_pairs(
                 days=ns_parser.days,
@@ -1223,7 +1224,7 @@ class OnchainController(BaseController):
                     )
 
                 else:
-                    print(f"Coin '{ns_parser.coin}' does not exist.")
+                    console.print(f"Coin '{ns_parser.coin}' does not exist.")
                     if ns_parser.coin.upper() == "BTC":
                         token = "WBTC"
                     else:
@@ -1235,7 +1236,7 @@ class OnchainController(BaseController):
                         )
                         token = similar_cmd[0]
                     if similar_cmd[0]:
-                        print(f"Replacing with '{token}'")
+                        console.print(f"Replacing with '{token}'")
                         bitquery_view.display_spread_for_crypto_pair(
                             token=token,
                             vs=ns_parser.vs,
@@ -1252,10 +1253,10 @@ class OnchainController(BaseController):
                             cutoff=0.5,
                         )
                         if similar_cmd:
-                            print(f"Did you mean '{similar_cmd[0]}'?")
+                            console.print(f"Did you mean '{similar_cmd[0]}'?")
 
             else:
-                print("You didn't provide coin symbol.\n")
+                console.print("You didn't provide coin symbol.\n")
 
     def print_help(self):
         """Print help"""
@@ -1300,4 +1301,4 @@ Ethereum [Ethplorer]:
     tx              ethereum blockchain transaction info{Style.RESET_ALL if self.address_type != "tx" else ""}
     """
 
-        print(help_text)
+        console.print(help_text)

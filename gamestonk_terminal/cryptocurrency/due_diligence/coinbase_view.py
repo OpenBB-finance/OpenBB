@@ -10,6 +10,7 @@ from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -56,7 +57,7 @@ def display_trades(
     df_data = df.copy()
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -67,7 +68,7 @@ def display_trades(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -94,7 +95,7 @@ def display_candles(product_id: str, interval: str, export) -> None:
     df_data = df.copy()
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -105,7 +106,7 @@ def display_candles(product_id: str, interval: str, export) -> None:
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -131,7 +132,7 @@ def display_stats(product_id: str, export: str) -> None:
     df_data = df.copy()
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -142,7 +143,7 @@ def display_stats(product_id: str, export: str) -> None:
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,

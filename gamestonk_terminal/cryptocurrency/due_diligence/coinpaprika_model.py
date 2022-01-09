@@ -7,6 +7,7 @@ import textwrap
 import pandas as pd
 from dateutil import parser
 from gamestonk_terminal.cryptocurrency.coinpaprika_helpers import PaprikaSession
+from gamestonk_terminal.rich_config import console
 
 
 def get_coin(coin_id: str = "eth-ethereum") -> dict:
@@ -44,7 +45,7 @@ def get_coin_twitter_timeline(coin_id: str = "eth-ethereum") -> pd.DataFrame:
     session = PaprikaSession()
     res = session.make_request(session.ENDPOINTS["coin_tweeter"].format(coin_id))
     if "error" in res:
-        print(res)
+        console.print(res)
         return pd.DataFrame()
     if isinstance(res, list) and len(res) == 0:
         return pd.DataFrame()
@@ -160,7 +161,7 @@ def get_coin_markets_by_id(
         session.ENDPOINTS["coin_markets"].format(coin_id), quotes=quotes
     )
     if "error" in markets:
-        print(markets)
+        console.print(markets)
         return pd.DataFrame()
 
     data = []
@@ -222,7 +223,7 @@ def get_ohlc_historical(
         end=end,
     )
     if "error" in data:
-        print(data)
+        console.print(data)
         return pd.DataFrame()
     return pd.DataFrame(data)
 
@@ -292,21 +293,21 @@ def get_tickers_info_for_coin(
             try:
                 tickers[key] = parser.parse(date).strftime("%Y-%m-%d %H:%M:%S")
             except (KeyError, ValueError, TypeError) as e:
-                print(e)
+                console.print(e)
         if key == "quotes":
             try:
                 tickers[key][quotes]["ath_date"] = parser.parse(
                     tickers[key][quotes]["ath_date"]
                 ).strftime("%Y-%m-%d %H:%M:%S")
             except (KeyError, ValueError, TypeError) as e:
-                print(e)
+                console.print(e)
 
     df = pd.json_normalize(tickers)
     try:
         df.columns = [col.replace("quotes.", "") for col in list(df.columns)]
         df.columns = [col.replace(".", "_").lower() for col in list(df.columns)]
     except KeyError as e:
-        print(e)
+        console.print(e)
     df = df.T.reset_index()
     df.columns = ["Metric", "Value"]
     return df
@@ -340,7 +341,7 @@ def validate_coin(coin: str, coins_dct: dict) -> Tuple[str, Optional[Any]]:
 
     if not coin_found:
         raise ValueError(f"Could not find coin with given id: {coin}\n")
-    # print(f"Coin found : {coin_found} with symbol {symbol}\n")
+    # console.print(f"Coin found : {coin_found} with symbol {symbol}\n")
     return coin_found, symbol
 
 

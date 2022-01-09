@@ -19,6 +19,7 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.etf.screener import screener_view
 from gamestonk_terminal.etf import financedatabase_view, financedatabase_model
+from gamestonk_terminal.rich_config import console
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -83,7 +84,7 @@ PRESET: {self.preset}
 
     sbc         screen by category [FinanceDatabase]
 """
-        print(help_str)
+        console.print(help_str)
 
     def call_view(self, other_args: List[str]):
         """Process view command"""
@@ -127,19 +128,19 @@ PRESET: {self.preset}
                     "YrHigh",
                 ]
 
-                print("")
+                console.print("")
                 for filter_header in headers:
-                    print(f" - {filter_header} -")
+                    console.print(f" - {filter_header} -")
                     d_filters = {**preset_filter[filter_header]}
                     d_filters = {k: v for k, v in d_filters.items() if v}
                     if d_filters:
                         max_len = len(max(d_filters, key=len))
                         for key, value in d_filters.items():
-                            print(f"{key}{(max_len-len(key))*' '}: {value}")
-                    print("")
+                            console.print(f"{key}{(max_len-len(key))*' '}: {value}")
+                    console.print("")
 
             else:
-                print("\nPresets:")
+                console.print("\nPresets:")
                 for preset in self.preset_choices:
                     with open(
                         presets_path + preset + ".ini",
@@ -150,10 +151,10 @@ PRESET: {self.preset}
                             if line.strip() == "[Price]":
                                 break
                             description += line.strip()
-                    print(
+                    console.print(
                         f"   {preset}{(30-len(preset)) * ' '}{description.split('Description: ')[1].replace('#', '')}"
                     )
-                print("")
+                console.print("")
 
     def call_set(self, other_args: List[str]):
         """Process set command"""
@@ -177,7 +178,7 @@ PRESET: {self.preset}
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.preset = ns_parser.preset
-        print("")
+        console.print("")
 
     def call_screen(self, other_args):
         """Process screen command"""
@@ -266,7 +267,7 @@ PRESET: {self.preset}
                     export=ns_parser.export,
                 )
             else:
-                print(
+                console.print(
                     "The category selected does not exist, choose one from:"
                     f" {', '.join(financedatabase_model.get_etfs_categories())}\n"
                 )

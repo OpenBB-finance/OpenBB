@@ -11,6 +11,7 @@ from gamestonk_terminal.helper_funcs import (
 import gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model as gecko
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import wrap_text_in_df
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -49,7 +50,7 @@ def display_coin_potential_returns(
     )
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -60,7 +61,7 @@ def display_coin_potential_returns(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -86,7 +87,7 @@ def display_info(symbol: str, export: str) -> None:
     df = wrap_text_in_df(coin.get_base_info, w=80)
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -97,7 +98,7 @@ def display_info(symbol: str, export: str) -> None:
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -123,7 +124,7 @@ def display_web(symbol: str, export: str) -> None:
     df = coin.get_websites
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -134,7 +135,7 @@ def display_web(symbol: str, export: str) -> None:
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -158,7 +159,7 @@ def display_social(symbol: str, export: str) -> None:
     df = coin.get_social_media
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -169,7 +170,7 @@ def display_social(symbol: str, export: str) -> None:
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -194,7 +195,7 @@ def display_dev(symbol: str, export: str) -> None:
     df = coin.get_developers_data
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -205,7 +206,7 @@ def display_dev(symbol: str, export: str) -> None:
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -233,7 +234,7 @@ def display_ath(symbol: str, currency: str, export: str) -> None:
     df = coin.get_all_time_high(currency=currency)
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -244,7 +245,7 @@ def display_ath(symbol: str, currency: str, export: str) -> None:
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -272,7 +273,7 @@ def display_atl(symbol: str, currency: str, export: str) -> None:
     df = coin.get_all_time_low(currency=currency)
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -283,7 +284,7 @@ def display_atl(symbol: str, currency: str, export: str) -> None:
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -308,7 +309,7 @@ def display_score(symbol: str, export: str) -> None:
     df = coin.get_scores
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -319,7 +320,7 @@ def display_score(symbol: str, export: str) -> None:
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -344,7 +345,7 @@ def display_bc(symbol: str, export: str) -> None:
     df = coin.get_blockchain_explorers
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -355,7 +356,7 @@ def display_bc(symbol: str, export: str) -> None:
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -380,7 +381,7 @@ def display_market(symbol: str, export: str) -> None:
     df = coin.get_market_data
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df,
                 headers=df.columns,
@@ -391,7 +392,7 @@ def display_market(symbol: str, export: str) -> None:
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,

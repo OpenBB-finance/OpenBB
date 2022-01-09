@@ -36,6 +36,7 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
     load,
 )
+from gamestonk_terminal.rich_config import console
 
 FILTERS_VS_USD_BTC = ["usd", "btc"]
 
@@ -171,7 +172,7 @@ Coinbase:
    trades          show last trades
    stats           show coin stats
 """
-        print(help_text)
+        console.print(help_text)
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -224,7 +225,9 @@ Coinbase:
                 coin=ns_parser.coin, source=ns_parser.source
             )
             if self.symbol:
-                print(f"\nLoaded {self.current_coin} from source {self.source}\n")
+                console.print(
+                    f"\nLoaded {self.current_coin} from source {self.source}\n"
+                )
 
     def call_nonzero(self, other_args: List[str]):
         """Process nonzero command"""
@@ -283,7 +286,7 @@ Coinbase:
                 )
 
         else:
-            print("Glassnode source does not support this symbol\n")
+            console.print("Glassnode source does not support this symbol\n")
 
     def call_active(self, other_args: List[str]):
         """Process active command"""
@@ -341,7 +344,7 @@ Coinbase:
                 )
 
         else:
-            print("Glassnode source does not support this symbol\n")
+            console.print("Glassnode source does not support this symbol\n")
 
     def call_change(self, other_args: List[str]):
         """Process change command"""
@@ -413,7 +416,7 @@ Coinbase:
                     export=ns_parser.export,
                 )
         else:
-            print("Glassnode source does not support this symbol\n")
+            console.print("Glassnode source does not support this symbol\n")
 
     def call_eb(self, other_args: List[str]):
         """Process eb command"""
@@ -494,7 +497,7 @@ Coinbase:
                 )
 
         else:
-            print("Glassnode source does not support this symbol\n")
+            console.print("Glassnode source does not support this symbol\n")
 
     def call_oi(self, other_args):
         """Process oi command"""
@@ -772,7 +775,7 @@ Coinbase:
 
         _, quotes = coinbase_model.show_available_pairs_for_given_symbol(coin)
         if len(quotes) < 0:
-            print(f"Couldn't find any quoted coins for provided symbol {coin}")
+            console.print(f"Couldn't find any quoted coins for provided symbol {coin}")
 
         parser.add_argument(
             "--vs",
@@ -834,7 +837,7 @@ Coinbase:
         coin = self.coin_map_df["Coinbase"]
         _, quotes = coinbase_model.show_available_pairs_for_given_symbol(coin)
         if len(quotes) < 0:
-            print(
+            console.print(
                 f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
             )
 

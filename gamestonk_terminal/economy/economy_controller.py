@@ -194,7 +194,6 @@ NASDAQ DataLink (formerly Quandl):
 
 >   fred          Federal Reserve Economic Data submenu
 """
-        print(type(help_text))
         console.print(help_text)
 
     def call_feargreed(self, other_args: List[str]):

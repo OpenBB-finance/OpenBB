@@ -12,6 +12,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 
 from gamestonk_terminal.cryptocurrency.nft import nftcalendar_view, opensea_view
+from gamestonk_terminal.rich_config import console
 
 
 class NFTController(BaseController):
@@ -39,7 +40,7 @@ nftcalendar.io:
 opensea.io
     stats       check open sea collection stats
 """
-        print(help_text)
+        console.print(help_text)
 
     def call_stats(self, other_args: List[str]):
         """Process stats command"""

@@ -7,6 +7,7 @@ from tabulate import tabulate
 from gamestonk_terminal.cryptocurrency.defi import substack_model
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def display_newsletters(top: int = 10, export: str = "") -> None:
@@ -25,7 +26,7 @@ def display_newsletters(top: int = 10, export: str = "") -> None:
     df_data = df.copy()
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -36,7 +37,7 @@ def display_newsletters(top: int = 10, export: str = "") -> None:
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,

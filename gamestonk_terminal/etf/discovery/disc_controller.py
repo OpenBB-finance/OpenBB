@@ -15,6 +15,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.etf.discovery import wsj_view
+from gamestonk_terminal.rich_config import console
 
 
 class DiscoveryController(BaseController):
@@ -41,7 +42,7 @@ class DiscoveryController(BaseController):
     decliners   show top decliners [WSJ]
     active      show most active [WSJ]
 """
-        print(help_str)
+        console.print(help_str)
 
     def call_gainers(self, other_args):
         """Process gainers command"""

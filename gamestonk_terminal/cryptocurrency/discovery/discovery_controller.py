@@ -21,6 +21,7 @@ from gamestonk_terminal.cryptocurrency.discovery import (
     coinpaprika_view,
     coinmarketcap_view,
 )
+from gamestonk_terminal.rich_config import console
 
 
 class DiscoveryController(BaseController):
@@ -110,7 +111,7 @@ CoinPaprika:
 CoinMarketCap:
     cmctop            top coins from CoinMarketCap
 """
-        print(help_text)
+        console.print(help_text)
 
     def call_cggainers(self, other_args):
         """Process gainers command"""

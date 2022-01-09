@@ -25,6 +25,7 @@ from gamestonk_terminal.cryptocurrency.defi import (
     substack_view,
     graph_view,
 )
+from gamestonk_terminal.rich_config import console
 
 
 class DefiController(BaseController):
@@ -78,7 +79,7 @@ Uniswap:
     pools         Pools by volume on Uniswap
     swaps         Recent swaps done on Uniswap
 """
-        print(help_text)
+        console.print(help_text)
 
     def call_dpi(self, other_args: List[str]):
         """Process dpi command"""

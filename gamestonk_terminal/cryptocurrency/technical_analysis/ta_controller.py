@@ -30,6 +30,7 @@ from gamestonk_terminal.common.technical_analysis import (
     volatility_view,
     volume_view,
 )
+from gamestonk_terminal.rich_config import console
 
 
 class TechnicalAnalysisController(BaseController):
@@ -119,7 +120,7 @@ Volume:
 Custom:
     fib         fibonacci retracement
 """
-        print(help_str)
+        console.print(help_str)
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -197,7 +198,7 @@ Custom:
                 interval=ns_parser.interval,
                 vs=ns_parser.vs,
             )
-            print(f"{delta} Days of {self.ticker} vs {self.currency} loaded\n")
+            console.print(f"{delta} Days of {self.ticker} vs {self.currency} loaded\n")
 
     # TODO: Go through all models and make sure all needed columns are in dfs
 
@@ -390,7 +391,7 @@ Custom:
         )
         if ns_parser:
             if self.interval == "1440min":
-                print("VWAP should be used with intraday data.\n")
+                console.print("VWAP should be used with intraday data.\n")
 
             overlap_view.view_vwap(
                 s_ticker=self.ticker,

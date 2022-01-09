@@ -30,6 +30,7 @@ from gamestonk_terminal.common.technical_analysis import (
     volatility_view,
     volume_view,
 )
+from gamestonk_terminal.rich_config import console
 
 
 class TechnicalAnalysisController(BaseController):
@@ -110,7 +111,7 @@ Volume:
 Custom:
     fib         fibonacci retracement
 """
-        print(help_str)
+        console.print(help_str)
 
     def custom_reset(self):
         """Class specific component of reset command"""

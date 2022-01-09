@@ -8,6 +8,7 @@ from tabulate import tabulate
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.economy import wsj_model
 from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.rich_config import console
 
 
 def display_overview(export: str):
@@ -20,11 +21,11 @@ def display_overview(export: str):
     """
     df_data = wsj_model.market_overview()
     if df_data.empty:
-        print("No overview data available\n")
+        console.print("No overview data available\n")
         return
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df_data,
                 showindex=False,
@@ -34,8 +35,8 @@ def display_overview(export: str):
             )
         )
     else:
-        print(df_data.to_string(index=False))
-    print("")
+        console.print(df_data.to_string(index=False))
+    console.print("")
 
     export_data(
         export,
@@ -55,11 +56,11 @@ def display_indices(export: str):
     """
     df_data = wsj_model.us_indices()
     if df_data.empty:
-        print("No indices data available\n")
+        console.print("No indices data available\n")
         return
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df_data,
                 showindex=False,
@@ -69,8 +70,8 @@ def display_indices(export: str):
             )
         )
     else:
-        print(df_data.to_string(index=False))
-    print("")
+        console.print(df_data.to_string(index=False))
+    console.print("")
 
     export_data(
         export,
@@ -90,11 +91,11 @@ def display_futures(export: str):
     """
     df_data = wsj_model.top_commodities()
     if df_data.empty:
-        print("No futures/commodities data available\n")
+        console.print("No futures/commodities data available\n")
         return
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df_data,
                 showindex=False,
@@ -104,8 +105,8 @@ def display_futures(export: str):
             )
         )
     else:
-        print(df_data.to_string(index=False))
-    print("")
+        console.print(df_data.to_string(index=False))
+    console.print("")
 
     export_data(
         export,
@@ -125,11 +126,11 @@ def display_usbonds(export: str):
     """
     df_data = wsj_model.us_bonds()
     if df_data.empty:
-        print("No US bonds data available\n")
+        console.print("No US bonds data available\n")
         return
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df_data,
                 showindex=False,
@@ -139,8 +140,8 @@ def display_usbonds(export: str):
             )
         )
     else:
-        print(df_data.to_string(index=False))
-    print("")
+        console.print(df_data.to_string(index=False))
+    console.print("")
 
     export_data(
         export,
@@ -160,11 +161,11 @@ def display_glbonds(export: str):
     """
     df_data = wsj_model.global_bonds()
     if df_data.empty:
-        print("No global bonds data available\n")
+        console.print("No global bonds data available\n")
         return
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df_data,
                 showindex=False,
@@ -174,8 +175,8 @@ def display_glbonds(export: str):
             )
         )
     else:
-        print(df_data.to_string(index=False))
-    print("")
+        console.print(df_data.to_string(index=False))
+    console.print("")
 
     export_data(
         export,
@@ -195,11 +196,11 @@ def display_currencies(export: str):
     """
     df_data = wsj_model.global_currencies()
     if df_data.empty:
-        print("No currencies data available\n")
+        console.print("No currencies data available\n")
         return
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df_data,
                 showindex=False,
@@ -209,8 +210,8 @@ def display_currencies(export: str):
             )
         )
     else:
-        print(df_data.to_string(index=False))
-    print("")
+        console.print(df_data.to_string(index=False))
+    console.print("")
 
     export_data(
         export,

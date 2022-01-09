@@ -7,6 +7,7 @@ from tabulate import tabulate
 from gamestonk_terminal.cryptocurrency.discovery import pycoingecko_model
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -49,7 +50,7 @@ def display_gainers(
             df.drop("Url", axis=1, inplace=True)
 
         if gtff.USE_TABULATE_DF:
-            print(
+            console.print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,
@@ -60,7 +61,7 @@ def display_gainers(
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
@@ -69,9 +70,9 @@ def display_gainers(
             df_data,
         )
     else:
-        print("")
-        print("Unable to retrieve data from CoinGecko.")
-        print("")
+        console.print("")
+        console.print("Unable to retrieve data from CoinGecko.")
+        console.print("")
 
 
 def display_losers(
@@ -108,7 +109,7 @@ def display_losers(
             df.drop("Url", axis=1, inplace=True)
 
         if gtff.USE_TABULATE_DF:
-            print(
+            console.print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,
@@ -119,7 +120,7 @@ def display_losers(
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
@@ -128,9 +129,9 @@ def display_losers(
             df_data,
         )
     else:
-        print("")
-        print("Unable to retrieve data from CoinGecko.")
-        print("")
+        console.print("")
+        console.print("Unable to retrieve data from CoinGecko.")
+        console.print("")
 
 
 def display_discover(
@@ -172,7 +173,7 @@ def display_discover(
             df.drop("Url", axis=1, inplace=True)
 
         if gtff.USE_TABULATE_DF:
-            print(
+            console.print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,
@@ -183,7 +184,7 @@ def display_discover(
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
@@ -192,9 +193,9 @@ def display_discover(
             df_data,
         )
     else:
-        print("")
-        print("Unable to retrieve data from CoinGecko.")
-        print("")
+        console.print("")
+        console.print("Unable to retrieve data from CoinGecko.")
+        console.print("")
 
 
 def display_recently_added(
@@ -228,7 +229,7 @@ def display_recently_added(
         df.drop("Url", axis=1, inplace=True)
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -239,7 +240,7 @@ def display_recently_added(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -274,7 +275,7 @@ def display_top_defi_coins(
     stats_str = res[0]
     df = res[1].sort_values(by=sortby, ascending=descend)
     if df.empty:
-        print("No available data\n")
+        console.print("No available data\n")
     else:
         df_data = df.copy()
 
@@ -283,9 +284,9 @@ def display_top_defi_coins(
         else:
             df.drop("Url", axis=1, inplace=True)
 
-        print("\n", stats_str, "\n")
+        console.print("\n", stats_str, "\n")
         if gtff.USE_TABULATE_DF:
-            print(
+            console.print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,
@@ -296,7 +297,7 @@ def display_top_defi_coins(
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
@@ -325,7 +326,7 @@ def display_top_dex(top: int, sortby: str, descend: bool, export: str) -> None:
     df = pycoingecko_model.get_top_dexes().sort_values(by=sortby, ascending=descend)
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -336,7 +337,7 @@ def display_top_dex(top: int, sortby: str, descend: bool, export: str) -> None:
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -366,7 +367,7 @@ def display_top_volume_coins(top: int, sortby: str, descend: bool, export: str) 
     if not df.empty:
         df = df.sort_values(by=sortby, ascending=descend)
         if gtff.USE_TABULATE_DF:
-            print(
+            console.print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,
@@ -377,7 +378,7 @@ def display_top_volume_coins(top: int, sortby: str, descend: bool, export: str) 
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
@@ -386,9 +387,9 @@ def display_top_volume_coins(top: int, sortby: str, descend: bool, export: str) 
             df,
         )
     else:
-        print("")
-        print("Unable to retrieve data from CoinGecko.")
-        print("")
+        console.print("")
+        console.print("Unable to retrieve data from CoinGecko.")
+        console.print("")
 
 
 def display_top_nft(
@@ -425,7 +426,7 @@ def display_top_nft(
             df.drop("Url", axis=1, inplace=True)
 
         if gtff.USE_TABULATE_DF:
-            print(
+            console.print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,
@@ -436,7 +437,7 @@ def display_top_nft(
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
@@ -445,9 +446,9 @@ def display_top_nft(
             df_data,
         )
     else:
-        print("")
-        print("Unable to retrieve data from CoinGecko.")
-        print("")
+        console.print("")
+        console.print("Unable to retrieve data from CoinGecko.")
+        console.print("")
 
 
 def display_yieldfarms(top: int, sortby: str, descend: bool, export: str) -> None:
@@ -474,7 +475,7 @@ def display_yieldfarms(top: int, sortby: str, descend: bool, export: str) -> Non
         df = df.sort_values(by=sortby, ascending=descend)
 
         if gtff.USE_TABULATE_DF:
-            print(
+            console.print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,
@@ -485,7 +486,7 @@ def display_yieldfarms(top: int, sortby: str, descend: bool, export: str) -> Non
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
@@ -494,6 +495,6 @@ def display_yieldfarms(top: int, sortby: str, descend: bool, export: str) -> Non
             df_data,
         )
     else:
-        print("")
-        print("Unable to retrieve data from CoinGecko.")
-        print("")
+        console.print("")
+        console.print("Unable to retrieve data from CoinGecko.")
+        console.print("")

@@ -12,6 +12,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.rich_config import console
 
 
 def display_defi_protocols(
@@ -55,7 +56,7 @@ def display_defi_protocols(
         ]
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 df.head(top),
                 headers=df.columns,
@@ -66,7 +67,7 @@ def display_defi_protocols(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -108,7 +109,7 @@ def display_defi_tvl(top: int, export: str = "") -> None:
     if gtff.USE_ION:
         plt.ion()
     plt.show()
-    print("")
+    console.print("")
 
     export_data(
         export,

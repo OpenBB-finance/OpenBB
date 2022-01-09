@@ -18,6 +18,7 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=R1710,import-outside-toplevel
 
@@ -60,7 +61,7 @@ AlphaVantage:
 Forex brokerages:
 >   oanda         Oanda menu
  """
-        print(help_text)
+        console.print(help_text)
 
     def call_to(self, other_args: List[str]):
         """Process 'to' command."""
@@ -90,7 +91,7 @@ Forex brokerages:
         if ns_parser:
             self.to_symbol = ns_parser.to_symbol
 
-            print(
+            console.print(
                 f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
             )
 
@@ -121,7 +122,7 @@ Forex brokerages:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.from_symbol = ns_parser.from_symbol
-            print(
+            console.print(
                 f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
             )
 
@@ -169,11 +170,13 @@ Forex brokerages:
                     interval=ns_parser.interval,
                     start_date=ns_parser.start_date.strftime("%Y-%m-%d"),
                 )
-                print(
+                console.print(
                     f"Loaded historic data from {self.from_symbol} to {self.to_symbol}"
                 )
             else:
-                print("\nMake sure both a to symbol and a from symbol are supplied\n")
+                console.print(
+                    "\nMake sure both a to symbol and a from symbol are supplied\n"
+                )
 
     def call_candle(self, other_args: List[str]):
         """Process quote command."""
@@ -188,7 +191,9 @@ Forex brokerages:
             if not self.data.empty:
                 av_view.display_candle(self.data, self.to_symbol, self.from_symbol)
             else:
-                print("No forex historical data loaded.  Load first using <load>.\n")
+                console.print(
+                    "No forex historical data loaded.  Load first using <load>.\n"
+                )
 
     def call_quote(self, other_args: List[str]):
         """Process quote command."""
@@ -203,7 +208,9 @@ Forex brokerages:
             if self.to_symbol and self.from_symbol:
                 av_view.display_quote(self.to_symbol, self.from_symbol)
             else:
-                print('Make sure both a "to" symbol and a "from" symbol are selected\n')
+                console.print(
+                    'Make sure both a "to" symbol and a "from" symbol are selected\n'
+                )
 
     # MENUS
     def call_oanda(self, _):

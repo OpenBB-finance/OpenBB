@@ -17,6 +17,7 @@ from gamestonk_terminal.helper_funcs import (
     check_non_negative_float,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.rich_config import console
 
 account = cfg.OANDA_ACCOUNT
 
@@ -91,7 +92,7 @@ class OandaController(BaseController):
     {reset_style_if_no_ticker}
 
     """
-        print(help_text)
+        console.print(help_text)
 
     def call_to(self, other_args: List[str]):
         """Process 'to' command."""
@@ -121,7 +122,7 @@ class OandaController(BaseController):
             self.to_symbol = ns_parser.to_symbol.upper()
             self.instrument = f"{self.from_symbol}_{self.to_symbol}"
 
-            print(
+            console.print(
                 f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
             )
 
@@ -154,7 +155,7 @@ class OandaController(BaseController):
             self.from_symbol = ns_parser.from_symbol.upper()
             self.instrument = f"{self.from_symbol}_{self.to_symbol}"
 
-            print(
+            console.print(
                 f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
             )
 
