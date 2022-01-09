@@ -1,0 +1,79 @@
+"""Coindix view"""
+__docformat__ = "numpy"
+
+import os
+from typing import Optional
+
+from tabulate import tabulate
+from gamestonk_terminal.cryptocurrency.defi import coindix_model
+from gamestonk_terminal.helper_funcs import export_data, long_number_format
+from gamestonk_terminal import feature_flags as gtff
+
+
+def display_defi_vaults(
+    *,
+    chain: Optional[str] = None,
+    protocol: Optional[str] = None,
+    kind: Optional[str] = None,
+    top: int,
+    sortby: str,
+    descend: bool,
+    export: str = ""
+) -> None:
+    """Display Top DeFi Vaults - pools of funds with an assigned strategy which main goal is to
+    maximize returns of its crypto assets. [Source: https://coindix.com/]
+
+    Parameters
+    ----------
+    chain: str
+        Blockchain - one from list [
+            'ethereum', 'polygon', 'avalanche', 'bsc', 'terra', 'fantom',
+            'moonriver', 'celo', 'heco', 'okex', 'cronos', 'arbitrum', 'eth',
+            'harmony', 'fuse', 'defichain', 'solana', 'optimism'
+        ]
+    protocol: str
+        DeFi protocol - one from list: [
+            'aave', 'acryptos', 'alpaca', 'anchor', 'autofarm', 'balancer', 'bancor',
+            'beefy', 'belt', 'compound', 'convex', 'cream', 'curve', 'defichain', 'geist',
+            'lido', 'liquity', 'mirror', 'pancakeswap', 'raydium', 'sushi', 'tarot', 'traderjoe',
+            'tulip', 'ubeswap', 'uniswap', 'venus', 'yearn'
+        ]
+    kind: str
+        Kind/type of vault - one from list: ['lp','single','noimploss','stable']
+    top: int
+        Number of records to display
+    sortby: str
+        Key by which to sort data
+    descend: bool
+        Flag to sort data descending
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+
+    df = coindix_model.get_defi_vaults(chain=chain, protocol=protocol, kind=kind)
+    df_data = df.copy()
+
+    df = df.sort_values(by=sortby, ascending=descend)
+    df["tvl"] = df["tvl"].apply(lambda x: long_number_format(x))
+    df.columns = [x.title() for x in df.columns]
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "vaults",
+        df_data,
+    )

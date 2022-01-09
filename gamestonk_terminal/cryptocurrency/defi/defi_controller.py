@@ -7,7 +7,7 @@ import difflib
 from typing import List, Union
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.cryptocurrency.defi import graph_model
+from gamestonk_terminal.cryptocurrency.defi import graph_model, coindix_model
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
@@ -27,6 +27,7 @@ from gamestonk_terminal.cryptocurrency.defi import (
     llama_view,
     substack_view,
     graph_view,
+    coindix_view,
 )
 
 
@@ -60,6 +61,7 @@ class DefiController:
         "pools",
         "swaps",
         "stats",
+        "vaults",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -79,6 +81,10 @@ class DefiController:
             choices["pairs"]["-s"] = {c: {} for c in graph_model.PAIRS_FILTERS}
             choices["pools"]["-s"] = {c: {} for c in graph_model.POOLS_FILTERS}
             choices["swaps"]["-s"] = {c: {} for c in graph_model.SWAPS_FILTERS}
+            choices["vaults"]["-s"] = {c: {} for c in coindix_model.VAULTS_FILTERS}
+            choices["vaults"]["-k"] = {c: {} for c in coindix_model.VAULT_KINDS}
+            choices["vaults"]["-c"] = {c: {} for c in coindix_model.CHAINS}
+            choices["vaults"]["-p"] = {c: {} for c in coindix_model.PROTOCOLS}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         if queue:
@@ -726,6 +732,94 @@ class DefiController:
                 export=ns_parser.export,
             )
 
+    @try_except
+    def call_vaults(self, other_args: List[str]):
+        """Process swaps command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="vaults",
+            description="""
+                Display Top DeFi Vaults.
+                [Source: https://coindix.com/]
+            """,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--chain",
+            dest="chain",
+            type=str,
+            help="Blockchain name e.g. ethereum, terra",
+            default=None,
+            choices=coindix_model.CHAINS,
+            required=False,
+        )
+
+        parser.add_argument(
+            "-p",
+            "--protocol",
+            dest="protocol",
+            type=str,
+            help="DeFi protocol name e.g. aave, uniswap",
+            default=None,
+            choices=coindix_model.PROTOCOLS,
+            required=False,
+        )
+
+        parser.add_argument(
+            "-k",
+            "--kind",
+            dest="kind",
+            type=str,
+            help="Kind/type of vault e.g. lp, single, noimploss, stable",
+            default=None,
+            choices=coindix_model.VAULT_KINDS,
+            required=False,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=check_positive,
+            help="Number of records to display",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: timestamp",
+            default="apy",
+            choices=coindix_model.VAULTS_FILTERS,
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=False,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            coindix_view.display_defi_vaults(
+                chain=ns_parser.chain,
+                kind=ns_parser.kind,
+                protocol=ns_parser.protocol,
+                top=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
+
     def print_help(self):
         """Print help"""
         help_text = """
@@ -736,9 +830,10 @@ Overview:
     tvl           Total value locked of DeFi protocols
     newsletter    Recent DeFi related newsletters
     dpi           DeFi protocols listed on DefiPulse
-    funding       Funding reates - current or last 30 days average
+    funding       Funding rates - current or last 30 days average
     borrow        DeFi borrow rates - current or last 30 days average
     lending       DeFi ending rates - current or last 30 days average
+    vaults        Top DeFi Vaults on different blockchains
 Uniswap:
     tokens        Tokens trade-able on Uniswap
     stats         Base statistics about Uniswap
