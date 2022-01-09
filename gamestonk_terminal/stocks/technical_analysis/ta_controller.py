@@ -715,9 +715,9 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            momentum_view.view_macd(
+            momentum_view.display_macd(
                 s_ticker=self.ticker,
-                prices=self.stock["Adj Close"],
+                values=self.stock["Adj Close"],
                 n_fast=ns_parser.n_fast,
                 n_slow=ns_parser.n_slow,
                 n_signal=ns_parser.n_signal,
@@ -774,7 +774,7 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            momentum_view.view_rsi(
+            momentum_view.display_rsi(
                 s_ticker=self.ticker,
                 prices=self.stock["Adj Close"],
                 length=ns_parser.n_length,
@@ -829,7 +829,7 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            momentum_view.view_stoch(
+            momentum_view.display_stoch(
                 s_ticker=self.ticker,
                 df_stock=self.stock,
                 fastkperiod=ns_parser.n_fastkperiod,
@@ -869,7 +869,7 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            momentum_view.view_fisher(
+            momentum_view.display_fisher(
                 s_ticker=self.ticker,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
@@ -907,7 +907,7 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            momentum_view.view_cg(
+            momentum_view.display_cg(
                 s_ticker=self.ticker,
                 prices=self.stock["Adj Close"],
                 length=ns_parser.n_length,

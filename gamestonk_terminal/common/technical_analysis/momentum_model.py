@@ -40,7 +40,7 @@ def cci(
 
 
 def macd(
-    data: pd.DataFrame,
+    values: pd.DataFrame,
     n_fast: int = 12,
     n_slow: int = 26,
     n_signal: int = 9,
@@ -49,8 +49,8 @@ def macd(
 
     Parameters
     ----------
-    data: pd.DataFrame
-        Dataframe of prices
+    values: pd.Series
+        Values for calculation
     n_fast : int
         Fast period
     n_slow : int
@@ -63,16 +63,16 @@ def macd(
         Dataframe of technical indicator
     """
     return pd.DataFrame(
-        ta.macd(data["values"], fast=n_fast, slow=n_slow, signal=n_signal).dropna()
+        ta.macd(values, fast=n_fast, slow=n_slow, signal=n_signal).dropna()
     )
 
 
-def rsi(data: pd.DataFrame, length: int, scalar: float, drift: int) -> pd.DataFrame:
+def rsi(values: pd.Series, length: int, scalar: float, drift: int) -> pd.DataFrame:
     """Relative strength index
 
     Parameters
     ----------
-    data: pd.DataFrame
+    values: pd.Series
         Dataframe of prices
     length: int
         Length of window
@@ -87,7 +87,7 @@ def rsi(data: pd.DataFrame, length: int, scalar: float, drift: int) -> pd.DataFr
         Dataframe of technical indicator
     """
     return pd.DataFrame(
-        ta.rsi(data["values"], length=length, scalar=scalar, drift=drift).dropna()
+        ta.rsi(values, length=length, scalar=scalar, drift=drift).dropna()
     )
 
 

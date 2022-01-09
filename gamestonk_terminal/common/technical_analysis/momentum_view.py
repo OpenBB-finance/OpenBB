@@ -80,8 +80,8 @@ def plot_cci(
     )
 
 
-def view_macd(
-    prices: pd.DataFrame,
+def display_macd(
+    values: pd.Series,
     n_fast: int = 12,
     n_slow: int = 26,
     n_signal: int = 9,
@@ -92,8 +92,8 @@ def view_macd(
 
     Parameters
     ----------
-    df_stock : pd.DataFrame
-        Dataframe of prices
+    values : pd.DataFrame
+        Values to input
     n_fast : int
         Fast period
     n_slow : int
@@ -105,15 +105,13 @@ def view_macd(
     export : str
         Format to export data
     """
-    df = pd.DataFrame(prices)
-    df.columns = ["values"]
-    df_ta = momentum_model.macd(df, n_fast, n_slow, n_signal)
+    df_ta = momentum_model.macd(values, n_fast, n_slow, n_signal)
 
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
     ax.set_title(f"{s_ticker} MACD")
-    ax.plot(df.index, df["values"].values, "k", lw=2)
-    ax.set_xlim(df.index[0], df.index[-1])
+    ax.plot(values.index, values.values, "k", lw=2)
+    ax.set_xlim(values.index[0], values.index[-1])
     ax.set_ylabel("Share Price ($)")
     ax.grid(b=True, which="major", color="#666666", linestyle="-")
 
@@ -129,7 +127,7 @@ def view_macd(
         ],
         loc="upper left",
     )
-    ax2.set_xlim(df.index[0], df.index[-1])
+    ax2.set_xlim(values.index[0], values.index[-1])
     ax2.grid(b=True, which="major", color="#666666", linestyle="-")
 
     if gtff.USE_ION:
@@ -148,7 +146,7 @@ def view_macd(
     )
 
 
-def view_rsi(
+def display_rsi(
     prices: pd.Series,
     length: int = 14,
     scalar: float = 100.0,
@@ -173,21 +171,19 @@ def view_rsi(
     export : str
         Format to export data
     """
-    df_stock = pd.DataFrame(prices)
-    df_stock.columns = ["values"]
-    df_ta = momentum_model.rsi(df_stock, length, scalar, drift)
+    df_ta = momentum_model.rsi(prices, length, scalar, drift)
 
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
-    ax.plot(df_stock.index, df_stock["values"].values, "k", lw=2)
+    ax.plot(prices.index, prices.values, "k", lw=2)
     ax.set_title(f" {s_ticker} RSI{length} ")
-    ax.set_xlim(df_stock.index[0], df_stock.index[-1])
+    ax.set_xlim(prices.index[0], prices.index[-1])
     ax.set_ylabel("Share Price ($)")
     ax.grid(b=True, which="major", color="#666666", linestyle="-")
 
     ax2 = axes[1]
     ax2.plot(df_ta.index, df_ta.values, "b", lw=2)
-    ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
+    ax2.set_xlim(prices.index[0], prices.index[-1])
     ax2.axhspan(70, 100, facecolor="r", alpha=0.2)
     ax2.axhspan(0, 30, facecolor="g", alpha=0.2)
     ax2.axhline(70, linewidth=3, color="r", ls="--")
@@ -215,7 +211,7 @@ def view_rsi(
     )
 
 
-def view_stoch(
+def display_stoch(
     df_stock: pd.DataFrame,
     fastkperiod: int = 14,
     slowdperiod: int = 3,
@@ -285,7 +281,7 @@ def view_stoch(
     )
 
 
-def view_fisher(
+def display_fisher(
     df_stock: pd.DataFrame,
     length: int = 14,
     s_ticker: str = "",
@@ -363,7 +359,7 @@ def view_fisher(
     )
 
 
-def view_cg(
+def display_cg(
     prices: pd.Series,
     length: int = 14,
     s_ticker: str = "",

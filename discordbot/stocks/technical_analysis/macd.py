@@ -94,7 +94,7 @@ async def macd_command(
         fig.tight_layout(pad=1)
 
         plt.savefig("ta_macd.png")
-        uploaded_image = gst_imgur.upload_image("ta_cci.png", title="something")
+        uploaded_image = gst_imgur.upload_image("ta_macd.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
             logger.debug("Image URL: %s", image_link)
