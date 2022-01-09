@@ -98,6 +98,7 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
 ## Getting Started
 
 There are currently two main options to install the terminal:
+
 * using Docker: recommended if you just want to use the terminal
 * using Python: recommended if you want to develop new features
 
@@ -163,18 +164,19 @@ If you are using Windows you first you need to install WSL. The process is simpl
 
 Since WSL installation is headless by default (i.e., you have only access to a terminal running a linux distribution) you need some extra steps to be able to visualize the charts produced by the terminal (more detailed tutorial [here](https://medium.com/@shaoyenyu/make-matplotlib-works-correctly-with-x-server-in-wsl2-9d9928b4e36a)):
 
-1. Dynamically export the DISPLAY environment variable in WSL2: 
-```
-# add to the end of ~/.bashrc file
-export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
-# source the file
-source ~/.bashrc
-```
+1. Dynamically export the DISPLAY environment variable in WSL2:
+
+   ```bash
+   # add to the end of ~/.bashrc file
+   export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
+   # source the file
+   source ~/.bashrc
+   ```
+
 2. Download and install [VcXsrv](https://sourceforge.net/projects/vcxsrv/)
 3. When running the program is important to check "Disable access control"
 
 After this, `VcXsrv` should be running successfully and we can proceed to terminal installation.
-
 
 Although we **extremely** recommend using WSL to run the terminal on windows, if you don't want or can't for some reason, you can try install the terminal directly on Windows without WSL. If you'd like to see a video recording of the installation on Windows without WSL, @JohnnyDankseed has made one available [here](https://www.youtube.com/watch?v=-DJJ-cfquDA).
 
