@@ -39,7 +39,6 @@ def calculate_fib_levels(
         Price at max point
     """
     if open_date and close_date:
-
         if open_date not in df_stock.index:
             date0 = df_stock.index[df_stock.index.get_loc(open_date, method="nearest")]
             print(f"Start date not in df_stock.  Using nearest: {date0}")

@@ -34,8 +34,8 @@ def bbands(
             length=length,
             std=n_std,
             mamode=mamode,
-        ).dropna()
-    )
+        )
+    ).dropna()
 
 
 def donchian(

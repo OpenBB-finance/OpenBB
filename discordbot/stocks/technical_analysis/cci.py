@@ -41,13 +41,15 @@ async def cci_command(ctx, ticker="", length="14", scalar="0.015", start="", end
             end = datetime.now()
         else:
             end = datetime.strptime(end, cfg.DATE_FORMAT)
-
-        if not length.lstrip("-").isnumeric():
-            raise Exception("Number has to be an integer")
-        length = float(length)
-        if not scalar.lstrip("-").isnumeric():
-            raise Exception("Number has to be an integer")
-        scalar = float(scalar)
+        # pylint
+        try:
+            length = int(length)
+        except ValueError as e:
+            raise Exception("Length has to be an integer") from e
+        try:
+            scalar = float(scalar)
+        except ValueError as e:
+            raise Exception("Scalar has to be an integer") from e
 
         ticker = ticker.upper()
         df_stock = discordbot.helpers.load(ticker, start)

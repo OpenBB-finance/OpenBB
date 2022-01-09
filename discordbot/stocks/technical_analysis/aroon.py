@@ -44,7 +44,7 @@ async def aroon_command(ctx, ticker="", length="25", scalar="100", start="", end
 
         if not length.lstrip("-").isnumeric():
             raise Exception("Number has to be an integer")
-        length = float(length)
+        length = int(length)
         if not scalar.lstrip("-").isnumeric():
             raise Exception("Number has to be an integer")
         scalar = float(scalar)
