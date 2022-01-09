@@ -11,15 +11,11 @@ if env_files:
 # Relative path to the terminal
 sys.path.append("..")
 
-# DiscordBot# https://discord.com/developers/applications/
-DISCORD_BOT_TOKEN = (
-    os.getenv("GT_DISCORD_BOT_TOKEN")
-    or "OTA0NzYyNjEwODI0NjU0ODg4.YYAP2A.pqx8kS2xAFZpPA7RDEft8UW2x9o"
-)
+# https://discord.com/developers/applications/
+DISCORD_BOT_TOKEN = os.getenv("GT_DISCORD_BOT_TOKEN") or "REPLACE_ME"
 
 # https://apidocs.imgur.com
-IMGUR_CLIENT_ID = os.getenv("GT_IMGUR_CLIENT_ID") or "623a199299858e7"
-
+IMGUR_CLIENT_ID = os.getenv("GT_IMGUR_CLIENT_ID") or "REPLACE_ME"
 
 # Settings
 COMMAND_PREFIX = "!"

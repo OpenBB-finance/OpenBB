@@ -367,7 +367,7 @@ def display_fisher(
 
 
 def display_cg(
-    prices: pd.Series,
+    values: pd.Series,
     length: int = 14,
     s_ticker: str = "",
     export: str = "",
@@ -376,8 +376,8 @@ def display_cg(
 
     Parameters
     ----------
-    prices : pd.Series
-        Series of prices
+    values : pd.Series
+        Series of values
     length : int
         Length of window
     s_ticker : str
@@ -385,15 +385,13 @@ def display_cg(
     export : str
         Format to export data
     """
-    prices = pd.DataFrame(prices)
-    prices.columns = ["values"]
-    df_ta = momentum_model.cg(prices, length)
+    df_ta = momentum_model.cg(values, length)
 
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
     ax.set_title(f"{s_ticker} Centre of Gravity")
-    ax.plot(prices.index, prices["values"].values, "k", lw=1)
-    ax.set_xlim(prices.index[0], prices.index[-1])
+    ax.plot(values.index, values.values, "k", lw=1)
+    ax.set_xlim(values.index[0], values.index[-1])
     ax.set_ylabel("Share Price ($)")
     ax.grid(b=True, which="major", color="#666666", linestyle="-")
 
@@ -403,7 +401,7 @@ def display_cg(
     signal = df_ta.values
     signal = np.roll(signal, 1)
     ax2.plot(df_ta.index, signal, "g", lw=1, label="Signal")
-    ax2.set_xlim(prices.index[0], prices.index[-1])
+    ax2.set_xlim(values.index[0], values.index[-1])
     ax2.grid(b=True, which="major", color="#666666", linestyle="-")
 
     if gtff.USE_ION:

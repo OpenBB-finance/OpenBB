@@ -156,12 +156,12 @@ def fisher(high_vals: pd.Series, low_vals: pd.Series, length: int = 14) -> pd.Da
     return pd.DataFrame(ta.fisher(high=high_vals, low=low_vals, length=length).dropna())
 
 
-def cg(data: pd.DataFrame, length: int) -> pd.DataFrame:
+def cg(values: pd.Series, length: int) -> pd.DataFrame:
     """Center of gravity
 
     Parameters
     ----------
-    data: pd.DataFrame
+    values: pd.DataFrame
         Data to use with close being titled values
     length: int
         Length for indicator window
@@ -170,4 +170,4 @@ def cg(data: pd.DataFrame, length: int) -> pd.DataFrame:
     d.DataFrame
         Dataframe of technical indicator
     """
-    return pd.DataFrame(ta.cg(close=data["values"], length=length).dropna())
+    return pd.DataFrame(ta.cg(close=values, length=length).dropna())

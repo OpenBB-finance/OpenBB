@@ -687,7 +687,7 @@ Custom:
         if ns_parser:
             momentum_view.display_cg(
                 s_ticker=self.ticker,
-                prices=self.stock["Adj Close"],
+                values=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
