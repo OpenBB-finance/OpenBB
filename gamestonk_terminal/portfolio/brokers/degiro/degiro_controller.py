@@ -12,6 +12,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers.degiro.degiro_view import DegiroView
+from gamestonk_terminal.rich_config import console
 
 
 class DegiroController(BaseController):
@@ -44,7 +45,7 @@ class DegiroController(BaseController):
     def print_help(self):
         """Print help."""
         help_text = "Derigo brokerage menu"
-        print(help_text)
+        console.print(help_text)
 
     def cancel(self, other_args: List[str]):
         """Cancel an order using the `id`."""

@@ -27,6 +27,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     get_user_timezone_or_invalid,
 )
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=no-member,too-many-branches,C0302
 
@@ -75,7 +76,7 @@ def search(
         raise ValueError("No companies found. \n")
 
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 equities_dataframe.iloc[:amount],
                 showindex=False,
@@ -85,7 +86,7 @@ def search(
             "\n",
         )
     else:
-        print(equities_dataframe.iloc[:amount].to_string(), "\n")
+        console.print(equities_dataframe.iloc[:amount].to_string(), "\n")
 
 
 def load(
@@ -256,7 +257,7 @@ def load(
 
     s_intraday = (f"Intraday {s_interval}", "Daily")[interval == 1440]
 
-    print(
+    console.print(
         f"Loading {s_intraday} {ticker.upper()} stock "
         f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis.",
     )
@@ -448,7 +449,7 @@ def display_candle(
             )
 
         fig.show()
-    print("")
+    console.print("")
 
 
 def quote(other_args: List[str], s_ticker: str):
@@ -506,14 +507,16 @@ def quote(other_args: List[str], s_ticker: str):
             return
 
     except SystemExit:
-        print("")
+        console.print("")
         return
 
     ticker = yf.Ticker(ns_parser.s_ticker)
 
     # If price only option, return immediate market price for ticker.
     if ns_parser.price_only:
-        print(f"Price of {ns_parser.s_ticker} {ticker.info['regularMarketPrice']} \n")
+        console.print(
+            f"Price of {ns_parser.s_ticker} {ticker.info['regularMarketPrice']} \n"
+        )
         return
 
     try:
@@ -556,7 +559,7 @@ def quote(other_args: List[str], s_ticker: str):
 
         quote_data = transpose(quote_df)
 
-        print(
+        console.print(
             tabulate(
                 quote_data,
                 headers=quote_data.columns,  # type: ignore
@@ -566,9 +569,9 @@ def quote(other_args: List[str], s_ticker: str):
         )
 
     except KeyError:
-        print(f"Invalid stock ticker: {ns_parser.s_ticker}")
+        console.print(f"Invalid stock ticker: {ns_parser.s_ticker}")
 
-    print("")
+    console.print("")
     return
 
 

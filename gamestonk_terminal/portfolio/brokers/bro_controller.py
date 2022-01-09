@@ -14,6 +14,7 @@ from gamestonk_terminal.portfolio.brokers.ally import ally_controller
 from gamestonk_terminal.portfolio.brokers.degiro import degiro_controller
 from gamestonk_terminal.portfolio.brokers.robinhood import robinhood_controller
 from gamestonk_terminal.portfolio.brokers.coinbase import coinbase_controller
+from gamestonk_terminal.rich_config import console
 
 
 class BrokersController(BaseController):
@@ -42,7 +43,7 @@ class BrokersController(BaseController):
 
 >   cb           Coinbase Pro Menu
     """
-        print(help_string)
+        console.print(help_string)
 
     def call_degiro(self, _):
         """Process degiro command."""
@@ -65,8 +66,8 @@ class BrokersController(BaseController):
     #    """Process login command"""
     #    logged_in = False
     #    if not other_args:
-    #        print("Please enter brokers you wish to login to")
-    #        print("")
+    #        console.print("Please enter brokers you wish to login to")
+    #        console.print("")
     #        return
     #    for broker in other_args:
     #        if broker in self.BROKERS:
@@ -77,10 +78,10 @@ class BrokersController(BaseController):
     #                self.broker_list.add(broker)
     #                logged_in = True
     #            except Exception as e:
-    #                print("")
-    #                print(f"Error at broker : {broker}")
-    #                print(e)
-    #                print("Make sure credentials are defined in config_terminal.py ")
-    #                print("")
+    #                console.print("")
+    #                console.print(f"Error at broker : {broker}")
+    #                console.print(e)
+    #                console.print("Make sure credentials are defined in config_terminal.py ")
+    #                console.print("")
     #        else:
-    #            print(f"{broker} not supported")
+    #            console.print(f"{broker} not supported")

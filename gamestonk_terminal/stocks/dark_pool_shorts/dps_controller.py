@@ -28,6 +28,7 @@ from gamestonk_terminal.stocks.dark_pool_shorts import (
     finra_view,
     nyse_view,
 )
+from gamestonk_terminal.rich_config import console
 
 
 class DarkPoolShortsController(BaseController):
@@ -95,7 +96,7 @@ Quandl/Stockgrid:
 NYSE:
     volexch        short volume for ARCA,Amex,Chicago,NYSE and national exchanges
 {Style.RESET_ALL if not self.ticker else ''}"""
-        print(help_text)
+        console.print(help_text)
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -350,7 +351,7 @@ NYSE:
                     export=ns_parser.export,
                 )
             else:
-                print("No ticker loaded.\n")
+                console.print("No ticker loaded.\n")
 
     def call_ftd(self, other_args: List[str]):
         """Process ftd command"""
@@ -408,7 +409,7 @@ NYSE:
                     export=ns_parser.export,
                 )
             else:
-                print("No ticker loaded.\n")
+                console.print("No ticker loaded.\n")
 
     def call_spos(self, other_args: List[str]):
         """Process spos command"""
@@ -445,7 +446,7 @@ NYSE:
                     export=ns_parser.export,
                 )
             else:
-                print("No ticker loaded.\n")
+                console.print("No ticker loaded.\n")
 
     def call_psi(self, other_args: List[str]):
         """Process psi command"""
@@ -506,7 +507,7 @@ NYSE:
                         export=ns_parser.export,
                     )
             else:
-                print("No ticker loaded.\n")
+                console.print("No ticker loaded.\n")
 
     def call_volexch(self, other_args: List[str]):
         """Process volexch command"""
@@ -562,4 +563,4 @@ NYSE:
                     export=ns_parser.export,
                 )
             else:
-                print("No ticker loaded.  Use `load ticker` first.")
+                console.print("No ticker loaded.  Use `load ticker` first.")

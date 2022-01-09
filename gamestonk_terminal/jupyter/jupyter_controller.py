@@ -9,6 +9,7 @@ from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=import-outside-toplevel
 
@@ -35,7 +36,7 @@ class JupyterController(BaseController):
 >   reports     creates jupyter reports
 >   dashboards  shows interactive jupyter dashboards
         """
-        print(help_str)
+        console.print(help_str)
 
     def call_reports(self, _):
         """Process reports command"""

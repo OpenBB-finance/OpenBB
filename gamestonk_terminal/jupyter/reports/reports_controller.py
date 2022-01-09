@@ -14,6 +14,7 @@ import papermill as pm
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.rich_config import console
 
 
 class ReportController(BaseController):
@@ -89,7 +90,7 @@ class ReportController(BaseController):
 
 Select one of the following reports:
 {self.reports_opts}"""
-        print(help_text)
+        console.print(help_text)
 
     @try_except
     def switch(self, an_input: str):
@@ -107,7 +108,7 @@ Select one of the following reports:
         """
         # Empty command
         if not an_input:
-            print("")
+            console.print("")
             return self.queue
 
         # Navigation slash is being used
@@ -159,14 +160,14 @@ Select one of the following reports:
             # the notebook. This is a downside of allowing the user to have this much
             # flexibility.
             if len(other_args) != len(params):
-                print("Wrong number of arguments provided!")
+                console.print("Wrong number of arguments provided!")
                 if len(params):
-                    print("Provide, in order:")
+                    console.print("Provide, in order:")
                     for k, v in enumerate(params):
-                        print(f"{k+1}. {v}")
+                        console.print(f"{k+1}. {v}")
                 else:
-                    print("No argument required.")
-                print("")
+                    console.print("No argument required.")
+                console.print("")
 
             notebook_template = os.path.join(
                 "gamestonk_terminal", "jupyter", "reports", report_to_run
@@ -203,8 +204,8 @@ Select one of the following reports:
                 )
                 webbrowser.open(f"file://{report_output_path}")
 
-            print("")
-            print(
+            console.print("")
+            console.print(
                 "Exported: ",
                 os.path.join(
                     os.path.abspath(os.path.join(".")), notebook_output + ".html"

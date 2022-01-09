@@ -28,6 +28,7 @@ from gamestonk_terminal.common.behavioural_analysis import (
     twitter_view,
 )
 from gamestonk_terminal.stocks import stocks_helper
+from gamestonk_terminal.rich_config import console
 
 # pylint:disable=R0904,C0302
 
@@ -128,7 +129,7 @@ SentimentInvestor:
     social        social media figures for stock popularity
     historical    plot the past week of data for a selected metric{res}
         """
-        print(help_txt)
+        console.print(help_txt)
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -171,7 +172,7 @@ SentimentInvestor:
                 else:
                     self.ticker = ns_parser.ticker.upper()
             else:
-                print("Provide a valid ticker")
+                console.print("Provide a valid ticker")
 
     def call_watchlist(self, other_args: List[str]):
         """Process watchlist command"""
@@ -381,7 +382,7 @@ SentimentInvestor:
                     show_all_flairs=ns_parser.all,
                 )
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_bullbear(self, other_args: List[str]):
         """Process bullbear command"""
@@ -399,7 +400,7 @@ SentimentInvestor:
             if self.ticker:
                 stocktwits_view.display_bullbear(ticker=self.ticker)
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_messages(self, other_args: List[str]):
         """Process messages command"""
@@ -427,7 +428,7 @@ SentimentInvestor:
                     ticker=self.ticker, limit=ns_parser.limit
                 )
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_trending(self, other_args: List[str]):
         """Process trending command"""
@@ -506,7 +507,7 @@ SentimentInvestor:
                     ticker=self.ticker, start=ns_parser.start, export=ns_parser.export
                 )
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_regions(self, other_args: List[str]):
         """Process regions command"""
@@ -536,7 +537,7 @@ SentimentInvestor:
                     ticker=self.ticker, num=ns_parser.limit, export=ns_parser.export
                 )
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_queries(self, other_args: List[str]):
         """Process queries command"""
@@ -566,7 +567,7 @@ SentimentInvestor:
                     ticker=self.ticker, num=ns_parser.limit, export=ns_parser.export
                 )
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_rise(self, other_args: List[str]):
         """Process rise command"""
@@ -596,7 +597,7 @@ SentimentInvestor:
                     ticker=self.ticker, num=ns_parser.limit, export=ns_parser.export
                 )
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_infer(self, other_args: List[str]):
         """Process infer command"""
@@ -628,7 +629,7 @@ SentimentInvestor:
             if self.ticker:
                 twitter_view.display_inference(ticker=self.ticker, num=ns_parser.limit)
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_sentiment(self, other_args: List[str]):
         """Process sentiment command"""
@@ -676,7 +677,7 @@ SentimentInvestor:
                     export=ns_parser.export,
                 )
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_headlines(self, other_args: List[str]):
         """Process finbrain command"""
@@ -700,7 +701,7 @@ SentimentInvestor:
                     ticker=self.ticker, export=ns_parser.export
                 )
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_stats(self, other_args: List[str]):
         """Process stats command"""
@@ -723,7 +724,7 @@ SentimentInvestor:
                     ticker=self.ticker, export=ns_parser.export
                 )
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_metrics(self, other_args: List[str]):
         """Process metrics command"""
@@ -768,12 +769,12 @@ SentimentInvestor:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
-                print(
+                console.print(
                     "Currently under maintenance by the new Sentiment Investor team.\n"
                 )
                 # sentimentinvestor_view.display_metrics(ticker=self.ticker)
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_social(self, other_args: List[str]):
         """Process social command"""
@@ -796,12 +797,12 @@ SentimentInvestor:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
-                print(
+                console.print(
                     "Currently under maintenance by the new Sentiment Investor team.\n"
                 )
                 # sentimentinvestor_view.display_social(ticker=self.ticker)
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
@@ -878,7 +879,7 @@ SentimentInvestor:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
-                print(
+                console.print(
                     "Currently under maintenance by the new Sentiment Investor team.\n"
                 )
                 # sentimentinvestor_view.display_historical(
@@ -888,7 +889,7 @@ SentimentInvestor:
                 #    sort_dir=ns_parser.sort_dir,
                 # )
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_popularsi(self, other_args: List[str]):
         """Process popular command"""
@@ -925,7 +926,9 @@ SentimentInvestor:
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            print("Currently under maintenance by the new Sentiment Investor team.\n")
+            console.print(
+                "Currently under maintenance by the new Sentiment Investor team.\n"
+            )
             # sentimentinvestor_view.display_top(metric="AHI", limit=ns_parser.limit)
 
     def call_emerging(self, other_args: List[str]):
@@ -962,5 +965,7 @@ SentimentInvestor:
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            print("Currently under maintenance by the new Sentiment Investor team.\n")
+            console.print(
+                "Currently under maintenance by the new Sentiment Investor team.\n"
+            )
             # sentimentinvestor_view.display_top(metric="RHI", limit=ns_parser.limit)

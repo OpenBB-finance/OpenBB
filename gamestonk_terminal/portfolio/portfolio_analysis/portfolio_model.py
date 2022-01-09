@@ -5,6 +5,7 @@ from tabulate import tabulate
 import pandas as pd
 import yfinance as yf
 import gamestonk_terminal.feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=no-member,unsupported-assignment-operation,unsubscriptable-object
 
@@ -63,7 +64,7 @@ def load_portfolio(
         df = df.dropna(axis=1)
 
     if gtff.USE_TABULATE_DF:
-        print(tabulate(df, tablefmt="fancy_grid", headers=df.columns), "\n")
+        console.print(tabulate(df, tablefmt="fancy_grid", headers=df.columns), "\n")
     else:
-        print(df.to_string(), "\n")
+        console.print(df.to_string(), "\n")
     return df

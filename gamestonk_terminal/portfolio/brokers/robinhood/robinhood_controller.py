@@ -16,6 +16,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
+from gamestonk_terminal.rich_config import console
 
 
 class RobinhoodController(BaseController):
@@ -45,7 +46,7 @@ Robinhood:
     holdings    show account holdings in stocks
     history     show equity history of your account
 """
-        print(help_text)
+        console.print(help_text)
 
     def call_login(self, _):
         """Process login"""

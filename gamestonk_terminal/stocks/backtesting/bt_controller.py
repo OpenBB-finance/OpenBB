@@ -18,6 +18,7 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.rich_config import console
 
 # This code below aims to fix an issue with the fnn module, used by bt module
 # which forces matplotlib backend to be 'agg' which doesn't allow to plot
@@ -57,7 +58,7 @@ Ticker: {self.ticker.upper()}
     ema_cross   buy when EMA(short) > EMA(long)
     rsi         buy when RSI < low and sell when RSI > high
         """
-        print(help_text)
+        console.print(help_text)
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -194,7 +195,7 @@ Ticker: {self.ticker.upper()}
         if ns_parser:
 
             if ns_parser.long < ns_parser.short:
-                print("Short EMA period is longer than Long EMA period\n")
+                console.print("Short EMA period is longer than Long EMA period\n")
 
             bt_view.display_ema_cross(
                 ticker=self.ticker,
@@ -266,7 +267,7 @@ Ticker: {self.ticker.upper()}
         )
         if ns_parser:
             if ns_parser.high < ns_parser.low:
-                print("Low RSI value is higher than Low RSI value\n")
+                console.print("Low RSI value is higher than Low RSI value\n")
 
             bt_view.display_rsi_strategy(
                 ticker=self.ticker,

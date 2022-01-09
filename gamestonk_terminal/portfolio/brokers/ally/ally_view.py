@@ -6,13 +6,14 @@ from tabulate import tabulate
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.portfolio.brokers.ally import ally_model
+from gamestonk_terminal.rich_config import console
 
 
 def display_history(n_to_show: int = 15, export: str = ""):
     history = ally_model.get_history()
     show_history = history[["amount", "date", "symbol", "transactiontype", "quantity"]]
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 show_history.tail(n_to_show),
                 headers=show_history.columns,
@@ -22,8 +23,8 @@ def display_history(n_to_show: int = 15, export: str = ""):
             )
         )
     else:
-        print(show_history.tail(n_to_show).to_string())
-    print("")
+        console.print(show_history.tail(n_to_show).to_string())
+    console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "ally_history", history
     )
@@ -40,7 +41,7 @@ def display_holdings(export: str = ""):
     holdings = ally_model.get_holdings()
     holdings = holdings.set_index("Symbol")
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 holdings,
                 headers=holdings.columns,
@@ -50,8 +51,8 @@ def display_holdings(export: str = ""):
             )
         )
     else:
-        print(holdings.to_string())
-    print("")
+        console.print(holdings.to_string())
+    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
@@ -87,7 +88,7 @@ def display_balances(export: str = ""):
         ]
     ]
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 balances,
                 headers=balances.columns,
@@ -97,8 +98,8 @@ def display_balances(export: str = ""):
             )
         )
     else:
-        print(balances.to_string())
-    print("")
+        console.print(balances.to_string())
+    console.print("")
 
 
 def display_stock_quote(ticker: str):
@@ -111,14 +112,14 @@ def display_stock_quote(ticker: str):
     """
     quote = ally_model.get_stock_quote(ticker)
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 quote, tablefmt="fancy_grid", headers=quote.columns, showindex=True
             )
         )
     else:
-        print(quote.to_string())
-    print("")
+        console.print(quote.to_string())
+    console.print("")
 
 
 def display_top_lists(
@@ -141,7 +142,7 @@ def display_top_lists(
     """
     movers = ally_model.get_top_movers(list_type, exchange)
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 movers.head(num_to_show),
                 headers=movers.columns,
@@ -151,8 +152,8 @@ def display_top_lists(
             )
         )
     else:
-        print(movers.to_string())
-    print("")
+        console.print(movers.to_string())
+    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),

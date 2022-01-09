@@ -13,6 +13,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
+from gamestonk_terminal.rich_config import console
 
 
 class AllyController(BaseController):
@@ -51,7 +52,7 @@ Stock Information:
     movers      get ranked lists of movers
 """
 
-        print(help_text)
+        console.print(help_text)
 
     def call_holdings(self, other_args: List[str]):
         """Process holdings command"""

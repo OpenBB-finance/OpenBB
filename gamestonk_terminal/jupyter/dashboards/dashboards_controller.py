@@ -14,6 +14,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=consider-using-with
 
@@ -38,7 +39,7 @@ class DashboardsController(BaseController):
         help_str = """
    stocks        interactive dashboard with ticker information
         """
-        print(help_str)
+        console.print(help_str)
 
     def call_stocks(self, other_args: List[str]):
         """Process stocks command"""
@@ -65,7 +66,7 @@ class DashboardsController(BaseController):
             cmd = "jupyter-lab" if ns_parser.jupyter else "voila"
             file = "gamestonk_terminal/jupyter/dashboards/stocks.ipynb"
 
-            print(
+            console.print(
                 f"Warning: this command will open a port on your computer to run a {cmd} server."
             )
             response = input("Would you like us to run the server for you? y/n\n")
@@ -78,8 +79,8 @@ class DashboardsController(BaseController):
                     shell=True,
                 )
             else:
-                print(
+                console.print(
                     f"To run manually type: {cmd} {file}\ninto a terminal after"
                     " entering the environment you use to run the terminal."
                 )
-        print("")
+        console.print("")

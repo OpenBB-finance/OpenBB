@@ -4,8 +4,8 @@ import os
 from matplotlib import pyplot
 from prompt_toolkit import PromptSession
 from prompt_toolkit.eventloop.inputhook import set_eventloop_with_inputhook
-from gamestonk_terminal.rich_config import console
 from prompt_toolkit.history import FileHistory
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 

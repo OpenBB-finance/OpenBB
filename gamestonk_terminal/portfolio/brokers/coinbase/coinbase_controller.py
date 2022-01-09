@@ -16,6 +16,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
+from gamestonk_terminal.rich_config import console
 
 
 class CoinbaseController(BaseController):
@@ -58,7 +59,7 @@ Coinbase:
     deposits    show all your deposits or internal transfers
     orders      show all your orders
 """
-        print(help_text)
+        console.print(help_text)
 
     def call_account(self, other_args):
         """Process account command"""

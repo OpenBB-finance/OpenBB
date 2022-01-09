@@ -245,7 +245,7 @@ Stock: [/info] {stock_text}
                 self.add_info = stocks_helper.additional_info_about_ticker(
                     ns_parser.ticker
                 )
-                print(self.add_info)
+                console.print(self.add_info)
                 if "." in ns_parser.ticker:
                     self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
                 else:
@@ -257,7 +257,7 @@ Stock: [/info] {stock_text}
                 else:
                     self.start = ns_parser.start
                 self.interval = f"{ns_parser.interval}min"
-                print("")
+                console.print("")
 
     def call_quote(self, other_args: List[str]):
         """Process quote command"""
@@ -354,12 +354,12 @@ Stock: [/info] {stock_text}
                         intraday=self.interval != "1440min",
                     )
             else:
-                print("No ticker loaded. First use `load {ticker}`\n")
+                console.print("No ticker loaded. First use `load {ticker}`\n")
 
     def call_news(self, other_args: List[str]):
         """Process news command"""
         if not self.ticker:
-            print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!", "\n")
             return
 
         parser = argparse.ArgumentParser(
@@ -498,7 +498,7 @@ Stock: [/info] {stock_text}
                 self.queue,
             ).menu()
         else:
-            print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!", "\n")
 
     def call_dd(self, _):
         """Process dd command"""
@@ -509,7 +509,7 @@ Stock: [/info] {stock_text}
                 self.ticker, self.start, self.interval, self.stock, self.queue
             ).menu()
         else:
-            print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!", "\n")
 
     def call_ca(self, _):
         """Process ca command"""
@@ -529,7 +529,7 @@ Stock: [/info] {stock_text}
                 self.ticker, self.start, self.interval, self.suffix, self.queue
             ).menu()
         else:
-            print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!", "\n")
 
     def call_bt(self, _):
         """Process bt command"""
@@ -540,7 +540,7 @@ Stock: [/info] {stock_text}
                 self.ticker, self.stock, self.queue
             ).menu()
         else:
-            print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!", "\n")
 
     def call_ta(self, _):
         """Process ta command"""
@@ -551,7 +551,7 @@ Stock: [/info] {stock_text}
                 self.ticker, self.start, self.interval, self.stock, self.queue
             ).menu()
         else:
-            print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!", "\n")
 
     def call_ba(self, _):
         """Process ba command"""
@@ -573,9 +573,9 @@ Stock: [/info] {stock_text}
                     self.ticker, self.start, self.interval, self.stock, self.queue
                 ).menu()
             # TODO: This menu should work regardless of data being daily or not!
-            print("Load daily data to use this menu!", "\n")
+            console.print("Load daily data to use this menu!", "\n")
         else:
-            print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!", "\n")
 
     def call_pred(self, _):
         """Process pred command"""
@@ -595,18 +595,18 @@ Stock: [/info] {stock_text}
                             self.queue,
                         ).menu()
                     except ModuleNotFoundError as e:
-                        print(
+                        console.print(
                             "One of the optional packages seems to be missing: ",
                             e,
                             "\n",
                         )
 
                 # TODO: This menu should work regardless of data being daily or not!
-                print("Load daily data to use this menu!", "\n")
+                console.print("Load daily data to use this menu!", "\n")
             else:
-                print("Use 'load <ticker>' prior to this command!", "\n")
+                console.print("Use 'load <ticker>' prior to this command!", "\n")
         else:
-            print(
+            console.print(
                 "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
                 "\n",
             )

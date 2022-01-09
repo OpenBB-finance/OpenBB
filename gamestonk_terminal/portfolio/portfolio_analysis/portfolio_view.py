@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import pandas as pd
 from tabulate import tabulate
 import gamestonk_terminal.feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def display_group_holdings(portfolio: pd.DataFrame, group_column: str):
@@ -19,7 +20,7 @@ def display_group_holdings(portfolio: pd.DataFrame, group_column: str):
 
     grouped_df = pd.DataFrame(portfolio.groupby(group_column).agg(sum)["value"])
     if gtff.USE_TABULATE_DF:
-        print(
+        console.print(
             tabulate(
                 grouped_df,
                 headers=[group_column, "value"],
@@ -29,4 +30,4 @@ def display_group_holdings(portfolio: pd.DataFrame, group_column: str):
             "\n",
         )
     else:
-        print(portfolio.to_string(), "\n")
+        console.print(portfolio.to_string(), "\n")

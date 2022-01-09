@@ -15,6 +15,7 @@ from gamestonk_terminal.portfolio.portfolio_analysis import (
     portfolio_model,
     portfolio_view,
 )
+from gamestonk_terminal.rich_config import console
 
 portfolios_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "portfolios")
 possible_paths = [
@@ -56,7 +57,7 @@ Portfolio: {self.portfolio_name or None}
 
     group         view holdings grouped by parameter
             """
-        print(help_string)
+        console.print(help_string)
 
     def call_load(self, other_args):
         """Process load command"""
@@ -111,7 +112,7 @@ Portfolio: {self.portfolio_name or None}
                 show_nan=ns_parser.show_nan,
             )
             if not self.portfolio.empty:
-                print(f"Successfully loaded: {self.portfolio_name}\n")
+                console.print(f"Successfully loaded: {self.portfolio_name}\n")
 
     def call_group(self, other_args):
         """Process group command"""
@@ -155,7 +156,7 @@ Portfolio: {self.portfolio_name or None}
                     portfolio=self.portfolio, group_column=ns_parser.group
                 )
             else:
-                print(
+                console.print(
                     "'value' column not in portfolio.  Either add manually or load without --no_last_price flag\n"
                 )
 
@@ -185,7 +186,7 @@ Portfolio: {self.portfolio_name or None}
                     if port.endswith(ns_parser.file_format)
                 ]
 
-            print("\nAvailable Portfolios:\n")
+            console.print("\nAvailable Portfolios:\n")
             for port in available_ports:
-                print(port)
-            print("")
+                console.print(port)
+            console.print("")
