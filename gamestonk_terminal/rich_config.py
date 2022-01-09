@@ -22,4 +22,5 @@ custom_theme = Theme(
 )
 
 # Obviouse setup to make sure it works
-console = Console(theme=custom_theme, style="white", highlight=False, soft_wrap=False)
+# soft_wrap=True is must be on or many tests fail
+console = Console(theme=custom_theme, style="white", highlight=False, soft_wrap=True)
