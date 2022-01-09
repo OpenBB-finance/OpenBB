@@ -45,6 +45,7 @@ class PortfolioController(BaseController):
     CHOICES_MENUS = [
         "bro",
         "po",
+        "pa",
     ]
 
     def __init__(self, queue: List[str] = None):
@@ -108,7 +109,7 @@ Graphs:
         """Process pa command"""
         from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
 
-        self.queue = pa_controller.PortfolioAnalysis([], self.queue).menu()
+        self.queue = pa_controller.PortfolioAnalysis(self.queue).menu()
 
     def call_load(self, other_args: List[str]):
         """Process load command"""

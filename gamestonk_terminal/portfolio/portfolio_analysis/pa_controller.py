@@ -4,23 +4,16 @@ __docformat__ = "numpy"
 from typing import List
 import argparse
 import os
-from os import listdir
-from os.path import isfile, join
-from typing import List
-from datetime import datetime
 
 from prompt_toolkit.completion import NestedCompleter
 import pandas as pd
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import (
-    valid_date,
-    check_positive_float,
-)
 from gamestonk_terminal.portfolio.portfolio_analysis import (
     portfolio_model,
     portfolio_view,
 )
+from gamestonk_terminal.menu import session
 
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
