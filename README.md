@@ -153,7 +153,7 @@ If you want to install the terminal using Python ignore the Docker section and j
 
 ### Local Install - Anaconda and Python
 
-This installation type supports both Windows and Unix systems (Linux + MacOS). However, on Windows it can become messy so it is to use Windows Subsystem Linux (WSL) on this operating system. WSL emulates a Linux machine inside your Windows system.
+This installation type supports both Windows and Unix systems (Linux + MacOS). However, on Windows it can become messy so it is easier to use Windows Subsystem Linux (WSL) on this operating system. WSL emulates a Linux machine inside your Windows system.
 
 If you are using macOS or other Linux operating systems you can jump the next section <a href="#installing-the-terminal">Installing the terminal</a>.
 
@@ -191,12 +191,12 @@ If you decided to add Machine Learning features at a later point, you will likel
 Anaconda's Python distribution.
 
 1. [Install Anaconda](https://docs.anaconda.com/anaconda/install/index.html) (It's on the AUR as anaconda or miniconda3!)
-   - Follow the instructions specified on the website above:
-      - If you are using macOS click [Installing on MacOS](https://docs.anaconda.com/anaconda/install/mac-os/)
-      - If you are using WSL or Linux click [Installing on Linux](https://docs.anaconda.com/anaconda/install/linux/)
-      - If you are using Windows click [Installing on Windows](https://docs.anaconda.com/anaconda/install/windows/). **ONLY REQUIRED IF NOT USING WSL**, you also need to install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
+   * Follow the instructions specified on the website above:
+      * If you are using macOS click [Installing on MacOS](https://docs.anaconda.com/anaconda/install/mac-os/)
+      * If you are using WSL or Linux click [Installing on Linux](https://docs.anaconda.com/anaconda/install/linux/)
+      * If you are using Windows click [Installing on Windows](https://docs.anaconda.com/anaconda/install/windows/). **ONLY REQUIRED IF NOT USING WSL**, you also need to install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
 
-   - After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output should be something along the lines of: `conda 4.9.2`
+   * After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output should be something along the lines of: `conda 4.9.2`
 
 2. Install git
 
@@ -206,8 +206,8 @@ Anaconda's Python distribution.
 
 3. Clone the Project
 
-   - Via HTTPS: `git clone https://github.com/GamestonkTerminal/GamestonkTerminal.git`
-   - via SSH: `git clone git@github.com:GamestonkTerminal/GamestonkTerminal.git`
+   * Via HTTPS: `git clone https://github.com/GamestonkTerminal/GamestonkTerminal.git`
+   * via SSH: `git clone git@github.com:GamestonkTerminal/GamestonkTerminal.git`
 
 4. Navigate into the project's folder
 
@@ -283,13 +283,13 @@ in separate places.
 
 _If you would like to use optional Machine Learning features:_
 
-- Update your [feature_flags.py](/gamestonk_terminal/feature_flags.py) with:
+* Update your [feature_flags.py](/gamestonk_terminal/feature_flags.py) with:
 
 ```bash
 ENABLE_PREDICT = os.getenv("GTFF_ENABLE_PREDICT") or True
 ```
 
-- Install optional ML features dependencies:
+* Install optional ML features dependencies:
 
 ```bash
 poetry install -E prediction
@@ -432,8 +432,8 @@ any loss or damage as a result of your trading, or your reliance on the informat
 
 Feel free to share loss porn, memes or any questions at:
 
-- Discord: <https://discord.gg/Up2QGbMKHY>
-- Twitter: [@gamestonkt](https://twitter.com/gamestonkt)
+* Discord: <https://discord.gg/Up2QGbMKHY>
+* Twitter: [@gamestonkt](https://twitter.com/gamestonkt)
 
 ### Contributors
 
@@ -443,16 +443,16 @@ Feel free to share loss porn, memes or any questions at:
 
 ## Acknowledgments
 
-- [VICE article - Gamestonk Terminal Is a DIY, Meme Stock Version of Bloomberg Terminal](https://www.vice.com/en/article/qjp9vp/gamestonk-terminal-is-a-diy-meme-stock-version-of-bloomberg-terminal)
-- [Daily Fintech article - Never underestimate Bloomberg, but here are 5 reasons why the Gamestonk Terminal is a contender](https://dailyfintech.com/2021/02/25/never-underestimate-bloomberg-but-here-are-5-reasons-why-the-gamestonk-terminal-is-a-contender/)
-- [HackerNews - Show HN: Can’t afford Bloomberg Terminal? No prob, I built the next best thing](https://news.ycombinator.com/item?id=26258773)
-- [Reddit r/algotrading - Gamestonk Terminal: The next best thing after Bloomberg Terminal.](https://www.reddit.com/r/algotrading/comments/m4uvza/gamestonk_terminal_the_next_best_thing_after/)
-- [Reddit r/Python - Gamestonk Terminal: The equivalent to an open-source python Bloomberg Terminal.](https://www.reddit.com/r/Python/comments/m515yk/gamestonk_terminal_the_equivalent_to_an/)
-- [Reddit r/Superstonk - Move over Bloomberg Terminal, here comes Gamestonk Terminal](https://www.reddit.com/r/Superstonk/comments/mx2cjh/move_over_bloomberg_terminal_here_comes_gamestonk/)
-- [Spotlight: Didier Lopes. Creator of Gamestonk Terminal](https://deepsource.io/spotlight/didier-lopes/)
-- [Reddit r/Superstonk - Gamestonk Terminal - We are very much alive](https://www.reddit.com/r/Superstonk/comments/o502i8/gamestonk_terminal_we_are_very_much_alive/)
-- [Medium- Gamestonk Terminal. Can't Stop, Won't Stop](https://dro-lopes.medium.com/gamestonk-terminal-cant-stop-won-t-stop-e635662d6f2e)
-- [Gamestonk Terminal: UX/UI >> Features](https://dro-lopes.medium.com/gamestonk-terminal-ux-features-f9754b484919)
+* [VICE article - Gamestonk Terminal Is a DIY, Meme Stock Version of Bloomberg Terminal](https://www.vice.com/en/article/qjp9vp/gamestonk-terminal-is-a-diy-meme-stock-version-of-bloomberg-terminal)
+* [Daily Fintech article - Never underestimate Bloomberg, but here are 5 reasons why the Gamestonk Terminal is a contender](https://dailyfintech.com/2021/02/25/never-underestimate-bloomberg-but-here-are-5-reasons-why-the-gamestonk-terminal-is-a-contender/)
+* [HackerNews - Show HN: Can’t afford Bloomberg Terminal? No prob, I built the next best thing](https://news.ycombinator.com/item?id=26258773)
+* [Reddit r/algotrading - Gamestonk Terminal: The next best thing after Bloomberg Terminal.](https://www.reddit.com/r/algotrading/comments/m4uvza/gamestonk_terminal_the_next_best_thing_after/)
+* [Reddit r/Python - Gamestonk Terminal: The equivalent to an open-source python Bloomberg Terminal.](https://www.reddit.com/r/Python/comments/m515yk/gamestonk_terminal_the_equivalent_to_an/)
+* [Reddit r/Superstonk - Move over Bloomberg Terminal, here comes Gamestonk Terminal](https://www.reddit.com/r/Superstonk/comments/mx2cjh/move_over_bloomberg_terminal_here_comes_gamestonk/)
+* [Spotlight: Didier Lopes. Creator of Gamestonk Terminal](https://deepsource.io/spotlight/didier-lopes/)
+* [Reddit r/Superstonk - Gamestonk Terminal - We are very much alive](https://www.reddit.com/r/Superstonk/comments/o502i8/gamestonk_terminal_we_are_very_much_alive/)
+* [Medium- Gamestonk Terminal. Can't Stop, Won't Stop](https://dro-lopes.medium.com/gamestonk-terminal-cant-stop-won-t-stop-e635662d6f2e)
+* [Gamestonk Terminal: UX/UI >> Features](https://dro-lopes.medium.com/gamestonk-terminal-ux-features-f9754b484919)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
