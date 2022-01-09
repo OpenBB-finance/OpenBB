@@ -89,7 +89,7 @@ def orders_view(num: int, export: str):
 
     df_orders = df_orders.head(n=num).iloc[:, :-1]
 
-    console.print(
+    print(
         tabulate(
             df_orders,
             headers=df_orders.columns,

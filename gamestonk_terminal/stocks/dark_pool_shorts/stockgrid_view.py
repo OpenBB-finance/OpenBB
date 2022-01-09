@@ -54,7 +54,7 @@ def dark_pool_short_positions(num: int, sort_field: str, ascending: bool, export
 
     # Assuming that the datetime is the same, which from my experiments seems to be the case
     console.print(f"The following data corresponds to the date: {dp_date}")
-    console.print(
+    print(
         tabulate(
             df.iloc[:num],
             tablefmt="fancy_grid",
@@ -101,7 +101,7 @@ def short_interest_days_to_cover(num: int, sort_field: str, export: str):
 
     # Assuming that the datetime is the same, which from my experiments seems to be the case
     console.print(f"The following data corresponds to the date: {dp_date}")
-    console.print(
+    print(
         tabulate(
             df.iloc[:num],
             tablefmt="fancy_grid",

@@ -80,7 +80,7 @@ def display_short_by_exchange(
         if not USE_TABULATE_DF:
             console.print(volume_by_exchange.head(20).to_string())
         else:
-            console.print(
+            print(
                 tabulate(
                     volume_by_exchange.head(20),
                     showindex=False,

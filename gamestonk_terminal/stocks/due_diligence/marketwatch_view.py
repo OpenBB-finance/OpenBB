@@ -23,7 +23,7 @@ def sec_filings(ticker: str, num: int, export: str):
         Export dataframe data to csv,json,xlsx file
     """
     df_financials = marketwatch_model.get_sec_filings(ticker)
-    console.print(
+    print(
         tabulate(
             df_financials.head(num),
             headers=df_financials.columns,

@@ -288,7 +288,7 @@ def display_companies_per_sector_in_country(
     if raw:
         console.print(f"\n{title}")
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df,
                     headers=df.columns,
@@ -446,7 +446,7 @@ def display_companies_per_industry_in_country(
     if raw:
         console.print(f"\n{title}")
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df,
                     headers=df.columns,
@@ -609,7 +609,7 @@ def display_companies_per_industry_in_sector(
     if raw:
         console.print(f"\n{title}")
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df,
                     headers=df.columns,
@@ -772,7 +772,7 @@ def display_companies_per_country_in_sector(
     if raw:
         console.print(f"\n{title}")
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df,
                     headers=df.columns,
@@ -933,7 +933,7 @@ def display_companies_per_country_in_industry(
     if raw:
         console.print(f"\n{title}")
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df,
                     headers=df.columns,

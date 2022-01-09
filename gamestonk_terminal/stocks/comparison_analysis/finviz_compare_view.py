@@ -31,7 +31,7 @@ def screener(similar: List[str], data_type: str, export: str = ""):
     else:
         if gtff.USE_TABULATE_DF:
             # TODO: figure out right way to use different floatfmts across different cols
-            console.print(
+            print(
                 tabulate(
                     df_screen,
                     headers=df_screen.columns,

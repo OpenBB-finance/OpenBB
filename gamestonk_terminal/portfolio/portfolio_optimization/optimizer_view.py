@@ -62,7 +62,7 @@ def display_weights(weights: dict, market_neutral: bool = False):
             )
 
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     weight_df, headers=["Value"], showindex=True, tablefmt="fancy_grid"
                 )
@@ -74,7 +74,7 @@ def display_weights(weights: dict, market_neutral: bool = False):
         tot_value = weight_df["value"].abs().mean()
         header = "Value ($)" if tot_value > 1.01 else "Value (%)"
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     weight_df,
                     headers=[header],

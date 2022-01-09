@@ -7,7 +7,6 @@ from tabulate import tabulate
 
 from gamestonk_terminal.stocks.technical_analysis import tradingview_model
 from gamestonk_terminal.helper_funcs import export_data
-from gamestonk_terminal.rich_config import console
 
 
 def print_recommendation(
@@ -40,7 +39,7 @@ def print_recommendation(
         recom,
     )
 
-    console.print(
+    print(
         tabulate(
             recom, headers=["INTERVAL"] + list(recom.columns), tablefmt="fancy_grid"
         ),

@@ -72,7 +72,7 @@ def analyst(ticker: str, export: str = ""):
     if gtff.USE_COLOR:
         df["category"] = df["category"].apply(category_color_red_green)
 
-    console.print(
+    print(
         tabulate(
             df,
             headers=df.columns,

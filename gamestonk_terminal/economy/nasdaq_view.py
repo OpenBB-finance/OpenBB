@@ -49,9 +49,7 @@ def display_big_mac_index(
 
     if raw:
         if gtff.USE_TABULATE_DF:
-            console.print(
-                tabulate(big_mac, headers=big_mac.columns, tablefmt="fancy_grid")
-            )
+            print(tabulate(big_mac, headers=big_mac.columns, tablefmt="fancy_grid"))
         else:
             console.print(big_mac.head(20).to_string())
 

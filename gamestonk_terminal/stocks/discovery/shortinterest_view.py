@@ -6,7 +6,6 @@ from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import export_data
 
 from gamestonk_terminal.stocks.discovery import shortinterest_model
-from gamestonk_terminal.rich_config import console
 
 
 def low_float(num: int, export: str):
@@ -22,7 +21,7 @@ def low_float(num: int, export: str):
     df_low_float = shortinterest_model.get_low_float()
     df_low_float = df_low_float.iloc[1:].head(n=num)
 
-    console.print(
+    print(
         tabulate(
             df_low_float,
             headers=df_low_float.columns,
@@ -53,7 +52,7 @@ def hot_penny_stocks(num: int, export: str):
     """
     df_penny_stocks = shortinterest_model.get_today_hot_penny_stocks()
 
-    console.print(
+    print(
         tabulate(
             df_penny_stocks.head(num),
             headers=df_penny_stocks.columns,

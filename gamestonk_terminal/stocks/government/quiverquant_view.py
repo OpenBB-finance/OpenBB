@@ -103,7 +103,7 @@ def display_last_government(
                 console.print(df_gov_rep.to_string(index=False))
     else:
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df_gov,
                     headers=df_gov.columns,
@@ -188,7 +188,7 @@ def display_government_buys(
             .head(n=num)
         )
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df, headers=["Amount ($1k)"], tablefmt="fancy_grid", showindex=True
                 )
@@ -296,7 +296,7 @@ def display_government_sells(
             .head(n=num)
         )
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df, headers=["Amount ($1k)"], tablefmt="fancy_grid", showindex=True
                 )
@@ -495,7 +495,7 @@ def display_government_trading(
 
     if raw:
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df_gov,
                     headers=df_gov.columns,
@@ -544,7 +544,7 @@ def display_contracts(
 
     if raw:
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df_contracts,
                     headers=df_contracts.columns,
@@ -660,7 +660,7 @@ def display_qtr_contracts(analysis: str, num: int, raw: bool = False, export: st
 
     elif analysis == "total":
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     tickers, headers=["Total"], tablefmt="fancy_grid", floatfmt=".2e"
                 )
@@ -705,7 +705,7 @@ def display_hist_contracts(ticker: str, raw: bool = False, export: str = ""):
 
     if raw:
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df_contracts,
                     headers=df_contracts.columns,
@@ -764,7 +764,7 @@ def display_top_lobbying(num: int, raw: bool = False, export: str = ""):
 
     if raw:
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     lobbying_by_ticker.head(num),
                     headers=["Amount ($100k)"],

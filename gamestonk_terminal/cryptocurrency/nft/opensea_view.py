@@ -24,7 +24,7 @@ def display_collection_stats(slug: str, export: str):
         console.print("No data found.", "\n")
     else:
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     collection_stats_df,
                     headers=collection_stats_df.columns,

@@ -32,7 +32,7 @@ def display_overall_withdrawal_fees(top: int, export: str = "") -> None:
         console.print("\nWithdrawal fees on exchanges:")
 
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df_fees.head(top),
                     headers=df_fees.columns,
@@ -71,7 +71,7 @@ def display_overall_exchange_withdrawal_fees(export: str) -> None:
         console.print("\nWithdrawal fees per exchange:")
 
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df_fees,
                     headers=df_fees.columns,
@@ -115,7 +115,7 @@ def display_crypto_withdrawal_fees(symbol: str, export: str = "") -> None:
         console.print(f"\n{stats_string}\n")
 
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df_fees,
                     headers=df_fees.columns,

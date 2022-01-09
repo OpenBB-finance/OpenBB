@@ -30,7 +30,7 @@ def realtime_performance_sector(raw: bool, export: str):
 
     if raw:
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df_rtp.to_frame(),
                     showindex=True,
@@ -105,7 +105,7 @@ def display_real_gdp(
     )
     if raw:
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     gdp.head(20),
                     headers=["Date", "GDP"],
@@ -154,7 +154,7 @@ def display_gdp_capita(start_year: int = 2010, raw: bool = False, export: str = 
     )
     if raw:
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     gdp.head(20),
                     headers=["Date", "GDP"],
@@ -203,7 +203,7 @@ def display_inflation(start_year: int = 2010, raw: bool = False, export: str = "
     )
     if raw:
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     inf.head(20),
                     headers=["Date", "Inflation"],
@@ -258,7 +258,7 @@ def display_cpi(
     )
     if raw:
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     cpi.head(20),
                     headers=["Date", "CPI"],
@@ -314,7 +314,7 @@ def display_treasury_yield(
     )
     if raw:
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     yld.head(20),
                     headers=["Date", "Yield"],
@@ -368,7 +368,7 @@ def display_unemployment(start_year: int = 2015, raw: bool = False, export: str 
 
     if raw:
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     un.head(20),
                     headers=["Date", "GDP"],

@@ -44,7 +44,7 @@ def display_etf_weightings(
         console.print(f"\n{title}")
         holdings.columns = ["% of holdings in the sector"]
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     holdings,
                     headers=holdings.columns,

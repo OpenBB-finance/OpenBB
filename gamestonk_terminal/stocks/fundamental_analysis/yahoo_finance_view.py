@@ -81,7 +81,7 @@ def display_shareholders(ticker: str):
     for df, title in zip(dfs, titles):
         console.print(title)
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(df, headers=df.columns, tablefmt="fancy_grid", showindex=False)
             )
         else:
@@ -194,7 +194,7 @@ def display_dividends(
             "%Y-%m-%d"
         )
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     div_history.head(limit),
                     tablefmt="fancy_grid",

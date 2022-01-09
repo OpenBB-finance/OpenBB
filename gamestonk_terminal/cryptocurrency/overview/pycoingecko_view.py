@@ -36,7 +36,7 @@ def display_holdings_overview(coin: str, export: str) -> None:
     else:
         console.print(f"\n{stats_string}\n")
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df,
                     headers=df.columns,
@@ -108,7 +108,7 @@ def display_nft_market_status(export: str) -> None:
     df = gecko.get_nft_market_status()
     if not df.empty:
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df,
                     headers=df.columns,
@@ -152,7 +152,7 @@ def display_exchange_rates(sortby: str, descend: bool, top: int, export: str) ->
 
     if not df.empty:
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,
@@ -195,7 +195,7 @@ def display_global_market_info(export: str) -> None:
 
     if not df.empty:
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df,
                     headers=df.columns,
@@ -233,7 +233,7 @@ def display_global_defi_info(export: str) -> None:
 
     if not df.empty:
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df,
                     headers=df.columns,
@@ -289,7 +289,7 @@ def display_stablecoins(
             df.drop("Url", axis=1, inplace=True)
 
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,
@@ -349,7 +349,7 @@ def display_news(
             df = df[["Index", "Url"]]
 
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df,
                     headers=df.columns,
@@ -407,7 +407,7 @@ def display_categories(
             df = df[["Rank", "Name", "Url"]]
 
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,
@@ -462,7 +462,7 @@ def display_exchanges(
             df.drop("Url", axis=1, inplace=True)
 
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,
@@ -508,7 +508,7 @@ def display_platforms(sortby: str, descend: bool, top: int, export: str) -> None
         df = df.sort_values(by=sortby, ascending=descend)
 
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,
@@ -554,7 +554,7 @@ def display_products(sortby: str, descend: bool, top: int, export: str) -> None:
         df = df.sort_values(by=sortby, ascending=descend)
 
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,
@@ -599,7 +599,7 @@ def display_indexes(sortby: str, descend: bool, top: int, export: str) -> None:
         df = df.sort_values(by=sortby, ascending=descend)
 
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,
@@ -645,7 +645,7 @@ def display_derivatives(sortby: str, descend: bool, top: int, export: str) -> No
         df = df.sort_values(by=sortby, ascending=descend)
 
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,

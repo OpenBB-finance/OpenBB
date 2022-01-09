@@ -193,7 +193,7 @@ def screener(
         df_screen = df_screen.fillna("")
 
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df_screen.head(n=limit),
                     headers=df_screen.columns,

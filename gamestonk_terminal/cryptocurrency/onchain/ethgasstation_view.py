@@ -26,7 +26,7 @@ def display_gwei_fees(export: str) -> None:
         console.print("\nCurrent ETH gas fees (gwei):")
 
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df_fees.head(4),
                     headers=df_fees.columns,

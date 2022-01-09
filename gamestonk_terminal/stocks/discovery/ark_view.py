@@ -85,7 +85,7 @@ def ark_orders_view(
     # df_orders["link"] = "https://finviz.com/quote.ashx?t=" + df_orders["ticker"]
 
     console.print("Orders by ARK Investment Management LLC")
-    console.print(
+    print(
         tabulate(
             df_orders,
             headers=df_orders.columns,

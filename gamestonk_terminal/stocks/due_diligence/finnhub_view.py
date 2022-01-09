@@ -84,7 +84,7 @@ def rating_over_time(ticker: str, num: int, raw: bool, export: str):
             .head(num)
         )
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df_rot_raw,
                     headers=df_rot_raw.columns,

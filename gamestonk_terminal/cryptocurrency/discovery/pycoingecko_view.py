@@ -50,7 +50,7 @@ def display_gainers(
             df.drop("Url", axis=1, inplace=True)
 
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,
@@ -109,7 +109,7 @@ def display_losers(
             df.drop("Url", axis=1, inplace=True)
 
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,
@@ -173,7 +173,7 @@ def display_discover(
             df.drop("Url", axis=1, inplace=True)
 
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,
@@ -286,7 +286,7 @@ def display_top_defi_coins(
 
         console.print("\n", stats_str, "\n")
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,
@@ -367,7 +367,7 @@ def display_top_volume_coins(top: int, sortby: str, descend: bool, export: str) 
     if not df.empty:
         df = df.sort_values(by=sortby, ascending=descend)
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,
@@ -426,7 +426,7 @@ def display_top_nft(
             df.drop("Url", axis=1, inplace=True)
 
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,
@@ -475,7 +475,7 @@ def display_yieldfarms(top: int, sortby: str, descend: bool, export: str) -> Non
         df = df.sort_values(by=sortby, ascending=descend)
 
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df.head(top),
                     headers=df.columns,

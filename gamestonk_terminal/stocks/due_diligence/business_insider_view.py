@@ -52,7 +52,7 @@ def price_target_from_analysts(
     if raw:
         df_analyst_data.index = df_analyst_data.index.strftime("%Y-%m-%d")
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df_analyst_data.sort_index(ascending=False).head(num),
                     headers=df_analyst_data.columns,
@@ -122,7 +122,7 @@ def estimates(ticker: str, export: str):
         df_quarter_revenues,
     ) = business_insider_model.get_estimates(ticker)
 
-    console.print(
+    print(
         tabulate(
             df_year_estimates,
             headers=df_year_estimates.columns,
@@ -132,7 +132,7 @@ def estimates(ticker: str, export: str):
         ),
     )
     console.print("")
-    console.print(
+    print(
         tabulate(
             df_quarter_earnings,
             headers=df_quarter_earnings.columns,
@@ -142,7 +142,7 @@ def estimates(ticker: str, export: str):
         ),
     )
     console.print("")
-    console.print(
+    print(
         tabulate(
             df_quarter_revenues,
             headers=df_quarter_revenues.columns,

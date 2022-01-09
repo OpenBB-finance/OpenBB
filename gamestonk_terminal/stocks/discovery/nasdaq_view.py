@@ -27,7 +27,7 @@ def display_top_retail(n_days: int = 3, export: str = ""):
         console.print(f"{Style.BRIGHT}{date} Top Retail:{Style.RESET_ALL}")
         df = df.drop(columns=["Date"])
         if gtff.USE_TABULATE_DF:
-            console.print(
+            print(
                 tabulate(
                     df.reset_index(drop=True),
                     headers=df.columns[1:],
