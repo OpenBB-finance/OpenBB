@@ -11,14 +11,13 @@ from gamestonk_terminal import feature_flags as gtff
 
 
 def display_defi_vaults(
-    *,
     chain: Optional[str] = None,
     protocol: Optional[str] = None,
     kind: Optional[str] = None,
-    top: int,
-    sortby: str,
-    descend: bool,
-    export: str = ""
+    top: int = 10,
+    sortby: str = "apy",
+    descend: bool = False,
+    export: str = "",
 ) -> None:
     """Display Top DeFi Vaults - pools of funds with an assigned strategy which main goal is to
     maximize returns of its crypto assets. [Source: https://coindix.com/]
@@ -52,10 +51,18 @@ def display_defi_vaults(
 
     df = coindix_model.get_defi_vaults(chain=chain, protocol=protocol, kind=kind)
     df_data = df.copy()
+    if df.empty:
+        print(
+            f"Couldn't find any vaults for "
+            f"{'' if not chain else 'chain: ' + chain}{'' if not protocol else ', protocol: ' + protocol}"
+            f"{'' if not kind else ', kind:' + kind}"
+        )
 
     df = df.sort_values(by=sortby, ascending=descend)
     df["tvl"] = df["tvl"].apply(lambda x: long_number_format(x))
-    df.columns = [x.title() for x in df.columns]
+    df["apy"] = df["apy"].apply(
+        lambda x: f"{str(round(x * 100, 2))} %" if isinstance(x, (int, float)) else x
+    )
 
     if gtff.USE_TABULATE_DF:
         print(
