@@ -11,6 +11,7 @@ import pytz
 
 from prompt_toolkit.completion import NestedCompleter
 
+from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -83,7 +84,8 @@ class TerminalController(BaseController):
     def print_help(self):
         """Print help"""
         console.print(
-            f"""
+            Panel.fit(
+                f"""
 [info]Multiple jobs queue (where each '/' denotes a new command).[/info]
     E.g. '/stocks $ disc/ugs -n 3/../load tsla/candle'
 
@@ -117,7 +119,11 @@ class TerminalController(BaseController):
 >   jupyter
 >   resources
 >   alternative [/menu]
-    """
+    """,
+                title="Home",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
         )
 
     def call_update(self, _):
