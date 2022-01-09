@@ -166,7 +166,9 @@ class CryptoController(BaseController):
                 if ns_parser.vs:
                     coin_found = pycoingecko_model.check_coin(ns_parser.vs)
                     if not coin_found:
-                        print(f"VS Coin '{ns_parser.vs}' not found in CoinGecko\n")
+                        console.print(
+                            f"VS Coin '{ns_parser.vs}' not found in CoinGecko\n"
+                        )
                         return
                 pycoingecko_view.display_coin_potential_returns(
                     self.coin_map_df["CoinGecko"],
@@ -176,7 +178,7 @@ class CryptoController(BaseController):
                 )
 
         else:
-            print(
+            console.print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
             )
 
@@ -451,7 +453,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
                     self.current_coin
                 )
                 if len(quotes) < 0:
-                    print(
+                    console.print(
                         f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
                     )
                     return
@@ -521,7 +523,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
                 ).menu()
 
         else:
-            print("No coin selected. Use 'load' to load a coin.\n")
+            console.print("No coin selected. Use 'load' to load a coin.\n")
 
     def call_disc(self, _):
         """Process disc command"""
@@ -593,7 +595,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
                 queue=self.queue,
             ).menu()
         else:
-            print("No coin selected. Use 'load' to load a coin.\n")
+            console.print("No coin selected. Use 'load' to load a coin.\n")
 
     def call_pred(self, _):
         """Process pred command"""
@@ -603,7 +605,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
             )
 
             if self.current_interval != "1day":
-                print("Only interval `1day` is possible for now.\n")
+                console.print("Only interval `1day` is possible for now.\n")
             else:
                 self.queue = pred_controller.PredictionTechniquesController(
                     self.current_coin,
@@ -611,7 +613,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
                     self.queue,
                 ).menu()
         else:
-            print(
+            console.print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
             )
 

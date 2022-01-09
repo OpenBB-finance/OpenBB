@@ -11,6 +11,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import volume_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -100,7 +101,7 @@ def plot_ad(
     fig.tight_layout(pad=1)
 
     plt.show()
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -203,7 +204,7 @@ def plot_adosc(
     fig.tight_layout(pad=1)
     plt.legend()
     plt.show()
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -295,7 +296,7 @@ def plot_obv(s_ticker: str, s_interval: str, df_stock: pd.DataFrame, export: str
     fig.tight_layout(pad=1)
 
     plt.show()
-    print("")
+    console.print("")
 
     export_data(
         export,

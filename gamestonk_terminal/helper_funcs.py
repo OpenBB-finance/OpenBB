@@ -23,6 +23,7 @@ import pandas.io.formats.format
 import requests
 from screeninfo import get_monitors
 
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_plot as cfgPlot
 
@@ -257,8 +258,8 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
             dpi=cfgPlot.PLOT_DPI,
         )
     except Exception as e:
-        print(e)
-        print(
+        console.print(e)
+        console.print(
             "Encountered an error trying to open a chart window. Check your X server configuration."
         )
         logging.exception("%s", type(e).__name__)
@@ -310,7 +311,7 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
     plt.setp(ax[1].get_xticklabels(), rotation=20, horizontalalignment="right")
 
     plt.show()
-    print("")
+    console.print("")
 
 
 def us_market_holidays(years) -> list:
@@ -649,16 +650,16 @@ def parse_known_args_and_warn(
         (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
     except SystemExit:
         # In case the command has required argument that isn't specified
-        print("")
+        console.print("")
         return None
 
     if ns_parser.help:
         parser.print_help()
-        print("")
+        console.print("")
         return None
 
     if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+        console.print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
     return ns_parser
 
@@ -790,13 +791,13 @@ def replace_user_timezone(user_tz: str) -> None:
         with open(filename, "w") as f:
             if is_timezone_valid(user_tz):
                 if f.write(user_tz):
-                    print("Timezone successfully updated", "\n")
+                    console.print("Timezone successfully updated", "\n")
                 else:
-                    print("Timezone not set successfully", "\n")
+                    console.print("Timezone not set successfully", "\n")
             else:
-                print("Timezone selected is not valid", "\n")
+                console.print("Timezone selected is not valid", "\n")
     else:
-        print("timezone.gst file does not exist", "\n")
+        console.print("timezone.gst file does not exist", "\n")
 
 
 def str_to_bool(value) -> bool:
@@ -815,7 +816,9 @@ def get_screeninfo():
     screens = get_monitors()  # Get all available monitors
     if len(screens) - 1 < cfgPlot.MONITOR:  # Check to see if chosen monitor is detected
         monitor = 0
-        print(f"Could not locate monitor {cfgPlot.MONITOR}, using primary monitor.")
+        console.print(
+            f"Could not locate monitor {cfgPlot.MONITOR}, using primary monitor."
+        )
     else:
         monitor = cfgPlot.MONITOR
     main_screen = screens[monitor]  # Choose what monitor to get
@@ -904,9 +907,9 @@ def export_data(
                 elif exp_type == "svg":
                     plt.savefig(saved_path)
                 else:
-                    print("Wrong export file specified.\n")
+                    console.print("Wrong export file specified.\n")
 
-                print(f"Saved file: {saved_path}\n")
+                console.print(f"Saved file: {saved_path}\n")
 
 
 def get_rf() -> float:
@@ -947,13 +950,15 @@ class LineAnnotateDrawer:
         # self.ax.legend(handlelength=0, handletextpad=0, fancybox=True, loc=2)
         # self.ax.figure.canvas.draw()
 
-        print("Click twice for annotation.\nClose window to keep using terminal.\n")
+        console.print(
+            "Click twice for annotation.\nClose window to keep using terminal.\n"
+        )
 
         while True:
             xy = plt.ginput(2)
             # Check whether the user has closed the window or not
             if not plt.get_fignums():
-                print("")
+                console.print("")
                 return
 
             if len(xy) == 2:

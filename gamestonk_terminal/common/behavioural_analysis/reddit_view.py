@@ -14,6 +14,7 @@ from tabulate import tabulate
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.behavioural_analysis import reddit_model
 from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.rich_config import console
 
 
 def print_and_record_reddit_post(
@@ -51,8 +52,8 @@ def print_and_record_reddit_post(
         "awards": s_all_awards,
     }
     # Print post data collected so far
-    print(f"{s_datetime} - {submission.title}")
-    print(f"{s_link}")
+    console.print(f"{s_datetime} - {submission.title}")
+    console.print(f"{s_link}")
     t_post = PrettyTable(
         ["Subreddit", "Flair", "Score", "# Comments", "Upvote %", "Awards"]
     )
@@ -66,8 +67,8 @@ def print_and_record_reddit_post(
             s_all_awards,
         ]
     )
-    print(t_post)
-    print("\n")
+    console.print(t_post)
+    console.print("\n")
 
 
 def display_watchlist(num: int):
@@ -96,15 +97,15 @@ def display_watchlist(num: int):
                     s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                 n_tickers += 1
             except Exception:
-                # print(e, "\n")
+                # console.print(e, "\n")
                 pass
         if n_tickers:
-            print(
+            console.print(
                 "The following stock tickers have been mentioned more than once across the previous watchlists:"
             )
-            print(s_watchlist_tickers[:-2] + "\n")
+            console.print(s_watchlist_tickers[:-2] + "\n")
 
-    print("")
+    console.print("")
 
 
 def display_popular_tickers(
@@ -127,9 +128,9 @@ def display_popular_tickers(
         n_top, posts_to_look_at, subreddits
     )
     if not popular_tickers_df.empty:
-        print(f"\nThe following TOP {n_top} tickers have been mentioned:")
+        console.print(f"\nThe following TOP {n_top} tickers have been mentioned:")
         if gtff.USE_TABULATE_DF:
-            print(
+            console.print(
                 tabulate(
                     popular_tickers_df,
                     headers=popular_tickers_df.columns,
@@ -138,11 +139,11 @@ def display_popular_tickers(
                 )
             )
         else:
-            print(popular_tickers_df.to_string())
+            console.print(popular_tickers_df.to_string())
     else:
-        print("No tickers found")
+        console.print("No tickers found")
 
-    print("")
+    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -180,15 +181,15 @@ def display_spac_community(limit: int = 10, popular: bool = False):
                     s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                 n_tickers += 1
             except Exception:
-                # print(e, "\n")
+                # console.print(e, "\n")
                 pass
 
         if n_tickers:
-            print(
+            console.print(
                 "The following stock tickers have been mentioned more than once across the previous SPACs:"
             )
-            print(s_watchlist_tickers[:-2])
-    print("")
+            console.print(s_watchlist_tickers[:-2])
+    console.print("")
 
 
 def display_spac(limit: int = 5):
@@ -221,11 +222,11 @@ def display_spac(limit: int = 5):
             except Exception:
                 pass
         if n_tickers:
-            print(
+            console.print(
                 "The following stock tickers have been mentioned more than once across the previous SPACs:"
             )
-            print(s_watchlist_tickers[:-2])
-    print("")
+            console.print(s_watchlist_tickers[:-2])
+    console.print("")
 
 
 def display_wsb_community(limit: int = 10, new: bool = False):
@@ -264,4 +265,4 @@ def display_due_diligence(
     for sub in subs:
         print_and_record_reddit_post({}, sub)
     if not subs:
-        print(f"No DD posts found for {ticker}\n")
+        console.print(f"No DD posts found for {ticker}\n")

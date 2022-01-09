@@ -12,6 +12,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -75,7 +76,7 @@ def plot_cci(
     fig.tight_layout(pad=1)
     plt.show()
 
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -148,7 +149,7 @@ def view_macd(
     fig.tight_layout(pad=1)
 
     plt.show()
-    print("")
+    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
@@ -218,7 +219,7 @@ def view_rsi(
     plt.gcf().autofmt_xdate()
     fig.tight_layout(pad=1)
     plt.show()
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -295,7 +296,7 @@ def view_stoch(
     plt.gcf().autofmt_xdate()
     fig.tight_layout(pad=1)
     plt.show()
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -375,7 +376,7 @@ def view_fisher(
     plt.legend()
     plt.show()
 
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -432,7 +433,7 @@ def view_cg(
     fig.tight_layout(pad=1)
     plt.legend()
     plt.show()
-    print("")
+    console.print("")
 
     export_data(
         export,
