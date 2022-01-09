@@ -407,7 +407,7 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            momentum_view.plot_cci(
+            momentum_view.display_cci(
                 s_ticker=self.ticker,
                 df=self.data,
                 length=ns_parser.n_length,

@@ -16,8 +16,12 @@ def cci(
 
     Parameters
     ----------
-    df_stock: pd.DataFrame
-        Dataframe of prices.  Needs high Low and Close
+    high_vals: pd.Series
+        High values
+    low_values: pd.Series
+        Low values
+    close-values: pd.Series
+        Close values
     length: int
         Length of window
     scalar: float
@@ -92,7 +96,9 @@ def rsi(values: pd.Series, length: int, scalar: float, drift: int) -> pd.DataFra
 
 
 def stoch(
-    df_stock: pd.DataFrame,
+    high_vals: pd.Series,
+    low_vals: pd.Series,
+    close_vals: pd.Series,
     fastkperiod: int = 14,
     slowdperiod: int = 3,
     slowkperiod: int = 3,
@@ -101,8 +107,12 @@ def stoch(
 
     Parameters
     ----------
-    df_stock: pd.DataFrame
-        Dataframe of prices.  Needs High Low and Adj Close
+    high_vals: pd.Series
+        High values
+    low_vals: pd.Series
+        Low values
+    close-vals: pd.Series
+        Close values
     fastkperiod : int
         Fast k period
     slowdperiod : int
@@ -116,9 +126,9 @@ def stoch(
     """
     return pd.DataFrame(
         ta.stoch(
-            high=df_stock["High"],
-            low=df_stock["Low"],
-            close=df_stock["Adj Close"],
+            high=high_vals,
+            low=low_vals,
+            close=close_vals,
             k=fastkperiod,
             d=slowdperiod,
             smooth_k=slowkperiod,
@@ -126,24 +136,24 @@ def stoch(
     )
 
 
-def fisher(df_stock: pd.DataFrame, length: int = 14) -> pd.DataFrame:
+def fisher(high_vals: pd.Series, low_vals: pd.Series, length: int = 14) -> pd.DataFrame:
     """Fisher Transform
 
     Parameters
     ----------
-    df_stock: pd.DataFrame
-        Dataframe of prices.  Needs to contain High and Low
+    high_vals: pd.Series
+        High values
+    low_vals: pd.Series
+        Low values
     length: int
-        Lengyh for indicator window
+        Length for indicator window
     Returns
     ----------
     df_ta: pd.DataFrame
         Dataframe of technical indicator
     """
     # Daily
-    return pd.DataFrame(
-        ta.fisher(high=df_stock["High"], low=df_stock["Low"], length=length).dropna()
-    )
+    return pd.DataFrame(ta.fisher(high=high_vals, low=low_vals, length=length).dropna())
 
 
 def cg(data: pd.DataFrame, length: int) -> pd.DataFrame:

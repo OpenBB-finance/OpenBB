@@ -16,7 +16,7 @@ from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 register_matplotlib_converters()
 
 
-def plot_cci(
+def display_cci(
     df: pd.DataFrame,
     length: int = 14,
     scalar: float = 0.0015,
@@ -236,7 +236,14 @@ def display_stoch(
     export : str
         Format to export data
     """
-    df_ta = momentum_model.stoch(df_stock, fastkperiod, slowdperiod, slowkperiod)
+    df_ta = momentum_model.stoch(
+        df_stock["High"],
+        df_stock["Low"],
+        df_stock["Adj Close"],
+        fastkperiod,
+        slowdperiod,
+        slowkperiod,
+    )
 
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
@@ -300,7 +307,7 @@ def display_fisher(
     export : str
         Format to export data
     """
-    df_ta = momentum_model.fisher(df_stock, length)
+    df_ta = momentum_model.fisher(df_stock["High"], df_stock["Low"], length)
 
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
