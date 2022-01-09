@@ -56,7 +56,9 @@ async def cci_command(ctx, ticker="", length="14", scalar="0.015", start="", end
 
         # Retrieve Data
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
-        df_ta = momentum_model.cci(df_stock, length, scalar)
+        df_ta = momentum_model.cci(
+            df_stock["High"], df_stock["Low"], df_stock["Adj Close"], length, scalar
+        )
 
         fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
         ax = axes[0]

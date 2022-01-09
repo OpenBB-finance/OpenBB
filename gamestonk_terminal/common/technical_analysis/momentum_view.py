@@ -17,7 +17,7 @@ register_matplotlib_converters()
 
 
 def plot_cci(
-    ohlc_df: pd.DataFrame,
+    df: pd.DataFrame,
     length: int = 14,
     scalar: float = 0.0015,
     s_ticker: str = "",
@@ -39,19 +39,19 @@ def plot_cci(
     export : str
         Format to export data
     """
-    df_ta = momentum_model.cci(ohlc_df, length, scalar)
+    df_ta = momentum_model.cci(df["High"], df["Low"], df["Adj Close"], length, scalar)
 
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
     ax.set_title(f"{s_ticker} CCI")
-    ax.plot(ohlc_df.index, ohlc_df["Adj Close"].values, "k", lw=2)
-    ax.set_xlim(ohlc_df.index[0], ohlc_df.index[-1])
+    ax.plot(df.index, df["Adj Close"].values, "k", lw=2)
+    ax.set_xlim(df.index[0], df.index[-1])
     ax.set_ylabel("Share Price ($)")
     ax.grid(b=True, which="major", color="#666666", linestyle="-")
 
     ax2 = axes[1]
     ax2.plot(df_ta.index, df_ta.values, "b", lw=2)
-    ax2.set_xlim(ohlc_df.index[0], ohlc_df.index[-1])
+    ax2.set_xlim(df.index[0], df.index[-1])
     ax2.axhspan(100, plt.gca().get_ylim()[1], facecolor="r", alpha=0.2)
     ax2.axhspan(plt.gca().get_ylim()[0], -100, facecolor="g", alpha=0.2)
     ax2.axhline(100, linewidth=3, color="r", ls="--")

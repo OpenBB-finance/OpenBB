@@ -6,7 +6,11 @@ import pandas_ta as ta
 
 
 def cci(
-    ohlc_df: pd.DataFrame, length: int = 14, scalar: float = 0.0015
+    high_vals: pd.Series,
+    low_vals: pd.Series,
+    close_vals: pd.Series,
+    length: int = 14,
+    scalar: float = 0.0015,
 ) -> pd.DataFrame:
     """Commodity channel index
 
@@ -26,9 +30,9 @@ def cci(
     """
     return pd.DataFrame(
         ta.cci(
-            high=ohlc_df["High"],
-            low=ohlc_df["Low"],
-            close=ohlc_df["Adj Close"],
+            high=high_vals,
+            low=low_vals,
+            close=close_vals,
             length=length,
             scalar=scalar,
         ).dropna()

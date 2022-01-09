@@ -409,7 +409,7 @@ Custom:
         if ns_parser:
             momentum_view.plot_cci(
                 s_ticker=self.ticker,
-                ohlc_df=self.data,
+                df=self.data,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
