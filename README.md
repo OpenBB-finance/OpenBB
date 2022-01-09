@@ -97,13 +97,19 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
 
 ## Getting Started
 
-Star the project
+There are currently two main options to install the terminal:
+* using Docker: recommended if you just want to use the terminal
+* using Python: recommended if you want to develop new features
+
+First step in both options is to star the project
 
 <img width="1272" alt="Github starts" src="https://user-images.githubusercontent.com/25267873/115989986-e20cfe80-a5b8-11eb-8182-d6d87d092252.png">
 
+If you want to install the terminal using Python ignore the Docker section and jump to <a href="#local-install---anaconda-and-python">Local Install - Anaconda and Python</a> section.
+
 ### Docker Installation
 
-1. First step is to make sure docker desktop is installed. Install links can be found [here](https://www.docker.com/products/docker-desktop).
+1. Make sure docker desktop is installed. Install links can be found [here](https://www.docker.com/products/docker-desktop).
    To confirm that your docker desktop is downloaded and running, open a command prompt or terminal and enter
    `docker info`. If you get the following you are not running the docker desktop:
 
@@ -135,19 +141,46 @@ Star the project
 
 3. Run a container
 
-   You are now ready to run the terminal.
+   You are now ready to run the terminal (every time you want to use the terminal you need to run this command):
 
    `docker run -it --rm ghcr.io/gamestonkterminal/gst-poetry:latest`
 
    This will open up the terminal in your command prompt or terminal. Note that this has provided now environment file,
    so you will not be able to view plots or use keys at this stage.
 
-   To read more on adding the environment keys and how to configure your X-server to show plots, hop over to the
+   At this point, you should be able to use the majority of the features using Docker. To read more on adding the environment keys and how to configure your X-server to show plots, hop over to the
    [Advanced Docker Setup](/DOCKER_ADVANCED.md).
 
 ### Local Install - Anaconda and Python
 
-If you'd like to see a video recording of the installation process, @JohnnyDankseed has made one available [here](https://www.youtube.com/watch?v=-DJJ-cfquDA).
+This installation type supports both Windows and Unix systems (Linux + MacOS). However, on Windows it can become messy so it is to use Windows Subsystem Linux (WSL) on this operating system. WSL emulates a Linux machine inside your Windows system.
+
+If you are using macOS or other Linux operating systems you can jump the next section <a href="#installing-the-terminal">Installing the terminal</a>.
+
+#### Installing WSL (Only for Windows users)
+
+If you are using Windows you first you need to install WSL. The process is simple and a tutorial can be found [here](https://www.sitepoint.com/wsl2/). Once you reach the section **Update Linux** on that tutorial, you should have a linux machine installed and can proceed to the next steps.
+
+Since WSL installation is headless by default (i.e., you have only access to a terminal running a linux distribution) you need some extra steps to be able to visualize the charts produced by the terminal (more detailed tutorial [here](https://medium.com/@shaoyenyu/make-matplotlib-works-correctly-with-x-server-in-wsl2-9d9928b4e36a)):
+
+1. Dynamically export the DISPLAY environment variable in WSL2: 
+```
+# add to the end of ~/.bashrc file
+export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
+# source the file
+source ~/.bashrc
+```
+2. Download and install [VcXsrv](https://sourceforge.net/projects/vcxsrv/)
+3. When running the program is important to check "Disable access control"
+
+After this, `VcXsrv` should be running successfully and we can proceed to terminal installation.
+
+
+Although we **extremely** recommend using WSL to run the terminal on windows, if you don't want or can't for some reason, you can try install the terminal directly on Windows without WSL. If you'd like to see a video recording of the installation on Windows without WSL, @JohnnyDankseed has made one available [here](https://www.youtube.com/watch?v=-DJJ-cfquDA).
+
+#### Installing the terminal
+
+These steps are common in all operating systems (Windows with or without WSL, MacOS or Linux).
 
 This project supports Python 3.7, 3.8 and 3.9.
 
@@ -158,10 +191,12 @@ If you decided to add Machine Learning features at a later point, you will likel
 Anaconda's Python distribution.
 
 1. [Install Anaconda](https://docs.anaconda.com/anaconda/install/index.html) (It's on the AUR as anaconda or miniconda3!)
+   - Follow the instructions specified on the website above:
+      - If you are using macOS click [Installing on MacOS](https://docs.anaconda.com/anaconda/install/mac-os/)
+      - If you are using WSL or Linux click [Installing on Linux](https://docs.anaconda.com/anaconda/install/linux/)
+      - If you are using Windows click [Installing on Windows](https://docs.anaconda.com/anaconda/install/windows/). **ONLY REQUIRED IF NOT USING WSL**, you also need to install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
 
-   - Confirm that you have it with: `conda -V`. The output should be something along the lines of: `conda 4.9.2`
-
-   - If on Windows, install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
+   - After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output should be something along the lines of: `conda 4.9.2`
 
 2. Install git
 
@@ -216,7 +251,7 @@ Anaconda's Python distribution.
    python terminal.py
    ```
 
-9. (Windows - Optional) Speeding up opening process in the future
+9. (Windows - Optional and **only if you are not using WSL**) Speeding up opening process in the future
 
    After you've installed Gamestonk Terminal, you'll find a file named "Gamestonk Terminal.bat". You can use this file
    to open Gamestonk Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues
@@ -232,7 +267,7 @@ Anaconda's Python distribution.
 before you call `python terminal.py` again.
 
 **TROUBLESHOOT:** If you are having troubles to install, check our _newest_
-<a href="https://github.com/GamestonkTerminal/GamestonkTerminal/blob/master/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>
+<a href="https://github.com/GamestonkTerminal/GamestonkTerminal/blob/master/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>. You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
 
 ### Advanced User Install - Machine Learning
 
