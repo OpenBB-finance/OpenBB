@@ -31,7 +31,7 @@ def display_quote(to_symbol: str, from_symbol: str):
     df.index = df.index.to_series().apply(lambda x: x[3:]).values
     df = df.iloc[[0, 2, 5, 4, 7, 8]]
     if gtff.USE_TABULATE_DF:
-        console.print(tabulate(df, tablefmt="fancy_grid"))
+        print(tabulate(df, tablefmt="fancy_grid"))
     else:
         console.print(df.to_string())
     console.print("")

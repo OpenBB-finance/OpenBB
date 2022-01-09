@@ -69,7 +69,7 @@ def display_quote(ticker: str):
 
     quote = fmp_model.get_quote(ticker)
     if gtff.USE_TABULATE_DF:
-        console.print(tabulate(quote, headers=[], tablefmt="fancy_grid"))
+        print(tabulate(quote, headers=[], tablefmt="fancy_grid"))
     else:
         console.print(quote.to_string(header=False))
     console.print("")
@@ -94,7 +94,7 @@ def display_enterprise(
     df_fa = fmp_model.get_enterprise(ticker, number, quarterly)
     df_fa = df_fa[df_fa.columns[::-1]]
     if gtff.USE_TABULATE_DF:
-        console.print(tabulate(df_fa, headers=df_fa.columns, tablefmt="fancy_grid"))
+        print(tabulate(df_fa, headers=df_fa.columns, tablefmt="fancy_grid"))
     else:
         console.print(df_fa.to_string())
     console.print("")
@@ -120,7 +120,7 @@ def display_discounted_cash_flow(
     dcf = fmp_model.get_dcf(ticker, number, quarterly)
     dcf = dcf[dcf.columns[::-1]]
     if gtff.USE_TABULATE_DF:
-        console.print(tabulate(dcf, headers=[], tablefmt="fancy_grid"))
+        print(tabulate(dcf, headers=[], tablefmt="fancy_grid"))
     else:
         console.print(dcf.to_string())
 
@@ -292,7 +292,7 @@ def display_financial_ratios(
     ratios = fmp_model.get_key_ratios(ticker, number, quarterly)
     ratios = ratios[ratios.columns[::-1]]
     if gtff.USE_TABULATE_DF:
-        console.print(tabulate(ratios, headers=ratios.columns, tablefmt="fancy_grid"))
+        print(tabulate(ratios, headers=ratios.columns, tablefmt="fancy_grid"))
     else:
 
         console.print(ratios.to_string())
@@ -321,7 +321,7 @@ def display_financial_statement_growth(
     growth = fmp_model.get_financial_growth(ticker, number, quarterly)
     growth = growth[growth.columns[::-1]]
     if gtff.USE_TABULATE_DF:
-        console.print(tabulate(growth, headers=growth.columns, tablefmt="fancy_grid"))
+        print(tabulate(growth, headers=growth.columns, tablefmt="fancy_grid"))
     else:
 
         console.print(growth.to_string())

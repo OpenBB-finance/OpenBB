@@ -28,7 +28,7 @@ def view_overview(symbol: str, export: str):
 
     data = stockanalysis_model.get_etf_overview(symbol)
 
-    console.print(tabulate(data, headers=data.columns, tablefmt="fancy_grid"), "\n")
+    print(tabulate(data, headers=data.columns, tablefmt="fancy_grid"), "\n")
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "overview", data)
 
@@ -84,7 +84,7 @@ def view_comparisons(symbols: List[str], export: str):
         console.print("No data found for given ETFs\n")
         return
     if gtff.USE_TABULATE_DF:
-        console.print(tabulate(data, headers=data.columns, tablefmt="fancy_grid"), "\n")
+        print(tabulate(data, headers=data.columns, tablefmt="fancy_grid"), "\n")
     else:
         console.print(data.to_string())
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "overview", data)

@@ -24,7 +24,7 @@ def display_screen_data(ticker: str, export: str = ""):
     fund_data = finviz_model.get_data(ticker)
     console.print("")
     if gtff.USE_TABULATE_DF:
-        console.print(tabulate(fund_data, tablefmt="fancy_grid", showindex=True))
+        print(tabulate(fund_data, tablefmt="fancy_grid", showindex=True))
     else:
         console.print(fund_data.to_string(header=False))
 

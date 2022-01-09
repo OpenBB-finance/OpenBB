@@ -622,7 +622,7 @@ def display_historical(
     )
 
     if raw:
-        console.print(tabulate(df_hist, headers=df_hist.columns, tablefmt="fancy_grid"))
+        print(tabulate(df_hist, headers=df_hist.columns, tablefmt="fancy_grid"))
 
     op_type = ["call", "put"][put]
 

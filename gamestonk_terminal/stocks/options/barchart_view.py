@@ -23,6 +23,6 @@ def print_options_data(ticker: str, export: str):
 
     data = barchart_model.get_options_info(ticker)
 
-    console.print(tabulate(data, tablefmt="fancy_grid", showindex=False))
+    print(tabulate(data, tablefmt="fancy_grid", showindex=False))
     console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "info", data)

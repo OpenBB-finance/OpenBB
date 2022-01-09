@@ -52,7 +52,7 @@ def display_key(ticker: str):
         return
 
     if gtff.USE_TABULATE_DF:
-        console.print(tabulate(df_key, headers=[], tablefmt="fancy_grid"))
+        print(tabulate(df_key, headers=[], tablefmt="fancy_grid"))
     else:
         console.print(df_key.to_string(header=False))
 
@@ -143,7 +143,7 @@ def display_cash_flow(
         return
 
     if gtff.USE_TABULATE_DF:
-        console.print(tabulate(df_cash, headers=df_cash.columns, tablefmt="fancy_grid"))
+        print(tabulate(df_cash, headers=df_cash.columns, tablefmt="fancy_grid"))
     else:
         console.print(df_cash.to_string())
 

@@ -625,7 +625,7 @@ def print_prediction_kpis(real: np.ndarray, pred: np.ndarray):
     console.print("KPIs")
     df = pd.DataFrame.from_dict(kpis, orient="index")
     if gtff.USE_TABULATE_DF:
-        console.print(tabulate(df, tablefmt="fancy_grid", showindex=True))
+        print(tabulate(df, tablefmt="fancy_grid", showindex=True))
     else:
         console.print(df.to_string())
 

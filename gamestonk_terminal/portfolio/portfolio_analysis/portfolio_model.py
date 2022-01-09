@@ -64,7 +64,7 @@ def load_portfolio(
         df = df.dropna(axis=1)
 
     if gtff.USE_TABULATE_DF:
-        console.print(tabulate(df, tablefmt="fancy_grid", headers=df.columns), "\n")
+        print(tabulate(df, tablefmt="fancy_grid", headers=df.columns), "\n")
     else:
         console.print(df.to_string(), "\n")
     return df
