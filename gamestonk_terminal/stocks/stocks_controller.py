@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 import yfinance as yf
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
+from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
@@ -114,7 +115,14 @@ Stock: [/info] {stock_text}
 >   qa          quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis
 >   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm
 {has_ticker_end}"""
-        console.print(help_text)
+        console.print(
+            Panel(
+                help_text,
+                title="Stocks",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def custom_reset(self):
         """Class specific component of reset command"""
