@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 from colorama import Fore, Style
 from sklearn.metrics import (
     mean_absolute_error,
@@ -413,8 +414,9 @@ def plot_data_predictions(
 ):
     """Plots data predictions for the different ML techniques"""
 
-    plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    plt.plot(
+    # plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    ax.plot(
         data.index,
         data.values,
         "-ob",
@@ -430,13 +432,13 @@ def plot_data_predictions(
         else:
             y_pred = preds[i].ravel()
             y_act = y_valid[i].ravel()
-        plt.plot(
+        ax.plot(
             y_dates_valid[i],
             y_pred,
             "r",
             lw=1,
         )
-        plt.fill_between(
+        ax.fill_between(
             y_dates_valid[i],
             y_pred,
             y_act,
@@ -444,7 +446,7 @@ def plot_data_predictions(
             color="r",
             alpha=0.2,
         )
-        plt.fill_between(
+        ax.fill_between(
             y_dates_valid[i],
             y_pred,
             y_act,
@@ -460,14 +462,14 @@ def plot_data_predictions(
     else:
         final_pred = preds[-1].reshape(-1, 1).ravel()
         final_valid = y_valid[-1].reshape(-1, 1).ravel()
-    plt.plot(
+    ax.plot(
         y_dates_valid[-1],
         final_pred,
         "r",
         lw=2,
         label="Predictions",
     )
-    plt.fill_between(
+    ax.fill_between(
         y_dates_valid[-1],
         final_pred,
         final_valid,
@@ -476,7 +478,7 @@ def plot_data_predictions(
     )
 
     _, _, ymin, ymax = plt.axis()
-    plt.vlines(
+    ax.vlines(
         forecast_data.index[0],
         ymin,
         ymax,
@@ -486,7 +488,7 @@ def plot_data_predictions(
         color="k",
     )
     if n_loops == 1:
-        plt.plot(
+        ax.plot(
             forecast_data.index,
             forecast_data.values,
             "-og",
@@ -494,14 +496,14 @@ def plot_data_predictions(
             label="Forecast",
         )
     else:
-        plt.plot(
+        ax.plot(
             forecast_data.index,
             forecast_data.median(axis=1).values,
             "-og",
             ms=3,
             label="Forecast",
         )
-        plt.fill_between(
+        ax.fill_between(
             forecast_data.index,
             forecast_data.quantile(0.25, axis=1).values,
             forecast_data.quantile(0.75, axis=1).values,
@@ -510,28 +512,32 @@ def plot_data_predictions(
         )
     # Subtracting 1 day only works nicely for daily data.  For now if not daily, then start line on last point
     if not time_str or time_str == "1D":
-        plt.axvspan(
+        ax.axvspan(
             forecast_data.index[0] - timedelta(days=1),
             forecast_data.index[-1],
             facecolor="tab:orange",
             alpha=0.2,
         )
-        plt.xlim(data.index[0], forecast_data.index[-1] + timedelta(days=1))
+        ax.set_xlim(data.index[0], forecast_data.index[-1] + timedelta(days=1))
 
     else:
-        plt.axvspan(
+        ax.axvspan(
             forecast_data.index[0],
             forecast_data.index[-1],
             facecolor="tab:orange",
             alpha=0.2,
         )
-        plt.xlim(data.index[0], forecast_data.index[-1])
+        ax.set_xlim(data.index[0], forecast_data.index[-1])
 
-    plt.legend(loc=0)
-    plt.xlabel("Time")
-    plt.ylabel("Value")
-    plt.grid(b=True, which="major", color="#666666", linestyle="-")
-    plt.title(title)
+    ax.legend(loc=0)
+    ax.set_xlabel("Time")
+    ax.set_ylabel("Value")
+    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+    dateFmt = mdates.DateFormatter("%m/%d/%Y")
+    ax.xaxis.set_major_formatter(dateFmt)
+    ax.tick_params(axis="x", labelrotation=45)
+    fig.suptitle(title)
+    fig.tight_layout(pad=2)
     if gtff.USE_ION:
         plt.ion()
     plt.show()

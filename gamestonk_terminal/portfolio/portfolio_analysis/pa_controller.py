@@ -1,6 +1,7 @@
 """Portfolio Analysis Controller"""
 __docformat__ = "numpy"
 
+from typing import List
 import argparse
 import os
 from os import listdir
@@ -16,7 +17,6 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     check_positive_float,
 )
-from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.portfolio_analysis import (
     portfolio_model,
     portfolio_view,
@@ -33,7 +33,7 @@ possible_paths = [
 ]
 
 
-class PortfolioController(BaseController):
+class PortfolioAnalysis(BaseController):
     """Portfolio Controller"""
 
     CHOICES_COMMANDS = [
@@ -44,7 +44,7 @@ class PortfolioController(BaseController):
 
     def __init__(self, queue: List[str] = None):
 
-        super().__init__("/portfolio/", queue)
+        super().__init__("/portfolio/pa/", queue)
 
         self.portfolio_name = ""
         self.portfolio = pd.DataFrame()

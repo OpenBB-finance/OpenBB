@@ -5,22 +5,30 @@ __docformat__ = "numpy"
 
 import argparse
 import difflib
-from typing import List, Union
+from datetime import datetime, timedelta
+from typing import List
 
 from colorama.ansi import Style
-
 from prompt_toolkit.completion import NestedCompleter
+
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
+    GLASSNODE_SUPPORTED_HASHRATE_ASSETS,
+    INTERVALS,
+)
+from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_view import (
+    display_hashrate,
+)
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
-    get_flair,
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     parse_known_args_and_warn,
     check_positive,
     check_int_range,
-    try_except,
-    system_clear,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    valid_date,
 )
 
 from gamestonk_terminal.cryptocurrency.onchain import (
@@ -34,22 +42,8 @@ from gamestonk_terminal.cryptocurrency.onchain import (
 )
 
 
-class OnchainController:
+class OnchainController(BaseController):
     """Onchain Controller class"""
-
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
 
     SPECIFIC_CHOICES = {
         "account": [
@@ -66,6 +60,7 @@ class OnchainController:
     }
 
     CHOICES_COMMANDS = [
+        "hr",
         "gwei",
         "whales",
         "balance",
@@ -85,22 +80,22 @@ class OnchainController:
         "baas",
     ]
 
-    CHOICES += CHOICES_COMMANDS
-
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        self.onchain_parser = argparse.ArgumentParser(add_help=False, prog="onchain")
-        self.onchain_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        super().__init__("/crypto/onchain/", queue)
+
         self.address = ""
         self.address_type = ""
 
-        self.completer: Union[None, NestedCompleter] = None
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["whales"]["-s"] = {c: None for c in whale_alert_model.FILTERS}
+            choices["hr"] = {c: None for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}
+            choices["hr"]["-c"] = {c: None for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}
+            choices["hr"]["--coin"] = {
+                c: None for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS
+            }
+            choices["hr"]["-i"] = {c: None for c in INTERVALS}
             choices["ttcp"] = {c: None for c in bitquery_model.DECENTRALIZED_EXCHANGES}
             choices["baas"]["-c"] = {c: None for c in bitquery_model.POSSIBLE_CRYPTOS}
             choices["baas"]["--coin"] = {
@@ -128,99 +123,73 @@ class OnchainController:
             choices["baas"]["-s"] = {c: None for c in bitquery_model.BAAS_FILTERS}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
+    def call_hr(self, other_args: List[str]):
+        """Process hr command"""
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Parameters
-        -------
-        an_input : str
-            string with input arguments
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.onchain_parser.parse_known_args(
-            an_input.split()
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="hr",
+            description="""
+                Display mean hashrate for a certain blockchain (ETH or BTC)
+                [Source: https://glassnode.org]
+            """,
         )
 
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
+        parser.add_argument(
+            "-c",
+            "--coin",
+            dest="coin",
+            type=str,
+            help="Coin to check hashrate (BTC or ETH)",
+            default="BTC",
+            choices=GLASSNODE_SUPPORTED_HASHRATE_ASSETS,
+        )
 
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
+        parser.add_argument(
+            "-i",
+            "--interval",
+            dest="interval",
+            type=str,
+            help="Frequency interval. Default: 24h",
+            default="24h",
+            choices=INTERVALS,
+        )
 
-        return self.queue
+        parser.add_argument(
+            "-s",
+            "--since",
+            dest="since",
+            type=valid_date,
+            help="Initial date. Default: 2020-01-01",
+            default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
+        )
 
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
+        parser.add_argument(
+            "-u",
+            "--until",
+            dest="until",
+            type=valid_date,
+            help="Final date. Default: 2021-01-01",
+            default=(datetime.now()).strftime("%Y-%m-%d"),
+        )
 
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-c")
 
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
 
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
+        if ns_parser:
+            display_hashrate(
+                asset=ns_parser.coin,
+                interval=ns_parser.interval,
+                since=int(datetime.timestamp(ns_parser.since)),
+                until=int(datetime.timestamp(ns_parser.until)),
+                export=ns_parser.export,
+            )
 
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "onchain")
-        self.queue.insert(0, "crypto")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    @try_except
     def call_gwei(self, other_args: List[str]):
         """Process gwei command"""
         parser = argparse.ArgumentParser(
@@ -240,7 +209,6 @@ class OnchainController:
         if ns_parser:
             ethgasstation_view.display_gwei_fees(export=ns_parser.export)
 
-    @try_except
     def call_whales(self, other_args: List[str]):
         """Process whales command"""
         parser = argparse.ArgumentParser(
@@ -311,7 +279,6 @@ class OnchainController:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_address(self, other_args: List[str]):
         """Process address command"""
         parser = argparse.ArgumentParser(
@@ -387,7 +354,6 @@ class OnchainController:
             self.address = ns_parser.address
             self.address_type = address_type
 
-    @try_except
     def call_balance(self, other_args: List[str]):
         """Process balance command"""
         parser = argparse.ArgumentParser(
@@ -442,7 +408,6 @@ class OnchainController:
         else:
             print("You need to set an ethereum address\n")
 
-    @try_except
     def call_hist(self, other_args: List[str]):
         """Process hist command"""
         parser = argparse.ArgumentParser(
@@ -498,7 +463,6 @@ class OnchainController:
         else:
             print("You need to set an ethereum address\n")
 
-    @try_except
     def call_holders(self, other_args: List[str]):
         """Process holders command"""
         parser = argparse.ArgumentParser(
@@ -553,7 +517,6 @@ class OnchainController:
         else:
             print("You need to set an ethereum address\n")
 
-    @try_except
     def call_top(self, other_args: List[str]):
         """Process top command"""
         parser = argparse.ArgumentParser(
@@ -605,7 +568,6 @@ class OnchainController:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_info(self, other_args: List[str]):
         """Process info command"""
         parser = argparse.ArgumentParser(
@@ -639,7 +601,6 @@ class OnchainController:
         else:
             print("You need to set an ethereum address\n")
 
-    @try_except
     def call_th(self, other_args: List[str]):
         """Process th command"""
         parser = argparse.ArgumentParser(
@@ -704,7 +665,6 @@ class OnchainController:
         else:
             print("You need to set an ethereum address\n")
 
-    @try_except
     def call_tx(self, other_args: List[str]):
         """Process tx command"""
         parser = argparse.ArgumentParser(
@@ -730,7 +690,6 @@ class OnchainController:
         else:
             print("You need to set an ethereum address\n")
 
-    @try_except
     def call_prices(self, other_args: List[str]):
         """Process prices command"""
         parser = argparse.ArgumentParser(
@@ -785,7 +744,6 @@ class OnchainController:
         else:
             print("You need to set an ethereum address\n")
 
-    @try_except
     def call_lt(self, other_args: List[str]):
         """Process lt command"""
         parser = argparse.ArgumentParser(
@@ -869,7 +827,6 @@ class OnchainController:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_dvcp(self, other_args: List[str]):
         """Process dvcp command"""
         parser = argparse.ArgumentParser(
@@ -948,7 +905,6 @@ class OnchainController:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_tv(self, other_args: List[str]):
         """Process tv command"""
         parser = argparse.ArgumentParser(
@@ -1023,7 +979,6 @@ class OnchainController:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_ueat(self, other_args: List[str]):
         """Process ueat command"""
         parser = argparse.ArgumentParser(
@@ -1089,7 +1044,6 @@ class OnchainController:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_ttcp(self, other_args: List[str]):
         """Process ttcp command"""
         parser = argparse.ArgumentParser(
@@ -1198,7 +1152,6 @@ class OnchainController:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_baas(self, other_args: List[str]):
         """Process baas command"""
         parser = argparse.ArgumentParser(
@@ -1309,6 +1262,8 @@ class OnchainController:
         help_text = """
 Onchain Menu:
 
+Glassnode:
+    hr              check blockchain hashrate over time (BTC or ETH)
 Eth Gas Station:
     gwei             check current eth gas fees
 Whale Alert:
@@ -1346,80 +1301,3 @@ Ethereum [Ethplorer]:
     """
 
         print(help_text)
-
-
-def menu(queue: List[str] = None):
-    """Onchain Menu"""
-    onchain_controller = OnchainController(queue=queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if onchain_controller.queue and len(onchain_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if onchain_controller.queue[0] in ("q", "..", "quit"):
-                if len(onchain_controller.queue) > 1:
-                    return onchain_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = onchain_controller.queue[0]
-            onchain_controller.queue = onchain_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if (
-                an_input
-                and an_input.split(" ")[0] in onchain_controller.CHOICES_COMMANDS
-            ):
-                print(f"{get_flair()} /crypto/onchain/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                onchain_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and onchain_controller.completer:
-                an_input = session.prompt(
-                    f"{get_flair()} /crypto/onchain/ $ ",
-                    completer=onchain_controller.completer,
-                    search_ignore_case=True,
-                )
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /crypto/onchain/ $ ")
-
-        try:
-            # Process the input command
-            onchain_controller.queue = onchain_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                onchain_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        onchain_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                onchain_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

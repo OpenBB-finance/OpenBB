@@ -1,7 +1,10 @@
 """CoinGecko model"""
 __docformat__ = "numpy"
 
+# pylint: disable=C0301
+
 import math
+from typing import Any, List
 import pandas as pd
 import numpy as np
 from pycoingecko import CoinGeckoAPI
@@ -82,7 +85,7 @@ DERIVATIVES_FILTERS = [
 ]
 
 
-def get_holdings_overview(endpoint: str = "bitcoin") -> pd.DataFrame:
+def get_holdings_overview(endpoint: str = "bitcoin") -> List[Any]:
     """Scrapes overview of public companies that holds ethereum or bitcoin
     from "https://www.coingecko.com/en/public-companies-{bitcoin/ethereum}" [Source: CoinGecko]
 
@@ -93,78 +96,30 @@ def get_holdings_overview(endpoint: str = "bitcoin") -> pd.DataFrame:
 
     Returns
     -------
-    pandas.DataFrame
-        Metric, Value
+    List:
+        - str:              Overall statistics
+        - pandas.DataFrame: Companies holding crypto
     """
+    cg = CoinGeckoAPI()
+    data = cg.get_companies_public_treasury_by_coin_id(coin_id=endpoint)
 
-    url = f"https://www.coingecko.com/en/public-companies-{endpoint}"
-    try:
-        scraped_data = scrape_gecko_data(url)
-    except RetryError as e:
-        print(e)
-        return pd.DataFrame()
-    rows = scraped_data.find_all("span", class_="overview-box d-inline-block p-3 mr-2")
-    kpis = {}
-    for row in rows:
-        row_cleaned = clean_row(row)
-        if row_cleaned:
-            value, *kpi = row_cleaned
-            name = " ".join(kpi)
-            kpis[name] = value
+    stats_str = f"""{len(data["companies"])} companies hold a total of {data["total_holdings"]} {endpoint} ({data["market_cap_dominance"]}% of market cap dominance) with the current value of {int(data["total_value_usd"])} USD dollars"""  # noqa
 
-    df = pd.Series(kpis).to_frame().reset_index()
-    df.columns = ["Metric", "Value"]
-    df["Metric"] = df["Metric"].apply(
-        lambda x: replace_underscores_in_column_names(x) if isinstance(x, str) else x
+    df = pd.json_normalize(data, record_path=["companies"])
+
+    df.columns = list(
+        map(
+            lambda x: replace_underscores_in_column_names(x)
+            if isinstance(x, str)
+            else x,
+            df.columns,
+        )
     )
-    return df
+
+    return [stats_str, df]
 
 
-def get_companies_assets(endpoint: str = "bitcoin") -> pd.DataFrame:
-    """Scrapes list of companies that holds ethereum or bitcoin
-    from "https://www.coingecko.com/en/public-companies-{bitcoin/ethereum}" [Source: CoinGecko]
-
-    Parameters
-    ----------
-    endpoint : str
-        "bitcoin" or "ethereum"
-
-    Returns
-    -------
-    pandas.DataFrame
-        Rank, Company, Ticker, Country, Total_Btc, Entry_Value, Today_Value, Pct_Supply, Url
-    """
-
-    url = f"https://www.coingecko.com/en/public-companies-{endpoint}"
-    try:
-        scraped_data = scrape_gecko_data(url)
-    except RetryError as e:
-        print(e)
-        return pd.DataFrame()
-    rows = scraped_data.find("tbody").find_all("tr")
-    results = []
-    for row in rows:
-        link = row.find("a")["href"]
-        row_cleaned = clean_row(row)
-        row_cleaned.append(link)
-        results.append(row_cleaned)
-    df = pd.DataFrame(
-        results,
-        columns=[
-            "Rank",
-            "Company",
-            "Ticker",
-            "Country",
-            "Total_Btc",
-            "Entry_Value",
-            "Today_Value",
-            "Pct_Supply",
-            "Url",
-        ],
-    )
-    return df
-
-
+# This function does not use coingecko api because there is not an endpoint for this
 def get_news(n: int = 100) -> pd.DataFrame:
     """Scrapes news from "https://www.coingecko.com/en/news?page={}" [Source: CoinGecko]
 
@@ -218,6 +173,7 @@ def get_news(n: int = 100) -> pd.DataFrame:
     return df
 
 
+# This function does not use coingecko api because there is not an endpoint for this
 def get_top_crypto_categories() -> pd.DataFrame:
     """Scrapes top crypto categories from "https://www.coingecko.com/en/categories" [Source: CoinGecko]
 
@@ -277,6 +233,7 @@ def get_top_crypto_categories() -> pd.DataFrame:
     return df
 
 
+# This function does not use coingecko api because there is not an endpoint for this
 def get_stable_coins() -> pd.DataFrame:
     """Scrapes stable coins data from "https://www.coingecko.com/en/stablecoins" [Source: CoinGecko]
 
@@ -342,6 +299,7 @@ def get_stable_coins() -> pd.DataFrame:
     return df
 
 
+# This function does not use coingecko api because there is not an endpoint for this
 def get_nft_of_the_day() -> pd.DataFrame:
     """Scrapes data about nft of the day. [Source: CoinGecko]
 
@@ -384,6 +342,7 @@ def get_nft_of_the_day() -> pd.DataFrame:
     return df
 
 
+# This function does not use coingecko api because there is not an endpoint for this
 def get_nft_market_status() -> pd.DataFrame:
     """Scrapes overview data of nft markets from "https://www.coingecko.com/en/nft" [Source: CoinGecko]
 

@@ -1,9 +1,12 @@
 import difflib
+
 import discord
 import pandas as pd
 
 from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
+
 import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import logger
 from discordbot.helpers import pagination
 from discordbot.stocks.screener import screener_options as so
 
@@ -19,7 +22,9 @@ async def performance_command(
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.scr.performance {preset} {sort} {limit} {ascend}")
+            logger.debug(
+                "!stocks.scr.performance %s %s %s %s", preset, sort, limit, ascend
+            )
 
         # Check for argument
         if not limit.lstrip("-").isnumeric():

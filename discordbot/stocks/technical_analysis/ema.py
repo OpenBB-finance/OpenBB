@@ -9,7 +9,7 @@ from gamestonk_terminal.common.technical_analysis import overlap_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
 
 
@@ -19,7 +19,14 @@ async def ema_command(ctx, ticker="", window="", offset="", start="", end=""):
     try:
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.ema {ticker} {window} {offset} {start} {end}")
+            logger.debug(
+                "!stocks.ta.ema %s %s %s %s %s",
+                ticker,
+                window,
+                offset,
+                start,
+                end,
+            )
 
         # Check for argument
         if ticker == "":
@@ -101,7 +108,7 @@ async def ema_command(ctx, ticker="", window="", offset="", start="", end=""):
         uploaded_image = gst_imgur.upload_image("ta_ema.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: Exponential-Moving-Average " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

@@ -33,9 +33,11 @@
   </a>
 
   <h3 align="center">Gamestonk Terminal 🚀</h3>
+  
+  ![honest work](https://user-images.githubusercontent.com/25267873/148552707-12dcca7e-0b7e-481c-9055-17436c2bc4cf.gif)
 
   <p align="center">
-    The next best thing after Bloomberg Terminal. #weliketheterminal
+    Investment research for everyone.
     <br />
     <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/blob/master/ROADMAP.md"><strong>≪  ROADMAP</strong></a>
     &nbsp · &nbsp
@@ -62,12 +64,11 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#docker-installation---new-and-improved">Docker Installation - new and improved</a></li>
+        <li><a href="#docker-installation">Docker Installation</a></li>
         <li><a href="#local-install---anaconda-and-python">Local Install - Anaconda and Python</a></li>
         <li><a href="#advanced-user-install---machine-learning">Advanced User Install - Machine Learning</a></li>
         <li><a href="#update-terminal">Update Terminal</a></li>
         <li><a href="#api-keys">API Keys</a></li>
-        <li><a href="#usage">Usage</a></li>
       </ul>
     </li>
     <li><a href="#contributing">Contributing</a></li>
@@ -96,7 +97,11 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
 
 ## Getting Started
 
-### Docker Installation - _new and improved_
+Star the project
+
+<img width="1272" alt="Github starts" src="https://user-images.githubusercontent.com/25267873/115989986-e20cfe80-a5b8-11eb-8182-d6d87d092252.png">
+
+### Docker Installation
 
 1. First step is to make sure docker desktop is installed. Install links can be found [here](https://www.docker.com/products/docker-desktop).
    To confirm that your docker desktop is downloaded and running, open a command prompt or terminal and enter
@@ -116,9 +121,8 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
    docker pull ghcr.io/gamestonkterminal/gst-poetry:latest
    ```
 
-   Upon running this the first time, you should see the various layers downloading (note the random series of letters
-   numbers will vary). The first time this is run, it will take a few minutes. Subsequent updates will be much faster,
-   as the changes will be in the MB instead of GB.
+   Upon running this the first time, you should see the various layers downloading (note the random series of letters numbers will vary). The first time this is run, it will take a few minutes. Subsequent updates will be much faster, as the changes will be in the MB instead of GB.
+
    ![Screen Shot 2021-09-08 at 10 41 08 AM](https://user-images.githubusercontent.com/18151143/132531075-7d7f7e71-4fcb-435c-9bb3-466d7077eba4.png)
 
    Once the download is complete, confirm that the image has been created by doing `docker images`. You should see
@@ -152,10 +156,6 @@ Our current recommendation is to use this project with Anaconda's Python distrib
 Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional.
 If you decided to add Machine Learning features at a later point, you will likely have better user experience with
 Anaconda's Python distribution.
-
-0. Star the project
-
-   <img width="1272" alt="Github starts" src="https://user-images.githubusercontent.com/25267873/115989986-e20cfe80-a5b8-11eb-8182-d6d87d092252.png">
 
 1. [Install Anaconda](https://docs.anaconda.com/anaconda/install/index.html) (It's on the AUR as anaconda or miniconda3!)
 
@@ -289,38 +289,9 @@ git stash pop
 
 ### API Keys
 
-The project is build around several different API calls, whether it is to access historical data or financials.
+The project is build around several different API calls, whether it is to access historical data or financials. The table below shows the ones where a key is necessary. The environment variable names are shown explicitly, for the variable name in the code one just needs to remove the "GT_", this can be found in [config_terminal.py](/gamestonk_terminal/config_terminal.py).
 
-These are the ones where a key is necessary:
-
-- Alpha Vantage: <https://www.alphavantage.co>
-- Binance: <https://binance.us> (US) / <https://binance.com> (Outside US)
-- CoinMarketCap API: <https://coinmarketcap.com/api>
-- Degiro API : <https://www.degiro.fr>
-- FRED: <https://fred.stlouisfed.org/docs/api/api_key.html>
-- Financial Modeling Prep: <https://financialmodelingprep.com/developer>
-- Finhub API: <https://finnhub.io>
-- News API: <https://newsapi.org>
-- Oanda API: <https://developer.oanda.com>
-- Polygon: <https://polygon.io>
-- Quandl: <https://www.quandl.com/tools/api>
-- Reddit: <https://www.reddit.com/prefs/apps>
-- SentimentInvestor: <https://sentimentinvestor.com>
-- Tradier: <https://developer.tradier.com/getting_started>
-- Twitter: <https://developer.twitter.com>
-- Coinbase Pro API: <https://docs.pro.coinbase.com/>
-- Whale Alert API: <https://docs.whale-alert.io/>
-- Ethplorer API: <https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API>
-- Cryptopanic API: <https://cryptopanic.com/developers/api/>
-- BitQuery API: <https://bitquery.io/pricing>
-- Glassnode API: <https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key>
-- Coinglass API: <https://coinglass.github.io/API-Reference/#api-key>
-
-When these are obtained, don't forget to update [config_terminal.py](/gamestonk_terminal/config_terminal.py).
-
-Alternatively, you can also set them to the following environment variables:
-
-| Website                                                                         | Variables                                                                                                                                         |
+| Website | Environment Variables |
 | :------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------ |
 | [Alpha Vantage](https://www.alphavantage.co)                                    | GT_API_KEY_ALPHAVANTAGE                                                                                                                           |
 | [Binance](https://binance.com)                                                  | GT_API_BINANCE_KEY <br/> GT_API_BINANCE_SECRET                                                                                                    |
@@ -360,73 +331,6 @@ GT_API_REDDIT_USERNAME=SexyYear
 
 Note that the `GT_API_REDDIT_USER_AGENT` is the name of the script that you set when obtained the Reddit API key.
 Note that it is not necessary to have a valid Alpha Vantage key to get daily OHLC values.
-
-### Usage
-
-Start by selecting a context that you would like to work with. If you want to research stocks, you would start with
-
-```bash
-stocks
-```
-
-Alternatively, you can set a default context to be loaded in the config_terminal file by setting
-
-```bash
-DEFAULT_CONTEXT = "stocks"
-```
-
-From this menu, you can load a ticker of interest (note the -t is optional):
-
-```bash
-load -t GME
-```
-
-At this point, all available menus will be in full color and available to use.
-
-To look at the candle chart of your stock, run:
-
-```bash
-candle
-```
-
-Slice the historical data by loading ticker and setting a starting point, e.g.
-
-```bash
-load -t GME -s 2020-06-04
-```
-
-To perform technical analysis, first enter the menu
-
-```bash
-ta
-```
-
-and run a SMA with:
-
-```bash
-sma
-```
-
-However, imagine that you wanted to change the length of the window because you don't want to go long but do a swing,
-and therefore a smaller window is necessary. Check what settings are available on the SMA command:
-
-```bash
-sma -h
-```
-
-Once that has been seen, set the parameters that you want after flagging them. In this case, to change length window
-to 10, we would have to do:
-
-```bash
-sma -l 10
-```
-
-Example:
-
-<img src='/images/usage.gif' width="1000">
-
-To return to the stocks menu to perform more research in a different menu, just use the `q` command. From the stocks
-menu, using `q` again will return you to the main menu where you can enter a different context (crypto for example).
 
 <!-- CONTRIBUTING -->
 
@@ -498,17 +402,8 @@ Feel free to share loss porn, memes or any questions at:
 
 ### Contributors
 
-- **pll_llq** and **Chavithra**: Working on JupyterLab integration. Also developed a GUI POOC.
-- **jpp** : Responsible by developing `Crypto` menu.
-- **northern-64bit** : Developing a discord bot for the terminal.
-- **1lluz10n** and **crspy** : Working on our landing page <https://gamestonkterminal.netlify.app>.
-- **Meghan Hone** : Managing Twitter account.
-- **Chavithra** and **Deel18** : for Degiro's integration.
-- **alokan** : Responsible by developing `Forex` menu.
-- **Traceabl3** : By adding several preset screeners.
-
 <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=GamestonkTerminal/GamestonkTerminal" height="276"/>
+   <img src="https://contributors-img.web.app/image?repo=GamestonkTerminal/GamestonkTerminal" height="276"/>
 </a>
 
 ## Acknowledgments
@@ -522,6 +417,7 @@ Feel free to share loss porn, memes or any questions at:
 - [Spotlight: Didier Lopes. Creator of Gamestonk Terminal](https://deepsource.io/spotlight/didier-lopes/)
 - [Reddit r/Superstonk - Gamestonk Terminal - We are very much alive](https://www.reddit.com/r/Superstonk/comments/o502i8/gamestonk_terminal_we_are_very_much_alive/)
 - [Medium- Gamestonk Terminal. Can't Stop, Won't Stop](https://dro-lopes.medium.com/gamestonk-terminal-cant-stop-won-t-stop-e635662d6f2e)
+- [Gamestonk Terminal: UX/UI >> Features](https://dro-lopes.medium.com/gamestonk-terminal-ux-features-f9754b484919)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->

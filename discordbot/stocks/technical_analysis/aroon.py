@@ -8,7 +8,7 @@ from gamestonk_terminal.common.technical_analysis import trend_indicators_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
 
 
@@ -19,7 +19,14 @@ async def aroon_command(ctx, ticker="", length="25", scalar="100", start="", end
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.aroon {ticker} {length} {scalar} {start} {end}")
+            logger.debug(
+                "!stocks.ta.aroon %s %s %s %s %s",
+                ticker,
+                length,
+                scalar,
+                start,
+                end,
+            )
 
         # Check for argument
         if ticker == "":
@@ -88,7 +95,7 @@ async def aroon_command(ctx, ticker="", length="25", scalar="100", start="", end
         uploaded_image = gst_imgur.upload_image("ta_aroon.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: Aroon-Indicator " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

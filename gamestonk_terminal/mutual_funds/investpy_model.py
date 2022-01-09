@@ -164,8 +164,8 @@ def get_fund_historical(
             return pd.DataFrame(), "", fund, country
 
     # Note that dates for investpy need to be in the format dd/mm/yyyy
-    from_date = start_date.strftime("%d/%m/%Y")
-    to_date = end_date.strftime("%d/%m/%Y")
+    from_date = start_date.strftime("%Y-%m-%d")
+    to_date = end_date.strftime("%Y-%m-%d")
     search_country = matching_country if matching_country else country
     try:
         return (

@@ -1,9 +1,8 @@
 import asyncio
+
 import discord
-
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_bot
-
+from discordbot.run_discordbot import gst_bot, logger
 from discordbot.stocks.options.calls import calls_command
 from discordbot.stocks.options.expirations import expirations_command
 from discordbot.stocks.options.hist import hist_command
@@ -20,7 +19,7 @@ async def opt_command(ctx, ticker="", expiration="", strike="", put=""):
     """Options Menu command"""
 
     if cfg.DEBUG:
-        print(f"!stocks.opt {ticker} {expiration} {strike} {put}")
+        logger.debug("!stocks.opt %s %s %s %s", ticker, expiration, strike, put)
 
     if ticker:
         current = 1

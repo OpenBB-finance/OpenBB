@@ -3,24 +3,23 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 
 import argparse
-import difflib
-from typing import List, Union
-from datetime import datetime
+from typing import List
+from datetime import datetime, timedelta
 from colorama import Style
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import load
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-    get_flair,
     parse_known_args_and_warn,
     check_positive_list,
     check_positive,
     valid_date,
-    try_except,
-    system_clear,
+    valid_date_in_past,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.technical_analysis import (
@@ -33,25 +32,11 @@ from gamestonk_terminal.common.technical_analysis import (
 )
 
 
-class TechnicalAnalysisController:
+class TechnicalAnalysisController(BaseController):
     """Technical Analysis Controller class"""
 
-    # Command choices
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
-
     CHOICES_COMMANDS = [
+        "load",
         "ema",
         "sma",
         "vwap",
@@ -71,8 +56,6 @@ class TechnicalAnalysisController:
         "fib",
     ]
 
-    CHOICES += CHOICES_COMMANDS
-
     def __init__(
         self,
         ticker: str,
@@ -82,26 +65,18 @@ class TechnicalAnalysisController:
         queue: List[str] = None,
     ):
         """Constructor"""
-        self.ta_parser = argparse.ArgumentParser(add_help=False, prog="ta")
-        self.ta_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-        self.completer: Union[None, NestedCompleter] = None
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-            self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
+        super().__init__("/crypto/ta/", queue)
 
         self.ticker = ticker
         self.start = start
         self.interval = interval
         self.stock = stock
         self.stock["Adj Close"] = stock["Close"]
+        self.currency = ""
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
@@ -109,9 +84,9 @@ class TechnicalAnalysisController:
             self.interval == "1440min"
         ]
         if self.start:
-            crypto_str = f"{s_intraday}\nCrypto: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            crypto_str = f"{s_intraday}\nCoin Loaded: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            crypto_str = f"{s_intraday}\nCrypto: {self.ticker}"
+            crypto_str = f"{s_intraday}\nCoin Loaded: {self.ticker}"
 
         dim = Style.DIM if "Volume" not in self.stock else ""
         not_dim = Style.RESET_ALL if "Volume" not in self.stock else ""
@@ -146,96 +121,86 @@ Custom:
 """
         print(help_str)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Parameters
-        -------
-        an_input : str
-            string with input arguments
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.ta_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "ta")
+    def custom_reset(self):
+        """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(0, f"load {self.ticker}")
-        self.queue.insert(0, "crypto")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            return ["crypto", f"load {self.ticker}", "ta"]
+        return []
+
+    def call_load(self, other_args):
+        """Process load command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load crypto currency to perform analysis on."
+            "Available data sources are CoinGecko, CoinPaprika, Binance, Coinbase"
+            "By default main source used for analysis is CoinGecko (cg). To change it use --source flag",
+        )
+        parser.add_argument(
+            "-c",
+            "--coin",
+            help="Coin to get",
+            dest="coin",
+            type=str,
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "--source",
+            help="Source of data",
+            dest="source",
+            choices=("cp", "cg", "bin", "cb"),
+            default="cg",
+            required=False,
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date_in_past,
+            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the crypto",
+        )
+        parser.add_argument(
+            "--vs",
+            help="Quote currency (what to view coin vs)",
+            dest="vs",
+            default="usd",
+            type=str,
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            help="Interval to get data (Only available on binance/coinbase)",
+            dest="interval",
+            default="1day",
+            type=str,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        delta = (datetime.now() - ns_parser.start).days
+        if ns_parser:
+            source = ns_parser.source
+            for arg in ["--source", source]:
+                if arg in other_args:
+                    other_args.remove(arg)
+
+            # TODO: protections in case None is returned
+            (self.ticker, _, _, _, self.stock, self.currency) = load(
+                coin=ns_parser.coin,
+                source=ns_parser.source,
+                should_load_ta_data=True,
+                days=delta,
+                interval=ns_parser.interval,
+                vs=ns_parser.vs,
+            )
+            print(f"{delta} Days of {self.ticker} vs {self.currency} loaded\n")
 
     # TODO: Go through all models and make sure all needed columns are in dfs
-    @try_except
+
     def call_ema(self, other_args: List[str]):
         """Process ema command"""
         parser = argparse.ArgumentParser(
@@ -291,7 +256,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_sma(self, other_args: List[str]):
         """Process sma command"""
         parser = argparse.ArgumentParser(
@@ -345,7 +309,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_zlma(self, other_args: List[str]):
         """Process zlma command"""
         parser = argparse.ArgumentParser(
@@ -400,7 +363,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_vwap(self, other_args: List[str]):
         """Process vwap command"""
         parser = argparse.ArgumentParser(
@@ -438,7 +400,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cci(self, other_args: List[str]):
         """Process cci command"""
 
@@ -488,7 +449,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_macd(self, other_args: List[str]):
         """Process macd command"""
         parser = argparse.ArgumentParser(
@@ -551,7 +511,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_rsi(self, other_args: List[str]):
         """Process rsi command"""
         parser = argparse.ArgumentParser(
@@ -611,7 +570,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_stoch(self, other_args: List[str]):
         """Process stoch command"""
         parser = argparse.ArgumentParser(
@@ -671,7 +629,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_fisher(self, other_args: List[str]):
         """Process fisher command"""
         parser = argparse.ArgumentParser(
@@ -709,7 +666,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cg(self, other_args: List[str]):
         """Process cg command"""
         parser = argparse.ArgumentParser(
@@ -747,7 +703,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_adx(self, other_args: List[str]):
         """Process adx command"""
         parser = argparse.ArgumentParser(
@@ -805,7 +760,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_aroon(self, other_args: List[str]):
         """Process aroon command"""
         parser = argparse.ArgumentParser(
@@ -869,7 +823,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_bbands(self, other_args: List[str]):
         """Process bbands command"""
         parser = argparse.ArgumentParser(
@@ -933,7 +886,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_donchian(self, other_args: List[str]):
         """Process donchian command"""
         parser = argparse.ArgumentParser(
@@ -983,7 +935,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_ad(self, other_args: List[str]):
         """Process ad command"""
         parser = argparse.ArgumentParser(
@@ -1024,7 +975,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_obv(self, other_args: List[str]):
         """Process obv command"""
         parser = argparse.ArgumentParser(
@@ -1053,7 +1003,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_fib(self, other_args: List[str]):
         """Process fib command"""
         parser = argparse.ArgumentParser(
@@ -1100,83 +1049,3 @@ Custom:
                 end_date=ns_parser.end,
                 export=ns_parser.export,
             )
-
-
-def menu(
-    ticker: str,
-    start: datetime,
-    interval: str,
-    stock: pd.DataFrame,
-    queue: List[str] = None,
-):
-    """Technical Analysis Menu"""
-    ta_controller = TechnicalAnalysisController(ticker, start, interval, stock, queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if ta_controller.queue and len(ta_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if ta_controller.queue[0] in ("q", "..", "quit"):
-                if len(ta_controller.queue) > 1:
-                    return ta_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = ta_controller.queue[0]
-            ta_controller.queue = ta_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in ta_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /crypto/ta/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                ta_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and ta_controller.completer:
-                an_input = session.prompt(
-                    f"{get_flair()} /crypto/ta/ $ ",
-                    completer=ta_controller.completer,
-                    search_ignore_case=True,
-                )
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /crypto/ta/ $ ")
-
-        try:
-            # Process the input command
-            ta_controller.queue = ta_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                ta_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        ta_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                ta_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

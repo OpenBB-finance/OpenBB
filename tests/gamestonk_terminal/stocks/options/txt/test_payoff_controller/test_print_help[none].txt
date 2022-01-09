@@ -1,0 +1,17 @@
+
+
+Ticker: MOCK_TICKER
+Expiry: 2022-01-07
+
+    pick          long, short, or none (default) underlying asset
+
+Underlying Asset: None
+
+    list          list available strike prices for calls and puts
+
+    add           add option to the list of the options to be plotted[2m
+    rmv           remove option from the list of the options to be plotted[0m
+
+    sop           selected options
+    plot          show the option payoff diagram
+        
