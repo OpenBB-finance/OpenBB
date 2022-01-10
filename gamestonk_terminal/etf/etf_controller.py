@@ -2,10 +2,9 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
 import os
 from datetime import datetime, timedelta
-from typing import List, Union
+from typing import List
 import yfinance as yf
 import matplotlib.pyplot as plt
 import mplfinance as mpf
@@ -14,6 +13,8 @@ from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 
 from thepassiveinvestor import create_ETF_report
+
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.etf import (
     stockanalysis_view,
@@ -28,10 +29,7 @@ from gamestonk_terminal.helper_funcs import (
     check_non_negative_float,
     check_positive,
     valid_date,
-    get_flair,
     parse_known_args_and_warn,
-    try_except,
-    system_clear,
     plot_autoscale,
     export_data,
 )
@@ -45,22 +43,8 @@ from gamestonk_terminal.etf.discovery import disc_controller
 # pylint: disable=C0415,C0302
 
 
-class ETFController:
+class ETFController(BaseController):
     """ETF Controller class"""
-
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
 
     CHOICES_COMMANDS = [
         "ln",
@@ -75,7 +59,6 @@ class ETFController:
         "summary",
         "compare",
     ]
-
     CHOICES_MENUS = [
         "ta",
         "pred",
@@ -84,27 +67,17 @@ class ETFController:
         "disc",
     ]
 
-    CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
-
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        self.etf_parser = argparse.ArgumentParser(add_help=False, prog="etf")
-        self.etf_parser.add_argument("cmd", choices=self.CHOICES)
-
-        self.completer: Union[None, NestedCompleter] = None
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-            self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
+        super().__init__("/etf/", queue)
 
         self.etf_name = ""
         self.etf_data = ""
         self.etf_holdings: List = list()
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
@@ -136,87 +109,12 @@ Major holdings: {', '.join(self.etf_holdings)}
 {Style.RESET_ALL}"""
         print(help_txt)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.etf_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        print("")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
+    def custom_reset(self):
+        """Class specific component of reset command"""
         if self.etf_name:
-            self.queue.insert(0, f"load {self.etf_name}")
-        self.queue.insert(0, "etf")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
+            return ["etf", f"load {self.etf_name}"]
+        return []
 
-    @try_except
     def call_ln(self, other_args: List[str]):
         """Process ln command"""
         parser = argparse.ArgumentParser(
@@ -275,7 +173,6 @@ Major holdings: {', '.join(self.etf_holdings)}
             else:
                 print("Wrong source choice!\n")
 
-    @try_except
     def call_ld(self, other_args: List[str]):
         """Process ld command"""
         parser = argparse.ArgumentParser(
@@ -316,7 +213,6 @@ Major holdings: {', '.join(self.etf_holdings)}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -386,7 +282,6 @@ Major holdings: {', '.join(self.etf_holdings)}
 
             print("")
 
-    @try_except
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
         parser = argparse.ArgumentParser(
@@ -404,7 +299,6 @@ Major holdings: {', '.join(self.etf_holdings)}
                 symbol=self.etf_name, export=ns_parser.export
             )
 
-    @try_except
     def call_holdings(self, other_args: List[str]):
         """Process holdings command"""
         parser = argparse.ArgumentParser(
@@ -434,7 +328,6 @@ Major holdings: {', '.join(self.etf_holdings)}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_news(self, other_args: List[str]):
         """Process news command"""
         parser = argparse.ArgumentParser(
@@ -501,7 +394,6 @@ Major holdings: {', '.join(self.etf_holdings)}
             else:
                 print("Use 'load <ticker>' prior to this command!", "\n")
 
-    @try_except
     def call_candle(self, other_args: List[str]):
         """Process candle command"""
         parser = argparse.ArgumentParser(
@@ -573,7 +465,6 @@ Major holdings: {', '.join(self.etf_holdings)}
             else:
                 print("No ticker loaded. First use `load {ticker}`\n")
 
-    @try_except
     def call_pir(self, other_args):
         """Process pir command"""
         parser = argparse.ArgumentParser(
@@ -618,7 +509,6 @@ Major holdings: {', '.join(self.etf_holdings)}
                     f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
                 )
 
-    @try_except
     def call_weights(self, other_args: List[str]):
         """Process weights command"""
         parser = argparse.ArgumentParser(
@@ -655,7 +545,6 @@ Major holdings: {', '.join(self.etf_holdings)}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_summary(self, other_args: List[str]):
         """Process summary command"""
         parser = argparse.ArgumentParser(
@@ -673,33 +562,31 @@ Major holdings: {', '.join(self.etf_holdings)}
                 name=self.etf_name,
             )
 
-    @try_except
     def call_ta(self, _):
         """Process ta command"""
         if self.etf_name:
-            self.queue = ta_controller.menu(
+            self.queue = ta_controller.TechnicalAnalysisController(
                 self.etf_name, self.etf_data.index[0], self.etf_data, self.queue
-            )
+            ).menu()
         else:
             print("Use 'load <ticker>' prior to this command!", "\n")
 
-    @try_except
     def call_pred(self, _):
         """Process pred command"""
         if gtff.ENABLE_PREDICT:
             if self.etf_name:
                 try:
-                    from gamestonk_terminal.stocks.prediction_techniques import (
+                    from gamestonk_terminal.etf.prediction_techniques import (
                         pred_controller,
                     )
 
-                    self.queue = pred_controller.menu(
+                    self.queue = pred_controller.PredictionTechniquesController(
                         self.etf_name,
                         self.etf_data.index[0],
                         "1440min",
                         self.etf_data,
                         self.queue,
-                    )
+                    ).menu()
                 except ModuleNotFoundError as e:
                     print(
                         "One of the optional packages seems to be missing: ",
@@ -714,25 +601,21 @@ Major holdings: {', '.join(self.etf_holdings)}
                 "\n",
             )
 
-    @try_except
     def call_ca(self, _):
         """Process ca command"""
         if len(self.etf_holdings) > 0:
-            self.queue = ca_controller.menu(
-                self.etf_holdings, self.queue, from_submenu=True
-            )
+            self.queue = ca_controller.ComparisonAnalysisController(
+                self.etf_holdings, self.queue
+            ).menu(custom_path_menu_above="/stocks/")
 
-    @try_except
     def call_scr(self, _):
         """Process scr command"""
-        self.queue = screener_controller.menu(self.queue)
+        self.queue = screener_controller.ScreenerController(self.queue).menu()
 
-    @try_except
     def call_disc(self, _):
         """Process disc command"""
-        self.queue = disc_controller.menu(self.queue)
+        self.queue = disc_controller.DiscoveryController(self.queue).menu()
 
-    @try_except
     def call_compare(self, other_args):
         """Process compare command"""
         parser = argparse.ArgumentParser(
@@ -759,78 +642,3 @@ Major holdings: {', '.join(self.etf_holdings)}
         if ns_parser:
             etf_list = ns_parser.names.upper().split(",")
             stockanalysis_view.view_comparisons(etf_list, export=ns_parser.export)
-
-
-def menu(queue: List[str] = None):
-    etf_controller = ETFController(queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if etf_controller.queue and len(etf_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if etf_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(etf_controller.queue) > 1:
-                    return etf_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = etf_controller.queue[0]
-            etf_controller.queue = etf_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in etf_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /etf/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                etf_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and etf_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /etf/ $ ",
-                        completer=etf_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /etf/ $ ")
-
-        try:
-            # Process the input command
-            etf_controller.queue = etf_controller.switch(an_input)
-
-        except SystemExit:
-            print(f"\nThe command '{an_input}' doesn't exist on the /etf menu.", end="")
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                etf_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        etf_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                etf_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

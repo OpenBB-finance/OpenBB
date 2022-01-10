@@ -7,16 +7,14 @@ import difflib
 from datetime import datetime, timedelta
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.cryptocurrency.overview.blockchaincenter_model import DAYS
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    get_flair,
     parse_known_args_and_warn,
     check_positive,
-    try_except,
-    system_clear,
     valid_date,
 )
 from gamestonk_terminal.menu import session
@@ -42,21 +40,8 @@ from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_view import (
 )
 
 
-class OverviewController:
-
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
+class OverviewController(BaseController):
+    """Overview Controller class"""
 
     CHOICES_COMMANDS = [
         "cgglobal",
@@ -89,18 +74,60 @@ class OverviewController:
         "altindex",
     ]
 
-    CHOICES += CHOICES_COMMANDS
-
     def __init__(self, queue: List[str] = None):
-        """CONSTRUCTOR"""
+        """Constructor"""
+        super().__init__("/crypto/ov/", queue)
 
-        self.overview_parser = argparse.ArgumentParser(add_help=False, prog="ov")
-        self.overview_parser.add_argument("cmd", choices=self.CHOICES)
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["cghold"] = {c: None for c in pycoingecko_model.HOLD_COINS}
+            choices["cgcompanies"] = {c: None for c in pycoingecko_model.HOLD_COINS}
+            choices["cgnews"]["-s"] = {c: None for c in pycoingecko_model.NEWS_FILTERS}
+            choices["cgcategories"]["-s"] = {
+                c: None for c in pycoingecko_model.CATEGORIES_FILTERS
+            }
+            choices["cgstables"]["-s"] = {
+                c: None for c in pycoingecko_model.STABLES_FILTERS
+            }
+            choices["cgproducts"]["-s"] = {
+                c: None for c in pycoingecko_model.PRODUCTS_FILTERS
+            }
+            choices["cgplatforms"]["-s"] = {
+                c: None for c in pycoingecko_model.PLATFORMS_FILTERS
+            }
+            choices["cgexrates"]["-s"] = {
+                c: None for c in pycoingecko_model.EXRATES_FILTERS
+            }
+            choices["cgindexes"]["-s"] = {
+                c: None for c in pycoingecko_model.INDEXES_FILTERS
+            }
+            choices["cgderivatives"]["-s"] = {
+                c: None for c in pycoingecko_model.DERIVATIVES_FILTERS
+            }
+            choices["cpmarkets"]["-s"] = {
+                c: None for c in coinpaprika_model.MARKETS_FILTERS
+            }
+            choices["cpexmarkets"]["-s"] = {
+                c: None for c in coinpaprika_model.EXMARKETS_FILTERS
+            }
+            choices["cpexchanges"]["-s"] = {
+                c: None for c in coinpaprika_model.EXCHANGES_FILTERS
+            }
+            choices["cpcontracts"] = {
+                c: None for c in get_all_contract_platforms()["platform_id"].tolist()
+            }
+            choices["cpcontracts"]["-s"] = {
+                c: None for c in coinpaprika_model.CONTRACTS_FILTERS
+            }
+            choices["cpinfo"]["-s"] = {c: None for c in coinpaprika_model.INFO_FILTERS}
+            choices["cbpairs"]["-s"] = {c: None for c in coinbase_model.PAIRS_FILTERS}
+            choices["news"]["-k"] = {c: None for c in cryptopanic_model.CATEGORIES}
+            choices["news"]["-f"] = {c: None for c in cryptopanic_model.FILTERS}
+            choices["news"]["-r"] = {c: None for c in cryptopanic_model.REGIONS}
+            choices["news"]["-s"] = {c: None for c in cryptopanic_model.SORT_FILTERS}
+            choices["wfpe"] = {c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS}
 
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
@@ -143,94 +170,6 @@ BlockchainCenter:
 
         print(help_text)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Parameters
-        -------
-        an_input : str
-            string with input arguments
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.overview_parser.parse_known_args(
-            an_input.split()
-        )
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "ov")
-        self.queue.insert(0, "crypto")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    @try_except
     def call_btcrb(self, other_args: List[str]):
         """Process btcrb command"""
         parser = argparse.ArgumentParser(
@@ -325,7 +264,6 @@ BlockchainCenter:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_wf(self, other_args: List[str]):
         """Process wf command"""
         parser = argparse.ArgumentParser(
@@ -356,7 +294,6 @@ BlockchainCenter:
                 top=ns_parser.limit, export=ns_parser.export
             )
 
-    @try_except
     def call_ewf(self, other_args: List[str]):
         """Process ewf command"""
         parser = argparse.ArgumentParser(
@@ -378,7 +315,6 @@ BlockchainCenter:
                 export=ns_parser.export
             )
 
-    @try_except
     def call_wfpe(self, other_args: List[str]):
         """Process wfpe command"""
         parser = argparse.ArgumentParser(
@@ -442,7 +378,6 @@ BlockchainCenter:
                     f"Please choose one from list: {withdrawalfees_model.POSSIBLE_CRYPTOS}\n"
                 )
 
-    @try_except
     def call_cghold(self, other_args):
         """Process hold command"""
         parser = argparse.ArgumentParser(
@@ -477,7 +412,6 @@ BlockchainCenter:
                 coin=ns_parser.coin, export=ns_parser.export
             )
 
-    @try_except
     def call_cgnews(self, other_args):
         """Process news command"""
         parser = argparse.ArgumentParser(
@@ -538,7 +472,6 @@ BlockchainCenter:
                 links=ns_parser.urls,
             )
 
-    @try_except
     def call_cgcategories(self, other_args):
         """Process top_categories command"""
         parser = argparse.ArgumentParser(
@@ -600,7 +533,6 @@ BlockchainCenter:
                 links=ns_parser.urls,
             )
 
-    @try_except
     def call_cgstables(self, other_args):
         """Process stables command"""
         parser = argparse.ArgumentParser(
@@ -664,7 +596,6 @@ BlockchainCenter:
                 links=ns_parser.urls,
             )
 
-    @try_except
     def call_cgnft(self, other_args):
         """Process nft command"""
 
@@ -685,7 +616,6 @@ BlockchainCenter:
         if ns_parser:
             pycoingecko_view.display_nft_market_status(export=ns_parser.export)
 
-    @try_except
     def call_cgnftday(self, other_args):
         """Process nftday command"""
         parser = argparse.ArgumentParser(
@@ -705,7 +635,6 @@ BlockchainCenter:
         if ns_parser:
             pycoingecko_view.display_nft_of_the_day(export=ns_parser.export)
 
-    @try_except
     def call_cgproducts(self, other_args):
         """Process products command"""
         parser = argparse.ArgumentParser(
@@ -757,7 +686,6 @@ BlockchainCenter:
                 descend=ns_parser.descend,
             )
 
-    @try_except
     def call_cgplatforms(self, other_args):
         """Process platforms command"""
         parser = argparse.ArgumentParser(
@@ -810,7 +738,6 @@ BlockchainCenter:
                 descend=ns_parser.descend,
             )
 
-    @try_except
     def call_cgexchanges(self, other_args):
         """Process exchanges command"""
         parser = argparse.ArgumentParser(
@@ -872,7 +799,6 @@ BlockchainCenter:
                 links=ns_parser.urls,
             )
 
-    @try_except
     def call_cgexrates(self, other_args):
         """Process exchange_rates command"""
         parser = argparse.ArgumentParser(
@@ -923,7 +849,6 @@ BlockchainCenter:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cgindexes(self, other_args):
         """Process indexes command"""
         parser = argparse.ArgumentParser(
@@ -977,7 +902,6 @@ BlockchainCenter:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cgderivatives(self, other_args):
         """Process derivatives command"""
         parser = argparse.ArgumentParser(
@@ -1033,7 +957,6 @@ BlockchainCenter:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cgglobal(self, other_args):
         """Process global command"""
         parser = argparse.ArgumentParser(
@@ -1049,7 +972,6 @@ BlockchainCenter:
         if ns_parser:
             pycoingecko_view.display_global_market_info(export=ns_parser.export)
 
-    @try_except
     def call_cgdefi(self, other_args):
         """Process defi command"""
         parser = argparse.ArgumentParser(
@@ -1069,7 +991,6 @@ BlockchainCenter:
         if ns_parser:
             pycoingecko_view.display_global_defi_info(export=ns_parser.export)
 
-    @try_except
     def call_cpglobal(self, other_args):
         """Process global command"""
 
@@ -1087,7 +1008,6 @@ BlockchainCenter:
         if ns_parser:
             coinpaprika_view.display_global_market(export=ns_parser.export)
 
-    @try_except
     def call_cpmarkets(self, other_args):
         """Process markets command"""
         parser = argparse.ArgumentParser(
@@ -1152,7 +1072,6 @@ BlockchainCenter:
                 sortby=ns_parser.sortby,
             )
 
-    @try_except
     def call_cpexmarkets(self, other_args):
         """Process exmarkets command"""
         parser = argparse.ArgumentParser(
@@ -1231,7 +1150,6 @@ BlockchainCenter:
                 links=ns_parser.urls,
             )
 
-    @try_except
     def call_cpinfo(self, other_args):
         """Process info command"""
         parser = argparse.ArgumentParser(
@@ -1296,7 +1214,6 @@ BlockchainCenter:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cpexchanges(self, other_args):
         """Process coins_market command"""
         parser = argparse.ArgumentParser(
@@ -1361,7 +1278,6 @@ BlockchainCenter:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cpplatforms(self, other_args):
         """Process platforms command"""
         parser = argparse.ArgumentParser(
@@ -1377,7 +1293,6 @@ BlockchainCenter:
         if ns_parser:
             coinpaprika_view.display_all_platforms(export=ns_parser.export)
 
-    @try_except
     def call_cpcontracts(self, other_args):
         """Process contracts command"""
         platforms = get_all_contract_platforms()["platform_id"].tolist()
@@ -1449,7 +1364,6 @@ BlockchainCenter:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cbpairs(self, other_args):
         """Process news command"""
         parser = argparse.ArgumentParser(
@@ -1497,7 +1411,6 @@ BlockchainCenter:
                 descend=ns_parser.descend,
             )
 
-    @try_except
     def call_news(self, other_args):
         """Process news command"""
         parser = argparse.ArgumentParser(
@@ -1590,145 +1503,3 @@ BlockchainCenter:
                 filter_=ns_parser.filter,
                 region=ns_parser.region,
             )
-
-
-def menu(queue: List[str] = None):
-    overview_controller = OverviewController(queue=queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if overview_controller.queue and len(overview_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if overview_controller.queue[0] in ("q", "..", "quit"):
-                if len(overview_controller.queue) > 1:
-                    return overview_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = overview_controller.queue[0]
-            overview_controller.queue = overview_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if (
-                an_input
-                and an_input.split(" ")[0] in overview_controller.CHOICES_COMMANDS
-            ):
-                print(f"{get_flair()} /crypto/ov/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                overview_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT:
-                choices: dict = {c: {} for c in overview_controller.CHOICES}
-                choices["cghold"] = {c: None for c in pycoingecko_model.HOLD_COINS}
-                choices["cgnews"]["-s"] = {
-                    c: None for c in pycoingecko_model.NEWS_FILTERS
-                }
-                choices["cgcategories"]["-s"] = {
-                    c: None for c in pycoingecko_model.CATEGORIES_FILTERS
-                }
-                choices["cgstables"]["-s"] = {
-                    c: None for c in pycoingecko_model.STABLES_FILTERS
-                }
-                choices["cgproducts"]["-s"] = {
-                    c: None for c in pycoingecko_model.PRODUCTS_FILTERS
-                }
-                choices["cgplatforms"]["-s"] = {
-                    c: None for c in pycoingecko_model.PLATFORMS_FILTERS
-                }
-                choices["cgexrates"]["-s"] = {
-                    c: None for c in pycoingecko_model.EXRATES_FILTERS
-                }
-                choices["cgindexes"]["-s"] = {
-                    c: None for c in pycoingecko_model.INDEXES_FILTERS
-                }
-                choices["cgderivatives"]["-s"] = {
-                    c: None for c in pycoingecko_model.DERIVATIVES_FILTERS
-                }
-                choices["cpmarkets"]["-s"] = {
-                    c: None for c in coinpaprika_model.MARKETS_FILTERS
-                }
-                choices["cpexmarkets"]["-s"] = {
-                    c: None for c in coinpaprika_model.EXMARKETS_FILTERS
-                }
-                choices["cpexchanges"]["-s"] = {
-                    c: None for c in coinpaprika_model.EXCHANGES_FILTERS
-                }
-                choices["cpcontracts"] = {
-                    c: None
-                    for c in get_all_contract_platforms()["platform_id"].tolist()
-                }
-                choices["cpcontracts"]["-s"] = {
-                    c: None for c in coinpaprika_model.CONTRACTS_FILTERS
-                }
-                choices["cpinfo"]["-s"] = {
-                    c: None for c in coinpaprika_model.INFO_FILTERS
-                }
-                choices["cbpairs"]["-s"] = {
-                    c: None for c in coinbase_model.PAIRS_FILTERS
-                }
-                choices["news"]["-k"] = {c: None for c in cryptopanic_model.CATEGORIES}
-                choices["news"]["-f"] = {c: None for c in cryptopanic_model.FILTERS}
-                choices["news"]["-r"] = {c: None for c in cryptopanic_model.REGIONS}
-                choices["news"]["-s"] = {
-                    c: None for c in cryptopanic_model.SORT_FILTERS
-                }
-                choices["wfpe"] = {
-                    c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS
-                }
-
-                choices["altindex"] = {c: None for c in map(str, DAYS)}
-                choices["altindex"]["-p"] = {c: None for c in map(str, DAYS)}
-
-                completer = NestedCompleter.from_nested_dict(choices)
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /crypto/ov/ $ ",
-                        completer=completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /crypto/ov/ $ ")
-
-        try:
-            # Process the input command
-            overview_controller.queue = overview_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /crypto/ov menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                overview_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        overview_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                overview_controller.queue.insert(0, an_input)
-            else:
-                print("\n")
