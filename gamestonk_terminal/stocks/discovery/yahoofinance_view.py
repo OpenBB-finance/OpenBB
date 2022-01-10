@@ -4,12 +4,13 @@ __docformat__ = "numpy"
 import os
 import logging
 from tabulate import tabulate
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, log_decorator
 from gamestonk_terminal.stocks.discovery import yahoofinance_model
 
 logger = logging.getLogger(__name__)
 
 
+@log_decorator(log=logger)
 def display_gainers(num_stocks: int, export: str) -> None:
     """Display gainers. [Source: Yahoo Finance]
 
@@ -20,8 +21,6 @@ def display_gainers(num_stocks: int, export: str) -> None:
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-
-    logger.info("Started")
 
     df_gainers = yahoofinance_model.get_gainers()
     df_gainers.dropna(how="all", axis=1, inplace=True)
@@ -48,9 +47,8 @@ def display_gainers(num_stocks: int, export: str) -> None:
         df_gainers,
     )
 
-    logger.info("Finished")
 
-
+@log_decorator(log=logger)
 def display_losers(num_stocks: int, export: str) -> None:
     """Display losers. [Source: Yahoo Finance]
 
@@ -61,8 +59,6 @@ def display_losers(num_stocks: int, export: str) -> None:
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-
-    logger.info("Started num_stocks: %d export: %s", num_stocks, export)
 
     df_losers = yahoofinance_model.get_losers()
     df_losers.dropna(how="all", axis=1, inplace=True)
@@ -89,9 +85,8 @@ def display_losers(num_stocks: int, export: str) -> None:
         df_losers,
     )
 
-    logger.info("Finished")
 
-
+@log_decorator(log=logger)
 def display_ugs(num_stocks: int, export: str) -> None:
     """Display most undervalued growth stock. [Source: Yahoo Finance]
 
@@ -102,8 +97,6 @@ def display_ugs(num_stocks: int, export: str) -> None:
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-
-    logger.info("Started num_stocks: %d export: %s", num_stocks, export)
 
     df = yahoofinance_model.get_ugs()
     df.dropna(how="all", axis=1, inplace=True)
@@ -130,9 +123,8 @@ def display_ugs(num_stocks: int, export: str) -> None:
         df,
     )
 
-    logger.info("Finished")
 
-
+@log_decorator(log=logger)
 def display_gtech(num_stocks: int, export: str) -> None:
     """Display growth technology stocks. [Source: Yahoo Finance]
 
@@ -143,8 +135,6 @@ def display_gtech(num_stocks: int, export: str) -> None:
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-
-    logger.info("Started num_stocks: %d export: %s", num_stocks, export)
 
     df = yahoofinance_model.get_gtech()
     df.dropna(how="all", axis=1, inplace=True)
@@ -171,9 +161,8 @@ def display_gtech(num_stocks: int, export: str) -> None:
         df,
     )
 
-    logger.info("Finished")
 
-
+@log_decorator(log=logger)
 def display_active(num_stocks: int, export: str) -> None:
     """Display most active stocks. [Source: Yahoo Finance]
 
@@ -184,8 +173,6 @@ def display_active(num_stocks: int, export: str) -> None:
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-
-    logger.info("Started num_stocks: %d export: %s", num_stocks, export)
 
     df = yahoofinance_model.get_active()
     df.dropna(how="all", axis=1, inplace=True)
@@ -212,9 +199,8 @@ def display_active(num_stocks: int, export: str) -> None:
         df,
     )
 
-    logger.info("Finished")
 
-
+@log_decorator(log=logger)
 def display_ulc(num_stocks: int, export: str) -> None:
     """Display potentially undervalued large cap stocks. [Source: Yahoo Finance]
 
@@ -225,8 +211,6 @@ def display_ulc(num_stocks: int, export: str) -> None:
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-
-    logger.info("Started num_stocks: %d export: %s", num_stocks, export)
 
     df = yahoofinance_model.get_ulc()
     df.dropna(how="all", axis=1, inplace=True)
@@ -253,9 +237,8 @@ def display_ulc(num_stocks: int, export: str) -> None:
         df,
     )
 
-    logger.info("Finished")
 
-
+@log_decorator(log=logger)
 def display_asc(num_stocks: int, export: str) -> None:
     """Display small cap stocks with earnings growth rates better than 25%. [Source: Yahoo Finance]
 
@@ -266,8 +249,6 @@ def display_asc(num_stocks: int, export: str) -> None:
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-
-    logger.info("Started num_stocks: %d export: %s", num_stocks, export)
 
     df = yahoofinance_model.get_asc()
     df.dropna(how="all", axis=1, inplace=True)
@@ -293,5 +274,3 @@ def display_asc(num_stocks: int, export: str) -> None:
         "asc",
         df,
     )
-
-    logger.info("Finished")

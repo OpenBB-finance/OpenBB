@@ -38,7 +38,6 @@ def library_loggers(verbosity: int = 0) -> None:
 
 def setup_file_logger() -> None:
     """Setup File Logger"""
-
     file_path = Path(__file__)
     logger.debug("Parent dir: %s", file_path.parent.parent.absolute())
     log_dir = file_path.parent.parent.absolute().joinpath("logs")
@@ -114,6 +113,8 @@ class CustomFormatterWithExceptions(logging.Formatter):
         str
             Formatted log message
         """
+        if hasattr(record, "func_name_override"):
+            record.funcName = record.func_name_override  # type: ignore
         s = super().format(record)
         if record.levelname:
             prefix = record.levelname[0]
