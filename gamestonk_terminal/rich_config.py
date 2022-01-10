@@ -10,12 +10,16 @@ custom_theme = Theme(
     {
         # information provided to the user
         "info": "thistle1",
-        # goes into a new menu
-        "menu": "medium_violet_red",
         # triggers a command
         "cmds": "light_sky_blue1",
         # configurable parameter
         "param": "gold3",
+        # goes into a new menu
+        "menu": "rgb(175,0,255)",
+        # data sources,
+        "src": "rgb(245,245,30)",
+        # print help,
+        "help": "green",
         # unavailable command/parameter
         "unvl": "dim",
     }

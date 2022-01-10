@@ -86,8 +86,8 @@ class StocksController(BaseController):
             )
         else:
             stock_text = f"{s_intraday} {self.ticker}"
-        has_ticker_start = "" if self.ticker else "[dim]"
-        has_ticker_end = "" if self.ticker else "[/dim]"
+        has_ticker_start = "" if self.ticker else "[unvl]"
+        has_ticker_end = "" if self.ticker else "[/unvl]"
         help_text = f"""[cmds]
     search      search a specific stock ticker for analysis
     load        load a specific stock ticker and additional info for analysis[/cmds][info]
@@ -96,7 +96,7 @@ Stock: [/info] {stock_text}
 [cmds]
     quote       view the current price for a specific stock ticker
     candle      view a candle chart for a specific stock ticker
-    news        latest news of the company [News API][/cmds]
+    news        latest news of the company[/cmds] [src][News API][/src]
 [menu]
 >   options     options menu,  \t\t\t e.g.: chains, open interest, greeks, parity
 >   disc        discover trending stocks, \t e.g. map, sectors, high short interest
