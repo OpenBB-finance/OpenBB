@@ -13,7 +13,7 @@ from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
     GLASSNODE_SUPPORTED_HASHRATE_ASSETS,
-    INTERVALS,
+    INTERVALS_HASHRATE,
 )
 from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_view import (
     display_hashrate,
@@ -117,7 +117,7 @@ class OnchainController:
             choices["hr"]["--coin"] = {
                 c: None for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS
             }
-            choices["hr"]["-i"] = {c: None for c in INTERVALS}
+            choices["hr"]["-i"] = {c: None for c in INTERVALS_HASHRATE}
             choices["ttcp"] = {c: None for c in bitquery_model.DECENTRALIZED_EXCHANGES}
             choices["baas"]["-c"] = {c: None for c in bitquery_model.POSSIBLE_CRYPTOS}
             choices["baas"]["--coin"] = {
@@ -268,7 +268,7 @@ class OnchainController:
             type=str,
             help="Frequency interval. Default: 24h",
             default="24h",
-            choices=INTERVALS,
+            choices=INTERVALS_HASHRATE,
         )
 
         parser.add_argument(

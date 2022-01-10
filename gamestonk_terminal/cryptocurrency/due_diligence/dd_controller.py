@@ -116,16 +116,22 @@ class DueDiligenceController:
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.CHOICES}
             choices["load"]["--source"] = {c: None for c in CRYPTO_SOURCES.keys()}
-            choices["active"]["-i"] = {c: None for c in glassnode_model.INTERVALS}
+            choices["active"]["-i"] = {
+                c: None for c in glassnode_model.INTERVALS_ACTIVE_ADDRESSES
+                }
             choices["change"] = {
                 c: None for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
             }
-            choices["change"]["-i"] = {c: None for c in glassnode_model.INTERVALS}
-            choices["nonzero"]["-i"] = {c: None for c in glassnode_model.INTERVALS}
+            choices["change"]["-i"] = {
+                c: None for c in glassnode_model.INTERVALS_DISPLAY_EXCHANGE_NET_POSITION_CHANGE
+                }
+            choices["nonzero"]["-i"] = {
+                c: None for c in glassnode_model.INTERVALS_NON_ZERO_ADDRESSES
+                }
             choices["eb"] = {
                 c: None for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
             }
-            choices["eb"]["-i"] = {c: None for c in glassnode_model.INTERVALS}
+            choices["eb"]["-i"] = {c: None for c in glassnode_model.INTERVALS_EXCHANGE_BALANCES}
             choices["oi"]["-i"] = {c: None for c in coinglass_model.INTERVALS}
             choices["atl"]["--vs"] = {c: None for c in FILTERS_VS_USD_BTC}
             choices["ath"]["--vs"] = {c: None for c in FILTERS_VS_USD_BTC}
@@ -355,7 +361,7 @@ Coinbase:
                 type=str,
                 help="Frequency interval. Default: 24h",
                 default="24h",
-                choices=glassnode_model.INTERVALS,
+                choices=glassnode_model.INTERVALS_NON_ZERO_ADDRESSES,
             )
 
             # TODO: tell users that free api key only data with 1y lag
@@ -415,7 +421,7 @@ Coinbase:
                 type=str,
                 help="Frequency interval. Default: 24h",
                 default="24h",
-                choices=glassnode_model.INTERVALS,
+                choices=glassnode_model.INTERVALS_ACTIVE_ADDRESSES,
             )
 
             parser.add_argument(
@@ -484,7 +490,7 @@ Coinbase:
                 type=str,
                 help="Frequency interval. Default: 24h",
                 default="24h",
-                choices=glassnode_model.INTERVALS,
+                choices=glassnode_model.INTERVALS_DISPLAY_EXCHANGE_NET_POSITION_CHANGE,
             )
 
             parser.add_argument(
@@ -565,7 +571,7 @@ Coinbase:
                 type=str,
                 help="Frequency interval. Default: 24h",
                 default="24h",
-                choices=glassnode_model.INTERVALS,
+                choices=glassnode_model.INTERVALS_EXCHANGE_BALANCES,
             )
 
             parser.add_argument(
