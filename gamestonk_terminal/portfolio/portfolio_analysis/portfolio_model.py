@@ -6,6 +6,7 @@ import pandas as pd
 import yfinance as yf
 import gamestonk_terminal.feature_flags as gtff
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.portfolio.portfolio_analysis import yfinance_model
 
 # pylint: disable=no-member,unsupported-assignment-operation,unsubscriptable-object
 
@@ -13,6 +14,7 @@ from gamestonk_terminal.rich_config import console
 def load_portfolio(
     full_path: str,
     sector: bool = False,
+    country: bool = False,
     last_price: bool = False,
     show_nan: bool = True,
 ) -> pd.DataFrame:
@@ -23,7 +25,9 @@ def load_portfolio(
     full_path : str
         Path to portfolio file.
     sector : bool, optional
-        Boolean to indicate getting sector from yfinance , by default False
+        Boolean to indicate getting sector from yfinance, by default False
+    country : bool, optional
+        Boolean to indicate getting country from yfinance, by default False
     last_price : bool, optional
         Boolean to indicate getting last price from yfinance, by default False
     show_nan : bool, optional
@@ -50,6 +54,12 @@ def load_portfolio(
             else "yf Other",
             axis=1,
         )
+
+    if country:
+        country_dict = {
+            tick: yfinance_model.get_country(tick) for tick in df.Ticker.unique()
+        }
+        df["Country"] = df["Ticker"].map(country_dict)
 
     if last_price:
         df["last_price"] = df.apply(

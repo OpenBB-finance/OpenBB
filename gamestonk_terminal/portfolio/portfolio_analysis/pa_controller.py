@@ -5,17 +5,17 @@ from typing import List
 import argparse
 import os
 
+from prompt_toolkit.completion import NestedCompleter
 import pandas as pd
-
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-)
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.portfolio.portfolio_analysis import (
     portfolio_model,
     portfolio_view,
 )
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.menu import session
+
 
 portfolios_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "portfolios")
 possible_paths = [
@@ -25,7 +25,7 @@ possible_paths = [
 ]
 
 
-class PortfolioController(BaseController):
+class PortfolioAnalysis(BaseController):
     """Portfolio Controller"""
 
     CHOICES_COMMANDS = [
@@ -35,9 +35,15 @@ class PortfolioController(BaseController):
     ]
 
     def __init__(self, queue: List[str] = None):
+
         super().__init__("/portfolio/pa/", queue)
+
         self.portfolio_name = ""
         self.portfolio = pd.DataFrame()
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
@@ -65,7 +71,8 @@ Portfolio: {self.portfolio_name or None}
             prog="load",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="Function to get portfolio from predefined csv/json/xlsx file inside portfolios folder",
+            description="Function to get portfolio from predefined "
+            "csv/json/xlsx file inside portfolios folder",
             epilog="usage: load file_name",
         )
         parser.add_argument(
@@ -75,6 +82,14 @@ Portfolio: {self.portfolio_name or None}
             default=False,
             help="Add sector to dataframe",
             dest="sector",
+        )
+        parser.add_argument(
+            "-c",
+            "--country",
+            action="store_true",
+            default=False,
+            help="Add country to dataframe",
+            dest="country",
         )
         parser.add_argument(
             "--no_last_price",
@@ -108,6 +123,7 @@ Portfolio: {self.portfolio_name or None}
             self.portfolio = portfolio_model.load_portfolio(
                 full_path=os.path.join(portfolios_path, ns_parser.path),
                 sector=ns_parser.sector,
+                country=ns_parser.country,
                 last_price=ns_parser.last_price,
                 show_nan=ns_parser.show_nan,
             )
@@ -133,6 +149,14 @@ Portfolio: {self.portfolio_name or None}
             choices=self.portfolio.columns,
             help="Column to group by",
         )
+        parser.add_argument(
+            "-a",
+            "--allocation",
+            action="store_true",
+            default=False,
+            help="Add allocation column in % to dataframe",
+            dest="allocation",
+        )
 
         # The following arguments will be used in a later PR for customizable 'reports'
 
@@ -153,11 +177,14 @@ Portfolio: {self.portfolio_name or None}
         if ns_parser:
             if "value" in self.portfolio.columns:
                 portfolio_view.display_group_holdings(
-                    portfolio=self.portfolio, group_column=ns_parser.group
+                    portfolio=self.portfolio,
+                    group_column=ns_parser.group,
+                    allocation=ns_parser.allocation,
                 )
             else:
                 console.print(
-                    "'value' column not in portfolio.  Either add manually or load without --no_last_price flag\n"
+                    "'value' column not in portfolio.  "
+                    "Either add manually or load without --no_last_price flag\n"
                 )
 
     def call_view(self, other_args):
