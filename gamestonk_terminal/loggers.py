@@ -12,7 +12,7 @@ import git
 import gamestonk_terminal.config_terminal as cfg
 
 logger = logging.getLogger(__name__)
-LOGFORMAT = "%(asctime)s|%(levelname)s|%(name)s|%(funcName)s|%(lineno)s|%(message)s"
+LOGFORMAT = "%(asctime)s|%(levelname)s|%(name)s|%(funcName)s|%(message)s"
 DATEFORMAT = "%Y-%m-%dT%H:%M:%S%z"
 
 
