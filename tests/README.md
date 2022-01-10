@@ -29,7 +29,7 @@ Slow part of the code like `network` or `database` access should be either `mock
 
 # 2. Run `unit tests`
 
-In this section we will explain every think you need to run the `unit tests` on `Gamestonk Terminal`.
+In this section we will explain everything you need to run the `unit tests` on `Gamestonk Terminal`.
 
 ## 2.1. How to install tests dependencies ?
 
