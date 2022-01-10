@@ -30,7 +30,7 @@ jobs:
       - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil
       - run: bandit -x ./tests -r . || true
       - run: black --check .
-      - run: codespell --ignore-words-list=ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml
+      - run: codespell --ignore-words-list=zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml
       - run: flake8 . --count --ignore=E203,W503 --max-line-length=122 --show-source --statistics
       - run: mypy --ignore-missing-imports --exclude="/setup\.py$" .
       - run: shopt -s globstar && pyupgrade --py36-plus **/*.py
@@ -103,11 +103,11 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python-version: ['3.8', '3.9']
+        python-version: ["3.8", "3.9"]
         os: [ubuntu-latest, macos-latest]
         exclude:
           - os: ubuntu-latest
-            python-version: '3.9'
+            python-version: "3.9"
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -164,9 +164,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ['ubuntu', 'windows']
-        python-version: ['3.8']
-        dependencies: ['']
+        os: ["ubuntu", "windows"]
+        python-version: ["3.8"]
+        dependencies: [""]
         include:
           - os: ubuntu
             python: 3.8
