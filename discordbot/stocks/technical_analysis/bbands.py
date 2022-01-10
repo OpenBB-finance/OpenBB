@@ -84,7 +84,7 @@ async def bbands_command(
         # Retrieve Data
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
-        df_ta = volatility_model.bbands("1440min", df_stock, length, n_std, mamode)
+        df_ta = volatility_model.bbands(df_stock["Adj Close"], length, n_std, mamode)
 
         # Output Data
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
