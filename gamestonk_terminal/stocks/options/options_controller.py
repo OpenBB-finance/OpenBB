@@ -6,8 +6,9 @@ import os
 from datetime import datetime, timedelta
 from typing import List
 import pandas as pd
-
 from prompt_toolkit.completion import NestedCompleter
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_terminal import TRADIER_TOKEN
@@ -34,7 +35,6 @@ from gamestonk_terminal.stocks.options import (
     pricing_controller,
     screener_controller,
 )
-from gamestonk_terminal.rich_config import console
 
 # pylint: disable=R1710,C0302,R0916
 
@@ -162,33 +162,39 @@ class OptionsController(BaseController):
         has_ticker_start = "" if self.ticker and self.selected_date else "[dim]"
         has_ticker_end = "" if self.ticker and self.selected_date else "[/dim]"
         help_text = f"""[cmds]
-    unu           show unusual options activity [fdscanner.com]
+    unu           show unusual options activity [src][Fdscanner.com][/src]
     calc          basic call/put PnL calculator
 
     load          load new ticker
     exp           see and set expiration dates[/cmds]
-
-[info]
-Ticker: [/info] {self.ticker or None}
-Expiry: {self.selected_date or None}
+[param]
+Ticker: [/param]{self.ticker or None}[param]
+Expiry: [/param]{self.selected_date or None}
 [menu]
-    pcr           display put call ratio for ticker [AlphaQuery.com]
-    info          display option information (volatility, IV rank etc) [Barchart.com]
-    chains        display option chains with greeks [Tradier]
-    oi            plot open interest [Tradier/YF]
-    vol           plot volume [Tradier/YF]
-    voi           plot volume and open interest [Tradier/YF]
-    hist          plot option history [Tradier]
-    grhist        plot option greek history [Syncretism.io]
-    plot          plot variables provided by the user [Yfinance]
-    parity        shows whether options are above or below expected price [Yfinance]
-    binom         shows the value of an option using binomial options pricing [Yfinance]
+    pcr           display put call ratio for ticker [src][AlphaQuery.com][/src]
+    info          display option information (volatility, IV rank etc) [src][Barchart.com][/src]
+    chains        display option chains with greeks [src][Tradier][/src]
+    oi            plot open interest [src][Tradier/YFinance][/src]
+    vol           plot volume [src][Tradier/YFinance][/src]
+    voi           plot volume and open interest [src][Tradier/YFinance][/src]
+    hist          plot option history [src][Tradier][/src]
+    grhist        plot option greek history [src][Syncretism.io][/src]
+    plot          plot variables provided by the user [src][Yfinance][/src]
+    parity        shows whether options are above or below expected price [src][Yfinance][/src]
+    binom         shows the value of an option using binomial options pricing [src][Yfinance][/src]
 {has_ticker_start}
->   screen        screens tickers based on preset [Syncretism.io]
->   payoff        shows payoff diagram for a selection of options [Yfinance]
->   pricing       shows options pricing and risk neutral valuation [Yfinance]
+>   screen        screens tickers based on preset [src][Syncretism.io][/src]
+>   payoff        shows payoff diagram for a selection of options [src][Yfinance][/src]
+>   pricing       shows options pricing and risk neutral valuation [src][Yfinance][/src]
 {has_ticker_end}"""
-        console.print(help_text)
+        console.print(
+            Panel(
+                help_text,
+                title="Stocks - Options",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def custom_reset(self):
         """Class specific component of reset command"""

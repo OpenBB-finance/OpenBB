@@ -5,8 +5,9 @@ import argparse
 import os
 from typing import List
 
-from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -18,7 +19,6 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
 from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 from gamestonk_terminal.stocks.options import syncretism_view
-from gamestonk_terminal.rich_config import console
 
 # pylint: disable=E1121
 
@@ -52,19 +52,28 @@ class ScreenerController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
+        has_screen_tickers_start = "" if self.screen_tickers else "[unvl]"
+        has_screen_tickers_end = "" if self.screen_tickers else "[/unvl]"
+        help_text = f"""[cmds]
     view          view available presets (or one in particular)
     set           set one of the available presets
+[/cmds]
+[param]PRESET: [/param]{self.preset}[cmds]
 
-PRESET: {self.preset}
-
-    scr            screen data from this preset
-{Style.NORMAL if self.screen_tickers else Style.DIM}
-Last screened tickers: {', '.join(self.screen_tickers)}
+    scr            screen data from this preset[/cmds]
+{has_screen_tickers_start}
+[param]Last screened tickers: [/param]{', '.join(self.screen_tickers)}[menu]
 >   ca             take these to comparison analysis menu
->   po             take these to portoflio optimization menu{Style.RESET_ALL}
+>   po             take these to portoflio optimization menu{has_screen_tickers_end}
         """
-        console.print(help_text)
+        console.print(
+            Panel(
+                help_text,
+                title="Stocks - Options - Screener",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_view(self, other_args: List[str]):
         """Process view command"""
