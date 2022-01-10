@@ -118,20 +118,23 @@ class DueDiligenceController:
             choices["load"]["--source"] = {c: None for c in CRYPTO_SOURCES.keys()}
             choices["active"]["-i"] = {
                 c: None for c in glassnode_model.INTERVALS_ACTIVE_ADDRESSES
-                }
+            }
             choices["change"] = {
                 c: None for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
             }
             choices["change"]["-i"] = {
-                c: None for c in glassnode_model.INTERVALS_DISPLAY_EXCHANGE_NET_POSITION_CHANGE
-                }
+                c: None
+                for c in glassnode_model.INTERVALS_DISPLAY_EXCHANGE_NET_POSITION_CHANGE
+            }
             choices["nonzero"]["-i"] = {
                 c: None for c in glassnode_model.INTERVALS_NON_ZERO_ADDRESSES
-                }
+            }
             choices["eb"] = {
                 c: None for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
             }
-            choices["eb"]["-i"] = {c: None for c in glassnode_model.INTERVALS_EXCHANGE_BALANCES}
+            choices["eb"]["-i"] = {
+                c: None for c in glassnode_model.INTERVALS_EXCHANGE_BALANCES
+            }
             choices["oi"]["-i"] = {c: None for c in coinglass_model.INTERVALS}
             choices["atl"]["--vs"] = {c: None for c in FILTERS_VS_USD_BTC}
             choices["ath"]["--vs"] = {c: None for c in FILTERS_VS_USD_BTC}
