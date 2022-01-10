@@ -654,8 +654,8 @@ def parse_known_args_and_warn(
         return None
 
     if ns_parser.help:
-        parser.print_help()
-        console.print("")
+        txt_help = parser.format_help()
+        console.print(f"[help]{txt_help}[/help]")
         return None
 
     if l_unknown_args:
