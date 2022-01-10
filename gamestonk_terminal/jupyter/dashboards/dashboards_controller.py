@@ -1,6 +1,7 @@
 """Dashboards Module"""
 __docformat__ = "numpy"
 
+import os
 import argparse
 import subprocess
 from typing import List
@@ -72,7 +73,9 @@ def create_call(other_args: List[str], name: str, filename: str = None) -> None:
 
     if ns_parser:
         cmd = "jupyter-lab" if ns_parser.jupyter else "voila"
-        file = f"gamestonk_terminal/jupyter/dashboards/{filename}.ipynb"
+        file = os.path.join(
+            os.path.abspath(os.path.dirname(__file__)), f"{filename}.ipynb"
+        )
 
         print(
             f"Warning: this command will open a port on your computer to run a {cmd} server."
