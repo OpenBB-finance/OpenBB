@@ -2,8 +2,10 @@
 __docformat__ = "numpy"
 
 import os
+from matplotlib import ticker, dates as mdates
 from tabulate import tabulate
 import matplotlib.pyplot as plt
+from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import read_data_file
 from gamestonk_terminal.cryptocurrency.defi import llama_model
 from gamestonk_terminal.helper_funcs import (
     export_data,
@@ -12,6 +14,58 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
+
+
+def display_grouped_defi_protocols(num: int = 50, export: str = "") -> None:
+    """Display information about listed DeFi protocols, their current TVL and changes to it in the last hour/day/week.
+    [Source: https://docs.llama.fi/api]
+
+    Parameters
+    ----------
+    top: int
+        Number of records to display
+    sortby: str
+        Key by which to sort data
+    descend: bool
+        Flag to sort data descending
+    description: bool
+        Flag to display description of protocol
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+    df = llama_model.get_defi_protocols(include_chain_column=True)
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+    df = df.sort_values("tvl", ascending=False).head(num)
+    df = df.set_index("name")
+
+    chains = df.groupby("chain").size().index.values.tolist()
+
+    for chain in chains:
+        chain_filter = df.loc[df.chain == chain]
+        ax.bar(x=chain_filter.index, height=chain_filter.tvl, label=chain)
+
+    ax.set_ylabel("Total Value Locked ($)")
+    ax.set_xlabel("dApp name")
+    ax.get_yaxis().set_major_formatter(
+        ticker.FuncFormatter(lambda x, _: long_number_format(x))
+    )
+    fig.subplots_adjust(bottom=0.3)
+    ax.legend(ncol=2)
+
+    ax.set_title(f"Top {num} dApp TVL grouped by chain")
+    ax.grid(alpha=0.5)
+    ax.tick_params(axis="x", labelrotation=90)
+    if gtff.USE_ION:
+        plt.ion()
+    plt.show()
+    print("")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "gdapps",
+        df,
+    )
 
 
 def display_defi_protocols(
@@ -71,9 +125,59 @@ def display_defi_protocols(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "llama",
+        "dapps",
         df_data,
     )
+
+
+def display_historical_tvl(dapps: str = "", export: str = ""):
+    """Displays historical values of the total sum of TVLs from all listed protocols.
+    [Source: https://docs.llama.fi/api]
+
+    Parameters
+    ----------
+    top: int
+        Number of records to display
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    available_protocols = read_data_file("defillama_dapps.json")
+    if isinstance(available_protocols, dict):
+        for dapp in dapps.split(","):
+            if dapp in available_protocols.keys():
+                df = llama_model.get_defi_protocol(dapp)
+                if not df.empty:
+                    ax.plot(df, label=available_protocols[dapp])
+            else:
+                print(f"{dapp} not found\n")
+
+        ax.set_ylabel("TVL ($)")
+        ax.set_xlabel("Time")
+        dateFmt = mdates.DateFormatter("%m/%d/%Y")
+
+        ax.xaxis.set_major_formatter(dateFmt)
+        ax.get_yaxis().set_major_formatter(
+            ticker.FuncFormatter(lambda x, _: long_number_format(x))
+        )
+        ax.legend()
+
+        ax.set_title("TVL in dApps overtime")
+        ax.grid(alpha=0.5)
+        ax.tick_params(axis="x", labelrotation=45)
+
+        if gtff.USE_ION:
+            plt.ion()
+        plt.show()
+        print("")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "tvl",
+            None,
+        )
 
 
 def display_defi_tvl(top: int, export: str = "") -> None:
@@ -92,19 +196,24 @@ def display_defi_tvl(top: int, export: str = "") -> None:
     df_data = df.copy()
 
     df = df.tail(top)
-    df["totalLiquidityUSD"] = df["totalLiquidityUSD"] / 1_000_000_000
 
-    plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-    plt.plot(df["date"], df["totalLiquidityUSD"], "-ok", ms=2)
-    plt.xlabel("Time")
-    plt.xlim(df["date"].iloc[0], df["date"].iloc[-1])
-    plt.gcf().autofmt_xdate()
-    plt.ylabel("Total Value Locked USD [1B]")
-    plt.grid(b=True, which="major", color="#666666", linestyle="-")
-    plt.minorticks_on()
-    plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-    plt.title("Total Value Locked in DeFi [Billions USD]")
+    ax.plot(df["date"], df["totalLiquidityUSD"], "-ok", ms=2)
+    ax.set_xlabel("Time")
+    ax.set_xlim(df["date"].iloc[0], df["date"].iloc[-1])
+    dateFmt = mdates.DateFormatter("%m/%d/%Y")
+
+    ax.xaxis.set_major_formatter(dateFmt)
+    ax.tick_params(axis="x", labelrotation=45)
+    ax.set_ylabel("Total Value Locked ($)")
+    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax.minorticks_on()
+    ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+    ax.set_title("Total Value Locked in DeFi")
+    ax.get_yaxis().set_major_formatter(
+        ticker.FuncFormatter(lambda x, _: long_number_format(x))
+    )
     if gtff.USE_ION:
         plt.ion()
     plt.show()

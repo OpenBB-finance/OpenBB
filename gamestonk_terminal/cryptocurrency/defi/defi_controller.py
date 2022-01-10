@@ -34,9 +34,11 @@ class DefiController(BaseController):
         "dpi",
         "funding",
         "lending",
-        "tvl",
         "borrow",
-        "llama",
+        "ldapps",
+        "gdapps",
+        "tvl",
+        "dtvl",
         "newsletter",
         "tokens",
         "pairs",
@@ -51,7 +53,7 @@ class DefiController(BaseController):
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["llama"]["-s"] = {c: {} for c in llama_model.LLAMA_FILTERS}
+            choices["ldapps"]["-s"] = {c: {} for c in llama_model.LLAMA_FILTERS}
             choices["tokens"]["-s"] = {c: {} for c in graph_model.TOKENS_FILTERS}
             choices["pairs"]["-s"] = {c: {} for c in graph_model.PAIRS_FILTERS}
             choices["pools"]["-s"] = {c: {} for c in graph_model.POOLS_FILTERS}
@@ -64,13 +66,16 @@ class DefiController(BaseController):
 Decentralized Finance Menu:
 
 Overview:
-    llama         DeFi protocols listed on DeFi Llama
-    tvl           Total value locked of DeFi protocols
     newsletter    Recent DeFi related newsletters
     dpi           DeFi protocols listed on DefiPulse
     funding       Funding reates - current or last 30 days average
     borrow        DeFi borrow rates - current or last 30 days average
     lending       DeFi ending rates - current or last 30 days average
+Defi Llama:
+    ldapps        List decentralized applications
+    gdapps        Display top DeFi protocols grouped by chain
+    tvl           Display historical total value locked (TVL) of all dApps
+    dtvl          Display historical total value locked (TVL) by dapp
 Uniswap:
     tokens        Tokens trade-able on Uniswap
     stats         Base statistics about Uniswap
@@ -131,12 +136,68 @@ Uniswap:
                 export=ns_parser.export,
             )
 
-    def call_llama(self, other_args: List[str]):
-        """Process llama command"""
+    def call_gdapps(self, other_args: List[str]):
+        """Process gdapps command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="llama",
+            prog="gdapps",
+            description="""
+                Display information about listed DeFi Protocols on DeFi Llama.
+                [Source: https://docs.llama.fi/api]
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=check_positive,
+            help="Number of records to display",
+            default=10,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            llama_view.display_grouped_defi_protocols(num=ns_parser.limit)
+
+    def call_dtvl(self, other_args: List[str]):
+        """Process dtvl command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="dtvl",
+            description="""
+                Display information about listed DeFi Protocols on DeFi Llama.
+                [Source: https://docs.llama.fi/api]
+            """,
+        )
+        parser.add_argument(
+            "-d",
+            "--dapps",
+            dest="dapps",
+            type=str,
+            required="-h" not in other_args,
+            help="dApps to search historical TVL. Should be split by , e.g.: anchor,sushiswap,pancakeswap",
+        )
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-d")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            llama_view.display_historical_tvl(dapps=ns_parser.dapps)
+
+    def call_ldapps(self, other_args: List[str]):
+        """Process ldapps command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ldapps",
             description="""
                 Display information about listed DeFi Protocols on DeFi Llama.
                 [Source: https://docs.llama.fi/api]
