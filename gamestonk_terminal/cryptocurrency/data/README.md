@@ -13,7 +13,7 @@
 ### Defillama
 
 - File: `/data/defillama_dapps.json`
-- Endpoint: [https://api.llama.fi/protocols"]
+- Endpoint: [https://api.llama.fi/protocols](https://api.llama.fi/protocols)
 
 ```python
 import requests
