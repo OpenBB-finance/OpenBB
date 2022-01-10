@@ -21,7 +21,7 @@ LLAMA_FILTERS = [
 ]
 
 
-def get_defi_protocols(include_chain_column: bool = False) -> pd.DataFrame:
+def get_defi_protocols() -> pd.DataFrame:
     """Returns information about listed DeFi protocols, their current TVL and changes to it in the last hour/day/week.
     [Source: https://docs.llama.fi/api]
 
@@ -56,8 +56,6 @@ def get_defi_protocols(include_chain_column: bool = False) -> pd.DataFrame:
         df["description"] = df["description"].apply(
             lambda x: "\n".join(textwrap.wrap(x, width=70)) if isinstance(x, str) else x
         )
-        if include_chain_column:
-            return df[columns]
         return df[columns]
 
     except Exception as e:
@@ -65,6 +63,14 @@ def get_defi_protocols(include_chain_column: bool = False) -> pd.DataFrame:
 
 
 def get_defi_protocol(protocol: str) -> pd.DataFrame:
+    """Returns information about historical tvl of a defi protocol.
+    [Source: https://docs.llama.fi/api]
+
+    Returns
+    -------
+    pd.DataFrame
+        Historical tvl
+    """
     url = f"{API_URL}/protocol/{protocol}"
     r = requests.get(url)
     data = r.json()

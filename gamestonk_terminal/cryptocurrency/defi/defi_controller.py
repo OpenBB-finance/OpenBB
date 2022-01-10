@@ -37,7 +37,7 @@ class DefiController(BaseController):
         "borrow",
         "ldapps",
         "gdapps",
-        "tvl",
+        "stvl",
         "dtvl",
         "newsletter",
         "tokens",
@@ -72,10 +72,10 @@ Overview:
     borrow        DeFi borrow rates - current or last 30 days average
     lending       DeFi ending rates - current or last 30 days average
 Defi Llama:
-    ldapps        List decentralized applications
-    gdapps        Display top DeFi protocols grouped by chain
-    tvl           Display historical total value locked (TVL) of all dApps
-    dtvl          Display historical total value locked (TVL) by dapp
+    ldapps        Lists dApps
+    gdapps        Display top DeFi dApps grouped by chain
+    stvl          Display historical values of the total sum of TVLs from all dApps
+    dtvl          Display historical total value locked (TVL) by dApp
 Uniswap:
     tokens        Tokens trade-able on Uniswap
     stats         Base statistics about Uniswap
@@ -143,7 +143,7 @@ Uniswap:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="gdapps",
             description="""
-                Display information about listed DeFi Protocols on DeFi Llama.
+                Display top dApps (in terms of TVL) grouped by chain.
                 [Source: https://docs.llama.fi/api]
             """,
         )
@@ -152,8 +152,8 @@ Uniswap:
             "--limit",
             dest="limit",
             type=check_positive,
-            help="Number of records to display",
-            default=10,
+            help="Number of top dApps to display",
+            default=40,
         )
 
         ns_parser = parse_known_args_and_warn(
@@ -170,7 +170,7 @@ Uniswap:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="dtvl",
             description="""
-                Display information about listed DeFi Protocols on DeFi Llama.
+                Displays historical TVL of different dApps.
                 [Source: https://docs.llama.fi/api]
             """,
         )
@@ -199,7 +199,7 @@ Uniswap:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="ldapps",
             description="""
-                Display information about listed DeFi Protocols on DeFi Llama.
+                Display information about listed dApps on DeFi Llama.
                 [Source: https://docs.llama.fi/api]
             """,
         )
@@ -252,14 +252,14 @@ Uniswap:
                 export=ns_parser.export,
             )
 
-    def call_tvl(self, other_args: List[str]):
-        """Process tvl command"""
+    def call_stvl(self, other_args: List[str]):
+        """Process stvl command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="tvl",
+            prog="stvl",
             description="""
-                Displays historical values of the total sum of TVLs from all listed protocols.
+                Displays historical values of the total sum of TVLs from all listed dApps.
                 [Source: https://docs.llama.fi/api]
             """,
         )

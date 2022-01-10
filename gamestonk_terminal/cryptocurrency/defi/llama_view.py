@@ -6,6 +6,9 @@ from matplotlib import ticker, dates as mdates
 from tabulate import tabulate
 import matplotlib.pyplot as plt
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import read_data_file
+from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
+    replace_underscores_in_column_names,
+)
 from gamestonk_terminal.cryptocurrency.defi import llama_model
 from gamestonk_terminal.helper_funcs import (
     export_data,
@@ -17,23 +20,17 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 
 
 def display_grouped_defi_protocols(num: int = 50, export: str = "") -> None:
-    """Display information about listed DeFi protocols, their current TVL and changes to it in the last hour/day/week.
+    """Display top dApps (in terms of TVL) grouped by chain.
     [Source: https://docs.llama.fi/api]
 
     Parameters
     ----------
-    top: int
-        Number of records to display
-    sortby: str
-        Key by which to sort data
-    descend: bool
-        Flag to sort data descending
-    description: bool
-        Flag to display description of protocol
+    num: int
+        Number of top dApps to display
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    df = llama_model.get_defi_protocols(include_chain_column=True)
+    df = llama_model.get_defi_protocols()
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     df = df.sort_values("tvl", ascending=False).head(num)
@@ -92,6 +89,7 @@ def display_defi_protocols(
     df_data = df.copy()
 
     df = df.sort_values(by=sortby, ascending=descend)
+    df = df.drop(columns="chain")
 
     df["tvl"] = df["tvl"].apply(lambda x: long_number_format(x))
 
@@ -107,6 +105,17 @@ def display_defi_protocols(
                 "url",
             ]
         ]
+
+    df.columns = [replace_underscores_in_column_names(val) for val in df.columns]
+    df.rename(
+        columns={
+            "Change 1H": "Change 1H (%)",
+            "Change 1D": "Change 1D (%)",
+            "Change 7D": "Change 7D (%)",
+            "Tvl": "TVL ($)",
+        },
+        inplace=True,
+    )
 
     if gtff.USE_TABULATE_DF:
         print(
@@ -125,19 +134,19 @@ def display_defi_protocols(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "dapps",
+        "ldapps",
         df_data,
     )
 
 
 def display_historical_tvl(dapps: str = "", export: str = ""):
-    """Displays historical values of the total sum of TVLs from all listed protocols.
+    """Displays historical TVL of different dApps
     [Source: https://docs.llama.fi/api]
 
     Parameters
     ----------
-    top: int
-        Number of records to display
+    dapps: str
+        dApps to search historical TVL. Should be split by , e.g.: anchor,sushiswap,pancakeswap
     export : str
         Export dataframe data to csv,json,xlsx file
     """
@@ -153,7 +162,7 @@ def display_historical_tvl(dapps: str = "", export: str = ""):
             else:
                 print(f"{dapp} not found\n")
 
-        ax.set_ylabel("TVL ($)")
+        ax.set_ylabel("Total Value Locked ($)")
         ax.set_xlabel("Time")
         dateFmt = mdates.DateFormatter("%m/%d/%Y")
 
@@ -163,7 +172,7 @@ def display_historical_tvl(dapps: str = "", export: str = ""):
         )
         ax.legend()
 
-        ax.set_title("TVL in dApps overtime")
+        ax.set_title("TVL in dApps")
         ax.grid(alpha=0.5)
         ax.tick_params(axis="x", labelrotation=45)
 
@@ -175,7 +184,7 @@ def display_historical_tvl(dapps: str = "", export: str = ""):
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
-            "tvl",
+            "dtvl",
             None,
         )
 
@@ -222,6 +231,6 @@ def display_defi_tvl(top: int, export: str = "") -> None:
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "tvl",
+        "stvl",
         df_data,
     )
