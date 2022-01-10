@@ -130,6 +130,9 @@ class BaseController(metaclass=ABCMeta):
             lambda _: "Command not recognized!",
         )(other_args)
 
+        if gtff.ENABLE_EXIT_AUTO_HELP and an_input in self.CHOICES_MENUS:
+            self.queue.insert(0, "help")
+
         return self.queue
 
     def call_cls(self, _) -> None:
