@@ -69,7 +69,7 @@ def test_screener_no_data(data, mocker):
         export="",
     )
 
-    assert result == []
+    assert not result
 
 
 @pytest.mark.vcr
