@@ -74,7 +74,7 @@ async def sma_command(ctx, ticker="", window="", offset="", start="", end=""):
         i = 1
         for win in window:
             sma_data = overlap_model.sma(
-                s_interval="1440min", df_stock=stock, length=win, offset=offset
+                values=stock["Adj Close"], length=win, offset=offset
             )
             price_df = price_df.join(sma_data)
             l_legend.append(f"SMA {win}")

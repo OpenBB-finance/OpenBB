@@ -11,11 +11,11 @@ from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.cryptocurrency.overview.blockchaincenter_model import DAYS
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     parse_known_args_and_warn,
     check_positive,
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
     valid_date,
-    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.overview import (
@@ -34,6 +34,9 @@ from gamestonk_terminal.cryptocurrency.overview import (
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_view import CURRENCIES
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
     get_all_contract_platforms,
+)
+from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_view import (
+    display_btc_rainbow,
 )
 
 
@@ -67,6 +70,7 @@ class OverviewController(BaseController):
         "wf",
         "ewf",
         "wfpe",
+        "btcrb",
         "altindex",
     ]
 
@@ -128,8 +132,6 @@ class OverviewController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = """
-Overview Menu:
-
 CoinGecko:
     cgglobal          global crypto market info
     cgnews            last news available on CoinGecko
@@ -163,9 +165,47 @@ WithdrawalFees:
     wfpe              crypto withdrawal fees per exchange
 BlockchainCenter:
     altindex          displays altcoin season index (if 75% of top 50 coins perform better than btc)
+    btcrb             display bitcoin rainbow price chart (logarithmic regression)
 """
 
         print(help_text)
+
+    def call_btcrb(self, other_args: List[str]):
+        """Process btcrb command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="btcrb",
+            description="""Display bitcoin rainbow chart overtime including halvings.
+            [Price data from source: https://glassnode.com]
+            [Inspired by: https://blockchaincenter.net]""",
+        )
+        parser.add_argument(
+            "-s",
+            "--since",
+            dest="since",
+            type=valid_date,
+            help="Initial date. Default is initial BTC date: 2010-01-01",
+            default=datetime(2010, 1, 1).strftime("%Y-%m-%d"),
+        )
+
+        parser.add_argument(
+            "-u",
+            "--until",
+            dest="until",
+            type=valid_date,
+            help="Final date. Default is current date",
+            default=datetime.now().strftime("%Y-%m-%d"),
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            display_btc_rainbow(
+                since=int(ns_parser.since.timestamp()),
+                until=int(ns_parser.until.timestamp()),
+                export=ns_parser.export,
+            )
 
     def call_altindex(self, other_args: List[str]):
         """Process altindex command"""
@@ -205,8 +245,8 @@ BlockchainCenter:
             "--until",
             dest="until",
             type=valid_date,
-            help="End date (default: current day, e.g., 2022-01-01)",
-            default=(datetime.now()).strftime("%Y-%m-%d"),
+            help="Final date. Default is current date",
+            default=datetime.now().strftime("%Y-%m-%d"),
         )
 
         if other_args and "-" not in other_args[0][0]:
