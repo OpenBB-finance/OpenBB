@@ -8,7 +8,7 @@ from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
 
 
@@ -21,7 +21,16 @@ async def macd_command(
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.macd {ticker} {fast} {slow} {signal} {start} {end}")
+            # pylint: disable=logging-too-many-args
+            logger.debug(
+                "!stocks.ta.macd %s %s %s %s %s %s",
+                ticker,
+                fast,
+                slow,
+                signal,
+                start,
+                end,
+            )
 
         # Check for argument
         if ticker == "":
@@ -55,7 +64,7 @@ async def macd_command(
         # Retrieve Data
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
-        df_ta = momentum_model.macd("1440min", df_stock, fast, slow, signal)
+        df_ta = momentum_model.macd(df_stock["Adj Close"], fast, slow, signal)
 
         # Output Data
         fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -85,10 +94,10 @@ async def macd_command(
         fig.tight_layout(pad=1)
 
         plt.savefig("ta_macd.png")
-        uploaded_image = gst_imgur.upload_image("ta_cci.png", title="something")
+        uploaded_image = gst_imgur.upload_image("ta_macd.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: Moving-Average-Convergence-Divergence " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

@@ -1,15 +1,16 @@
 import os
+
 import discord
+import numpy as np
 from matplotlib import pyplot as plt
 from tabulate import tabulate
-import numpy as np
 
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.stocks.government import quiverquant_model
 from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal.stocks.government import quiverquant_model
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 
 
 async def qtrcontracts_command(ctx, num="", analysis=""):
@@ -17,7 +18,7 @@ async def qtrcontracts_command(ctx, num="", analysis=""):
     try:
         # Debug user input
         if cfg.DEBUG:
-            print(f"!stocks.gov.qtrcontracts {num} {analysis}")
+            logger.debug("!stocks.gov.qtrcontracts %s %s", num, analysis)
 
         if num == "":
             num = 20
@@ -96,7 +97,7 @@ async def qtrcontracts_command(ctx, num="", analysis=""):
             )
             image_link = uploaded_image.link
             if cfg.DEBUG:
-                print(f"Image URL: {image_link}")
+                logger.debug("Image URL: %s", image_link)
             title = "Stocks: [quiverquant.com] Government contracts"
             embed = discord.Embed(
                 title=title, description=description, colour=cfg.COLOR

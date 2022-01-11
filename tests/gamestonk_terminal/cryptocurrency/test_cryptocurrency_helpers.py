@@ -5,11 +5,11 @@ import os
 import vcr
 from pycoingecko import CoinGeckoAPI
 
-from gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
     plot_chart,
     load,
     load_ta_data,
+    prepare_all_coins_df,
 )
 from tests.helpers.helpers import check_print
 
@@ -29,22 +29,22 @@ def get_bitcoin(mock_load):
     ) as f:
         sample_return = json.load(f)
     mock_load.return_value = sample_return
-    coin, _, _ = load(coin="bitcoin", source="cg")
-    return coin
+    coin, _, symbol, _, _, _ = load(coin="bitcoin", source="cg")
+    return coin, symbol
 
 
 # pylint: disable=R0904
 class TestCoinGeckoAPI(TestCase):
     # pylint: disable = no-value-for-parameter
-    coin = get_bitcoin()
+    coin, symbol = get_bitcoin()
+    coin_map_df = prepare_all_coins_df().set_index("Symbol").loc[symbol]
 
     def test_coin_api_load(self):
         """
         Mock load function through get_coin_market_chart_by_id.
         Mock returns a dict saved as .json
         """
-        self.assertEqual(self.coin.coin_symbol, "bitcoin")
-        self.assertIsInstance(self.coin, Coin)
+        self.assertEqual(self.coin, "bitcoin")
 
     @mock.patch(
         "gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model.CoinGeckoAPI.get_coin_market_chart_by_id"
@@ -63,7 +63,7 @@ class TestCoinGeckoAPI(TestCase):
 
         mock_load.return_value = sample_return
         mock_return, vs = load_ta_data(
-            coin=self.coin,
+            coin_map_df=self.coin_map_df,
             source="cg",
             currency="usd",
             days=30,
@@ -88,6 +88,6 @@ class TestCoinGeckoAPI(TestCase):
     @mock.patch("matplotlib.pyplot.show")
     def test_coin_chart(self, mock_matplot):
         # pylint: disable=unused-argument
-        plot_chart(coin=self.coin, source="cg", currency="usd", days=30)
+        plot_chart(coin_map_df=self.coin_map_df, source="cg", currency="usd", days=30)
 
     # TODO: Re-add tests for coin_list and find

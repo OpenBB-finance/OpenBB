@@ -49,7 +49,7 @@ def price_target_from_analysts(
     df_analyst_data = business_insider_model.get_price_target_from_analysts(ticker)
 
     if raw:
-        df_analyst_data.index = df_analyst_data.index.strftime("%d/%m/%Y")
+        df_analyst_data.index = df_analyst_data.index.strftime("%Y-%m-%d")
         if gtff.USE_TABULATE_DF:
             print(
                 tabulate(

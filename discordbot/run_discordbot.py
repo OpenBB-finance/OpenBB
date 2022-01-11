@@ -2,7 +2,6 @@ import difflib
 import logging
 import os
 import sys
-from datetime import datetime
 
 import discord
 import discord_components
@@ -13,13 +12,7 @@ import config_discordbot as cfg
 # Logging
 logger = logging.getLogger("discord")
 logging.basicConfig(level=logging.INFO)  # DEBUG/INFO/WARNING/ERROR/CRITICAL
-handler = logging.FileHandler(
-    filename=os.path.join(
-        os.path.dirname(__file__), "..", "logs", f"{datetime.now()}_bot.log"
-    ),
-    encoding="utf-8",
-    mode="w",
-)
+handler = logging.StreamHandler(sys.stdout)
 handler.setFormatter(
     logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
 )
@@ -61,15 +54,15 @@ gst_bot = discord.ext.commands.Bot(
 discord_components.DiscordComponents(gst_bot)
 
 if cfg.IMGUR_CLIENT_ID == "REPLACE_ME" or cfg.DISCORD_BOT_TOKEN == "REPLACE_ME":
-    print(
-        "Update IMGUR_CLIENT_ID or DISCORD_BOT_TOKEN or both in "
-        + f"{ os.path.join('discordbot', 'config_discordbot') } \n"
+    logger.info(
+        "Update IMGUR_CLIENT_ID or DISCORD_BOT_TOKEN or both in %s \n",
+        os.path.join("discordbot", "config_discordbot"),
     )
     sys.exit()
 
 
 async def on_ready():
-    print("GST Discord Bot Ready to Gamestonk!")
+    logger.info("GST Discord Bot Ready to Gamestonk!")
 
 
 gst_imgur = pyimgur.Imgur(cfg.IMGUR_CLIENT_ID)

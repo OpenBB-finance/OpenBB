@@ -6,10 +6,10 @@ dependencies:
   - pip
   - poetry=1.1.12
   - numpy=1.21.2
-  - cvxpy=1.1.17
+  - cvxpy=1.1.18
   - pytest
   - black=21.7b0
   - sphinx=4.1.1
-  - charset-normalizer=2.0.9
-  - rich=10.16.1
+  - charset-normalizer=2.0.10
+  - rich=10.16.2
   

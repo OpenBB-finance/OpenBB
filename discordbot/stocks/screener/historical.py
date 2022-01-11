@@ -2,6 +2,7 @@ import os
 import random
 from datetime import datetime, timedelta
 import configparser
+
 import discord
 from matplotlib import pyplot as plt
 import yfinance as yf
@@ -13,6 +14,7 @@ from gamestonk_terminal.stocks.screener import finviz_model
 from gamestonk_terminal.helper_funcs import plot_autoscale
 
 import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import logger
 from discordbot.run_discordbot import gst_imgur
 from discordbot.stocks.screener import screener_options as so
 
@@ -25,7 +27,7 @@ async def historical_command(ctx, signal="", start=""):
 
         # Debug user input
         if cfg.DEBUG:
-            print(f"!stocks.scr.historical {signal} {start}")
+            logger.debug("!stocks.scr.historical %s %s", signal, start)
 
         # Check for argument
         if signal == "" or signal not in list(so.d_signals_desc.keys):
@@ -75,7 +77,7 @@ async def historical_command(ctx, signal="", start=""):
             random.shuffle(l_stocks)
             l_stocks = sorted(l_stocks[:10])
             description = description + (", ".join(l_stocks))
-            print(description)
+            logger.debug(description)
 
         plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
@@ -138,7 +140,7 @@ async def historical_command(ctx, signal="", start=""):
         uploaded_image = gst_imgur.upload_image("scr_historical.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: [Yahoo Finance] Historical Screener"
         embed = discord.Embed(title=title, description=description, colour=cfg.COLOR)
         embed.set_author(

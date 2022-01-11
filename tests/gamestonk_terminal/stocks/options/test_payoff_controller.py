@@ -118,11 +118,11 @@ def test_menu_with_queue(expected, mocker, queue):
         target=f"{path_controller}.PayoffController.switch",
         return_value=["quit"],
     )
-    result_menu = payoff_controller.menu(
+    result_menu = payoff_controller.PayoffController(
         ticker="MOCK_TICKER",
         expiration="2022-01-07",
         queue=queue,
-    )
+    ).menu()
 
     assert result_menu == expected
 
@@ -141,7 +141,20 @@ def test_menu_without_queue_completion(mocker):
         return_value=95.0,
     )
 
-    # DISABLE AUTO-COMPLETION
+    # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    mocker.patch(
+        target="gamestonk_terminal.feature_flags.USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session.prompt",
+        return_value="quit",
+    )
+
+    # ENABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch.object(
         target=payoff_controller.gtff,
         attribute="USE_PROMPT_TOOLKIT",
@@ -164,11 +177,11 @@ def test_menu_without_queue_completion(mocker):
         target=f"{path_controller}.PayoffController",
         return_value=controller,
     )
-    result_menu = payoff_controller.menu(
+    result_menu = payoff_controller.PayoffController(
         ticker="MOCK_TICKER",
         expiration="2022-01-07",
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -222,11 +235,11 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         new=mock_switch,
     )
 
-    result_menu = payoff_controller.menu(
+    result_menu = payoff_controller.PayoffController(
         ticker="MOCK_TICKER",
         expiration="2022-01-07",
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -276,9 +289,9 @@ def test_print_help(mocker, underlying):
                 "quit",
                 "reset",
                 "stocks",
-                "options",
                 "load MOCK_TICKER",
-                "exp 2022-01-07",
+                "options",
+                "exp -d 2022-01-07",
                 "payoff",
             ],
         ),
@@ -358,9 +371,9 @@ def test_call_cls(mocker):
                 "quit",
                 "reset",
                 "stocks",
-                "options",
                 "load MOCK_TICKER",
-                "exp 2022-01-07",
+                "options",
+                "exp -d 2022-01-07",
                 "payoff",
             ],
         ),
@@ -373,9 +386,9 @@ def test_call_cls(mocker):
                 "quit",
                 "reset",
                 "stocks",
-                "options",
                 "load MOCK_TICKER",
-                "exp 2022-01-07",
+                "options",
+                "exp -d 2022-01-07",
                 "payoff",
                 "help",
             ],

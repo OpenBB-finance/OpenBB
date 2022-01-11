@@ -8,7 +8,7 @@ from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
 
 
@@ -21,7 +21,15 @@ async def stoch_command(
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.stoch {ticker} {fast_k} {slow_k} {slow_d} {start} {end}")
+            logger.debug(
+                "!stocks.ta.stoch %s %s %s %s %s %s",
+                ticker,
+                fast_k,
+                slow_k,
+                slow_d,
+                start,
+                end,
+            )
 
         # Check for argument
         if ticker == "":
@@ -39,13 +47,13 @@ async def stoch_command(
 
         if not fast_k.lstrip("-").isnumeric():
             raise Exception("Number has to be an integer")
-        fast_k = float(fast_k)
+        fast_k = int(fast_k)
         if not slow_k.lstrip("-").isnumeric():
             raise Exception("Number has to be an integer")
-        slow_k = float(slow_k)
+        slow_k = int(slow_k)
         if not slow_d.lstrip("-").isnumeric():
             raise Exception("Number has to be an integer")
-        slow_d = float(slow_d)
+        slow_d = int(slow_d)
 
         ticker = ticker.upper()
         df_stock = discordbot.helpers.load(ticker, start)
@@ -55,7 +63,14 @@ async def stoch_command(
         # Retrieve Data
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
-        df_ta = momentum_model.stoch("1440min", df_stock, fast_k, slow_d, slow_k)
+        df_ta = momentum_model.stoch(
+            df_stock["High"],
+            df_stock["Low"],
+            df_stock["Adj Close"],
+            fast_k,
+            slow_d,
+            slow_k,
+        )
 
         # Output Data
         fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -93,7 +108,7 @@ async def stoch_command(
         uploaded_image = gst_imgur.upload_image("ta_stoch.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: Stochastic-Relative-Strength-Index " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
