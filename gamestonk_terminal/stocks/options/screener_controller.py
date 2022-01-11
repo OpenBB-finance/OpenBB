@@ -332,11 +332,15 @@ def menu(queue: List[str] = None):
 
             # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT and scr_controller.completer:
-                an_input = session.prompt(
-                    f"{get_flair()} /stocks/options/screen/ $ ",
-                    completer=scr_controller.completer,
-                    search_ignore_case=True,
-                )
+                try:
+                    an_input = session.prompt(
+                        f"{get_flair()} /stocks/options/screen/ $ ",
+                        completer=scr_controller.completer,
+                        search_ignore_case=True,
+                    )
+                except KeyboardInterrupt:
+                    # Exit in case of keyboard interrupt
+                    an_input = "exit"
             # Get input from user without auto-completion
             else:
                 an_input = input(f"{get_flair()} /stocks/options/screen/ $ ")

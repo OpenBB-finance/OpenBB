@@ -1,0 +1,38 @@
+
+Technical Analysis Menu:
+
+
+Intraday MOCK_INTERVAL Stock: MOCK_TICKER (from 2021-12-01)
+
+    view        view historical data and trendlines [Finviz]
+    summary     technical summary report [FinBrain API]
+    recom       recommendation based on Technical Indicators [Tradingview API]
+
+Overlap:
+    ema         exponential moving average
+    sma         simple moving average
+    wma         weighted moving average
+    hma         hull moving average
+    zlma        zero lag moving average
+    vwap        volume weighted average price
+Momentum:
+    cci         commodity channel index
+    macd        moving average convergence/divergence
+    rsi         relative strength index
+    stoch       stochastic oscillator
+    fisher      fisher transform
+    cg          centre of gravity
+Trend:
+    adx         average directional movement index
+    aroon       aroon indicator
+Volatility:
+    bbands      bollinger bands
+    donchian    donchian channels
+    kc          keltner channels
+Volume:
+    ad          accumulation/distribution line
+    adosc       chaikin oscillator
+    obv         on balance volume
+Custom:
+    fib         fibonacci retracement
+

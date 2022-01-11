@@ -1,3 +1,4 @@
+jupyter
 reports
 econ_dta
 econ_data
