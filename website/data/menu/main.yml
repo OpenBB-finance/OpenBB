@@ -420,6 +420,8 @@ main:
             ref: "/stocks/options/hist"
           - name: grhist
             ref: "/stocks/options/grhist"
+          - name: vsurf
+            ref: "/stocks/options/vsurf"
           - name: portfolio optimization
             ref: "/portfolio/portfolio_optimization"
           - name: parity
