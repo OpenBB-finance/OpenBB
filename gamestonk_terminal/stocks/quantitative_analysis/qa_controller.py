@@ -8,12 +8,13 @@ from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.common.quantitative_analysis import (
     qa_view,
     rolling_view,
 )
-from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.helper_funcs import (
@@ -97,40 +98,49 @@ class QaController(BaseController):
         """Print help"""
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.start:
-            stock_str = f"{s_intraday} Stock: [cyan]{self.ticker}[/cyan] (from {self.start.strftime('%Y-%m-%d')})"
+            stock_str = (
+                f"{s_intraday} {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            )
         else:
-            stock_str = f"{s_intraday} Stock: [cyan]{self.ticker}[/cyan]"
-        help_str = f"""
+            stock_str = f"{s_intraday} {self.ticker}"
+        help_text = f"""[cmds]
    load        load new ticker
-   pick        pick target column for analysis
+   pick        pick target column for analysis[/cmds]
 
-{stock_str}
-Target Column: [green]{self.target}[/green]
-
-Statistics:
+[param]Stock: [/param]{stock_str}
+[param]Target Column: [/param]{self.target}
+[cmds]
+[info]Statistics:[/info]
     summary     brief summary statistics of loaded stock.
     normality   normality statistics and tests
     unitroot    unit root test for stationarity (ADF, KPSS)
-Plots:
+[info]Plots:[/info]
     line        line plot of selected target
     hist        histogram with density plot
     cdf         cumulative distribution function
     bw          box and whisker plot
     acf         (partial) auto-correlation function differentials of prices
     qqplot      residuals against standard normal curve
-Rolling Metrics:
+[info]Rolling Metrics:[/info]
     rolling     rolling mean and std deviation of prices
     spread      rolling variance and std deviation of prices
     quantile    rolling median and quantile of prices
     skew        rolling skewness of distribution of prices
     kurtosis    rolling kurtosis of distribution of prices
-Other:
+[info]Other:[/info]
     raw         print raw data
     decompose   decomposition in cyclic-trend, season, and residuals of prices
     cusum       detects abrupt changes using cumulative sum algorithm of prices
-    capm        capital asset pricing model
+    capm        capital asset pricing model[/cmds]
         """
-        console.print(help_str)
+        console.print(
+            Panel(
+                help_text,
+                title="Stocks - Quantitative Analysis",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def custom_reset(self):
         """Class specific component of reset command"""

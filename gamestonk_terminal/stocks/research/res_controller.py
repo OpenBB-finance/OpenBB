@@ -5,10 +5,11 @@ import webbrowser
 from typing import List
 from datetime import datetime
 from prompt_toolkit.completion import NestedCompleter
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.rich_config import console
 
 
 class ResearchController(BaseController):
@@ -52,8 +53,8 @@ class ResearchController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = f"""
-Ticker: {self.ticker}
-
+[param]Ticker: [/param]{self.ticker}
+[cmds]
     macroaxis            www.macroaxis.com
     yahoo                www.finance.yahoo.com
     finviz               www.finviz.com
@@ -71,9 +72,16 @@ Ticker: {self.ticker}
     zacks                www.zacks.com
     macrotrends          www.macrotrends.net
     newsfilter           www.newsfilter.io
-    stockanalysis        www.stockanalysis.com
+    stockanalysis        www.stockanalysis.com[/cmds]
 """
-        console.print(help_text)
+        console.print(
+            Panel(
+                help_text,
+                title="Stocks - Research",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def custom_reset(self):
         """Class specific component of reset command"""

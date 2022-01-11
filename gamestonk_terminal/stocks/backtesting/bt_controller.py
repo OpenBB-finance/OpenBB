@@ -7,6 +7,8 @@ from typing import List
 import matplotlib as mpl
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -18,7 +20,7 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.rich_config import console
+
 
 # This code below aims to fix an issue with the fnn module, used by bt module
 # which forces matplotlib backend to be 'agg' which doesn't allow to plot
@@ -50,15 +52,22 @@ class BacktestingController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = f"""
-Ticker: {self.ticker.upper()}
+[param]Ticker: [/param]{self.ticker.upper()}[cmds]
 
     whatif      what if you had bought X shares on day Y
 
     ema         buy when price exceeds EMA(l)
     ema_cross   buy when EMA(short) > EMA(long)
-    rsi         buy when RSI < low and sell when RSI > high
+    rsi         buy when RSI < low and sell when RSI > high[/cmds]
         """
-        console.print(help_text)
+        console.print(
+            Panel(
+                help_text,
+                title="Stocks - Backtesting",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def custom_reset(self):
         """Class specific component of reset command"""
