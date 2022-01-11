@@ -27,8 +27,8 @@ from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     rich_table_from_df,
-    LineAnnotateDrawer,
 )
+from gamestonk_terminal.helper_classes import LineAnnotateDrawer
 
 register_matplotlib_converters()
 t_console = Console()
@@ -457,7 +457,7 @@ def display_qqplot(name: str, df: pd.DataFrame, target: str):
     target : str
         Column in data to look at
     """
-    # Statsmodels has a UserWarning for marker kwarg-- which we dont use
+    # Statsmodels has a UserWarning for marker kwarg-- which we don't use
     warnings.filterwarnings(category=UserWarning, action="ignore")
     data = df[target]
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
