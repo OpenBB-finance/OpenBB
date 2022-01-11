@@ -69,7 +69,7 @@ def test_screener_no_data(data, mocker):
         export="",
     )
 
-    assert result == []  # pylint: disable=C1803
+    assert result == []  # pylint: disable=use-implicit-booleaness-not-comparison
 
 
 @pytest.mark.vcr
