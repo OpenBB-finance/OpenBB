@@ -69,7 +69,7 @@ def test_screener_no_data(data, mocker):
         export="",
     )
 
-    assert not result
+    assert result == []  # pylint: disable=C1803
 
 
 @pytest.mark.vcr
