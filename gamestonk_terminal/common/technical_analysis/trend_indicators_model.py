@@ -5,15 +5,24 @@ import pandas as pd
 import pandas_ta as ta
 
 
-def adx(s_interval: str, df_stock: pd.DataFrame, length: int, scalar: int, drift: int):
+def adx(
+    high_values: pd.Series,
+    low_values: pd.Series,
+    close_values: pd.Series,
+    length: int = 14,
+    scalar: int = 100,
+    drift: int = 1,
+):
     """ADX technical indicator
 
     Parameters
     ----------
-    s_interval : str
-        Interval of stock data
-    df_stock : pd.DataFrame
-        Dataframe with prices
+    high_values: pd.Series
+        High prices
+    low_values: pd.Series
+        Low prices
+    close_values: pd.Series
+        close prices
     length: int
         Length of window
     scalar: int
@@ -23,41 +32,32 @@ def adx(s_interval: str, df_stock: pd.DataFrame, length: int, scalar: int, drift
 
     Returns
     -------
-    df_ta: pd.DataFrame
+    pd.DataFrame
         DataFrame with adx indicator
     """
-    # Daily
-    if s_interval == "1440min":
-        df_ta = ta.adx(
-            high=df_stock["High"],
-            low=df_stock["Low"],
-            close=df_stock["Adj Close"],
+    return pd.DataFrame(
+        ta.adx(
+            high=high_values,
+            low=low_values,
+            close=close_values,
             length=length,
             scalar=scalar,
             drift=drift,
         ).dropna()
-
-    # Intraday
-    else:
-        df_ta = ta.adx(
-            high=df_stock["High"],
-            low=df_stock["Low"],
-            close=df_stock["Close"],
-            length=length,
-            scalar=scalar,
-            drift=drift,
-        ).dropna()
-
-    return df_ta
+    )
 
 
-def aroon(df_stock: pd.DataFrame, length: int, scalar: int) -> pd.DataFrame:
+def aroon(
+    high_values: pd.Series, low_values: pd.Series, length: int = 25, scalar: int = 100
+) -> pd.DataFrame:
     """Aroon technical indicator
 
     Parameters
     ----------
-    df_stock : pd.DataFrame
-        Dataframe of stock prices
+    high_values: pd.Series
+        High prices
+    low_values: pd.Series
+        Low prices
     length : int
         Length of window
     scalar : int
@@ -65,15 +65,15 @@ def aroon(df_stock: pd.DataFrame, length: int, scalar: int) -> pd.DataFrame:
 
     Returns
     -------
-    df_ta: pd.DataFrame
+    pd.DataFrame
         DataFrame with aroon indicator
     """
 
-    df_ta = ta.aroon(
-        high=df_stock["High"],
-        low=df_stock["Low"],
-        length=length,
-        scalar=scalar,
-    ).dropna()
-
-    return pd.DataFrame(df_ta)
+    return pd.DataFrame(
+        ta.aroon(
+            high=high_values,
+            low=low_values,
+            length=length,
+            scalar=scalar,
+        ).dropna()
+    )

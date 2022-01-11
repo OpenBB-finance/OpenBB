@@ -1,16 +1,138 @@
+from datetime import datetime
 import os
 from matplotlib import pyplot as plt, dates as mdates, ticker
+import matplotlib
 import numpy as np
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal import config_plot as cfgPlot
 from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
     get_active_addresses,
+    get_close_price,
     get_exchange_balances,
     get_exchange_net_position_change,
     get_hashrate,
     get_non_zero_addresses,
 )
 from gamestonk_terminal import feature_flags as gtff
+
+
+def display_btc_rainbow(since: int, until: int, export: str = ""):
+    """Displays bitcoin rainbow chart
+    [Price data from source: https://glassnode.com]
+    [Inspired by: https://blockchaincenter.net]
+
+    Parameters
+    ----------
+    since : int
+        Initial date timestamp. Default is initial BTC timestamp: 1_325_376_000
+    until : int
+        Final date timestamp. Default is current BTC timestamp
+    """
+    df_data = get_close_price("BTC", "24h", since, until)
+    if df_data.empty:
+        print("Error in glassnode request\n")
+    else:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+
+        d0 = datetime.strptime("2012-01-01", "%Y-%m-%d")
+        x = range((df_data.index[0] - d0).days, (df_data.index[-1] - d0).days + 1)
+
+        y0 = [
+            10 ** ((2.90 * ln_x) - 19.463) for ln_x in [np.log(val + 1400) for val in x]
+        ]
+        y1 = [
+            10 ** ((2.886 * ln_x) - 19.463)
+            for ln_x in [np.log(val + 1375) for val in x]
+        ]
+        y2 = [
+            10 ** ((2.872 * ln_x) - 19.463)
+            for ln_x in [np.log(val + 1350) for val in x]
+        ]
+        y3 = [
+            10 ** ((2.859 * ln_x) - 19.463)
+            for ln_x in [np.log(val + 1320) for val in x]
+        ]
+        y4 = [
+            10 ** ((2.8445 * ln_x) - 19.463)
+            for ln_x in [np.log(val + 1293) for val in x]
+        ]
+        y5 = [
+            10 ** ((2.8295 * ln_x) - 19.463)
+            for ln_x in [np.log(val + 1275) for val in x]
+        ]
+        y6 = [
+            10 ** ((2.815 * ln_x) - 19.463)
+            for ln_x in [np.log(val + 1250) for val in x]
+        ]
+        y7 = [
+            10 ** ((2.801 * ln_x) - 19.463)
+            for ln_x in [np.log(val + 1225) for val in x]
+        ]
+        y8 = [
+            10 ** ((2.788 * ln_x) - 19.463)
+            for ln_x in [np.log(val + 1200) for val in x]
+        ]
+        ax.fill_between(df_data.index, y0, y1, color="red", alpha=0.7)
+        ax.fill_between(df_data.index, y1, y2, color="orange", alpha=0.7)
+        ax.fill_between(df_data.index, y2, y3, color="yellow", alpha=0.7)
+        ax.fill_between(df_data.index, y3, y4, color="green", alpha=0.7)
+        ax.fill_between(df_data.index, y4, y5, color="blue", alpha=0.7)
+        ax.fill_between(df_data.index, y5, y6, color="violet", alpha=0.7)
+        ax.fill_between(df_data.index, y6, y7, color="indigo", alpha=0.7)
+        ax.fill_between(df_data.index, y7, y8, color="purple", alpha=0.7)
+
+        ax.semilogy(df_data.index, df_data["v"].values, c="k", lw=1.2)
+        ax.set_xlim(df_data.index[0], df_data.index[-1])
+        ax.set_title("Bitcoin Rainbow Chart")
+        ax.set_xlabel("Time")
+        dateFmt = mdates.DateFormatter("%m/%d/%Y")
+        ax.set_ylabel("Price ($)")
+        ax.xaxis.set_major_formatter(dateFmt)
+        ax.tick_params(axis="x", labelrotation=45)
+
+        ax.legend(
+            [
+                "Bubble bursting imminent!!",
+                "SELL!",
+                "Everyone FOMO'ing....",
+                "Is this a bubble??",
+                "Still cheap",
+                "Accumulate",
+                "BUY!",
+                "Basically a Fire Sale",
+                "Bitcoin Price",
+            ],
+            prop={"size": 6},
+        )
+
+        sample_dates = np.array(
+            [datetime(2012, 11, 28), datetime(2016, 7, 9), datetime(2020, 5, 11)]
+        )
+        sample_dates = mdates.date2num(sample_dates)
+        ax.vlines(x=sample_dates, ymin=0, ymax=10 ** 5, color="grey")
+        for i, x in enumerate(sample_dates):
+            ax.text(x, 1, f"Halving {i+1}", rotation=-90, verticalalignment="center")
+
+        ax.grid(alpha=0.2)
+        ax.minorticks_off()
+        ax.yaxis.set_major_formatter(
+            matplotlib.ticker.FuncFormatter(lambda x, _: int(x) if x >= 1 else x)
+        )
+        ax.yaxis.set_major_locator(
+            matplotlib.ticker.LogLocator(base=100, subs=[1.0, 2.0, 5.0, 10.0])
+        )
+
+        if gtff.USE_ION:
+            plt.ion()
+        plt.show()
+        print("")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "rainbox",
+            df_data,
+        )
 
 
 def display_active_addresses(

@@ -230,6 +230,9 @@ def terminal(jobs_cmds: List[str] = None):
                 print_goodbye()
                 break
 
+            if gtff.ENABLE_EXIT_AUTO_HELP and len(t_controller.queue) > 1:
+                t_controller.queue = t_controller.queue[1:]
+
             # Consume 1 element from the queue
             an_input = t_controller.queue[0]
             t_controller.queue = t_controller.queue[1:]
