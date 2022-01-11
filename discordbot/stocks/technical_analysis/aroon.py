@@ -44,7 +44,7 @@ async def aroon_command(ctx, ticker="", length="25", scalar="100", start="", end
 
         if not length.lstrip("-").isnumeric():
             raise Exception("Number has to be an integer")
-        length = float(length)
+        length = int(length)
         if not scalar.lstrip("-").isnumeric():
             raise Exception("Number has to be an integer")
         scalar = float(scalar)
@@ -57,7 +57,9 @@ async def aroon_command(ctx, ticker="", length="25", scalar="100", start="", end
         # Retrieve Data
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
-        df_ta = trend_indicators_model.aroon(df_stock, length, scalar)
+        df_ta = trend_indicators_model.aroon(
+            df_stock["High"], df_stock["Low"], length, scalar
+        )
 
         fig, ax = plt.subplots(3, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
         ax0 = ax[0]

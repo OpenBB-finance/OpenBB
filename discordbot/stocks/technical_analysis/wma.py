@@ -74,7 +74,7 @@ async def wma_command(ctx, ticker="", window="", offset="", start="", end=""):
         i = 1
         for win in window:
             wma_data = overlap_model.wma(
-                s_interval="1440min", df_stock=stock, length=win, offset=offset
+                values=stock["Adj Close"], length=win, offset=offset
             )
             price_df = price_df.join(wma_data)
             l_legend.append(f"WMA {win}")

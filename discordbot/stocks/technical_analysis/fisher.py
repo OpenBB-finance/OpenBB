@@ -37,7 +37,7 @@ async def fisher_command(ctx, ticker="", length="14", start="", end=""):
 
         if not length.lstrip("-").isnumeric():
             raise Exception("Number has to be an integer")
-        length = float(length)
+        length = int(length)
 
         ticker = ticker.upper()
         df_stock = discordbot.helpers.load(ticker, start)
@@ -47,7 +47,7 @@ async def fisher_command(ctx, ticker="", length="14", start="", end=""):
         # Retrieve Data
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
-        df_ta = momentum_model.fisher("1440min", df_stock, length)
+        df_ta = momentum_model.fisher(df_stock["High"], df_stock["Low"], length)
 
         # Output Data
         fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)

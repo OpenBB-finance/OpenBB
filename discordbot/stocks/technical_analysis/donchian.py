@@ -59,7 +59,9 @@ async def donchian_command(
         # Retrieve Data
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
-        df_ta = volatility_model.donchian(df_stock, upper_length, lower_length)
+        df_ta = volatility_model.donchian(
+            df_stock["High"], df_stock["Low"], upper_length, lower_length
+        )
 
         # Output Data
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)

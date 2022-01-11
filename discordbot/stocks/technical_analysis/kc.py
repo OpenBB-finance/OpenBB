@@ -51,7 +51,7 @@ async def kc_command(
 
         if not length.lstrip("-").isnumeric():
             raise Exception("Number has to be an integer")
-        length = float(length)
+        length = int(length)
         if not scalar.lstrip("-").isnumeric():
             raise Exception("Number has to be an integer")
         scalar = float(scalar)
@@ -70,7 +70,15 @@ async def kc_command(
         # Retrieve Data
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
-        df_ta = volatility_model.kc("1440min", df_stock, length, scalar, mamode, offset)
+        df_ta = volatility_model.kc(
+            df_stock["High"],
+            df_stock["Low"],
+            df_stock["Adj Close"],
+            length,
+            scalar,
+            mamode,
+            offset,
+        )
 
         # Output Data
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
