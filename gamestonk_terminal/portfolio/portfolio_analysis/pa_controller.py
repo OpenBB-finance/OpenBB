@@ -13,6 +13,7 @@ from gamestonk_terminal.portfolio.portfolio_analysis import (
     portfolio_model,
     portfolio_view,
 )
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.menu import session
 
