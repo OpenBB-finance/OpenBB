@@ -15,24 +15,19 @@ from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 register_matplotlib_converters()
 
 
-def plot_adx(
-    s_ticker: str,
-    s_interval: str,
+def display_adx(
     df_stock: pd.DataFrame,
-    length: int,
-    scalar: int,
-    drift: int,
+    length: int = 14,
+    scalar: int = 100,
+    drift: int = 1,
+    s_ticker: str = "",
     export: str = "",
 ):
     """Plot ADX indicator
 
     Parameters
     ----------
-    s_ticker : str
-        Ticker
-    s_interval : str
-        Interval for data
-    df_stock : pd.DataFrame
+    df_stock
         Dataframe of prices
     length : int
         Length of window
@@ -40,10 +35,19 @@ def plot_adx(
         Scalar variable
     drift : int
         Drift variable
+    s_ticker : str
+        Ticker
     export: str
         Format to export data
     """
-    df_ta = trend_indicators_model.adx(s_interval, df_stock, length, scalar, drift)
+    df_ta = trend_indicators_model.adx(
+        high_values=df_stock["High"],
+        low_values=df_stock["Low"],
+        close_values=df_stock["Adj Close"],
+        length=length,
+        scalar=scalar,
+        drift=drift,
+    )
 
     fig, ax = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax0 = ax[0]
@@ -88,39 +92,37 @@ def plot_adx(
     )
 
 
-def plot_aroon(
-    s_ticker: str,
-    s_interval: str,
+def display_aroon(
     df_stock: pd.DataFrame,
-    length: int,
-    scalar: int,
+    length: int = 25,
+    scalar: int = 100,
+    s_ticker: str = "",
     export: str = "",
 ):
     """Plot Aroon indicator
 
     Parameters
     ----------
-    s_ticker : str
-        Ticker
-    s_interval: str
-        Interval of price data
     df_stock : pd.DataFrame.length
         Dataframe of prices
     length:int
         Length of window
+    s_ticker : str
+        Ticker
     scalar : int
         Scalar variable
     """
-    df_ta = trend_indicators_model.aroon(df_stock, length, scalar)
+    df_ta = trend_indicators_model.aroon(
+        high_values=df_stock["High"],
+        low_values=df_stock["Low"],
+        length=length,
+        scalar=scalar,
+    )
 
     fig, ax = plt.subplots(3, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax0 = ax[0]
     # Daily
-    if s_interval == "1440min":
-        ax0.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
-    # Intraday
-    else:
-        ax0.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
+    ax0.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
 
     ax0.set_title(f"Aroon on {s_ticker}")
     ax0.set_xlim(df_stock.index[0], df_stock.index[-1])

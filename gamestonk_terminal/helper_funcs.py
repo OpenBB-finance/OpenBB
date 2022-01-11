@@ -1,5 +1,6 @@
 """Helper functions"""
 __docformat__ = "numpy"
+# pylint: disable=too-many-lines
 import argparse
 import logging
 from typing import List
@@ -426,7 +427,7 @@ def divide_chunks(data, n):
     """Split into chunks"""
     # looping till length of data
     for i in range(0, len(data), n):
-        yield data[i : i + n]
+        yield data[i : i + n]  # noqa: E203
 
 
 def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
@@ -857,7 +858,7 @@ def get_last_time_market_was_open(dt):
 
 def export_data(
     export_type: str, dir_path: str, func_name: str, df: pd.DataFrame = pd.DataFrame()
-):
+) -> None:
     """Export data to a file.
 
     Parameters
@@ -930,23 +931,13 @@ def get_rf() -> float:
 
 
 class LineAnnotateDrawer:
+    """Line drawing class."""
+
     def __init__(self, ax: matplotlib.axes = None):
         self.ax = ax
 
     def draw_lines_and_annotate(self):
-
-        # ymin, _ = self.ax.get_ylim()
-        # xmin, _ = self.ax.get_xlim()
-        # self.ax.plot(
-        #     [xmin, xmin],
-        #     [ymin, ymin],
-        #     lw=0,
-        #     color="white",
-        #     label="X - leave interactive mode\nClick twice for annotation",
-        # )
-        # self.ax.legend(handlelength=0, handletextpad=0, fancybox=True, loc=2)
-        # self.ax.figure.canvas.draw()
-
+        """Draw lines."""
         print("Click twice for annotation.\nClose window to keep using terminal.\n")
 
         while True:
