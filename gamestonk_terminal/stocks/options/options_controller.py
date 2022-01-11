@@ -60,6 +60,7 @@ class OptionsController(BaseController):
         "plot",
         "parity",
         "binom",
+        "vsurf",
     ]
     CHOICES_MENUS = [
         "payoff",
@@ -178,6 +179,7 @@ Expiry: [/param]{self.selected_date or None}
     vol           plot volume [src][Tradier/YFinance][/src]
     voi           plot volume and open interest [src][Tradier/YFinance][/src]
     hist          plot option history [src][Tradier][/src]
+    vsurf         show 3D volatility surface [Yfinance]
     grhist        plot option greek history [src][Syncretism.io][/src]
     plot          plot variables provided by the user [src][Yfinance][/src]
     parity        shows whether options are above or below expected price [src][Yfinance][/src]
@@ -1082,6 +1084,21 @@ Expiry: [/param]{self.selected_date or None}
                     console.print("No expiry loaded. First use `exp {expiry date}`\n")
             else:
                 console.print("No ticker loaded. First use `load <ticker>`\n")
+
+    def call_vsurf(self, other_args: List[str]):
+        """Process vol command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="vsurf",
+            description="Plot 3D volatility surface.",
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            yfinance_view.display_vol_surface(self.ticker, export=ns_parser.export)
 
     def call_parity(self, other_args: List[str]):
         """Process parity command"""
