@@ -8,7 +8,7 @@ from gamestonk_terminal.common.technical_analysis import volatility_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
 
 
@@ -21,8 +21,13 @@ async def donchian_command(
 
         # Debug
         if cfg.DEBUG:
-            print(
-                f"!stocks.ta.donchian {ticker} {upper_length} {lower_length} {start} {end}"
+            logger.debug(
+                "!stocks.ta.donchian %s %s %s %s %s",
+                ticker,
+                upper_length,
+                lower_length,
+                start,
+                end,
             )
 
         # Check for argument
@@ -54,7 +59,9 @@ async def donchian_command(
         # Retrieve Data
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
-        df_ta = volatility_model.donchian(df_stock, upper_length, lower_length)
+        df_ta = volatility_model.donchian(
+            df_stock["High"], df_stock["Low"], upper_length, lower_length
+        )
 
         # Output Data
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -86,7 +93,7 @@ async def donchian_command(
         uploaded_image = gst_imgur.upload_image("ta_donchian.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: Donchian-Channels " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

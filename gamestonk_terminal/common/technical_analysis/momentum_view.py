@@ -16,47 +16,42 @@ from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 register_matplotlib_converters()
 
 
-def plot_cci(
-    s_ticker: str,
-    s_interval: str,
-    df_stock: pd.DataFrame,
-    length: int,
-    scalar: float,
+def display_cci(
+    df: pd.DataFrame,
+    length: int = 14,
+    scalar: float = 0.0015,
+    s_ticker: str = "",
     export: str = "",
 ):
     """Display CCI Indicator
 
     Parameters
     ----------
-    s_ticker : str
-        Stock ticker
-    s_interval : str
-        Interval of stock data
-    df_stock : pd.DataFrame
-        Dataframe of prices
+
+    ohlc_df : pd.DataFrame
+        Dataframe of OHLC
     length : int
         Length of window
     scalar : float
         Scalar variable
+    s_ticker : str
+        Stock ticker
     export : str
         Format to export data
     """
-    df_ta = momentum_model.cci(s_interval, df_stock, length, scalar)
+    df_ta = momentum_model.cci(df["High"], df["Low"], df["Adj Close"], length, scalar)
 
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
     ax.set_title(f"{s_ticker} CCI")
-    if s_interval == "1440min":
-        ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
-    else:
-        ax.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
-    ax.set_xlim(df_stock.index[0], df_stock.index[-1])
+    ax.plot(df.index, df["Adj Close"].values, "k", lw=2)
+    ax.set_xlim(df.index[0], df.index[-1])
     ax.set_ylabel("Share Price ($)")
     ax.grid(b=True, which="major", color="#666666", linestyle="-")
 
     ax2 = axes[1]
     ax2.plot(df_ta.index, df_ta.values, "b", lw=2)
-    ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
+    ax2.set_xlim(df.index[0], df.index[-1])
     ax2.axhspan(100, plt.gca().get_ylim()[1], facecolor="r", alpha=0.2)
     ax2.axhspan(plt.gca().get_ylim()[0], -100, facecolor="g", alpha=0.2)
     ax2.axhline(100, linewidth=3, color="r", ls="--")
@@ -85,44 +80,38 @@ def plot_cci(
     )
 
 
-def view_macd(
-    s_ticker: str,
-    s_interval: str,
-    df_stock: pd.DataFrame,
-    n_fast: int,
-    n_slow: int,
-    n_signal: int,
+def display_macd(
+    values: pd.Series,
+    n_fast: int = 12,
+    n_slow: int = 26,
+    n_signal: int = 9,
+    s_ticker: str = "",
     export: str = "",
 ):
     """Plot MACD signal
 
     Parameters
     ----------
-    s_ticker : str
-        Stock ticker
-    s_interval : str
-        Interval of data
-    df_stock : pd.DataFrame
-        Dataframe of prices
+    values : pd.DataFrame
+        Values to input
     n_fast : int
         Fast period
     n_slow : int
         Slow period
     n_signal : int
         Signal period
+    s_ticker : str
+        Stock ticker
     export : str
         Format to export data
     """
-    df_ta = momentum_model.macd(s_interval, df_stock, n_fast, n_slow, n_signal)
+    df_ta = momentum_model.macd(values, n_fast, n_slow, n_signal)
 
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
     ax.set_title(f"{s_ticker} MACD")
-    if s_interval == "1440min":
-        ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
-    else:
-        ax.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
-    ax.set_xlim(df_stock.index[0], df_stock.index[-1])
+    ax.plot(values.index, values.values, "k", lw=2)
+    ax.set_xlim(values.index[0], values.index[-1])
     ax.set_ylabel("Share Price ($)")
     ax.grid(b=True, which="major", color="#666666", linestyle="-")
 
@@ -138,7 +127,7 @@ def view_macd(
         ],
         loc="upper left",
     )
-    ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
+    ax2.set_xlim(values.index[0], values.index[-1])
     ax2.grid(b=True, which="major", color="#666666", linestyle="-")
 
     if gtff.USE_ION:
@@ -157,24 +146,19 @@ def view_macd(
     )
 
 
-def view_rsi(
-    s_ticker: str,
-    s_interval: str,
-    df_stock: pd.DataFrame,
-    length: int,
-    scalar: float,
-    drift: int,
+def display_rsi(
+    prices: pd.Series,
+    length: int = 14,
+    scalar: float = 100.0,
+    drift: int = 1,
+    s_ticker: str = "",
     export: str = "",
 ):
     """Display RSI Indicator
 
     Parameters
     ----------
-    s_ticker : str
-        Stock ticker
-    s_interval : str
-        Interval of stock data
-    df_stock : pd.DataFrame
+    prices : pd.Series
         Dataframe of prices
     length : int
         Length of window
@@ -182,25 +166,24 @@ def view_rsi(
         Scalar variable
     drift : int
         Drift variable
+    s_ticker : str
+        Stock ticker
     export : str
         Format to export data
     """
-    df_ta = momentum_model.rsi(s_interval, df_stock, length, scalar, drift)
+    df_ta = momentum_model.rsi(prices, length, scalar, drift)
 
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
-    if s_interval == "1440min":
-        ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
-    else:
-        ax.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
+    ax.plot(prices.index, prices.values, "k", lw=2)
     ax.set_title(f" {s_ticker} RSI{length} ")
-    ax.set_xlim(df_stock.index[0], df_stock.index[-1])
+    ax.set_xlim(prices.index[0], prices.index[-1])
     ax.set_ylabel("Share Price ($)")
     ax.grid(b=True, which="major", color="#666666", linestyle="-")
 
     ax2 = axes[1]
     ax2.plot(df_ta.index, df_ta.values, "b", lw=2)
-    ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
+    ax2.set_xlim(prices.index[0], prices.index[-1])
     ax2.axhspan(70, 100, facecolor="r", alpha=0.2)
     ax2.axhspan(0, 30, facecolor="g", alpha=0.2)
     ax2.axhline(70, linewidth=3, color="r", ls="--")
@@ -228,23 +211,18 @@ def view_rsi(
     )
 
 
-def view_stoch(
-    s_ticker: str,
-    s_interval: str,
+def display_stoch(
     df_stock: pd.DataFrame,
-    fastkperiod: int,
-    slowdperiod: int,
-    slowkperiod: int,
+    fastkperiod: int = 14,
+    slowdperiod: int = 3,
+    slowkperiod: int = 3,
+    s_ticker: str = "",
     export: str = "",
 ):
     """Plot stochastic oscillator signal
 
     Parameters
     ----------
-    s_ticker : str
-        Stock ticker
-    s_interval : str
-        Interval of data
     df_stock : pd.DataFrame
         Dataframe of prices
     fastkperiod : int
@@ -253,19 +231,24 @@ def view_stoch(
         Slow d period
     slowkperiod : int
         Slow k period
+    s_ticker : str
+        Stock ticker
     export : str
         Format to export data
     """
     df_ta = momentum_model.stoch(
-        s_interval, df_stock, fastkperiod, slowdperiod, slowkperiod
+        df_stock["High"],
+        df_stock["Low"],
+        df_stock["Adj Close"],
+        fastkperiod,
+        slowdperiod,
+        slowkperiod,
     )
 
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
-    if s_interval == "1440min":
-        ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
-    else:
-        ax.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
+    ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
+
     ax.set_title(f"Stochastic Relative Strength Index (STOCH RSI) on {s_ticker}")
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax.set_xticklabels([])
@@ -305,33 +288,31 @@ def view_stoch(
     )
 
 
-def view_fisher(
-    s_ticker: str, s_interval: str, df_stock: pd.DataFrame, length: int, export: str
+def display_fisher(
+    df_stock: pd.DataFrame,
+    length: int = 14,
+    s_ticker: str = "",
+    export: str = "",
 ):
     """Display Fisher Indicator
 
     Parameters
     ----------
-    s_ticker : str
-        Stock ticker
-    s_interval : str
-        Interval of stock data
     df_stock : pd.DataFrame
         Dataframe of prices
     length : int
         Length of window
+    s_ticker : str
+        Ticker string
     export : str
         Format to export data
     """
-    df_ta = momentum_model.fisher(s_interval, df_stock, length)
+    df_ta = momentum_model.fisher(df_stock["High"], df_stock["Low"], length)
 
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
     ax.set_title(f"{s_ticker} Fisher Transform")
-    if s_interval == "1440min":
-        ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=1)
-    else:
-        ax.plot(df_stock.index, df_stock["Close"].values, "k", lw=1)
+    ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=1)
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax.set_ylabel("Price")
     ax.grid(b=True, which="major", color="#666666", linestyle="-")
@@ -385,34 +366,32 @@ def view_fisher(
     )
 
 
-def view_cg(
-    s_ticker: str, s_interval: str, df_stock: pd.DataFrame, length: int, export: str
+def display_cg(
+    values: pd.Series,
+    length: int = 14,
+    s_ticker: str = "",
+    export: str = "",
 ):
-    """Display Fisher Indicator
+    """Display center of gravity Indicator
 
     Parameters
     ----------
-    s_ticker : str
-        Stock ticker
-    s_interval : str
-        Interval of stock data
-    df_stock : pd.DataFrame
-        Dataframe of prices
+    values : pd.Series
+        Series of values
     length : int
         Length of window
+    s_ticker : str
+        Stock ticker
     export : str
         Format to export data
     """
-    df_ta = momentum_model.cg(s_interval, df_stock, length)
+    df_ta = momentum_model.cg(values, length)
 
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
     ax.set_title(f"{s_ticker} Centre of Gravity")
-    if s_interval == "1440min":
-        ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=1)
-    else:
-        ax.plot(df_stock.index, df_stock["Close"].values, "k", lw=1)
-    ax.set_xlim(df_stock.index[0], df_stock.index[-1])
+    ax.plot(values.index, values.values, "k", lw=1)
+    ax.set_xlim(values.index[0], values.index[-1])
     ax.set_ylabel("Share Price ($)")
     ax.grid(b=True, which="major", color="#666666", linestyle="-")
 
@@ -422,7 +401,7 @@ def view_cg(
     signal = df_ta.values
     signal = np.roll(signal, 1)
     ax2.plot(df_ta.index, signal, "g", lw=1, label="Signal")
-    ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
+    ax2.set_xlim(values.index[0], values.index[-1])
     ax2.grid(b=True, which="major", color="#666666", linestyle="-")
 
     if gtff.USE_ION:

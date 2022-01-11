@@ -22,7 +22,7 @@ COMMAND_PREFIX = "!"
 DATE_FORMAT = "%Y-%m-%d"
 COLOR = discord.Color.from_rgb(0, 206, 154)
 MENU_TIMEOUT = 30
-DEBUG = True
+DEBUG = False
 
 GST_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 

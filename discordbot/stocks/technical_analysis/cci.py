@@ -8,7 +8,7 @@ from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
 
 
@@ -19,7 +19,14 @@ async def cci_command(ctx, ticker="", length="14", scalar="0.015", start="", end
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.cci {ticker} {length} {scalar} {start} {end}")
+            logger.debug(
+                "!stocks.ta.cci %s %s %s %s %s",
+                ticker,
+                length,
+                scalar,
+                start,
+                end,
+            )
 
         # Check for argument
         if ticker == "":
@@ -34,13 +41,15 @@ async def cci_command(ctx, ticker="", length="14", scalar="0.015", start="", end
             end = datetime.now()
         else:
             end = datetime.strptime(end, cfg.DATE_FORMAT)
-
-        if not length.lstrip("-").isnumeric():
-            raise Exception("Number has to be an integer")
-        length = float(length)
-        if not scalar.lstrip("-").isnumeric():
-            raise Exception("Number has to be an integer")
-        scalar = float(scalar)
+        # pylint
+        try:
+            length = int(length)
+        except ValueError as e:
+            raise Exception("Length has to be an integer") from e
+        try:
+            scalar = float(scalar)
+        except ValueError as e:
+            raise Exception("Scalar has to be an integer") from e
 
         ticker = ticker.upper()
         df_stock = discordbot.helpers.load(ticker, start)
@@ -49,7 +58,9 @@ async def cci_command(ctx, ticker="", length="14", scalar="0.015", start="", end
 
         # Retrieve Data
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
-        df_ta = momentum_model.cci("1440min", df_stock, length, scalar)
+        df_ta = momentum_model.cci(
+            df_stock["High"], df_stock["Low"], df_stock["Adj Close"], length, scalar
+        )
 
         fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
         ax = axes[0]
@@ -80,7 +91,7 @@ async def cci_command(ctx, ticker="", length="14", scalar="0.015", start="", end
         uploaded_image = gst_imgur.upload_image("ta_cci.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: Commodity-Channel-Index " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

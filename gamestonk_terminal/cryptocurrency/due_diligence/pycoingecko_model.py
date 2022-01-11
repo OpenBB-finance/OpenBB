@@ -14,6 +14,7 @@ from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
     rename_columns_in_dct,
     create_dictionary_with_prefixes,
     DENOMINATION,
+    calc_change,
 )
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     replace_underscores_in_column_names,
@@ -38,6 +39,160 @@ BASE_INFO = [
     "market_cap_rank",
     "public_interest_score",
 ]
+
+
+def get_coin_potential_returns(
+    main_coin: str,
+    vs: Union[str, None] = None,
+    top: Union[int, None] = None,
+    price: Union[int, None] = None,
+) -> pd.DataFrame:
+    """Fetch data to calculate potential returns of a certain coin. [Source: CoinGecko]
+
+    Parameters
+    ----------
+    main_coin   : str
+        Coin loaded to check potential returns for (e.g., algorand)
+    vs          : str | None
+        Coin to compare main_coin with (e.g., bitcoin)
+    top         : int | None
+        Number of coins with highest market cap to compare main_coin with (e.g., 5)
+    price
+        Target price of main_coin to check potential returns (e.g., 5)
+
+    Returns
+    -------
+    pd.DataFrame
+            Potential returns data
+            Columns: Coin, Current Price, Target Coin, Potential Price, Potential Market Cap ($), Change (%)
+    """
+    client = CoinGeckoAPI()
+    COLUMNS = [
+        "Coin",
+        "Current Price ($)",
+        "Current Market Cap ($)",
+        "Target Coin",
+        "Potential Price ($)",
+        "Potential Market Cap ($)",
+        "Change (%)",
+    ]
+    if top and top > 0:  # user wants to compare with top coins
+        data = client.get_price(
+            ids=f"{main_coin}",
+            vs_currencies="usd",
+            include_market_cap=True,
+            include_24hr_vol=False,
+            include_24hr_change=False,
+            include_last_updated_at=False,
+        )
+        top_coins_data = client.get_coins_markets(
+            vs_currency="usd", per_page=top, order="market_cap_desc"
+        )
+        main_coin_data = data[main_coin]
+        diff_arr = []
+        for coin in top_coins_data:
+            market_cap_difference_percentage = calc_change(
+                coin["market_cap"], main_coin_data["usd_market_cap"]
+            )
+            future_price = main_coin_data["usd"] * (
+                1 + market_cap_difference_percentage / 100
+            )
+            diff_arr.append(
+                [
+                    main_coin,
+                    main_coin_data["usd"],
+                    main_coin_data["usd_market_cap"],
+                    coin["id"],
+                    future_price,
+                    coin["market_cap"],
+                    market_cap_difference_percentage,
+                ]
+            )
+        return pd.DataFrame(
+            data=diff_arr,
+            columns=COLUMNS,
+        )
+
+    if vs:  # user passed a coin
+        data = client.get_price(
+            ids=f"{main_coin},{vs}",
+            vs_currencies="usd",
+            include_market_cap=True,
+            include_24hr_vol=False,
+            include_24hr_change=False,
+            include_last_updated_at=False,
+        )
+        main_coin_data = data[main_coin]
+        vs_coin_data = data[vs]
+
+        if main_coin_data and vs_coin_data:
+            market_cap_difference_percentage = calc_change(
+                vs_coin_data["usd_market_cap"], main_coin_data["usd_market_cap"]
+            )
+            future_price = main_coin_data["usd"] * (
+                1 + market_cap_difference_percentage / 100
+            )
+            return pd.DataFrame(
+                data=[
+                    [
+                        main_coin,
+                        main_coin_data["usd"],
+                        main_coin_data["usd_market_cap"],
+                        vs,
+                        future_price,
+                        vs_coin_data["usd_market_cap"],
+                        market_cap_difference_percentage,
+                    ]
+                ],
+                columns=COLUMNS,
+            )
+
+    if price and price > 0:  # user passed a price
+        data = client.get_price(
+            ids=main_coin,
+            vs_currencies="usd",
+            include_market_cap=True,
+            include_24hr_vol=False,
+            include_24hr_change=False,
+            include_last_updated_at=False,
+        )
+        main_coin_data = data[main_coin]
+        if main_coin_data:
+            final_market_cap = (
+                main_coin_data["usd_market_cap"] * price / main_coin_data["usd"]
+            )
+            market_cap_difference_percentage = calc_change(
+                final_market_cap, main_coin_data["usd_market_cap"]
+            )
+            future_price = main_coin_data["usd"] * (
+                1 + market_cap_difference_percentage / 100
+            )
+            return pd.DataFrame(
+                data=[
+                    [
+                        main_coin,
+                        main_coin_data["usd"],
+                        main_coin_data["usd_market_cap"],
+                        "",
+                        future_price,
+                        final_market_cap,
+                        market_cap_difference_percentage,
+                    ]
+                ],
+                columns=COLUMNS,
+            )
+
+    return pd.DataFrame()
+
+
+def check_coin(coin_id: str):
+    coins = load_coins_list("coingecko_coins.json")
+    for coin in coins:
+        if coin["id"] == coin_id:
+            return coin["id"]
+        if coin["symbol"] == coin_id:
+            return coin["id"]
+    return None
 
 
 def load_coins_list(file_name: str) -> pd.DataFrame:

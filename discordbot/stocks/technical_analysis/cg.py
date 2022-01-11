@@ -9,7 +9,7 @@ from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
 
 
@@ -20,7 +20,13 @@ async def cg_command(ctx, ticker="", length="14", start="", end=""):
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.cg {ticker} {length} {start} {end}")
+            logger.debug(
+                "!stocks.ta.cg %s %s %s %s",
+                ticker,
+                length,
+                start,
+                end,
+            )
 
         # Check for argument
         if ticker == "":
@@ -47,8 +53,9 @@ async def cg_command(ctx, ticker="", length="14", start="", end=""):
 
         # Retrieve Data
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
-
-        df_ta = momentum_model.cg("1440min", df_stock, length)
+        df_close = df_stock["Adj Close"]
+        df_close.columns = ["values"]
+        df_ta = momentum_model.cg(df_close, length)
 
         # Output Data
         fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -76,7 +83,7 @@ async def cg_command(ctx, ticker="", length="14", start="", end=""):
         uploaded_image = gst_imgur.upload_image("ta_cg.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: Center-of-Gravity " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

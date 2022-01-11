@@ -8,16 +8,14 @@ MAMODES = ["ema", "sma", "wma", "hma", "zlma"]
 
 
 def bbands(
-    s_interval: str, df_stock: pd.DataFrame, length: int, n_std: float, mamode: str
+    close_values: pd.Series, length: int = 15, n_std: float = 2, mamode: str = "ema"
 ) -> pd.DataFrame:
     """Calculate Bollinger Bands
 
     Parameters
     ----------
-    s_interval : str
-        Interval of stock data
-    df_stock : pd.DataFrame
-        DataFrame of stock data
+    close_values : pd.DataFrame
+        DataFrame of sclose prices
     length : int
         Length of window to calculate BB
     n_std : float
@@ -30,77 +28,69 @@ def bbands(
     df_ta: pd.DataFrame
         Dataframe of bollinger band data
     """
-    # Daily
-    if s_interval == "1440min":
-        df_ta = ta.bbands(
-            close=df_stock["Adj Close"],
+    return pd.DataFrame(
+        ta.bbands(
+            close=close_values,
             length=length,
             std=n_std,
             mamode=mamode,
-        ).dropna()
-
-    # Intraday
-    else:
-        df_ta = ta.bbands(
-            close=df_stock["Close"],
-            length=length,
-            std=n_std,
-            mamode=mamode,
-        ).dropna()
-
-    return df_ta
+        )
+    ).dropna()
 
 
 def donchian(
-    df_stock: pd.DataFrame,
-    upper_length: int,
-    lower_length: int,
+    high_prices: pd.Series,
+    low_prices: pd.Series,
+    upper_length: int = 20,
+    lower_length: int = 20,
 ) -> pd.DataFrame:
     """Calculate Donchian Channels
 
     Parameters
     ----------
-    s_interval : str
-        Interval of stock data
-    df_stock : pd.DataFrame
-        DataFrame of stock data
+    high_prices : pd.DataFrame
+        High prices
+    low_prices : pd.DataFrame
+        Low prices
     upper_length : int
         Length of window to calculate upper channel
     lower_length : int
         Length of window to calculate lower channel
 
-
     Returns
     -------
-    df_ta: pd.DataFrame
+    pd.DataFrame
         Dataframe of upper and lower channels
     """
-    df_ta = ta.donchian(
-        high=df_stock["High"],
-        low=df_stock["Low"],
-        upper_length=upper_length,
-        lower_length=lower_length,
-    ).dropna()
-
-    return df_ta
+    return pd.DataFrame(
+        ta.donchian(
+            high=high_prices,
+            low=low_prices,
+            upper_length=upper_length,
+            lower_length=lower_length,
+        ).dropna()
+    )
 
 
 def kc(
-    s_interval: str,
-    df_stock: pd.DataFrame,
-    length: int,
-    scalar: float,
-    mamode: str,
-    offset: int,
+    high_prices: pd.Series,
+    low_prices: pd.Series,
+    close_prices: pd.Series,
+    length: int = 20,
+    scalar: float = 2,
+    mamode: str = "ema",
+    offset: int = 0,
 ) -> pd.DataFrame:
     """Keltner Channels
 
     Parameters
     ----------
-    s_interval : str
-        Interval of stock data
-    df_stock : pd.DataFrame
-        Dataframe of prices
+    high_values : pd.DataFrame
+        High prices
+    low_values : pd.DataFrame
+        Low prices
+    close_values : pd.DataFrame
+        Close prices
     length : int
         Length of window
     mamode: str
@@ -114,27 +104,14 @@ def kc(
         Dataframe of rolling kc
     """
     # Daily
-    if s_interval == "1440min":
-        df_kc = ta.kc(
-            high=df_stock["High"],
-            low=df_stock["Low"],
-            close=df_stock["Adj Close"],
+    return pd.DataFrame(
+        ta.kc(
+            high=high_prices,
+            low=low_prices,
+            close=close_prices,
             length=length,
             scalar=scalar,
             mamode=mamode,
             offset=offset,
         ).dropna()
-
-    # Intraday
-    else:
-        df_kc = ta.kc(
-            high=df_stock["High"],
-            low=df_stock["Low"],
-            close=df_stock["Close"],
-            length=length,
-            scalar=scalar,
-            mamode=mamode,
-            offset=offset,
-        ).dropna()
-
-    return df_kc
+    )

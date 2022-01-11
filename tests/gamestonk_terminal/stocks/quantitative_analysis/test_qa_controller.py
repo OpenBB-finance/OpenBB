@@ -76,20 +76,33 @@ def test_menu_with_queue(expected, mocker, queue):
         ),
         return_value=["quit"],
     )
-    result_menu = qa_controller.menu(
+    result_menu = qa_controller.QaController(
         ticker="TSLA",
         start=datetime.strptime("2021-12-21", "%Y-%m-%d"),
         interval="1440min",
         stock=DF_STOCK.copy(),
         queue=queue,
-    )
+    ).menu()
 
     assert result_menu == expected
 
 
 @pytest.mark.vcr(record_mode="none")
 def test_menu_without_queue_completion(mocker):
-    # DISABLE AUTO-COMPLETION
+    # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    mocker.patch(
+        target="gamestonk_terminal.feature_flags.USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session.prompt",
+        return_value="quit",
+    )
+
+    # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch.object(
         target=qa_controller.gtff,
         attribute="USE_PROMPT_TOOLKIT",
@@ -103,13 +116,13 @@ def test_menu_without_queue_completion(mocker):
         return_value="quit",
     )
 
-    result_menu = qa_controller.menu(
+    result_menu = qa_controller.QaController(
         ticker="TSLA",
         start=datetime.strptime("2021-12-21", "%Y-%m-%d"),
         interval="1440min",
         stock=DF_STOCK.copy(),
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -154,13 +167,13 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         new=mock_switch,
     )
 
-    result_menu = qa_controller.menu(
+    result_menu = qa_controller.QaController(
         ticker="TSLA",
         start=datetime.strptime("2021-12-21", "%Y-%m-%d"),
         interval="1440min",
         stock=DF_STOCK.copy(),
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -238,12 +251,29 @@ def test_call_cls(mocker):
         (
             "call_reset",
             [],
-            ["quit", "quit", "reset", "stocks", "load MOCK_TICKER", "qa"],
+            [
+                "quit",
+                "quit",
+                "reset",
+                "stocks",
+                "load MOCK_TICKER",
+                "qa",
+                "pick returns",
+            ],
         ),
         (
             "call_reset",
             ["help"],
-            ["quit", "quit", "reset", "stocks", "load MOCK_TICKER", "qa", "help"],
+            [
+                "quit",
+                "quit",
+                "reset",
+                "stocks",
+                "load MOCK_TICKER",
+                "qa",
+                "pick returns",
+                "help",
+            ],
         ),
     ],
 )

@@ -1,11 +1,14 @@
 import os
+
 import discord
 import matplotlib.pyplot as plt
-import discordbot.config_discordbot as cfg
 
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.stocks.options import yfinance_model
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import logger
 
 
 async def vol_command(
@@ -21,7 +24,7 @@ async def vol_command(
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.opt.vol {ticker} {expiry} {min_sp} {max_sp}")
+            logger.debug("!stocks.opt.vol %s %s %s %s", ticker, expiry, min_sp, max_sp)
 
         # Check for argument
         if ticker is None:
@@ -87,7 +90,7 @@ async def vol_command(
         image = discord.File(imagefile)
 
         if cfg.DEBUG:
-            print(f"Image: {imagefile}")
+            logger.debug("Image: %s", imagefile)
         title = f"Volume for {ticker.upper()} expiring {expiry}"
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_image(url="attachment://opt_vol.png")

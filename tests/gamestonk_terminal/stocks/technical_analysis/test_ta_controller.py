@@ -14,6 +14,10 @@ from gamestonk_terminal.stocks.technical_analysis import ta_controller
 # pylint: disable=E1111
 
 EMPTY_DF = pd.DataFrame()
+MOCK_STOCK_DF = pd.read_csv(
+    "tests/gamestonk_terminal/stocks/technical_analysis/csv/testdf.csv", index_col=0
+)
+print(MOCK_STOCK_DF.columns)
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -33,13 +37,13 @@ def test_menu_with_queue(expected, mocker, queue):
         return_value=["quit"],
     )
 
-    result_menu = ta_controller.menu(
+    result_menu = ta_controller.TechnicalAnalysisController(
         ticker="MOCK_TICKER",
         start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
         interval="MOCK_INTERVAL",
         stock=EMPTY_DF,
         queue=queue,
-    )
+    ).menu()
 
     assert result_menu == expected
 
@@ -47,6 +51,21 @@ def test_menu_with_queue(expected, mocker, queue):
 @pytest.mark.vcr(record_mode="none")
 def test_menu_without_queue_completion(mocker):
     path_controller = "gamestonk_terminal.stocks.technical_analysis.ta_controller"
+
+    # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    mocker.patch(
+        target="gamestonk_terminal.feature_flags.USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session.prompt",
+        return_value="quit",
+    )
+
+    # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
 
     # DISABLE AUTO-COMPLETION
     mocker.patch.object(
@@ -62,13 +81,13 @@ def test_menu_without_queue_completion(mocker):
         return_value="quit",
     )
 
-    result_menu = ta_controller.menu(
+    result_menu = ta_controller.TechnicalAnalysisController(
         ticker="MOCK_TICKER",
         start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
         interval="MOCK_INTERVAL",
         stock=EMPTY_DF,
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -112,13 +131,13 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         new=mock_switch,
     )
 
-    result_menu = ta_controller.menu(
+    result_menu = ta_controller.TechnicalAnalysisController(
         ticker="MOCK_TICKER",
         start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
         interval="MOCK_INTERVAL",
         stock=EMPTY_DF,
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -177,7 +196,7 @@ def test_switch(an_input, expected_queue):
         ticker="MOCK_TICKER",
         start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
         interval="MOCK_INTERVAL",
-        stock=EMPTY_DF,
+        stock=MOCK_STOCK_DF,
         queue=None,
     )
     queue = controller.switch(an_input=an_input)
@@ -329,8 +348,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 ma_type="EMA",
                 s_ticker="MOCK_TICKER",
-                s_interval="MOCK_INTERVAL",
-                df_stock=EMPTY_DF,
+                values=MOCK_STOCK_DF["Adj Close"],
                 length=[1, 2],
                 offset=2,
                 export="csv",
@@ -348,8 +366,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 ma_type="SMA",
                 s_ticker="MOCK_TICKER",
-                s_interval="MOCK_INTERVAL",
-                df_stock=EMPTY_DF,
+                values=MOCK_STOCK_DF["Adj Close"],
                 length=[1, 2],
                 offset=2,
                 export="csv",
@@ -367,8 +384,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 ma_type="WMA",
                 s_ticker="MOCK_TICKER",
-                s_interval="MOCK_INTERVAL",
-                df_stock=EMPTY_DF,
+                values=MOCK_STOCK_DF["Adj Close"],
                 length=[1, 2],
                 offset=2,
                 export="csv",
@@ -386,8 +402,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 ma_type="HMA",
                 s_ticker="MOCK_TICKER",
-                s_interval="MOCK_INTERVAL",
-                df_stock=EMPTY_DF,
+                values=MOCK_STOCK_DF["Adj Close"],
                 length=[1, 2],
                 offset=2,
                 export="csv",
@@ -403,8 +418,8 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 s_ticker="MOCK_TICKER",
+                df_stock=MOCK_STOCK_DF,
                 s_interval="MOCK_INTERVAL",
-                df_stock=EMPTY_DF,
                 offset=2,
                 export="csv",
             ),
@@ -421,8 +436,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 ma_type="ZLMA",
                 s_ticker="MOCK_TICKER",
-                s_interval="MOCK_INTERVAL",
-                df_stock=EMPTY_DF,
+                values=MOCK_STOCK_DF["Adj Close"],
                 length=[1, 2],
                 offset=2,
                 export="csv",
@@ -435,12 +449,11 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--scalar=2",
                 "--export=csv",
             ],
-            "momentum_view.plot_cci",
+            "momentum_view.display_cci",
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                s_interval="MOCK_INTERVAL",
-                df_stock=EMPTY_DF,
+                df=MOCK_STOCK_DF,
                 length=1,
                 scalar=2,
                 export="csv",
@@ -454,12 +467,11 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--signal=3",
                 "--export=csv",
             ],
-            "momentum_view.view_macd",
+            "momentum_view.display_macd",
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                s_interval="MOCK_INTERVAL",
-                df_stock=EMPTY_DF,
+                values=MOCK_STOCK_DF["Adj Close"],
                 n_fast=1,
                 n_slow=2,
                 n_signal=3,
@@ -474,12 +486,11 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--drift=3",
                 "--export=csv",
             ],
-            "momentum_view.view_rsi",
+            "momentum_view.display_rsi",
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                s_interval="MOCK_INTERVAL",
-                df_stock=EMPTY_DF,
+                prices=MOCK_STOCK_DF["Adj Close"],
                 length=1,
                 scalar=2,
                 drift=3,
@@ -494,12 +505,11 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--slowkperiod=3",
                 "--export=csv",
             ],
-            "momentum_view.view_stoch",
+            "momentum_view.display_stoch",
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                s_interval="MOCK_INTERVAL",
-                df_stock=EMPTY_DF,
+                df_stock=MOCK_STOCK_DF,
                 fastkperiod=1,
                 slowdperiod=2,
                 slowkperiod=3,
@@ -512,12 +522,11 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "1",
                 "--export=csv",
             ],
-            "momentum_view.view_fisher",
+            "momentum_view.display_fisher",
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                s_interval="MOCK_INTERVAL",
-                df_stock=EMPTY_DF,
+                df_stock=MOCK_STOCK_DF,
                 length=1,
                 export="csv",
             ),
@@ -528,12 +537,11 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "1",
                 "--export=csv",
             ],
-            "momentum_view.view_cg",
+            "momentum_view.display_cg",
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                s_interval="MOCK_INTERVAL",
-                df_stock=EMPTY_DF,
+                values=MOCK_STOCK_DF["Adj Close"],
                 length=1,
                 export="csv",
             ),
@@ -546,12 +554,11 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--drift=3",
                 "--export=csv",
             ],
-            "trend_indicators_view.plot_adx",
+            "trend_indicators_view.display_adx",
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                s_interval="MOCK_INTERVAL",
-                df_stock=EMPTY_DF,
+                df_stock=MOCK_STOCK_DF,
                 length=1,
                 scalar=2,
                 drift=3,
@@ -565,12 +572,11 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--scalar=2",
                 "--export=csv",
             ],
-            "trend_indicators_view.plot_aroon",
+            "trend_indicators_view.display_aroon",
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                s_interval="MOCK_INTERVAL",
-                df_stock=EMPTY_DF,
+                df_stock=MOCK_STOCK_DF,
                 length=1,
                 scalar=2,
                 export="csv",
@@ -584,12 +590,11 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--mamode=MOCK_MAMODE",
                 "--export=csv",
             ],
-            "volatility_view.view_bbands",
+            "volatility_view.display_bbands",
             [],
             dict(
                 ticker="MOCK_TICKER",
-                s_interval="MOCK_INTERVAL",
-                df_stock=EMPTY_DF,
+                df_stock=MOCK_STOCK_DF,
                 length=1,
                 n_std=2,
                 mamode="MOCK_MAMODE",
@@ -603,12 +608,11 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--length_lower=2",
                 "--export=csv",
             ],
-            "volatility_view.view_donchian",
+            "volatility_view.display_donchian",
             [],
             dict(
                 ticker="MOCK_TICKER",
-                s_interval="MOCK_INTERVAL",
-                df_stock=EMPTY_DF,
+                df_stock=MOCK_STOCK_DF,
                 upper_length=1,
                 lower_length=2,
                 export="csv",
@@ -627,8 +631,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                s_interval="MOCK_INTERVAL",
-                df_stock=EMPTY_DF,
+                df_stock=MOCK_STOCK_DF,
                 length=1,
                 scalar=2,
                 mamode="sma",
@@ -642,12 +645,11 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--open",
                 "--export=csv",
             ],
-            "volume_view.plot_ad",
+            "volume_view.display_ad",
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                s_interval="MOCK_INTERVAL",
-                df_stock=EMPTY_DF,
+                df_stock=MOCK_STOCK_DF,
                 use_open=True,
                 export="csv",
             ),
@@ -660,12 +662,11 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--slow_length=2",
                 "--export=csv",
             ],
-            "volume_view.plot_adosc",
+            "volume_view.display_adosc",
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                s_interval="MOCK_INTERVAL",
-                df_stock=EMPTY_DF,
+                df_stock=MOCK_STOCK_DF,
                 use_open=True,
                 fast=1,
                 slow=2,
@@ -677,12 +678,11 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "--export=csv",
             ],
-            "volume_view.plot_obv",
+            "volume_view.display_obv",
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                s_interval="MOCK_INTERVAL",
-                df_stock=EMPTY_DF,
+                df_stock=MOCK_STOCK_DF,
                 export="csv",
             ),
         ),
@@ -698,7 +698,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                df_stock=EMPTY_DF,
+                df_stock=MOCK_STOCK_DF,
                 period=1,
                 start_date=datetime.strptime("2021-12-01", "%Y-%m-%d"),
                 end_date=datetime.strptime("2021-12-02", "%Y-%m-%d"),
@@ -723,7 +723,7 @@ def test_call_func(
             ticker="MOCK_TICKER",
             start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
             interval="MOCK_INTERVAL",
-            stock=EMPTY_DF,
+            stock=MOCK_STOCK_DF,
             queue=None,
         )
         controller.screen_tickers = ["PM"]
@@ -745,6 +745,7 @@ def test_call_func(
         getattr(controller, tested_func)(other_args)
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 def test_call_load(mocker):
     # FORCE SINGLE THREADING

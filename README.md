@@ -33,9 +33,11 @@
   </a>
 
   <h3 align="center">Gamestonk Terminal 🚀</h3>
+  
+  ![honest work](https://user-images.githubusercontent.com/25267873/148552707-12dcca7e-0b7e-481c-9055-17436c2bc4cf.gif)
 
   <p align="center">
-    The next best thing after Bloomberg Terminal. #weliketheterminal
+    Investment research for everyone.
     <br />
     <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/blob/master/ROADMAP.md"><strong>≪  ROADMAP</strong></a>
     &nbsp · &nbsp
@@ -62,12 +64,11 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#docker-installation---new-and-improved">Docker Installation - new and improved</a></li>
+        <li><a href="#docker-installation">Docker Installation</a></li>
         <li><a href="#local-install---anaconda-and-python">Local Install - Anaconda and Python</a></li>
         <li><a href="#advanced-user-install---machine-learning">Advanced User Install - Machine Learning</a></li>
         <li><a href="#update-terminal">Update Terminal</a></li>
         <li><a href="#api-keys">API Keys</a></li>
-        <li><a href="#usage">Usage</a></li>
       </ul>
     </li>
     <li><a href="#contributing">Contributing</a></li>
@@ -96,9 +97,20 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
 
 ## Getting Started
 
-### Docker Installation - _new and improved_
+There are currently two main options to install the terminal:
 
-1. First step is to make sure docker desktop is installed. Install links can be found [here](https://www.docker.com/products/docker-desktop).
+* using Docker: recommended if you just want to use the terminal
+* using Python: recommended if you want to develop new features
+
+First step in both options is to star the project
+
+<img width="1272" alt="Github starts" src="https://user-images.githubusercontent.com/25267873/115989986-e20cfe80-a5b8-11eb-8182-d6d87d092252.png">
+
+If you want to install the terminal using Python ignore the Docker section and jump to <a href="#local-install---anaconda-and-python">Local Install - Anaconda and Python</a> section.
+
+### Docker Installation
+
+1. Make sure docker desktop is installed. Install links can be found [here](https://www.docker.com/products/docker-desktop).
    To confirm that your docker desktop is downloaded and running, open a command prompt or terminal and enter
    `docker info`. If you get the following you are not running the docker desktop:
 
@@ -116,9 +128,8 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
    docker pull ghcr.io/gamestonkterminal/gst-poetry:latest
    ```
 
-   Upon running this the first time, you should see the various layers downloading (note the random series of letters
-   numbers will vary). The first time this is run, it will take a few minutes. Subsequent updates will be much faster,
-   as the changes will be in the MB instead of GB.
+   Upon running this the first time, you should see the various layers downloading (note the random series of letters numbers will vary). The first time this is run, it will take a few minutes. Subsequent updates will be much faster, as the changes will be in the MB instead of GB.
+
    ![Screen Shot 2021-09-08 at 10 41 08 AM](https://user-images.githubusercontent.com/18151143/132531075-7d7f7e71-4fcb-435c-9bb3-466d7077eba4.png)
 
    Once the download is complete, confirm that the image has been created by doing `docker images`. You should see
@@ -131,19 +142,47 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
 
 3. Run a container
 
-   You are now ready to run the terminal.
+   You are now ready to run the terminal (every time you want to use the terminal you need to run this command):
 
    `docker run -it --rm ghcr.io/gamestonkterminal/gst-poetry:latest`
 
    This will open up the terminal in your command prompt or terminal. Note that this has provided now environment file,
    so you will not be able to view plots or use keys at this stage.
 
-   To read more on adding the environment keys and how to configure your X-server to show plots, hop over to the
+   At this point, you should be able to use the majority of the features using Docker. To read more on adding the environment keys and how to configure your X-server to show plots, hop over to the
    [Advanced Docker Setup](/DOCKER_ADVANCED.md).
 
 ### Local Install - Anaconda and Python
 
-If you'd like to see a video recording of the installation process, @JohnnyDankseed has made one available [here](https://www.youtube.com/watch?v=-DJJ-cfquDA).
+This installation type supports both Windows and Unix systems (Linux + MacOS). However, on Windows it can become messy so it is easier to use Windows Subsystem Linux (WSL) on this operating system. WSL emulates a Linux machine inside your Windows system.
+
+If you are using macOS or other Linux operating systems you can jump the next section <a href="#installing-the-terminal">Installing the terminal</a>.
+
+#### Installing WSL (Only for Windows users)
+
+If you are using Windows you first you need to install WSL. The process is simple and a tutorial can be found [here](https://www.sitepoint.com/wsl2/). Once you reach the section **Update Linux** on that tutorial, you should have a linux machine installed and can proceed to the next steps.
+
+Since WSL installation is headless by default (i.e., you have only access to a terminal running a linux distribution) you need some extra steps to be able to visualize the charts produced by the terminal (more detailed tutorial [here](https://medium.com/@shaoyenyu/make-matplotlib-works-correctly-with-x-server-in-wsl2-9d9928b4e36a)):
+
+1. Dynamically export the DISPLAY environment variable in WSL2:
+
+   ```bash
+   # add to the end of ~/.bashrc file
+   export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
+   # source the file
+   source ~/.bashrc
+   ```
+
+2. Download and install [VcXsrv](https://sourceforge.net/projects/vcxsrv/)
+3. When running the program is important to check "Disable access control"
+
+After this, `VcXsrv` should be running successfully and we can proceed to terminal installation.
+
+Although we **extremely** recommend using WSL to run the terminal on windows, if you don't want or can't for some reason, you can try install the terminal directly on Windows without WSL. If you'd like to see a video recording of the installation on Windows without WSL, @JohnnyDankseed has made one available [here](https://www.youtube.com/watch?v=-DJJ-cfquDA).
+
+#### Installing the terminal
+
+These steps are common in all operating systems (Windows with or without WSL, MacOS or Linux).
 
 This project supports Python 3.7, 3.8 and 3.9.
 
@@ -153,15 +192,13 @@ Several features in this project utilize Machine Learning. Machine Learning Pyth
 If you decided to add Machine Learning features at a later point, you will likely have better user experience with
 Anaconda's Python distribution.
 
-0. Star the project
-
-   <img width="1272" alt="Github starts" src="https://user-images.githubusercontent.com/25267873/115989986-e20cfe80-a5b8-11eb-8182-d6d87d092252.png">
-
 1. [Install Anaconda](https://docs.anaconda.com/anaconda/install/index.html) (It's on the AUR as anaconda or miniconda3!)
+   * Follow the instructions specified on the website above:
+      * If you are using macOS click [Installing on MacOS](https://docs.anaconda.com/anaconda/install/mac-os/)
+      * If you are using WSL or Linux click [Installing on Linux](https://docs.anaconda.com/anaconda/install/linux/)
+      * If you are using Windows click [Installing on Windows](https://docs.anaconda.com/anaconda/install/windows/). **ONLY REQUIRED IF NOT USING WSL**, you also need to install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
 
-   - Confirm that you have it with: `conda -V`. The output should be something along the lines of: `conda 4.9.2`
-
-   - If on Windows, install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
+   * After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output should be something along the lines of: `conda 4.9.2`
 
 2. Install git
 
@@ -171,8 +208,8 @@ Anaconda's Python distribution.
 
 3. Clone the Project
 
-   - Via HTTPS: `git clone https://github.com/GamestonkTerminal/GamestonkTerminal.git`
-   - via SSH: `git clone git@github.com:GamestonkTerminal/GamestonkTerminal.git`
+   * Via HTTPS: `git clone https://github.com/GamestonkTerminal/GamestonkTerminal.git`
+   * via SSH: `git clone git@github.com:GamestonkTerminal/GamestonkTerminal.git`
 
 4. Navigate into the project's folder
 
@@ -216,7 +253,7 @@ Anaconda's Python distribution.
    python terminal.py
    ```
 
-9. (Windows - Optional) Speeding up opening process in the future
+9. (Windows - Optional and **only if you are not using WSL**) Speeding up opening process in the future
 
    After you've installed Gamestonk Terminal, you'll find a file named "Gamestonk Terminal.bat". You can use this file
    to open Gamestonk Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues
@@ -232,7 +269,7 @@ Anaconda's Python distribution.
 before you call `python terminal.py` again.
 
 **TROUBLESHOOT:** If you are having troubles to install, check our _newest_
-<a href="https://github.com/GamestonkTerminal/GamestonkTerminal/blob/master/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>
+<a href="https://github.com/GamestonkTerminal/GamestonkTerminal/blob/master/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>. You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
 
 ### Advanced User Install - Machine Learning
 
@@ -248,13 +285,13 @@ in separate places.
 
 _If you would like to use optional Machine Learning features:_
 
-- Update your [feature_flags.py](/gamestonk_terminal/feature_flags.py) with:
+* Update your [feature_flags.py](/gamestonk_terminal/feature_flags.py) with:
 
 ```bash
 ENABLE_PREDICT = os.getenv("GTFF_ENABLE_PREDICT") or True
 ```
 
-- Install optional ML features dependencies:
+* Install optional ML features dependencies:
 
 ```bash
 poetry install -E prediction
@@ -289,38 +326,9 @@ git stash pop
 
 ### API Keys
 
-The project is build around several different API calls, whether it is to access historical data or financials.
+The project is build around several different API calls, whether it is to access historical data or financials. The table below shows the ones where a key is necessary. The environment variable names are shown explicitly, for the variable name in the code one just needs to remove the "GT_", this can be found in [config_terminal.py](/gamestonk_terminal/config_terminal.py).
 
-These are the ones where a key is necessary:
-
-- Alpha Vantage: <https://www.alphavantage.co>
-- Binance: <https://binance.us> (US) / <https://binance.com> (Outside US)
-- CoinMarketCap API: <https://coinmarketcap.com/api>
-- Degiro API : <https://www.degiro.fr>
-- FRED: <https://fred.stlouisfed.org/docs/api/api_key.html>
-- Financial Modeling Prep: <https://financialmodelingprep.com/developer>
-- Finhub API: <https://finnhub.io>
-- News API: <https://newsapi.org>
-- Oanda API: <https://developer.oanda.com>
-- Polygon: <https://polygon.io>
-- Quandl: <https://www.quandl.com/tools/api>
-- Reddit: <https://www.reddit.com/prefs/apps>
-- SentimentInvestor: <https://sentimentinvestor.com>
-- Tradier: <https://developer.tradier.com/getting_started>
-- Twitter: <https://developer.twitter.com>
-- Coinbase Pro API: <https://docs.pro.coinbase.com/>
-- Whale Alert API: <https://docs.whale-alert.io/>
-- Ethplorer API: <https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API>
-- Cryptopanic API: <https://cryptopanic.com/developers/api/>
-- BitQuery API: <https://bitquery.io/pricing>
-- Glassnode API: <https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key>
-- Coinglass API: <https://coinglass.github.io/API-Reference/#api-key>
-
-When these are obtained, don't forget to update [config_terminal.py](/gamestonk_terminal/config_terminal.py).
-
-Alternatively, you can also set them to the following environment variables:
-
-| Website                                                                         | Variables                                                                                                                                         |
+| Website | Environment Variables |
 | :------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------ |
 | [Alpha Vantage](https://www.alphavantage.co)                                    | GT_API_KEY_ALPHAVANTAGE                                                                                                                           |
 | [Binance](https://binance.com)                                                  | GT_API_BINANCE_KEY <br/> GT_API_BINANCE_SECRET                                                                                                    |
@@ -360,73 +368,6 @@ GT_API_REDDIT_USERNAME=SexyYear
 
 Note that the `GT_API_REDDIT_USER_AGENT` is the name of the script that you set when obtained the Reddit API key.
 Note that it is not necessary to have a valid Alpha Vantage key to get daily OHLC values.
-
-### Usage
-
-Start by selecting a context that you would like to work with. If you want to research stocks, you would start with
-
-```bash
-stocks
-```
-
-Alternatively, you can set a default context to be loaded in the config_terminal file by setting
-
-```bash
-DEFAULT_CONTEXT = "stocks"
-```
-
-From this menu, you can load a ticker of interest (note the -t is optional):
-
-```bash
-load -t GME
-```
-
-At this point, all available menus will be in full color and available to use.
-
-To look at the candle chart of your stock, run:
-
-```bash
-candle
-```
-
-Slice the historical data by loading ticker and setting a starting point, e.g.
-
-```bash
-load -t GME -s 2020-06-04
-```
-
-To perform technical analysis, first enter the menu
-
-```bash
-ta
-```
-
-and run a SMA with:
-
-```bash
-sma
-```
-
-However, imagine that you wanted to change the length of the window because you don't want to go long but do a swing,
-and therefore a smaller window is necessary. Check what settings are available on the SMA command:
-
-```bash
-sma -h
-```
-
-Once that has been seen, set the parameters that you want after flagging them. In this case, to change length window
-to 10, we would have to do:
-
-```bash
-sma -l 10
-```
-
-Example:
-
-<img src='/images/usage.gif' width="1000">
-
-To return to the stocks menu to perform more research in a different menu, just use the `q` command. From the stocks
-menu, using `q` again will return you to the main menu where you can enter a different context (crypto for example).
 
 <!-- CONTRIBUTING -->
 
@@ -493,35 +434,27 @@ any loss or damage as a result of your trading, or your reliance on the informat
 
 Feel free to share loss porn, memes or any questions at:
 
-- Discord: <https://discord.gg/Up2QGbMKHY>
-- Twitter: [@gamestonkt](https://twitter.com/gamestonkt)
+* Discord: <https://discord.gg/Up2QGbMKHY>
+* Twitter: [@gamestonkt](https://twitter.com/gamestonkt)
 
 ### Contributors
 
-- **pll_llq** and **Chavithra**: Working on JupyterLab integration. Also developed a GUI POOC.
-- **jpp** : Responsible by developing `Crypto` menu.
-- **northern-64bit** : Developing a discord bot for the terminal.
-- **1lluz10n** and **crspy** : Working on our landing page <https://gamestonkterminal.netlify.app>.
-- **Meghan Hone** : Managing Twitter account.
-- **Chavithra** and **Deel18** : for Degiro's integration.
-- **alokan** : Responsible by developing `Forex` menu.
-- **Traceabl3** : By adding several preset screeners.
-
 <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=GamestonkTerminal/GamestonkTerminal" height="276"/>
+   <img src="https://contributors-img.web.app/image?repo=GamestonkTerminal/GamestonkTerminal" height="276"/>
 </a>
 
 ## Acknowledgments
 
-- [VICE article - Gamestonk Terminal Is a DIY, Meme Stock Version of Bloomberg Terminal](https://www.vice.com/en/article/qjp9vp/gamestonk-terminal-is-a-diy-meme-stock-version-of-bloomberg-terminal)
-- [Daily Fintech article - Never underestimate Bloomberg, but here are 5 reasons why the Gamestonk Terminal is a contender](https://dailyfintech.com/2021/02/25/never-underestimate-bloomberg-but-here-are-5-reasons-why-the-gamestonk-terminal-is-a-contender/)
-- [HackerNews - Show HN: Can’t afford Bloomberg Terminal? No prob, I built the next best thing](https://news.ycombinator.com/item?id=26258773)
-- [Reddit r/algotrading - Gamestonk Terminal: The next best thing after Bloomberg Terminal.](https://www.reddit.com/r/algotrading/comments/m4uvza/gamestonk_terminal_the_next_best_thing_after/)
-- [Reddit r/Python - Gamestonk Terminal: The equivalent to an open-source python Bloomberg Terminal.](https://www.reddit.com/r/Python/comments/m515yk/gamestonk_terminal_the_equivalent_to_an/)
-- [Reddit r/Superstonk - Move over Bloomberg Terminal, here comes Gamestonk Terminal](https://www.reddit.com/r/Superstonk/comments/mx2cjh/move_over_bloomberg_terminal_here_comes_gamestonk/)
-- [Spotlight: Didier Lopes. Creator of Gamestonk Terminal](https://deepsource.io/spotlight/didier-lopes/)
-- [Reddit r/Superstonk - Gamestonk Terminal - We are very much alive](https://www.reddit.com/r/Superstonk/comments/o502i8/gamestonk_terminal_we_are_very_much_alive/)
-- [Medium- Gamestonk Terminal. Can't Stop, Won't Stop](https://dro-lopes.medium.com/gamestonk-terminal-cant-stop-won-t-stop-e635662d6f2e)
+* [VICE article - Gamestonk Terminal Is a DIY, Meme Stock Version of Bloomberg Terminal](https://www.vice.com/en/article/qjp9vp/gamestonk-terminal-is-a-diy-meme-stock-version-of-bloomberg-terminal)
+* [Daily Fintech article - Never underestimate Bloomberg, but here are 5 reasons why the Gamestonk Terminal is a contender](https://dailyfintech.com/2021/02/25/never-underestimate-bloomberg-but-here-are-5-reasons-why-the-gamestonk-terminal-is-a-contender/)
+* [HackerNews - Show HN: Can’t afford Bloomberg Terminal? No prob, I built the next best thing](https://news.ycombinator.com/item?id=26258773)
+* [Reddit r/algotrading - Gamestonk Terminal: The next best thing after Bloomberg Terminal.](https://www.reddit.com/r/algotrading/comments/m4uvza/gamestonk_terminal_the_next_best_thing_after/)
+* [Reddit r/Python - Gamestonk Terminal: The equivalent to an open-source python Bloomberg Terminal.](https://www.reddit.com/r/Python/comments/m515yk/gamestonk_terminal_the_equivalent_to_an/)
+* [Reddit r/Superstonk - Move over Bloomberg Terminal, here comes Gamestonk Terminal](https://www.reddit.com/r/Superstonk/comments/mx2cjh/move_over_bloomberg_terminal_here_comes_gamestonk/)
+* [Spotlight: Didier Lopes. Creator of Gamestonk Terminal](https://deepsource.io/spotlight/didier-lopes/)
+* [Reddit r/Superstonk - Gamestonk Terminal - We are very much alive](https://www.reddit.com/r/Superstonk/comments/o502i8/gamestonk_terminal_we_are_very_much_alive/)
+* [Medium- Gamestonk Terminal. Can't Stop, Won't Stop](https://dro-lopes.medium.com/gamestonk-terminal-cant-stop-won-t-stop-e635662d6f2e)
+* [Gamestonk Terminal: UX/UI >> Features](https://dro-lopes.medium.com/gamestonk-terminal-ux-features-f9754b484919)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->

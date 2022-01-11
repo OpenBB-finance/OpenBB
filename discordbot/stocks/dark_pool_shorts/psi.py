@@ -1,13 +1,15 @@
 import os
 from datetime import timedelta
-import discord
-from matplotlib import pyplot as plt
-import yfinance as yf
-import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
-from gamestonk_terminal.config_plot import PLOT_DPI
 
+import discord
+import yfinance as yf
+from matplotlib import pyplot as plt
+
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur, logger
 
 
 async def psi_command(ctx, ticker=""):
@@ -16,7 +18,7 @@ async def psi_command(ctx, ticker=""):
     try:
         # Debug user input
         if cfg.DEBUG:
-            print(f"\n!stocks.dps.psi {ticker}")
+            logger.debug("!stocks.dps.psi %s", ticker)
 
         # Check for argument
         if ticker == "":
@@ -33,7 +35,7 @@ async def psi_command(ctx, ticker=""):
 
         # Debug user output
         if cfg.DEBUG:
-            print(df.to_string())
+            logger.debug(df.to_string())
 
         # Output data
         title = f"Stocks: [Stockgrid] Price vs Short Interest Volume {ticker}"
@@ -70,7 +72,10 @@ async def psi_command(ctx, ticker=""):
         axes[0].set_ylabel("Volume (1M)")
         ax2 = axes[0].twinx()
         ax2.plot(
-            df["date"].values, prices[len(prices) - len(df) :], c="k", label="Price"
+            df["date"].values,
+            prices[len(prices) - len(df) :],  # noqa: E203
+            c="k",
+            label="Price",
         )
         ax2.set_ylabel("Price ($)")
 

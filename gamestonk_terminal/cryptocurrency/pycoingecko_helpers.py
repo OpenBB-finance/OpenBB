@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import json
+import math
 import datetime as dt
 from datetime import timezone
 from typing import Sequence, Optional, Any, Dict, Tuple, Union, List
@@ -18,6 +19,29 @@ from gamestonk_terminal.helper_funcs import get_user_agent
 GECKO_BASE_URL = "https://www.coingecko.com"
 
 DENOMINATION = ("usd", "btc", "eth")
+
+
+def millify(n: Union[float, int]) -> str:
+    millnames = ["", "K", "M", "B", "T"]
+    n = float(n)
+    millidx = max(
+        0,
+        min(
+            len(millnames) - 1, int(math.floor(0 if n == 0 else math.log10(abs(n)) / 3))
+        ),
+    )
+
+    return f"{n / 10 ** (3 * millidx):.0f}{millnames[millidx]}"
+
+
+def calc_change(current: Union[float, int], previous: Union[float, int]):
+    """Calculates change between two different values"""
+    if current == previous:
+        return 0
+    try:
+        return ((current - previous) / previous) * 100.0
+    except ZeroDivisionError:
+        return float("inf")
 
 
 def get_btc_price() -> float:

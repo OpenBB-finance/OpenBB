@@ -2,10 +2,9 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
 import logging
 import os
-from typing import List, Union
+from typing import List
 
 from datetime import datetime, timedelta
 import yfinance as yf
@@ -13,17 +12,15 @@ import pandas as pd
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common import newsapi_view
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     export_data,
-    get_flair,
     parse_known_args_and_warn,
     valid_date,
-    try_except,
-    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks import stocks_helper
@@ -35,25 +32,9 @@ from gamestonk_terminal.common.quantitative_analysis import qa_view
 logger = logging.getLogger(__name__)
 
 
-class StocksController:
+class StocksController(BaseController):
     """Stocks Controller class"""
 
-    # To hold suffix for Yahoo Finance
-    suffix = ""
-
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
     CHOICES_COMMANDS = [
         "search",
         "load",
@@ -79,33 +60,21 @@ class StocksController:
         "ca",
         "options",
     ]
-    CHOICES += CHOICES_COMMANDS
-    CHOICES += CHOICES_MENUS
 
-    def __init__(self, ticker, queue: List[str] = None):
+    def __init__(self, queue: List[str] = None):
         """Constructor"""
-        self.stocks_parser = argparse.ArgumentParser(add_help=False, prog="stocks")
-        self.stocks_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-
-        self.completer: Union[None, NestedCompleter] = None
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-
-            self.completer = NestedCompleter.from_nested_dict(choices)
+        super().__init__("/stocks/", queue)
 
         self.stock = pd.DataFrame()
-        self.ticker = ticker
+        self.ticker = ""
+        self.suffix = ""  # To hold suffix for Yahoo Finance
         self.start = ""
         self.interval = "1440min"
         self.add_info = stocks_helper.additional_info_about_ticker("")
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
@@ -147,88 +116,17 @@ Stocks Menus:
 {reset_style_if_no_ticker}"""
         print(help_text)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.stocks_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
+    def custom_reset(self):
+        """Class specific component of reset command"""
         if self.ticker:
-            if self.suffix:
-                self.queue.insert(0, f"load {self.ticker}.{self.suffix}")
-            else:
-                self.queue.insert(0, f"load {self.ticker}")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
+            return [
+                "stocks",
+                f"load {self.ticker}.{self.suffix}"
+                if self.suffix
+                else f"load {self.ticker}",
+            ]
+        return []
 
-    @try_except
     def call_search(self, other_args: List[str]):
         """Process search command"""
         parser = argparse.ArgumentParser(
@@ -260,7 +158,6 @@ Stocks Menus:
         if ns_parser:
             stocks_helper.search(query=ns_parser.query, amount=ns_parser.amount)
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -368,7 +265,6 @@ Stocks Menus:
             other_args, self.ticker + "." + self.suffix if self.suffix else self.ticker
         )
 
-    @try_except
     def call_candle(self, other_args: List[str]):
         """Process candle command"""
         parser = argparse.ArgumentParser(
@@ -460,7 +356,6 @@ Stocks Menus:
             else:
                 print("No ticker loaded. First use `load {ticker}`\n")
 
-    @try_except
     def call_news(self, other_args: List[str]):
         """Process news command"""
         if not self.ticker:
@@ -529,65 +424,79 @@ Stocks Menus:
 
     def call_disc(self, _):
         """Process disc command"""
-        from gamestonk_terminal.stocks.discovery import disc_controller
+        from gamestonk_terminal.stocks.discovery.disc_controller import (
+            DiscoveryController,
+        )
 
-        self.queue = disc_controller.menu(self.queue)
+        self.queue = DiscoveryController(self.queue).menu()
 
     def call_dps(self, _):
         """Process dps command"""
-        from gamestonk_terminal.stocks.dark_pool_shorts import dps_controller
-
-        self.queue = dps_controller.menu(
-            self.ticker, self.start, self.stock, self.queue
+        from gamestonk_terminal.stocks.dark_pool_shorts.dps_controller import (
+            DarkPoolShortsController,
         )
+
+        self.queue = DarkPoolShortsController(
+            self.ticker, self.start, self.stock, self.queue
+        ).menu()
 
     def call_scr(self, _):
         """Process scr command"""
-        from gamestonk_terminal.stocks.screener import screener_controller
+        from gamestonk_terminal.stocks.screener.screener_controller import (
+            ScreenerController,
+        )
 
-        self.queue = screener_controller.menu(self.queue)
+        self.queue = ScreenerController(self.queue).menu()
 
     def call_sia(self, _):
         """Process ins command"""
-        from gamestonk_terminal.stocks.sector_industry_analysis import sia_controller
+        from gamestonk_terminal.stocks.sector_industry_analysis.sia_controller import (
+            SectorIndustryAnalysisController,
+        )
 
-        self.queue = sia_controller.menu(self.ticker, self.queue)
+        self.queue = SectorIndustryAnalysisController(self.ticker, self.queue).menu()
 
     def call_ins(self, _):
         """Process ins command"""
-        from gamestonk_terminal.stocks.insider import insider_controller
+        from gamestonk_terminal.stocks.insider.insider_controller import (
+            InsiderController,
+        )
 
-        self.queue = insider_controller.menu(
+        self.queue = InsiderController(
             self.ticker,
             self.start,
             self.interval,
             self.stock,
             self.queue,
-        )
+        ).menu()
 
     def call_gov(self, _):
         """Process gov command"""
-        from gamestonk_terminal.stocks.government import gov_controller
+        from gamestonk_terminal.stocks.government.gov_controller import GovController
 
-        self.queue = gov_controller.menu(self.ticker, self.queue)
+        self.queue = GovController(self.ticker, self.queue).menu()
 
     def call_options(self, _):
         """Process options command"""
-        from gamestonk_terminal.stocks.options import options_controller
+        from gamestonk_terminal.stocks.options.options_controller import (
+            OptionsController,
+        )
 
-        self.queue = options_controller.menu(self.ticker, self.queue)
+        self.queue = OptionsController(self.ticker, self.queue).menu()
 
     def call_res(self, _):
         """Process res command"""
         if self.ticker:
-            from gamestonk_terminal.stocks.research import res_controller
+            from gamestonk_terminal.stocks.research.res_controller import (
+                ResearchController,
+            )
 
-            self.queue = res_controller.menu(
+            self.queue = ResearchController(
                 self.ticker,
                 self.start,
                 self.interval,
                 self.queue,
-            )
+            ).menu()
         else:
             print("Use 'load <ticker>' prior to this command!", "\n")
 
@@ -596,9 +505,9 @@ Stocks Menus:
         if self.ticker:
             from gamestonk_terminal.stocks.due_diligence import dd_controller
 
-            self.queue = dd_controller.menu(
+            self.queue = dd_controller.DueDiligenceController(
                 self.ticker, self.start, self.interval, self.stock, self.queue
-            )
+            ).menu()
         else:
             print("Use 'load <ticker>' prior to this command!", "\n")
 
@@ -607,18 +516,18 @@ Stocks Menus:
 
         from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 
-        self.queue = ca_controller.menu(
+        self.queue = ca_controller.ComparisonAnalysisController(
             [self.ticker] if self.ticker else "", self.queue
-        )
+        ).menu()
 
     def call_fa(self, _):
         """Process fa command"""
         if self.ticker:
             from gamestonk_terminal.stocks.fundamental_analysis import fa_controller
 
-            self.queue = fa_controller.menu(
+            self.queue = fa_controller.FundamentalAnalysisController(
                 self.ticker, self.start, self.interval, self.suffix, self.queue
-            )
+            ).menu()
         else:
             print("Use 'load <ticker>' prior to this command!", "\n")
 
@@ -627,7 +536,9 @@ Stocks Menus:
         if self.ticker:
             from gamestonk_terminal.stocks.backtesting import bt_controller
 
-            self.queue = bt_controller.menu(self.ticker, self.stock, self.queue)
+            self.queue = bt_controller.BacktestingController(
+                self.ticker, self.stock, self.queue
+            ).menu()
         else:
             print("Use 'load <ticker>' prior to this command!", "\n")
 
@@ -636,9 +547,9 @@ Stocks Menus:
         if self.ticker:
             from gamestonk_terminal.stocks.technical_analysis import ta_controller
 
-            self.queue = ta_controller.menu(
+            self.queue = ta_controller.TechnicalAnalysisController(
                 self.ticker, self.start, self.interval, self.stock, self.queue
-            )
+            ).menu()
         else:
             print("Use 'load <ticker>' prior to this command!", "\n")
 
@@ -646,7 +557,9 @@ Stocks Menus:
         """Process ba command"""
         from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
 
-        self.queue = ba_controller.menu(self.ticker, self.start, self.queue)
+        self.queue = ba_controller.BehaviouralAnalysisController(
+            self.ticker, self.start, self.queue
+        ).menu()
 
     def call_qa(self, _):
         """Process qa command"""
@@ -656,15 +569,14 @@ Stocks Menus:
                     qa_controller,
                 )
 
-                self.queue = qa_controller.menu(
+                self.queue = qa_controller.QaController(
                     self.ticker, self.start, self.interval, self.stock, self.queue
-                )
+                ).menu()
             # TODO: This menu should work regardless of data being daily or not!
             print("Load daily data to use this menu!", "\n")
         else:
             print("Use 'load <ticker>' prior to this command!", "\n")
 
-    @try_except
     def call_pred(self, _):
         """Process pred command"""
         if gtff.ENABLE_PREDICT:
@@ -675,13 +587,13 @@ Stocks Menus:
                             pred_controller,
                         )
 
-                        self.queue = pred_controller.menu(
+                        self.queue = pred_controller.PredictionTechniquesController(
                             self.ticker,
                             self.start,
                             self.interval,
                             self.stock,
                             self.queue,
-                        )
+                        ).menu()
                     except ModuleNotFoundError as e:
                         print(
                             "One of the optional packages seems to be missing: ",
@@ -698,84 +610,3 @@ Stocks Menus:
                 "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
                 "\n",
             )
-
-
-def menu(ticker: str = "", queue: List[str] = None):
-    """Stocks Menu"""
-    stocks_controller = StocksController(ticker, queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if stocks_controller.queue and len(stocks_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if stocks_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(stocks_controller.queue) > 1:
-                    return stocks_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = stocks_controller.queue[0]
-            stocks_controller.queue = stocks_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if (
-                an_input
-                and an_input.split(" ")[0] in stocks_controller.CHOICES_COMMANDS
-            ):
-                print(f"{get_flair()} /stocks/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                stocks_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and stocks_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/ $ ",
-                        completer=stocks_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/ $ ")
-
-        try:
-            # Process the input command
-            stocks_controller.queue = stocks_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks menu.", end=""
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                stocks_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        stocks_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                stocks_controller.queue.insert(0, an_input)
-            else:
-                print("\n")
