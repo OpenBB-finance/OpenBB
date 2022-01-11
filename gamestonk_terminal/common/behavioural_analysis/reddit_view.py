@@ -8,8 +8,8 @@ from typing import Dict
 
 import finviz
 import praw
-from prettytable import PrettyTable
 from tabulate import tabulate
+import pandas as pd
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.behavioural_analysis import reddit_model
@@ -54,19 +54,23 @@ def print_and_record_reddit_post(
     # Print post data collected so far
     console.print(f"{s_datetime} - {submission.title}")
     console.print(f"{s_link}")
-    t_post = PrettyTable(
-        ["Subreddit", "Flair", "Score", "# Comments", "Upvote %", "Awards"]
+    columns = ["Subreddit", "Flair", "Score", "# Comments", "Upvote %", "Awards"]
+    data = [
+        submission.subreddit,
+        submission.link_flair_text,
+        submission.score,
+        submission.num_comments,
+        f"{round(100 * submission.upvote_ratio)}%",
+        s_all_awards,
+    ]
+    df = pd.DataFrame(data, columns=columns)
+    t_post = tabulate(
+        df,
+        headers=df.columns,
+        tablefmt="fancy_grid",
+        showindex=False,
     )
-    t_post.add_row(
-        [
-            submission.subreddit,
-            submission.link_flair_text,
-            submission.score,
-            submission.num_comments,
-            f"{round(100 * submission.upvote_ratio)}%",
-            s_all_awards,
-        ]
-    )
+
     console.print(t_post)
     console.print("\n")
 
