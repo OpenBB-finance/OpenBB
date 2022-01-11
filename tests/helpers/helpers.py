@@ -1,6 +1,17 @@
 import functools
 import sys
 import io
+from typing import Union
+
+
+def calc_change(current: Union[float, int], previous: Union[float, int]):
+    """Calculates change between two different values"""
+    if current == previous:
+        return 0
+    try:
+        return ((current - previous) / previous) * 100.0
+    except ZeroDivisionError:
+        return float("inf")
 
 
 def check_print(assert_in: str = "", length: int = -1):

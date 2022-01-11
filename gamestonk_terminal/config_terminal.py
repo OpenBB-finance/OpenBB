@@ -18,7 +18,7 @@ PAPERMILL_NOTEBOOK_REPORT_PORT = "8888"
 # 1 - DEBUG for terminal, INFO for libraries
 # 2 - DEBUG for terminal, DEBUG for libraries
 
-LOGGING_VERBOSITY = 2
+LOGGING_VERBOSITY = 0
 
 if tmp_verbosity := os.getenv("GT_LOGGING_VERBOSITY"):
     print(f"Setting verbosity to {tmp_verbosity}")
