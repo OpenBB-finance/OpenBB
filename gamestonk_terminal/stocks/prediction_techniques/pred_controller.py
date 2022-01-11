@@ -7,7 +7,8 @@ from datetime import datetime, timedelta
 import pandas as pd
 import numpy as np
 from prompt_toolkit.completion import NestedCompleter
-
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -31,7 +32,6 @@ from gamestonk_terminal.common.prediction_techniques import (
     mc_view,
 )
 from gamestonk_terminal.stocks import stocks_helper
-from gamestonk_terminal.rich_config import console
 
 
 class PredictionTechniquesController(BaseController):
@@ -89,20 +89,20 @@ class PredictionTechniquesController(BaseController):
         """Print help"""
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.start:
-            stock_info = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            stock_info = (
+                f"{s_intraday} {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            )
         else:
-            stock_info = "{s_intraday} Stock: {self.ticker}"
+            stock_info = "{s_intraday} {self.ticker}"
 
-        help_string = f"""
-Prediction Techniques Menu:
-
+        help_text = f"""[cmds]
     load        load new ticker
-    pick        pick new target variable
+    pick        pick new target variable[/cmds]
 
-Ticker Loaded: {stock_info}
-Target Column: {self.target}
+[param]Stock: [/param]{stock_info}
+[param]Target Column: [/param]{self.target}
 
-Models:
+[info]Models:[/info][cmds]
     ets         exponential smoothing (e.g. Holt-Winters)
     knn         k-Nearest Neighbors
     regression  polynomial regression
@@ -111,9 +111,16 @@ Models:
     rnn         Recurrent Neural Network
     lstm        Long-Short Term Memory
     conv1d      1D Convolutional Neural Network
-    mc          Monte-Carlo simulations
+    mc          Monte-Carlo simulations[/cmds]
         """
-        console.print(help_string)
+        console.print(
+            Panel(
+                help_text,
+                title="Stocks - Prediction Techniques",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def custom_reset(self):
         """Class specific component of reset command"""

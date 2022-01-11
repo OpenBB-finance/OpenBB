@@ -5,6 +5,8 @@ import argparse
 from datetime import datetime, timedelta
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
@@ -29,7 +31,6 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.rich_config import console
 
 # pylint: disable=inconsistent-return-statements
 
@@ -92,42 +93,44 @@ class FundamentalAnalysisController(BaseController):
 
     def print_help(self):
         """Print help."""
-        newline = "\n"
-        help_text = f"""[info]
-Ticker: [/info] {self.ticker} [cmds]
-{f"Note that only Yahoo Finance currently supports foreign exchanges{newline}" if self.suffix else ""}
-    data          fundamental and technical data of company [FinViz]
-    mgmt          management team of the company [Business Insider]
-    analysis      analyse SEC filings with the help of machine learning [Eclect.us]
-    score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]
-    warnings      company warnings according to Sean Seah book [Market Watch]
-    dcf           advanced Excel customizable discounted cash flow [stockanalysis]
-Yahoo Finance:
-    info          information scope of the company
+        is_foreign_start = "" if not self.suffix else "[unvl]"
+        is_foreign_end = "" if not self.suffix else "[/unvl]"
+        help_text = f"""[param]
+Ticker: [/param] {self.ticker} [cmds]
+
+[cmds]    data          fundamental and technical data of company [src][FinViz][/src]
+    mgmt          management team of the company [src][Business Insider][/src]
+    analysis      analyse SEC filings with the help of machine learning [src][Eclect.us][/src]
+    score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [src][FMP][/src]
+    warnings      company warnings according to Sean Seah book [src][Market Watch][/src]
+    dcf           advanced Excel customizable discounted cash flow [src][Stockanalysis][/src][/cmds] 
+[src][Yahoo Finance][/src]
+    info          information scope of the company{is_foreign_start}
     shrs          shareholders of the company
     sust          sustainability values of the company
     cal           calendar earnings and estimates of the company
     web           open web browser of the company
     hq            open HQ location of the company
-    divs          show historical dividends for company
-Alpha Vantage:
+    divs          show historical dividends for company{is_foreign_end}
+[src][Alpha Vantage][/src]
     overview      overview of the company
     key           company key metrics
     income        income statements of the company
     balance       balance sheet of the company
     cash          cash flow of the company
     earnings      earnings dates and reported EPS
-    fraud         key fraud ratios
-Other Sources:
->   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP[/cmds]
+    fraud         key fraud ratios[/cmds]
+[info]Other Sources:[/info][menu]
+>   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP[/menu]
         """
-        console.print(help_text)
-        # No longer used, but keep for future:
-        # console.print("")
-        # console.print("Market Watch API - DEPRECATED")
-        # console.print("   income        income statement of the company")
-        # console.print("   balance       balance sheet of the company")
-        # console.print("   cash          cash flow statement of the company")
+        console.print(
+            Panel(
+                help_text,
+                title="Stocks - Fundamental Analysis",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -326,9 +329,11 @@ Other Sources:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        if ns_parser:
-            yahoo_finance_view.display_shareholders(self.ticker)
+        if not self.suffix:
+            if ns_parser:
+                yahoo_finance_view.display_shareholders(self.ticker)
+        else:
+            console.print("Only US tickers are recognized.", "\n")
 
     def call_sust(self, other_args: List[str]):
         """Process sust command."""
@@ -348,8 +353,11 @@ Other Sources:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            yahoo_finance_view.display_sustainability(self.ticker)
+        if not self.suffix:
+            if ns_parser:
+                yahoo_finance_view.display_sustainability(self.ticker)
+        else:
+            console.print("Only US tickers are recognized.", "\n")
 
     def call_cal(self, other_args: List[str]):
         """Process cal command."""
@@ -365,8 +373,11 @@ Other Sources:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            yahoo_finance_view.display_calendar_earnings(ticker=self.ticker)
+        if not self.suffix:
+            if ns_parser:
+                yahoo_finance_view.display_calendar_earnings(ticker=self.ticker)
+        else:
+            console.print("Only US tickers are recognized.", "\n")
 
     def call_web(self, other_args: List[str]):
         """Process web command."""
@@ -381,8 +392,11 @@ Other Sources:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            yahoo_finance_view.open_web(self.ticker)
+        if not self.suffix:
+            if ns_parser:
+                yahoo_finance_view.open_web(self.ticker)
+        else:
+            console.print("Only US tickers are recognized.", "\n")
 
     def call_hq(self, other_args: List[str]):
         """Process hq command."""
@@ -397,8 +411,11 @@ Other Sources:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            yahoo_finance_view.open_headquarters_map(self.ticker)
+        if not self.suffix:
+            if ns_parser:
+                yahoo_finance_view.open_headquarters_map(self.ticker)
+        else:
+            console.print("Only US tickers are recognized.", "\n")
 
     def call_divs(self, other_args: List[str]):
         """Process divs command."""
@@ -427,13 +444,16 @@ Other Sources:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            yahoo_finance_view.display_dividends(
-                ticker=self.ticker,
-                limit=ns_parser.limit,
-                plot=ns_parser.plot,
-                export=ns_parser.export,
-            )
+        if not self.suffix:
+            if ns_parser:
+                yahoo_finance_view.display_dividends(
+                    ticker=self.ticker,
+                    limit=ns_parser.limit,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
+                )
+        else:
+            console.print("Only US tickers are recognized.", "\n")
 
     def call_overview(self, other_args: List[str]):
         """Process overview command."""
