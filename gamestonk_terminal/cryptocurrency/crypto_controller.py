@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 from binance.client import Client
-
+from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import calc_change
@@ -93,36 +93,39 @@ class CryptoController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """
-     load        load a specific cryptocurrency for analysis
-     find        find coins in a certain source
-     coins       find coins and check map across multiple sources
+        source_txt = CRYPTO_SOURCES.get(self.source, "?") if self.source != "" else ""
+        has_ticker_start = "" if self.current_coin else "[unvl]"
+        has_ticker_end = "" if self.current_coin else "[/unvl]"
+        help_text = f"""[cmds]
+    load        load a specific cryptocurrency for analysis
+    find        find coins in a certain source
+    coins       find coins and check map across multiple sources[/cmds]
+
+[param]Coin: [/param]{self.current_coin}
+[param]Source: [/param]{source_txt}
+[cmds]
+    headlines   crypto sentiment from 15+ major news headlines [src][Finbrain][/src]{has_ticker_start}
+    chart       view a candle chart for a specific cryptocurrency
+    prt         potential returns tool - check how much upside if ETH reaches BTC market cap{has_ticker_end}
+[/cmds][menu]
+>   disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
+>   ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
+>   onchain     information on different blockchains,   e.g.: eth gas fees, whale alerts, DEXes info
+>   defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
+>   nft         non-fungible tokens,                    e.g.: today drops{has_ticker_start}
+>   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
+>   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
+>   pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo[/menu]
+{has_ticker_end}
 """
-        help_text += (
-            f"\nCoin: {self.current_coin}" if self.current_coin != "" else "\nCoin: ?"
+        console.print(
+            Panel(
+                help_text,
+                title="Cryptocurrency",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
         )
-        help_text += (
-            f"\nSource: {CRYPTO_SOURCES.get(self.source, '?')}\n"
-            if self.source != ""
-            else "\nSource: ?\n"
-        )
-        help_text += self.price_str + "\n"
-        help_text += f"""
-     headlines   crypto sentiment from 15+ major news headlines [Finbrain]{'[dim]' if not self.current_coin else ''}
-     chart       view a candle chart for a specific cryptocurrency
-     prt         potential returns tool                  e.g.: check how much upside if eth reaches btc market cap{'[/dim]' if not self.current_coin else ''}
-    """  # noqa
-        help_text += f"""
->    disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
->    ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
->    onchain     information on different blockchains,   e.g.: eth gas fees, whale alerts, DEXes info
->    defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
->    nft         non-fungible tokens,                    e.g.: today drops{'[dim]' if not self.current_coin else ''}
->    dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
->    ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
->    pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo{'[/dim]' if not self.current_coin else ''}
-"""  # noqa
-        console.print(help_text)
 
     def call_prt(self, other_args):
         """Process prt command"""

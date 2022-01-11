@@ -5,11 +5,11 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 from datetime import datetime, timedelta
-from colorama import Style
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import load
 from gamestonk_terminal import feature_flags as gtff
@@ -30,7 +30,6 @@ from gamestonk_terminal.common.technical_analysis import (
     volatility_view,
     volume_view,
 )
-from gamestonk_terminal.rich_config import console
 
 
 class TechnicalAnalysisController(BaseController):
@@ -81,46 +80,46 @@ class TechnicalAnalysisController(BaseController):
 
     def print_help(self):
         """Print help"""
-        s_intraday = (f"Interval: Intraday {self.interval}", "Daily")[
-            self.interval == "1440min"
-        ]
-        if self.start:
-            crypto_str = f"{s_intraday}\nCoin Loaded: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-        else:
-            crypto_str = f"{s_intraday}\nCoin Loaded: {self.ticker}"
+        crypto_str = f" {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+        help_text = f"""[cmds]
+[param]Coin Loaded: [/param]{crypto_str}
 
-        dim = Style.DIM if "Volume" not in self.stock else ""
-        not_dim = Style.RESET_ALL if "Volume" not in self.stock else ""
-        help_str = f"""
-Technical Analysis Menu:
-
-{crypto_str}
-
-Overlap:
+[info]Overlap:[/info]
     ema         exponential moving average
     sma         simple moving average
-    zlma        zero lag moving average{dim}
-    vwap        volume weighted average price{not_dim}
-Momentum:
+    wma         weighted moving average
+    hma         hull moving average
+    zlma        zero lag moving average
+    vwap        volume weighted average price
+[info]Momentum:[/info]
     cci         commodity channel index
     macd        moving average convergence/divergence
     rsi         relative strength index
     stoch       stochastic oscillator
     fisher      fisher transform
     cg          centre of gravity
-Trend:
+[info]Trend:[/info]
     adx         average directional movement index
     aroon       aroon indicator
-Volatility:
+[info]Volatility:[/info]
     bbands      bollinger bands
-    donchian    donchian channels{dim}
-Volume:
-    ad          accumulation/distribution line values
-    obv         on balance volume{not_dim}
-Custom:
-    fib         fibonacci retracement
+    donchian    donchian channels
+    kc          keltner channels
+[info]Volume:[/info]
+    ad          accumulation/distribution line
+    adosc       chaikin oscillator
+    obv         on balance volume
+[info]Custom:[/info]
+    fib         fibonacci retracement[/cmds]
 """
-        console.print(help_str)
+        console.print(
+            Panel(
+                help_text,
+                title="Cryptocurrency - Technical Analysis",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def custom_reset(self):
         """Class specific component of reset command"""

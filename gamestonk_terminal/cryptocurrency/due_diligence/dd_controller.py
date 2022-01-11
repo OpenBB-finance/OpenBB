@@ -7,6 +7,8 @@ from typing import List
 from datetime import datetime, timedelta
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.cryptocurrency.due_diligence import (
     coinglass_model,
@@ -36,7 +38,6 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
     load,
 )
-from gamestonk_terminal.rich_config import console
 
 FILTERS_VS_USD_BTC = ["usd", "btc"]
 
@@ -136,34 +137,28 @@ class DueDiligenceController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = "Due Diligence Menu:\n"
-        help_text += """
+        source_txt = CRYPTO_SOURCES.get(self.source, "?") if self.source != "" else ""
+        help_text = f"""[cmds]
     load        load a specific cryptocurrency for analysis
-"""
-        help_text += (
-            f"\nCoin: {self.current_coin}" if self.current_coin != "" else "\nCoin: ?"
-        )
-        help_text += (
-            f"\nSource: {CRYPTO_SOURCES.get(self.source, '?')}\n"
-            if self.source != ""
-            else "\nSource: ?\n"
-        )
-        help_text += """
-Glassnode:
+
+[param]Coin: [/param]{self.current_coin}
+[param]Source: [/param]{source_txt}
+
+[src]Glassnode[/src]
    active          active addresses
    nonzero         addresses with non-zero balances
    change          30d change of supply held on exchange wallets
    eb              total balance held on exchanges (in percentage and units)
-Coinglass:
+[src]Coinglass[/src]
    oi              open interest per exchange
-CoinPaprika:
+[src]CoinPaprika[/src]
    basic           basic information about loaded coin
    ps              price and supply related metrics for loaded coin
    mkt             all markets for loaded coin
    ex              all exchanges where loaded coin is listed
    twitter         tweets for loaded coin
    events          events related to loaded coin
-CoinGecko:
+[src]CoinGecko[/src]
    info            basic information about loaded coin
    market          market stats about loaded coin
    ath             all time high related stats for loaded coin
@@ -173,15 +168,22 @@ CoinGecko:
    score           different kind of scores for loaded coin, e.g developer score, sentiment score
    dev             github, bitbucket coin development statistics
    bc              links to blockchain explorers for loaded coin
-Binance:
+[src]Binance[/src]
    binbook         show order book
    balance         show coin balance
-Coinbase:
+[src]Coinbase[/src]
    cbbook          show order book
    trades          show last trades
-   stats           show coin stats
+   stats           show coin stats[/cmds]
 """
-        console.print(help_text)
+        console.print(
+            Panel(
+                help_text,
+                title="Stocks - Due Diligence",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def custom_reset(self):
         """Class specific component of reset command"""

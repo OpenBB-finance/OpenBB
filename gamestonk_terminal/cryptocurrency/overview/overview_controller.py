@@ -7,6 +7,8 @@ import difflib
 from datetime import datetime, timedelta
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.cryptocurrency.overview.blockchaincenter_model import DAYS
@@ -35,7 +37,6 @@ from gamestonk_terminal.cryptocurrency.overview.coinpaprika_view import CURRENCI
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
     get_all_contract_platforms,
 )
-from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_view import (
     display_btc_rainbow,
 )
@@ -132,10 +133,10 @@ class OverviewController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """
-CoinGecko:
+        help_text = """[cmds]
+[src][CoinGecko][/src]
     cgglobal          global crypto market info
-    cgnews            last news available on CoinGecko
+    cgnews            last news available
     cgdefi            global DeFi market info
     cgstables         stablecoins
     cgnft             non fungible token market status
@@ -148,28 +149,34 @@ CoinGecko:
     cgderivatives     crypto derivatives
     cgcategories      crypto categories
     cghold            ethereum, bitcoin holdings overview statistics
-CoinPaprika:
+[src][CoinPaprika][/src]
     cpglobal          global crypto market info
-    cpinfo            basic info about all coins available on CoinPaprika
-    cpmarkets         market related info about all coins available on CoinPaprika
+    cpinfo            basic info about all coins available
+    cpmarkets         market related info about all coins available
     cpexchanges       list all exchanges
     cpexmarkets       all available markets on given exchange
     cpplatforms       list blockchain platforms eg. ethereum, solana, kusama, terra
     cpcontracts       all smart contracts for given platform
-Coinbase:
-    cbpairs           info about available trading pairs on Coinbase
-CryptoPanic:
-    news              recent crypto news from CryptoPanic aggregator
-WithdrawalFees:
+[src][Coinbase][/src]
+    cbpairs           info about available trading pairs
+[src][CryptoPanic][/src]
+    news              recent crypto news
+[src][WithdrawalFees][/src]
     wf                overall withdrawal fees
     ewf               overall exchange withdrawal fees
     wfpe              crypto withdrawal fees per exchange
-BlockchainCenter:
-    altindex          displays altcoin season index (if 75% of top 50 coins perform better than btc)
-    btcrb             display bitcoin rainbow price chart (logarithmic regression)
+[src][BlockchainCenter][/src]
+    altindex          displays altcoin season index (if 75% of top 50 coins perform better than BTC)
+    btcrb             display bitcoin rainbow price chart (logarithmic regression)[/cmds]
 """
-
-        console.print(help_text)
+        console.print(
+            Panel(
+                help_text,
+                title="Cryptocurrency - Overview",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_btcrb(self, other_args: List[str]):
         """Process btcrb command"""

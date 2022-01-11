@@ -8,7 +8,8 @@ from typing import List
 import pandas as pd
 import numpy as np
 from prompt_toolkit.completion import NestedCompleter
-
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -33,7 +34,6 @@ from gamestonk_terminal.common.prediction_techniques import (
     mc_view,
 )
 from gamestonk_terminal.cryptocurrency import cryptocurrency_helpers as c_help
-from gamestonk_terminal.rich_config import console
 
 
 class PredictionTechniquesController(BaseController):
@@ -91,17 +91,14 @@ class PredictionTechniquesController(BaseController):
 
     def print_help(self):
         """Print help"""
-
-        help_string = f"""
-Prediction Techniques Menu:
-
+        help_text = f"""[cmds]
     load        load new ticker
-    pick        pick new target variable
+    pick        pick new target variable[/cmds]
 
-Coin Loaded: {self.coin}
-Target Column: {self.target}
+[param]Coin Loaded: [/param]{self.coin}
+[param]Target Column: [/param]{self.target}
 
-Models:
+[info]Models:[/info][cmds]
     ets         exponential smoothing (e.g. Holt-Winters)
     knn         k-Nearest Neighbors
     regression  polynomial regression
@@ -110,9 +107,16 @@ Models:
     rnn         Recurrent Neural Network
     lstm        Long-Short Term Memory
     conv1d      1D Convolutional Neural Network
-    mc          Monte-Carlo simulations
+    mc          Monte-Carlo simulations[/cmds]
         """
-        console.print(help_string)
+        console.print(
+            Panel(
+                help_text,
+                title="Cryptocurrency - Prediction Techniques",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def custom_reset(self):
         """Class specific component of reset command"""
