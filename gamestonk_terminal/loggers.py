@@ -12,7 +12,7 @@ import git
 import gamestonk_terminal.config_terminal as cfg
 
 logger = logging.getLogger(__name__)
-LOGFORMAT = "%(asctime)s|%(levelname)s|%(name)s|%(funcName)s|%(message)s"
+LOGFORMAT = "%(asctime)s|%(levelname)s|%(name)s|%(funcName)s|%(lineno)s|%(message)s"
 DATEFORMAT = "%Y-%m-%dT%H:%M:%S%z"
 
 
@@ -115,6 +115,7 @@ class CustomFormatterWithExceptions(logging.Formatter):
         """
         if hasattr(record, "func_name_override"):
             record.funcName = record.func_name_override  # type: ignore
+            record.lineno = 0
         s = super().format(record)
         if record.levelname:
             prefix = record.levelname[0]

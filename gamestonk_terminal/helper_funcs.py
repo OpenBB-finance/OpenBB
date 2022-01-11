@@ -812,7 +812,7 @@ def system_clear():
     os.system("cls||clear")  # nosec
 
 
-def log_execution(func=None, log=None):
+def log_start_end(func=None, log=None):
     assert callable(func) or func is None
 
     def decorator(func):
