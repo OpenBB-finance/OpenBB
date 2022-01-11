@@ -1,36 +1,38 @@
-
-    load           load a specific stock ticker for analysis
-
-Ticker: TSLA
-
-Finbrain:
-    headlines     sentiment from 15+ major news headlines [0m
-Finnhub:
-    stats         sentiment stats including comparison with sector[0m
-Reddit:
-    wsb           show what WSB gang is up to in subreddit wallstreetbets
-    watchlist     show other users watchlist
-    popular       show popular tickers
-    spac_c        show other users spacs announcements from subreddit SPACs community
-    spac          show other users spacs announcements from other subs
-    getdd         gets due diligence from another user's post[0m
-Stocktwits:
-    bullbear      estimate quick sentiment from last 30 messages on board
-    messages      output up to the 30 last messages on the board[0m
-    trending      trending stocks
-    stalker       stalk stocktwits user's last messages
-Twitter:
-    infer         infer about stock's sentiment from latest tweets
-    sentiment     in-depth sentiment prediction from tweets over time[0m
-Google:
-    mentions      interest over time based on stock's mentions
-    regions       regions that show highest interest in stock
-    queries       top related queries with this stock
-    rise          top rising related queries with stock[0m
-SentimentInvestor:
-    popularsi     show most popular stocks on social media right now
-    emerging      show stocks that are being talked about more than usual
-    metrics       core social sentiment metrics for this stock
-    social        social media figures for stock popularity
-    historical    plot the past week of data for a selected metric[0m
-        
+╭─────────────────────── Stocks - Behavioural Analysis ────────────────────────╮
+│                                                                              │
+│     load           load a specific stock ticker for analysis                 │
+│                                                                              │
+│ Ticker: TSLA                                                                 │
+│                                                                              │
+│ [Finbrain]                                                                   │
+│     headlines     sentiment from 15+ major news headlines                    │
+│ [Finnhub]                                                                    │
+│     stats         sentiment stats including comparison with sector           │
+│ [Reddit]                                                                     │
+│     wsb           show what WSB gang is up to in subreddit wallstreetbets    │
+│     watchlist     show other users watchlist                                 │
+│     popular       show popular tickers                                       │
+│     spac_c        show other users spacs announcements from subreddit SPACs  │
+│     spac          show other users spacs announcements from other subs       │
+│     getdd         gets due diligence from another user's post                │
+│ [Stocktwits]                                                                 │
+│     trending      trending stocks                                            │
+│     stalker       stalk stocktwits user's last messages                      │
+│     bullbear      estimate quick sentiment from last 30 messages on board    │
+│     messages      output up to the 30 last messages on the board             │
+│ [Twitter]                                                                    │
+│     infer         infer about stock's sentiment from latest tweets           │
+│     sentiment     in-depth sentiment prediction from tweets over time        │
+│ [Google]                                                                     │
+│     mentions      interest over time based on stock's mentions               │
+│     regions       regions that show highest interest in stock                │
+│     queries       top related queries with this stock                        │
+│     rise          top rising related queries with stock                      │
+│ [SentimentInvestor]                                                          │
+│     popularsi     show most popular stocks on social media right now         │
+│     emerging      show stocks that are being talked about more than usual    │
+│     metrics       core social sentiment metrics for this stock               │
+│     social        social media figures for stock popularity                  │
+│     historical    plot the past week of data for a selected metric           │
+│                                                                              │
+╰───────────────────────────────────────────────────────── Gamestonk Terminal ─╯

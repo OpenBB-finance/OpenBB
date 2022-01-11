@@ -1,4 +1,4 @@
-    Ticker                        Company              Sector                       Industry Country   Market Cap P/E  Price  Change     Volume
-50    AACG          ATA Creativity Global  Consumer Defensive  Education & Training Services   China   33070000.0       1.23   0.149   123934.0
-142   ADVM  Adverum Biotechnologies, Inc.          Healthcare                  Biotechnology     USA  170910000.0       1.95   0.107  5952435.0
+   Ticker                                          Company      Sector                                  Industry Country   Market Cap P/E  Price  Change  Volume
+85    ACV  AllianzGI Diversified Income & Convertible Fund   Financial                          Asset Management     USA  359800000.0      34.75     0.0     0.0
+87   AERI                      Aerie Pharmaceuticals, Inc.  Healthcare  Drug Manufacturers - Specialty & Generic     USA  360970000.0       8.23     0.0     0.0
 

@@ -1,18 +1,20 @@
-
-    view          view available presets (defaults and customs)
-    set           set one of the available presets
-
-PRESET: top_gainers
-
-    historical     view historical price
-    overview       overview (e.g. Sector, Industry, Market Cap, Volume)
-    valuation      valuation (e.g. P/E, PEG, P/S, P/B, EPS this Y)
-    financial      financial (e.g. Dividend, ROA, ROE, ROI, Earnings)
-    ownership      ownership (e.g. Float, Insider Own, Short Ratio)
-    performance    performance (e.g. Perf Week, Perf YTD, Volatility M)
-    technical      technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
-    [2m
-Last screened tickers: 
->   ca             take these to comparison analysis menu
->   po             take these to portfolio optimization menu[0m
-        
+╭───────────────────────────── Stocks - Screener ──────────────────────────────╮
+│                                                                              │
+│     view          view available presets (defaults and customs)              │
+│     set           set one of the available presets                           │
+│                                                                              │
+│ PRESET: top_gainers                                                          │
+│                                                                              │
+│     historical     view historical price                                     │
+│     overview       overview (e.g. Sector, Industry, Market Cap, Volume)      │
+│     valuation      valuation (e.g. P/E, PEG, P/S, P/B, EPS this Y)           │
+│     financial      financial (e.g. Dividend, ROA, ROE, ROI, Earnings)        │
+│     ownership      ownership (e.g. Float, Insider Own, Short Ratio)          │
+│     performance    performance (e.g. Perf Week, Perf YTD, Volatility M)      │
+│     technical      technical (e.g. Beta, SMA50, 52W Low, RSI, Change)        │
+│                                                                              │
+│ Last screened tickers:                                                       │
+│ >   ca             take these to comparison analysis menu                    │
+│ >   po             take these to portfolio optimization menu                 │
+│                                                                              │
+╰───────────────────────────────────────────────────────── Gamestonk Terminal ─╯
