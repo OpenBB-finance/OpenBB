@@ -862,6 +862,35 @@ main:
             ref: "/common/technical_analysis/obv"
           - name: fib
             ref: "/common/technical_analysis/fib"
+      - name: defi
+        ref: "/cryptocurrency/defi"
+        sub:
+          - name: llama
+            ref: "/cryptocurrency/defi/llama"
+          - name: tvl
+            ref: "/cryptocurrency/defi/tvl"
+          - name: newsletter
+            ref: "/cryptocurrency/defi/newsletter"
+          - name: dpi
+            ref: "/cryptocurrency/defi/dpi"
+          - name: funding
+            ref: "/cryptocurrency/defi/funding"
+          - name: borrow
+            ref: "/cryptocurrency/defi/borrow"
+          - name: lending
+            ref: "/cryptocurrency/defi/lending"
+          - name: vaults
+            ref: "/cryptocurrency/defi/vaults"
+          - name: tokens
+            ref: "/cryptocurrency/defi/tokens"
+          - name: stats
+            ref: "/cryptocurrency/defi/stats"
+          - name: pairs
+            ref: "/cryptocurrency/defi/pairs"
+          - name: pools
+            ref: "/cryptocurrency/defi/pools"
+          - name: swaps
+            ref: "/cryptocurrency/defi/swaps"
   - name: economy
     ref: "/economy"
     sub:
