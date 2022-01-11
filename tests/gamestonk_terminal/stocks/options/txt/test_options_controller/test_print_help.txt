@@ -15,6 +15,7 @@ Expiry: None
     vol           plot volume [Tradier/YF]
     voi           plot volume and open interest [Tradier/YF]
     hist          plot option history [Tradier]
+    vsurf         show 3D volatility surface [Yfinance]
     grhist        plot option greek history [Syncretism.io]
     plot          plot variables provided by the user [Yfinance]
     parity        shows whether options are above or below expected price [Yfinance]

@@ -58,7 +58,7 @@ async def obv_command(ctx, ticker="", start="", end=""):
         divisor = 1_000_000
         df_vol = df_stock["Volume"].dropna()
         df_vol = df_vol.values / divisor
-        df_ta = volume_model.obv("1440min", df_stock)
+        df_ta = volume_model.obv(df_stock)
         df_cal = df_ta.values
         df_cal = df_cal / divisor
 

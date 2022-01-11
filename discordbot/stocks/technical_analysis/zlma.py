@@ -74,7 +74,7 @@ async def zlma_command(ctx, ticker="", window="", offset="", start="", end=""):
         i = 1
         for win in window:
             zlma_data = overlap_model.zlma(
-                s_interval="1440min", df_stock=stock, length=win, offset=offset
+                values=stock["Adj Close"], length=win, offset=offset
             )
             price_df = price_df.join(zlma_data)
             l_legend.append(f"ZLMA {win}")
