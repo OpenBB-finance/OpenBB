@@ -5,41 +5,41 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.26.0
+      - python-requests/2.27.1
     method: GET
     uri: https://www.alphavantage.co/query?apikey=MOCK_API_KEY&function=OVERVIEW&symbol=AAPL
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA3RUTW/jNhC9768YBAXaAo5A0ZI/elMcJevWtryxskWOtDSWiVCkS1J2vUX/e0HJ
-        khInFXSa94bzhvM4/3wBALjZnMutEje/wU0UrRc3gyYaGYM2PR/QATNVlkrCxqrstSWsWFlj0eEg
-        EOYya4F7NJnmB8uVfId7wA0wCVGJmmdMQlkJyyVzRCbAYraXSqjiDJkqD0yewe6ZBXPAjDPBf6AB
-        LiFT0lQlakCBmdVK8swM6ozKogajdvbENA6AyRyUFFwiGNRHnqHxoBHDDdg9wklpkf9sQDBdoLGf
-        KdieQeMRZYXwi1WWCcFlAT/RceCFsOVCcCWdKkoo+dWVHIDhMkP4ncmK6bMD/MG7aqUyFo5MVGwr
-        sC3kQWRA7S70T1XuVKXt/rYVu57BEWWutNNYSW7BMIGm6fuKa0qm7WGvJELJZLVjma00ag/m1lVx
-        cbWri93xAh74EfshcblTuqyH9PGCeF1QKFnAids9RCX7oeQAHpUqBA5gyTOt3EgaWQ8sw61Sr15r
-        ldn8D2eRISX+dNgG47+zPZNFba5VtLmPvnX0SmuU2dkhz5v7LqwqafUlGrXRDWZWaRdM49nXVbJI
-        Hl9abC7zylxS4kU8S5+S1XwGs2S5fk7jp033CPJcozGOlqximK8e5qt5GsMiSdYDmD2v46d0vkoG
-        MIsG8NylPXCTMfGCTMcyd8kbPFgst6hbxoJZNPZbxbTFWqMb/C2Z3g5JS1ky/Yp2xg7cOvez9j3R
-        aTChQ0KoT0hHju/m6X3kYJ8SOhwS8hZdx08uvblqjwz7+GMPeJOQtsCdUq/fmajwggR+97j5keco
-        8zXqzZ7pmkC8SXiNv3AUeQMSEkw6neuNC4beqDvxqXlf7YFpuqy79L1pJ1OrHbdLpgsumyNp2IHJ
-        ATWzXBYNfkknHp1O+gq20jKR9UozPYPQa0b8V8Xt+cLwvWAcXKm8QMNROPHHhARvLvlRK2Maqe0B
-        IZ0MR6T++vsRlcU8Xm8upLdXcfGDOMdMSy4L86jVye5fkpdG8WhEP1Avwq6YdNJ1H0kmzsambhfY
-        teZZPTN/HHrjUctJNeNus63jDx55UPrEdN4jYT8WnmGqNm7t1Da6dDTxyOiK4/zUOS0YeaNxZ4jv
-        qbq00ORS+hbqfU0Dr3fhHVrWjIj2SkP6J+LrV17sa2hCvWnwHluoUw354RsFIbln56U6cllER9Ss
-        WTz+iHrjrlVKPicFgUe7Xmv7mqSyxjKZc1k05wRkFFxZoHki98xi9/R99/cb8P84JLz58u9/AAAA
-        //8DAEu54Re4BwAA
+        H4sIAAAAAAAAA3RU227jNhB9368YBAXaAo5A05IvfVMcJevWtryxskUeaWksE6FIl6Tseov+e0Fd
+        EycV9DTnDOcM5wz/+QIAcLO9FDslbn6DmzDcLG8GdTQ0Bm1yOaID5qoolIStVelrS1izosLC41Eg
+        LGTaAvdoUs2Pliv5DveAG2ASwgI1T5mEohSWS+aITIDF9CCVUPkFUlUcmbyAPTAL5ogpZ4L/QANc
+        QqqkKQvUgAJTq5XkqRlUGaVFDUbt7ZlpHACTGSgpuEQwqE88ReNBLYYbsAeEs9Ii+9mAYDpHYz9T
+        sLuAxhPKEuEXqywTgsscfqIT3wtgx4XgSjpVlFDyqys5AMNlivA7kyXTFwcMB++qFcpYODFRsp3A
+        tpAHoQG1b+ifqtyrUtvDbSt2M4cTykxpp7GU3IJhAk3d9xXXFEzb40FJhILJcs9SW2rUHiysq+Li
+        al8Vu+M5PPAT9kPicq90UQ3p4wXxqqBQMocztwcIC/ZDyQE8KpULHMCKp1q5kdSyHliKO6VevdYq
+        88UfziIjSoazURuM/k4PTOaVudbh9j781tFLrVGmF4c8b++7sCql1U00bKNbTK3SLphE86/reBk/
+        vrTYQmalaVKiZTRPnuL1Yg7zeLV5TqKnbbcEWabRGEeL1xEs1g+L9SKJYBnHmwHMnzfRU7JYxwOY
+        hwN47tIeuEmZeEGmI5m55C0eLRY71C1jySwa+61k2mKl0Q3+lsxuR6SlrJh+RTtnR26d+1m7T3RK
+        /fF0NvNHhHTk6G6R3IcOHlJCRyNChm/QTfTk0qurJt541scfe8CbBrQF7pR6/c5EiQ3iD7vl5iee
+        ocw2qLcHpisC8abBNf7CUWQ1SEjQpUebrQsG3rgLPdX71R6YJKuqy6HXy9Rqz+2K6ZzL+kgadGB8
+        RM0sl3mNN+nEo7NpX8GWWsayetJMzyD0mhH9VXJ7aRhDz5/4VyobaDQOpsMJIf6bS37UyphaantA
+        QKejMam+/n5EaTGLNtuG9PYqGj+IS8S05DI3j1qd7eElfqkVj8f0A7URdsWk0677UDJxMTZxb4Hd
+        aJ5WMxtOfK9fuUQz7l62TfTBIw9Kn5nOGoR6JOjHwlNM1NY9O5WNmo4m3oRecZyfOqf5Y2886Qzx
+        PVFNCw6bepS+hXpfU9/rXXiHltUjoqRrIqB/Ir5+5fmhgqbUm/nvsaU6V9AweKMgIPfsslInLvPw
+        hJrVD89w7HvTrh4ln5P8wBt1eiv7mri0xjKZcZk355Cxf2WBekXumcVu9Yfu71/A/+OQ4ObLv/8B
+        AAD//wMAdzGY17gHAAA=
     headers:
       Allow:
       - GET, HEAD, OPTIONS
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 6c9370712e280857-CDG
+      - 6cb1d2484c0358b4-IAD
       Connection:
       - keep-alive
       Content-Encoding:
@@ -47,7 +47,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 06 Jan 2022 08:05:05 GMT
+      - Mon, 10 Jan 2022 00:34:45 GMT
       Expect-CT:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       Server:
@@ -86,7 +86,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
       Content-Length:
@@ -100,15 +100,15 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAy1Su44UQQz8l4l7rfbb3mwFIUIgQnTBSoSIC1ii0/075dmbCbrttqury/V2PF4f
-        99+fXv/9eRxXXsev++N+XH++HX+P6/H19uPz7fv1dvv25cAR8pdNXM9/bdom54+txPnlciVrljCL
-        FUy9WXy7rFSqlK7gXplUks6avWpTFkt32cqiLaqbc13UySNZhFc28U4uVVnGJCqixbyUCRXJxrY4
-        KdO2KftSo27BRVWLmdjQwBmrgd5cor4YjLm3uvQCScVZ+zJi0dhZs83YzZlrL1Ax11DziS7OVLtQ
-        5Ipw8F1Lw6eyKBlNOlckaAiWxMJlkA1Bkc2SEAlcOp65ednUl3gX72kO0g6sTCkWAuYIhDaHzrc4
-        gnyLzfMRQN2GCl7E+DANYPgpYS62JPUNVoFSwzVQM4cv5yaF2EinYz5pUKSecYF2M2gDSQAPdAM6
-        4EJQerLBUSWBeweVLshMDNIfdY5Xhm0kQE+2D0E8YZrwqj5P0O56njwhhlFlC4rgGN6YylBTbRD+
-        6IYfau8pKQiiI1cZHLinBAY51bce/yARTqcaY8ATpDDrge0igQuXsJEOWiQFRn8O7sTq0XsSTaMc
-        ZuGW0ByD5wAKfG1lCMCjCrcxHAJrVYthgr56fGPYXITC4fE6hTMKSAHnc768v7z/B9QpzBCFAwAA
+        H4sIAAAAAAAAAzVTu65TQQz8l1NvLL8f6SIoEQJRoltEokTcglBd3X9n9gRyirW99qxn7Lwdj9fH
+        /eeH1z+/HsdV1vHj/rgf1+9vx+/jeny+fft4+3q93b58OnCF+IVJ+vkt2DzPb/HyIUtjnrFtC2vo
+        eC8LmpYRFV/hxFI8FrNCSSat1W1l0wSrauu6dBFzVg7bukyRSoTVzLIiT1TDXdrENm6es1SoBI2o
+        19KhzOBuoCLeLmJSKyhNOL1kATB8Cva6OImsi1H6UmqTtrJeiMaElIMVk3eLmm/nkkNRlnhWtgtm
+        NcLRAw/dpTa7iy4pkCscTtkdMzJwkiRxBBXXdMV2iiKeiaYT+j9PNXAJXjlTIA1HQZJt/5Zk0qDb
+        1G07NaSVaMpAN6J4K9AaxF3iBQ0YZAyAHmTqCWwGIJNBAoEFdQKPKKZy+tAiSzp2N2oAQGmfhBJX
+        z2YAh0GB6iSUWwqxN7t/ebFH5YxAGinHAAIMdhFIzXmD8sAi4OYJsTvqmpO5YX9mS4CObWpbZ3UN
+        NWOzgKNYAN6GkybvFBck7xNTyh1IEEucBQ4nSA9kQWCaVJGBnYQiOxPD653pNCfWAF52AIShAl6r
+        LTIWAHPEqm6UNuJs7BLaGEIMaXgf2u0/RWF3eBorpVtjQbsnvvjL+8v7X5QhsRF4AwAA
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -123,7 +123,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 06 Jan 2022 08:05:05 GMT
+      - Mon, 10 Jan 2022 00:34:45 GMT
       Server:
       - tv
       Strict-Transport-Security:
@@ -131,7 +131,7 @@ interactions:
       Transfer-Encoding:
       - chunked
       Via:
-      - 192.108.254.126:443
+      - 192.108.254.94:443
     status:
       code: 200
       message: OK

@@ -4,8 +4,10 @@ import pandas as pd
 import requests
 from tabulate import tabulate
 
-import discordbot.config_discordbot as cfg
 from gamestonk_terminal.helper_funcs import get_user_agent
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import logger
 
 
 async def unu_command(ctx, num: int = None):
@@ -14,7 +16,7 @@ async def unu_command(ctx, num: int = None):
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.opt.unu {num}")
+            logger.debug("!stocks.opt.unu %s", num)
 
         # Check for argument
         if num is None:
@@ -30,7 +32,7 @@ async def unu_command(ctx, num: int = None):
             )
 
             if r.status_code != 200:
-                print("Error in fdscanner request")
+                logger.debug("Error in fdscanner request")
                 return pd.DataFrame(), "request error"
 
             data_list.append(r.json())

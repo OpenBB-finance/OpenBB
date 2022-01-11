@@ -8,7 +8,7 @@ from gamestonk_terminal.common.technical_analysis import custom_indicators_model
 from gamestonk_terminal import config_plot as cfp
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
 
 
@@ -19,7 +19,12 @@ async def fib_command(ctx, ticker="", start="", end=""):
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.fib {ticker} {start} {end}")
+            logger.debug(
+                "!stocks.ta.fib %s %s %s",
+                ticker,
+                start,
+                end,
+            )
 
         # Check for argument
         if ticker == "":
@@ -27,13 +32,17 @@ async def fib_command(ctx, ticker="", start="", end=""):
 
         if start == "":
             start = datetime.now() - timedelta(days=365)
+            f_start = None
         else:
             start = datetime.strptime(start, cfg.DATE_FORMAT)
+            f_start = start
 
         if end == "":
             end = datetime.now()
+            f_end = None
         else:
             end = datetime.strptime(end, cfg.DATE_FORMAT)
+            f_end = None
 
         ticker = ticker.upper()
         df_stock = discordbot.helpers.load(ticker, start)
@@ -51,7 +60,7 @@ async def fib_command(ctx, ticker="", start="", end=""):
             max_date,
             min_pr,
             max_pr,
-        ) = custom_indicators_model.calculate_fib_levels(df_stock, 120, start, end)
+        ) = custom_indicators_model.calculate_fib_levels(df_stock, 120, f_start, f_end)
 
         levels = df_fib.Price
         fig, ax = plt.subplots(figsize=(plot_autoscale()), dpi=cfp.PLOT_DPI)
@@ -81,7 +90,7 @@ async def fib_command(ctx, ticker="", start="", end=""):
         uploaded_image = gst_imgur.upload_image("ta_fib.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: Fibonacci-Retracement-Levels " + ticker
         str_df_fib = "```" + df_fib.to_string(index=False) + "```"
         embed = discord.Embed(title=title, colour=cfg.COLOR, description=str_df_fib)

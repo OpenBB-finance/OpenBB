@@ -2,12 +2,12 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
-from typing import List, Union
+from typing import List
 from datetime import datetime, timedelta
 from colorama import Style
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
@@ -15,9 +15,6 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     valid_date,
     check_int_range,
-    try_except,
-    system_clear,
-    get_flair,
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
@@ -33,22 +30,9 @@ from gamestonk_terminal.stocks.dark_pool_shorts import (
 )
 
 
-class DarkPoolShortsController:
+class DarkPoolShortsController(BaseController):
     """Dark Pool Shorts Controller class"""
 
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
     CHOICES_COMMANDS = [
         "load",
         "shorted",
@@ -62,32 +46,26 @@ class DarkPoolShortsController:
         "spos",
         "volexch",
     ]
-    CHOICES += CHOICES_COMMANDS
 
     def __init__(
         self, ticker: str, start: str, stock: pd.DataFrame, queue: List[str] = None
     ):
         """Constructor"""
-        self.dps_parser = argparse.ArgumentParser(add_help=False, prog="dps")
-        self.dps_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-
-        self.completer: Union[None, NestedCompleter] = None
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-            self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
+        super().__init__("/stocks/dps/", queue)
 
         self.ticker = ticker
         self.start = start
         self.stock = stock
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def custom_reset(self):
+        """Class specific component of reset command"""
+        if self.ticker:
+            return ["stocks", f"load {self.ticker}", "dps"]
+        return []
 
     def print_help(self):
         """Print help"""
@@ -119,89 +97,6 @@ NYSE:
 {Style.RESET_ALL if not self.ticker else ''}"""
         print(help_text)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.dps_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        if self.ticker:
-            self.queue.insert(0, f"load {self.ticker}")
-        self.queue.insert(0, "dps")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -245,7 +140,6 @@ NYSE:
                 else:
                     self.ticker = ns_parser.ticker.upper()
 
-    @try_except
     def call_shorted(self, other_args: List[str]):
         """Process shorted command"""
         parser = argparse.ArgumentParser(
@@ -274,7 +168,6 @@ NYSE:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_hsi(self, other_args: List[str]):
         """Process hsi command"""
         parser = argparse.ArgumentParser(
@@ -307,7 +200,6 @@ NYSE:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_prom(self, other_args: List[str]):
         """Process prom command"""
         parser = argparse.ArgumentParser(
@@ -357,7 +249,6 @@ NYSE:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_pos(self, other_args: List[str]):
         """Process pos command"""
         parser = argparse.ArgumentParser(
@@ -405,7 +296,6 @@ NYSE:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_sidtc(self, other_args: List[str]):
         """Process sidtc command"""
         parser = argparse.ArgumentParser(
@@ -442,7 +332,6 @@ NYSE:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_dpotc(self, other_args: List[str]):
         """Process dpotc command"""
         parser = argparse.ArgumentParser(
@@ -463,7 +352,6 @@ NYSE:
             else:
                 print("No ticker loaded.\n")
 
-    @try_except
     def call_ftd(self, other_args: List[str]):
         """Process ftd command"""
         parser = argparse.ArgumentParser(
@@ -522,7 +410,6 @@ NYSE:
             else:
                 print("No ticker loaded.\n")
 
-    @try_except
     def call_spos(self, other_args: List[str]):
         """Process spos command"""
         parser = argparse.ArgumentParser(
@@ -560,7 +447,6 @@ NYSE:
             else:
                 print("No ticker loaded.\n")
 
-    @try_except
     def call_psi(self, other_args: List[str]):
         """Process psi command"""
         parser = argparse.ArgumentParser(
@@ -622,7 +508,6 @@ NYSE:
             else:
                 print("No ticker loaded.\n")
 
-    @try_except
     def call_volexch(self, other_args: List[str]):
         """Process volexch command"""
         parser = argparse.ArgumentParser(
@@ -678,87 +563,3 @@ NYSE:
                 )
             else:
                 print("No ticker loaded.  Use `load ticker` first.")
-
-
-def menu(
-    ticker: str = "",
-    start: str = "",
-    stock: pd.DataFrame = pd.DataFrame(),
-    queue: List[str] = None,
-):
-    """Dark Pool Shorts Menu"""
-    dps_controller = DarkPoolShortsController(ticker, start, stock, queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if dps_controller.queue and len(dps_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if dps_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(dps_controller.queue) > 1:
-                    return dps_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = dps_controller.queue[0]
-            dps_controller.queue = dps_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in dps_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /stocks/dps/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                dps_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and dps_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/dps/ $ ",
-                        completer=dps_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/dps/ $ ")
-
-        try:
-            # Process the input command
-            dps_controller.queue = dps_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/dps menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                dps_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        dps_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                dps_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

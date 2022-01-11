@@ -3,12 +3,13 @@ import discord
 
 from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 from gamestonk_terminal.stocks.options import tradier_model, yfinance_model
-from discordbot.run_discordbot import gst_bot
+
 import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_bot, logger
 
 
 async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple = None):
-    if TRADIER_TOKEN == "REPLACE_ME":
+    if TRADIER_TOKEN == "REPLACE_ME":  # nosec
         dates = yfinance_model.option_expirations(ticker)
     else:
         dates = tradier_model.option_expirations(ticker)
@@ -100,13 +101,12 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
         )
         for N in range(0, 10):
             if reaction.emoji == emoji_list[N]:
-                if cfg.DEBUG:
-                    print(f"Reaction selected: {N}")
-                    expiry = dates[N]
-                    if call_arg is None:
-                        await func_cmd(ctx, ticker, expiry)
-                    else:
-                        await func_cmd(ctx, ticker, expiry, *call_arg)
+                logger.info("Reaction selected: %d", N)
+                expiry = dates[N]
+                if call_arg is None:
+                    await func_cmd(ctx, ticker, expiry)
+                else:
+                    await func_cmd(ctx, ticker, expiry, *call_arg)
 
         for emoji in emoji_list:
             await msg.remove_reaction(emoji, ctx.bot.user)
@@ -114,13 +114,14 @@ async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple =
     except asyncio.TimeoutError:
         for emoji in emoji_list:
             await msg.remove_reaction(emoji, ctx.bot.user)
-        embed = discord.Embed(
-            description="Error timeout - you snooze you lose! 😋",
-            colour=cfg.COLOR,
-            title="TIMEOUT  " + ticker.upper() + " Options: Expiry Date",
-        )
-        embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
-        )
-        await ctx.send(embed=embed, delete_after=10.0)
+        if cfg.DEBUG:
+            embed = discord.Embed(
+                description="Error timeout - you snooze you lose! 😋",
+                colour=cfg.COLOR,
+                title="TIMEOUT  " + ticker.upper() + " Options: Expiry Date",
+            )
+            embed.set_author(
+                name=cfg.AUTHOR_NAME,
+                icon_url=cfg.AUTHOR_ICON_URL,
+            )
+            await ctx.send(embed=embed, delete_after=10.0)

@@ -9,7 +9,7 @@ from gamestonk_terminal.common.technical_analysis import overlap_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
 
 
@@ -19,7 +19,14 @@ async def hma_command(ctx, ticker="", window="", offset="", start="", end=""):
     try:
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.hma {ticker} {window} {offset} {start} {end}")
+            logger.debug(
+                "!stocks.ta.hma %s %s %s %s %s",
+                ticker,
+                window,
+                offset,
+                start,
+                end,
+            )
 
         # Check for argument
         if ticker == "":
@@ -67,7 +74,7 @@ async def hma_command(ctx, ticker="", window="", offset="", start="", end=""):
         i = 1
         for win in window:
             hma_data = overlap_model.hma(
-                s_interval="1440min", df_stock=stock, length=win, offset=offset
+                values=stock["Adj Close"], length=win, offset=offset
             )
             price_df = price_df.join(hma_data)
             l_legend.append(f"HMA {win}")
@@ -100,7 +107,7 @@ async def hma_command(ctx, ticker="", window="", offset="", start="", end=""):
         uploaded_image = gst_imgur.upload_image("ta_hma.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: Hull-Moving-Average " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

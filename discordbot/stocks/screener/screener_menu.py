@@ -2,9 +2,7 @@ import asyncio
 import discord
 
 import discordbot.config_discordbot as cfg
-
-from discordbot.run_discordbot import gst_bot
-
+from discordbot.run_discordbot import gst_bot, logger
 from discordbot.stocks.screener.historical import historical_command
 from discordbot.stocks.screener.overview import overview_command
 from discordbot.stocks.screener.presets_custom import presets_custom_command
@@ -29,11 +27,13 @@ class ScreenerCommands(discord.ext.commands.Cog):
     @discord.ext.commands.command(name="stocks.scr.presets_default")
     async def presets_default(self, ctx: discord.ext.commands.Context):
         """Displays every available preset"""
+        logger.info("stocks.scr.presets_default")
         await presets_default_command(ctx)
 
     @discord.ext.commands.command(name="stocks.scr.presets_custom")
     async def presets_custom(self, ctx: discord.ext.commands.Context):
         """Displays every available preset"""
+        logger.info("stocks.scr.presets_custom")
         await presets_custom_command(ctx)
 
     @discord.ext.commands.command(
@@ -54,6 +54,7 @@ class ScreenerCommands(discord.ext.commands.Cog):
         start:
             Starting date in YYYY-MM-DD format
         """
+        logger.info("stocks.scr.historical")
         await historical_command(ctx, signal, start)
 
     @discord.ext.commands.command(
@@ -80,6 +81,7 @@ class ScreenerCommands(discord.ext.commands.Cog):
         ascend: boolean
             whether it's sorted by ascending order or not. Default: False
         """
+        logger.info("stocks.scr.overview")
         await overview_command(ctx, preset, sort, limit, ascend)
 
     @discord.ext.commands.command(
@@ -106,6 +108,7 @@ class ScreenerCommands(discord.ext.commands.Cog):
         ascend: boolean
             whether it's sorted by ascending order or not. Default: False
         """
+        logger.info("stocks.scr.valuation")
         await valuation_command(ctx, preset, sort, limit, ascend)
 
     @discord.ext.commands.command(
@@ -132,6 +135,7 @@ class ScreenerCommands(discord.ext.commands.Cog):
         ascend: boolean
             whether it's sorted by ascending order or not. Default: False
         """
+        logger.info("stocks.scr.financial")
         await financial_command(ctx, preset, sort, limit, ascend)
 
     @discord.ext.commands.command(
@@ -158,6 +162,7 @@ class ScreenerCommands(discord.ext.commands.Cog):
         ascend: boolean
             whether it's sorted by ascending order or not. Default: False
         """
+        logger.info("stocks.scr.ownership")
         await ownership_command(ctx, preset, sort, limit, ascend)
 
     @discord.ext.commands.command(
@@ -184,6 +189,7 @@ class ScreenerCommands(discord.ext.commands.Cog):
         ascend: boolean
             whether it's sorted by ascending order or not. Default: False
         """
+        logger.info("stocks.scr.performance")
         await performance_command(ctx, preset, sort, limit, ascend)
 
     @discord.ext.commands.command(
@@ -210,6 +216,7 @@ class ScreenerCommands(discord.ext.commands.Cog):
         ascend: boolean
             whether it's sorted by ascending order or not. Default: False
         """
+        logger.info("stocks.scr.technical")
         await technical_command(ctx, preset, sort, limit, ascend)
 
     @discord.ext.commands.command(name="stocks.scr")
@@ -223,12 +230,10 @@ class ScreenerCommands(discord.ext.commands.Cog):
         Sends a message to the discord user with the commands from the screener context.
         The user can then select a reaction to trigger a command.
         """
+        logger.info("!stocks.scr")
 
         if preset != "" and preset not in so.all_presets:
             raise Exception("Invalid preset selected!")
-
-        if cfg.DEBUG:
-            print("!stocks.scr")
 
         if preset:
             text = (
@@ -276,40 +281,31 @@ class ScreenerCommands(discord.ext.commands.Cog):
                 "reaction_add", timeout=cfg.MENU_TIMEOUT, check=check
             )
             if reaction.emoji == "0️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 0")
+                logger.info("!stocks.scr. Reaction selected: 0")
                 await presets_default_command(ctx)
             elif reaction.emoji == "1️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 1")
+                logger.info("!stocks.scr. Reaction selected: 1")
                 await presets_custom_command(ctx)
             elif reaction.emoji == "2️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 2")
+                logger.info("!stocks.scr. Reaction selected: 2")
                 await historical_command(ctx, preset)
             elif reaction.emoji == "3️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 3")
+                logger.info("!stocks.scr. Reaction selected: 3")
                 await overview_command(ctx, preset)
             elif reaction.emoji == "4️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 4")
+                logger.info("!stocks.scr. Reaction selected: 4")
                 await valuation_command(ctx, preset)
             elif reaction.emoji == "5️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 5")
+                logger.info("!stocks.scr. Reaction selected: 5")
                 await financial_command(ctx, preset)
             elif reaction.emoji == "6️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 6")
+                logger.info("!stocks.scr. Reaction selected: 6")
                 await ownership_command(ctx, preset)
             elif reaction.emoji == "7️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 7")
+                logger.info("!stocks.scr. Reaction selected: 7")
                 await performance_command(ctx, preset)
             elif reaction.emoji == "8️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 8")
+                logger.info("!stocks.scr. Reaction selected: 8")
                 await technical_command(ctx, preset)
 
             for emoji in emoji_list:

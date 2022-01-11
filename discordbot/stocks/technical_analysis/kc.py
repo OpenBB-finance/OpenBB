@@ -8,7 +8,7 @@ from gamestonk_terminal.common.technical_analysis import volatility_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
 
 
@@ -21,8 +21,16 @@ async def kc_command(
 
         # Debug
         if cfg.DEBUG:
-            print(
-                f"!stocks.ta.kc {ticker} {length} {scalar} {mamode} {offset} {start} {end}"
+            # pylint: disable=logging-too-many-args
+            logger.debug(
+                "!stocks.ta.kc %s %s %s %s %s %s %s",
+                ticker,
+                length,
+                scalar,
+                mamode,
+                offset,
+                start,
+                end,
             )
 
         # Check for argument
@@ -43,7 +51,7 @@ async def kc_command(
 
         if not length.lstrip("-").isnumeric():
             raise Exception("Number has to be an integer")
-        length = float(length)
+        length = int(length)
         if not scalar.lstrip("-").isnumeric():
             raise Exception("Number has to be an integer")
         scalar = float(scalar)
@@ -62,7 +70,15 @@ async def kc_command(
         # Retrieve Data
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
-        df_ta = volatility_model.kc("1440min", df_stock, length, scalar, mamode, offset)
+        df_ta = volatility_model.kc(
+            df_stock["High"],
+            df_stock["Low"],
+            df_stock["Adj Close"],
+            length,
+            scalar,
+            mamode,
+            offset,
+        )
 
         # Output Data
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -94,7 +110,7 @@ async def kc_command(
         uploaded_image = gst_imgur.upload_image("ta_kc.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: Keltner-Channel " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

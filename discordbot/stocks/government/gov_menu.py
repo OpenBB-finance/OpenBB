@@ -1,9 +1,8 @@
 import asyncio
 import discord
+
 import discordbot.config_discordbot as cfg
-
-from discordbot.run_discordbot import gst_bot
-
+from discordbot.run_discordbot import gst_bot, logger
 from discordbot.stocks.government.lasttrades import lasttrades_command
 from discordbot.stocks.government.topbuys import topbuys_command
 from discordbot.stocks.government.topsells import topsells_command
@@ -75,6 +74,7 @@ class GovernmentCommands(discord.ext.commands.Cog):
         raw: boolean
             True or false
         """
+        logger.info("stocks.gov.topbuys")
         await topbuys_command(ctx, gov_type, past_transactions_months, num, raw)
 
     @discord.ext.commands.command(
@@ -102,6 +102,7 @@ class GovernmentCommands(discord.ext.commands.Cog):
         raw: boolean
             True or false
         """
+        logger.info("stocks.gov.topsells")
         await topsells_command(ctx, gov_type, past_transactions_months, num, raw)
 
     @discord.ext.commands.command(
@@ -120,6 +121,7 @@ class GovernmentCommands(discord.ext.commands.Cog):
         num: int
             Number of contracts
         """
+        logger.info("stocks.gov.lastcontracts")
         await lastcontracts_command(ctx, past_transactions_days, num)
 
     @discord.ext.commands.command(
@@ -138,6 +140,7 @@ class GovernmentCommands(discord.ext.commands.Cog):
         num: int
             Number of contracts
         """
+        logger.info("stocks.gov.qtrcontracts")
         await qtrcontracts_command(ctx, num, analysis)
 
     @discord.ext.commands.command(
@@ -154,6 +157,7 @@ class GovernmentCommands(discord.ext.commands.Cog):
         raw: boolean
             True or false
         """
+        logger.info("stocks.gov.toplobbying")
         await toplobbying_command(ctx, num, raw)
 
     @discord.ext.commands.command(
@@ -181,6 +185,7 @@ class GovernmentCommands(discord.ext.commands.Cog):
         raw: boolean
             True or false
         """
+        logger.info("stocks.gov.gtrades")
         await gtrades_command(ctx, ticker, gov_type, past_transactions_months, raw)
 
     @discord.ext.commands.command(
@@ -205,6 +210,7 @@ class GovernmentCommands(discord.ext.commands.Cog):
         raw: boolean
             True or false
         """
+        logger.info("stocks.gov.contracts")
         await contracts_command(ctx, ticker, past_transaction_days, raw)
 
     @discord.ext.commands.command(
@@ -219,6 +225,7 @@ class GovernmentCommands(discord.ext.commands.Cog):
         ticker: str
             ticker, -h or help
         """
+        logger.info("stocks.gov.histcont")
         await histcont_command(ctx, ticker)
 
     @discord.ext.commands.command(
@@ -235,6 +242,7 @@ class GovernmentCommands(discord.ext.commands.Cog):
         num: int
             Number of events
         """
+        logger.info("stocks.gov.lobbying")
         await lobbying_command(ctx, ticker, num)
 
     @discord.ext.commands.command(
@@ -252,9 +260,7 @@ class GovernmentCommands(discord.ext.commands.Cog):
         Sends a message to the discord user with the commands from the gov context.
         The user can then select a reaction to trigger a command.
         """
-
-        if cfg.DEBUG:
-            print(f"\n!stocks.gov {ticker}")
+        logger.info("!stocks.gov %s", ticker)
 
         text = (
             "0️⃣ !stocks.gov.lasttrades <GOV_TYPE> <PAST_TRANSACTION_DAYS> "
@@ -305,44 +311,34 @@ class GovernmentCommands(discord.ext.commands.Cog):
                 "reaction_add", timeout=cfg.MENU_TIMEOUT, check=check
             )
             if reaction.emoji == "0️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 0")
+                logger.info("Reaction selected: 0")
                 await lasttrades_command(ctx)
             elif reaction.emoji == "1️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 1")
+                logger.info("Reaction selected: 1")
                 await topbuys_command(ctx)
             elif reaction.emoji == "2️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 2")
+                logger.info("Reaction selected: 2")
                 await topsells_command(ctx)
             elif reaction.emoji == "3️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 3")
+                logger.info("Reaction selected: 3")
                 await lastcontracts_command(ctx)
             elif reaction.emoji == "4️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 4")
+                logger.info("Reaction selected: 4")
                 await qtrcontracts_command(ctx)
             elif reaction.emoji == "5️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 5")
+                logger.info("Reaction selected: 5")
                 await toplobbying_command(ctx, ticker)
             elif reaction.emoji == "6️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 6")
+                logger.info("Reaction selected: 6")
                 await gtrades_command(ctx, ticker)
             elif reaction.emoji == "7️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 7")
+                logger.info("Reaction selected: 7")
                 await contracts_command(ctx, ticker)
             elif reaction.emoji == "8️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 8")
+                logger.info("Reaction selected: 8")
                 await histcont_command(ctx, ticker)
             elif reaction.emoji == "9️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 9")
+                logger.info("Reaction selected: 9")
                 await lobbying_command(ctx, ticker)
 
             for emoji in emoji_list:
@@ -351,15 +347,16 @@ class GovernmentCommands(discord.ext.commands.Cog):
         except asyncio.TimeoutError:
             for emoji in emoji_list:
                 await msg.remove_reaction(emoji, ctx.bot.user)
-            embed = discord.Embed(
-                description="Error timeout - you snooze you lose! 😋",
-                colour=cfg.COLOR,
-                title="TIMEOUT Stocks: Government (GOV) Menu",
-            ).set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
-            )
-            await ctx.send(embed=embed)
+            if cfg.DEBUG:
+                embed = discord.Embed(
+                    description="Error timeout - you snooze you lose! 😋",
+                    colour=cfg.COLOR,
+                    title="TIMEOUT Stocks: Government (GOV) Menu",
+                ).set_author(
+                    name=cfg.AUTHOR_NAME,
+                    icon_url=cfg.AUTHOR_ICON_URL,
+                )
+                await ctx.send(embed=embed)
 
 
 def setup(bot: discord.ext.commands.Bot):

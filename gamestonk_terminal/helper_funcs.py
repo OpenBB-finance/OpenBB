@@ -1,7 +1,6 @@
 """Helper functions"""
 __docformat__ = "numpy"
 import argparse
-import functools
 import logging
 from typing import List
 from datetime import datetime, timedelta
@@ -26,9 +25,7 @@ from screeninfo import get_monitors
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_plot as cfgPlot
-import gamestonk_terminal.config_terminal as cfg
 
-logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 if cfgPlot.BACKEND is not None:
@@ -212,6 +209,19 @@ def check_proportion_range(num) -> float:
     if num < mini or num > maxi:
         raise argparse.ArgumentTypeError("Value must be between 0 and 1")
     return num
+
+
+def valid_date_in_past(s: str) -> datetime:
+    """Argparse type to check date is in valid format"""
+    try:
+        delta = datetime.now() - datetime.strptime(s, "%Y-%m-%d")
+        if delta.days < 1:
+            raise argparse.ArgumentTypeError(
+                f"Not a valid date: {s}. Must be earlier than today"
+            )
+        return datetime.strptime(s, "%Y-%m-%d")
+    except ValueError as value_error:
+        raise argparse.ArgumentTypeError(f"Not a valid date: {s}") from value_error
 
 
 def valid_date(s: str) -> datetime:
@@ -565,6 +575,8 @@ def parse_known_args_and_warn(
     parser: argparse.ArgumentParser,
     other_args: List[str],
     export_allowed: int = NO_EXPORT,
+    raw: bool = False,
+    limit: int = 0,
 ):
     """Parses list of arguments into the supplied parser
 
@@ -577,7 +589,10 @@ def parse_known_args_and_warn(
     export_allowed: int
         Choose from NO_EXPORT, EXPORT_ONLY_RAW_DATA_ALLOWED,
         EXPORT_ONLY_FIGURES_ALLOWED and EXPORT_BOTH_RAW_DATA_AND_FIGURES
-
+    raw: bool
+        Add the --raw flag
+    limit: int
+        Add a --limit flag with this number default
     Returns
     -------
     ns_parser:
@@ -607,6 +622,24 @@ def parse_known_args_and_warn(
             type=str,
             dest="export",
             help=help_export,
+        )
+
+    if raw:
+        parser.add_argument(
+            "--raw",
+            dest="raw",
+            action="store_true",
+            default=False,
+            help="Flag to display raw data",
+        )
+    if limit > 0:
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            default=limit,
+            help="Number of entries to show in data.",
+            type=int,
         )
 
     if gtff.USE_CLEAR_AFTER_CMD:
@@ -894,28 +927,6 @@ def get_rf() -> float:
         return round(float(latest["avg_interest_rate_amt"]) / 100, 8)
     except Exception:
         return 0.02
-
-
-def try_except(f):
-    """Adds a try except block if the user is not in development mode
-
-    Parameters
-    -------
-    f: function
-        The function to be wrapped
-    """
-    # pylint: disable=inconsistent-return-statements
-    @functools.wraps(f)
-    def inner(*args, **kwargs):
-        if cfg.DEBUG_MODE:
-            return f(*args, **kwargs)
-        try:
-            return f(*args, **kwargs)
-        except Exception as e:
-            logger.exception("%s", type(e).__name__)
-            return []
-
-    return inner
 
 
 class LineAnnotateDrawer:

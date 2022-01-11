@@ -4533,8 +4533,6 @@ interactions:
       - strict-origin-when-cross-origin
       Server:
       - cloudflare
-      Transfer-Encoding:
-      - chunked
       Vary:
       - Accept-Encoding
       X-Content-Type-Options:
@@ -4554,6 +4552,71 @@ interactions:
       alt-svc:
       - h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400, h3=":443";
         ma=86400
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://api.coingecko.com/api/v3/global/decentralized_finance_defi
+  response:
+    body:
+      string: !!binary |
+        H4sIAI0K02EAA1yQzU7DMBCE38VnVO2/d/sc3C2rCTSCJFWUcqn67mwrIQEXH2zPfDNzK0Pfezne
+        yjC+TW3u28e4t1O/lGNBZZNqgqZ0CDXCUEQncnRALC9l3M9/JaLqUfMdmQ9CalW9AgQHsZpYap6c
+        fW0P7db3aU1Zfq5AhMCKAIREEiCB7IomopAungdVQwpXQ3CIR6SqtTKn7b71YVre29f6eZ3HRnJO
+        Xw8NjDBIf65IqmDVmCPQUP0nzbDO09KX05gSOwhnT5WkELgkgjOJJ5zEJFugOFRErs7ARCb03GJf
+        L+20Tktb+vwweh23rf++/48izFGxKuc8nu1d7/dvAAAA//8DAFPa3eqPAQAA
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization
+      Access-Control-Allow-Methods:
+      - POST, PUT, DELETE, GET, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - link, per-page, total
+      Access-Control-Request-Method:
+      - '*'
+      Alternate-Protocol:
+      - 443:npn-spdy/2
+      CF-Cache-Status:
+      - MISS
+      CF-RAY:
+      - 6c7cf98fe8915d37-LIS
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jan 2022 14:39:09 GMT
+      ETag:
+      - W/"76b22de0b784147f052833b5628e876a"
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, Origin
+      X-Request-Id:
+      - af6fcdfb-ae99-421c-b30e-a2fe2328d0a6
+      X-Runtime:
+      - '0.151205'
     status:
       code: 200
       message: OK

@@ -2,22 +2,19 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
 import random
-from typing import List, Union
+from typing import List
 from datetime import datetime, timedelta
 import yfinance as yf
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     check_non_negative,
     check_positive,
-    get_flair,
     parse_known_args_and_warn,
-    try_except,
-    system_clear,
     valid_date,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
@@ -38,22 +35,9 @@ from gamestonk_terminal.stocks.comparison_analysis import (
 # pylint: disable=E1121,C0302,R0904
 
 
-class ComparisonAnalysisController:
+class ComparisonAnalysisController(BaseController):
     """Comparison Analysis Controller class"""
 
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
     CHOICES_COMMANDS = [
         "ticker",
         "getpoly",
@@ -81,26 +65,10 @@ class ComparisonAnalysisController:
     CHOICES_MENUS = [
         "po",
     ]
-    CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
 
-    def __init__(
-        self,
-        similar: List[str] = None,
-        queue: List[str] = None,
-    ):
+    def __init__(self, similar: List[str] = None, queue: List[str] = None):
         """Constructor"""
-        self.ca_parser = argparse.ArgumentParser(add_help=False, prog="ca")
-        self.ca_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-
-        self.completer: Union[None, NestedCompleter] = None
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-
-            choices: dict = {c: {} for c in self.CHOICES}
-            self.completer = NestedCompleter.from_nested_dict(choices)
+        super().__init__("/stocks/ca/", queue)
 
         self.ticker = ""
         self.user = ""
@@ -112,10 +80,9 @@ class ComparisonAnalysisController:
         else:
             self.similar = []
 
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
@@ -158,91 +125,12 @@ Finviz:
         """
         print(help_text)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.ca_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        # additional quit for when we come to this menu through a relative path
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
+    def custom_reset(self):
+        """Class specific component of reset command"""
         if self.similar:
-            self.queue.insert(0, f"set {','.join(self.similar)}")
-        self.queue.insert(0, "ca")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            return ["stocks", "ca", f"set {','.join(self.similar)}"]
+        return []
 
-    @try_except
     def call_ticker(self, other_args: List[str]):
         """Process ticker command"""
         parser = argparse.ArgumentParser(
@@ -276,7 +164,6 @@ Finviz:
                     self.ticker = ns_parser.ticker.upper()
             print("")
 
-    @try_except
     def call_tsne(self, other_args: List[str]):
         """Process tsne command"""
         parser = argparse.ArgumentParser(
@@ -322,7 +209,6 @@ Finviz:
             else:
                 print("You need to 'set' a ticker to get similar companies from first!")
 
-    @try_except
     def call_getfinviz(self, other_args: List[str]):
         """Process getfinviz command"""
         parser = argparse.ArgumentParser(
@@ -381,7 +267,6 @@ Finviz:
             else:
                 print("You need to 'set' a ticker to get similar companies from first!")
 
-    @try_except
     def call_getpoly(self, other_args: List[str]):
         """Process get command"""
         parser = argparse.ArgumentParser(
@@ -436,7 +321,6 @@ Finviz:
             else:
                 print("You need to 'set' a ticker to get similar companies from first!")
 
-    @try_except
     def call_getfinnhub(self, other_args: List[str]):
         """Process get command"""
         parser = argparse.ArgumentParser(
@@ -483,7 +367,6 @@ Finviz:
             else:
                 print("You need to 'set' a ticker to get similar companies from first!")
 
-    @try_except
     def call_add(self, other_args: List[str]):
         """Process add command"""
         parser = argparse.ArgumentParser(
@@ -512,7 +395,6 @@ Finviz:
 
             print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
 
-    @try_except
     def call_rmv(self, other_args: List[str]):
         """Process rmv command"""
         parser = argparse.ArgumentParser(
@@ -550,7 +432,6 @@ Finviz:
             print("")
             self.user = "Custom"
 
-    @try_except
     def call_set(self, other_args: List[str]):
         """Process set command"""
         parser = argparse.ArgumentParser(
@@ -575,7 +456,6 @@ Finviz:
             self.user = "Custom"
             print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
 
-    @try_except
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
         parser = argparse.ArgumentParser(
@@ -630,7 +510,6 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-    @try_except
     def call_hcorr(self, other_args: List[str]):
         """Process historical correlation command"""
         parser = argparse.ArgumentParser(
@@ -672,7 +551,6 @@ Finviz:
             else:
                 print("Please make sure there are similar tickers selected. \n")
 
-    @try_except
     def call_income(self, other_args: List[str]):
         """Process income command"""
         parser = argparse.ArgumentParser(
@@ -712,7 +590,6 @@ Finviz:
                 quarter=ns_parser.b_quarter,
             )
 
-    @try_except
     def call_volume(self, other_args: List[str]):
         """Process volume command"""
         parser = argparse.ArgumentParser(
@@ -746,7 +623,6 @@ Finviz:
             else:
                 print("Please make sure there are similar tickers selected. \n")
 
-    @try_except
     def call_balance(self, other_args: List[str]):
         """Process balance command"""
         parser = argparse.ArgumentParser(
@@ -784,7 +660,6 @@ Finviz:
                 quarter=ns_parser.b_quarter,
             )
 
-    @try_except
     def call_cashflow(self, other_args: List[str]):
         """Process cashflow command"""
         parser = argparse.ArgumentParser(
@@ -822,7 +697,6 @@ Finviz:
                 quarter=ns_parser.b_quarter,
             )
 
-    @try_except
     def call_sentiment(self, other_args: List[str]):
         """Process sentiment command"""
         parser = argparse.ArgumentParser(
@@ -856,7 +730,6 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-    @try_except
     def call_scorr(self, other_args: List[str]):
         """Process sentiment correlation command"""
         parser = argparse.ArgumentParser(
@@ -888,7 +761,6 @@ Finviz:
             else:
                 print("Please make sure there are similar tickers selected. \n")
 
-    @try_except
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
         parser = argparse.ArgumentParser(
@@ -914,7 +786,6 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-    @try_except
     def call_valuation(self, other_args: List[str]):
         """Process valuation command"""
         parser = argparse.ArgumentParser(
@@ -940,7 +811,6 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-    @try_except
     def call_financial(self, other_args: List[str]):
         """Process financial command"""
         parser = argparse.ArgumentParser(
@@ -966,7 +836,6 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-    @try_except
     def call_ownership(self, other_args: List[str]):
         """Process ownership command"""
         parser = argparse.ArgumentParser(
@@ -992,7 +861,6 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-    @try_except
     def call_performance(self, other_args: List[str]):
         """Process performance command"""
         parser = argparse.ArgumentParser(
@@ -1018,7 +886,6 @@ Finviz:
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
-    @try_except
     def call_technical(self, other_args: List[str]):
         """Process technical command"""
         parser = argparse.ArgumentParser(
@@ -1047,94 +914,8 @@ Finviz:
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
         if self.similar and len(self.similar) > 1:
-            self.queue = po_controller.menu(self.similar, self.queue, from_submenu=True)
+            self.queue = po_controller.PortfolioOptimization(
+                self.similar, self.queue
+            ).menu(custom_path_menu_above="/portfolio/")
         else:
             print("Please make sure there are more than 1 similar tickers selected. \n")
-
-
-def menu(
-    similar: List,
-    queue: List[str] = None,
-    from_submenu: bool = False,
-):
-    """Comparison Analysis Menu"""
-    ca_controller = ComparisonAnalysisController(similar, queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if ca_controller.queue and len(ca_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if ca_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                # Since we came from another menu we need to quit an additional time
-                if from_submenu:
-                    ca_controller.queue.insert(0, "quit")
-                    from_submenu = False
-
-                if len(ca_controller.queue) > 1:
-                    return ca_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = ca_controller.queue[0]
-            ca_controller.queue = ca_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in ca_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /stocks/ca/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                ca_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and ca_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/ca/ $ ",
-                        completer=ca_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/ca/ $ ")
-
-        try:
-            # Process the input command
-            ca_controller.queue = ca_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/ca menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                ca_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        ca_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                ca_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

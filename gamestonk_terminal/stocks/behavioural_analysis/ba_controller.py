@@ -2,23 +2,21 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
-from typing import List, Union
+from typing import List
 from datetime import datetime, timedelta
 import textwrap
 from prompt_toolkit.completion import NestedCompleter
 from colorama import Style
+
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    get_flair,
     parse_known_args_and_warn,
     check_int_range,
     valid_date,
     check_positive,
-    try_except,
-    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.behavioural_analysis import (
@@ -36,23 +34,9 @@ from gamestonk_terminal.stocks import stocks_helper
 # pylint:disable=R0904,C0302
 
 
-class BehaviouralAnalysisController:
+class BehaviouralAnalysisController(BaseController):
     """Behavioural Analysis Controller class"""
 
-    # Command choices
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
     CHOICES_COMMANDS = [
         "load",
         "watchlist",
@@ -74,14 +58,14 @@ class BehaviouralAnalysisController:
         "stats",
         "metrics",
         "social",
-        "historical",
+        "
+      ",
         "emerging",
         "popular",
         "popularsi",
         "getdd",
         "his",
     ]
-    CHOICES += CHOICES_COMMANDS
 
     historical_sort = ["date", "value"]
     historical_direction = ["asc", "desc"]
@@ -89,16 +73,13 @@ class BehaviouralAnalysisController:
 
     def __init__(self, ticker: str, start: datetime, queue: List[str] = None):
         """Constructor"""
-        self.ba_parser = argparse.ArgumentParser(add_help=False, prog="ba")
-        self.ba_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES + self.CHOICES_COMMANDS,
-        )
+        super().__init__("/stocks/ba/", queue)
 
-        self.completer: Union[None, NestedCompleter] = None
+        self.ticker = ticker
+        self.start = start
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["historical"]["-s"] = {c: None for c in self.historical_sort}
             choices["historical"]["--sort"] = {c: None for c in self.historical_sort}
             choices["historical"]["-d"] = {c: None for c in self.historical_direction}
@@ -110,16 +91,7 @@ class BehaviouralAnalysisController:
                 c: None for c in self.historical_metric
             }
             choices["historical"] = {c: None for c in self.historical_metric}
-
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        self.ticker = ticker
-        self.start = start
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
     def print_help(self):
         dim = Style.DIM if not self.ticker else ""
@@ -162,137 +134,6 @@ SentimentInvestor:
     his           plot historical RHI and AHI data by hour
         """
         print(help_txt)
-
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.ba_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "ba")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    @try_except
-    def call_his(self, other_args: List[str]):
-        """Process his command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="his",
-            description="Plot historical sentiment data of RHI and AHI by hour",
-        )
-
-        parser.add_argument(
-            "-s",
-            "--start",
-            type=valid_date,
-            default=(datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
-            dest="start",
-            help="The starting date (format YYYY-MM-DD) of the stock. Default: 7 days ago",
-        )
-
-        parser.add_argument(
-            "-e",
-            "--end",
-            type=valid_date,
-            default=(datetime.now().strftime("%Y-%m-%d")),
-            dest="end",
-            help="The ending date (format YYYY-MM-DD) of the stock. Default: today",
-        )
-
-        parser.add_argument(
-            "-n",
-            "--number",
-            default=100,
-            type=check_positive,
-            dest="number",
-            help="Limit number of returned results. Defaul: 100",
-        )
-
-        ns_parser = parse_known_args_and_warn(parser,
-        other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES)
-
-        if ns_parser:
-            sentimentinvestor_view.display_historical(
-                    ticker=self.ticker,
-                    start=ns_parser.start,
-                    end=ns_parser.end,
-                    limit=ns_parser.number,
-                    export=ns_parser.export
-            )
-
-
 
     @try_except
     def call_load(self, other_args: List[str]):
@@ -338,7 +179,6 @@ SentimentInvestor:
             else:
                 print("Provide a valid ticker")
 
-    @try_except
     def call_watchlist(self, other_args: List[str]):
         """Process watchlist command"""
         parser = argparse.ArgumentParser(
@@ -362,7 +202,6 @@ SentimentInvestor:
         if ns_parser:
             reddit_view.display_watchlist(num=ns_parser.limit)
 
-    @try_except
     def call_spac(self, other_args: List[str]):
         """Process spac command"""
         parser = argparse.ArgumentParser(
@@ -386,7 +225,6 @@ SentimentInvestor:
         if ns_parser:
             reddit_view.display_spac(limit=ns_parser.n_limit)
 
-    @try_except
     def call_spac_c(self, other_args: List[str]):
         """Process spac_c command"""
         parser = argparse.ArgumentParser(
@@ -420,7 +258,6 @@ SentimentInvestor:
                 limit=ns_parser.n_limit, popular=ns_parser.b_popular
             )
 
-    @try_except
     def call_wsb(self, other_args: List[str]):
         """Process wsb command"""
         parser = argparse.ArgumentParser(
@@ -453,7 +290,6 @@ SentimentInvestor:
                 limit=ns_parser.n_limit, new=ns_parser.b_new
             )
 
-    @try_except
     def call_popular(self, other_args: List[str]):
         """Process popular command"""
         parser = argparse.ArgumentParser(
@@ -502,7 +338,6 @@ SentimentInvestor:
                 subreddits=ns_parser.s_subreddit,
             )
 
-    @try_except
     def call_getdd(self, other_args: List[str]):
         """Process getdd command"""
         parser = argparse.ArgumentParser(
@@ -554,7 +389,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_bullbear(self, other_args: List[str]):
         """Process bullbear command"""
         parser = argparse.ArgumentParser(
@@ -573,7 +407,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_messages(self, other_args: List[str]):
         """Process messages command"""
         parser = argparse.ArgumentParser(
@@ -602,7 +435,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_trending(self, other_args: List[str]):
         """Process trending command"""
         parser = argparse.ArgumentParser(
@@ -615,7 +447,6 @@ SentimentInvestor:
         if ns_parser:
             stocktwits_view.display_trending()
 
-    @try_except
     def call_stalker(self, other_args: List[str]):
         """Process stalker command"""
         parser = argparse.ArgumentParser(
@@ -652,7 +483,6 @@ SentimentInvestor:
                 user=ns_parser.s_user, limit=ns_parser.limit
             )
 
-    @try_except
     def call_mentions(self, other_args: List[str]):
         """Process mentions command"""
         parser = argparse.ArgumentParser(
@@ -684,7 +514,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_regions(self, other_args: List[str]):
         """Process regions command"""
         parser = argparse.ArgumentParser(
@@ -715,7 +544,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_queries(self, other_args: List[str]):
         """Process queries command"""
         parser = argparse.ArgumentParser(
@@ -746,7 +574,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_rise(self, other_args: List[str]):
         """Process rise command"""
         parser = argparse.ArgumentParser(
@@ -777,7 +604,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_infer(self, other_args: List[str]):
         """Process infer command"""
         parser = argparse.ArgumentParser(
@@ -810,7 +636,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_sentiment(self, other_args: List[str]):
         """Process sentiment command"""
         parser = argparse.ArgumentParser(
@@ -859,7 +684,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_headlines(self, other_args: List[str]):
         """Process finbrain command"""
         parser = argparse.ArgumentParser(
@@ -884,7 +708,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_stats(self, other_args: List[str]):
         """Process stats command"""
         parser = argparse.ArgumentParser(
@@ -908,7 +731,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_metrics(self, other_args: List[str]):
         """Process metrics command"""
         command_description = f"""
@@ -959,7 +781,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_social(self, other_args: List[str]):
         """Process social command"""
         command_description = f"""
@@ -988,7 +809,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @try_except
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
         command_description = f"""
@@ -1076,7 +896,56 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
+ 
     @try_except
+    def call_his(self, other_args: List[str]):
+        """Process his command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="his",
+            description="Plot historical sentiment data of RHI and AHI by hour",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the stock. Default: 7 days ago",
+        )
+
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            default=(datetime.now().strftime("%Y-%m-%d")),
+            dest="end",
+            help="The ending date (format YYYY-MM-DD) of the stock. Default: today",
+        )
+
+        parser.add_argument(
+            "-n",
+            "--number",
+            default=100,
+            type=check_positive,
+            dest="number",
+            help="Limit number of returned results. Defaul: 100",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser,
+        other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES)
+
+        if ns_parser:
+            sentimentinvestor_view.display_historical(
+                    ticker=self.ticker,
+                    start=ns_parser.start,
+                    end=ns_parser.end,
+                    limit=ns_parser.number,
+                    export=ns_parser.export
+            )
+            
     def call_popularsi(self, other_args: List[str]):
         """Process popular command"""
         command_description = f"""
@@ -1115,7 +984,6 @@ SentimentInvestor:
             print("Currently under maintenance by the new Sentiment Investor team.\n")
             # sentimentinvestor_view.display_top(metric="AHI", limit=ns_parser.limit)
 
-    @try_except
     def call_emerging(self, other_args: List[str]):
         """Process emerging command"""
         command_description = f"""
@@ -1152,82 +1020,3 @@ SentimentInvestor:
         if ns_parser:
             print("Currently under maintenance by the new Sentiment Investor team.\n")
             # sentimentinvestor_view.display_top(metric="RHI", limit=ns_parser.limit)
-
-
-def menu(ticker: str, start: datetime, queue: List[str] = None):
-    """Behavioural Analysis Menu"""
-    ba_controller = BehaviouralAnalysisController(ticker, start, queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if ba_controller.queue and len(ba_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if ba_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(ba_controller.queue) > 1:
-                    return ba_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = ba_controller.queue[0]
-            ba_controller.queue = ba_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in ba_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /stocks/ba/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                ba_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and ba_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/ba/ $ ",
-                        completer=ba_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/ba/ $ ")
-
-        try:
-            # Process the input command
-            ba_controller.queue = ba_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/ba menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                ba_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        ba_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                ba_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

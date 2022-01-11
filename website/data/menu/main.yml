@@ -622,13 +622,15 @@ main:
         ref: "/cryptocurrency/chart"
       - name: find
         ref: "/cryptocurrency/find"
+      - name: coins
+        ref: "/cryptocurrency/coins"
       - name: headlines
         ref: "/cryptocurrency/headlines"
+      - name: prt
+        ref: "/cryptocurrency/prt"
       - name: discovery
         ref: "/cryptocurrency/discovery"
         sub:
-          - name: coins
-            ref: "/cryptocurrency/discovery/coins"
           - name: cgtrending
             ref: "/cryptocurrency/discovery/cgtrending"
           - name: cgvoted
@@ -660,6 +662,8 @@ main:
       - name: overview
         ref: "/cryptocurrency/overview"
         sub:
+          - name: btcrb
+            ref: "/cryptocurrency/overview/btcrb"
           - name: cgglobal
             ref: "/cryptocurrency/overview/cgglobal"
           - name: cgnews
@@ -688,8 +692,6 @@ main:
             ref: "/cryptocurrency/overview/cgcategories"
           - name: cghold
             ref: "/cryptocurrency/overview/cghold"
-          - name: cgcompanies
-            ref: "/cryptocurrency/overview/cgcompanies"
           - name: cpglobal
             ref: "/cryptocurrency/overview/cpglobal"
           - name: cpinfo
@@ -714,6 +716,8 @@ main:
             ref: "/cryptocurrency/overview/ewf"
           - name: wfpe
             ref: "/cryptocurrency/overview/wfpe"
+          - name: altindex
+            ref: "/cryptocurrency/overview/altindex"
       - name: due diligence
         ref: "/cryptocurrency/due_diligence"
         sub:
@@ -743,8 +747,6 @@ main:
             ref: "/cryptocurrency/due_diligence/dev"
           - name: bc
             ref: "/cryptocurrency/due_diligence/bc"
-          - name: chart
-            ref: "/cryptocurrency/due_diligence/chart"
           - name: basic
             ref: "/cryptocurrency/due_diligence/basic"
           - name: ps
@@ -860,6 +862,35 @@ main:
             ref: "/common/technical_analysis/obv"
           - name: fib
             ref: "/common/technical_analysis/fib"
+      - name: defi
+        ref: "/cryptocurrency/defi"
+        sub:
+          - name: llama
+            ref: "/cryptocurrency/defi/llama"
+          - name: tvl
+            ref: "/cryptocurrency/defi/tvl"
+          - name: newsletter
+            ref: "/cryptocurrency/defi/newsletter"
+          - name: dpi
+            ref: "/cryptocurrency/defi/dpi"
+          - name: funding
+            ref: "/cryptocurrency/defi/funding"
+          - name: borrow
+            ref: "/cryptocurrency/defi/borrow"
+          - name: lending
+            ref: "/cryptocurrency/defi/lending"
+          - name: vaults
+            ref: "/cryptocurrency/defi/vaults"
+          - name: tokens
+            ref: "/cryptocurrency/defi/tokens"
+          - name: stats
+            ref: "/cryptocurrency/defi/stats"
+          - name: pairs
+            ref: "/cryptocurrency/defi/pairs"
+          - name: pools
+            ref: "/cryptocurrency/defi/pools"
+          - name: swaps
+            ref: "/cryptocurrency/defi/swaps"
   - name: economy
     ref: "/economy"
     sub:
@@ -1076,3 +1107,19 @@ main:
         ref: "/forex/candle"
   - name: resources
     ref: "/resources"
+  - name: alternative
+    ref: "/alternative"
+    sub:
+      - name: covid
+        ref: "/alternative/covid"
+        sub:
+          - name: slopes
+            ref: "/alternative/covid/slopes"
+          - name: ov
+            ref: "/alternative/covid/ov"
+          - name: deaths
+            ref: "/alternative/covid/deaths"
+          - name: cases
+            ref: "/alternative/covid/cases"
+          - name: rates
+            ref: "/alternative/covid/rates"
