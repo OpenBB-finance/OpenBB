@@ -103,7 +103,7 @@ Ticker: [/param] {self.ticker} [cmds]
     analysis      analyse SEC filings with the help of machine learning [src][Eclect.us][/src]
     score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [src][FMP][/src]
     warnings      company warnings according to Sean Seah book [src][Market Watch][/src]
-    dcf           advanced Excel customizable discounted cash flow [src][Stockanalysis][/src][/cmds] 
+    dcf           advanced Excel customizable discounted cash flow [src][Stockanalysis][/src][/cmds]
 [src][Yahoo Finance][/src]
     info          information scope of the company{is_foreign_start}
     shrs          shareholders of the company
