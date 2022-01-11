@@ -1,5 +1,4 @@
 import pandas as pd
-from termcolor import colored
 from gamestonk_terminal.rich_config import console
 
 
@@ -33,7 +32,7 @@ def print_brokers_holdings(portfolio):
         )
 
         if pct_change >= 0:
-            console.print(colored(to_print, "green"))
+            console.print(to_print, "green")
         else:
-            console.print(colored(to_print, "red"))
+            console.print(to_print, "red")
     console.print("")
