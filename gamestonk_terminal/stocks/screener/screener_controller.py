@@ -7,8 +7,10 @@ import os
 import datetime
 from typing import List
 
-from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
+
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -26,7 +28,6 @@ from gamestonk_terminal.stocks.screener import (
     yahoofinance_view,
     finviz_model,
 )
-from gamestonk_terminal.rich_config import console
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -97,11 +98,13 @@ class ScreenerController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
+        has_tickers_start = "[unvl]" if not self.screen_tickers else ""
+        has_tickers_end = "[/unvl]" if not self.screen_tickers else ""
+        help_text = f"""[cmds]
     view          view available presets (defaults and customs)
-    set           set one of the available presets
+    set           set one of the available presets[/cmds]
 
-PRESET: {self.preset}
+[param]PRESET: [/param]{self.preset}[cmds]
 
     historical     view historical price
     overview       overview (e.g. Sector, Industry, Market Cap, Volume)
@@ -109,13 +112,20 @@ PRESET: {self.preset}
     financial      financial (e.g. Dividend, ROA, ROE, ROI, Earnings)
     ownership      ownership (e.g. Float, Insider Own, Short Ratio)
     performance    performance (e.g. Perf Week, Perf YTD, Volatility M)
-    technical      technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
-    {Style.NORMAL if self.screen_tickers else Style.DIM}
-Last screened tickers: {', '.join(self.screen_tickers)}
+    technical      technical (e.g. Beta, SMA50, 52W Low, RSI, Change)[/cmds]
+    {has_tickers_start}
+[param]Last screened tickers: [/param]{', '.join(self.screen_tickers)}
 >   ca             take these to comparison analysis menu
->   po             take these to portfolio optimization menu{Style.RESET_ALL}
+>   po             take these to portfolio optimization menu{has_tickers_end}
         """
-        console.print(help_text)
+        console.print(
+            Panel(
+                help_text,
+                title="Stocks - Screener",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_view(self, other_args: List[str]):
         """Process view command"""

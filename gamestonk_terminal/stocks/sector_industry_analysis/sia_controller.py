@@ -245,14 +245,14 @@ class SectorIndustryAnalysisController(BaseController):
 [param]Market Cap        : [/param]{self.mktcap}
 [param]Exclude Exchanges : [/param]{self.exclude_exhanges}
 
-Statistics{c}[cmds]
+[info]Statistics[/info]{c}[cmds]
     cps           companies per Sector based on Country{c_}{m} and Market Cap{m_}{c}
     cpic          companies per Industry based on Country{c_}{m} and Market Cap{m_}{s}
     cpis          companies per Industry based on Sector{s_}{m} and Market Cap{m_}{s}
     cpcs          companies per Country based on Sector{s_}{m} and Market Cap{m_}{i}
     cpci          companies per Country based on Industry{i_}{m} and Market Cap{m_}[/cmds]
 
-Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}[cmds]
+[info]Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}[/info][cmds]
     sama          see all metrics available
     metric        visualise financial metric across filters selected[/cmds]
 {has_no_tickers}
