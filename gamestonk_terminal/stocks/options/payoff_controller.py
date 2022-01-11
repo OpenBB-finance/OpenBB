@@ -4,7 +4,8 @@ __docformat__ = "numpy"
 import argparse
 from typing import List, Dict
 from prompt_toolkit.completion import NestedCompleter
-from colorama import Style
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.helper_funcs import (
@@ -14,7 +15,6 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.options.yfinance_model import get_option_chain, get_price
 from gamestonk_terminal.stocks.options.yfinance_view import plot_payoff
-from gamestonk_terminal.rich_config import console
 
 
 # pylint: disable=R0902
@@ -77,30 +77,32 @@ class PayoffController(BaseController):
 
     def print_help(self):
         """Print help"""
-        if self.underlying == 1:
-            text = "Long"
-        elif self.underlying == 0:
-            text = "None"
-        elif self.underlying == -1:
-            text = "Short"
-
+        has_option_start = "" if self.options else "[unvl]"
+        has_option_end = "" if self.options else "[/unvl]"
         help_text = f"""
-Ticker: {self.ticker or None}
-Expiry: {self.expiration or None}
-
+[param]Ticker: [/param]{self.ticker or None}
+[param]Expiry: [/param]{self.expiration or None}
+[cmds]
     pick          long, short, or none (default) underlying asset
-
-Underlying Asset: {text}
-
+[/cmds][param]
+Underlying Asset: [/param]{('Short', 'None', 'Long')[self.underlying+1]}
+[cmds]
     list          list available strike prices for calls and puts
 
-    add           add option to the list of the options to be plotted{Style.DIM if not self.options else ""}
-    rmv           remove option from the list of the options to be plotted{Style.RESET_ALL}
+    add           add option to the list of the options to be plotted{has_option_start}
+    rmv           remove option from the list of the options to be plotted{has_option_end}
 
     sop           selected options
-    plot          show the option payoff diagram
+    plot          show the option payoff diagram[/cmds]
         """
-        console.print(help_text)
+        console.print(
+            Panel(
+                help_text,
+                title="Stocks - Options - Payoff",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def custom_reset(self):
         """Class specific component of reset command"""

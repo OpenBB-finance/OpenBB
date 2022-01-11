@@ -6,9 +6,9 @@ import random
 from typing import List
 from datetime import datetime, timedelta
 import yfinance as yf
-from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
-
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -30,7 +30,6 @@ from gamestonk_terminal.stocks.comparison_analysis import (
     yahoo_finance_view,
     yahoo_finance_model,
 )
-from gamestonk_terminal.rich_config import console
 
 
 # pylint: disable=E1121,C0302,R0904
@@ -87,34 +86,41 @@ class ComparisonAnalysisController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
-    ticker        set ticker to get similar companies from{Style.NORMAL if self.ticker else Style.DIM}
+        has_ticker_start = "" if self.ticker else "[unvl]"
+        has_ticker_end = "" if self.ticker else "[/unvl]"
 
-Ticker to get similar companies from: {self.ticker}
+        has_similar_start = "" if self.similar and len(self.similar) > 1 else "[unvl]"
+        has_similar_end = "" if self.similar and len(self.similar) > 1 else "[/unvl]"
 
+        help_text = f"""[cmds]
+    ticker        set ticker to get similar companies from[/cmds]
+
+[param]Ticker to get similar companies from: [/param]{self.ticker}
+[cmds]{has_ticker_start}
     tsne          run TSNE on all SP500 stocks and returns closest tickers
     getpoly       get similar stocks from polygon API
     getfinnhub    get similar stocks from finnhub API
-    getfinviz     get similar stocks from finviz API{Style.RESET_ALL}
+    getfinviz     get similar stocks from finviz API{has_ticker_end}
+
 
     set           reset and set similar companies
     add           add more similar companies
-    rmv           remove similar companies individually or all
-{Style.NORMAL if self.similar and len(self.similar)>1 else Style.DIM}
-Similar Companies: {', '.join(self.similar) if self.similar else ''}
+    rmv           remove similar companies individually or all[/cmds]
+{has_similar_start}
+[param]Similar Companies: [/param]{', '.join(self.similar) if self.similar else ''}
 
-Yahoo Finance:
+[src][Yahoo Finance][/src]
     historical    historical price data comparison
     hcorr         historical price correlation
     volume        historical volume data comparison
-Market Watch:
+[src][Market Watch][/src]
     income        income financials comparison
     balance       balance financials comparison
     cashflow      cashflow comparison
-Finbrain:
+[src][Finbrain][/src]
     sentiment     sentiment analysis comparison
     scorr         sentiment correlation
-Finviz:
+[src][Finviz][/src]
     overview      brief overview comparison
     valuation     brief valuation comparison
     financial     brief financial comparison
@@ -122,9 +128,16 @@ Finviz:
     performance   brief performance comparison
     technical     brief technical comparison
 
->   po            portfolio optimization for selected tickers{Style.RESET_ALL}
+[menu]>   po            portfolio optimization for selected tickers[/menu]{has_similar_end}
         """
-        console.print(help_text)
+        console.print(
+            Panel(
+                help_text,
+                title="Stocks - Comparison Analysis",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def custom_reset(self):
         """Class specific component of reset command"""

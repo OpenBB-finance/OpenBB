@@ -6,7 +6,8 @@ from typing import List
 import pandas as pd
 from tabulate import tabulate
 from prompt_toolkit.completion import NestedCompleter
-
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.helper_funcs import (
@@ -14,7 +15,6 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.options import yfinance_view
-from gamestonk_terminal.rich_config import console
 
 
 class PricingController(BaseController):
@@ -48,16 +48,23 @@ class PricingController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = f"""
-Ticker: {self.ticker or None}
-Expiry: {self.selected_date or None}
-
+[param]Ticker: [/param]{self.ticker or None}
+[param]Expiry: [/param]{self.selected_date or None}
+[cmds]
     add           add an expected price to the list
     rmv           remove an expected price from the list
 
     show          show the listed of expected prices
-    rnval         risk neutral valuation for an option
+    rnval         risk neutral valuation for an option[/cmds]
         """
-        console.print(help_text)
+        console.print(
+            Panel(
+                help_text,
+                title="Stocks - Options - Pricing",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def custom_reset(self):
         """Class specific component of reset command"""

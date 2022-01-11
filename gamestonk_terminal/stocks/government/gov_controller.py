@@ -4,8 +4,9 @@ __docformat__ = "numpy"
 import argparse
 from datetime import datetime, timedelta
 from typing import List
-from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -21,7 +22,6 @@ from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
 )
-from gamestonk_terminal.rich_config import console
 
 
 class GovController(BaseController):
@@ -67,10 +67,12 @@ class GovController(BaseController):
 
     def print_help(self):
         """Print help"""
-        dim_no_ticker = Style.DIM if not self.ticker else ""
-        reset_style = Style.RESET_ALL
-        help_txt = f"""
-Explore:
+        has_ticker_start = "[unvl]" if not self.ticker else ""
+        has_ticker_end = "[/unvl]" if not self.ticker else ""
+        help_text = f"""
+[src][QuiverQuant][/src]
+
+[info]Explore:[/info][cmds]
     lasttrades           last trades
     topbuys              show most purchased stocks
     topsells             show most sold stocks
@@ -78,16 +80,23 @@ Explore:
     qtrcontracts         quarterly government contracts analysis
     toplobbying          top corporate lobbying tickers
 
-    load                 load a specific ticker for analysis
+    load                 load a specific ticker for analysis[/cmds]
 
-Ticker: {self.ticker or None}{dim_no_ticker}
+[param]Ticker: [/param]{self.ticker or None}{has_ticker_start}[cmds]
 
     gtrades              show government trades for ticker
     contracts            show government contracts for ticker
     histcont             show historical quarterly government contracts for ticker
-    lobbying             corporate lobbying details for ticker{reset_style}
+    lobbying             corporate lobbying details for ticker[/cmds]{has_ticker_end}
             """
-        console.print(help_txt)
+        console.print(
+            Panel(
+                help_text,
+                title="Stocks - Screener",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def custom_reset(self):
         """Class specific component of reset command"""

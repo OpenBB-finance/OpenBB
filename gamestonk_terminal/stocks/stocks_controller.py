@@ -90,8 +90,9 @@ class StocksController(BaseController):
         has_ticker_end = "" if self.ticker else "[/unvl]"
         help_text = f"""[cmds]
     search      search a specific stock ticker for analysis
-    load        load a specific stock ticker and additional info for analysis[/cmds][info]
-Stock: [/info] {stock_text}
+    load        load a specific stock ticker and additional info for analysis[/cmds][param]
+
+Stock: [/param]{stock_text}
 {self.add_info}
 [cmds]
     quote       view the current price for a specific stock ticker
