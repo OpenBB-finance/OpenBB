@@ -7,6 +7,8 @@ from datetime import datetime, timedelta
 import textwrap
 from prompt_toolkit.completion import NestedCompleter
 from colorama import Style
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -28,7 +30,6 @@ from gamestonk_terminal.common.behavioural_analysis import (
     twitter_view,
 )
 from gamestonk_terminal.stocks import stocks_helper
-from gamestonk_terminal.rich_config import console
 
 # pylint:disable=R0904,C0302
 
@@ -91,45 +92,52 @@ class BehaviouralAnalysisController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
-        dim = Style.DIM if not self.ticker else ""
-        res = Style.RESET_ALL
-        help_txt = f"""
+        has_ticker_start = "" if self.ticker else "[unvl]"
+        has_ticker_end = "" if self.ticker else "[/unvl]"
+        help_text = f"""[cmds]
     load           load a specific stock ticker for analysis
 
-Ticker: {self.ticker.upper() or None}
-
-Finbrain:{dim}
-    headlines     sentiment from 15+ major news headlines {res}
-Finnhub:{dim}
-    stats         sentiment stats including comparison with sector{res}
-Reddit:
+[param]Ticker: [/param]{self.ticker.upper() or None}
+{has_ticker_start}
+[src][Finbrain][/src]
+    headlines     sentiment from 15+ major news headlines
+[src][Finnhub][/src]
+    stats         sentiment stats including comparison with sector{has_ticker_end}
+[src][Reddit][/src]
     wsb           show what WSB gang is up to in subreddit wallstreetbets
     watchlist     show other users watchlist
     popular       show popular tickers
     spac_c        show other users spacs announcements from subreddit SPACs community
-    spac          show other users spacs announcements from other subs{dim}
-    getdd         gets due diligence from another user's post{res}
-Stocktwits:{dim}
-    bullbear      estimate quick sentiment from last 30 messages on board
-    messages      output up to the 30 last messages on the board{res}
+    spac          show other users spacs announcements from other subs{has_ticker_start}
+    getdd         gets due diligence from another user's post{has_ticker_end}
+[src][Stocktwits][/src]
     trending      trending stocks
-    stalker       stalk stocktwits user's last messages
-Twitter:{dim}
+    stalker       stalk stocktwits user's last messages{has_ticker_start}
+    bullbear      estimate quick sentiment from last 30 messages on board
+    messages      output up to the 30 last messages on the board
+[src][Twitter][/src]
     infer         infer about stock's sentiment from latest tweets
-    sentiment     in-depth sentiment prediction from tweets over time{res}
-Google:{dim}
+    sentiment     in-depth sentiment prediction from tweets over time
+[src][Google][/src]
     mentions      interest over time based on stock's mentions
     regions       regions that show highest interest in stock
     queries       top related queries with this stock
-    rise          top rising related queries with stock{res}
-SentimentInvestor:
+    rise          top rising related queries with stock{has_ticker_end}
+[src][SentimentInvestor][/src]
     popularsi     show most popular stocks on social media right now
-    emerging      show stocks that are being talked about more than usual{dim}
+    emerging      show stocks that are being talked about more than usual{has_ticker_start}
     metrics       core social sentiment metrics for this stock
     social        social media figures for stock popularity
-    historical    plot the past week of data for a selected metric{res}
+    historical    plot the past week of data for a selected metric{has_ticker_end}[/cmds]
         """
-        console.print(help_txt)
+        console.print(
+            Panel(
+                help_text,
+                title="Stocks - Behavioural Analysis",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
