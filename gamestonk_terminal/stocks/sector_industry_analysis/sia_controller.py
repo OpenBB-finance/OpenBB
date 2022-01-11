@@ -5,8 +5,9 @@ import argparse
 import difflib
 from typing import List
 import yfinance as yf
-from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -22,7 +23,6 @@ from gamestonk_terminal.stocks.sector_industry_analysis import (
     financedatabase_view,
 )
 from gamestonk_terminal.stocks.comparison_analysis import ca_controller
-from gamestonk_terminal.rich_config import console
 
 
 # pylint: disable=inconsistent-return-statements,C0302,R0902
@@ -219,13 +219,17 @@ class SectorIndustryAnalysisController(BaseController):
 
     def print_help(self):
         """Print help"""
-        params = not any([self.industry, self.sector, self.country])
-        s = Style.DIM if not self.sector else ""
-        i = Style.DIM if not self.industry else ""
-        c = Style.DIM if not self.country else ""
-        m = Style.DIM if not self.mktcap else ""
-        r = Style.RESET_ALL
-        help_text = f"""
+        s = "[unvl]" if not self.sector else ""
+        i = "[unvl]" if not self.industry else ""
+        c = "[unvl]" if not self.country else ""
+        m = "[unvl]" if not self.mktcap else ""
+        s_ = "[/unvl]" if not self.sector else ""
+        i_ = "[/unvl]" if not self.industry else ""
+        c_ = "[/unvl]" if not self.country else ""
+        m_ = "[/unvl]" if not self.mktcap else ""
+        has_no_tickers = "[unvl]" if len(self.tickers) == 0 else ""
+        has_no_tickers_ = "[unvl/]" if len(self.tickers) == 0 else ""
+        help_text = f"""[cmds]
     load          load a specific ticker and all it's corresponding parameters
 
     clear         clear all or one of industry, sector, country and market cap parameters
@@ -234,28 +238,35 @@ class SectorIndustryAnalysisController(BaseController):
     country       see existing countries, or set country if arg specified
     mktcap        set mktcap between small, mid or large
     exchange      revert exclude international exchanges flag
+[/cmds]
+[param]Industry          : [/param]{self.industry}
+[param]Sector            : [/param]{self.sector}
+[param]Country           : [/param]{self.country}
+[param]Market Cap        : [/param]{self.mktcap}
+[param]Exclude Exchanges : [/param]{self.exclude_exhanges}
 
-Industry          : {self.industry}
-Sector            : {self.sector}
-Country           : {self.country}
-Market Cap        : {self.mktcap}
-Exclude Exchanges : {self.exclude_exhanges}
+Statistics{c}[cmds]
+    cps           companies per Sector based on Country{c_}{m} and Market Cap{m_}{c}
+    cpic          companies per Industry based on Country{c_}{m} and Market Cap{m_}{s}
+    cpis          companies per Industry based on Sector{s_}{m} and Market Cap{m_}{s}
+    cpcs          companies per Country based on Sector{s_}{m} and Market Cap{m_}{i}
+    cpci          companies per Country based on Industry{i_}{m} and Market Cap{m_}[/cmds]
 
-Statistics{c}
-    cps           companies per Sector based on Country{m} and Market Cap{r}{c}
-    cpic          companies per Industry based on Country{m} and Market Cap{r}{s}
-    cpis          companies per Industry based on Sector{m} and Market Cap{r}{s}
-    cpcs          companies per Country based on Sector{m} and Market Cap{r}{i}
-    cpci          companies per Country based on Industry{m} and Market Cap{r}
-{r}{Style.DIM if params else ''}
-Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
+Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}[cmds]
     sama          see all metrics available
-    metric        visualise financial metric across filters selected
-{r if params else ''}{Style.DIM if len(self.tickers) == 0 else ''}
-Returned tickers: {', '.join(self.tickers)}
->   ca            take these to comparison analysis menu
-{r if len(self.tickers) == 0 else ''}"""
-        console.print(help_text)
+    metric        visualise financial metric across filters selected[/cmds]
+{has_no_tickers}
+[param]Returned tickers: [/param]{', '.join(self.tickers)}
+[menu]>   ca            take these to comparison analysis menu[/menu]
+{has_no_tickers_}"""
+        console.print(
+            Panel(
+                help_text,
+                title="Stocks - Sector and Industry Analysis",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def custom_reset(self):
         """Class specific component of reset command"""

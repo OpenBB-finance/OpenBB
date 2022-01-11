@@ -92,7 +92,7 @@ class StocksController(BaseController):
     search      search a specific stock ticker for analysis
     load        load a specific stock ticker and additional info for analysis[/cmds][param]
 
-Stock: [/param] {stock_text}
+Stock: [/param]{stock_text}
 {self.add_info}
 [cmds]
     quote       view the current price for a specific stock ticker
