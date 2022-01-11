@@ -1,6 +1,7 @@
 """Helper classes."""
 __docformat__ = "numpy"
-
+import os
+from importlib import machinery, util
 import matplotlib
 import matplotlib.pyplot as plt
 
@@ -33,3 +34,32 @@ class LineAnnotateDrawer:
                     self.ax.plot(x, y)
 
                 self.ax.figure.canvas.draw()
+
+
+# pylint: disable=too-few-public-methods
+class ModelsNamespace:
+    """A namespace placeholder for the menu models.
+
+    This class is used in all api wrappers to create a `models` namespace and import
+    all the model functions.
+    """
+
+    def __init__(self, folder) -> None:
+        """Import all menu models into the models namespace."""
+        menu_models = [
+            (
+                f.replace("_model.py", ""),
+                os.path.abspath(os.path.join(folder, f)),
+            )
+            for f in os.listdir(folder)
+            if f.endswith("_model.py")
+        ]
+
+        for model_name, model_file in menu_models:
+            loader = machinery.SourceFileLoader(model_name, model_file)
+            spec = util.spec_from_loader(model_name, loader)
+            if spec is not None:
+                setattr(self, model_name, util.module_from_spec(spec))
+                loader.exec_module(getattr(self, model_name))
+            else:
+                pass

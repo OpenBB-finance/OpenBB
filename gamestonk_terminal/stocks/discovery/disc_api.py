@@ -1,7 +1,6 @@
 """Discovery API."""
-import os as _os
-import importlib.machinery as _machinery
-import importlib.util as _util
+import os
+from gamestonk_terminal.helper_classes import ModelsNamespace as _models
 
 # flake8: noqa
 # pylint: disable=unused-import
@@ -27,29 +26,4 @@ from .shortinterest_view import hot_penny_stocks as hotpenny
 from .nasdaq_view import display_top_retail as rtat
 
 # Models
-# pylint: disable=too-few-public-methods
-class _models:
-    """A namespace placeholder for the menu models."""
-
-    def __init__(self) -> None:
-        """Import all menu models into the models namespace."""
-        _menu_models = [
-            (
-                f.replace("_model.py", ""),
-                _os.path.abspath(_os.path.join(_os.path.dirname(__file__), f)),
-            )
-            for f in _os.listdir(_os.path.dirname(__file__))
-            if f.endswith("_model.py")
-        ]
-
-        for _model_name, _model_file in _menu_models:
-            _loader = _machinery.SourceFileLoader(_model_name, _model_file)
-            _spec = _util.spec_from_loader(_model_name, _loader)
-            if _spec is not None:
-                setattr(self, _model_name, _util.module_from_spec(_spec))
-                _loader.exec_module(getattr(self, _model_name))
-            else:
-                pass
-
-
-models = _models()
+models = _models(os.path.abspath(os.path.dirname(__file__)))
