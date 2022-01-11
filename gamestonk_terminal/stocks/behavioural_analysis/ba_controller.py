@@ -28,6 +28,8 @@ from gamestonk_terminal.common.behavioural_analysis import (
     finbrain_view,
     finnhub_view,
     twitter_view,
+    sentimentinvestor_view
+
 )
 from gamestonk_terminal.stocks import stocks_helper
 
@@ -77,6 +79,7 @@ class BehaviouralAnalysisController:
         "popular",
         "popularsi",
         "getdd",
+        "his",
     ]
     CHOICES += CHOICES_COMMANDS
 
@@ -156,6 +159,7 @@ SentimentInvestor:
     metrics       core social sentiment metrics for this stock
     social        social media figures for stock popularity
     historical    plot the past week of data for a selected metric{res}
+    his           plot historical RHI and AHI data by hour
         """
         print(help_txt)
 
@@ -238,6 +242,57 @@ SentimentInvestor:
         self.queue.insert(0, "reset")
         self.queue.insert(0, "quit")
         self.queue.insert(0, "quit")
+
+    @try_except
+    def call_his(self, other_args: List[str]):
+        """Process his command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="his",
+            description="Plot historical sentiment data of RHI and AHI by hour",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the stock. Default: 7 days ago",
+        )
+
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            default=(datetime.now().strftime("%Y-%m-%d")),
+            dest="end",
+            help="The ending date (format YYYY-MM-DD) of the stock. Default: today",
+        )
+
+        parser.add_argument(
+            "-n",
+            "--number",
+            default=100,
+            type=check_positive,
+            dest="number",
+            help="Limit number of returned results. Defaul: 100",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser,
+        other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES)
+
+        if ns_parser:
+            sentimentinvestor_view.display_historical(
+                    ticker=self.ticker,
+                    start=ns_parser.start,
+                    end=ns_parser.end,
+                    limit=ns_parser.number,
+                    export=ns_parser.export
+            )
+
+
 
     @try_except
     def call_load(self, other_args: List[str]):
