@@ -662,6 +662,8 @@ main:
       - name: overview
         ref: "/cryptocurrency/overview"
         sub:
+          - name: btcrb
+            ref: "/cryptocurrency/overview/btcrb"
           - name: cgglobal
             ref: "/cryptocurrency/overview/cgglobal"
           - name: cgnews

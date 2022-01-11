@@ -167,6 +167,47 @@ INTERVALS_DISPLAY_EXCHANGE_NET_POSITION_CHANGE = ["24h"]
 INTERVALS_EXCHANGE_BALANCES = ["24h"]
 
 
+def get_close_price(asset: str, interval: str, since: int, until: int) -> pd.DataFrame:
+    """Returns the price of a cryptocurrency
+    [Source: https://glassnode.com]
+
+    Parameters
+    ----------
+    asset : str
+        Crypto to check close price (BTC or ETH)
+    since : int
+        Initial date timestamp (e.g., 1_614_556_800)
+    until : int
+        End date timestamp (e.g., 1_641_227_783_561)
+    interval : str
+        Interval frequency (e.g., 24h)
+
+    Returns
+    -------
+    pd.DataFrame
+        price over time
+    """
+
+    url = api_url + "market/price_usd_close"
+
+    parameters = {
+        "api_key": cfg.API_GLASSNODE_KEY,
+        "a": asset,
+        "i": interval,
+        "s": str(since),
+        "u": str(until),
+    }
+
+    r = requests.get(url, params=parameters)
+    if r.status_code == 200:
+        df = pd.DataFrame(json.loads(r.text))
+        df = df.set_index("t")
+        df.index = pd.to_datetime(df.index, unit="s")
+        return df
+
+    return pd.DataFrame()
+
+
 def get_non_zero_addresses(
     asset: str, interval: str, since: int, until: int
 ) -> pd.DataFrame:
