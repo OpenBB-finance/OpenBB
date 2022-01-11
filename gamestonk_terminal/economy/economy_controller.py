@@ -166,17 +166,17 @@ class EconomyController(BaseController):
     @staticmethod
     def print_help():
         """Print help"""
-        help_text = """[cmds][src]
-CNN:[/src]
-    feargreed     CNN Fear and Greed Index[src]
-Wall St. Journal:[/src]
+        help_text = """[cmds]
+[src][CNN][/src]
+    feargreed     CNN Fear and Greed Index
+[src][Wall St. Journal][/src]
     overview      market data overview
     indices       US indices overview
     futures       futures and commodities overview
     usbonds       US bonds overview
     glbonds       global bonds overview
-    currencies    currencies overview[src]
-Finviz:[/src]
+    currencies    currencies overview
+[src][Finviz][/src]
     energy        energy futures overview
     metals        metals futures overview
     meats         meats futures overview
@@ -185,16 +185,16 @@ Finviz:[/src]
     map           S&P500 index stocks map
     valuation     valuation of sectors, industry, country
     performance   performance of sectors, industry, country
-    spectrum      spectrum of sectors, industry, country[src]
-Alpha Vantage:[/src]
+    spectrum      spectrum of sectors, industry, country
+[src][Alpha Vantage][/src]
     rtps          real-time performance sectors
     gdp           real GDP for United States
     gdpc          quarterly real GDP per Capita data of the United States
     inf           infation rates for United States
     cpi           consumer price index for United States
     tyld          treasury yields for United States
-    unemp         United States unemployment rates[src]
-NASDAQ DataLink (formerly Quandl):[/src]
+    unemp         United States unemployment rates
+[src][NASDAQ DataLink][/src]
     bigmac        the economists Big Mac index[/cmds]
 [menu]
 >   fred          Federal Reserve Economic Data submenu[/menu]

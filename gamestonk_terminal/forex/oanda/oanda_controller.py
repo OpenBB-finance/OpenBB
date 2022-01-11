@@ -66,8 +66,8 @@ class OandaController(BaseController):
 
     def print_help(self):
         """Print help."""
-        dim_if_no_ticker = "[dim]" if not self.instrument else ""
-        reset_style_if_no_ticker = "[/dim]" if not self.instrument else ""
+        has_instrument_start = "[unvl]" if not self.instrument else ""
+        has_instrument_end = "[/unvl]" if not self.instrument else ""
 
         help_text = f"""[cmds]
     summary       shows account summary
@@ -78,22 +78,23 @@ class OandaController(BaseController):
     positions     get open positions
     trades        list open trades
     closetrade    close a trade by id
-[/cmds]
-    Loaded instrument: {self.instrument if self.instrument else ""}
-[cmds]
-    from      select the "from" currency in a forex pair
-    to        select the "to" currency in a forex pair
-    {dim_if_no_ticker}
+
+    from          select the "from" currency in a forex pair
+    to            select the "to" currency in a forex pair[/cmds]
+
+[param]Loaded instrument: [/param]{self.instrument if self.instrument else ""}[cmds]
+
+    {has_instrument_start}
     candles       show candles
     price         shows price for selected instrument
     order         place limit order -u # of units -p price
     orderbook     print orderbook
-    positionbook  print positionbook{reset_style_if_no_ticker}[/cmds]
+    positionbook  print positionbook[/cmds]{has_instrument_end}
     """
         console.print(
             Panel(
                 help_text,
-                title="Oanda",
+                title="Forex - Oanda",
                 subtitle_align="right",
                 subtitle="Gamestonk Terminal",
             )
@@ -111,6 +112,7 @@ class OandaController(BaseController):
             "-n",
             "--name",
             help="To currency",
+            required=True,
             type=av_model.check_valid_forex_currency,
             dest="to_symbol",
         )
@@ -136,13 +138,14 @@ class OandaController(BaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="to",
+            prog="from",
             description='Select the "from" currency symbol in a forex pair',
         )
         parser.add_argument(
             "-n",
             "--name",
             help="From currency",
+            required=True,
             type=av_model.check_valid_forex_currency,
             dest="from_symbol",
         )

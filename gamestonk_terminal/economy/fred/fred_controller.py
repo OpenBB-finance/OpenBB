@@ -54,7 +54,7 @@ class FredController(BaseController):
     add           add series ID to list
     rmv           remove series ID from list[/cmds]
 
-Current Series IDs:
+[param]Current Series IDs:[/param]
 {id_string}{'[dim]'if not self.current_series else ""}[cmds]
     plot          plot selected series [/cmds]{'[/dim]'if not self.current_series else ""}
 {'[dim]'if len(self.current_series.keys())!=1 else ""}[menu]
