@@ -2,6 +2,8 @@ import argparse
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
@@ -12,7 +14,6 @@ from gamestonk_terminal.helper_funcs import (
 )
 
 from gamestonk_terminal.cryptocurrency.nft import nftcalendar_view, opensea_view
-from gamestonk_terminal.rich_config import console
 
 
 class NFTController(BaseController):
@@ -31,16 +32,23 @@ class NFTController(BaseController):
     def print_help(self):
         """Print help"""
 
-        help_text = """
-nftcalendar.io:
+        help_text = """[cmds]
+[src][Nftcalendar.io][/src]
     today       today's NFT drops
     upcoming    upcoming NFT drops
     ongoing     Ongoing NFT drops
     newest      Recently NFTs added
-opensea.io
-    stats       check open sea collection stats
+[src][Opensea.io][/src]
+    stats       check open sea collection stats[/cmds]
 """
-        console.print(help_text)
+        console.print(
+            Panel(
+                help_text,
+                title="Cryptocurrency - Non Fungible Token",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_stats(self, other_args: List[str]):
         """Process stats command"""

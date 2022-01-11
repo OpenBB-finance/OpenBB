@@ -8,9 +8,9 @@ import difflib
 from datetime import datetime, timedelta
 from typing import List
 
-from colorama.ansi import Style
 from prompt_toolkit.completion import NestedCompleter
-
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
     GLASSNODE_SUPPORTED_HASHRATE_ASSETS,
@@ -40,7 +40,6 @@ from gamestonk_terminal.cryptocurrency.onchain import (
     bitquery_view,
     bitquery_model,
 )
-from gamestonk_terminal.rich_config import console
 
 
 class OnchainController(BaseController):
@@ -123,6 +122,55 @@ class OnchainController(BaseController):
             choices["ttcp"]["-s"] = {c: None for c in bitquery_model.TTCP_FILTERS}
             choices["baas"]["-s"] = {c: None for c in bitquery_model.BAAS_FILTERS}
             self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def print_help(self):
+        """Print help"""
+        has_account_start = "[unvl]" if self.address_type != "account" else ""
+        has_account_end = "[unvl]" if self.address_type != "account" else ""
+
+        has_token_start = "[unvl]" if self.address_type != "token" else ""
+        has_token_end = "[unvl]" if self.address_type != "token" else ""
+
+        has_tx_start = "[unvl]" if self.address_type != "tx" else ""
+        has_tx_end = "[unvl]" if self.address_type != "tx" else ""
+
+        help_text = f"""[cmds]
+[src][Glassnode][/src]
+    hr              check blockchain hashrate over time (BTC or ETH)
+[src][Eth Gas Station][/src]
+    gwei             check current eth gas fees
+[src][Whale Alert][/src]
+    whales           check crypto wales transactions
+[src][BitQuery][/src]
+    lt               last trades by dex or month
+    dvcp             daily volume for crypto pair
+    tv               token volume on DEXes
+    ueat             unique ethereum addresses which made a transaction
+    ttcp             top traded crypto pairs on given decentralized exchange
+    baas             bid, ask prices, average spread for given crypto pair
+
+[param]Ethereum address: [/param]{self.address}
+[param]Address type: [/param]{self.address_type if self.address_type else ''}
+
+[src][Ethplorer][/src] [info]Ethereum:[/info]
+    address         load ethereum address of token, account or transaction
+    top             top ERC20 tokens{has_account_start}
+    balance         check ethereum balance
+    hist            ethereum balance history (transactions){has_account_end}{has_token_start}
+    info            ERC20 token info
+    holders         top ERC20 token holders
+    th              ERC20 token history
+    prices          ERC20 token historical prices{has_token_end}{has_tx_start}
+    tx              ethereum blockchain transaction info{has_tx_end}
+    """
+        console.print(
+            Panel(
+                help_text,
+                title="Cryptocurrency - Onchain",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_hr(self, other_args: List[str]):
         """Process hr command"""
@@ -1257,48 +1305,3 @@ class OnchainController(BaseController):
 
             else:
                 console.print("You didn't provide coin symbol.\n")
-
-    def print_help(self):
-        """Print help"""
-        help_text = """
-Onchain Menu:
-
-Glassnode:
-    hr              check blockchain hashrate over time (BTC or ETH)
-Eth Gas Station:
-    gwei             check current eth gas fees
-Whale Alert:
-    whales           check crypto wales transactions
-BitQuery:
-    lt               last trades by dex or month
-    dvcp             daily volume for crypto pair
-    tv               token volume on DEXes
-    ueat             unique ethereum addresses which made a transaction
-    ttcp             top traded crypto pairs on given decentralized exchange
-    baas             bid, ask prices, average spread for given crypto pair
-"""
-        help_text += f"\nEthereum address: {self.address if self.address else '?'}"
-        help_text += (
-            f"\nAddress type: {self.address_type if self.address_type else '?'}\n"
-        )
-
-        help_text += """
-Ethereum [Ethplorer]:
-    address         load ethereum address of token, account or transaction
-    top             top ERC20 tokens"""
-
-        help_text += f"""{Style.DIM if self.address_type != "account" else ""}
-    balance         check ethereum balance
-    hist            ethereum balance history (transactions){Style.RESET_ALL if self.address_type != "account" else ""}"""
-
-        help_text += f"""{Style.DIM if self.address_type != "token" else ""}
-    info            ERC20 token info
-    holders         top ERC20 token holders
-    th              ERC20 token history
-    prices          ERC20 token historical prices{Style.RESET_ALL if self.address_type != "token" else ""}"""
-
-        help_text += f"""{Style.DIM if self.address_type != "tx" else ""}
-    tx              ethereum blockchain transaction info{Style.RESET_ALL if self.address_type != "tx" else ""}
-    """
-
-        console.print(help_text)

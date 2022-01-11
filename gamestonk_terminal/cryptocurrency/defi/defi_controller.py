@@ -5,7 +5,8 @@ import argparse
 
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
-
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.cryptocurrency.defi import graph_model, coindix_model
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -26,7 +27,6 @@ from gamestonk_terminal.cryptocurrency.defi import (
     graph_view,
     coindix_view,
 )
-from gamestonk_terminal.rich_config import console
 
 
 class DefiController(BaseController):
@@ -67,26 +67,31 @@ class DefiController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """
-Decentralized Finance Menu:
-
-Overview:
-    llama         DeFi protocols listed on DeFi Llama
-    tvl           Total value locked of DeFi protocols
-    newsletter    Recent DeFi related newsletters
-    dpi           DeFi protocols listed on DefiPulse
-    funding       Funding rates - current or last 30 days average
-    borrow        DeFi borrow rates - current or last 30 days average
-    lending       DeFi ending rates - current or last 30 days average
-    vaults        Top DeFi Vaults on different blockchains [Source: Coindix]
-Uniswap:
+        help_text = """[cmds]
+[info]Overview:[/info]
+    llama         DeFi protocols listed on DeFi Llama [src][Llama][/src]
+    tvl           Total value locked of DeFi protocols [src][Llama][/src]
+    newsletter    Recent DeFi related newsletters [src][Substack][/src]
+    dpi           DeFi protocols listed on DefiPulse [src][Defipulse][/src]
+    funding       Funding rates - current or last 30 days average [src][Defirate][/src]
+    borrow        DeFi borrow rates - current or last 30 days average [src][Defirate][/src]
+    lending       DeFi ending rates - current or last 30 days average [src][Defirate][/src]
+    vaults        Top DeFi Vaults on different blockchains [src][[Coindix][/src]
+ [src][The Graph][/src] [info]Uniswap:[/info]
     tokens        Tokens trade-able on Uniswap
     stats         Base statistics about Uniswap
     pairs         Recently added pairs on Uniswap
     pools         Pools by volume on Uniswap
-    swaps         Recent swaps done on Uniswap
+    swaps         Recent swaps done on Uniswap[/cmds]
 """
-        console.print(help_text)
+        console.print(
+            Panel(
+                help_text,
+                title="Cryptocurrency - Decentralized Finance",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_dpi(self, other_args: List[str]):
         """Process dpi command"""
