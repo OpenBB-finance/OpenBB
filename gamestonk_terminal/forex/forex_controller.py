@@ -4,10 +4,12 @@ __docformat__ = "numpy"
 import argparse
 from datetime import timedelta, datetime
 from typing import List
+import logging
 
 import pandas as pd
-from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
+
+from rich.panel import Panel
 
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -21,6 +23,8 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.rich_config import console
 
 # pylint: disable=R1710,import-outside-toplevel
+
+logger = logging.getLogger(__name__)
 
 
 class ForexController(BaseController):
@@ -45,23 +49,31 @@ class ForexController(BaseController):
 
     def print_help(self):
         """Print help."""
-        dim_bool = self.from_symbol and self.to_symbol
-        help_text = f"""
+        has_symbols_start = "" if self.from_symbol and self.to_symbol else "[dim]"
+        has_symbols_end = "" if self.from_symbol and self.to_symbol else "[/dim]"
+        help_text = f"""[cmds]
     from      select the "from" currency in a forex pair
     to        select the "to" currency in a forex pair
-
+[/cmds]
 From: {None or self.from_symbol}
-To:   {None or self.to_symbol}
-{Style.DIM if not dim_bool else ""}
-AlphaVantage:
+To:   {None or self.to_symbol}[cmds]
+{has_symbols_start}[src]
+AlphaVantage:[/src][cmds]
     quote         get last quote
     load          get historical data
-    candle        show candle plot for loaded data
-{Style.RESET_ALL}
-Forex brokerages:
->   oanda         Oanda menu
+    candle        show candle plot for loaded data[/cmds]
+{has_symbols_end}[info]
+Forex brokerages:[/info][menu]
+>   oanda         Oanda menu[/menu][/cmds]
  """
-        console.print(help_text)
+        console.print(
+            Panel(
+                help_text,
+                title="Forex",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_to(self, other_args: List[str]):
         """Process 'to' command."""
@@ -175,7 +187,7 @@ Forex brokerages:
                 )
             else:
                 console.print(
-                    "\nMake sure both a to symbol and a from symbol are supplied\n"
+                    "\n[red]Make sure both a to symbol and a from symbol are supplied.[/red]\n"
                 )
 
     def call_candle(self, other_args: List[str]):
@@ -192,7 +204,7 @@ Forex brokerages:
                 av_view.display_candle(self.data, self.to_symbol, self.from_symbol)
             else:
                 console.print(
-                    "No forex historical data loaded.  Load first using <load>.\n"
+                    "[red]No forex historical data loaded.  Load first using <load>.[/red]\n"
                 )
 
     def call_quote(self, other_args: List[str]):
@@ -209,7 +221,7 @@ Forex brokerages:
                 av_view.display_quote(self.to_symbol, self.from_symbol)
             else:
                 console.print(
-                    'Make sure both a "to" symbol and a "from" symbol are selected\n'
+                    '[red]Make sure both a "to" symbol and a "from" symbol are selected.[/red]\n'
                 )
 
     # MENUS

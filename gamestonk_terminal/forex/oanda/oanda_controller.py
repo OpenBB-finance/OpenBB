@@ -4,8 +4,8 @@ __docformat__ = "numpy"
 import argparse
 from typing import List, Union
 
-from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
+from rich.panel import Panel
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
@@ -66,10 +66,10 @@ class OandaController(BaseController):
 
     def print_help(self):
         """Print help."""
-        dim_if_no_ticker = Style.DIM if not self.instrument else ""
-        reset_style_if_no_ticker = Style.RESET_ALL if not self.instrument else ""
+        dim_if_no_ticker = "[dim]" if not self.instrument else ""
+        reset_style_if_no_ticker = "[/dim]" if not self.instrument else ""
 
-        help_text = f"""
+        help_text = f"""[cmds]
     summary       shows account summary
     calendar      show calendar
     list          list order history
@@ -78,9 +78,9 @@ class OandaController(BaseController):
     positions     get open positions
     trades        list open trades
     closetrade    close a trade by id
-
+[/cmds]
     Loaded instrument: {self.instrument if self.instrument else ""}
-
+[cmds]
     from      select the "from" currency in a forex pair
     to        select the "to" currency in a forex pair
     {dim_if_no_ticker}
@@ -88,11 +88,16 @@ class OandaController(BaseController):
     price         shows price for selected instrument
     order         place limit order -u # of units -p price
     orderbook     print orderbook
-    positionbook  print positionbook
-    {reset_style_if_no_ticker}
-
+    positionbook  print positionbook{reset_style_if_no_ticker}[/cmds]
     """
-        console.print(help_text)
+        console.print(
+            Panel(
+                help_text,
+                title="Oanda",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_to(self, other_args: List[str]):
         """Process 'to' command."""

@@ -5,6 +5,7 @@ import argparse
 from typing import List, Dict
 
 from prompt_toolkit.completion import NestedCompleter
+from rich.panel import Panel
 
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
@@ -43,23 +44,30 @@ class FredController(BaseController):
         id_string = ""
         for s_id, sub_dict in self.current_series.items():
             id_string += (
-                f"    [blue]{s_id.upper()}{(self.long_id-len(s_id)) * ' '}[/blue] :"
+                f"    {s_id.upper()}{(self.long_id-len(s_id)) * ' '} :"
                 f" [italic]{sub_dict['title']}[/italic]\n"
             )
         if not id_string:
             id_string += "    [bold][red]None[/red][/bold]\n"
-        help_text = f"""
+        help_text = f"""[cmds]
     search        search FRED series notes
     add           add series ID to list
-    rmv           remove series ID from list
+    rmv           remove series ID from list[/cmds]
 
 Current Series IDs:
-{id_string}{'[dim]'if not self.current_series else ""}
-    plot          plot selected series {'[/dim]'if not self.current_series else ""}
-{'[dim]'if len(self.current_series.keys())!=1 else ""}
->   pred          prediction techniques (single SeriesID){'[/dim]'if len(self.current_series.keys())!=1 else ""}
+{id_string}{'[dim]'if not self.current_series else ""}[cmds]
+    plot          plot selected series [/cmds]{'[/dim]'if not self.current_series else ""}
+{'[dim]'if len(self.current_series.keys())!=1 else ""}[menu]
+>   pred          prediction techniques (single SeriesID)[/menu]{'[/dim]'if len(self.current_series.keys())!=1 else ""}
         """
-        console.print(help_text)
+        console.print(
+            Panel(
+                help_text,
+                title="Fred",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_search(self, other_args: List[str]):
         """Process search command"""
