@@ -134,7 +134,7 @@ class SectorIndustryAnalysisController(BaseController):
         self.sector = "Financial Services"
         self.industry = "Financial Data & Stock Exchanges"
         self.mktcap = "Large"
-        self.exclude_exhanges = True
+        self.exclude_exchanges = True
 
         self.ticker = ticker
 
@@ -238,7 +238,7 @@ Industry          : {self.industry}
 Sector            : {self.sector}
 Country           : {self.country}
 Market Cap        : {self.mktcap}
-Exclude Exchanges : {self.exclude_exhanges}
+Exclude Exchanges : {self.exclude_exchanges}
 
 Statistics{c}
     cps           companies per Sector based on Country{m} and Market Cap{r}{c}
@@ -249,7 +249,7 @@ Statistics{c}
 {r}{Style.DIM if params else ''}
 Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}
     sama          see all metrics available
-    metric        visualise financial metric across filters selected
+    metric        visualize financial metric across filters selected
 {r if params else ''}{Style.DIM if len(self.tickers) == 0 else ''}
 Returned tickers: {', '.join(self.tickers)}
 >   ca            take these to comparison analysis menu
@@ -559,9 +559,9 @@ Returned tickers: {', '.join(self.tickers)}
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            self.exclude_exhanges = not self.exclude_exhanges
+            self.exclude_exchanges = not self.exclude_exchanges
             print(
-                f"Internationa exchanges {'excluded' if self.exclude_exhanges else 'included'}",
+                f"Internationa exchanges {'excluded' if self.exclude_exchanges else 'included'}",
                 "\n",
             )
 
@@ -602,7 +602,7 @@ Returned tickers: {', '.join(self.tickers)}
                 self.country = ""
                 self.mktcap = ""
 
-            self.exclude_exhanges = True
+            self.exclude_exchanges = True
             self.ticker = ""
             self.update_runtime_choices()
             self.stocks_data = {}
@@ -661,7 +661,7 @@ Returned tickers: {', '.join(self.tickers)}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="metric",
-            description="Visualise a particular metric with the filters selected",
+            description="Visualize a particular metric with the filters selected",
         )
         parser.add_argument(
             "-m",
@@ -704,7 +704,7 @@ Returned tickers: {', '.join(self.tickers)}
                 self.sector,
                 self.industry,
                 self.mktcap,
-                self.exclude_exhanges,
+                self.exclude_exchanges,
                 ns_parser.limit,
                 ns_parser.export,
                 ns_parser.raw,
@@ -754,7 +754,7 @@ Returned tickers: {', '.join(self.tickers)}
                 financedatabase_view.display_companies_per_sector_in_country(
                     self.country,
                     self.mktcap,
-                    self.exclude_exhanges,
+                    self.exclude_exchanges,
                     ns_parser.export,
                     ns_parser.raw,
                     ns_parser.max_sectors_to_display,
@@ -804,7 +804,7 @@ Returned tickers: {', '.join(self.tickers)}
                 financedatabase_view.display_companies_per_industry_in_country(
                     self.country,
                     self.mktcap,
-                    self.exclude_exhanges,
+                    self.exclude_exchanges,
                     ns_parser.export,
                     ns_parser.raw,
                     ns_parser.max_industries_to_display,
@@ -854,7 +854,7 @@ Returned tickers: {', '.join(self.tickers)}
                 financedatabase_view.display_companies_per_industry_in_sector(
                     self.sector,
                     self.mktcap,
-                    self.exclude_exhanges,
+                    self.exclude_exchanges,
                     ns_parser.export,
                     ns_parser.raw,
                     ns_parser.max_industries_to_display,
@@ -904,7 +904,7 @@ Returned tickers: {', '.join(self.tickers)}
                 financedatabase_view.display_companies_per_country_in_sector(
                     self.sector,
                     self.mktcap,
-                    self.exclude_exhanges,
+                    self.exclude_exchanges,
                     ns_parser.export,
                     ns_parser.raw,
                     ns_parser.max_countries_to_display,
@@ -954,7 +954,7 @@ Returned tickers: {', '.join(self.tickers)}
                 financedatabase_view.display_companies_per_country_in_industry(
                     self.industry,
                     self.mktcap,
-                    self.exclude_exhanges,
+                    self.exclude_exchanges,
                     ns_parser.export,
                     ns_parser.raw,
                     ns_parser.max_countries_to_display,
