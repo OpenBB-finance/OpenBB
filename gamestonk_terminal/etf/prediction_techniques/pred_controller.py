@@ -91,12 +91,12 @@ class PredictionTechniquesController(BaseController):
 
         help_text = f"""[cmds]
     load        load new ticker
-    pick        pick new target variable
+    pick        pick new target variable[/cmds]
 
 [param]Ticker Loaded: [/param]{etf_info}
 [param]Target Column: [/param]{self.target}
 
-[info]Models:[/info]
+[info]Models:[/info][cmds]
     ets         exponential smoothing (e.g. Holt-Winters)
     knn         k-Nearest Neighbors
     regression  polynomial regression
