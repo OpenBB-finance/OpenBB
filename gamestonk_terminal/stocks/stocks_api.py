@@ -9,4 +9,6 @@ from .stocks_helper import display_candle as candle
 
 # Context menus
 from .backtesting import bt_api as bt
+from .behavioural_analysis import ba_api as ba
+from .comparison_analysis import ca_api as ca
 from .discovery import disc_api as disc
