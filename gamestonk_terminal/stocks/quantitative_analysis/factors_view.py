@@ -6,8 +6,14 @@ from gamestonk_terminal.stocks.quantitative_analysis.factors_model import (
 )
 
 
-def capm_view(ticker):
-    """A view that displays information for the CAPM model."""
+def capm_view(ticker: str) -> None:
+    """Displays information for the CAPM model.
+
+    Parameters
+    ----------
+    ticker : str
+        Selected ticker
+    """
     beta, sy = capm_information(ticker)
     print(f"Beta:\t\t\t{beta:.2f}")
     print(f"Systematic Risk:\t{sy*100:.2f}%")

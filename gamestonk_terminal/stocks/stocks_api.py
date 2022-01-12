@@ -18,3 +18,4 @@ from .government import gov_api as gov
 from .insider import insider_api as ins
 from .options import options_api as options
 from .prediction_techniques import pred_api as pred
+from .quantitative_analysis import qa_api as qa
