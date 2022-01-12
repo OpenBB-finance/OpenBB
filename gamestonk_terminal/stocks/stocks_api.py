@@ -17,3 +17,4 @@ from .fundamental_analysis import fa_api as fa
 from .government import gov_api as gov
 from .insider import insider_api as ins
 from .options import options_api as options
+from .prediction_techniques import pred_api as pred
