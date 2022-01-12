@@ -867,8 +867,14 @@ main:
       - name: defi
         ref: "/cryptocurrency/defi"
         sub:
-          - name: llama
-            ref: "/cryptocurrency/defi/llama"
+          - name: ldapps
+            ref: "/cryptocurrency/defi/ldapps"
+          - name: gdapps
+            ref: "/cryptocurrency/defi/gdapps"
+          - name: dtvl
+            ref: "/cryptocurrency/defi/dtvl"
+          - name: stvl
+            ref: "/cryptocurrency/defi/stvl"
           - name: tvl
             ref: "/cryptocurrency/defi/tvl"
           - name: newsletter
