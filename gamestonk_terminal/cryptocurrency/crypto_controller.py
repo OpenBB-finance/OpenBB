@@ -89,21 +89,13 @@ class CryptoController(BaseController):
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            # choices["coins"]['-c'] = {c: {} for c in CRYPTO_SOURCES.keys()}
             choices["load"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
             choices["find"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
             choices["find"]["-k"] = {c: {} for c in FIND_KEYS}
+            choices["coins"]["--category"] = {c: None for c in get_categories_keys()}
             choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
             # choices["prt"]["--vs"] = {c: {} for c in coingecko_coin_ids} # list is huge. makes typing buggy
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-    def update_runtime_choices(self):
-        """Update runtime choices"""
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            self.choices["coins"]["--category"] = {
-                i: None for i in get_categories_keys()
-            }
-            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help"""
@@ -630,8 +622,8 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
             -c, --coin stands for coin - you provide here your search query
             -k, --key it's a searching key. You can search by symbol, id or name of coin
             -l, --limit it displays top N number of records.
-            coins: 
-            Shows list of coins available on CoinGecko, CoinPaprika and Binance.If you provide name of
+            
+            coins: Shows list of coins available on CoinGecko, CoinPaprika and Binance.If you provide name of
             coin then in result you will see ids of coins with best match for all mentioned services.
             If you provide ALL keyword in your search query, then all coins will be displayed. To move over coins you
             can use pagination mechanism with skip, top params. E.g. coins ALL --skip 100 --limit 30 then all coins
