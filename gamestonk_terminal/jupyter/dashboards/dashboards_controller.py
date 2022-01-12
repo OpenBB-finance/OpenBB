@@ -1,6 +1,7 @@
 """Dashboards Module"""
 __docformat__ = "numpy"
 
+import os
 import argparse
 import subprocess
 from typing import List
@@ -22,9 +23,7 @@ from gamestonk_terminal.menu import session
 class DashboardsController(BaseController):
     """Dashboards Controller class"""
 
-    CHOICES_COMMANDS = [
-        "stocks",
-    ]
+    CHOICES_COMMANDS = ["stocks", "correlation"]
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -37,7 +36,8 @@ class DashboardsController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = """[cmds]
-   stocks        interactive dashboard with ticker information[/cmds]
+   stocks        interactive dashboard with ticker information
+   correlation   interactive dashboard with correlation information[/cmds]
         """
         console.print(
             Panel(
@@ -50,28 +50,46 @@ class DashboardsController(BaseController):
 
     def call_stocks(self, other_args: List[str]):
         """Process stocks command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="stocks",
-            description="""Shows an interactive stock dashboard""",
-        )
-        parser.add_argument(
-            "-j",
-            "--jupyter",
-            action="store_true",
-            default=False,
-            dest="jupyter",
-            help="Shows dashboard in jupyter-lab.",
+        create_call(other_args, "stocks", "stocks")
+
+    def call_correlation(self, other_args: List[str]):
+        """Process correlation command"""
+        create_call(other_args, "correlation", "correlation")
+
+
+def create_call(other_args: List[str], name: str, filename: str = None) -> None:
+    filename = filename if filename else name
+
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog=name,
+        description="""Shows correlations between stocks""",
+    )
+    parser.add_argument(
+        "-j",
+        "--jupyter",
+        action="store_true",
+        default=False,
+        dest="jupyter",
+        help="Shows dashboard in jupyter-lab.",
+    )
+
+    ns_parser = parse_known_args_and_warn(
+        parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+    )
+
+    if ns_parser:
+        cmd = "jupyter-lab" if ns_parser.jupyter else "voila"
+        file = os.path.join(
+            os.path.abspath(os.path.dirname(__file__)), f"{filename}.ipynb"
         )
 
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        print(
+            f"Warning: this command will open a port on your computer to run a {cmd} server."
         )
-
-        if ns_parser:
-            cmd = "jupyter-lab" if ns_parser.jupyter else "voila"
-            file = "gamestonk_terminal/jupyter/dashboards/stocks.ipynb"
+        response = input("Would you like us to run the server for you? y/n\n")
+        if response.lower() == "y":
 
             console.print(
                 f"Warning: this command will open a port on your computer to run a {cmd} server."
