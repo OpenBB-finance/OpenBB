@@ -5,6 +5,8 @@ import argparse
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers.robinhood import (
@@ -16,7 +18,6 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
-from gamestonk_terminal.rich_config import console
 
 
 class RobinhoodController(BaseController):
@@ -39,14 +40,20 @@ class RobinhoodController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """
-Robinhood:
+        help_text = """[cmds]
     login       login to robinhood
 
     holdings    show account holdings in stocks
     history     show equity history of your account
-"""
-        console.print(help_text)
+[/cmds]"""
+        console.print(
+            Panel(
+                help_text,
+                title="Portfolio - Brokers - Robinhood",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_login(self, _):
         """Process login"""

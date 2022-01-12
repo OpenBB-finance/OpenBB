@@ -11,8 +11,8 @@ import mplfinance as mpf
 
 from prompt_toolkit.completion import NestedCompleter
 from rich.panel import Panel
-from gamestonk_terminal.rich_config import console
 from thepassiveinvestor import create_ETF_report
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff

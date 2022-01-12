@@ -5,6 +5,8 @@ import argparse
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.helper_funcs import (
@@ -18,7 +20,6 @@ from gamestonk_terminal.portfolio.portfolio_optimization import (
 )
 
 from gamestonk_terminal.helper_funcs import get_rf
-from gamestonk_terminal.rich_config import console
 
 
 # pylint: disable=C0302
@@ -171,30 +172,36 @@ class PortfolioOptimization(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
-Portfolio Optimization:
+        help_text = f"""[cmds]
     select        select list of tickers to be optimized
     add           add tickers to the list of the tickers to be optimized
-    rmv           remove tickers from the list of the tickers to be optimized
+    rmv           remove tickers from the list of the tickers to be optimized[/cmds]
 
-Tickers: {('None', ', '.join(self.tickers))[bool(self.tickers)]}
+[param]Tickers: [/param]{('None', ', '.join(self.tickers))[bool(self.tickers)]}
 
-Optimization:
+[info]Optimization:[/info][cmds]
     equal         equally weighted
     mktcap        weighted according to market cap (property marketCap)
     dividend      weighted according to dividend yield (property dividendYield)
     property      weight according to selected info property
 
-Mean Variance Optimization:
+[info]Mean Variance Optimization:[/info]
     maxsharpe     optimizes for maximal Sharpe ratio (a.k.a the tangency portfolio
     minvol        optimizes for minimum volatility
     maxquadutil   maximises the quadratic utility, given some risk aversion
     effret        maximises return for a given target risk
     effrisk       minimises risk for a given target return
 
-    ef            show the efficient frontier
-        """
-        console.print(help_text)
+    ef            show the efficient frontier[/cmds]
+    """
+        console.print(
+            Panel(
+                help_text,
+                title="Portfolio - Portfolio Optimization",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_select(self, other_args: List[str]):
         """Process select command"""

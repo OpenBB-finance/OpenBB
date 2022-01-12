@@ -4,7 +4,8 @@ __docformat__ = "numpy"
 
 from typing import List, Set
 from prompt_toolkit.completion import NestedCompleter
-
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
@@ -14,7 +15,6 @@ from gamestonk_terminal.portfolio.brokers.ally import ally_controller
 from gamestonk_terminal.portfolio.brokers.degiro import degiro_controller
 from gamestonk_terminal.portfolio.brokers.robinhood import robinhood_controller
 from gamestonk_terminal.portfolio.brokers.coinbase import coinbase_controller
-from gamestonk_terminal.rich_config import console
 
 
 class BrokersController(BaseController):
@@ -36,14 +36,20 @@ class BrokersController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_string = """
+        help_text = """[menu]
 >   ally         Ally Invest Menu
 >   degiro       Degiro Menu
 >   rh           Robinhood Menu
-
->   cb           Coinbase Pro Menu
+>   cb           Coinbase Pro Menu[/menu]
     """
-        console.print(help_string)
+        console.print(
+            Panel(
+                help_text,
+                title="Portfolio - Brokers",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_degiro(self, _):
         """Process degiro command."""

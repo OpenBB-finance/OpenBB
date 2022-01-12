@@ -4,7 +4,8 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
-
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
@@ -13,7 +14,6 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
-from gamestonk_terminal.rich_config import console
 
 
 class AllyController(BaseController):
@@ -41,18 +41,23 @@ class AllyController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """
-Ally:
+        help_text = """[cmds]
     holdings    show account holdings
     history     show history of your account
     balances    show balance details of account
 
-Stock Information:
+[info]Stock Information:[/info]
     quote       get stock quote
-    movers      get ranked lists of movers
+    movers      get ranked lists of movers[/cmds]
 """
-
-        console.print(help_text)
+        console.print(
+            Panel(
+                help_text,
+                title="Portfolio - Brokers",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_holdings(self, other_args: List[str]):
         """Process holdings command"""

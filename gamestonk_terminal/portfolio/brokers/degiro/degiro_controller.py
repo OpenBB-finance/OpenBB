@@ -2,7 +2,8 @@ import argparse
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 import gamestonk_terminal.config_terminal as config
 
 from gamestonk_terminal import feature_flags as gtff
@@ -12,7 +13,6 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers.degiro.degiro_view import DegiroView
-from gamestonk_terminal.rich_config import console
 
 
 class DegiroController(BaseController):
@@ -34,7 +34,7 @@ class DegiroController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/portfolio/bro/derigo/", queue)
+        super().__init__("/portfolio/bro/degiro/", queue)
 
         self.__degiro_view = DegiroView()
 
@@ -44,8 +44,30 @@ class DegiroController(BaseController):
 
     def print_help(self):
         """Print help."""
-        help_text = "Derigo brokerage menu"
-        console.print(help_text)
+        help_text = """
+    login        connect to degiro's api
+    logout       disconnect from degiro's api
+
+    hold         view holdings
+    lookup       view search for a product by name
+
+    create       create an order
+    update       update an order
+    cancel       cancel an order using the id
+    pending      view pending orders
+
+    companynews  view news about a company with it's isin
+    lastnews     view latest news
+    topnews      view top news preview
+    """
+        console.print(
+            Panel(
+                help_text,
+                title="Portfolio - Brokers - Degiro",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def cancel(self, other_args: List[str]):
         """Cancel an order using the `id`."""
