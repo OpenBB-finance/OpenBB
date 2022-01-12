@@ -90,7 +90,6 @@ def _retry_session(
         connect=retries,
         status_forcelist=[500, 502, 503, 504],
         backoff_factor=backoff_factor,
-        method_whitelist=False,
     )
     adapter = HTTPAdapter(max_retries=retry)
     session.mount(url, adapter)

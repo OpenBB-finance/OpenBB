@@ -246,10 +246,10 @@ def merge_dataframes(
         comb[("Profit", uni)] = comb[("Profit", uni)].cumsum()
     comb[("Cash", "Cash")] = comb[("Cash", "Cash")].cumsum()
     if len(changes["Date"]) > 0:
-        comb["holdings"] = comb.sum(level=0, axis=1)["Holding"]
-        comb["profits"] = comb.sum(level=0, axis=1)["Profit"]
+        comb["holdings"] = comb.groupby(level=0, axis=1).sum()["Holding"]
+        comb["profits"] = comb.groupby(level=0, axis=1).sum()["Profit"]
         comb["total_prof"] = comb["holdings"] + comb["profits"]
-        comb["total_cost"] = comb.sum(level=0, axis=1)["Cost Basis"]
+        comb["total_cost"] = comb.groupby(level=0, axis=1).sum()["Cost Basis"]
     return comb
 
 
@@ -269,11 +269,11 @@ def convert_df(portfolio: pd.DataFrame) -> pd.DataFrame:
         The historical performance of tickers in portfolio
     """
     changes = portfolio.copy()
-    # Transactions sorted for only stocks
+    # Transactions sorted for only stocks and etfs
     cashes = changes[changes["Type"] == "cash"]
     if cashes.empty:
         raise ValueError("Brokers require cash, input cash deposits")
-    changes = changes[changes["Type"] == "stock"]
+    changes = changes[changes["Type"] == ("stock" or "etf")]
     uniques = list(set(changes["Name"].tolist()))
     if uniques:
         hist = yfinance_model.get_stocks(uniques, min(changes["Date"]))
