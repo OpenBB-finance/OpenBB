@@ -12,3 +12,4 @@ from .backtesting import bt_api as bt
 from .behavioural_analysis import ba_api as ba
 from .comparison_analysis import ca_api as ca
 from .discovery import disc_api as disc
+from .due_diligence import dd_api as dd
