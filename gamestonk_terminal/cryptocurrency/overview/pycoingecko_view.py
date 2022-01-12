@@ -4,8 +4,9 @@ __docformat__ = "numpy"
 import os
 import textwrap
 from pandas.plotting import register_matplotlib_converters
+from rich.console import Console
 from tabulate import tabulate
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
 import gamestonk_terminal.cryptocurrency.overview.pycoingecko_model as gecko
 from gamestonk_terminal import feature_flags as gtff
 
@@ -13,6 +14,8 @@ register_matplotlib_converters()
 
 # pylint: disable=inconsistent-return-statements
 # pylint: disable=R0904, C0302
+
+t_console = Console()
 
 
 def display_holdings_overview(coin: str, export: str) -> None:
@@ -276,41 +279,30 @@ def display_stablecoins(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = gecko.get_stable_coins()
+    df = gecko.get_stable_coins(top)
 
     if not df.empty:
-        df = df.sort_values(by=sortby, ascending=descend)
-        df_data = df.copy()
-
-        if links is True:
-            df = df[["Rank", "Name", "Symbol", "Url"]]
-        else:
-            df.drop("Url", axis=1, inplace=True)
-
         if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
+            t_console.print(
+                rich_table_from_df(
                     df.head(top),
-                    headers=df.columns,
-                    floatfmt=".0f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
+                    headers=list(df.columns),
+                    floatfmt=".2f",
+                    show_index=False,
                 ),
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            t_console.print(df.to_string, "\n")
 
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
-            "stables",
-            df_data,
+            "cgstables",
+            df,
         )
     else:
-        print("")
-        print("Unable to retrieve data from CoinGecko.")
-        print("")
+        t_console.print("Unable to retrieve data from CoinGecko.")
 
 
 def display_news(
@@ -388,32 +380,29 @@ def display_categories(sortby: str, top: int, export: str) -> None:
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = gecko.get_crypto_categories(sortby)
+    df = gecko.get_top_crypto_categories(sortby)
     if not df.empty:
         if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
+            t_console.print(
+                rich_table_from_df(
                     df.head(top),
-                    headers=df.columns,
+                    headers=list(df.columns),
                     floatfmt=".2f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
+                    show_index=False,
                 ),
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            t_console.print(df.to_string, "\n")
 
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
-            "categories",
+            "cgcategories",
             df,
         )
     else:
-        print("")
-        print("Unable to retrieve data from CoinGecko.")
-        print("")
+        t_console.print("\nUnable to retrieve data from CoinGecko.\n")
 
 
 def display_exchanges(

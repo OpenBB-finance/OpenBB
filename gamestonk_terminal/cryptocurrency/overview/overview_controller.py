@@ -499,8 +499,8 @@ BlockchainCenter:
             "--sort",
             dest="sortby",
             type=str,
-            help="Sort by given column. Default: Rank",
-            default="Rank",
+            help="Sort by given column. Default: market_cap_desc",
+            default=pycoingecko_model.SORT_VALUES[0],
             choices=pycoingecko_model.SORT_VALUES,
         )
 

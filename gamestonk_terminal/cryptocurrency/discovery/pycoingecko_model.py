@@ -1,6 +1,8 @@
 """CoinGecko model"""
 __docformat__ = "numpy"
 
+import os
+import json
 from typing import Any, List
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
@@ -88,7 +90,23 @@ DEX_FILTERS = [
 ]
 
 
-def get_coins(top: int = 250):
+def read_file_data(file_name: str):
+    if file_name.split(".")[1] != "json":
+        raise TypeError("Please load json file")
+
+    par_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    path = os.path.join(par_dir, "data", file_name)
+    with open(path, encoding="utf8") as f:
+        data = json.load(f)
+    return data
+
+
+def get_categories_keys():
+    categories = read_file_data("coingecko_categories.json")
+    return categories.keys()
+
+
+def get_coins(top: int = 250, category: str = ""):
     """Get N coins from CoinGecko [Source: CoinGecko]
 
     Parameters
@@ -103,50 +121,100 @@ def get_coins(top: int = 250):
     i = 1
     remaining_top = top
     client = CoinGeckoAPI()
+    if category:
+        categories_dict = read_file_data("coingecko_categories.json")
+        if category not in categories_dict:
+            raise ValueError(
+                f"Category does not exist\nPlease chose one from list: {categories_dict.keys()}"
+            )
     if top > 250:
-        data = client.get_coins_markets(
-            vs_currency="usd",
-            order="market_cap_desc",
-            per_page=top,
-            page=i,
-            sparkline=False,
-            price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
-        )
+        if category:
+            data = client.get_coins_markets(
+                category=category,
+                vs_currency="usd",
+                order="market_cap_desc",
+                per_page=top,
+                page=i,
+                sparkline=False,
+                price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
+            )
+        else:
+            data = client.get_coins_markets(
+                vs_currency="usd",
+                order="market_cap_desc",
+                per_page=top,
+                page=i,
+                sparkline=False,
+                price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
+            )
         df = pd.DataFrame(data)
         remaining_top -= 250
         i += 1
     else:
-        data = client.get_coins_markets(
-            vs_currency="usd",
-            order="market_cap_desc",
-            per_page=top,
-            page=i,
-            sparkline=False,
-            price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
-        )
+        if category:
+            data = client.get_coins_markets(
+                category=category,
+                vs_currency="usd",
+                order="market_cap_desc",
+                per_page=top,
+                page=i,
+                sparkline=False,
+                price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
+            )
+        else:
+            data = client.get_coins_markets(
+                vs_currency="usd",
+                order="market_cap_desc",
+                per_page=top,
+                page=i,
+                sparkline=False,
+                price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
+            )
         df = pd.DataFrame(data)
         return df
     while remaining_top > 250:
-        data = client.get_coins_markets(
-            vs_currency="usd",
-            order="market_cap_desc",
-            per_page=top,
-            page=i,
-            sparkline=False,
-            price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
-        )
+        if category:
+            data = client.get_coins_markets(
+                category=category,
+                vs_currency="usd",
+                order="market_cap_desc",
+                per_page=top,
+                page=i,
+                sparkline=False,
+                price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
+            )
+        else:
+            data = client.get_coins_markets(
+                vs_currency="usd",
+                order="market_cap_desc",
+                per_page=top,
+                page=i,
+                sparkline=False,
+                price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
+            )
         df = df.append(pd.DataFrame(data), ignore_index=True)
         remaining_top -= 250
         i += 1
     if remaining_top > 0:
-        data = client.get_coins_markets(
-            vs_currency="usd",
-            order="market_cap_desc",
-            per_page=remaining_top,
-            page=i,
-            sparkline=False,
-            price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
-        )
+        if category:
+            data = client.get_coins_markets(
+                category=category,
+                vs_currency="usd",
+                order="market_cap_desc",
+                per_page=remaining_top,
+                page=i,
+                sparkline=False,
+                price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
+            )
+        else:
+            data = client.get_coins_markets(
+                vs_currency="usd",
+                order="market_cap_desc",
+                per_page=top,
+                page=i,
+                sparkline=False,
+                price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
+            )
         df = df.append(pd.DataFrame(data), ignore_index=True)
     return df
 
@@ -396,7 +464,6 @@ def get_yield_farms() -> pd.DataFrame:
     return df
 
 
-# This function does not use coingecko api because there is not an endpoint for this
 def get_top_volume_coins(top: int = 50) -> pd.DataFrame:
     """Returns N coins with top volume [Source: CoinGecko]
 
@@ -416,7 +483,6 @@ def get_top_volume_coins(top: int = 50) -> pd.DataFrame:
         [
             "symbol",
             "name",
-            "current_price",
             "market_cap",
             "market_cap_rank",
             "price_change_percentage_7d_in_currency",
@@ -427,7 +493,7 @@ def get_top_volume_coins(top: int = 50) -> pd.DataFrame:
 
 
 # This function does not use coingecko api because there is not an endpoint for this
-def get_top_defi_coins() -> List[Any]:
+def get_top_defi_coins(top: int = 20) -> List[Any]:
     """Scrapes top decentralized finance coins "https://www.coingecko.com/en/defi" [Source: CoinGecko]
 
     Returns
@@ -449,49 +515,23 @@ Defi has currently a market cap of {int(float(data['defi_market_cap']))} USD dol
 {data["top_coin_name"]} is the most popular Defi cryptocurrency with {round(float(data["top_coin_defi_dominance"]), 2)}% of defi dominance
     """  # noqa
 
-    url = "https://www.coingecko.com/en/defi"
-    try:
-        scraped_data = scrape_gecko_data(url)
-    except RetryError as e:
-        print(e)
-        return ["", pd.DataFrame()]
-    rows = scraped_data.find("tbody").find_all("tr")
-    results = []
-    for row in rows:
+    df = get_coins(top, "decentralized-finance-defi")
 
-        row_cleaned = clean_row(row)
-        row_cleaned.pop(2)
-        url = GECKO_BASE_URL + row.find("a")["href"]
-        row_cleaned.append(url)
-        if len(row_cleaned) == 11:
-            row_cleaned.insert(4, "?")
-        results.append(row_cleaned)
-
-    df = pd.DataFrame(
-        results,
-        columns=[
-            "Rank",
-            "Name",
-            "Symbol",
-            "Price",
-            "Change_1h",
-            "Change_24h",
-            "Change_7d",
-            "Volume_24h",
-            "Market_Cap",
-            "Fully Diluted Market Cap",
-            "Market Cap to TVL Ratio",
-            "Url",
+    return [
+        stats_str,
+        df[
+            [
+                "symbol",
+                "name",
+                "current_price",
+                "market_cap",
+                "market_cap_rank",
+                "price_change_percentage_7d_in_currency",
+                "price_change_percentage_24h_in_currency",
+                "total_volume",
+            ]
         ],
-    )
-    df.drop(
-        ["Fully Diluted Market Cap", "Market Cap to TVL Ratio"],
-        axis=1,
-        inplace=True,
-    )
-    df["Rank"] = df["Rank"].astype(int)
-    df["Price"] = df["Price"].apply(lambda x: float(x.strip("$").replace(",", "")))
-    return [stats_str, df]
+    ]
 
 
 # This function does not use coingecko api because there is not an endpoint for this

@@ -6,6 +6,10 @@ import argparse
 from typing import List
 from datetime import datetime, timedelta
 import pandas as pd
+from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import (
+    get_categories_keys,
+)
+from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_view import display_coins
 from prompt_toolkit.completion import NestedCompleter
 from rich import console
 from binance.client import Client
@@ -85,13 +89,21 @@ class CryptoController(BaseController):
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["coins"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
+            # choices["coins"]['-c'] = {c: {} for c in CRYPTO_SOURCES.keys()}
             choices["load"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
             choices["find"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
             choices["find"]["-k"] = {c: {} for c in FIND_KEYS}
             choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
             # choices["prt"]["--vs"] = {c: {} for c in coingecko_coin_ids} # list is huge. makes typing buggy
             self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def update_runtime_choices(self):
+        """Update runtime choices"""
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            self.choices["coins"]["--category"] = {
+                i: None for i in get_categories_keys()
+            }
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help"""
@@ -188,33 +200,16 @@ class CryptoController(BaseController):
             prog="coins",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Shows list of coins available on CoinGecko, CoinPaprika and Binance.If you provide name of
-            coin then in result you will see ids of coins with best match for all mentioned services.
-            If you provide ALL keyword in your search query, then all coins will be displayed. To move over coins you
-            can use pagination mechanism with skip, top params. E.g. coins ALL --skip 100 --limit 30 then all coins
-            from 100 to 130 will be displayed. By default skip = 0, limit = 10.
-            If you won't provide source of the data everything will be displayed (CoinGecko, CoinPaprika, Binance).
-            If you want to search only in given source then use --source flag. E.g. if you want to find coin with name
-            uniswap on CoinPaprika then use: coins uniswap --source cp --limit 10
-                """,
+            description="""Check coins in by category and market cap. [Source: CoinGecko]
+            """,
         )
 
         parser.add_argument(
             "-c",
-            "--coin",
-            help="Coin you search for",
-            dest="coin",
-            required="-h" not in other_args,
-            type=str,
-        )
-
-        parser.add_argument(
-            "-s",
-            "--skip",
-            default=0,
-            dest="skip",
-            help="Skip n of records",
-            type=check_positive,
+            "--category",
+            default="",
+            dest="category",
+            help="Category (e.g., stablecoins). Empty for no category",
         )
 
         parser.add_argument(
@@ -226,14 +221,6 @@ class CryptoController(BaseController):
             type=check_positive,
         )
 
-        parser.add_argument(
-            "--source",
-            dest="source",
-            help="Source of data.",
-            type=str,
-            choices=CRYPTO_SOURCES.keys(),
-        )
-
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-c")
 
@@ -241,12 +228,9 @@ class CryptoController(BaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            display_all_coins(
-                coin=ns_parser.coin,
-                source=ns_parser.source,
+            display_coins(
+                category=ns_parser.category,
                 top=ns_parser.limit,
-                skip=ns_parser.skip,
-                show_all=bool("ALL" in other_args),
                 export=ns_parser.export,
             )
 
@@ -645,7 +629,17 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
             It will search for coin that has similar name to polka and display top 25 matches.
             -c, --coin stands for coin - you provide here your search query
             -k, --key it's a searching key. You can search by symbol, id or name of coin
-            -l, --limit it displays top N number of records.""",
+            -l, --limit it displays top N number of records.
+            coins: 
+            Shows list of coins available on CoinGecko, CoinPaprika and Binance.If you provide name of
+            coin then in result you will see ids of coins with best match for all mentioned services.
+            If you provide ALL keyword in your search query, then all coins will be displayed. To move over coins you
+            can use pagination mechanism with skip, top params. E.g. coins ALL --skip 100 --limit 30 then all coins
+            from 100 to 130 will be displayed. By default skip = 0, limit = 10.
+            If you won't provide source of the data everything will be displayed (CoinGecko, CoinPaprika, Binance).
+            If you want to search only in given source then use --source flag. E.g. if you want to find coin with name
+            uniswap on CoinPaprika then use: coins uniswap --source cp --limit 10
+            """,
         )
 
         parser.add_argument(
@@ -685,17 +679,35 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
             type=str,
         )
 
+        parser.add_argument(
+            "-s",
+            "--skip",
+            default=0,
+            dest="skip",
+            help="Skip n of records",
+            type=check_positive,
+        )
+
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-c")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        # TODO: merge find + display_all_coins
         if ns_parser:
             find(
                 coin=ns_parser.coin,
                 source=ns_parser.source,
                 key=ns_parser.key,
                 top=ns_parser.limit,
+                export=ns_parser.export,
+            )
+            display_all_coins(
+                coin=ns_parser.coin,
+                source=ns_parser.source,
+                top=ns_parser.limit,
+                skip=ns_parser.skip,
+                show_all=bool("ALL" in other_args),
                 export=ns_parser.export,
             )

@@ -18,6 +18,54 @@ t_console = Console()
 # pylint: disable=R0904, C0302
 
 
+def display_coins(category: str, top: int, export: str) -> None:
+    """Shows top coins [Source: CoinGecko]
+
+    Parameters
+    ----------
+    category: str
+
+    top: int
+        Number of records to display
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+    df = pycoingecko_model.get_coins(top=top, category=category)
+    if not df.empty:
+        df = df[
+            [
+                "symbol",
+                "name",
+                "market_cap",
+                "market_cap_rank",
+                "price_change_percentage_7d_in_currency",
+                "price_change_percentage_24h_in_currency",
+                "total_volume",
+            ]
+        ]
+        if gtff.USE_TABULATE_DF:
+            t_console.print(
+                rich_table_from_df(
+                    df.head(top),
+                    headers=list(df.columns),
+                    floatfmt=".4f",
+                    show_index=False,
+                ),
+                "\n",
+            )
+        else:
+            t_console.print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "coins",
+            df,
+        )
+    else:
+        t_console.print("\nUnable to retrieve data from CoinGecko.\n")
+
+
 def display_gainers(period: str, top: int, export: str) -> None:
     """Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]
 
@@ -270,39 +318,31 @@ def display_top_defi_coins(
         Export dataframe data to csv,json,xlsx file
     """
 
-    res = pycoingecko_model.get_top_defi_coins()
+    res = pycoingecko_model.get_top_defi_coins(top)
     stats_str = res[0]
-    df = res[1].sort_values(by=sortby, ascending=descend)
+    df = res[1]
     if df.empty:
-        print("No available data\n")
+        t_console.print("No available data\n")
     else:
-        df_data = df.copy()
-
-        if links is True:
-            df = df[["Rank", "Name", "Symbol", "Url"]]
-        else:
-            df.drop("Url", axis=1, inplace=True)
-
-        print("\n", stats_str, "\n")
+        t_console.print("\n", stats_str, "\n")
         if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
+            t_console.print(
+                rich_table_from_df(
                     df.head(top),
-                    headers=df.columns,
+                    headers=list(df.columns),
                     floatfmt=".4f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
+                    show_index=False,
                 ),
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            t_console.print(df.to_string, "\n")
 
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "defi",
-            df_data,
+            df,
         )
 
 
