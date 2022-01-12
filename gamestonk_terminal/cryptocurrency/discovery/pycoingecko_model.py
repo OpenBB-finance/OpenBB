@@ -6,7 +6,6 @@ import pandas as pd
 from pycoingecko import CoinGeckoAPI
 from requests.adapters import RetryError
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
-    create_df_index,
     wrap_text_in_df,
 )
 from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
@@ -192,9 +191,31 @@ def get_gainers_or_losers(
             "current_price",
             "market_cap",
             "market_cap_rank",
-            "price_change_percentage_1y_in_currency",
+            f"price_change_percentage_{period}_in_currency",
         ]
     ]
+
+
+def get_trending_coins() -> pd.DataFrame:
+    """Returns trending coins [Source: CoinGecko]
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+    pandas.DataFrame:
+        Trending Coins
+        Columns:
+    """
+    client = CoinGeckoAPI()
+    data = client.get_search_trending()
+    coins = data["coins"]
+    df = pd.DataFrame(columns=["Symbol", "Name", "Market Cap Rank"])
+    for i, coin in enumerate(coins):
+        coin = coin["item"]
+        df.loc[i] = [coin["id"], coin["name"], coin["market_cap_rank"]]
+    return df
 
 
 # api only supports for trending (not most_voted, positive_sentiment, recently_added or most_visited)
@@ -376,8 +397,8 @@ def get_yield_farms() -> pd.DataFrame:
 
 
 # This function does not use coingecko api because there is not an endpoint for this
-def get_top_volume_coins() -> pd.DataFrame:
-    """Scrapes top coins by trading volume "https://www.coingecko.com/en/coins/high_volume" [Source: CoinGecko]
+def get_top_volume_coins(top: int = 50) -> pd.DataFrame:
+    """Returns N coins with top volume [Source: CoinGecko]
 
     Returns
     -------
@@ -386,36 +407,23 @@ def get_top_volume_coins() -> pd.DataFrame:
         Columns: Rank, Name, Symbol, Price, Change_1h, Change_24h, Change_7d, Volume_24h, Market_Cap
     """
 
-    columns = [
-        "Rank",
-        "Name",
-        "Symbol",
-        "Price",
-        "Change_1h",
-        "Change_24h",
-        "Change_7d",
-        "Volume_24h",
-        "Market_Cap",
+    df = get_coins(top)
+    sorted_df = df.sort_values(
+        by=["total_volume"],
+        ascending=False,
+    )
+    return sorted_df[
+        [
+            "symbol",
+            "name",
+            "current_price",
+            "market_cap",
+            "market_cap_rank",
+            "price_change_percentage_7d_in_currency",
+            "price_change_percentage_24h_in_currency",
+            "total_volume",
+        ]
     ]
-    url = "https://www.coingecko.com/en/coins/high_volume"
-    try:
-        scraped_data = scrape_gecko_data(url)
-    except RetryError as e:
-        print(e)
-        return pd.DataFrame()
-    rows = scraped_data.find("tbody").find_all("tr")
-    results = []
-    for row in rows:
-        row_cleaned = clean_row(row)
-        if len(row_cleaned) == 9:
-            row_cleaned.insert(0, "?")
-        row_cleaned.pop(3)
-        results.append(row_cleaned)
-    df = replace_qm(pd.DataFrame(results, columns=columns))
-    df.drop("Rank", axis=1, inplace=True)
-    create_df_index(df, "Rank")
-    df["Price"] = df["Price"].apply(lambda x: float(x.strip("$").replace(",", "")))
-    return df
 
 
 # This function does not use coingecko api because there is not an endpoint for this

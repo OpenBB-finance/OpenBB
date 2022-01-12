@@ -207,52 +207,12 @@ CoinMarketCap:
                 trending will display: Rank, Name, Price_BTC, Price_USD
             """,
         )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="Number of records to display",
-            default=15,
-        )
-
-        parser.add_argument(
-            "-s",
-            "--sort",
-            dest="sortby",
-            type=str,
-            help="Sort by given column. Default: rank",
-            default="Rank",
-            choices=pycoingecko_model.TRENDING_FILTERS,
-        )
-
-        parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
-        )
-
-        parser.add_argument(
-            "-u",
-            "--urls",
-            dest="urls",
-            action="store_true",
-            help="Flag to show urls. If you will use that flag you will additional column with urls",
-            default=False,
-        )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            pycoingecko_view.display_discover(
-                category="trending",
-                top=ns_parser.limit,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                links=ns_parser.urls,
+            pycoingecko_view.display_trending(
                 export=ns_parser.export,
             )
 

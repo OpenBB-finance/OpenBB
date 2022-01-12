@@ -3,13 +3,16 @@ __docformat__ = "numpy"
 
 import os
 from pandas.plotting import register_matplotlib_converters
+from rich.console import Console
+
 from tabulate import tabulate
 from gamestonk_terminal.cryptocurrency.discovery import pycoingecko_model
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
 from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
 
+t_console = Console()
 
 # pylint: disable=inconsistent-return-statements
 # pylint: disable=R0904, C0302
@@ -97,6 +100,41 @@ def display_losers(period: str, top: int, export: str) -> None:
         print("")
 
 
+def display_trending(export: str) -> None:
+    """Display trending coins [Source: CoinGecko]
+
+    Parameters
+    ----------
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+
+    df = pycoingecko_model.get_trending_coins()
+    if not df.empty:
+        if gtff.USE_TABULATE_DF:
+            t_console.print(
+                rich_table_from_df(
+                    df,
+                    headers=list(df.columns),
+                    floatfmt=".4f",
+                    show_index=False,
+                    title="Trending coins on CoinGecko",
+                ),
+                "\n",
+            )
+        else:
+            t_console.print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "cgtrending",
+            df,
+        )
+    else:
+        t_console.print("\nUnable to retrieve data from CoinGecko.\n")
+
+
 def display_discover(
     category: str, top: int, sortby: str, descend: bool, links: bool, export: str
 ) -> None:
@@ -156,9 +194,7 @@ def display_discover(
             df_data,
         )
     else:
-        print("")
-        print("Unable to retrieve data from CoinGecko.")
-        print("")
+        print("\nUnable to retrieve data from CoinGecko.\n")
 
 
 def display_recently_added(
@@ -310,25 +346,21 @@ def display_top_dex(top: int, sortby: str, descend: bool, export: str) -> None:
     )
 
 
-def display_top_volume_coins(top: int, sortby: str, descend: bool, export: str) -> None:
+def display_top_volume_coins(top: int, export: str) -> None:
     """Shows Top 100 Coins by Trading Volume from "https://www.coingecko.com/en/yield-farming" [Source: CoinGecko]
 
     Parameters
     ----------
     top: int
         Number of records to display
-    sortby: str
-        Key by which to sort data
-    descend: bool
-        Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = pycoingecko_model.get_top_volume_coins()
+    df = pycoingecko_model.get_top_volume_coins(top)
 
     if not df.empty:
-        df = df.sort_values(by=sortby, ascending=descend)
+        # df = df.sort_values(by=sortby, ascending=descend)
         if gtff.USE_TABULATE_DF:
             print(
                 tabulate(
