@@ -15,9 +15,7 @@ register_matplotlib_converters()
 # pylint: disable=R0904, C0302
 
 
-def display_gainers(
-    period: str, top: int, sortby: str, descend: bool, links: bool, export: str
-) -> None:
+def display_gainers(period: str, top: int, export: str) -> None:
     """Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]
 
     Parameters
@@ -26,28 +24,12 @@ def display_gainers(
         Time period by which data is displayed. One from [1h, 24h, 7d, 14d, 30d, 60d, 1y]
     top: int
         Number of records to display
-    sortby: str
-        Key by which to sort data
-    descend: bool
-        Flag to sort data descending
-    links: bool
-        Flag to display urls
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    if sortby == "Change":
-        sortby = f"%Change_{period}"
-
-    df = pycoingecko_model.get_gainers_or_losers(period=period, typ="gainers")
+    df = pycoingecko_model.get_gainers_or_losers(top=top, period=period, typ="gainers")
     if not df.empty:
-        df = df.sort_values(by=sortby, ascending=descend)
-
-        df_data = df.copy()
-
-        if not links:
-            df.drop("Url", axis=1, inplace=True)
-
         if gtff.USE_TABULATE_DF:
             print(
                 tabulate(
@@ -66,7 +48,7 @@ def display_gainers(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "gainers",
-            df_data,
+            df,
         )
     else:
         print("")
@@ -74,9 +56,7 @@ def display_gainers(
         print("")
 
 
-def display_losers(
-    period: str, top: int, sortby: str, descend: bool, links: bool, export: str
-) -> None:
+def display_losers(period: str, top: int, export: str) -> None:
     """Shows Largest Losers - coins which lost the most in given period of time. [Source: CoinGecko]
 
     Parameters
@@ -85,28 +65,12 @@ def display_losers(
         Time period by which data is displayed. One from [1h, 24h, 7d, 14d, 30d, 60d, 1y]
     top: int
         Number of records to display
-    sortby: str
-        Key by which to sort data
-    descend: bool
-        Flag to sort data descending
-    links: bool
-        Flag to display urls
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    if sortby == "Change":
-        sortby = f"%Change_{period}"
-
-    df = pycoingecko_model.get_gainers_or_losers(period=period, typ="losers")
+    df = pycoingecko_model.get_gainers_or_losers(top=top, period=period, typ="losers")
     if not df.empty:
-        df = df.sort_values(by=sortby, ascending=descend)
-
-        df_data = df.copy()
-
-        if not links:
-            df.drop("Url", axis=1, inplace=True)
-
         if gtff.USE_TABULATE_DF:
             print(
                 tabulate(
@@ -125,7 +89,7 @@ def display_losers(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "losers",
-            df_data,
+            df,
         )
     else:
         print("")

@@ -1,14 +1,15 @@
 import os
 from datetime import datetime, timedelta
+
 import discord
 from matplotlib import pyplot as plt
 
-from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.common.technical_analysis import volume_model
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.helper_funcs import plot_autoscale
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
 
 
@@ -19,7 +20,7 @@ async def ad_command(ctx, ticker="", is_open="False", start="", end=""):
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.ad {ticker} {is_open} {start} {end}")
+            logger.debug("!stocks.ta.ad %s %s %s %s", ticker, is_open, start, end)
 
         # Check for argument
         if ticker == "":
@@ -103,7 +104,7 @@ async def ad_command(ctx, ticker="", is_open="False", start="", end=""):
         uploaded_image = gst_imgur.upload_image("ta_ad.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: Accumulation/Distribution Line " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

@@ -18,9 +18,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_gainers(self):
-        disc_pycoingecko_view.display_gainers(
-            period="24h", top=15, sortby="Change", descend=True, links=False, export=""
-        )
+        disc_pycoingecko_view.display_gainers(period="24h", top=15, export="")
 
     @check_print(assert_in="Rank")
     @vcr.use_cassette(
@@ -28,9 +26,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_losers(self):
-        disc_pycoingecko_view.display_losers(
-            period="24h", top=15, sortby="Change", descend=True, links=False, export=""
-        )
+        disc_pycoingecko_view.display_losers(period="24h", top=15, export="")
 
     @check_print(assert_in="CryptoBlades")
     @vcr.use_cassette(

@@ -3,19 +3,18 @@
 __docformat__ = "numpy"
 
 import os
-import argparse
 import difflib
 import logging
 import sys
-from typing import List, Union
+from typing import List
 import pytz
 
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
-    system_clear,
     get_user_timezone_or_invalid,
     replace_user_timezone,
 )
@@ -35,21 +34,9 @@ from gamestonk_terminal.terminal_helper import (
 logger = logging.getLogger(__name__)
 
 
-class TerminalController:
+class TerminalController(BaseController):
     """Terminal Controller class"""
 
-    CHOICES = [
-        "cls",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
     CHOICES_COMMANDS = [
         "update",
         "about",
@@ -68,22 +55,15 @@ class TerminalController:
         "funds",
         "alternative",
     ]
-    CHOICES += CHOICES_COMMANDS
-    CHOICES += CHOICES_MENUS
 
     all_timezones = pytz.all_timezones
 
     def __init__(self, jobs_cmds: List[str] = None):
         """Constructor"""
-        self.t_parser = argparse.ArgumentParser(add_help=False, prog="terminal")
-        self.t_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-        self.completer: Union[None, NestedCompleter] = None
+        super().__init__("/", jobs_cmds)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: None for c in self.CHOICES}
+            choices: dict = {c: None for c in self.controller_choices}
             choices["tz"] = {c: None for c in self.all_timezones}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -138,76 +118,6 @@ Timezone: {get_user_timezone_or_invalid()}
     """
         print(help_text)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-            # Absolute path is specified.
-            if not actions[0]:
-                # Since we are already in home we can pick up the first instruction
-                an_input = actions[1]
-                idx_to_start = 2
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-                idx_to_start = 1
-
-            # Add all instructions to the queue
-            for cmd in actions[idx_to_start:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.t_parser.parse_known_args(an_input.split())
-
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        # has been dealt with before
-
     def call_update(self, _):
         """Process update command"""
         self.update_succcess = not update_terminal()
@@ -222,63 +132,71 @@ Timezone: {get_user_timezone_or_invalid()}
 
     def call_stocks(self, _):
         """Process stocks command"""
-        from gamestonk_terminal.stocks import stocks_controller
+        from gamestonk_terminal.stocks.stocks_controller import StocksController
 
-        self.queue = stocks_controller.menu("", self.queue)
+        self.queue = StocksController(self.queue).menu()
 
     def call_crypto(self, _):
         """Process crypto command"""
-        from gamestonk_terminal.cryptocurrency import crypto_controller
+        from gamestonk_terminal.cryptocurrency.crypto_controller import CryptoController
 
-        self.queue = crypto_controller.menu(queue=self.queue)
+        self.queue = CryptoController(self.queue).menu()
 
     def call_economy(self, _):
         """Process economy command"""
-        from gamestonk_terminal.economy import economy_controller
+        from gamestonk_terminal.economy.economy_controller import EconomyController
 
-        self.queue = economy_controller.menu(self.queue)
+        self.queue = EconomyController(self.queue).menu()
 
     def call_etf(self, _):
         """Process etf command"""
-        from gamestonk_terminal.etf import etf_controller
+        from gamestonk_terminal.etf.etf_controller import ETFController
 
-        self.queue = etf_controller.menu(self.queue)
+        self.queue = ETFController(self.queue).menu()
 
     def call_funds(self, _):
         """Process etf command"""
-        from gamestonk_terminal.mutual_funds import mutual_fund_controller
+        from gamestonk_terminal.mutual_funds.mutual_fund_controller import (
+            FundController,
+        )
 
-        self.queue = mutual_fund_controller.menu(self.queue)
+        self.queue = FundController(self.queue).menu()
 
     def call_forex(self, _):
         """Process forex command"""
-        from gamestonk_terminal.forex import forex_controller
+        from gamestonk_terminal.forex.forex_controller import ForexController
 
-        self.queue = forex_controller.menu(self.queue)
+        self.queue = ForexController(self.queue).menu()
 
     def call_jupyter(self, _):
         """Process jupyter command"""
-        from gamestonk_terminal.jupyter import jupyter_controller
+        from gamestonk_terminal.jupyter.jupyter_controller import JupyterController
 
-        self.queue = jupyter_controller.menu(self.queue)
+        self.queue = JupyterController(self.queue).menu()
 
     def call_resources(self, _):
         """Process resources command"""
-        from gamestonk_terminal.resources import resources_controller
+        from gamestonk_terminal.resources.resources_controller import (
+            ResourceCollectionController,
+        )
 
-        self.queue = resources_controller.menu(self.queue)
+        self.queue = ResourceCollectionController(self.queue).menu()
 
     def call_alternative(self, _):
         """Process resources command"""
-        from gamestonk_terminal.alternative import alt_controller
+        from gamestonk_terminal.alternative.alt_controller import (
+            AlternativeDataController,
+        )
 
-        self.queue = alt_controller.menu(self.queue)
+        self.queue = AlternativeDataController(self.queue).menu()
 
     def call_portfolio(self, _):
         """Process portfolio command"""
-        from gamestonk_terminal.portfolio import portfolio_controller
+        from gamestonk_terminal.portfolio.portfolio_controller import (
+            PortfolioController,
+        )
 
-        self.queue = portfolio_controller.menu(self.queue)
+        self.queue = PortfolioController(self.queue).menu()
 
     def call_tz(self, other_args: List[str]):
         """Process tz command"""
@@ -317,7 +235,7 @@ def terminal(jobs_cmds: List[str] = None):
             t_controller.queue = t_controller.queue[1:]
 
             # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in t_controller.CHOICES_COMMANDS:
+            if an_input and an_input.split(" ")[0] in t_controller.controller_choices:
                 print(f"{get_flair()} / $ {an_input}")
 
         # Get input command from user
@@ -361,7 +279,7 @@ def terminal(jobs_cmds: List[str] = None):
             print(f"\nThe command '{an_input}' doesn't exist on the / menu", end="")
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
-                t_controller.CHOICES,
+                t_controller.controller_choices,
                 n=1,
                 cutoff=0.7,
             )

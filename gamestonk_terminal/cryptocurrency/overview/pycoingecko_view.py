@@ -373,9 +373,7 @@ def display_news(
         print("")
 
 
-def display_categories(
-    sortby: str, descend: bool, top: int, links: bool, export: str
-) -> None:
+def display_categories(sortby: str, top: int, export: str) -> None:
     """Shows top cryptocurrency categories by market capitalization from https://www.coingecko.com/en/categories
 
     The cryptocurrency category ranking is based on market capitalization. [Source: CoinGecko]
@@ -386,10 +384,6 @@ def display_categories(
         Number of records to display
     sortby: str
         Key by which to sort data
-    descend: bool
-        Flag to sort data descending
-    links: bool
-        Flag to display urls
     export : str
         Export dataframe data to csv,json,xlsx file
     """

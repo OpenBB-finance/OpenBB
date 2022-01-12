@@ -6,7 +6,6 @@ import pandas as pd
 from pycoingecko import CoinGeckoAPI
 from requests.adapters import RetryError
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
-    percent_to_float,
     create_df_index,
     wrap_text_in_df,
 )
@@ -30,6 +29,8 @@ PERIODS = {
     "60d": "?time=d60",
     "1y": "?time=y1",
 }
+
+API_PERIODS = ["14d", "1h", "1y", "200d", "24h", "30d", "7d"]
 
 CATEGORIES = {
     "trending": 0,
@@ -87,17 +88,83 @@ DEX_FILTERS = [
     "Market_Share",
 ]
 
+
+def get_coins(top: int = 250):
+    """Get N coins from CoinGecko [Source: CoinGecko]
+
+    Parameters
+    ----------
+    top: int
+        Number of top coins to grab from CoinGecko
+    Returns
+    -------
+    pandas.DataFrame
+        N coins
+    """
+    i = 1
+    remaining_top = top
+    client = CoinGeckoAPI()
+    if top > 250:
+        data = client.get_coins_markets(
+            vs_currency="usd",
+            order="market_cap_desc",
+            per_page=top,
+            page=i,
+            sparkline=False,
+            price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
+        )
+        df = pd.DataFrame(data)
+        remaining_top -= 250
+        i += 1
+    else:
+        data = client.get_coins_markets(
+            vs_currency="usd",
+            order="market_cap_desc",
+            per_page=top,
+            page=i,
+            sparkline=False,
+            price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
+        )
+        df = pd.DataFrame(data)
+        return df
+    while remaining_top > 250:
+        data = client.get_coins_markets(
+            vs_currency="usd",
+            order="market_cap_desc",
+            per_page=top,
+            page=i,
+            sparkline=False,
+            price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
+        )
+        df = df.append(pd.DataFrame(data), ignore_index=True)
+        remaining_top -= 250
+        i += 1
+    if remaining_top > 0:
+        data = client.get_coins_markets(
+            vs_currency="usd",
+            order="market_cap_desc",
+            per_page=remaining_top,
+            page=i,
+            sparkline=False,
+            price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
+        )
+        df = df.append(pd.DataFrame(data), ignore_index=True)
+    return df
+
+
 # TODO: convert Volume and other str that should be int to int otherwise sort won't work
 
-# This function does not use coingecko api because there is not an endpoint for this
 
-
-def get_gainers_or_losers(period: str = "1h", typ: str = "gainers") -> pd.DataFrame:
+def get_gainers_or_losers(
+    top: int = 20, period: str = "1h", typ: str = "gainers"
+) -> pd.DataFrame:
     """Scrape data about top gainers - coins which gain the most in given period and
     top losers - coins that lost the most in given period of time. [Source: CoinGecko]
 
     Parameters
     ----------
+    top: int
+        Num of coins to get
     period: str
         One from [1h, 24h, 7d, 14d, 30d, 60d, 1y]
     typ: str
@@ -109,51 +176,28 @@ def get_gainers_or_losers(period: str = "1h", typ: str = "gainers") -> pd.DataFr
         Columns: Symbol, Name, Volume, Price, %Change_{period}, Url
     """
 
-    category = {
-        "gainers": 0,
-        "losers": 1,
-    }
-
-    if period not in PERIODS:
+    if period not in API_PERIODS:
         raise ValueError(
-            f"Wrong time period\nPlease chose one from list: {PERIODS.keys()}"
+            f"Wrong time period\nPlease chose one from list: {API_PERIODS}"
         )
-
-    url = f"https://www.coingecko.com/en/coins/trending{PERIODS.get(period)}"
-    try:
-        scraped_data = scrape_gecko_data(url)
-    except RetryError as e:
-        print(e)
-        return pd.DataFrame()
-    rows = scraped_data.find_all("tbody")[category.get(typ)].find_all("tr")
-    results = []
-    for row in rows:
-        url = GECKO_BASE_URL + row.find("a")["href"]
-        symbol, name, *_, volume, price, change = clean_row(row)
-        try:
-            change = percent_to_float(change)
-        except (ValueError, TypeError) as e:
-            print(e)
-        results.append([symbol, name, volume, price, change, url])
-    df = pd.DataFrame(
-        results,
-        columns=[
-            "Symbol",
-            "Name",
-            "Volume",
-            "Price",
-            f"%Change_{period}",
-            "Url",
-        ],
+    df = get_coins(top)
+    sorted_df = df.sort_values(
+        by=[f"price_change_percentage_{period}_in_currency"],
+        ascending=typ != "gainers",
     )
-    df.index = df.index + 1
-    df.reset_index(inplace=True)
-    df = df.rename(columns={"index": "Rank"})
-    df["Price"] = df["Price"].apply(lambda x: float(x.strip("$").replace(",", "")))
-    return df
+    return sorted_df[
+        [
+            "symbol",
+            "name",
+            "current_price",
+            "market_cap",
+            "market_cap_rank",
+            "price_change_percentage_1y_in_currency",
+        ]
+    ]
 
 
-# This function does not use coingecko api because there is not an endpoint for this
+# api only supports for trending (not most_voted, positive_sentiment, recently_added or most_visited)
 def get_discovered_coins(category: str = "trending") -> pd.DataFrame:
     """Scrapes data from "https://www.coingecko.com/en/discover" [Source: CoinGecko]
         - Most voted coins

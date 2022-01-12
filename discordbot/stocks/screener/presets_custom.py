@@ -1,7 +1,7 @@
 import discord
 
 import discordbot.config_discordbot as cfg
-
+from discordbot.run_discordbot import logger
 from discordbot.stocks.screener import screener_options as so
 
 
@@ -11,7 +11,7 @@ async def presets_custom_command(ctx):
 
         # Debug
         if cfg.DEBUG:
-            print("!stocks.scr.presets")
+            logger.debug("!stocks.scr.presets")
 
         description = ""
         for preset in so.presets:

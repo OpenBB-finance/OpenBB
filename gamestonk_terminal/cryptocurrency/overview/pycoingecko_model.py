@@ -5,9 +5,9 @@ __docformat__ = "numpy"
 
 import math
 from typing import Any, List
+import re
 import pandas as pd
 import numpy as np
-import re
 from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     wrap_text_in_df,
@@ -174,15 +174,21 @@ def get_news(n: int = 100) -> pd.DataFrame:
     return df
 
 
-SORT_VALUES = ["market_cap_desc", "market_cap_asc", "name_desc", "name_asc", "market_cap_change_24h_desc",
-               "market_cap_change_24h_asc"]
+SORT_VALUES = [
+    "market_cap_desc",
+    "market_cap_asc",
+    "name_desc",
+    "name_asc",
+    "market_cap_change_24h_desc",
+    "market_cap_change_24h_asc",
+]
 
 
 def coin_formatter(n):
     # TODO: can be improved
     coins = []
     for coin in n:
-        coin_stripped = re.search('small/(.*)(.jpg|.png|.JPG|.PNG)', coin).group(1)
+        coin_stripped = re.search("small/(.*)(.jpg|.png|.JPG|.PNG)", coin).group(1)
         coins.append(coin_stripped)
     return ",".join(coins)
 
@@ -192,11 +198,14 @@ def get_crypto_categories(sort_filter: str = SORT_VALUES[0]):
         cg = CoinGeckoAPI()
         data = cg.get_coins_categories(order=sort_filter)
         df = pd.DataFrame(data)
-        del df['id']
-        del df['content']
-        del df['updated_at']
-        df['top_3_coins'] = df['top_3_coins'].apply(coin_formatter)
-        df.columns = [replace_underscores_in_column_names(col) if isinstance(col, str) else col for col in df.columns]
+        del df["id"]
+        del df["content"]
+        del df["updated_at"]
+        df["top_3_coins"] = df["top_3_coins"].apply(coin_formatter)
+        df.columns = [
+            replace_underscores_in_column_names(col) if isinstance(col, str) else col
+            for col in df.columns
+        ]
         return df
     return pd.DataFrame()
 

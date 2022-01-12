@@ -8,7 +8,7 @@ from gamestonk_terminal.common.technical_analysis import custom_indicators_model
 from gamestonk_terminal import config_plot as cfp
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
 
 
@@ -19,7 +19,12 @@ async def fib_command(ctx, ticker="", start="", end=""):
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.fib {ticker} {start} {end}")
+            logger.debug(
+                "!stocks.ta.fib %s %s %s",
+                ticker,
+                start,
+                end,
+            )
 
         # Check for argument
         if ticker == "":
@@ -81,7 +86,7 @@ async def fib_command(ctx, ticker="", start="", end=""):
         uploaded_image = gst_imgur.upload_image("ta_fib.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: Fibonacci-Retracement-Levels " + ticker
         str_df_fib = "```" + df_fib.to_string(index=False) + "```"
         embed = discord.Embed(title=title, colour=cfg.COLOR, description=str_df_fib)
