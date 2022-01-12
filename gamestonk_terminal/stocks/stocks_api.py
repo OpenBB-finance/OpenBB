@@ -13,3 +13,4 @@ from .behavioural_analysis import ba_api as ba
 from .comparison_analysis import ca_api as ca
 from .discovery import disc_api as disc
 from .due_diligence import dd_api as dd
+from .fundamental_analysis import fa_api as fa
