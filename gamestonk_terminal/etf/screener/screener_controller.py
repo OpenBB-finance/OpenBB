@@ -74,15 +74,15 @@ class ScreenerController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
+        help_text = f"""[cmds]
     view        view available presets
-    set         set one of the available presets
+    set         set one of the available presets[/cmds]
 
-[param]RESET: [/param]{self.preset}
+[param]PRESET: [/param]{self.preset}[cmds]
 
     screen      screen ETF using preset selected [src][StockAnalysis][/src]
 
-    sbc         screen by category [src][FinanceDatabase][/src]
+    sbc         screen by category [src][FinanceDatabase][/src][/cmds]
 """
         console.print(
             Panel(

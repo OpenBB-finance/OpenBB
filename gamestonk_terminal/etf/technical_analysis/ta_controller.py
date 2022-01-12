@@ -81,7 +81,7 @@ class TechnicalAnalysisController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = f"""
-[param]ETF: [/param]{self.ticker}
+[param]ETF: [/param]{self.ticker}[cmds]
 
 [info]Overlap:[/info]
     ema         exponential moving average
@@ -108,7 +108,7 @@ class TechnicalAnalysisController(BaseController):
     adosc       chaikin oscillator
     obv         on balance volume
 [info]Custom:[/info]
-    fib         fibonacci retracement
+    fib         fibonacci retracement[/cmds]
 """
         console.print(
             Panel(

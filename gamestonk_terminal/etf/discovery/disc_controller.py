@@ -38,10 +38,10 @@ class DiscoveryController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = """
-[src][Wall Street Journal][/src]
+[src][Wall Street Journal][/src][cmds]
     gainers     top gainers
     decliners   top decliners
-    active      most active
+    active      most active[/cmds]
 """
         console.print(
             Panel(
