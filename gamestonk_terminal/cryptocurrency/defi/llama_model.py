@@ -91,7 +91,6 @@ def get_defi_tvl() -> pd.DataFrame:
         Historical values of total sum of Total Value Locked from all listed protocols.
     """
     response = requests.get(API_URL + "/charts")
-    print(response.status_code)
     if response.status_code != 200:
         raise Exception(f"Status code: {response.status_code}. Reason: {response.text}")
     try:

@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import os
 from matplotlib import ticker, dates as mdates
-from tabulate import tabulate
+from rich.console import Console
 import matplotlib.pyplot as plt
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import read_data_file
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
@@ -14,9 +14,12 @@ from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     long_number_format,
+    rich_table_from_df,
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
+
+t_console = Console()
 
 
 def display_grouped_defi_protocols(num: int = 50, export: str = "") -> None:
@@ -47,9 +50,8 @@ def display_grouped_defi_protocols(num: int = 50, export: str = "") -> None:
     ax.get_yaxis().set_major_formatter(
         ticker.FuncFormatter(lambda x, _: long_number_format(x))
     )
-    fig.subplots_adjust(bottom=0.3)
+    fig.tight_layout(pad=8)
     ax.legend(ncol=2)
-
     ax.set_title(f"Top {num} dApp TVL grouped by chain")
     ax.grid(alpha=0.5)
     ax.tick_params(axis="x", labelrotation=90)
@@ -118,18 +120,17 @@ def display_defi_protocols(
     )
 
     if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
+        t_console.print(
+            rich_table_from_df(
                 df.head(top),
-                headers=df.columns,
+                headers=list(df.columns),
                 floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
+                show_index=False,
             ),
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        t_console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -151,7 +152,7 @@ def display_historical_tvl(dapps: str = "", export: str = ""):
         Export dataframe data to csv,json,xlsx file
     """
 
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     available_protocols = read_data_file("defillama_dapps.json")
     if isinstance(available_protocols, dict):
         for dapp in dapps.split(","):
@@ -175,6 +176,7 @@ def display_historical_tvl(dapps: str = "", export: str = ""):
         ax.set_title("TVL in dApps")
         ax.grid(alpha=0.5)
         ax.tick_params(axis="x", labelrotation=45)
+        fig.tight_layout(pad=2)
 
         if gtff.USE_ION:
             plt.ion()
@@ -206,7 +208,7 @@ def display_defi_tvl(top: int, export: str = "") -> None:
 
     df = df.tail(top)
 
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     ax.plot(df["date"], df["totalLiquidityUSD"], "-ok", ms=2)
     ax.set_xlabel("Time")
@@ -223,6 +225,8 @@ def display_defi_tvl(top: int, export: str = "") -> None:
     ax.get_yaxis().set_major_formatter(
         ticker.FuncFormatter(lambda x, _: long_number_format(x))
     )
+    fig.tight_layout(pad=2)
+
     if gtff.USE_ION:
         plt.ion()
     plt.show()
