@@ -875,8 +875,6 @@ main:
             ref: "/cryptocurrency/defi/dtvl"
           - name: stvl
             ref: "/cryptocurrency/defi/stvl"
-          - name: tvl
-            ref: "/cryptocurrency/defi/tvl"
           - name: newsletter
             ref: "/cryptocurrency/defi/newsletter"
           - name: dpi
