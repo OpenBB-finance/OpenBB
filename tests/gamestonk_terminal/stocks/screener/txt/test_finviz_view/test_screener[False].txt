@@ -1,4 +1,4 @@
-    Ticker                Company      Sector                     Industry Country    Market Cap P/E  Price  Change     Volume
-191   AADI  Aadi Bioscience, Inc.  Healthcare                Biotechnology     USA   474580000.0      23.15  0.0580    83153.0
-4     ACCD         Accolade, Inc.  Healthcare  Health Information Services     USA  1300000000.0      23.05  0.2043  4035153.0
+   Ticker            Company      Sector                Industry Country    Market Cap P/E  Price  Change    Volume
+30    AHG  Akso Health Group   Financial         Credit Services   China    42210000.0       1.72  0.0818   42059.0
+69    API        Agora, Inc.  Technology  Software - Application   China  1720000000.0      15.65  0.0572  128924.0
 
