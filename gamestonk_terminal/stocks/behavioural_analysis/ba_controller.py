@@ -136,9 +136,10 @@ SentimentInvestor:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
-            " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
-            " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
+            description="Load stock ticker to perform analysis on. When the data "
+            + "source is 'yf', an Indian ticker can be loaded by using '.NS' at the end,"
+            + " e.g. 'SBIN.NS'. See available market in"
+            + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
         )
         parser.add_argument(
             "-t",
@@ -931,7 +932,7 @@ SentimentInvestor:
     def call_emerging(self, other_args: List[str]):
         """Process emerging command"""
         command_description = f"""
-        The {Style.BRIGHT}emerging{Style.RESET_ALL} command prints the stocks with highest Relative Hype Index right now.
+        The {Style.BRIGHT}emerging{Style.RESET_ALL} command prints the stocks with highest Index right now.
 
         {Style.BRIGHT}RHI (Relative Hype Index){Style.RESET_ALL}
         ---
