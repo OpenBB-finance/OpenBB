@@ -1,4 +1,4 @@
-   Ticker            Company      Sector                Industry Country    Market Cap P/E  Price  Change    Volume
-30    AHG  Akso Health Group   Financial         Credit Services   China    42210000.0       1.72  0.0818   42059.0
-69    API        Agora, Inc.  Technology  Software - Application   China  1720000000.0      15.65  0.0572  128924.0
+   Ticker                    Company      Sector         Industry Country  Market Cap P/E  Price  Change   Volume
+53   ACOR  Acorda Therapeutics, Inc.  Healthcare    Biotechnology     USA  25600000.0       2.37  0.0676  37441.0
+71    AHG          Akso Health Group   Financial  Credit Services   China  42210000.0       1.68  0.0566  57897.0
 
