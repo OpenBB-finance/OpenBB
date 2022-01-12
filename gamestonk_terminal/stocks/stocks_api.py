@@ -16,3 +16,4 @@ from .due_diligence import dd_api as dd
 from .fundamental_analysis import fa_api as fa
 from .government import gov_api as gov
 from .insider import insider_api as ins
+from .options import options_api as options
