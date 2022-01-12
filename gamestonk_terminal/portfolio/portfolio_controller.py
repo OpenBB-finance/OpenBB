@@ -10,6 +10,8 @@ from datetime import datetime
 
 from prompt_toolkit.completion import NestedCompleter
 import pandas as pd
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -26,7 +28,6 @@ from gamestonk_terminal.portfolio import (
     portfolio_helper,
 )
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
-from gamestonk_terminal.rich_config import console
 
 # pylint: disable=R1710,E1101,C0415
 
@@ -72,27 +73,32 @@ class PortfolioController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """
-What do you want to do?
-
+        help_text = """[menu]
 >   bro         brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
 >   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt
->   pa          portfolio analysis, \t\t analyse portfolios
+>   pa          portfolio analysis, \t\t analyse portfolios[/menu]
 
-Portfolio:
+[info]Portfolio:[/info][cmds]
     load        load data into the portfolio
     save        save your portfolio for future use
     show        show existing transactions
     add         add a security to your portfolio
-    rmv         remove a security from your portfolio
+    rmv         remove a security from your portfolio[/cmds]
 
-Reports:
+[info]Reports:[/info][cmds]
     ar          annual report for performance of a given portfolio
 
-Graphs:
+[info]Graphs:[/info][cmds]
     rmr         graph your returns versus the market's returns
         """
-        console.print(help_text)
+        console.print(
+            Panel(
+                help_text,
+                title="Portfolio",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_bro(self, _):
         """Process bro command"""

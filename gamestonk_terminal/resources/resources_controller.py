@@ -5,11 +5,11 @@ import webbrowser
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.rich_config import console
 
 
 class ResourceCollectionController(BaseController):
@@ -35,17 +35,24 @@ class ResourceCollectionController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_str = """
-Resource Collection:
+        help_text = """
+[info]Resource Collection:[/info][cmds]
    hfletters     hedge fund letters or reports
    arxiv         open-access archive for academic articles
    finra         self-regulatory organization
    edgar         online public database from SEC
    fred          economic research data
    learn         trading analysis, tips and resources
-   econiverse    compilation of free knowledge and educational resources
+   econiverse    compilation of free knowledge and educational resources[/cmds]
         """
-        console.print(help_str)
+        console.print(
+            Panel(
+                help_text,
+                title="Resources",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_hfletters(self, _):
         """Process hfletters command"""

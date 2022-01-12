@@ -5,6 +5,7 @@ import logging
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
+from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
@@ -31,10 +32,17 @@ class AlternativeDataController(BaseController):
     @staticmethod
     def print_help():
         """Print help"""
-        help_str = """
->   covid           cases, deaths, rates
+        help_text = """[menu]
+>   covid     COVID menu,                    e.g.: cases, deaths, rates[/menu]
         """
-        console.print(help_str)
+        console.print(
+            Panel(
+                help_text,
+                title="Alternative",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_covid(self, _):
         """Process covid command"""

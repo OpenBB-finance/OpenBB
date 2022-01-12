@@ -53,17 +53,17 @@ class ForexController(BaseController):
         has_symbols_end = "" if self.from_symbol and self.to_symbol else "[/dim]"
         help_text = f"""[cmds]
     from      select the "from" currency in a forex pair
-    to        select the "to" currency in a forex pair
-[/cmds]
-From: {None or self.from_symbol}
-To:   {None or self.to_symbol}[cmds]
-{has_symbols_start}[src]
-AlphaVantage:[/src][cmds]
+    to        select the "to" currency in a forex pair[/cmds]
+
+[param]From: [/param]{None or self.from_symbol}
+[param]To:   [/param]{None or self.to_symbol}[cmds]
+{has_symbols_start}
+[src][AlphaVantage][/src][cmds]
     quote         get last quote
     load          get historical data
     candle        show candle plot for loaded data[/cmds]
-{has_symbols_end}[info]
-Forex brokerages:[/info][menu]
+{has_symbols_end}
+[info]Forex brokerages:[/info][menu]
 >   oanda         Oanda menu[/menu][/cmds]
  """
         console.print(

@@ -8,11 +8,11 @@ from typing import List
 import yfinance as yf
 import matplotlib.pyplot as plt
 import mplfinance as mpf
-from colorama import Style
 
 from prompt_toolkit.completion import NestedCompleter
-
+from rich.panel import Panel
 from thepassiveinvestor import create_ETF_report
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -39,7 +39,6 @@ from gamestonk_terminal.etf.technical_analysis import ta_controller
 from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 from gamestonk_terminal.etf.screener import screener_controller
 from gamestonk_terminal.etf.discovery import disc_controller
-from gamestonk_terminal.rich_config import console
 
 # pylint: disable=C0415,C0302
 
@@ -82,33 +81,43 @@ class ETFController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_txt = f"""
-    ln            lookup by name [FinanceDatabase/StockAnalysis.com]
-    ld            lookup by description [FinanceDatabase]
-    load          load ETF data [Yfinance]
-{Style.DIM if not self.etf_name else ""}
-Symbol: {self.etf_name}{Style.DIM if len(self.etf_holdings)==0 else ""}
-Major holdings: {', '.join(self.etf_holdings)}
+        has_ticker_start = "" if self.etf_name else "[unvl]"
+        has_ticker_end = "" if self.etf_name else "[/unvl]"
+        has_etfs_start = "[unvl]" if len(self.etf_holdings) == 0 else ""
+        has_etfs_end = "[/unvl]" if len(self.etf_holdings) == 0 else ""
+        help_text = f"""[cmds]
+    ln            lookup by name [src][FinanceDatabase/StockAnalysis.com][/src]
+    ld            lookup by description [src][FinanceDatabase][/src]
+    load          load ETF data [src][Yfinance][/src][/cmds]
 
->   ca            comparison analysis,          e.g.: get similar, historical, correlation, financials
-{Style.RESET_ALL}
+[param]Symbol: [/param]{self.etf_name}{has_etfs_start}
+[param]Major holdings: [/param]{', '.join(self.etf_holdings)}
+[menu]
+>   ca            comparison analysis,          e.g.: get similar, historical, correlation, financials{has_etfs_end}
 >   disc          discover ETFs,                e.g.: gainers/decliners/active
->   scr           screener ETFs,                e.g.: overview/performance, using preset filters
-{Style.DIM if not self.etf_name else ""}
-    overview      get overview [StockAnalysis]
-    holdings      top company holdings [StockAnalysis]
-    weights       sector weights allocation [Yfinance]
-    summary       summary description of the ETF [Yfinance]
+>   scr           screener ETFs,                e.g.: overview/performance, using preset filters[/menu]
+{has_ticker_start}[cmds]
+    overview      get overview [src][StockAnalysis][/src]
+    holdings      top company holdings [src][StockAnalysis][/src]
+    weights       sector weights allocation [src][Yfinance][/src]
+    summary       summary description of the ETF [src][Yfinance][/src]
     candle        view a candle chart for ETF
-    news          latest news of the company [News API]
+    news          latest news of the company [src][News API][/src]
 
-    pir           create (multiple) passive investor excel report(s) [PassiveInvestor]
-    compare       compare multiple different ETFs [StockAnalysis]
-
+    pir           create (multiple) passive investor excel report(s) [src][PassiveInvestor][/src]
+    compare       compare multiple different ETFs [src][StockAnalysis][/src][/cmds]
+[menu]
 >   ta            technical analysis,           e.g.: ema, macd, rsi, adx, bbands, obv
->   pred          prediction techniques,        e.g.: regression, arima, rnn, lstm
-{Style.RESET_ALL}"""
-        console.print(help_txt)
+>   pred          prediction techniques,        e.g.: regression, arima, rnn, lstm[/menu]
+{has_ticker_end}"""
+        console.print(
+            Panel(
+                help_text,
+                title="ETF",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -610,6 +619,8 @@ Major holdings: {', '.join(self.etf_holdings)}
             self.queue = ca_controller.ComparisonAnalysisController(
                 self.etf_holdings, self.queue
             ).menu(custom_path_menu_above="/stocks/")
+        else:
+            print("Load a ticker with major holdings to compare them on this menu\n")
 
     def call_scr(self, _):
         """Process scr command"""

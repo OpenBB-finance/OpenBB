@@ -6,7 +6,8 @@ import subprocess
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -14,7 +15,6 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.rich_config import console
 
 # pylint: disable=consider-using-with
 
@@ -28,7 +28,7 @@ class DashboardsController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/jupyter/dashboard/", queue)
+        super().__init__("/jupyter/dashboards/", queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -36,10 +36,17 @@ class DashboardsController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_str = """
-   stocks        interactive dashboard with ticker information
+        help_text = """[cmds]
+   stocks        interactive dashboard with ticker information[/cmds]
         """
-        console.print(help_str)
+        console.print(
+            Panel(
+                help_text,
+                title="Jupyter - Dashboards",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_stocks(self, other_args: List[str]):
         """Process stocks command"""

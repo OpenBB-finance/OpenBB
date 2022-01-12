@@ -7,6 +7,8 @@ import os
 
 from prompt_toolkit.completion import NestedCompleter
 import pandas as pd
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.portfolio.portfolio_analysis import (
@@ -14,7 +16,6 @@ from gamestonk_terminal.portfolio.portfolio_analysis import (
     portfolio_view,
 )
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
-from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.menu import session
 
 
@@ -48,23 +49,22 @@ class PortfolioAnalysis(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_string = f"""
->>PORTFOLIO ANALYSIS<<
-
-What would you like to do?
-    cls           clear screen
-    ?/help        show this menu again
-    q             quit this menu, and shows back to main menu
-    quit          quit to abandon program
-
+        help_text = f"""[cmds]
     view          view available portfolios
-    load          load portfolio from a file
+    load          load portfolio from a file[/cmds]
 
-Portfolio: {self.portfolio_name or None}
+[param]Portfolio: [/param]{self.portfolio_name}[cmds]
 
-    group         view holdings grouped by parameter
-            """
-        console.print(help_string)
+    group         view holdings grouped by parameter[/cmds]
+        """
+        console.print(
+            Panel(
+                help_text,
+                title="Portfolio - Portfolio Analysis",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_load(self, other_args):
         """Process load command"""

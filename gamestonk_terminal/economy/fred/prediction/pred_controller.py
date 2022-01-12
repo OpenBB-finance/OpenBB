@@ -80,15 +80,13 @@ class PredictionTechniquesController(BaseController):
         id_string = ""
         for s_id, sub_dict in self.current_series.items():
             id_string += f"    [cyan]{s_id.upper()}[/cyan] : {sub_dict['title']}"
-        help_string = f"""
-Prediction Techniques Menu:
+        help_string = f"""[cmds]
+    load        load new series[/cmds]
 
-    load        load new series
-
-Selected Series (starting from [green]{self.start_date}[/green]):
+[param]Selected Series[/param]: From {self.start_date}
 {id_string}
 
-Models:
+[info]Models:[/info][cmds]
     ets         exponential smoothing (e.g. Holt-Winters)
     knn         k-Nearest Neighbors
     regression  polynomial regression
@@ -97,7 +95,7 @@ Models:
     rnn         Recurrent Neural Network
     lstm        Long-Short Term Memory
     conv1d      1D Convolutional Neural Network
-    mc          Monte-Carlo simulations
+    mc          Monte-Carlo simulations[/cmds]
         """
         console.print(help_string)
 

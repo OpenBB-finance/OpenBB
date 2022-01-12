@@ -5,7 +5,8 @@ import argparse
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -15,7 +16,6 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.etf.discovery import wsj_view
-from gamestonk_terminal.rich_config import console
 
 
 class DiscoveryController(BaseController):
@@ -37,12 +37,20 @@ class DiscoveryController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_str = """
-    gainers     show top gainers [WSJ]
-    decliners   show top decliners [WSJ]
-    active      show most active [WSJ]
+        help_text = """
+[src][Wall Street Journal][/src]
+    gainers     top gainers
+    decliners   top decliners
+    active      most active
 """
-        console.print(help_str)
+        console.print(
+            Panel(
+                help_text,
+                title="ETF - Discovery",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_gainers(self, other_args):
         """Process gainers command"""

@@ -8,7 +8,8 @@ import configparser
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -19,7 +20,6 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.etf.screener import screener_view
 from gamestonk_terminal.etf import financedatabase_view, financedatabase_model
-from gamestonk_terminal.rich_config import console
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -74,17 +74,24 @@ class ScreenerController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_str = f"""
+        help_text = f"""
     view        view available presets
     set         set one of the available presets
 
-PRESET: {self.preset}
+[param]RESET: [/param]{self.preset}
 
-    screen      screen ETF using preset selected [StockAnalysis]
+    screen      screen ETF using preset selected [src][StockAnalysis][/src]
 
-    sbc         screen by category [FinanceDatabase]
+    sbc         screen by category [src][FinanceDatabase][/src]
 """
-        console.print(help_str)
+        console.print(
+            Panel(
+                help_text,
+                title="ETF - Screener",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_view(self, other_args: List[str]):
         """Process view command"""

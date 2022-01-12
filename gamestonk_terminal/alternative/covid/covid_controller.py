@@ -8,6 +8,7 @@ from typing import List
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
+from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
@@ -47,18 +48,25 @@ class CovidController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_str = f"""
+        help_text = f"""[cmds]
         slopes      get countries with highest slope in cases
-        country     select country for data
+        country     select country for data[/cmds]
 
-Country: [cyan]{self.country}[/cyan]
+[param]Country: [/param]{self.country}[cmds]
 
         ov          get overview (cases and deaths) for selected country
         deaths      get deaths for selected country
         cases       get cases for selected country
-        rates       get death/cases rate for selected country
+        rates       get death/cases rate for selected country[/cmds]
         """
-        console.print(help_str)
+        console.print(
+            Panel(
+                help_text,
+                title="Alternative - COVID",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def custom_reset(self):
         """Class specific component of reset command"""

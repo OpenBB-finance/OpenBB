@@ -5,6 +5,8 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
+from rich.panel import Panel
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
@@ -16,7 +18,6 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
-from gamestonk_terminal.rich_config import console
 
 
 class CoinbaseController(BaseController):
@@ -52,14 +53,20 @@ class CoinbaseController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """
-Coinbase:
+        help_text = """[cmds]
     account     show balance of your account
     history     show history of your account
     deposits    show all your deposits or internal transfers
     orders      show all your orders
-"""
-        console.print(help_text)
+[/cmds]"""
+        console.print(
+            Panel(
+                help_text,
+                title="Portfolio - Brokers - Coinbase",
+                subtitle_align="right",
+                subtitle="Gamestonk Terminal",
+            )
+        )
 
     def call_account(self, other_args):
         """Process account command"""
