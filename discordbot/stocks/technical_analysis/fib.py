@@ -32,13 +32,17 @@ async def fib_command(ctx, ticker="", start="", end=""):
 
         if start == "":
             start = datetime.now() - timedelta(days=365)
+            f_start = None
         else:
             start = datetime.strptime(start, cfg.DATE_FORMAT)
+            f_start = start
 
         if end == "":
             end = datetime.now()
+            f_end = None
         else:
             end = datetime.strptime(end, cfg.DATE_FORMAT)
+            f_end = None
 
         ticker = ticker.upper()
         df_stock = discordbot.helpers.load(ticker, start)
@@ -56,7 +60,7 @@ async def fib_command(ctx, ticker="", start="", end=""):
             max_date,
             min_pr,
             max_pr,
-        ) = custom_indicators_model.calculate_fib_levels(df_stock, 120, start, end)
+        ) = custom_indicators_model.calculate_fib_levels(df_stock, 120, f_start, f_end)
 
         levels = df_fib.Price
         fig, ax = plt.subplots(figsize=(plot_autoscale()), dpi=cfp.PLOT_DPI)
