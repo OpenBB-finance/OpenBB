@@ -571,8 +571,8 @@ CoinMarketCap:
         if ns_parser:
             pycoingecko_view.display_top_volume_coins(
                 top=ns_parser.limit,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                # sortby=ns_parser.sortby,
+                # descend=ns_parser.descend,
                 export=ns_parser.export,
             )
 
