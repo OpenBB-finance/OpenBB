@@ -27,6 +27,10 @@ presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets
 
 # pylint: disable=,inconsistent-return-statements
 
+# TODO: HELP WANTED! This menu required some refactoring. Things that can be addressed:
+#       - better preset management (MVC style)
+#       - unification of model return types (now some return dataframes other records list)
+
 
 class InsiderController(BaseController):
     """Screener Controller class"""
@@ -145,9 +149,10 @@ Top Insiders:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
-            " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
-            " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
+            description="Load stock ticker to perform analysis on. When the data source"
+            + " is 'yf', an Indian ticker can be loaded by using '.NS' at the end,"
+            + " e.g. 'SBIN.NS'. See available market in"
+            + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
         )
         parser.add_argument(
             "-t",

@@ -38,6 +38,11 @@ from gamestonk_terminal.stocks.options import (
 
 # pylint: disable=R1710,C0302,R0916
 
+# TODO: HELP WANTED! This controller requires some MVC style refactoring
+#       - At the moment there's too much logic in the controller to implement an
+#         API wrapper. Please refactor functions like 'call_exp'
+#       - The separate controllers and related models/views should be moved to subfolders
+
 
 class OptionsController(BaseController):
     """Options Controller class"""
@@ -111,7 +116,7 @@ class OptionsController(BaseController):
         self.chain = None
 
         if ticker:
-            if TRADIER_TOKEN == "REPLACE_ME":
+            if TRADIER_TOKEN == "REPLACE_ME":  # nosec
                 print("Loaded expiry dates from Yahoo Finance")
                 self.expiry_dates = yfinance_model.option_expirations(self.ticker)
             else:
@@ -275,7 +280,7 @@ Expiry: {self.selected_date or None}
             )
 
     def call_unu(self, other_args: List[str]):
-        """Process act command"""
+        """Process unu command"""
         parser = argparse.ArgumentParser(
             prog="unu",
             add_help=False,
@@ -526,7 +531,7 @@ Expiry: {self.selected_date or None}
             self.ticker = ns_parser.ticker.upper()
             self.update_runtime_choices()
 
-            if TRADIER_TOKEN == "REPLACE_ME" or ns_parser.source == "yf":
+            if TRADIER_TOKEN == "REPLACE_ME" or ns_parser.source == "yf":  # nosec
                 self.expiry_dates = yfinance_model.option_expirations(self.ticker)
             else:
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
@@ -678,7 +683,7 @@ Expiry: {self.selected_date or None}
                             )
 
                         else:
-                            if TRADIER_TOKEN != "REPLACE_ME":
+                            if TRADIER_TOKEN != "REPLACE_ME":  # nosec
                                 tradier_view.display_historical(
                                     ticker=self.ticker,
                                     expiry=self.selected_date,
@@ -752,7 +757,7 @@ Expiry: {self.selected_date or None}
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    if TRADIER_TOKEN != "REPLACE_ME":
+                    if TRADIER_TOKEN != "REPLACE_ME":  # nosec
                         tradier_view.display_chains(
                             ticker=self.ticker,
                             expiry=self.selected_date,
@@ -825,7 +830,10 @@ Expiry: {self.selected_date or None}
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    if ns_parser.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
+                    if (
+                        ns_parser.source == "tr"
+                        and TRADIER_TOKEN != "REPLACE_ME"  # nosec
+                    ):
                         tradier_view.plot_vol(
                             ticker=self.ticker,
                             expiry=self.selected_date,
@@ -897,7 +905,10 @@ Expiry: {self.selected_date or None}
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    if ns_parser.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
+                    if (
+                        ns_parser.source == "tr"
+                        and TRADIER_TOKEN != "REPLACE_ME"  # nosec
+                    ):
                         tradier_view.plot_volume_open_interest(
                             ticker=self.ticker,
                             expiry=self.selected_date,
@@ -975,7 +986,10 @@ Expiry: {self.selected_date or None}
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    if ns_parser.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
+                    if (
+                        ns_parser.source == "tr"
+                        and TRADIER_TOKEN != "REPLACE_ME"  # nosec
+                    ):
                         tradier_view.plot_oi(
                             ticker=self.ticker,
                             expiry=self.selected_date,
