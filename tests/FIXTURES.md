@@ -159,6 +159,16 @@ You can run this command to regenerate the text file :
 pytest --record-mode=rewrite
 ```
 
+**REWRITE EXPECTED**
+
+This will force `record_stdout` to rewrite any changed file (`txt`).
+
+This will not rewrite the cassettes.
+
+Example :
+```
+pytest --rewrite-expected
+```
 
 **VCR**
 
@@ -283,6 +293,17 @@ You can run this command to regenerate the text file :
 
 ```bash
 pytest --record-mode=rewrite
+```
+
+**REWRITE EXPECTED**
+
+This will force `recorder` to rewrite any changed file (`csv`, `json`, `txt`).
+
+This will not rewrite the cassettes.
+
+Example :
+```
+pytest --rewrite-expected
 ```
 
 **VCR**
