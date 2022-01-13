@@ -44,6 +44,5 @@ def get_history_asset_from_terra_address(
     data = response.json()
     df = pd.DataFrame(data[0]["data"])
     df["x"] = pd.to_datetime(df["x"])
-    df["y"] = df["y"].apply(lambda x: x * 1000)
 
     return df
