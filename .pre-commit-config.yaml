@@ -1,4 +1,12 @@
 repos:
+  - repo: local
+    hooks:
+      - id: check-debug-mode
+        name: check-debug-mode
+        entry: custom_pre_commit/check_debug_mode.sh
+        language: script
+        types: [python]
+        pass_filenames: false
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.0.1
     hooks:
