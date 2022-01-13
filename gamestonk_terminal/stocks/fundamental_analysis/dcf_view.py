@@ -114,20 +114,24 @@ class CreateExcelFA:
             raise ValueError("The ticker given is not in the stock analysis website.")
         soup = BeautifulSoup(r.content, "html.parser")
 
-        table = soup.find(
-            "table", attrs={"class": re.compile("fintbl")}
-        )
+        table = soup.find("table", attrs={"class": re.compile("fintbl")})
         head = table.find("thead")
         columns = head.find_all("th")
 
         if self.years == []:
-            self.years = [x.get_text().strip() for x in columns if "-" not in x.get_text().strip()]
+            self.years = [
+                x.get_text().strip() for x in columns if "-" not in x.get_text().strip()
+            ]
             self.len_data = len(self.years) - 1
 
         if self.rounding == 0:
-            phrase = soup.find(
-                "div", attrs={"class": "text-sm text-gray-600 block lg:hidden"}
-            ).get_text().lower()
+            phrase = (
+                soup.find(
+                    "div", attrs={"class": "text-sm text-gray-600 block lg:hidden"}
+                )
+                .get_text()
+                .lower()
+            )
 
             if "thousand" in phrase:
                 self.rounding = 1_000
@@ -152,7 +156,7 @@ class CreateExcelFA:
         ]
 
         df = pd.DataFrame(data=all_data)
-        df = df.loc[:, ~(df == 'Upgrade').any()]
+        df = df.loc[:, ~(df == "Upgrade").any()]
         df = df.set_index(0)
         n = df.shape[1] - self.len_data
         if n > 0:
@@ -1271,17 +1275,22 @@ class CreateExcelFA:
         i = 0
         new_list = []
         while i < 3 and sisters:
-            sister_ret = [self.get_sister_data(x, sisters[0])  for x in ["BS", "IS", "CF"]]
+            sister_ret = [
+                self.get_sister_data(x, sisters[0]) for x in ["BS", "IS", "CF"]
+            ]
             print(sister_ret)
             blank = [x.empty for x in sister_ret]
             if True in blank:
                 sisters.pop(0)
             else:
-                vals = [sisters[0], sister_ret,]
+                vals = [
+                    sisters[0],
+                    sister_ret,
+                ]
                 new_list.append(vals)
                 i += 1
                 sisters.pop(0)
-              
+
         self.sister_data = new_list
 
     def get_sister_data(self, statement: str, ticker: str) -> pd.DataFrame:
@@ -1302,22 +1311,26 @@ class CreateExcelFA:
             return pd.DataFrame()
         soup = BeautifulSoup(r.content, "html.parser")
 
-        table = soup.find(
-            "table", attrs={"class": re.compile("fintbl")}
-        )
+        table = soup.find("table", attrs={"class": re.compile("fintbl")})
         head = table.find("thead")
         if head is None:
             return pd.DataFrame()
         columns = head.find_all("th")
 
         if self.years == []:
-            self.years = [x.get_text().strip() for x in columns if "-" not in x.get_text().strip()]
+            self.years = [
+                x.get_text().strip() for x in columns if "-" not in x.get_text().strip()
+            ]
             self.len_data = len(self.years) - 1
 
         if self.rounding == 0:
-            phrase = soup.find(
-                "div", attrs={"class": "text-sm text-gray-600 block lg:hidden"}
-            ).get_text().lower()
+            phrase = (
+                soup.find(
+                    "div", attrs={"class": "text-sm text-gray-600 block lg:hidden"}
+                )
+                .get_text()
+                .lower()
+            )
             if "thousand" in phrase:
                 self.rounding = 1_000
             elif "millions" in phrase:
@@ -1333,7 +1346,7 @@ class CreateExcelFA:
         all_data = [[x.get_text().strip() for x in y.find_all("td")] for y in rows]
 
         df = pd.DataFrame(data=all_data)
-        df = df.loc[:, ~(df == 'Upgrade').any()]
+        df = df.loc[:, ~(df == "Upgrade").any()]
         df = df.set_index(0)
         n = df.shape[1] - self.len_data
         if n > 0:
