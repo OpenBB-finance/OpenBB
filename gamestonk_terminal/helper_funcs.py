@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 # pylint: disable=too-many-lines
 import argparse
 import logging
-from typing import List
+from typing import List, Union
 from datetime import datetime, timedelta
 import os
 import random
@@ -48,8 +48,8 @@ def rich_table_from_df(
     show_index: bool = False,
     title: str = "",
     index_name: str = "",
-    headers: List[str] = None,
-    floatfmt: str = ".2f",
+    headers: Union[List[str], pd.Index] = None,
+    floatfmt: Union[str, List[str]] = ".2f",
 ) -> Table:
     """Prepare a table from df in rich
 
@@ -78,6 +78,8 @@ def rich_table_from_df(
         table.add_column(index_name)
 
     if headers:
+        if isinstance(headers, pd.Index):
+            headers = list(headers)
         if len(headers) != len(df.columns):
             raise ValueError("Length of headers does not match length of DataFrame")
         for header in headers:
@@ -86,10 +88,19 @@ def rich_table_from_df(
         for column in df.columns:
             table.add_column(str(column))
 
+    if isinstance(floatfmt, list):
+        if len(floatfmt) != len(df.columns):
+            raise ValueError(
+                "Length of floatfmt list does not match length of DataFrame columns."
+            )
+    if isinstance(floatfmt, str):
+        floatfmt = [floatfmt for _ in range(len(df.columns))]
+
     for idx, values in zip(df.index.tolist(), df.values.tolist()):
         row = [str(idx)] if show_index else []
         row += [
-            str(x) if not isinstance(x, float) else f"{x:{floatfmt}}" for x in values
+            str(x) if not isinstance(x, float) else f"{x:{floatfmt[idx]}}"
+            for idx, x in enumerate(values)
         ]
         table.add_row(*row)
 
