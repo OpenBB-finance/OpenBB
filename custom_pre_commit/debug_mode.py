@@ -1,6 +1,7 @@
 """ Check debug mode """
 __docformat__ = "numpy"
 
+import sys
 import os
 from typing import List
 
@@ -25,8 +26,8 @@ def main():
     debug_line = search(lines, "DEBUG_MODE")
 
     if debug_line == "DEBUG_MODE = False":
-        return True
-    return False
+        sys.exit(0)
+    sys.exit(1)
 
 
 if __name__ == "__main__":
