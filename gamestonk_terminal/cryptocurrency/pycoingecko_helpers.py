@@ -229,8 +229,8 @@ def collateral_auditors_parse(
             auditors = []
         else:
             n_elem = int(args[0])
-            auditors = args[1 : n_elem + 1]
-            collateral = args[n_elem + 1 :]
+            auditors = args[1 : n_elem + 1]  # noqa: E203
+            collateral = args[n_elem + 1 :]  # noqa: E203
 
         return auditors, collateral
     except ValueError:
