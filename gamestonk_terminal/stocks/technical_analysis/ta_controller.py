@@ -1,28 +1,24 @@
 """Technical Analysis Controller Module"""
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines
-# pylint:disable=R0904,C0201
+# pylint:disable=too-many-lines,R0904,C0201
 
 import argparse
-import difflib
-from typing import List, Union
+from typing import List
 from datetime import datetime, timedelta
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    get_flair,
     parse_known_args_and_warn,
     check_positive_list,
     check_positive,
-    try_except,
     valid_date,
-    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.technical_analysis import (
@@ -45,23 +41,8 @@ from gamestonk_terminal.common.technical_analysis import (
 from gamestonk_terminal.stocks import stocks_helper
 
 
-class TechnicalAnalysisController:
+class TechnicalAnalysisController(BaseController):
     """Technical Analysis Controller class"""
-
-    # Command choices
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
 
     CHOICES_COMMANDS = [
         "load",
@@ -91,8 +72,6 @@ class TechnicalAnalysisController:
         "fib",
     ]
 
-    CHOICES += CHOICES_COMMANDS
-
     def __init__(
         self,
         ticker: str,
@@ -102,30 +81,21 @@ class TechnicalAnalysisController:
         queue: List[str] = None,
     ):
         """Constructor"""
+        super().__init__("/stocks/ta/", queue)
+
         self.ticker = ticker
         self.start = start
         self.interval = interval
         self.stock = stock
 
-        self.ta_parser = argparse.ArgumentParser(add_help=False, prog="ta")
-        self.ta_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-        self.completer: Union[None, NestedCompleter] = None
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["-i"] = {c: {} for c in stocks_helper.INTERVALS}
             choices["load"]["-s"] = {c: {} for c in stocks_helper.SOURCES}
             choices["recom"]["-i"] = {c: {} for c in tradingview_model.INTERVALS.keys()}
             choices["recom"]["-s"] = {c: {} for c in tradingview_model.SCREENERS}
             choices["kc"]["-m"] = {c: {} for c in volatility_model.MAMODES}
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
     def print_help(self):
         """Print help"""
@@ -174,102 +144,22 @@ Custom:
 """
         print(help_str)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-        Parameters
-        -------
-        an_input : str
-            string with input arguments
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.ta_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "ta")
+    def custom_reset(self):
+        """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(0, f"load {self.ticker}")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            return ["stocks", f"load {self.ticker}", "ta"]
+        return []
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
-            " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
-            " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
+            description="Load stock ticker to perform analysis on. When the data source"
+            + " is 'yf', an Indian ticker can be loaded by using '.NS' at the end,"
+            + " e.g. 'SBIN.NS'. See available market in"
+            + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
         )
         parser.add_argument(
             "-t",
@@ -350,10 +240,9 @@ Custom:
                 self.interval = f"{ns_parser.interval}min"
 
     # SPECIFIC
-    @try_except
+
     def call_view(self, other_args: List[str]):
         """Process view command"""
-
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -366,7 +255,6 @@ Custom:
         if ns_parser:
             finviz_view.view(self.ticker)
 
-    @try_except
     def call_summary(self, other_args: List[str]):
         """Process summary command"""
         parser = argparse.ArgumentParser(
@@ -386,10 +274,8 @@ Custom:
         if ns_parser:
             finbrain_view.technical_summary_report(self.ticker)
 
-    @try_except
     def call_recom(self, other_args: List[str]):
         """Process recom command"""
-
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -445,7 +331,7 @@ Custom:
 
     # COMMON
     # TODO: Go through all models and make sure all needed columns are in dfs
-    @try_except
+
     def call_ema(self, other_args: List[str]):
         """Process ema command"""
         parser = argparse.ArgumentParser(
@@ -492,14 +378,12 @@ Custom:
             overlap_view.view_ma(
                 ma_type="EMA",
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                values=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_sma(self, other_args: List[str]):
         """Process sma command"""
         parser = argparse.ArgumentParser(
@@ -545,14 +429,12 @@ Custom:
             overlap_view.view_ma(
                 ma_type="SMA",
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                values=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_wma(self, other_args: List[str]):
         """Process wma command"""
         parser = argparse.ArgumentParser(
@@ -595,14 +477,12 @@ Custom:
             overlap_view.view_ma(
                 ma_type="WMA",
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                values=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_hma(self, other_args: List[str]):
         """Process hma command"""
         parser = argparse.ArgumentParser(
@@ -645,14 +525,12 @@ Custom:
             overlap_view.view_ma(
                 ma_type="HMA",
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                values=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_zlma(self, other_args: List[str]):
         """Process zlma command"""
         parser = argparse.ArgumentParser(
@@ -698,14 +576,12 @@ Custom:
             overlap_view.view_ma(
                 ma_type="ZLMA",
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                values=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_vwap(self, other_args: List[str]):
         """Process vwap command"""
         parser = argparse.ArgumentParser(
@@ -744,7 +620,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cci(self, other_args: List[str]):
         """Process cci command"""
 
@@ -784,16 +659,14 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            momentum_view.plot_cci(
+            momentum_view.display_cci(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                df=self.stock,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_macd(self, other_args: List[str]):
         """Process macd command"""
         parser = argparse.ArgumentParser(
@@ -812,7 +685,6 @@ Custom:
                 should be above zero for a buy, and below zero for a sell.
             """,
         )
-
         parser.add_argument(
             "-f",
             "--fast",
@@ -844,17 +716,15 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            momentum_view.view_macd(
+            momentum_view.display_macd(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                values=self.stock["Adj Close"],
                 n_fast=ns_parser.n_fast,
                 n_slow=ns_parser.n_slow,
                 n_signal=ns_parser.n_signal,
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_rsi(self, other_args: List[str]):
         """Process rsi command"""
         parser = argparse.ArgumentParser(
@@ -905,17 +775,15 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            momentum_view.view_rsi(
+            momentum_view.display_rsi(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                prices=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_stoch(self, other_args: List[str]):
         """Process stoch command"""
         parser = argparse.ArgumentParser(
@@ -931,7 +799,6 @@ Custom:
                 for crossover signals.
             """,
         )
-
         parser.add_argument(
             "-k",
             "--fastkperiod",
@@ -963,9 +830,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            momentum_view.view_stoch(
+            momentum_view.display_stoch(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 fastkperiod=ns_parser.n_fastkperiod,
                 slowdperiod=ns_parser.n_slowdperiod,
@@ -973,7 +839,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_fisher(self, other_args: List[str]):
         """Process fisher command"""
         parser = argparse.ArgumentParser(
@@ -988,7 +853,6 @@ Custom:
                 helps show the trend and isolate the price waves within a trend.
             """,
         )
-
         parser.add_argument(
             "-l",
             "--length",
@@ -1006,15 +870,13 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            momentum_view.view_fisher(
+            momentum_view.display_fisher(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cg(self, other_args: List[str]):
         """Process cg command"""
         parser = argparse.ArgumentParser(
@@ -1029,7 +891,6 @@ Custom:
                 price change of the asset.
             """,
         )
-
         parser.add_argument(
             "-l",
             "--length",
@@ -1047,15 +908,13 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            momentum_view.view_cg(
+            momentum_view.display_cg(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                values=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_adx(self, other_args: List[str]):
         """Process adx command"""
         parser = argparse.ArgumentParser(
@@ -1103,9 +962,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            trend_indicators_view.plot_adx(
+            trend_indicators_view.display_adx(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
@@ -1113,7 +971,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_aroon(self, other_args: List[str]):
         """Process aroon command"""
         parser = argparse.ArgumentParser(
@@ -1160,16 +1017,14 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            trend_indicators_view.plot_aroon(
+            trend_indicators_view.display_aroon(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_bbands(self, other_args: List[str]):
         """Process bbands command"""
         parser = argparse.ArgumentParser(
@@ -1196,7 +1051,7 @@ Custom:
             action="store",
             dest="n_length",
             type=check_positive,
-            default=5,
+            default=15,
             help="length",
         )
         parser.add_argument(
@@ -1224,9 +1079,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            volatility_view.view_bbands(
+            volatility_view.display_bbands(
                 ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
                 n_std=ns_parser.n_std,
@@ -1234,7 +1088,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_donchian(self, other_args: List[str]):
         """Process donchian command"""
         parser = argparse.ArgumentParser(
@@ -1273,16 +1126,14 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            volatility_view.view_donchian(
+            volatility_view.display_donchian(
                 ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 upper_length=ns_parser.n_length_upper,
                 lower_length=ns_parser.n_length_lower,
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_kc(self, other_args: List[str]):
         """Process kc command"""
         parser = argparse.ArgumentParser(
@@ -1343,7 +1194,6 @@ Custom:
         if ns_parser:
             volatility_view.view_kc(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
@@ -1352,7 +1202,6 @@ Custom:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_ad(self, other_args: List[str]):
         """Process ad command"""
         parser = argparse.ArgumentParser(
@@ -1384,15 +1233,13 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            volume_view.plot_ad(
+            volume_view.display_ad(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 use_open=ns_parser.b_use_open,
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_adosc(self, other_args: List[str]):
         """Process adosc command"""
         parser = argparse.ArgumentParser(
@@ -1439,9 +1286,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            volume_view.plot_adosc(
+            volume_view.display_adosc(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 use_open=ns_parser.b_use_open,
                 fast=ns_parser.n_length_fast,
@@ -1470,14 +1316,12 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            volume_view.plot_obv(
+            volume_view.display_obv(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_fib(self, other_args: List[str]):
         """Process fib command"""
         parser = argparse.ArgumentParser(
@@ -1524,88 +1368,3 @@ Custom:
                 end_date=ns_parser.end,
                 export=ns_parser.export,
             )
-
-
-def menu(
-    ticker: str,
-    start: datetime,
-    interval: str,
-    stock: pd.DataFrame,
-    queue: List[str] = None,
-):
-    """Technical Analysis Menu"""
-
-    ta_controller = TechnicalAnalysisController(ticker, start, interval, stock, queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if ta_controller.queue and len(ta_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if ta_controller.queue[0] in ("q", "..", "quit"):
-                if len(ta_controller.queue) > 1:
-                    return ta_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = ta_controller.queue[0]
-            ta_controller.queue = ta_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in ta_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /stocks/ta/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                ta_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and ta_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/ta/ $ ",
-                        completer=ta_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/ta/ $ ")
-
-        try:
-            # Process the input command
-            ta_controller.queue = ta_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/ta menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                ta_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        ta_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                ta_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

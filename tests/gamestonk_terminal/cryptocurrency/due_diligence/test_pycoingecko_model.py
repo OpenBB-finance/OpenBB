@@ -3,7 +3,7 @@ import pytest
 from gamestonk_terminal.cryptocurrency.due_diligence import pycoingecko_model
 
 
-@pytest.mark.vcr
+@pytest.mark.skip
 @pytest.mark.parametrize(
     "main_coin,vs",
     [("algorand", "bitcoin"), ("solana", "ethereum")],

@@ -29,7 +29,7 @@ Slow part of the code like `network` or `database` access should be either `mock
 
 # 2. Run `unit tests`
 
-In this section we will explain every think you need to run the `unit tests` on `Gamestonk Terminal`.
+In this section we will explain everything you need to run the `unit tests` on `Gamestonk Terminal`.
 
 ## 2.1. How to install tests dependencies ?
 
@@ -317,6 +317,20 @@ def test_ark_orders_view(kwargs_dict, mocker, use_color):
 
     yf.download(tickers="VCYT QSI")
 ```
+
+**BROTLI**
+
+The library `requests` doesn't support : `brotli` comnpression.
+
+Unless `brotli` library is installed in the enviroment.
+
+Plus `brotli` is not in `GamestonkTerminal` requirements.
+
+So if both of these conditions are fulfilled :
+- one generates a cassette with `brotli` installed in his/her environment
+- the server choose to send `brotli` compressed data
+
+Then the `test` might work in local but crash during `PullRequest`.
 
 ## 3.9. List of useful `vscode` tools for `unit tests`
 

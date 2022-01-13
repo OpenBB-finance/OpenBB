@@ -2,37 +2,22 @@
 __docformat__ = "numpy"
 
 # pylint: disable=R1732
-import argparse
-import difflib
 import os
-from typing import List, Union
+from typing import List
 import webbrowser
 from datetime import datetime
 from ast import literal_eval
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.decorators import try_except
 import papermill as pm
 
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.helper_funcs import get_flair, system_clear
 
 
-class ReportController:
+class ReportController(BaseController):
     """Report Controller class."""
-
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
 
     reports_folder = os.path.dirname(os.path.abspath(__file__))
 
@@ -43,8 +28,6 @@ class ReportController:
     ]
 
     ids_reports = [str(val + 1) for val in range(len(report_names))]
-
-    CHOICES += report_names + ids_reports
 
     d_id_to_report_name = {}
     for id_report, report_name in enumerate(report_names):
@@ -90,25 +73,15 @@ class ReportController:
             + f"{(max_len_name-len(report_to_run))*' '} "
             + f"{args if args != '<>' else ''}\n"
         )
+    CHOICES_MENUS = report_names + ids_reports
 
     def __init__(self, queue: List[str] = None):
-        """Construct the Reports Controller."""
-        self.report_parser = argparse.ArgumentParser(add_help=False, prog="reports")
-        self.report_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-
-        self.completer: Union[None, NestedCompleter] = None
+        """Constructor"""
+        super().__init__("/jupyter/reports/", queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
     def print_help(self):
         """Print help."""
@@ -118,6 +91,7 @@ Select one of the following reports:
 {self.reports_opts}"""
         print(help_text)
 
+    @try_except
     def switch(self, an_input: str):
         """Process and dispatch input.
 
@@ -152,7 +126,7 @@ Select one of the following reports:
                 if cmd:
                     self.queue.insert(0, cmd)
 
-        (known_args, other_args) = self.report_parser.parse_known_args(an_input.split())
+        (known_args, other_args) = self.parser.parse_known_args(an_input.split())
 
         # Redirect commands to their correct functions
         if known_args.cmd:
@@ -239,114 +213,3 @@ Select one of the following reports:
             )
 
         return self.queue
-
-    def call_home(self, _):
-        """Process home command."""
-        self.queue.insert(0, "quit")
-
-    def call_cls(self, _):
-        """Process cls command."""
-        system_clear()
-
-    def call_help(self, _):
-        """Process help command."""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command."""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command."""
-        print("")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command."""
-        self.queue.insert(0, "reports")
-        self.queue.insert(0, "jupyter")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-
-
-def menu(queue: List[str] = None):
-    """Report Menu."""
-    report_controller = ReportController(queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if report_controller.queue and len(report_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if report_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(report_controller.queue) > 1:
-                    return report_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = report_controller.queue[0]
-            report_controller.queue = report_controller.queue[1:]
-
-            # Print the current location because this was an instruction
-            # and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in report_controller.CHOICES:
-                print(f"{get_flair()} /jupyter/reports/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                report_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and report_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /jupyter/reports/ $ ",
-                        completer=report_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /jupyter/reports/ $ ")
-
-        try:
-            # Process the input command
-            report_controller.queue = report_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /reports menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                report_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        report_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                report_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

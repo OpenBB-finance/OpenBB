@@ -2,23 +2,20 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
-from typing import List, Union, Dict
+from typing import List, Dict
 import logging
 
 from prompt_toolkit.completion import NestedCompleter
 from rich.console import Console
 
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
-    get_flair,
     parse_known_args_and_warn,
     check_positive,
     valid_date,
     get_next_stock_market_days,
     EXPORT_ONLY_FIGURES_ALLOWED,
-    try_except,
-    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.prediction_techniques import (
@@ -35,28 +32,12 @@ from gamestonk_terminal.common.prediction_techniques import (
 )
 from gamestonk_terminal.economy.fred import fred_model
 
-
 logger = logging.getLogger(__name__)
 t_console = Console()
 
 
-class PredictionTechniquesController:
+class PredictionTechniquesController(BaseController):
     """Prediction Techniques Controller class"""
-
-    # Command choices
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
 
     CHOICES_COMMANDS = [
         "load",
@@ -70,7 +51,6 @@ class PredictionTechniquesController:
         "conv1d",
         "mc",
     ]
-    CHOICES += CHOICES_COMMANDS
 
     def __init__(
         self,
@@ -78,11 +58,8 @@ class PredictionTechniquesController:
         queue: List[str] = None,
     ):
         """Constructor"""
-        self.pred_parser = argparse.ArgumentParser(add_help=False, prog="pred")
-        self.pred_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        super().__init__("/economy/fred/pred/", queue)
+
         self.start_date = "2020-01-01"
         self.current_series = current_series
         self.current_id = list(current_series.keys())[0].upper()
@@ -90,19 +67,14 @@ class PredictionTechniquesController:
             list(current_series.keys())[0], self.start_date
         ).dropna()
         self.resolution = ""  # For the views
-        self.completer: Union[None, NestedCompleter] = None
+
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["ets"]["-t"] = {c: {} for c in ets_model.TRENDS}
             choices["ets"]["-s"] = {c: {} for c in ets_model.SEASONS}
             choices["arima"]["-i"] = {c: {} for c in arima_model.ICS}
             choices["mc"]["--dist"] = {c: {} for c in mc_model.DISTRIBUTIONS}
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
 
     def print_help(self):
         """Print help"""
@@ -130,97 +102,17 @@ Models:
         """
         t_console.print(help_string)
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Parameters
-        -------
-        an_input : str
-            string with input arguments
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-
-        # Empty command
-        if not an_input:
-            t_console.print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.pred_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "pred")
+    def custom_reset(self):
+        """Class specific component of reset command"""
         if self.current_series:
-            self.queue.insert(0, f"add {list(self.current_series.keys())[0]}")
-        self.queue.insert(0, "fred")
-        self.queue.insert(0, "economy")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            return [
+                "economy",
+                "fred",
+                "pred",
+                f"add {list(self.current_series.keys())[0]}",
+            ]
+        return []
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process add command"""
         parser = argparse.ArgumentParser(
@@ -265,7 +157,6 @@ Models:
                 f"Current Series: {', '.join(self.current_series.keys()).upper() or None}\n"
             )
 
-    @try_except
     def call_ets(self, other_args: List[str]):
         """Process ets command"""
         parser = argparse.ArgumentParser(
@@ -363,7 +254,6 @@ Models:
                 time_res=self.resolution,
             )
 
-    @try_except
     def call_knn(self, other_args: List[str]):
         """Process knn command"""
         parser = argparse.ArgumentParser(
@@ -462,7 +352,6 @@ Models:
             except ValueError:
                 t_console.print("The loaded data does not have enough data")
 
-    @try_except
     def call_regression(self, other_args: List[str]):
         """Process linear command"""
         parser = argparse.ArgumentParser(
@@ -569,7 +458,6 @@ Models:
             except ValueError as e:
                 t_console.print(e)
 
-    @try_except
     def call_arima(self, other_args: List[str]):
         """Process arima command"""
         parser = argparse.ArgumentParser(
@@ -674,7 +562,6 @@ Models:
                 time_res=self.resolution,
             )
 
-    @try_except
     def call_mlp(self, other_args: List[str]):
         """Process mlp command"""
         try:
@@ -818,7 +705,6 @@ Models:
         finally:
             pred_helper.restore_env()
 
-    @try_except
     def call_mc(self, other_args: List[str]):
         """Process mc command"""
         parser = argparse.ArgumentParser(
@@ -866,82 +752,3 @@ Models:
                 export=ns_parser.export,
                 fig_title=f"Monte Carlo Forecast for {self.current_id}",
             )
-
-
-def menu(series: Dict, queue: List[str] = None):
-    """Prediction Techniques Menu"""
-
-    pred_controller = PredictionTechniquesController(series, queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if pred_controller.queue and len(pred_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if pred_controller.queue[0] in ("q", "..", "quit"):
-                t_console.print("")
-                if len(pred_controller.queue) > 1:
-                    return pred_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = pred_controller.queue[0]
-            pred_controller.queue = pred_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in pred_controller.CHOICES_COMMANDS:
-                t_console.print(f"{get_flair()} /economy/fred/pred/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                pred_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and pred_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /economy/fred/pred/ $ ",
-                        completer=pred_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /economy/fred/pred/ $ ")
-
-        try:
-            # Process the input command
-            pred_controller.queue = pred_controller.switch(an_input)
-
-        except SystemExit:
-            t_console.print(
-                f"\nThe command '{an_input}' doesn't exist on the /economy/fred/pred menu.\n",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                pred_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        pred_controller.queue = []
-                        t_console.print("")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                t_console.print(f" Replacing by '{an_input}'.")
-                pred_controller.queue.insert(0, an_input)
-            else:
-                t_console.print("")

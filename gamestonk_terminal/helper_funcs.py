@@ -1,7 +1,7 @@
 """Helper functions"""
 __docformat__ = "numpy"
+# pylint: disable=too-many-lines
 import argparse
-import functools
 import logging
 from typing import List
 from datetime import datetime, timedelta
@@ -26,9 +26,7 @@ from screeninfo import get_monitors
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_plot as cfgPlot
-import gamestonk_terminal.config_terminal as cfg
 
-logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 if cfgPlot.BACKEND is not None:
@@ -429,7 +427,7 @@ def divide_chunks(data, n):
     """Split into chunks"""
     # looping till length of data
     for i in range(0, len(data), n):
-        yield data[i : i + n]
+        yield data[i : i + n]  # noqa: E203
 
 
 def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
@@ -860,7 +858,7 @@ def get_last_time_market_was_open(dt):
 
 def export_data(
     export_type: str, dir_path: str, func_name: str, df: pd.DataFrame = pd.DataFrame()
-):
+) -> None:
     """Export data to a file.
 
     Parameters
@@ -930,68 +928,6 @@ def get_rf() -> float:
         return round(float(latest["avg_interest_rate_amt"]) / 100, 8)
     except Exception:
         return 0.02
-
-
-def try_except(f):
-    """Adds a try except block if the user is not in development mode
-
-    Parameters
-    -------
-    f: function
-        The function to be wrapped
-    """
-    # pylint: disable=inconsistent-return-statements
-    @functools.wraps(f)
-    def inner(*args, **kwargs):
-        if cfg.DEBUG_MODE:
-            return f(*args, **kwargs)
-        try:
-            return f(*args, **kwargs)
-        except Exception as e:
-            logger.exception("%s", type(e).__name__)
-            return []
-
-    return inner
-
-
-class LineAnnotateDrawer:
-    def __init__(self, ax: matplotlib.axes = None):
-        self.ax = ax
-
-    def draw_lines_and_annotate(self):
-
-        # ymin, _ = self.ax.get_ylim()
-        # xmin, _ = self.ax.get_xlim()
-        # self.ax.plot(
-        #     [xmin, xmin],
-        #     [ymin, ymin],
-        #     lw=0,
-        #     color="white",
-        #     label="X - leave interactive mode\nClick twice for annotation",
-        # )
-        # self.ax.legend(handlelength=0, handletextpad=0, fancybox=True, loc=2)
-        # self.ax.figure.canvas.draw()
-
-        print("Click twice for annotation.\nClose window to keep using terminal.\n")
-
-        while True:
-            xy = plt.ginput(2)
-            # Check whether the user has closed the window or not
-            if not plt.get_fignums():
-                print("")
-                return
-
-            if len(xy) == 2:
-                x = [p[0] for p in xy]
-                y = [p[1] for p in xy]
-
-                if (x[0] == x[1]) and (y[0] == y[1]):
-                    txt = input("Annotation: ")
-                    self.ax.annotate(txt, (x[0], y[1]), ha="center", va="center")
-                else:
-                    self.ax.plot(x, y)
-
-                self.ax.figure.canvas.draw()
 
 
 def system_clear():
