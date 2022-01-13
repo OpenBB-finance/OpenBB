@@ -322,9 +322,8 @@ class DiscoveryController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="gtech",
-            description="""
-                Print up to 25 top tech stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]
-            """,
+            description="Print up to 25 top tech stocks with revenue and earnings"
+            + " growth in excess of 25%. [Source: Yahoo Finance]",
         )
         parser.add_argument(
             "-l",

@@ -135,7 +135,7 @@ class SectorIndustryAnalysisController(BaseController):
         self.sector = "Financial Services"
         self.industry = "Financial Data & Stock Exchanges"
         self.mktcap = "Large"
-        self.exclude_exhanges = True
+        self.exclude_exchanges = True
 
         self.ticker = ticker
 
@@ -280,9 +280,10 @@ class SectorIndustryAnalysisController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
-            " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
-            " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
+            description="Load stock ticker to perform analysis on. When the data source"
+            + " is 'yf', an Indian ticker can be loaded by using '.NS' at the end,"
+            + " e.g. 'SBIN.NS'. See available market in"
+            + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
         )
         parser.add_argument(
             "-t",
@@ -579,7 +580,7 @@ class SectorIndustryAnalysisController(BaseController):
         if ns_parser:
             self.exclude_exhanges = not self.exclude_exhanges
             console.print(
-                f"Internationa exchanges {'excluded' if self.exclude_exhanges else 'included'}",
+                f"International exchanges {'excluded' if self.exclude_exhanges else 'included'}",
                 "\n",
             )
 
@@ -620,7 +621,7 @@ class SectorIndustryAnalysisController(BaseController):
                 self.country = ""
                 self.mktcap = ""
 
-            self.exclude_exhanges = True
+            self.exclude_exchanges = True
             self.ticker = ""
             self.update_runtime_choices()
             self.stocks_data = {}
@@ -679,7 +680,7 @@ class SectorIndustryAnalysisController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="metric",
-            description="Visualise a particular metric with the filters selected",
+            description="Visualize a particular metric with the filters selected",
         )
         parser.add_argument(
             "-m",
@@ -722,7 +723,7 @@ class SectorIndustryAnalysisController(BaseController):
                 self.sector,
                 self.industry,
                 self.mktcap,
-                self.exclude_exhanges,
+                self.exclude_exchanges,
                 ns_parser.limit,
                 ns_parser.export,
                 ns_parser.raw,
@@ -772,7 +773,7 @@ class SectorIndustryAnalysisController(BaseController):
                 financedatabase_view.display_companies_per_sector_in_country(
                     self.country,
                     self.mktcap,
-                    self.exclude_exhanges,
+                    self.exclude_exchanges,
                     ns_parser.export,
                     ns_parser.raw,
                     ns_parser.max_sectors_to_display,
@@ -822,7 +823,7 @@ class SectorIndustryAnalysisController(BaseController):
                 financedatabase_view.display_companies_per_industry_in_country(
                     self.country,
                     self.mktcap,
-                    self.exclude_exhanges,
+                    self.exclude_exchanges,
                     ns_parser.export,
                     ns_parser.raw,
                     ns_parser.max_industries_to_display,
@@ -872,7 +873,7 @@ class SectorIndustryAnalysisController(BaseController):
                 financedatabase_view.display_companies_per_industry_in_sector(
                     self.sector,
                     self.mktcap,
-                    self.exclude_exhanges,
+                    self.exclude_exchanges,
                     ns_parser.export,
                     ns_parser.raw,
                     ns_parser.max_industries_to_display,
@@ -922,7 +923,7 @@ class SectorIndustryAnalysisController(BaseController):
                 financedatabase_view.display_companies_per_country_in_sector(
                     self.sector,
                     self.mktcap,
-                    self.exclude_exhanges,
+                    self.exclude_exchanges,
                     ns_parser.export,
                     ns_parser.raw,
                     ns_parser.max_countries_to_display,
@@ -972,7 +973,7 @@ class SectorIndustryAnalysisController(BaseController):
                 financedatabase_view.display_companies_per_country_in_industry(
                     self.industry,
                     self.mktcap,
-                    self.exclude_exhanges,
+                    self.exclude_exchanges,
                     ns_parser.export,
                     ns_parser.raw,
                     ns_parser.max_countries_to_display,
