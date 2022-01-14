@@ -568,6 +568,7 @@ class SectorIndustryAnalysisController(BaseController):
             self.stocks_data = {}
             console.print("")
 
+    # pylint:disable=attribute-defined-outside-init
     def call_exchange(self, other_args: List[str]):
         """Process exchange command"""
         parser = argparse.ArgumentParser(
