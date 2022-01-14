@@ -1,7 +1,8 @@
 """Rich Module"""
 __docformat__ = "numpy"
 
-from typing import Any
+import sys
+from rich import panel
 from rich.console import Console, Theme
 from gamestonk_terminal import feature_flags as gtff
 
@@ -14,6 +15,10 @@ class NoConsole:
 
     def print(self, *args, **kwargs):
         print(*args, **kwargs)
+
+
+def no_panel(renderable, *args, **kwargs):  # pylint: disable=unused-argument
+    return renderable
 
 
 custom_theme = Theme(
@@ -35,10 +40,13 @@ custom_theme = Theme(
     }
 )
 
-# Obviouse setup to make sure it works
-# soft_wrap=True is must be on or many tests fail
-console: Any = (
-    Console(theme=custom_theme, highlight=False, soft_wrap=True)
-    if gtff.ENABLE_RICH
-    else NoConsole()
-)
+if gtff.ENABLE_RICH:
+    console = Console(theme=custom_theme, highlight=False, soft_wrap=True)
+else:
+    console = NoConsole()
+    panel.Panel = no_panel
+
+
+def disable_rich():
+    sys.modules[__name__].console = NoConsole()
+    sys.modules[__name__].panel.Panel = no_panel
