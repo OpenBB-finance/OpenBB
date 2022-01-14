@@ -61,6 +61,7 @@ class DefiController(BaseController):
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["aterra"]["--asset"] = {c: {} for c in terraengineer_model.ASSETS}
+            choices["aterra"] = {c: {} for c in terraengineer_model.ASSETS}
             choices["llama"]["-s"] = {c: {} for c in llama_model.LLAMA_FILTERS}
             choices["tokens"]["-s"] = {c: {} for c in graph_model.TOKENS_FILTERS}
             choices["pairs"]["-s"] = {c: {} for c in graph_model.PAIRS_FILTERS}
@@ -123,6 +124,9 @@ TerraEngineer:
             help="Terra address. Valid terra addresses start with 'terra'",
             required=True,
         )
+
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "--asset")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
