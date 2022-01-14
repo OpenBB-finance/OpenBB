@@ -875,6 +875,10 @@ main:
             ref: "/cryptocurrency/defi/dtvl"
           - name: stvl
             ref: "/cryptocurrency/defi/stvl"
+          - name: ayr
+            ref: "/cryptocurrency/defi/ayr"
+          - name: aterra
+            ref: "/cryptocurrency/defi/aterra"
           - name: newsletter
             ref: "/cryptocurrency/defi/newsletter"
           - name: dpi
