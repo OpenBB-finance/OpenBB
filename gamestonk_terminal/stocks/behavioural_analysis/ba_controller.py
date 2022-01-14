@@ -62,10 +62,6 @@ class BehaviouralAnalysisController(BaseController):
         "hist",
     ]
 
-    historical_sort = ["date", "value"]
-    historical_direction = ["asc", "desc"]
-    historical_metric = ["sentiment", "AHI", "RHI", "SGP"]
-
     def __init__(self, ticker: str, start: datetime, queue: List[str] = None):
         """Constructor"""
         super().__init__("/stocks/ba/", queue)
@@ -75,17 +71,6 @@ class BehaviouralAnalysisController(BaseController):
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["historical"]["-s"] = {c: None for c in self.historical_sort}
-            choices["historical"]["--sort"] = {c: None for c in self.historical_sort}
-            choices["historical"]["-d"] = {c: None for c in self.historical_direction}
-            choices["historical"]["--direction"] = {
-                c: None for c in self.historical_direction
-            }
-            choices["historical"]["-m"] = {c: None for c in self.historical_metric}
-            choices["historical"]["--metric"] = {
-                c: None for c in self.historical_metric
-            }
-            choices["historical"] = {c: None for c in self.historical_metric}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
