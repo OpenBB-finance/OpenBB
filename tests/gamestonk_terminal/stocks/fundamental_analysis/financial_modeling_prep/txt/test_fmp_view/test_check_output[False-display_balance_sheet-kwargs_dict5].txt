@@ -51,7 +51,7 @@ Total debt                                              29.067 B             34.
 Net debt                                                24.828 B             25.892 B             25.166 B             24.184 B             24.256 B
 
                                                                                                            Final link
-Fiscal Date Ending                                                              
+Fiscal Date Ending                                                                                                   
 2016                https://www.sec.gov/Archives/edgar/data/1413329/000141332917000014/pm123116form10kwrapinclfsm.htm
 2017                https://www.sec.gov/Archives/edgar/data/1413329/000141332918000007/pm123117form10kwrapinclfsm.htm
 2018                https://www.sec.gov/Archives/edgar/data/1413329/000141332919000007/pm123118form10kwrapinclfsm.htm
@@ -59,7 +59,7 @@ Fiscal Date Ending
 2020                               https://www.sec.gov/Archives/edgar/data/1413329/000141332921000007/pm-20201231.htm
 
                                                                                                                  Link
-Fiscal Date Ending                                                              
+Fiscal Date Ending                                                                                                   
 2016                https://www.sec.gov/Archives/edgar/data/1413329/000141332917000014/0001413329-17-000014-index.htm
 2017                https://www.sec.gov/Archives/edgar/data/1413329/000141332918000007/0001413329-18-000007-index.htm
 2018                https://www.sec.gov/Archives/edgar/data/1413329/000141332919000007/0001413329-19-000007-index.htm

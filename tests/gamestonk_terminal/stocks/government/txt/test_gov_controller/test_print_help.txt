@@ -1,22 +1,20 @@
-╭───────────────────────────── Stocks - Screener ──────────────────────────────╮
-│                                                                              │
-│ [QuiverQuant]                                                                │
-│                                                                              │
-│ Explore:                                                                     │
-│     lasttrades           last trades                                         │
-│     topbuys              show most purchased stocks                          │
-│     topsells             show most sold stocks                               │
-│     lastcontracts        show last government contracts given out            │
-│     qtrcontracts         quarterly government contracts analysis             │
-│     toplobbying          top corporate lobbying tickers                      │
-│                                                                              │
-│     load                 load a specific ticker for analysis                 │
-│                                                                              │
-│ Ticker: None                                                                 │
-│                                                                              │
-│     gtrades              show government trades for ticker                   │
-│     contracts            show government contracts for ticker                │
-│     histcont             show historical quarterly government contracts for  │
-│     lobbying             corporate lobbying details for ticker               │
-│                                                                              │
-╰───────────────────────────────────────────────────────── Gamestonk Terminal ─╯
+
+[src][QuiverQuant][/src]
+
+[info]Explore:[/info][cmds]
+    lasttrades           last trades
+    topbuys              show most purchased stocks
+    topsells             show most sold stocks
+    lastcontracts        show last government contracts given out
+    qtrcontracts         quarterly government contracts analysis
+    toplobbying          top corporate lobbying tickers
+
+    load                 load a specific ticker for analysis[/cmds]
+
+[param]Ticker: [/param]None[unvl][cmds]
+
+    gtrades              show government trades for ticker
+    contracts            show government contracts for ticker
+    histcont             show historical quarterly government contracts for ticker
+    lobbying             corporate lobbying details for ticker[/cmds][/unvl]
+            

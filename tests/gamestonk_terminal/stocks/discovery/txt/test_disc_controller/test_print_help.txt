@@ -1,31 +1,29 @@
-╭───────────────────────────── Stocks - Discovery ─────────────────────────────╮
-│                                                                              │
-│ [Geek of Wall St]                                                            │
-│     rtearn         realtime earnings from and expected moves                 │
-│ [Finnhub]                                                                    │
-│     pipo           past IPOs dates                                           │
-│     fipo           future IPOs dates                                         │
-│ [Yahoo Finance]                                                              │
-│     gainers        show latest top gainers                                   │
-│     losers         show latest top losers                                    │
-│     ugs            undervalued stocks with revenue and earnings growth in ex │
-│     gtech          tech stocks with revenue and earnings growth more than 25 │
-│     active         most active stocks by intraday trade volume               │
-│     ulc            potentially undervalued large cap stocks                  │
-│     asc            small cap stocks with earnings growth rates better than 2 │
-│ [Fidelity]                                                                   │
-│     ford           orders by Fidelity Customers                              │
-│ [Cathiesark.com]                                                             │
-│     arkord         orders by ARK Investment Management LLC                   │
-│ [Seeking Alpha]                                                              │
-│     upcoming       upcoming earnings release dates                           │
-│     trending       trending news                                             │
-│     cnews          customized news (buybacks, ipos, spacs, healthcare, polit │
-│ [Shortinterest.com]                                                          │
-│     lowfloat       low float stocks under 10M shares float                   │
-│ [Pennystockflow.com]                                                         │
-│     hotpenny       today's hot penny stocks                                  │
-│ [NASDAQ Data Link (Formerly Quandl)]                                         │
-│     rtat           top 10 retail traded stocks per day                       │
-│                                                                              │
-╰───────────────────────────────────────────────────────── Gamestonk Terminal ─╯
+[cmds]
+[src][Geek of Wall St][/src]
+    rtearn         realtime earnings from and expected moves
+[src][Finnhub][/src]
+    pipo           past IPOs dates
+    fipo           future IPOs dates
+[src][Yahoo Finance][/src]
+    gainers        show latest top gainers
+    losers         show latest top losers
+    ugs            undervalued stocks with revenue and earnings growth in excess of 25%
+    gtech          tech stocks with revenue and earnings growth more than 25%
+    active         most active stocks by intraday trade volume
+    ulc            potentially undervalued large cap stocks
+    asc            small cap stocks with earnings growth rates better than 25%
+[src][Fidelity][/src]
+    ford           orders by Fidelity Customers
+[src][Cathiesark.com][/src]
+    arkord         orders by ARK Investment Management LLC
+[src][Seeking Alpha][/src]
+    upcoming       upcoming earnings release dates
+    trending       trending news
+    cnews          customized news (buybacks, ipos, spacs, healthcare, politics)
+[src][Shortinterest.com][/src]
+    lowfloat       low float stocks under 10M shares float
+[src][Pennystockflow.com][/src]
+    hotpenny       today's hot penny stocks
+[src][NASDAQ Data Link (Formerly Quandl)][/src]
+    rtat           top 10 retail traded stocks per day[/cmds]
+
