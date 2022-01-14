@@ -5,7 +5,6 @@ import webbrowser
 from typing import List
 from datetime import datetime
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
@@ -74,14 +73,7 @@ class ResearchController(BaseController):
     newsfilter           www.newsfilter.io
     stockanalysis        www.stockanalysis.com[/cmds]
 """
-        console.print(
-            Panel(
-                help_text,
-                title="Stocks - Research",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Stocks - Research")
 
     def custom_reset(self):
         """Class specific component of reset command"""

@@ -5,7 +5,6 @@ import argparse
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -43,14 +42,7 @@ class DiscoveryController(BaseController):
     decliners   top decliners
     active      most active[/cmds]
 """
-        console.print(
-            Panel(
-                help_text,
-                title="ETF - Discovery",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="ETF - Discovery")
 
     def call_gainers(self, other_args):
         """Process gainers command"""

@@ -2,7 +2,6 @@ import argparse
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 import gamestonk_terminal.config_terminal as config
 
@@ -60,14 +59,7 @@ class DegiroController(BaseController):
     lastnews     view latest news
     topnews      view top news preview
     """
-        console.print(
-            Panel(
-                help_text,
-                title="Portfolio - Brokers - Degiro",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Portfolio - Brokers - Degiro")
 
     def cancel(self, other_args: List[str]):
         """Cancel an order using the `id`."""

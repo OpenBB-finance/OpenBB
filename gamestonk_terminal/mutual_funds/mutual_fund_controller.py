@@ -8,7 +8,6 @@ from typing import List
 import investpy
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
@@ -108,14 +107,7 @@ class FundController(BaseController):
     sector        sector weightings
     equity        equity holdings[/cmds]{has_fund_usa_end}
     """
-        console.print(
-            Panel(
-                help_text,
-                title="Mutual Funds",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Mutual Funds")
 
     def custom_reset(self):
         """Class specific component of reset command"""

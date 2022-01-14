@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 import mplfinance as mpf
 
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from thepassiveinvestor import create_ETF_report
 from gamestonk_terminal.rich_config import console
 
@@ -110,14 +109,7 @@ class ETFController(BaseController):
 >   ta            technical analysis,           e.g.: ema, macd, rsi, adx, bbands, obv
 >   pred          prediction techniques,        e.g.: regression, arima, rnn, lstm[/menu]
 {has_ticker_end}"""
-        console.print(
-            Panel(
-                help_text,
-                title="ETF",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="ETF")
 
     def custom_reset(self):
         """Class specific component of reset command"""

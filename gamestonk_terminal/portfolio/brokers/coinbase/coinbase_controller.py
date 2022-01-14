@@ -5,7 +5,6 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -59,14 +58,7 @@ class CoinbaseController(BaseController):
     deposits    show all your deposits or internal transfers
     orders      show all your orders
 [/cmds]"""
-        console.print(
-            Panel(
-                help_text,
-                title="Portfolio - Brokers - Coinbase",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Portfolio - Brokers - Coinbase")
 
     def call_account(self, other_args):
         """Process account command"""

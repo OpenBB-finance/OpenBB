@@ -8,7 +8,6 @@ from typing import List
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
@@ -59,14 +58,7 @@ class CovidController(BaseController):
         cases       get cases for selected country
         rates       get death/cases rate for selected country[/cmds]
         """
-        console.print(
-            Panel(
-                help_text,
-                title="Alternative - COVID",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Alternative - COVID")
 
     def custom_reset(self):
         """Class specific component of reset command"""

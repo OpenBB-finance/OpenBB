@@ -7,7 +7,6 @@ from typing import List
 from datetime import datetime, timedelta
 import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -134,14 +133,7 @@ class ComparisonAnalysisController(BaseController):
 
 [menu]>   po            portfolio optimization for selected tickers[/menu]{has_similar_end}
         """
-        console.print(
-            Panel(
-                help_text,
-                title="Stocks - Comparison Analysis",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Stocks - Comparison Analysis")
 
     def custom_reset(self):
         """Class specific component of reset command"""

@@ -5,7 +5,6 @@ import argparse
 from typing import List, Union
 
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
@@ -91,14 +90,7 @@ class OandaController(BaseController):
     orderbook     print orderbook
     positionbook  print positionbook[/cmds]{has_instrument_end}
     """
-        console.print(
-            Panel(
-                help_text,
-                title="Forex - Oanda",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Forex - Oanda")
 
     def call_to(self, other_args: List[str]):
         """Process 'to' command."""

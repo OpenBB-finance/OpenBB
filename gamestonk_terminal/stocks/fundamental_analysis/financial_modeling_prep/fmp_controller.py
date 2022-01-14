@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
@@ -70,12 +69,8 @@ class FinancialModelingPrepController(BaseController):
     growth        financial statement growth of the company[/cmds]
         """
         console.print(
-            Panel(
-                help_text,
-                title="Stocks - Fundamental Analysis - Financial Modeling Prep",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
+            text=help_text,
+            menu="Stocks - Fundamental Analysis - Financial Modeling Prep",
         )
 
     def custom_reset(self):

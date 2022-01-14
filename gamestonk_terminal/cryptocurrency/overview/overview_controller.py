@@ -7,7 +7,6 @@ import difflib
 from datetime import datetime, timedelta
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -169,14 +168,7 @@ class OverviewController(BaseController):
     altindex          displays altcoin season index (if 75% of top 50 coins perform better than BTC)
     btcrb             display bitcoin rainbow price chart (logarithmic regression)[/cmds]
 """
-        console.print(
-            Panel(
-                help_text,
-                title="Cryptocurrency - Overview",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Cryptocurrency - Overview")
 
     def call_btcrb(self, other_args: List[str]):
         """Process btcrb command"""

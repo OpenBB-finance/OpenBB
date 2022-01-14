@@ -8,7 +8,6 @@ from datetime import datetime, timedelta
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -143,14 +142,7 @@ class TechnicalAnalysisController(BaseController):
 [info]Custom:[/info]
     fib         fibonacci retracement[/cmds]
 """
-        console.print(
-            Panel(
-                help_text,
-                title="Stocks - Technical Analysis",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Stocks - Technical Analysis")
 
     def custom_reset(self):
         """Class specific component of reset command"""

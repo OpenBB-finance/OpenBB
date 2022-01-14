@@ -7,7 +7,6 @@ import os
 
 from prompt_toolkit.completion import NestedCompleter
 import pandas as pd
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -57,14 +56,7 @@ class PortfolioAnalysis(BaseController):
 
     group         view holdings grouped by parameter[/cmds]
         """
-        console.print(
-            Panel(
-                help_text,
-                title="Portfolio - Portfolio Analysis",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Portfolio - Portfolio Analysis")
 
     def call_load(self, other_args):
         """Process load command"""

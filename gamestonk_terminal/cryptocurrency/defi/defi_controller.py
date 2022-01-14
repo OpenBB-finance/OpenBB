@@ -5,7 +5,6 @@ import argparse
 
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.cryptocurrency.defi import (
     graph_model,
@@ -101,14 +100,7 @@ class DefiController(BaseController):
     aterra        Displays 30-day history of specified asset in terra address
     ayr           Displays 30-day history of anchor yield reserve[/cmds]
 """
-        console.print(
-            Panel(
-                help_text,
-                title="Cryptocurrency - Decentralized Finance",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Cryptocurrency - Decentralized Finance")
 
     def call_aterra(self, other_args: List[str]):
         parser = argparse.ArgumentParser(

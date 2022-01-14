@@ -9,7 +9,6 @@ import logging
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
@@ -199,14 +198,7 @@ class EconomyController(BaseController):
 [menu]
 >   fred          Federal Reserve Economic Data submenu[/menu]
 """
-        console.print(
-            Panel(
-                help_text,
-                title="Economy",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Economy")
 
     def call_feargreed(self, other_args: List[str]):
         """Process feargreed command"""

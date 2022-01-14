@@ -9,8 +9,6 @@ import logging
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
-from rich.panel import Panel
-
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.forex import av_view, av_model
@@ -66,14 +64,7 @@ class ForexController(BaseController):
 [info]Forex brokerages:[/info][menu]
 >   oanda         Oanda menu[/menu][/cmds]
  """
-        console.print(
-            Panel(
-                help_text,
-                title="Forex",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Forex")
 
     def call_to(self, other_args: List[str]):
         """Process 'to' command."""

@@ -8,7 +8,6 @@ from datetime import datetime, timedelta
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 from binance.client import Client
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import calc_change
@@ -112,14 +111,7 @@ class CryptoController(BaseController):
 >   pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo[/menu]
 {has_ticker_end}
 """
-        console.print(
-            Panel(
-                help_text,
-                title="Cryptocurrency",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Cryptocurrency")
 
     def call_prt(self, other_args):
         """Process prt command"""

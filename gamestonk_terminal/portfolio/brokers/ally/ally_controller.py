@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -50,14 +49,7 @@ class AllyController(BaseController):
     quote       get stock quote
     movers      get ranked lists of movers[/cmds]
 """
-        console.print(
-            Panel(
-                help_text,
-                title="Portfolio - Brokers",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Portfolio - Brokers")
 
     def call_holdings(self, other_args: List[str]):
         """Process holdings command"""

@@ -5,7 +5,6 @@ import argparse
 from typing import List, Dict
 
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
@@ -60,14 +59,7 @@ class FredController(BaseController):
 {'[dim]'if len(self.current_series.keys())!=1 else ""}[menu]
 >   pred          prediction techniques (single SeriesID)[/menu]{'[/dim]'if len(self.current_series.keys())!=1 else ""}
         """
-        console.print(
-            Panel(
-                help_text,
-                title="Fred",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Economy - Federal Reserve Economic Data")
 
     def call_search(self, other_args: List[str]):
         """Process search command"""

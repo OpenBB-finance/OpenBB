@@ -7,7 +7,6 @@ from typing import List
 import matplotlib as mpl
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
@@ -60,14 +59,7 @@ class BacktestingController(BaseController):
     ema_cross   buy when EMA(short) > EMA(long)
     rsi         buy when RSI < low and sell when RSI > high[/cmds]
         """
-        console.print(
-            Panel(
-                help_text,
-                title="Stocks - Backtesting",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Stocks - Backtesting")
 
     def custom_reset(self):
         """Class specific component of reset command"""

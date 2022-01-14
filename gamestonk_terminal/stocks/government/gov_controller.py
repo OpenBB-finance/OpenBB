@@ -5,7 +5,6 @@ import argparse
 from datetime import datetime, timedelta
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
@@ -89,14 +88,7 @@ class GovController(BaseController):
     histcont             show historical quarterly government contracts for ticker
     lobbying             corporate lobbying details for ticker[/cmds]{has_ticker_end}
             """
-        console.print(
-            Panel(
-                help_text,
-                title="Stocks - Screener",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Stocks - Screener")
 
     def custom_reset(self):
         """Class specific component of reset command"""
