@@ -1306,8 +1306,6 @@ class CreateExcelFA:
 
         r = requests.get(URL, headers=dcf_model.headers)
 
-        if "404 - Page Not Found" in r.text:
-            # TODO: add better handling
         soup = BeautifulSoup(r.content, "html.parser")
 
         table = soup.find("table", attrs={"class": re.compile("fintbl")})
