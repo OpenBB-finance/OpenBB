@@ -240,6 +240,12 @@ jobs:
         run: |
           pip install --requirement requirements-full.txt
 
+      # Is there a better way to do this?
+      - name: Uninstall Brotli
+        shell: bash -l {0}
+        run: |
+          pip uninstall brotli
+
       - name: List installed packages (Bash)
         shell: bash -l {0}
         run: |
