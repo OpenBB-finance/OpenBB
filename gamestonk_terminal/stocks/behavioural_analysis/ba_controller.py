@@ -104,7 +104,7 @@ Google:{dim}
     queries       top related queries with this stock
     rise          top rising related queries with stock{res}
 SentimentInvestor:
-    hist           plot historical RHI and AHI data by hour
+    hist          plot historical RHI and AHI data by hour{res}
         """
         print(help_txt)
 
@@ -719,7 +719,7 @@ SentimentInvestor:
             "-s",
             "--start",
             type=valid_date,
-            default=(datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
+            default=self.start,
             dest="start",
             help="The starting date (format YYYY-MM-DD) of the stock. Default: 7 days ago",
         )
@@ -728,7 +728,7 @@ SentimentInvestor:
             "-e",
             "--end",
             type=valid_date,
-            default=(datetime.now().strftime("%Y-%m-%d")),
+            default=(self.start + timedelta(days=7)).strftime("%Y-%m-%d"),
             dest="end",
             help="The ending date (format YYYY-MM-DD) of the stock. Default: today",
         )
@@ -764,12 +764,16 @@ SentimentInvestor:
         )
 
         if ns_parser:
-            sentimentinvestor_view.display_historical(
-                ticker=self.ticker,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                number=ns_parser.number,
-                export=ns_parser.export,
-                raw=ns_parser.raw,
-                limit=ns_parser.limit,
-            )
+            if self.ticker:
+                sentimentinvestor_view.display_historical(
+                    ticker=self.ticker,
+                    start=ns_parser.start,
+                    end=ns_parser.end,
+                    number=ns_parser.number,
+                    export=ns_parser.export,
+                    raw=ns_parser.raw,
+                    limit=ns_parser.limit,
+                )
+
+            else:
+                print("No ticker loaded. Please load using 'load <ticker>'\n")
