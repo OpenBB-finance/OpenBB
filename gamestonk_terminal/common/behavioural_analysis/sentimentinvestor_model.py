@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import requests
 import pandas as pd
+from typing import Union, Dict
 
 from gamestonk_terminal import config_terminal as cfg
 
@@ -30,14 +31,18 @@ def get_historical(ticker: str, start: str, end: str, number: int) -> pd.DataFra
         Dataframe of historical sentiment
     """
 
-    response = requests.get("https://api.sentimentinvestor.com/v1/historical",
-                            params={
-                                "token": cfg.API_SENTIMENTINVESTOR_TOKEN,
-                                "symbol": ticker,
-                                "start": str(start),
-                                "end": str(end),
-                                "limit": number,
-                            })
+    payload: Dict[str, Union[int, str]] = {
+            "token": cfg.API_SENTIMENTINVESTOR_TOKEN,
+            "symbol": ticker,
+            "start": str(start),
+            "end": str(end),
+            "limit": number,
+        }
+
+    response = requests.get(
+        "https://api.sentimentinvestor.com/v1/historical",
+        params=payload
+    )
 
     if response.status_code == 200:
         df = pd.DataFrame(response.json()["results"])
