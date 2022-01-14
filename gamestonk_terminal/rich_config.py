@@ -42,7 +42,7 @@ class ConsoleAndPanel:
 
     def print(self, *args, **kwargs):
         new_console = Console(theme=CUSTOM_THEME, highlight=False, soft_wrap=True)
-        if kwargs and "text" in list(kwargs.keys()) and "menu" in list(kwargs.keys()):
+        if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
             if gtff.ENABLE_RICH_PANEL:
                 new_console.print(
                     panel.Panel(
