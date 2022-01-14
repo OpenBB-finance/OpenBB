@@ -206,7 +206,7 @@ Ticker: {self.ticker}
             description="""
                 Prints a complete income statement over time. This can be either quarterly or annually.
                 The following fields are expected: Accepted date, Cost and expenses, Cost of
-                revenue, Depreciation and amortization, Ebitda, Ebitdaratio, Eps, Epsdiluted, Filling
+                revenue, Depreciation and amortization, EBITDA, EBITDA Ratio, Eps, Eps Diluted, Filling
                 date, Final link, General and administrative expenses, Gross profit, Gross profit
                 ratio, Income before tax, Income before tax ratio, Income tax expense, Interest
                 expense, Link, Net income, Net income ratio, Operating expenses, Operating income,
@@ -362,7 +362,7 @@ Ticker: {self.ticker}
                 Graham number, Income quality, Intangibles to total assets, Interest debt per share,
                 Inventory turnover, Market cap, Net current asset value, Net debt to EBITDA, Net income
                 per share, Operating cash flow per share, Payables turnover, Payout ratio, Pb ratio, Pe
-                ratio, Pfcf ratio, Pocfratio, Price to sales ratio, Ptb ratio, Receivables turnover,
+                ratio, Pfcf ratio, Pocf ratio, Price to sales ratio, Ptb ratio, Receivables turnover,
                 Research and development to revenue, Return on tangible assets, Revenue per share,
                 Roe, Roic, Sales general and administrative to revenue, Shareholders equity per
                 share, Stock based compensation to revenue, Tangible book value per share, and Working
@@ -462,12 +462,12 @@ Ticker: {self.ticker}
             time. This can be either annually and quarterly. These are, among other things, Revenue
             Growth (3, 5 and 10 years), inventory growth and operating cash flow growth (3, 5 and 10
             years). The following fields are expected: Asset growth, Book valueper share growth, Debt
-            growth, Dividendsper share growth, Ebitgrowth, Epsdiluted growth, Epsgrowth, Five y
+            growth, Dividendsper share growth, Ebit growth, Eps diluted growth, Eps growth, Five y
             dividendper share growth per share, Five y net income growth per share, Five y operating c
             f growth per share, Five y revenue growth per share, Five y shareholders equity growth per
             share, Free cash flow growth, Gross profit growth, Inventory growth, Net income growth,
-            Operating cash flow growth, Operating income growth, Rdexpense growth, Receivables growth,
-            Revenue growth, Sgaexpenses growth, Ten y dividendper share growth per share, Ten y net
+            Operating cash flow growth, Operating income growth, Rd expense growth, Receivables growth,
+            Revenue growth, Sga expenses growth, Ten y dividendper share growth per share, Ten y net
             income growth per share, Ten y operating c f growth per share, Ten y revenue growth per
             share, Ten y shareholders equity growth per share, Three y dividendper share growth per
             share, Three y net income growth per share, Three y operating c f growth per share, Three y
