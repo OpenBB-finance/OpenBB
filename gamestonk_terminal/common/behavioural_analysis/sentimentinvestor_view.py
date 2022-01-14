@@ -1,18 +1,25 @@
 """SentimentInvestor View"""
 __docformat__ = "numpy"
 
-import matplotlib.dates as mdates
-from numpy import str0
-import pandas as pd
-from matplotlib import pyplot as plt
 import os
+import matplotlib.dates as mdates
+from matplotlib import pyplot as plt
+from tabulate import tabulate
 
 from gamestonk_terminal.common.behavioural_analysis import sentimentinvestor_model
-from gamestonk_terminal import feature_flags as gtff
+
 from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal import feature_flags as gtff
 
-
-def display_historical(ticker: str, start: str, end: str, limit: int, export: str):
+def display_historical(
+    ticker: str,
+    start: str,
+    end: str,
+    export: str,
+    number: int = 100,
+    raw: bool = True,
+    limit: int = 10,
+):
     """Display historical sentiment data of a ticker,
     and plot a chart with RHI and AHI.
 
@@ -24,16 +31,19 @@ def display_historical(ticker: str, start: str, end: str, limit: int, export: st
         Initial date like string or unix timestamp (e.g. 12-21-2021)
     end: str
         End date like string or unix timestamp (e.g. 12-21-2021)
-    limit : int
-        Limit number of results
+    number : int
+        Number of results returned by API call
         Maximum 250 per api call
-
+    raw: boolean
+        Whether to display raw data, by default True
+    limit: int
+        Number of results display on the terminal
+        Default: 10
     Returns
     -------
     """
 
-
-    df = sentimentinvestor_model.get_historical(ticker, start, end, limit)
+    df = sentimentinvestor_model.get_historical(ticker, start, end, number)
 
     if df.empty:
         print("Error in Sentiment Investor request")
@@ -47,9 +57,7 @@ def display_historical(ticker: str, start: str, end: str, limit: int, export: st
 
         ax1.set_ylabel(f"RHI")
         ax1.set_xlabel("Time")
-        ax1.set_title(
-            f"Hourly-level data of RHI and AHI"
-        )
+        ax1.set_title(f"Hourly-level data of RHI and AHI")
         ax1.set_xlim(df.index[0], df.index[-1])
         ax2.set_ylabel(f"AHI")
 
@@ -65,7 +73,33 @@ def display_historical(ticker: str, start: str, end: str, limit: int, export: st
 
         export_data(
             export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "his",
+            os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+            "hist",
             df,
         )
+
+        RAW_COLS = ["twitter", "stocktwits", "yahoo", "likes", "RHI", "AHI"]
+
+        if raw:
+            df.index = df.index.strftime("%Y-%m-%d %H:%M")
+            df.index.name = "Time"
+
+            if gtff.USE_TABULATE_DF:
+                print(
+                    tabulate(
+                        df[RAW_COLS].head(limit),
+                        headers=[
+                            "Time",
+                            "Twitter",
+                            "Stocktwits",
+                            "Yahoo",
+                            "Likes",
+                            "RHI",
+                            "AHI",
+                        ],
+                        tablefmt="fancy_grid",
+                        showindex=True,
+                    )
+                )
+            else:
+                print(df[RAW_COLS].head(limit).to_string())
