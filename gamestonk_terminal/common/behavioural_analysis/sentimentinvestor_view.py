@@ -11,6 +11,7 @@ from gamestonk_terminal.common.behavioural_analysis import sentimentinvestor_mod
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal import feature_flags as gtff
 
+
 def display_historical(
     ticker: str,
     start: str,

@@ -611,7 +611,6 @@ SentimentInvestor:
             else:
                 print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-
     def call_sentiment(self, other_args: List[str]):
         """Process sentiment command"""
         parser = argparse.ArgumentParser(
