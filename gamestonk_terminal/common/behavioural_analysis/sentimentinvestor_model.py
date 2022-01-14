@@ -1,9 +1,9 @@
 """SentimentInvestor Model"""
 __docformat__ = "numpy"
 
+from typing import Union, Dict
 import requests
 import pandas as pd
-from typing import Union, Dict
 
 from gamestonk_terminal import config_terminal as cfg
 
