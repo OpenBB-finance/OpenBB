@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import sys
+
 from rich import panel
 from rich.console import Console, Theme
 from gamestonk_terminal import feature_flags as gtff
@@ -19,6 +20,21 @@ class NoConsole:
 
 def no_panel(renderable, *args, **kwargs):  # pylint: disable=unused-argument
     return renderable
+
+
+def build_console():
+    if gtff.ENABLE_RICH:
+        console = Console(theme=custom_theme, highlight=False, soft_wrap=True)
+    else:
+        console = NoConsole()
+        panel.Panel = no_panel
+
+    return console
+
+
+def disable_rich():
+    sys.modules[__name__].console = NoConsole()
+    sys.modules[__name__].panel.Panel = no_panel
 
 
 custom_theme = Theme(
@@ -40,13 +56,4 @@ custom_theme = Theme(
     }
 )
 
-if gtff.ENABLE_RICH:
-    console = Console(theme=custom_theme, highlight=False, soft_wrap=True)
-else:
-    console = NoConsole()
-    panel.Panel = no_panel
-
-
-def disable_rich():
-    sys.modules[__name__].console = NoConsole()
-    sys.modules[__name__].panel.Panel = no_panel
+console = build_console()
