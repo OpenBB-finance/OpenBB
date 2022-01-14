@@ -136,8 +136,7 @@ Timezone: {get_user_timezone_or_invalid()}
         """Process stocks command"""
         from gamestonk_terminal.stocks.stocks_controller import StocksController
 
-        self.queue = self.load_class(StocksController)
-        # StocksController(self.queue).menu()
+        self.queue = self.load_class(StocksController, self.queue)
 
     def call_crypto(self, _):
         """Process crypto command"""

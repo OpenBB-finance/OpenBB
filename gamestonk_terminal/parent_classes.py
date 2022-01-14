@@ -77,14 +77,15 @@ class BaseController(metaclass=ABCMeta):
                 "Path must only contain lowercase letters and '/' characters."
             )
 
-    def load_class(self, class_ins):
+    def load_class(self, class_ins, *args, **kwargs):
         """Checks for an existing instance of the controller before creating a new one"""
         self.save_class()
-        if class_ins.PATH in controllers:
+        arguments = len(args) + len(kwargs)
+        if class_ins.PATH in controllers and arguments == 1:
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
             return old_class.menu()
-        return class_ins(self.queue).menu()
+        return class_ins(*args, **kwargs).menu()
 
     def save_class(self):
         """Saves the current instance of the class to be loaded later"""
