@@ -53,13 +53,7 @@ CRYPTO_SOURCES = {
 class CryptoController(BaseController):
     """Crypto Controller"""
 
-    CHOICES_COMMANDS = [
-        "headlines",
-        "chart",
-        "load",
-        "coins",
-        "find",
-    ]
+    CHOICES_COMMANDS = ["headlines", "chart", "load", "coins", "find", "prt"]
     CHOICES_MENUS = ["ta", "dd", "ov", "disc", "onchain", "defi", "nft", "pred"]
 
     DD_VIEWS_MAPPING = {
@@ -175,7 +169,7 @@ class CryptoController(BaseController):
                         return
                 pycoingecko_view.display_coin_potential_returns(
                     self.coin_map_df["CoinGecko"],
-                    ns_parser.vs,
+                    coin_found,
                     ns_parser.top,
                     ns_parser.price,
                 )

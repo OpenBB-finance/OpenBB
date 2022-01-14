@@ -867,10 +867,18 @@ main:
       - name: defi
         ref: "/cryptocurrency/defi"
         sub:
-          - name: llama
-            ref: "/cryptocurrency/defi/llama"
-          - name: tvl
-            ref: "/cryptocurrency/defi/tvl"
+          - name: ldapps
+            ref: "/cryptocurrency/defi/ldapps"
+          - name: gdapps
+            ref: "/cryptocurrency/defi/gdapps"
+          - name: dtvl
+            ref: "/cryptocurrency/defi/dtvl"
+          - name: stvl
+            ref: "/cryptocurrency/defi/stvl"
+          - name: ayr
+            ref: "/cryptocurrency/defi/ayr"
+          - name: aterra
+            ref: "/cryptocurrency/defi/aterra"
           - name: newsletter
             ref: "/cryptocurrency/defi/newsletter"
           - name: dpi
