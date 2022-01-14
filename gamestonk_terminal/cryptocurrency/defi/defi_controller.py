@@ -6,7 +6,12 @@ import argparse
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.cryptocurrency.defi import graph_model, coindix_model
+from gamestonk_terminal.cryptocurrency.defi import (
+    graph_model,
+    coindix_model,
+    terraengineer_model,
+    terraengineer_view,
+)
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
@@ -45,6 +50,8 @@ class DefiController(BaseController):
         "swaps",
         "stats",
         "vaults",
+        "ayr",
+        "aterra",
     ]
 
     def __init__(self, queue: List[str] = None):
@@ -53,6 +60,8 @@ class DefiController(BaseController):
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+            choices["aterra"]["--asset"] = {c: {} for c in terraengineer_model.ASSETS}
+            choices["aterra"] = {c: {} for c in terraengineer_model.ASSETS}
             choices["llama"]["-s"] = {c: {} for c in llama_model.LLAMA_FILTERS}
             choices["tokens"]["-s"] = {c: {} for c in graph_model.TOKENS_FILTERS}
             choices["pairs"]["-s"] = {c: {} for c in graph_model.PAIRS_FILTERS}
@@ -84,8 +93,74 @@ Uniswap:
     pairs         Recently added pairs on Uniswap
     pools         Pools by volume on Uniswap
     swaps         Recent swaps done on Uniswap
+TerraEngineer:
+    aterra        Displays 30-day history of specified asset in terra address
+    ayr           Displays 30-day history of anchor yield reserve
 """
         print(help_text)
+
+    def call_aterra(self, other_args: List[str]):
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="aterra",
+            description="""
+                Displays the 30-day history of an asset in a certain terra address.
+                [Source: https://terra.engineer/]
+            """,
+        )
+        parser.add_argument(
+            "--asset",
+            dest="asset",
+            type=str,
+            help="Terra asset {ust,luna,sdt} Default: ust",
+            default=terraengineer_model.ASSETS[0],
+            choices=terraengineer_model.ASSETS,
+        )
+        parser.add_argument(
+            "--address",
+            dest="address",
+            type=str,
+            help="Terra address. Valid terra addresses start with 'terra'",
+            required=True,
+        )
+
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "--asset")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            terraengineer_view.display_terra_asset_history(
+                export=ns_parser.export,
+                address=ns_parser.address,
+                asset=ns_parser.asset,
+            )
+
+    def call_ayr(self, other_args: List[str]):
+        """Process ayr command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ayr",
+            description="""
+                Displays the 30-day history of the Anchor Yield Reserve.
+                An increasing yield reserve indicates that the return on collateral staked by borrowers in Anchor
+                is greater than the yield paid to depositors. A decreasing yield reserve means yield paid
+                to depositors is outpacing the staking returns of borrower's collateral.
+                TLDR: Shows the address that contains UST that is paid on anchor interest earn.
+                [Source: https://terra.engineer/]
+            """,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            terraengineer_view.display_anchor_yield_reserve(export=ns_parser.export)
 
     def call_dpi(self, other_args: List[str]):
         """Process dpi command"""

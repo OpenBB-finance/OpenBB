@@ -867,6 +867,10 @@ main:
       - name: defi
         ref: "/cryptocurrency/defi"
         sub:
+          - name: ayr
+            ref: "/cryptocurrency/defi/ayr"
+          - name: aterra
+            ref: "/cryptocurrency/defi/aterra"
           - name: llama
             ref: "/cryptocurrency/defi/llama"
           - name: tvl
