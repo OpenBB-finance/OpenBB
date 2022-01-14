@@ -70,6 +70,7 @@ class InsiderController(BaseController):
         for preset in os.listdir(presets_path)
         if preset[-4:] == ".ini"
     ]
+    PATH = "/stocks/ins/"
 
     def __init__(
         self,
@@ -80,7 +81,7 @@ class InsiderController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/stocks/ins/", queue)
+        super().__init__(queue)
 
         self.ticker = ticker
         self.start = start

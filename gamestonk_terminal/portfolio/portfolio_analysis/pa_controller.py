@@ -34,10 +34,11 @@ class PortfolioAnalysis(BaseController):
         "load",
         "group",
     ]
+    PATH = "/portfolio/pa/"
 
     def __init__(self, queue: List[str] = None):
 
-        super().__init__("/portfolio/pa/", queue)
+        super().__init__(queue)
 
         self.portfolio_name = ""
         self.portfolio = pd.DataFrame()

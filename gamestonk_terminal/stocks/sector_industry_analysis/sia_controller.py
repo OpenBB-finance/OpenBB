@@ -121,6 +121,7 @@ class SectorIndustryAnalysisController(BaseController):
     }
     mktcap_choices = ["Small", "Mid", "Large", "small", "mid", "large"]
     clear_choices = ["industry", "sector", "country", "mktcap"]
+    PATH = "/stocks/sia/"
 
     def __init__(
         self,
@@ -128,7 +129,7 @@ class SectorIndustryAnalysisController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/stocks/sia/", queue)
+        super().__init__(queue)
 
         self.country = "United States"
         self.sector = "Financial Services"

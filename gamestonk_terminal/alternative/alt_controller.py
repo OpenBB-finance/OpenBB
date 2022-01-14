@@ -20,10 +20,11 @@ class AlternativeDataController(BaseController):
 
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS = ["covid"]
+    PATH = "/alternative/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/alternative/", queue)
+        super().__init__(queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}

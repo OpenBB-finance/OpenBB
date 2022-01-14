@@ -47,10 +47,11 @@ class PortfolioController(BaseController):
         "po",
         "pa",
     ]
+    PATH = "/portfolio/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/portfolio/", queue)
+        super().__init__(queue)
 
         self.portfolio = pd.DataFrame(
             columns=[

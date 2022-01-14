@@ -35,10 +35,11 @@ class ScreenerController(BaseController):
     preset_choices = [
         f.split(".")[0] for f in os.listdir(presets_path) if f.endswith(".ini")
     ]
+    PATH = "/stocks/options/screen/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/options/screen/", queue)
+        super().__init__(queue)
 
         self.preset = "high_IV"
         self.screen_tickers: List = list()

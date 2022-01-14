@@ -71,6 +71,7 @@ class TechnicalAnalysisController(BaseController):
         "obv",
         "fib",
     ]
+    PATH = "/stocks/ta/"
 
     def __init__(
         self,
@@ -81,7 +82,7 @@ class TechnicalAnalysisController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/stocks/ta/", queue)
+        super().__init__(queue)
 
         self.ticker = ticker
         self.start = start

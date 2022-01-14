@@ -61,9 +61,11 @@ class StocksController(BaseController):
         "options",
     ]
 
+    PATH = "/stocks/"
+
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/", queue)
+        super().__init__(queue)
 
         self.stock = pd.DataFrame()
         self.ticker = ""

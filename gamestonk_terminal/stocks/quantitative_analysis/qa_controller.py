@@ -60,6 +60,7 @@ class QaController(BaseController):
 
     stock_interval = [1, 5, 15, 30, 60]
     stock_sources = ["yf", "av", "iex"]
+    PATH = "/stocks/qa/"
 
     def __init__(
         self,
@@ -70,7 +71,7 @@ class QaController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/stocks/qa/", queue)
+        super().__init__(queue)
 
         stock["Returns"] = stock["Adj Close"].pct_change()
         stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(

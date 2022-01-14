@@ -56,11 +56,13 @@ class TerminalController(BaseController):
         "alternative",
     ]
 
+    PATH = "/"
+
     all_timezones = pytz.all_timezones
 
     def __init__(self, jobs_cmds: List[str] = None):
         """Constructor"""
-        super().__init__("/", jobs_cmds)
+        super().__init__(jobs_cmds)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: None for c in self.controller_choices}
@@ -134,7 +136,8 @@ Timezone: {get_user_timezone_or_invalid()}
         """Process stocks command"""
         from gamestonk_terminal.stocks.stocks_controller import StocksController
 
-        self.queue = StocksController(self.queue).menu()
+        self.queue = self.load_class(StocksController)
+        # StocksController(self.queue).menu()
 
     def call_crypto(self, _):
         """Process crypto command"""

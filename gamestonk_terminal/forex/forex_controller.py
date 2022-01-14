@@ -27,10 +27,11 @@ class ForexController(BaseController):
 
     CHOICES_COMMANDS = ["to", "from", "load", "quote", "candle"]
     CHOICES_MENUS = ["oanda"]
+    PATH = "/forex/"
 
     def __init__(self, queue: List[str] = None):
         """Construct Data."""
-        super().__init__("/forex/", queue)
+        super().__init__(queue)
 
         self.from_symbol = "USD"
         self.to_symbol = ""

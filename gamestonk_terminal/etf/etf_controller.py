@@ -66,10 +66,11 @@ class ETFController(BaseController):
         "scr",
         "disc",
     ]
+    PATH = "/etf/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/etf/", queue)
+        super().__init__(queue)
 
         self.etf_name = ""
         self.etf_data = ""

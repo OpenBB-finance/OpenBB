@@ -105,10 +105,11 @@ class OptionsController(BaseController):
     oi_source_choices = ["tr", "yf"]
     plot_vars_choices = ["ltd", "s", "lp", "b", "a", "c", "pc", "v", "oi", "iv"]
     plot_custom_choices = ["smile"]
+    PATH = "/stocks/options/"
 
     def __init__(self, ticker: str, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/options/", queue)
+        super().__init__(queue)
 
         self.ticker = ticker
         self.prices = pd.DataFrame(columns=["Price", "Chance"])

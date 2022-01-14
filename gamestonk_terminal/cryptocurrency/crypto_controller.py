@@ -69,10 +69,11 @@ class CryptoController(BaseController):
         "cp": coinpaprika_view,
         "bin": binance_view,
     }
+    PATH = "/crypto/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/crypto/", queue)
+        super().__init__(queue)
 
         self.symbol = ""
         self.current_coin = ""

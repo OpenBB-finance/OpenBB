@@ -55,9 +55,11 @@ class ScreenerController(BaseController):
         "N_Hold",
     ]
 
+    PATH = "/etf/scr/"
+
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/etf/scr/", queue)
+        super().__init__(queue)
 
         self.preset = "etf_config"
         self.screen_tickers: List = list()

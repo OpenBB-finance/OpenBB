@@ -21,10 +21,11 @@ class BrokersController(BaseController):
 
     CHOICES_COMMANDS: List = []
     CHOICES_MENUS = ["cb", "ally", "rh", "degiro"]
+    PATH = "/portfolio/bro/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/portfolio/bro/", queue)
+        super().__init__(queue)
 
         self.broker_list: Set = set()
         self.merged_holdings = None

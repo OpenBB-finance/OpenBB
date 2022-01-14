@@ -42,6 +42,7 @@ class GovController(BaseController):
 
     gov_type_choices = ["congress", "senate", "house"]
     analysis_choices = ["total", "upmom", "downmom"]
+    PATH = "/stocks/gov/"
 
     def __init__(
         self,
@@ -49,7 +50,7 @@ class GovController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/stocks/gov/", queue)
+        super().__init__(queue)
 
         self.ticker = ticker
 

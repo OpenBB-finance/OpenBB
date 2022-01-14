@@ -78,6 +78,8 @@ class DueDiligenceController(BaseController):
         "bin": binance_view,
     }
 
+    PATH = "/crypto/dd/"
+
     def __init__(
         self,
         coin=None,
@@ -87,7 +89,7 @@ class DueDiligenceController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/crypto/dd/", queue)
+        super().__init__(queue)
 
         for _, value in self.SPECIFIC_CHOICES.items():
             self.controller_choices.extend(value)
