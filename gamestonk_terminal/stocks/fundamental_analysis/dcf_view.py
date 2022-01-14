@@ -1278,7 +1278,6 @@ class CreateExcelFA:
             sister_ret = [
                 self.get_sister_data(x, sisters[0]) for x in ["BS", "IS", "CF"]
             ]
-            print(sister_ret)
             blank = [x.empty for x in sister_ret]
             if True in blank:
                 sisters.pop(0)
