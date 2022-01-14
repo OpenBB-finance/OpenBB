@@ -3488,6 +3488,14 @@ python-versions = "*"
 types-urllib3 = "<1.27"
 
 [[package]]
+name = "types-setuptools"
+version = "57.4.7"
+description = "Typing stubs for setuptools"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "types-tabulate"
 version = "0.8.5"
 description = "Typing stubs for tabulate"
@@ -3796,7 +3804,7 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "e35d8e3392ea50417f375c2616b56205dc88dc9d9e0d0de6d761f267f25ce794"
+content-hash = "faeca826895daa0cdbd1657f04d57494c5ff36fccfa501d7a5719546a8fc286b"
 
 [metadata.files]
 absl-py = [
@@ -4156,6 +4164,7 @@ cvxpy = [
     {file = "cvxpy-1.1.18-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:9f82ca609e34577062940d5c32bc1f687fcf83d39ca92ec0d04fb1f290b43355"},
     {file = "cvxpy-1.1.18-cp39-cp39-manylinux_2_24_x86_64.whl", hash = "sha256:569f7298539a2bd8704209628af11ecf1bca0cff2d5e27c46b57ffea921a01cf"},
     {file = "cvxpy-1.1.18-cp39-cp39-win_amd64.whl", hash = "sha256:2eb079877d23f03494141102d6cf9d3139edf5e1dc07bfa3f767f4c79e837ecb"},
+    {file = "cvxpy-1.1.18.tar.gz", hash = "sha256:5baefe1f2ed6937749b293586c6ce4f42ed30e7890223f7661ccb2bb7df70bef"},
 ]
 cycler = [
     {file = "cycler-0.11.0-py3-none-any.whl", hash = "sha256:3a27e95f763a428a739d2add979fa7494c912a32c17c4c38c4d5f082cad165a3"},
@@ -6214,6 +6223,10 @@ types-pyyaml = [
 types-requests = [
     {file = "types-requests-2.27.3.tar.gz", hash = "sha256:9fe61821910eb5b33bc774165d0c8fbdf933902ef57b0d5040f96b59bc428efa"},
     {file = "types_requests-2.27.3-py3-none-any.whl", hash = "sha256:20cba29db305c005305dab4d29d5f0de01af7820a375c0853b68159269e8e2da"},
+]
+types-setuptools = [
+    {file = "types-setuptools-57.4.7.tar.gz", hash = "sha256:9677d969b00ec1c14552f5be2b2b47a6fbea4d0ed4de0fdcee18abdaa0cc9267"},
+    {file = "types_setuptools-57.4.7-py3-none-any.whl", hash = "sha256:ffda504687ea02d4b7751c0d1df517fbbcdc276836d90849e4f1a5f1ccd79f01"},
 ]
 types-tabulate = [
     {file = "types-tabulate-0.8.5.tar.gz", hash = "sha256:03f283bf384ea121b7b6a58afb38f4def97f30704fca13a0da686936b0f392ac"},
