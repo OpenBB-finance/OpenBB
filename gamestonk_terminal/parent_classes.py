@@ -81,7 +81,7 @@ class BaseController(metaclass=ABCMeta):
         """Checks for an existing instance of the controller before creating a new one"""
         self.save_class()
         arguments = len(args) + len(kwargs)
-        if class_ins.PATH in controllers and arguments == 1:
+        if class_ins.PATH in controllers and arguments == 1 and gtff.REMEMBER_CONTEXTS:
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
             return old_class.menu()
@@ -89,7 +89,8 @@ class BaseController(metaclass=ABCMeta):
 
     def save_class(self):
         """Saves the current instance of the class to be loaded later"""
-        controllers[self.PATH] = self
+        if gtff.REMEMBER_CONTEXTS:
+            controllers[self.PATH] = self
 
     def custom_reset(self) -> List[str]:
         """This will be replaced by any children with custom_reset functions"""
