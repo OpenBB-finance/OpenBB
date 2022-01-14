@@ -56,11 +56,11 @@ def display_historical(
         ax1.grid()
         ax2.plot(df.index, df["AHI"], c="orange")
 
-        ax1.set_ylabel(f"RHI")
+        ax1.set_ylabel("RHI")
         ax1.set_xlabel("Time")
-        ax1.set_title(f"Hourly-level data of RHI and AHI")
+        ax1.set_title("Hourly-level data of RHI and AHI")
         ax1.set_xlim(df.index[0], df.index[-1])
-        ax2.set_ylabel(f"AHI")
+        ax2.set_ylabel("AHI")
 
         interval_locator = mdates.HourLocator(interval=6)
         plt.gca().xaxis.set_major_locator(interval_locator)

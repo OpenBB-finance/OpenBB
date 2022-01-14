@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 from datetime import datetime, timedelta
-import textwrap
 from prompt_toolkit.completion import NestedCompleter
 from colorama import Style
 
