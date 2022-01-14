@@ -1,6 +1,7 @@
 """Rich Module"""
 __docformat__ = "numpy"
 
+from typing import Any
 from rich.console import Console, Theme
 from gamestonk_terminal import feature_flags as gtff
 
@@ -33,9 +34,11 @@ custom_theme = Theme(
         "unvl": "dim",
     }
 )
-if gtff.ENABLE_RICH:
-    # Obviouse setup to make sure it works
-    # soft_wrap=True is must be on or many tests fail
-    console = Console(theme=custom_theme, highlight=False, soft_wrap=True)
-else:
-    console = NoConsole()
+
+# Obviouse setup to make sure it works
+# soft_wrap=True is must be on or many tests fail
+console: Any = (
+    Console(theme=custom_theme, highlight=False, soft_wrap=True)
+    if gtff.ENABLE_RICH
+    else NoConsole()
+)
