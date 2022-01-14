@@ -929,3 +929,41 @@ def show_binom(
     print(
         f"{ticker} {'put' if put else 'call'} at ${strike:.2f} expiring on {expiration} is worth ${opt_vals[0][0]:.2f}\n"
     )
+
+
+def display_vol_surface(ticker: str, export: str = ""):
+    """Display vol surface
+
+    Parameters
+    ----------
+    ticker: str
+        Ticker to get surface for
+    export: str
+        Format to export data
+
+    """
+    data = yfinance_model.get_iv_surface(ticker)
+    if data.empty:
+        print(f"No options data found for {ticker}.\n")
+        return
+    X = data.dte
+    Y = data.strike
+    Z = data.impliedVolatility
+    fig = plt.figure()
+    ax = plt.axes(projection="3d")
+    ax.plot_trisurf(X, Y, Z, cmap="jet", linewidth=0.2)
+    ax.set_xlabel("DTE")
+    ax.set_ylabel("Strike")
+    ax.set_zlabel("IV")
+    fig.tight_layout()
+    fig.suptitle(f"Volatility Surface for {ticker}")
+    if gtff.USE_ION:
+        plt.ion()
+    plt.show()
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "vsurf",
+        data,
+    )
+    print("")
