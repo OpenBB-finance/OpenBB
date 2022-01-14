@@ -13,19 +13,19 @@ from gamestonk_terminal import feature_flags as gtff
 CUSTOM_THEME = Theme(
     {
         # information provided to the user
-        "info": "thistle1",
+        "info": "rgb(224,131,48)",
         # triggers a command
-        "cmds": "light_sky_blue1",
+        "cmds": "rgb(70,156,222)",
         # configurable parameter
-        "param": "gold3",
+        "param": "rgb(247,206,70)",
         # goes into a new menu
-        "menu": "rgb(175,0,255)",
+        "menu": "rgb(50,115,185)",
         # data sources,
-        "src": "rgb(245,245,30)",
+        "src": "rgb(216,90,64)",
         # print help,
         "help": "green",
         # unavailable command/parameter
-        "unvl": "dim",
+        "unvl": "grey30",
     }
 )
 
@@ -37,13 +37,34 @@ class NoConsole:
         print(*args, **kwargs)
 
 
+class ConsoleAndPanel:
+    """Create a rich console to wrap the console print with a Panel"""
+
+    def print(self, *args, **kwargs):
+        new_console = Console(theme=CUSTOM_THEME, highlight=False, soft_wrap=True)
+        if kwargs and "text" in list(kwargs.keys()) and "menu" in list(kwargs.keys()):
+            if gtff.ENABLE_RICH_PANEL:
+                new_console.print(
+                    panel.Panel(
+                        kwargs["text"],
+                        title=kwargs["menu"],
+                        subtitle_align="right",
+                        subtitle="Gamestonk Terminal",
+                    )
+                )
+            else:
+                new_console.print(kwargs["text"])
+        else:
+            new_console.print(*args, **kwargs)
+
+
 def no_panel(renderable, *args, **kwargs):  # pylint: disable=unused-argument
     return renderable
 
 
 def build_console():
     if gtff.ENABLE_RICH:
-        new_console = Console(theme=CUSTOM_THEME, highlight=False, soft_wrap=True)
+        new_console = ConsoleAndPanel()
     else:
         new_console = NoConsole()
         panel.Panel = no_panel

@@ -2,7 +2,6 @@ import argparse
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -41,14 +40,7 @@ class NFTController(BaseController):
 [src][Opensea.io][/src]
     stats       check open sea collection stats[/cmds]
 """
-        console.print(
-            Panel(
-                help_text,
-                title="Cryptocurrency - Non Fungible Token",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Cryptocurrency - Non Fungible Token")
 
     def call_stats(self, other_args: List[str]):
         """Process stats command"""

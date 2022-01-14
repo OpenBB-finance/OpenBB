@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 
 from typing import List, Set
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal import feature_flags as gtff
@@ -42,14 +41,7 @@ class BrokersController(BaseController):
 >   rh           Robinhood Menu
 >   cb           Coinbase Pro Menu[/menu]
     """
-        console.print(
-            Panel(
-                help_text,
-                title="Portfolio - Brokers",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Portfolio - Brokers")
 
     def call_degiro(self, _):
         """Process degiro command."""

@@ -7,7 +7,6 @@ from datetime import datetime, timedelta
 import textwrap
 from prompt_toolkit.completion import NestedCompleter
 from colorama import Style
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
@@ -130,14 +129,7 @@ class BehaviouralAnalysisController(BaseController):
     social        social media figures for stock popularity
     historical    plot the past week of data for a selected metric{has_ticker_end}[/cmds]
         """
-        console.print(
-            Panel(
-                help_text,
-                title="Stocks - Behavioural Analysis",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Stocks - Behavioural Analysis")
 
     def call_load(self, other_args: List[str]):
         """Process load command"""

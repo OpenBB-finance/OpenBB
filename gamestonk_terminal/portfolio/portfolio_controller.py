@@ -10,7 +10,6 @@ from datetime import datetime
 
 from prompt_toolkit.completion import NestedCompleter
 import pandas as pd
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -91,14 +90,7 @@ class PortfolioController(BaseController):
 [info]Graphs:[/info][cmds]
     rmr         graph your returns versus the market's returns
         """
-        console.print(
-            Panel(
-                help_text,
-                title="Portfolio",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Portfolio")
 
     def call_bro(self, _):
         """Process bro command"""

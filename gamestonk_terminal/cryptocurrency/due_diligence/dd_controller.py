@@ -7,7 +7,6 @@ from typing import List
 from datetime import datetime, timedelta
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.cryptocurrency.due_diligence import (
@@ -176,14 +175,7 @@ class DueDiligenceController(BaseController):
    trades          show last trades
    stats           show coin stats[/cmds]
 """
-        console.print(
-            Panel(
-                help_text,
-                title="Stocks - Due Diligence",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Stocks - Due Diligence")
 
     def custom_reset(self):
         """Class specific component of reset command"""

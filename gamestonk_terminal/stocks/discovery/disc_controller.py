@@ -5,7 +5,6 @@ import argparse
 from datetime import datetime
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -144,14 +143,7 @@ class DiscoveryController(BaseController):
 [src][NASDAQ Data Link (Formerly Quandl)][/src]
     rtat           top 10 retail traded stocks per day[/cmds]
 """
-        console.print(
-            Panel(
-                help_text,
-                title="Stocks - Discovery",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Stocks - Discovery")
 
     def call_rtearn(self, other_args: List[str]):
         """Process rtearn command"""

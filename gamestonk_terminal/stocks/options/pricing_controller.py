@@ -6,7 +6,6 @@ from typing import List
 import pandas as pd
 from tabulate import tabulate
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
@@ -57,14 +56,7 @@ class PricingController(BaseController):
     show          show the listed of expected prices
     rnval         risk neutral valuation for an option[/cmds]
         """
-        console.print(
-            Panel(
-                help_text,
-                title="Stocks - Options - Pricing",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Stocks - Options - Pricing")
 
     def custom_reset(self):
         """Class specific component of reset command"""

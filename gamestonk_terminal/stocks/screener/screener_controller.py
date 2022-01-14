@@ -8,7 +8,6 @@ import datetime
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
@@ -122,14 +121,7 @@ class ScreenerController(BaseController):
 >   ca             take these to comparison analysis menu
 >   po             take these to portfolio optimization menu{has_tickers_end}
         """
-        console.print(
-            Panel(
-                help_text,
-                title="Stocks - Screener",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Stocks - Screener")
 
     def call_view(self, other_args: List[str]):
         """Process view command"""

@@ -51,3 +51,6 @@ ENABLE_EXIT_AUTO_HELP = strtobool(os.getenv("GTFF_ENABLE_EXIT_AUTO_HELP", "False
 
 # Use the colorful rich terminal
 ENABLE_RICH = strtobool(os.getenv("GTFF_ENABLE_RICH", "True"))
+
+# Use the colorful rich terminal
+ENABLE_RICH_PANEL = strtobool(os.getenv("GTFF_ENABLE_RICH", "True"))

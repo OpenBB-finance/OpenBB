@@ -9,7 +9,6 @@ from datetime import datetime, timedelta
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
@@ -163,14 +162,7 @@ class OnchainController(BaseController):
     prices          ERC20 token historical prices{has_token_end}{has_tx_start}
     tx              ethereum blockchain transaction info{has_tx_end}
     """
-        console.print(
-            Panel(
-                help_text,
-                title="Cryptocurrency - Onchain",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Cryptocurrency - Onchain")
 
     def call_hr(self, other_args: List[str]):
         """Process hr command"""

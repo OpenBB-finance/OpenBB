@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import argparse
 from typing import List, Dict
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
@@ -95,14 +94,7 @@ Underlying Asset: [/param]{('Short', 'None', 'Long')[self.underlying+1]}
     sop           selected options
     plot          show the option payoff diagram[/cmds]
         """
-        console.print(
-            Panel(
-                help_text,
-                title="Stocks - Options - Payoff",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Stocks - Options - Payoff")
 
     def custom_reset(self):
         """Class specific component of reset command"""

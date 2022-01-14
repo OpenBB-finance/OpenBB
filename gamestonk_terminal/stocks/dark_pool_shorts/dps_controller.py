@@ -6,7 +6,6 @@ from typing import List
 from datetime import datetime, timedelta
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -98,14 +97,7 @@ class DarkPoolShortsController(BaseController):
 [src][NYSE][/src]
     volexch        short volume for ARCA,Amex,Chicago,NYSE and national exchanges[/cmds]
 {has_ticker_end}"""
-        console.print(
-            Panel(
-                help_text,
-                title="Stocks - Dark Pool and Short data",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Stocks - Dark Pool and Short data")
 
     def call_load(self, other_args: List[str]):
         """Process load command"""

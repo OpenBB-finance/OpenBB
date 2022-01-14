@@ -5,7 +5,6 @@ import webbrowser
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
@@ -45,14 +44,7 @@ class ResourceCollectionController(BaseController):
    learn         trading analysis, tips and resources
    econiverse    compilation of free knowledge and educational resources[/cmds]
         """
-        console.print(
-            Panel(
-                help_text,
-                title="Resources",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Resources")
 
     def call_hfletters(self, _):
         """Process hfletters command"""

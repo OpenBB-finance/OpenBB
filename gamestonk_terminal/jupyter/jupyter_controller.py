@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -36,14 +35,7 @@ class JupyterController(BaseController):
 >   reports     creates jupyter reports
 >   dashboards  shows interactive jupyter dashboards[/menu]
         """
-        console.print(
-            Panel(
-                help_text,
-                title="Jupyter",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Jupyter")
 
     def call_reports(self, _):
         """Process reports command"""

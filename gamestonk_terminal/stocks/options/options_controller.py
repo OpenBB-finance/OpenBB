@@ -7,7 +7,6 @@ from datetime import datetime, timedelta
 from typing import List
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -194,14 +193,7 @@ Expiry: [/param]{self.selected_date or None}
 >   payoff        shows payoff diagram for a selection of options [src][Yfinance][/src]
 >   pricing       shows options pricing and risk neutral valuation [src][Yfinance][/src]
 {has_ticker_end}"""
-        console.print(
-            Panel(
-                help_text,
-                title="Stocks - Options",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Stocks - Options")
 
     def custom_reset(self):
         """Class specific component of reset command"""

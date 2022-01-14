@@ -8,7 +8,6 @@ import webbrowser
 from datetime import datetime
 from ast import literal_eval
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.decorators import try_except
 import papermill as pm
@@ -90,14 +89,7 @@ class ReportController(BaseController):
         help_text = f"""[info]
 Select one of the following reports:[/info][cmds]
 {self.reports_opts}[/cmds]"""
-        console.print(
-            Panel(
-                help_text,
-                title="Jupyter - Reports",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Jupyter - Reports")
 
     @try_except
     def switch(self, an_input: str):

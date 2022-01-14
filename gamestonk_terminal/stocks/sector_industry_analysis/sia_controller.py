@@ -6,7 +6,6 @@ import difflib
 from typing import List
 import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.helper_funcs import (
@@ -259,14 +258,7 @@ class SectorIndustryAnalysisController(BaseController):
 [param]Returned tickers: [/param]{', '.join(self.tickers)}
 [menu]>   ca            take these to comparison analysis menu[/menu]
 {has_no_tickers_}"""
-        console.print(
-            Panel(
-                help_text,
-                title="Stocks - Sector and Industry Analysis",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Stocks - Sector and Industry Analysis")
 
     def custom_reset(self):
         """Class specific component of reset command"""

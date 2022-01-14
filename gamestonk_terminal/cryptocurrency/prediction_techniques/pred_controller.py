@@ -8,7 +8,6 @@ from typing import List
 import pandas as pd
 import numpy as np
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -109,14 +108,7 @@ class PredictionTechniquesController(BaseController):
     conv1d      1D Convolutional Neural Network
     mc          Monte-Carlo simulations[/cmds]
         """
-        console.print(
-            Panel(
-                help_text,
-                title="Cryptocurrency - Prediction Techniques",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Cryptocurrency - Prediction Techniques")
 
     def custom_reset(self):
         """Class specific component of reset command"""

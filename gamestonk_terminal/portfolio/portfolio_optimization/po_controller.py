@@ -5,7 +5,6 @@ import argparse
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
@@ -194,14 +193,7 @@ class PortfolioOptimization(BaseController):
 
     ef            show the efficient frontier[/cmds]
     """
-        console.print(
-            Panel(
-                help_text,
-                title="Portfolio - Portfolio Optimization",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Portfolio - Portfolio Optimization")
 
     def call_select(self, other_args: List[str]):
         """Process select command"""

@@ -5,7 +5,6 @@ import argparse
 from datetime import datetime, timedelta
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
@@ -123,14 +122,7 @@ Ticker: [/param] {self.ticker} [cmds]
 [info]Other Sources:[/info][menu]
 >   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP[/menu]
         """
-        console.print(
-            Panel(
-                help_text,
-                title="Stocks - Fundamental Analysis",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Stocks - Fundamental Analysis")
 
     def custom_reset(self):
         """Class specific component of reset command"""

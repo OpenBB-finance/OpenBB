@@ -7,7 +7,6 @@ import subprocess
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-from rich.panel import Panel
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -39,14 +38,7 @@ class DashboardsController(BaseController):
    stocks        interactive dashboard with ticker information
    correlation   interactive dashboard with correlation information[/cmds]
         """
-        console.print(
-            Panel(
-                help_text,
-                title="Jupyter - Dashboards",
-                subtitle_align="right",
-                subtitle="Gamestonk Terminal",
-            )
-        )
+        console.print(text=help_text, menu="Jupyter - Dashboards")
 
     def call_stocks(self, other_args: List[str]):
         """Process stocks command"""
