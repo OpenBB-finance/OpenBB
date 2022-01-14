@@ -568,6 +568,7 @@ class SectorIndustryAnalysisController(BaseController):
             self.stocks_data = {}
             console.print("")
 
+    # pylint:disable=attribute-defined-outside-init
     def call_exchange(self, other_args: List[str]):
         """Process exchange command"""
         parser = argparse.ArgumentParser(
@@ -578,7 +579,7 @@ class SectorIndustryAnalysisController(BaseController):
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            self.exclude_exhanges = not self.exclude_exhanges
+            self.exclude_exhanges: bool = not self.exclude_exhanges
             console.print(
                 f"International exchanges {'excluded' if self.exclude_exhanges else 'included'}",
                 "\n",

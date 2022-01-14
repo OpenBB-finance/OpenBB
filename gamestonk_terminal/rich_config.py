@@ -1,10 +1,20 @@
 """Rich Module"""
 __docformat__ = "numpy"
 
+from typing import Any
 from rich.console import Console, Theme
+from gamestonk_terminal import feature_flags as gtff
 
 # https://rich.readthedocs.io/en/stable/appendix/colors.html#appendix-colors
 # https://rich.readthedocs.io/en/latest/highlighting.html#custom-highlighters
+
+
+class NoConsole:
+    """Create a dummy rich console to wrap the console print"""
+
+    def print(self, *args, **kwargs):
+        print(*args, **kwargs)
+
 
 custom_theme = Theme(
     {
@@ -27,4 +37,8 @@ custom_theme = Theme(
 
 # Obviouse setup to make sure it works
 # soft_wrap=True is must be on or many tests fail
-console = Console(theme=custom_theme, highlight=False, soft_wrap=True)
+console: Any = (
+    Console(theme=custom_theme, highlight=False, soft_wrap=True)
+    if gtff.ENABLE_RICH
+    else NoConsole()
+)
