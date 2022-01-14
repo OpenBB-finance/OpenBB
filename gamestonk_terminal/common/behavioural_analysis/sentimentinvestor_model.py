@@ -31,15 +31,15 @@ def get_historical(ticker: str, start: str, end: str, number: int) -> pd.DataFra
     """
     api_url = "https://api.sentimentinvestor.com/v1/historical"
 
-    params = {
+    payload = {
         "token": cfg.API_SENTIMENTINVESTOR_TOKEN,
         "symbol": ticker,
-        "start": start,
-        "end": end,
+        "start": str(start),
+        "end": str(end),
         "limit": number,
     }
 
-    response = requests.get(api_url, params=params)
+    response = requests.get(api_url, params=payload)
 
     if response.status_code == 200:
         df = pd.DataFrame(response.json()["results"])
