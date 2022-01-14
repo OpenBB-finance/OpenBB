@@ -118,6 +118,16 @@ def _load_coin_map(file_name: str) -> pd.DataFrame:
     return coins_df
 
 
+def read_data_file(file_name: str):
+    if file_name.split(".")[1] != "json":
+        raise TypeError("Please load json file")
+
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    path = os.path.join(current_dir, "data", file_name)
+    with open(path, encoding="utf8") as f:
+        return json.load(f)
+
+
 def load_coins_list(file_name: str, return_raw: bool = False) -> pd.DataFrame:
     if file_name.split(".")[1] != "json":
         raise TypeError("Please load json file")

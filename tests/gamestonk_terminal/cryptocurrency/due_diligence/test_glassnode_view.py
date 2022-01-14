@@ -13,6 +13,7 @@ def vcr_config():
     }
 
 
+@pytest.mark.skip("Hangs on Windows")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_display_btc_rainbow():

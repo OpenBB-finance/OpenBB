@@ -1,4 +1,13 @@
 repos:
+  - repo: local
+    hooks:
+      - id: check-debug-mode
+        name: check-debug-mode
+        entry: python custom_pre_commit/debug_mode.py
+        language: python
+        language_version: python3
+        types: ["file"]
+        pass_filenames: false
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.0.1
     hooks:
@@ -23,28 +32,41 @@ repos:
     hooks:
       - id: codespell
         entry: codespell
-        args: [ '--ignore-words-list=ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold', '--quiet-level=2', '--skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml' ]
+        args:
+          [
+            "--ignore-words-list=zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold",
+            "--quiet-level=2",
+            "--skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml",
+          ]
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: 'v0.910-1'
+    rev: "v0.910-1"
     hooks:
       - id: mypy
-        args: ['--ignore-missing-imports', '--exclude=/setup\.py$']
+        args: ["--ignore-missing-imports", '--exclude=/setup\.py$']
         additional_dependencies: [types-all]
+
+  - repo: https://github.com/roy-ht/pre-commit-jupyter
+    rev: v1.2.1
+    hooks:
+      - id: jupyter-notebook-cleanup
+        args:
+          - --remove-kernel-metadata
+          - --pin-patterns
   - repo: local
     hooks:
-       - id: pylint
-         name: pylint
-         entry: pylint discordbot gamestonk_terminal terminal.py tests
-         language: system
-         types: [python]
+      - id: pylint
+        name: pylint
+        entry: pylint discordbot gamestonk_terminal terminal.py tests
+        language: system
+        types: [python]
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.1.0
     hooks:
       - id: detect-secrets
-        args: [ '--baseline', '.secrets.baseline', '--exclude-files', 'tests/*/cassettes/*' ]
+        args: [ '--baseline', '.secrets.baseline', '--exclude-files', 'cassettes/*' ]
         exclude: package.lock.json
   - repo: https://github.com/asottile/pyupgrade
     rev: v2.29.1
     hooks:
       - id: pyupgrade
-        args: [ --py36-plus ]
+        args: [--py36-plus]

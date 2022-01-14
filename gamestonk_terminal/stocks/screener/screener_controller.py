@@ -31,6 +31,10 @@ presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets
 
 # pylint: disable=E1121
 
+# TODO: HELP WANTED! This menu required some refactoring. Things that can be addressed:
+#       - better preset management (MVC style).
+#       - decoupling view and model in the yfinance_view
+
 
 class ScreenerController(BaseController):
     """Screener Controller class"""

@@ -34,6 +34,10 @@ from gamestonk_terminal.stocks.comparison_analysis import (
 
 # pylint: disable=E1121,C0302,R0904
 
+# TODO: HELP WANTED! This controller still has some view functionality that should be
+#       refactored in order to implement an API wrapper. Use the discovery controller
+#       as an example.
+
 
 class ComparisonAnalysisController(BaseController):
     """Comparison Analysis Controller class"""
@@ -131,13 +135,14 @@ Finviz:
             return ["stocks", "ca", f"set {','.join(self.similar)}"]
         return []
 
+    # TODO: Figure out if this function is actually needed here
     def call_ticker(self, other_args: List[str]):
         """Process ticker command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="ticker",
-            description="""Set ticker to extract similars from""",
+            description="""Set ticker to extract similar from""",
         )
         parser.add_argument(
             "-t",

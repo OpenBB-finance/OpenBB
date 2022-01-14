@@ -13,29 +13,27 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAMVWTXPbRgz9Lzqz7ALYz9w6TaftIR6ncQ6ejKfDWrTNRhJdinLievTf+7Aka5Ny
-        J8fqsFpisVjgPWCxT6vru6rrV2+eVl29P2ww+/S02tZ9paLrQ9fVu+vH1ZvVxw9vV8Vq/7j9o93g
-        8/wdvuqv2Ly7rc+qbQ3Z2eV7CJvdvu8O23rXXzzeq/in9x9/vbjEyk3T7fuLrlrXb6seK8TGBW+8
-        MQUOvz1squ5d1X2u+4tG7ZG3JkVrDRer223f3tzsa7j3HUWjO3oo/d3u8gkfLl54czEujF79sK27
-        5rr6/qz+8vtl231eLQ47xyr0kithNINx3tUPTXvY/7hp91iJrky2WN2r3i/NDi7AoQGZHE2zuz3H
-        Ee1aEbvvav07cW7fZ5RzTBaB46x6tx4FnnJEJ0Ee/3X1mzZHE882Fbj/sHnf7vtvGhz3PxtMMb5u
-        EBbXVV/93FU7dbXpNV1orTgrHfqxbfH1UG2a9W8q2iPJBg2nw7AsefR5pEcMrIPTgYyO2+rr6uo4
-        EA9Pt/ewQl6i+KSx69Q6Z8eps+pdnkZDk0KMYVJIQUaFhBTkcUrW+3FqjZsUbOJJwYU4KXjvRrsp
-        OBrsYiTjp2kKZpxSlEmBfYrj1JObpMHQJA0x8jiFu5OxgeIrUPKAxNsrgevmoVmDofzxfIp+Vdv2
-        oKlKJbvMz1hQg8ZRSWt2a9RF33Z5+1+HVnVQ/HfN7R0mMZYRrCM0F12S4AqVBJWwE0shhSKm0qlX
-        TOJZjA1FolKTwohxFIAVFYlLLEEizicRryqGYSaGkDj5GItkSvIqIR+TdUIqcSpJPtnIllnNyNwd
-        SJyqRBtQUYRNUtKLPZSKZE/M2DKzRo5dDDGplcwSgeFghFjNhDD3Dzp2blhKlwc3d8mWNLeO4zQ7
-        2VokiOesEnh+noPbL3XA8ab9ohT4UrPRiPdMJkksYiiFZgFBsvTNlGZBiilZYfDeisGQeXMzliBh
-        hTcZFH5g71US7Ut4IfAnLGnQtEwU4DWMS8+oDDM/oLLIKKhYmh/CJQoMP5Sst/AuSzRAlI8RR84r
-        E6wQmkTOcRCbScxgL6KCxMwiB9jtfb0b0NbCfE5UQLs4GRXgee4vwF7kAJXi596ZMi5IA/525u9r
-        aMeFGUAjL2tLgTAZQxWjssk463NyphMMlxTJK5V7iupgXuuDcRM53EuiYgAyI0ROmLaldUvg51QA
-        +OuhwSryizMAfVTovQjKCEWheMhJqiz9MEieeb0AxbmOQp9Zm+Ov0S+Sm15BMcxvMnvik5R2gQSf
-        8Cgnh6NS5n6rZMG1LFMGkqVl+LO4fIG6n9OMdw6gf2g3B30efcJmcGIKvMR0bxHE5+7jQ9BsK9Ci
-        cvd0hB/+Qau6UdiITMJ/NM7lFmUkUNAN6FjayXwUzs0NDS/3Psvoz9lClPyPC1blnDi/NVjj13/P
-        rCcJS261PHZqAZzQuzrC/Wr955Q8Ty8/8FYLhsE1UcwNttA71KWI6xjmSThqEYMrsIqWS4Gm/sPw
-        HtkDHHFLI0sogVQxA5CcSz8yLl9vAcRoB645j3NwmeZLNGopCu51g+gBVM5IPEuwmkJ+RajER2es
-        iNjkTcqph8wk7RMAKvicITgDaeSyg8NdiuAVc6Rarodcroy7kgDrVA8h/b95dbw6Kjt117V4suI5
-        uDke/wExZ52eYgwAAA==
+        H4sIAAAAAAAAAO1WTXPbNhD9LzyzLBYfCyC3TtNpe4jHaZSDJ5PpsBZts5FEl6KcuB7997wFSUeE
+        3Mkf6MEQuFzsPrzdt/RTcX1X90Px6qnom/1hg92Hp2LbDLWYrg993+yuH4tXxft3r4uy2D9u/+o2
+        eLx8g6fmCw7vbpuLetvAdnH1FsZ2tx/6w7bZDavHezH/8vb976srvLlp+/2w6ut187oe8Ia0cp4V
+        K1Ui+e1hU/dv6v5TM6xaiUdsNSk46LK43Q7dzc2+AbwfKCg5McDp326XMrxbnaBZTS8mVD9tm769
+        rn+8aD7/edX1n4os2SXeSjalKypHNi775qHtDvufN90eryJV7MviXhx/a3fAAEQjNek67e72Ejm6
+        tVB23zfyc4ZuPySa5VKKrZUbNLv1ZAj4Uy/c8viM9bsxpxDPMRNz/xHzvtsP3ws4n/8WUGv1ckBE
+        XNdD/Wtf7wRqO0i/0FqIlnrIw7bD00O9add/iGmPLhs9nCzja5NWTis9YtGyOFlIyfo4iPO2/lJ8
+        PI71B97tPWIRm2ijACxl63zgacvs1LT1jmzaYiXF8zZ6NW0pmNlBcwzTlsnNVq9otvoQ9LQN3s7B
+        ItMUTNiaHMgo5nkbzexgfZzikmM3xaWg3ewQacZLMfrJYVLERxTmAe23lzKu24d2jTqlh28Xkad6
+        2x2kYanSLlVp1NXkcZTStbs15DF0fTr+z6ETH8yA7r7ZYYPmt4JZGeXIg9ky6krJEsSMQKSc5VhG
+        U0UAjYE4ROsMJR8Fi3cuuGi8Ex8nDGkyrI2yvhRtiQU0K+PAhPiM4aUuGtw6MG3EbAKCRaxsg7Up
+        oYWBow0axACCrawTH6jBes0sFq1yS8jiuMqzxGErlYKBBQFXqTOkkF4Z0mX0ZwhiJQdPEOAqFekF
+        cDHFJSpSVJkFe6jn9ThshPBzHr14G+M4GpPuYLwQq52x5KMXLmzGBRjkM2KtWCI5p72x4hOFfMOM
+        vsK9kiWrNkqWnTJnkYHn9BAl3nlZaCekuvwmDCIEtzE+RMVaXPKq+spmKGNFZlEJIVkLJcH7qCOH
+        MPIu9cIwMCiwM4l3Gb1KW+gP2VwpYz81SLAeoiVCJR66zUE+HR9wP09ogpKhcBEgB6OTJjEg0qyw
+        Olgnvy6Y9Iv8YtdRsxzQglp+WQO7Ko02aTTp6E1Iz5SmAIYB2FOlMz4l8Bg0KTEuxek9pzxesRAI
+        QF4aCPnSWC6twbDwDuA33WdpIlWJ3OhMgLoa15xjyjUgAly2GLg760telkEsZ2rWMW8fgfCSMJXL
+        myirFprD6UWVYbHLIqOlMgWigdSpTtFkAX24PBUrFRaNmKTMi74TU1g0Ogi/a2/vhHFdudM+knvS
+        cjjgPi7DYav0fSKnXUDeVJls6oCuZWO/UD1oNC1uWWxb0TI60sUlobbyepnPAXZOesjUjdmYFeac
+        Yn/WHDETv9CZRsszQBGootM+FEs2o84le0QZ6vXf8wR9On2AEjg4ZY0xFlKKNjVysCRMQMSeU5MS
+        SVpHBOWNCoEwbQhAZsa5JB8qLV9lSH4WhM9a+/95+lJxjlKfpu87/BeL/xA3x+NX5OjcUHYMAAA=
     headers:
       Age:
       - '0'
@@ -58,11 +56,11 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '1267'
+      - '1196'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Sat, 01 Jan 2022 14:44:33 GMT
+      - Fri, 14 Jan 2022 00:25:57 GMT
       server:
       - ATS
       vary:
@@ -70,13 +68,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '15'
+      - '21'
       x-request-id:
-      - a4bc0078-c5e6-4abc-b1cd-1169e43b008c
+      - 24d2440b-a788-4fbd-89f3-66644830095e
       x-yahoo-request-id:
-      - cqdqe4tgt0q6h
+      - crstdopgu1gol
       y-rid:
-      - cqdqe4tgt0q6h
+      - crstdopgu1gol
     status:
       code: 200
       message: OK

@@ -18,7 +18,8 @@ def get_government_trading(gov_type: str, ticker: str = "") -> pd.DataFrame:
     Parameters
     ----------
     gov_type: str
-        Type of government data between: Congress, Senate, House, Contracts, Quarter-Contracts and Corporate-Lobbying
+        Type of government data between:
+        'congress', 'senate', 'house', 'contracts', 'quarter-contracts' and 'corporate-lobbying'
     ticker : str
         Ticker to get congress trading data from
 
@@ -35,19 +36,19 @@ def get_government_trading(gov_type: str, ticker: str = "") -> pd.DataFrame:
         else:
             url = "https://api.quiverquant.com/beta/live/congresstrading"
 
-    elif gov_type == "senate":
+    elif gov_type.lower() == "senate":
         if ticker:
             url = f"https://api.quiverquant.com/beta/historical/senatetrading/{ticker}"
         else:
             url = "https://api.quiverquant.com/beta/live/senatetrading"
 
-    elif gov_type == "house":
+    elif gov_type.lower() == "house":
         if ticker:
             url = f"https://api.quiverquant.com/beta/historical/housetrading/{ticker}"
         else:
             url = "https://api.quiverquant.com/beta/live/housetrading"
 
-    elif gov_type == "contracts":
+    elif gov_type.lower() == "contracts":
         if ticker:
             url = (
                 f"https://api.quiverquant.com/beta/historical/govcontractsall/{ticker}"
@@ -55,13 +56,13 @@ def get_government_trading(gov_type: str, ticker: str = "") -> pd.DataFrame:
         else:
             url = "https://api.quiverquant.com/beta/live/govcontractsall"
 
-    elif gov_type == "quarter-contracts":
+    elif gov_type.lower() == "quarter-contracts":
         if ticker:
             url = f"https://api.quiverquant.com/beta/historical/govcontracts/{ticker}"
         else:
             url = "https://api.quiverquant.com/beta/live/govcontracts"
 
-    elif gov_type == "corporate-lobbying":
+    elif gov_type.lower() == "corporate-lobbying":
         if ticker:
             url = f"https://api.quiverquant.com/beta/historical/lobbying/{ticker}"
         else:
