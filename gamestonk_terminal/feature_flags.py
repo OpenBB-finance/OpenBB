@@ -48,3 +48,6 @@ OPEN_REPORT_AS_HTML = strtobool(os.getenv("GTFF_OPEN_REPORT_AS_HTML", "True"))
 
 # Enable auto print_help when exiting menus
 ENABLE_EXIT_AUTO_HELP = strtobool(os.getenv("GTFF_ENABLE_EXIT_AUTO_HELP", "False"))
+
+# Use the colorful rich terminal
+ENABLE_RICH = True
