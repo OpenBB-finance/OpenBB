@@ -578,7 +578,7 @@ class SectorIndustryAnalysisController(BaseController):
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            self.exclude_exhanges:bool = not self.exclude_exhanges
+            self.exclude_exhanges: bool = not self.exclude_exhanges
             console.print(
                 f"International exchanges {'excluded' if self.exclude_exhanges else 'included'}",
                 "\n",
