@@ -1,4 +1,3 @@
-"Controler"
 """Behavioural Analysis Controller Module"""
 __docformat__ = "numpy"
 
@@ -741,7 +740,7 @@ SentimentInvestor:
             default=100,
             type=check_positive,
             dest="number",
-            help="Number of results returned from Sentiment Investor. Defaul: 100",
+            help="Number of results returned from Sentiment Investor. Default: 100",
         )
 
         parser.add_argument(
@@ -758,7 +757,7 @@ SentimentInvestor:
             default=10,
             type=check_positive,
             dest="limit",
-            help="Number of records to display on the terminal. Defaul: 10",
+            help="Number of records to display on the terminal. Default: 10",
         )
 
         ns_parser = parse_known_args_and_warn(
