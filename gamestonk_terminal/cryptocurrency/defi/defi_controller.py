@@ -40,9 +40,11 @@ class DefiController(BaseController):
         "dpi",
         "funding",
         "lending",
-        "tvl",
         "borrow",
-        "llama",
+        "ldapps",
+        "gdapps",
+        "stvl",
+        "dtvl",
         "newsletter",
         "tokens",
         "pairs",
@@ -60,9 +62,9 @@ class DefiController(BaseController):
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+            choices["ldapps"]["-s"] = {c: {} for c in llama_model.LLAMA_FILTERS}
             choices["aterra"]["--asset"] = {c: {} for c in terraengineer_model.ASSETS}
             choices["aterra"] = {c: {} for c in terraengineer_model.ASSETS}
-            choices["llama"]["-s"] = {c: {} for c in llama_model.LLAMA_FILTERS}
             choices["tokens"]["-s"] = {c: {} for c in graph_model.TOKENS_FILTERS}
             choices["pairs"]["-s"] = {c: {} for c in graph_model.PAIRS_FILTERS}
             choices["pools"]["-s"] = {c: {} for c in graph_model.POOLS_FILTERS}
@@ -79,14 +81,17 @@ class DefiController(BaseController):
 Decentralized Finance Menu:
 
 Overview:
-    llama         DeFi protocols listed on DeFi Llama
-    tvl           Total value locked of DeFi protocols
     newsletter    Recent DeFi related newsletters
     dpi           DeFi protocols listed on DefiPulse
     funding       Funding rates - current or last 30 days average
     borrow        DeFi borrow rates - current or last 30 days average
     lending       DeFi ending rates - current or last 30 days average
     vaults        Top DeFi Vaults on different blockchains [Source: Coindix]
+Defi Llama:
+    ldapps        Lists dApps
+    gdapps        Display top DeFi dApps grouped by chain
+    stvl          Display historical values of the total sum of TVLs from all dApps
+    dtvl          Display historical total value locked (TVL) by dApp
 Uniswap:
     tokens        Tokens trade-able on Uniswap
     stats         Base statistics about Uniswap
@@ -213,14 +218,70 @@ TerraEngineer:
                 export=ns_parser.export,
             )
 
-    def call_llama(self, other_args: List[str]):
-        """Process llama command"""
+    def call_gdapps(self, other_args: List[str]):
+        """Process gdapps command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="llama",
+            prog="gdapps",
             description="""
-                Display information about listed DeFi Protocols on DeFi Llama.
+                Display top dApps (in terms of TVL) grouped by chain.
+                [Source: https://docs.llama.fi/api]
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=check_positive,
+            help="Number of top dApps to display",
+            default=40,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            llama_view.display_grouped_defi_protocols(num=ns_parser.limit)
+
+    def call_dtvl(self, other_args: List[str]):
+        """Process dtvl command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="dtvl",
+            description="""
+                Displays historical TVL of different dApps.
+                [Source: https://docs.llama.fi/api]
+            """,
+        )
+        parser.add_argument(
+            "-d",
+            "--dapps",
+            dest="dapps",
+            type=str,
+            required="-h" not in other_args,
+            help="dApps to search historical TVL. Should be split by , e.g.: anchor,sushiswap,pancakeswap",
+        )
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-d")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            llama_view.display_historical_tvl(dapps=ns_parser.dapps)
+
+    def call_ldapps(self, other_args: List[str]):
+        """Process ldapps command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ldapps",
+            description="""
+                Display information about listed dApps on DeFi Llama.
                 [Source: https://docs.llama.fi/api]
             """,
         )
@@ -273,14 +334,14 @@ TerraEngineer:
                 export=ns_parser.export,
             )
 
-    def call_tvl(self, other_args: List[str]):
-        """Process tvl command"""
+    def call_stvl(self, other_args: List[str]):
+        """Process stvl command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="tvl",
+            prog="stvl",
             description="""
-                Displays historical values of the total sum of TVLs from all listed protocols.
+                Displays historical values of the total sum of TVLs from all listed dApps.
                 [Source: https://docs.llama.fi/api]
             """,
         )

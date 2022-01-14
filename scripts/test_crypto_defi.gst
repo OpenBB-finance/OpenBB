@@ -1,7 +1,9 @@
 crypto
 defi
-llama
-tvl
+ldapps
+gdapps
+stvl
+dtvl anchor,sushiswap
 newsletter
 dpi
 funding
