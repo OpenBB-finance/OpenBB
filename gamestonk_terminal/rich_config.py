@@ -13,19 +13,19 @@ from gamestonk_terminal import feature_flags as gtff
 CUSTOM_THEME = Theme(
     {
         # information provided to the user
-        "info": "thistle1",
+        "info": "rgb(224,131,48)",
         # triggers a command
-        "cmds": "light_sky_blue1",
+        "cmds": "rgb(70,156,222)",
         # configurable parameter
-        "param": "gold3",
+        "param": "rgb(247,206,70)",
         # goes into a new menu
-        "menu": "rgb(175,0,255)",
+        "menu": "rgb(50,115,185)",
         # data sources,
-        "src": "rgb(245,245,30)",
+        "src": "rgb(216,90,64)",
         # print help,
         "help": "green",
         # unavailable command/parameter
-        "unvl": "dim",
+        "unvl": "grey30",
     }
 )
 
