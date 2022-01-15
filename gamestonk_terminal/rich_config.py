@@ -27,6 +27,21 @@ CUSTOM_THEME = Theme(
     }
 )
 
+RICH_TAGS = [
+    "[menu]",
+    "[/menu]",
+    "[cmds]",
+    "[/cmds]",
+    "[info]",
+    "[/info]",
+    "[param]",
+    "[/param]",
+    "[src]",
+    "[/src]",
+    "[help]",
+    "[/help]",
+]
+
 
 def no_panel(renderable, *args, **kwargs):  # pylint: disable=unused-argument
     return renderable
@@ -37,6 +52,13 @@ class ConsoleAndPanel:
 
     def __init__(self):
         self.console = Console(theme=CUSTOM_THEME, highlight=False, soft_wrap=True)
+
+    @staticmethod
+    def filter_rich_tags(text):
+        for val in RICH_TAGS:
+            text = text.replace(val, "")
+
+        return text
 
     def print(self, *args, **kwargs):
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
@@ -53,13 +75,12 @@ class ConsoleAndPanel:
                 else:
                     self.console.print(kwargs["text"])
             else:
-                panel.Panel = no_panel
-                print(kwargs["text"])
+                print(self.filter_rich_tags(kwargs["text"]))
         else:
             if gtff.ENABLE_RICH:
                 self.console.print(*args, **kwargs)
             else:
-                panel.Panel = no_panel
+                print(*args, **kwargs)
 
 
 console = ConsoleAndPanel()
