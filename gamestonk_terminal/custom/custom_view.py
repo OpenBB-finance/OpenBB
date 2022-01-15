@@ -12,7 +12,13 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
 
-def custom_plot(data: pd.DataFrame, y_col: str, x_col: str = "", export: str = ""):
+def custom_plot(
+    data: pd.DataFrame,
+    y_col: str,
+    x_col: str = "",
+    kind: str = "scatter",
+    export: str = "",
+):
     """Plot custom data
 
     Parameters
@@ -23,15 +29,17 @@ def custom_plot(data: pd.DataFrame, y_col: str, x_col: str = "", export: str = "
         Column for y data
     x_col: str
         Column for x data.  Uses index if not supplied.
+    kind : str
+        Kind of plot to pass to pandas plot function
     export: str
         Format to export image
     """
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     if x_col:
-        ax.scatter(data[x_col], data[y_col])
+        data.plot(x=x_col, y=y_col, kind=kind, ax=ax)
     else:
-        ax.scatter(data.index, data[y_col])
+        data.reset_index().plot(x="index", y=y_col, kind=kind, ax=ax)
     fig.tight_layout(pad=2)
     if gtff.USE_ION:
         plt.ion()

@@ -26,7 +26,19 @@ logger = logging.getLogger(__name__)
 class CustomDataController(BaseController):
     """Alternative Controller class"""
 
-    CHOICES_COMMANDS: List[str] = ["load", "plot", "head"]
+    CHOICES_COMMANDS: List[str] = ["load", "plot", "head", "info"]
+    pandas_plot_choices = [
+        "line",
+        "scatter",
+        "bar",
+        "barh",
+        "hist",
+        "box",
+        "kde",
+        "area",
+        "pie",
+        "hexbin",
+    ]
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -38,7 +50,7 @@ class CustomDataController(BaseController):
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"] = {c: None for c in self.DATA_FILES}
-
+            choices["plot"]["-k"] = {c: None for c in self.pandas_plot_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -50,6 +62,7 @@ class CustomDataController(BaseController):
 
 Current file:    {self.file or None}[cmds]{has_data_start}
     head            show first rows of loaded file
+    info            show data info (columns and datatypes)
     plot            plot data from loaded file{has_data_end}[/cmds]
             """
         console.print(text=help_text, menu="Custom")
@@ -78,6 +91,7 @@ Current file:    {self.file or None}[cmds]{has_data_start}
             file = Path("custom_imports") / ns_parser.file
             self.data = custom_model.load(file)
             self.file = ns_parser.file
+        console.print("")
 
     def call_plot(self, other_args: List[str]):
         """Process plot command"""
@@ -103,14 +117,28 @@ Current file:    {self.file or None}[cmds]{has_data_start}
             choices=list(self.data.columns),
             default="",
         )
+        parser.add_argument(
+            "-k",
+            "--kind",
+            default="scatter",
+            help="Type of plot for data",
+            choices=self.pandas_plot_choices,
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-y")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
+            if self.data.empty:
+                console.print("[red]No data loaded.[/red]\n")
+                return
             custom_view.custom_plot(
-                self.data, ns_parser.yvar, ns_parser.xvar, export=ns_parser.export
+                self.data,
+                ns_parser.yvar,
+                ns_parser.xvar,
+                kind=ns_parser.kind,
+                export=ns_parser.export,
             )
         console.print("")
 
@@ -124,4 +152,25 @@ Current file:    {self.file or None}[cmds]{has_data_start}
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if self.data.empty:
+                console.print("[red]No data loaded.[/red]\n")
+                return
             console.print(self.data.head())
+        console.print()
+
+    def call_info(self, other_args: List[str]):
+        """Process info command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="info",
+            description="Show infomration of custom data.",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if self.data.empty:
+                console.print("[red]No data loaded.[/red]\n")
+                return
+            console.print(self.data.info())
+        console.print()
