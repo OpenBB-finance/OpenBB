@@ -19,6 +19,7 @@
 - [ ] Update [our Hugo documentation](https://gamestonkterminal.github.io/GamestonkTerminal/) following [these guidelines](https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/website).
 - [ ] Update our tests following [these guidelines](https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/tests).
 - [ ] Make sure you are following our [CONTRIBUTING guidelines](https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/CONTRIBUTING.md).
+- [ ] If a feature was added make sure to add it to the corresponding [scripts file](https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/scripts).
 
 
 # Others
