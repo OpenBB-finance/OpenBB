@@ -1309,6 +1309,8 @@ class CreateExcelFA:
         soup = BeautifulSoup(r.content, "html.parser")
 
         table = soup.find("table", attrs={"class": re.compile("fintbl")})
+        if table is None:
+            return pd.DataFrame()
         head = table.find("thead")
         if head is None:
             return pd.DataFrame()
