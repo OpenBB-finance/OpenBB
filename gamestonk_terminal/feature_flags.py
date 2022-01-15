@@ -50,7 +50,7 @@ OPEN_REPORT_AS_HTML = strtobool(os.getenv("GTFF_OPEN_REPORT_AS_HTML", "True"))
 ENABLE_EXIT_AUTO_HELP = strtobool(os.getenv("GTFF_ENABLE_EXIT_AUTO_HELP", "False"))
 
 # Use the colorful rich terminal
-ENABLE_RICH = strtobool(os.getenv("GTFF_ENABLE_RICH", "True"))
+ENABLE_RICH = strtobool(os.getenv("GTFF_ENABLE_RICH", "False"))
 
 # Use the colorful rich terminal
-ENABLE_RICH_PANEL = strtobool(os.getenv("GTFF_ENABLE_RICH", "True"))
+ENABLE_RICH_PANEL = strtobool(os.getenv("GTFF_ENABLE_RICH_PANEL", "False"))

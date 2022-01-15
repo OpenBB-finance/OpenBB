@@ -1,8 +1,6 @@
 """Rich Module"""
 __docformat__ = "numpy"
 
-import sys
-
 from rich import panel
 from rich.console import Console, Theme
 from gamestonk_terminal import feature_flags as gtff
@@ -30,51 +28,42 @@ CUSTOM_THEME = Theme(
 )
 
 
-class NoConsole:
-    """Create a dummy rich console to wrap the console print"""
-
-    def print(self, *args, **kwargs):
-        print(*args, **kwargs)
+def no_panel(renderable, *args, **kwargs):  # pylint: disable=unused-argument
+    return renderable
 
 
 class ConsoleAndPanel:
     """Create a rich console to wrap the console print with a Panel"""
 
+    def __init__(self):
+        self.console = Console(theme=CUSTOM_THEME, highlight=False, soft_wrap=True)
+
     def print(self, *args, **kwargs):
-        new_console = Console(theme=CUSTOM_THEME, highlight=False, soft_wrap=True)
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
-            if gtff.ENABLE_RICH_PANEL:
-                new_console.print(
-                    panel.Panel(
-                        kwargs["text"],
-                        title=kwargs["menu"],
-                        subtitle_align="right",
-                        subtitle="Gamestonk Terminal",
+            if gtff.ENABLE_RICH:
+                if gtff.ENABLE_RICH_PANEL:
+                    self.console.print(
+                        panel.Panel(
+                            kwargs["text"],
+                            title=kwargs["menu"],
+                            subtitle_align="right",
+                            subtitle="Gamestonk Terminal",
+                        )
                     )
-                )
+                else:
+                    self.console.print(kwargs["text"])
             else:
-                new_console.print(kwargs["text"])
+                panel.Panel = no_panel
+                print(kwargs["text"])
         else:
-            new_console.print(*args, **kwargs)
+            if gtff.ENABLE_RICH:
+                self.console.print(*args, **kwargs)
+            else:
+                panel.Panel = no_panel
 
 
-def no_panel(renderable, *args, **kwargs):  # pylint: disable=unused-argument
-    return renderable
-
-
-def build_console():
-    if gtff.ENABLE_RICH:
-        new_console = ConsoleAndPanel()
-    else:
-        new_console = NoConsole()
-        panel.Panel = no_panel
-
-    return new_console
+console = ConsoleAndPanel()
 
 
 def disable_rich():
-    sys.modules[__name__].console = NoConsole()
-    sys.modules[__name__].panel.Panel = no_panel
-
-
-console = build_console()
+    gtff.ENABLE_RICH = False
