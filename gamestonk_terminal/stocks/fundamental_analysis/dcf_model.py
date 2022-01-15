@@ -2,20 +2,197 @@
 __docformat__ = "numpy"
 
 from urllib.request import urlopen
-from typing import List, Union
+from typing import List, Union, Dict
 from zipfile import ZipFile
 from io import BytesIO
+import re
 
 from sklearn.linear_model import LinearRegression
 from openpyxl.styles import Border, Side, Font, PatternFill, Alignment
 from openpyxl import worksheet
+from bs4 import BeautifulSoup
 import financedatabase as fd
 import yfinance as yf
 import pandas as pd
+import requests
 
 from gamestonk_terminal.helper_funcs import get_user_agent, excel_columns
 
 opts = Union[int, str, float]
+
+letters = excel_columns()
+
+non_gaap_is = [
+    "Revenue Growth",
+    "Net Income Common",
+    "Net Income Growth",
+    "Shares Outstanding (Basic)",
+    "Shares Outstanding (Diluted)",
+    "Shares Change",
+    "EPS (Basic)",
+    "EPS (Diluted)",
+    "EPS Growth",
+    "Free Cash Flow Per Share",
+    "Dividend Per Share",
+    "Dividend Growth",
+    "Gross Margin",
+    "Operating Margin",
+    "Profit Margin",
+    "Free Cash Flow Margin",
+    "Effective Tax Rate",
+    "EBITDA",
+    "EBITDA Margin",
+    "EBIT",
+    "EBIT Margin",
+    "Operating Expenses",
+    "Pretax Income",
+]
+gaap_is = [
+    "Revenue",
+    "Cost of Revenue",
+    "Gross Profit",
+    "Selling, General & Admin",
+    "Research & Development",
+    "Other Operating Expenses",
+    "Operating Income",
+    "Interest Expense / Income",
+    "Other Expense / Income",
+    "Income Tax",
+    "Net Income",
+    "Preferred Dividends",
+]
+non_gaap_bs = [
+    "Cash Growth",
+    "Debt Growth",
+    "Net Cash / Debt",
+    "Net Cash / Debt Growth",
+    "Net Cash Per Share",
+    "Working Capital",
+    "Book Value Per Share",
+    "Total Debt",
+]
+gaap_bs = [
+    "Cash & Equivalents",
+    "Short-Term Investments",
+    "Cash & Cash Equivalents",
+    "Receivables",
+    "Inventory",
+    "Other Current Assets",
+    "Total Current Assets",
+    "Property, Plant & Equipment",
+    "Long-Term Investments",
+    "Goodwill and Intangibles",
+    "Other Long-Term Assets",
+    "Total Long-Term Assets",
+    "Total Assets",
+    "Accounts Payable",
+    "Deferred Revenue",
+    "Current Debt",
+    "Other Current Liabilities",
+    "Total Current Liabilities",
+    "Long-Term Debt",
+    "Other Long-Term Liabilities",
+    "Total Long-Term Liabilities",
+    "Total Liabilities",
+    "Common Stock",
+    "Retained Earnings",
+    "Comprehensive Income",
+    "Shareholders' Equity",
+    "Total Liabilities and Equity",
+]
+non_gaap_cf = [
+    "Operating Cash Flow Growth",
+    "Free Cash Flow Growth",
+    "Free Cash Flow Margin",
+    "Free Cash Flow Per Share",
+    "Free Cash Flow",
+]
+
+gaap_cf = [
+    "Net Income",
+    "Depreciation & Amortization",
+    "Share-Based Compensation",
+    "Other Operating Activities",
+    "Operating Cash Flow",
+    "Capital Expenditures",
+    "Acquisitions",
+    "Change in Investments",
+    "Other Investing Activities",
+    "Investing Cash Flow",
+    "Dividends Paid",
+    "Share Issuance / Repurchase",
+    "Debt Issued / Paid",
+    "Other Financing Activities",
+    "Financing Cash Flow",
+    "Net Cash Flow",
+]
+
+sum_rows = [
+    "Gross Profit",
+    "Operating Income",
+    "Net Income",
+    "Cash & Cash Equivalents",
+    "Total Current Assets",
+    "Total Long-Term Assets",
+    "Total Assets",
+    "Total Current Liabilities",
+    "Total Long-Term Liabilities",
+    "Total Liabilities",
+    "Shareholders' Equity",
+    "Total Liabilities and Equity",
+    "Operating Cash Flow",
+    "Investing Cash Flow",
+    "Financing Cash Flow",
+    "Net Cash Flow",
+]
+
+bold_font = Font(bold=True)
+thin_border_top = Border(top=Side(style="thin"))
+thin_border_bottom = Border(bottom=Side(style="thin"))
+
+thin_border_nl = Border(
+    right=Side(style="thin"),
+    top=Side(style="thin"),
+    bottom=Side(style="thin"),
+)
+
+thin_border_nr = Border(
+    left=Side(style="thin"),
+    top=Side(style="thin"),
+    bottom=Side(style="thin"),
+)
+
+thin_border = Border(
+    left=Side(style="thin"),
+    right=Side(style="thin"),
+    top=Side(style="thin"),
+    bottom=Side(style="thin"),
+)
+
+green_bg = PatternFill(fgColor="7fe5cd", fill_type="solid")
+
+center = Alignment(horizontal="center")
+
+red = Font(color="FF0000")
+
+fmt_acct = "_($* #,##0.00_);[Red]_($* (#,##0.00);_($* -_0_0_);_(@"
+
+statement_titles = {"BS": "Balance Sheet", "CF": "Cash Flows", "IS": "Income Statement"}
+
+statement_url: Dict[str, str] = {
+    "BS": "balance-sheet/",
+    "CF": "cash-flow-statement/",
+    "IS": "Income Statement",
+}
+
+statement_ignore: Dict[str, List[str]] = {
+    "BS": non_gaap_bs,
+    "CF": non_gaap_cf,
+    "IS": non_gaap_is,
+}
+
+
+headers = {"User-Agent": get_user_agent()}
 
 
 def string_float(string: str) -> float:
@@ -232,161 +409,90 @@ def others_in_sector(ticker: str, sector: str, industry: str) -> List[str]:
     return sister_ticks
 
 
-letters = excel_columns()
+def create_dataframe(ticker: str, statement: str):
+    """
+    Creates a df financial statement for a given ticker
 
-non_gaap_is = [
-    "Revenue Growth",
-    "Net Income Common",
-    "Net Income Growth",
-    "Shares Outstanding (Basic)",
-    "Shares Outstanding (Diluted)",
-    "Shares Change",
-    "EPS (Basic)",
-    "EPS (Diluted)",
-    "EPS Growth",
-    "Free Cash Flow Per Share",
-    "Dividend Per Share",
-    "Dividend Growth",
-    "Gross Margin",
-    "Operating Margin",
-    "Profit Margin",
-    "Free Cash Flow Margin",
-    "Effective Tax Rate",
-    "EBITDA",
-    "EBITDA Margin",
-    "EBIT",
-    "EBIT Margin",
-    "Operating Expenses",
-    "Pretax Income",
-]
-gaap_is = [
-    "Revenue",
-    "Cost of Revenue",
-    "Gross Profit",
-    "Selling, General & Admin",
-    "Research & Development",
-    "Other Operating Expenses",
-    "Operating Income",
-    "Interest Expense / Income",
-    "Other Expense / Income",
-    "Income Tax",
-    "Net Income",
-    "Preferred Dividends",
-]
-non_gaap_bs = [
-    "Cash Growth",
-    "Debt Growth",
-    "Net Cash / Debt",
-    "Net Cash / Debt Growth",
-    "Net Cash Per Share",
-    "Working Capital",
-    "Book Value Per Share",
-    "Total Debt",
-]
-gaap_bs = [
-    "Cash & Equivalents",
-    "Short-Term Investments",
-    "Cash & Cash Equivalents",
-    "Receivables",
-    "Inventory",
-    "Other Current Assets",
-    "Total Current Assets",
-    "Property, Plant & Equipment",
-    "Long-Term Investments",
-    "Goodwill and Intangibles",
-    "Other Long-Term Assets",
-    "Total Long-Term Assets",
-    "Total Assets",
-    "Accounts Payable",
-    "Deferred Revenue",
-    "Current Debt",
-    "Other Current Liabilities",
-    "Total Current Liabilities",
-    "Long-Term Debt",
-    "Other Long-Term Liabilities",
-    "Total Long-Term Liabilities",
-    "Total Liabilities",
-    "Common Stock",
-    "Retained Earnings",
-    "Comprehensive Income",
-    "Shareholders' Equity",
-    "Total Liabilities and Equity",
-]
-non_gaap_cf = [
-    "Operating Cash Flow Growth",
-    "Free Cash Flow Growth",
-    "Free Cash Flow Margin",
-    "Free Cash Flow Per Share",
-    "Free Cash Flow",
-]
+    Parameters
+    ----------
+    ticker : str
+        The ticker to create a dataframe for
+    statement : str
+        The financial statement dataframe to create
 
-gaap_cf = [
-    "Net Income",
-    "Depreciation & Amortization",
-    "Share-Based Compensation",
-    "Other Operating Activities",
-    "Operating Cash Flow",
-    "Capital Expenditures",
-    "Acquisitions",
-    "Change in Investments",
-    "Other Investing Activities",
-    "Investing Cash Flow",
-    "Dividends Paid",
-    "Share Issuance / Repurchase",
-    "Debt Issued / Paid",
-    "Other Financing Activities",
-    "Financing Cash Flow",
-    "Net Cash Flow",
-]
+    Returns
+    -------
+    statement : pd.DataFrame
+        The financial statement requested
+    rounding : int
+        The amount of rounding to use
+    """
+    URL = f"https://stockanalysis.com/stocks/{ticker}/financials/"
+    URL += statement_url[statement]
+    ignores = statement_ignore[statement]
 
-sum_rows = [
-    "Gross Profit",
-    "Operating Income",
-    "Net Income",
-    "Cash & Cash Equivalents",
-    "Total Current Assets",
-    "Total Long-Term Assets",
-    "Total Assets",
-    "Total Current Liabilities",
-    "Total Long-Term Liabilities",
-    "Total Liabilities",
-    "Shareholders' Equity",
-    "Total Liabilities and Equity",
-    "Operating Cash Flow",
-    "Investing Cash Flow",
-    "Financing Cash Flow",
-    "Net Cash Flow",
-]
+    r = requests.get(URL, headers=headers)
 
-bold_font = Font(bold=True)
-thin_border_top = Border(top=Side(style="thin"))
-thin_border_bottom = Border(bottom=Side(style="thin"))
+    if "404 - Page Not Found" in r.text:
+        raise ValueError("The ticker given is not in the stock analysis website.")
+    soup = BeautifulSoup(r.content, "html.parser")
 
-thin_border_nl = Border(
-    right=Side(style="thin"),
-    top=Side(style="thin"),
-    bottom=Side(style="thin"),
-)
+    table = soup.find("table", attrs={"class": re.compile("fintbl")})
+    head = table.find("thead")
+    columns = head.find_all("th")
 
-thin_border_nr = Border(
-    left=Side(style="thin"),
-    top=Side(style="thin"),
-    bottom=Side(style="thin"),
-)
+    years = [x.get_text().strip() for x in columns if "-" not in x.get_text().strip()]
+    len_data = len(years) - 1
 
-thin_border = Border(
-    left=Side(style="thin"),
-    right=Side(style="thin"),
-    top=Side(style="thin"),
-    bottom=Side(style="thin"),
-)
+    phrase = soup.find("div", attrs={"class": "text-sm text-gray-600 block lg:hidden"})
+    phrase = phrase.get_text().lower()
 
-green_bg = PatternFill(fgColor="7fe5cd", fill_type="solid")
+    if "thousand" in phrase:
+        rounding = 1_000
+    elif "millions" in phrase:
+        rounding = 1_000_000
+    elif "billions" in phrase:
+        rounding = 1_000_000_000
+    else:
+        raise ValueError("Improper rounding provided")
 
-center = Alignment(horizontal="center")
+    body = table.find("tbody")
+    rows = body.find_all("tr")
 
-red = Font(color="FF0000")
+    all_data = [
+        [
+            x.get_text().strip() if x.get_text().strip() != "-" else "0"
+            for x in y.find_all("td")
+        ]
+        for y in rows
+    ]
 
-fmt_acct = "_($* #,##0.00_);[Red]_($* (#,##0.00);_($* -_0_0_);_(@"
+    df = pd.DataFrame(data=all_data)
+    df = df.loc[:, ~(df == "Upgrade").any()]
+    df = df.set_index(0)
+    n = df.shape[1] - len_data
+    if n > 0:
+        df = df.iloc[:, :-n]
+    df.columns = years[1:]
 
-headers = {"User-Agent": get_user_agent()}
+    for ignore in ignores:
+        if ignore in df.index:
+            df = df.drop([ignore])
+    df = df[df.columns[::-1]]
+
+    if statement == "IS":
+        vals = ["Revenue", gaap_is]
+    elif statement == "BS":
+        vals = ["Cash & Equivalents", gaap_bs]
+    elif statement == "CF":
+        vals = ["Net Income", gaap_cf]
+
+    if vals[0] in df.index:
+        blank_list = ["0" for _ in df.loc[vals[0]].to_list()]
+    else:
+        raise ValueError("Dataframe does not have key information.")
+    for i, _ in enumerate(vals[1][1:]):
+        df = insert_row(vals[1][i + 1], vals[1][i], df, blank_list)
+
+    # not giving: len_date, rounding, years
+    return df, rounding

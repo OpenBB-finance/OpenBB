@@ -11,21 +11,15 @@ from openpyxl.styles.numbers import FORMAT_PERCENTAGE_00
 from openpyxl import Workbook, worksheet
 from openpyxl.styles import Font
 from sklearn.linear_model import LinearRegression
-from bs4 import BeautifulSoup
-import regex as re
 import yfinance as yf
 import pandas as pd
 import numpy as np
-import requests
 
 from gamestonk_terminal.stocks.fundamental_analysis import dcf_model
 from gamestonk_terminal.helper_funcs import get_rf
 from gamestonk_terminal.rich_config import console
 
-# pylint: disable=R0902
-# pylint: disable=R0912
-# pylint: disable=C0302
-# pylint: disable=R0915
+# R0902, R0912, C0302, R0915
 
 int_or_str = Union[int, str]
 
@@ -47,7 +41,6 @@ class CreateExcelFA:
         self.cf_start: int = 47
         self.len_data: int = 0
         self.len_pred: int = 10
-        self.years: List[str] = []
         self.rounding: int = 0
         self.df_bs: pd.DataFrame = self.get_data("BS", self.bs_start, False)
         self.df_is: pd.DataFrame = self.get_data("IS", self.is_start, True)
@@ -96,95 +89,11 @@ class CreateExcelFA:
             )
 
     def get_data(self, statement: str, row: int, header: bool) -> pd.DataFrame:
-        URL = f"https://stockanalysis.com/stocks/{self.ticker}/financials/"
-        if statement == "BS":
-            URL += "balance-sheet/"
-            title = "Balance Sheet"
-            ignores = dcf_model.non_gaap_bs
-        if statement == "CF":
-            URL += "cash-flow-statement/"
-            title = "Cash Flows"
-            ignores = dcf_model.non_gaap_cf
-        if statement == "IS":
-            title = "Income Statement"
-            ignores = dcf_model.non_gaap_is
+        df, rounding = dcf_model.create_dataframe(self.ticker, statement)
+        self.rounding = rounding
 
-        r = requests.get(URL, headers=dcf_model.headers)
-
-        if "404 - Page Not Found" in r.text:
-            raise ValueError("The ticker given is not in the stock analysis website.")
-        soup = BeautifulSoup(r.content, "html.parser")
-
-        table = soup.find("table", attrs={"class": re.compile("fintbl")})
-        head = table.find("thead")
-        columns = head.find_all("th")
-
-        if self.years == []:
-            self.years = [
-                x.get_text().strip() for x in columns if "-" not in x.get_text().strip()
-            ]
-            self.len_data = len(self.years) - 1
-
-        if self.rounding == 0:
-            phrase = (
-                soup.find(
-                    "div", attrs={"class": "text-sm text-gray-600 block lg:hidden"}
-                )
-                .get_text()
-                .lower()
-            )
-
-            if "thousand" in phrase:
-                self.rounding = 1_000
-            elif "millions" in phrase:
-                self.rounding = 1_000_000
-            elif "billions" in phrase:
-                self.rounding = 1_000_000_000
-            else:
-                raise ValueError(
-                    "Stock Analysis did not specify a proper rounding amount"
-                )
-
-        body = table.find("tbody")
-        rows = body.find_all("tr")
-
-        all_data = [
-            [
-                x.get_text().strip() if x.get_text().strip() != "-" else "0"
-                for x in y.find_all("td")
-            ]
-            for y in rows
-        ]
-
-        df = pd.DataFrame(data=all_data)
-        df = df.loc[:, ~(df == "Upgrade").any()]
-        df = df.set_index(0)
-        n = df.shape[1] - self.len_data
-        if n > 0:
-            df = df.iloc[:, :-n]
-        df.columns = self.years[1:]
-
-        for ignore in ignores:
-            if ignore in df.index:
-                df = df.drop([ignore])
-        df = df[df.columns[::-1]]
-
-        self.ws1[f"A{row}"] = title
+        self.ws1[f"A{row}"] = dcf_model.statement_titles[statement]
         self.ws1[f"A{row}"].font = dcf_model.bold_font
-
-        if statement == "IS":
-            vals = ["Revenue", dcf_model.gaap_is]
-        elif statement == "BS":
-            vals = ["Cash & Equivalents", dcf_model.gaap_bs]
-        elif statement == "CF":
-            vals = ["Net Income", dcf_model.gaap_cf]
-
-        if vals[0] in df.index:
-            blank_list = ["0" for _ in df.loc[vals[0]].to_list()]
-        else:
-            raise ValueError("Dataframe does not have key information.")
-        for i, _ in enumerate(vals[1][1:]):
-            df = dcf_model.insert_row(vals[1][i + 1], vals[1][i], df, blank_list)
 
         rowI = row + 1
         names = df.index.values.tolist()
@@ -230,7 +139,7 @@ class CreateExcelFA:
         return df
 
     def add_estimates(self):
-        last_year = self.years[1]
+        last_year = self.years[1]  # Replace with columns in DF
         col = self.len_data + 1
         for i in range(self.len_pred):
             dcf_model.set_cell(
@@ -1277,7 +1186,8 @@ class CreateExcelFA:
         new_list = []
         while i < 3 and sisters:
             sister_ret = [
-                self.get_sister_data(x, sisters[0]) for x in ["BS", "IS", "CF"]
+                self.dcf_model.create_dataframe(x, sisters[0])
+                for x in ["BS", "IS", "CF"]
             ]
             blank = [x.empty for x in sister_ret]
             if True in blank:
@@ -1292,84 +1202,3 @@ class CreateExcelFA:
                 sisters.pop(0)
 
         self.sister_data = new_list
-
-    def get_sister_data(self, statement: str, ticker: str) -> pd.DataFrame:
-        URL = f"https://stockanalysis.com/stocks/{ticker}/financials/"
-        if statement == "BS":
-            URL += "balance-sheet/"
-            ignores = dcf_model.non_gaap_bs
-        if statement == "CF":
-            URL += "cash-flow-statement/"
-            ignores = dcf_model.non_gaap_cf
-        if statement == "IS":
-            ignores = dcf_model.non_gaap_is
-
-        r = requests.get(URL, headers=dcf_model.headers)
-
-        soup = BeautifulSoup(r.content, "html.parser")
-
-        table = soup.find("table", attrs={"class": re.compile("fintbl")})
-        if table is None:
-            return pd.DataFrame()
-        head = table.find("thead")
-        if head is None:
-            return pd.DataFrame()
-        columns = head.find_all("th")
-
-        if self.years == []:
-            self.years = [
-                x.get_text().strip() for x in columns if "-" not in x.get_text().strip()
-            ]
-            self.len_data = len(self.years) - 1
-
-        if self.rounding == 0:
-            phrase = (
-                soup.find(
-                    "div", attrs={"class": "text-sm text-gray-600 block lg:hidden"}
-                )
-                .get_text()
-                .lower()
-            )
-            if "thousand" in phrase:
-                self.rounding = 1_000
-            elif "millions" in phrase:
-                self.rounding = 1_000_000
-            elif "billions" in phrase:
-                self.rounding = 1_000_000_000
-            else:
-                return pd.DataFrame
-
-        body = table.find("tbody")
-        rows = body.find_all("tr")
-
-        all_data = [[x.get_text().strip() for x in y.find_all("td")] for y in rows]
-
-        df = pd.DataFrame(data=all_data)
-        df = df.loc[:, ~(df == "Upgrade").any()]
-        df = df.set_index(0)
-        n = df.shape[1] - self.len_data
-        if n > 0:
-            df = df.iloc[:, :-n]
-
-        df.columns = self.years[1:]
-
-        for ignore in ignores:
-            if ignore in df.index:
-                df = df.drop([ignore])
-        df = df[df.columns[::-1]]
-
-        if statement == "IS":
-            vals = ["Revenue", dcf_model.gaap_is]
-        elif statement == "BS":
-            vals = ["Cash & Equivalents", dcf_model.gaap_bs]
-        elif statement == "CF":
-            vals = ["Net Income", dcf_model.gaap_cf]
-
-        if vals[0] in df.index:
-            blank_list = ["0" for _ in df.loc[vals[0]].to_list()]
-        else:
-            return pd.DataFrame()
-        for i, _ in enumerate(vals[1][1:]):
-            df = dcf_model.insert_row(vals[1][i + 1], vals[1][i], df, blank_list)
-
-        return df
