@@ -6,6 +6,7 @@ from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.stocks.options import calculator_model
+from gamestonk_terminal.rich_config import console
 
 
 def view_calculator(
@@ -85,4 +86,4 @@ Max loss: Unlimited\n"""
         print_string += f"""Max profit: Unlimited
 Max loss: ${-100 * premium}\n"""
 
-    print(print_string)
+    console.print(print_string)

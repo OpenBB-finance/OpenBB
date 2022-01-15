@@ -9,6 +9,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.economy import cnn_model
 from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -29,7 +30,7 @@ def fear_and_greed_index(indicator: str, export: str):
 
     report, im = cnn_model.get_feargreed_report(indicator, fig)
 
-    print(report)
+    console.print(report)
 
     if indicator:
         plt.imshow(im)

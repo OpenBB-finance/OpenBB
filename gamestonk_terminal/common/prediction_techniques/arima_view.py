@@ -25,6 +25,7 @@ from gamestonk_terminal.helper_funcs import (
     patch_pandas_text_adjustment,
     plot_autoscale,
 )
+from gamestonk_terminal.rich_config import console
 
 
 register_matplotlib_converters()
@@ -83,7 +84,7 @@ def display_arima(
             )[1:]
 
         if future_index[-1] > datetime.datetime.now():
-            print(
+            console.print(
                 "Backtesting not allowed, since End Date + Prediction days is in the future\n"
             )
             return
@@ -109,8 +110,8 @@ def display_arima(
     df_pred = pd.Series(l_predictions, index=l_pred_days, name="Price")
 
     if results:
-        print(model.summary())
-        print("")
+        console.print(model.summary())
+        console.print("")
 
     # Plotting
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -287,8 +288,8 @@ def display_arima(
                 )
             else:
                 patch_pandas_text_adjustment()
-                print("Time         Real [$]  x  Prediction [$]")
-                print(
+                console.print("Time         Real [$]  x  Prediction [$]")
+                console.print(
                     df_pred.apply(
                         price_prediction_backtesting_color, axis=1
                     ).to_string()
@@ -310,13 +311,13 @@ def display_arima(
                     )
                 )
             else:
-                print(df_pred[["Real", "Prediction"]].round(2).to_string())
+                console.print(df_pred[["Real", "Prediction"]].round(2).to_string())
 
-        print("")
+        console.print("")
         print_prediction_kpis(df_pred["Real"].values, df_pred["Prediction"].values)
 
     else:
         # Print prediction data
         print_pretty_prediction(df_pred, values.values[-1])
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "arima")
-    print("")
+    console.print("")

@@ -12,6 +12,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.stocks.insider import businessinsider_model
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -165,7 +166,7 @@ def insider_activity(
 
         plt.show()
 
-    print("")
+    console.print("")
 
     export_data(
         export,

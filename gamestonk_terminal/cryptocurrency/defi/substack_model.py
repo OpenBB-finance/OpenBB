@@ -8,6 +8,8 @@ import requests
 from bs4 import BeautifulSoup
 from dateutil import parser
 
+from gamestonk_terminal.rich_config import console
+
 
 def scrape_substack(url: str) -> list:
     """Helper method to scrape newsletters from substack.
@@ -66,7 +68,7 @@ def get_newsletters() -> pd.DataFrame:
             try:
                 newsletters.append(pd.DataFrame(newsletter))
             except KeyError as e:
-                print(e, "\n")
+                console.print(e, "\n")
                 continue
 
     df = pd.concat(newsletters, ignore_index=True)

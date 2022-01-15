@@ -11,6 +11,7 @@ from gamestonk_terminal.stocks.dark_pool_shorts import nyse_model
 from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
 from gamestonk_terminal.feature_flags import USE_ION, USE_TABULATE_DF
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.rich_config import console
 
 
 def display_short_by_exchange(
@@ -42,7 +43,7 @@ def display_short_by_exchange(
         by="Date"
     )
     if volume_by_exchange.empty:
-        print(
+        console.print(
             "No short data found.  Ping @terp340 on discord if you believe this is an error."
         )
 
@@ -50,7 +51,7 @@ def display_short_by_exchange(
         if sort in volume_by_exchange.columns:
             volume_by_exchange = volume_by_exchange.sort_values(by=sort, ascending=asc)
         else:
-            print(
+            console.print(
                 f"{sort} not a valid option.  Selectone of {list(volume_by_exchange.columns)}.  Not sorting."
             )
 
@@ -77,7 +78,7 @@ def display_short_by_exchange(
 
     if raw:
         if not USE_TABULATE_DF:
-            print(volume_by_exchange.head(20).to_string())
+            console.print(volume_by_exchange.head(20).to_string())
         else:
             print(
                 tabulate(
@@ -87,7 +88,7 @@ def display_short_by_exchange(
                     headers=volume_by_exchange.columns,
                 )
             )
-    print("")
+    console.print("")
     if export:
         export_data(
             export,

@@ -5,7 +5,7 @@ import argparse
 from datetime import datetime
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -114,13 +114,13 @@ class DiscoveryController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """
-Geek of Wall St:
+        help_text = """[cmds]
+[src][Geek of Wall St][/src]
     rtearn         realtime earnings from and expected moves
-Finnhub:
+[src][Finnhub][/src]
     pipo           past IPOs dates
     fipo           future IPOs dates
-Yahoo Finance:
+[src][Yahoo Finance][/src]
     gainers        show latest top gainers
     losers         show latest top losers
     ugs            undervalued stocks with revenue and earnings growth in excess of 25%
@@ -128,22 +128,22 @@ Yahoo Finance:
     active         most active stocks by intraday trade volume
     ulc            potentially undervalued large cap stocks
     asc            small cap stocks with earnings growth rates better than 25%
-Fidelity:
+[src][Fidelity][/src]
     ford           orders by Fidelity Customers
-cathiesark.com:
+[src][Cathiesark.com][/src]
     arkord         orders by ARK Investment Management LLC
-Seeking Alpha:
+[src][Seeking Alpha][/src]
     upcoming       upcoming earnings release dates
     trending       trending news
     cnews          customized news (buybacks, ipos, spacs, healthcare, politics)
-shortinterest.com
+[src][Shortinterest.com][/src]
     lowfloat       low float stocks under 10M shares float
-pennystockflow.com
+[src][Pennystockflow.com][/src]
     hotpenny       today's hot penny stocks
-NASDAQ Data Link (Formerly Quandl):
-    rtat           top 10 retail traded stocks per day
+[src][NASDAQ Data Link (Formerly Quandl)][/src]
+    rtat           top 10 retail traded stocks per day[/cmds]
 """
-        print(help_text)
+        console.print(text=help_text, menu="Stocks - Discovery")
 
     def call_rtearn(self, other_args: List[str]):
         """Process rtearn command"""

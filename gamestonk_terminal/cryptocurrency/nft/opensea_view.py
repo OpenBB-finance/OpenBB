@@ -5,6 +5,7 @@ from tabulate import tabulate
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.cryptocurrency.nft.opensea_model import get_collection_stats
+from gamestonk_terminal.rich_config import console
 
 
 def display_collection_stats(slug: str, export: str):
@@ -20,7 +21,7 @@ def display_collection_stats(slug: str, export: str):
 
     collection_stats_df = get_collection_stats(slug)
     if collection_stats_df.empty:
-        print("No data found.", "\n")
+        console.print("No data found.", "\n")
     else:
         if gtff.USE_TABULATE_DF:
             print(
@@ -34,7 +35,7 @@ def display_collection_stats(slug: str, export: str):
                 "\n",
             )
         else:
-            print(collection_stats_df.to_string, "\n")
+            console.print(collection_stats_df.to_string, "\n")
 
     export_data(
         export,

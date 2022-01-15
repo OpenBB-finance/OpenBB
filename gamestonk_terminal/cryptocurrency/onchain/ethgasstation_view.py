@@ -5,6 +5,7 @@ from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.cryptocurrency.onchain.ethgasstation_model import get_gwei_fees
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def display_gwei_fees(export: str) -> None:
@@ -20,9 +21,9 @@ def display_gwei_fees(export: str) -> None:
     df_fees = get_gwei_fees()
 
     if df_fees.empty:
-        print("\nError in ethgasstation request\n")
+        console.print("\nError in ethgasstation request\n")
     else:
-        print("\nCurrent ETH gas fees (gwei):")
+        console.print("\nCurrent ETH gas fees (gwei):")
 
         if gtff.USE_TABULATE_DF:
             print(
@@ -36,7 +37,7 @@ def display_gwei_fees(export: str) -> None:
                 "\n",
             )
         else:
-            print(df_fees.to_string(index=False), "\n")
+            console.print(df_fees.to_string(index=False), "\n")
 
         export_data(
             export,

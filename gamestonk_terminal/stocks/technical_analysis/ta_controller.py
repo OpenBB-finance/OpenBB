@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -101,48 +101,48 @@ class TechnicalAnalysisController(BaseController):
         """Print help"""
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.start:
-            stock_str = f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            stock_str = (
+                f"{s_intraday} {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            )
         else:
-            stock_str = f"\n{s_intraday} Stock: {self.ticker}"
+            stock_str = f"{s_intraday} {self.ticker}"
 
-        help_str = f"""
-Technical Analysis Menu:
+        help_text = f"""
+[param]Stock: [/param]{stock_str}[cmds]
 
-{stock_str}
+    view        view historical data and trendlines [src][Finviz][/src]
+    summary     technical summary report [src][FinBrain][/src]
+    recom       recommendation based on Technical Indicators [src][Tradingview][/src]
 
-    view        view historical data and trendlines [Finviz]
-    summary     technical summary report [FinBrain API]
-    recom       recommendation based on Technical Indicators [Tradingview API]
-
-Overlap:
+[info]Overlap:[/info]
     ema         exponential moving average
     sma         simple moving average
     wma         weighted moving average
     hma         hull moving average
     zlma        zero lag moving average
     vwap        volume weighted average price
-Momentum:
+[info]Momentum:[/info]
     cci         commodity channel index
     macd        moving average convergence/divergence
     rsi         relative strength index
     stoch       stochastic oscillator
     fisher      fisher transform
     cg          centre of gravity
-Trend:
+[info]Trend:[/info]
     adx         average directional movement index
     aroon       aroon indicator
-Volatility:
+[info]Volatility:[/info]
     bbands      bollinger bands
     donchian    donchian channels
     kc          keltner channels
-Volume:
+[info]Volume:[/info]
     ad          accumulation/distribution line
     adosc       chaikin oscillator
     obv         on balance volume
-Custom:
-    fib         fibonacci retracement
+[info]Custom:[/info]
+    fib         fibonacci retracement[/cmds]
 """
-        print(help_str)
+        console.print(text=help_text, menu="Stocks - Technical Analysis")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -609,7 +609,7 @@ Custom:
         if ns_parser:
             # Daily
             if self.interval == "1440min":
-                print("VWAP should be used with intraday data. \n")
+                console.print("VWAP should be used with intraday data. \n")
                 return
 
             overlap_view.view_vwap(

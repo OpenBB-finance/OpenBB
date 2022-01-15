@@ -4,9 +4,9 @@ __docformat__ = "numpy"
 import argparse
 from typing import List, Dict
 
-from rich.console import Console
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.economy.fred import fred_view, fred_model
@@ -19,8 +19,6 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.menu import session
 
 # pylint: disable=import-outside-toplevel
-
-t_console = Console()
 
 
 class FredController(BaseController):
@@ -45,23 +43,23 @@ class FredController(BaseController):
         id_string = ""
         for s_id, sub_dict in self.current_series.items():
             id_string += (
-                f"    [blue]{s_id.upper()}{(self.long_id-len(s_id)) * ' '}[/blue] :"
+                f"    {s_id.upper()}{(self.long_id-len(s_id)) * ' '} :"
                 f" [italic]{sub_dict['title']}[/italic]\n"
             )
         if not id_string:
             id_string += "    [bold][red]None[/red][/bold]\n"
-        help_text = f"""
+        help_text = f"""[cmds]
     search        search FRED series notes
     add           add series ID to list
-    rmv           remove series ID from list
+    rmv           remove series ID from list[/cmds]
 
-Current Series IDs:
-{id_string}{'[dim]'if not self.current_series else ""}
-    plot          plot selected series {'[/dim]'if not self.current_series else ""}
-{'[dim]'if len(self.current_series.keys())!=1 else ""}
->   pred          prediction techniques (single SeriesID){'[/dim]'if len(self.current_series.keys())!=1 else ""}
+[param]Current Series IDs:[/param]
+{id_string}{'[dim]'if not self.current_series else ""}[cmds]
+    plot          plot selected series [/cmds]{'[/dim]'if not self.current_series else ""}
+{'[dim]'if len(self.current_series.keys())!=1 else ""}[menu]
+>   pred          prediction techniques (single SeriesID)[/menu]{'[/dim]'if len(self.current_series.keys())!=1 else ""}
         """
-        t_console.print(help_text)
+        console.print(text=help_text, menu="Economy - Federal Reserve Economic Data")
 
     def call_search(self, other_args: List[str]):
         """Process search command"""
@@ -129,9 +127,9 @@ Current Series IDs:
                     }
                     self.long_id = max(self.long_id, len(s_id))
                 else:
-                    t_console.print(f"[red]{s_id} not found[/red].")
+                    console.print(f"[red]{s_id} not found[/red].")
 
-            t_console.print(
+            console.print(
                 f"Current Series:[blue] {', '.join(self.current_series.keys()) .upper() or None}[/blue]\n"
             )
 
@@ -176,10 +174,10 @@ Current Series IDs:
             if ns_parser.all:
                 self.current_series = {}
                 self.long_id = 0
-                t_console.print("")
+                console.print("")
 
             self.current_series.pop(ns_parser.series_id)
-            t_console.print(
+            console.print(
                 f"Current Series Ids: [blue]{', '.join(self.current_series.keys()) or None}[/blue]\n"
             )
 
@@ -228,10 +226,10 @@ Current Series IDs:
     def call_pred(self, _):
         """Process pred command"""
         if not self.current_series:
-            t_console.print("Please select 1 Series to use.\n")
+            console.print("Please select 1 Series to use.\n")
             return
         if len(self.current_series.keys()) != 1:
-            t_console.print("Only 1 Series can be input into prediction.\n")
+            console.print("Only 1 Series can be input into prediction.\n")
             return
         from gamestonk_terminal.economy.fred.prediction.pred_controller import (
             PredictionTechniquesController,

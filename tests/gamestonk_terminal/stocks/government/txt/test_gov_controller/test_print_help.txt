@@ -1,4 +1,6 @@
 
+[QuiverQuant]
+
 Explore:
     lasttrades           last trades
     topbuys              show most purchased stocks
@@ -9,10 +11,10 @@ Explore:
 
     load                 load a specific ticker for analysis
 
-Ticker: None[2m
+Ticker: None[unvl]
 
     gtrades              show government trades for ticker
     contracts            show government contracts for ticker
     histcont             show historical quarterly government contracts for ticker
-    lobbying             corporate lobbying details for ticker[0m
+    lobbying             corporate lobbying details for ticker[/unvl]
             

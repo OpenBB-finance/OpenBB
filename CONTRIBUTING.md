@@ -196,6 +196,7 @@ __docformat__ = "numpy"
 
 import os
 from tabulate import tabulate
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.stocks.dark_pool_shorts import yahoofinance_model
 
@@ -215,7 +216,7 @@ def display_most_shorted(num_stocks: int, export: str):
     df = df.replace(float("NaN"), "")
 
     if df.empty:
-        print("No data found.")
+        console.print("No data found.")
     else:
         print(
             tabulate(
@@ -226,7 +227,7 @@ def display_most_shorted(num_stocks: int, export: str):
                 tablefmt="fancy_grid",
             )
         )
-    print("")
+    console.print("")
 
     export_data(
         export,

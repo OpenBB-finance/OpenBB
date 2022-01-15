@@ -6,6 +6,8 @@ import pandas as pd
 
 from gamestonk_terminal import config_terminal as cfg
 
+from gamestonk_terminal.rich_config import console
+
 
 def get_pattern_recognition(ticker: str, resolution: str) -> pd.DataFrame:
     """Get pattern recognition data
@@ -33,8 +35,8 @@ def get_pattern_recognition(ticker: str, resolution: str) -> pd.DataFrame:
         if "points" in d_data:
             return pd.DataFrame(d_data["points"]).T
         else:
-            print("Response is empty")
+            console.print("Response is empty")
             return pd.DataFrame()
     else:
-        print(f"Error in requests with code: {response.status_code}")
+        console.print(f"Error in requests with code: {response.status_code}")
         return pd.DataFrame()

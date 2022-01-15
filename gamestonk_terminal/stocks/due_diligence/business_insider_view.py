@@ -13,6 +13,7 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -61,7 +62,7 @@ def price_target_from_analysts(
                 )
             )
         else:
-            print(df_analyst_data.head(num).to_string())
+            console.print(df_analyst_data.head(num).to_string())
 
     else:
         plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -95,7 +96,7 @@ def price_target_from_analysts(
             plt.ion()
         plt.gcf().autofmt_xdate()
         plt.show()
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -130,7 +131,7 @@ def estimates(ticker: str, export: str):
             tablefmt="fancy_grid",
         ),
     )
-    print("")
+    console.print("")
     print(
         tabulate(
             df_quarter_earnings,
@@ -140,7 +141,7 @@ def estimates(ticker: str, export: str):
             tablefmt="fancy_grid",
         ),
     )
-    print("")
+    console.print("")
     print(
         tabulate(
             df_quarter_revenues,
@@ -150,7 +151,7 @@ def estimates(ticker: str, export: str):
             tablefmt="fancy_grid",
         )
     )
-    print("")
+    console.print("")
 
     export_data(
         export,

@@ -16,6 +16,7 @@ from gamestonk_terminal.portfolio import (
     yfinance_model,
     portfolio_helper,
 )
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=E1136
 # pylint: disable=unsupported-assignment-operation
@@ -55,7 +56,7 @@ def load_df(name: str) -> pd.DataFrame:
         A DataFrame with historical trading information
     """
     if ".csv" not in name and ".xlsx" not in name and ".json" not in name:
-        print(
+        console.print(
             "Please submit as 'filename.filetype' with filetype being csv, xlsx, or json\n"
         )
         return pd.DataFrame()
@@ -78,13 +79,15 @@ def load_df(name: str) -> pd.DataFrame:
         for item in ["Quantity", "Price", "Fees", "Premium"]:
             result = any(df[item] < 0)
             if result:
-                print(
+                console.print(
                     f"The column '{item}' has a negative value. Ensure all values are positive."
                 )
                 return pd.DataFrame()
 
         if len(df[~df["Type"].isin(["cash", "stock"])].index):
-            print("Warning: 'Type' other than 'cash' and 'stock' will be ignored.")
+            console.print(
+                "Warning: 'Type' other than 'cash' and 'stock' will be ignored."
+            )
 
         if len(
             df[
@@ -93,7 +96,9 @@ def load_df(name: str) -> pd.DataFrame:
                 .isin(["buy", "sell", "interest", "deposit", "withdrawal"])
             ].index
         ):
-            print("Warning: 'Side' must be buy, sell, interest, deposit, or withdrawal")
+            console.print(
+                "Warning: 'Side' must be buy, sell, interest, deposit, or withdrawal"
+            )
             return pd.DataFrame()
 
         return df

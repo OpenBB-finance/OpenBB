@@ -2206,20 +2206,6 @@ toml = "*"
 virtualenv = ">=20.0.8"
 
 [[package]]
-name = "prettytable"
-version = "2.5.0"
-description = "A simple Python library for easily displaying tabular data in a visually appealing ASCII table format"
-category = "main"
-optional = false
-python-versions = ">=3.6"
-
-[package.dependencies]
-wcwidth = "*"
-
-[package.extras]
-tests = ["pytest", "pytest-cov", "pytest-lazy-fixture"]
-
-[[package]]
 name = "prometheus-client"
 version = "0.12.0"
 description = "Python client for the Prometheus monitoring system."
@@ -3320,7 +3306,7 @@ name = "termcolor"
 version = "1.1.0"
 description = "ANSII Color formatting for output in terminal."
 category = "main"
-optional = false
+optional = true
 python-versions = "*"
 
 [[package]]
@@ -3491,14 +3477,6 @@ types-urllib3 = "<1.27"
 name = "types-tabulate"
 version = "0.8.5"
 description = "Typing stubs for tabulate"
-category = "dev"
-optional = false
-python-versions = "*"
-
-[[package]]
-name = "types-termcolor"
-version = "1.1.3"
-description = "Typing stubs for termcolor"
 category = "dev"
 optional = false
 python-versions = "*"
@@ -3796,7 +3774,7 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "e35d8e3392ea50417f375c2616b56205dc88dc9d9e0d0de6d761f267f25ce794"
+content-hash = "6481960741aeb5ea869912bd6903d2f80d58416be6b0006c2b9ce3f737b84a86"
 
 [metadata.files]
 absl-py = [
@@ -4156,6 +4134,7 @@ cvxpy = [
     {file = "cvxpy-1.1.18-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:9f82ca609e34577062940d5c32bc1f687fcf83d39ca92ec0d04fb1f290b43355"},
     {file = "cvxpy-1.1.18-cp39-cp39-manylinux_2_24_x86_64.whl", hash = "sha256:569f7298539a2bd8704209628af11ecf1bca0cff2d5e27c46b57ffea921a01cf"},
     {file = "cvxpy-1.1.18-cp39-cp39-win_amd64.whl", hash = "sha256:2eb079877d23f03494141102d6cf9d3139edf5e1dc07bfa3f767f4c79e837ecb"},
+    {file = "cvxpy-1.1.18.tar.gz", hash = "sha256:5baefe1f2ed6937749b293586c6ce4f42ed30e7890223f7661ccb2bb7df70bef"},
 ]
 cycler = [
     {file = "cycler-0.11.0-py3-none-any.whl", hash = "sha256:3a27e95f763a428a739d2add979fa7494c912a32c17c4c38c4d5f082cad165a3"},
@@ -5251,10 +5230,6 @@ pre-commit = [
     {file = "pre_commit-2.16.0-py2.py3-none-any.whl", hash = "sha256:758d1dc9b62c2ed8881585c254976d66eae0889919ab9b859064fc2fe3c7743e"},
     {file = "pre_commit-2.16.0.tar.gz", hash = "sha256:fe9897cac830aa7164dbd02a4e7b90cae49630451ce88464bca73db486ba9f65"},
 ]
-prettytable = [
-    {file = "prettytable-2.5.0-py3-none-any.whl", hash = "sha256:1411c65d21dca9eaa505ba1d041bed75a6d629ae22f5109a923f4e719cfecba4"},
-    {file = "prettytable-2.5.0.tar.gz", hash = "sha256:f7da57ba63d55116d65e5acb147bfdfa60dceccabf0d607d6817ee2888a05f2c"},
-]
 prometheus-client = [
     {file = "prometheus_client-0.12.0-py2.py3-none-any.whl", hash = "sha256:317453ebabff0a1b02df7f708efbab21e3489e7072b61cb6957230dd004a0af0"},
     {file = "prometheus_client-0.12.0.tar.gz", hash = "sha256:1b12ba48cee33b9b0b9de64a1047cbd3c5f2d0ab6ebcead7ddda613a750ec3c5"},
@@ -6218,10 +6193,6 @@ types-requests = [
 types-tabulate = [
     {file = "types-tabulate-0.8.5.tar.gz", hash = "sha256:03f283bf384ea121b7b6a58afb38f4def97f30704fca13a0da686936b0f392ac"},
     {file = "types_tabulate-0.8.5-py3-none-any.whl", hash = "sha256:a7289b809220dfbb6d8816a8dcc25bdf82b91b47288225afb2c3f296e0417c7f"},
-]
-types-termcolor = [
-    {file = "types-termcolor-1.1.3.tar.gz", hash = "sha256:b97d20d5c649431bac4ab75f9a9718113f11cbdbc0dd1faac61ae54ac93df77b"},
-    {file = "types_termcolor-1.1.3-py3-none-any.whl", hash = "sha256:be8626040770f788ee5a99aa3246ee5996f015bebba076d258c59c09cc40be86"},
 ]
 types-urllib3 = [
     {file = "types-urllib3-1.26.1.tar.gz", hash = "sha256:b09ed6a9396727d4faeac90a922738e68cf9816ad8d937efc63fd4e8c7d6599e"},

@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 from typing import Union
 import numpy as np
 import pandas as pd
+from gamestonk_terminal.rich_config import console
 
 
 def get_loss_at_strike(strike: float, chain: pd.DataFrame) -> float:
@@ -50,7 +51,7 @@ def calculate_max_pain(chain: pd.DataFrame) -> Union[int, float]:
 
     strikes = np.array(chain.index)
     if ("OI_call" not in chain.columns) or ("OI_put" not in chain.columns):
-        print("Incorrect columns.  Unable to parse max pain")
+        console.print("Incorrect columns.  Unable to parse max pain")
         return np.nan
 
     loss = []

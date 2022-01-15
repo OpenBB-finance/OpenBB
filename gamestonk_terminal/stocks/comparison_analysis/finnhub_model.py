@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 from typing import List, Tuple
 import requests
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.rich_config import console
 
 
 def get_similar_companies(ticker: str) -> Tuple[List[str], str]:
@@ -16,7 +17,7 @@ def get_similar_companies(ticker: str) -> Tuple[List[str], str]:
         user = "Finnhub"
 
     else:
-        print("Similar companies not found.")
+        console.print("Similar companies not found.")
         similar = [""]
         user = "Error"
     return similar, user

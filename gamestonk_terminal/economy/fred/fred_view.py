@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 from pandas.plotting import register_matplotlib_converters
-from rich.console import Console
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -20,8 +20,6 @@ from gamestonk_terminal.helper_funcs import (
 )
 
 register_matplotlib_converters()
-
-t_console = Console()
 
 
 def format_units(num: int) -> str:
@@ -51,7 +49,7 @@ def notes(series_term: str, num: int):
     """
     df_search = fred_model.get_series_notes(series_term)
     if df_search.empty:
-        t_console.print("No matches found. \n")
+        console.print("No matches found. \n")
         return
     df_search["notes"] = df_search["notes"].apply(
         lambda x: "\n".join(textwrap.wrap(x, width=100)) if isinstance(x, str) else x
@@ -60,7 +58,7 @@ def notes(series_term: str, num: int):
         lambda x: "\n".join(textwrap.wrap(x, width=50)) if isinstance(x, str) else x
     )
     if gtff.USE_TABULATE_DF:
-        t_console.print(
+        console.print(
             rich_table_from_df(
                 df_search[["id", "title", "notes"]].head(num),
                 title=f"[bold]Search results for {series_term}[/bold]",
@@ -69,10 +67,10 @@ def notes(series_term: str, num: int):
             )
         )
     else:
-        t_console.print(
+        console.print(
             df_search[["id", "title", "notes"]].head(num).to_string(index=False)
         )
-    t_console.print("")
+    console.print("")
 
 
 def display_fred_series(
@@ -145,7 +143,7 @@ def display_fred_series(
     data.index = [x.strftime("%Y-%m-%d") for x in data.index]
     if raw:
         if gtff.USE_TABULATE_DF:
-            t_console.print(
+            console.print(
                 rich_table_from_df(
                     data.tail(limit),
                     headers=list(data.columns),
@@ -154,11 +152,11 @@ def display_fred_series(
                 )
             )
         else:
-            t_console.print(data.tail(limit).to_string())
+            console.print(data.tail(limit).to_string())
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "plot",
         data,
     )
-    t_console.print("")
+    console.print("")

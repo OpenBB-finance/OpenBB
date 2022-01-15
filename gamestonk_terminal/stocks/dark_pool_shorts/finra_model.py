@@ -6,6 +6,8 @@ import requests
 import pandas as pd
 from scipy import stats
 
+from gamestonk_terminal.rich_config import console
+
 
 def getFINRAweeks(tier: str, is_ats: bool) -> List:
     """Get FINRA weeks. [Source: FINRA]
@@ -223,7 +225,7 @@ def getATSdata(num_tickers_to_filter: int, tier_ats: str) -> Tuple[pd.DataFrame,
     df_ats = pd.DataFrame()
 
     for tier in tiers:
-        print(f"Processing Tier {tier} ...")
+        console.print(f"Processing Tier {tier} ...")
         for d_week in getFINRAweeks(tier, is_ats=True):
             offset = 0
             response = getFINRAdata_offset(
@@ -249,7 +251,9 @@ def getATSdata(num_tickers_to_filter: int, tier_ats: str) -> Tuple[pd.DataFrame,
         lambda x: x.timestamp()
     )
 
-    print(f"Processing regression on {num_tickers_to_filter} promising tickers ...")
+    console.print(
+        f"Processing regression on {num_tickers_to_filter} promising tickers ..."
+    )
 
     d_ats_reg = {}
     # set(df_ats['issueSymbolIdentifier'].values) this would be iterating through all tickers

@@ -8,6 +8,7 @@ from tabulate import tabulate
 from gamestonk_terminal.etf.screener import screener_model
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 # pylint:disable=no-member
 
@@ -46,8 +47,8 @@ def view_screener(
             )
         )
     else:
-        print(screened_data.head(num_to_show).fillna("").to_string())
-    print("")
+        console.print(screened_data.head(num_to_show).fillna("").to_string())
+    console.print("")
 
     export_data(
         export,

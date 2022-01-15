@@ -10,6 +10,7 @@ import pandas as pd
 from gamestonk_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 from gamestonk_terminal.helper_funcs import long_number_format
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.rich_config import console
 
 
 def get_overview(ticker: str) -> pd.DataFrame:
@@ -33,7 +34,7 @@ def get_overview(ticker: str) -> pd.DataFrame:
     if result.status_code == 200:
         # Parse json data to dataframe
         if "Note" in result.json():
-            print(result.json()["Note"], "\n")
+            console.print(result.json()["Note"], "\n")
             return pd.DataFrame()
 
         df_fa = pd.json_normalize(result.json())

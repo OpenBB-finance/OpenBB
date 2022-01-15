@@ -6,7 +6,7 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from rich import console
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -16,8 +16,6 @@ from gamestonk_terminal.helper_funcs import (
     rich_table_from_df,
 )
 from gamestonk_terminal.mutual_funds import investpy_model
-
-t_console = console.Console()
 
 
 def display_search(
@@ -47,12 +45,12 @@ def display_search(
     """
     searches = investpy_model.search_funds(by, value)
     if searches.empty:
-        t_console.print("No matches found.\n")
+        console.print("No matches found.\n")
         return
     if country:
         searches = searches[searches.country == country]
         if searches.empty:
-            t_console.print(f"No matches found in {country}.\n")
+            console.print(f"No matches found in {country}.\n")
             return
         searches = searches.drop(columns=["country", "underlying"])
 
@@ -62,7 +60,7 @@ def display_search(
     # If we want to move forward with rich -- should rename this gtff
     # Additionally, I recreated the tabulate functions with the rich.Table class.
     if gtff.USE_TABULATE_DF:
-        t_console.print(
+        console.print(
             rich_table_from_df(
                 searches.head(limit),
                 show_index=False,
@@ -70,8 +68,8 @@ def display_search(
             )
         )
     else:
-        t_console.print(searches.head(limit).to_string())
-    t_console.print("\n")
+        console.print(searches.head(limit).to_string())
+    console.print("\n")
 
 
 def display_overview(country: str = "united states", limit: int = 10, export: str = ""):
@@ -90,20 +88,20 @@ def display_overview(country: str = "united states", limit: int = 10, export: st
     overview["Assets (1B)"] = overview.total_assets / 1_000_000_000
     overview = overview.drop(columns=["country", "total_assets"])
     if gtff.USE_TABULATE_DF:
-        t_console.print(
+        console.print(
             rich_table_from_df(
                 overview, title=f"[bold]Fund overview for {country.title()}[/bold]"
             )
         )
     else:
-        t_console.print(overview.to_string())
+        console.print(overview.to_string())
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         f"overview_{country.replace(' ','_')}",
         overview,
     )
-    t_console.print("\n")
+    console.print("\n")
 
 
 def display_fund_info(fund_name: str, country: str = "united states"):
@@ -123,7 +121,7 @@ def display_fund_info(fund_name: str, country: str = "united states"):
         .dropna()
     )
     if gtff.USE_TABULATE_DF:
-        t_console.print(
+        console.print(
             rich_table_from_df(
                 info,
                 title=f"[bold]{fund_name.title()} Information[/bold]",
@@ -132,8 +130,8 @@ def display_fund_info(fund_name: str, country: str = "united states"):
             )
         )
     else:
-        t_console.print(info.to_string())
-    t_console.print("\n")
+        console.print(info.to_string())
+    console.print("\n")
 
 
 def display_historical(data: pd.DataFrame, fund: str = "", export: str = ""):
@@ -148,7 +146,7 @@ def display_historical(data: pd.DataFrame, fund: str = "", export: str = ""):
     export: str
         Format to export data
     """
-    t_console.print("")
+    console.print("")
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax.plot(data.index, data.Close, "-g")
     ax.grid("on")

@@ -7,9 +7,8 @@ from typing import List
 from datetime import datetime, timedelta
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from rich import console
 from binance.client import Client
-
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import calc_change
 from gamestonk_terminal.cryptocurrency.due_diligence import pycoingecko_model
@@ -49,8 +48,6 @@ CRYPTO_SOURCES = {
     "cb": "Coinbase",
 }
 
-t_console = console.Console()
-
 
 class CryptoController(BaseController):
     """Crypto Controller"""
@@ -89,36 +86,32 @@ class CryptoController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """
-     load        load a specific cryptocurrency for analysis
-     find        find coins in a certain source
-     coins       find coins and check map across multiple sources
+        source_txt = CRYPTO_SOURCES.get(self.source, "?") if self.source != "" else ""
+        has_ticker_start = "" if self.current_coin else "[unvl]"
+        has_ticker_end = "" if self.current_coin else "[/unvl]"
+        help_text = f"""[cmds]
+    load        load a specific cryptocurrency for analysis
+    find        find coins in a certain source
+    coins       find coins and check map across multiple sources[/cmds]
+
+[param]Coin: [/param]{self.current_coin}
+[param]Source: [/param]{source_txt}
+[cmds]
+    headlines   crypto sentiment from 15+ major news headlines [src][Finbrain][/src]{has_ticker_start}
+    chart       view a candle chart for a specific cryptocurrency
+    prt         potential returns tool - check how much upside if ETH reaches BTC market cap{has_ticker_end}
+[/cmds][menu]
+>   disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
+>   ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
+>   onchain     information on different blockchains,   e.g.: eth gas fees, whale alerts, DEXes info
+>   defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
+>   nft         non-fungible tokens,                    e.g.: today drops{has_ticker_start}
+>   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
+>   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
+>   pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo[/menu]
+{has_ticker_end}
 """
-        help_text += (
-            f"\nCoin: {self.current_coin}" if self.current_coin != "" else "\nCoin: ?"
-        )
-        help_text += (
-            f"\nSource: {CRYPTO_SOURCES.get(self.source, '?')}\n"
-            if self.source != ""
-            else "\nSource: ?\n"
-        )
-        help_text += self.price_str + "\n"
-        help_text += f"""
-     headlines   crypto sentiment from 15+ major news headlines [Finbrain]{'[dim]' if not self.current_coin else ''}
-     chart       view a candle chart for a specific cryptocurrency
-     prt         potential returns tool                  e.g.: check how much upside if eth reaches btc market cap{'[/dim]' if not self.current_coin else ''}
-    """  # noqa
-        help_text += f"""
->    disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
->    ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
->    onchain     information on different blockchains,   e.g.: eth gas fees, whale alerts, DEXes info
->    defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
->    nft         non-fungible tokens,                    e.g.: today drops{'[dim]' if not self.current_coin else ''}
->    dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
->    ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
->    pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo{'[/dim]' if not self.current_coin else ''}
-"""  # noqa
-        t_console.print(help_text)
+        console.print(text=help_text, menu="Cryptocurrency")
 
     def call_prt(self, other_args):
         """Process prt command"""
@@ -162,7 +155,9 @@ class CryptoController(BaseController):
                 if ns_parser.vs:
                     coin_found = pycoingecko_model.check_coin(ns_parser.vs)
                     if not coin_found:
-                        print(f"VS Coin '{ns_parser.vs}' not found in CoinGecko\n")
+                        console.print(
+                            f"VS Coin '{ns_parser.vs}' not found in CoinGecko\n"
+                        )
                         return
                 pycoingecko_view.display_coin_potential_returns(
                     self.coin_map_df["CoinGecko"],
@@ -172,7 +167,7 @@ class CryptoController(BaseController):
                 )
 
         else:
-            print(
+            console.print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
             )
 
@@ -333,7 +328,7 @@ class CryptoController(BaseController):
 Performance in interval ({self.current_interval}): {'[green]' if interval_change > 0 else "[red]"}{round(interval_change,2)}%{'[/green]' if interval_change > 0 else "[/red]"}
 Performance since {ns_parser.start.strftime('%Y-%m-%d')}: {'[green]' if since_start_change > 0 else "[red]"}{round(since_start_change,2)}%{'[/green]' if since_start_change > 0 else "[/red]"}"""  # noqa
 
-                    t_console.print(
+                    console.print(
                         f"""
 Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[self.source]} source
 
@@ -447,7 +442,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
                     self.current_coin
                 )
                 if len(quotes) < 0:
-                    print(
+                    console.print(
                         f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
                     )
                     return
@@ -517,7 +512,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
                 ).menu()
 
         else:
-            print("No coin selected. Use 'load' to load a coin.\n")
+            console.print("No coin selected. Use 'load' to load a coin.\n")
 
     def call_disc(self, _):
         """Process disc command"""
@@ -589,7 +584,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
                 queue=self.queue,
             ).menu()
         else:
-            print("No coin selected. Use 'load' to load a coin.\n")
+            console.print("No coin selected. Use 'load' to load a coin.\n")
 
     def call_pred(self, _):
         """Process pred command"""
@@ -599,7 +594,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
             )
 
             if self.current_interval != "1day":
-                print("Only interval `1day` is possible for now.\n")
+                console.print("Only interval `1day` is possible for now.\n")
             else:
                 self.queue = pred_controller.PredictionTechniquesController(
                     self.current_coin,
@@ -607,7 +602,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
                     self.queue,
                 ).menu()
         else:
-            print(
+            console.print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
             )
 

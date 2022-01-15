@@ -7,6 +7,7 @@ import difflib
 from datetime import datetime, timedelta
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.cryptocurrency.overview.blockchaincenter_model import DAYS
@@ -131,10 +132,10 @@ class OverviewController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """
-CoinGecko:
+        help_text = """[cmds]
+[src][CoinGecko][/src]
     cgglobal          global crypto market info
-    cgnews            last news available on CoinGecko
+    cgnews            last news available
     cgdefi            global DeFi market info
     cgstables         stablecoins
     cgnft             non fungible token market status
@@ -147,28 +148,27 @@ CoinGecko:
     cgderivatives     crypto derivatives
     cgcategories      crypto categories
     cghold            ethereum, bitcoin holdings overview statistics
-CoinPaprika:
+[src][CoinPaprika][/src]
     cpglobal          global crypto market info
-    cpinfo            basic info about all coins available on CoinPaprika
-    cpmarkets         market related info about all coins available on CoinPaprika
+    cpinfo            basic info about all coins available
+    cpmarkets         market related info about all coins available
     cpexchanges       list all exchanges
     cpexmarkets       all available markets on given exchange
     cpplatforms       list blockchain platforms eg. ethereum, solana, kusama, terra
     cpcontracts       all smart contracts for given platform
-Coinbase:
-    cbpairs           info about available trading pairs on Coinbase
-CryptoPanic:
-    news              recent crypto news from CryptoPanic aggregator
-WithdrawalFees:
+[src][Coinbase][/src]
+    cbpairs           info about available trading pairs
+[src][CryptoPanic][/src]
+    news              recent crypto news
+[src][WithdrawalFees][/src]
     wf                overall withdrawal fees
     ewf               overall exchange withdrawal fees
     wfpe              crypto withdrawal fees per exchange
-BlockchainCenter:
-    altindex          displays altcoin season index (if 75% of top 50 coins perform better than btc)
-    btcrb             display bitcoin rainbow price chart (logarithmic regression)
+[src][BlockchainCenter][/src]
+    altindex          displays altcoin season index (if 75% of top 50 coins perform better than BTC)
+    btcrb             display bitcoin rainbow price chart (logarithmic regression)[/cmds]
 """
-
-        print(help_text)
+        console.print(text=help_text, menu="Cryptocurrency - Overview")
 
     def call_btcrb(self, other_args: List[str]):
         """Process btcrb command"""
@@ -350,7 +350,7 @@ BlockchainCenter:
                         symbol=ns_parser.coin, export=ns_parser.export
                     )
                 else:
-                    print(f"Coin '{ns_parser.coin}' does not exist.")
+                    console.print(f"Coin '{ns_parser.coin}' does not exist.")
 
                     similar_cmd = difflib.get_close_matches(
                         ns_parser.coin,
@@ -359,7 +359,7 @@ BlockchainCenter:
                         cutoff=0.75,
                     )
                     if similar_cmd:
-                        print(f"Replacing by '{similar_cmd[0]}'")
+                        console.print(f"Replacing by '{similar_cmd[0]}'")
                         withdrawalfees_view.display_crypto_withdrawal_fees(
                             symbol=similar_cmd[0], export=ns_parser.export
                         )
@@ -371,9 +371,9 @@ BlockchainCenter:
                             cutoff=0.5,
                         )
                         if similar_cmd:
-                            print(f"Did you mean '{similar_cmd[0]}'?")
+                            console.print(f"Did you mean '{similar_cmd[0]}'?")
             else:
-                print(
+                console.print(
                     f"Couldn't find any coin with provided name: {ns_parser.coin}. "
                     f"Please choose one from list: {withdrawalfees_model.POSSIBLE_CRYPTOS}\n"
                 )

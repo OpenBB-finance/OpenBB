@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 from typing import List, Dict
 from prompt_toolkit.completion import NestedCompleter
-from colorama import Style
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.helper_funcs import (
@@ -76,30 +76,25 @@ class PayoffController(BaseController):
 
     def print_help(self):
         """Print help"""
-        if self.underlying == 1:
-            text = "Long"
-        elif self.underlying == 0:
-            text = "None"
-        elif self.underlying == -1:
-            text = "Short"
-
+        has_option_start = "" if self.options else "[unvl]"
+        has_option_end = "" if self.options else "[/unvl]"
         help_text = f"""
-Ticker: {self.ticker or None}
-Expiry: {self.expiration or None}
-
+[param]Ticker: [/param]{self.ticker or None}
+[param]Expiry: [/param]{self.expiration or None}
+[cmds]
     pick          long, short, or none (default) underlying asset
-
-Underlying Asset: {text}
-
+[/cmds][param]
+Underlying Asset: [/param]{('Short', 'None', 'Long')[self.underlying+1]}
+[cmds]
     list          list available strike prices for calls and puts
 
-    add           add option to the list of the options to be plotted{Style.DIM if not self.options else ""}
-    rmv           remove option from the list of the options to be plotted{Style.RESET_ALL}
+    add           add option to the list of the options to be plotted{has_option_start}
+    rmv           remove option from the list of the options to be plotted{has_option_end}
 
     sop           selected options
-    plot          show the option payoff diagram
+    plot          show the option payoff diagram[/cmds]
         """
-        print(help_text)
+        console.print(text=help_text, menu="Stocks - Options - Payoff")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -125,12 +120,12 @@ Underlying Asset: {text}
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             length = max(len(self.calls), len(self.puts)) - 1
-            print("#\tcall\tput")
+            console.print("#\tcall\tput")
             for i in range(length):
                 call = self.calls[i][0] if i < len(self.calls) else ""
                 put = self.puts[i][0] if i < len(self.puts) else ""
-                print(f"{i}\t{call}\t{put}")
-            print("")
+                console.print(f"{i}\t{call}\t{put}")
+            console.print("")
 
     def call_add(self, other_args: List[str]):
         """Process add command"""
@@ -187,14 +182,16 @@ Underlying Asset: {text}
                 self.options.append(option)
                 self.update_runtime_choices()
 
-                print("#\tType\tHold\tStrike\tCost")
+                console.print("#\tType\tHold\tStrike\tCost")
                 for i, o in enumerate(self.options):
                     asset: str = "Long" if o["sign"] == 1 else "Short"
-                    print(f"{i}\t{o['type']}\t{asset}\t{o['strike']}\t{o['cost']}")
-                print("")
+                    console.print(
+                        f"{i}\t{o['type']}\t{asset}\t{o['strike']}\t{o['cost']}"
+                    )
+                console.print("")
 
             else:
-                print("Please use a valid index\n")
+                console.print("Please use a valid index\n")
 
     def call_rmv(self, other_args: List[str]):
         """Process rmv command"""
@@ -232,15 +229,19 @@ Underlying Asset: {text}
                         del self.options[ns_parser.index]
                         self.update_runtime_choices()
                     else:
-                        print("Please use a valid index.\n")
+                        console.print("Please use a valid index.\n")
 
-                print("#\tType\tHold\tStrike\tCost")
+                console.print("#\tType\tHold\tStrike\tCost")
                 for i, o in enumerate(self.options):
                     sign = "Long" if o["sign"] == 1 else "Short"
-                    print(f"{i}\t{o['type']}\t{sign}\t{o['strike']}\t{o['cost']}")
-                print("")
+                    console.print(
+                        f"{i}\t{o['type']}\t{sign}\t{o['strike']}\t{o['cost']}"
+                    )
+                console.print("")
         else:
-            print("No options have been selected, removing them is not possible\n")
+            console.print(
+                "No options have been selected, removing them is not possible\n"
+            )
 
     def call_pick(self, other_args: List[str]):
         """Process pick command"""
@@ -270,7 +271,7 @@ Underlying Asset: {text}
             elif ns_parser.underlyingtype == "short":
                 self.underlying = -1
 
-        print("")
+        console.print("")
 
     def call_sop(self, other_args):
         """Process sop command"""
@@ -282,11 +283,11 @@ Underlying Asset: {text}
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            print("#\tType\tHold\tStrike\tCost")
+            console.print("#\tType\tHold\tStrike\tCost")
             for i, o in enumerate(self.options):
                 sign = "Long" if o["sign"] == 1 else "Short"
-                print(f"{i}\t{o['type']}\t{sign}\t{o['strike']}\t{o['cost']}")
-            print("")
+                console.print(f"{i}\t{o['type']}\t{sign}\t{o['strike']}\t{o['cost']}")
+            console.print("")
 
     def call_plot(self, other_args):
         """Process plot command"""

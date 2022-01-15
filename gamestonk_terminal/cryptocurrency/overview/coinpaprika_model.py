@@ -6,6 +6,7 @@ import textwrap
 import pandas as pd
 from dateutil import parser
 from gamestonk_terminal.cryptocurrency.coinpaprika_helpers import PaprikaSession
+from gamestonk_terminal.rich_config import console
 
 MARKETS_FILTERS = [
     "rank",
@@ -85,7 +86,7 @@ def get_global_market() -> pd.DataFrame:
             try:
                 global_markets[key] = parser.parse(date).strftime("%Y-%m-%d %H:%M:%S")
             except (KeyError, ValueError, TypeError) as e:
-                print(e)
+                console.print(e)
     df = pd.Series(global_markets).to_frame().reset_index()
     df.columns = ["Metric", "Value"]
     return df
@@ -171,7 +172,7 @@ def _get_coins_info_helper(quotes: str = "USD") -> pd.DataFrame:
         ]
         data.columns = [col.replace("percent", "pct") for col in list(data.columns)]
     except KeyError as e:
-        print(e)
+        console.print(e)
     data.rename(
         columns={
             "market_cap_change_24h": "mcap_change_24h",
@@ -267,7 +268,7 @@ def get_list_of_exchanges(quotes: str = "USD") -> pd.DataFrame:
             col.replace(f"quotes.{quotes}.", "") for col in df.columns.tolist()
         ]
     except KeyError as e:
-        print(e)
+        console.print(e)
     df = df[df["active"]]
     cols = [
         "adjusted_rank",
@@ -319,7 +320,7 @@ def get_exchanges_market(
         session.ENDPOINTS["exchange_markets"].format(exchange_id), quotes=quotes
     )
     if "error" in data:
-        print(data)
+        console.print(data)
         return pd.DataFrame()
     cols = [
         "exchange_id",

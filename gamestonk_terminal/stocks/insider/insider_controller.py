@@ -6,8 +6,9 @@ import argparse
 import configparser
 from typing import List
 import pandas as pd
-from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.rich_config import console
+
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -96,23 +97,28 @@ class InsiderController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
+        has_ticker_start = "[unvl]" if not self.ticker else ""
+        has_ticker_end = "[/unvl]" if not self.ticker else ""
+
+        help_text = f"""[cmds]
     view          view available presets
-    set           set one of the available presets
+    set           set one of the available presets[/cmds]
 
-PRESET: {self.preset}
+[param]PRESET: [/param]{self.preset}[cmds]
 
-    filter        filter insiders based on preset
+    filter        filter insiders based on preset [src][Open Insider][/src]
 
-    load          load a specific stock ticker for analysis
-{Style.DIM if not self.ticker else ''}
-Ticker: {self.ticker}
 
-    stats         insider stats of the company [Open Insider]
-    act           insider activity over time [Business Insider]
-    lins          last insider trading of the company [Finviz]
-{Style.RESET_ALL if not self.ticker else ''}
-Latest Insiders:
+    load          load a specific stock ticker for analysis[/cmds]
+{has_ticker_start}
+[param]Ticker: [/param]{self.ticker}
+
+    stats         insider stats of the company [src][Open Insider][/src]
+    act           insider activity over time [src][Business Insider][/src]
+    lins          last insider trading of the company [src][Finviz][/src]
+{has_ticker_end}
+
+[info]Latest Insiders[/info] [src][Open Insider][/src][cmds]
     lcb           latest cluster boys
     lpsb          latest penny stock buys
     lit           latest insider trading (all filings)
@@ -124,7 +130,7 @@ Latest Insiders:
     blis          big latest insider sales ($100k+)
     blos          big latest officer sales ($100k+)
     blcs          big latest CEO/CFO sales ($100k+)
-Top Insiders:
+[info]Top Insiders [src][Open Insider][/src][/info]
     topt          top officer purchases today
     toppw         top officer purchases past week
     toppm         top officer purchases past month
@@ -133,9 +139,9 @@ Top Insiders:
     tippm         top insider purchases past month
     tist          top insider sales today
     tispw         top insider sales past week
-    tispm         top insider sales past month
+    tispm         top insider sales past month[/cmds]
 """
-        print(help_text)
+        console.print(text=help_text, menu="Stocks - Insider Trading")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -216,16 +222,16 @@ Top Insiders:
                     "CompanyTotals",
                 ]
 
-                print("")
+                console.print("")
                 for filter_header in filters_headers:
-                    print(f" - {filter_header} -")
+                    console.print(f" - {filter_header} -")
                     d_filters = {**preset_filter[filter_header]}
                     d_filters = {k: v for k, v in d_filters.items() if v}
                     if d_filters:
                         max_len = len(max(d_filters, key=len))
                         for key, value in d_filters.items():
-                            print(f"{key}{(max_len-len(key))*' '}: {value}")
-                    print("")
+                            console.print(f"{key}{(max_len-len(key))*' '}: {value}")
+                    console.print("")
 
             else:
                 for preset in self.preset_choices:
@@ -238,9 +244,11 @@ Top Insiders:
                             if line.strip() == "[General]":
                                 break
                             description += line.strip()
-                    print(f"\nPRESET: {preset}")
-                    print(description.split("Description: ")[1].replace("#", ""))
-                print("")
+                    console.print(f"\nPRESET: {preset}")
+                    console.print(
+                        description.split("Description: ")[1].replace("#", "")
+                    )
+                console.print("")
 
     def call_set(self, other_args: List[str]):
         """Process set command"""
@@ -264,7 +272,7 @@ Top Insiders:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.preset = ns_parser.preset
-            print("")
+            console.print("")
 
     def call_filter(self, other_args: List[str]):
         """Process filter command"""
@@ -345,7 +353,7 @@ Top Insiders:
                     export=ns_parser.export,
                 )
             else:
-                print("Please use `load <ticker>` before.\n")
+                console.print("Please use `load <ticker>` before.\n")
 
     def call_lcb(self, other_args: List[str]):
         """Process latest-cluster-buys"""
@@ -927,7 +935,7 @@ Top Insiders:
                     export=ns_parser.export,
                 )
             else:
-                print("No ticker loaded. First use `load {ticker}`\n")
+                console.print("No ticker loaded. First use `load {ticker}`\n")
 
     def call_lins(self, other_args: List[str]):
         """Process lins command"""
@@ -961,4 +969,4 @@ Top Insiders:
                     export=ns_parser.export,
                 )
             else:
-                print("No ticker loaded. First use `load {ticker}`\n")
+                console.print("No ticker loaded. First use `load {ticker}`\n")

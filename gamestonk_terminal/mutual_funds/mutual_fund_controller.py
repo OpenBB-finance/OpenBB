@@ -8,7 +8,7 @@ from typing import List
 import investpy
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from rich import console
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -23,8 +23,6 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.mutual_funds import investpy_model, investpy_view, yfinance_view
-
-t_console = console.Console()
 
 
 class FundController(BaseController):
@@ -74,34 +72,42 @@ class FundController(BaseController):
 
     def print_help(self):
         """Print help"""
-        fund_string = f"{self.fund_name or None}"
-        fund_string2 = f" ({self.fund_symbol})" if self.fund_symbol else ""
-        fund_string += fund_string2
-        help_str = f"""
-[bold]Mutual Funds[/bold]:[italic]
+        has_fund_start = "" if self.fund_symbol else "[unvl]"
+        has_fund_end = "" if self.fund_symbol else "[/unvl]"
+        has_fund_usa_start = (
+            "" if self.fund_symbol and self.country == "united states" else "[unvl]"
+        )
+        has_fund_usa_end = (
+            "" if self.fund_symbol and self.country == "united states" else "[/unvl]"
+        )
+        if self.fund_name:
+            if self.fund_symbol:
+                fund_string = f"{self.fund_name} ({self.fund_symbol})"
+            else:
+                fund_string = f"{self.fund_name}"
+        else:
+            fund_string = ""
+        help_text = f"""
+[src][Investing.com][/src][cmds]
+    country       set a country for filtering[/cmds]
 
-Investing.com[/italic]:
-    country       set a country for filtering
+[param]Current Country: [/param]{self.country.title()}
 
-Current Country: [green]{self.country.title()}[/green][italic]
-
-Investing.com[/italic]:
+[src][Investing.com][/src][cmds]
     overview      overview of top funds by country
     search        search for Mutual Funds
-    load          load historical fund data
+    load          load historical fund data[/cmds]
 
-Current Fund: [cyan] {fund_string}[/cyan]
-[italic]{'[dim]' if not self.fund_symbol else ''}
-Investing.com[/italic]:
+[param]Current Fund: [/param]{fund_string}
+{has_fund_start}
+[src][Investing.com][/src][cmds]
     info          get fund information
-    plot          plot loaded historical fund data{'[/dim]' if not self.fund_symbol else ''}
-[italic]{'[dim]' if not self.fund_symbol or self.country!='united states' else ''}
-Yahoo Finance[/italic]:
+    plot          plot loaded historical fund data{has_fund_end}{has_fund_usa_start}
+[src][YFinance][/src]
     sector        sector weightings
-    equity        equity holdings
-    {'[/dim]' if not self.fund_symbol or self.country!='united states' else ''}
+    equity        equity holdings[/cmds]{has_fund_usa_end}
     """
-        t_console.print(help_str)
+        console.print(text=help_text, menu="Mutual Funds")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -133,10 +139,10 @@ Yahoo Finance[/italic]:
             if country_candidate.lower() in self.fund_countries:
                 self.country = " ".join(ns_parser.name)
             else:
-                t_console.print(
+                console.print(
                     f"{country_candidate.lower()} not a valid country to select."
                 )
-        t_console.print("")
+        console.print("")
         return self.queue
 
     def call_search(self, other_args: List[str]):
@@ -239,7 +245,7 @@ Yahoo Finance[/italic]:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if not self.fund_name:
-                t_console.print(
+                console.print(
                     "No fund loaded.  Please use `load` first to plot.\n", style="bold"
                 )
                 return self.queue
@@ -306,14 +312,14 @@ Yahoo Finance[/italic]:
                 end_date=ns_parser.end,
             )
             if self.data.empty:
-                t_console.print(
+                console.print(
                     """No data found.
 Potential errors
     -- Incorrect country specified
     -- ISIN supplied instead of symbol
     -- Name used, but --name flag not passed"""
                 )
-        t_console.print("")
+        console.print("")
         return self.queue
 
     def call_plot(self, other_args: List[str]):
@@ -330,7 +336,7 @@ Potential errors
         )
         if ns_parser:
             if not self.fund_symbol:
-                t_console.print(
+                console.print(
                     "No fund loaded.  Please use `load` first to plot.\n", style="bold"
                 )
                 return self.queue
@@ -361,12 +367,12 @@ Potential errors
         )
         if ns_parser:
             if self.country != "united states":
-                t_console.print(
+                console.print(
                     "YFinance implementation currently only supports funds from united states"
                 )
                 return self.queue
             if not self.fund_symbol or not self.fund_name:
-                t_console.print(
+                console.print(
                     "No fund loaded.  Please use `load` first to plot.\n", style="bold"
                 )
                 return self.queue
@@ -390,12 +396,12 @@ Potential errors
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.country != "united states":
-                t_console.print(
+                console.print(
                     "YFinance implementation currently only supports funds from united states"
                 )
                 return self.queue
             if not self.fund_symbol or not self.fund_name:
-                t_console.print(
+                console.print(
                     "No fund loaded.  Please use `load` first to plot.\n", style="bold"
                 )
                 return self.queue

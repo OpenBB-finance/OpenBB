@@ -4,17 +4,19 @@
 
 PRESET: whales
 
-    filter        filter insiders based on preset
+    filter        filter insiders based on preset [Open Insider]
+
 
     load          load a specific stock ticker for analysis
-[2m
+[unvl]
 Ticker: 
 
     stats         insider stats of the company [Open Insider]
     act           insider activity over time [Business Insider]
     lins          last insider trading of the company [Finviz]
-[0m
-Latest Insiders:
+[/unvl]
+
+Latest Insiders [Open Insider]
     lcb           latest cluster boys
     lpsb          latest penny stock buys
     lit           latest insider trading (all filings)
@@ -26,7 +28,7 @@ Latest Insiders:
     blis          big latest insider sales ($100k+)
     blos          big latest officer sales ($100k+)
     blcs          big latest CEO/CFO sales ($100k+)
-Top Insiders:
+Top Insiders [Open Insider]
     topt          top officer purchases today
     toppw         top officer purchases past week
     toppm         top officer purchases past month
