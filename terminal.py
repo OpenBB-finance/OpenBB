@@ -11,6 +11,7 @@ import pytz
 
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -83,17 +84,18 @@ class TerminalController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
-Multiple jobs queue (where each '/' denotes a new command). E.g.
-    /stocks $ disc/ugs -n 3/../load tsla/candle
+        console.print(
+            text=f"""
+[info]Multiple jobs queue (where each '/' denotes a new command).[/info]
+    E.g. '/stocks $ disc/ugs -n 3/../load tsla/candle'
 
-If you want to jump from crypto/ta to stocks you can use an absolute path that starts with a slash (/). E.g.
-    /crypto/ta $ /stocks
+[info]If you want to jump from crypto/ta to stocks you can use an absolute path that starts with a slash (/).[/info]
+    E.g. '/crypto/ta $ /stocks'
 
-The previous logic also holds for when launching the terminal. E.g.
-    $ python terminal.py /stocks/disc/ugs -n 3/../load tsla/candle
+[info]The previous logic also holds for when launching the terminal.[/info]
+    E.g. '$ python terminal.py /stocks/disc/ugs -n 3/../load tsla/candle'
 
-The main commands you should be aware when navigating through the terminal are:
+[info]The main commands you should be aware when navigating through the terminal are:[/info][cmds]
     cls             clear the screen
     help / h / ?    help menu
     quit / q / ..   quit this menu and go one menu above
@@ -103,10 +105,10 @@ The main commands you should be aware when navigating through the terminal are:
     about           about us
     update          update terminal automatically
     keys            check for status of API keys
-    tz              set different timezone
+    tz              set different timezone[/cmds]
 
-Timezone: {get_user_timezone_or_invalid()}
-
+[param]Timezone:[/param] {get_user_timezone_or_invalid()}
+[menu]
 >   stocks
 >   crypto
 >   etf
@@ -116,9 +118,10 @@ Timezone: {get_user_timezone_or_invalid()}
 >   portfolio
 >   jupyter
 >   resources
->   alternative
-    """
-        print(help_text)
+>   alternative [/menu]
+    """,
+            menu="Home",
+        )
 
     def call_update(self, _):
         """Process update command"""
@@ -222,7 +225,7 @@ def terminal(jobs_cmds: List[str] = None):
 
     while ret_code:
         if gtff.ENABLE_QUICK_EXIT:
-            print("Quick exit enabled")
+            console.print("Quick exit enabled")
             break
 
         # There is a command in the queue
@@ -240,8 +243,8 @@ def terminal(jobs_cmds: List[str] = None):
             t_controller.queue = t_controller.queue[1:]
 
             # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in t_controller.controller_choices:
-                print(f"{get_flair()} / $ {an_input}")
+            if an_input and an_input.split(" ")[0] in t_controller.CHOICES_COMMANDS:
+                console.print(f"{get_flair()} / $ {an_input}")
 
         # Get input command from user
         else:
@@ -281,7 +284,9 @@ def terminal(jobs_cmds: List[str] = None):
                     break
 
         except SystemExit:
-            print(f"\nThe command '{an_input}' doesn't exist on the / menu", end="")
+            console.print(
+                f"\nThe command '{an_input}' doesn't exist on the / menu", end=""
+            )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 t_controller.controller_choices,
@@ -296,16 +301,16 @@ def terminal(jobs_cmds: List[str] = None):
                     if candidate_input == an_input:
                         an_input = ""
                         t_controller.queue = []
-                        print("\n")
+                        console.print("\n")
                         continue
                     an_input = candidate_input
                 else:
                     an_input = similar_cmd[0]
 
-                print(f" Replacing by '{an_input}'.")
+                console.print(f" Replacing by '{an_input}'.")
                 t_controller.queue.insert(0, an_input)
             else:
-                print("\n")
+                console.print("\n")
 
 
 if __name__ == "__main__":
@@ -316,7 +321,7 @@ if __name__ == "__main__":
                     simulate_argv = f"/{'/'.join([line.rstrip() for line in fp])}"
                     terminal(simulate_argv.replace("//", "/home/").split())
             else:
-                print(
+                console.print(
                     f"The file '{sys.argv[1]}' doesn't exist. Launching terminal without any configuration.\n"
                 )
                 terminal()

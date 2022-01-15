@@ -11,6 +11,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.economy import nasdaq_model
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.rich_config import console
 
 
 def display_big_mac_index(
@@ -50,7 +51,7 @@ def display_big_mac_index(
         if gtff.USE_TABULATE_DF:
             print(tabulate(big_mac, headers=big_mac.columns, tablefmt="fancy_grid"))
         else:
-            print(big_mac.head(20).to_string())
+            console.print(big_mac.head(20).to_string())
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "bigmac", big_mac)
-    print("")
+    console.print("")

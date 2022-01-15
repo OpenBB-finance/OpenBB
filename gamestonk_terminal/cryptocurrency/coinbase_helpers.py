@@ -12,6 +12,7 @@ import base64
 import requests
 from requests.auth import AuthBase
 import gamestonk_terminal.config_terminal as cfg
+from gamestonk_terminal.rich_config import console
 
 
 class CoinbaseProAuth(AuthBase):
@@ -163,5 +164,5 @@ def _check_account_validity(account: str) -> Union[str, Any]:
     if account in list(accounts.values()):
         return account
 
-    print("Wrong account id or coin symbol")
+    console.print("Wrong account id or coin symbol")
     return None

@@ -20,6 +20,7 @@ from gamestonk_terminal.common.behavioural_analysis.sentimentinvestor_model impo
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 sentipy: Sentipy = Sentipy(
     token=cfg.API_SENTIMENTINVESTOR_TOKEN, key=cfg.API_SENTIMENTINVESTOR_KEY
@@ -43,7 +44,7 @@ def display_top(metric: str, limit: int):
     """
     table = sentimentinvestor_model.get_top(metric, limit)
     print(tabulate.tabulate(table, headers=["Rank", "Ticker", metric], floatfmt=".3f"))
-    print("")
+    console.print("")
 
 
 def _tabulate_metrics(ticker: str, metrics_list: List[_Metric]):
@@ -98,33 +99,33 @@ def _customise_plot() -> None:
 def display_metrics(ticker: str) -> None:
     """Display sentiment investor metrics for stock ticker"""
     if not sentipy.supported(ticker):
-        print("This stock is not supported by the SentimentInvestor API.")
+        console.print("This stock is not supported by the SentimentInvestor API.")
         return
 
     metric_values = sentimentinvestor_model.get_metrics(ticker)
 
     if not metric_values:
-        print("No data available or an error occurred.")
+        console.print("No data available or an error occurred.")
         return
 
-    print(_tabulate_metrics(ticker, metric_values))
-    print()
+    console.print(_tabulate_metrics(ticker, metric_values))
+    console.print()
 
 
 def display_social(ticker: str) -> None:
     """Display sentiment investor social metrics for ticker"""
     if not sentipy.supported(ticker):
-        print("This stock is not supported by the SentimentInvestor API.")
+        console.print("This stock is not supported by the SentimentInvestor API.")
         return
 
     metric_values = sentimentinvestor_model.get_socials(ticker)
 
     if not metric_values:
-        print("No data available or an error occurred.")
+        console.print("No data available or an error occurred.")
         return
 
-    print(_tabulate_metrics(ticker, metric_values))
-    print("")
+    console.print(_tabulate_metrics(ticker, metric_values))
+    console.print("")
 
 
 def display_historical(
@@ -144,13 +145,13 @@ def display_historical(
         Metric to get data for. Either 'sentiment', 'AHI', 'RHI', 'SGP'
     """
     if not sentipy.supported(ticker):
-        print("This stock is not supported by the SentimentInvestor API.")
+        console.print("This stock is not supported by the SentimentInvestor API.")
         return
 
     df = sentimentinvestor_model.get_historical(ticker, metric)
 
     if df.empty:
-        print("The dataset is empty, something must have gone wrong")
+        console.print("The dataset is empty, something must have gone wrong")
         return
 
     _customise_plot()

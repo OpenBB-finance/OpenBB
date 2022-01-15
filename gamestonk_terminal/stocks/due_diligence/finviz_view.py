@@ -8,6 +8,7 @@ from tabulate import tabulate
 from gamestonk_terminal.stocks.due_diligence import finviz_model
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def category_color_red_green(val: str) -> str:
@@ -49,11 +50,11 @@ def news(ticker: str, num: int):
         fnews = sorted(fnews, reverse=True)[:num]
 
         for news_date, news_title, news_link, _ in fnews:
-            print(f"{news_date} - {news_title}")
-            print(f"{news_link}\n")
+            console.print(f"{news_date} - {news_title}")
+            console.print(f"{news_link}\n")
 
     else:
-        print("No news found for this ticker")
+        console.print("No news found for this ticker")
 
 
 def analyst(ticker: str, export: str = ""):

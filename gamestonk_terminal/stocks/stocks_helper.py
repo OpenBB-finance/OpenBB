@@ -27,6 +27,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     get_user_timezone_or_invalid,
 )
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=no-member,too-many-branches,C0302
 
@@ -85,7 +86,7 @@ def search(
             "\n",
         )
     else:
-        print(equities_dataframe.iloc[:amount].to_string(), "\n")
+        console.print(equities_dataframe.iloc[:amount].to_string(), "\n")
 
 
 def load(
@@ -256,7 +257,7 @@ def load(
 
     s_intraday = (f"Intraday {s_interval}", "Daily")[interval == 1440]
 
-    print(
+    console.print(
         f"Loading {s_intraday} {ticker.upper()} stock "
         f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis.",
     )
@@ -448,7 +449,7 @@ def display_candle(
             )
 
         fig.show()
-    print("")
+    console.print("")
 
 
 def quote(other_args: List[str], s_ticker: str):
@@ -506,14 +507,16 @@ def quote(other_args: List[str], s_ticker: str):
             return
 
     except SystemExit:
-        print("")
+        console.print("")
         return
 
     ticker = yf.Ticker(ns_parser.s_ticker)
 
     # If price only option, return immediate market price for ticker.
     if ns_parser.price_only:
-        print(f"Price of {ns_parser.s_ticker} {ticker.info['regularMarketPrice']} \n")
+        console.print(
+            f"Price of {ns_parser.s_ticker} {ticker.info['regularMarketPrice']} \n"
+        )
         return
 
     try:
@@ -566,9 +569,9 @@ def quote(other_args: List[str], s_ticker: str):
         )
 
     except KeyError:
-        print(f"Invalid stock ticker: {ns_parser.s_ticker}")
+        console.print(f"Invalid stock ticker: {ns_parser.s_ticker}")
 
-    print("")
+    console.print("")
     return
 
 
@@ -709,7 +712,7 @@ def additional_info_about_ticker(ticker: str) -> str:
         if "." in ticker:
             ticker_info = yf.Ticker(ticker).info
 
-            extra_info += "\nDatetime: "
+            extra_info += "\n[param]Datetime: [/param]"
             if (
                 "exchangeTimezoneName" in ticker_info
                 and ticker_info["exchangeTimezoneName"]
@@ -718,22 +721,22 @@ def additional_info_about_ticker(ticker: str) -> str:
                     pytz.timezone(ticker_info["exchangeTimezoneName"])
                 ).strftime("%Y %b %d %H:%M")
                 extra_info += dtime
-                extra_info += "\nTimezone: "
+                extra_info += "\n[param]Timezone: [/param]"
                 extra_info += ticker_info["exchangeTimezoneName"]
             else:
-                extra_info += "\nDatetime: "
-                extra_info += "\nTimezone: "
+                extra_info += "\n[param]Datetime: [/param]"
+                extra_info += "\n[param]Timezone: [/param]"
 
-            extra_info += "\nExchange: "
+            extra_info += "\n[param]Exchange: [/param]"
             if "exchange" in ticker_info and ticker_info["exchange"]:
                 exchange_name = ticker_info["exchange"]
                 extra_info += exchange_name
 
-            extra_info += "\nCurrency: "
+            extra_info += "\n[param]Currency: [/param]"
             if "currency" in ticker_info and ticker_info["currency"]:
                 extra_info += ticker_info["currency"]
 
-            extra_info += "\nMarket:   "
+            extra_info += "\n[param]Market:   [/param]"
             if "exchange" in ticker_info and ticker_info["exchange"]:
                 if exchange_name in mcal.get_calendar_names():
                     calendar = mcal.get_calendar(exchange_name)
@@ -758,14 +761,14 @@ def additional_info_about_ticker(ticker: str) -> str:
                         else:
                             extra_info += "CLOSED"
         else:
-            extra_info += "\nDatetime: "
+            extra_info += "\n[param]Datetime: [/param]"
             dtime = datetime.now(pytz.timezone("America/New_York")).strftime(
                 "%Y %b %d %H:%M"
             )
             extra_info += dtime
-            extra_info += "\nTimezone: America/New_York"
-            extra_info += "\nCurrency: USD"
-            extra_info += "\nMarket:   "
+            extra_info += "\n[param]Timezone: [/param]America/New_York"
+            extra_info += "\n[param]Currency: [/param]USD"
+            extra_info += "\n[param]Market:   [/param]"
             calendar = mcal.get_calendar("NYSE")
             sch = calendar.schedule(
                 start_date=(datetime.now() - timedelta(days=3)).strftime("%Y-%m-%d"),
@@ -783,10 +786,10 @@ def additional_info_about_ticker(ticker: str) -> str:
                     extra_info += "CLOSED"
 
     else:
-        extra_info += "\nDatetime: "
-        extra_info += "\nTimezone: "
-        extra_info += "\nExchange: "
-        extra_info += "\nMarket: "
-        extra_info += "\nCurrency: "
+        extra_info += "\n[param]Datetime: [/param]"
+        extra_info += "\n[param]Timezone: [/param]"
+        extra_info += "\n[param]Exchange: [/param]"
+        extra_info += "\n[param]Market: [/param]"
+        extra_info += "\n[param]Currency: [/param]"
 
     return extra_info

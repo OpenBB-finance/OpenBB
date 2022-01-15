@@ -5,6 +5,7 @@ from typing import List, Tuple
 
 import requests
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.rich_config import console
 
 
 def get_similar_companies(ticker: str, us_only: bool) -> Tuple[List[str], str]:
@@ -39,7 +40,7 @@ def get_similar_companies(ticker: str, us_only: bool) -> Tuple[List[str], str]:
                     us_similar.append(sym)
                 similar = us_similar
     else:
-        print(result.json()["error"])
+        console.print(result.json()["error"])
         similar = [""]
         source = "Error"
     return similar, source

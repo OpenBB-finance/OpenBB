@@ -15,6 +15,8 @@ from _pytest.fixtures import SubRequest
 from _pytest.mark.structures import Mark
 
 # IMPORTATION INTERNAL
+from gamestonk_terminal import rich_config
+
 
 # pylint: disable=redefined-outer-name
 
@@ -301,6 +303,7 @@ def pytest_addoption(parser: Parser):
 
 
 def pytest_configure(config: Config) -> None:
+    rich_config.disable_rich()
     config.addinivalue_line("markers", "record_stdout: Mark the test as text record.")
 
 

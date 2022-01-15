@@ -6,6 +6,7 @@ import financedatabase as fd
 import pandas as pd
 from tabulate import tabulate
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def show_equities(
@@ -47,7 +48,7 @@ def show_equities(
     """
     if options is not None:
         for option in fd.show_options("equities", options):
-            print(option)
+            console.print(option)
         return
 
     if country is not None:
@@ -105,4 +106,4 @@ def show_equities(
             "\n",
         )
     else:
-        print(tabulate_data.iloc[:amount].to_string(), "\n")
+        console.print(tabulate_data.iloc[:amount].to_string(), "\n")

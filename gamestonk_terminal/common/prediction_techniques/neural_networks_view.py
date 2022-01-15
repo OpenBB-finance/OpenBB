@@ -10,6 +10,7 @@ from gamestonk_terminal.common.prediction_techniques.pred_helper import (
     print_pretty_prediction,
 )
 from gamestonk_terminal.common.prediction_techniques import neural_networks_model
+from gamestonk_terminal.rich_config import console
 
 # pylint:disable=too-many-arguments
 
@@ -93,7 +94,7 @@ def display_mlp(
         n_loops,
         time_res,
     )
-    print("")
+    console.print("")
 
 
 def display_rnn(
@@ -174,7 +175,7 @@ def display_rnn(
         n_loops,
         time_res,
     )
-    print("")
+    console.print("")
 
 
 def display_lstm(
@@ -255,7 +256,7 @@ def display_lstm(
         n_loops,
         time_res,
     )
-    print("")
+    console.print("")
 
 
 def display_conv1d(
@@ -336,4 +337,4 @@ def display_conv1d(
         n_loops,
         time_res,
     )
-    print("")
+    console.print("")

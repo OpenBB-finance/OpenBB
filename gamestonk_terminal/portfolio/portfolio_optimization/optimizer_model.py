@@ -9,6 +9,7 @@ import yfinance as yf
 from pypfopt.efficient_frontier import EfficientFrontier
 from pypfopt import expected_returns, risk_models
 from gamestonk_terminal.portfolio.portfolio_optimization import yahoo_finance_model
+from gamestonk_terminal.rich_config import console
 
 
 def get_equal_weights(stocks: List[str], value: float = 1.0) -> Dict:
@@ -58,7 +59,7 @@ def get_property_weights(
         prop_sum += stock_prop
 
     if prop_sum == 0:
-        print(f"No {s_property} was found on list of tickers provided", "\n")
+        console.print(f"No {s_property} was found on list of tickers provided", "\n")
         return {}
 
     return {k: value * v / prop_sum for k, v in prop.items()}

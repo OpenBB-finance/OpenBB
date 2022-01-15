@@ -17,6 +17,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.stocks.comparison_analysis import finbrain_model
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -35,7 +36,7 @@ def display_sentiment_compare(similar: List[str], raw: bool = False, export: str
     """
     df_sentiment = finbrain_model.get_sentiments(similar)
     if df_sentiment.empty:
-        print("No sentiments found.")
+        console.print("No sentiments found.")
 
     else:
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -85,7 +86,7 @@ def display_sentiment_compare(similar: List[str], raw: bool = False, export: str
 
         if raw:
             if gtff.USE_TABULATE_DF:
-                print(
+                console.print(
                     tabulate(
                         df_sentiment,
                         headers=df_sentiment.columns,
@@ -93,7 +94,7 @@ def display_sentiment_compare(similar: List[str], raw: bool = False, export: str
                     )
                 )
             else:
-                print(df_sentiment.to_string())
+                console.print(df_sentiment.to_string())
 
         export_data(
             export,
@@ -101,7 +102,7 @@ def display_sentiment_compare(similar: List[str], raw: bool = False, export: str
             "sentiment",
             df_sentiment,
         )
-    print("")
+    console.print("")
 
 
 def display_sentiment_correlation(
@@ -121,7 +122,7 @@ def display_sentiment_correlation(
     df_sentiment = finbrain_model.get_sentiments(similar)
     corrs = df_sentiment.corr()
     if df_sentiment.empty:
-        print("No sentiments found.")
+        console.print("No sentiments found.")
 
     else:
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -147,7 +148,7 @@ def display_sentiment_correlation(
 
         if raw:
             if gtff.USE_TABULATE_DF:
-                print(
+                console.print(
                     tabulate(
                         corrs,
                         headers=corrs.columns,
@@ -156,7 +157,7 @@ def display_sentiment_correlation(
                     )
                 )
             else:
-                print(corrs.to_string())
+                console.print(corrs.to_string())
 
         export_data(
             export,
@@ -165,4 +166,4 @@ def display_sentiment_correlation(
             corrs,
         )
 
-    print("")
+    console.print("")

@@ -5,6 +5,7 @@ import argparse
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.helper_funcs import (
@@ -171,30 +172,29 @@ class PortfolioOptimization(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
-Portfolio Optimization:
+        help_text = f"""[cmds]
     select        select list of tickers to be optimized
     add           add tickers to the list of the tickers to be optimized
-    rmv           remove tickers from the list of the tickers to be optimized
+    rmv           remove tickers from the list of the tickers to be optimized[/cmds]
 
-Tickers: {('None', ', '.join(self.tickers))[bool(self.tickers)]}
+[param]Tickers: [/param]{('None', ', '.join(self.tickers))[bool(self.tickers)]}
 
-Optimization:
+[info]Optimization:[/info][cmds]
     equal         equally weighted
     mktcap        weighted according to market cap (property marketCap)
     dividend      weighted according to dividend yield (property dividendYield)
     property      weight according to selected info property
 
-Mean Variance Optimization:
+[info]Mean Variance Optimization:[/info]
     maxsharpe     optimizes for maximal Sharpe ratio (a.k.a the tangency portfolio
     minvol        optimizes for minimum volatility
     maxquadutil   maximises the quadratic utility, given some risk aversion
     effret        maximises return for a given target risk
     effrisk       minimises risk for a given target return
 
-    ef            show the efficient frontier
-        """
-        print(help_text)
+    ef            show the efficient frontier[/cmds]
+    """
+        console.print(text=help_text, menu="Portfolio - Portfolio Optimization")
 
     def call_select(self, other_args: List[str]):
         """Process select command"""
@@ -236,7 +236,9 @@ Mean Variance Optimization:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
-                print("Please have at least 2 loaded tickers to calculate weights.\n")
+                console.print(
+                    "Please have at least 2 loaded tickers to calculate weights.\n"
+                )
 
             optimizer_view.display_equal_weight(
                 stocks=self.tickers, value=ns_parser.value, pie=ns_parser.pie
@@ -268,7 +270,9 @@ Mean Variance Optimization:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
-                print("Please have at least 2 stocks selected to perform calculations.")
+                console.print(
+                    "Please have at least 2 stocks selected to perform calculations."
+                )
 
             optimizer_view.display_property_weighting(
                 self.tickers,
@@ -303,7 +307,9 @@ Mean Variance Optimization:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
-                print("Please have at least 2 stocks selected to perform calculations.")
+                console.print(
+                    "Please have at least 2 stocks selected to perform calculations."
+                )
 
             optimizer_view.display_property_weighting(
                 self.tickers,
@@ -347,7 +353,9 @@ Mean Variance Optimization:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
-                print("Please have at least 2 stocks selected to perform calculations.")
+                console.print(
+                    "Please have at least 2 stocks selected to perform calculations."
+                )
 
             optimizer_view.display_property_weighting(
                 self.tickers,
@@ -400,7 +408,9 @@ Mean Variance Optimization:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
-                print("Please have at least 2 loaded tickers to calculate weights.\n")
+                console.print(
+                    "Please have at least 2 loaded tickers to calculate weights.\n"
+                )
 
             optimizer_view.display_max_sharpe(
                 stocks=self.tickers,
@@ -445,7 +455,9 @@ Mean Variance Optimization:
 
         if ns_parser:
             if len(self.tickers) < 2:
-                print("Please have at least 2 loaded tickers to calculate weights.\n")
+                console.print(
+                    "Please have at least 2 loaded tickers to calculate weights.\n"
+                )
 
             optimizer_view.display_min_volatility(
                 stocks=self.tickers,
@@ -506,10 +518,12 @@ Mean Variance Optimization:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
-                print("Please have at least 2 loaded tickers to calculate weights.\n")
+                console.print(
+                    "Please have at least 2 loaded tickers to calculate weights.\n"
+                )
 
             if ns_parser.pie and ns_parser.market_neutral:
-                print(
+                console.print(
                     "Cannot show pie chart for market neutral due to negative weights."
                 )
 
@@ -579,10 +593,12 @@ Mean Variance Optimization:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
-                print("Please have at least 2 loaded tickers to calculate weights.\n")
+                console.print(
+                    "Please have at least 2 loaded tickers to calculate weights.\n"
+                )
 
             if ns_parser.pie and ns_parser.market_neutral:
-                print(
+                console.print(
                     "Cannot show pie chart for market neutral due to negative weights."
                 )
 
@@ -650,10 +666,12 @@ Mean Variance Optimization:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
-                print("Please have at least 2 loaded tickers to calculate weights.\n")
+                console.print(
+                    "Please have at least 2 loaded tickers to calculate weights.\n"
+                )
 
             if ns_parser.pie and ns_parser.market_neutral:
-                print(
+                console.print(
                     "Cannot show pie chart for market neutral due to negative weights."
                 )
 
@@ -705,7 +723,9 @@ Mean Variance Optimization:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
-                print("Please have at least 2 loaded tickers to calculate weights.\n")
+                console.print(
+                    "Please have at least 2 loaded tickers to calculate weights.\n"
+                )
 
             optimizer_view.display_ef(
                 stocks=self.tickers,
@@ -716,8 +736,8 @@ Mean Variance Optimization:
 
     def call_yolo(self, _):
         # Easter egg :)
-        print("DFV YOLO")
-        print("GME: ALL", "\n")
+        console.print("DFV YOLO")
+        console.print("GME: ALL", "\n")
 
     def add_stocks(self, other_args: List[str]):
         """Add ticker or Select tickers for portfolio to be optimized"""
@@ -745,12 +765,12 @@ Mean Variance Optimization:
                 tickers.add(ticker)
 
             if self.tickers:
-                print(
+                console.print(
                     f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}"
                 )
 
             self.tickers = list(tickers)
-            print("")
+            console.print("")
 
     def rmv_stocks(self, other_args: List[str]):
         """Remove one of the tickers to be optimized"""
@@ -778,9 +798,9 @@ Mean Variance Optimization:
                 tickers.remove(ticker)
 
             if self.tickers:
-                print(
+                console.print(
                     f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}"
                 )
 
             self.tickers = list(tickers)
-            print("")
+            console.print("")

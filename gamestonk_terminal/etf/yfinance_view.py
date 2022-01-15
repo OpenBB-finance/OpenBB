@@ -9,6 +9,7 @@ from gamestonk_terminal.etf import yfinance_model
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
+from gamestonk_terminal.rich_config import console
 
 
 def display_etf_weightings(
@@ -32,7 +33,7 @@ def display_etf_weightings(
     """
     sectors = yfinance_model.get_etf_sector_weightings(name)
     if not sectors:
-        print("No data was found for that ETF\n")
+        console.print("No data was found for that ETF\n")
         return
 
     holdings = pd.DataFrame(sectors, index=[0]).T
@@ -40,7 +41,7 @@ def display_etf_weightings(
     title = f"Sector holdings of {name}"
 
     if raw:
-        print(f"\n{title}")
+        console.print(f"\n{title}")
         holdings.columns = ["% of holdings in the sector"]
         if gtff.USE_TABULATE_DF:
             print(
@@ -52,7 +53,7 @@ def display_etf_weightings(
                 ),
             )
         else:
-            print(holdings.to_string, "\n")
+            console.print(holdings.to_string, "\n")
 
     else:
         main_holdings = holdings[holdings.values > min_pct_to_display].to_dict()[
@@ -78,7 +79,7 @@ def display_etf_weightings(
             plt.ion()
         plt.show()
 
-        print("")
+        console.print("")
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "weights", holdings)
 
@@ -95,7 +96,7 @@ def display_etf_description(
     """
     description = yfinance_model.get_etf_summary_description(name)
     if not description:
-        print("No data was found for that ETF\n")
+        console.print("No data was found for that ETF\n")
         return
 
-    print(description, "\n")
+    console.print(description, "\n")

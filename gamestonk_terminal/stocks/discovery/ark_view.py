@@ -9,6 +9,7 @@ from colorama import Fore, Style
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.stocks.discovery import ark_model
+from gamestonk_terminal.rich_config import console
 
 
 def direction_color_red_green(val: str) -> str:
@@ -66,7 +67,7 @@ def ark_orders_view(
     df_orders = ark_model.get_ark_orders()
 
     if df_orders.empty:
-        print("The ARK orders aren't available at the moment.\n")
+        console.print("The ARK orders aren't available at the moment.\n")
         return
     if fund:
         df_orders = df_orders[df_orders.fund == fund]
@@ -83,7 +84,7 @@ def ark_orders_view(
 
     # df_orders["link"] = "https://finviz.com/quote.ashx?t=" + df_orders["ticker"]
 
-    print("Orders by ARK Investment Management LLC")
+    console.print("Orders by ARK Investment Management LLC")
     print(
         tabulate(
             df_orders,
@@ -93,7 +94,7 @@ def ark_orders_view(
             tablefmt="fancy_grid",
         ),
     )
-    print("")
+    console.print("")
 
     export_data(
         export,

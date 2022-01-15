@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import os
 from matplotlib import ticker, dates as mdates
-from rich.console import Console
 import matplotlib.pyplot as plt
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import read_data_file
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
@@ -18,8 +17,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
-
-t_console = Console()
+from gamestonk_terminal.rich_config import console
 
 
 def display_grouped_defi_protocols(num: int = 50, export: str = "") -> None:
@@ -120,7 +118,7 @@ def display_defi_protocols(
     )
 
     if gtff.USE_TABULATE_DF:
-        t_console.print(
+        console.print(
             rich_table_from_df(
                 df.head(top),
                 headers=list(df.columns),
@@ -130,7 +128,7 @@ def display_defi_protocols(
             "\n",
         )
     else:
-        t_console.print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -230,7 +228,7 @@ def display_defi_tvl(top: int, export: str = "") -> None:
     if gtff.USE_ION:
         plt.ion()
     plt.show()
-    print("")
+    console.print("")
 
     export_data(
         export,

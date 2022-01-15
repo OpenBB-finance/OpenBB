@@ -11,6 +11,7 @@ from tabulate import tabulate
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.economy import finviz_model
 from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.rich_config import console
 
 
 def map_sp500_view(period: str, map_type: str):
@@ -30,7 +31,7 @@ def map_sp500_view(period: str, map_type: str):
     webbrowser.open(
         f"https://finviz.com/map.ashx?t={d_type[map_type]}&st={d_period[period]}"
     )
-    print("")
+    console.print("")
 
 
 def display_performance(
@@ -96,8 +97,8 @@ def display_performance(
             )
         )
     else:
-        print(df_group.fillna("").to_string(index=False))
-    print("")
+        console.print(df_group.fillna("").to_string(index=False))
+    console.print("")
 
     export_data(
         export,
@@ -143,8 +144,8 @@ def display_valuation(
             )
         )
     else:
-        print(df_group.fillna("").to_string(index=False))
-    print("")
+        console.print(df_group.fillna("").to_string(index=False))
+    console.print("")
 
     export_data(
         export,
@@ -165,7 +166,7 @@ def display_spectrum(s_group: str, export: str = ""):
         Format to export data
     """
     finviz_model.get_spectrum_data(s_group)
-    print("")
+    console.print("")
 
     img = Image.open(s_group + ".jpg")
 
@@ -213,7 +214,9 @@ def display_future(
             )
         )
     else:
-        print(df[["prevClose", "last", "change"]].fillna("").to_string(index=True))
+        console.print(
+            df[["prevClose", "last", "change"]].fillna("").to_string(index=True)
+        )
 
     export_data(
         export,
@@ -221,4 +224,4 @@ def display_future(
         future_type.lower(),
         df,
     )
-    print("")
+    console.print("")

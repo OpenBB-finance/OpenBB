@@ -6,7 +6,7 @@ from typing import List, Dict
 import logging
 
 from prompt_toolkit.completion import NestedCompleter
-from rich.console import Console
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -33,7 +33,6 @@ from gamestonk_terminal.common.prediction_techniques import (
 from gamestonk_terminal.economy.fred import fred_model
 
 logger = logging.getLogger(__name__)
-t_console = Console()
 
 
 class PredictionTechniquesController(BaseController):
@@ -82,15 +81,13 @@ class PredictionTechniquesController(BaseController):
         id_string = ""
         for s_id, sub_dict in self.current_series.items():
             id_string += f"    [cyan]{s_id.upper()}[/cyan] : {sub_dict['title']}"
-        help_string = f"""
-Prediction Techniques Menu:
+        help_string = f"""[cmds]
+    load        load new series[/cmds]
 
-    load        load new series
-
-Selected Series (starting from [green]{self.start_date}[/green]):
+[param]Selected Series[/param]: From {self.start_date}
 {id_string}
 
-Models:
+[info]Models:[/info][cmds]
     ets         exponential smoothing (e.g. Holt-Winters)
     knn         k-Nearest Neighbors
     regression  polynomial regression
@@ -99,9 +96,9 @@ Models:
     rnn         Recurrent Neural Network
     lstm        Long-Short Term Memory
     conv1d      1D Convolutional Neural Network
-    mc          Monte-Carlo simulations
+    mc          Monte-Carlo simulations[/cmds]
         """
-        t_console.print(help_string)
+        console.print(help_string)
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -153,8 +150,8 @@ Models:
                     ns_parser.series_id, ns_parser.start_date
                 ).dropna()
             else:
-                t_console.print(f"[red]{ns_parser.series_id} not found[/red].")
-            t_console.print(
+                console.print(f"[red]{ns_parser.series_id} not found[/red].")
+            console.print(
                 f"Current Series: {', '.join(self.current_series.keys()).upper() or None}\n"
             )
 
@@ -231,7 +228,7 @@ Models:
         if ns_parser:
             if ns_parser.s_end_date:
                 if ns_parser.s_end_date < self.data.index[0]:
-                    t_console.print(
+                    console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
 
@@ -239,7 +236,7 @@ Models:
                     last_stock_day=self.data.index[0],
                     n_next_days=5 + ns_parser.n_days,
                 )[-1]:
-                    t_console.print(
+                    console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
 
@@ -332,7 +329,7 @@ Models:
         )
         if ns_parser:
             if ns_parser.n_inputs > len(self.data):
-                t_console.print(
+                console.print(
                     f"[red]Data only contains {len(self.data)} samples and the model is trying "
                     f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
                     f" an earlier start date[/red]\n"
@@ -351,7 +348,7 @@ Models:
                     time_res=self.resolution,
                 )
             except ValueError:
-                t_console.print("The loaded data does not have enough data")
+                console.print("The loaded data does not have enough data")
 
     def call_regression(self, other_args: List[str]):
         """Process linear command"""
@@ -423,7 +420,7 @@ Models:
             # BACKTESTING CHECK
             if ns_parser.s_end_date:
                 if ns_parser.s_end_date < self.data.index[0]:
-                    t_console.print(
+                    console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
                     return
@@ -432,14 +429,14 @@ Models:
                     last_stock_day=self.data.index[0],
                     n_next_days=5 + ns_parser.n_days,
                 )[-1]:
-                    t_console.print(
+                    console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
                     return
 
             try:
                 if ns_parser.n_inputs > len(self.data):
-                    t_console.print(
+                    console.print(
                         f"[red]Data only contains {len(self.data)} samples and the model is trying "
                         f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
                         f" an earlier start date[/red]\n"
@@ -457,7 +454,7 @@ Models:
                     time_res=self.resolution,
                 )
             except ValueError as e:
-                t_console.print(e)
+                console.print(e)
 
     def call_arima(self, other_args: List[str]):
         """Process arima command"""
@@ -536,7 +533,7 @@ Models:
             # BACKTESTING CHECK
             if ns_parser.s_end_date:
                 if ns_parser.s_end_date < self.data.index[0]:
-                    t_console.print(
+                    console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
                     return
@@ -545,7 +542,7 @@ Models:
                     last_stock_day=self.data.index[0],
                     n_next_days=5 + ns_parser.n_days,
                 )[-1]:
-                    t_console.print(
+                    console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
                     return
@@ -573,7 +570,7 @@ Models:
             )
             if ns_parser:
                 if ns_parser.n_inputs > len(self.data):
-                    t_console.print(
+                    console.print(
                         f"[red]Data only contains {len(self.data)} samples and the model is trying "
                         f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
                         f" an earlier start date[/red]\n"
@@ -593,7 +590,7 @@ Models:
                     time_res=self.resolution,
                 )
         except Exception as e:
-            t_console.print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -608,7 +605,7 @@ Models:
             )
             if ns_parser:
                 if ns_parser.n_inputs > len(self.data):
-                    t_console.print(
+                    console.print(
                         f"[red]Data only contains {len(self.data)} samples and the model is trying "
                         f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
                         f" an earlier start date[/red]\n"
@@ -629,7 +626,7 @@ Models:
                 )
 
         except Exception as e:
-            t_console.print(e)
+            console.print(e)
 
         finally:
             pred_helper.restore_env()
@@ -644,7 +641,7 @@ Models:
             )
             if ns_parser:
                 if ns_parser.n_inputs > len(self.data):
-                    t_console.print(
+                    console.print(
                         f"[red]Data only contains {len(self.data)} samples and the model is trying "
                         f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
                         f" an earlier start date[/red]\n"
@@ -665,7 +662,7 @@ Models:
                 )
 
         except Exception as e:
-            t_console.print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -680,7 +677,7 @@ Models:
             )
             if ns_parser:
                 if ns_parser.n_inputs > len(self.data):
-                    t_console.print(
+                    console.print(
                         f"[red]Data only contains {len(self.data)} samples and the model is trying "
                         f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
                         f" an earlier start date[/red]\n"
@@ -701,7 +698,7 @@ Models:
                 )
 
         except Exception as e:
-            t_console.print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()

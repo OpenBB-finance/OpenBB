@@ -11,6 +11,7 @@ from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
 from gamestonk_terminal.cryptocurrency.onchain import bitquery_model
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def display_dex_trades(
@@ -70,7 +71,7 @@ def display_dex_trades(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -140,7 +141,7 @@ def display_daily_volume_for_given_pair(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -204,7 +205,7 @@ def display_dex_volume_for_token(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -268,7 +269,7 @@ def display_ethereum_unique_senders(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -328,7 +329,7 @@ def display_most_traded_pairs(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -388,7 +389,7 @@ def display_spread_for_crypto_pair(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
