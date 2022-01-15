@@ -12,6 +12,7 @@ from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import custom_indicators_model
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.rich_config import console
 
 
 def fibonacci_retracement(
@@ -85,7 +86,7 @@ def fibonacci_retracement(
             tablefmt="fancy_grid",
         )
     )
-    print("")
+    console.print("")
 
     export_data(
         export,

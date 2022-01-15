@@ -7,15 +7,15 @@ import os
 
 from prompt_toolkit.completion import NestedCompleter
 import pandas as pd
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.portfolio.portfolio_analysis import (
     portfolio_model,
     portfolio_view,
 )
-from gamestonk_terminal.menu import session
-
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
+from gamestonk_terminal.menu import session
 
 
 portfolios_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "portfolios")
@@ -48,23 +48,15 @@ class PortfolioAnalysis(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_string = f"""
->>PORTFOLIO ANALYSIS<<
-
-What would you like to do?
-    cls           clear screen
-    ?/help        show this menu again
-    q             quit this menu, and shows back to main menu
-    quit          quit to abandon program
-
+        help_text = f"""[cmds]
     view          view available portfolios
-    load          load portfolio from a file
+    load          load portfolio from a file[/cmds]
 
-Portfolio: {self.portfolio_name or None}
+[param]Portfolio: [/param]{self.portfolio_name}[cmds]
 
-    group         view holdings grouped by parameter
-            """
-        print(help_string)
+    group         view holdings grouped by parameter[/cmds]
+        """
+        console.print(text=help_text, menu="Portfolio - Portfolio Analysis")
 
     def call_load(self, other_args):
         """Process load command"""
@@ -129,7 +121,7 @@ Portfolio: {self.portfolio_name or None}
                 show_nan=ns_parser.show_nan,
             )
             if not self.portfolio.empty:
-                print(f"Successfully loaded: {self.portfolio_name}\n")
+                console.print(f"Successfully loaded: {self.portfolio_name}\n")
 
     def call_group(self, other_args):
         """Process group command"""
@@ -183,7 +175,7 @@ Portfolio: {self.portfolio_name or None}
                     allocation=ns_parser.allocation,
                 )
             else:
-                print(
+                console.print(
                     "'value' column not in portfolio.  "
                     "Either add manually or load without --no_last_price flag\n"
                 )
@@ -214,7 +206,7 @@ Portfolio: {self.portfolio_name or None}
                     if port.endswith(ns_parser.file_format)
                 ]
 
-            print("\nAvailable Portfolios:\n")
+            console.print("\nAvailable Portfolios:\n")
             for port in available_ports:
-                print(port)
-            print("")
+                console.print(port)
+            console.print("")

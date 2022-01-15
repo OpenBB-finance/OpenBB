@@ -8,9 +8,8 @@ import difflib
 from datetime import datetime, timedelta
 from typing import List
 
-from colorama.ansi import Style
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
     GLASSNODE_SUPPORTED_HASHRATE_ASSETS,
@@ -122,6 +121,48 @@ class OnchainController(BaseController):
             choices["ttcp"]["-s"] = {c: None for c in bitquery_model.TTCP_FILTERS}
             choices["baas"]["-s"] = {c: None for c in bitquery_model.BAAS_FILTERS}
             self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def print_help(self):
+        """Print help"""
+        has_account_start = "[unvl]" if self.address_type != "account" else ""
+        has_account_end = "[unvl]" if self.address_type != "account" else ""
+
+        has_token_start = "[unvl]" if self.address_type != "token" else ""
+        has_token_end = "[unvl]" if self.address_type != "token" else ""
+
+        has_tx_start = "[unvl]" if self.address_type != "tx" else ""
+        has_tx_end = "[unvl]" if self.address_type != "tx" else ""
+
+        help_text = f"""[cmds]
+[src][Glassnode][/src]
+    hr              check blockchain hashrate over time (BTC or ETH)
+[src][Eth Gas Station][/src]
+    gwei             check current eth gas fees
+[src][Whale Alert][/src]
+    whales           check crypto wales transactions
+[src][BitQuery][/src]
+    lt               last trades by dex or month
+    dvcp             daily volume for crypto pair
+    tv               token volume on DEXes
+    ueat             unique ethereum addresses which made a transaction
+    ttcp             top traded crypto pairs on given decentralized exchange
+    baas             bid, ask prices, average spread for given crypto pair
+
+[param]Ethereum address: [/param]{self.address}
+[param]Address type: [/param]{self.address_type if self.address_type else ''}
+
+[src][Ethplorer][/src] [info]Ethereum:[/info]
+    address         load ethereum address of token, account or transaction
+    top             top ERC20 tokens{has_account_start}
+    balance         check ethereum balance
+    hist            ethereum balance history (transactions){has_account_end}{has_token_start}
+    info            ERC20 token info
+    holders         top ERC20 token holders
+    th              ERC20 token history
+    prices          ERC20 token historical prices{has_token_end}{has_tx_start}
+    tx              ethereum blockchain transaction info{has_tx_end}
+    """
+        console.print(text=help_text, menu="Cryptocurrency - Onchain")
 
     def call_hr(self, other_args: List[str]):
         """Process hr command"""
@@ -333,7 +374,7 @@ class OnchainController(BaseController):
 
         if ns_parser:
             if len(ns_parser.address) not in [42, 66]:
-                print(
+                console.print(
                     f"Couldn't load address {ns_parser.address}. "
                     f"Token or account address should be 42 characters long. "
                     f"Transaction hash should be 66 characters long\n"
@@ -406,7 +447,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
         else:
-            print("You need to set an ethereum address\n")
+            console.print("You need to set an ethereum address\n")
 
     def call_hist(self, other_args: List[str]):
         """Process hist command"""
@@ -461,7 +502,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
         else:
-            print("You need to set an ethereum address\n")
+            console.print("You need to set an ethereum address\n")
 
     def call_holders(self, other_args: List[str]):
         """Process holders command"""
@@ -515,7 +556,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
         else:
-            print("You need to set an ethereum address\n")
+            console.print("You need to set an ethereum address\n")
 
     def call_top(self, other_args: List[str]):
         """Process top command"""
@@ -599,7 +640,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
         else:
-            print("You need to set an ethereum address\n")
+            console.print("You need to set an ethereum address\n")
 
     def call_th(self, other_args: List[str]):
         """Process th command"""
@@ -663,7 +704,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
         else:
-            print("You need to set an ethereum address\n")
+            console.print("You need to set an ethereum address\n")
 
     def call_tx(self, other_args: List[str]):
         """Process tx command"""
@@ -688,7 +729,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
         else:
-            print("You need to set an ethereum address\n")
+            console.print("You need to set an ethereum address\n")
 
     def call_prices(self, other_args: List[str]):
         """Process prices command"""
@@ -742,7 +783,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
         else:
-            print("You need to set an ethereum address\n")
+            console.print("You need to set an ethereum address\n")
 
     def call_lt(self, other_args: List[str]):
         """Process lt command"""
@@ -1122,7 +1163,7 @@ class OnchainController(BaseController):
                     )
 
                     if similar_cmd:
-                        print(f"Replacing by '{similar_cmd[0]}'")
+                        console.print(f"Replacing by '{similar_cmd[0]}'")
                         exchange = similar_cmd[0]
 
                     else:
@@ -1133,15 +1174,15 @@ class OnchainController(BaseController):
                             cutoff=0.5,
                         )
                         if similar_cmd:
-                            print(f"Did you mean '{similar_cmd[0]}'?")
+                            console.print(f"Did you mean '{similar_cmd[0]}'?")
 
-                        print(
+                        console.print(
                             f"Couldn't find any exchange with provided name: {ns_parser.exchange}. "
                             f"Please choose one from list: {bitquery_model.DECENTRALIZED_EXCHANGES}\n"
                         )
 
             else:
-                print("Exchange not provided setting default to Uniswap.\n")
+                console.print("Exchange not provided setting default to Uniswap.\n")
 
             bitquery_view.display_most_traded_pairs(
                 days=ns_parser.days,
@@ -1223,7 +1264,7 @@ class OnchainController(BaseController):
                     )
 
                 else:
-                    print(f"Coin '{ns_parser.coin}' does not exist.")
+                    console.print(f"Coin '{ns_parser.coin}' does not exist.")
                     if ns_parser.coin.upper() == "BTC":
                         token = "WBTC"
                     else:
@@ -1235,7 +1276,7 @@ class OnchainController(BaseController):
                         )
                         token = similar_cmd[0]
                     if similar_cmd[0]:
-                        print(f"Replacing with '{token}'")
+                        console.print(f"Replacing with '{token}'")
                         bitquery_view.display_spread_for_crypto_pair(
                             token=token,
                             vs=ns_parser.vs,
@@ -1252,52 +1293,7 @@ class OnchainController(BaseController):
                             cutoff=0.5,
                         )
                         if similar_cmd:
-                            print(f"Did you mean '{similar_cmd[0]}'?")
+                            console.print(f"Did you mean '{similar_cmd[0]}'?")
 
             else:
-                print("You didn't provide coin symbol.\n")
-
-    def print_help(self):
-        """Print help"""
-        help_text = """
-Onchain Menu:
-
-Glassnode:
-    hr              check blockchain hashrate over time (BTC or ETH)
-Eth Gas Station:
-    gwei             check current eth gas fees
-Whale Alert:
-    whales           check crypto wales transactions
-BitQuery:
-    lt               last trades by dex or month
-    dvcp             daily volume for crypto pair
-    tv               token volume on DEXes
-    ueat             unique ethereum addresses which made a transaction
-    ttcp             top traded crypto pairs on given decentralized exchange
-    baas             bid, ask prices, average spread for given crypto pair
-"""
-        help_text += f"\nEthereum address: {self.address if self.address else '?'}"
-        help_text += (
-            f"\nAddress type: {self.address_type if self.address_type else '?'}\n"
-        )
-
-        help_text += """
-Ethereum [Ethplorer]:
-    address         load ethereum address of token, account or transaction
-    top             top ERC20 tokens"""
-
-        help_text += f"""{Style.DIM if self.address_type != "account" else ""}
-    balance         check ethereum balance
-    hist            ethereum balance history (transactions){Style.RESET_ALL if self.address_type != "account" else ""}"""
-
-        help_text += f"""{Style.DIM if self.address_type != "token" else ""}
-    info            ERC20 token info
-    holders         top ERC20 token holders
-    th              ERC20 token history
-    prices          ERC20 token historical prices{Style.RESET_ALL if self.address_type != "token" else ""}"""
-
-        help_text += f"""{Style.DIM if self.address_type != "tx" else ""}
-    tx              ethereum blockchain transaction info{Style.RESET_ALL if self.address_type != "tx" else ""}
-    """
-
-        print(help_text)
+                console.print("You didn't provide coin symbol.\n")

@@ -7,8 +7,9 @@ import os
 import datetime
 from typing import List
 
-from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.rich_config import console
+
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -100,11 +101,13 @@ class ScreenerController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
+        has_tickers_start = "[unvl]" if not self.screen_tickers else ""
+        has_tickers_end = "[/unvl]" if not self.screen_tickers else ""
+        help_text = f"""[cmds]
     view          view available presets (defaults and customs)
-    set           set one of the available presets
+    set           set one of the available presets[/cmds]
 
-PRESET: {self.preset}
+[param]PRESET: [/param]{self.preset}[cmds]
 
     historical     view historical price
     overview       overview (e.g. Sector, Industry, Market Cap, Volume)
@@ -112,13 +115,13 @@ PRESET: {self.preset}
     financial      financial (e.g. Dividend, ROA, ROE, ROI, Earnings)
     ownership      ownership (e.g. Float, Insider Own, Short Ratio)
     performance    performance (e.g. Perf Week, Perf YTD, Volatility M)
-    technical      technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
-    {Style.NORMAL if self.screen_tickers else Style.DIM}
-Last screened tickers: {', '.join(self.screen_tickers)}
+    technical      technical (e.g. Beta, SMA50, 52W Low, RSI, Change)[/cmds]
+    {has_tickers_start}
+[param]Last screened tickers: [/param]{', '.join(self.screen_tickers)}
 >   ca             take these to comparison analysis menu
->   po             take these to portfolio optimization menu{Style.RESET_ALL}
+>   po             take these to portfolio optimization menu{has_tickers_end}
         """
-        print(help_text)
+        console.print(text=help_text, menu="Stocks - Screener")
 
     def call_view(self, other_args: List[str]):
         """Process view command"""
@@ -148,19 +151,19 @@ Last screened tickers: {', '.join(self.screen_tickers)}
 
                 filters_headers = ["General", "Descriptive", "Fundamental", "Technical"]
 
-                print("")
+                console.print("")
                 for filter_header in filters_headers:
-                    print(f" - {filter_header} -")
+                    console.print(f" - {filter_header} -")
                     d_filters = {**preset_filter[filter_header]}
                     d_filters = {k: v for k, v in d_filters.items() if v}
                     if d_filters:
                         max_len = len(max(d_filters, key=len))
                         for key, value in d_filters.items():
-                            print(f"{key}{(max_len-len(key))*' '}: {value}")
-                    print("")
+                            console.print(f"{key}{(max_len-len(key))*' '}: {value}")
+                    console.print("")
 
             else:
-                print("\nCustom Presets:")
+                console.print("\nCustom Presets:")
                 for preset in self.preset_choices:
                     with open(
                         presets_path + preset + ".ini",
@@ -171,14 +174,14 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                             if line.strip() == "[General]":
                                 break
                             description += line.strip()
-                    print(
+                    console.print(
                         f"   {preset}{(50-len(preset)) * ' '}{description.split('Description: ')[1].replace('#', '')}"
                     )
 
-                print("\nDefault Presets:")
+                console.print("\nDefault Presets:")
                 for signame, sigdesc in finviz_model.d_signals_desc.items():
-                    print(f"   {signame}{(50-len(signame)) * ' '}{sigdesc}")
-                print("")
+                    console.print(f"   {signame}{(50-len(signame)) * ' '}{sigdesc}")
+                console.print("")
 
     def call_set(self, other_args: List[str]):
         """Process set command"""
@@ -202,7 +205,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.preset = ns_parser.preset
-        print("")
+        console.print("")
 
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
@@ -634,7 +637,9 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 custom_path_menu_above="/portfolio/"
             )
         else:
-            print("Some tickers must be screened first through one of the presets!\n")
+            console.print(
+                "Some tickers must be screened first through one of the presets!\n"
+            )
 
     def call_ca(self, _):
         """Call the comparison analysis menu with selected tickers"""
@@ -643,4 +648,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 self.screen_tickers, self.queue
             ).menu(custom_path_menu_above="/stocks/")
         else:
-            print("Some tickers must be screened first through one of the presets!\n")
+            console.print(
+                "Some tickers must be screened first through one of the presets!\n"
+            )

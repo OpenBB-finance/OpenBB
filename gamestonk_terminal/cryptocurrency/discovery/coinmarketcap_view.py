@@ -6,6 +6,7 @@ from tabulate import tabulate
 from gamestonk_terminal.cryptocurrency.discovery import coinmarketcap_model
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 sort_map = {
     "Symbol": "Symbol",
@@ -35,7 +36,7 @@ def display_cmc_top_coins(top: int, sortby: str, descend: bool, export: str) -> 
     df = coinmarketcap_model.get_cmc_top_n()
 
     if df.empty:
-        print("No Data Found\n")
+        console.print("No Data Found\n")
         return
 
     df = df.sort_values(by=sort_map[sortby], ascending=descend)
@@ -52,7 +53,7 @@ def display_cmc_top_coins(top: int, sortby: str, descend: bool, export: str) -> 
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,

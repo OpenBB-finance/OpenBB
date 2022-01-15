@@ -16,6 +16,7 @@ from gamestonk_terminal.stocks.insider.openinsider_model import (
     get_open_insider_data,
 )
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 d_open_insider = {
     "lcb": "latest-cluster-buys",
@@ -139,7 +140,7 @@ def print_insider_data(type_insider: str, limit: int = 10, export: str = ""):
     table = soup.find("table", {"class": "tinytable"})
 
     if not table:
-        print("No insider information found", "\n")
+        console.print("No insider information found", "\n")
         return
 
     table_rows = table.find_all("tr")
@@ -197,7 +198,7 @@ def print_insider_data(type_insider: str, limit: int = 10, export: str = ""):
             )
         )
     else:
-        print(df.to_string())
+        console.print(df.to_string())
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), type_insider, df)
 
@@ -205,8 +206,8 @@ def print_insider_data(type_insider: str, limit: int = 10, export: str = ""):
     l_uchars = np.unique(list(itertools.chain(*l_chars)))
 
     for char in l_uchars:
-        print(d_notes[char])
-    print("")
+        console.print(d_notes[char])
+    console.print("")
 
 
 def print_insider_filter(
@@ -237,14 +238,14 @@ def print_insider_filter(
         link = get_open_insider_link(preset_loaded)
 
     if not link:
-        print("")
+        console.print("")
         return
 
     df_insider = get_open_insider_data(link, has_company_name=bool(not ticker))
     df_insider_orig = df_insider.copy()
 
     if df_insider.empty:
-        print("No insider data found\n")
+        console.print("No insider data found\n")
         return
 
     if links:
@@ -285,7 +286,7 @@ def print_insider_filter(
         # needs to be done because table is too large :(
         df_insider = df_insider.drop(columns=["Filing Date"])
 
-    print("")
+    console.print("")
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
@@ -295,7 +296,7 @@ def print_insider_filter(
             )
         )
     else:
-        print(df_insider.to_string(index=False))
+        console.print(df_insider.to_string(index=False))
 
     if export:
         if preset_loaded:
@@ -308,14 +309,14 @@ def print_insider_filter(
     if not links:
         l_chars = [list(chars) for chars in df_insider_orig["X"].values]
         l_uchars = np.unique(list(itertools.chain(*l_chars)))
-        print("")
+        console.print("")
         for char in l_uchars:
-            print(d_notes[char])
+            console.print(d_notes[char])
 
         l_tradetype = df_insider_orig["Trade Type"].values
         l_utradetype = np.unique(l_tradetype)
-        print("")
+        console.print("")
         for tradetype in l_utradetype:
-            print(d_trade_types[tradetype])
+            console.print(d_trade_types[tradetype])
 
-    print("")
+    console.print("")

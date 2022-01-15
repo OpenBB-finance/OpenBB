@@ -9,6 +9,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     very_long_number_formatter,
 )
+from gamestonk_terminal.rich_config import console
 
 
 def display_uni_tokens(
@@ -56,7 +57,7 @@ def display_uni_tokens(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -92,7 +93,7 @@ def display_uni_stats(export: str = "") -> None:
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -161,7 +162,7 @@ def display_recently_added(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -207,7 +208,7 @@ def display_uni_pools(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -255,7 +256,7 @@ def display_last_uni_swaps(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,

@@ -31,6 +31,7 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal import config_neural_network_models as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.rich_config import console
 
 
 register_matplotlib_converters()
@@ -217,7 +218,7 @@ def parse_args(prog: str, description: str, other_args: List[str]):
         return ns_parser
 
     except SystemExit:
-        print("")
+        console.print("")
         return None
 
 
@@ -281,7 +282,9 @@ def prepare_scale_train_valid_test(
     if s_end_date:
         data = data[data.index <= s_end_date]
         if n_input_days + n_predict_days > data.shape[0]:
-            print("Cannot train enough input days to predict with loaded dataframe\n")
+            console.print(
+                "Cannot train enough input days to predict with loaded dataframe\n"
+            )
             return (
                 None,
                 None,
@@ -554,49 +557,53 @@ def price_prediction_color(val: float, last_val: float) -> str:
 
 def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
     """Print predictions"""
-    print("")
+    console.print("")
     if gtff.USE_COLOR:
-        print(f"Actual price: {Fore.YELLOW}{last_price:.2f} ${Style.RESET_ALL}\n")
+        console.print(
+            f"Actual price: {Fore.YELLOW}{last_price:.2f} ${Style.RESET_ALL}\n"
+        )
         if gtff.USE_TABULATE_DF:
             df_pred = pd.DataFrame(df_pred)
             df_pred.columns = ["pred"]
             df_pred["pred"] = df_pred["pred"].apply(
                 lambda x: price_prediction_color(x, last_val=last_price)
             )
-            print("Prediction:")
+            console.print("Prediction:")
             print(tabulate(df_pred, headers=["Prediction"], tablefmt="fancy_grid"))
 
         else:
 
-            print("Prediction:")
-            print(
+            console.print("Prediction:")
+            console.print(
                 df_pred.apply(price_prediction_color, last_val=last_price).to_string()
             )
     else:
         if gtff.USE_TABULATE_DF:
             df_pred = pd.DataFrame(df_pred)
             df_pred.columns = ["pred"]
-            print("Prediction:")
+            console.print("Prediction:")
             print(tabulate(df_pred, headers=["Prediction"], tablefmt="fancy_grid"))
         else:
-            print(f"Actual price: {last_price:.2f} $\n")
-            print("Prediction:")
-            print(df_pred.to_string())
+            console.print(f"Actual price: {last_price:.2f} $\n")
+            console.print("Prediction:")
+            console.print(df_pred.to_string())
 
 
 def print_pretty_prediction_nn(df_pred: pd.DataFrame, last_price: float):
     if gtff.USE_COLOR:
-        print(f"Actual price: {Fore.YELLOW}{last_price:.2f} ${Style.RESET_ALL}\n")
-        print("Prediction:")
-        print(
+        console.print(
+            f"Actual price: {Fore.YELLOW}{last_price:.2f} ${Style.RESET_ALL}\n"
+        )
+        console.print("Prediction:")
+        console.print(
             df_pred.applymap(
                 lambda x: price_prediction_color(x, last_val=last_price)
             ).to_string()
         )
     else:
-        print(f"Actual price: {last_price:.2f} $\n")
-        print("Prediction:")
-        print(df_pred.to_string())
+        console.print(f"Actual price: {last_price:.2f} $\n")
+        console.print("Prediction:")
+        console.print(df_pred.to_string())
 
 
 def mean_absolute_percentage_error(y_true: np.ndarray, y_pred: np.ndarray) -> np.number:
@@ -615,12 +622,12 @@ def print_prediction_kpis(real: np.ndarray, pred: np.ndarray):
         "RMSE": f"{mean_squared_error(real, pred, squared=False):.3f}",
     }
 
-    print("KPIs")
+    console.print("KPIs")
     df = pd.DataFrame.from_dict(kpis, orient="index")
     if gtff.USE_TABULATE_DF:
         print(tabulate(df, tablefmt="fancy_grid", showindex=True))
     else:
-        print(df.to_string())
+        console.print(df.to_string())
 
 
 def price_prediction_backtesting_color(val: list) -> str:

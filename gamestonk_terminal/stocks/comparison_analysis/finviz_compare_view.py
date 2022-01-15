@@ -9,6 +9,7 @@ from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.stocks.comparison_analysis import finviz_compare_model
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def screener(similar: List[str], data_type: str, export: str = ""):
@@ -26,7 +27,7 @@ def screener(similar: List[str], data_type: str, export: str = ""):
     df_screen = finviz_compare_model.get_comparison_data(data_type, similar)
 
     if df_screen.empty:
-        print("No screened data found.")
+        console.print("No screened data found.")
     else:
         if gtff.USE_TABULATE_DF:
             # TODO: figure out right way to use different floatfmts across different cols
@@ -39,9 +40,9 @@ def screener(similar: List[str], data_type: str, export: str = ""):
                 )
             )
         else:
-            print(df_screen.to_string())
+            console.print(df_screen.to_string())
 
-    print("")
+    console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), data_type, df_screen
     )

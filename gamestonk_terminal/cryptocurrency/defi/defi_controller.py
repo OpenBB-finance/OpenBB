@@ -5,7 +5,7 @@ import argparse
 
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.cryptocurrency.defi import (
     graph_model,
     coindix_model,
@@ -77,32 +77,30 @@ class DefiController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """
-Decentralized Finance Menu:
-
-Overview:
-    newsletter    Recent DeFi related newsletters
-    dpi           DeFi protocols listed on DefiPulse
-    funding       Funding rates - current or last 30 days average
-    borrow        DeFi borrow rates - current or last 30 days average
-    lending       DeFi ending rates - current or last 30 days average
-    vaults        Top DeFi Vaults on different blockchains [Source: Coindix]
-Defi Llama:
-    ldapps        Lists dApps
-    gdapps        Display top DeFi dApps grouped by chain
-    stvl          Display historical values of the total sum of TVLs from all dApps
-    dtvl          Display historical total value locked (TVL) by dApp
-Uniswap:
+        help_text = """[cmds]
+[info]Overview:[/info]
+    newsletter    Recent DeFi related newsletters [src][Substack][/src]
+    dpi           DeFi protocols listed on DefiPulse [src][Defipulse][/src]
+    funding       Funding rates - current or last 30 days average [src][Defirate][/src]
+    borrow        DeFi borrow rates - current or last 30 days average [src][Defirate][/src]
+    lending       DeFi ending rates - current or last 30 days average [src][Defirate][/src]
+    vaults        Top DeFi Vaults on different blockchains [src][[Coindix][/src]
+[src][The Graph][/src] [info]Uniswap[/info]
     tokens        Tokens trade-able on Uniswap
     stats         Base statistics about Uniswap
     pairs         Recently added pairs on Uniswap
     pools         Pools by volume on Uniswap
     swaps         Recent swaps done on Uniswap
-TerraEngineer:
+[src][Defi Llama][/src]
+    ldapps        Lists dApps
+    gdapps        Display top DeFi dApps grouped by chain
+    stvl          Display historical values of the total sum of TVLs from all dApps
+    dtvl          Display historical total value locked (TVL) by dApp
+[src][Terra Engineer][/src]
     aterra        Displays 30-day history of specified asset in terra address
-    ayr           Displays 30-day history of anchor yield reserve
+    ayr           Displays 30-day history of anchor yield reserve[/cmds]
 """
-        print(help_text)
+        console.print(text=help_text, menu="Cryptocurrency - Decentralized Finance")
 
     def call_aterra(self, other_args: List[str]):
         parser = argparse.ArgumentParser(

@@ -5,8 +5,8 @@ import argparse
 import os
 from typing import List
 
-from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -51,19 +51,21 @@ class ScreenerController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
+        has_screen_tickers_start = "" if self.screen_tickers else "[unvl]"
+        has_screen_tickers_end = "" if self.screen_tickers else "[/unvl]"
+        help_text = f"""[cmds]
     view          view available presets (or one in particular)
     set           set one of the available presets
+[/cmds]
+[param]PRESET: [/param]{self.preset}[cmds]
 
-PRESET: {self.preset}
-
-    scr            screen data from this preset
-{Style.NORMAL if self.screen_tickers else Style.DIM}
-Last screened tickers: {', '.join(self.screen_tickers)}
+    scr            screen data from this preset[/cmds]
+{has_screen_tickers_start}
+[param]Last screened tickers: [/param]{', '.join(self.screen_tickers)}[menu]
 >   ca             take these to comparison analysis menu
->   po             take these to portoflio optimization menu{Style.RESET_ALL}
+>   po             take these to portoflio optimization menu{has_screen_tickers_end}
         """
-        print(help_text)
+        console.print(text=help_text, menu="Stocks - Options - Screener")
 
     def call_view(self, other_args: List[str]):
         """Process view command"""
@@ -93,8 +95,8 @@ Last screened tickers: {', '.join(self.screen_tickers)}
 
             else:
                 for preset in self.preset_choices:
-                    print(preset)
-                print("")
+                    console.print(preset)
+                console.print("")
 
     def call_set(self, other_args: List[str]):
         """Process set command"""
@@ -118,7 +120,7 @@ Last screened tickers: {', '.join(self.screen_tickers)}
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.preset = ns_parser.preset
-        print("")
+        console.print("")
 
     def call_scr(self, other_args: List[str]):
         """Process scr command"""
@@ -172,7 +174,9 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 custom_path_menu_above="/portfolio/"
             )
         else:
-            print("Some tickers must be screened first through one of the presets!\n")
+            console.print(
+                "Some tickers must be screened first through one of the presets!\n"
+            )
 
     def call_ca(self, _):
         """Call the comparison analysis menu with selected tickers"""
@@ -181,4 +185,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 self.screen_tickers, self.queue
             ).menu(custom_path_menu_above="/stocks/")
         else:
-            print("Some tickers must be screened first through one of the presets!\n")
+            console.print(
+                "Some tickers must be screened first through one of the presets!\n"
+            )

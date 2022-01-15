@@ -15,6 +15,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.behavioural_analysis import twitter_model
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 import gamestonk_terminal.config_plot as cfg_plot
+from gamestonk_terminal.rich_config import console
 
 
 def display_inference(ticker: str, num: int, export: str = ""):
@@ -37,13 +38,13 @@ def display_inference(ticker: str, num: int, export: str = ""):
     # Parse tweets
     dt_from = dparse.parse(df_tweets["created_at"].values[-1])
     dt_to = dparse.parse(df_tweets["created_at"].values[0])
-    print(f"From: {dt_from.strftime('%Y-%m-%d %H:%M:%S')}")
-    print(f"To:   {dt_to.strftime('%Y-%m-%d %H:%M:%S')}")
+    console.print(f"From: {dt_from.strftime('%Y-%m-%d %H:%M:%S')}")
+    console.print(f"To:   {dt_to.strftime('%Y-%m-%d %H:%M:%S')}")
 
-    print(f"{len(df_tweets)} tweets were analyzed.")
+    console.print(f"{len(df_tweets)} tweets were analyzed.")
     dt_delta = dt_to - dt_from
     n_freq = dt_delta.total_seconds() / len(df_tweets)
-    print(f"Frequency of approx 1 tweet every {round(n_freq)} seconds.")
+    console.print(f"Frequency of approx 1 tweet every {round(n_freq)} seconds.")
 
     pos = df_tweets["positive"]
     neg = df_tweets["negative"]
@@ -52,15 +53,15 @@ def display_inference(ticker: str, num: int, export: str = ""):
     percent_neg = len(np.where(pos < neg)[0]) / len(df_tweets)
     total_sent = np.round(np.sum(df_tweets["sentiment"]), 2)
     mean_sent = np.round(np.mean(df_tweets["sentiment"]), 2)
-    print(f"The summed compound sentiment of {ticker} is: {total_sent}")
-    print(f"The average compound sentiment of {ticker} is: {mean_sent}")
-    print(
+    console.print(f"The summed compound sentiment of {ticker} is: {total_sent}")
+    console.print(f"The average compound sentiment of {ticker} is: {mean_sent}")
+    console.print(
         f"Of the last {len(df_tweets)} tweets, {100*percent_pos:.2f} % had a higher positive sentiment"
     )
-    print(
+    console.print(
         f"Of the last {len(df_tweets)} tweets, {100*percent_neg:.2f} % had a higher negative sentiment"
     )
-    print("")
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "infer", df_tweets)
 
 
@@ -84,7 +85,7 @@ def display_sentiment(ticker: str, n_tweets: int, n_days_past: int, export: str 
     # Algorithm to extract
     dt_recent = datetime.now() - timedelta(seconds=20)
     dt_old = dt_recent - timedelta(days=n_days_past)
-    print(
+    console.print(
         f"From {dt_recent.date()} retrieving {n_tweets*24} tweets ({n_tweets} tweets/hour)"
     )
 
@@ -118,7 +119,7 @@ def display_sentiment(ticker: str, n_tweets: int, n_days_past: int, export: str 
         df_tweets = pd.concat([df_tweets, temp])
 
         if dt_past.day < dt_recent.day:
-            print(
+            console.print(
                 f"From {dt_past.date()} retrieving {n_tweets*24} tweets ({n_tweets} tweets/hour)"
             )
 
@@ -176,7 +177,7 @@ def display_sentiment(ticker: str, n_tweets: int, n_days_past: int, export: str 
     if gtff.USE_ION:
         plt.ion()
     plt.show()
-    print("")
+    console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "sentiment", df_tweets
     )

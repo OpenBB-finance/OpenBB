@@ -7,6 +7,7 @@ from tabulate import tabulate
 
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.stocks.options import barchart_model
+from gamestonk_terminal.rich_config import console
 
 
 def print_options_data(ticker: str, export: str):
@@ -23,5 +24,5 @@ def print_options_data(ticker: str, export: str):
     data = barchart_model.get_options_info(ticker)
 
     print(tabulate(data, tablefmt="fancy_grid", showindex=False))
-    print("")
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "info", data)

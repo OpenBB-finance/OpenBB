@@ -1,10 +1,10 @@
 
-Geek of Wall St:
+[Geek of Wall St]
     rtearn         realtime earnings from and expected moves
-Finnhub:
+[Finnhub]
     pipo           past IPOs dates
     fipo           future IPOs dates
-Yahoo Finance:
+[Yahoo Finance]
     gainers        show latest top gainers
     losers         show latest top losers
     ugs            undervalued stocks with revenue and earnings growth in excess of 25%
@@ -12,18 +12,18 @@ Yahoo Finance:
     active         most active stocks by intraday trade volume
     ulc            potentially undervalued large cap stocks
     asc            small cap stocks with earnings growth rates better than 25%
-Fidelity:
+[Fidelity]
     ford           orders by Fidelity Customers
-cathiesark.com:
+[Cathiesark.com]
     arkord         orders by ARK Investment Management LLC
-Seeking Alpha:
+[Seeking Alpha]
     upcoming       upcoming earnings release dates
     trending       trending news
     cnews          customized news (buybacks, ipos, spacs, healthcare, politics)
-shortinterest.com
+[Shortinterest.com]
     lowfloat       low float stocks under 10M shares float
-pennystockflow.com
+[Pennystockflow.com]
     hotpenny       today's hot penny stocks
-NASDAQ Data Link (Formerly Quandl):
+[NASDAQ Data Link (Formerly Quandl)]
     rtat           top 10 retail traded stocks per day
 

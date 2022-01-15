@@ -8,6 +8,7 @@ from tabulate import tabulate
 import gamestonk_terminal.feature_flags as gtff
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.stocks.discovery import geekofwallstreet_model as gwt_model
+from gamestonk_terminal.rich_config import console
 
 # pylint:disable=no-member
 
@@ -49,7 +50,7 @@ def display_realtime_earnings(export: str = ""):
             "\n",
         )
     else:
-        print(earnings.to_string())
+        console.print(earnings.to_string())
 
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "rtearn", earnings_export

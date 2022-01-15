@@ -5,6 +5,7 @@ import argparse
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers.robinhood import (
@@ -38,14 +39,13 @@ class RobinhoodController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """
-Robinhood:
+        help_text = """[cmds]
     login       login to robinhood
 
     holdings    show account holdings in stocks
     history     show equity history of your account
-"""
-        print(help_text)
+[/cmds]"""
+        console.print(text=help_text, menu="Portfolio - Brokers - Robinhood")
 
     def call_login(self, _):
         """Process login"""

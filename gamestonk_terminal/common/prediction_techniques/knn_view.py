@@ -11,6 +11,7 @@ from gamestonk_terminal.common.prediction_techniques.pred_helper import (
     plot_data_predictions,
 )
 from gamestonk_terminal.common.prediction_techniques import knn_model
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -62,7 +63,7 @@ def display_k_nearest_neighbors(
     )
 
     if forecast_data_df.empty:
-        print("Issue performing data prep and prediction")
+        console.print("Issue performing data prep and prediction")
         return
 
     if time_res:
@@ -81,4 +82,4 @@ def display_k_nearest_neighbors(
         1,
         time_res,
     )
-    print("")
+    console.print("")

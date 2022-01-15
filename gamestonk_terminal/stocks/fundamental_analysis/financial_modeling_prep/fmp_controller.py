@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
     fmp_view,
@@ -55,9 +55,7 @@ class FinancialModelingPrepController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = f"""
-Financial Modeling Prep Menu:
-
-Ticker: {self.ticker}
+[param]Ticker: [/param]{self.ticker}[cmds]
 
     profile       profile of the company
     quote         quote of the company
@@ -68,9 +66,12 @@ Ticker: {self.ticker}
     cash          cash flow statement of the company
     metrics       key metrics of the company
     ratios        financial ratios of the company
-    growth        financial statement growth of the company
+    growth        financial statement growth of the company[/cmds]
         """
-        print(help_text)
+        console.print(
+            text=help_text,
+            menu="Stocks - Fundamental Analysis - Financial Modeling Prep",
+        )
 
     def custom_reset(self):
         """Class specific component of reset command"""

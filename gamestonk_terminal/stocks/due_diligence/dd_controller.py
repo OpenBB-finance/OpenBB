@@ -6,6 +6,7 @@ from typing import List
 from datetime import datetime, timedelta
 from pandas.core.frame import DataFrame
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.stocks.due_diligence import (
@@ -69,26 +70,26 @@ class DueDiligenceController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = f"""
-Ticker: {self.ticker}
+[param]Ticker: [/param]{self.ticker}[cmds]
 
-Finviz:
+[src][Finviz][/src]
     analyst       analyst prices and ratings of the company
-FMP:
+[src][FMP][/src]
     rating        rating over time (daily)
-Finnhub:
+[src][Finnhub][/src]
     rot           number of analysts ratings over time (monthly)
-Business Insider:
+[src][Business Insider][/src]
     pt            price targets over time
     est           quarter and year analysts earnings estimates
-Market Watch:
+[src][Market Watch][/src]
     sec           SEC filings
-csimarket:
+[src][Csimarket][/src]
     supplier      list of suppliers
     customer      list of customers
-cathiesark.com
-    arktrades     get ARK trades for ticker
+[src][Cathiesark.com][/src]
+    arktrades     get ARK trades for ticker[/cmds]
         """
-        print(help_text)
+        console.print(text=help_text, menu="Stocks - Due Diligence")
 
     def custom_reset(self) -> List[str]:
         """Class specific component of reset command"""

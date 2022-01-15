@@ -5,7 +5,7 @@ import os
 
 import pandas as pd
 import matplotlib.pyplot as plt
-from rich.console import Console
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.helper_funcs import (
     rich_table_from_df,
@@ -15,8 +15,6 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.mutual_funds import yfinance_model
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
-
-console = Console()
 
 
 def display_sector(fund: str, min_pct_to_display: float = 5, export: str = ""):

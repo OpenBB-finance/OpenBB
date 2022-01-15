@@ -6,6 +6,7 @@ from tabulate import tabulate
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.portfolio.brokers.ally import ally_model
+from gamestonk_terminal.rich_config import console
 
 
 def display_history(n_to_show: int = 15, export: str = ""):
@@ -22,8 +23,8 @@ def display_history(n_to_show: int = 15, export: str = ""):
             )
         )
     else:
-        print(show_history.tail(n_to_show).to_string())
-    print("")
+        console.print(show_history.tail(n_to_show).to_string())
+    console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "ally_history", history
     )
@@ -50,8 +51,8 @@ def display_holdings(export: str = ""):
             )
         )
     else:
-        print(holdings.to_string())
-    print("")
+        console.print(holdings.to_string())
+    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
@@ -97,8 +98,8 @@ def display_balances(export: str = ""):
             )
         )
     else:
-        print(balances.to_string())
-    print("")
+        console.print(balances.to_string())
+    console.print("")
 
 
 def display_stock_quote(ticker: str):
@@ -117,8 +118,8 @@ def display_stock_quote(ticker: str):
             )
         )
     else:
-        print(quote.to_string())
-    print("")
+        console.print(quote.to_string())
+    console.print("")
 
 
 def display_top_lists(
@@ -151,8 +152,8 @@ def display_top_lists(
             )
         )
     else:
-        print(movers.to_string())
-    print("")
+        console.print(movers.to_string())
+    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),

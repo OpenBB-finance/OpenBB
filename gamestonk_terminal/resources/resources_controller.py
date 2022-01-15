@@ -5,7 +5,7 @@ import webbrowser
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.menu import session
@@ -34,49 +34,49 @@ class ResourceCollectionController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_str = """
-Resource Collection:
+        help_text = """
+[info]Resource Collection:[/info][cmds]
    hfletters     hedge fund letters or reports
    arxiv         open-access archive for academic articles
    finra         self-regulatory organization
    edgar         online public database from SEC
    fred          economic research data
    learn         trading analysis, tips and resources
-   econiverse    compilation of free knowledge and educational resources
+   econiverse    compilation of free knowledge and educational resources[/cmds]
         """
-        print(help_str)
+        console.print(text=help_text, menu="Resources")
 
     def call_hfletters(self, _):
         """Process hfletters command"""
         webbrowser.open("https://miltonfmr.com/hedge-fund-letters/")
-        print("")
+        console.print("")
 
     def call_arxiv(self, _):
         """Process arxiv command"""
         webbrowser.open("https://arxiv.org")
-        print("")
+        console.print("")
 
     def call_finra(self, _):
         """Process finra command"""
         webbrowser.open("https://www.finra.org/#/")
-        print("")
+        console.print("")
 
     def call_edgar(self, _):
         """Process edgar command"""
         webbrowser.open("https://www.sec.gov/edgar.shtml")
-        print("")
+        console.print("")
 
     def call_fred(self, _):
         """Process fred command"""
         webbrowser.open("https://fred.stlouisfed.org")
-        print("")
+        console.print("")
 
     def call_learn(self, _):
         """Process learn command"""
         webbrowser.open("https://moongangcapital.com/free-stock-market-resources/")
-        print("")
+        console.print("")
 
     def call_econiverse(self, _):
         """Process econiverse command"""
         webbrowser.open("https://econiverse.github.io")
-        print("")
+        console.print("")
