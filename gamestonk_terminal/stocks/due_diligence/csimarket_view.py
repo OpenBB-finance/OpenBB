@@ -7,6 +7,7 @@ from gamestonk_terminal.stocks.due_diligence import csimarket_model
 from gamestonk_terminal.helper_funcs import (
     export_data,
 )
+from gamestonk_terminal.rich_config import console
 
 
 def suppliers(ticker: str, export: str):
@@ -20,7 +21,7 @@ def suppliers(ticker: str, export: str):
         Export dataframe data to csv,json,xlsx file
     """
     tickers = csimarket_model.get_suppliers(ticker)
-    print(tickers)
+    console.print(tickers)
 
     export_data(
         export,
@@ -41,7 +42,7 @@ def customers(ticker: str, export: str):
         Export dataframe data to csv,json,xlsx file
     """
     tickers = csimarket_model.get_customers(ticker)
-    print(tickers)
+    console.print(tickers)
 
     export_data(
         export,

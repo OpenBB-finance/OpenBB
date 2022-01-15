@@ -6,7 +6,7 @@ import os
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import pandas as pd
-from rich.console import Console
+from gamestonk_terminal.rich_config import console
 
 import gamestonk_terminal.feature_flags as gtff
 from gamestonk_terminal.alternative.covid import covid_model
@@ -16,8 +16,6 @@ from gamestonk_terminal.helper_funcs import (
     export_data,
     rich_table_from_df,
 )
-
-t_console = Console()
 
 
 def display_covid_ov(country, raw: bool = False, limit: int = 10, export: str = ""):
@@ -34,7 +32,7 @@ def display_covid_ov(country, raw: bool = False, limit: int = 10, export: str = 
     export: str
         Format to export data
     """
-    t_console.print("")
+    console.print("")
     cases = covid_model.get_global_cases(country) / 1_000
     deaths = covid_model.get_global_deaths(country)
     ov = pd.concat([cases, deaths], axis=1)
@@ -69,7 +67,7 @@ def display_covid_ov(country, raw: bool = False, limit: int = 10, export: str = 
     if raw:
         ov.index = [x.strftime("%Y-%m-%d") for x in ov.index]
         if gtff.USE_TABULATE_DF:
-            t_console.print(
+            console.print(
                 rich_table_from_df(
                     ov.tail(limit),
                     headers=[x.title() for x in ov.columns],
@@ -79,9 +77,9 @@ def display_covid_ov(country, raw: bool = False, limit: int = 10, export: str = 
                 )
             )
         else:
-            t_console.print(ov.tail(limit).to_string())
+            console.print(ov.tail(limit).to_string())
 
-        t_console.print("")
+        console.print("")
 
     if export:
         export_data(export, os.path.dirname(os.path.abspath(__file__)), "ov", ov)
@@ -105,7 +103,7 @@ def display_covid_stat(
     export: str
         Format to export data
     """
-    t_console.print("")
+    console.print("")
     if stat == "cases":
         data = covid_model.get_global_cases(country) / 1_000
     elif stat == "deaths":
@@ -115,7 +113,7 @@ def display_covid_stat(
         deaths = covid_model.get_global_deaths(country)
         data = (deaths / cases).fillna(0) * 100
     else:
-        t_console.print("Invalid stat selected.\n")
+        console.print("Invalid stat selected.\n")
         return
 
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -143,7 +141,7 @@ def display_covid_stat(
     if raw:
         data.index = [x.strftime("%Y-%m-%d") for x in data.index]
         if gtff.USE_TABULATE_DF:
-            t_console.print(
+            console.print(
                 rich_table_from_df(
                     data.tail(limit),
                     headers=[stat.title()],
@@ -153,9 +151,9 @@ def display_covid_stat(
                 )
             )
         else:
-            t_console.print(data.tail(limit).to_string())
+            console.print(data.tail(limit).to_string())
 
-        t_console.print("")
+        console.print("")
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), stat, data)
 
@@ -186,7 +184,7 @@ def display_country_slopes(
         by="Slope", ascending=ascend
     )
     if gtff.USE_TABULATE_DF:
-        t_console.print(
+        console.print(
             rich_table_from_df(
                 hist_slope.head(limit),
                 show_index=True,
@@ -195,8 +193,8 @@ def display_country_slopes(
             )
         )
     else:
-        t_console.print(hist_slope.head(limit).to_string())
-    t_console.print("")
+        console.print(hist_slope.head(limit).to_string())
+    console.print("")
 
     export_data(
         export,

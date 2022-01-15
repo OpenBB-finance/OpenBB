@@ -20,6 +20,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
 )
 from gamestonk_terminal.stocks.screener import finviz_model
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -90,7 +91,7 @@ def historical(
         if len(l_stocks) > limit:
             random.shuffle(l_stocks)
             l_stocks = sorted(l_stocks[:limit])
-            print(
+            console.print(
                 "\nThe limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed.",
                 f"\nThe selected list will be: {', '.join(l_stocks)}",
             )
@@ -103,7 +104,7 @@ def historical(
 
         if np.any(df_screener.isna()):
             nan_tickers = df_screener.columns[df_screener.isna().sum() >= 1].to_list()
-            print(
+            console.print(
                 f"NaN values found in: {', '.join(nan_tickers)}.  Replacing with zeros."
             )
             df_screener = df_screener.fillna(0)
@@ -138,7 +139,7 @@ def historical(
             plt.ion()
 
         plt.show()
-        print("")
+        console.print("")
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
@@ -148,5 +149,5 @@ def historical(
 
         return l_stocks
 
-    print("No screener stocks found with this preset", "\n")
+    console.print("No screener stocks found with this preset", "\n")
     return []

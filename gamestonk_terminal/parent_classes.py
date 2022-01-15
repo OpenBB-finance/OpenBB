@@ -13,6 +13,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import system_clear, get_flair
+from gamestonk_terminal.rich_config import console
 
 
 class BaseController(metaclass=ABCMeta):
@@ -94,7 +95,7 @@ class BaseController(metaclass=ABCMeta):
         """
         # Empty command
         if not an_input:
-            print("")
+            console.print("")
             return self.queue
 
         # Navigation slash is being used
@@ -147,7 +148,7 @@ class BaseController(metaclass=ABCMeta):
 
     def call_quit(self, _) -> None:
         """Process quit menu command"""
-        print("")
+        console.print("")
         self.queue.insert(0, "quit")
 
     def call_exit(self, _) -> None:
@@ -177,7 +178,7 @@ class BaseController(metaclass=ABCMeta):
             if self.queue and len(self.queue) > 0:
                 # If the command is quitting the menu we want to return in here
                 if self.queue[0] in ("q", "..", "quit"):
-                    print("")
+                    console.print("")
                     # Go back to the root in order to go to the right directory because
                     # there was a jump between indirect menus
                     if custom_path_menu_above:
@@ -196,7 +197,7 @@ class BaseController(metaclass=ABCMeta):
 
                 # Print location because this was an instruction and we want user to know the action
                 if an_input and an_input.split(" ")[0] in self.controller_choices:
-                    print(f"{get_flair()} {self.path} $ {an_input}")
+                    console.print(f"{get_flair()} {self.path} $ {an_input}")
 
             # Get input command from user
             else:
@@ -224,7 +225,7 @@ class BaseController(metaclass=ABCMeta):
                 self.queue = self.switch(an_input)
 
             except SystemExit:
-                print(
+                console.print(
                     f"\nThe command '{an_input}' doesn't exist on the {self.path} menu.",
                     end="",
                 )
@@ -242,13 +243,13 @@ class BaseController(metaclass=ABCMeta):
                         if candidate_input == an_input:
                             an_input = ""
                             self.queue = []
-                            print("\n")
+                            console.print("\n")
                             continue
                         an_input = candidate_input
                     else:
                         an_input = similar_cmd[0]
 
-                    print(f" Replacing by '{an_input}'.")
+                    console.print(f" Replacing by '{an_input}'.")
                     self.queue.insert(0, an_input)
                 else:
-                    print("\n")
+                    console.print("\n")

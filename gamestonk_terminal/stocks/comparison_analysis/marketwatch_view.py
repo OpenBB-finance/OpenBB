@@ -13,6 +13,7 @@ from gamestonk_terminal.helper_funcs import (
     patch_pandas_text_adjustment,
 )
 from gamestonk_terminal.stocks.comparison_analysis import marketwatch_model
+from gamestonk_terminal.rich_config import console
 
 
 def display_income_comparison(
@@ -65,7 +66,7 @@ def display_income_comparison(
             "\n",
         )
     else:
-        print(df_financials_compared.to_string(), "\n")
+        console.print(df_financials_compared.to_string(), "\n")
 
 
 def display_balance_comparison(
@@ -118,7 +119,7 @@ def display_balance_comparison(
             "\n",
         )
     else:
-        print(df_financials_compared.to_string(), "\n")
+        console.print(df_financials_compared.to_string(), "\n")
 
 
 def display_cashflow_comparison(
@@ -174,4 +175,4 @@ def display_cashflow_comparison(
             "\n",
         )
     else:
-        print(df_financials_compared.to_string(), "\n")
+        console.print(df_financials_compared.to_string(), "\n")

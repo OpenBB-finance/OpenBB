@@ -4,9 +4,9 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 from datetime import datetime, timedelta
-from colorama import Style
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
@@ -69,33 +69,35 @@ class DarkPoolShortsController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
+        has_ticker_start = "" if self.ticker else "[unvl]"
+        has_ticker_end = "" if self.ticker else "[/unvl]"
+        help_text = f"""[cmds]
     load           load a specific stock ticker for analysis
 
-Yahoo Finance:
+[src][Yahoo Finance][/src]
     shorted        show most shorted stocks
-shortinterest.com:
+[src][Shortinterest.com][/src]
     hsi            show top high short interest stocks of over 20% ratio
-FINRA:
+[src][FINRA][/src]
     prom           promising tickers based on dark pool shares regression
-Stockgrid:
+[src][Stockgrid][/src]
     pos            dark pool short position
     sidtc          short interest and days to cover
-{Style.DIM if not self.ticker else ''}
-Ticker: {self.ticker or None}
+{has_ticker_start}
+[param]Ticker: [/param]{self.ticker or None}
 
-FINRA:
+[src][FINRA][/src]
     dpotc          dark pools (ATS) vs OTC data
-SEC:
+[src][SEC][/src]
     ftd            fails-to-deliver data
-Stockgrid:
+[src][Stockgrid][/src]
     spos           net short vs position
-Quandl/Stockgrid:
+[src][Quandl/Stockgrid][/src]
     psi            price vs short interest volume
-NYSE:
-    volexch        short volume for ARCA,Amex,Chicago,NYSE and national exchanges
-{Style.RESET_ALL if not self.ticker else ''}"""
-        print(help_text)
+[src][NYSE][/src]
+    volexch        short volume for ARCA,Amex,Chicago,NYSE and national exchanges[/cmds]
+{has_ticker_end}"""
+        console.print(text=help_text, menu="Stocks - Dark Pool and Short data")
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -350,7 +352,7 @@ NYSE:
                     export=ns_parser.export,
                 )
             else:
-                print("No ticker loaded.\n")
+                console.print("No ticker loaded.\n")
 
     def call_ftd(self, other_args: List[str]):
         """Process ftd command"""
@@ -408,7 +410,7 @@ NYSE:
                     export=ns_parser.export,
                 )
             else:
-                print("No ticker loaded.\n")
+                console.print("No ticker loaded.\n")
 
     def call_spos(self, other_args: List[str]):
         """Process spos command"""
@@ -445,7 +447,7 @@ NYSE:
                     export=ns_parser.export,
                 )
             else:
-                print("No ticker loaded.\n")
+                console.print("No ticker loaded.\n")
 
     def call_psi(self, other_args: List[str]):
         """Process psi command"""
@@ -506,7 +508,7 @@ NYSE:
                         export=ns_parser.export,
                     )
             else:
-                print("No ticker loaded.\n")
+                console.print("No ticker loaded.\n")
 
     def call_volexch(self, other_args: List[str]):
         """Process volexch command"""
@@ -562,4 +564,4 @@ NYSE:
                     export=ns_parser.export,
                 )
             else:
-                print("No ticker loaded.  Use `load ticker` first.")
+                console.print("No ticker loaded.  Use `load ticker` first.")
