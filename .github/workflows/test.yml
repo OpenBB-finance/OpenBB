@@ -27,7 +27,7 @@ jobs:
           restore-keys: ${{ runner.os }}-linting
 
       - run: pip install bandit black codespell flake8 mypy pyupgrade safety pylint==2.12.2 black[jupyter]
-      - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil
+      - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools
       - run: bandit -x ./tests -r . || true
       - run: black --check .
       - run: codespell --ignore-words-list=zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml
@@ -234,6 +234,12 @@ jobs:
           key: ${{ runner.os }}-3-8-pip-${{ hashFiles('requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
+
+      # TODO: Is there a better way to do this?
+      - name: Uninstall Brotlipy
+        shell: bash -l {0}
+        run: |
+          conda remove brotlipy -y
 
       - name: Install dependencies (Bash)
         shell: bash -l {0}

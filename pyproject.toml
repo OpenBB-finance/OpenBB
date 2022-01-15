@@ -85,6 +85,7 @@ python-dotenv = {version = "^0.19.2", optional = true}
 Pygments = "2.11.2"
 
 
+
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
 pylint = "^2.7.2"
@@ -106,6 +107,7 @@ types-requests = "^2.26.0"
 types-tabulate = "^0.8.3"
 types-PyYAML = "^6.0.1"
 types-python-dateutil = "^2.8.3"
+types-setuptools = "^57.4.7"
 pre-commit = "^2.16.0"
 pandas-market-calendars = "^3.2"
 
