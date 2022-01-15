@@ -193,6 +193,8 @@ class DiscoveryController(BaseController):
             help="Flag to sort in ascending order",
             dest="ascend",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-d")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
         )

@@ -39,22 +39,20 @@ def get_dividend_cal(date: str) -> pd.DataFrame:
     pd.DataFrame:
         Dataframe of dividend calendar
     """
-    success = 69
-    count = 0
-    while success != 200 or count != 5:
-        try:
-            r = requests.get(
-                f"https://api.nasdaq.com/api/calendar/dividends?date={date}",
-                timeout=1,
-                headers={"User-Agent": get_user_agent()},
-            )
-            success = r.status_code
-        except requests.exceptions.ReadTimeout:
-            success = 420
-            count += 1
-
-    if count == 5:
+    ag = get_user_agent()
+    # Nasdaq API doesn't like this user agent, thus we always get other than this particular one
+    while (
+        ag
+        == "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:82.1) Gecko/20100101 Firefox/82.1"
+    ):
+        ag = get_user_agent()
+    try:
+        r = requests.get(
+            f"https://api.nasdaq.com/api/calendar/dividends?date={date}",
+            headers={"User-Agent": ag},
+        )
+        if r.status_code == 200:
+            return pd.DataFrame(r.json()["data"]["calendar"]["rows"])
+    except requests.exceptions.ReadTimeout:
         return pd.DataFrame()
-    if r.status_code == 200:
-        return pd.DataFrame(r.json()["data"]["calendar"]["rows"])
     return pd.DataFrame()
