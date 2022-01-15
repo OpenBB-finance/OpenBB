@@ -1,11 +1,11 @@
 """Optimization View"""
 __docformat__ = "numpy"
 
+import copy
 import math
 from typing import List
 
 import matplotlib.pyplot as plt
-
 from matplotlib.lines import Line2D
 import numpy as np
 import pandas as pd
@@ -342,13 +342,20 @@ def display_ef(
     ef, rets, stds = optimizer_model.generate_random_portfolios(
         stocks, period, n_portfolios
     )
+    # The ef needs to be deep-copied to avoid error in plotting sharpe
+    ef2 = copy.deepcopy(ef)
+
     sharpes = rets / stds
     ax.scatter(stds, rets, marker=".", c=sharpes, cmap="viridis_r")
+    for ticker, ret, std in zip(
+        ef.tickers, ef.expected_returns, np.sqrt(np.diag(ef.cov_matrix))
+    ):
+        ax.annotate(ticker, (std * 1.01, ret))
     plotting.plot_efficient_frontier(ef, ax=ax, show_assets=True)
     # Find the tangency portfolio
     rfrate = get_rf()
-    ef.max_sharpe(risk_free_rate=rfrate)
-    ret_sharpe, std_sharpe, _ = ef.portfolio_performance(
+    ef2.max_sharpe(risk_free_rate=rfrate)
+    ret_sharpe, std_sharpe, _ = ef2.portfolio_performance(
         verbose=True, risk_free_rate=rfrate
     )
     ax.scatter(std_sharpe, ret_sharpe, marker="*", s=100, c="r", label="Max Sharpe")
