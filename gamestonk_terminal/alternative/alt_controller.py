@@ -43,4 +43,4 @@ class AlternativeDataController(BaseController):
             CovidController,
         )
 
-        self.queue = CovidController(self.queue).menu()
+        self.queue = self.load_class(CovidController, self.queue)

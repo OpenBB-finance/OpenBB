@@ -51,6 +51,7 @@ ENABLE_EXIT_AUTO_HELP = strtobool(os.getenv("GTFF_ENABLE_EXIT_AUTO_HELP", "False
 
 # Remember contexts during session
 REMEMBER_CONTEXTS = strtobool(os.getenv("GTFF_REMEMBER_CONTEXTS", "True"))
+
 # Use the colorful rich terminal
 ENABLE_RICH = strtobool(os.getenv("GTFF_ENABLE_RICH", "True"))
 

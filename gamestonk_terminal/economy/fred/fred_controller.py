@@ -236,6 +236,6 @@ class FredController(BaseController):
             PredictionTechniquesController,
         )
 
-        self.queue = PredictionTechniquesController(
-            self.current_series, self.queue
-        ).menu()
+        self.queue = self.load_class(
+            PredictionTechniquesController, self.current_series, self.queue
+        )

@@ -44,7 +44,7 @@ class JupyterController(BaseController):
             ReportController,
         )
 
-        self.queue = ReportController(self.queue).menu()
+        self.queue = self.load_class(ReportController, self.queue)
 
     def call_dashboards(self, _):
         """Process dashboards command"""
@@ -52,4 +52,4 @@ class JupyterController(BaseController):
             DashboardsController,
         )
 
-        self.queue = DashboardsController(self.queue).menu()
+        self.queue = self.load_class(DashboardsController, self.queue)

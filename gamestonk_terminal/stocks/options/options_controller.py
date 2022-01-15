@@ -1247,9 +1247,12 @@ Expiry: [/param]{self.selected_date or None}
         """Process payoff command"""
         if self.ticker:
             if self.selected_date:
-                self.queue = payoff_controller.PayoffController(
-                    self.ticker, self.selected_date, self.queue
-                ).menu()
+                self.queue = self.load_class(
+                    payoff_controller.PayoffController,
+                    self.ticker,
+                    self.selected_date,
+                    self.queue,
+                )
             else:
                 console.print("No expiry loaded. First use `exp {expiry date}`\n")
 
@@ -1260,9 +1263,13 @@ Expiry: [/param]{self.selected_date or None}
         """Process pricing command"""
         if self.ticker:
             if self.selected_date:
-                self.queue = pricing_controller.PricingController(
-                    self.ticker, self.selected_date, self.prices, self.queue
-                ).menu()
+                self.queue = self.load_class(
+                    pricing_controller.PricingController,
+                    self.ticker,
+                    self.selected_date,
+                    self.prices,
+                    self.queue,
+                )
             else:
                 console.print("No expiry loaded. First use `exp {expiry date}`\n")
 

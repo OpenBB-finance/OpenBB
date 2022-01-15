@@ -1024,4 +1024,4 @@ class EconomyController(BaseController):
         """Process fred command"""
         from gamestonk_terminal.economy.fred.fred_controller import FredController
 
-        self.queue = FredController(self.queue).menu()
+        self.queue = self.load_class(FredController, self.queue)

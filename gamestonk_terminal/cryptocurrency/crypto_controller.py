@@ -504,13 +504,14 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
         # TODO: Play with this to get correct usage
         if self.current_coin:
             if self.current_currency != "" and not self.current_df.empty:
-                self.queue = TechnicalAnalysisController(
+                self.queue = self.load_class(
+                    TechnicalAnalysisController,
                     stock=self.current_df,
                     ticker=self.current_coin,
                     start=self.current_df.index[0],
                     interval="",
                     queue=self.queue,
-                ).menu()
+                )
 
         else:
             console.print("No coin selected. Use 'load' to load a coin.\n")
@@ -521,7 +522,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
             DiscoveryController,
         )
 
-        self.queue = DiscoveryController(queue=self.queue).menu()
+        self.queue = self.load_class(DiscoveryController, self.queue)
 
     def call_ov(self, _):
         """Process ov command"""
@@ -529,7 +530,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
             OverviewController,
         )
 
-        self.queue = OverviewController(queue=self.queue).menu()
+        self.queue = self.load_class(OverviewController, self.queue)
 
     def call_defi(self, _):
         """Process defi command"""
@@ -537,7 +538,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
             DefiController,
         )
 
-        self.queue = DefiController(queue=self.queue).menu()
+        self.queue = self.load_class(DefiController, self.queue)
 
     def call_headlines(self, other_args):
         """Process sentiment command"""
@@ -577,13 +578,14 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
                 DueDiligenceController,
             )
 
-            self.queue = DueDiligenceController(
+            self.queue = self.load_class(
+                DueDiligenceController,
                 self.current_coin,
                 self.source,
                 self.symbol,
                 self.coin_map_df,
                 queue=self.queue,
-            ).menu()
+            )
         else:
             console.print("No coin selected. Use 'load' to load a coin.\n")
 
@@ -597,11 +599,12 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
             if self.current_interval != "1day":
                 console.print("Only interval `1day` is possible for now.\n")
             else:
-                self.queue = pred_controller.PredictionTechniquesController(
+                self.queue = self.load_class(
+                    pred_controller.PredictionTechniquesController,
                     self.current_coin,
                     self.current_df,
                     self.queue,
-                ).menu()
+                )
         else:
             console.print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
@@ -613,13 +616,13 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
             OnchainController,
         )
 
-        self.queue = OnchainController(queue=self.queue).menu()
+        self.queue = self.load_class(OnchainController, self.queue)
 
     def call_nft(self, _):
         """Process nft command"""
         from gamestonk_terminal.cryptocurrency.nft.nft_controller import NFTController
 
-        self.queue = NFTController(queue=self.queue).menu()
+        self.queue = self.load_class(NFTController, self.queue)
 
     def call_find(self, other_args):
         """Process find command"""

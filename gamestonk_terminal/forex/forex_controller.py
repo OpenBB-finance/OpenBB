@@ -221,7 +221,7 @@ class ForexController(BaseController):
         """Enter Oanda menu."""
         from gamestonk_terminal.forex.oanda.oanda_controller import OandaController
 
-        self.queue = OandaController(self.queue).menu()
+        self.queue = self.load_class(OandaController, self.queue)
 
     # HELP WANTED!
     # TODO: Add news and reddit commands back
