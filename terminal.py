@@ -98,6 +98,7 @@ class TerminalController(BaseController):
     quit / q / ..   quit this menu and go one menu above
     exit            exit the terminal
     reset / r       reset the terminal and reload configs from the current location
+    resources       only available on main contexts (not sub-menus)
 
     about           about us
     update          update terminal automatically
