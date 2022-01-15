@@ -76,7 +76,10 @@ def display_dividend_calendar(
     }
     calendar = nasdaq_model.get_dividend_cal(date)
     if calendar.empty:
-        console.print("No data found.\n")
+        console.print(
+            "No data found. Check that the date provided is a market day.  If it is then try this function"
+            " again as the request may have not gone through.\n"
+        )
         return
     calendar = calendar.drop(columns=["announcement_Date"])
     calendar.columns = calendar.columns.map(div_map)
