@@ -54,6 +54,7 @@ class DiscoveryController(BaseController):
         "rtearn",
         "cnews",
         "rtat",
+        "divcal",
     ]
 
     arkord_sortby_choices = [
@@ -94,6 +95,16 @@ class DiscoveryController(BaseController):
             "Technology",
         ]
     ]
+    dividend_columns = [
+        "Name",
+        "Symbol",
+        "Ex-Dividend Date",
+        "Payment Date",
+        "Record Date",
+        "Dividend",
+        "Indicated Annual Dividend",
+        "Announcement Date",
+    ]
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -109,6 +120,8 @@ class DiscoveryController(BaseController):
             choices["arkord"]["--fund"] = {c: None for c in self.arkord_fund_choices}
             choices["cnews"]["-t"] = {c: None for c in self.cnews_type_choices}
             choices["cnews"]["--type"] = {c: None for c in self.cnews_type_choices}
+            choices["divcal"]["-s"] = {c: None for c in self.dividend_columns}
+            choices["divcal"]["--sort"] = {c: None for c in self.dividend_columns}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -141,9 +154,62 @@ class DiscoveryController(BaseController):
 [src][Pennystockflow.com][/src]
     hotpenny       today's hot penny stocks
 [src][NASDAQ Data Link (Formerly Quandl)][/src]
-    rtat           top 10 retail traded stocks per day[/cmds]
+    rtat           top 10 retail traded stocks per day
+    divcal         dividend calendar for selected date[/cmds]
 """
         console.print(text=help_text, menu="Stocks - Discovery")
+
+    # TODO Add flag for adding last price to the following table
+    def call_divcal(self, other_args: List[str]):
+        """Process divcal command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="divcal",
+            description="""Get dividend calendar for selected date""",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            default=datetime.now(),
+            type=valid_date,
+            dest="date",
+            help="Date to get format for",
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            default=["Dividend"],
+            nargs="+",
+            type=str,
+            help="Column to sort by",
+            dest="sort",
+        )
+        parser.add_argument(
+            "-a",
+            "--ascend",
+            default=False,
+            action="store_true",
+            help="Flag to sort in ascending order",
+            dest="ascend",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-d")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
+        )
+        if ns_parser:
+            sort_col = " ".join(ns_parser.sort)
+            if sort_col not in self.dividend_columns:
+                console.print(f"{sort_col} not a valid selection for sorting.\n")
+                return
+            nasdaq_view.display_dividend_calendar(
+                ns_parser.date.strftime("%Y-%m-%d"),
+                sort_col=sort_col,
+                ascending=ns_parser.ascend,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
     def call_rtearn(self, other_args: List[str]):
         """Process rtearn command"""
