@@ -244,7 +244,7 @@ jobs:
       - name: Uninstall Brotlipy
         shell: bash -l {0}
         run: |
-          pip uninstall brotlipy -y --user
+          python -m pip uninstall brotlipy -y
 
       - name: List installed packages (Bash)
         shell: bash -l {0}
