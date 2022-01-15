@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 from typing import Any
-
+from datetime import datetime
 import requests
 import pandas as pd
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import denominate_number
@@ -119,3 +119,59 @@ def get_validators() -> pd.DataFrame:
         )
 
     return pd.DataFrame(results).sort_values(by="votingPower")
+
+
+def get_proposals() -> pd.DataFrame:
+    """Get terra blockchain governance proposals list [Source: https://fcd.terra.dev/v1]
+
+    Returns
+    -------
+    pd.DataFrame
+        Terra blockchain governance proposals list
+    """
+
+    response = _make_request("gov/proposals")["proposals"]
+    results = []
+    votes_options = ["Yes", "Abstain", "No", "NoWithVeto"]
+    for proposal in response:
+        deposit = proposal.pop("deposit")
+        proposal["depositEndTime"] = deposit.get("depositEndTime")
+        vote = proposal.pop("vote")
+        proposal.pop("proposer")
+        for opt in votes_options:
+            proposal[opt] = vote["count"].get(opt)
+
+        results.append(proposal)
+    columns = [
+        "id",
+        "submitTime",
+        "depositEndTime",
+        "status",
+        "type",
+        "title",
+        "Yes",
+        "No",
+        "Abstain",
+        "NoWithVeto",
+    ]
+    return pd.DataFrame(results)[columns]
+
+
+def get_account_growth(cumulative: bool = True) -> pd.DataFrame:
+    """Get terra blockchain account growth history [Source: https://fcd.terra.dev/v1]
+
+    Parameters
+    ----------
+    cumulative: bool
+        distinguish between periodical and cumulative account growth data
+    Returns
+    -------
+    pd.DataFrame
+        historical data of accounts growth
+    """
+
+    response = _make_request("dashboard/account_growth")
+    kind = "cumulative" if cumulative else "periodic"
+    df = pd.DataFrame(response[kind])
+    df["date"] = df["datetime"].apply(lambda x: datetime.fromtimestamp(x / 1000).date())
+    return df[["date", "totalAccountCount", "activeAccountCount"]]
