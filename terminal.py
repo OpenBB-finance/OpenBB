@@ -55,6 +55,7 @@ class TerminalController(BaseController):
         "jupyter",
         "funds",
         "alternative",
+        "custom",
     ]
 
     all_timezones = pytz.all_timezones
@@ -116,7 +117,8 @@ class TerminalController(BaseController):
 >   portfolio
 >   jupyter
 >   resources
->   alternative [/menu]
+>   alternative
+>   custom[/menu]
     """,
             menu="Home",
         )
@@ -192,6 +194,14 @@ class TerminalController(BaseController):
         )
 
         self.queue = AlternativeDataController(self.queue).menu()
+
+    def call_custom(self, _):
+        """Process custom command"""
+        from gamestonk_terminal.custom.custom_controller import (
+            CustomDataController,
+        )
+
+        self.queue = CustomDataController(self.queue).menu()
 
     def call_portfolio(self, _):
         """Process portfolio command"""
