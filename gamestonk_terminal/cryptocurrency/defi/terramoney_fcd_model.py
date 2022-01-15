@@ -1,6 +1,7 @@
 """Terra Money FCD model"""
 __docformat__ = "numpy"
 
+import textwrap
 from typing import Any
 from datetime import datetime
 import requests
@@ -60,7 +61,7 @@ def _adjust_delegation_info(delegation: dict) -> dict:
 
 
 def get_staking_account_info(address: str = "") -> dict:
-    """Get staking info for provided terra account [Source: https://fcd.terra.dev/v1]
+    """Get staking info for provided terra account [Source: https://fcd.terra.dev/swagger]
 
     Parameters
     ----------
@@ -91,7 +92,8 @@ def get_staking_account_info(address: str = "") -> dict:
 
 
 def get_validators() -> pd.DataFrame:
-    """Get information about terra validators [Source: https://fcd.terra.dev/v1]
+    """Get information about terra validators [Source: https://fcd.terra.dev/swagger]
+
     Returns
     -------
     pd.DataFrame
@@ -113,16 +115,20 @@ def get_validators() -> pd.DataFrame:
                     (float(validator["commissionInfo"].get("rate", 0)) * 100), 2
                 ),
                 "status": validator["status"],
-                "upTime": round((float(validator.get("upTime", 0)) * 100), 2),
-                "validatorDescription": validator["description"].get("details"),
+                "uptime": round((float(validator.get("upTime", 0)) * 100), 2),
             }
         )
 
     return pd.DataFrame(results).sort_values(by="votingPower")
 
 
-def get_proposals() -> pd.DataFrame:
-    """Get terra blockchain governance proposals list [Source: https://fcd.terra.dev/v1]
+def get_proposals(status: str = "") -> pd.DataFrame:
+    """Get terra blockchain governance proposals list [Source: https://fcd.terra.dev/swagger]
+
+    Parameters
+    ----------
+    status: str
+        status of proposal, one from list: ['Voting','Deposit','Passed','Rejected']
 
     Returns
     -------
@@ -130,6 +136,7 @@ def get_proposals() -> pd.DataFrame:
         Terra blockchain governance proposals list
     """
 
+    statuses = ["Voting", "Deposit", "Passed", "Rejected"]
     response = _make_request("gov/proposals")["proposals"]
     results = []
     votes_options = ["Yes", "Abstain", "No", "NoWithVeto"]
@@ -154,11 +161,24 @@ def get_proposals() -> pd.DataFrame:
         "Abstain",
         "NoWithVeto",
     ]
-    return pd.DataFrame(results)[columns]
+    df = pd.DataFrame(results)[columns]
+    df[["id", "Yes", "No", "Abstain", "NoWithVeto"]] = df[
+        ["id", "Yes", "No", "Abstain", "NoWithVeto"]
+    ].astype(int, errors="ignore")
+    df["title"] = df["title"].apply(
+        lambda x: "\n".join(textwrap.wrap(x, width=40)) if isinstance(x, str) else x
+    )
+
+    for col in ["submitTime", "depositEndTime"]:
+        df[col] = df[col].apply(lambda x: pd.to_datetime(x).strftime("%Y-%m-%d %H:%M"))
+
+    if status.title() in statuses:
+        df = df[df["status"] == status.title()]
+    return df
 
 
 def get_account_growth(cumulative: bool = True) -> pd.DataFrame:
-    """Get terra blockchain account growth history [Source: https://fcd.terra.dev/v1]
+    """Get terra blockchain account growth history [Source: https://fcd.terra.dev/swagger]
 
     Parameters
     ----------
