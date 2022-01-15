@@ -6,6 +6,7 @@ from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.cryptocurrency.defi import defirate_model
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def display_funding_rates(top: int, current: bool = True, export: str = "") -> None:
@@ -38,7 +39,7 @@ def display_funding_rates(top: int, current: bool = True, export: str = "") -> N
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -79,7 +80,7 @@ def display_lending_rates(top: int, current: bool = True, export: str = "") -> N
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -121,7 +122,7 @@ def display_borrow_rates(top: int, current: bool = True, export: str = "") -> No
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,

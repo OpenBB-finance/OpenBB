@@ -16,6 +16,8 @@ from _pytest.fixtures import SubRequest
 from _pytest.mark.structures import Mark
 
 # IMPORTATION INTERNAL
+from gamestonk_terminal import rich_config
+
 
 # pylint: disable=redefined-outer-name
 
@@ -306,6 +308,7 @@ def pytest_configure(config: Config) -> None:
     for item in list(installed_packages):
         if "brotli" in str(item).lower():
             pytest.exit("Uninstall brotli before running tests")
+    rich_config.disable_rich()
     config.addinivalue_line("markers", "record_stdout: Mark the test as text record.")
 
 

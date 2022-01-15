@@ -1,6 +1,4 @@
 
-Financial Modeling Prep Menu:
-
 Ticker: 
 
     profile       profile of the company

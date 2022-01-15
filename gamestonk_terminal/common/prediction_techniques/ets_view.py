@@ -27,6 +27,7 @@ from gamestonk_terminal.helper_funcs import (
     patch_pandas_text_adjustment,
     plot_autoscale,
 )
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -79,7 +80,7 @@ def display_exponential_smoothing(
             )[1:]
 
         if future_index[-1] > datetime.datetime.now():
-            print(
+            console.print(
                 "Backtesting not allowed, since End Date + Prediction days is in the future\n"
             )
             return
@@ -93,11 +94,11 @@ def display_exponential_smoothing(
     )
 
     if not forecast:
-        print("No forecast made.  Model did not converge.\n")
+        console.print("No forecast made.  Model did not converge.\n")
         return
 
     if np.isnan(forecast).any():
-        print("Model predicted NaN values.  Runtime Error.\n")
+        console.print("Model predicted NaN values.  Runtime Error.\n")
         return
 
     if not time_res:
@@ -112,15 +113,15 @@ def display_exponential_smoothing(
 
     df_pred = pd.Series(forecast, index=l_pred_days, name="Price")
 
-    print(f"\n{title}")
-    print("\nFit model parameters:")
+    console.print(f"\n{title}")
+    console.print("\nFit model parameters:")
     for key, value in model.params.items():
-        print(f"{key} {' '*(18-len(key))}: {value}")
+        console.print(f"{key} {' '*(18-len(key))}: {value}")
 
-    print("\nAssess fit model:")
-    print(f"AIC: {round(model.aic, 2)}")
-    print(f"BIC: {round(model.bic, 2)}")
-    print(f"SSE: {round(model.sse, 2)}\n")
+    console.print("\nAssess fit model:")
+    console.print(f"AIC: {round(model.aic, 2)}")
+    console.print(f"BIC: {round(model.bic, 2)}")
+    console.print(f"SSE: {round(model.sse, 2)}\n")
 
     # Plotting
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -292,12 +293,14 @@ def display_exponential_smoothing(
 
             patch_pandas_text_adjustment()
 
-            print("Time         Real [$]  x  Prediction [$]")
-            print(df_pred.apply(price_prediction_backtesting_color, axis=1).to_string())
+            console.print("Time         Real [$]  x  Prediction [$]")
+            console.print(
+                df_pred.apply(price_prediction_backtesting_color, axis=1).to_string()
+            )
         else:
-            print(df_pred[["Real", "Prediction"]].round(2).to_string())
+            console.print(df_pred[["Real", "Prediction"]].round(2).to_string())
 
-        print("")
+        console.print("")
         print_prediction_kpis(df_pred["Real"].values, df_pred["Prediction"].values)
 
     else:
@@ -305,4 +308,4 @@ def display_exponential_smoothing(
         print_pretty_prediction(df_pred, values.values[-1])
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "ets")
 
-    print("")
+    console.print("")

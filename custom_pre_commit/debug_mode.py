@@ -7,26 +7,29 @@ from typing import List
 
 
 def search(lst: List[str], search_item: str):
-    for _, val in enumerate(lst):
+    for i, val in enumerate(lst):
         if search_item in val:
-            return val
+            return i, val
     return None
 
 
 def main():
-    path = os.path.join(
-        os.path.dirname(os.path.dirname(__file__)),
-        "gamestonk_terminal",
-        "config_terminal.py",
-    )
+    base = os.path.dirname(os.path.dirname(__file__))
+    path = os.path.join(base, "gamestonk_terminal", "config_terminal.py")
     with open(path) as file:
         lines = file.readlines()
         lines = [line.rstrip() for line in lines]
 
-    debug_line = search(lines, "DEBUG_MODE")
+    debug_line, debug_val = search(lines, "DEBUG_MODE")
 
-    if debug_line == "DEBUG_MODE = False":
+    if debug_val == "DEBUG_MODE = False":
         sys.exit(0)
+
+    lines[debug_line] = "DEBUG_MODE = False"
+    with open(path, "w") as file:
+        for element in lines:
+            file.write(element + "\n")
+
     sys.exit(1)
 
 

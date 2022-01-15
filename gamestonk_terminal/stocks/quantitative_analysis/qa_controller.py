@@ -7,8 +7,8 @@ from datetime import datetime, timedelta
 
 import numpy as np
 import pandas as pd
-from rich.console import Console
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.common.quantitative_analysis import (
     qa_view,
@@ -26,8 +26,6 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.quantitative_analysis.factors_view import capm_view
-
-t_console = Console()
 
 
 class QaController(BaseController):
@@ -99,40 +97,42 @@ class QaController(BaseController):
         """Print help"""
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.start:
-            stock_str = f"{s_intraday} Stock: [cyan]{self.ticker}[/cyan] (from {self.start.strftime('%Y-%m-%d')})"
+            stock_str = (
+                f"{s_intraday} {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            )
         else:
-            stock_str = f"{s_intraday} Stock: [cyan]{self.ticker}[/cyan]"
-        help_str = f"""
+            stock_str = f"{s_intraday} {self.ticker}"
+        help_text = f"""[cmds]
    load        load new ticker
-   pick        pick target column for analysis
+   pick        pick target column for analysis[/cmds]
 
-{stock_str}
-Target Column: [green]{self.target}[/green]
-
-Statistics:
+[param]Stock: [/param]{stock_str}
+[param]Target Column: [/param]{self.target}
+[cmds]
+[info]Statistics:[/info]
     summary     brief summary statistics of loaded stock.
     normality   normality statistics and tests
     unitroot    unit root test for stationarity (ADF, KPSS)
-Plots:
+[info]Plots:[/info]
     line        line plot of selected target
     hist        histogram with density plot
     cdf         cumulative distribution function
     bw          box and whisker plot
     acf         (partial) auto-correlation function differentials of prices
     qqplot      residuals against standard normal curve
-Rolling Metrics:
+[info]Rolling Metrics:[/info]
     rolling     rolling mean and std deviation of prices
     spread      rolling variance and std deviation of prices
     quantile    rolling median and quantile of prices
     skew        rolling skewness of distribution of prices
     kurtosis    rolling kurtosis of distribution of prices
-Other:
+[info]Other:[/info]
     raw         print raw data
     decompose   decomposition in cyclic-trend, season, and residuals of prices
     cusum       detects abrupt changes using cumulative sum algorithm of prices
-    capm        capital asset pricing model
+    capm        capital asset pricing model[/cmds]
         """
-        t_console.print(help_str)
+        console.print(text=help_text, menu="Stocks - Quantitative Analysis")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -238,7 +238,7 @@ Other:
                 self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
                 self.stock = self.stock.dropna()
                 self.stock.columns = [x.lower() for x in self.stock.columns]
-                print("")
+                console.print("")
 
     def call_pick(self, other_args: List[str]):
         """Process pick command"""
@@ -264,7 +264,7 @@ Other:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.target = ns_parser.target
-        t_console.print("")
+        console.print("")
 
     def call_raw(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
@@ -521,7 +521,7 @@ Other:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.target != "AdjClose":
-                t_console.print(
+                console.print(
                     "Target not AdjClose.  For best results, use `pick AdjClose` first."
                 )
 

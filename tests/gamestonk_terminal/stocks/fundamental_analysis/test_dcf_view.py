@@ -36,6 +36,7 @@ def test_create_xls():
             assert item in items_cf
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 def test_create_workbook(mocker):
     excel = dcf_view.CreateExcelFA(ticker="AEIS", audit=False)

@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import argparse
 from typing import List, Union
 
-from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import config_terminal as cfg
@@ -17,6 +16,7 @@ from gamestonk_terminal.helper_funcs import (
     check_non_negative_float,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.rich_config import console
 
 account = cfg.OANDA_ACCOUNT
 
@@ -65,10 +65,10 @@ class OandaController(BaseController):
 
     def print_help(self):
         """Print help."""
-        dim_if_no_ticker = Style.DIM if not self.instrument else ""
-        reset_style_if_no_ticker = Style.RESET_ALL if not self.instrument else ""
+        has_instrument_start = "[unvl]" if not self.instrument else ""
+        has_instrument_end = "[/unvl]" if not self.instrument else ""
 
-        help_text = f"""
+        help_text = f"""[cmds]
     summary       shows account summary
     calendar      show calendar
     list          list order history
@@ -78,20 +78,19 @@ class OandaController(BaseController):
     trades        list open trades
     closetrade    close a trade by id
 
-    Loaded instrument: {self.instrument if self.instrument else ""}
+    from          select the "from" currency in a forex pair
+    to            select the "to" currency in a forex pair[/cmds]
 
-    from      select the "from" currency in a forex pair
-    to        select the "to" currency in a forex pair
-    {dim_if_no_ticker}
+[param]Loaded instrument: [/param]{self.instrument if self.instrument else ""}[cmds]
+
+    {has_instrument_start}
     candles       show candles
     price         shows price for selected instrument
     order         place limit order -u # of units -p price
     orderbook     print orderbook
-    positionbook  print positionbook
-    {reset_style_if_no_ticker}
-
+    positionbook  print positionbook[/cmds]{has_instrument_end}
     """
-        print(help_text)
+        console.print(text=help_text, menu="Forex - Oanda")
 
     def call_to(self, other_args: List[str]):
         """Process 'to' command."""
@@ -105,6 +104,7 @@ class OandaController(BaseController):
             "-n",
             "--name",
             help="To currency",
+            required=True,
             type=av_model.check_valid_forex_currency,
             dest="to_symbol",
         )
@@ -121,7 +121,7 @@ class OandaController(BaseController):
             self.to_symbol = ns_parser.to_symbol.upper()
             self.instrument = f"{self.from_symbol}_{self.to_symbol}"
 
-            print(
+            console.print(
                 f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
             )
 
@@ -130,13 +130,14 @@ class OandaController(BaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="to",
+            prog="from",
             description='Select the "from" currency symbol in a forex pair',
         )
         parser.add_argument(
             "-n",
             "--name",
             help="From currency",
+            required=True,
             type=av_model.check_valid_forex_currency,
             dest="from_symbol",
         )
@@ -154,7 +155,7 @@ class OandaController(BaseController):
             self.from_symbol = ns_parser.from_symbol.upper()
             self.instrument = f"{self.from_symbol}_{self.to_symbol}"
 
-            print(
+            console.print(
                 f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
             )
 

@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -91,13 +92,13 @@ class DiscoveryController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """
-CoinGecko:
-    cgtrending        trending coins on CoinGecko
-    cgvoted           most voted coins on CoinGecko
-    cgvisited         most visited coins on CoinGecko
-    cgvolume          coins with highest volume on CoinGecko
-    cgrecently        recently added on CoinGecko
+        help_text = """[cmds]
+[src][CoinGecko][/src]
+    cgtrending        trending coins
+    cgvoted           most voted coins
+    cgvisited         most visited coins
+    cgvolume          coins with highest volume
+    cgrecently        recently added
     cgsentiment       coins with most positive sentiment
     cggainers         top gainers - coins which price gained the most in given period
     cglosers          top losers - coins which price dropped the most in given period
@@ -105,12 +106,12 @@ CoinGecko:
     cgdefi            top defi protocols
     cgdex             top decentralized exchanges
     cgnft             top non fungible tokens
-CoinPaprika:
-    cpsearch          search on CoinPaprika
-CoinMarketCap:
-    cmctop            top coins from CoinMarketCap
+[src][CoinPaprika][/src]
+    cpsearch          search for coins
+[src][CoinMarketCap][/src]
+    cmctop            top coins[/cmds]
 """
-        print(help_text)
+        console.print(text=help_text, menu="Cryptocurrency - Discovery")
 
     def call_cggainers(self, other_args):
         """Process gainers command"""

@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 
 from gamestonk_terminal.stocks.options.op_helpers import convert
 from gamestonk_terminal.helper_funcs import get_user_agent
+from gamestonk_terminal.rich_config import console
 
 
 def get_option_history(ticker: str, date: str, call: bool, price: str) -> pd.DataFrame:
@@ -44,7 +45,7 @@ def get_option_history(ticker: str, date: str, call: bool, price: str) -> pd.Dat
             item = row.find_all("div")
             clean_rows.append([x.text for x in item])
     else:
-        print("No data for this option\n")
+        console.print("No data for this option\n")
         return pd.DataFrame()
 
     df = pd.DataFrame()

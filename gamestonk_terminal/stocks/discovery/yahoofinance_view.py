@@ -7,6 +7,7 @@ from tabulate import tabulate
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.stocks.discovery import yahoofinance_model
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +29,7 @@ def display_gainers(num_stocks: int, export: str) -> None:
     df_gainers = df_gainers.replace(float("NaN"), "")
 
     if df_gainers.empty:
-        print("No gainers found.")
+        console.print("No gainers found.")
     else:
         print(
             tabulate(
@@ -39,7 +40,7 @@ def display_gainers(num_stocks: int, export: str) -> None:
                 tablefmt="fancy_grid",
             )
         )
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -66,7 +67,7 @@ def display_losers(num_stocks: int, export: str) -> None:
     df_losers = df_losers.replace(float("NaN"), "")
 
     if df_losers.empty:
-        print("No losers found.")
+        console.print("No losers found.")
     else:
         print(
             tabulate(
@@ -77,7 +78,7 @@ def display_losers(num_stocks: int, export: str) -> None:
                 tablefmt="fancy_grid",
             )
         )
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -104,7 +105,7 @@ def display_ugs(num_stocks: int, export: str) -> None:
     df = df.replace(float("NaN"), "")
 
     if df.empty:
-        print("No data found.")
+        console.print("No data found.")
     else:
         print(
             tabulate(
@@ -115,7 +116,7 @@ def display_ugs(num_stocks: int, export: str) -> None:
                 tablefmt="fancy_grid",
             )
         )
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -142,7 +143,7 @@ def display_gtech(num_stocks: int, export: str) -> None:
     df = df.replace(float("NaN"), "")
 
     if df.empty:
-        print("No data found.")
+        console.print("No data found.")
     else:
         print(
             tabulate(
@@ -153,7 +154,7 @@ def display_gtech(num_stocks: int, export: str) -> None:
                 tablefmt="fancy_grid",
             )
         )
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -180,7 +181,7 @@ def display_active(num_stocks: int, export: str) -> None:
     df = df.replace(float("NaN"), "")
 
     if df.empty:
-        print("No data found.")
+        console.print("No data found.")
     else:
         print(
             tabulate(
@@ -191,7 +192,7 @@ def display_active(num_stocks: int, export: str) -> None:
                 tablefmt="fancy_grid",
             )
         )
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -218,7 +219,7 @@ def display_ulc(num_stocks: int, export: str) -> None:
     df = df.replace(float("NaN"), "")
 
     if df.empty:
-        print("No data found.")
+        console.print("No data found.")
     else:
         print(
             tabulate(
@@ -229,7 +230,7 @@ def display_ulc(num_stocks: int, export: str) -> None:
                 tablefmt="fancy_grid",
             )
         )
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -256,7 +257,7 @@ def display_asc(num_stocks: int, export: str) -> None:
     df = df.replace(float("NaN"), "")
 
     if df.empty:
-        print("No data found.")
+        console.print("No data found.")
     else:
         print(
             tabulate(
@@ -267,7 +268,7 @@ def display_asc(num_stocks: int, export: str) -> None:
                 tablefmt="fancy_grid",
             )
         )
-    print("")
+    console.print("")
 
     export_data(
         export,

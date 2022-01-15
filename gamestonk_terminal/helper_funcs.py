@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 # pylint: disable=too-many-lines
 import argparse
 import logging
-from typing import List
+from typing import List, Union
 from datetime import datetime, timedelta
 import os
 import random
@@ -24,6 +24,7 @@ import pandas.io.formats.format
 import requests
 from screeninfo import get_monitors
 
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_plot as cfgPlot
 
@@ -47,8 +48,8 @@ def rich_table_from_df(
     show_index: bool = False,
     title: str = "",
     index_name: str = "",
-    headers: List[str] = None,
-    floatfmt: str = ".2f",
+    headers: Union[List[str], pd.Index] = None,
+    floatfmt: Union[str, List[str]] = ".2f",
 ) -> Table:
     """Prepare a table from df in rich
 
@@ -77,6 +78,8 @@ def rich_table_from_df(
         table.add_column(index_name)
 
     if headers:
+        if isinstance(headers, pd.Index):
+            headers = list(headers)
         if len(headers) != len(df.columns):
             raise ValueError("Length of headers does not match length of DataFrame")
         for header in headers:
@@ -85,10 +88,19 @@ def rich_table_from_df(
         for column in df.columns:
             table.add_column(str(column))
 
+    if isinstance(floatfmt, list):
+        if len(floatfmt) != len(df.columns):
+            raise ValueError(
+                "Length of floatfmt list does not match length of DataFrame columns."
+            )
+    if isinstance(floatfmt, str):
+        floatfmt = [floatfmt for _ in range(len(df.columns))]
+
     for idx, values in zip(df.index.tolist(), df.values.tolist()):
         row = [str(idx)] if show_index else []
         row += [
-            str(x) if not isinstance(x, float) else f"{x:{floatfmt}}" for x in values
+            str(x) if not isinstance(x, float) else f"{x:{floatfmt[idx]}}"
+            for idx, x in enumerate(values)
         ]
         table.add_row(*row)
 
@@ -258,8 +270,8 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
             dpi=cfgPlot.PLOT_DPI,
         )
     except Exception as e:
-        print(e)
-        print(
+        console.print(e)
+        console.print(
             "Encountered an error trying to open a chart window. Check your X server configuration."
         )
         logging.exception("%s", type(e).__name__)
@@ -311,7 +323,7 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
     plt.setp(ax[1].get_xticklabels(), rotation=20, horizontalalignment="right")
 
     plt.show()
-    print("")
+    console.print("")
 
 
 def us_market_holidays(years) -> list:
@@ -650,16 +662,16 @@ def parse_known_args_and_warn(
         (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
     except SystemExit:
         # In case the command has required argument that isn't specified
-        print("")
+        console.print("")
         return None
 
     if ns_parser.help:
-        parser.print_help()
-        print("")
+        txt_help = parser.format_help()
+        console.print(f"[help]{txt_help}[/help]")
         return None
 
     if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+        console.print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
     return ns_parser
 
@@ -791,13 +803,13 @@ def replace_user_timezone(user_tz: str) -> None:
         with open(filename, "w") as f:
             if is_timezone_valid(user_tz):
                 if f.write(user_tz):
-                    print("Timezone successfully updated", "\n")
+                    console.print("Timezone successfully updated", "\n")
                 else:
-                    print("Timezone not set successfully", "\n")
+                    console.print("Timezone not set successfully", "\n")
             else:
-                print("Timezone selected is not valid", "\n")
+                console.print("Timezone selected is not valid", "\n")
     else:
-        print("timezone.gst file does not exist", "\n")
+        console.print("timezone.gst file does not exist", "\n")
 
 
 def str_to_bool(value) -> bool:
@@ -816,7 +828,9 @@ def get_screeninfo():
     screens = get_monitors()  # Get all available monitors
     if len(screens) - 1 < cfgPlot.MONITOR:  # Check to see if chosen monitor is detected
         monitor = 0
-        print(f"Could not locate monitor {cfgPlot.MONITOR}, using primary monitor.")
+        console.print(
+            f"Could not locate monitor {cfgPlot.MONITOR}, using primary monitor."
+        )
     else:
         monitor = cfgPlot.MONITOR
     main_screen = screens[monitor]  # Choose what monitor to get
@@ -905,9 +919,9 @@ def export_data(
                 elif exp_type == "svg":
                     plt.savefig(saved_path)
                 else:
-                    print("Wrong export file specified.\n")
+                    console.print("Wrong export file specified.\n")
 
-                print(f"Saved file: {saved_path}\n")
+                console.print(f"Saved file: {saved_path}\n")
 
 
 def get_rf() -> float:
@@ -928,6 +942,49 @@ def get_rf() -> float:
         return round(float(latest["avg_interest_rate_amt"]) / 100, 8)
     except Exception:
         return 0.02
+
+
+class LineAnnotateDrawer:
+    """Line drawing class."""
+
+    def __init__(self, ax: matplotlib.axes = None):
+        self.ax = ax
+
+    def draw_lines_and_annotate(self):
+        # ymin, _ = self.ax.get_ylim()
+        # xmin, _ = self.ax.get_xlim()
+        # self.ax.plot(
+        #     [xmin, xmin],
+        #     [ymin, ymin],
+        #     lw=0,
+        #     color="white",
+        #     label="X - leave interactive mode\nClick twice for annotation",
+        # )
+        # self.ax.legend(handlelength=0, handletextpad=0, fancybox=True, loc=2)
+        # self.ax.figure.canvas.draw()
+        """Draw lines."""
+        console.print(
+            "Click twice for annotation.\nClose window to keep using terminal.\n"
+        )
+
+        while True:
+            xy = plt.ginput(2)
+            # Check whether the user has closed the window or not
+            if not plt.get_fignums():
+                console.print("")
+                return
+
+            if len(xy) == 2:
+                x = [p[0] for p in xy]
+                y = [p[1] for p in xy]
+
+                if (x[0] == x[1]) and (y[0] == y[1]):
+                    txt = input("Annotation: ")
+                    self.ax.annotate(txt, (x[0], y[1]), ha="center", va="center")
+                else:
+                    self.ax.plot(x, y)
+
+                self.ax.figure.canvas.draw()
 
 
 def system_clear():

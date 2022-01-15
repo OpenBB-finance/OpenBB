@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 
 from typing import List, Set
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
@@ -35,14 +35,13 @@ class BrokersController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_string = """
+        help_text = """[menu]
 >   ally         Ally Invest Menu
 >   degiro       Degiro Menu
 >   rh           Robinhood Menu
-
->   cb           Coinbase Pro Menu
+>   cb           Coinbase Pro Menu[/menu]
     """
-        print(help_string)
+        console.print(text=help_text, menu="Portfolio - Brokers")
 
     def call_degiro(self, _):
         """Process degiro command."""
@@ -65,8 +64,8 @@ class BrokersController(BaseController):
     #    """Process login command"""
     #    logged_in = False
     #    if not other_args:
-    #        print("Please enter brokers you wish to login to")
-    #        print("")
+    #        console.print("Please enter brokers you wish to login to")
+    #        console.print("")
     #        return
     #    for broker in other_args:
     #        if broker in self.BROKERS:
@@ -77,10 +76,10 @@ class BrokersController(BaseController):
     #                self.broker_list.add(broker)
     #                logged_in = True
     #            except Exception as e:
-    #                print("")
-    #                print(f"Error at broker : {broker}")
-    #                print(e)
-    #                print("Make sure credentials are defined in config_terminal.py ")
-    #                print("")
+    #                console.print("")
+    #                console.print(f"Error at broker : {broker}")
+    #                console.print(e)
+    #                console.print("Make sure credentials are defined in config_terminal.py ")
+    #                console.print("")
     #        else:
-    #            print(f"{broker} not supported")
+    #            console.print(f"{broker} not supported")

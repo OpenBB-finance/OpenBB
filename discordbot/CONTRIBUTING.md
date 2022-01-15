@@ -107,6 +107,7 @@ import os
 from datetime import datetime, timedelta
 import discord
 import yfinance as yf
+from gamestonk_terminal.rich_config import console
 import discordbot.config_discordbot as cfg
 import discordbot.helpers
 from matplotlib import pyplot as plt
@@ -124,7 +125,7 @@ async def ftd_command(ctx, ticker="", start="", end=""):
     try:
         # DEBUG USER INPUT
         if cfg.DEBUG:
-            print(f"\n!stocks.dps.ftd {ticker} {start} {end}")
+            console.print(f"\n!stocks.dps.ftd {ticker} {start} {end}")
 
         # CHECK FOR ARGUMENT VALIDITY
         if ticker == "":
@@ -147,7 +148,7 @@ async def ftd_command(ctx, ticker="", start="", end=""):
 
         # DEBUG OUTPUT
         if cfg.DEBUG:
-            print(ftds_data.to_string())
+            console.print(ftds_data.to_string())
 
         # PROCESS DATA TO OUTPUT
         plt.bar(
@@ -249,7 +250,7 @@ async def dark_pool_shorts_menu(self, ctx: discord.ext.commands.Context):
     """Stocks Context - Shows Dark Pool Shorts Menu"""
 
     if cfg.DEBUG:
-        print(f"\n!stocks.dps {ticker}")
+        console.print(f"\n!stocks.dps {ticker}")
 
     text = (
         "0️⃣ !stocks.dps.shorted <NUM>\n"
@@ -278,15 +279,15 @@ async def dark_pool_shorts_menu(self, ctx: discord.ext.commands.Context):
         )
         if reaction.emoji == "0️⃣":
             if cfg.DEBUG:
-                print("Reaction selected: 0")
+                console.print("Reaction selected: 0")
             await shorted_command(ctx)
         elif reaction.emoji == "1️⃣":
             if cfg.DEBUG:
-                print("Reaction selected: 1")
+                console.print("Reaction selected: 1")
             await hsi_command(ctx)
         elif reaction.emoji == "2️⃣":
             if cfg.DEBUG:
-                print("Reaction selected: 2")
+                console.print("Reaction selected: 2")
             await pos_command(ctx)
 
         for emoji in emoji_list:

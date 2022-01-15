@@ -32,6 +32,7 @@ from gamestonk_terminal.common.prediction_techniques.pred_helper import (
     forecast,
 )
 from gamestonk_terminal import config_neural_network_models as cfg_nn_models
+from gamestonk_terminal.rich_config import console
 
 
 optimizers = {
@@ -130,7 +131,7 @@ def build_neural_network_model(
         elif str(*d_layer) == "Flatten":
             model.add(Flatten())
         else:
-            print(f"Incorrect neuron type: {str(*d_layer)}")
+            console.print(f"Incorrect neuron type: {str(*d_layer)}")
 
     return model
 
@@ -201,7 +202,7 @@ def mlp_model(
     if is_error:
         return pd.DataFrame(), np.array(0), np.array(0), np.array(0), None
 
-    print(
+    console.print(
         f"Training on {X_train.shape[0]} sequences of length {X_train.shape[1]}.  Using {X_valid.shape[0]} sequences "
         f" of length {X_valid.shape[1]} for validation. Model will run {n_loops} loops"
     )
@@ -321,7 +322,7 @@ def rnn_model(
     if is_error:
         return pd.DataFrame(), np.array(0), np.array(0), np.array(0), None
 
-    print(
+    console.print(
         f"Training on {X_train.shape[0]} sequences of length {X_train.shape[1]}.  Using {X_valid.shape[0]} sequences "
         f" of length {X_valid.shape[1]} for validation. Model will run {n_loops} loops"
     )
@@ -434,7 +435,7 @@ def lstm_model(
     if is_error:
         return pd.DataFrame(), np.array(0), np.array(0), np.array(0), None
 
-    print(
+    console.print(
         f"Training on {X_train.shape[0]} sequences of length {X_train.shape[1]}.  Using {X_valid.shape[0]} sequences "
         f" of length {X_valid.shape[1]} for validation. Model will run {n_loops} loops"
     )
@@ -547,7 +548,7 @@ def conv1d_model(
     if is_error:
         return pd.DataFrame(), np.array(0), np.array(0), np.array(0), None
 
-    print(
+    console.print(
         f"Training on {X_train.shape[0]} sequences of length {X_train.shape[1]}.  Using {X_valid.shape[0]} sequences "
         f" of length {X_valid.shape[1]} for validation. Model will run {n_loops} loops"
     )

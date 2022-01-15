@@ -5,6 +5,7 @@ from matplotlib import pyplot
 from prompt_toolkit import PromptSession
 from prompt_toolkit.eventloop.inputhook import set_eventloop_with_inputhook
 from prompt_toolkit.history import FileHistory
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +28,7 @@ try:
 # pylint: disable=unused-variable
 except Exception as e:  # noqa: F841
     logger.exception("%s", type(e).__name__)
-    print(
+    console.print(
         "WARNING: Prompt toolkit is turned on but did not initialize successfully. Falling back to input()..."
     )
     session = None  # type: ignore

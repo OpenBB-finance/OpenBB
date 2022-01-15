@@ -7,6 +7,7 @@ from typing import List
 from datetime import datetime, timedelta
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.cryptocurrency.due_diligence import (
     coinglass_model,
@@ -135,34 +136,28 @@ class DueDiligenceController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = "Due Diligence Menu:\n"
-        help_text += """
+        source_txt = CRYPTO_SOURCES.get(self.source, "?") if self.source != "" else ""
+        help_text = f"""[cmds]
     load        load a specific cryptocurrency for analysis
-"""
-        help_text += (
-            f"\nCoin: {self.current_coin}" if self.current_coin != "" else "\nCoin: ?"
-        )
-        help_text += (
-            f"\nSource: {CRYPTO_SOURCES.get(self.source, '?')}\n"
-            if self.source != ""
-            else "\nSource: ?\n"
-        )
-        help_text += """
-Glassnode:
+
+[param]Coin: [/param]{self.current_coin}
+[param]Source: [/param]{source_txt}
+
+[src]Glassnode[/src]
    active          active addresses
    nonzero         addresses with non-zero balances
    change          30d change of supply held on exchange wallets
    eb              total balance held on exchanges (in percentage and units)
-Coinglass:
+[src]Coinglass[/src]
    oi              open interest per exchange
-CoinPaprika:
+[src]CoinPaprika[/src]
    basic           basic information about loaded coin
    ps              price and supply related metrics for loaded coin
    mkt             all markets for loaded coin
    ex              all exchanges where loaded coin is listed
    twitter         tweets for loaded coin
    events          events related to loaded coin
-CoinGecko:
+[src]CoinGecko[/src]
    info            basic information about loaded coin
    market          market stats about loaded coin
    ath             all time high related stats for loaded coin
@@ -172,15 +167,15 @@ CoinGecko:
    score           different kind of scores for loaded coin, e.g developer score, sentiment score
    dev             github, bitbucket coin development statistics
    bc              links to blockchain explorers for loaded coin
-Binance:
+[src]Binance[/src]
    binbook         show order book
    balance         show coin balance
-Coinbase:
+[src]Coinbase[/src]
    cbbook          show order book
    trades          show last trades
-   stats           show coin stats
+   stats           show coin stats[/cmds]
 """
-        print(help_text)
+        console.print(text=help_text, menu="Stocks - Due Diligence")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -233,7 +228,9 @@ Coinbase:
                 coin=ns_parser.coin, source=ns_parser.source
             )
             if self.symbol:
-                print(f"\nLoaded {self.current_coin} from source {self.source}\n")
+                console.print(
+                    f"\nLoaded {self.current_coin} from source {self.source}\n"
+                )
 
     def call_nonzero(self, other_args: List[str]):
         """Process nonzero command"""
@@ -292,7 +289,7 @@ Coinbase:
                 )
 
         else:
-            print("Glassnode source does not support this symbol\n")
+            console.print("Glassnode source does not support this symbol\n")
 
     def call_active(self, other_args: List[str]):
         """Process active command"""
@@ -350,7 +347,7 @@ Coinbase:
                 )
 
         else:
-            print("Glassnode source does not support this symbol\n")
+            console.print("Glassnode source does not support this symbol\n")
 
     def call_change(self, other_args: List[str]):
         """Process change command"""
@@ -422,7 +419,7 @@ Coinbase:
                     export=ns_parser.export,
                 )
         else:
-            print("Glassnode source does not support this symbol\n")
+            console.print("Glassnode source does not support this symbol\n")
 
     def call_eb(self, other_args: List[str]):
         """Process eb command"""
@@ -503,7 +500,7 @@ Coinbase:
                 )
 
         else:
-            print("Glassnode source does not support this symbol\n")
+            console.print("Glassnode source does not support this symbol\n")
 
     def call_oi(self, other_args):
         """Process oi command"""
@@ -781,7 +778,7 @@ Coinbase:
 
         _, quotes = coinbase_model.show_available_pairs_for_given_symbol(coin)
         if len(quotes) < 0:
-            print(f"Couldn't find any quoted coins for provided symbol {coin}")
+            console.print(f"Couldn't find any quoted coins for provided symbol {coin}")
 
         parser.add_argument(
             "--vs",
@@ -843,7 +840,7 @@ Coinbase:
         coin = self.coin_map_df["Coinbase"]
         _, quotes = coinbase_model.show_available_pairs_for_given_symbol(coin)
         if len(quotes) < 0:
-            print(
+            console.print(
                 f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
             )
 

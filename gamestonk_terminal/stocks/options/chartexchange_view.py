@@ -8,6 +8,7 @@ from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.stocks.options import chartexchange_model
+from gamestonk_terminal.rich_config import console
 
 
 def display_raw(
@@ -51,6 +52,6 @@ def display_raw(
             )
         )
     else:
-        print(df.to_string(index=False))
+        console.print(df.to_string(index=False))
 
-    print("")
+    console.print("")
