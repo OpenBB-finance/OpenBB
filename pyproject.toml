@@ -95,7 +95,7 @@ codespell = "^2.0.0"
 pyupgrade = "^2.11.0"
 sphinx = "4.1.1"
 myst-parser = "^0.15.2"
-black = "21.7b0"
+black = {extras = ["jupyter"], version = "21.7b0"}
 bandit = "^1.7.0"
 coverage = ">=5.5"
 vcrpy = "^4.1.1"

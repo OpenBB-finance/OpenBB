@@ -3774,7 +3774,7 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "6481960741aeb5ea869912bd6903d2f80d58416be6b0006c2b9ce3f737b84a86"
+content-hash = "fddd8f4b3e979228f2ed560d82db5e542d38b7e474faec6b80d3f4f1c72efccd"
 
 [metadata.files]
 absl-py = [
