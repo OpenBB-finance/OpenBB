@@ -1,13 +1,13 @@
-[param]
-Ticker: [/param] TSLA [cmds]
 
-[cmds]    data          fundamental and technical data of company [src][FinViz][/src]
-    mgmt          management team of the company [src][Business Insider][/src]
-    analysis      analyse SEC filings with the help of machine learning [src][Eclect.us][/src]
-    score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [src][FMP][/src]
-    warnings      company warnings according to Sean Seah book [src][Market Watch][/src]
-    dcf           advanced Excel customizable discounted cash flow [src][Stockanalysis][/src][/cmds]
-[src][Yahoo Finance][/src]
+Ticker:  TSLA 
+
+    data          fundamental and technical data of company [FinViz]
+    mgmt          management team of the company [Business Insider]
+    analysis      analyse SEC filings with the help of machine learning [Eclect.us]
+    score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]
+    warnings      company warnings according to Sean Seah book [Market Watch]
+    dcf           advanced Excel customizable discounted cash flow [Stockanalysis]
+[Yahoo Finance]
     info          information scope of the company
     shrs          shareholders of the company
     sust          sustainability values of the company
@@ -15,14 +15,14 @@ Ticker: [/param] TSLA [cmds]
     web           open web browser of the company
     hq            open HQ location of the company
     divs          show historical dividends for company
-[src][Alpha Vantage][/src]
+[Alpha Vantage]
     overview      overview of the company
     key           company key metrics
     income        income statements of the company
     balance       balance sheet of the company
     cash          cash flow of the company
     earnings      earnings dates and reported EPS
-    fraud         key fraud ratios[/cmds]
-[info]Other Sources:[/info][menu]
->   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP[/menu]
+    fraud         key fraud ratios
+Other Sources:
+>   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP
         

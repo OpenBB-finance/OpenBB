@@ -1,6 +1,6 @@
 
-[param]Ticker: [/param]MOCK_TICKER
-[cmds]
+Ticker: MOCK_TICKER
+
     macroaxis            www.macroaxis.com
     yahoo                www.finance.yahoo.com
     finviz               www.finviz.com
@@ -18,5 +18,5 @@
     zacks                www.zacks.com
     macrotrends          www.macrotrends.net
     newsfilter           www.newsfilter.io
-    stockanalysis        www.stockanalysis.com[/cmds]
+    stockanalysis        www.stockanalysis.com
 

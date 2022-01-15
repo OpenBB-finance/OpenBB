@@ -1,26 +1,26 @@
-[cmds]
+
     load           load a specific stock ticker for analysis
 
-[src][Yahoo Finance][/src]
+[Yahoo Finance]
     shorted        show most shorted stocks
-[src][Shortinterest.com][/src]
+[Shortinterest.com]
     hsi            show top high short interest stocks of over 20% ratio
-[src][FINRA][/src]
+[FINRA]
     prom           promising tickers based on dark pool shares regression
-[src][Stockgrid][/src]
+[Stockgrid]
     pos            dark pool short position
     sidtc          short interest and days to cover
 
-[param]Ticker: [/param]TSLA
+Ticker: TSLA
 
-[src][FINRA][/src]
+[FINRA]
     dpotc          dark pools (ATS) vs OTC data
-[src][SEC][/src]
+[SEC]
     ftd            fails-to-deliver data
-[src][Stockgrid][/src]
+[Stockgrid]
     spos           net short vs position
-[src][Quandl/Stockgrid][/src]
+[Quandl/Stockgrid]
     psi            price vs short interest volume
-[src][NYSE][/src]
-    volexch        short volume for ARCA,Amex,Chicago,NYSE and national exchanges[/cmds]
+[NYSE]
+    volexch        short volume for ARCA,Amex,Chicago,NYSE and national exchanges
 

@@ -1,27 +1,27 @@
-[cmds]
-    unu           show unusual options activity [src][Fdscanner.com][/src]
+
+    unu           show unusual options activity [Fdscanner.com]
     calc          basic call/put PnL calculator
 
     load          load new ticker
-    exp           see and set expiration dates[/cmds]
-[param]
-Ticker: [/param]None[param]
-Expiry: [/param]None
-[menu]
-    pcr           display put call ratio for ticker [src][AlphaQuery.com][/src]
-    info          display option information (volatility, IV rank etc) [src][Barchart.com][/src]
-    chains        display option chains with greeks [src][Tradier][/src]
-    oi            plot open interest [src][Tradier/YFinance][/src]
-    vol           plot volume [src][Tradier/YFinance][/src]
-    voi           plot volume and open interest [src][Tradier/YFinance][/src]
-    hist          plot option history [src][Tradier][/src]
+    exp           see and set expiration dates
+
+Ticker: None
+Expiry: None
+
+    pcr           display put call ratio for ticker [AlphaQuery.com]
+    info          display option information (volatility, IV rank etc) [Barchart.com]
+    chains        display option chains with greeks [Tradier]
+    oi            plot open interest [Tradier/YFinance]
+    vol           plot volume [Tradier/YFinance]
+    voi           plot volume and open interest [Tradier/YFinance]
+    hist          plot option history [Tradier]
     vsurf         show 3D volatility surface [Yfinance]
-    grhist        plot option greek history [src][Syncretism.io][/src]
-    plot          plot variables provided by the user [src][Yfinance][/src]
-    parity        shows whether options are above or below expected price [src][Yfinance][/src]
-    binom         shows the value of an option using binomial options pricing [src][Yfinance][/src]
+    grhist        plot option greek history [Syncretism.io]
+    plot          plot variables provided by the user [Yfinance]
+    parity        shows whether options are above or below expected price [Yfinance]
+    binom         shows the value of an option using binomial options pricing [Yfinance]
 [dim]
->   screen        screens tickers based on preset [src][Syncretism.io][/src]
->   payoff        shows payoff diagram for a selection of options [src][Yfinance][/src]
->   pricing       shows options pricing and risk neutral valuation [src][Yfinance][/src]
+>   screen        screens tickers based on preset [Syncretism.io]
+>   payoff        shows payoff diagram for a selection of options [Yfinance]
+>   pricing       shows options pricing and risk neutral valuation [Yfinance]
 [/dim]

@@ -1,12 +1,12 @@
-[cmds]
+
     view          view available presets (or one in particular)
     set           set one of the available presets
-[/cmds]
-[param]PRESET: [/param]high_IV[cmds]
 
-    scr            screen data from this preset[/cmds]
+PRESET: high_IV
+
+    scr            screen data from this preset
 [unvl]
-[param]Last screened tickers: [/param][menu]
+Last screened tickers: 
 >   ca             take these to comparison analysis menu
 >   po             take these to portoflio optimization menu[/unvl]
         
