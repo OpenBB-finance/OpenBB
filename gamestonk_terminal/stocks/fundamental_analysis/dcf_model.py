@@ -13,7 +13,7 @@ import financedatabase as fd
 import yfinance as yf
 import pandas as pd
 
-from gamestonk_terminal.helper_funcs import get_user_agent
+from gamestonk_terminal.helper_funcs import get_user_agent, excel_columns
 
 opts = Union[int, str, float]
 
@@ -232,60 +232,8 @@ def others_in_sector(ticker: str, sector: str, industry: str) -> List[str]:
     return sister_ticks
 
 
-letters = [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-    "Q",
-    "R",
-    "S",
-    "T",
-    "U",
-    "V",
-    "W",
-    "X",
-    "Y",
-    "Z",
-    "AA",
-    "AB",
-    "AC",
-    "AD",
-    "AE",
-    "AF",
-    "AG",
-    "AH",
-    "AI",
-    "AJ",
-    "AK",
-    "AL",
-    "AM",
-    "AN",
-    "AO",
-    "AP",
-    "AQ",
-    "AR",
-    "AS",
-    "AT",
-    "AU",
-    "AV",
-    "AW",
-    "AX",
-    "AY",
-    "AZ",
-]
+letters = excel_columns()
+
 non_gaap_is = [
     "Revenue Growth",
     "Net Income Common",
@@ -442,16 +390,3 @@ red = Font(color="FF0000")
 fmt_acct = "_($* #,##0.00_);[Red]_($* (#,##0.00);_($* -_0_0_);_(@"
 
 headers = {"User-Agent": get_user_agent()}
-
-tickers = [
-    "AEIS",
-    "AEL",
-    "AEM",
-    "AEMD",
-    "AENZ",
-    "AEO",
-    "AEP",
-    "AER",
-    "AERI",
-    "AES",
-]
