@@ -244,7 +244,7 @@ jobs:
       - name: Uninstall Brotlipy
         shell: bash -l {0}
         run: |
-          python -m pip uninstall brotlipy -y
+          conda remove brotlipy -y
 
       - name: List installed packages (Bash)
         shell: bash -l {0}
