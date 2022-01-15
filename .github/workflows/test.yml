@@ -240,7 +240,7 @@ jobs:
         run: |
           pip install --requirement requirements-full.txt
 
-      # Is there a better way to do this?
+      # TODO: Is there a better way to do this?
       - name: Uninstall Brotlipy
         shell: bash -l {0}
         run: |
