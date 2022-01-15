@@ -235,16 +235,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - name: Install dependencies (Bash)
-        shell: bash -l {0}
-        run: |
-          pip install --requirement requirements-full.txt
-
       # TODO: Is there a better way to do this?
       - name: Uninstall Brotlipy
         shell: bash -l {0}
         run: |
           conda remove brotlipy -y
+
+      - name: Install dependencies (Bash)
+        shell: bash -l {0}
+        run: |
+          pip install --requirement requirements-full.txt
 
       - name: List installed packages (Bash)
         shell: bash -l {0}
