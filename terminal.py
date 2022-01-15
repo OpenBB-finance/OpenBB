@@ -51,7 +51,6 @@ class TerminalController(BaseController):
         "portfolio",
         "forex",
         "etf",
-        "resources",
         "jupyter",
         "funds",
         "alternative",
@@ -113,10 +112,9 @@ class TerminalController(BaseController):
 >   economy
 >   forex
 >   funds
+>   alternative
 >   portfolio
->   jupyter
->   resources
->   alternative [/menu]
+>   jupyter [/menu]
     """,
             menu="Home",
         )
@@ -177,16 +175,8 @@ class TerminalController(BaseController):
 
         self.queue = JupyterController(self.queue).menu()
 
-    def call_resources(self, _):
-        """Process resources command"""
-        from gamestonk_terminal.resources.resources_controller import (
-            ResourceCollectionController,
-        )
-
-        self.queue = ResourceCollectionController(self.queue).menu()
-
     def call_alternative(self, _):
-        """Process resources command"""
+        """Process alternative command"""
         from gamestonk_terminal.alternative.alt_controller import (
             AlternativeDataController,
         )
