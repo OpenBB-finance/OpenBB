@@ -26,6 +26,7 @@ from gamestonk_terminal.portfolio import (
 from gamestonk_terminal.portfolio import reportlab_helpers
 from gamestonk_terminal.helper_funcs import get_rf
 from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_model
+from gamestonk_terminal.rich_config import console
 
 
 def load_info():
@@ -50,7 +51,7 @@ In order to load a CSV do the following:
 \t8. Whether the asset was bought (covered) or sold (shorted)\n
 2. Place this file in gamestonk_terminal/portfolio/portfolios\n
         """
-    print(text)
+    console.print(text)
 
 
 def show_df(df: pd.DataFrame, show: bool) -> None:
@@ -78,7 +79,7 @@ def show_df(df: pd.DataFrame, show: bool) -> None:
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
 
 def plot_overall_return(
@@ -129,7 +130,7 @@ def plot_overall_return(
     fig.autofmt_xdate()
     if plot:
         plt.show()
-        print("")
+        console.print("")
         return None
     imgdata = BytesIO()
     fig.savefig(imgdata, format="png")
@@ -303,7 +304,7 @@ class Report:
         self.generate_pg1(report)
         self.generate_pg2(report)
         report.save()
-        print("File save in:\n", loc, "\n")
+        console.print("File save in:\n", loc, "\n")
 
     def generate_pg1(self, report: canvas.Canvas) -> None:
         report.drawImage(

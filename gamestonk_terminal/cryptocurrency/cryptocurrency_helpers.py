@@ -36,6 +36,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.feature_flags import USE_ION as ion
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 INTERVALS = ["1H", "3H", "6H", "1D"]
 
@@ -116,6 +117,16 @@ def _load_coin_map(file_name: str) -> pd.DataFrame:
     coins_df = pd.Series(coins).reset_index()
     coins_df.columns = ["symbol", "id"]
     return coins_df
+
+
+def read_data_file(file_name: str):
+    if file_name.split(".")[1] != "json":
+        raise TypeError("Please load json file")
+
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    path = os.path.join(current_dir, "data", file_name)
+    with open(path, encoding="utf8") as f:
+        return json.load(f)
 
 
 def load_coins_list(file_name: str, return_raw: bool = False) -> pd.DataFrame:
@@ -259,10 +270,10 @@ def load(
     """
     if source in ("cg", "cp"):
         if vs not in ("USD", "BTC", "usd", "btc"):
-            print("You can only compare with usd or btc (e.g., --vs usd)\n")
+            console.print("You can only compare with usd or btc (e.g., --vs usd)\n")
             return None, None, None, None, None, None
         if interval != "1day":
-            print(
+            console.print(
                 "Only daily data is supported for coingecko and coinpaprika (e.g., -i 1day)\n"
             )
             return None, None, None, None, None, None
@@ -331,7 +342,7 @@ def load(
         if vs == "usd":
             vs = "USDT"
         if interval not in SOURCES_INTERVALS["bin"]:
-            print(
+            console.print(
                 "Interval not available on binance. Run command again with one supported (e.g., -i 1day):\n",
                 SOURCES_INTERVALS["bin"],
             )
@@ -342,7 +353,7 @@ def load(
         current_coin, pairs = show_available_pairs_for_given_symbol(parsed_coin)
         if len(pairs) > 0:
             if vs not in pairs:
-                print(
+                console.print(
                     "vs specified not supported by binance. Run command again with one supported (e.g., --vs USDT):\n",
                     pairs,
                 )
@@ -353,7 +364,7 @@ def load(
                 if isinstance(coin_map_df, pd.DataFrame)
                 else coin_map_df
             )
-            # print(f"Coin found : {current_coin}\n")
+            # console.print(f"Coin found : {current_coin}\n")
             if should_load_ta_data:
                 df_prices, currency = load_ta_data(
                     coin_map_df=coin_map_df,
@@ -378,7 +389,7 @@ def load(
         if vs == "usd":
             vs = "USDT"
         if interval not in SOURCES_INTERVALS["cb"]:
-            print(
+            console.print(
                 "Interval not available on coinbase. Run command again with one supported (e.g., -i 1day):\n",
                 SOURCES_INTERVALS["cb"],
             )
@@ -390,13 +401,13 @@ def load(
             coinbase_coin
         )
         if vs not in pairs:
-            print(
+            console.print(
                 "vs specified not supported by coinbase. Run command again with one supported (e.g., --vs USDT):\n",
                 pairs,
             )
             return None, None, None, None, None, None
         if len(pairs) > 0:
-            # print(f"Coin found : {current_coin}\n")
+            # console.print(f"Coin found : {current_coin}\n")
 
             coin_map_df = coins_map_df.loc[coin]
             coin_map_df = (
@@ -415,7 +426,7 @@ def load(
                 )
                 return (current_coin, source, coin, coin_map_df, df_prices, currency)
             return (current_coin, source, coin, coin_map_df, None, None)
-        print(f"Couldn't find coin with symbol {current_coin}\n")
+        console.print(f"Couldn't find coin with symbol {current_coin}\n")
         return None, None, None, None, None, None
 
     return None, None, None, None, None, None
@@ -511,7 +522,7 @@ def find(source: str, coin: str, key: str, top: int, export: str) -> None:
         df = df.merge(coins, on=key)
 
     else:
-        print(
+        console.print(
             "Couldn't execute find methods for CoinPaprika, Binance, Coinbase or CoinGecko\n"
         )
         df = pd.DataFrame()
@@ -528,7 +539,7 @@ def find(source: str, coin: str, key: str, top: int, export: str) -> None:
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -627,13 +638,13 @@ def display_all_coins(
 
         else:
             df = pd.DataFrame(columns=["index", "id", "symbol"])
-            print("Couldn't find any coins")
-        print("")
+            console.print("Couldn't find any coins")
+        console.print("")
 
     try:
         df = df[skip : skip + top]
     except Exception as e:
-        print(e)
+        console.print(e)
 
     if gtff.USE_TABULATE_DF:
         print(
@@ -647,7 +658,7 @@ def display_all_coins(
         )
 
     else:
-        print(df.fillna("N/A").to_string, "\n")
+        console.print(df.fillna("N/A").to_string, "\n")
 
     export_data(
         export,
@@ -714,7 +725,7 @@ def load_ta_data(
         pair = symbol_binance + currency.upper()
 
         if check_valid_binance_str(pair):
-            # print(f"{symbol_binance} loaded vs {currency.upper()}")
+            # console.print(f"{symbol_binance} loaded vs {currency.upper()}")
 
             candles = client.get_klines(
                 symbol=pair,
@@ -744,7 +755,7 @@ def load_ta_data(
         )
 
         if df.empty:
-            print("No data found", "\n")
+            console.print("No data found", "\n")
             return pd.DataFrame(), ""
 
         df.drop(["time_close", "market_cap"], axis=1, inplace=True)
@@ -779,7 +790,7 @@ def load_ta_data(
         pair = f"{coin}-{currency}"
 
         if coinbase_model.check_validity_of_product(pair):
-            # print(f"{coin} loaded vs {currency}")
+            # console.print(f"{coin} loaded vs {currency}")
 
             df = coinbase_model.get_candles(
                 product_id=pair,
@@ -852,7 +863,7 @@ def plot_chart(
         pair = symbol_binance + currency
 
         if check_valid_binance_str(pair):
-            # print(f"{symbol_binance} loaded vs {currency.upper()}")
+            # console.print(f"{symbol_binance} loaded vs {currency.upper()}")
 
             candles = client.get_klines(
                 symbol=pair,
@@ -885,7 +896,7 @@ def plot_chart(
         )
 
         if df.empty:
-            print("There is not data to plot chart\n")
+            console.print("There is not data to plot chart\n")
             return
 
         df.drop(["time_close", "market_cap"], axis=1, inplace=True)
@@ -921,7 +932,7 @@ def plot_chart(
         if ion:
             plt.ion()
         plt.show()
-        print("")
+        console.print("")
 
     if source == "cg":
         symbol_coingecko = coin_map_df["CoinGecko"]
@@ -959,7 +970,7 @@ def plot_chart(
         if ion:
             plt.ion()
         plt.show()
-        print("")
+        console.print("")
 
     if source == "cb":
         symbol_coinbase = coin_map_df["Coinbase"]
@@ -967,7 +978,7 @@ def plot_chart(
         pair = f"{coin}-{currency}"
 
         if coinbase_model.check_validity_of_product(pair):
-            # print(f"{coin} loaded vs {currency}")
+            # console.print(f"{coin} loaded vs {currency}")
 
             df = coinbase_model.get_candles(
                 product_id=pair,
@@ -1000,7 +1011,7 @@ def plot_chart(
             if ion:
                 plt.ion()
             plt.show()
-            print("")
+            console.print("")
 
 
 def plot_order_book(bids: np.ndarray, asks: np.ndarray, coin: str) -> None:
@@ -1032,4 +1043,4 @@ def plot_order_book(bids: np.ndarray, asks: np.ndarray, coin: str) -> None:
     if ion:
         plt.ion()
     plt.show()
-    print("")
+    console.print("")

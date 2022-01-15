@@ -7,6 +7,7 @@ from typing import List
 import matplotlib as mpl
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -18,6 +19,7 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
 )
 from gamestonk_terminal.menu import session
+
 
 # This code below aims to fix an issue with the fnn module, used by bt module
 # which forces matplotlib backend to be 'agg' which doesn't allow to plot
@@ -49,15 +51,15 @@ class BacktestingController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = f"""
-Ticker: {self.ticker.upper()}
+[param]Ticker: [/param]{self.ticker.upper()}[cmds]
 
     whatif      what if you had bought X shares on day Y
 
     ema         buy when price exceeds EMA(l)
     ema_cross   buy when EMA(short) > EMA(long)
-    rsi         buy when RSI < low and sell when RSI > high
+    rsi         buy when RSI < low and sell when RSI > high[/cmds]
         """
-        print(help_text)
+        console.print(text=help_text, menu="Stocks - Backtesting")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -194,7 +196,7 @@ Ticker: {self.ticker.upper()}
         if ns_parser:
 
             if ns_parser.long < ns_parser.short:
-                print("Short EMA period is longer than Long EMA period\n")
+                console.print("Short EMA period is longer than Long EMA period\n")
 
             bt_view.display_ema_cross(
                 ticker=self.ticker,
@@ -266,7 +268,7 @@ Ticker: {self.ticker.upper()}
         )
         if ns_parser:
             if ns_parser.high < ns_parser.low:
-                print("Low RSI value is higher than Low RSI value\n")
+                console.print("Low RSI value is higher than Low RSI value\n")
 
             bt_view.display_rsi_strategy(
                 ticker=self.ticker,

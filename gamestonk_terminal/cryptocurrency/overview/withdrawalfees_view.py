@@ -9,6 +9,7 @@ from gamestonk_terminal.cryptocurrency.overview.withdrawalfees_model import (
 )
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def display_overall_withdrawal_fees(top: int, export: str = "") -> None:
@@ -26,9 +27,9 @@ def display_overall_withdrawal_fees(top: int, export: str = "") -> None:
     df_fees = get_overall_withdrawal_fees(top)
 
     if df_fees.empty:
-        print("\nError in withdrawal fees request\n")
+        console.print("\nError in withdrawal fees request\n")
     else:
-        print("\nWithdrawal fees on exchanges:")
+        console.print("\nWithdrawal fees on exchanges:")
 
         if gtff.USE_TABULATE_DF:
             print(
@@ -42,7 +43,7 @@ def display_overall_withdrawal_fees(top: int, export: str = "") -> None:
                 "\n",
             )
         else:
-            print(df_fees.to_string(index=False), "\n")
+            console.print(df_fees.to_string(index=False), "\n")
 
         export_data(
             export,
@@ -65,9 +66,9 @@ def display_overall_exchange_withdrawal_fees(export: str) -> None:
     df_fees = get_overall_exchange_withdrawal_fees()
 
     if df_fees.empty:
-        print("\nError in withdrawal fees request\n")
+        console.print("\nError in withdrawal fees request\n")
     else:
-        print("\nWithdrawal fees per exchange:")
+        console.print("\nWithdrawal fees per exchange:")
 
         if gtff.USE_TABULATE_DF:
             print(
@@ -81,7 +82,7 @@ def display_overall_exchange_withdrawal_fees(export: str) -> None:
                 "\n",
             )
         else:
-            print(df_fees.to_string(index=False), "\n")
+            console.print(df_fees.to_string(index=False), "\n")
 
         export_data(
             export,
@@ -107,11 +108,11 @@ def display_crypto_withdrawal_fees(symbol: str, export: str = "") -> None:
     stats_string = res[0]
     df_fees = res[1]
     if df_fees.empty:
-        print("\nError in withdrawal fees request\n")
+        console.print("\nError in withdrawal fees request\n")
     else:
-        print(f"\nWithdrawal fees for {symbol}:")
+        console.print(f"\nWithdrawal fees for {symbol}:")
 
-        print(f"\n{stats_string}\n")
+        console.print(f"\n{stats_string}\n")
 
         if gtff.USE_TABULATE_DF:
             print(
@@ -125,7 +126,7 @@ def display_crypto_withdrawal_fees(symbol: str, export: str = "") -> None:
                 "\n",
             )
         else:
-            print(df_fees.to_string(index=False), "\n")
+            console.print(df_fees.to_string(index=False), "\n")
 
         export_data(
             export,

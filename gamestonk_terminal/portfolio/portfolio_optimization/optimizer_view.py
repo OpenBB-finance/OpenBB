@@ -16,6 +16,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale, get_rf
 from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_model
+from gamestonk_terminal.rich_config import console
 
 d_period = {
     "1d": "[1 Day]",
@@ -67,7 +68,7 @@ def display_weights(weights: dict, market_neutral: bool = False):
                 )
             )
         else:
-            print(weight_df.to_string(header=False))
+            console.print(weight_df.to_string(header=False))
 
     else:
         tot_value = weight_df["value"].abs().mean()
@@ -83,8 +84,8 @@ def display_weights(weights: dict, market_neutral: bool = False):
                 ),
             )
         else:
-            print(weight_df.to_string(header=False))
-    print("")
+            console.print(weight_df.to_string(header=False))
+    console.print("")
 
 
 def display_equal_weight(stocks: List[str], value: float, pie: bool = False):
@@ -159,10 +160,10 @@ def display_max_sharpe(
     if pie:
         pie_chart_weights(weights, s_title)
     else:
-        print("\n", s_title)
+        console.print("\n", s_title)
         display_weights(weights)
     ef.portfolio_performance(verbose=True, risk_free_rate=rfrate)
-    print("")
+    console.print("")
 
 
 def display_min_volatility(
@@ -187,10 +188,10 @@ def display_min_volatility(
     if pie:
         pie_chart_weights(weights, s_title)
     else:
-        print("\n", s_title)
+        console.print("\n", s_title)
         display_weights(weights)
     ef.portfolio_performance(verbose=True)
-    print("")
+    console.print("")
 
 
 def display_max_quadratic_utility(
@@ -227,13 +228,13 @@ def display_max_quadratic_utility(
     if not market_neutral and pie:
         pie_chart_weights(weights, s_title)
         ef.portfolio_performance(verbose=True)
-        print("")
+        console.print("")
         return
 
-    print(s_title)
+    console.print(s_title)
     display_weights(weights, market_neutral)
     ef.portfolio_performance(verbose=True)
-    print("")
+    console.print("")
 
 
 def display_efficient_risk(
@@ -270,13 +271,13 @@ def display_efficient_risk(
     if not market_neutral and pie:
         pie_chart_weights(weights, s_title)
         ef.portfolio_performance(verbose=True)
-        print("")
+        console.print("")
         return
 
-    print(s_title)
+    console.print(s_title)
     display_weights(weights, market_neutral)
     ef.portfolio_performance(verbose=True)
-    print("")
+    console.print("")
 
 
 def display_efficient_return(
@@ -313,13 +314,13 @@ def display_efficient_return(
     if not market_neutral and pie:
         pie_chart_weights(weights, s_title)
         ef.portfolio_performance(verbose=True)
-        print("")
+        console.print("")
         return
 
-    print(s_title)
+    console.print(s_title)
     display_weights(weights, market_neutral)
     ef.portfolio_performance(verbose=True)
-    print("")
+    console.print("")
 
 
 def display_ef(
@@ -371,7 +372,7 @@ def display_ef(
         plt.ion()
 
     plt.show()
-    print("")
+    console.print("")
 
 
 def my_autopct(x):
@@ -469,4 +470,4 @@ def pie_chart_weights(weights: dict, title_opt: str):
     plt.tight_layout()
 
     plt.show()
-    print("")
+    console.print("")

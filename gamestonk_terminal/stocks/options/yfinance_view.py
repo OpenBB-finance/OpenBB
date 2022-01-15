@@ -28,6 +28,7 @@ from gamestonk_terminal.stocks.options.yfinance_model import (
     get_price,
 )
 from gamestonk_terminal.helper_funcs import get_rf
+from gamestonk_terminal.rich_config import console
 
 
 def plot_oi(
@@ -80,7 +81,7 @@ def plot_oi(
         max_strike = max_sp
 
     if calls_only and puts_only:
-        print("Both flags selected, please select one", "\n")
+        console.print("Both flags selected, please select one", "\n")
         return
 
     call_oi = calls.set_index("strike")["openInterest"] / 1000
@@ -130,7 +131,7 @@ def plot_oi(
     fig.tight_layout(pad=1)
 
     plt.show()
-    print("")
+    console.print("")
 
 
 def plot_vol(
@@ -177,7 +178,7 @@ def plot_vol(
         max_strike = max_sp
 
     if calls_only and puts_only:
-        print("Both flags selected, please select one", "\n")
+        console.print("Both flags selected, please select one", "\n")
         return
 
     call_v = calls.set_index("strike")["volume"] / 1000
@@ -225,7 +226,7 @@ def plot_vol(
         "vol_yf",
         options,
     )
-    print("")
+    console.print("")
 
 
 def plot_volume_open_interest(
@@ -314,7 +315,7 @@ def plot_volume_open_interest(
             df_puts = df_puts[df_puts["strike"] < max_sp]
 
     if df_calls.empty and df_puts.empty:
-        print(
+        console.print(
             "The filtering applied is too strong, there is no data available for such conditions.\n"
         )
         return
@@ -411,7 +412,7 @@ def plot_volume_open_interest(
         "voi_yf",
         options,
     )
-    print("")
+    console.print("")
 
 
 def plot_plot(
@@ -484,7 +485,7 @@ def plot_plot(
         plt.ion()
     plt.show()
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "plot")
-    print("")
+    console.print("")
 
 
 def plot_payoff(
@@ -511,7 +512,7 @@ def plot_payoff(
     if gtff.USE_ION:
         plt.ion()
     plt.show()
-    print("")
+    console.print("")
 
 
 def show_parity(
@@ -598,9 +599,9 @@ def show_parity(
 
     show = filtered[["strike", diff]].copy()
 
-    print("Warning: Low volume options may be difficult to trade.\n")
+    console.print("Warning: Low volume options may be difficult to trade.\n")
     if ask:
-        print("Warning: Options with no current ask price not shown.\n")
+        console.print("Warning: Options with no current ask price not shown.\n")
 
     if gtff.USE_TABULATE_DF:
         print(
@@ -613,7 +614,7 @@ def show_parity(
             )
         )
     else:
-        print(show.to_string(index=False))
+        console.print(show.to_string(index=False))
 
     export_data(
         export,
@@ -621,7 +622,7 @@ def show_parity(
         "parity",
         show,
     )
-    print("")
+    console.print("")
 
 
 def risk_neutral_vals(
@@ -692,8 +693,8 @@ def risk_neutral_vals(
             )
         )
     else:
-        print(new_df.to_string(index=False))
-    print("")
+        console.print(new_df.to_string(index=False))
+    console.print("")
 
 
 def plot_expected_prices(
@@ -820,7 +821,9 @@ def export_binomial_calcs(
         f"{ticker} {datetime.now()}.xlsx",
     )
     wb.save(trypath)
-    print(f"Analysis ran for {ticker}\nPlease look in {trypath} for the file.\n")
+    console.print(
+        f"Analysis ran for {ticker}\nPlease look in {trypath} for the file.\n"
+    )
 
 
 def show_binom(
@@ -926,7 +929,7 @@ def show_binom(
     if plot:
         plot_expected_prices(und_vals, prob_up, ticker, expiration)
 
-    print(
+    console.print(
         f"{ticker} {'put' if put else 'call'} at ${strike:.2f} expiring on {expiration} is worth ${opt_vals[0][0]:.2f}\n"
     )
 

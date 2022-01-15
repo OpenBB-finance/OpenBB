@@ -20,6 +20,7 @@ import requests
 
 from gamestonk_terminal.stocks.fundamental_analysis import dcf_model
 from gamestonk_terminal.helper_funcs import get_rf
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=R0902
 # pylint: disable=R0912
@@ -87,10 +88,10 @@ class CreateExcelFA:
 
         my_file = Path(trypath)
         if my_file.is_file():
-            print("Analysis already ran. Please move file to rerun.")
+            console.print("Analysis already ran. Please move file to rerun.")
         else:
             self.wb.save(trypath)
-            print(
+            console.print(
                 f"Analysis ran for {self.ticker}\nPlease look in {trypath} for the file.\n"
             )
 
@@ -1278,7 +1279,6 @@ class CreateExcelFA:
             sister_ret = [
                 self.get_sister_data(x, sisters[0]) for x in ["BS", "IS", "CF"]
             ]
-            print(sister_ret)
             blank = [x.empty for x in sister_ret]
             if True in blank:
                 sisters.pop(0)
@@ -1306,9 +1306,6 @@ class CreateExcelFA:
 
         r = requests.get(URL, headers=dcf_model.headers)
 
-        if "404 - Page Not Found" in r.text:
-            # TODO: add better handling
-            return pd.DataFrame()
         soup = BeautifulSoup(r.content, "html.parser")
 
         table = soup.find("table", attrs={"class": re.compile("fintbl")})

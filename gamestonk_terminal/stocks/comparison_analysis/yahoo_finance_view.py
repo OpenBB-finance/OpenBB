@@ -16,6 +16,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.stocks.comparison_analysis import yahoo_finance_model
+from gamestonk_terminal.rich_config import console
 
 
 register_matplotlib_converters()
@@ -57,7 +58,9 @@ def display_historical(
 
     if np.any(df_similar.isna()):
         nan_tickers = df_similar.columns[df_similar.isna().sum() >= 1].to_list()
-        print(f"NaN values found in: {', '.join(nan_tickers)}.  Replacing with zeros.")
+        console.print(
+            f"NaN values found in: {', '.join(nan_tickers)}.  Replacing with zeros."
+        )
         df_similar = df_similar.fillna(0)
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     # This puts everything on 0-1 scale for visualizing
@@ -83,7 +86,7 @@ def display_historical(
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "historical", df_similar
     )
-    print("")
+    console.print("")
 
 
 def display_volume(
@@ -124,7 +127,7 @@ def display_volume(
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "volume", df_similar
     )
-    print("")
+    console.print("")
 
 
 def display_correlation(
@@ -150,7 +153,9 @@ def display_correlation(
 
     if np.any(df_similar.isna()):
         nan_tickers = df_similar.columns[df_similar.isna().sum() >= 1].to_list()
-        print(f"NaN values found in: {', '.join(nan_tickers)}.  Backfilling data")
+        console.print(
+            f"NaN values found in: {', '.join(nan_tickers)}.  Backfilling data"
+        )
         df_similar = df_similar.fillna(method="bfill")
 
     df_similar = df_similar.dropna(axis=1, how="all")
@@ -174,4 +179,4 @@ def display_correlation(
     if gtff.USE_ION:
         plt.ion()
     plt.show()
-    print("")
+    console.print("")

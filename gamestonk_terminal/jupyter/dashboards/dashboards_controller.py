@@ -7,7 +7,7 @@ import subprocess
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -26,7 +26,7 @@ class DashboardsController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/jupyter/dashboard/", queue)
+        super().__init__("/jupyter/dashboards/", queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -34,11 +34,11 @@ class DashboardsController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_str = """
+        help_text = """[cmds]
    stocks        interactive dashboard with ticker information
-   correlation   interactive dashboard with correlation information
+   correlation   interactive dashboard with correlation information[/cmds]
         """
-        print(help_str)
+        console.print(text=help_text, menu="Jupyter - Dashboards")
 
     def call_stocks(self, other_args: List[str]):
         """Process stocks command"""
@@ -83,15 +83,21 @@ def create_call(other_args: List[str], name: str, filename: str = None) -> None:
         response = input("Would you like us to run the server for you? y/n\n")
         if response.lower() == "y":
 
-            subprocess.Popen(
-                f"{cmd} {file}",
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                shell=True,
+            console.print(
+                f"Warning: this command will open a port on your computer to run a {cmd} server."
             )
-        else:
-            print(
-                f"To run manually type: {cmd} {file}\ninto a terminal after"
-                " entering the environment you use to run the terminal."
-            )
-    print("")
+            response = input("Would you like us to run the server for you? y/n\n")
+            if response.lower() == "y":
+
+                subprocess.Popen(
+                    f"{cmd} {file}",
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    shell=True,
+                )
+            else:
+                console.print(
+                    f"To run manually type: {cmd} {file}\ninto a terminal after"
+                    " entering the environment you use to run the terminal."
+                )
+        console.print("")

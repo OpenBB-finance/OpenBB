@@ -4,8 +4,8 @@ __docformat__ = "numpy"
 import argparse
 from datetime import datetime, timedelta
 from typing import List
-from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -66,10 +66,12 @@ class GovController(BaseController):
 
     def print_help(self):
         """Print help"""
-        dim_no_ticker = Style.DIM if not self.ticker else ""
-        reset_style = Style.RESET_ALL
-        help_txt = f"""
-Explore:
+        has_ticker_start = "[unvl]" if not self.ticker else ""
+        has_ticker_end = "[/unvl]" if not self.ticker else ""
+        help_text = f"""
+[src][QuiverQuant][/src]
+
+[info]Explore:[/info][cmds]
     lasttrades           last trades
     topbuys              show most purchased stocks
     topsells             show most sold stocks
@@ -77,16 +79,16 @@ Explore:
     qtrcontracts         quarterly government contracts analysis
     toplobbying          top corporate lobbying tickers
 
-    load                 load a specific ticker for analysis
+    load                 load a specific ticker for analysis[/cmds]
 
-Ticker: {self.ticker or None}{dim_no_ticker}
+[param]Ticker: [/param]{self.ticker or None}{has_ticker_start}[cmds]
 
     gtrades              show government trades for ticker
     contracts            show government contracts for ticker
     histcont             show historical quarterly government contracts for ticker
-    lobbying             corporate lobbying details for ticker{reset_style}
+    lobbying             corporate lobbying details for ticker[/cmds]{has_ticker_end}
             """
-        print(help_txt)
+        console.print(text=help_text, menu="Stocks - Screener")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -132,7 +134,7 @@ Ticker: {self.ticker or None}{dim_no_ticker}
             if not df_stock_candidate.empty:
                 self.ticker = ns_parser.ticker.upper()
             else:
-                print("Ticker selected does not exist!", "\n")
+                console.print("Ticker selected does not exist!", "\n")
 
     def call_lasttrades(self, other_args: List[str]):
         """Process lasttrades command"""
@@ -465,7 +467,7 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                     export=ns_parser.export,
                 )
             else:
-                print("No ticker loaded. Use `load <ticker>` first.\n")
+                console.print("No ticker loaded. Use `load <ticker>` first.\n")
 
     def call_contracts(self, other_args: List[str]):
         """Process contracts command"""
@@ -505,7 +507,7 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                     export=ns_parser.export,
                 )
             else:
-                print("No ticker loaded. Use `load <ticker>` first.\n")
+                console.print("No ticker loaded. Use `load <ticker>` first.\n")
 
     def call_histcont(self, other_args: List[str]):
         """Process histcont command"""
@@ -531,7 +533,7 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                     ticker=self.ticker, raw=ns_parser.raw, export=ns_parser.export
                 )
             else:
-                print("No ticker loaded. Use `load <ticker>` first.\n")
+                console.print("No ticker loaded. Use `load <ticker>` first.\n")
 
     def call_lobbying(self, other_args: List[str]):
         """Process lobbying command"""
@@ -560,4 +562,4 @@ Ticker: {self.ticker or None}{dim_no_ticker}
                     num=ns_parser.limit,
                 )
             else:
-                print("No ticker loaded. Use `load <ticker>` first.\n")
+                console.print("No ticker loaded. Use `load <ticker>` first.\n")

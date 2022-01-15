@@ -1,12 +1,9 @@
 
-Technical Analysis Menu:
-
-
-Intraday MOCK_INTERVAL Stock: MOCK_TICKER
+Stock: Intraday MOCK_INTERVAL MOCK_TICKER
 
     view        view historical data and trendlines [Finviz]
-    summary     technical summary report [FinBrain API]
-    recom       recommendation based on Technical Indicators [Tradingview API]
+    summary     technical summary report [FinBrain]
+    recom       recommendation based on Technical Indicators [Tradingview]
 
 Overlap:
     ema         exponential moving average

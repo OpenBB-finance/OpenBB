@@ -4,9 +4,9 @@ __docformat__ = "numpy"
 import argparse
 from datetime import timedelta, datetime
 from typing import List
+import logging
 
 import pandas as pd
-from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.parent_classes import BaseController
@@ -18,8 +18,11 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=R1710,import-outside-toplevel
+
+logger = logging.getLogger(__name__)
 
 
 class ForexController(BaseController):
@@ -44,23 +47,24 @@ class ForexController(BaseController):
 
     def print_help(self):
         """Print help."""
-        dim_bool = self.from_symbol and self.to_symbol
-        help_text = f"""
+        has_symbols_start = "" if self.from_symbol and self.to_symbol else "[dim]"
+        has_symbols_end = "" if self.from_symbol and self.to_symbol else "[/dim]"
+        help_text = f"""[cmds]
     from      select the "from" currency in a forex pair
-    to        select the "to" currency in a forex pair
+    to        select the "to" currency in a forex pair[/cmds]
 
-From: {None or self.from_symbol}
-To:   {None or self.to_symbol}
-{Style.DIM if not dim_bool else ""}
-AlphaVantage:
+[param]From: [/param]{None or self.from_symbol}
+[param]To:   [/param]{None or self.to_symbol}[cmds]
+{has_symbols_start}
+[src][AlphaVantage][/src][cmds]
     quote         get last quote
     load          get historical data
-    candle        show candle plot for loaded data
-{Style.RESET_ALL}
-Forex brokerages:
->   oanda         Oanda menu
+    candle        show candle plot for loaded data[/cmds]
+{has_symbols_end}
+[info]Forex brokerages:[/info][menu]
+>   oanda         Oanda menu[/menu][/cmds]
  """
-        print(help_text)
+        console.print(text=help_text, menu="Forex")
 
     def call_to(self, other_args: List[str]):
         """Process 'to' command."""
@@ -90,7 +94,7 @@ Forex brokerages:
         if ns_parser:
             self.to_symbol = ns_parser.to_symbol
 
-            print(
+            console.print(
                 f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
             )
 
@@ -121,7 +125,7 @@ Forex brokerages:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.from_symbol = ns_parser.from_symbol
-            print(
+            console.print(
                 f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
             )
 
@@ -169,11 +173,13 @@ Forex brokerages:
                     interval=ns_parser.interval,
                     start_date=ns_parser.start_date.strftime("%Y-%m-%d"),
                 )
-                print(
+                console.print(
                     f"Loaded historic data from {self.from_symbol} to {self.to_symbol}"
                 )
             else:
-                print("\nMake sure both a to symbol and a from symbol are supplied\n")
+                console.print(
+                    "\n[red]Make sure both a to symbol and a from symbol are supplied.[/red]\n"
+                )
 
     def call_candle(self, other_args: List[str]):
         """Process quote command."""
@@ -188,7 +194,9 @@ Forex brokerages:
             if not self.data.empty:
                 av_view.display_candle(self.data, self.to_symbol, self.from_symbol)
             else:
-                print("No forex historical data loaded.  Load first using <load>.\n")
+                console.print(
+                    "[red]No forex historical data loaded.  Load first using <load>.[/red]\n"
+                )
 
     def call_quote(self, other_args: List[str]):
         """Process quote command."""
@@ -203,7 +211,9 @@ Forex brokerages:
             if self.to_symbol and self.from_symbol:
                 av_view.display_quote(self.to_symbol, self.from_symbol)
             else:
-                print('Make sure both a "to" symbol and a "from" symbol are selected\n')
+                console.print(
+                    '[red]Make sure both a "to" symbol and a "from" symbol are selected.[/red]\n'
+                )
 
     # MENUS
     def call_oanda(self, _):

@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 import textwrap
 from prompt_toolkit.completion import NestedCompleter
 from colorama import Style
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -90,45 +91,45 @@ class BehaviouralAnalysisController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
-        dim = Style.DIM if not self.ticker else ""
-        res = Style.RESET_ALL
-        help_txt = f"""
+        has_ticker_start = "" if self.ticker else "[unvl]"
+        has_ticker_end = "" if self.ticker else "[/unvl]"
+        help_text = f"""[cmds]
     load           load a specific stock ticker for analysis
 
-Ticker: {self.ticker.upper() or None}
-
-Finbrain:{dim}
-    headlines     sentiment from 15+ major news headlines {res}
-Finnhub:{dim}
-    stats         sentiment stats including comparison with sector{res}
-Reddit:
+[param]Ticker: [/param]{self.ticker.upper() or None}
+{has_ticker_start}
+[src][Finbrain][/src]
+    headlines     sentiment from 15+ major news headlines
+[src][Finnhub][/src]
+    stats         sentiment stats including comparison with sector{has_ticker_end}
+[src][Reddit][/src]
     wsb           show what WSB gang is up to in subreddit wallstreetbets
     watchlist     show other users watchlist
     popular       show popular tickers
     spac_c        show other users spacs announcements from subreddit SPACs community
-    spac          show other users spacs announcements from other subs{dim}
-    getdd         gets due diligence from another user's post{res}
-Stocktwits:{dim}
-    bullbear      estimate quick sentiment from last 30 messages on board
-    messages      output up to the 30 last messages on the board{res}
+    spac          show other users spacs announcements from other subs{has_ticker_start}
+    getdd         gets due diligence from another user's post{has_ticker_end}
+[src][Stocktwits][/src]
     trending      trending stocks
-    stalker       stalk stocktwits user's last messages
-Twitter:{dim}
+    stalker       stalk stocktwits user's last messages{has_ticker_start}
+    bullbear      estimate quick sentiment from last 30 messages on board
+    messages      output up to the 30 last messages on the board
+[src][Twitter][/src]
     infer         infer about stock's sentiment from latest tweets
-    sentiment     in-depth sentiment prediction from tweets over time{res}
-Google:{dim}
+    sentiment     in-depth sentiment prediction from tweets over time
+[src][Google][/src]
     mentions      interest over time based on stock's mentions
     regions       regions that show highest interest in stock
     queries       top related queries with this stock
-    rise          top rising related queries with stock{res}
-SentimentInvestor:
+    rise          top rising related queries with stock{has_ticker_end}
+[src][SentimentInvestor][/src]
     popularsi     show most popular stocks on social media right now
-    emerging      show stocks that are being talked about more than usual{dim}
+    emerging      show stocks that are being talked about more than usual{has_ticker_start}
     metrics       core social sentiment metrics for this stock
     social        social media figures for stock popularity
-    historical    plot the past week of data for a selected metric{res}
+    historical    plot the past week of data for a selected metric{has_ticker_end}[/cmds]
         """
-        print(help_txt)
+        console.print(text=help_text, menu="Stocks - Behavioural Analysis")
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -172,7 +173,7 @@ SentimentInvestor:
                 else:
                     self.ticker = ns_parser.ticker.upper()
             else:
-                print("Provide a valid ticker")
+                console.print("Provide a valid ticker")
 
     def call_watchlist(self, other_args: List[str]):
         """Process watchlist command"""
@@ -382,7 +383,7 @@ SentimentInvestor:
                     show_all_flairs=ns_parser.all,
                 )
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_bullbear(self, other_args: List[str]):
         """Process bullbear command"""
@@ -400,7 +401,7 @@ SentimentInvestor:
             if self.ticker:
                 stocktwits_view.display_bullbear(ticker=self.ticker)
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_messages(self, other_args: List[str]):
         """Process messages command"""
@@ -428,7 +429,7 @@ SentimentInvestor:
                     ticker=self.ticker, limit=ns_parser.limit
                 )
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_trending(self, other_args: List[str]):
         """Process trending command"""
@@ -507,7 +508,7 @@ SentimentInvestor:
                     ticker=self.ticker, start=ns_parser.start, export=ns_parser.export
                 )
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_regions(self, other_args: List[str]):
         """Process regions command"""
@@ -537,7 +538,7 @@ SentimentInvestor:
                     ticker=self.ticker, num=ns_parser.limit, export=ns_parser.export
                 )
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_queries(self, other_args: List[str]):
         """Process queries command"""
@@ -567,7 +568,7 @@ SentimentInvestor:
                     ticker=self.ticker, num=ns_parser.limit, export=ns_parser.export
                 )
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_rise(self, other_args: List[str]):
         """Process rise command"""
@@ -597,7 +598,7 @@ SentimentInvestor:
                     ticker=self.ticker, num=ns_parser.limit, export=ns_parser.export
                 )
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_infer(self, other_args: List[str]):
         """Process infer command"""
@@ -629,7 +630,7 @@ SentimentInvestor:
             if self.ticker:
                 twitter_view.display_inference(ticker=self.ticker, num=ns_parser.limit)
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_sentiment(self, other_args: List[str]):
         """Process sentiment command"""
@@ -677,7 +678,7 @@ SentimentInvestor:
                     export=ns_parser.export,
                 )
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_headlines(self, other_args: List[str]):
         """Process finbrain command"""
@@ -701,7 +702,7 @@ SentimentInvestor:
                     ticker=self.ticker, export=ns_parser.export
                 )
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_stats(self, other_args: List[str]):
         """Process stats command"""
@@ -724,7 +725,7 @@ SentimentInvestor:
                     ticker=self.ticker, export=ns_parser.export
                 )
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_metrics(self, other_args: List[str]):
         """Process metrics command"""
@@ -769,12 +770,12 @@ SentimentInvestor:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
-                print(
+                console.print(
                     "Currently under maintenance by the new Sentiment Investor team.\n"
                 )
                 # sentimentinvestor_view.display_metrics(ticker=self.ticker)
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_social(self, other_args: List[str]):
         """Process social command"""
@@ -797,12 +798,12 @@ SentimentInvestor:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
-                print(
+                console.print(
                     "Currently under maintenance by the new Sentiment Investor team.\n"
                 )
                 # sentimentinvestor_view.display_social(ticker=self.ticker)
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
@@ -879,7 +880,7 @@ SentimentInvestor:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
-                print(
+                console.print(
                     "Currently under maintenance by the new Sentiment Investor team.\n"
                 )
                 # sentimentinvestor_view.display_historical(
@@ -889,7 +890,7 @@ SentimentInvestor:
                 #    sort_dir=ns_parser.sort_dir,
                 # )
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_popularsi(self, other_args: List[str]):
         """Process popular command"""
@@ -926,7 +927,9 @@ SentimentInvestor:
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            print("Currently under maintenance by the new Sentiment Investor team.\n")
+            console.print(
+                "Currently under maintenance by the new Sentiment Investor team.\n"
+            )
             # sentimentinvestor_view.display_top(metric="AHI", limit=ns_parser.limit)
 
     def call_emerging(self, other_args: List[str]):
@@ -963,5 +966,7 @@ SentimentInvestor:
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            print("Currently under maintenance by the new Sentiment Investor team.\n")
+            console.print(
+                "Currently under maintenance by the new Sentiment Investor team.\n"
+            )
             # sentimentinvestor_view.display_top(metric="RHI", limit=ns_parser.limit)

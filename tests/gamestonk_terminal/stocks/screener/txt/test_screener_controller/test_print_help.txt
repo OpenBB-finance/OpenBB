@@ -11,8 +11,8 @@ PRESET: top_gainers
     ownership      ownership (e.g. Float, Insider Own, Short Ratio)
     performance    performance (e.g. Perf Week, Perf YTD, Volatility M)
     technical      technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
-    [2m
+    [unvl]
 Last screened tickers: 
 >   ca             take these to comparison analysis menu
->   po             take these to portfolio optimization menu[0m
+>   po             take these to portfolio optimization menu[/unvl]
         

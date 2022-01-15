@@ -11,6 +11,7 @@ from gamestonk_terminal.stocks.fundamental_analysis import yahoo_finance_model
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.rich_config import console
 
 
 def open_headquarters_map(ticker: str):
@@ -21,7 +22,7 @@ def open_headquarters_map(ticker: str):
         Fundamental analysis ticker symbol
     """
     webbrowser.open(yahoo_finance_model.get_hq(ticker))
-    print("")
+    console.print("")
 
 
 def open_web(ticker: str):
@@ -32,7 +33,7 @@ def open_web(ticker: str):
         Fundamental analysis ticker symbol
     """
     webbrowser.open(yahoo_finance_model.get_website(ticker))
-    print("")
+    console.print("")
 
 
 def display_info(ticker: str):
@@ -52,13 +53,13 @@ def display_info(ticker: str):
         print(tabulate(df_info, headers=[], showindex=True, tablefmt="fancy_grid"))
 
     else:
-        print(df_info.to_string(header=False))
+        console.print(df_info.to_string(header=False))
 
     if summary:
-        print("Business Summary:")
-        print(summary)
+        console.print("Business Summary:")
+        console.print(summary)
 
-    print("")
+    console.print("")
 
 
 def display_shareholders(ticker: str):
@@ -76,16 +77,16 @@ def display_shareholders(ticker: str):
 
     dfs = [df_major_holders, df_institutional_shareholders, df_mutualfund_shareholders]
     titles = ["Major Holders:\n", "Institutuinal Holders:\n", "Mutual Fund Holders:\n"]
-    print("")
+    console.print("")
     for df, title in zip(dfs, titles):
-        print(title)
+        console.print(title)
         if gtff.USE_TABULATE_DF:
             print(
                 tabulate(df, headers=df.columns, tablefmt="fancy_grid", showindex=False)
             )
         else:
-            print(df.to_string(index=False))
-        print("")
+            console.print(df.to_string(index=False))
+        console.print("")
 
 
 def display_sustainability(ticker: str):
@@ -101,7 +102,7 @@ def display_sustainability(ticker: str):
     df_sustainability = yahoo_finance_model.get_sustainability(ticker)
 
     if df_sustainability.empty:
-        print("No sustainability data found.", "\n")
+        console.print("No sustainability data found.", "\n")
         return
 
     if gtff.USE_TABULATE_DF:
@@ -114,8 +115,8 @@ def display_sustainability(ticker: str):
             )
         )
     else:
-        print(df_sustainability.to_string(index=True))
-    print("")
+        console.print(df_sustainability.to_string(index=True))
+    console.print("")
 
 
 def display_calendar_earnings(ticker: str):
@@ -127,7 +128,7 @@ def display_calendar_earnings(ticker: str):
     """
     df_calendar = yahoo_finance_model.get_calendar_earnings(ticker).T
     if df_calendar.empty:
-        print("No calendar events found.\n")
+        console.print("No calendar events found.\n")
         return
     if gtff.USE_TABULATE_DF:
         print(
@@ -139,8 +140,8 @@ def display_calendar_earnings(ticker: str):
             )
         )
     else:
-        print(df_calendar.to_string(index=False))
-    print("")
+        console.print(df_calendar.to_string(index=False))
+    console.print("")
 
 
 def display_dividends(
@@ -160,7 +161,7 @@ def display_dividends(
     """
     div_history = yahoo_finance_model.get_dividends(ticker)
     if div_history.empty:
-        print("No dividends found.\n")
+        console.print("No dividends found.\n")
         return
     div_history["Dif"] = div_history.diff()
     div_history = div_history[::-1]
@@ -202,6 +203,6 @@ def display_dividends(
                 )
             )
         else:
-            print(div_history.to_string())
-    print("")
+            console.print(div_history.to_string())
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "divs", div_history)

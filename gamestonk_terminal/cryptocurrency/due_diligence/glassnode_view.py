@@ -14,6 +14,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
     get_non_zero_addresses,
 )
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def display_btc_rainbow(since: int, until: int, export: str = ""):
@@ -158,7 +159,7 @@ def display_active_addresses(
     df_addresses = get_active_addresses(asset, interval, since, until)
 
     if df_addresses.empty:
-        print("Error in glassnode request")
+        console.print("Error in glassnode request")
     else:
         _, main_ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
 
@@ -179,7 +180,7 @@ def display_active_addresses(
 
         plt.show()
 
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -212,7 +213,7 @@ def display_non_zero_addresses(
     df_addresses = get_non_zero_addresses(asset, interval, since, until)
 
     if df_addresses.empty:
-        print("Error in glassnode request")
+        console.print("Error in glassnode request")
     else:
         _, main_ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
 
@@ -233,7 +234,7 @@ def display_non_zero_addresses(
 
         plt.show()
 
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -270,7 +271,7 @@ def display_exchange_net_position_change(
     )
 
     if df_addresses.empty:
-        print("Error in glassnode request")
+        console.print("Error in glassnode request")
     else:
         _, ax1 = plt.subplots(figsize=(25, 7))
 
@@ -304,7 +305,7 @@ def display_exchange_net_position_change(
             plt.ion()
 
         plt.show()
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -347,7 +348,7 @@ def display_exchange_balances(
     df_balance = get_exchange_balances(asset, exchange, interval, since, until)
 
     if df_balance.empty:
-        print("Error in glassnode request")
+        console.print("Error in glassnode request")
     else:
         _, ax1 = plt.subplots(figsize=(25, 7))
         if percentage:
@@ -375,7 +376,7 @@ def display_exchange_balances(
 
         plt.show()
 
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -412,7 +413,7 @@ def display_hashrate(
     df = get_hashrate(asset, interval, since, until)
 
     if df.empty:
-        print("Error in glassnode request")
+        console.print("Error in glassnode request")
     else:
         _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
         ax1.plot(df.index, df["hashrate"] / 1_000_000_000_000, c="k")
@@ -435,7 +436,7 @@ def display_hashrate(
 
         plt.show()
 
-    print("")
+    console.print("")
 
     export_data(
         export,
