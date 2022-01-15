@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import pandas as pd
 import requests
 import gamestonk_terminal.config_terminal as cfg
+from gamestonk_terminal.helper_funcs import get_user_agent
 
 
 def get_retail_tickers() -> pd.DataFrame:
@@ -23,3 +24,25 @@ def get_retail_tickers() -> pd.DataFrame:
     df = pd.DataFrame(r.json()["datatable"]["data"])
     df.columns = ["Date", "Ticker", "Activity", "Sentiment"]
     return df
+
+
+def get_dividend_cal(date: str) -> pd.DataFrame:
+    """Gets dividend calendar for given date.  Date represents Ex-Dividend Date
+
+    Parameters
+    ----------
+    date: datetime
+        Date to get for in format YYYY-MM-DD
+
+    Returns
+    -------
+    pd.DataFrame:
+        Dataframe of dividend calendar
+    """
+    r = requests.get(
+        f"https://api.nasdaq.com/api/calendar/dividends?date={date}",
+        headers={"User-Agent": get_user_agent()},
+    )
+    if r.status_code == 200:
+        return pd.DataFrame(r.json()["data"]["calendar"]["rows"])
+    return pd.DataFrame()
