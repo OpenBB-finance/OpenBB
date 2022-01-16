@@ -10,9 +10,8 @@ from gamestonk_terminal.stocks.discovery import nasdaq_view
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
-        "filter_query_parameters": [
-            ("api_key", "MOCK_API"),
-        ]
+        "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [("api_key", "MOCK_API"), ("date", "MOCK_DATE")],
     }
 
 
@@ -26,3 +25,12 @@ def test_display_top_retail(mocker, use_tab):
     )
 
     nasdaq_view.display_top_retail(n_days=3, export="")
+
+
+@pytest.mark.default_cassette("test_display_dividend_calendar")
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+def test_display_dividend_calendar(mocker):
+    mocker.patch.object(target=nasdaq_view.gtff, attribute="USE_TABULATE_DF", new=False)
+
+    nasdaq_view.display_dividend_calendar(date="2022-01-11", limit=2)
