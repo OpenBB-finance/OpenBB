@@ -374,7 +374,7 @@ class PortfolioOptimization(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="3mo",
+            default="1y",
             dest="period",
             help="period to get yfinance data from",
             choices=self.period_choices,
@@ -430,7 +430,7 @@ class PortfolioOptimization(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="3mo",
+            default="1y",
             dest="period",
             help="period to get yfinance data from",
             choices=self.period_choices,
@@ -476,7 +476,7 @@ class PortfolioOptimization(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="3mo",
+            default="1y",
             dest="period",
             help="period to get yfinance data from",
             choices=self.period_choices,
@@ -547,7 +547,7 @@ class PortfolioOptimization(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="3mo",
+            default="1y",
             dest="period",
             help="period to get yfinance data from",
             choices=self.period_choices,
@@ -621,7 +621,7 @@ class PortfolioOptimization(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="3mo",
+            default="1y",
             dest="period",
             help="period to get yfinance data from",
             choices=self.period_choices,
@@ -695,7 +695,7 @@ class PortfolioOptimization(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="3mo",
+            default="1y",
             dest="period",
             help="period to get yfinance data from",
             choices=self.period_choices,
