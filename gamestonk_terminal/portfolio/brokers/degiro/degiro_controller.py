@@ -47,6 +47,17 @@ class DegiroController(BaseController):
         """Print help."""
         DegiroView.help_display()
 
+    def switch(self, an_input):
+        try:
+            super().switch(an_input)
+        except Exception as exception:
+            error = str(exception)
+            err_map = DegiroController.ERROR_MAP
+            if error in err_map:
+                print(err_map[error])
+            else:
+                raise exception
+
     def call_cancel(self, other_args: List[str]):
         """Cancel an order using the `id`."""
 
