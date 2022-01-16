@@ -101,6 +101,10 @@ Current file:    {self.file or None}[cmds]{has_data_start}
         if ns_parser:
             file = Path("custom_imports") / ns_parser.file
             self.data = custom_model.load(file)
+            self.data.columns = self.data.columns.map(lambda x: x.lower())
+            for col in self.data.columns:
+                if col in ["date", "time", "timestamp"]:  # Could be others?
+                    self.data[col] = pd.to_datetime(self.data[col])
             self.file = ns_parser.file
             self.update_runtime_choices()
         console.print("")

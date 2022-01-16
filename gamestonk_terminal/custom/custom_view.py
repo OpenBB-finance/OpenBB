@@ -40,6 +40,10 @@ def custom_plot(
         data.plot(x=x_col, y=y_col, kind=kind, ax=ax)
     else:
         data.reset_index().plot(x="index", y=y_col, kind=kind, ax=ax)
+
+    if x_col in ["date", "time", "timestamp"]:
+        fig.autofmt_xdate()
+
     fig.tight_layout(pad=2)
     if gtff.USE_ION:
         plt.ion()
