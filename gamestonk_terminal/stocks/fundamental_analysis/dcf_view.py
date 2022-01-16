@@ -14,7 +14,7 @@ import yfinance as yf
 import pandas as pd
 import numpy as np
 
-from gamestonk_terminal.stocks.fundamental_analysis import dcf_model
+from gamestonk_terminal.stocks.fundamental_analysis import dcf_model, dcf_static
 from gamestonk_terminal.helper_funcs import get_rf
 from gamestonk_terminal.rich_config import console
 
@@ -53,9 +53,9 @@ class CreateExcelFA:
         self.ws[1].title = "Financials"
         self.ws[1].column_dimensions["A"].width = 25
         self.ws[2].column_dimensions["A"].width = 22
-        for column in dcf_model.letters[1:21]:
+        for column in dcf_static.letters[1:21]:
             self.ws[1].column_dimensions[column].width = 14
-        for column in dcf_model.letters[1:21]:
+        for column in dcf_static.letters[1:21]:
             self.ws[2].column_dimensions[column].width = 14
 
         self.ws[3].column_dimensions["A"].width = 3
@@ -93,26 +93,26 @@ class CreateExcelFA:
         if not self.len_data:
             self.len_data = len(df.columns)
 
-        self.ws[1][f"A{row}"] = dcf_model.statement_titles[statement]
-        self.ws[1][f"A{row}"].font = dcf_model.bold_font
+        self.ws[1][f"A{row}"] = dcf_static.statement_titles[statement]
+        self.ws[1][f"A{row}"].font = dcf_static.bold_font
 
         rowI = row + 1
         names = df.index.values.tolist()
 
         for name in names:
             self.ws[1][f"A{rowI}"] = name
-            if name in dcf_model.sum_rows:
+            if name in dcf_static.sum_rows:
                 length = self.len_data + (self.len_pred if statement != "CF" else 0)
                 for i in range(length):
                     if statement == "CF" and name == "Net Income":
                         pass
                     else:
                         self.ws[1][
-                            f"{dcf_model.letters[i+1]}{rowI}"
-                        ].font = dcf_model.bold_font
+                            f"{dcf_static.letters[i+1]}{rowI}"
+                        ].font = dcf_static.bold_font
                         self.ws[1][
-                            f"{dcf_model.letters[i+1]}{rowI}"
-                        ].border = dcf_model.thin_border_top
+                            f"{dcf_static.letters[i+1]}{rowI}"
+                        ].border = dcf_static.thin_border_top
             rowI += 1
 
         column = 1
@@ -122,16 +122,16 @@ class CreateExcelFA:
             if header:
                 dcf_model.set_cell(
                     self.ws[1],
-                    f"{dcf_model.letters[column]}{rowI}",
+                    f"{dcf_static.letters[column]}{rowI}",
                     float(key),
-                    font=dcf_model.bold_font,
+                    font=dcf_static.bold_font,
                 )
             for item in value:
                 rowI += 1
                 m = 0 if item is None else float(item.replace(",", ""))
                 dcf_model.set_cell(
                     self.ws[1],
-                    f"{dcf_model.letters[column]}{rowI}",
+                    f"{dcf_static.letters[column]}{rowI}",
                     m,
                     num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
                 )
@@ -145,35 +145,37 @@ class CreateExcelFA:
         for i in range(self.len_pred):
             dcf_model.set_cell(
                 self.ws[1],
-                f"{dcf_model.letters[col+i]}4",
+                f"{dcf_static.letters[col+i]}4",
                 int(last_year) + 1 + i,
-                font=dcf_model.bold_font,
+                font=dcf_static.bold_font,
             )
 
         for i in range(41):
             col = self.len_pred + self.len_data + 3
             dcf_model.set_cell(
                 self.ws[1],
-                f"{dcf_model.letters[col]}{3+i}",
-                fill=dcf_model.green_bg,
-                border=dcf_model.thin_border_nr,
+                f"{dcf_static.letters[col]}{3+i}",
+                fill=dcf_static.green_bg,
+                border=dcf_static.thin_border_nr,
             )
             dcf_model.set_cell(
                 self.ws[1],
-                f"{dcf_model.letters[col+1]}{3+i}",
-                fill=dcf_model.green_bg,
-                border=dcf_model.thin_border_nl,
+                f"{dcf_static.letters[col+1]}{3+i}",
+                fill=dcf_static.green_bg,
+                border=dcf_static.thin_border_nl,
             )
 
         dcf_model.set_cell(
             self.ws[1],
-            f"{dcf_model.letters[col]}3",
+            f"{dcf_static.letters[col]}3",
             "Linear model",
-            alignment=dcf_model.center,
+            alignment=dcf_static.center,
         )
-        self.ws[1].merge_cells(f"{dcf_model.letters[col]}3:{dcf_model.letters[col+1]}3")
-        dcf_model.set_cell(self.ws[1], f"{dcf_model.letters[col]}4", "m")
-        dcf_model.set_cell(self.ws[1], f"{dcf_model.letters[col+1]}4", "b")
+        self.ws[1].merge_cells(
+            f"{dcf_static.letters[col]}3:{dcf_static.letters[col+1]}3"
+        )
+        dcf_model.set_cell(self.ws[1], f"{dcf_static.letters[col]}4", "m")
+        dcf_model.set_cell(self.ws[1], f"{dcf_static.letters[col+1]}4", "b")
         self.get_linear("Date", "Revenue")
         self.get_linear("Revenue", "Cost of Revenue")
         self.get_sum("Gross Profit", "Revenue", [], ["Cost of Revenue"])
@@ -282,8 +284,8 @@ class CreateExcelFA:
         for i in range(self.len_pred):
             dcf_model.set_cell(
                 self.ws[1],
-                f"{dcf_model.letters[col+i]}{rer}",
-                f"={dcf_model.letters[col+i]}{nir}+{dcf_model.letters[col+i-1]}{rer}",
+                f"{dcf_static.letters[col+i]}{rer}",
+                f"={dcf_static.letters[col+i]}{nir}+{dcf_static.letters[col+i-1]}{rer}",
                 num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
             )
 
@@ -308,7 +310,7 @@ class CreateExcelFA:
                 "Warning: Stock Analysis does not have all of the cash flow items included. Operating"
                 ", Financing, and Investing Cash Flows may not add up to total cash flows."
             ),
-            font=dcf_model.red,
+            font=dcf_static.red,
         )
 
     def create_dcf(self):
@@ -319,17 +321,17 @@ class CreateExcelFA:
         self.ws[2]["A9"] = "Free Cash Flows"
         r = 4
 
-        c1 = dcf_model.letters[self.len_pred + 3]
-        c2 = dcf_model.letters[self.len_pred + 4]
-        c3 = dcf_model.letters[self.len_pred + 5]
+        c1 = dcf_static.letters[self.len_pred + 3]
+        c2 = dcf_static.letters[self.len_pred + 4]
+        c3 = dcf_static.letters[self.len_pred + 5]
         for i in range(self.len_pred):
             j = 1 + i + self.len_data
-            cols = dcf_model.letters
+            cols = dcf_static.letters
             dcf_model.set_cell(
                 self.ws[2],
                 f"{cols[1+i]}4",
                 f"=Financials!{cols[j]}4",
-                font=dcf_model.bold_font,
+                font=dcf_static.bold_font,
             )
             dcf_model.set_cell(
                 self.ws[2],
@@ -340,7 +342,7 @@ class CreateExcelFA:
 
             dcf_model.set_cell(
                 self.ws[2],
-                f"{dcf_model.letters[1+i]}6",
+                f"{dcf_static.letters[1+i]}6",
                 (
                     f"=Financials!{cols[j]}{self.title_to_row('Total Current Assets')}"
                     f"-Financials!{cols[j-1]}{self.title_to_row('Total Current Assets')}"
@@ -351,7 +353,7 @@ class CreateExcelFA:
             )
             dcf_model.set_cell(
                 self.ws[2],
-                f"{dcf_model.letters[1+i]}7",
+                f"{dcf_static.letters[1+i]}7",
                 (
                     f"=Financials!{cols[j]}{self.title_to_row('Total Long-Term Assets')}"
                     f"-Financials!{cols[j-1]}{self.title_to_row('Total Long-Term Assets')}"
@@ -360,7 +362,7 @@ class CreateExcelFA:
             )
             dcf_model.set_cell(
                 self.ws[2],
-                f"{dcf_model.letters[1+i]}8",
+                f"{dcf_static.letters[1+i]}8",
                 f"=Financials!{cols[j]}{self.title_to_row('Preferred Dividends')}",
                 num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
             )
@@ -369,8 +371,8 @@ class CreateExcelFA:
                 f"{cols[1+i]}9",
                 f"={cols[1+i]}5-{cols[1+i]}6-{cols[1+i]}7-{cols[1+i]}8",
                 num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
-                font=dcf_model.bold_font,
-                border=dcf_model.thin_border_top,
+                font=dcf_static.bold_font,
+                border=dcf_static.thin_border_top,
             )
             dcf_model.set_cell(
                 self.ws[2],
@@ -383,19 +385,19 @@ class CreateExcelFA:
             self.ws[2],
             f"{c1}{r-2}",
             "Note: We do not allow r values to go below 0.5%.",
-            font=dcf_model.red,
+            font=dcf_static.red,
         )
         self.ws[2].merge_cells(f"{c1}{r}:{c2}{r}")
         for x in [c1, c2]:
             dcf_model.set_cell(
-                self.ws[2], f"{x}{r}", border=dcf_model.thin_border_bottom
+                self.ws[2], f"{x}{r}", border=dcf_static.thin_border_bottom
             )
         dcf_model.set_cell(
             self.ws[2],
             f"{c1}{r}",
             "Discount Rate",
-            alignment=dcf_model.center,
-            border=dcf_model.thin_border_bottom,
+            alignment=dcf_static.center,
+            border=dcf_static.thin_border_bottom,
         )
 
         # CAPM
@@ -432,8 +434,8 @@ class CreateExcelFA:
             f"{c2}{r+4}",
             f"=max((({c2}{r+2}-{c2}{r+1})*{c2}{r+3})+{c2}{r+1},0.005)",
             num_form=FORMAT_PERCENTAGE_00,
-            border=dcf_model.thin_border_top,
-            font=dcf_model.bold_font,
+            border=dcf_static.thin_border_top,
+            font=dcf_static.bold_font,
         )
 
         # Fama French
@@ -457,15 +459,15 @@ class CreateExcelFA:
         # Decide
         for x in [c1, c2]:
             dcf_model.set_cell(
-                self.ws[2], f"{x}{r+9}", border=dcf_model.thin_border_bottom
+                self.ws[2], f"{x}{r+9}", border=dcf_static.thin_border_bottom
             )
         self.ws[2].merge_cells(f"{c1}{r+9}:{c2}{r+9}")
         dcf_model.set_cell(
             self.ws[2],
             f"{c1}{r+9}",
             "Choose model",
-            border=dcf_model.thin_border_bottom,
-            alignment=dcf_model.center,
+            border=dcf_static.thin_border_bottom,
+            alignment=dcf_static.center,
             num_form=FORMAT_PERCENTAGE_00,
         )
         dcf_model.set_cell(self.ws[2], f"{c1}{r+10}", "Model")
@@ -490,14 +492,14 @@ class CreateExcelFA:
         dcf_model.set_cell(
             self.ws[2],
             "B11",
-            f"=NPV({c2}{r+11},B9:{dcf_model.letters[self.len_pred+1]}9)",
+            f"=NPV({c2}{r+11},B9:{dcf_static.letters[self.len_pred+1]}9)",
             num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
         )
         dcf_model.set_cell(self.ws[2], "A12", "Cash and Cash Equivalents")
         dcf_model.set_cell(
             self.ws[2],
             "B12",
-            f"=financials!{dcf_model.letters[self.len_data]}{self.title_to_row('Cash & Cash Equivalents')}",
+            f"=financials!{dcf_static.letters[self.len_data]}{self.title_to_row('Cash & Cash Equivalents')}",
             num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
         )
         dcf_model.set_cell(self.ws[2], "A13", "Intrinsic Value (sum)")
@@ -511,7 +513,7 @@ class CreateExcelFA:
         dcf_model.set_cell(
             self.ws[2],
             "B14",
-            f"=financials!{dcf_model.letters[self.len_data]}{self.title_to_row('Total Long-Term Liabilities')}",
+            f"=financials!{dcf_static.letters[self.len_data]}{self.title_to_row('Total Long-Term Liabilities')}",
             num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
         )
         dcf_model.set_cell(self.ws[2], "A15", "Firm value without debt")
@@ -520,8 +522,8 @@ class CreateExcelFA:
             "B15",
             (
                 f"=max(B13-B14,"
-                f"Financials!{dcf_model.letters[self.len_data]}{self.title_to_row('Total Assets')}"
-                f"-Financials!{dcf_model.letters[self.len_data]}{self.title_to_row('Total Liabilities')})"
+                f"Financials!{dcf_static.letters[self.len_data]}{self.title_to_row('Total Assets')}"
+                f"-Financials!{dcf_static.letters[self.len_data]}{self.title_to_row('Total Liabilities')})"
             ),
             num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
         )
@@ -530,12 +532,12 @@ class CreateExcelFA:
             "C15",
             (
                 f"=if((B13-B14)>"
-                f"(Financials!{dcf_model.letters[self.len_data]}{self.title_to_row('Total Assets')}"
-                f"-Financials!{dcf_model.letters[self.len_data]}{self.title_to_row('Total Liabilities')}),"
+                f"(Financials!{dcf_static.letters[self.len_data]}{self.title_to_row('Total Assets')}"
+                f"-Financials!{dcf_static.letters[self.len_data]}{self.title_to_row('Total Liabilities')}),"
                 '"","Note: Total assets minus total liabilities exceeds projected firm value without debt.'
                 ' Value shown is total assets minus total liabilities.")'
             ),
-            font=dcf_model.red,
+            font=dcf_static.red,
         )
         dcf_model.set_cell(self.ws[2], "A16", "Shares Outstanding")
         dcf_model.set_cell(
@@ -556,7 +558,7 @@ class CreateExcelFA:
     def create_header(self, ws: Workbook):
         for i in range(10):
             dcf_model.set_cell(
-                ws, f"{dcf_model.letters[i]}1", border=dcf_model.thin_border
+                ws, f"{dcf_static.letters[i]}1", border=dcf_static.thin_border
             )
 
         ws.merge_cells("A1:J1")
@@ -565,8 +567,8 @@ class CreateExcelFA:
             "A1",
             f"Gamestonk Terminal Analysis: {self.ticker.upper()}",
             font=Font(color="04cca8", size=20),
-            border=dcf_model.thin_border,
-            alignment=dcf_model.center,
+            border=dcf_static.thin_border,
+            alignment=dcf_static.center,
         )
         dcf_model.set_cell(
             ws, "A2", f"DCF for {self.ticker} generated on {self.data['now']}"
@@ -574,7 +576,7 @@ class CreateExcelFA:
 
     def run_audit(self):
         start = 67
-        for i, value in enumerate(dcf_model.sum_rows):
+        for i, value in enumerate(dcf_static.sum_rows):
             dcf_model.set_cell(self.ws[1], f"A{start + i}", value)
 
         self.ws[1].merge_cells(f"A{start-2}:K{start-2}")
@@ -583,7 +585,7 @@ class CreateExcelFA:
             f"A{start - 2}",
             "Financial Statement Audit",
             font=Font(color="FF0000"),
-            alignment=dcf_model.center,
+            alignment=dcf_static.center,
         )
         dcf_model.set_cell(
             self.ws[1],
@@ -760,22 +762,22 @@ class CreateExcelFA:
 
         col = self.len_pred + self.len_data + 3
         dcf_model.set_cell(
-            self.ws[1], f"{dcf_model.letters[col]}{row1}", float(model.coef_)
+            self.ws[1], f"{dcf_static.letters[col]}{row1}", float(model.coef_)
         )
         dcf_model.set_cell(
-            self.ws[1], f"{dcf_model.letters[col+1]}{row1}", float(model.intercept_)
+            self.ws[1], f"{dcf_static.letters[col+1]}{row1}", float(model.intercept_)
         )
         dcf_model.set_cell(
             self.ws[1],
-            f"{dcf_model.letters[col+2]}{row1}",
-            dcf_model.letters[self.letter],
-            font=dcf_model.red,
+            f"{dcf_static.letters[col+2]}{row1}",
+            dcf_static.letters[self.letter],
+            font=dcf_static.red,
         )
         dcf_model.set_cell(
             self.ws[3],
             f"A{self.letter+4}",
-            dcf_model.letters[self.letter],
-            font=dcf_model.red,
+            dcf_static.letters[self.letter],
+            font=dcf_static.red,
         )
         dcf_model.set_cell(
             self.ws[3],
@@ -790,8 +792,8 @@ class CreateExcelFA:
         for i in range(self.len_pred):
             if x_ind == "Date":
                 base = (
-                    f"(({dcf_model.letters[col+i]}4-B4)*{dcf_model.letters[col+self.len_pred+2]}"
-                    f"{row1})+{dcf_model.letters[col+self.len_pred+3]}{row1}"
+                    f"(({dcf_static.letters[col+i]}4-B4)*{dcf_static.letters[col+self.len_pred+2]}"
+                    f"{row1})+{dcf_static.letters[col+self.len_pred+3]}{row1}"
                 )
             else:
                 row_n = (
@@ -800,12 +802,12 @@ class CreateExcelFA:
                     else self.starts["BS"]
                 )
                 base = (
-                    f"({dcf_model.letters[col+i]}{row_n}*{dcf_model.letters[col+self.len_pred+2]}{row1})"
-                    f"+{dcf_model.letters[col+self.len_pred+3]}{row1}"
+                    f"({dcf_static.letters[col+i]}{row_n}*{dcf_static.letters[col+self.len_pred+2]}{row1})"
+                    f"+{dcf_static.letters[col+self.len_pred+3]}{row1}"
                 )
             dcf_model.set_cell(
                 self.ws[1],
-                f"{dcf_model.letters[col+i]}{row1}",
+                f"{dcf_static.letters[col+i]}{row1}",
                 f"=max({base},0)" if no_neg else f"={base}",
                 num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
             )
@@ -823,15 +825,15 @@ class CreateExcelFA:
     ):
         col = 1 if audit else self.len_data + 1
         for i in range(self.len_data if audit else self.len_pred):
-            sum_formula = f"={dcf_model.letters[col+i]}{self.title_to_row(first)}"
+            sum_formula = f"={dcf_static.letters[col+i]}{self.title_to_row(first)}"
             for item in adds:
-                sum_formula += f"+{dcf_model.letters[col+i]}{self.title_to_row(item)}"
+                sum_formula += f"+{dcf_static.letters[col+i]}{self.title_to_row(item)}"
             for item in subtracts:
-                sum_formula += f"-{dcf_model.letters[col+i]}{self.title_to_row(item)}"
+                sum_formula += f"-{dcf_static.letters[col+i]}{self.title_to_row(item)}"
             rowI = row if isinstance(row, int) else self.title_to_row(row)
             dcf_model.set_cell(
                 self.ws[1],
-                f"{dcf_model.letters[col+i]}{rowI}",
+                f"{dcf_static.letters[col+i]}{rowI}",
                 sum_formula,
                 num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
             )
@@ -867,23 +869,23 @@ class CreateExcelFA:
             col = self.len_pred + self.len_data + 3
             dcf_model.set_cell(
                 self.ws[1],
-                f"{dcf_model.letters[col+2]}{rowT}",
-                dcf_model.letters[self.letter],
-                font=dcf_model.red,
+                f"{dcf_static.letters[col+2]}{rowT}",
+                dcf_static.letters[self.letter],
+                font=dcf_static.red,
             )
         if ws == 2:
             dcf_model.set_cell(
                 self.ws[2],
                 f"{column}{row}",
-                dcf_model.letters[self.letter],
-                font=dcf_model.red,
+                dcf_static.letters[self.letter],
+                font=dcf_static.red,
             )
 
         dcf_model.set_cell(
             self.ws[3],
             f"A{self.letter+4}",
-            dcf_model.letters[self.letter],
-            font=dcf_model.red,
+            dcf_static.letters[self.letter],
+            font=dcf_static.red,
         )
         dcf_model.set_cell(self.ws[3], f"B{self.letter+4}", text)
         self.letter += 1
@@ -899,68 +901,56 @@ class CreateExcelFA:
         row = 6
         for val in sister_data:
             self.ws[4].merge_cells(f"A{row}:J{row}")
-            dcf_model.set_cell(
-                self.ws[4], f"A{row}", val[0], alignment=dcf_model.center
-            )
-            dcf_model.set_cell(
-                self.ws[4],
-                f"A{row+1}",
-                "Liquidity Ratios",
-                border=dcf_model.thin_border,
-                font=dcf_model.bold_font,
-            )
-            dcf_model.set_cell(self.ws[4], f"A{row+2}", "Current Ratio")
-            dcf_model.set_cell(self.ws[4], f"A{row+3}", "Quick Ratio")
-            dcf_model.set_cell(
-                self.ws[4],
-                f"A{row+5}",
-                "Activity Ratios",
-                border=dcf_model.thin_border,
-                font=dcf_model.bold_font,
-            )
-            dcf_model.set_cell(self.ws[4], f"A{row+6}", "AR Turnover")
-            dcf_model.set_cell(self.ws[4], f"A{row+7}", "Days Sales in AR")
-            dcf_model.set_cell(self.ws[4], f"A{row+8}", "Inventory Turnover")
-            dcf_model.set_cell(self.ws[4], f"A{row+9}", "Days in Inventory")
-            dcf_model.set_cell(self.ws[4], f"A{row+10}", "Average Payable Turnover")
-            dcf_model.set_cell(self.ws[4], f"A{row+11}", "Days of Payables Outstanding")
-            dcf_model.set_cell(self.ws[4], f"A{row+12}", "Cash Conversion Cycle")
-            dcf_model.set_cell(self.ws[4], f"A{row+13}", "Asset Turnover")
-            dcf_model.set_cell(
-                self.ws[4],
-                f"A{row+15}",
-                "Profitability Ratios",
-                border=dcf_model.thin_border,
-                font=dcf_model.bold_font,
-            )
-            dcf_model.set_cell(self.ws[4], f"A{row+16}", "Profit Margin")
-            dcf_model.set_cell(self.ws[4], f"A{row+17}", "Return on Assets")
-            dcf_model.set_cell(self.ws[4], f"A{row+18}", "Return on Equity")
-            dcf_model.set_cell(self.ws[4], f"A{row+19}", "Return on Sales")
-            dcf_model.set_cell(self.ws[4], f"A{row+20}", "Gross Margin")
-            dcf_model.set_cell(self.ws[4], f"A{row+21}", "Operating Cash Flow Ratio")
-            dcf_model.set_cell(
-                self.ws[4],
-                f"A{row+23}",
-                "Coverage Ratios",
-                border=dcf_model.thin_border,
-                font=dcf_model.bold_font,
-            )
-            dcf_model.set_cell(self.ws[4], f"A{row+24}", "Debt-to-Equity")
-            dcf_model.set_cell(self.ws[4], f"A{row+25}", "Total Debt Ratio")
-            dcf_model.set_cell(self.ws[4], f"A{row+26}", "Equity Multiplier")
-            dcf_model.set_cell(self.ws[4], f"A{row+27}", "Times Interest Earned")
-            dcf_model.set_cell(
-                self.ws[4],
-                f"A{row+29}",
-                "Investor Ratios",
-                border=dcf_model.thin_border,
-                font=dcf_model.bold_font,
-            )
-            dcf_model.set_cell(self.ws[4], f"A{row+30}", "Earnings Per Share")
-            dcf_model.set_cell(self.ws[4], f"A{row+31}", "Price Earnings Ratio")
+
+            # Header columns formatted as row index, text, format type
+            titles = [
+                [0, val[0], 1],
+                [1, "Liquidity Ratios", 2],
+                [2, "Current Ratio", 0],
+                [3, "Quick Ratio", 0],
+                [5, "Activity Ratios", 2],
+                [6, "AR Turnover", 0],
+                [7, "Days Sales in AR", 0],
+                [8, "Inventory Turnover", 0],
+                [9, "Days in Inventory", 0],
+                [10, "Average Payable Turnover", 0],
+                [11, "Days of Payables Outstanding", 0],
+                [12, "Cash Conversion Cycle", 0],
+                [13, "Asset Turnover", 0],
+                [15, "Profitability Ratios", 2],
+                [16, "Profit Margin", 0],
+                [17, "Return on Assets", 0],
+                [18, "Return on Equity", 0],
+                [19, "Return on Sales", 0],
+                [20, "Gross Margin", 0],
+                [21, "Operating Cash Flow Ratio", 0],
+                [23, "Coverage Ratios", 2],
+                [24, "Debt-to-Equity", 0],
+                [25, "Total Debt Ratio", 0],
+                [26, "Equity Multiplier", 0],
+                [27, "Times Interest Earned", 0],
+                [29, "Investor Ratios", 2],
+                [30, "Earnings Per Share", 0],
+                [31, "Price Earnings Ratio", 0],
+            ]
+
+            for j in titles:
+                if j[2] == 1:
+                    align = dcf_static.center
+                    dcf_model.set_cell(
+                        self.ws[4], f"A{row+j[0]}", j[1], alignment=align
+                    )
+                elif j[2] == 2:
+                    border = dcf_static.thin_border
+                    font = dcf_static.bold_font
+                    dcf_model.set_cell(
+                        self.ws[4], f"A{row+j[0]}", j[1], border=border, font=font
+                    )
+                else:
+                    dcf_model.set_cell(self.ws[4], f"A{row+j[0]}", j[1])
+
             for j in range(val[1][0].shape[1] - 1):
-                lt = dcf_model.letters[j + 1]
+                lt = dcf_static.letters[j + 1]
 
                 cace1 = dcf_model.get_value(val[1][0], "Cash & Cash Equivalents", j)[1]
                 ar0, ar1 = dcf_model.get_value(val[1][0], "Receivables", j)
@@ -981,31 +971,24 @@ class CreateExcelFA:
                 pdiv1 = dcf_model.get_value(val[1][1], "Preferred Dividends", j)[1]
                 opcf1 = dcf_model.get_value(val[1][2], "Operating Cash Flow", j)[1]
 
-                dcf_model.set_cell(
-                    self.ws[4],
-                    f"{lt}{row+1}",
-                    int(val[1][0].columns[j + 1]),
-                    font=dcf_model.bold_font,
-                )
+                def frac(num: float, denom: float) -> Union[str, float]:
+                    return "N/A" if denom == 0 else num / denom
 
-                frac = (
-                    lambda num, denom: "N/A"
-                    if denom == 0
-                    else float(num) / float(denom)
-                )
                 info, outstand = self.data["info"], float(
                     self.data["info"]["sharesOutstanding"]
                 )
 
+                # Enter row offset, number to display, and format number
                 rows = [
-                    [2, frac(ca1, cl1)],
-                    [3, frac(cace1 + ar1, cl1)],
-                    [6, frac(sls1, (ar0 + ar1) / 2)],
-                    [7, frac(ar1, sls1 / 365)],
-                    [8, frac(cogs1, (inv0 + inv1) / 2)],
-                    [9, frac(inv1, cogs1 / 365)],
-                    [10, frac(cogs1, (ap0 + ap1) / 2)],
-                    [11, frac(ap1, cogs1 / 365)],
+                    [1, int(val[1][0].columns[j + 1]), 1],
+                    [2, frac(ca1, cl1), 0],
+                    [3, frac(cace1 + ar1, cl1), 0],
+                    [6, frac(sls1, (ar0 + ar1) / 2), 0],
+                    [7, frac(ar1, sls1 / 365), 0],
+                    [8, frac(cogs1, (inv0 + inv1) / 2), 0],
+                    [9, frac(inv1, cogs1 / 365), 0],
+                    [10, frac(cogs1, (ap0 + ap1) / 2), 0],
+                    [11, frac(ap1, cogs1 / 365), 0],
                     [
                         12,
                         "N/A"
@@ -1013,29 +996,37 @@ class CreateExcelFA:
                         else frac(ar1, sls1 / 365)
                         + frac(inv1, cogs1 / 365)
                         - frac(ap1, cogs1 / 365),
+                        0,
                     ],
-                    [13, frac(sls1, (ta0 + ta1) / 2)],
-                    [16, frac(ni1, sls1)],
-                    [17, frac(ni1, (ar0 + ar1) / 2)],
-                    [18, frac(ni1, (te0 + te1) / 2)],
-                    [19, frac(ni1 + inte1 + tax1, sls1)],
-                    [20, frac(sls1 - cogs1, sls1)],
-                    [21, frac(opcf1, cl1)],
-                    [24, frac(tl1, te1)],
-                    [25, frac(tl1, ta1)],
-                    [26, frac(ta1, te1)],
-                    [27, frac(ni1 + inte1 + tax1, inte1)],
-                    [30, frac((ni1 - pdiv1) * self.rounding, outstand)],
+                    [13, frac(sls1, (ta0 + ta1) / 2), 0],
+                    [16, frac(ni1, sls1), 0],
+                    [17, frac(ni1, (ar0 + ar1) / 2), 0],
+                    [18, frac(ni1, (te0 + te1) / 2), 0],
+                    [19, frac(ni1 + inte1 + tax1, sls1), 0],
+                    [20, frac(sls1 - cogs1, sls1), 0],
+                    [21, frac(opcf1, cl1), 0],
+                    [24, frac(tl1, te1), 0],
+                    [25, frac(tl1, ta1), 0],
+                    [26, frac(ta1, te1), 0],
+                    [27, frac(ni1 + inte1 + tax1, inte1), 0],
+                    [30, frac((ni1 - pdiv1) * self.rounding, outstand), 0],
                     [
                         31,
                         frac(
                             float(info["previousClose"]) * outstand * self.rounding,
                             ni1 - pdiv1,
                         ),
+                        0,
                     ],
                 ]
 
-                for item in rows:
-                    dcf_model.set_cell(self.ws[4], f"{lt}{row+item[0]}", item[1])
+                for k in rows:
+                    if k[2] == 1:
+                        font = dcf_static.bold_font
+                        dcf_model.set_cell(
+                            self.ws[4], f"{lt}{row+k[0]}", k[1], font=font
+                        )
+                    else:
+                        dcf_model.set_cell(self.ws[4], f"{lt}{row+k[0]}", k[1])
 
             row += 35
