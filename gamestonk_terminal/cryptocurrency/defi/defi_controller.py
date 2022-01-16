@@ -14,6 +14,7 @@ from gamestonk_terminal.cryptocurrency.defi import (
     terraengineer_model,
     terraengineer_view,
     terramoney_fcd_view,
+    terramoney_fcd_model,
 )
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -82,6 +83,14 @@ class DefiController(BaseController):
             choices["vaults"]["-k"] = {c: {} for c in coindix_model.VAULT_KINDS}
             choices["vaults"]["-c"] = {c: {} for c in coindix_model.CHAINS}
             choices["vaults"]["-p"] = {c: {} for c in coindix_model.PROTOCOLS}
+            choices["govp"]["-s"] = {c: {} for c in terramoney_fcd_model.GOV_COLUMNS}
+            choices["govp"]["--status"] = {
+                c: {} for c in terramoney_fcd_model.GOV_STATUSES
+            }
+            choices["validators"]["-s"] = {
+                c: {} for c in terramoney_fcd_model.VALIDATORS_COLUMNS
+            }
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -196,7 +205,7 @@ class DefiController(BaseController):
             dest="address",
             type=str,
             help="Terra address. Valid terra addresses start with 'terra'",
-            required=True,
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-l",

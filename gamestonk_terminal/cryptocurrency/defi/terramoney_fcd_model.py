@@ -12,6 +12,26 @@ from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     replace_unicode,
 )
 
+GOV_COLUMNS = [
+    "submitTime",
+    "id",
+    "depositEndTime",
+    "status",
+    "type",
+    "title",
+    "Yes",
+    "No",
+]
+GOV_STATUSES = ["voting", "deposit", "passed", "rejected"]
+VALIDATORS_COLUMNS = [
+    "validatorName",
+    "tokensAmount",
+    "votingPower",
+    "commissionRate",
+    "status",
+    "uptime",
+]
+
 
 def _make_request(endpoint: str) -> dict:
     """Helper method handles terra fcd api requests. [Source: https://fcd.terra.dev/v1]
