@@ -235,7 +235,6 @@ def others_in_sector(ticker: str, sector: str, industry: str) -> List[str]:
         sister_ticks = {
             k: v for (k, v) in sister_ticks.items() if v["market_cap"] == market_cap
         }
-        print(sister_ticks)
     sister_ticks = list(sister_ticks)
     return sister_ticks
 
