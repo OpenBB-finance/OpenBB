@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 from urllib.request import urlopen
-from typing import List, Union, Dict
+from typing import List, Union, Dict, Any
 from zipfile import ZipFile
 from io import BytesIO
 import re
@@ -182,7 +182,7 @@ statement_titles = {"BS": "Balance Sheet", "CF": "Cash Flows", "IS": "Income Sta
 statement_url: Dict[str, str] = {
     "BS": "balance-sheet/",
     "CF": "cash-flow-statement/",
-    "IS": "Income Statement",
+    "IS": "",
 }
 
 statement_ignore: Dict[str, List[str]] = {
@@ -434,12 +434,18 @@ def create_dataframe(ticker: str, statement: str):
     r = requests.get(URL, headers=headers)
 
     if "404 - Page Not Found" in r.text:
-        raise ValueError("The ticker given is not in the stock analysis website.")
+        return pd.DataFrame(), None
     soup = BeautifulSoup(r.content, "html.parser")
 
     table = soup.find("table", attrs={"class": re.compile("fintbl")})
+    if table is None:
+        return pd.DataFrame(), None
     head = table.find("thead")
+    if head is None:
+        return pd.DataFrame(), None
     columns = head.find_all("th")
+    if columns is None:
+        return pd.DataFrame(), None
 
     years = [x.get_text().strip() for x in columns if "-" not in x.get_text().strip()]
     len_data = len(years) - 1
@@ -454,7 +460,7 @@ def create_dataframe(ticker: str, statement: str):
     elif "billions" in phrase:
         rounding = 1_000_000_000
     else:
-        raise ValueError("Improper rounding provided")
+        return pd.DataFrame(), None
 
     body = table.find("tbody")
     rows = body.find_all("tr")
@@ -473,7 +479,7 @@ def create_dataframe(ticker: str, statement: str):
     n = df.shape[1] - len_data
     if n > 0:
         df = df.iloc[:, :-n]
-    df.columns = years[1:]
+    df.columns = years[1 : len(df.columns) + 1]
 
     for ignore in ignores:
         if ignore in df.index:
@@ -490,9 +496,41 @@ def create_dataframe(ticker: str, statement: str):
     if vals[0] in df.index:
         blank_list = ["0" for _ in df.loc[vals[0]].to_list()]
     else:
-        raise ValueError("Dataframe does not have key information.")
+        return pd.DataFrame(), None
     for i, _ in enumerate(vals[1][1:]):
         df = insert_row(vals[1][i + 1], vals[1][i], df, blank_list)
 
-    # not giving: len_date, rounding, years
+    # not giving: len_date, years
     return df, rounding
+
+
+def get_sister_dfs(ticker: str, info: Dict[str, Any], n: int):
+    """
+    Get dataframes for sister companies
+
+    Parameters
+    ----------
+    ticker : str
+        The ticker to create a dataframe for
+    into : Dict[str,Any]
+        The dictionary produced from the yfinance.info function
+    n : int
+        The number of sister companies to produce
+
+    Returns
+    -------
+
+    """
+    # TODO: Once mcap is added to this, we can add as an additional filters for more comparative results
+    sisters = others_in_sector(ticker, info["sector"], info["industry"])
+    i = 0
+    new_list = []
+    while i < n and sisters:
+        sister_ret = [create_dataframe(sisters[0], x)[0] for x in ["BS", "IS", "CF"]]
+        blank = [x.empty for x in sister_ret]
+        if True not in blank:
+            vals = [sisters[0], sister_ret]
+            new_list.append(vals)
+            i += 1
+        sisters.pop(0)
+    return new_list

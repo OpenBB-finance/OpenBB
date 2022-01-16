@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 from typing import List, Union
 from datetime import datetime
 from pathlib import Path
-import random
 import os
 
 from openpyxl.styles.numbers import FORMAT_PERCENTAGE_00
@@ -48,10 +47,6 @@ class CreateExcelFA:
         self.info: pd.DataFrame = yf.Ticker(ticker).info
         self.t_bill: float = get_rf()
         self.r_ff: float = dcf_model.get_fama_coe(self.ticker)
-        self.sisters: List[str] = dcf_model.others_in_sector(
-            self.ticker, self.info["sector"], self.info["industry"]
-        )
-        self.sister_data: List[List[pd.DataFrame]] = [[pd.DataFrame()]]
 
     def create_workbook(self):
         self.ws1.column_dimensions["A"].width = 25
@@ -62,12 +57,11 @@ class CreateExcelFA:
             self.ws2.column_dimensions[column].width = 14
 
         self.ws3.column_dimensions["A"].width = 3
-        self.create_header(self.ws1)
-        self.create_header(self.ws2)
-        self.create_header(self.ws3)
-        self.create_header(self.ws4)
+        for val in [self.ws1, self.ws2, self.ws3, self.ws4]:
+            self.create_header(val)
         self.add_estimates()
         self.create_dcf()
+        self.add_ratios()
         if self.audit:
             self.run_audit()
 
@@ -90,7 +84,11 @@ class CreateExcelFA:
 
     def get_data(self, statement: str, row: int, header: bool) -> pd.DataFrame:
         df, rounding = dcf_model.create_dataframe(self.ticker, statement)
+        if df.empty:
+            raise ValueError("Could generate a dataframe for the ticker")
         self.rounding = rounding
+        if not self.len_data:
+            self.len_data = len(df.columns)
 
         self.ws1[f"A{row}"] = dcf_model.statement_titles[statement]
         self.ws1[f"A{row}"].font = dcf_model.bold_font
@@ -139,7 +137,7 @@ class CreateExcelFA:
         return df
 
     def add_estimates(self):
-        last_year = self.years[1]  # Replace with columns in DF
+        last_year = self.df_bs.columns[-1]  # Replace with columns in DF
         col = self.len_data + 1
         for i in range(self.len_pred):
             dcf_model.set_cell(
@@ -547,306 +545,6 @@ class CreateExcelFA:
         dcf_model.set_cell(self.ws4, "B4", "Sector:")
         dcf_model.set_cell(self.ws4, "C4", self.info["sector"])
 
-        self.get_sister_dfs()
-        self.sister_data.insert(0, [self.ticker, [self.df_bs, self.df_is, self.df_cf]])
-        row = 6
-        for i in self.sister_data:
-            self.ws4.merge_cells(f"A{row}:J{row}")
-            dcf_model.set_cell(self.ws4, f"A{row}", i[0], alignment=dcf_model.center)
-            dcf_model.set_cell(
-                self.ws4,
-                f"A{row+1}",
-                "Liquidity Ratios",
-                border=dcf_model.thin_border,
-                font=dcf_model.bold_font,
-            )
-            dcf_model.set_cell(self.ws4, f"A{row+2}", "Current Ratio")
-            dcf_model.set_cell(self.ws4, f"A{row+3}", "Quick Ratio")
-            dcf_model.set_cell(
-                self.ws4,
-                f"A{row+5}",
-                "Activity Ratios",
-                border=dcf_model.thin_border,
-                font=dcf_model.bold_font,
-            )
-            dcf_model.set_cell(self.ws4, f"A{row+6}", "AR Turnover")
-            dcf_model.set_cell(self.ws4, f"A{row+7}", "Days Sales in AR")
-            dcf_model.set_cell(self.ws4, f"A{row+8}", "Inventory Turnover")
-            dcf_model.set_cell(self.ws4, f"A{row+9}", "Days in Inventory")
-            dcf_model.set_cell(self.ws4, f"A{row+10}", "Average Payable Turnover")
-            dcf_model.set_cell(self.ws4, f"A{row+11}", "Days of Payables Outstanding")
-            dcf_model.set_cell(self.ws4, f"A{row+12}", "Cash Conversion Cycle")
-            dcf_model.set_cell(self.ws4, f"A{row+13}", "Asset Turnover")
-            dcf_model.set_cell(
-                self.ws4,
-                f"A{row+15}",
-                "Profitability Ratios",
-                border=dcf_model.thin_border,
-                font=dcf_model.bold_font,
-            )
-            dcf_model.set_cell(self.ws4, f"A{row+16}", "Profit Margin")
-            dcf_model.set_cell(self.ws4, f"A{row+17}", "Return on Assets")
-            dcf_model.set_cell(self.ws4, f"A{row+18}", "Return on Equity")
-            dcf_model.set_cell(self.ws4, f"A{row+19}", "Return on Sales")
-            dcf_model.set_cell(self.ws4, f"A{row+20}", "Gross Margin")
-            dcf_model.set_cell(self.ws4, f"A{row+21}", "Operating Cash Flow Ratio")
-            dcf_model.set_cell(
-                self.ws4,
-                f"A{row+23}",
-                "Coverage Ratios",
-                border=dcf_model.thin_border,
-                font=dcf_model.bold_font,
-            )
-            dcf_model.set_cell(self.ws4, f"A{row+24}", "Debt-to-Equity")
-            dcf_model.set_cell(self.ws4, f"A{row+25}", "Total Debt Ratio")
-            dcf_model.set_cell(self.ws4, f"A{row+26}", "Equity Multiplier")
-            dcf_model.set_cell(self.ws4, f"A{row+27}", "Times Interest Earned")
-            dcf_model.set_cell(
-                self.ws4,
-                f"A{row+29}",
-                "Investor Ratios",
-                border=dcf_model.thin_border,
-                font=dcf_model.bold_font,
-            )
-            dcf_model.set_cell(self.ws4, f"A{row+30}", "Earnings Per Share")
-            dcf_model.set_cell(self.ws4, f"A{row+31}", "Price Earnings Ratio")
-            for j in range(len(self.df_bs.columns) - 1):
-                lt = dcf_model.letters[j + 1]
-
-                cace1 = float(
-                    i[1][0]
-                    .at["Cash & Cash Equivalents", i[1][0].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                ar0 = float(
-                    i[1][0]
-                    .at["Receivables", i[1][0].columns[j]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                ar1 = float(
-                    i[1][0]
-                    .at["Receivables", i[1][0].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                inv0 = float(
-                    i[1][0]
-                    .at["Inventory", i[1][0].columns[j]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                inv1 = float(
-                    i[1][0]
-                    .at["Inventory", i[1][0].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                ca1 = float(
-                    i[1][0]
-                    .at["Total Current Assets", i[1][0].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                ta0 = float(
-                    i[1][0]
-                    .at["Total Assets", i[1][0].columns[j]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                ta1 = float(
-                    i[1][0]
-                    .at["Total Assets", i[1][0].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                ap0 = float(
-                    i[1][0]
-                    .at["Accounts Payable", i[1][0].columns[j]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                ap1 = float(
-                    i[1][0]
-                    .at["Accounts Payable", i[1][0].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                cl1 = float(
-                    i[1][0]
-                    .at["Total Current Liabilities", i[1][0].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                tl1 = float(
-                    i[1][0]
-                    .at["Total Liabilities", i[1][0].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                te0 = float(
-                    i[1][0]
-                    .at["Shareholders' Equity", i[1][0].columns[j]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                te1 = float(
-                    i[1][0]
-                    .at["Shareholders' Equity", i[1][0].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                sls1 = float(
-                    i[1][1]
-                    .at["Revenue", i[1][1].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                cogs1 = float(
-                    i[1][1]
-                    .at["Cost of Revenue", i[1][1].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                inte1 = float(
-                    i[1][1]
-                    .at["Interest Expense / Income", i[1][1].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                tax1 = float(
-                    i[1][1]
-                    .at["Income Tax", i[1][1].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                ni1 = float(
-                    i[1][1]
-                    .at["Net Income", i[1][1].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                pdiv1 = float(
-                    i[1][1]
-                    .at["Preferred Dividends", i[1][0].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                opcf1 = float(
-                    i[1][2]
-                    .at["Operating Cash Flow", i[1][2].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-
-                dcf_model.set_cell(
-                    self.ws4,
-                    f"{lt}{row+1}",
-                    int(i[1][0].columns[j + 1]),
-                    font=dcf_model.bold_font,
-                )
-                dcf_model.set_cell(
-                    self.ws4, f"{lt}{row+2}", "N/A" if cl1 == 0 else ca1 / cl1
-                )
-                dcf_model.set_cell(
-                    self.ws4, f"{lt}{row+3}", "N/A" if cl1 == 0 else (cace1 + ar1) / cl1
-                )
-                dcf_model.set_cell(
-                    self.ws4,
-                    f"{lt}{row+6}",
-                    "N/A" if ar0 + ar1 == 0 else sls1 / ((ar0 + ar1) / 2),
-                )
-                dcf_model.set_cell(
-                    self.ws4, f"{lt}{row+7}", "N/A" if sls1 == 0 else ar1 / (sls1 / 365)
-                )
-                dcf_model.set_cell(
-                    self.ws4,
-                    f"{lt}{row+8}",
-                    "N/A" if inv0 + inv1 == 0 else cogs1 / ((inv0 + inv1) / 2),
-                )
-                dcf_model.set_cell(
-                    self.ws4,
-                    f"{lt}{row+9}",
-                    "N/A" if cogs1 == 0 else inv1 / (cogs1 / 365),
-                )
-                dcf_model.set_cell(
-                    self.ws4,
-                    f"{lt}{row+10}",
-                    "N/A" if ap0 + ap1 == 0 else cogs1 / ((ap0 + ap1) / 2),
-                )
-                dcf_model.set_cell(
-                    self.ws4,
-                    f"{lt}{row+11}",
-                    "N/A" if cogs1 == 0 else ap1 / (cogs1 / 365),
-                )
-                dcf_model.set_cell(
-                    self.ws4,
-                    f"{lt}{row+12}",
-                    "N/A"
-                    if cogs1 == 0
-                    else (ar1 / (sls1 / 365))
-                    + (inv1 / (cogs1 / 365))
-                    - (ap1 / (cogs1 / 365)),
-                )
-                dcf_model.set_cell(
-                    self.ws4,
-                    f"{lt}{row+13}",
-                    "N/A" if ta0 + ta1 == 0 else sls1 / ((ta0 + ta1) / 2),
-                )
-                dcf_model.set_cell(
-                    self.ws4, f"{lt}{row+16}", "N/A" if sls1 == 0 else ni1 / sls1
-                )
-                dcf_model.set_cell(
-                    self.ws4,
-                    f"{lt}{row+17}",
-                    "N/A" if ar0 + ar1 == 0 else ni1 / ((ar0 + ar1) / 2),
-                )
-                dcf_model.set_cell(
-                    self.ws4,
-                    f"{lt}{row+18}",
-                    "N/A" if te0 + te1 == 0 else ni1 / ((te0 + te1) / 2),
-                )
-                dcf_model.set_cell(
-                    self.ws4,
-                    f"{lt}{row+19}",
-                    "N/A" if sls1 == 0 else (ni1 + inte1 + tax1) / sls1,
-                )
-                dcf_model.set_cell(
-                    self.ws4,
-                    f"{lt}{row+20}",
-                    "N/A" if sls1 == 0 else (sls1 - cogs1) / sls1,
-                )
-                dcf_model.set_cell(
-                    self.ws4, f"{lt}{row+21}", "N/A" if cl1 == 0 else opcf1 / cl1
-                )
-                dcf_model.set_cell(
-                    self.ws4, f"{lt}{row+24}", "N/A" if te1 == 0 else tl1 / te1
-                )
-                dcf_model.set_cell(
-                    self.ws4, f"{lt}{row+25}", "N/A" if ta1 == 0 else tl1 / ta1
-                )
-                dcf_model.set_cell(
-                    self.ws4, f"{lt}{row+26}", "N/A" if te1 == 0 else ta1 / te1
-                )
-                dcf_model.set_cell(
-                    self.ws4,
-                    f"{lt}{row+27}",
-                    "N/A" if inte1 == 0 else (ni1 + inte1 + tax1) / inte1,
-                )
-                dcf_model.set_cell(
-                    self.ws4,
-                    f"{lt}{row+30}",
-                    (ni1 - pdiv1) / float(self.info["sharesOutstanding"]),
-                )
-                dcf_model.set_cell(
-                    self.ws4,
-                    f"{lt}{row+31}",
-                    float(self.info["previousClose"])
-                    / ((ni1 - pdiv1) / float(self.info["sharesOutstanding"])),
-                )
-            row += 35
-
     def create_header(self, ws: Workbook):
         for i in range(10):
             dcf_model.set_cell(
@@ -1178,27 +876,303 @@ class CreateExcelFA:
         dcf_model.set_cell(self.ws3, f"B{self.letter+4}", text)
         self.letter += 1
 
-    def get_sister_dfs(self):
-        # TODO: Once mcap is added to this, we can add as an additional filters for more comparative results
-        sisters = self.sisters
-        random.shuffle(sisters)
-        i = 0
-        new_list = []
-        while i < 3 and sisters:
-            sister_ret = [
-                self.dcf_model.create_dataframe(x, sisters[0])
-                for x in ["BS", "IS", "CF"]
-            ]
-            blank = [x.empty for x in sister_ret]
-            if True in blank:
-                sisters.pop(0)
-            else:
-                vals = [
-                    sisters[0],
-                    sister_ret,
-                ]
-                new_list.append(vals)
-                i += 1
-                sisters.pop(0)
+    def add_ratios(self):
+        sister_data = dcf_model.get_sister_dfs(self.ticker, self.info, 3)
+        sister_data.insert(0, [self.ticker, [self.df_bs, self.df_is, self.df_cf]])
+        row = 6
+        for val in sister_data:
+            self.ws4.merge_cells(f"A{row}:J{row}")
+            dcf_model.set_cell(self.ws4, f"A{row}", val[0], alignment=dcf_model.center)
+            dcf_model.set_cell(
+                self.ws4,
+                f"A{row+1}",
+                "Liquidity Ratios",
+                border=dcf_model.thin_border,
+                font=dcf_model.bold_font,
+            )
+            dcf_model.set_cell(self.ws4, f"A{row+2}", "Current Ratio")
+            dcf_model.set_cell(self.ws4, f"A{row+3}", "Quick Ratio")
+            dcf_model.set_cell(
+                self.ws4,
+                f"A{row+5}",
+                "Activity Ratios",
+                border=dcf_model.thin_border,
+                font=dcf_model.bold_font,
+            )
+            dcf_model.set_cell(self.ws4, f"A{row+6}", "AR Turnover")
+            dcf_model.set_cell(self.ws4, f"A{row+7}", "Days Sales in AR")
+            dcf_model.set_cell(self.ws4, f"A{row+8}", "Inventory Turnover")
+            dcf_model.set_cell(self.ws4, f"A{row+9}", "Days in Inventory")
+            dcf_model.set_cell(self.ws4, f"A{row+10}", "Average Payable Turnover")
+            dcf_model.set_cell(self.ws4, f"A{row+11}", "Days of Payables Outstanding")
+            dcf_model.set_cell(self.ws4, f"A{row+12}", "Cash Conversion Cycle")
+            dcf_model.set_cell(self.ws4, f"A{row+13}", "Asset Turnover")
+            dcf_model.set_cell(
+                self.ws4,
+                f"A{row+15}",
+                "Profitability Ratios",
+                border=dcf_model.thin_border,
+                font=dcf_model.bold_font,
+            )
+            dcf_model.set_cell(self.ws4, f"A{row+16}", "Profit Margin")
+            dcf_model.set_cell(self.ws4, f"A{row+17}", "Return on Assets")
+            dcf_model.set_cell(self.ws4, f"A{row+18}", "Return on Equity")
+            dcf_model.set_cell(self.ws4, f"A{row+19}", "Return on Sales")
+            dcf_model.set_cell(self.ws4, f"A{row+20}", "Gross Margin")
+            dcf_model.set_cell(self.ws4, f"A{row+21}", "Operating Cash Flow Ratio")
+            dcf_model.set_cell(
+                self.ws4,
+                f"A{row+23}",
+                "Coverage Ratios",
+                border=dcf_model.thin_border,
+                font=dcf_model.bold_font,
+            )
+            dcf_model.set_cell(self.ws4, f"A{row+24}", "Debt-to-Equity")
+            dcf_model.set_cell(self.ws4, f"A{row+25}", "Total Debt Ratio")
+            dcf_model.set_cell(self.ws4, f"A{row+26}", "Equity Multiplier")
+            dcf_model.set_cell(self.ws4, f"A{row+27}", "Times Interest Earned")
+            dcf_model.set_cell(
+                self.ws4,
+                f"A{row+29}",
+                "Investor Ratios",
+                border=dcf_model.thin_border,
+                font=dcf_model.bold_font,
+            )
+            dcf_model.set_cell(self.ws4, f"A{row+30}", "Earnings Per Share")
+            dcf_model.set_cell(self.ws4, f"A{row+31}", "Price Earnings Ratio")
+            for j in range(len(self.df_bs.columns) - 1):
+                lt = dcf_model.letters[j + 1]
 
-        self.sister_data = new_list
+                cace1 = float(
+                    val[1][0]
+                    .at["Cash & Cash Equivalents", val[1][0].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
+                )
+                ar0 = float(
+                    val[1][0]
+                    .at["Receivables", val[1][0].columns[j]]
+                    .replace(",", "")
+                    .replace("-", "-0")
+                )
+                ar1 = float(
+                    val[1][0]
+                    .at["Receivables", val[1][0].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
+                )
+                inv0 = float(
+                    val[1][0]
+                    .at["Inventory", val[1][0].columns[j]]
+                    .replace(",", "")
+                    .replace("-", "-0")
+                )
+                inv1 = float(
+                    val[1][0]
+                    .at["Inventory", val[1][0].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
+                )
+                ca1 = float(
+                    val[1][0]
+                    .at["Total Current Assets", val[1][0].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
+                )
+                ta0 = float(
+                    val[1][0]
+                    .at["Total Assets", val[1][0].columns[j]]
+                    .replace(",", "")
+                    .replace("-", "-0")
+                )
+                ta1 = float(
+                    val[1][0]
+                    .at["Total Assets", val[1][0].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
+                )
+                ap0 = float(
+                    val[1][0]
+                    .at["Accounts Payable", val[1][0].columns[j]]
+                    .replace(",", "")
+                    .replace("-", "-0")
+                )
+                ap1 = float(
+                    val[1][0]
+                    .at["Accounts Payable", val[1][0].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
+                )
+                cl1 = float(
+                    val[1][0]
+                    .at["Total Current Liabilities", val[1][0].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
+                )
+                tl1 = float(
+                    val[1][0]
+                    .at["Total Liabilities", val[1][0].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
+                )
+                te0 = float(
+                    val[1][0]
+                    .at["Shareholders' Equity", val[1][0].columns[j]]
+                    .replace(",", "")
+                    .replace("-", "-0")
+                )
+                te1 = float(
+                    val[1][0]
+                    .at["Shareholders' Equity", val[1][0].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
+                )
+                sls1 = float(
+                    val[1][1]
+                    .at["Revenue", val[1][1].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
+                )
+                cogs1 = float(
+                    val[1][1]
+                    .at["Cost of Revenue", val[1][1].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
+                )
+                inte1 = float(
+                    val[1][1]
+                    .at["Interest Expense / Income", val[1][1].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
+                )
+                tax1 = float(
+                    val[1][1]
+                    .at["Income Tax", val[1][1].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
+                )
+                ni1 = float(
+                    val[1][1]
+                    .at["Net Income", val[1][1].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
+                )
+                pdiv1 = float(
+                    val[1][1]
+                    .at["Preferred Dividends", val[1][0].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
+                )
+                opcf1 = float(
+                    val[1][2]
+                    .at["Operating Cash Flow", val[1][2].columns[j + 1]]
+                    .replace(",", "")
+                    .replace("-", "-0")
+                )
+
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+1}",
+                    int(val[1][0].columns[j + 1]),
+                    font=dcf_model.bold_font,
+                )
+                dcf_model.set_cell(
+                    self.ws4, f"{lt}{row+2}", "N/A" if cl1 == 0 else ca1 / cl1
+                )
+                dcf_model.set_cell(
+                    self.ws4, f"{lt}{row+3}", "N/A" if cl1 == 0 else (cace1 + ar1) / cl1
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+6}",
+                    "N/A" if ar0 + ar1 == 0 else sls1 / ((ar0 + ar1) / 2),
+                )
+                dcf_model.set_cell(
+                    self.ws4, f"{lt}{row+7}", "N/A" if sls1 == 0 else ar1 / (sls1 / 365)
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+8}",
+                    "N/A" if inv0 + inv1 == 0 else cogs1 / ((inv0 + inv1) / 2),
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+9}",
+                    "N/A" if cogs1 == 0 else inv1 / (cogs1 / 365),
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+10}",
+                    "N/A" if ap0 + ap1 == 0 else cogs1 / ((ap0 + ap1) / 2),
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+11}",
+                    "N/A" if cogs1 == 0 else ap1 / (cogs1 / 365),
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+12}",
+                    "N/A"
+                    if cogs1 == 0
+                    else (ar1 / (sls1 / 365))
+                    + (inv1 / (cogs1 / 365))
+                    - (ap1 / (cogs1 / 365)),
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+13}",
+                    "N/A" if ta0 + ta1 == 0 else sls1 / ((ta0 + ta1) / 2),
+                )
+                dcf_model.set_cell(
+                    self.ws4, f"{lt}{row+16}", "N/A" if sls1 == 0 else ni1 / sls1
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+17}",
+                    "N/A" if ar0 + ar1 == 0 else ni1 / ((ar0 + ar1) / 2),
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+18}",
+                    "N/A" if te0 + te1 == 0 else ni1 / ((te0 + te1) / 2),
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+19}",
+                    "N/A" if sls1 == 0 else (ni1 + inte1 + tax1) / sls1,
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+20}",
+                    "N/A" if sls1 == 0 else (sls1 - cogs1) / sls1,
+                )
+                dcf_model.set_cell(
+                    self.ws4, f"{lt}{row+21}", "N/A" if cl1 == 0 else opcf1 / cl1
+                )
+                dcf_model.set_cell(
+                    self.ws4, f"{lt}{row+24}", "N/A" if te1 == 0 else tl1 / te1
+                )
+                dcf_model.set_cell(
+                    self.ws4, f"{lt}{row+25}", "N/A" if ta1 == 0 else tl1 / ta1
+                )
+                dcf_model.set_cell(
+                    self.ws4, f"{lt}{row+26}", "N/A" if te1 == 0 else ta1 / te1
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+27}",
+                    "N/A" if inte1 == 0 else (ni1 + inte1 + tax1) / inte1,
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+30}",
+                    (ni1 - pdiv1) / float(self.info["sharesOutstanding"]),
+                )
+                dcf_model.set_cell(
+                    self.ws4,
+                    f"{lt}{row+31}",
+                    float(self.info["previousClose"])
+                    / ((ni1 - pdiv1) / float(self.info["sharesOutstanding"])),
+                )
+            row += 35
