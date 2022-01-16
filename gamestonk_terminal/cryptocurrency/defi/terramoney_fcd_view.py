@@ -154,7 +154,7 @@ def display_gov_proposals(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "proposals",
+        "govp",
         df_data,
     )
 
@@ -171,7 +171,7 @@ def display_account_growth(
     kind: str
         display total account count or active account count. One from list [active, total]
     cumulative: bool
-        Flag to show cumulative or discrete values. For active accounts only discrete value is available.
+        Flag to show cumulative or discrete values. For active accounts only discrete value are available.
     export : str
         Export dataframe data to csv,json,xlsx file
     """
