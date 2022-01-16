@@ -34,18 +34,22 @@ class CreateExcelFA:
             4: self.wb.create_sheet("Ratios"),
         }
         self.ticker: str = ticker
-        self.now: str = datetime.now().strftime("%Y-%m-%d")
         self.letter: int = 0
         self.starts: Dict[str, int] = {"IS": 4, "BS": 18, "CF": 47}
         self.len_data: int = 0
         self.len_pred: int = 10
         self.rounding: int = 0
-        self.df_bs: pd.DataFrame = self.get_data("BS", self.starts["BS"], False)
-        self.df_is: pd.DataFrame = self.get_data("IS", self.starts["IS"], True)
-        self.df_cf: pd.DataFrame = self.get_data("CF", self.starts["CF"], False)
-        self.info: pd.DataFrame = yf.Ticker(ticker).info
-        self.t_bill: float = get_rf()
-        self.r_ff: float = dcf_model.get_fama_coe(self.ticker)
+        self.df: Dict[str, pd.DataFrame] = {
+            "BS": self.get_data("BS", self.starts["BS"], False),
+            "IS": self.get_data("IS", self.starts["IS"], True),
+            "CF": self.get_data("CF", self.starts["CF"], False),
+        }
+        self.data: Dict[str, Any] = {
+            "now": datetime.now().strftime("%Y-%m-%d"),
+            "info": yf.Ticker(ticker).info,
+            "t_bill": get_rf(),
+            "r_ff": dcf_model.get_fama_coe(self.ticker),
+        }
 
     def create_workbook(self):
         self.ws[1].title = "Financials"
@@ -59,8 +63,8 @@ class CreateExcelFA:
         self.ws[3].column_dimensions["A"].width = 3
         for val in [self.ws[1], self.ws[2], self.ws[3], self.ws[4]]:
             self.create_header(val)
-        self.df_bs, self.df_is, self.df_cf = dcf_model.clean_dataframes(
-            self.df_bs, self.df_is, self.df_cf
+        self.df["BS"], self.df["IS"], self.df["CF"] = dcf_model.clean_dataframes(
+            self.df["BS"], self.df["IS"], self.df["CF"]
         )
         self.add_estimates()
         self.create_dcf()
@@ -73,7 +77,7 @@ class CreateExcelFA:
             "exports",
             "stocks",
             "fundamental_analysis",
-            f"{self.ticker} {self.now}.xlsx",
+            f"{self.ticker} {self.data['now']}.xlsx",
         )
 
         my_file = Path(trypath)
@@ -140,7 +144,7 @@ class CreateExcelFA:
         return df
 
     def add_estimates(self):
-        last_year = self.df_bs.columns[-1]  # Replace with columns in DF
+        last_year = self.df["BS"].columns[-1]  # Replace with columns in DF
         col = self.len_data + 1
         for i in range(self.len_pred):
             dcf_model.set_cell(
@@ -403,7 +407,7 @@ class CreateExcelFA:
         dcf_model.set_cell(
             self.ws[2],
             f"{c2}{r+1}",
-            float(self.t_bill) / 100,
+            float(self.data["t_bill"]) / 100,
             num_form=FORMAT_PERCENTAGE_00,
         )
         self.custom_exp(r + 1, "Pulled from US Treasurey.", 2, f"{c3}")
@@ -415,14 +419,16 @@ class CreateExcelFA:
             r + 2, "Average return of the S&P 500 is 8% [Investopedia]", 2, f"{c3}"
         )
         dcf_model.set_cell(self.ws[2], f"{c1}{r+3}", "Beta")
-        if self.info["beta"] is None:
+        if self.data["info"]["beta"] is None:
             dcf_model.set_cell(self.ws[2], f"{c2}{r+3}", float(1))
             self.custom_exp(
                 r + 3, "Warning: Beta not found. Assumed a beta of one.", 2, f"{c3}"
             )
-            self.info["beta"] = 1
+            self.data["info"]["beta"] = 1
         else:
-            dcf_model.set_cell(self.ws[2], f"{c2}{r+3}", float(self.info["beta"]))
+            dcf_model.set_cell(
+                self.ws[2], f"{c2}{r+3}", float(self.data["info"]["beta"])
+            )
             self.custom_exp(r + 3, "Beta from yahoo finance", 2, f"{c3}")
         dcf_model.set_cell(self.ws[2], f"{c1}{r+4}", "r (CAPM)")
         dcf_model.set_cell(
@@ -439,7 +445,7 @@ class CreateExcelFA:
         dcf_model.set_cell(
             self.ws[2],
             f"{c2}{r+7}",
-            f"=max({self.r_ff},0.005)",
+            f"=max({self.data['r_ff']},0.005)",
             num_form=FORMAT_PERCENTAGE_00,
         )
         self.custom_exp(
@@ -536,7 +542,9 @@ class CreateExcelFA:
             font=dcf_model.red,
         )
         dcf_model.set_cell(self.ws[2], "A16", "Shares Outstanding")
-        dcf_model.set_cell(self.ws[2], "B16", int(self.info["sharesOutstanding"]))
+        dcf_model.set_cell(
+            self.ws[2], "B16", int(self.data["info"]["sharesOutstanding"])
+        )
         dcf_model.set_cell(self.ws[2], "A17", "Shares Price")
         dcf_model.set_cell(
             self.ws[2],
@@ -545,12 +553,14 @@ class CreateExcelFA:
             num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
         )
         dcf_model.set_cell(self.ws[2], "A18", "Actual Price")
-        dcf_model.set_cell(self.ws[2], "B18", float(self.info["regularMarketPrice"]))
+        dcf_model.set_cell(
+            self.ws[2], "B18", float(self.data["info"]["regularMarketPrice"])
+        )
 
         # Create ratios page
         self.ws[4].column_dimensions["A"].width = 27
         dcf_model.set_cell(self.ws[4], "B4", "Sector:")
-        dcf_model.set_cell(self.ws[4], "C4", self.info["sector"])
+        dcf_model.set_cell(self.ws[4], "C4", self.data["info"]["sector"])
 
     def create_header(self, ws: Workbook):
         for i in range(10):
@@ -567,7 +577,9 @@ class CreateExcelFA:
             border=dcf_model.thin_border,
             alignment=dcf_model.center,
         )
-        dcf_model.set_cell(ws, "A2", f"DCF for {self.ticker} generated on {self.now}")
+        dcf_model.set_cell(
+            ws, "A2", f"DCF for {self.ticker} generated on {self.data['now']}"
+        )
 
     def run_audit(self):
         start = 67
@@ -718,10 +730,10 @@ class CreateExcelFA:
         )
 
     def get_linear(self, x_ind: str, y_ind: str, no_neg: bool = False):
-        x_type = "IS" if x_ind in self.df_is.index else "BS"
-        y_type = "IS" if y_ind in self.df_is.index else "BS"
-        x_df = self.df_is if x_type == "IS" else self.df_bs
-        y_df = self.df_is if y_type == "IS" else self.df_bs
+        x_type = "IS" if x_ind in self.df["IS"].index else "BS"
+        y_type = "IS" if y_ind in self.df["IS"].index else "BS"
+        x_df = self.df["IS"] if x_type == "IS" else self.df["BS"]
+        y_df = self.df["IS"] if y_type == "IS" else self.df["BS"]
         pre_x = (
             x_df.columns.to_numpy() if x_ind == "Date" else x_df.loc[x_ind].to_numpy()
         )
@@ -837,20 +849,20 @@ class CreateExcelFA:
 
     def title_to_row(self, title: str) -> int:
         df = (
-            self.df_is
-            if title in self.df_is.index
-            else self.df_bs
-            if title in self.df_bs.index
-            else self.df_cf
+            self.df["IS"]
+            if title in self.df["IS"].index
+            else self.df["BS"]
+            if title in self.df["BS"].index
+            else self.df["CF"]
         )
         ind = (
             df.index.get_loc(title)
             + 1
             + (
                 self.starts["IS"]
-                if title in self.df_is.index
+                if title in self.df["IS"].index
                 else self.starts["BS"]
-                if title in self.df_bs.index
+                if title in self.df["BS"].index
                 else self.starts["CF"]
             )
         )
@@ -884,8 +896,10 @@ class CreateExcelFA:
         self.letter += 1
 
     def add_ratios(self):
-        sister_data = dcf_model.get_sister_dfs(self.ticker, self.info, 3)
-        sister_data.insert(0, [self.ticker, [self.df_bs, self.df_is, self.df_cf]])
+        sister_data = dcf_model.get_sister_dfs(self.ticker, self.data["info"], 3)
+        sister_data.insert(
+            0, [self.ticker, [self.df["BS"], self.df["IS"], self.df["CF"]]]
+        )
         row = 6
         for val in sister_data:
             self.ws[4].merge_cells(f"A{row}:J{row}")
@@ -949,7 +963,7 @@ class CreateExcelFA:
             )
             dcf_model.set_cell(self.ws[4], f"A{row+30}", "Earnings Per Share")
             dcf_model.set_cell(self.ws[4], f"A{row+31}", "Price Earnings Ratio")
-            for j in range(val[1][0].shape[1] - 1):  # self.df_bs.columns
+            for j in range(val[1][0].shape[1] - 1):
                 lt = dcf_model.letters[j + 1]
 
                 cace1 = dcf_model.get_value(val[1][0], "Cash & Cash Equivalents", j)[1]
@@ -1072,14 +1086,15 @@ class CreateExcelFA:
                 dcf_model.set_cell(
                     self.ws[4],
                     f"{lt}{row+30}",
-                    (ni1 - pdiv1) / float(self.info["sharesOutstanding"]),
+                    (ni1 - pdiv1) / float(self.data["info"]["sharesOutstanding"]),
                 )
                 dcf_model.set_cell(
                     self.ws[4],
                     f"{lt}{row+31}",
                     "NA"
-                    if ((ni1 - pdiv1) / float(self.info["sharesOutstanding"])) == 0
-                    else float(self.info["previousClose"])
-                    / ((ni1 - pdiv1) / float(self.info["sharesOutstanding"])),
+                    if ((ni1 - pdiv1) / float(self.data["info"]["sharesOutstanding"]))
+                    == 0
+                    else float(self.data["info"]["previousClose"])
+                    / ((ni1 - pdiv1) / float(self.data["info"]["sharesOutstanding"])),
                 )
             row += 35
