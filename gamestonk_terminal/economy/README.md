@@ -1,3 +1,3 @@
 # Resources
 
-* Federal Reserve Economic Data : https://fred.stlouisfed.org
+* Federal Reserve Economic Data : <https://fred.stlouisfed.org>
