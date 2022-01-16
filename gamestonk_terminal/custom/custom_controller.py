@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 class CustomDataController(BaseController):
     """Alternative Controller class"""
 
-    CHOICES_COMMANDS: List[str] = ["load", "plot", "head", "info"]
+    CHOICES_COMMANDS: List[str] = ["load", "plot", "show", "info"]
     pandas_plot_choices = [
         "line",
         "scatter",
@@ -51,7 +51,18 @@ class CustomDataController(BaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"] = {c: None for c in self.DATA_FILES}
             choices["plot"]["-k"] = {c: None for c in self.pandas_plot_choices}
+            self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def update_runtime_choices(self):
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            self.choices["plot"] = {c: None for c in self.data.columns}
+            self.choices["plot"]["-y"] = {c: None for c in self.data.columns}
+            self.choices["plot"]["-x"] = {c: None for c in self.data.columns}
+            self.choices["plot"]["--vs"] = {c: None for c in self.data.columns}
+            self.choices["show"]["-s"] = {c: None for c in self.data.columns}
+
+        self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help"""
@@ -61,7 +72,7 @@ class CustomDataController(BaseController):
     load            load in custom data set[/cmds]
 
 Current file:    {self.file or None}[cmds]{has_data_start}
-    head            show first rows of loaded file
+    show            show portion of loaded data
     info            show data info (columns and datatypes)
     plot            plot data from loaded file{has_data_end}[/cmds]
             """
@@ -91,6 +102,7 @@ Current file:    {self.file or None}[cmds]{has_data_start}
             file = Path("custom_imports") / ns_parser.file
             self.data = custom_model.load(file)
             self.file = ns_parser.file
+            self.update_runtime_choices()
         console.print("")
 
     def call_plot(self, other_args: List[str]):
@@ -109,7 +121,7 @@ Current file:    {self.file or None}[cmds]{has_data_start}
             choices=list(self.data.columns),
         )
         parser.add_argument(
-            "-v",
+            "-x",
             "--vs",
             help="Variable along x axis",
             dest="xvar",
@@ -142,20 +154,41 @@ Current file:    {self.file or None}[cmds]{has_data_start}
             )
         console.print("")
 
-    def call_head(self, other_args: List[str]):
+    def call_show(self, other_args: List[str]):
         """Process head command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="head",
-            description="Plot first 5 rows of loaded dataframe",
+            prog="show",
+            description="Show loaded dataframe",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        parser.add_argument(
+            "-s", "--sortcol", nargs="+", type=str, dest="sortcol", default=""
+        )
+        parser.add_argument(
+            "-a", "--ascend", action="store_true", default=False, dest="ascend"
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args, limit=5)
         if ns_parser:
             if self.data.empty:
                 console.print("[red]No data loaded.[/red]\n")
                 return
-            console.print(self.data.head())
+            if ns_parser.sortcol:
+                sort_column = " ".join(ns_parser.sortcol)
+                if sort_column not in self.data.columns:
+                    console.print(
+                        f"[red]{sort_column} not a valid column.  Showing without sorting.\n[/red]"
+                    )
+                else:
+                    console.print(
+                        self.data.sort_values(
+                            by=sort_column, ascending=ns_parser.ascend
+                        ).head(ns_parser.limit)
+                    )
+                    console.print()
+                    return
+
+            console.print(self.data.head(ns_parser.limit))
         console.print()
 
     def call_info(self, other_args: List[str]):
