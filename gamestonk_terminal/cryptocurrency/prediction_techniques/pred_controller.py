@@ -8,7 +8,7 @@ from typing import List
 import pandas as pd
 import numpy as np
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -90,17 +90,14 @@ class PredictionTechniquesController(BaseController):
 
     def print_help(self):
         """Print help"""
-
-        help_string = f"""
-Prediction Techniques Menu:
-
+        help_text = f"""[cmds]
     load        load new ticker
-    pick        pick new target variable
+    pick        pick new target variable[/cmds]
 
-Coin Loaded: {self.coin}
-Target Column: {self.target}
+[param]Coin Loaded: [/param]{self.coin}
+[param]Target Column: [/param]{self.target}
 
-Models:
+[info]Models:[/info][cmds]
     ets         exponential smoothing (e.g. Holt-Winters)
     knn         k-Nearest Neighbors
     regression  polynomial regression
@@ -109,9 +106,9 @@ Models:
     rnn         Recurrent Neural Network
     lstm        Long-Short Term Memory
     conv1d      1D Convolutional Neural Network
-    mc          Monte-Carlo simulations
+    mc          Monte-Carlo simulations[/cmds]
         """
-        print(help_string)
+        console.print(text=help_text, menu="Cryptocurrency - Prediction Techniques")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -199,7 +196,7 @@ Models:
                 interval="1day",
                 vs=ns_parser.vs,
             )
-            print(
+            console.print(
                 f"{delta} Days of {self.coin} vs {self.current_currency} loaded with {res} resolution.\n"
             )
 
@@ -226,7 +223,7 @@ Models:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.target = ns_parser.target
-            print("")
+            console.print("")
 
     def call_ets(self, other_args: List[str]):
         """Process ets command"""
@@ -301,7 +298,7 @@ Models:
         if ns_parser:
             if ns_parser.s_end_date:
                 if ns_parser.s_end_date < self.data.index[0]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
 
@@ -309,7 +306,7 @@ Models:
                     last_stock_day=self.data.index[0],
                     n_next_days=5 + ns_parser.n_days,
                 )[-1]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
 
@@ -484,7 +481,7 @@ Models:
             # BACKTESTING CHECK
             if ns_parser.s_end_date:
                 if ns_parser.s_end_date < self.data.index[0]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
 
@@ -492,7 +489,7 @@ Models:
                     last_stock_day=self.data.index[0],
                     n_next_days=5 + ns_parser.n_days,
                 )[-1]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
 
@@ -585,7 +582,7 @@ Models:
             # BACKTESTING CHECK
             if ns_parser.s_end_date:
                 if ns_parser.s_end_date < self.data.index[0]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
 
@@ -593,7 +590,7 @@ Models:
                     last_stock_day=self.data.index[0],
                     n_next_days=5 + ns_parser.n_days,
                 )[-1]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
 
@@ -633,7 +630,7 @@ Models:
                     time_res=self.resolution,
                 )
         except Exception as e:
-            print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -662,7 +659,7 @@ Models:
                 )
 
         except Exception as e:
-            print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -691,7 +688,7 @@ Models:
                 )
 
         except Exception as e:
-            print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -720,7 +717,7 @@ Models:
                 )
 
         except Exception as e:
-            print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -762,7 +759,7 @@ Models:
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if self.target != "Close":
-            print("MC Prediction designed for AdjClose prices\n")
+            console.print("MC Prediction designed for AdjClose prices\n")
 
         if ns_parser:
             mc_view.display_mc_forecast(

@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -101,48 +101,48 @@ class TechnicalAnalysisController(BaseController):
         """Print help"""
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.start:
-            stock_str = f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            stock_str = (
+                f"{s_intraday} {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            )
         else:
-            stock_str = f"\n{s_intraday} Stock: {self.ticker}"
+            stock_str = f"{s_intraday} {self.ticker}"
 
-        help_str = f"""
-Technical Analysis Menu:
+        help_text = f"""
+[param]Stock: [/param]{stock_str}[cmds]
 
-{stock_str}
+    view        view historical data and trendlines [src][Finviz][/src]
+    summary     technical summary report [src][FinBrain][/src]
+    recom       recommendation based on Technical Indicators [src][Tradingview][/src]
 
-    view        view historical data and trendlines [Finviz]
-    summary     technical summary report [FinBrain API]
-    recom       recommendation based on Technical Indicators [Tradingview API]
-
-Overlap:
+[info]Overlap:[/info]
     ema         exponential moving average
     sma         simple moving average
     wma         weighted moving average
     hma         hull moving average
     zlma        zero lag moving average
     vwap        volume weighted average price
-Momentum:
+[info]Momentum:[/info]
     cci         commodity channel index
     macd        moving average convergence/divergence
     rsi         relative strength index
     stoch       stochastic oscillator
     fisher      fisher transform
     cg          centre of gravity
-Trend:
+[info]Trend:[/info]
     adx         average directional movement index
     aroon       aroon indicator
-Volatility:
+[info]Volatility:[/info]
     bbands      bollinger bands
     donchian    donchian channels
     kc          keltner channels
-Volume:
+[info]Volume:[/info]
     ad          accumulation/distribution line
     adosc       chaikin oscillator
     obv         on balance volume
-Custom:
-    fib         fibonacci retracement
+[info]Custom:[/info]
+    fib         fibonacci retracement[/cmds]
 """
-        print(help_str)
+        console.print(text=help_text, menu="Stocks - Technical Analysis")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -156,9 +156,10 @@ Custom:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
-            " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
-            " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
+            description="Load stock ticker to perform analysis on. When the data source"
+            + " is 'yf', an Indian ticker can be loaded by using '.NS' at the end,"
+            + " e.g. 'SBIN.NS'. See available market in"
+            + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
         )
         parser.add_argument(
             "-t",
@@ -242,7 +243,6 @@ Custom:
 
     def call_view(self, other_args: List[str]):
         """Process view command"""
-
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -276,7 +276,6 @@ Custom:
 
     def call_recom(self, other_args: List[str]):
         """Process recom command"""
-
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -379,8 +378,7 @@ Custom:
             overlap_view.view_ma(
                 ma_type="EMA",
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                values=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -431,8 +429,7 @@ Custom:
             overlap_view.view_ma(
                 ma_type="SMA",
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                values=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -480,8 +477,7 @@ Custom:
             overlap_view.view_ma(
                 ma_type="WMA",
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                values=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -529,8 +525,7 @@ Custom:
             overlap_view.view_ma(
                 ma_type="HMA",
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                values=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -581,8 +576,7 @@ Custom:
             overlap_view.view_ma(
                 ma_type="ZLMA",
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                values=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -615,7 +609,7 @@ Custom:
         if ns_parser:
             # Daily
             if self.interval == "1440min":
-                print("VWAP should be used with intraday data. \n")
+                console.print("VWAP should be used with intraday data. \n")
                 return
 
             overlap_view.view_vwap(
@@ -665,10 +659,9 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            momentum_view.plot_cci(
+            momentum_view.display_cci(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                df=self.stock,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
@@ -692,7 +685,6 @@ Custom:
                 should be above zero for a buy, and below zero for a sell.
             """,
         )
-
         parser.add_argument(
             "-f",
             "--fast",
@@ -724,10 +716,9 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            momentum_view.view_macd(
+            momentum_view.display_macd(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                values=self.stock["Adj Close"],
                 n_fast=ns_parser.n_fast,
                 n_slow=ns_parser.n_slow,
                 n_signal=ns_parser.n_signal,
@@ -784,10 +775,9 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            momentum_view.view_rsi(
+            momentum_view.display_rsi(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                prices=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
@@ -809,7 +799,6 @@ Custom:
                 for crossover signals.
             """,
         )
-
         parser.add_argument(
             "-k",
             "--fastkperiod",
@@ -841,9 +830,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            momentum_view.view_stoch(
+            momentum_view.display_stoch(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 fastkperiod=ns_parser.n_fastkperiod,
                 slowdperiod=ns_parser.n_slowdperiod,
@@ -865,7 +853,6 @@ Custom:
                 helps show the trend and isolate the price waves within a trend.
             """,
         )
-
         parser.add_argument(
             "-l",
             "--length",
@@ -883,9 +870,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            momentum_view.view_fisher(
+            momentum_view.display_fisher(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
                 export=ns_parser.export,
@@ -905,7 +891,6 @@ Custom:
                 price change of the asset.
             """,
         )
-
         parser.add_argument(
             "-l",
             "--length",
@@ -923,10 +908,9 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            momentum_view.view_cg(
+            momentum_view.display_cg(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                values=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
@@ -978,9 +962,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            trend_indicators_view.plot_adx(
+            trend_indicators_view.display_adx(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
@@ -1034,9 +1017,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            trend_indicators_view.plot_aroon(
+            trend_indicators_view.display_aroon(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
@@ -1069,7 +1051,7 @@ Custom:
             action="store",
             dest="n_length",
             type=check_positive,
-            default=5,
+            default=15,
             help="length",
         )
         parser.add_argument(
@@ -1097,9 +1079,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            volatility_view.view_bbands(
+            volatility_view.display_bbands(
                 ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
                 n_std=ns_parser.n_std,
@@ -1145,9 +1126,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            volatility_view.view_donchian(
+            volatility_view.display_donchian(
                 ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 upper_length=ns_parser.n_length_upper,
                 lower_length=ns_parser.n_length_lower,
@@ -1214,7 +1194,6 @@ Custom:
         if ns_parser:
             volatility_view.view_kc(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
@@ -1254,9 +1233,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            volume_view.plot_ad(
+            volume_view.display_ad(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 use_open=ns_parser.b_use_open,
                 export=ns_parser.export,
@@ -1308,9 +1286,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            volume_view.plot_adosc(
+            volume_view.display_adosc(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 use_open=ns_parser.b_use_open,
                 fast=ns_parser.n_length_fast,
@@ -1339,9 +1316,8 @@ Custom:
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            volume_view.plot_obv(
+            volume_view.display_obv(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
                 df_stock=self.stock,
                 export=ns_parser.export,
             )

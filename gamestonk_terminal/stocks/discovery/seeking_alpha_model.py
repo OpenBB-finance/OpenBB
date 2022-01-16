@@ -8,6 +8,7 @@ import pandas as pd
 from pandas.core.frame import DataFrame
 
 from gamestonk_terminal.helper_funcs import get_user_agent
+from gamestonk_terminal.rich_config import console
 
 
 def get_earnings_html(url_next_earnings: str) -> str:
@@ -109,7 +110,7 @@ def get_trending_list(num: int) -> list:
 
     # Check that the API response was successful
     if response.status_code != 200:
-        print("Invalid response\n")
+        console.print("Invalid response\n")
     else:
         for item in response.json():
             article_url = item["uri"]

@@ -16,6 +16,7 @@ from gamestonk_terminal.portfolio import (
     yfinance_model,
     portfolio_helper,
 )
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=E1136
 # pylint: disable=unsupported-assignment-operation
@@ -55,7 +56,7 @@ def load_df(name: str) -> pd.DataFrame:
         A DataFrame with historical trading information
     """
     if ".csv" not in name and ".xlsx" not in name and ".json" not in name:
-        print(
+        console.print(
             "Please submit as 'filename.filetype' with filetype being csv, xlsx, or json\n"
         )
         return pd.DataFrame()
@@ -78,13 +79,15 @@ def load_df(name: str) -> pd.DataFrame:
         for item in ["Quantity", "Price", "Fees", "Premium"]:
             result = any(df[item] < 0)
             if result:
-                print(
+                console.print(
                     f"The column '{item}' has a negative value. Ensure all values are positive."
                 )
                 return pd.DataFrame()
 
         if len(df[~df["Type"].isin(["cash", "stock"])].index):
-            print("Warning: 'Type' other than 'cash' and 'stock' will be ignored.")
+            console.print(
+                "Warning: 'Type' other than 'cash' and 'stock' will be ignored."
+            )
 
         if len(
             df[
@@ -93,7 +96,9 @@ def load_df(name: str) -> pd.DataFrame:
                 .isin(["buy", "sell", "interest", "deposit", "withdrawal"])
             ].index
         ):
-            print("Warning: 'Side' must be buy, sell, interest, deposit, or withdrawal")
+            console.print(
+                "Warning: 'Side' must be buy, sell, interest, deposit, or withdrawal"
+            )
             return pd.DataFrame()
 
         return df
@@ -246,10 +251,10 @@ def merge_dataframes(
         comb[("Profit", uni)] = comb[("Profit", uni)].cumsum()
     comb[("Cash", "Cash")] = comb[("Cash", "Cash")].cumsum()
     if len(changes["Date"]) > 0:
-        comb["holdings"] = comb.sum(level=0, axis=1)["Holding"]
-        comb["profits"] = comb.sum(level=0, axis=1)["Profit"]
+        comb["holdings"] = comb.groupby(level=0, axis=1).sum()["Holding"]
+        comb["profits"] = comb.groupby(level=0, axis=1).sum()["Profit"]
         comb["total_prof"] = comb["holdings"] + comb["profits"]
-        comb["total_cost"] = comb.sum(level=0, axis=1)["Cost Basis"]
+        comb["total_cost"] = comb.groupby(level=0, axis=1).sum()["Cost Basis"]
     return comb
 
 
@@ -269,11 +274,11 @@ def convert_df(portfolio: pd.DataFrame) -> pd.DataFrame:
         The historical performance of tickers in portfolio
     """
     changes = portfolio.copy()
-    # Transactions sorted for only stocks
+    # Transactions sorted for only stocks and etfs
     cashes = changes[changes["Type"] == "cash"]
     if cashes.empty:
         raise ValueError("Brokers require cash, input cash deposits")
-    changes = changes[changes["Type"] == "stock"]
+    changes = changes[changes["Type"] == ("stock" or "etf")]
     uniques = list(set(changes["Name"].tolist()))
     if uniques:
         hist = yfinance_model.get_stocks(uniques, min(changes["Date"]))

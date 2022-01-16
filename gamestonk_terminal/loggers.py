@@ -38,7 +38,6 @@ def library_loggers(verbosity: int = 0) -> None:
 
 def setup_file_logger() -> None:
     """Setup File Logger"""
-
     file_path = Path(__file__)
     logger.debug("Parent dir: %s", file_path.parent.parent.absolute())
     log_dir = file_path.parent.parent.absolute().joinpath("logs")
@@ -114,6 +113,9 @@ class CustomFormatterWithExceptions(logging.Formatter):
         str
             Formatted log message
         """
+        if hasattr(record, "func_name_override"):
+            record.funcName = record.func_name_override  # type: ignore
+            record.lineno = 0
         s = super().format(record)
         if record.levelname:
             prefix = record.levelname[0]
@@ -176,7 +178,7 @@ def setup_logging() -> None:
         else:
             logger.debug("Unknown loghandler")
 
-    library_loggers(verbosity)
+    library_loggers(int(cfg.LOGGING_VERBOSITY))
 
     logger.info("Logging configuration finished")
     logger.info("Logging set to %s", cfg.LOGGING_HANDLERS)

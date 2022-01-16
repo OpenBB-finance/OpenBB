@@ -12,6 +12,7 @@ from finvizfinance.screener import (
     performance,
 )
 from finvizfinance.screener.overview import Overview
+from gamestonk_terminal.rich_config import console
 
 
 def get_similar_companies(
@@ -39,7 +40,7 @@ def get_similar_companies(
         )
         user = "Finviz"
     except Exception as e:
-        print(e)
+        console.print(e)
         similar = [""]
         user = "Error"
     return similar, user
@@ -71,7 +72,7 @@ def get_comparison_data(data_type: str, similar: List[str]):
     elif data_type == "technical":
         screen = technical.Technical()
     else:
-        print("Invalid selected screener type")
+        console.print("Invalid selected screener type")
         return pd.DataFrame()
 
     screen.set_filter(ticker=",".join(similar))

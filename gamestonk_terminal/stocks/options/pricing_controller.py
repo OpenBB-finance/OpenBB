@@ -6,7 +6,7 @@ from typing import List
 import pandas as pd
 from tabulate import tabulate
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.helper_funcs import (
@@ -47,16 +47,16 @@ class PricingController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = f"""
-Ticker: {self.ticker or None}
-Expiry: {self.selected_date or None}
-
+[param]Ticker: [/param]{self.ticker or None}
+[param]Expiry: [/param]{self.selected_date or None}
+[cmds]
     add           add an expected price to the list
     rmv           remove an expected price from the list
 
     show          show the listed of expected prices
-    rnval         risk neutral valuation for an option
+    rnval         risk neutral valuation for an option[/cmds]
         """
-        print(help_text)
+        console.print(text=help_text, menu="Stocks - Options - Pricing")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -108,7 +108,7 @@ Expiry: {self.selected_date or None}
             new = {"Price": ns_parser.price, "Chance": ns_parser.chance}
             df = df.append(new, ignore_index=True)
             self.prices = df.sort_values("Price")
-            print("")
+            console.print("")
 
     def call_rmv(self, other_args: List[str]):
         """Process rmv command"""
@@ -142,7 +142,7 @@ Expiry: {self.selected_date or None}
                 self.prices = pd.DataFrame(columns=["Price", "Chance"])
             else:
                 self.prices = self.prices[(self.prices["Price"] != ns_parser.price)]
-            print("")
+            console.print("")
 
     def call_show(self, other_args):
         """Process show command"""
@@ -154,9 +154,11 @@ Expiry: {self.selected_date or None}
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            print(f"Estimated price(s) of {self.ticker} at {self.selected_date}")
+            console.print(
+                f"Estimated price(s) of {self.ticker} at {self.selected_date}"
+            )
             if gtff.USE_TABULATE_DF:
-                print(
+                console.print(
                     tabulate(
                         self.prices,
                         headers=self.prices.columns,
@@ -167,7 +169,7 @@ Expiry: {self.selected_date or None}
                     "\n",
                 )
             else:
-                print(self.prices.to_string, "\n")
+                console.print(self.prices.to_string, "\n")
 
     def call_rnval(self, other_args: List[str]):
         """Process rnval command"""
@@ -223,8 +225,8 @@ Expiry: {self.selected_date or None}
                             ns_parser.risk,
                         )
                     else:
-                        print("Total chances must equal one\n")
+                        console.print("Total chances must equal one\n")
                 else:
-                    print("No expiry loaded. First use `exp {expiry date}`\n")
+                    console.print("No expiry loaded. First use `exp {expiry date}`\n")
             else:
-                print("No ticker loaded. First use `load <ticker>`\n")
+                console.print("No ticker loaded. First use `load <ticker>`\n")

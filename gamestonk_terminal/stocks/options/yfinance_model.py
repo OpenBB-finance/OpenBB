@@ -2,9 +2,10 @@
 __docformat__ = "numpy"
 
 from typing import List, Dict, Tuple, Any
-
+from datetime import datetime
 import yfinance as yf
 import pandas as pd
+from gamestonk_terminal.rich_config import console
 
 
 def option_expirations(ticker: str):
@@ -23,7 +24,7 @@ def option_expirations(ticker: str):
     yf_ticker = yf.Ticker(ticker)
     dates = list(yf_ticker.options)
     if not dates:
-        print("No expiration dates found for ticker. \n")
+        console.print("No expiration dates found for ticker. \n")
     return dates
 
 
@@ -168,3 +169,35 @@ def get_closing(ticker: str) -> pd.Series:
     """
     tick = yf.Ticker(ticker)
     return tick.history(period="1y")["Close"]
+
+
+def get_dte(date: str) -> int:
+    """Gets days to expiration from yfinance option date"""
+    return (datetime.strptime(date, "%Y-%m-%d") - datetime.now()).days
+
+
+def get_iv_surface(ticker: str) -> pd.DataFrame:
+    """Gets IV surface for calls and puts for ticker
+
+    Parameters
+    ----------
+    ticker: str
+        Stock ticker to get
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of DTE, Strike and IV
+    """
+
+    stock = yf.Ticker(ticker)
+    dates = stock.options
+    vol_df = pd.DataFrame()
+    for date in dates:
+        df = stock.option_chain(date).calls[["strike", "impliedVolatility"]]
+        df["dte"] = get_dte(date)
+        vol_df = pd.concat([vol_df, df], axis=0)
+        df = stock.option_chain(date).puts[["strike", "impliedVolatility"]]
+        df["dte"] = get_dte(date)
+        vol_df = pd.concat([vol_df, df], axis=0)
+    return vol_df

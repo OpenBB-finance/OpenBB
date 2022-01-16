@@ -7,6 +7,7 @@ from tabulate import tabulate
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.etf import financedatabase_model
 from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.rich_config import console
 
 
 def display_etf_by_name(
@@ -27,7 +28,7 @@ def display_etf_by_name(
     """
     data = financedatabase_model.get_etfs_by_name(name)
     if not data:
-        print("No data was found with that name\n")
+        console.print("No data was found with that name\n")
         return
 
     tabulate_data = pd.DataFrame(data).T[
@@ -48,7 +49,7 @@ def display_etf_by_name(
             "\n",
         )
     else:
-        print(tabulate_data_sorted.iloc[:limit].to_string(), "\n")
+        console.print(tabulate_data_sorted.iloc[:limit].to_string(), "\n")
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "ln_fd", data)
 
@@ -71,7 +72,7 @@ def display_etf_by_description(
     """
     data = financedatabase_model.get_etfs_by_description(description)
     if not data:
-        print("No data was found with that description\n")
+        console.print("No data was found with that description\n")
         return
 
     tabulate_data = pd.DataFrame(data).T[
@@ -92,7 +93,7 @@ def display_etf_by_description(
             "\n",
         )
     else:
-        print(tabulate_data_sorted.iloc[:limit].to_string(), "\n")
+        console.print(tabulate_data_sorted.iloc[:limit].to_string(), "\n")
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "ld", data)
 
@@ -115,7 +116,7 @@ def display_etf_by_category(
     """
     data = financedatabase_model.get_etfs_by_category(category)
     if not data:
-        print("No data was found on that category\n")
+        console.print("No data was found on that category\n")
         return
 
     tabulate_data = pd.DataFrame(data).T[
@@ -136,7 +137,7 @@ def display_etf_by_category(
             "\n",
         )
     else:
-        print(tabulate_data_sorted.iloc[:limit].to_string(), "\n")
+        console.print(tabulate_data_sorted.iloc[:limit].to_string(), "\n")
 
     export_data(
         export,

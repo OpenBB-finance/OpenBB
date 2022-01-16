@@ -11,6 +11,7 @@ from gamestonk_terminal.stocks.options import alphaquery_model
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def display_put_call_ratio(
@@ -34,7 +35,7 @@ def display_put_call_ratio(
     """
     pcr = alphaquery_model.get_put_call_ratio(ticker, window, start_date)
     if pcr.empty:
-        print("No data found.\n")
+        console.print("No data found.\n")
         return
     dateFmt = mdates.DateFormatter("%m/%d/%Y")
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -49,7 +50,7 @@ def display_put_call_ratio(
     if gtff.USE_ION:
         plt.ion()
     plt.show()
-    print("")
+    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),

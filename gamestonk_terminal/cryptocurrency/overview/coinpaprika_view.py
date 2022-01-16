@@ -10,6 +10,7 @@ from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     long_number_format_with_type_check,
 )
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -93,7 +94,7 @@ def display_global_market(export: str) -> None:
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -131,13 +132,13 @@ def display_all_coins_market_info(
     df_data = df.copy()
 
     if df.empty:
-        print("No data found", "\n")
+        console.print("No data found", "\n")
         return
 
     cols = [col for col in df.columns if col != "rank"]
     df[cols] = df[cols].applymap(lambda x: long_number_format_with_type_check(x))
 
-    print(f"\nDisplaying data vs {currency}")
+    console.print(f"\nDisplaying data vs {currency}")
 
     if gtff.USE_TABULATE_DF:
         print(
@@ -151,7 +152,7 @@ def display_all_coins_market_info(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -189,13 +190,13 @@ def display_all_coins_info(
     df_data = df.copy()
 
     if df.empty:
-        print("Not data found", "\n")
+        console.print("Not data found", "\n")
         return
 
     cols = [col for col in df.columns if col != "rank"]
     df[cols] = df[cols].applymap(lambda x: long_number_format_with_type_check(x))
 
-    print(f"\nDisplaying data vs {currency}")
+    console.print(f"\nDisplaying data vs {currency}")
 
     if gtff.USE_TABULATE_DF:
         print(
@@ -209,7 +210,7 @@ def display_all_coins_info(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -248,12 +249,12 @@ def display_all_exchanges(
     df_data = df.copy()
 
     if df.empty:
-        print("No data found", "\n")
+        console.print("No data found", "\n")
         return
 
     cols = [col for col in df.columns if col != "rank"]
     df[cols] = df[cols].applymap(lambda x: long_number_format_with_type_check(x))
-    print(f"\nDisplaying data vs {currency}")
+    console.print(f"\nDisplaying data vs {currency}")
 
     if gtff.USE_TABULATE_DF:
         print(
@@ -267,7 +268,7 @@ def display_all_exchanges(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -303,7 +304,7 @@ def display_exchange_markets(
     df_data = df.copy()
 
     if df.empty:
-        print("No data found", "\n")
+        console.print("No data found", "\n")
         return
 
     df = df.sort_values(by=sortby, ascending=descend)
@@ -325,7 +326,7 @@ def display_exchange_markets(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -358,7 +359,7 @@ def display_all_platforms(export: str) -> None:
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -390,7 +391,7 @@ def display_contracts(
     df = paprika.get_contract_platform(platform)
 
     if df.empty:
-        print(f"Nothing found for platform: {platform}", "\n")
+        console.print(f"Nothing found for platform: {platform}", "\n")
         return
 
     df = df.sort_values(by=sortby, ascending=descend)
@@ -407,7 +408,7 @@ def display_contracts(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,

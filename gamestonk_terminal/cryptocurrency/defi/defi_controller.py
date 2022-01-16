@@ -5,9 +5,14 @@ import argparse
 
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.cryptocurrency.defi import (
+    graph_model,
+    coindix_model,
+    terraengineer_model,
+    terraengineer_view,
+)
 from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.cryptocurrency.defi import graph_model
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
@@ -24,6 +29,7 @@ from gamestonk_terminal.cryptocurrency.defi import (
     llama_view,
     substack_view,
     graph_view,
+    coindix_view,
 )
 
 
@@ -34,15 +40,20 @@ class DefiController(BaseController):
         "dpi",
         "funding",
         "lending",
-        "tvl",
         "borrow",
-        "llama",
+        "ldapps",
+        "gdapps",
+        "stvl",
+        "dtvl",
         "newsletter",
         "tokens",
         "pairs",
         "pools",
         "swaps",
         "stats",
+        "vaults",
+        "ayr",
+        "aterra",
     ]
 
     def __init__(self, queue: List[str] = None):
@@ -51,34 +62,108 @@ class DefiController(BaseController):
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["llama"]["-s"] = {c: {} for c in llama_model.LLAMA_FILTERS}
+            choices["ldapps"]["-s"] = {c: {} for c in llama_model.LLAMA_FILTERS}
+            choices["aterra"]["--asset"] = {c: {} for c in terraengineer_model.ASSETS}
+            choices["aterra"] = {c: {} for c in terraengineer_model.ASSETS}
             choices["tokens"]["-s"] = {c: {} for c in graph_model.TOKENS_FILTERS}
             choices["pairs"]["-s"] = {c: {} for c in graph_model.PAIRS_FILTERS}
             choices["pools"]["-s"] = {c: {} for c in graph_model.POOLS_FILTERS}
             choices["swaps"]["-s"] = {c: {} for c in graph_model.SWAPS_FILTERS}
+            choices["vaults"]["-s"] = {c: {} for c in coindix_model.VAULTS_FILTERS}
+            choices["vaults"]["-k"] = {c: {} for c in coindix_model.VAULT_KINDS}
+            choices["vaults"]["-c"] = {c: {} for c in coindix_model.CHAINS}
+            choices["vaults"]["-p"] = {c: {} for c in coindix_model.PROTOCOLS}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
-        help_text = """
-Decentralized Finance Menu:
-
-Overview:
-    llama         DeFi protocols listed on DeFi Llama
-    tvl           Total value locked of DeFi protocols
-    newsletter    Recent DeFi related newsletters
-    dpi           DeFi protocols listed on DefiPulse
-    funding       Funding reates - current or last 30 days average
-    borrow        DeFi borrow rates - current or last 30 days average
-    lending       DeFi ending rates - current or last 30 days average
-Uniswap:
+        help_text = """[cmds]
+[info]Overview:[/info]
+    newsletter    Recent DeFi related newsletters [src][Substack][/src]
+    dpi           DeFi protocols listed on DefiPulse [src][Defipulse][/src]
+    funding       Funding rates - current or last 30 days average [src][Defirate][/src]
+    borrow        DeFi borrow rates - current or last 30 days average [src][Defirate][/src]
+    lending       DeFi ending rates - current or last 30 days average [src][Defirate][/src]
+    vaults        Top DeFi Vaults on different blockchains [src][[Coindix][/src]
+[src][The Graph][/src] [info]Uniswap[/info]
     tokens        Tokens trade-able on Uniswap
     stats         Base statistics about Uniswap
     pairs         Recently added pairs on Uniswap
     pools         Pools by volume on Uniswap
     swaps         Recent swaps done on Uniswap
+[src][Defi Llama][/src]
+    ldapps        Lists dApps
+    gdapps        Display top DeFi dApps grouped by chain
+    stvl          Display historical values of the total sum of TVLs from all dApps
+    dtvl          Display historical total value locked (TVL) by dApp
+[src][Terra Engineer][/src]
+    aterra        Displays 30-day history of specified asset in terra address
+    ayr           Displays 30-day history of anchor yield reserve[/cmds]
 """
-        print(help_text)
+        console.print(text=help_text, menu="Cryptocurrency - Decentralized Finance")
+
+    def call_aterra(self, other_args: List[str]):
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="aterra",
+            description="""
+                Displays the 30-day history of an asset in a certain terra address.
+                [Source: https://terra.engineer/]
+            """,
+        )
+        parser.add_argument(
+            "--asset",
+            dest="asset",
+            type=str,
+            help="Terra asset {ust,luna,sdt} Default: ust",
+            default=terraengineer_model.ASSETS[0],
+            choices=terraengineer_model.ASSETS,
+        )
+        parser.add_argument(
+            "--address",
+            dest="address",
+            type=str,
+            help="Terra address. Valid terra addresses start with 'terra'",
+            required=True,
+        )
+
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "--asset")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            terraengineer_view.display_terra_asset_history(
+                export=ns_parser.export,
+                address=ns_parser.address,
+                asset=ns_parser.asset,
+            )
+
+    def call_ayr(self, other_args: List[str]):
+        """Process ayr command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ayr",
+            description="""
+                Displays the 30-day history of the Anchor Yield Reserve.
+                An increasing yield reserve indicates that the return on collateral staked by borrowers in Anchor
+                is greater than the yield paid to depositors. A decreasing yield reserve means yield paid
+                to depositors is outpacing the staking returns of borrower's collateral.
+                TLDR: Shows the address that contains UST that is paid on anchor interest earn.
+                [Source: https://terra.engineer/]
+            """,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            terraengineer_view.display_anchor_yield_reserve(export=ns_parser.export)
 
     def call_dpi(self, other_args: List[str]):
         """Process dpi command"""
@@ -131,14 +216,70 @@ Uniswap:
                 export=ns_parser.export,
             )
 
-    def call_llama(self, other_args: List[str]):
-        """Process llama command"""
+    def call_gdapps(self, other_args: List[str]):
+        """Process gdapps command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="llama",
+            prog="gdapps",
             description="""
-                Display information about listed DeFi Protocols on DeFi Llama.
+                Display top dApps (in terms of TVL) grouped by chain.
+                [Source: https://docs.llama.fi/api]
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=check_positive,
+            help="Number of top dApps to display",
+            default=40,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            llama_view.display_grouped_defi_protocols(num=ns_parser.limit)
+
+    def call_dtvl(self, other_args: List[str]):
+        """Process dtvl command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="dtvl",
+            description="""
+                Displays historical TVL of different dApps.
+                [Source: https://docs.llama.fi/api]
+            """,
+        )
+        parser.add_argument(
+            "-d",
+            "--dapps",
+            dest="dapps",
+            type=str,
+            required="-h" not in other_args,
+            help="dApps to search historical TVL. Should be split by , e.g.: anchor,sushiswap,pancakeswap",
+        )
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-d")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            llama_view.display_historical_tvl(dapps=ns_parser.dapps)
+
+    def call_ldapps(self, other_args: List[str]):
+        """Process ldapps command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ldapps",
+            description="""
+                Display information about listed dApps on DeFi Llama.
                 [Source: https://docs.llama.fi/api]
             """,
         )
@@ -191,14 +332,14 @@ Uniswap:
                 export=ns_parser.export,
             )
 
-    def call_tvl(self, other_args: List[str]):
-        """Process tvl command"""
+    def call_stvl(self, other_args: List[str]):
+        """Process stvl command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="tvl",
+            prog="stvl",
             description="""
-                Displays historical values of the total sum of TVLs from all listed protocols.
+                Displays historical values of the total sum of TVLs from all listed dApps.
                 [Source: https://docs.llama.fi/api]
             """,
         )
@@ -620,5 +761,102 @@ Uniswap:
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
+
+    def call_vaults(self, other_args: List[str]):
+        """Process swaps command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="vaults",
+            description="""
+                Display Top DeFi Vaults.
+                [Source: https://coindix.com/]
+            """,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--chain",
+            dest="chain",
+            type=str,
+            help="Blockchain name e.g. ethereum, terra",
+            default=None,
+            choices=coindix_model.CHAINS,
+            required=False,
+        )
+
+        parser.add_argument(
+            "-p",
+            "--protocol",
+            dest="protocol",
+            type=str,
+            help="DeFi protocol name e.g. aave, uniswap",
+            default=None,
+            choices=coindix_model.PROTOCOLS,
+            required=False,
+        )
+
+        parser.add_argument(
+            "-k",
+            "--kind",
+            dest="kind",
+            type=str,
+            help="Kind/type of vault e.g. lp, single, noimploss, stable",
+            default=None,
+            choices=coindix_model.VAULT_KINDS,
+            required=False,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="limit",
+            type=check_positive,
+            help="Number of records to display",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: timestamp",
+            default="apy",
+            choices=coindix_model.VAULTS_FILTERS,
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=False,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--links",
+            action="store_false",
+            help="Flag to show vault link",
+            dest="link",
+            default=True,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            coindix_view.display_defi_vaults(
+                chain=ns_parser.chain,
+                kind=ns_parser.kind,
+                protocol=ns_parser.protocol,
+                top=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                link=ns_parser.link,
                 export=ns_parser.export,
             )

@@ -10,6 +10,7 @@ from gamestonk_terminal.stocks.due_diligence import finnhub_model
 from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -66,7 +67,7 @@ def rating_over_time(ticker: str, num: int, raw: bool, export: str):
     df_rot = finnhub_model.get_rating_over_time(ticker)
 
     if df_rot.empty:
-        print("No ratings over time found", "\n")
+        console.print("No ratings over time found", "\n")
         return
 
     if raw:
@@ -93,11 +94,11 @@ def rating_over_time(ticker: str, num: int, raw: bool, export: str):
                 )
             )
         else:
-            print(df_rot_raw.to_string())
+            console.print(df_rot_raw.to_string())
     else:
         plot_rating_over_time(df_rot.head(num), ticker)
 
-    print("")
+    console.print("")
 
     export_data(
         export,

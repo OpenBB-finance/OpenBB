@@ -5,10 +5,9 @@ import argparse
 import os
 from datetime import datetime, timedelta
 from typing import List
-from colorama import Style
 import pandas as pd
-
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_terminal import TRADIER_TOKEN
@@ -38,6 +37,11 @@ from gamestonk_terminal.stocks.options import (
 
 # pylint: disable=R1710,C0302,R0916
 
+# TODO: HELP WANTED! This controller requires some MVC style refactoring
+#       - At the moment there's too much logic in the controller to implement an
+#         API wrapper. Please refactor functions like 'call_exp'
+#       - The separate controllers and related models/views should be moved to subfolders
+
 
 class OptionsController(BaseController):
     """Options Controller class"""
@@ -60,6 +64,7 @@ class OptionsController(BaseController):
         "plot",
         "parity",
         "binom",
+        "vsurf",
     ]
     CHOICES_MENUS = [
         "payoff",
@@ -110,11 +115,11 @@ class OptionsController(BaseController):
         self.chain = None
 
         if ticker:
-            if TRADIER_TOKEN == "REPLACE_ME":
-                print("Loaded expiry dates from Yahoo Finance")
+            if TRADIER_TOKEN == "REPLACE_ME":  # nosec
+                console.print("Loaded expiry dates from Yahoo Finance")
                 self.expiry_dates = yfinance_model.option_expirations(self.ticker)
             else:
-                print("Loaded expiry dates from Tradier")
+                console.print("Loaded expiry dates from Tradier")
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
         else:
             self.expiry_dates = []
@@ -159,34 +164,36 @@ class OptionsController(BaseController):
 
     def print_help(self):
         """Print help."""
-        colored = self.ticker and self.selected_date
-        help_text = f"""
-    unu           show unusual options activity [fdscanner.com]
+        has_ticker_start = "" if self.ticker and self.selected_date else "[dim]"
+        has_ticker_end = "" if self.ticker and self.selected_date else "[/dim]"
+        help_text = f"""[cmds]
+    unu           show unusual options activity [src][Fdscanner.com][/src]
     calc          basic call/put PnL calculator
 
     load          load new ticker
-    exp           see and set expiration dates
-
-Ticker: {self.ticker or None}
-Expiry: {self.selected_date or None}
-{"" if self.ticker else Style.DIM}
-    pcr           display put call ratio for ticker [AlphaQuery.com]{Style.DIM if not colored else ''}
-    info          display option information (volatility, IV rank etc) [Barchart.com]
-    chains        display option chains with greeks [Tradier]
-    oi            plot open interest [Tradier/YF]
-    vol           plot volume [Tradier/YF]
-    voi           plot volume and open interest [Tradier/YF]
-    hist          plot option history [Tradier]
-    grhist        plot option greek history [Syncretism.io]
-    plot          plot variables provided by the user [Yfinance]
-    parity        shows whether options are above or below expected price [Yfinance]
-    binom         shows the value of an option using binomial options pricing [Yfinance]
-{Style.RESET_ALL if not colored else ''}
->   screen        screens tickers based on preset [Syncretism.io]{"" if colored else Style.DIM}
->   payoff        shows payoff diagram for a selection of options [Yfinance]
->   pricing       shows options pricing and risk neutral valuation [Yfinance]
-{Style.RESET_ALL if not colored else ''}"""
-        print(help_text)
+    exp           see and set expiration dates[/cmds]
+[param]
+Ticker: [/param]{self.ticker or None}[param]
+Expiry: [/param]{self.selected_date or None}
+[menu]
+    pcr           display put call ratio for ticker [src][AlphaQuery.com][/src]
+    info          display option information (volatility, IV rank etc) [src][Barchart.com][/src]
+    chains        display option chains with greeks [src][Tradier][/src]
+    oi            plot open interest [src][Tradier/YFinance][/src]
+    vol           plot volume [src][Tradier/YFinance][/src]
+    voi           plot volume and open interest [src][Tradier/YFinance][/src]
+    hist          plot option history [src][Tradier][/src]
+    vsurf         show 3D volatility surface [Yfinance]
+    grhist        plot option greek history [src][Syncretism.io][/src]
+    plot          plot variables provided by the user [src][Yfinance][/src]
+    parity        shows whether options are above or below expected price [src][Yfinance][/src]
+    binom         shows the value of an option using binomial options pricing [src][Yfinance][/src]
+{has_ticker_start}
+>   screen        screens tickers based on preset [src][Syncretism.io][/src]
+>   payoff        shows payoff diagram for a selection of options [src][Yfinance][/src]
+>   pricing       shows options pricing and risk neutral valuation [src][Yfinance][/src]
+{has_ticker_end}"""
+        console.print(text=help_text, menu="Stocks - Options")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -273,7 +280,7 @@ Expiry: {self.selected_date or None}
             )
 
     def call_unu(self, other_args: List[str]):
-        """Process act command"""
+        """Process unu command"""
         parser = argparse.ArgumentParser(
             prog="unu",
             add_help=False,
@@ -328,7 +335,7 @@ Expiry: {self.selected_date or None}
         )
         if ns_parser:
             if ns_parser.calls_only and ns_parser.puts_only:
-                print(
+                console.print(
                     "Cannot return puts only and calls only. Either use one or neither\n."
                 )
             else:
@@ -378,7 +385,7 @@ Expiry: {self.selected_date or None}
                     export=ns_parser.export,
                 )
             else:
-                print("No ticker loaded.\n")
+                console.print("No ticker loaded.\n")
 
     def call_info(self, other_args: List[str]):
         """Process info command"""
@@ -397,7 +404,7 @@ Expiry: {self.selected_date or None}
                     ticker=self.ticker, export=ns_parser.export
                 )
             else:
-                print("No ticker loaded.\n")
+                console.print("No ticker loaded.\n")
 
     def call_grhist(self, other_args: List[str]):
         """Process grhist command"""
@@ -487,11 +494,11 @@ Expiry: {self.selected_date or None}
                             export=ns_parser.export,
                         )
                     else:
-                        print("No correct strike input\n")
+                        console.print("No correct strike input\n")
                 else:
-                    print("No expiry loaded. First use `exp <expiry date>`\n")
+                    console.print("No expiry loaded. First use `exp <expiry date>`\n")
             else:
-                print("No ticker loaded. First use `load <ticker>` \n")
+                console.print("No ticker loaded. First use `load <ticker>` \n")
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -524,11 +531,11 @@ Expiry: {self.selected_date or None}
             self.ticker = ns_parser.ticker.upper()
             self.update_runtime_choices()
 
-            if TRADIER_TOKEN == "REPLACE_ME" or ns_parser.source == "yf":
+            if TRADIER_TOKEN == "REPLACE_ME" or ns_parser.source == "yf":  # nosec
                 self.expiry_dates = yfinance_model.option_expirations(self.ticker)
             else:
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
-            print("")
+            console.print("")
 
             if self.ticker and self.selected_date:
                 self.chain = yfinance_model.get_option_chain(
@@ -570,20 +577,20 @@ Expiry: {self.selected_date or None}
             if self.ticker:
                 # Print possible expiry dates
                 if ns_parser.index == -1 and not ns_parser.date:
-                    print("\nAvailable expiry dates:")
+                    console.print("\nAvailable expiry dates:")
                     for i, d in enumerate(self.expiry_dates):
-                        print(f"   {(2 - len(str(i))) * ' '}{i}.  {d}")
-                    print("")
+                        console.print(f"   {(2 - len(str(i))) * ' '}{i}.  {d}")
+                    console.print("")
                 elif ns_parser.date:
                     if ns_parser.date in self.expiry_dates:
-                        print(f"Expiration set to {ns_parser.date} \n")
+                        console.print(f"Expiration set to {ns_parser.date} \n")
                         self.selected_date = ns_parser.date
                         self.update_runtime_choices()
                     else:
-                        print("Expiration not an option")
+                        console.print("Expiration not an option")
                 else:
                     expiry_date = self.expiry_dates[ns_parser.index]
-                    print(f"Expiration set to {expiry_date} \n")
+                    console.print(f"Expiration set to {expiry_date} \n")
                     self.selected_date = expiry_date
                     self.update_runtime_choices()
 
@@ -593,7 +600,7 @@ Expiry: {self.selected_date or None}
                     )
                     self.update_runtime_choices()
             else:
-                print("Please load a ticker using `load <ticker>`.\n")
+                console.print("Please load a ticker using `load <ticker>`.\n")
 
     def call_hist(self, other_args: List[str]):
         """Process hist command"""
@@ -676,7 +683,7 @@ Expiry: {self.selected_date or None}
                             )
 
                         else:
-                            if TRADIER_TOKEN != "REPLACE_ME":
+                            if TRADIER_TOKEN != "REPLACE_ME":  # nosec
                                 tradier_view.display_historical(
                                     ticker=self.ticker,
                                     expiry=self.selected_date,
@@ -687,13 +694,13 @@ Expiry: {self.selected_date or None}
                                     export=ns_parser.export,
                                 )
                             else:
-                                print("TRADIER TOKEN not supplied. \n")
+                                console.print("TRADIER TOKEN not supplied. \n")
                     else:
-                        print("No correct strike input\n")
+                        console.print("No correct strike input\n")
                 else:
-                    print("No expiry loaded. First use `exp <expiry date>` \n")
+                    console.print("No expiry loaded. First use `exp <expiry date>` \n")
             else:
-                print("No ticker loaded. First use `load <ticker>`\n")
+                console.print("No ticker loaded. First use `load <ticker>`\n")
 
     def call_chains(self, other_args: List[str]):
         """Process chains command"""
@@ -750,7 +757,7 @@ Expiry: {self.selected_date or None}
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    if TRADIER_TOKEN != "REPLACE_ME":
+                    if TRADIER_TOKEN != "REPLACE_ME":  # nosec
                         tradier_view.display_chains(
                             ticker=self.ticker,
                             expiry=self.selected_date,
@@ -762,11 +769,11 @@ Expiry: {self.selected_date or None}
                             export=ns_parser.export,
                         )
                     else:
-                        print("TRADIER TOKEN not supplied. \n")
+                        console.print("TRADIER TOKEN not supplied. \n")
                 else:
-                    print("No expiry loaded. First use `exp {expiry date}`\n")
+                    console.print("No expiry loaded. First use `exp {expiry date}`\n")
             else:
-                print("No ticker loaded. First use `load <ticker>`\n")
+                console.print("No ticker loaded. First use `load <ticker>`\n")
 
     def call_vol(self, other_args: List[str]):
         """Process vol command"""
@@ -823,7 +830,10 @@ Expiry: {self.selected_date or None}
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    if ns_parser.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
+                    if (
+                        ns_parser.source == "tr"
+                        and TRADIER_TOKEN != "REPLACE_ME"  # nosec
+                    ):
                         tradier_view.plot_vol(
                             ticker=self.ticker,
                             expiry=self.selected_date,
@@ -844,9 +854,9 @@ Expiry: {self.selected_date or None}
                             export=ns_parser.export,
                         )
                 else:
-                    print("No expiry loaded. First use `exp {expiry date}`\n")
+                    console.print("No expiry loaded. First use `exp {expiry date}`\n")
             else:
-                print("No ticker loaded. First use `load <ticker>`\n")
+                console.print("No ticker loaded. First use `load <ticker>`\n")
 
     def call_voi(self, other_args: List[str]):
         """Process voi command"""
@@ -895,7 +905,10 @@ Expiry: {self.selected_date or None}
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    if ns_parser.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
+                    if (
+                        ns_parser.source == "tr"
+                        and TRADIER_TOKEN != "REPLACE_ME"  # nosec
+                    ):
                         tradier_view.plot_volume_open_interest(
                             ticker=self.ticker,
                             expiry=self.selected_date,
@@ -914,9 +927,9 @@ Expiry: {self.selected_date or None}
                             export=ns_parser.export,
                         )
                 else:
-                    print("No expiry loaded. First use `exp {expiry date}`\n")
+                    console.print("No expiry loaded. First use `exp {expiry date}`\n")
             else:
-                print("No ticker loaded. First use `load <ticker>`\n")
+                console.print("No ticker loaded. First use `load <ticker>`\n")
 
     def call_oi(self, other_args: List[str]):
         """Process oi command"""
@@ -973,7 +986,10 @@ Expiry: {self.selected_date or None}
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    if ns_parser.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
+                    if (
+                        ns_parser.source == "tr"
+                        and TRADIER_TOKEN != "REPLACE_ME"  # nosec
+                    ):
                         tradier_view.plot_oi(
                             ticker=self.ticker,
                             expiry=self.selected_date,
@@ -994,9 +1010,9 @@ Expiry: {self.selected_date or None}
                             export=ns_parser.export,
                         )
                 else:
-                    print("No expiry loaded. First use `exp {expiry date}`\n")
+                    console.print("No expiry loaded. First use `exp {expiry date}`\n")
             else:
-                print("No ticker loaded. First use `load <ticker>`\n")
+                console.print("No ticker loaded. First use `load <ticker>`\n")
 
     def call_plot(self, other_args: List[str]):
         """Process plot command"""
@@ -1057,7 +1073,9 @@ Expiry: {self.selected_date or None}
                     if (
                         ns_parser.x is None or ns_parser.y is None
                     ) and ns_parser.custom is None:
-                        print("Please submit an X and Y value, or select a preset.\n")
+                        console.print(
+                            "Please submit an X and Y value, or select a preset.\n"
+                        )
                     else:
                         yfinance_view.plot_plot(
                             self.ticker,
@@ -1069,9 +1087,24 @@ Expiry: {self.selected_date or None}
                             ns_parser.export,
                         )
                 else:
-                    print("No expiry loaded. First use `exp {expiry date}`\n")
+                    console.print("No expiry loaded. First use `exp {expiry date}`\n")
             else:
-                print("No ticker loaded. First use `load <ticker>`\n")
+                console.print("No ticker loaded. First use `load <ticker>`\n")
+
+    def call_vsurf(self, other_args: List[str]):
+        """Process vol command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="vsurf",
+            description="Plot 3D volatility surface.",
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            yfinance_view.display_vol_surface(self.ticker, export=ns_parser.export)
 
     def call_parity(self, other_args: List[str]):
         """Process parity command"""
@@ -1129,9 +1162,9 @@ Expiry: {self.selected_date or None}
                         ns_parser.export,
                     )
                 else:
-                    print("No expiry loaded. First use `exp {expiry date}`\n")
+                    console.print("No expiry loaded. First use `exp {expiry date}`\n")
             else:
-                print("No ticker loaded. First use `load <ticker>`\n")
+                console.print("No ticker loaded. First use `load <ticker>`\n")
 
     def call_binom(self, other_args: List[str]):
         """Process binom command"""
@@ -1205,9 +1238,9 @@ Expiry: {self.selected_date or None}
                         ns_parser.volatility,
                     )
                 else:
-                    print("No expiry loaded. First use `exp {expiry date}`\n")
+                    console.print("No expiry loaded. First use `exp {expiry date}`\n")
             else:
-                print("No ticker loaded. First use `load <ticker>`\n")
+                console.print("No ticker loaded. First use `load <ticker>`\n")
 
     def call_payoff(self, _):
         """Process payoff command"""
@@ -1217,10 +1250,10 @@ Expiry: {self.selected_date or None}
                     self.ticker, self.selected_date, self.queue
                 ).menu()
             else:
-                print("No expiry loaded. First use `exp {expiry date}`\n")
+                console.print("No expiry loaded. First use `exp {expiry date}`\n")
 
         else:
-            print("No ticker loaded. First use `load <ticker>`\n")
+            console.print("No ticker loaded. First use `load <ticker>`\n")
 
     def call_pricing(self, _):
         """Process pricing command"""
@@ -1230,10 +1263,10 @@ Expiry: {self.selected_date or None}
                     self.ticker, self.selected_date, self.prices, self.queue
                 ).menu()
             else:
-                print("No expiry loaded. First use `exp {expiry date}`\n")
+                console.print("No expiry loaded. First use `exp {expiry date}`\n")
 
         else:
-            print("No ticker loaded. First use `load <ticker>`\n")
+            console.print("No ticker loaded. First use `load <ticker>`\n")
 
     def call_screen(self, _):
         """Process screen command"""

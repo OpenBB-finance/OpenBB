@@ -10,7 +10,7 @@ from psaw import PushshiftAPI
 import praw
 import finviz
 from gamestonk_terminal import config_terminal as cfg
-
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.common.behavioural_analysis.reddit_helpers import find_tickers
 
 l_sub_reddits = [
@@ -131,7 +131,7 @@ def get_popular_tickers(
 
     psaw_api = PushshiftAPI()
     for s_sub_reddit in sub_reddit_list:
-        print(
+        console.print(
             f"Search for latest tickers for {posts_to_look_at} '{s_sub_reddit}' posts"
         )
         submissions = psaw_api.search_submissions(
@@ -172,12 +172,12 @@ def get_popular_tickers(
                                 d_watchlist_tickers[key] = 1
 
             except ResponseException:
-                print(
+                console.print(
                     "Received a response from Reddit with an authorization error. check your token.\n"
                 )
                 return pd.DataFrame()
 
-        print(f"  {n_tickers} potential tickers found.")
+        console.print(f"  {n_tickers} potential tickers found.")
     lt_watchlist_sorted = sorted(
         d_watchlist_tickers.items(), key=lambda item: item[1], reverse=True
     )
@@ -208,9 +208,9 @@ def get_popular_tickers(
                 n_top_stocks += 1
             except HTTPError as e:
                 if e.response.status_code != 404:
-                    print(f"Unexpected exception from Finviz: {e}")
+                    console.print(f"Unexpected exception from Finviz: {e}")
             except Exception as e:
-                print(e, "\n")
+                console.print(e, "\n")
                 return
 
         popular_tickers_df = pd.DataFrame(

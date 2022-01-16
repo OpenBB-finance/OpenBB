@@ -8,7 +8,7 @@ import configparser
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -73,17 +73,17 @@ class ScreenerController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_str = f"""
+        help_text = f"""[cmds]
     view        view available presets
-    set         set one of the available presets
+    set         set one of the available presets[/cmds]
 
-PRESET: {self.preset}
+[param]PRESET: [/param]{self.preset}[cmds]
 
-    screen      screen ETF using preset selected [StockAnalysis]
+    screen      screen ETF using preset selected [src][StockAnalysis][/src]
 
-    sbc         screen by category [FinanceDatabase]
+    sbc         screen by category [src][FinanceDatabase][/src][/cmds]
 """
-        print(help_str)
+        console.print(text=help_text, menu="ETF - Screener")
 
     def call_view(self, other_args: List[str]):
         """Process view command"""
@@ -127,19 +127,19 @@ PRESET: {self.preset}
                     "YrHigh",
                 ]
 
-                print("")
+                console.print("")
                 for filter_header in headers:
-                    print(f" - {filter_header} -")
+                    console.print(f" - {filter_header} -")
                     d_filters = {**preset_filter[filter_header]}
                     d_filters = {k: v for k, v in d_filters.items() if v}
                     if d_filters:
                         max_len = len(max(d_filters, key=len))
                         for key, value in d_filters.items():
-                            print(f"{key}{(max_len-len(key))*' '}: {value}")
-                    print("")
+                            console.print(f"{key}{(max_len-len(key))*' '}: {value}")
+                    console.print("")
 
             else:
-                print("\nPresets:")
+                console.print("\nPresets:")
                 for preset in self.preset_choices:
                     with open(
                         presets_path + preset + ".ini",
@@ -150,10 +150,10 @@ PRESET: {self.preset}
                             if line.strip() == "[Price]":
                                 break
                             description += line.strip()
-                    print(
+                    console.print(
                         f"   {preset}{(30-len(preset)) * ' '}{description.split('Description: ')[1].replace('#', '')}"
                     )
-                print("")
+                console.print("")
 
     def call_set(self, other_args: List[str]):
         """Process set command"""
@@ -177,7 +177,7 @@ PRESET: {self.preset}
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.preset = ns_parser.preset
-        print("")
+        console.print("")
 
     def call_screen(self, other_args):
         """Process screen command"""
@@ -266,7 +266,7 @@ PRESET: {self.preset}
                     export=ns_parser.export,
                 )
             else:
-                print(
+                console.print(
                     "The category selected does not exist, choose one from:"
                     f" {', '.join(financedatabase_model.get_etfs_categories())}\n"
                 )

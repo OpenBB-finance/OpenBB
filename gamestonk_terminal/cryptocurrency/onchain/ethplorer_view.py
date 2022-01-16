@@ -9,6 +9,7 @@ from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.cryptocurrency.onchain import ethplorer_model
+from gamestonk_terminal.rich_config import console
 
 
 def display_address_info(
@@ -54,7 +55,7 @@ def display_address_info(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -104,7 +105,7 @@ def display_top_tokens(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -154,7 +155,7 @@ def display_top_token_holders(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -206,7 +207,7 @@ def display_address_history(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -255,7 +256,7 @@ def display_token_info(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -293,7 +294,7 @@ def display_tx_info(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -332,7 +333,7 @@ def display_token_history(
     df = ethplorer_model.get_token_history(address)
     df_data = df.copy()
     if df.empty:
-        print(f"No results found for balance: {address}\n")
+        console.print(f"No results found for balance: {address}\n")
         return
 
     df["value"] = df["value"].apply(lambda x: very_long_number_formatter(x))
@@ -355,7 +356,7 @@ def display_token_history(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -392,7 +393,7 @@ def display_token_historical_prices(
     df_data = df.copy()
 
     if df.empty:
-        print(f"No results found for balance: {address}\n")
+        console.print(f"No results found for balance: {address}\n")
         return
 
     df["volumeConverted"] = df["volumeConverted"].apply(
@@ -413,7 +414,7 @@ def display_token_historical_prices(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,

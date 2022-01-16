@@ -64,7 +64,14 @@ async def adx_command(
         # Retrieve Data
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
-        df_ta = trend_indicators_model.adx("1440min", df_stock, length, scalar, drift)
+        df_ta = trend_indicators_model.adx(
+            df_stock["High"],
+            df_stock["Low"],
+            df_stock["Adj Close"],
+            length,
+            scalar,
+            drift,
+        )
 
         # Output Data
         fig, ax = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)

@@ -2,7 +2,7 @@ import argparse
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
 import gamestonk_terminal.config_terminal as config
 
 from gamestonk_terminal import feature_flags as gtff
@@ -35,7 +35,7 @@ class DegiroController(BaseController):
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/portfolio/bro/derigo/", queue)
+        super().__init__("/portfolio/bro/degiro/", queue)
 
         self.__degiro_view = DegiroView()
 
