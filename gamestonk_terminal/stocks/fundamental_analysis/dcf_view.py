@@ -20,8 +20,6 @@ from gamestonk_terminal.rich_config import console
 
 # R0902, R0912, C0302, R0915
 
-int_or_str = Union[int, str]
-
 
 class CreateExcelFA:
     def __init__(self, ticker: str, audit: bool):
@@ -85,9 +83,7 @@ class CreateExcelFA:
             console.print("Analysis already ran. Please move file to rerun.")
         else:
             self.wb.save(trypath)
-            console.print(
-                f"Analysis ran for {self.ticker}\nPlease look in {trypath} for the file.\n"
-            )
+            console.print(f"Analysis ran for {self.ticker}\nFile in {trypath}.\n")
 
     def get_data(self, statement: str, row: int, header: bool) -> pd.DataFrame:
         df, rounding = dcf_model.create_dataframe(self.ticker, statement)
@@ -557,11 +553,6 @@ class CreateExcelFA:
             self.ws[2], "B18", float(self.data["info"]["regularMarketPrice"])
         )
 
-        # Create ratios page
-        self.ws[4].column_dimensions["A"].width = 27
-        dcf_model.set_cell(self.ws[4], "B4", "Sector:")
-        dcf_model.set_cell(self.ws[4], "C4", self.data["info"]["sector"])
-
     def create_header(self, ws: Workbook):
         for i in range(10):
             dcf_model.set_cell(
@@ -823,7 +814,7 @@ class CreateExcelFA:
 
     def get_sum(
         self,
-        row: int_or_str,
+        row: Union[int, str],
         first: str,
         adds: List[str],
         subtracts: List[str],
@@ -868,7 +859,9 @@ class CreateExcelFA:
         )
         return ind
 
-    def custom_exp(self, row: int_or_str, text: str, ws: int = 1, column: str = None):
+    def custom_exp(
+        self, row: Union[int, str], text: str, ws: int = 1, column: str = None
+    ):
         if ws == 1:
             rowT = row if isinstance(row, int) else self.title_to_row(row)
             col = self.len_pred + self.len_data + 3
@@ -896,6 +889,9 @@ class CreateExcelFA:
         self.letter += 1
 
     def add_ratios(self):
+        self.ws[4].column_dimensions["A"].width = 27
+        dcf_model.set_cell(self.ws[4], "B4", "Sector:")
+        dcf_model.set_cell(self.ws[4], "C4", self.data["info"]["sector"])
         sister_data = dcf_model.get_sister_dfs(self.ticker, self.data["info"], 3)
         sister_data.insert(
             0, [self.ticker, [self.df["BS"], self.df["IS"], self.df["CF"]]]
