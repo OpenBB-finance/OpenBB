@@ -57,11 +57,13 @@ class TerminalController(BaseController):
         "alternative",
     ]
 
+    PATH = "/"
+
     all_timezones = pytz.all_timezones
 
     def __init__(self, jobs_cmds: List[str] = None):
         """Constructor"""
-        super().__init__("/", jobs_cmds)
+        super().__init__(jobs_cmds)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: None for c in self.controller_choices}
@@ -137,25 +139,25 @@ class TerminalController(BaseController):
         """Process stocks command"""
         from gamestonk_terminal.stocks.stocks_controller import StocksController
 
-        self.queue = StocksController(self.queue).menu()
+        self.queue = self.load_class(StocksController, self.queue)
 
     def call_crypto(self, _):
         """Process crypto command"""
         from gamestonk_terminal.cryptocurrency.crypto_controller import CryptoController
 
-        self.queue = CryptoController(self.queue).menu()
+        self.queue = self.load_class(CryptoController, self.queue)
 
     def call_economy(self, _):
         """Process economy command"""
         from gamestonk_terminal.economy.economy_controller import EconomyController
 
-        self.queue = EconomyController(self.queue).menu()
+        self.queue = self.load_class(EconomyController, self.queue)
 
     def call_etf(self, _):
         """Process etf command"""
         from gamestonk_terminal.etf.etf_controller import ETFController
 
-        self.queue = ETFController(self.queue).menu()
+        self.queue = self.load_class(ETFController, self.queue)
 
     def call_funds(self, _):
         """Process etf command"""
@@ -163,19 +165,19 @@ class TerminalController(BaseController):
             FundController,
         )
 
-        self.queue = FundController(self.queue).menu()
+        self.queue = self.load_class(FundController, self.queue)
 
     def call_forex(self, _):
         """Process forex command"""
         from gamestonk_terminal.forex.forex_controller import ForexController
 
-        self.queue = ForexController(self.queue).menu()
+        self.queue = self.load_class(ForexController, self.queue)
 
     def call_jupyter(self, _):
         """Process jupyter command"""
         from gamestonk_terminal.jupyter.jupyter_controller import JupyterController
 
-        self.queue = JupyterController(self.queue).menu()
+        self.queue = self.load_class(JupyterController, self.queue)
 
     def call_resources(self, _):
         """Process resources command"""
@@ -183,7 +185,7 @@ class TerminalController(BaseController):
             ResourceCollectionController,
         )
 
-        self.queue = ResourceCollectionController(self.queue).menu()
+        self.queue = self.load_class(ResourceCollectionController, self.queue)
 
     def call_alternative(self, _):
         """Process resources command"""
@@ -191,7 +193,7 @@ class TerminalController(BaseController):
             AlternativeDataController,
         )
 
-        self.queue = AlternativeDataController(self.queue).menu()
+        self.queue = self.load_class(AlternativeDataController, self.queue)
 
     def call_portfolio(self, _):
         """Process portfolio command"""
@@ -199,7 +201,7 @@ class TerminalController(BaseController):
             PortfolioController,
         )
 
-        self.queue = PortfolioController(self.queue).menu()
+        self.queue = self.load_class(PortfolioController, self.queue)
 
     def call_tz(self, other_args: List[str]):
         """Process tz command"""

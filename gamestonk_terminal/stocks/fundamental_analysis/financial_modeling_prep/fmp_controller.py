@@ -33,6 +33,7 @@ class FinancialModelingPrepController(BaseController):
         "ratios",
         "growth",
     ]
+    PATH = "/stocks/fa/fmp/"
 
     def __init__(
         self,
@@ -42,7 +43,7 @@ class FinancialModelingPrepController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/stocks/fa/fmp/", queue)
+        super().__init__(queue)
 
         self.ticker = ticker
         self.start = start
