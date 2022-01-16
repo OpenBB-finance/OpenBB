@@ -13,9 +13,62 @@ from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
 )
 
 
+def display_account_staking_info(
+    address: str = "", top: int = 10, export: str = ""
+) -> None:
+    """Display staking info for provided terra account address [Source: https://fcd.terra.dev/swagger]
+
+    Parameters
+    ----------
+    address: str
+        terra blockchain address e.g. terra1jvwelvs7rdk6j3mqdztq5tya99w8lxk6l9hcqg
+    top: int
+        Number of records to display
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+
+    df, report = terramoney_fcd_model.get_staking_account_info(address)
+    console.print(report)
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        console.print(df.to_string(index=False), "\n")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "sinfo",
+        df,
+    )
+
+
 def display_validators(
     top: int = 10, sortby: str = "votingPower", descend: bool = False, export: str = ""
 ) -> None:
+    """Display information about terra validators [Source: https://fcd.terra.dev/swagger]
+
+    Parameters
+    ----------
+    top: int
+        Number of records to display
+    sortby: str
+        Key by which to sort data
+    descend: bool
+        Flag to sort data descending
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+
     df = terramoney_fcd_model.get_validators()
     df_data = df.copy()
     df = df.sort_values(by=sortby, ascending=descend).head(top)
@@ -56,6 +109,22 @@ def display_gov_proposals(
     descend: bool = False,
     export: str = "",
 ) -> None:
+    """Display terra blockchain governance proposals list [Source: https://fcd.terra.dev/swagger]
+
+    Parameters
+    ----------
+    top: int
+        Number of records to display
+    status: str
+        status of proposal, one from list: ['Voting','Deposit','Passed','Rejected']
+    sortby: str
+        Key by which to sort data
+    descend: bool
+        Flag to sort data descending
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+
     df = terramoney_fcd_model.get_proposals(status)
     df_data = df.copy()
     df = df.sort_values(by=sortby, ascending=descend).head(top)

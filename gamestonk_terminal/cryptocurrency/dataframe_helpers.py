@@ -161,3 +161,22 @@ def denominate_number(
     if round_digits:
         return round(float(number) / divider, round_digits)
     return round(float(number) / divider)
+
+
+def replace_unicode(x: Any) -> Any:
+    """Replace unicode characters to ?
+
+    Parameters
+    ----------
+    x: Any
+        value to replace unicode chars
+
+    Returns
+    -------
+    Any
+        replaced value
+    """
+
+    if isinstance(x, str):
+        return x.encode("ascii", "replace").decode()
+    return x

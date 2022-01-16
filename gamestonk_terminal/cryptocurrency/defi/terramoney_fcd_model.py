@@ -6,7 +6,11 @@ from typing import Any
 from datetime import datetime
 import requests
 import pandas as pd
-from gamestonk_terminal.cryptocurrency.dataframe_helpers import denominate_number
+from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
+    denominate_number,
+    prettify_column_names,
+    replace_unicode,
+)
 
 
 def _make_request(endpoint: str) -> dict:
@@ -60,7 +64,7 @@ def _adjust_delegation_info(delegation: dict) -> dict:
     return delegation_info
 
 
-def get_staking_account_info(address: str = "") -> dict:
+def get_staking_account_info(address: str = "") -> tuple[pd.DataFrame, str]:
     """Get staking info for provided terra account [Source: https://fcd.terra.dev/swagger]
 
     Parameters
@@ -69,8 +73,8 @@ def get_staking_account_info(address: str = "") -> dict:
         terra blockchain address e.g. terra1jvwelvs7rdk6j3mqdztq5tya99w8lxk6l9hcqg
     Returns
     -------
-    dict:
-        staking info for given address
+    tuple[pd.DataFrame, str]:
+        luna delegations and summary report for given address
     """
 
     response = _make_request(f"staking/{address}")
@@ -84,11 +88,27 @@ def get_staking_account_info(address: str = "") -> dict:
         for delegation in my_delegations:
             validator = _adjust_delegation_info(delegation)
             results["myDelegations"].append(validator)
-    results["myDelegations"] = pd.DataFrame(results["myDelegations"])
+
+    df = pd.DataFrame(results["myDelegations"])
+
+    try:
+        df["validatorName"] = df["validatorName"].apply(lambda x: replace_unicode(x))
+        df.columns = prettify_column_names(list(df.columns))
+    except KeyError:
+        df = pd.DataFrame()
+
     results["totalRewards"] = denominate_number(
         response.get("rewards", {}).get("total", 0)
     )
-    return results
+
+    report = "Overview: \n"
+    report += f"{3*' '}Address: {address}\n"
+    report += f"{3*' '}Available Luna: {results['availableLuna']}\n"
+    report += f"{3*' '}Delegated Luna: {results['delegationTotal']}\n"
+    report += f"{3*' '}Total Rewards:  {results['totalRewards']}\n"
+    report += "\nDelegations: "
+
+    return df, report
 
 
 def get_validators() -> pd.DataFrame:
