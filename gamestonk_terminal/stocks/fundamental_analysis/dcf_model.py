@@ -341,7 +341,8 @@ def get_sister_dfs(ticker: str, info: Dict[str, Any], n: int):
 
     Returns
     -------
-    Do not merge if colin did not update this to a dictionary
+    new_list: List[str, pd.DataFrame]
+        A list of sister companies
     """
     # TODO: Once mcap is added to this, we can add as an additional filters for more comparative results
     sisters = others_in_sector(ticker, info["sector"], info["industry"])

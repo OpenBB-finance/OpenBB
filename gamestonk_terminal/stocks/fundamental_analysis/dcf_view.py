@@ -22,21 +22,47 @@ from gamestonk_terminal.rich_config import console
 
 
 class CreateExcelFA:
-    def __init__(self, ticker: str, audit: bool):
-        self.audit: bool = audit
+    def __init__(
+        self,
+        ticker: str,
+        audit: bool = False,
+        ratios: bool = True,
+        len_pred: int = 10,
+        max_sisters: int = 3,
+    ):
+        """
+        Creates a detialed DCF for a given company
+
+        Parameters
+        ----------
+        ticker : str
+            The ticker to create a DCF for
+        audit : bool
+            Whether or not to show that the balance sheet and income statement tie-out
+        ratios : bool
+            Whether to show ratios for the company and for sister companies
+        len_pred: int
+            The number of years to make predictions for before assuming a terminal value
+        max_sisters: int
+            The maximum number of sister companies to show, will be less if there are not enough similar companies
+        """
+        self.info: Dict[str, Any] = {
+            "len_data": 0,
+            "len_pred": len_pred,
+            "max_sisters": max_sisters,
+            "rounding": 0,
+            "ticker": ticker,
+            "audit": audit,
+            "ratios": ratios,
+        }
+        self.letter: int = 0
+        self.starts: Dict[str, int] = {"IS": 4, "BS": 18, "CF": 47}
         self.wb: Workbook = Workbook()
         self.ws: Dict[int, Any] = {
             1: self.wb.active,
             2: self.wb.create_sheet("Free Cash Flows"),
             3: self.wb.create_sheet("Explanations"),
-            4: self.wb.create_sheet("Ratios"),
         }
-        self.ticker: str = ticker
-        self.letter: int = 0
-        self.starts: Dict[str, int] = {"IS": 4, "BS": 18, "CF": 47}
-        self.len_data: int = 0
-        self.len_pred: int = 10
-        self.rounding: int = 0
         self.df: Dict[str, pd.DataFrame] = {
             "BS": self.get_data("BS", self.starts["BS"], False),
             "IS": self.get_data("IS", self.starts["IS"], True),
@@ -46,7 +72,7 @@ class CreateExcelFA:
             "now": datetime.now().strftime("%Y-%m-%d"),
             "info": yf.Ticker(ticker).info,
             "t_bill": get_rf(),
-            "r_ff": dcf_model.get_fama_coe(self.ticker),
+            "r_ff": dcf_model.get_fama_coe(self.info["ticker"]),
         }
 
     def create_workbook(self):
@@ -57,17 +83,19 @@ class CreateExcelFA:
             self.ws[1].column_dimensions[column].width = 14
         for column in dcf_static.letters[1:21]:
             self.ws[2].column_dimensions[column].width = 14
-
         self.ws[3].column_dimensions["A"].width = 3
-        for val in [self.ws[1], self.ws[2], self.ws[3], self.ws[4]]:
-            self.create_header(val)
+
+        for _, value in self.ws.items():
+            self.create_header(value)
+
         self.df["BS"], self.df["IS"], self.df["CF"] = dcf_model.clean_dataframes(
             self.df["BS"], self.df["IS"], self.df["CF"]
         )
         self.add_estimates()
         self.create_dcf()
-        self.add_ratios()
-        if self.audit:
+        if self.info["ratios"]:
+            self.add_ratios()
+        if self.info["audit"]:
             self.run_audit()
 
         trypath = os.path.join(
@@ -75,7 +103,7 @@ class CreateExcelFA:
             "exports",
             "stocks",
             "fundamental_analysis",
-            f"{self.ticker} {self.data['now']}.xlsx",
+            f"{self.info['ticker']} {self.data['now']}.xlsx",
         )
 
         my_file = Path(trypath)
@@ -83,15 +111,17 @@ class CreateExcelFA:
             console.print("Analysis already ran. Please move file to rerun.")
         else:
             self.wb.save(trypath)
-            console.print(f"Analysis ran for {self.ticker}\nFile in {trypath}.\n")
+            console.print(
+                f"Analysis ran for {self.info['ticker']}\nFile in {trypath}.\n"
+            )
 
     def get_data(self, statement: str, row: int, header: bool) -> pd.DataFrame:
-        df, rounding = dcf_model.create_dataframe(self.ticker, statement)
+        df, rounding = dcf_model.create_dataframe(self.info["ticker"], statement)
         if df.empty:
             raise ValueError("Could generate a dataframe for the ticker")
-        self.rounding = rounding
-        if not self.len_data:
-            self.len_data = len(df.columns)
+        self.info["rounding"] = rounding
+        if not self.info["len_data"]:
+            self.info["len_data"] = len(df.columns)
 
         self.ws[1][f"A{row}"] = dcf_static.statement_titles[statement]
         self.ws[1][f"A{row}"].font = dcf_static.bold_font
@@ -102,7 +132,9 @@ class CreateExcelFA:
         for name in names:
             self.ws[1][f"A{rowI}"] = name
             if name in dcf_static.sum_rows:
-                length = self.len_data + (self.len_pred if statement != "CF" else 0)
+                length = self.info["len_data"] + (
+                    self.info["len_pred"] if statement != "CF" else 0
+                )
                 for i in range(length):
                     if statement == "CF" and name == "Net Income":
                         pass
@@ -141,8 +173,8 @@ class CreateExcelFA:
 
     def add_estimates(self):
         last_year = self.df["BS"].columns[-1]  # Replace with columns in DF
-        col = self.len_data + 1
-        for i in range(self.len_pred):
+        col = self.info["len_data"] + 1
+        for i in range(self.info["len_pred"]):
             dcf_model.set_cell(
                 self.ws[1],
                 f"{dcf_static.letters[col+i]}4",
@@ -151,7 +183,7 @@ class CreateExcelFA:
             )
 
         for i in range(41):
-            col = self.len_pred + self.len_data + 3
+            col = self.info["len_pred"] + self.info["len_data"] + 3
             dcf_model.set_cell(
                 self.ws[1],
                 f"{dcf_static.letters[col]}{3+i}",
@@ -278,10 +310,10 @@ class CreateExcelFA:
             [],
         )
         self.get_linear("Revenue", "Common Stock")
-        col = self.len_data + 1
+        col = self.info["len_data"] + 1
         rer = self.title_to_row("Retained Earnings")
         nir = self.title_to_row("Net Income")
-        for i in range(self.len_pred):
+        for i in range(self.info["len_pred"]):
             dcf_model.set_cell(
                 self.ws[1],
                 f"{dcf_static.letters[col+i]}{rer}",
@@ -321,11 +353,11 @@ class CreateExcelFA:
         self.ws[2]["A9"] = "Free Cash Flows"
         r = 4
 
-        c1 = dcf_static.letters[self.len_pred + 3]
-        c2 = dcf_static.letters[self.len_pred + 4]
-        c3 = dcf_static.letters[self.len_pred + 5]
-        for i in range(self.len_pred):
-            j = 1 + i + self.len_data
+        c1 = dcf_static.letters[self.info["len_pred"] + 3]
+        c2 = dcf_static.letters[self.info["len_pred"] + 4]
+        c3 = dcf_static.letters[self.info["len_pred"] + 5]
+        for i in range(self.info["len_pred"]):
+            j = 1 + i + self.info["len_data"]
             cols = dcf_static.letters
             dcf_model.set_cell(
                 self.ws[2],
@@ -376,8 +408,9 @@ class CreateExcelFA:
             )
             dcf_model.set_cell(
                 self.ws[2],
-                f"{cols[1+self.len_pred]}9",
-                f"=({cols[self.len_pred]}9*(1+{c2}" f"{r+15}))/({c2}{r+11}-{c2}{r+15})",
+                f"{cols[1+self.info['len_pred']]}9",
+                f"=({cols[self.info['len_pred']]}9*(1+{c2}"
+                f"{r+15}))/({c2}{r+11}-{c2}{r+15})",
                 num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
             )
 
@@ -492,14 +525,14 @@ class CreateExcelFA:
         dcf_model.set_cell(
             self.ws[2],
             "B11",
-            f"=NPV({c2}{r+11},B9:{dcf_static.letters[self.len_pred+1]}9)",
+            f"=NPV({c2}{r+11},B9:{dcf_static.letters[self.info['len_pred']+1]}9)",
             num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
         )
         dcf_model.set_cell(self.ws[2], "A12", "Cash and Cash Equivalents")
         dcf_model.set_cell(
             self.ws[2],
             "B12",
-            f"=financials!{dcf_static.letters[self.len_data]}{self.title_to_row('Cash & Cash Equivalents')}",
+            f"=financials!{dcf_static.letters[self.info['len_data']]}{self.title_to_row('Cash & Cash Equivalents')}",
             num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
         )
         dcf_model.set_cell(self.ws[2], "A13", "Intrinsic Value (sum)")
@@ -513,7 +546,7 @@ class CreateExcelFA:
         dcf_model.set_cell(
             self.ws[2],
             "B14",
-            f"=financials!{dcf_static.letters[self.len_data]}{self.title_to_row('Total Long-Term Liabilities')}",
+            f"=financials!{dcf_static.letters[self.info['len_data']]}{self.title_to_row('Total Long-Term Liabilities')}",
             num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
         )
         dcf_model.set_cell(self.ws[2], "A15", "Firm value without debt")
@@ -522,8 +555,8 @@ class CreateExcelFA:
             "B15",
             (
                 f"=max(B13-B14,"
-                f"Financials!{dcf_static.letters[self.len_data]}{self.title_to_row('Total Assets')}"
-                f"-Financials!{dcf_static.letters[self.len_data]}{self.title_to_row('Total Liabilities')})"
+                f"Financials!{dcf_static.letters[self.info['len_data']]}{self.title_to_row('Total Assets')}"
+                f"-Financials!{dcf_static.letters[self.info['len_data']]}{self.title_to_row('Total Liabilities')})"
             ),
             num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
         )
@@ -532,8 +565,8 @@ class CreateExcelFA:
             "C15",
             (
                 f"=if((B13-B14)>"
-                f"(Financials!{dcf_static.letters[self.len_data]}{self.title_to_row('Total Assets')}"
-                f"-Financials!{dcf_static.letters[self.len_data]}{self.title_to_row('Total Liabilities')}),"
+                f"(Financials!{dcf_static.letters[self.info['len_data']]}{self.title_to_row('Total Assets')}"
+                f"-Financials!{dcf_static.letters[self.info['len_data']]}{self.title_to_row('Total Liabilities')}),"
                 '"","Note: Total assets minus total liabilities exceeds projected firm value without debt.'
                 ' Value shown is total assets minus total liabilities.")'
             ),
@@ -547,7 +580,7 @@ class CreateExcelFA:
         dcf_model.set_cell(
             self.ws[2],
             "B17",
-            f"=(B15*{self.rounding})/B16",
+            f"=(B15*{self.info['rounding']})/B16",
             num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
         )
         dcf_model.set_cell(self.ws[2], "A18", "Actual Price")
@@ -565,13 +598,13 @@ class CreateExcelFA:
         dcf_model.set_cell(
             ws,
             "A1",
-            f"Gamestonk Terminal Analysis: {self.ticker.upper()}",
+            f"Gamestonk Terminal Analysis: {self.info['ticker'].upper()}",
             font=Font(color="04cca8", size=20),
             border=dcf_static.thin_border,
             alignment=dcf_static.center,
         )
         dcf_model.set_cell(
-            ws, "A2", f"DCF for {self.ticker} generated on {self.data['now']}"
+            ws, "A2", f"DCF for {self.info['ticker']} generated on {self.data['now']}"
         )
 
     def run_audit(self):
@@ -760,7 +793,7 @@ class CreateExcelFA:
             + (self.starts["IS"] if y_type == "IS" else self.starts["BS"])
         )
 
-        col = self.len_pred + self.len_data + 3
+        col = self.info["len_pred"] + self.info["len_data"] + 3
         dcf_model.set_cell(
             self.ws[1], f"{dcf_static.letters[col]}{row1}", float(model.coef_)
         )
@@ -788,12 +821,12 @@ class CreateExcelFA:
             ),
         )
 
-        col = self.len_data + 1
-        for i in range(self.len_pred):
+        col = self.info["len_data"] + 1
+        for i in range(self.info["len_pred"]):
             if x_ind == "Date":
                 base = (
-                    f"(({dcf_static.letters[col+i]}4-B4)*{dcf_static.letters[col+self.len_pred+2]}"
-                    f"{row1})+{dcf_static.letters[col+self.len_pred+3]}{row1}"
+                    f"(({dcf_static.letters[col+i]}4-B4)*{dcf_static.letters[col+self.info['len_pred']+2]}"
+                    f"{row1})+{dcf_static.letters[col+self.info['len_pred']+3]}{row1}"
                 )
             else:
                 row_n = (
@@ -802,8 +835,8 @@ class CreateExcelFA:
                     else self.starts["BS"]
                 )
                 base = (
-                    f"({dcf_static.letters[col+i]}{row_n}*{dcf_static.letters[col+self.len_pred+2]}{row1})"
-                    f"+{dcf_static.letters[col+self.len_pred+3]}{row1}"
+                    f"({dcf_static.letters[col+i]}{row_n}*{dcf_static.letters[col+self.info['len_pred']+2]}{row1})"
+                    f"+{dcf_static.letters[col+self.info['len_pred']+3]}{row1}"
                 )
             dcf_model.set_cell(
                 self.ws[1],
@@ -823,8 +856,8 @@ class CreateExcelFA:
         audit: bool = False,
         text: str = None,
     ):
-        col = 1 if audit else self.len_data + 1
-        for i in range(self.len_data if audit else self.len_pred):
+        col = 1 if audit else self.info["len_data"] + 1
+        for i in range(self.info["len_data"] if audit else self.info["len_pred"]):
             sum_formula = f"={dcf_static.letters[col+i]}{self.title_to_row(first)}"
             for item in adds:
                 sum_formula += f"+{dcf_static.letters[col+i]}{self.title_to_row(item)}"
@@ -866,7 +899,7 @@ class CreateExcelFA:
     ):
         if ws == 1:
             rowT = row if isinstance(row, int) else self.title_to_row(row)
-            col = self.len_pred + self.len_data + 3
+            col = self.info["len_pred"] + self.info["len_data"] + 3
             dcf_model.set_cell(
                 self.ws[1],
                 f"{dcf_static.letters[col+2]}{rowT}",
@@ -891,12 +924,16 @@ class CreateExcelFA:
         self.letter += 1
 
     def add_ratios(self):
+        self.ws[4] = self.wb.create_sheet("Ratios")
+        self.create_header(self.ws[4])
         self.ws[4].column_dimensions["A"].width = 27
         dcf_model.set_cell(self.ws[4], "B4", "Sector:")
         dcf_model.set_cell(self.ws[4], "C4", self.data["info"]["sector"])
-        sister_data = dcf_model.get_sister_dfs(self.ticker, self.data["info"], 3)
+        sister_data = dcf_model.get_sister_dfs(
+            self.info["ticker"], self.data["info"], self.info["max_sisters"]
+        )
         sister_data.insert(
-            0, [self.ticker, [self.df["BS"], self.df["IS"], self.df["CF"]]]
+            0, [self.info["ticker"], [self.df["BS"], self.df["IS"], self.df["CF"]]]
         )
         row = 6
         for val in sister_data:
@@ -1009,11 +1046,13 @@ class CreateExcelFA:
                     [25, frac(tl1, ta1), 0],
                     [26, frac(ta1, te1), 0],
                     [27, frac(ni1 + inte1 + tax1, inte1), 0],
-                    [30, frac((ni1 - pdiv1) * self.rounding, outstand), 0],
+                    [30, frac((ni1 - pdiv1) * self.info["rounding"], outstand), 0],
                     [
                         31,
                         frac(
-                            float(info["previousClose"]) * outstand * self.rounding,
+                            float(info["previousClose"])
+                            * outstand
+                            * self.info["rounding"],
                             ni1 - pdiv1,
                         ),
                         0,
