@@ -991,110 +991,55 @@ class CreateExcelFA:
                     int(val[1][0].columns[j + 1]),
                     font=dcf_model.bold_font,
                 )
-                dcf_model.set_cell(
-                    self.ws[4], f"{lt}{row+2}", "N/A" if cl1 == 0 else ca1 / cl1
+
+                frac = (
+                    lambda num, denom: "N/A"
+                    if denom == 0
+                    else float(num) / float(denom)
                 )
-                dcf_model.set_cell(
-                    self.ws[4],
-                    f"{lt}{row+3}",
-                    "N/A" if cl1 == 0 else (cace1 + ar1) / cl1,
+                info, outstand = self.data["info"], float(
+                    self.data["info"]["sharesOutstanding"]
                 )
-                dcf_model.set_cell(
-                    self.ws[4],
-                    f"{lt}{row+6}",
-                    "N/A" if ar0 + ar1 == 0 else sls1 / ((ar0 + ar1) / 2),
-                )
-                dcf_model.set_cell(
-                    self.ws[4],
-                    f"{lt}{row+7}",
-                    "N/A" if sls1 == 0 else ar1 / (sls1 / 365),
-                )
-                dcf_model.set_cell(
-                    self.ws[4],
-                    f"{lt}{row+8}",
-                    "N/A" if inv0 + inv1 == 0 else cogs1 / ((inv0 + inv1) / 2),
-                )
-                dcf_model.set_cell(
-                    self.ws[4],
-                    f"{lt}{row+9}",
-                    "N/A" if cogs1 == 0 else inv1 / (cogs1 / 365),
-                )
-                dcf_model.set_cell(
-                    self.ws[4],
-                    f"{lt}{row+10}",
-                    "N/A" if ap0 + ap1 == 0 else cogs1 / ((ap0 + ap1) / 2),
-                )
-                dcf_model.set_cell(
-                    self.ws[4],
-                    f"{lt}{row+11}",
-                    "N/A" if cogs1 == 0 else ap1 / (cogs1 / 365),
-                )
-                dcf_model.set_cell(
-                    self.ws[4],
-                    f"{lt}{row+12}",
-                    "N/A"
-                    if cogs1 == 0
-                    else (ar1 / (sls1 / 365))
-                    + (inv1 / (cogs1 / 365))
-                    - (ap1 / (cogs1 / 365)),
-                )
-                dcf_model.set_cell(
-                    self.ws[4],
-                    f"{lt}{row+13}",
-                    "N/A" if ta0 + ta1 == 0 else sls1 / ((ta0 + ta1) / 2),
-                )
-                dcf_model.set_cell(
-                    self.ws[4], f"{lt}{row+16}", "N/A" if sls1 == 0 else ni1 / sls1
-                )
-                dcf_model.set_cell(
-                    self.ws[4],
-                    f"{lt}{row+17}",
-                    "N/A" if ar0 + ar1 == 0 else ni1 / ((ar0 + ar1) / 2),
-                )
-                dcf_model.set_cell(
-                    self.ws[4],
-                    f"{lt}{row+18}",
-                    "N/A" if te0 + te1 == 0 else ni1 / ((te0 + te1) / 2),
-                )
-                dcf_model.set_cell(
-                    self.ws[4],
-                    f"{lt}{row+19}",
-                    "N/A" if sls1 == 0 else (ni1 + inte1 + tax1) / sls1,
-                )
-                dcf_model.set_cell(
-                    self.ws[4],
-                    f"{lt}{row+20}",
-                    "N/A" if sls1 == 0 else (sls1 - cogs1) / sls1,
-                )
-                dcf_model.set_cell(
-                    self.ws[4], f"{lt}{row+21}", "N/A" if cl1 == 0 else opcf1 / cl1
-                )
-                dcf_model.set_cell(
-                    self.ws[4], f"{lt}{row+24}", "N/A" if te1 == 0 else tl1 / te1
-                )
-                dcf_model.set_cell(
-                    self.ws[4], f"{lt}{row+25}", "N/A" if ta1 == 0 else tl1 / ta1
-                )
-                dcf_model.set_cell(
-                    self.ws[4], f"{lt}{row+26}", "N/A" if te1 == 0 else ta1 / te1
-                )
-                dcf_model.set_cell(
-                    self.ws[4],
-                    f"{lt}{row+27}",
-                    "N/A" if inte1 == 0 else (ni1 + inte1 + tax1) / inte1,
-                )
-                dcf_model.set_cell(
-                    self.ws[4],
-                    f"{lt}{row+30}",
-                    (ni1 - pdiv1) / float(self.data["info"]["sharesOutstanding"]),
-                )
-                dcf_model.set_cell(
-                    self.ws[4],
-                    f"{lt}{row+31}",
-                    "NA"
-                    if ((ni1 - pdiv1) / float(self.data["info"]["sharesOutstanding"]))
-                    == 0
-                    else float(self.data["info"]["previousClose"])
-                    / ((ni1 - pdiv1) / float(self.data["info"]["sharesOutstanding"])),
-                )
+
+                rows = [
+                    [2, frac(ca1, cl1)],
+                    [3, frac(cace1 + ar1, cl1)],
+                    [6, frac(sls1, (ar0 + ar1) / 2)],
+                    [7, frac(ar1, sls1 / 365)],
+                    [8, frac(cogs1, (inv0 + inv1) / 2)],
+                    [9, frac(inv1, cogs1 / 365)],
+                    [10, frac(cogs1, (ap0 + ap1) / 2)],
+                    [11, frac(ap1, cogs1 / 365)],
+                    [
+                        12,
+                        "N/A"
+                        if sls1 == 0 or cogs1 == 0
+                        else frac(ar1, sls1 / 365)
+                        + frac(inv1, cogs1 / 365)
+                        - frac(ap1, cogs1 / 365),
+                    ],
+                    [13, frac(sls1, (ta0 + ta1) / 2)],
+                    [16, frac(ni1, sls1)],
+                    [17, frac(ni1, (ar0 + ar1) / 2)],
+                    [18, frac(ni1, (te0 + te1) / 2)],
+                    [19, frac(ni1 + inte1 + tax1, sls1)],
+                    [20, frac(sls1 - cogs1, sls1)],
+                    [21, frac(opcf1, cl1)],
+                    [24, frac(tl1, te1)],
+                    [25, frac(tl1, ta1)],
+                    [26, frac(ta1, te1)],
+                    [27, frac(ni1 + inte1 + tax1, inte1)],
+                    [30, frac((ni1 - pdiv1) * self.rounding, outstand)],
+                    [
+                        31,
+                        frac(
+                            float(info["previousClose"]) * outstand * self.rounding,
+                            ni1 - pdiv1,
+                        ),
+                    ],
+                ]
+
+                for item in rows:
+                    dcf_model.set_cell(self.ws[4], f"{lt}{row+item[0]}", item[1])
+
             row += 35
