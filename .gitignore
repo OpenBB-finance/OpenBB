@@ -15,6 +15,7 @@ exports/*
 .idea
 .coverage
 htmlcov
+gamestonk_terminal/reports
 gamestonk_terminal/jupyter/reports/stored/*
 !gamestonk_terminal/jupyter/reports/stored/.gitkeep
 !gamestonk_terminal/jupyter/dashboards/*.ipynb

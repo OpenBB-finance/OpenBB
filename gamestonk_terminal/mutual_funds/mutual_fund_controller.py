@@ -2,15 +2,15 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
 from datetime import datetime, timedelta
-from typing import List, Union
+from typing import List
 
 import investpy
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from rich import console
+from gamestonk_terminal.rich_config import console
 
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
@@ -18,34 +18,16 @@ from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     check_non_negative_float,
     check_positive,
-    get_flair,
     parse_known_args_and_warn,
-    system_clear,
-    try_except,
     valid_date,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.mutual_funds import investpy_model, investpy_view, yfinance_view
 
-t_console = console.Console()
 
-
-class FundController:
+class FundController(BaseController):
     """Fund Controller class"""
 
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
     CHOICES_COMMANDS = [
         "country",
         "search",
@@ -57,7 +39,6 @@ class FundController:
         "equity",
     ]
 
-    CHOICES += CHOICES_COMMANDS
     fund_countries = investpy.funds.get_fund_countries()
     search_by_choices = ["name", "issuer", "isin", "symbol"]
     search_cols = [
@@ -73,15 +54,15 @@ class FundController:
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        self.fund_parser = argparse.ArgumentParser(add_help=False, prog="fund")
-        self.fund_parser.add_argument("cmd", choices=self.CHOICES)
+        super().__init__("/funds/", queue)
+
         self.country = "united states"
-        self.completer: Union[None, NestedCompleter] = None
         self.data = pd.DataFrame()
         self.fund_name = ""
         self.fund_symbol = ""
+
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["country"] = {c: None for c in self.fund_countries}
             choices["search"]["-b"] = {c: None for c in self.search_by_choices}
             choices["search"]["--by"] = {c: None for c in self.search_by_choices}
@@ -89,122 +70,51 @@ class FundController:
             choices["search"]["--sortby"] = {c: None for c in self.search_cols}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
-
     def print_help(self):
         """Print help"""
-        fund_string = f"{self.fund_name or None}"
-        fund_string2 = f" ({self.fund_symbol})" if self.fund_symbol else ""
-        fund_string += fund_string2
-        help_str = f"""
-[bold]Mutual Funds[/bold]:[italic]
+        has_fund_start = "" if self.fund_symbol else "[unvl]"
+        has_fund_end = "" if self.fund_symbol else "[/unvl]"
+        has_fund_usa_start = (
+            "" if self.fund_symbol and self.country == "united states" else "[unvl]"
+        )
+        has_fund_usa_end = (
+            "" if self.fund_symbol and self.country == "united states" else "[/unvl]"
+        )
+        if self.fund_name:
+            if self.fund_symbol:
+                fund_string = f"{self.fund_name} ({self.fund_symbol})"
+            else:
+                fund_string = f"{self.fund_name}"
+        else:
+            fund_string = ""
+        help_text = f"""
+[src][Investing.com][/src][cmds]
+    country       set a country for filtering[/cmds]
 
-Investing.com[/italic]:
-    country       set a country for filtering
+[param]Current Country: [/param]{self.country.title()}
 
-Current Country: [green]{self.country.title()}[/green][italic]
-
-Investing.com[/italic]:
+[src][Investing.com][/src][cmds]
     overview      overview of top funds by country
     search        search for Mutual Funds
-    load          load historical fund data
+    load          load historical fund data[/cmds]
 
-Current Fund: [cyan] {fund_string}[/cyan]
-[italic]{'[dim]' if not self.fund_symbol else ''}
-Investing.com[/italic]:
+[param]Current Fund: [/param]{fund_string}
+{has_fund_start}
+[src][Investing.com][/src][cmds]
     info          get fund information
-    plot          plot loaded historical fund data{'[/dim]' if not self.fund_symbol else ''}
-[italic]{'[dim]' if not self.fund_symbol or self.country!='united states' else ''}
-Yahoo Finance[/italic]:
+    plot          plot loaded historical fund data{has_fund_end}{has_fund_usa_start}
+[src][YFinance][/src]
     sector        sector weightings
-    equity        equity holdings
-    {'[/dim]' if not self.fund_symbol or self.country!='united states' else ''}
+    equity        equity holdings[/cmds]{has_fund_usa_end}
     """
-        t_console.print(help_str)
+        console.print(text=help_text, menu="Mutual Funds")
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.fund_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
+    def custom_reset(self):
+        """Class specific component of reset command"""
         if self.fund_name:
-            self.queue.insert(0, f"load {self.fund_name} --name")
-        self.queue.insert(0, f"country -n {self.country}")
-        self.queue.insert(0, "funds")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
+            return ["funds", f"load {self.fund_name} --name"]
+        return []
 
-    @try_except
     def call_country(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -229,13 +139,12 @@ Yahoo Finance[/italic]:
             if country_candidate.lower() in self.fund_countries:
                 self.country = " ".join(ns_parser.name)
             else:
-                t_console.print(
+                console.print(
                     f"{country_candidate.lower()} not a valid country to select."
                 )
-        t_console.print("")
+        console.print("")
         return self.queue
 
-    @try_except
     def call_search(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -300,7 +209,6 @@ Yahoo Finance[/italic]:
             )
         return self.queue
 
-    @try_except
     def call_overview(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -326,7 +234,6 @@ Yahoo Finance[/italic]:
             )
         return self.queue
 
-    @try_except
     def call_info(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -338,14 +245,13 @@ Yahoo Finance[/italic]:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if not self.fund_name:
-                t_console.print(
+                console.print(
                     "No fund loaded.  Please use `load` first to plot.\n", style="bold"
                 )
                 return self.queue
             investpy_view.display_fund_info(self.fund_name, country=self.country)
         return self.queue
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -406,17 +312,16 @@ Yahoo Finance[/italic]:
                 end_date=ns_parser.end,
             )
             if self.data.empty:
-                t_console.print(
+                console.print(
                     """No data found.
 Potential errors
     -- Incorrect country specified
     -- ISIN supplied instead of symbol
     -- Name used, but --name flag not passed"""
                 )
-        t_console.print("")
+        console.print("")
         return self.queue
 
-    @try_except
     def call_plot(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -431,7 +336,7 @@ Potential errors
         )
         if ns_parser:
             if not self.fund_symbol:
-                t_console.print(
+                console.print(
                     "No fund loaded.  Please use `load` first to plot.\n", style="bold"
                 )
                 return self.queue
@@ -440,7 +345,6 @@ Potential errors
             )
         return self.queue
 
-    @try_except
     def call_sector(self, other_args: List[str]):
         """Process sector command"""
         parser = argparse.ArgumentParser(
@@ -463,12 +367,12 @@ Potential errors
         )
         if ns_parser:
             if self.country != "united states":
-                t_console.print(
+                console.print(
                     "YFinance implementation currently only supports funds from united states"
                 )
                 return self.queue
             if not self.fund_symbol or not self.fund_name:
-                t_console.print(
+                console.print(
                     "No fund loaded.  Please use `load` first to plot.\n", style="bold"
                 )
                 return self.queue
@@ -480,7 +384,6 @@ Potential errors
 
         return self.queue
 
-    @try_except
     def call_equity(self, other_args: List[str]):
         """Process sector command"""
         parser = argparse.ArgumentParser(
@@ -493,93 +396,15 @@ Potential errors
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.country != "united states":
-                t_console.print(
+                console.print(
                     "YFinance implementation currently only supports funds from united states"
                 )
                 return self.queue
             if not self.fund_symbol or not self.fund_name:
-                t_console.print(
+                console.print(
                     "No fund loaded.  Please use `load` first to plot.\n", style="bold"
                 )
                 return self.queue
             yfinance_view.display_equity(self.fund_symbol)
 
         return self.queue
-
-
-def menu(queue: List[str] = None):
-    fund_controller = FundController(queue)
-    first = True
-
-    while True:
-        # There is a command in the queue
-        if fund_controller.queue and len(fund_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if fund_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(fund_controller.queue) > 1:
-                    return fund_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = fund_controller.queue[0]
-            fund_controller.queue = fund_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in fund_controller.CHOICES_COMMANDS:
-                t_console.print(f"{get_flair()} /funds/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if first:
-                fund_controller.print_help()
-                first = False
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and fund_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /funds/ $ ",
-                        completer=fund_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /funds/ $ ")
-
-        try:
-            # Process the input command
-            fund_controller.queue = fund_controller.switch(an_input)
-
-        except SystemExit:
-            t_console.print(
-                f"\nThe command '{an_input}' doesn't exist on the /funds/ menu."
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                fund_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        fund_controller.queue = []
-                        t_console.print("")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.\n")
-                fund_controller.queue.insert(0, an_input)
-            else:
-                t_console.print("")

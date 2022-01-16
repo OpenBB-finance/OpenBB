@@ -6,16 +6,22 @@ import pandas_ta as ta
 
 
 def cci(
-    s_interval: str, df_stock: pd.DataFrame, length: int, scalar: float
+    high_vals: pd.Series,
+    low_vals: pd.Series,
+    close_vals: pd.Series,
+    length: int = 14,
+    scalar: float = 0.0015,
 ) -> pd.DataFrame:
     """Commodity channel index
 
     Parameters
     ----------
-    s_interval: str
-        Stock time interval
-    df_stock: pd.DataFrame
-        Dataframe of prices
+    high_vals: pd.Series
+        High values
+    low_values: pd.Series
+        Low values
+    close-values: pd.Series
+        Close values
     length: int
         Length of window
     scalar: float
@@ -23,43 +29,32 @@ def cci(
 
     Returns
     ----------
-    df_ta: pd.DataFrame
+    pd.DataFrame
         Dataframe of technical indicator
     """
-    # Daily
-    if s_interval == "1440min":
-        df_ta = ta.cci(
-            high=df_stock["High"],
-            low=df_stock["Low"],
-            close=df_stock["Adj Close"],
+    return pd.DataFrame(
+        ta.cci(
+            high=high_vals,
+            low=low_vals,
+            close=close_vals,
             length=length,
             scalar=scalar,
         ).dropna()
-
-    # Intraday
-    else:
-        df_ta = ta.cci(
-            high=df_stock["High"],
-            low=df_stock["Low"],
-            close=df_stock["Close"],
-            length=length,
-            scalar=scalar,
-        ).dropna()
-
-    return pd.DataFrame(df_ta)
+    )
 
 
 def macd(
-    s_interval: str, df_stock: pd.DataFrame, n_fast: int, n_slow: int, n_signal: int
+    values: pd.DataFrame,
+    n_fast: int = 12,
+    n_slow: int = 26,
+    n_signal: int = 9,
 ) -> pd.DataFrame:
     """Moving average convergence divergence
 
     Parameters
     ----------
-    s_interval: str
-        Stock time interval
-    df_stock: pd.DataFrame
-        Dataframe of prices
+    values: pd.Series
+        Values for calculation
     n_fast : int
         Fast period
     n_slow : int
@@ -68,34 +63,20 @@ def macd(
         Signal period
     Returns
     ----------
-    df_ta: pd.DataFrame
+    pd.DataFrame
         Dataframe of technical indicator
     """
-    # Daily
-    if s_interval == "1440min":
-        df_ta = ta.macd(
-            df_stock["Adj Close"], fast=n_fast, slow=n_slow, signal=n_signal
-        ).dropna()
-
-    # Intraday
-    else:
-        df_ta = ta.macd(
-            df_stock["Close"], fast=n_fast, slow=n_slow, signal=n_signal
-        ).dropna()
-
-    return pd.DataFrame(df_ta)
+    return pd.DataFrame(
+        ta.macd(values, fast=n_fast, slow=n_slow, signal=n_signal).dropna()
+    )
 
 
-def rsi(
-    s_interval: str, df_stock: pd.DataFrame, length: int, scalar: float, drift: int
-) -> pd.DataFrame:
+def rsi(values: pd.Series, length: int, scalar: float, drift: int) -> pd.DataFrame:
     """Relative strength index
 
     Parameters
     ----------
-    s_interval: str
-        Stock time interval
-    df_stock: pd.DataFrame
+    values: pd.Series
         Dataframe of prices
     length: int
         Length of window
@@ -106,38 +87,32 @@ def rsi(
 
     Returns
     ----------
-    df_ta: pd.DataFrame
+    pd.DataFrame
         Dataframe of technical indicator
     """
-    # Daily
-    if s_interval == "1440min":
-        df_ta = ta.rsi(
-            df_stock["Adj Close"], length=length, scalar=scalar, drift=drift
-        ).dropna()
-
-    # Intraday
-    else:
-        df_ta = ta.rsi(
-            df_stock["Close"], length=length, scalar=scalar, drift=drift
-        ).dropna()
-    return pd.DataFrame(df_ta)
+    return pd.DataFrame(
+        ta.rsi(values, length=length, scalar=scalar, drift=drift).dropna()
+    )
 
 
 def stoch(
-    s_interval: str,
-    df_stock: pd.DataFrame,
-    fastkperiod: int,
-    slowdperiod: int,
-    slowkperiod: int,
+    high_vals: pd.Series,
+    low_vals: pd.Series,
+    close_vals: pd.Series,
+    fastkperiod: int = 14,
+    slowdperiod: int = 3,
+    slowkperiod: int = 3,
 ):
     """Stochastic oscillator
 
     Parameters
     ----------
-    s_interval: str
-        Stock time interval
-    df_stock: pd.DataFrame
-        Dataframe of prices
+    high_vals: pd.Series
+        High values
+    low_vals: pd.Series
+        Low values
+    close-vals: pd.Series
+        Close values
     fastkperiod : int
         Fast k period
     slowdperiod : int
@@ -146,91 +121,53 @@ def stoch(
         Slow k period
     Returns
     ----------
-    df_ta: pd.DataFrame
+    pd.DataFrame
         Dataframe of technical indicator
     """
-    # Daily
-    if s_interval == "1440min":
-        df_ta = ta.stoch(
-            high=df_stock["High"],
-            low=df_stock["Low"],
-            close=df_stock["Adj Close"],
+    return pd.DataFrame(
+        ta.stoch(
+            high=high_vals,
+            low=low_vals,
+            close=close_vals,
             k=fastkperiod,
             d=slowdperiod,
             smooth_k=slowkperiod,
         ).dropna()
-
-    # Intraday
-    else:
-        df_ta = ta.stoch(
-            high=df_stock["High"],
-            low=df_stock["Low"],
-            close=df_stock["Close"],
-            k=fastkperiod,
-            d=slowdperiod,
-            smooth_k=slowkperiod,
-        ).dropna()
-
-    return pd.DataFrame(df_ta)
+    )
 
 
-def fisher(s_interval: str, df_stock: pd.DataFrame, length: int) -> pd.DataFrame:
+def fisher(high_vals: pd.Series, low_vals: pd.Series, length: int = 14) -> pd.DataFrame:
     """Fisher Transform
 
     Parameters
     ----------
-    other_args:List[str]
-        Argparse arguments
-    s_ticker: str
-        Ticker
-    s_interval: str
-        Stock time interval
-    df_stock: pd.DataFrame
-        Dataframe of prices
+    high_vals: pd.Series
+        High values
+    low_vals: pd.Series
+        Low values
+    length: int
+        Length for indicator window
     Returns
     ----------
     df_ta: pd.DataFrame
         Dataframe of technical indicator
     """
     # Daily
-    if s_interval == "1440min":
-        df_ta = ta.fisher(
-            high=df_stock["High"], low=df_stock["Low"], length=length
-        ).dropna()
-
-    # Intraday
-    else:
-        df_ta = ta.fisher(
-            high=df_stock["High"], low=df_stock["Low"], length=length
-        ).dropna()
-
-    return pd.DataFrame(df_ta)
+    return pd.DataFrame(ta.fisher(high=high_vals, low=low_vals, length=length).dropna())
 
 
-def cg(s_interval: str, df_stock: pd.DataFrame, length: int) -> pd.DataFrame:
+def cg(values: pd.Series, length: int) -> pd.DataFrame:
     """Center of gravity
 
     Parameters
     ----------
-    other_args:List[str]
-        Argparse arguments
-    s_ticker: str
-        Ticker
-    s_interval: str
-        Stock time interval
-    df_stock: pd.DataFrame
-        Dataframe of prices
+    values: pd.DataFrame
+        Data to use with close being titled values
+    length: int
+        Length for indicator window
     Returns
     ----------
-    df_ta: pd.DataFrame
+    d.DataFrame
         Dataframe of technical indicator
     """
-    # Daily
-    if s_interval == "1440min":
-        df_ta = ta.cg(close=df_stock["Adj Close"], length=length).dropna()
-
-    # Intraday
-    else:
-        df_ta = ta.cg(close=df_stock["Close"], length=length).dropna()
-
-    return pd.DataFrame(df_ta)
+    return pd.DataFrame(ta.cg(close=values, length=length).dropna())

@@ -2,20 +2,17 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
 from datetime import datetime
-from typing import List, Union
+from typing import List
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_non_negative,
     check_positive,
     check_int_range,
-    try_except,
-    system_clear,
-    get_flair,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     valid_date,
 )
@@ -35,22 +32,9 @@ from gamestonk_terminal.stocks.discovery import (
 # pylint:disable=C0302
 
 
-class DiscoveryController:
+class DiscoveryController(BaseController):
     """Discovery Controller class"""
 
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
     CHOICES_COMMANDS = [
         "pipo",
         "fipo",
@@ -70,8 +54,8 @@ class DiscoveryController:
         "rtearn",
         "cnews",
         "rtat",
+        "divcal",
     ]
-    CHOICES += CHOICES_COMMANDS
 
     arkord_sortby_choices = [
         "date",
@@ -111,20 +95,23 @@ class DiscoveryController:
             "Technology",
         ]
     ]
+    dividend_columns = [
+        "Name",
+        "Symbol",
+        "Ex-Dividend Date",
+        "Payment Date",
+        "Record Date",
+        "Dividend",
+        "Indicated Annual Dividend",
+        "Announcement Date",
+    ]
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        self.disc_parser = argparse.ArgumentParser(add_help=False, prog="disc")
-        self.disc_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-
-        self.completer: Union[None, NestedCompleter] = None
+        super().__init__("/stocks/disc/", queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["arkord"]["-s"] = {c: None for c in self.arkord_sortby_choices}
             choices["arkord"]["--sortby"] = {
                 c: None for c in self.arkord_sortby_choices
@@ -133,23 +120,20 @@ class DiscoveryController:
             choices["arkord"]["--fund"] = {c: None for c in self.arkord_fund_choices}
             choices["cnews"]["-t"] = {c: None for c in self.cnews_type_choices}
             choices["cnews"]["--type"] = {c: None for c in self.cnews_type_choices}
+            choices["divcal"]["-s"] = {c: None for c in self.dividend_columns}
+            choices["divcal"]["--sort"] = {c: None for c in self.dividend_columns}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
-
     def print_help(self):
         """Print help"""
-        help_text = """
-Geek of Wall St:
+        help_text = """[cmds]
+[src][Geek of Wall St][/src]
     rtearn         realtime earnings from and expected moves
-Finnhub:
+[src][Finnhub][/src]
     pipo           past IPOs dates
     fipo           future IPOs dates
-Yahoo Finance:
+[src][Yahoo Finance][/src]
     gainers        show latest top gainers
     losers         show latest top losers
     ugs            undervalued stocks with revenue and earnings growth in excess of 25%
@@ -157,104 +141,76 @@ Yahoo Finance:
     active         most active stocks by intraday trade volume
     ulc            potentially undervalued large cap stocks
     asc            small cap stocks with earnings growth rates better than 25%
-Fidelity:
+[src][Fidelity][/src]
     ford           orders by Fidelity Customers
-cathiesark.com:
+[src][Cathiesark.com][/src]
     arkord         orders by ARK Investment Management LLC
-Seeking Alpha:
+[src][Seeking Alpha][/src]
     upcoming       upcoming earnings release dates
     trending       trending news
     cnews          customized news (buybacks, ipos, spacs, healthcare, politics)
-shortinterest.com
+[src][Shortinterest.com][/src]
     lowfloat       low float stocks under 10M shares float
-pennystockflow.com
+[src][Pennystockflow.com][/src]
     hotpenny       today's hot penny stocks
-NASDAQ Data Link (Formerly Quandl):
+[src][NASDAQ Data Link (Formerly Quandl)][/src]
     rtat           top 10 retail traded stocks per day
+    divcal         dividend calendar for selected date[/cmds]
 """
-        print(help_text)
+        console.print(text=help_text, menu="Stocks - Discovery")
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
+    # TODO Add flag for adding last price to the following table
+    def call_divcal(self, other_args: List[str]):
+        """Process divcal command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="divcal",
+            description="""Get dividend calendar for selected date""",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            default=datetime.now(),
+            type=valid_date,
+            dest="date",
+            help="Date to get format for",
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            default=["Dividend"],
+            nargs="+",
+            type=str,
+            help="Column to sort by",
+            dest="sort",
+        )
+        parser.add_argument(
+            "-a",
+            "--ascend",
+            default=False,
+            action="store_true",
+            help="Flag to sort in ascending order",
+            dest="ascend",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-d")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
+        )
+        if ns_parser:
+            sort_col = " ".join(ns_parser.sort)
+            if sort_col not in self.dividend_columns:
+                console.print(f"{sort_col} not a valid selection for sorting.\n")
+                return
+            nasdaq_view.display_dividend_calendar(
+                ns_parser.date.strftime("%Y-%m-%d"),
+                sort_col=sort_col,
+                ascending=ns_parser.ascend,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.disc_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "disc")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    @try_except
     def call_rtearn(self, other_args: List[str]):
         """Process rtearn command"""
         parser = argparse.ArgumentParser(
@@ -271,7 +227,6 @@ NASDAQ Data Link (Formerly Quandl):
         if ns_parser:
             geekofwallstreet_view.display_realtime_earnings(ns_parser.export)
 
-    @try_except
     def call_pipo(self, other_args: List[str]):
         """Process pipo command"""
         parser = argparse.ArgumentParser(
@@ -302,7 +257,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_fipo(self, other_args: List[str]):
         """Process fipo command"""
         parser = argparse.ArgumentParser(
@@ -333,7 +287,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_gainers(self, other_args: List[str]):
         """Process gainers command"""
         parser = argparse.ArgumentParser(
@@ -362,7 +315,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_losers(self, other_args: List[str]):
         """Process losers command"""
         parser = argparse.ArgumentParser(
@@ -391,7 +343,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_ugs(self, other_args: List[str]):
         """Process ugs command"""
         parser = argparse.ArgumentParser(
@@ -423,16 +374,14 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_gtech(self, other_args: List[str]):
         """Process gtech command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="gtech",
-            description="""
-                Print up to 25 top tech stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]
-            """,
+            description="Print up to 25 top tech stocks with revenue and earnings"
+            + " growth in excess of 25%. [Source: Yahoo Finance]",
         )
         parser.add_argument(
             "-l",
@@ -454,7 +403,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_active(self, other_args: List[str]):
         """Process active command"""
         parser = argparse.ArgumentParser(
@@ -485,7 +433,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_ulc(self, other_args: List[str]):
         """Process ulc command"""
         parser = argparse.ArgumentParser(
@@ -516,7 +463,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_asc(self, other_args: List[str]):
         """Process asc command"""
         parser = argparse.ArgumentParser(
@@ -547,7 +493,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_ford(self, other_args: List[str]):
         """Process ford command"""
         parser = argparse.ArgumentParser(
@@ -581,7 +526,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_arkord(self, other_args: List[str]):
         """Process arkord command"""
         parser = argparse.ArgumentParser(
@@ -659,7 +603,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_upcoming(self, other_args: List[str]):
         # TODO: switch to nasdaq
         """Process upcoming command"""
@@ -699,7 +642,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_trending(self, other_args: List[str]):
         """Process trending command"""
         parser = argparse.ArgumentParser(
@@ -747,7 +689,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_lowfloat(self, other_args: List[str]):
         """Process lowfloat command"""
         parser = argparse.ArgumentParser(
@@ -782,7 +723,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cnews(self, other_args: List[str]):
         """Process cnews command"""
         parser = argparse.ArgumentParser(
@@ -822,7 +762,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_hotpenny(self, other_args: List[str]):
         """Process hotpenny command"""
         parser = argparse.ArgumentParser(
@@ -860,7 +799,6 @@ NASDAQ Data Link (Formerly Quandl):
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_rtat(self, other_args: List[str]):
         """Process fds command"""
         parser = argparse.ArgumentParser(
@@ -891,82 +829,3 @@ NASDAQ Data Link (Formerly Quandl):
             nasdaq_view.display_top_retail(
                 n_days=ns_parser.limit, export=ns_parser.export
             )
-
-
-def menu(queue: List[str] = None):
-    """Discovery Menu"""
-    disc_controller = DiscoveryController(queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if disc_controller.queue and len(disc_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if disc_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(disc_controller.queue) > 1:
-                    return disc_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = disc_controller.queue[0]
-            disc_controller.queue = disc_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in disc_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /stocks/disc/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                disc_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and disc_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/disc/ $ ",
-                        completer=disc_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/disc/ $ ")
-
-        try:
-            # Process the input command
-            disc_controller.queue = disc_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/disc menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                disc_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        disc_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                disc_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

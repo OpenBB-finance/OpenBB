@@ -1,14 +1,13 @@
 """Fundamental Analysis Controller."""
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines
 
 import argparse
-import difflib
 from datetime import datetime, timedelta
-from typing import List, Union
+from typing import List
 from prompt_toolkit.completion import NestedCompleter
-from colorama import Style
+from gamestonk_terminal.rich_config import console
 
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
     fmp_controller,
     fmp_view,
@@ -25,11 +24,8 @@ from gamestonk_terminal.stocks.fundamental_analysis import (
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    get_flair,
     parse_known_args_and_warn,
     check_positive,
-    try_except,
-    system_clear,
     valid_date,
 )
 from gamestonk_terminal.stocks import stocks_helper
@@ -38,22 +34,8 @@ from gamestonk_terminal.menu import session
 # pylint: disable=inconsistent-return-statements
 
 
-class FundamentalAnalysisController:
-    """Fundamental Analysis Controller."""
-
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
+class FundamentalAnalysisController(BaseController):
+    """Fundamental Analysis Controller class"""
 
     CHOICES_COMMANDS = [
         "load",
@@ -86,9 +68,6 @@ class FundamentalAnalysisController:
         "fmp",
     ]
 
-    CHOICES += CHOICES_COMMANDS
-    CHOICES += CHOICES_MENUS
-
     def __init__(
         self,
         ticker: str,
@@ -97,170 +76,60 @@ class FundamentalAnalysisController:
         suffix: str = "",
         queue: List[str] = None,
     ):
-        """Construct Fundamental Analysis Controller.
+        """Constructor"""
+        super().__init__("/stocks/fa/", queue)
 
-        Parameters
-        ----------
-        ticker : str
-            Fundamental analysis ticker symbol
-        start : str
-            Stat date of the stock data
-        interval : str
-            Stock data interval
-        suffix : str, optional
-            Exchange suffix, by default ""
-        queue : List[str], optional
-            Command queue, by default None
-        """
         self.ticker = f"{ticker}.{suffix}" if suffix else ticker
         self.start = start
         self.interval = interval
         self.suffix = suffix
 
-        self.fa_parser = argparse.ArgumentParser(add_help=False, prog="fa")
-        self.fa_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-        self.completer: Union[None, NestedCompleter] = None
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["-i"] = {c: {} for c in stocks_helper.INTERVALS}
             choices["load"]["-s"] = {c: {} for c in stocks_helper.SOURCES}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
-
     def print_help(self):
         """Print help."""
-        newline = "\n"
-        help_text = f"""
-Ticker: {self.ticker}
-{f"Note that only Yahoo Finance currently supports foreign exchanges{Style.DIM}{newline}" if self.suffix else ""}
-    data          fundamental and technical data of company [FinViz]
-    mgmt          management team of the company [Business Insider]
-    analysis      analyse SEC filings with the help of machine learning [Eclect.us]
-    score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]
-    warnings      company warnings according to Sean Seah book [Market Watch]
-    dcf           advanced Excel customizable discounted cash flow [stockanalysis] {Style.RESET_ALL}
-Yahoo Finance:
-    info          information scope of the company
+        is_foreign_start = "" if not self.suffix else "[unvl]"
+        is_foreign_end = "" if not self.suffix else "[/unvl]"
+        help_text = f"""[param]
+Ticker: [/param] {self.ticker} [cmds]
+
+[cmds]    data          fundamental and technical data of company [src][FinViz][/src]
+    mgmt          management team of the company [src][Business Insider][/src]
+    analysis      analyse SEC filings with the help of machine learning [src][Eclect.us][/src]
+    score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [src][FMP][/src]
+    warnings      company warnings according to Sean Seah book [src][Market Watch][/src]
+    dcf           advanced Excel customizable discounted cash flow [src][Stockanalysis][/src][/cmds]
+[src][Yahoo Finance][/src]
+    info          information scope of the company{is_foreign_start}
     shrs          shareholders of the company
     sust          sustainability values of the company
     cal           calendar earnings and estimates of the company
     web           open web browser of the company
     hq            open HQ location of the company
-    divs          show historical dividends for company {Style.DIM if self.suffix else ""}
-Alpha Vantage:
+    divs          show historical dividends for company{is_foreign_end}
+[src][Alpha Vantage][/src]
     overview      overview of the company
     key           company key metrics
     income        income statements of the company
     balance       balance sheet of the company
     cash          cash flow of the company
     earnings      earnings dates and reported EPS
-    fraud         key fraud ratios
-Other Sources:
->   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP{Style.RESET_ALL}
+    fraud         key fraud ratios[/cmds]
+[info]Other Sources:[/info][menu]
+>   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP[/menu]
         """
-        print(help_text)
-        # No longer used, but keep for future:
-        # print("")
-        # print("Market Watch API - DEPRECATED")
-        # print("   income        income statement of the company")
-        # print("   balance       balance sheet of the company")
-        # print("   cash          cash flow statement of the company")
+        console.print(text=help_text, menu="Stocks - Fundamental Analysis")
 
-    def switch(self, an_input: str):
-        """Process and dispatch input.
-
-        Parameters
-        ----------
-        an_input : str
-            string with input arguments
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.fa_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command."""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command."""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command."""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command."""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command."""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command."""
-        self.queue.insert(0, "fa")
+    def custom_reset(self):
+        """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(0, f"load {self.ticker}")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            return ["stocks", f"load {self.ticker}", "fa"]
+        return []
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command."""
         parser = argparse.ArgumentParser(
@@ -329,7 +198,6 @@ Other Sources:
                 else:
                     self.ticker = ns_parser.ticker.upper()
 
-    @try_except
     def call_analysis(self, other_args: List[str]):
         """Process analysis command."""
         parser = argparse.ArgumentParser(
@@ -344,7 +212,6 @@ Other Sources:
         if ns_parser:
             eclect_us_view.display_analysis(self.ticker)
 
-    @try_except
     def call_mgmt(self, other_args: List[str]):
         """Process mgmt command."""
         parser = argparse.ArgumentParser(
@@ -365,7 +232,6 @@ Other Sources:
                 ticker=self.ticker, export=ns_parser.export
             )
 
-    @try_except
     def call_data(self, other_args: List[str]):
         """Process screener command."""
         parser = argparse.ArgumentParser(
@@ -393,7 +259,6 @@ Other Sources:
         if ns_parser:
             finviz_view.display_screen_data(self.ticker)
 
-    @try_except
     def call_score(self, other_args: List[str]):
         """Process score command."""
         parser = argparse.ArgumentParser(
@@ -411,7 +276,6 @@ Other Sources:
         if ns_parser:
             fmp_view.valinvest_score(self.ticker)
 
-    @try_except
     def call_info(self, other_args: List[str]):
         """Process info command."""
         parser = argparse.ArgumentParser(
@@ -445,7 +309,6 @@ Other Sources:
         if ns_parser:
             yahoo_finance_view.display_info(self.ticker)
 
-    @try_except
     def call_shrs(self, other_args: List[str]):
         """Process shrs command."""
         parser = argparse.ArgumentParser(
@@ -458,11 +321,12 @@ Other Sources:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if not self.suffix:
+            if ns_parser:
+                yahoo_finance_view.display_shareholders(self.ticker)
+        else:
+            console.print("Only US tickers are recognized.", "\n")
 
-        if ns_parser:
-            yahoo_finance_view.display_shareholders(self.ticker)
-
-    @try_except
     def call_sust(self, other_args: List[str]):
         """Process sust command."""
         parser = argparse.ArgumentParser(
@@ -481,10 +345,12 @@ Other Sources:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            yahoo_finance_view.display_sustainability(self.ticker)
+        if not self.suffix:
+            if ns_parser:
+                yahoo_finance_view.display_sustainability(self.ticker)
+        else:
+            console.print("Only US tickers are recognized.", "\n")
 
-    @try_except
     def call_cal(self, other_args: List[str]):
         """Process cal command."""
         parser = argparse.ArgumentParser(
@@ -499,10 +365,12 @@ Other Sources:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            yahoo_finance_view.display_calendar_earnings(ticker=self.ticker)
+        if not self.suffix:
+            if ns_parser:
+                yahoo_finance_view.display_calendar_earnings(ticker=self.ticker)
+        else:
+            console.print("Only US tickers are recognized.", "\n")
 
-    @try_except
     def call_web(self, other_args: List[str]):
         """Process web command."""
         parser = argparse.ArgumentParser(
@@ -516,10 +384,12 @@ Other Sources:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            yahoo_finance_view.open_web(self.ticker)
+        if not self.suffix:
+            if ns_parser:
+                yahoo_finance_view.open_web(self.ticker)
+        else:
+            console.print("Only US tickers are recognized.", "\n")
 
-    @try_except
     def call_hq(self, other_args: List[str]):
         """Process hq command."""
         parser = argparse.ArgumentParser(
@@ -533,10 +403,12 @@ Other Sources:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            yahoo_finance_view.open_headquarters_map(self.ticker)
+        if not self.suffix:
+            if ns_parser:
+                yahoo_finance_view.open_headquarters_map(self.ticker)
+        else:
+            console.print("Only US tickers are recognized.", "\n")
 
-    @try_except
     def call_divs(self, other_args: List[str]):
         """Process divs command."""
         parser = argparse.ArgumentParser(
@@ -564,15 +436,17 @@ Other Sources:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            yahoo_finance_view.display_dividends(
-                ticker=self.ticker,
-                limit=ns_parser.limit,
-                plot=ns_parser.plot,
-                export=ns_parser.export,
-            )
+        if not self.suffix:
+            if ns_parser:
+                yahoo_finance_view.display_dividends(
+                    ticker=self.ticker,
+                    limit=ns_parser.limit,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
+                )
+        else:
+            console.print("Only US tickers are recognized.", "\n")
 
-    @try_except
     def call_overview(self, other_args: List[str]):
         """Process overview command."""
         parser = argparse.ArgumentParser(
@@ -603,7 +477,6 @@ Other Sources:
         if ns_parser:
             av_view.display_overview(self.ticker)
 
-    @try_except
     def call_key(self, other_args: List[str]):
         """Process overview command."""
         parser = argparse.ArgumentParser(
@@ -624,7 +497,6 @@ Other Sources:
         if ns_parser:
             av_view.display_key(self.ticker)
 
-    @try_except
     def call_income(self, other_args: List[str]):
         """Process income command."""
         parser = argparse.ArgumentParser(
@@ -670,7 +542,6 @@ Other Sources:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_balance(self, other_args: List[str]):
         """Process balance command."""
         parser = argparse.ArgumentParser(
@@ -722,7 +593,6 @@ Other Sources:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cash(self, other_args: List[str]):
         """Process cash command."""
         parser = argparse.ArgumentParser(
@@ -772,7 +642,6 @@ Other Sources:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_earnings(self, other_args: List[str]):
         """Process earnings command."""
         parser = argparse.ArgumentParser(
@@ -811,7 +680,6 @@ Other Sources:
                 quarterly=ns_parser.b_quarter,
             )
 
-    @try_except
     def call_fraud(self, other_args: List[str]):
         """Process fraud command."""
         parser = argparse.ArgumentParser(
@@ -860,7 +728,6 @@ Other Sources:
         if ns_parser:
             av_view.display_fraud(self.ticker)
 
-    @try_except
     def call_dcf(self, other_args: List[str]):
         """Process dcf command."""
         parser = argparse.ArgumentParser(
@@ -888,7 +755,6 @@ Other Sources:
             dcf = dcf_view.CreateExcelFA(self.ticker, ns_parser.audit)
             dcf.create_workbook()
 
-    @try_except
     def call_warnings(self, other_args: List[str]):
         """Process warnings command."""
         parser = argparse.ArgumentParser(
@@ -920,12 +786,11 @@ Other Sources:
 
     def call_fmp(self, _):
         """Process fmp command."""
-        self.queue = fmp_controller.menu(
+        self.queue = fmp_controller.FinancialModelingPrepController(
             self.ticker, self.start, self.interval, self.queue
-        )
+        ).menu()
 
 
-@try_except
 def key_metrics_explained(other_args: List[str]):
     """Key metrics explained.
 
@@ -951,88 +816,6 @@ def key_metrics_explained(other_args: List[str]):
         with open(filepath) as fp:
             line = fp.readline()
             while line:
-                print(f"{line.strip()}")
+                console.print(f"{line.strip()}")
                 line = fp.readline()
-            print("")
-
-
-def menu(
-    ticker: str, start: str, interval: str, suffix: str = "", queue: List[str] = None
-):
-    """Fundamental Analysis Menu."""
-    fa_controller = FundamentalAnalysisController(
-        ticker, start, interval, suffix, queue
-    )
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if fa_controller.queue and len(fa_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if fa_controller.queue[0] in ("q", "..", "quit"):
-                if len(fa_controller.queue) > 1:
-                    return fa_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = fa_controller.queue[0]
-            fa_controller.queue = fa_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in fa_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /stocks/fa/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                fa_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and fa_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/fa/ $ ",
-                        completer=fa_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/fa/ $ ")
-
-        try:
-            # Process the input command
-            fa_controller.queue = fa_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/fa menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                fa_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        fa_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                fa_controller.queue.insert(0, an_input)
-            else:
-                print("\n")
+            console.print("")

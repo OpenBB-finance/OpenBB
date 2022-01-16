@@ -5,6 +5,7 @@ from tabulate import tabulate
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.economy import finnhub_model
 from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.rich_config import console
 
 
 def economy_calendar_events(country: str, num: int, impact: str, export: str):
@@ -24,7 +25,7 @@ def economy_calendar_events(country: str, num: int, impact: str, export: str):
     df_events = finnhub_model.get_economy_calendar_events()
 
     if df_events.empty:
-        print("No latest economy calendar events found\n")
+        console.print("No latest economy calendar events found\n")
         return
 
     df_econ_calendar = df_events[df_events["country"] == country].sort_values(
@@ -32,14 +33,16 @@ def economy_calendar_events(country: str, num: int, impact: str, export: str):
     )
 
     if df_econ_calendar.empty:
-        print("No latest economy calendar events found in the specified country\n")
+        console.print(
+            "No latest economy calendar events found in the specified country\n"
+        )
         return
 
     if impact != "all":
         df_econ_calendar = df_econ_calendar[df_econ_calendar["impact"] == impact]
 
         if df_econ_calendar.empty:
-            print(
+            console.print(
                 "No latest economy calendar events found in the specified country with this impact\n"
             )
             return
@@ -75,8 +78,8 @@ def economy_calendar_events(country: str, num: int, impact: str, export: str):
             )
         )
     else:
-        print(df_econ_calendar.to_string(index=False))
-    print("")
+        console.print(df_econ_calendar.to_string(index=False))
+    console.print("")
 
     export_data(
         export,

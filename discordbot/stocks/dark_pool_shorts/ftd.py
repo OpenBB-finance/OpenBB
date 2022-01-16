@@ -1,15 +1,17 @@
 import os
 from datetime import datetime, timedelta
-import discord
-from matplotlib import pyplot as plt
-import matplotlib.dates as mdates
-import yfinance as yf
-import discordbot.config_discordbot as cfg
-import discordbot.helpers
-from discordbot.run_discordbot import gst_imgur
-from gamestonk_terminal.config_plot import PLOT_DPI
 
+import discord
+import yfinance as yf
+import matplotlib.dates as mdates
+from matplotlib import pyplot as plt
+
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.stocks.dark_pool_shorts import sec_model
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur, logger
+import discordbot.helpers
 
 
 async def ftd_command(ctx, ticker="", start="", end=""):
@@ -18,7 +20,7 @@ async def ftd_command(ctx, ticker="", start="", end=""):
     try:
         # Debug user input
         if cfg.DEBUG:
-            print(f"\n!stocks.dps.ftd {ticker} {start} {end}")
+            logger.debug("!stocks.dps.ftd %s %s %s", ticker, start, end)
 
         # Check for argument
         if ticker == "":
@@ -45,7 +47,7 @@ async def ftd_command(ctx, ticker="", start="", end=""):
 
         # Debug user output
         if cfg.DEBUG:
-            print(ftds_data.to_string())
+            logger.debug(ftds_data.to_string())
 
         plt.figure(dpi=PLOT_DPI)
         # Output data

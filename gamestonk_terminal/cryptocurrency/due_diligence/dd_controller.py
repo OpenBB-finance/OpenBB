@@ -3,13 +3,12 @@ __docformat__ = "numpy"
 
 # pylint: disable=R0904, C0302, W0622, C0201
 import argparse
-import difflib
-from typing import List, Union
+from typing import List
 from datetime import datetime, timedelta
-from colorama.ansi import Style
 import pandas as pd
-from binance.client import Client
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.cryptocurrency.due_diligence import (
     coinglass_model,
     glassnode_model,
@@ -31,39 +30,21 @@ from gamestonk_terminal.cryptocurrency.due_diligence import (
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    get_flair,
     parse_known_args_and_warn,
     check_positive,
-    try_except,
-    system_clear,
     valid_date,
 )
-
-from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_chart, load
-import gamestonk_terminal.config_terminal as cfg
+from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
+    load,
+)
 
 FILTERS_VS_USD_BTC = ["usd", "btc"]
 
 
-class DueDiligenceController:
+class DueDiligenceController(BaseController):
+    """Due Diligence Controller class"""
 
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
-
-    CHOICES_COMMANDS = ["load", "oi", "active", "change", "nonzero", "eb", "chart"]
-
-    CHOICES += CHOICES_COMMANDS
+    CHOICES_COMMANDS = ["load", "oi", "active", "change", "nonzero", "eb"]
 
     SPECIFIC_CHOICES = {
         "cp": [
@@ -86,10 +67,10 @@ class DueDiligenceController:
             "dev",
         ],
         "bin": [
-            "book",
+            "binbook",
             "balance",
         ],
-        "cb": ["book", "trades", "stats"],
+        "cb": ["cbbook", "trades", "stats"],
     }
 
     DD_VIEWS_MAPPING = {
@@ -98,34 +79,48 @@ class DueDiligenceController:
         "bin": binance_view,
     }
 
-    def __init__(self, coin=None, source=None, symbol=None, queue: List[str] = None):
-        """CONSTRUCTOR"""
+    def __init__(
+        self,
+        coin=None,
+        source=None,
+        symbol=None,
+        coin_map_df: pd.DataFrame = None,
+        queue: List[str] = None,
+    ):
+        """Constructor"""
+        super().__init__("/crypto/dd/", queue)
 
-        self.dd_parser = argparse.ArgumentParser(add_help=False, prog="dd")
-        self.dd_parser.add_argument("cmd", choices=self.CHOICES)
+        for _, value in self.SPECIFIC_CHOICES.items():
+            self.controller_choices.extend(value)
 
         self.current_coin = coin
         self.current_df = pd.DataFrame()
         self.source = source
         self.symbol = symbol
+        self.coin_map_df = coin_map_df
 
-        for _, value in self.SPECIFIC_CHOICES.items():
-            self.CHOICES.extend(value)
-
-        self.completer: Union[None, NestedCompleter] = None
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["--source"] = {c: None for c in CRYPTO_SOURCES.keys()}
-            choices["active"]["-i"] = {c: None for c in glassnode_model.INTERVALS}
+            choices["active"]["-i"] = {
+                c: None for c in glassnode_model.INTERVALS_ACTIVE_ADDRESSES
+            }
             choices["change"] = {
                 c: None for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
             }
-            choices["change"]["-i"] = {c: None for c in glassnode_model.INTERVALS}
-            choices["nonzero"]["-i"] = {c: None for c in glassnode_model.INTERVALS}
+            choices["change"]["-i"] = {
+                c: None
+                for c in glassnode_model.INTERVALS_DISPLAY_EXCHANGE_NET_POSITION_CHANGE
+            }
+            choices["nonzero"]["-i"] = {
+                c: None for c in glassnode_model.INTERVALS_NON_ZERO_ADDRESSES
+            }
             choices["eb"] = {
                 c: None for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
             }
-            choices["eb"]["-i"] = {c: None for c in glassnode_model.INTERVALS}
+            choices["eb"]["-i"] = {
+                c: None for c in glassnode_model.INTERVALS_EXCHANGE_BALANCES
+            }
             choices["oi"]["-i"] = {c: None for c in coinglass_model.INTERVALS}
             choices["atl"]["--vs"] = {c: None for c in FILTERS_VS_USD_BTC}
             choices["ath"]["--vs"] = {c: None for c in FILTERS_VS_USD_BTC}
@@ -139,45 +134,30 @@ class DueDiligenceController:
             choices["ps"]["--vs"] = {c: None for c in coinpaprika_view.CURRENCIES}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
-
     def print_help(self):
         """Print help"""
-        help_text = "Due Diligence Menu:\n"
-        help_text += """
+        source_txt = CRYPTO_SOURCES.get(self.source, "?") if self.source != "" else ""
+        help_text = f"""[cmds]
     load        load a specific cryptocurrency for analysis
-"""
-        help_text += (
-            f"\nCoin: {self.current_coin}" if self.current_coin != "" else "\nCoin: ?"
-        )
-        help_text += (
-            f"\nSource: {CRYPTO_SOURCES.get(self.source, '?')}\n"
-            if self.source != ""
-            else "\nSource: ?\n"
-        )
-        help_text += """
-Overview:
-   chart           show chart for loaded coin
-Glassnode:
+
+[param]Coin: [/param]{self.current_coin}
+[param]Source: [/param]{source_txt}
+
+[src]Glassnode[/src]
    active          active addresses
    nonzero         addresses with non-zero balances
    change          30d change of supply held on exchange wallets
    eb              total balance held on exchanges (in percentage and units)
-Coinglass:
-   oi              open interest per exchange"""
-        help_text += f"""{Style.DIM if self.source not in ("cp", "cg") else ""}
-CoinPaprika:
+[src]Coinglass[/src]
+   oi              open interest per exchange
+[src]CoinPaprika[/src]
    basic           basic information about loaded coin
    ps              price and supply related metrics for loaded coin
    mkt             all markets for loaded coin
    ex              all exchanges where loaded coin is listed
    twitter         tweets for loaded coin
-   events          events related to loaded coin{Style.RESET_ALL if self.source not in ("cp", "cg") else ""}"""
-        help_text += f"""{Style.DIM if self.source != "cg" else ""}
-CoinGecko:
+   events          events related to loaded coin
+[src]CoinGecko[/src]
    info            basic information about loaded coin
    market          market stats about loaded coin
    ath             all time high related stats for loaded coin
@@ -186,108 +166,23 @@ CoinGecko:
    social          social portals urls for loaded coin, e.g reddit, twitter
    score           different kind of scores for loaded coin, e.g developer score, sentiment score
    dev             github, bitbucket coin development statistics
-   bc              links to blockchain explorers for loaded coin{Style.RESET_ALL if self.source != "cg" else ""}"""
-        help_text += f"""{Style.DIM if self.source != "bin" else ""}
-Binance:
-   book            show order book
-   balance         show coin balance{Style.RESET_ALL if self.source != "bin" else ""}"""
-        help_text += f"""{Style.DIM if self.source != "cb" else ""}
-Coinbase:
-   book            show order book
+   bc              links to blockchain explorers for loaded coin
+[src]Binance[/src]
+   binbook         show order book
+   balance         show coin balance
+[src]Coinbase[/src]
+   cbbook          show order book
    trades          show last trades
-   stats           show coin stats{Style.DIM if self.source != "cb" else ""}
+   stats           show coin stats[/cmds]
 """
-        print(help_text)
+        console.print(text=help_text, menu="Stocks - Due Diligence")
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Parameters
-        -------
-        an_input : str
-            string with input arguments
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.dd_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "dd")
+    def custom_reset(self):
+        """Class specific component of reset command"""
         if self.current_coin:
-            self.queue.insert(0, f"load {self.current_coin} --source {self.source}")
-        self.queue.insert(0, "crypto")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            return ["crypto", f"load {self.current_coin} --source {self.source}"]
+        return []
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -329,11 +224,14 @@ Coinbase:
                 if arg in other_args:
                     other_args.remove(arg)
 
-            self.current_coin, self.source, self.symbol = load(
+            self.current_coin, self.source, self.symbol, self.coin_map_df, _, _ = load(
                 coin=ns_parser.coin, source=ns_parser.source
             )
+            if self.symbol:
+                console.print(
+                    f"\nLoaded {self.current_coin} from source {self.source}\n"
+                )
 
-    @try_except
     def call_nonzero(self, other_args: List[str]):
         """Process nonzero command"""
 
@@ -355,7 +253,7 @@ Coinbase:
                 type=str,
                 help="Frequency interval. Default: 24h",
                 default="24h",
-                choices=glassnode_model.INTERVALS,
+                choices=glassnode_model.INTERVALS_NON_ZERO_ADDRESSES,
             )
 
             # TODO: tell users that free api key only data with 1y lag
@@ -391,9 +289,8 @@ Coinbase:
                 )
 
         else:
-            print("Glassnode source does not support this symbol\n")
+            console.print("Glassnode source does not support this symbol\n")
 
-    @try_except
     def call_active(self, other_args: List[str]):
         """Process active command"""
 
@@ -415,7 +312,7 @@ Coinbase:
                 type=str,
                 help="Frequency interval. Default: 24h",
                 default="24h",
-                choices=glassnode_model.INTERVALS,
+                choices=glassnode_model.INTERVALS_ACTIVE_ADDRESSES,
             )
 
             parser.add_argument(
@@ -450,9 +347,8 @@ Coinbase:
                 )
 
         else:
-            print("Glassnode source does not support this symbol\n")
+            console.print("Glassnode source does not support this symbol\n")
 
-    @try_except
     def call_change(self, other_args: List[str]):
         """Process change command"""
 
@@ -484,7 +380,7 @@ Coinbase:
                 type=str,
                 help="Frequency interval. Default: 24h",
                 default="24h",
-                choices=glassnode_model.INTERVALS,
+                choices=glassnode_model.INTERVALS_DISPLAY_EXCHANGE_NET_POSITION_CHANGE,
             )
 
             parser.add_argument(
@@ -523,9 +419,8 @@ Coinbase:
                     export=ns_parser.export,
                 )
         else:
-            print("Glassnode source does not support this symbol\n")
+            console.print("Glassnode source does not support this symbol\n")
 
-    @try_except
     def call_eb(self, other_args: List[str]):
         """Process eb command"""
 
@@ -565,7 +460,7 @@ Coinbase:
                 type=str,
                 help="Frequency interval. Default: 24h",
                 default="24h",
-                choices=glassnode_model.INTERVALS,
+                choices=glassnode_model.INTERVALS_EXCHANGE_BALANCES,
             )
 
             parser.add_argument(
@@ -605,9 +500,8 @@ Coinbase:
                 )
 
         else:
-            print("Glassnode source does not support this symbol\n")
+            console.print("Glassnode source does not support this symbol\n")
 
-    @try_except
     def call_oi(self, other_args):
         """Process oi command"""
         assert isinstance(self.symbol, str)
@@ -642,7 +536,6 @@ Coinbase:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_info(self, other_args):
         """Process info command"""
         parser = argparse.ArgumentParser(
@@ -661,10 +554,9 @@ Coinbase:
 
         if ns_parser:
             pycoingecko_view.display_info(
-                coin=self.current_coin, export=ns_parser.export
+                symbol=self.coin_map_df["CoinGecko"], export=ns_parser.export
             )
 
-    @try_except
     def call_market(self, other_args):
         """Process market command"""
         parser = argparse.ArgumentParser(
@@ -679,9 +571,10 @@ Coinbase:
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            pycoingecko_view.display_market(self.current_coin, ns_parser.export)
+            pycoingecko_view.display_market(
+                self.coin_map_df["CoinGecko"], ns_parser.export
+            )
 
-    @try_except
     def call_web(self, other_args):
         """Process web command"""
         parser = argparse.ArgumentParser(
@@ -697,9 +590,10 @@ Coinbase:
         )
 
         if ns_parser:
-            pycoingecko_view.display_web(self.current_coin, export=ns_parser.export)
+            pycoingecko_view.display_web(
+                self.coin_map_df["CoinGecko"], export=ns_parser.export
+            )
 
-    @try_except
     def call_social(self, other_args):
         """Process social command"""
         parser = argparse.ArgumentParser(
@@ -714,9 +608,10 @@ Coinbase:
         )
 
         if ns_parser:
-            pycoingecko_view.display_social(self.current_coin, export=ns_parser.export)
+            pycoingecko_view.display_social(
+                self.coin_map_df["CoinGecko"], export=ns_parser.export
+            )
 
-    @try_except
     def call_dev(self, other_args):
         """Process dev command"""
         parser = argparse.ArgumentParser(
@@ -734,9 +629,10 @@ Coinbase:
         )
 
         if ns_parser:
-            pycoingecko_view.display_dev(self.current_coin, ns_parser.export)
+            pycoingecko_view.display_dev(
+                self.coin_map_df["CoinGecko"], ns_parser.export
+            )
 
-    @try_except
     def call_ath(self, other_args):
         """Process ath command"""
         parser = argparse.ArgumentParser(
@@ -760,10 +656,9 @@ Coinbase:
 
         if ns_parser:
             pycoingecko_view.display_ath(
-                self.current_coin, ns_parser.vs, ns_parser.export
+                self.coin_map_df["CoinGecko"], ns_parser.vs, ns_parser.export
             )
 
-    @try_except
     def call_atl(self, other_args):
         """Process atl command"""
         parser = argparse.ArgumentParser(
@@ -786,10 +681,9 @@ Coinbase:
 
         if ns_parser:
             pycoingecko_view.display_atl(
-                self.current_coin, ns_parser.vs, ns_parser.export
+                self.coin_map_df["CoinGecko"], ns_parser.vs, ns_parser.export
             )
 
-    @try_except
     def call_score(self, other_args):
         """Process score command"""
         parser = argparse.ArgumentParser(
@@ -808,9 +702,10 @@ Coinbase:
         )
 
         if ns_parser:
-            pycoingecko_view.display_score(self.current_coin, ns_parser.export)
+            pycoingecko_view.display_score(
+                self.coin_map_df["CoinGecko"], ns_parser.export
+            )
 
-    @try_except
     def call_bc(self, other_args):
         """Process bc command"""
         parser = argparse.ArgumentParser(
@@ -827,85 +722,87 @@ Coinbase:
         )
 
         if ns_parser:
-            pycoingecko_view.display_bc(self.current_coin, ns_parser.export)
+            pycoingecko_view.display_bc(self.coin_map_df["CoinGecko"], ns_parser.export)
 
-    @try_except
     def call_book(self, other_args):
         """Process book command"""
         parser = argparse.ArgumentParser(
-            prog="book",
+            prog="binbook",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Get the order book for selected coin",
         )
 
-        if self.source == "bin":
-            limit_list = [5, 10, 20, 50, 100, 500, 1000, 5000]
-            _, quotes = binance_model.show_available_pairs_for_given_symbol(
-                self.current_coin
-            )
-            parser.add_argument(
-                "-l",
-                "--limit",
-                dest="limit",
-                help="Limit parameter.  Adjusts the weight",
-                default=100,
-                type=int,
-                choices=limit_list,
-            )
+        limit_list = [5, 10, 20, 50, 100, 500, 1000, 5000]
+        coin = self.coin_map_df["Binance"]
+        _, quotes = binance_model.show_available_pairs_for_given_symbol(coin)
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            help="Limit parameter.  Adjusts the weight",
+            default=100,
+            type=int,
+            choices=limit_list,
+        )
 
-            parser.add_argument(
-                "--vs",
-                help="Quote currency (what to view coin vs)",
-                dest="vs",
-                type=str,
-                default="USDT",
-                choices=quotes,
-            )
-
-        if self.source == "cb":
-            _, quotes = coinbase_model.show_available_pairs_for_given_symbol(
-                self.current_coin
-            )
-            if len(quotes) < 0:
-                print(
-                    f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
-                )
-
-            parser.add_argument(
-                "--vs",
-                help="Quote currency (what to view coin vs)",
-                dest="vs",
-                type=str,
-                default="USDT" if "USDT" in quotes else quotes[0],
-                choices=quotes,
-            )
+        parser.add_argument(
+            "--vs",
+            help="Quote currency (what to view coin vs)",
+            dest="vs",
+            type=str,
+            default="USDT",
+            choices=quotes,
+        )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            if self.source == "bin":
-                binance_view.display_order_book(
-                    coin=self.current_coin,
-                    limit=ns_parser.limit,
-                    currency=ns_parser.vs,
-                    export=ns_parser.export,
-                )
+            binance_view.display_order_book(
+                coin=coin,
+                limit=ns_parser.limit,
+                currency=ns_parser.vs,
+                export=ns_parser.export,
+            )
 
-            elif self.source == "cb":
-                pair = f"{self.current_coin.upper()}-{ns_parser.vs.upper()}"
-                coinbase_view.display_order_book(
-                    product_id=pair,
-                    export=ns_parser.export,
-                )
+    def call_cbbook(self, other_args):
+        """Process cbbook command"""
+        coin = self.coin_map_df["Coinbase"]
+        parser = argparse.ArgumentParser(
+            prog="cbbook",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="Get the order book for selected coin",
+        )
 
-    @try_except
+        _, quotes = coinbase_model.show_available_pairs_for_given_symbol(coin)
+        if len(quotes) < 0:
+            console.print(f"Couldn't find any quoted coins for provided symbol {coin}")
+
+        parser.add_argument(
+            "--vs",
+            help="Quote currency (what to view coin vs)",
+            dest="vs",
+            type=str,
+            default="USDT" if "USDT" in quotes else quotes[0],
+            choices=quotes,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            pair = f"{coin}-{ns_parser.vs.upper()}"
+            coinbase_view.display_order_book(
+                product_id=pair,
+                export=ns_parser.export,
+            )
+
     def call_balance(self, other_args):
         """Process balance command"""
-        _, quotes = binance_model.show_available_pairs_for_given_symbol(
-            self.current_coin
-        )
+        coin = self.coin_map_df["Binance"]
+        _, quotes = binance_model.show_available_pairs_for_given_symbol(coin)
 
         parser = argparse.ArgumentParser(
             prog="balance",
@@ -929,10 +826,9 @@ Coinbase:
 
         if ns_parser:
             binance_view.display_balance(
-                coin=self.current_coin, currency=ns_parser.vs, export=ns_parser.export
+                coin=coin, currency=ns_parser.vs, export=ns_parser.export
             )
 
-    @try_except
     def call_trades(self, other_args):
         """Process trades command"""
         parser = argparse.ArgumentParser(
@@ -941,12 +837,10 @@ Coinbase:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Show last trades on Coinbase",
         )
-
-        _, quotes = coinbase_model.show_available_pairs_for_given_symbol(
-            self.current_coin
-        )
+        coin = self.coin_map_df["Coinbase"]
+        _, quotes = coinbase_model.show_available_pairs_for_given_symbol(coin)
         if len(quotes) < 0:
-            print(
+            console.print(
                 f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
             )
 
@@ -982,7 +876,7 @@ Coinbase:
         )
 
         if ns_parser:
-            pair = f"{self.current_coin.upper()}-{ns_parser.vs.upper()}"
+            pair = f"{coin}-{ns_parser.vs.upper()}"
             if ns_parser.side.upper() == "all":
                 side = None
             else:
@@ -992,12 +886,10 @@ Coinbase:
                 product_id=pair, limit=ns_parser.top, side=side, export=ns_parser.export
             )
 
-    @try_except
     def call_stats(self, other_args):
         """Process stats command"""
-        _, quotes = coinbase_model.show_available_pairs_for_given_symbol(
-            self.current_coin
-        )
+        coin = self.coin_map_df["Binance"]
+        _, quotes = coinbase_model.show_available_pairs_for_given_symbol(coin)
 
         parser = argparse.ArgumentParser(
             prog="stats",
@@ -1020,176 +912,9 @@ Coinbase:
         )
 
         if ns_parser:
-            pair = f"{self.current_coin.upper()}-{ns_parser.vs.upper()}"
+            pair = f"{coin}-{ns_parser.vs.upper()}"
             coinbase_view.display_stats(pair, ns_parser.export)
 
-    @try_except
-    def call_chart(self, other_args):
-        """Process chart command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="chart",
-            description="""Display chart for loaded coin. You can specify currency vs which you want
-            to show chart and also number of days to get data for.""",
-        )
-
-        if self.source == "cp":
-            parser.add_argument(
-                "--vs",
-                default="usd",
-                dest="vs",
-                help="Currency to display vs coin",
-                choices=["usd", "btc", "BTC", "USD"],
-                type=str,
-            )
-
-            parser.add_argument(
-                "-d",
-                "--days",
-                default=30,
-                dest="days",
-                help="Number of days to get data for",
-                type=check_positive,
-            )
-
-        if self.source == "cg":
-            parser.add_argument(
-                "--vs", default="usd", dest="vs", help="Currency to display vs coin"
-            )
-
-            parser.add_argument(
-                "-d",
-                "--days",
-                default=30,
-                dest="days",
-                help="Number of days to get data for",
-            )
-
-        if self.source == "bin":
-            client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
-            interval_map = {
-                "1day": client.KLINE_INTERVAL_1DAY,
-                "3day": client.KLINE_INTERVAL_3DAY,
-                "1hour": client.KLINE_INTERVAL_1HOUR,
-                "2hour": client.KLINE_INTERVAL_2HOUR,
-                "4hour": client.KLINE_INTERVAL_4HOUR,
-                "6hour": client.KLINE_INTERVAL_6HOUR,
-                "8hour": client.KLINE_INTERVAL_8HOUR,
-                "12hour": client.KLINE_INTERVAL_12HOUR,
-                "1week": client.KLINE_INTERVAL_1WEEK,
-                "1min": client.KLINE_INTERVAL_1MINUTE,
-                "3min": client.KLINE_INTERVAL_3MINUTE,
-                "5min": client.KLINE_INTERVAL_5MINUTE,
-                "15min": client.KLINE_INTERVAL_15MINUTE,
-                "30min": client.KLINE_INTERVAL_30MINUTE,
-                "1month": client.KLINE_INTERVAL_1MONTH,
-            }
-
-            _, quotes = binance_model.show_available_pairs_for_given_symbol(
-                self.current_coin
-            )
-
-            parser.add_argument(
-                "--vs",
-                help="Quote currency (what to view coin vs)",
-                dest="vs",
-                type=str,
-                default="USDT",
-                choices=quotes,
-            )
-
-            parser.add_argument(
-                "-i",
-                "--interval",
-                help="Interval to get data",
-                choices=list(interval_map.keys()),
-                dest="interval",
-                default="1day",
-                type=str,
-            )
-
-            parser.add_argument(
-                "-l",
-                "--limit",
-                dest="limit",
-                default=100,
-                help="Number to get",
-                type=check_positive,
-            )
-
-        if self.source == "cb":
-            interval_map = {
-                "1min": 60,
-                "5min": 300,
-                "15min": 900,
-                "1hour": 3600,
-                "6hour": 21600,
-                "24hour": 86400,
-                "1day": 86400,
-            }
-
-            _, quotes = coinbase_model.show_available_pairs_for_given_symbol(
-                self.current_coin
-            )
-            if len(quotes) < 0:
-                print(
-                    f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
-                )
-
-            parser.add_argument(
-                "--vs",
-                help="Quote currency (what to view coin vs)",
-                dest="vs",
-                type=str,
-                default="USDT" if "USDT" in quotes else quotes[0],
-                choices=quotes,
-            )
-
-            parser.add_argument(
-                "-i",
-                "--interval",
-                help="Interval to get data",
-                choices=list(interval_map.keys()),
-                dest="interval",
-                default="1day",
-                type=str,
-            )
-
-            parser.add_argument(
-                "-l",
-                "--limit",
-                dest="limit",
-                default=100,
-                help="Number to get",
-                type=check_positive,
-            )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-
-        if ns_parser:
-            if self.source in ["bin", "cb"]:
-                limit = ns_parser.limit
-                interval = ns_parser.interval
-                days = 0
-            else:
-                limit = 0
-                interval = "1day"
-                days = ns_parser.days
-
-            plot_chart(
-                coin=self.current_coin,
-                limit=limit,
-                interval=interval,
-                days=days,
-                currency=ns_parser.vs,
-                source=self.source,
-            )
-
-    # paprika
-    @try_except
     def call_ps(self, other_args):
         """Process ps command"""
         parser = argparse.ArgumentParser(
@@ -1212,14 +937,11 @@ Coinbase:
         )
         if ns_parser:
             coinpaprika_view.display_price_supply(
-                f"{self.symbol}-{self.current_coin}"
-                if self.source == "cg"
-                else self.current_coin,
+                self.coin_map_df["CoinPaprika"],
                 ns_parser.vs,
                 ns_parser.export,
             )
 
-    @try_except
     def call_basic(self, other_args):
         """Process basic command"""
         parser = argparse.ArgumentParser(
@@ -1235,13 +957,10 @@ Coinbase:
         )
         if ns_parser:
             coinpaprika_view.display_basic(
-                f"{self.symbol}-{self.current_coin}"
-                if self.source == "cg"
-                else self.current_coin,
+                self.coin_map_df["CoinPaprika"],
                 ns_parser.export,
             )
 
-    @try_except
     def call_mkt(self, other_args):
         """Process mkt command"""
         parser = argparse.ArgumentParser(
@@ -1307,9 +1026,7 @@ Coinbase:
         )
         if ns_parser:
             coinpaprika_view.display_markets(
-                coin_id=f"{self.symbol}-{self.current_coin}"
-                if self.source == "cg"
-                else self.current_coin,
+                coin_id=self.coin_map_df["CoinPaprika"],
                 currency=ns_parser.vs,
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
@@ -1318,7 +1035,6 @@ Coinbase:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_ex(self, other_args):
         """Process ex command"""
         parser = argparse.ArgumentParser(
@@ -1365,16 +1081,13 @@ Coinbase:
         )
         if ns_parser:
             coinpaprika_view.display_exchanges(
-                coin_id=f"{self.symbol}-{self.current_coin}"
-                if self.source == "cg"
-                else self.current_coin,
+                coin_id=self.coin_map_df["CoinPaprika"],
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_events(self, other_args):
         """Process events command"""
         parser = argparse.ArgumentParser(
@@ -1432,9 +1145,7 @@ Coinbase:
         )
         if ns_parser:
             coinpaprika_view.display_events(
-                coin_id=f"{self.symbol}-{self.current_coin}"
-                if self.source == "cg"
-                else self.current_coin,
+                coin_id=self.coin_map_df["CoinPaprika"],
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
@@ -1442,7 +1153,6 @@ Coinbase:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_twitter(self, other_args):
         """Process twitter command"""
         parser = argparse.ArgumentParser(
@@ -1490,92 +1200,9 @@ Coinbase:
         )
         if ns_parser:
             coinpaprika_view.display_twitter(
-                coin_id=f"{self.symbol}-{self.current_coin}"
-                if self.source == "cg"
-                else self.current_coin,
+                coin_id=self.coin_map_df["CoinPaprika"],
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
-
-
-def menu(coin=None, source=None, symbol=None, queue: List[str] = None):
-    """Due Dilligence Menu"""
-
-    source = source if source else "cg"
-    dd_controller = DueDiligenceController(
-        coin=coin, source=source, symbol=symbol, queue=queue
-    )
-    an_input = "HELP_ME"
-    while True:
-        # There is a command in the queue
-        if dd_controller.queue and len(dd_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if dd_controller.queue[0] in ("q", "..", "quit"):
-                if len(dd_controller.queue) > 1:
-                    return dd_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = dd_controller.queue[0]
-            dd_controller.queue = dd_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in dd_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /crypto/dd/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                dd_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and dd_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /crypto/dd/ $ ",
-                        completer=dd_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /crypto/dd/ $ ")
-
-        try:
-            # Process the input command
-            dd_controller.queue = dd_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                dd_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        dd_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                dd_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

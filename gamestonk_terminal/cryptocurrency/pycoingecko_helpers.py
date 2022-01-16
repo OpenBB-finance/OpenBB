@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import json
+import math
 import datetime as dt
 from datetime import timezone
 from typing import Sequence, Optional, Any, Dict, Tuple, Union, List
@@ -13,11 +14,35 @@ from dateutil import parser
 from requests.adapters import HTTPAdapter, RetryError
 from urllib3.util.retry import Retry
 from gamestonk_terminal.helper_funcs import get_user_agent
+from gamestonk_terminal.rich_config import console
 
 
 GECKO_BASE_URL = "https://www.coingecko.com"
 
 DENOMINATION = ("usd", "btc", "eth")
+
+
+def millify(n: Union[float, int]) -> str:
+    millnames = ["", "K", "M", "B", "T"]
+    n = float(n)
+    millidx = max(
+        0,
+        min(
+            len(millnames) - 1, int(math.floor(0 if n == 0 else math.log10(abs(n)) / 3))
+        ),
+    )
+
+    return f"{n / 10 ** (3 * millidx):.0f}{millnames[millidx]}"
+
+
+def calc_change(current: Union[float, int], previous: Union[float, int]):
+    """Calculates change between two different values"""
+    if current == previous:
+        return 0
+    try:
+        return ((current - previous) / previous) * 100.0
+    except ZeroDivisionError:
+        return float("inf")
 
 
 def get_btc_price() -> float:
@@ -66,7 +91,6 @@ def _retry_session(
         connect=retries,
         status_forcelist=[500, 502, 503, 504],
         backoff_factor=backoff_factor,
-        method_whitelist=False,
     )
     adapter = HTTPAdapter(max_retries=retry)
     session.mount(url, adapter)
@@ -90,6 +114,7 @@ def scrape_gecko_data(url: str) -> BeautifulSoup:
     try:
         req = session.get(url, headers=headers, timeout=5)
     except Exception as error:
+        console.print(error)
         raise RetryError(
             "Connection error. Couldn't connect to CoinGecko and scrape the data. "
             "Please visit CoinGecko site, and check if it's not under maintenance"
@@ -205,8 +230,8 @@ def collateral_auditors_parse(
             auditors = []
         else:
             n_elem = int(args[0])
-            auditors = args[1 : n_elem + 1]
-            collateral = args[n_elem + 1 :]
+            auditors = args[1 : n_elem + 1]  # noqa: E203
+            collateral = args[n_elem + 1 :]  # noqa: E203
 
         return auditors, collateral
     except ValueError:

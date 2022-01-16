@@ -2,7 +2,7 @@
    load        load new ticker
    pick        pick target column for analysis
 
-Intraday  Stock: 
+Stock: Intraday  
 Target Column: returns
 
 Statistics:

@@ -8,6 +8,7 @@ from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import export_data
 import gamestonk_terminal.cryptocurrency.overview.pycoingecko_model as gecko
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -26,72 +27,34 @@ def display_holdings_overview(coin: str, export: str) -> None:
         Export dataframe data to csv,json,xlsx
     """
 
-    df = gecko.get_holdings_overview(endpoint=coin)
+    res = gecko.get_holdings_overview(coin)
+    stats_string = res[0]
+    df = res[1]
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+    if df.empty:
+        console.print("\nZero companies holding this crypto\n")
+    else:
+        console.print(f"\n{stats_string}\n")
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df,
+                    headers=df.columns,
+                    floatfmt=".2f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            console.print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "hold",
+            df,
         )
-    else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "hold",
-        df,
-    )
-
-
-def display_holdings_companies_list(coin: str, links: bool, export: str) -> None:
-    """Shows Ethereum/Bitcoin Holdings by Public Companies [Source: CoinGecko]
-
-    Track publicly traded companies around the world that are buying ethereum as part of corporate treasury
-
-    Parameters
-    ----------
-    coin: str
-        Cryptocurrency: ethereum or bitcoin
-    links: bool
-        Display urls
-    export: str
-        Export dataframe data to csv,json,xlsx
-    """
-
-    df = gecko.get_companies_assets(endpoint=coin)
-
-    if links is True:
-        df = df[["Rank", "Company", "Url"]]
-    else:
-        df.drop("Url", axis=1, inplace=True)
-
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "companies",
-        df,
-    )
 
 
 def display_nft_of_the_day(export: str) -> None:
@@ -120,7 +83,7 @@ def display_nft_of_the_day(export: str) -> None:
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -156,7 +119,7 @@ def display_nft_market_status(export: str) -> None:
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
@@ -165,9 +128,9 @@ def display_nft_market_status(export: str) -> None:
             df,
         )
     else:
-        print("")
-        print("Unable to retrieve data from CoinGecko.")
-        print("")
+        console.print("")
+        console.print("Unable to retrieve data from CoinGecko.")
+        console.print("")
 
 
 def display_exchange_rates(sortby: str, descend: bool, top: int, export: str) -> None:
@@ -200,7 +163,7 @@ def display_exchange_rates(sortby: str, descend: bool, top: int, export: str) ->
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
@@ -209,9 +172,9 @@ def display_exchange_rates(sortby: str, descend: bool, top: int, export: str) ->
             df,
         )
     else:
-        print("")
-        print("Unable to retrieve data from CoinGecko.")
-        print("")
+        console.print("")
+        console.print("Unable to retrieve data from CoinGecko.")
+        console.print("")
 
 
 def display_global_market_info(export: str) -> None:
@@ -243,7 +206,7 @@ def display_global_market_info(export: str) -> None:
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
@@ -252,9 +215,9 @@ def display_global_market_info(export: str) -> None:
             df,
         )
     else:
-        print("")
-        print("Unable to retrieve data from CoinGecko.")
-        print("")
+        console.print("")
+        console.print("Unable to retrieve data from CoinGecko.")
+        console.print("")
 
 
 def display_global_defi_info(export: str) -> None:
@@ -281,7 +244,7 @@ def display_global_defi_info(export: str) -> None:
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
@@ -290,9 +253,9 @@ def display_global_defi_info(export: str) -> None:
             df,
         )
     else:
-        print("")
-        print("Unable to retrieve data from CoinGecko.")
-        print("")
+        console.print("")
+        console.print("Unable to retrieve data from CoinGecko.")
+        console.print("")
 
 
 def display_stablecoins(
@@ -337,7 +300,7 @@ def display_stablecoins(
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
@@ -346,9 +309,9 @@ def display_stablecoins(
             df_data,
         )
     else:
-        print("")
-        print("Unable to retrieve data from CoinGecko.")
-        print("")
+        console.print("")
+        console.print("Unable to retrieve data from CoinGecko.")
+        console.print("")
 
 
 def display_news(
@@ -397,7 +360,7 @@ def display_news(
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
@@ -406,9 +369,9 @@ def display_news(
             df_data,
         )
     else:
-        print("")
-        print("Unable to retrieve data from CoinGecko.")
-        print("")
+        console.print("")
+        console.print("Unable to retrieve data from CoinGecko.")
+        console.print("")
 
 
 def display_categories(
@@ -455,7 +418,7 @@ def display_categories(
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
@@ -464,9 +427,9 @@ def display_categories(
             df_data,
         )
     else:
-        print("")
-        print("Unable to retrieve data from CoinGecko.")
-        print("")
+        console.print("")
+        console.print("Unable to retrieve data from CoinGecko.")
+        console.print("")
 
 
 def display_exchanges(
@@ -510,7 +473,7 @@ def display_exchanges(
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
@@ -519,9 +482,9 @@ def display_exchanges(
             df,
         )
     else:
-        print("")
-        print("Unable to retrieve data from CoinGecko.")
-        print("")
+        console.print("")
+        console.print("Unable to retrieve data from CoinGecko.")
+        console.print("")
 
 
 def display_platforms(sortby: str, descend: bool, top: int, export: str) -> None:
@@ -556,7 +519,7 @@ def display_platforms(sortby: str, descend: bool, top: int, export: str) -> None
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
@@ -565,9 +528,9 @@ def display_platforms(sortby: str, descend: bool, top: int, export: str) -> None
             df,
         )
     else:
-        print("")
-        print("Unable to retrieve data from CoinGecko.")
-        print("")
+        console.print("")
+        console.print("Unable to retrieve data from CoinGecko.")
+        console.print("")
 
 
 def display_products(sortby: str, descend: bool, top: int, export: str) -> None:
@@ -602,7 +565,7 @@ def display_products(sortby: str, descend: bool, top: int, export: str) -> None:
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
@@ -611,9 +574,9 @@ def display_products(sortby: str, descend: bool, top: int, export: str) -> None:
             df,
         )
     else:
-        print("")
-        print("Unable to retrieve data from CoinGecko.")
-        print("")
+        console.print("")
+        console.print("Unable to retrieve data from CoinGecko.")
+        console.print("")
 
 
 def display_indexes(sortby: str, descend: bool, top: int, export: str) -> None:
@@ -647,7 +610,7 @@ def display_indexes(sortby: str, descend: bool, top: int, export: str) -> None:
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
@@ -656,9 +619,9 @@ def display_indexes(sortby: str, descend: bool, top: int, export: str) -> None:
             df,
         )
     else:
-        print("")
-        print("Unable to retrieve data from CoinGecko.")
-        print("")
+        console.print("")
+        console.print("Unable to retrieve data from CoinGecko.")
+        console.print("")
 
 
 def display_derivatives(sortby: str, descend: bool, top: int, export: str) -> None:
@@ -693,7 +656,7 @@ def display_derivatives(sortby: str, descend: bool, top: int, export: str) -> No
                 "\n",
             )
         else:
-            print(df.to_string, "\n")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
@@ -702,6 +665,6 @@ def display_derivatives(sortby: str, descend: bool, top: int, export: str) -> No
             df,
         )
     else:
-        print("")
-        print("Unable to retrieve data from CoinGecko.")
-        print("")
+        console.print("")
+        console.print("Unable to retrieve data from CoinGecko.")
+        console.print("")

@@ -1,9 +1,8 @@
 import asyncio
 import discord
 
-from discordbot.run_discordbot import gst_bot
 import discordbot.config_discordbot as cfg
-
+from discordbot.run_discordbot import gst_bot, logger
 from discordbot.stocks.due_diligence.analyst import analyst_command
 from discordbot.stocks.due_diligence.pt import pt_command
 from discordbot.stocks.due_diligence.est import est_command
@@ -28,6 +27,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         ticker: str
             ticker
         """
+        logger.info("stocks.dd.analyst")
         await analyst_command(ctx, ticker)
 
     @discord.ext.commands.command(name="stocks.dd.pt", usage="[ticker] [raw] [start]")
@@ -43,6 +43,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         start:
             Starting date in YYYY-MM-DD format
         """
+        logger.info("stocks.dd.pt")
         await pt_command(ctx, ticker, raw, start)
 
     @discord.ext.commands.command(name="stocks.dd.est", usage="[ticker]")
@@ -54,6 +55,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         ticker: str
             ticker
         """
+        logger.info("stocks.dd.est")
         await est_command(ctx, ticker)
 
     @discord.ext.commands.command(name="stocks.dd.sec", usage="[ticker]")
@@ -65,6 +67,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         ticker: str
             ticker
         """
+        logger.info("stocks.dd.sec")
         await sec_command(ctx, ticker)
 
     @discord.ext.commands.command(name="stocks.dd.supplier", usage="[ticker]")
@@ -76,6 +79,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         ticker: str
             ticker
         """
+        logger.info("stocks.dd.supplier")
         await supplier_command(ctx, ticker)
 
     @discord.ext.commands.command(name="stocks.dd.customer", usage="[ticker]")
@@ -87,6 +91,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         ticker: str
             ticker
         """
+        logger.info("stocks.dd.customer")
         await customer_command(ctx, ticker)
 
     @discord.ext.commands.command(name="stocks.dd.arktrades", usage="[ticker] [num]")
@@ -100,6 +105,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         num: int
             number of rows displayed
         """
+        logger.info("stocks.dd.arktrades")
         await arktrades_command(ctx, ticker, num)
 
     @discord.ext.commands.command(name="stocks.dd")
@@ -113,9 +119,7 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
         Sends a message to the discord user with the commands from the dd context.
         The user can then select a reaction to trigger a command.
         """
-
-        if cfg.DEBUG:
-            print("!stocks.dd")
+        logger.info("!stocks.dd")
 
         if ticker == "":
             embed = discord.Embed(
@@ -159,32 +163,25 @@ class DueDiligenceCommands(discord.ext.commands.Cog):
                 "reaction_add", timeout=cfg.MENU_TIMEOUT, check=check
             )
             if reaction.emoji == "0️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 0")
+                logger.info("!stocks.dd. Reaction selected: 0")
                 await analyst_command(ctx, ticker)
             elif reaction.emoji == "1️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 1")
+                logger.info("!stocks.dd. Reaction selected: 1")
                 await pt_command(ctx, ticker)
             elif reaction.emoji == "2️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 2")
+                logger.info("!stocks.dd. Reaction selected: 2")
                 await est_command(ctx, ticker)
             elif reaction.emoji == "3️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 3")
+                logger.info("!stocks.dd. Reaction selected: 3")
                 await sec_command(ctx, ticker)
             elif reaction.emoji == "4️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 4")
+                logger.info("!stocks.dd. Reaction selected: 4")
                 await supplier_command(ctx, ticker)
             elif reaction.emoji == "5️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 5")
+                logger.info("!stocks.dd. Reaction selected: 5")
                 await customer_command(ctx, ticker)
             elif reaction.emoji == "6️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 6")
+                logger.info("!stocks.dd. Reaction selected: 6")
                 await arktrades_command(ctx, ticker)
 
             for emoji in emoji_list:

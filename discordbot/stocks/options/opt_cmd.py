@@ -1,9 +1,8 @@
 import asyncio
+
 import discord
-
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_bot
-
+from discordbot.run_discordbot import gst_bot, logger
 from discordbot.stocks.options.calls import calls_command
 from discordbot.stocks.options.expirations import expirations_command
 from discordbot.stocks.options.hist import hist_command
@@ -12,6 +11,7 @@ from discordbot.stocks.options.oi import oi_command
 from discordbot.stocks.options.puts import puts_command
 from discordbot.stocks.options.unu import unu_command
 from discordbot.stocks.options.vol import vol_command
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=R0912
 
@@ -20,7 +20,7 @@ async def opt_command(ctx, ticker="", expiration="", strike="", put=""):
     """Options Menu command"""
 
     if cfg.DEBUG:
-        print(f"!stocks.opt {ticker} {expiration} {strike} {put}")
+        logger.debug("!stocks.opt %s %s %s %s", ticker, expiration, strike, put)
 
     if ticker:
         current = 1
@@ -71,35 +71,35 @@ async def opt_command(ctx, ticker="", expiration="", strike="", put=""):
         )
         if reaction.emoji == "0️⃣":
             if cfg.DEBUG:
-                print("Reaction selected: 0")
+                console.print("Reaction selected: 0")
             await unu_command(ctx)
         elif reaction.emoji == "1️⃣":
             if cfg.DEBUG:
-                print("Reaction selected: 1")
+                console.print("Reaction selected: 1")
             await expirations_command(ctx, ticker)
         elif reaction.emoji == "2️⃣":
             if cfg.DEBUG:
-                print("Reaction selected: 2")
+                console.print("Reaction selected: 2")
             await iv_command(ctx, ticker)
         elif reaction.emoji == "3️⃣":
             if cfg.DEBUG:
-                print("Reaction selected: 3")
+                console.print("Reaction selected: 3")
             await calls_command(ctx, ticker, expiration)
         elif reaction.emoji == "4️⃣":
             if cfg.DEBUG:
-                print("Reaction selected: 4")
+                console.print("Reaction selected: 4")
             await puts_command(ctx, ticker, expiration)
         elif reaction.emoji == "5️⃣":
             if cfg.DEBUG:
-                print("Reaction selected: 5")
+                console.print("Reaction selected: 5")
             await oi_command(ctx, ticker, expiration)
         elif reaction.emoji == "6️⃣":
             if cfg.DEBUG:
-                print("Reaction selected: 6")
+                console.print("Reaction selected: 6")
             await vol_command(ctx, ticker, expiration)
         elif reaction.emoji == "7️⃣":
             if cfg.DEBUG:
-                print("Reaction selected: 7")
+                console.print("Reaction selected: 7")
             strike = float(strike)
             await hist_command(ctx, ticker, expiration, strike, put)
 

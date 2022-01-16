@@ -1,7 +1,9 @@
 import discord
-import discordbot.config_discordbot as cfg
 
 from gamestonk_terminal.stocks.due_diligence import marketwatch_model
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import logger
 
 
 async def sec_command(ctx, ticker=""):
@@ -10,7 +12,7 @@ async def sec_command(ctx, ticker=""):
     try:
         # Debug user input
         if cfg.DEBUG:
-            print(f"!stocks.dd.sec {ticker}")
+            logger.debug("!stocks.dd.sec %s", ticker)
 
         if ticker == "":
             raise Exception("A ticker is required")
@@ -22,7 +24,7 @@ async def sec_command(ctx, ticker=""):
 
         # Debug user output
         if cfg.DEBUG:
-            print(df_financials.to_string())
+            logger.debug(df_financials.to_string())
 
         # Output data
         report = "```" + df_financials.to_string() + "```"

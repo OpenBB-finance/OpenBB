@@ -1,24 +1,22 @@
 """Portfolio Analysis Controller"""
 __docformat__ = "numpy"
 
+from typing import List
 import argparse
 import os
 
-import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-
+import pandas as pd
+from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import (
-    get_flair,
-    parse_known_args_and_warn,
-    try_except,
-    system_clear,
-)
-from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.portfolio_analysis import (
     portfolio_model,
     portfolio_view,
 )
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
+from gamestonk_terminal.menu import session
+
 
 portfolios_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "portfolios")
 possible_paths = [
@@ -28,104 +26,46 @@ possible_paths = [
 ]
 
 
-class PortfolioController:
+class PortfolioAnalysis(BaseController):
     """Portfolio Controller"""
 
-    CHOICES = [
-        "cls",
-        "?",
-        "help",
-        "q",
-        "quit",
-    ]
     CHOICES_COMMANDS = [
         "view",
         "load",
         "group",
     ]
 
-    CHOICES += CHOICES_COMMANDS
+    def __init__(self, queue: List[str] = None):
 
-    def __init__(self):
-        self.pa_parser = argparse.ArgumentParser(add_help=False, prog="pa")
-        self.pa_parser.add_argument("cmd", choices=self.CHOICES)
+        super().__init__("/portfolio/pa/", queue)
+
         self.portfolio_name = ""
         self.portfolio = pd.DataFrame()
 
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
     def print_help(self):
         """Print help"""
-        help_string = f"""
->>PORTFOLIO ANALYSIS<<
-
-What would you like to do?
-    cls           clear screen
-    ?/help        show this menu again
-    q             quit this menu, and shows back to main menu
-    quit          quit to abandon program
-
+        help_text = f"""[cmds]
     view          view available portfolios
-    load          load portfolio from a file
+    load          load portfolio from a file[/cmds]
 
-Portfolio: {self.portfolio_name or None}
+[param]Portfolio: [/param]{self.portfolio_name}[cmds]
 
-    group         view holdings grouped by parameter
-            """
-        print(help_string)
-
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+    group         view holdings grouped by parameter[/cmds]
         """
+        console.print(text=help_text, menu="Portfolio - Portfolio Analysis")
 
-        # Empty command
-        if not an_input:
-            print("")
-            return
-
-        (known_args, other_args) = self.pa_parser.parse_known_args(an_input.split())
-
-        # Help menu again
-        if known_args.cmd == "?":
-            self.print_help()
-            return
-
-        # Clear screen
-        if known_args.cmd == "cls":
-            system_clear()
-            return
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return
-
-    def call_help(self, _):
-        """Process Help command"""
-        self.print_help()
-
-    def call_q(self, _):
-        """Process Q command - quit the menu"""
-
-    def call_quit(self, _):
-        """Process Quit command - quit the program"""
-
-    @try_except
     def call_load(self, other_args):
         """Process load command"""
         parser = argparse.ArgumentParser(
             prog="load",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="Function to get portfolio from predefined csv/json/xlsx file inside portfolios folder",
+            description="Function to get portfolio from predefined "
+            "csv/json/xlsx file inside portfolios folder",
             epilog="usage: load file_name",
         )
         parser.add_argument(
@@ -135,6 +75,14 @@ Portfolio: {self.portfolio_name or None}
             default=False,
             help="Add sector to dataframe",
             dest="sector",
+        )
+        parser.add_argument(
+            "-c",
+            "--country",
+            action="store_true",
+            default=False,
+            help="Add country to dataframe",
+            dest="country",
         )
         parser.add_argument(
             "--no_last_price",
@@ -168,13 +116,13 @@ Portfolio: {self.portfolio_name or None}
             self.portfolio = portfolio_model.load_portfolio(
                 full_path=os.path.join(portfolios_path, ns_parser.path),
                 sector=ns_parser.sector,
+                country=ns_parser.country,
                 last_price=ns_parser.last_price,
                 show_nan=ns_parser.show_nan,
             )
             if not self.portfolio.empty:
-                print(f"Successfully loaded: {self.portfolio_name}\n")
+                console.print(f"Successfully loaded: {self.portfolio_name}\n")
 
-    @try_except
     def call_group(self, other_args):
         """Process group command"""
         parser = argparse.ArgumentParser(
@@ -193,6 +141,14 @@ Portfolio: {self.portfolio_name or None}
             default="Ticker",
             choices=self.portfolio.columns,
             help="Column to group by",
+        )
+        parser.add_argument(
+            "-a",
+            "--allocation",
+            action="store_true",
+            default=False,
+            help="Add allocation column in % to dataframe",
+            dest="allocation",
         )
 
         # The following arguments will be used in a later PR for customizable 'reports'
@@ -214,14 +170,16 @@ Portfolio: {self.portfolio_name or None}
         if ns_parser:
             if "value" in self.portfolio.columns:
                 portfolio_view.display_group_holdings(
-                    portfolio=self.portfolio, group_column=ns_parser.group
+                    portfolio=self.portfolio,
+                    group_column=ns_parser.group,
+                    allocation=ns_parser.allocation,
                 )
             else:
-                print(
-                    "'value' column not in portfolio.  Either add manually or load without --no_last_price flag\n"
+                console.print(
+                    "'value' column not in portfolio.  "
+                    "Either add manually or load without --no_last_price flag\n"
                 )
 
-    @try_except
     def call_view(self, other_args):
         parser = argparse.ArgumentParser(
             prog="view",
@@ -248,37 +206,7 @@ Portfolio: {self.portfolio_name or None}
                     if port.endswith(ns_parser.file_format)
                 ]
 
-            print("\nAvailable Portfolios:\n")
+            console.print("\nAvailable Portfolios:\n")
             for port in available_ports:
-                print(port)
-            print("")
-
-
-def menu():
-    """Portfolio Analysis Menu"""
-    pa_controller = PortfolioController()
-    pa_controller.print_help()
-
-    while True:
-        # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in pa_controller.CHOICES}
-            )
-            try:
-                an_input = session.prompt(
-                    f"{get_flair()} (portfolio)>(pa)> ",
-                    completer=completer,
-                )
-            except KeyboardInterrupt:
-                # Exit in case of keyboard interrupt
-                an_input = "exit"
-        else:
-            an_input = input(f"{get_flair()} (portfolio)>(pa)> ")
-
-        try:
-            pa_controller.switch(an_input)
-
-        except SystemExit:
-            print("The command selected doesn't exist\n")
-            continue
+                console.print(port)
+            console.print("")

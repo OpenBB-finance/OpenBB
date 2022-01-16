@@ -2,42 +2,24 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
-from typing import List, Union
+from typing import List
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
     fmp_view,
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
-    get_flair,
     parse_known_args_and_warn,
     check_positive,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    try_except,
-    system_clear,
 )
 from gamestonk_terminal.menu import session
 
 
-class FinancialModelingPrepController:
-    """Financial Modeling Prep Controller"""
-
-    # Command choices
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
+class FinancialModelingPrepController(BaseController):
+    """Financial Modeling Prep Controller class"""
 
     CHOICES_COMMANDS = [
         "profile",
@@ -51,7 +33,6 @@ class FinancialModelingPrepController:
         "ratios",
         "growth",
     ]
-    CHOICES += CHOICES_COMMANDS
 
     def __init__(
         self,
@@ -60,42 +41,21 @@ class FinancialModelingPrepController:
         interval: str,
         queue: List[str] = None,
     ):
-        """Constructor
-
-        Parameters
-        ----------
-        ticker : str
-            Fundamental analysis ticker symbol
-        start : str
-            Stat date of the stock data
-        interval : str
-            Stock data interval
-        """
+        """Constructor"""
+        super().__init__("/stocks/fa/fmp/", queue)
 
         self.ticker = ticker
         self.start = start
         self.interval = interval
-        self.fmp_parser = argparse.ArgumentParser(add_help=False, prog="fmp")
-        self.fmp_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-        self.completer: Union[None, NestedCompleter] = None
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-            self.completer = NestedCompleter.from_nested_dict(choices)
 
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
         help_text = f"""
-Financial Modeling Prep Menu:
-
-Ticker: {self.ticker}
+[param]Ticker: [/param]{self.ticker}[cmds]
 
     profile       profile of the company
     quote         quote of the company
@@ -106,100 +66,19 @@ Ticker: {self.ticker}
     cash          cash flow statement of the company
     metrics       key metrics of the company
     ratios        financial ratios of the company
-    growth        financial statement growth of the company
+    growth        financial statement growth of the company[/cmds]
         """
-        print(help_text)
+        console.print(
+            text=help_text,
+            menu="Stocks - Fundamental Analysis - Financial Modeling Prep",
+        )
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-        Parameters
-        -------
-        an_input : str
-            string with input arguments
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.fmp_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "fmp")
-        self.queue.insert(0, "fa")
+    def custom_reset(self):
+        """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(0, f"load {self.ticker}")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            return ["stocks", f"load {self.ticker}", "fa", "fmp"]
+        return []
 
-    @try_except
     def call_profile(self, other_args: List[str]):
         """Process profile command"""
         parser = argparse.ArgumentParser(
@@ -219,7 +98,6 @@ Ticker: {self.ticker}
         if ns_parser:
             fmp_view.display_profile(self.ticker)
 
-    @try_except
     def call_quote(self, other_args: List[str]):
         """Process quote command"""
         parser = argparse.ArgumentParser(
@@ -239,7 +117,6 @@ Ticker: {self.ticker}
         if ns_parser:
             fmp_view.display_quote(self.ticker)
 
-    @try_except
     def call_enterprise(self, other_args: List[str]):
         """Process income command"""
         parser = argparse.ArgumentParser(
@@ -281,7 +158,6 @@ Ticker: {self.ticker}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_dcf(self, other_args: List[str]):
         """Process dcf command"""
         parser = argparse.ArgumentParser(
@@ -322,7 +198,6 @@ Ticker: {self.ticker}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_income(self, other_args: List[str]):
         """Process income command"""
         parser = argparse.ArgumentParser(
@@ -332,7 +207,7 @@ Ticker: {self.ticker}
             description="""
                 Prints a complete income statement over time. This can be either quarterly or annually.
                 The following fields are expected: Accepted date, Cost and expenses, Cost of
-                revenue, Depreciation and amortization, Ebitda, Ebitdaratio, Eps, Epsdiluted, Filling
+                revenue, Depreciation and amortization, EBITDA, EBITDA Ratio, Eps, Eps Diluted, Filling
                 date, Final link, General and administrative expenses, Gross profit, Gross profit
                 ratio, Income before tax, Income before tax ratio, Income tax expense, Interest
                 expense, Link, Net income, Net income ratio, Operating expenses, Operating income,
@@ -369,7 +244,6 @@ Ticker: {self.ticker}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_balance(self, other_args: List[str]):
         """Process balance command"""
         parser = argparse.ArgumentParser(
@@ -421,7 +295,6 @@ Ticker: {self.ticker}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cash(self, other_args: List[str]):
         """Process cash command"""
         parser = argparse.ArgumentParser(
@@ -471,7 +344,6 @@ Ticker: {self.ticker}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_metrics(self, other_args: List[str]):
         """Process metrics command"""
         parser = argparse.ArgumentParser(
@@ -491,7 +363,7 @@ Ticker: {self.ticker}
                 Graham number, Income quality, Intangibles to total assets, Interest debt per share,
                 Inventory turnover, Market cap, Net current asset value, Net debt to EBITDA, Net income
                 per share, Operating cash flow per share, Payables turnover, Payout ratio, Pb ratio, Pe
-                ratio, Pfcf ratio, Pocfratio, Price to sales ratio, Ptb ratio, Receivables turnover,
+                ratio, Pfcf ratio, Pocf ratio, Price to sales ratio, Ptb ratio, Receivables turnover,
                 Research and development to revenue, Return on tangible assets, Revenue per share,
                 Roe, Roic, Sales general and administrative to revenue, Shareholders equity per
                 share, Stock based compensation to revenue, Tangible book value per share, and Working
@@ -526,7 +398,6 @@ Ticker: {self.ticker}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_ratios(self, other_args: List[str]):
         """Process cash command"""
         parser = argparse.ArgumentParser(
@@ -582,7 +453,6 @@ Ticker: {self.ticker}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_growth(self, other_args: List[str]):
         """Process cash command"""
         parser = argparse.ArgumentParser(
@@ -593,12 +463,12 @@ Ticker: {self.ticker}
             time. This can be either annually and quarterly. These are, among other things, Revenue
             Growth (3, 5 and 10 years), inventory growth and operating cash flow growth (3, 5 and 10
             years). The following fields are expected: Asset growth, Book valueper share growth, Debt
-            growth, Dividendsper share growth, Ebitgrowth, Epsdiluted growth, Epsgrowth, Five y
+            growth, Dividendsper share growth, Ebit growth, Eps diluted growth, Eps growth, Five y
             dividendper share growth per share, Five y net income growth per share, Five y operating c
             f growth per share, Five y revenue growth per share, Five y shareholders equity growth per
             share, Free cash flow growth, Gross profit growth, Inventory growth, Net income growth,
-            Operating cash flow growth, Operating income growth, Rdexpense growth, Receivables growth,
-            Revenue growth, Sgaexpenses growth, Ten y dividendper share growth per share, Ten y net
+            Operating cash flow growth, Operating income growth, Rd expense growth, Receivables growth,
+            Revenue growth, Sga expenses growth, Ten y dividendper share growth per share, Ten y net
             income growth per share, Ten y operating c f growth per share, Ten y revenue growth per
             share, Ten y shareholders equity growth per share, Three y dividendper share growth per
             share, Three y net income growth per share, Three y operating c f growth per share, Three y
@@ -633,97 +503,3 @@ Ticker: {self.ticker}
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
             )
-
-
-def menu(
-    ticker: str,
-    start: str,
-    interval: str,
-    queue: List[str] = None,
-):
-    """Financial Modeling Prep menu
-
-    Parameters
-    ----------
-    ticker : str
-        Fundamental analysis ticker symbol
-    start : str
-        Start date of the stock data
-    interval : str
-        Stock data interval
-    """
-
-    fmp_controller = FinancialModelingPrepController(ticker, start, interval, queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if fmp_controller.queue and len(fmp_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if fmp_controller.queue[0] in ("q", "..", "quit"):
-                if len(fmp_controller.queue) > 1:
-                    return fmp_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = fmp_controller.queue[0]
-            fmp_controller.queue = fmp_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in fmp_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /stocks/fa/fmp/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                fmp_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and fmp_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/fa/fmp/ $ ",
-                        completer=fmp_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/fa/fmp/ $ ")
-
-        try:
-            # Process the input command
-            fmp_controller.queue = fmp_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                fmp_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        fmp_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                fmp_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

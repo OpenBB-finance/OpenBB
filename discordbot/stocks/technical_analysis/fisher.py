@@ -8,7 +8,7 @@ from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
 
 
@@ -19,7 +19,7 @@ async def fisher_command(ctx, ticker="", length="14", start="", end=""):
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.fisher {ticker} {length} {start} {end}")
+            logger.debug("!stocks.ta.fisher %s %s %s %s", ticker, length, start, end)
 
         # Check for argument
         if ticker == "":
@@ -37,7 +37,7 @@ async def fisher_command(ctx, ticker="", length="14", start="", end=""):
 
         if not length.lstrip("-").isnumeric():
             raise Exception("Number has to be an integer")
-        length = float(length)
+        length = int(length)
 
         ticker = ticker.upper()
         df_stock = discordbot.helpers.load(ticker, start)
@@ -47,7 +47,7 @@ async def fisher_command(ctx, ticker="", length="14", start="", end=""):
         # Retrieve Data
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
-        df_ta = momentum_model.fisher("1440min", df_stock, length)
+        df_ta = momentum_model.fisher(df_stock["High"], df_stock["Low"], length)
 
         # Output Data
         fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -97,7 +97,7 @@ async def fisher_command(ctx, ticker="", length="14", start="", end=""):
         uploaded_image = gst_imgur.upload_image("ta_fisher.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: Fisher-Transform " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

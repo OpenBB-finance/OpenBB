@@ -19,7 +19,7 @@ pytest --fixtures
 This will include the :
 - `fixtures` available by default in `pytest`
 - `fixtures` defined by installed `pytest plugins`
-- custom `fixtures` built specialy for this GamestonkTerminal
+- custom `fixtures` built specially for this GamestonkTerminal
 
 ## 1.3. Which are the custom `fixtures` ?
 
@@ -81,7 +81,7 @@ def test_function(default_csv_path):
 
 You might want to comment the file saving part after the first run.
 
-Or find a way to conditionnaly disable it.
+Or find a way to conditionally disable it.
 
 ## 2.3. How to use `default_txt_path` ?
 
@@ -132,7 +132,7 @@ import pytest
 
 @pytest.mark.record_stdout
 def test_function():
-    print("Something")
+    console.print("Something")
 ```
 
 This will generate a text file to store the `printed` output.
@@ -159,6 +159,16 @@ You can run this command to regenerate the text file :
 pytest --record-mode=rewrite
 ```
 
+**REWRITE EXPECTED**
+
+This will force `record_stdout` to rewrite any changed file (`txt`).
+
+This will not rewrite the cassettes.
+
+Example :
+```
+pytest --rewrite-expected
+```
 
 **VCR**
 
@@ -167,14 +177,15 @@ You can combine `record_stdout` and `vcr` fixtures, like this :
 ```python
 import pytest
 import requests
+from gamestonk_terminal.rich_config import console
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_function():
     response = requests.get('https://api.github.com/user', auth=('user', 'pass'))
     
-    print(response.status_code)
-    print(response.text)
+    console.print(response.status_code)
+    console.print(response.text)
 ```
 
 **ASSERT IN LIST**
@@ -183,13 +194,14 @@ You are not forced to save a text file, you can use a list of texts instead like
 
 ```python
 import pytest
+from gamestonk_terminal.rich_config import console
 
 @pytest.mark.record_stdout(
     assert_in_list=["Some text", "Another text"],
     save_record=False,
 )
 def test_function():
-    print("""
+    console.print("""
         This text contains :
             - Some text
             - Another text
@@ -205,6 +217,7 @@ Example :
 ```python
 import pytest
 import random
+from gamestonk_terminal.rich_config import console
 
 @pytest.mark.record_stdout(strip=True)
 def test_function():
@@ -214,7 +227,7 @@ def test_function():
     for _ in range(random_int):
         text += " "
 
-    print(some_text)
+    console.print(some_text)
 ```
 
 **RECORD MODE**
@@ -224,12 +237,13 @@ It is possible to programmatically change the `record_mode` on a `test`.
 Example :
 ```python
 import pytest
+from gamestonk_terminal.rich_config import console
 
 @pytest.mark.record_stdout(record_mode="rewrite")
 def test_function():
     some_text = "Some text output"
 
-    print(some_text)
+    console.print(some_text)
 ```
 
 ## 3.2. How to use the `recorder fixture` ?
@@ -283,6 +297,17 @@ You can run this command to regenerate the text file :
 
 ```bash
 pytest --record-mode=rewrite
+```
+
+**REWRITE EXPECTED**
+
+This will force `recorder` to rewrite any changed file (`csv`, `json`, `txt`).
+
+This will not rewrite the cassettes.
+
+Example :
+```
+pytest --rewrite-expected
 ```
 
 **VCR**

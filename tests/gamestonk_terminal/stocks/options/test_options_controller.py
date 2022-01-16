@@ -12,6 +12,7 @@ from gamestonk_terminal.stocks.options import options_controller
 # pylint: disable=E1101
 # pylint: disable=W0603
 # pylint: disable=E1111
+# pylint: disable=C0302
 
 EXPIRY_DATES = [
     "2022-01-07",
@@ -122,10 +123,10 @@ def test_menu_with_queue(expected, mocker, queue):
         target=f"{path_controller}.OptionsController.switch",
         return_value=["quit"],
     )
-    result_menu = options_controller.menu(
+    result_menu = options_controller.OptionsController(
         ticker="TSLA",
         queue=queue,
-    )
+    ).menu()
 
     assert result_menu == expected
 
@@ -148,7 +149,20 @@ def test_menu_without_queue_completion(mocker):
         return_value=CHAIN,
     )
 
-    # DISABLE AUTO-COMPLETION
+    # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    mocker.patch(
+        target="gamestonk_terminal.feature_flags.USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session.prompt",
+        return_value="quit",
+    )
+
+    # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch.object(
         target=options_controller.gtff,
         attribute="USE_PROMPT_TOOLKIT",
@@ -168,10 +182,10 @@ def test_menu_without_queue_completion(mocker):
         target=f"{path_controller}.OptionsController",
         return_value=controller,
     )
-    result_menu = options_controller.menu(
+    result_menu = options_controller.OptionsController(
         ticker="MOCK_TICKER",
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -229,10 +243,10 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         new=mock_switch,
     )
 
-    result_menu = options_controller.menu(
+    result_menu = options_controller.OptionsController(
         ticker="MOCK_TICKER",
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -307,8 +321,8 @@ def test_call_cls(mocker):
                 "quit",
                 "reset",
                 "stocks",
-                "options",
                 "load MOCK_TICKER",
+                "options",
                 "exp -d 2022-01-07",
             ],
         ),
@@ -320,8 +334,8 @@ def test_call_cls(mocker):
                 "quit",
                 "reset",
                 "stocks",
-                "options",
                 "load MOCK_TICKER",
+                "options",
                 "exp -d 2022-01-07",
                 "help",
             ],
@@ -356,7 +370,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
     assert controller.queue == expected_queue
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
@@ -384,16 +398,19 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
         ),
         (
             "call_calc",
-            ["--put", "--sell", "--strike=1", "--prenium=2"],
-            "",
+            [
+                "--put",
+                "--sell",
+                "--strike=1",
+                "--premium=2",
+            ],
+            "calculator_view.view_calculator",
             [],
             dict(
-                strike=1,
-                premium=2,
+                strike=1.0,
+                premium=2.0,
                 put=True,
                 sell=True,
-                min=3,
-                max=4,
             ),
         ),
         (
@@ -528,69 +545,69 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             [],
             dict(),
         ),
-        # ( TO UNCOMMENT WHEN FUNCTION CALL_HIST WILL BE FIXED
-        #     # CHART EXCHANGE
-        #     "call_hist",
-        #     [
-        #         "200",
-        #         "--put",
-        #         "--chain=MOCK_CHAIN_ID",
-        #         "--raw",
-        #         "--source=ce",
-        #         "--limit=2",
-        #         "--export=csv",
-        #     ],
-        #     "chartexchange_view.display_raw",
-        #     [
-        #         "csv",
-        #         "MOCK_TICKER",
-        #         "2022-01-07",
-        #         False,
-        #         200.0,
-        #         2,
-        #     ],
-        #     dict(),
-        # ),
-        # (
-        #     # TRADIER
-        #     "call_hist",
-        #     [
-        #         "200",
-        #         "--put",
-        #         "--chain=MOCK_CHAIN_ID",
-        #         "--raw",
-        #         "--source=td",
-        #         "--limit=2",
-        #         "--export=csv",
-        #     ],
-        #     "tradier_view.display_historical",
-        #     [],
-        #     dict(
-        #         ticker="MOCK_TICKER",
-        #         expiry="2022-01-07",
-        #         strike=200.0,
-        #         put=True,
-        #         export="csv",
-        #         raw=True,
-        #         chain_id="MOCK_CHAIN_ID",
-        #     ),
-        # ),
-        # (
-        #     # DISPLAYS : "No correct strike input\n"
-        #     "call_hist",
-        #     [
-        #         "1",
-        #         "--put",
-        #         "--chain=MOCK_CHAIN_ID",
-        #         "--raw",
-        #         "--source=ce",
-        #         "--limit=2",
-        #         "--export=csv",
-        #     ],
-        #     "",
-        #     [],
-        #     dict(),
-        # ),
+        (
+            # CHART EXCHANGE
+            "call_hist",
+            [
+                "200",
+                "--put",
+                "--chain=MOCK_CHAIN_ID",
+                "--raw",
+                "--source=ce",
+                "--limit=2",
+                "--export=csv",
+            ],
+            "chartexchange_view.display_raw",
+            [
+                "MOCK_TICKER",
+                "2022-01-07",
+                False,
+                200.0,
+                2,
+                "csv",
+            ],
+            dict(),
+        ),
+        (
+            # TRADIER
+            "call_hist",
+            [
+                "200",
+                "--put",
+                "--chain=MOCK_CHAIN_ID",
+                "--raw",
+                "--source=td",
+                "--limit=2",
+                "--export=csv",
+            ],
+            "tradier_view.display_historical",
+            [],
+            dict(
+                ticker="MOCK_TICKER",
+                expiry="2022-01-07",
+                strike=200.0,
+                put=True,
+                export="csv",
+                raw=True,
+                chain_id="MOCK_CHAIN_ID",
+            ),
+        ),
+        (
+            # DISPLAYS : "No correct strike input\n"
+            "call_hist",
+            [
+                "1",
+                "--put",
+                "--chain=MOCK_CHAIN_ID",
+                "--raw",
+                "--source=ce",
+                "--limit=2",
+                "--export=csv",
+            ],
+            "",
+            [],
+            dict(),
+        ),
         (
             "call_chains",
             [
@@ -817,7 +834,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
         (
             "call_payoff",
             [],
-            "payoff_controller.menu",
+            "payoff_controller.PayoffController",
             [
                 "MOCK_TICKER",
                 "2022-01-07",
@@ -828,15 +845,15 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
         (
             "call_pricing",
             [],
-            "pricing_controller.menu",
+            "pricing_controller.PricingController",
             [],
             dict(),
         ),
         (
             "call_screen",
             [],
-            "screener_controller.menu",
-            [list()],
+            "screener_controller.ScreenerController",
+            [],
             dict(),
         ),
     ],
@@ -868,7 +885,7 @@ def test_call_func_test(
     )
 
     if mocked_func:
-        mock = mocker.Mock()
+        mock = mocker.MagicMock()
         mocker.patch(
             target=f"{path_controller}.{mocked_func}",
             new=mock,

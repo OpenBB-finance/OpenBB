@@ -5,13 +5,13 @@ import pandas as pd
 import pandas_ta as ta
 
 
-def ad(df_stock: pd.DataFrame, use_open: bool) -> pd.DataFrame:
+def ad(df_stock: pd.DataFrame, use_open: bool = False) -> pd.DataFrame:
     """Calculate AD technical indicator
 
     Parameters
     ----------
     df_stock : pd.DataFrame
-        Dataframe of prices
+        Dataframe of prices with OHLC and Volume
     use_open : bool
         Whether to use open prices
 
@@ -39,7 +39,9 @@ def ad(df_stock: pd.DataFrame, use_open: bool) -> pd.DataFrame:
     return pd.DataFrame(df_ta)
 
 
-def adosc(df_stock: pd.DataFrame, use_open: bool, fast: int, slow: int) -> pd.DataFrame:
+def adosc(
+    df_stock: pd.DataFrame, use_open: bool = False, fast: int = 3, slow: int = 10
+) -> pd.DataFrame:
     """Calculate AD oscillator technical indicator
 
     Parameters
@@ -76,13 +78,11 @@ def adosc(df_stock: pd.DataFrame, use_open: bool, fast: int, slow: int) -> pd.Da
     return pd.DataFrame(df_ta)
 
 
-def obv(s_interval: str, df_stock: pd.DataFrame) -> pd.DataFrame:
+def obv(df_stock: pd.DataFrame) -> pd.DataFrame:
     """On Balance Volume
 
     Parameters
     ----------
-    s_interval: str
-        Stock data interval
     df_stock: pd.DataFrame
         Dataframe of stock prices
 
@@ -91,12 +91,6 @@ def obv(s_interval: str, df_stock: pd.DataFrame) -> pd.DataFrame:
     pd.DataFrame
         Dataframe with technical indicator
     """
-    # Daily
-    if s_interval == "1440min":
-        df_ta = ta.obv(close=df_stock["Adj Close"], volume=df_stock["Volume"]).dropna()
-
-    # Intraday
-    else:
-        df_ta = ta.obv(close=df_stock["Close"], volume=df_stock["Volume"]).dropna()
-
-    return df_ta
+    return pd.DataFrame(
+        ta.obv(close=df_stock["Adj Close"], volume=df_stock["Volume"]).dropna()
+    )

@@ -8,7 +8,7 @@ from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
 
 
@@ -21,7 +21,16 @@ async def rsi_command(
 
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.ta.rsi {ticker} {length} {scalar} {drift} {start} {end}")
+            # pylint: disable=logging-too-many-args
+            logger.debug(
+                "!stocks.ta.rsi %s %s %s %s %s %s",
+                ticker,
+                length,
+                scalar,
+                drift,
+                start,
+                end,
+            )
 
         # Check for argument
         if ticker == "":
@@ -54,8 +63,7 @@ async def rsi_command(
 
         # Retrieve Data
         df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
-
-        df_ta = momentum_model.rsi("1440min", df_stock, length, scalar, drift)
+        df_ta = momentum_model.rsi(df_stock["Adj Close"], length, scalar, drift)
 
         # Output Data
         fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -87,7 +95,7 @@ async def rsi_command(
         uploaded_image = gst_imgur.upload_image("ta_rsi.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = "Stocks: Relative-Strength-Index " + ticker
         embed = discord.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

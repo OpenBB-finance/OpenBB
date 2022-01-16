@@ -15,6 +15,7 @@ from degiro_connector.trading.models.trading_pb2 import (
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=no-member
 
@@ -42,7 +43,7 @@ class DegiroView:
 
     @staticmethod
     def help_display():
-        print(
+        console.print(
             "\nDegiro:\n"
             "   login        connect to degiro's api\n"
             "   logout       disconnect from degiro's api\n"
@@ -75,11 +76,11 @@ class DegiroView:
 
     @staticmethod
     def __cancel_display_success(order_id: str):
-        print(f"Following `Order` was canceled : {order_id}")
+        console.print(f"Following `Order` was canceled : {order_id}")
 
     @staticmethod
     def __cancel_display_fail(order_id: str):
-        print(f"Following `Order` cancellation failed : {order_id}")
+        console.print(f"Following `Order` cancellation failed : {order_id}")
 
     def companynews(self, ns_parser: Namespace):
         # GET ATTRIBUTES
@@ -97,11 +98,11 @@ class DegiroView:
             message=news_by_company,
         )
         for article in news_dict["items"]:
-            print("date", article["date"])
-            print("title", article["title"])
-            print("content", article["content"])
-            print("isins", article["isins"])
-            print("---")
+            console.print("date", article["date"])
+            console.print("title", article["title"])
+            console.print("content", article["content"])
+            console.print("isins", article["isins"])
+            console.print("---")
 
     def create(self, ns_parser: Namespace):
         # GET CONSTANTS
@@ -160,7 +161,7 @@ class DegiroView:
 
     @staticmethod
     def __create_display_canceled():
-        print("`Order` creation canceled.\n")
+        console.print("`Order` creation canceled.\n")
 
     @staticmethod
     def __create_display_check(
@@ -182,7 +183,7 @@ class DegiroView:
         ]
         fees = pd.DataFrame(checking_response_dict["transaction_fees"])
 
-        print(
+        console.print(
             "The following `Order` will be created :\n\n",
             order_df[fields],
             "\n\nFree new space :",
@@ -205,7 +206,7 @@ class DegiroView:
             "time_type",
         ]
 
-        print(
+        console.print(
             "The following `Order` was created :\n",
             order_df[order_df.columns.intersection(fields)],
         )
@@ -230,7 +231,7 @@ class DegiroView:
 
     @staticmethod
     def __hold_display_no_position():
-        print("0 position found.")
+        console.print("0 position found.")
 
     @staticmethod
     def __hold_display_positions(positions: pd.DataFrame):
@@ -258,7 +259,7 @@ class DegiroView:
         fmt_positions["% Change"] /= fmt_positions["Break Even Price"]
         fmt_positions["% Change"] = fmt_positions["% Change"].round(3)
 
-        print(fmt_positions)
+        console.print(fmt_positions)
 
     def lastnews(self, ns_parser: Namespace):
         # GET ATTRIBUTES
@@ -274,10 +275,10 @@ class DegiroView:
             message=latest_news,
         )
         for article in news_dict["items"]:
-            print("date", article["date"])
-            print("title", article["title"])
-            print("content", article["content"])
-            print("---")
+            console.print("date", article["date"])
+            console.print("title", article["title"])
+            console.print("content", article["content"])
+            console.print("---")
 
     def login(self, ns_parser: Namespace):
         # GET ATTRIBUTES
@@ -300,7 +301,7 @@ class DegiroView:
 
     @staticmethod
     def __login_display_success():
-        print("You are now logged in !")
+        console.print("You are now logged in !")
 
     def logout(self, ns_parser: Namespace):
         _ = ns_parser
@@ -316,11 +317,11 @@ class DegiroView:
 
     @staticmethod
     def __logout_display_fail():
-        print("Logged out failed.")
+        console.print("Logged out failed.")
 
     @staticmethod
     def __logout_display_success():
-        print("You are now logged out !")
+        console.print("You are now logged out !")
 
     def lookup(self, ns_parser: Namespace):
         # GET ATTRIBUTES
@@ -357,11 +358,11 @@ class DegiroView:
                 "closePriceDate",
             ]
         ]
-        print(products_selected)
+        console.print(products_selected)
 
     @staticmethod
     def __lookup_display_no_result():
-        print("0 result found.")
+        console.print("0 result found.")
 
     def pending(self, ns_parser: Namespace):
         _ = ns_parser
@@ -394,11 +395,11 @@ class DegiroView:
             "stop_price",
             "total_order_value",
         ]
-        print(orders_df[orders_df.columns.intersection(fields)])
+        console.print(orders_df[orders_df.columns.intersection(fields)])
 
     @staticmethod
     def __pending_display_no_result():
-        print("No pending orders.")
+        console.print("No pending orders.")
 
     def topnews(self, ns_parser: Namespace):
         _ = ns_parser
@@ -418,12 +419,12 @@ class DegiroView:
             message=top_news,
         )
         for article in news_dict["items"]:
-            print("date", article["date"])
-            print("lastUpdated", article["lastUpdated"])
-            print("category", article["category"])
-            print("title", article["title"])
-            print("brief", article["brief"])
-            print("---")
+            console.print("date", article["date"])
+            console.print("lastUpdated", article["lastUpdated"])
+            console.print("category", article["category"])
+            console.print("title", article["title"])
+            console.print("brief", article["brief"])
+            console.print("---")
 
     def update(self, ns_parser: Namespace):
         # GET ATTRIBUTES
@@ -447,12 +448,12 @@ class DegiroView:
 
     @staticmethod
     def __update_display_fail():
-        print("`Order` update failed.")
+        console.print("`Order` update failed.")
 
     @staticmethod
     def __update_display_not_found(order_id: str):
-        print("The following `order` was not found:", order_id)
+        console.print("The following `order` was not found:", order_id)
 
     @staticmethod
     def __update_display_success():
-        print("`Order` updated .")
+        console.print("`Order` updated .")

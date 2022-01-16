@@ -9,6 +9,7 @@ from tabulate import tabulate
 import gamestonk_terminal.feature_flags as gtff
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.stocks.fundamental_analysis import business_insider_model
+from gamestonk_terminal.rich_config import console
 
 
 def display_management(ticker: str, export: str = ""):
@@ -38,9 +39,9 @@ def display_management(ticker: str, export: str = ""):
             )
         )
     else:
-        print(df_management.to_string())
+        console.print(df_management.to_string())
 
-    print("")
+    console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "mgmt", df_management
     )

@@ -12,6 +12,7 @@ from gamestonk_terminal.helper_funcs import (
     export_data,
 )
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def plot_short_interest(ticker: str, nyse: bool, df_short_interest: pd.DataFrame):
@@ -122,7 +123,7 @@ def short_interest(ticker: str, nyse: bool, days: int, raw: bool, export: str):
     else:
         plot_short_interest(ticker, nyse, df_short_interest)
 
-    print("")
+    console.print("")
 
     export_data(
         export,
