@@ -214,11 +214,13 @@ def get_account_growth(cumulative: bool = True) -> pd.DataFrame:
     kind = "cumulative" if cumulative else "periodic"
     df = pd.DataFrame(response[kind])
     df["date"] = df["datetime"].apply(lambda x: datetime.fromtimestamp(x / 1000).date())
-    return df[["date", "totalAccountCount", "activeAccountCount"]]
+    df = df[["date", "totalAccountCount", "activeAccountCount"]]
+    df.columns = ["date", "Total accounts", "Active accounts"]
+    return df
 
 
 def get_staking_ratio_history():
-    """Get terra blockchain staking ratio history [Source: https://fcd.terra.dev/v1]
+    """Get terra blockchain staking ratio history [Source: https://fcd.terra.dev/swagger]
 
     Returns
     -------
@@ -229,6 +231,7 @@ def get_staking_ratio_history():
     response = _make_request("dashboard/staking_ratio")
     df = pd.DataFrame(response)
     df["date"] = df["datetime"].apply(lambda x: datetime.fromtimestamp(x / 1000).date())
+    df["stakingRatio"] = df["stakingRatio"].apply(lambda x: round(float(x) * 100, 2))
     return df[["date", "stakingRatio"]]
 
 
@@ -244,4 +247,7 @@ def get_staking_returns_history():
     response = _make_request("dashboard/staking_return")
     df = pd.DataFrame(response)
     df["date"] = df["datetime"].apply(lambda x: datetime.fromtimestamp(x / 1000).date())
+    df["annualizedReturn"] = df["annualizedReturn"].apply(
+        lambda x: round(float(x) * 100, 2)
+    )
     return df[["date", "annualizedReturn"]]

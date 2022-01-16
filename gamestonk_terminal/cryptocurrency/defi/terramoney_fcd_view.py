@@ -1,16 +1,24 @@
-"""Terra Engineer View"""
+"""Terra Money FCD view"""
 __docformat__ = "numpy"
 
 import os
 from tabulate import tabulate
+import matplotlib.pyplot as plt
+from matplotlib import ticker, dates as mdates
 from gamestonk_terminal.cryptocurrency.defi import terramoney_fcd_model
-from gamestonk_terminal.helper_funcs import export_data
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    long_number_format,
+    plot_autoscale,
+    rich_table_from_df,
+)
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     prettify_column_names,
     very_long_number_formatter,
 )
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.rich_config import console
 
 
 def display_account_staking_info(
@@ -31,18 +39,17 @@ def display_account_staking_info(
     df, report = terramoney_fcd_model.get_staking_account_info(address)
     console.print(report)
     if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
+        console.print(
+            rich_table_from_df(
                 df.head(top),
-                headers=df.columns,
+                headers=list(df.columns),
                 floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
+                show_index=False,
             ),
             "\n",
         )
     else:
-        console.print(df.to_string(index=False), "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -149,4 +156,146 @@ def display_gov_proposals(
         os.path.dirname(os.path.abspath(__file__)),
         "proposals",
         df_data,
+    )
+
+
+def display_account_growth(
+    kind: str = "total", cumulative: bool = False, top: int = 90, export: str = ""
+) -> None:
+    """Display terra blockchain account growth history [Source: https://fcd.terra.dev/swagger]
+
+    Parameters
+    ----------
+    top: int
+        Number of records to display
+    kind: str
+        display total account count or active account count. One from list [active, total]
+    cumulative: bool
+        Flag to show cumulative or discrete values. For active accounts only discrete value is available.
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+
+    df = terramoney_fcd_model.get_account_growth(cumulative)
+    if kind not in ["active", "total"]:
+        kind = "total"
+    options = {"total": "Total accounts", "active": "Active accounts"}
+
+    opt = options[kind]
+    label = "Cumulative" if cumulative and opt == "total" else "Daily"
+
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+    df = df.sort_values("date", ascending=False).head(top)
+    df = df.set_index("date")
+
+    start, end = df.index[-1], df.index[0]
+    if cumulative:
+        ax.plot(df[opt], label=df[opt])
+    else:
+        ax.bar(x=df.index, height=df[opt], label=df[opt])
+
+    ax.set_ylabel(f"{opt}")
+    ax.set_xlabel("date")
+    dateFmt = mdates.DateFormatter("%m/%d/%Y")
+    ax.xaxis.set_major_formatter(dateFmt)
+
+    ax.get_yaxis().set_major_formatter(
+        ticker.FuncFormatter(lambda x, _: long_number_format(x))
+    )
+    fig.tight_layout(pad=8)
+    ax.set_title(f"{label} number of {opt.lower()} in period from {start} to {end}")
+    ax.grid(alpha=0.5)
+    ax.tick_params(axis="x", labelrotation=90)
+    if gtff.USE_ION:
+        plt.ion()
+    plt.show()
+    print("")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "gacc",
+        df,
+    )
+
+
+def display_staking_ratio_history(top: int = 90, export: str = "") -> None:
+    """Display terra blockchain staking ratio history [Source: https://fcd.terra.dev/v1]
+
+    Parameters
+    ----------
+    top: int
+        Number of records to display
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+
+    df = terramoney_fcd_model.get_staking_ratio_history()
+
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    df = df.sort_values("date", ascending=False).head(top)
+    df = df.set_index("date")
+
+    start, end = df.index[-1], df.index[0]
+
+    ax.plot(df, label=df["stakingRatio"])
+    ax.set_ylabel("Staking ratio [%]")
+    ax.set_xlabel("date")
+    dateFmt = mdates.DateFormatter("%m/%d/%Y")
+    ax.xaxis.set_major_formatter(dateFmt)
+
+    fig.tight_layout(pad=8)
+    ax.set_title(f"Staking ratio in period from {start} to {end}")
+    ax.grid(alpha=0.5)
+    ax.tick_params(axis="x", labelrotation=90)
+    if gtff.USE_ION:
+        plt.ion()
+    plt.show()
+    print("")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "sratio",
+        df,
+    )
+
+
+def display_staking_returns_history(top: int = 90, export: str = "") -> None:
+    """Display terra blockchain staking returns history [Source: https://fcd.terra.dev/swagger]
+
+    Parameters
+    ----------
+    top: int
+        Number of records to display
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+
+    df = terramoney_fcd_model.get_staking_returns_history()
+
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    df = df.sort_values("date", ascending=False).head(top)
+    df = df.set_index("date")
+
+    start, end = df.index[-1], df.index[0]
+
+    ax.plot(df, label=df["annualizedReturn"])
+    ax.set_ylabel("Staking returns [%]")
+    ax.set_xlabel("date")
+    dateFmt = mdates.DateFormatter("%m/%d/%Y")
+    ax.xaxis.set_major_formatter(dateFmt)
+
+    fig.tight_layout(pad=8)
+    ax.set_title(f"Staking returns in period from {start} to {end}")
+    ax.grid(alpha=0.5)
+    ax.tick_params(axis="x", labelrotation=90)
+    if gtff.USE_ION:
+        plt.ion()
+    plt.show()
+    print("")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "sreturn",
+        df,
     )
