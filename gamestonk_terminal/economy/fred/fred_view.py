@@ -127,7 +127,9 @@ def display_fred_series(
             ax.plot(
                 data_to_plot.index,
                 data_to_plot,
-                label="\n".join(textwrap.wrap(title, 80)),
+                label="\n".join(textwrap.wrap(title, 80))
+                if len(series_ids) < 5
+                else title,
             )
 
     ax.legend(prop={"size": 10}, bbox_to_anchor=(0, 1), loc="lower left")
@@ -135,10 +137,11 @@ def display_fred_series(
     ax.set_xlim(data.index[0], data.index[-1])
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
-    if gtff.USE_ION:
-        plt.ion()
     plt.gcf().autofmt_xdate()
     fig.tight_layout()
+    if gtff.USE_ION:
+        plt.ion()
+
     plt.show()
     data.index = [x.strftime("%Y-%m-%d") for x in data.index]
     if raw:
