@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 from urllib.request import urlopen
-from typing import List, Union, Dict, Any
+from typing import List, Union, Dict, Any, Tuple
 from zipfile import ZipFile
 from io import BytesIO
 import re
@@ -500,7 +500,6 @@ def create_dataframe(ticker: str, statement: str):
     for i, _ in enumerate(vals[1][1:]):
         df = insert_row(vals[1][i + 1], vals[1][i], df, blank_list)
 
-    # not giving: len_date, years
     return df, rounding
 
 
@@ -519,7 +518,7 @@ def get_sister_dfs(ticker: str, info: Dict[str, Any], n: int):
 
     Returns
     -------
-
+    Do not merge if colin did not update this to a dictionary
     """
     # TODO: Once mcap is added to this, we can add as an additional filters for more comparative results
     sisters = others_in_sector(ticker, info["sector"], info["industry"])
@@ -534,3 +533,48 @@ def get_sister_dfs(ticker: str, info: Dict[str, Any], n: int):
             i += 1
         sisters.pop(0)
     return new_list
+
+
+def clean_dataframes(*args) -> List[pd.DataFrame]:
+    """
+    All dataframes in the list take on the length of the shortest dataframe
+
+    Parameters
+    ----------
+    *args : List[pd.DataFrame]
+        List of dataframes to clean
+
+    Returns
+    -------
+    dfs : List[pd.DataFrame]
+        Cleaned list of dataframes
+    """
+    min_cols = min(x.shape[1] for x in args)
+    dfs = [x.iloc[:, -min_cols:] for x in args]
+
+    return dfs
+
+
+def get_value(df: pd.DataFrame, row: str, column: int) -> Tuple[float, float]:
+    """
+    Gets a specific value from the dataframe
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The dataframe to get the information from
+    row : str
+        The row to get the information from
+    column : int
+        The column to get the information from
+
+    Returns
+    -------
+    value : List[float]
+        The information in float format
+    """
+    val1: str = df.at[row, df.columns[column]]
+    fin_val1: float = float(val1.replace(",", "").replace("-", "-0"))
+    val2: str = df.at[row, df.columns[column + 1]]
+    fin_val2: float = float(val2.replace(",", "").replace("-", "-0"))
+    return fin_val1, fin_val2

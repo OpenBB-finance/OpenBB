@@ -59,6 +59,9 @@ class CreateExcelFA:
         self.ws3.column_dimensions["A"].width = 3
         for val in [self.ws1, self.ws2, self.ws3, self.ws4]:
             self.create_header(val)
+        self.df_bs, self.df_is, self.df_cf = dcf_model.clean_dataframes(
+            self.df_bs, self.df_is, self.df_cf
+        )
         self.add_estimates()
         self.create_dcf()
         self.add_ratios()
@@ -940,135 +943,27 @@ class CreateExcelFA:
             )
             dcf_model.set_cell(self.ws4, f"A{row+30}", "Earnings Per Share")
             dcf_model.set_cell(self.ws4, f"A{row+31}", "Price Earnings Ratio")
-            for j in range(len(self.df_bs.columns) - 1):
+            for j in range(val[1][0].shape[1] - 1):  # self.df_bs.columns
                 lt = dcf_model.letters[j + 1]
 
-                cace1 = float(
-                    val[1][0]
-                    .at["Cash & Cash Equivalents", val[1][0].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                ar0 = float(
-                    val[1][0]
-                    .at["Receivables", val[1][0].columns[j]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                ar1 = float(
-                    val[1][0]
-                    .at["Receivables", val[1][0].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                inv0 = float(
-                    val[1][0]
-                    .at["Inventory", val[1][0].columns[j]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                inv1 = float(
-                    val[1][0]
-                    .at["Inventory", val[1][0].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                ca1 = float(
-                    val[1][0]
-                    .at["Total Current Assets", val[1][0].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                ta0 = float(
-                    val[1][0]
-                    .at["Total Assets", val[1][0].columns[j]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                ta1 = float(
-                    val[1][0]
-                    .at["Total Assets", val[1][0].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                ap0 = float(
-                    val[1][0]
-                    .at["Accounts Payable", val[1][0].columns[j]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                ap1 = float(
-                    val[1][0]
-                    .at["Accounts Payable", val[1][0].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                cl1 = float(
-                    val[1][0]
-                    .at["Total Current Liabilities", val[1][0].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                tl1 = float(
-                    val[1][0]
-                    .at["Total Liabilities", val[1][0].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                te0 = float(
-                    val[1][0]
-                    .at["Shareholders' Equity", val[1][0].columns[j]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                te1 = float(
-                    val[1][0]
-                    .at["Shareholders' Equity", val[1][0].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                sls1 = float(
-                    val[1][1]
-                    .at["Revenue", val[1][1].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                cogs1 = float(
-                    val[1][1]
-                    .at["Cost of Revenue", val[1][1].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                inte1 = float(
-                    val[1][1]
-                    .at["Interest Expense / Income", val[1][1].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                tax1 = float(
-                    val[1][1]
-                    .at["Income Tax", val[1][1].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                ni1 = float(
-                    val[1][1]
-                    .at["Net Income", val[1][1].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                pdiv1 = float(
-                    val[1][1]
-                    .at["Preferred Dividends", val[1][0].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
-                opcf1 = float(
-                    val[1][2]
-                    .at["Operating Cash Flow", val[1][2].columns[j + 1]]
-                    .replace(",", "")
-                    .replace("-", "-0")
-                )
+                cace1 = dcf_model.get_value(val[1][0], "Cash & Cash Equivalents", j)[1]
+                ar0, ar1 = dcf_model.get_value(val[1][0], "Receivables", j)
+                inv0, inv1 = dcf_model.get_value(val[1][0], "Inventory", j)
+                ca1 = dcf_model.get_value(val[1][0], "Total Current Assets", j)[1]
+                ta0, ta1 = dcf_model.get_value(val[1][0], "Total Assets", j)
+                ap0, ap1 = dcf_model.get_value(val[1][0], "Accounts Payable", j)
+                cl1 = dcf_model.get_value(val[1][0], "Total Current Liabilities", j)[1]
+                tl1 = dcf_model.get_value(val[1][0], "Total Liabilities", j)[1]
+                te0, te1 = dcf_model.get_value(val[1][0], "Shareholders' Equity", j)
+                sls1 = dcf_model.get_value(val[1][1], "Revenue", j)[1]
+                cogs1 = dcf_model.get_value(val[1][1], "Cost of Revenue", j)[1]
+                inte1 = dcf_model.get_value(val[1][1], "Interest Expense / Income", j)[
+                    1
+                ]
+                tax1 = dcf_model.get_value(val[1][1], "Income Tax", j)[1]
+                ni1 = dcf_model.get_value(val[1][1], "Net Income", j)[1]
+                pdiv1 = dcf_model.get_value(val[1][1], "Preferred Dividends", j)[1]
+                opcf1 = dcf_model.get_value(val[1][2], "Operating Cash Flow", j)[1]
 
                 dcf_model.set_cell(
                     self.ws4,
@@ -1172,7 +1067,9 @@ class CreateExcelFA:
                 dcf_model.set_cell(
                     self.ws4,
                     f"{lt}{row+31}",
-                    float(self.info["previousClose"])
+                    "NA"
+                    if ((ni1 - pdiv1) / float(self.info["sharesOutstanding"])) == 0
+                    else float(self.info["previousClose"])
                     / ((ni1 - pdiv1) / float(self.info["sharesOutstanding"])),
                 )
             row += 35
