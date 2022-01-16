@@ -18,7 +18,7 @@ from gamestonk_terminal.stocks.fundamental_analysis import dcf_model, dcf_static
 from gamestonk_terminal.helper_funcs import get_rf
 from gamestonk_terminal.rich_config import console
 
-# R0902, R0912, C0302, R0915
+# pylint: disable=C0302
 
 
 class CreateExcelFA:
