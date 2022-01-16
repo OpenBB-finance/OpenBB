@@ -396,4 +396,3 @@ class PortfolioController(BaseController):
                 console.print("Cannot generate a graph from an empty dataframe\n")
         else:
             console.print("Please add items to the portfolio\n")
-

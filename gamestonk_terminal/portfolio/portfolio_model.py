@@ -278,7 +278,7 @@ def convert_df(portfolio: pd.DataFrame) -> pd.DataFrame:
     cashes = changes[changes["Type"] == "cash"]
     if cashes.empty:
         raise ValueError("Brokers require cash, input cash deposits")
-    changes = changes[(changes["Type"] == "stock")|(changes["Type"] == "etf")]
+    changes = changes[(changes["Type"] == "stock") | (changes["Type"] == "etf")]
     uniques = list(set(changes["Name"].tolist()))
     if uniques:
         hist = yfinance_model.get_stocks(uniques, min(changes["Date"]))
@@ -385,6 +385,7 @@ def get_rolling_beta(
     final = final[final.index >= datetime.now() - timedelta(days=n + 1)]
     comb = pd.merge(final, dropped, how="left", left_index=True, right_index=True)
     return comb
+
 
 def fix_etf_allocation(
     data: pd.DataFrame,

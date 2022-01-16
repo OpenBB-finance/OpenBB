@@ -272,12 +272,15 @@ def al(data: pd.DataFrame, graph: bool):
         if gtff.USE_TABULATE_DF:
             print(
                 tabulate(
-                    data, headers=data.columns, tablefmt="fancy_grid", floatfmt=".2f",
+                    data,
+                    headers=data.columns,
+                    tablefmt="fancy_grid",
+                    floatfmt=".2f",
                 ),
-                "\n",
             )
         else:
-            console.print(data.to_string(), "\n")
+            console.print(data.to_string())
+        console.print("")
 
 
 class Report:
