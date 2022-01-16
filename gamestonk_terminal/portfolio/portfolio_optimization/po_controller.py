@@ -150,10 +150,11 @@ class PortfolioOptimization(BaseController):
         "fiveYearAverageReturn",
         "regularMarketPrice",
     ]
+    PATH = "/portfolio/po/"
 
     def __init__(self, tickers: List[str] = None, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/portfolio/po/", queue)
+        super().__init__(queue)
 
         if tickers:
             self.tickers = list(set(tickers))

@@ -46,12 +46,13 @@ class DarkPoolShortsController(BaseController):
         "spos",
         "volexch",
     ]
+    PATH = "/stocks/dps/"
 
     def __init__(
         self, ticker: str, start: str, stock: pd.DataFrame, queue: List[str] = None
     ):
         """Constructor"""
-        super().__init__("/stocks/dps/", queue)
+        super().__init__(queue)
 
         self.ticker = ticker
         self.start = start

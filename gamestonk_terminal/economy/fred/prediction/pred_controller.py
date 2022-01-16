@@ -50,6 +50,7 @@ class PredictionTechniquesController(BaseController):
         "conv1d",
         "mc",
     ]
+    PATH = "/economy/fred/pred/"
 
     def __init__(
         self,
@@ -57,7 +58,7 @@ class PredictionTechniquesController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/economy/fred/pred/", queue)
+        super().__init__(queue)
 
         self.start_date = "2020-01-01"
         self.current_series = current_series
