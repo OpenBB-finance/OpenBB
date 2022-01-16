@@ -34,12 +34,13 @@ class ResearchController(BaseController):
         "newsfilter",
         "stockanalysis",
     ]
+    PATH = "/stocks/res/"
 
     def __init__(
         self, ticker: str, start: datetime, interval: str, queue: List[str] = None
     ):
         """Constructor"""
-        super().__init__("/stocks/res/", queue)
+        super().__init__(queue)
 
         self.ticker = ticker
         self.start = start

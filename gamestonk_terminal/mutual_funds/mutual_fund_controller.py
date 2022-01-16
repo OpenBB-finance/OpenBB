@@ -51,10 +51,11 @@ class FundController(BaseController):
         "currency",
         "underlying",
     ]
+    PATH = "/funds/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/funds/", queue)
+        super().__init__(queue)
 
         self.country = "united states"
         self.data = pd.DataFrame()

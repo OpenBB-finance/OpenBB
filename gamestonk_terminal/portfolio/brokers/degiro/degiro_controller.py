@@ -30,10 +30,11 @@ class DegiroController(BaseController):
         "topnews",
         "update",
     ]
+    PATH = "/portfolio/bro/derigo/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/portfolio/bro/degiro/", queue)
+        super().__init__(queue)
 
         self.__degiro_view = DegiroView()
 

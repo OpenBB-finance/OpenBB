@@ -23,10 +23,11 @@ class DashboardsController(BaseController):
     """Dashboards Controller class"""
 
     CHOICES_COMMANDS = ["stocks", "correlation"]
+    PATH = "/jupyter/dashboard/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/jupyter/dashboards/", queue)
+        super().__init__(queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}

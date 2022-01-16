@@ -45,9 +45,11 @@ class DiscoveryController(BaseController):
         "cgnft",
     ]
 
+    PATH = "/crypto/disc/"
+
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/crypto/disc/", queue)
+        super().__init__(queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}

@@ -79,9 +79,11 @@ class OnchainController(BaseController):
         "baas",
     ]
 
+    PATH = "/crypto/onchain/"
+
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/crypto/onchain/", queue)
+        super().__init__(queue)
 
         self.address = ""
         self.address_type = ""

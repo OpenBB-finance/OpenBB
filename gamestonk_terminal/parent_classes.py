@@ -5,7 +5,7 @@ from abc import ABCMeta, abstractmethod
 import argparse
 import re
 import difflib
-from typing import Union, List
+from typing import Union, List, Dict, Any
 
 from prompt_toolkit.completion import NestedCompleter
 
@@ -14,6 +14,9 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import system_clear, get_flair
 from gamestonk_terminal.rich_config import console
+
+
+controllers: Dict[str, Any] = {}
 
 
 class BaseController(metaclass=ABCMeta):
@@ -35,23 +38,21 @@ class BaseController(metaclass=ABCMeta):
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
 
-    def __init__(self, path: str, queue: List[str] = None) -> None:
+    PATH: str = ""
+
+    def __init__(self, queue: List[str] = None) -> None:
         """
         This is the base class for any controller in the codebase.
         It's used to simplify the creation of menus.
 
-        path: str
-            Menu location with regards to root of the terminal separated by "/"
-            E.g. /stocks/dps
         queue: List[str]
             The current queue of jobs to process separated by "/"
             E.g. /stocks/load gme/dps/sidtc/../exit
         """
-        self.check_path(path)
-        self.path = path
-        self.PATH = [x for x in path.split("/") if x != ""]
+        self.check_path()
+        self.path = [x for x in self.PATH.split("/") if x != ""]
 
-        self.queue = queue if (queue and path != "/") else list()
+        self.queue = queue if (queue and self.PATH != "/") else list()
 
         controller_choices = self.CHOICES_COMMANDS + self.CHOICES_MENUS
         if controller_choices:
@@ -62,11 +63,12 @@ class BaseController(metaclass=ABCMeta):
         self.completer: Union[None, NestedCompleter] = None
 
         self.parser = argparse.ArgumentParser(
-            add_help=False, prog=self.PATH[-1] if path != "/" else "terminal"
+            add_help=False, prog=self.path[-1] if self.PATH != "/" else "terminal"
         )
         self.parser.add_argument("cmd", choices=self.controller_choices)
 
-    def check_path(self, path: str) -> None:
+    def check_path(self) -> None:
+        path = self.PATH
         if path[0] != "/":
             raise ValueError("Path must begin with a '/' character.")
         if path[-1] != "/":
@@ -75,6 +77,21 @@ class BaseController(metaclass=ABCMeta):
             raise ValueError(
                 "Path must only contain lowercase letters and '/' characters."
             )
+
+    def load_class(self, class_ins, *args, **kwargs):
+        """Checks for an existing instance of the controller before creating a new one"""
+        self.save_class()
+        arguments = len(args) + len(kwargs)
+        if class_ins.PATH in controllers and arguments == 1 and gtff.REMEMBER_CONTEXTS:
+            old_class = controllers[class_ins.PATH]
+            old_class.queue = self.queue
+            return old_class.menu()
+        return class_ins(*args, **kwargs).menu()
+
+    def save_class(self):
+        """Saves the current instance of the class to be loaded later"""
+        if gtff.REMEMBER_CONTEXTS:
+            controllers[self.PATH] = self
 
     def custom_reset(self) -> List[str]:
         """This will be replaced by any children with custom_reset functions"""
@@ -139,7 +156,8 @@ class BaseController(metaclass=ABCMeta):
 
     def call_home(self, _) -> None:
         """Process home command"""
-        for _ in range(self.path.count("/") - 1):
+        self.save_class()
+        for _ in range(self.PATH.count("/") - 1):
             self.queue.insert(0, "quit")
 
     def call_help(self, _) -> None:
@@ -148,26 +166,28 @@ class BaseController(metaclass=ABCMeta):
 
     def call_quit(self, _) -> None:
         """Process quit menu command"""
+        self.save_class()
         console.print("")
         self.queue.insert(0, "quit")
 
     def call_exit(self, _) -> None:
+        # Not sure how to handle controller loading here
         """Process exit terminal command"""
-        for _ in range(self.path.count("/")):
+        for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
 
     def call_reset(self, _) -> None:
         """Process reset command. If you would like to have customization in the
         reset process define a methom `custom_reset` in the child class.
         """
-        if self.path != "/":
+        if self.PATH != "/":
             if self.custom_reset():
                 self.queue = self.custom_reset() + self.queue
             else:
-                for val in self.PATH[::-1]:
+                for val in self.path[::-1]:
                     self.queue.insert(0, val)
             self.queue.insert(0, "reset")
-            for _ in range(len(self.PATH)):
+            for _ in range(len(self.path)):
                 self.queue.insert(0, "quit")
 
     def menu(self, custom_path_menu_above: str = ""):
@@ -209,13 +229,13 @@ class BaseController(metaclass=ABCMeta):
                     # Get input from user using auto-completion
                     if session and gtff.USE_PROMPT_TOOLKIT:
                         an_input = session.prompt(
-                            f"{get_flair()} {self.path} $ ",
+                            f"{get_flair()} {self.PATH} $ ",
                             completer=self.completer,
                             search_ignore_case=True,
                         )
                     # Get input from user without auto-completion
                     else:
-                        an_input = input(f"{get_flair()} {self.path} $ ")
+                        an_input = input(f"{get_flair()} {self.PATH} $ ")
                 except KeyboardInterrupt:
                     # Exit in case of keyboard interrupt
                     an_input = "exit"
