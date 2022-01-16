@@ -224,11 +224,19 @@ def others_in_sector(ticker: str, sector: str, industry: str) -> List[str]:
     industry = industry.replace("—", " - ")
     industry = industry.replace("/", " ")
 
-    sister_ticks = list(
-        fd.select_equities(country="United States", sector=sector, industry=industry)
+    sister_ticks = fd.select_equities(
+        country="United States", sector=sector, industry=industry
     )
+
+    # This filters sisters to match marekt cap and removes ticker analyzed
     if ticker in sister_ticks:
-        sister_ticks.remove(ticker)
+        market_cap = sister_ticks[ticker]["market_cap"]
+        sister_ticks.pop(ticker, None)
+        sister_ticks = {
+            k: v for (k, v) in sister_ticks.items() if v["market_cap"] == market_cap
+        }
+        print(sister_ticks)
+    sister_ticks = list(sister_ticks)
     return sister_ticks
 
 
@@ -344,7 +352,6 @@ def get_sister_dfs(ticker: str, info: Dict[str, Any], n: int):
     new_list: List[str, pd.DataFrame]
         A list of sister companies
     """
-    # TODO: Once mcap is added to this, we can add as an additional filters for more comparative results
     sisters = others_in_sector(ticker, info["sector"], info["industry"])
     i = 0
     new_list = []
