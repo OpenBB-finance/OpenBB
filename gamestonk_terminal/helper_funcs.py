@@ -17,7 +17,6 @@ import iso8601
 import matplotlib
 import matplotlib.pyplot as plt
 from holidays import US as us_holidays
-from colorama import Fore, Style
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
 import pandas.io.formats.format
@@ -679,12 +678,12 @@ def parse_known_args_and_warn(
 def financials_colored_values(val: str) -> str:
     """Add a color to a value"""
     if val == "N/A" or str(val) == "nan":
-        val = f"{Fore.YELLOW}N/A{Style.RESET_ALL}"
+        val = "[yellow]N/A[/yellow]"
     elif sum(c.isalpha() for c in val) < 2:
         if "%" in val and "-" in val or "%" not in val and "(" in val:
-            val = f"{Fore.RED}{val}{Style.RESET_ALL}"
+            val = f"[red]{val}[/red]"
         elif "%" in val:
-            val = f"{Fore.GREEN}{val}{Style.RESET_ALL}"
+            val = f"[green]{val}[/green]"
     return val
 
 

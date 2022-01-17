@@ -11,7 +11,6 @@ import time
 from typing import Any, List, Optional, Tuple, Union
 
 import pandas as pd
-from colorama import Fore, Style
 from sentipy.sentipy import Sentipy
 
 from gamestonk_terminal import config_terminal as cfg
@@ -49,21 +48,21 @@ class _Boundary:
         """
 
         if num is None or self.min is None or self.max is None:
-            return Style.DIM + Fore.WHITE, "N/A"
+            return "dim", "N/A"
 
         boundaries = [self.min + (self.max - self.min) / 5 * i for i in range(1, 5)]
 
         if (num <= self.min or num >= self.max) and self.strong:
-            return Fore.WHITE, "Extreme (anomaly?)"
+            return "white", "Extreme (anomaly?)"
         if num < boundaries[0]:
-            return Style.BRIGHT + Fore.RED, "Much Lower"
+            return "bold red", "Much Lower"
         if num < boundaries[1]:
-            return Fore.RED, "Lower"
+            return "red", "Lower"
         if num < boundaries[2]:
-            return Fore.YELLOW, "Same"
+            return "yellow", "Same"
         if num < boundaries[3]:
-            return Fore.GREEN, "Higher"
-        return Style.BRIGHT + Fore.GREEN, "Much Higher"
+            return "green", "Higher"
+        return "bold green", "Much Higher"
 
 
 def _get_past_week_average(ticker: str, metric: str) -> float:
@@ -119,10 +118,10 @@ class _Metric(_MetricInfo):
     def visualise(self) -> Tuple[str, str, str, str]:
         color, category = self.boundary.categorise(self.value)
         return (
-            color + self.title,
+            f"[{color}]" + self.title,
             category,
             "N/A" if self.value is None else f"{self.value:{self.format}}",
-            self.description + Style.RESET_ALL,
+            self.description + f"[/{color}]",
         )
 
 
