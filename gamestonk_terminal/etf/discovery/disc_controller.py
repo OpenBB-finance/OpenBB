@@ -25,10 +25,11 @@ class DiscoveryController(BaseController):
         "decliners",
         "active",
     ]
+    PATH = "/etf/disc/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/etf/disc/", queue)
+        super().__init__(queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}

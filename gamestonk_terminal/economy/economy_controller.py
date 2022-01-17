@@ -122,10 +122,11 @@ class EconomyController(BaseController):
         "country": "Country (U.S. listed stocks only)",
         "capitalization": "Capitalization",
     }
+    PATH = "/economy/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/economy/", queue)
+        super().__init__(queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -1033,4 +1034,4 @@ class EconomyController(BaseController):
         """Process fred command"""
         from gamestonk_terminal.economy.fred.fred_controller import FredController
 
-        self.queue = FredController(self.queue).menu()
+        self.queue = self.load_class(FredController, self.queue)

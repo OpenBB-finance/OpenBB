@@ -20,10 +20,11 @@ class JupyterController(BaseController):
         "reports",
         "dashboards",
     ]
+    PATH = "/jupyter/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/jupyter/", queue)
+        super().__init__(queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -43,7 +44,7 @@ class JupyterController(BaseController):
             ReportController,
         )
 
-        self.queue = ReportController(self.queue).menu()
+        self.queue = self.load_class(ReportController, self.queue)
 
     def call_dashboards(self, _):
         """Process dashboards command"""
@@ -51,4 +52,4 @@ class JupyterController(BaseController):
             DashboardsController,
         )
 
-        self.queue = DashboardsController(self.queue).menu()
+        self.queue = self.load_class(DashboardsController, self.queue)

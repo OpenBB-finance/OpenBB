@@ -45,6 +45,7 @@ def test_get_option_chain(recorder):
     recorder.capture_list(result_tuple)
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "func",

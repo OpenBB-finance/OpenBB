@@ -67,10 +67,11 @@ class BehaviouralAnalysisController(BaseController):
     historical_sort = ["date", "value"]
     historical_direction = ["asc", "desc"]
     historical_metric = ["sentiment", "AHI", "RHI", "SGP"]
+    PATH = "/stocks/ba/"
 
     def __init__(self, ticker: str, start: datetime, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/ba/", queue)
+        super().__init__(queue)
 
         self.ticker = ticker
         self.start = start

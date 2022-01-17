@@ -21,10 +21,11 @@ class BrokersController(BaseController):
 
     CHOICES_COMMANDS: List = []
     CHOICES_MENUS = ["cb", "ally", "rh", "degiro"]
+    PATH = "/portfolio/bro/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/portfolio/bro/", queue)
+        super().__init__(queue)
 
         self.broker_list: Set = set()
         self.merged_holdings = None
@@ -45,19 +46,21 @@ class BrokersController(BaseController):
 
     def call_degiro(self, _):
         """Process degiro command."""
-        self.queue = degiro_controller.DegiroController(self.queue).menu()
+        self.queue = self.load_class(degiro_controller.DegiroController, self.queue)
 
     def call_ally(self, _):
         """Process ally command."""
-        self.queue = ally_controller.AllyController(self.queue).menu()
+        self.queue = self.load_class(ally_controller.AllyController, self.queue)
 
     def call_rh(self, _):
         """Process rh command."""
-        self.queue = robinhood_controller.RobinhoodController(self.queue).menu()
+        self.queue = self.load_class(
+            robinhood_controller.RobinhoodController, self.queue
+        )
 
     def call_cb(self, _):
         """Process degiro command."""
-        self.queue = coinbase_controller.CoinbaseController(self.queue).menu()
+        self.queue = self.load_class(coinbase_controller.CoinbaseController, self.queue)
 
     # TODO: Consistent way of merging across brokers including crypto
     # def call_login(self, other_args):
