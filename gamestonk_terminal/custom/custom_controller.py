@@ -27,7 +27,7 @@ class CustomDataController(BaseController):
     """Alternative Controller class"""
 
     CHOICES_COMMANDS: List[str] = ["load", "plot", "show", "info"]
-    CHOICES_MENUS: List[str] = ["qa"]
+    CHOICES_MENUS: List[str] = ["qa", "pred"]
     pandas_plot_choices = [
         "line",
         "scatter",
@@ -78,7 +78,8 @@ Current file:    {self.file or None}[cmds]{has_data_start}
     info            show data info (columns and datatypes)
     plot            plot data from loaded file{has_data_end}[/cmds]
 [menus]
->   qa          quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis[/menus]
+>   qa          quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis[
+>   pred        prediction techniques    \t e.g.: regression, arima, rnn, lstm/menus]
 """
         console.print(text=help_text, menu="Custom")
 
@@ -227,3 +228,15 @@ Current file:    {self.file or None}[cmds]{has_data_start}
             file=self.file,
             queue=self.queue,
         )
+
+    def call_pred(self, _):
+        """Process pred command"""
+        if gtff.ENABLE_PREDICT:
+            from gamestonk_terminal.custom.prediction_techniques import pred_controller
+
+            self.queue = self.load_class(
+                pred_controller.PredictionTechniquesController,
+                self.data,
+                self.file,
+                self.queue,
+            )
