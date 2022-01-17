@@ -4,10 +4,12 @@ __docformat__ = "numpy"
 import argparse
 from datetime import datetime, timedelta
 from typing import List
+import os
 
 import investpy
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
+from rich.markdown import Markdown
 from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
@@ -29,6 +31,7 @@ class FundController(BaseController):
     """Fund Controller class"""
 
     CHOICES_COMMANDS = [
+        "resources",
         "country",
         "search",
         "overview",
@@ -115,6 +118,16 @@ class FundController(BaseController):
         if self.fund_name:
             return ["funds", f"load {self.fund_name} --name"]
         return []
+
+    def call_resources(self, _):
+        """Process resources command"""
+        resources_md = os.path.join(os.path.dirname(__file__), "README.md")
+        if os.path.isfile(resources_md):
+            with open(resources_md) as f:
+                console.print(Markdown(f.read()))
+            console.print("")
+        else:
+            console.print("No resources available.\n")
 
     def call_country(self, other_args: List[str]):
         """Process country command"""

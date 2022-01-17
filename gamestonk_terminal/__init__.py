@@ -7,6 +7,5 @@ from . import (
     forex,
     portfolio,
     jupyter,
-    resources,
     stocks,
 )
