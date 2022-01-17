@@ -6,7 +6,6 @@ from typing import List
 from datetime import datetime, timedelta
 import textwrap
 from prompt_toolkit.completion import NestedCompleter
-from colorama import Style
 from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
@@ -730,33 +729,33 @@ class BehaviouralAnalysisController(BaseController):
 
     def call_metrics(self, other_args: List[str]):
         """Process metrics command"""
-        command_description = f"""
-        {Style.BRIGHT}Sentiment Investor{Style.RESET_ALL} analyzes data from four major social media platforms to
+        command_description = """
+        [bold]Sentiment Investor[/bold] analyzes data from four major social media platforms to
         generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
         sentiment metrics powered by proprietary NLP models.
 
-        The {Style.BRIGHT}metrics{Style.RESET_ALL} command prints the following realtime metrics:
+        The [bold]metrics[/bold] command prints the following realtime metrics:
 
-        {Style.BRIGHT}AHI (Absolute Hype Index){Style.RESET_ALL}
+        [bold]AHI (Absolute Hype Index)[/bold]
         ---
         AHI is a measure of how much people are talking about a stock on social media.
         It is calculated by dividing the total number of mentions for the chosen stock
         on a social network by the mean number of mentions any stock receives on that
         social medium.
 
-        {Style.BRIGHT}RHI (Relative Hype Index){Style.RESET_ALL}
+        [bold]RHI (Relative Hype Index)[/bold]
         ---
         RHI is a measure of whether people are talking about a stock more or less than
         usual, calculated by dividing the mean AHI for the past day by the mean AHI for
         for the past week for that stock.
 
-        {Style.BRIGHT}Sentiment Score{Style.RESET_ALL}
+        [bold]Sentiment Score[/bold]
         ---
         Sentiment score is the percentage of people talking positively about the stock.
         For each social network the number of positive posts/comments is divided by the
         total number of both positive and negative posts/comments.
 
-        {Style.BRIGHT}SGP (Standard General Perception){Style.RESET_ALL}
+        [bold]SGP (Standard General Perception)[/bold]
         ---
         SGP is a measure of whether people are more or less positive about a stock than
         usual. It is calculated by averaging the past day of sentiment values and then
@@ -780,12 +779,12 @@ class BehaviouralAnalysisController(BaseController):
 
     def call_social(self, other_args: List[str]):
         """Process social command"""
-        command_description = f"""
-        {Style.BRIGHT}Sentiment Investor{Style.RESET_ALL} analyzes data from four major social media platforms to
+        command_description = """
+        [bold]Sentiment Investor[/bold] analyzes data from four major social media platforms to
         generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
         sentiment metrics powered by proprietary NLP models.
 
-        The {Style.BRIGHT}social{Style.RESET_ALL} command prints the raw data for a given stock, including the number
+        The [bold]social[/bold] command prints the raw data for a given stock, including the number
         of mentions it has received on social media in the last hour and the sentiment
         score of those comments.
         """
@@ -808,33 +807,33 @@ class BehaviouralAnalysisController(BaseController):
 
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
-        command_description = f"""
-        {Style.BRIGHT}Sentiment Investor{Style.RESET_ALL} analyzes data from four major social media platforms to
+        command_description = """
+        [bold]Sentiment Investor[/bold] analyzes data from four major social media platforms to
         generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
         sentiment metrics powered by proprietary NLP models.
 
-        The {Style.BRIGHT}historical{Style.RESET_ALL} command plots the past week of data for a selected metric, one of:
+        The [bold]historical[/bold] command plots the past week of data for a selected metric, one of:
 
-        {Style.BRIGHT}AHI (Absolute Hype Index){Style.RESET_ALL}
+        [bold]AHI (Absolute Hype Index)[/bold]
         ---
         AHI is a measure of how much people are talking about a stock on social media.
         It is calculated by dividing the total number of mentions for the chosen stock
         on a social network by the mean number of mentions any stock receives on that
         social medium.
 
-        {Style.BRIGHT}RHI (Relative Hype Index){Style.RESET_ALL}
+        [bold]RHI (Relative Hype Index)[/bold]
         ---
         RHI is a measure of whether people are talking about a stock more or less than
         usual, calculated by dividing the mean AHI for the past day by the mean AHI for
         for the past week for that stock.
 
-        {Style.BRIGHT}Sentiment Score{Style.RESET_ALL}
+        [bold]Sentiment Score[/bold]
         ---
         Sentiment score is the percentage of people talking positively about the stock.
         For each social network the number of positive posts/comments is divided by the
         total number of both positive and negative posts/comments.
 
-        {Style.BRIGHT}SGP (Standard General Perception){Style.RESET_ALL}
+        [bold]SGP (Standard General Perception)[/bold]
         ---
         SGP is a measure of whether people are more or less positive about a stock than
         usual. It is calculated by averaging the past day of sentiment values and then
@@ -895,10 +894,10 @@ class BehaviouralAnalysisController(BaseController):
 
     def call_popularsi(self, other_args: List[str]):
         """Process popular command"""
-        command_description = f"""
-        The {Style.BRIGHT}popular{Style.RESET_ALL} command prints the stocks with highest Average Hype Index right now.
+        command_description = """
+        The [bold]popular[/bold] command prints the stocks with highest Average Hype Index right now.
 
-        {Style.BRIGHT}AHI (Absolute Hype Index){Style.RESET_ALL}
+        [bold]AHI (Absolute Hype Index)[/bold]
         ---
         AHI is a measure of how much people are talking about a stock on social media.
         It is calculated by dividing the total number of mentions for the chosen stock
@@ -907,7 +906,7 @@ class BehaviouralAnalysisController(BaseController):
 
         ===
 
-        {Style.BRIGHT}Sentiment Investor{Style.RESET_ALL} analyzes data from four major social media platforms to
+        [bold]Sentiment Investor[/bold] analyzes data from four major social media platforms to
         generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
         sentiment metrics powered by proprietary NLP models.
         """
@@ -935,10 +934,10 @@ class BehaviouralAnalysisController(BaseController):
 
     def call_emerging(self, other_args: List[str]):
         """Process emerging command"""
-        command_description = f"""
-        The {Style.BRIGHT}emerging{Style.RESET_ALL} command prints the stocks with highest Index right now.
+        command_description = """
+        The [bold]emerging[/bold] command prints the stocks with highest Index right now.
 
-        {Style.BRIGHT}RHI (Relative Hype Index){Style.RESET_ALL}
+        [bold]RHI (Relative Hype Index)[/bold]
         ---
         RHI is a measure of whether people are talking about a stock more or less than
         usual, calculated by dividing the mean AHI for the past day by the mean AHI for
@@ -946,7 +945,7 @@ class BehaviouralAnalysisController(BaseController):
 
         ===
 
-        {Style.BRIGHT}Sentiment Investor{Style.RESET_ALL} analyzes data from four major social media platforms to
+        [bold]Sentiment Investor[/bold] analyzes data from four major social media platforms to
         generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
         sentiment metrics powered by proprietary NLP models.
         """

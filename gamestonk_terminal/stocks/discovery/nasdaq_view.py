@@ -3,9 +3,6 @@ __docformat__ = "numpy"
 
 import os
 
-from colorama import Style
-from tabulate import tabulate
-
 from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
 from gamestonk_terminal.stocks.discovery import nasdaq_model
 import gamestonk_terminal.feature_flags as gtff
@@ -24,15 +21,15 @@ def display_top_retail(n_days: int = 3, export: str = ""):
     """
     retails = nasdaq_model.get_retail_tickers()
     for date, df in retails.head(n_days * 10).groupby("Date"):
-        console.print(f"{Style.BRIGHT}{date} Top Retail:{Style.RESET_ALL}")
+        console.print(f"[bold]{date} Top Retail:[/bold]")
         df = df.drop(columns=["Date"])
         if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
+            console.print(
+                rich_table_from_df(
                     df.reset_index(drop=True),
                     headers=df.columns[1:],
-                    showindex=False,
-                    tablefmt="fancy_grid",
+                    show_index=False,
+                    title="Top Retail Companies",
                 )
             )
         else:

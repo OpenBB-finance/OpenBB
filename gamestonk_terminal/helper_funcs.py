@@ -68,7 +68,7 @@ def rich_table_from_df(
         String to
     Returns
     -------
-    Table
+    Table: Table
         rich table
     """
     table = Table(title=title, show_lines=True)
@@ -102,7 +102,6 @@ def rich_table_from_df(
             for idx, x in enumerate(values)
         ]
         table.add_row(*row)
-
     return table
 
 

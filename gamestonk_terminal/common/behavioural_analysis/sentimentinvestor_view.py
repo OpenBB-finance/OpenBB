@@ -7,7 +7,6 @@ import matplotlib.dates as mdates
 import pandas as pd
 import seaborn as sns
 import tabulate
-from colorama import Style
 from matplotlib import pyplot as plt
 from sentipy.sentipy import Sentipy
 
@@ -51,7 +50,7 @@ def _tabulate_metrics(ticker: str, metrics_list: List[_Metric]):
     """Tabulates sentiment investor data"""
     table_data = []
     table_headers = [
-        f"{Style.BRIGHT}{ticker}{Style.RESET_ALL} Metrics",
+        f"[bold]{ticker}[/bold] Metrics",
         "vs Past 7 Days",
         "Value",
         "Description",
@@ -205,7 +204,9 @@ def display_historical(
 
     # apply coloring to every value
     aggregated[metric] = [
-        boundary.categorise(value)[0] + str(value) + Style.RESET_ALL
+        f"[{boundary.categorise(value)[0]}]"
+        + str(value)
+        + f"[/{boundary.categorise(value)[0]}]"
         for value in aggregated[metric]
     ]
 

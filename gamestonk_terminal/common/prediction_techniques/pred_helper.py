@@ -11,7 +11,6 @@ import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-from colorama import Fore, Style
 from sklearn.metrics import (
     mean_absolute_error,
     r2_score,
@@ -549,19 +548,15 @@ def plot_data_predictions(
 def price_prediction_color(val: float, last_val: float) -> str:
     """Set prediction to be a colored string"""
     if float(val) > last_val:
-        color = Fore.GREEN
-    else:
-        color = Fore.RED
-    return f"{color}{val:.2f} ${Style.RESET_ALL}"
+        return f"[green]{val:.2f} $[/green]"
+    return f"[red]{val:.2f} $[/red]"
 
 
 def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
     """Print predictions"""
     console.print("")
     if gtff.USE_COLOR:
-        console.print(
-            f"Actual price: {Fore.YELLOW}{last_price:.2f} ${Style.RESET_ALL}\n"
-        )
+        console.print(f"Actual price: [yellow]{last_price:.2f} $[/yellow]\n")
         if gtff.USE_TABULATE_DF:
             df_pred = pd.DataFrame(df_pred)
             df_pred.columns = ["pred"]
@@ -591,9 +586,7 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
 
 def print_pretty_prediction_nn(df_pred: pd.DataFrame, last_price: float):
     if gtff.USE_COLOR:
-        console.print(
-            f"Actual price: {Fore.YELLOW}{last_price:.2f} ${Style.RESET_ALL}\n"
-        )
+        console.print(f"Actual price: [yellow]{last_price:.2f} $[/yellow]\n")
         console.print("Prediction:")
         console.print(
             df_pred.applymap(
@@ -634,7 +627,9 @@ def price_prediction_backtesting_color(val: list) -> str:
     """Add color to backtest data"""
     err_pct = 100 * (val[0] - val[1]) / val[1]
     if val[0] > val[1]:
-        s_err_pct = f"       {Fore.GREEN} +{err_pct:.2f} %"
+        s_err_pct = f"       [green] +{err_pct:.2f} %"
+        color = "[/green]"
     else:
-        s_err_pct = f"       {Fore.RED} {err_pct:.2f} %"
-    return f"{val[1]:.2f}    x    {Fore.YELLOW}{val[0]:.2f}{s_err_pct}{Style.RESET_ALL}"
+        s_err_pct = f"       [red] {err_pct:.2f} %"
+        color = "[/red]"
+    return f"{val[1]:.2f}    x    [yellow]{val[0]:.2f}[/yellow]{s_err_pct}{color}"
