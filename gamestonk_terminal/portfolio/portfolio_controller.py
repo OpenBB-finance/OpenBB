@@ -16,6 +16,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     valid_date,
     check_positive_float,
+    check_positive,
 )
 from gamestonk_terminal.menu import session
 
@@ -365,12 +366,12 @@ class PortfolioController(BaseController):
             dest="limit",
         )
         parser.add_argument(
-            "-e",
-            "--etf",
+            "-n",
+            "--noetf",
             action="store_true",
-            default=True,
-            dest="add_etf_positions",
-            help="If etf positions should be added to the portfolio",
+            default=False,
+            dest="no_etf_positions",
+            help="If etf positions should not be added to the portfolio",
         )
         parser.add_argument(
             "-g",
@@ -389,7 +390,7 @@ class PortfolioController(BaseController):
                     hist,
                     self.portfolio,
                     ns_parser.limit,
-                    ns_parser.add_etf_positions,
+                    ns_parser.no_etf_positions,
                 )
                 portfolio_view.al(df, ns_parser.graph)
             else:

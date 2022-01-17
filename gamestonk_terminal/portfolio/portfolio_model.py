@@ -16,6 +16,7 @@ from gamestonk_terminal.portfolio import (
     yfinance_model,
     portfolio_helper,
 )
+from gamestonk_terminal.etf import stockanalysis_model
 from gamestonk_terminal.rich_config import console
 
 # pylint: disable=E1136
@@ -391,7 +392,7 @@ def fix_etf_allocation(
     data: pd.DataFrame,
     df_new: pd.DataFrame,
     etf: str,
-    add_etf_positions: bool,
+    no_etf_positions: bool,
     number: int,
 ):
     """Adjusting the dataframe to etf positions, by adding etf holdings to identical portfolio positions or
@@ -405,8 +406,8 @@ def fix_etf_allocation(
         A dataframe of etf holdings
     etf: str
         String of the etf
-    add_etf_positions: bool
-        If new positions should be added to the 'data' dataframe for etf holdings
+    no_etf_positions: bool
+        If new positions should not be added to the 'data' dataframe for etf holdings
     number: int
         Number of etf positions to be checked
 
@@ -427,7 +428,7 @@ def fix_etf_allocation(
                 / 100
             )
             data.loc[data.index == df_new.iloc[[i]].index[0].lower(), "value"] += change
-        elif add_etf_positions:
+        elif not no_etf_positions:
             change = (
                 float(df_new.iloc[i]["% Of Etf"].replace("%", ""))
                 * data["value"].loc[data.index == etf][0]
@@ -452,7 +453,7 @@ def get_allocation(
     hist: pd.DataFrame,
     portfolio: pd.DataFrame,
     number: int,
-    add_etf_positions: bool,
+    no_etf_positions: bool,
 ) -> pd.DataFrame:
     """Formatting the dataframe to an allocation dataframe of the positions
 
@@ -466,8 +467,8 @@ def get_allocation(
         Portfolio dataframe
     number: int
         Number of etf positions to be checked
-    add_etf_positions: bool
-        If new positions should be added to the 'data' dataframe for etf holdings
+    no_etf_positions: bool
+        If new positions should not be added to the 'data' dataframe for etf holdings
 
     Returns
     ----------
@@ -501,7 +502,7 @@ def get_allocation(
                 df,
                 stockanalysis_model.get_etf_holdings(row_index),
                 row_index,
-                add_etf_positions,
+                no_etf_positions,
                 number,
             )
         if df.iloc[i].loc["value"] < 0:
