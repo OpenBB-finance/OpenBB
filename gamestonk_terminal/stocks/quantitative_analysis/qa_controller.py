@@ -2,14 +2,14 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
-from typing import List, Union
+from typing import List
 from datetime import datetime, timedelta
 
 import numpy as np
 import pandas as pd
-from rich.console import Console
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.common.quantitative_analysis import (
     qa_view,
     rolling_view,
@@ -19,37 +19,17 @@ from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     EXPORT_ONLY_FIGURES_ALLOWED,
-    get_flair,
     check_positive,
     check_proportion_range,
     parse_known_args_and_warn,
-    try_except,
-    system_clear,
     valid_date,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.quantitative_analysis.factors_view import capm_view
 
-t_console = Console()
 
-
-class QaController:
+class QaController(BaseController):
     """Quantitative Analysis Controller class"""
-
-    # Command choices
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
 
     CHOICES_COMMANDS = [
         "load",
@@ -76,10 +56,9 @@ class QaController:
         "capm",
     ]
 
-    CHOICES += CHOICES_COMMANDS
-
     stock_interval = [1, 5, 15, 30, 60]
     stock_sources = ["yf", "av", "iex"]
+    PATH = "/stocks/qa/"
 
     def __init__(
         self,
@@ -90,6 +69,8 @@ class QaController:
         queue: List[str] = None,
     ):
         """Constructor"""
+        super().__init__(queue)
+
         stock["Returns"] = stock["Adj Close"].pct_change()
         stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(
             stock["Adj Close"].shift(1)
@@ -98,152 +79,69 @@ class QaController:
         stock = stock.rename(columns={"Adj Close": "AdjClose"})
         stock = stock.dropna()
         stock.columns = [x.lower() for x in stock.columns]
+
         self.stock = stock
         self.ticker = ticker
         self.start = start
         self.interval = interval
         self.target = "returns"
-        self.df_columns = list(stock.columns)
-        self.qa_parser = argparse.ArgumentParser(add_help=False, prog="qa")
-        self.qa_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-        self.completer: Union[None, NestedCompleter] = None
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-            choices["pick"] = {c: None for c in self.df_columns}
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["pick"] = {c: None for c in list(stock.columns)}
             choices["load"]["-i"] = {c: None for c in self.stock_interval}
             choices["load"]["--interval"] = {c: None for c in self.stock_interval}
             choices["load"]["--source"] = {c: None for c in self.stock_sources}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
-
     def print_help(self):
         """Print help"""
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.start:
-            stock_str = f"{s_intraday} Stock: [cyan]{self.ticker}[/cyan] (from {self.start.strftime('%Y-%m-%d')})"
+            stock_str = (
+                f"{s_intraday} {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            )
         else:
-            stock_str = f"{s_intraday} Stock: [cyan]{self.ticker}[/cyan]"
-        help_str = f"""
+            stock_str = f"{s_intraday} {self.ticker}"
+        help_text = f"""[cmds]
    load        load new ticker
-   pick        pick target column for analysis
+   pick        pick target column for analysis[/cmds]
 
-{stock_str}
-Target Column: [green]{self.target}[/green]
-
-Statistics:
+[param]Stock: [/param]{stock_str}
+[param]Target Column: [/param]{self.target}
+[cmds]
+[info]Statistics:[/info]
     summary     brief summary statistics of loaded stock.
     normality   normality statistics and tests
     unitroot    unit root test for stationarity (ADF, KPSS)
-Plots:
+[info]Plots:[/info]
     line        line plot of selected target
     hist        histogram with density plot
     cdf         cumulative distribution function
     bw          box and whisker plot
     acf         (partial) auto-correlation function differentials of prices
     qqplot      residuals against standard normal curve
-Rolling Metrics:
+[info]Rolling Metrics:[/info]
     rolling     rolling mean and std deviation of prices
     spread      rolling variance and std deviation of prices
     quantile    rolling median and quantile of prices
     skew        rolling skewness of distribution of prices
     kurtosis    rolling kurtosis of distribution of prices
-Other:
+[info]Other:[/info]
     raw         print raw data
     decompose   decomposition in cyclic-trend, season, and residuals of prices
     cusum       detects abrupt changes using cumulative sum algorithm of prices
-    capm        capital asset pricing model
+    capm        capital asset pricing model[/cmds]
         """
-        t_console.print(help_str)
+        console.print(text=help_text, menu="Stocks - Quantitative Analysis")
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            t_console.print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.qa_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        t_console.print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "qa")
+    def custom_reset(self):
+        """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(0, f"load {self.ticker}")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            if self.target:
+                return ["stocks", f"load {self.ticker}", "qa", f"pick {self.target}"]
+            return ["stocks", f"load {self.ticker}", "qa"]
+        return []
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -251,9 +149,10 @@ Other:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
-            " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
-            " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
+            description="Load stock ticker to perform analysis on. When the data source"
+            + " is 'yf', an Indian ticker can be loaded by using '.NS' at the end,"
+            + " e.g. 'SBIN.NS'. See available market in"
+            + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
         )
         parser.add_argument(
             "-t",
@@ -339,8 +238,9 @@ Other:
                 self.stock["LogPrice"] = np.log(self.stock["Adj Close"])
                 self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
                 self.stock = self.stock.dropna()
+                self.stock.columns = [x.lower() for x in self.stock.columns]
+                console.print("")
 
-    @try_except
     def call_pick(self, other_args: List[str]):
         """Process pick command"""
         parser = argparse.ArgumentParser(
@@ -365,9 +265,8 @@ Other:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.target = ns_parser.target
-        t_console.print("")
+        console.print("")
 
-    @try_except
     def call_raw(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -406,7 +305,6 @@ Other:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_summary(self, other_args: List[str]):
         """Process summary command"""
         parser = argparse.ArgumentParser(
@@ -423,7 +321,6 @@ Other:
         if ns_parser:
             qa_view.display_summary(df=self.stock, export=ns_parser.export)
 
-    @try_except
     def call_line(self, other_args: List[str]):
         """Process line command"""
         parser = argparse.ArgumentParser(
@@ -439,6 +336,14 @@ Other:
             action="store_true",
             default=False,
         )
+        parser.add_argument(
+            "-d",
+            "--draw",
+            help="Draw lines and annotate on the plot",
+            dest="draw",
+            action="store_true",
+            default=False,
+        )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
@@ -448,9 +353,9 @@ Other:
                 self.stock[self.target],
                 title=f"{self.ticker} {self.target}",
                 log_y=ns_parser.log,
+                draw=ns_parser.draw,
             )
 
-    @try_except
     def call_hist(self, other_args: List[str]):
         """Process hist command"""
         parser = argparse.ArgumentParser(
@@ -473,7 +378,6 @@ Other:
                 bins=ns_parser.n_bins,
             )
 
-    @try_except
     def call_cdf(self, other_args: List[str]):
         """Process cdf command"""
         parser = argparse.ArgumentParser(
@@ -495,7 +399,6 @@ Other:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_bw(self, other_args: List[str]):
         """Process bwy command"""
         parser = argparse.ArgumentParser(
@@ -523,7 +426,6 @@ Other:
                 yearly=ns_parser.year,
             )
 
-    @try_except
     def call_decompose(self, other_args: List[str]):
         """Process decompose command"""
         parser = argparse.ArgumentParser(
@@ -556,7 +458,6 @@ Other:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_cusum(self, other_args: List[str]):
         """Process cusum command"""
         parser = argparse.ArgumentParser(
@@ -600,7 +501,6 @@ Other:
                 drift=ns_parser.drift,
             )
 
-    @try_except
     def call_acf(self, other_args: List[str]):
         """Process acf command"""
         parser = argparse.ArgumentParser(
@@ -622,7 +522,7 @@ Other:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.target != "AdjClose":
-                t_console.print(
+                console.print(
                     "Target not AdjClose.  For best results, use `pick AdjClose` first."
                 )
 
@@ -633,7 +533,6 @@ Other:
                 lags=ns_parser.lags,
             )
 
-    @try_except
     def call_rolling(self, other_args: List[str]):
         """Process rolling command"""
         parser = argparse.ArgumentParser(
@@ -665,7 +564,6 @@ Other:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_spread(self, other_args: List[str]):
         """Process spread command"""
         parser = argparse.ArgumentParser(
@@ -696,7 +594,6 @@ Other:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_quantile(self, other_args: List[str]):
         """Process quantile command"""
         parser = argparse.ArgumentParser(
@@ -745,7 +642,6 @@ Other:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_skew(self, other_args: List[str]):
         """Process skew command"""
         parser = argparse.ArgumentParser(
@@ -782,7 +678,6 @@ Other:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_kurtosis(self, other_args: List[str]):
         """Process kurtosis command"""
         parser = argparse.ArgumentParser(
@@ -819,7 +714,6 @@ Other:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_normality(self, other_args: List[str]):
         """Process normality command"""
         parser = argparse.ArgumentParser(
@@ -838,7 +732,6 @@ Other:
                 df=self.stock, target=self.target, export=ns_parser.export
             )
 
-    @try_except
     def call_qqplot(self, other_args: List[str]):
         """Process qqplot command"""
         parser = argparse.ArgumentParser(
@@ -853,7 +746,6 @@ Other:
         if ns_parser:
             qa_view.display_qqplot(name=self.ticker, df=self.stock, target=self.target)
 
-    @try_except
     def call_unitroot(self, other_args: List[str]):
         """Process unitroot command"""
         parser = argparse.ArgumentParser(
@@ -894,7 +786,6 @@ Other:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_capm(self, other_args: List[str]):
         """Process capm command"""
         parser = argparse.ArgumentParser(
@@ -908,88 +799,3 @@ Other:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             capm_view(self.ticker)
-
-
-def menu(
-    ticker: str,
-    start: datetime,
-    interval: str,
-    stock: pd.DataFrame,
-    queue: List[str] = None,
-):
-    """Quantitative Analysis Menu"""
-    qa_controller = QaController(ticker, start, interval, stock, queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if qa_controller.queue and len(qa_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if qa_controller.queue[0] in ("q", "..", "quit"):
-                t_console.print("")
-                if len(qa_controller.queue) > 1:
-                    return qa_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = qa_controller.queue[0]
-            qa_controller.queue = qa_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in qa_controller.CHOICES_COMMANDS:
-                t_console.print(f"{get_flair()} /stocks/qa/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                qa_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and qa_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/qa/ $ ",
-                        completer=qa_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/qa/ $ ")
-
-        try:
-            # Process the input command
-            qa_controller.queue = qa_controller.switch(an_input)
-
-        except SystemExit:
-            t_console.print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/qa menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                qa_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        qa_controller.queue = []
-                        t_console.print("")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                t_console.print(f" Replacing by '{an_input}'.")
-                qa_controller.queue.insert(0, an_input)
-            else:
-                t_console.print("")

@@ -12,22 +12,21 @@ from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import custom_indicators_model
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.rich_config import console
 
 
 def fibonacci_retracement(
-    s_ticker: str,
     df_stock: pd.DataFrame,
-    period: int,
-    start_date: Any,
-    end_date: Any,
+    period: int = 120,
+    start_date: Any = None,
+    end_date: Any = None,
+    s_ticker: str = "",
     export: str = "",
 ):
     """Calculate fibonacci retracement levels
 
     Parameters
     ----------
-    s_ticker:str
-        Stock ticker
     df_stock: pd.DataFrame
         Stock data
     period: int
@@ -36,6 +35,8 @@ def fibonacci_retracement(
         User picked date for starting retracement
     end_date: Any
         User picked date for ending retracement
+    s_ticker:str
+        Stock ticker
     export: str
         Format to export data
     """
@@ -85,7 +86,7 @@ def fibonacci_retracement(
             tablefmt="fancy_grid",
         )
     )
-    print("")
+    console.print("")
 
     export_data(
         export,

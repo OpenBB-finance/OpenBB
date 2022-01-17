@@ -53,7 +53,7 @@ lot we can do).
 For a 1h coding session where the (old) architecture of the repo is explained while a new feature is added, check [here](https://www.youtube.com/watch?v=9BMI9cleTTg).
 
 The fact that this is an Open Source project makes the possibilities of contributing pretty much unlimited. In here you
-should consider what do you want to gain out of this experience of contributing, some examples we've seen since the
+should consider what you want to gain out of this experience of contributing, some examples we've seen since the
 repository is live:
 
 * Machine Learning engineers working on our prediction models
@@ -196,6 +196,7 @@ __docformat__ = "numpy"
 
 import os
 from tabulate import tabulate
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.stocks.dark_pool_shorts import yahoofinance_model
 
@@ -215,7 +216,7 @@ def display_most_shorted(num_stocks: int, export: str):
     df = df.replace(float("NaN"), "")
 
     if df.empty:
-        print("No data found.")
+        console.print("No data found.")
     else:
         print(
             tabulate(
@@ -226,7 +227,7 @@ def display_most_shorted(num_stocks: int, export: str):
                 tablefmt="fancy_grid",
             )
         )
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -268,7 +269,6 @@ of information. E.g.
    * Call the function contained in a `_view.py` file with the arguments parsed by argparse.
 
 ```python
-@try_except
 def call_shorted(self, other_args: List[str]):
         """Process shorted command"""
         parser = argparse.ArgumentParser(
@@ -415,25 +415,7 @@ report of testing coverage.
 ### VCR
 
 VCRPY allows us to save data from request methods to a .YAML file. This increases test integrity and significantly
-speeds up the time it takes to run tests. To use VCRPY do the following:
-
-1. `import vcr`
-1. add `@vcr.use_cassette("tests/cassettes/{test_folder}/{test_class}/{test_name}.yaml")` as a decorator to the test
-
-**Note:** If you see an error related to VCRPY add the attribute `record_mode="new_episodes"` to the decorator.
-
-### check_print
-
-GamestonkTerminal relies on print statements to return data to the user. To check whether necessary information was
-included in a print statement use the check_print decorator as detailed below:
-
-* `from tests.helpers import check_print`
-* Add `@check_print(assert_in="foo")` as a decorator to the test
-
-If you do not want to assert an item but your test still prints output, please add `@check_print()` as a decorator to
-mute print output.
-
-**Note:** Ensure `@check_print()` is above `@vcr.use_cassette` when using both.
+speeds up the time it takes to run tests. To use VCRPY add **@pytest.mark.vcr** above any function you write.
 
 ## Add Documentation
 

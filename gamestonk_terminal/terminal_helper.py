@@ -25,6 +25,7 @@ from tabulate import tabulate
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import thought_of_the_day as thought
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302
 
@@ -310,7 +311,7 @@ def print_goodbye():
     else:
         goodbye_msg_time = "Go get some rest soldier!"
 
-    print(  # nosec
+    console.print(  # nosec
         goodbye_msg[random.randint(0, len(goodbye_msg) - 1)] + goodbye_msg_time + "\n"
     )
 
@@ -338,9 +339,9 @@ def update_terminal():
     new_poetry_hash = sha256sum("poetry.lock")
 
     if poetry_hash == new_poetry_hash:
-        print("Great, seems like poetry hasn't been updated!")
+        console.print("Great, seems like poetry hasn't been updated!")
         return completed_process.returncode
-    print(
+    console.print(
         "Seems like more modules have been added, grab a coke, this may take a while."
     )
 
@@ -355,7 +356,7 @@ def update_terminal():
 
 def about_us():
     """Prints an about us section"""
-    print(
+    console.print(
         f"{Fore.GREEN}Thanks for using Gamestonk Terminal. This is our way!{Style.RESET_ALL}\n"
         "\n"
         f"{Fore.CYAN}Join our community on discord: {Style.RESET_ALL}https://discord.gg/Up2QGbMKHY\n"
@@ -390,27 +391,27 @@ def bootup():
             sys.stdout.reconfigure(encoding="utf-8")
     except Exception as e:
         logger.exception("%s", type(e).__name__)
-        print(e, "\n")
+        console.print(e, "\n")
 
     # Print first welcome message and help
-    print("\nWelcome to Gamestonk Terminal Beta\n")
+    console.print("\nWelcome to Gamestonk Terminal Beta\n")
 
     # The commit has was commented out because the terminal was crashing due to git import for multiple users
     # ({str(git.Repo('.').head.commit)[:7]})
 
     if gtff.ENABLE_THOUGHTS_DAY:
-        print("-------------------")
+        console.print("-------------------")
         try:
             thought.get_thought_of_the_day()
         except Exception as e:
             logger.exception("%s", type(e).__name__)
-            print(e)
-        print("")
+            console.print(e)
+        console.print("")
 
 
 def reset(queue: List[str] = None):
     """Resets the terminal.  Allows for checking code or keys without quitting"""
-    print("resetting...")
+    console.print("resetting...")
     plt.close("all")
 
     if queue and len(queue) > 0:
@@ -424,6 +425,6 @@ def reset(queue: List[str] = None):
             f"{sys.executable} terminal.py", shell=True, check=False
         )
     if completed_process.returncode != 0:
-        print("Unfortunately, resetting wasn't possible!\n")
+        console.print("Unfortunately, resetting wasn't possible!\n")
 
     return completed_process.returncode

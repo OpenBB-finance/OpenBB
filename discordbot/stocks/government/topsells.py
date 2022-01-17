@@ -1,15 +1,16 @@
 import os
 from datetime import datetime, timedelta
+
 import discord
-from matplotlib import pyplot as plt
 import pandas as pd
+from matplotlib import pyplot as plt
 
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.stocks.government import quiverquant_model
 from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal.stocks.government import quiverquant_model
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
+from discordbot.run_discordbot import gst_imgur, logger
 
 
 async def topsells_command(
@@ -19,8 +20,12 @@ async def topsells_command(
     try:
         # Debug user input
         if cfg.DEBUG:
-            print(
-                f"!stocks.gov.topsells {gov_type} {past_transactions_months} {num} {raw}"
+            logger.debug(
+                "!stocks.gov.topsells %s %s %s %s",
+                gov_type,
+                past_transactions_months,
+                num,
+                raw,
             )
 
         if past_transactions_months == "":
@@ -134,7 +139,7 @@ async def topsells_command(
         uploaded_image = gst_imgur.upload_image("gov_topsells.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
-            print(f"Image URL: {image_link}")
+            logger.debug("Image URL: %s", image_link)
         title = f"Stocks: [quiverquant.com] Top sells for {gov_type.upper()}"
         if raw:
             embed = discord.Embed(

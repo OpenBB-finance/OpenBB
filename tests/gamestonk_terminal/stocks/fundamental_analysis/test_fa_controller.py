@@ -28,20 +28,33 @@ def test_menu_with_queue(expected, mocker, queue):
         ),
         return_value=["quit"],
     )
-    result_menu = fa_controller.menu(
+    result_menu = fa_controller.FundamentalAnalysisController(
         ticker="TSLA",
         start="10/25/2021",
         interval="1440min",
         suffix="",
         queue=queue,
-    )
+    ).menu()
 
     assert result_menu == expected
 
 
 @pytest.mark.vcr(record_mode="none")
 def test_menu_without_queue_completion(mocker):
-    # DISABLE AUTO-COMPLETION
+    # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    mocker.patch(
+        target="gamestonk_terminal.feature_flags.USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session.prompt",
+        return_value="quit",
+    )
+
+    # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch.object(
         target=fa_controller.gtff,
         attribute="USE_PROMPT_TOOLKIT",
@@ -55,9 +68,9 @@ def test_menu_without_queue_completion(mocker):
         return_value="quit",
     )
 
-    result_menu = fa_controller.menu(
+    result_menu = fa_controller.FundamentalAnalysisController(
         ticker="TSLA", start="10/25/2021", interval="1440min", suffix="", queue=None
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -102,9 +115,9 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         new=mock_switch,
     )
 
-    result_menu = fa_controller.menu(
+    result_menu = fa_controller.FundamentalAnalysisController(
         ticker="TSLA", start="10/25/2021", interval="1440min", suffix="", queue=None
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -403,7 +416,10 @@ def test_key_metrics_explained_no_parser(mocker):
 @pytest.mark.vcr(record_mode="none")
 def test_call_fmp(mocker):
     mocker.patch(
-        "gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_controller.menu",
+        (
+            "gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep."
+            "fmp_controller.FinancialModelingPrepController.menu"
+        ),
         return_value=["quit"],
     )
 

@@ -5,6 +5,7 @@ import configparser
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+from gamestonk_terminal.rich_config import console
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -604,11 +605,11 @@ def check_dates(d_date: Dict) -> str:
     else:
         if d_date["FilingDate"] == "Custom":
             try:
-                datetime.strptime(d_date["FilingDateFrom"], "%d/%m/%Y")
+                datetime.strptime(d_date["FilingDateFrom"], "%Y-%m-%d")
             except ValueError:
                 error += f"Invalid FilingDateFrom '{d_date['FilingDateFrom']}' (format: dd/mm/yyyy).\n"
             try:
-                datetime.strptime(d_date["FilingDateTo"], "%d/%m/%Y")
+                datetime.strptime(d_date["FilingDateTo"], "%Y-%m-%d")
             except ValueError:
                 error += f"Invalid FilingDateTo '{d_date['FilingDateTo']}' (format: dd/mm/yyyy).\n"
 
@@ -620,12 +621,12 @@ def check_dates(d_date: Dict) -> str:
     else:
         if d_date["TradingDate"] == "Custom":
             try:
-                datetime.strptime(d_date["TradingDateFrom"], "%d/%m/%Y")
+                datetime.strptime(d_date["TradingDateFrom"], "%Y-%m-%d")
             except ValueError:
                 error += f"Invalid TradingDateFrom '{d_date['TradingDateFrom']}' (format: dd/mm/yyyy).\n"
 
             try:
-                datetime.strptime(d_date["TradingDateTo"], "%d/%m/%Y")
+                datetime.strptime(d_date["TradingDateTo"], "%Y-%m-%d")
             except ValueError:
                 error += f"Invalid TradingDateTo '{d_date['TradingDateTo']}' (format: dd/mm/yyyy).\n"
 
@@ -1093,7 +1094,7 @@ def get_open_insider_link(preset_loaded: str) -> str:
     )
 
     if result:
-        print(result)
+        console.print(result)
         return ""
 
     d_FilingTradingDate = {
@@ -1243,7 +1244,7 @@ def get_open_insider_data(url: str, has_company_name: bool) -> pd.DataFrame:
     text_soup_open_insider = BeautifulSoup(requests.get(url).text, "lxml")
 
     if len(text_soup_open_insider.find_all("tbody")) == 0:
-        print("No insider trading found.")
+        console.print("No insider trading found.")
         return pd.DataFrame()
 
     l_filing_link = []

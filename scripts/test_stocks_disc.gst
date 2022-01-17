@@ -29,4 +29,5 @@ hotpenny
 rtat
 reset
 r
+divcal -l 2
 exit

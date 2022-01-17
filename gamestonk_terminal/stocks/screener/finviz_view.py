@@ -13,6 +13,7 @@ from gamestonk_terminal.stocks.screener.finviz_model import (
     get_screener_data,
 )
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 d_cols_to_sort = {
@@ -176,7 +177,7 @@ def screener(
                     cutoff=0.7,
                 )
                 if similar_cmd:
-                    print(
+                    console.print(
                         f"Replacing '{' '.join(sort)}' by '{similar_cmd[0]}' so table can be sorted."
                     )
                     df_screen = df_screen.sort_values(
@@ -185,7 +186,7 @@ def screener(
                         na_position="last",
                     )
                 else:
-                    print(
+                    console.print(
                         f"Wrong sort column provided! Provide one of these: {', '.join(d_cols_to_sort[data_type])}"
                     )
 
@@ -202,8 +203,8 @@ def screener(
                 ),
             )
         else:
-            print(df_screen.head(n=limit).to_string())
-        print("")
+            console.print(df_screen.head(n=limit).to_string())
+        console.print("")
 
         export_data(
             export,
@@ -214,5 +215,5 @@ def screener(
 
         return list(df_screen.head(n=limit)["Ticker"].values)
 
-    print("")
+    console.print("")
     return []

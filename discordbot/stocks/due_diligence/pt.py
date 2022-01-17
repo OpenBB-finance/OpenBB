@@ -1,14 +1,15 @@
 import os
 from datetime import datetime, timedelta
+
 import discord
 from matplotlib import pyplot as plt
 
-import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur
-import discordbot.helpers
 from gamestonk_terminal.config_plot import PLOT_DPI
-
 from gamestonk_terminal.stocks.due_diligence import business_insider_model
+
+import discordbot.config_discordbot as cfg
+from discordbot.run_discordbot import gst_imgur, logger
+import discordbot.helpers
 
 
 async def pt_command(ctx, ticker="", raw="", start=""):
@@ -17,7 +18,7 @@ async def pt_command(ctx, ticker="", raw="", start=""):
     try:
         # Debug
         if cfg.DEBUG:
-            print(f"!stocks.dd.pt {ticker}")
+            logger.debug("!stocks.dd.pt %s", ticker)
 
         # Check for argument
         if ticker == "":
@@ -82,7 +83,7 @@ async def pt_command(ctx, ticker="", raw="", start=""):
             uploaded_image = gst_imgur.upload_image("ta_pt.png", title="something")
             image_link = uploaded_image.link
             if cfg.DEBUG:
-                print(f"Image URL: {image_link}")
+                logger.debug("Image URL: %s", image_link)
             title = "Stocks: [Business Insider] Price Targets " + ticker
             embed = discord.Embed(title=title, colour=cfg.COLOR)
             embed.set_author(

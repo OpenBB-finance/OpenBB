@@ -16,15 +16,14 @@ from gamestonk_terminal.helper_funcs import (
     financials_colored_values,
     parse_known_args_and_warn,
     patch_pandas_text_adjustment,
-    try_except,
 )
 from gamestonk_terminal.stocks.fundamental_analysis import market_watch_model as mwm
+from gamestonk_terminal.rich_config import console
 
 
 # pylint: disable=too-many-branches
 
 
-@try_except
 def income(other_args: List[str], ticker: str):
     """Market Watch ticker income statement
 
@@ -83,13 +82,12 @@ def income(other_args: List[str], ticker: str):
         pd.set_option("display.max_rows", None)
 
     if df_financials.empty:
-        print("Marketwatch does not yet provide financials for this ticker")
+        console.print("Marketwatch does not yet provide financials for this ticker")
     else:
-        print(df_financials.to_string(index=False))
-    print("")
+        console.print(df_financials.to_string(index=False))
+    console.print("")
 
 
-@try_except
 def balance(other_args: List[str], ticker: str):
     """Market Watch ticker balance statement
 
@@ -160,13 +158,12 @@ def balance(other_args: List[str], ticker: str):
         pd.set_option("display.max_rows", None)
 
     if df_financials.empty:
-        print("Marketwatch does not yet provide financials for this ticker")
+        console.print("Marketwatch does not yet provide financials for this ticker")
     else:
-        print(df_financials.to_string(index=False))
-    print("")
+        console.print(df_financials.to_string(index=False))
+    console.print("")
 
 
-@try_except
 def cash(other_args: List[str], ticker: str):
     """Market Watch ticker cash flow statement
 
@@ -233,10 +230,10 @@ def cash(other_args: List[str], ticker: str):
         pd.set_option("display.max_rows", None)
 
     if df_financials.empty:
-        print("Marketwatch does not yet provide financials for this ticker")
+        console.print("Marketwatch does not yet provide financials for this ticker")
     else:
-        print(df_financials.to_string(index=False))
-    print("")
+        console.print(df_financials.to_string(index=False))
+    console.print("")
 
 
 def display_sean_seah_warnings(ticker: str, debug: bool = False):
@@ -252,7 +249,7 @@ def display_sean_seah_warnings(ticker: str, debug: bool = False):
     financials, warnings, debugged_warnings = mwm.get_sean_seah_warnings(ticker, debug)
 
     if financials.empty:
-        print(f"No financials found for {ticker}\n")
+        console.print(f"No financials found for {ticker}\n")
         return
 
     if gtff.USE_TABULATE_DF:
@@ -265,10 +262,10 @@ def display_sean_seah_warnings(ticker: str, debug: bool = False):
             )
         )
     else:
-        print(financials.to_string())
+        console.print(financials.to_string())
 
     if not warnings:
-        print("No warnings found.  Good stonk")
+        console.print("No warnings found.  Good stonk")
         return
 
     messages = (
@@ -277,5 +274,5 @@ def display_sean_seah_warnings(ticker: str, debug: bool = False):
         else warnings
     )
 
-    print("Warnings:\n")
-    print("\n".join(messages), "\n")
+    console.print("Warnings:\n")
+    console.print("\n".join(messages), "\n")

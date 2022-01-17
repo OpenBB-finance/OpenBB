@@ -212,7 +212,7 @@ def test_show_binom(mocker):
         strike=90.0,
         put=True,
         europe=False,
-        export="csv",
+        export=False,
         plot=True,
         vol=None,
     )

@@ -31,12 +31,12 @@ def test_menu_with_queue(expected, mocker, queue):
         target=f"{path_controller}.PricingController.switch",
         return_value=["quit"],
     )
-    result_menu = pricing_controller.menu(
+    result_menu = pricing_controller.PricingController(
         ticker="MOCK_TICKER",
         selected_date="2022-01-07",
         prices=PRICES,
         queue=queue,
-    )
+    ).menu()
 
     assert result_menu == expected
 
@@ -45,7 +45,20 @@ def test_menu_with_queue(expected, mocker, queue):
 def test_menu_without_queue_completion(mocker):
     path_controller = "gamestonk_terminal.stocks.options.pricing_controller"
 
-    # DISABLE AUTO-COMPLETION
+    # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    mocker.patch(
+        target="gamestonk_terminal.feature_flags.USE_PROMPT_TOOLKIT",
+        new=True,
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.parent_classes.session.prompt",
+        return_value="quit",
+    )
+
+    # ENABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch.object(
         target=pricing_controller.gtff,
         attribute="USE_PROMPT_TOOLKIT",
@@ -59,12 +72,12 @@ def test_menu_without_queue_completion(mocker):
         return_value="quit",
     )
 
-    result_menu = pricing_controller.menu(
+    result_menu = pricing_controller.PricingController(
         ticker="MOCK_TICKER",
         selected_date="2022-01-07",
         prices=PRICES,
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -108,12 +121,12 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         new=mock_switch,
     )
 
-    result_menu = pricing_controller.menu(
+    result_menu = pricing_controller.PricingController(
         ticker="MOCK_TICKER",
         selected_date="2022-01-07",
         prices=PRICES,
         queue=None,
-    )
+    ).menu()
 
     assert result_menu == []
 
@@ -147,9 +160,9 @@ def test_print_help():
                 "quit",
                 "reset",
                 "stocks",
-                "options",
                 "load MOCK_TICKER",
-                "exp 2022-01-07",
+                "options",
+                "exp -d 2022-01-07",
                 "pricing",
             ],
         ),
@@ -205,9 +218,9 @@ def test_call_cls(mocker):
                 "quit",
                 "reset",
                 "stocks",
-                "options",
                 "load MOCK_TICKER",
-                "exp 2022-01-07",
+                "options",
+                "exp -d 2022-01-07",
                 "pricing",
             ],
         ),
@@ -220,9 +233,9 @@ def test_call_cls(mocker):
                 "quit",
                 "reset",
                 "stocks",
-                "options",
                 "load MOCK_TICKER",
-                "exp 2022-01-07",
+                "options",
+                "exp -d 2022-01-07",
                 "pricing",
                 "help",
             ],
@@ -358,14 +371,14 @@ def test_call_func_no_ticker(func, mocker):
         return_value=True,
     )
     controller = pricing_controller.PricingController(
-        ticker="MOCK_TICKER",
+        ticker=None,
         selected_date="2022-01-07",
         prices=PRICES,
         queue=None,
     )
 
     func_result = getattr(controller, func)(list())
-    assert func_result == []
+    assert func_result is None
     assert controller.queue == []
 
 
@@ -385,11 +398,11 @@ def test_call_func_no_selected_date(func, mocker):
 
     controller = pricing_controller.PricingController(
         ticker="MOCK_TICKER",
-        selected_date="2022-01-07",
+        selected_date=None,
         prices=PRICES,
         queue=None,
     )
 
     func_result = getattr(controller, func)(list())
-    assert func_result == []
-    assert controller.selected_date == "2022-01-07"
+    assert func_result is None
+    assert controller.selected_date is None

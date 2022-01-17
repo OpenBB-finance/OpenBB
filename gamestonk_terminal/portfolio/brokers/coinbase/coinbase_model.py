@@ -8,6 +8,7 @@ from gamestonk_terminal.cryptocurrency.coinbase_helpers import (
     _check_account_validity,
     make_coinbase_request,
 )
+from gamestonk_terminal.rich_config import console
 
 
 def get_accounts(add_current_price: bool = True, currency: str = "USD") -> pd.DataFrame:
@@ -125,7 +126,7 @@ def get_account_history(account: str) -> pd.DataFrame:
             for col in df.columns
         ]
     except Exception as e:
-        print(e)
+        console.print(e)
 
     return df
 

@@ -1,6 +1,7 @@
 """CoinGecko model"""
 __docformat__ = "numpy"
 
+from typing import Any, List
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
 from requests.adapters import RetryError
@@ -19,6 +20,7 @@ from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
     get_btc_price,
     GECKO_BASE_URL,
 )
+from gamestonk_terminal.rich_config import console
 
 PERIODS = {
     "1h": "?time=h1",
@@ -88,6 +90,8 @@ DEX_FILTERS = [
 
 # TODO: convert Volume and other str that should be int to int otherwise sort won't work
 
+# This function does not use coingecko api because there is not an endpoint for this
+
 
 def get_gainers_or_losers(period: str = "1h", typ: str = "gainers") -> pd.DataFrame:
     """Scrape data about top gainers - coins which gain the most in given period and
@@ -120,7 +124,7 @@ def get_gainers_or_losers(period: str = "1h", typ: str = "gainers") -> pd.DataFr
     try:
         scraped_data = scrape_gecko_data(url)
     except RetryError as e:
-        print(e)
+        console.print(e)
         return pd.DataFrame()
     rows = scraped_data.find_all("tbody")[category.get(typ)].find_all("tr")
     results = []
@@ -130,7 +134,7 @@ def get_gainers_or_losers(period: str = "1h", typ: str = "gainers") -> pd.DataFr
         try:
             change = percent_to_float(change)
         except (ValueError, TypeError) as e:
-            print(e)
+            console.print(e)
         results.append([symbol, name, volume, price, change, url])
     df = pd.DataFrame(
         results,
@@ -150,6 +154,7 @@ def get_gainers_or_losers(period: str = "1h", typ: str = "gainers") -> pd.DataFr
     return df
 
 
+# This function does not use coingecko api because there is not an endpoint for this
 def get_discovered_coins(category: str = "trending") -> pd.DataFrame:
     """Scrapes data from "https://www.coingecko.com/en/discover" [Source: CoinGecko]
         - Most voted coins
@@ -176,7 +181,7 @@ def get_discovered_coins(category: str = "trending") -> pd.DataFrame:
     try:
         scraped_data = scrape_gecko_data(url)
     except RetryError as e:
-        print(e)
+        console.print(e)
         return pd.DataFrame()
     popular = scraped_data.find_all("div", class_="col-12 col-sm-6 col-md-6 col-lg-4")[
         CATEGORIES[category]
@@ -204,6 +209,7 @@ def get_discovered_coins(category: str = "trending") -> pd.DataFrame:
     )
 
 
+# This function does not use coingecko api because there is not an endpoint for this
 def get_recently_added_coins() -> pd.DataFrame:
     """Scrape recently added coins on CoinGecko from "https://www.coingecko.com/en/coins/recently_added"
     [Source: CoinGecko]
@@ -229,7 +235,7 @@ def get_recently_added_coins() -> pd.DataFrame:
     try:
         scraped_data = scrape_gecko_data(url)
     except RetryError as e:
-        print(e)
+        console.print(e)
         return pd.DataFrame()
     rows = scraped_data.find("tbody").find_all("tr")
     results = []
@@ -257,6 +263,7 @@ def get_recently_added_coins() -> pd.DataFrame:
     return df
 
 
+# This function does not use coingecko api because there is not an endpoint for this
 def get_yield_farms() -> pd.DataFrame:
     """Scrapes yield farms data from "https://www.coingecko.com/en/yield-farming" [Source: CoinGecko]
 
@@ -280,7 +287,7 @@ def get_yield_farms() -> pd.DataFrame:
     try:
         scraped_data = scrape_gecko_data(url)
     except RetryError as e:
-        print(e)
+        console.print(e)
         return pd.DataFrame()
     rows = scraped_data.find("tbody").find_all("tr")
     results = []
@@ -325,6 +332,7 @@ def get_yield_farms() -> pd.DataFrame:
     return df
 
 
+# This function does not use coingecko api because there is not an endpoint for this
 def get_top_volume_coins() -> pd.DataFrame:
     """Scrapes top coins by trading volume "https://www.coingecko.com/en/coins/high_volume" [Source: CoinGecko]
 
@@ -350,7 +358,7 @@ def get_top_volume_coins() -> pd.DataFrame:
     try:
         scraped_data = scrape_gecko_data(url)
     except RetryError as e:
-        print(e)
+        console.print(e)
         return pd.DataFrame()
     rows = scraped_data.find("tbody").find_all("tr")
     results = []
@@ -367,22 +375,35 @@ def get_top_volume_coins() -> pd.DataFrame:
     return df
 
 
-def get_top_defi_coins() -> pd.DataFrame:
+# This function does not use coingecko api because there is not an endpoint for this
+def get_top_defi_coins() -> List[Any]:
     """Scrapes top decentralized finance coins "https://www.coingecko.com/en/defi" [Source: CoinGecko]
 
     Returns
     -------
+    str
+        Top defi coins stats
     pandas.DataFrame
         Top Decentralized Finance Coins
         Columns: Rank, Name, Symbol, Price, Change_1h, Change_24h, Change_7d, Volume_24h, Market_Cap, Url
     """
 
+    cg = CoinGeckoAPI()
+    data = cg.get_global_decentralized_finance_defi()
+
+    stats_str = f"""
+Defi has currently a market cap of {int(float(data['defi_market_cap']))} USD dollars:
+    - {data["defi_to_eth_ratio"]}% of ETH market cap
+    - {round(float(data["defi_dominance"]),2)}% of total market cap
+{data["top_coin_name"]} is the most popular Defi cryptocurrency with {round(float(data["top_coin_defi_dominance"]), 2)}% of defi dominance
+    """  # noqa
+
     url = "https://www.coingecko.com/en/defi"
     try:
         scraped_data = scrape_gecko_data(url)
     except RetryError as e:
-        print(e)
-        return pd.DataFrame()
+        console.print(e)
+        return ["", pd.DataFrame()]
     rows = scraped_data.find("tbody").find_all("tr")
     results = []
     for row in rows:
@@ -419,9 +440,10 @@ def get_top_defi_coins() -> pd.DataFrame:
     )
     df["Rank"] = df["Rank"].astype(int)
     df["Price"] = df["Price"].apply(lambda x: float(x.strip("$").replace(",", "")))
-    return df
+    return [stats_str, df]
 
 
+# This function does not use coingecko api because there is not an endpoint for this
 def get_top_dexes() -> pd.DataFrame:
     """Scrapes top decentralized exchanges from "https://www.coingecko.com/en/dex" [Source: CoinGecko]
 
@@ -446,7 +468,7 @@ def get_top_dexes() -> pd.DataFrame:
     try:
         scraped_data = scrape_gecko_data(url)
     except RetryError as e:
-        print(e)
+        console.print(e)
         return pd.DataFrame()
     rows = scraped_data.find("tbody").find_all("tr")
     results = []
@@ -474,6 +496,7 @@ def get_top_dexes() -> pd.DataFrame:
     return df.reset_index()
 
 
+# This function does not use coingecko api because there is not an endpoint for this
 def get_top_nfts() -> pd.DataFrame:
     """Scrapes top nfts from "https://www.coingecko.com/en/nft" [Source: CoinGecko]
 
@@ -488,7 +511,7 @@ def get_top_nfts() -> pd.DataFrame:
     try:
         scraped_data = scrape_gecko_data(url)
     except RetryError as e:
-        print(e)
+        console.print(e)
         return pd.DataFrame()
     rows = scraped_data.find("tbody").find_all("tr")
     results = []

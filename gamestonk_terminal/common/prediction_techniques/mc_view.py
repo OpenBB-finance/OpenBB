@@ -18,6 +18,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def display_mc_forecast(
@@ -80,4 +81,4 @@ def display_mc_forecast(
         plt.ion()
     plt.show()
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "mc")
-    print("")
+    console.print("")

@@ -1,25 +1,21 @@
 """ Prediction Controller """
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines
 
 import argparse
-import difflib
-from typing import List, Union
+from typing import List
 from datetime import datetime, timedelta
 import pandas as pd
 import numpy as np
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
-    get_flair,
     parse_known_args_and_warn,
     check_positive,
     valid_date,
     get_next_stock_market_days,
     EXPORT_ONLY_FIGURES_ALLOWED,
-    try_except,
-    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.prediction_techniques import (
@@ -37,23 +33,8 @@ from gamestonk_terminal.common.prediction_techniques import (
 from gamestonk_terminal.stocks import stocks_helper
 
 
-class PredictionTechniquesController:
+class PredictionTechniquesController(BaseController):
     """Prediction Techniques Controller class"""
-
-    # Command choices
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
 
     CHOICES_COMMANDS = [
         "load",
@@ -68,7 +49,8 @@ class PredictionTechniquesController:
         "conv1d",
         "mc",
     ]
-    CHOICES += CHOICES_COMMANDS
+
+    PATH = "/stocks/pred/"
 
     def __init__(
         self,
@@ -79,6 +61,8 @@ class PredictionTechniquesController:
         queue: List[str] = None,
     ):
         """Constructor"""
+        super().__init__(queue)
+
         stock["Returns"] = stock["Adj Close"].pct_change()
         stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(
             stock["Adj Close"].shift(1)
@@ -91,45 +75,35 @@ class PredictionTechniquesController:
         self.start = start
         self.interval = interval
         self.target = "AdjClose"
-        self.pred_parser = argparse.ArgumentParser(add_help=False, prog="pred")
-        self.pred_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-        self.completer: Union[None, NestedCompleter] = None
+
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["-r"] = {c: {} for c in stocks_helper.INTERVALS}
-            choices["pick"] = {c: {} for c in self.stock.columns}
+            choices["pick"] = {c: {} for c in stock.columns}
             choices["ets"]["-t"] = {c: {} for c in ets_model.TRENDS}
             choices["ets"]["-s"] = {c: {} for c in ets_model.SEASONS}
             choices["arima"]["-i"] = {c: {} for c in arima_model.ICS}
             choices["mc"]["--dist"] = {c: {} for c in mc_model.DISTRIBUTIONS}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
-
     def print_help(self):
         """Print help"""
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.start:
-            stock_info = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            stock_info = (
+                f"{s_intraday} {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            )
         else:
-            stock_info = "{s_intraday} Stock: {self.ticker}"
+            stock_info = "{s_intraday} {self.ticker}"
 
-        help_string = f"""
-Prediction Techniques Menu:
-
+        help_text = f"""[cmds]
     load        load new ticker
-    pick        pick new target variable
+    pick        pick new target variable[/cmds]
 
-Ticker Loaded: {stock_info}
-Target Column: {self.target}
+[param]Stock: [/param]{stock_info}
+[param]Target Column: [/param]{self.target}
 
-Models:
+[info]Models:[/info][cmds]
     ets         exponential smoothing (e.g. Holt-Winters)
     knn         k-Nearest Neighbors
     regression  polynomial regression
@@ -138,95 +112,15 @@ Models:
     rnn         Recurrent Neural Network
     lstm        Long-Short Term Memory
     conv1d      1D Convolutional Neural Network
-    mc          Monte-Carlo simulations
+    mc          Monte-Carlo simulations[/cmds]
         """
-        print(help_string)
+        console.print(text=help_text, menu="Stocks - Prediction Techniques")
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-        Parameters
-        -------
-        an_input : str
-            string with input arguments
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.pred_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "pred")
+    def custom_reset(self):
+        """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(0, f"load {self.ticker}")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            return ["stocks", f"load {self.ticker}", "pred"]
+        return []
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -234,9 +128,10 @@ Models:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
-            " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
-            " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
+            description="Load stock ticker to perform analysis on. When the data source"
+            + " is 'yf', an Indian ticker can be loaded by using '.NS' at the end,"
+            + " e.g. 'SBIN.NS'. See available market in"
+            + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
         )
         parser.add_argument(
             "-t",
@@ -323,7 +218,6 @@ Models:
                 self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
                 self.stock = self.stock.dropna()
 
-    @try_except
     def call_pick(self, other_args: List[str]):
         """Process pick command"""
         parser = argparse.ArgumentParser(
@@ -349,9 +243,8 @@ Models:
         )
         if ns_parser:
             self.target = ns_parser.target
-            print("")
+            console.print("")
 
-    @try_except
     def call_ets(self, other_args: List[str]):
         """Process ets command"""
         parser = argparse.ArgumentParser(
@@ -427,7 +320,7 @@ Models:
             if ns_parser.s_end_date:
 
                 if ns_parser.s_end_date < self.stock.index[0]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
 
@@ -435,7 +328,7 @@ Models:
                     last_stock_day=self.stock.index[0],
                     n_next_days=5 + ns_parser.n_days,
                 )[-1]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
 
@@ -450,7 +343,6 @@ Models:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_knn(self, other_args: List[str]):
         """Process knn command"""
         parser = argparse.ArgumentParser(
@@ -538,7 +430,6 @@ Models:
                 no_shuffle=ns_parser.no_shuffle,
             )
 
-    @try_except
     def call_regression(self, other_args: List[str]):
         """Process linear command"""
         parser = argparse.ArgumentParser(
@@ -610,7 +501,7 @@ Models:
             # BACKTESTING CHECK
             if ns_parser.s_end_date:
                 if ns_parser.s_end_date < self.stock.index[0]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
 
@@ -618,7 +509,7 @@ Models:
                     last_stock_day=self.stock.index[0],
                     n_next_days=5 + ns_parser.n_days,
                 )[-1]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
 
@@ -633,7 +524,6 @@ Models:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_arima(self, other_args: List[str]):
         """Process arima command"""
         parser = argparse.ArgumentParser(
@@ -712,7 +602,7 @@ Models:
             if ns_parser.s_end_date:
 
                 if ns_parser.s_end_date < self.stock.index[0]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
 
@@ -720,7 +610,7 @@ Models:
                     last_stock_day=self.stock.index[0],
                     n_next_days=5 + ns_parser.n_days,
                 )[-1]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
 
@@ -736,7 +626,6 @@ Models:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_mlp(self, other_args: List[str]):
         """Process mlp command"""
         try:
@@ -759,7 +648,7 @@ Models:
                     no_shuffle=ns_parser.no_shuffle,
                 )
         except Exception as e:
-            print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -787,7 +676,7 @@ Models:
                 )
 
         except Exception as e:
-            print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -815,7 +704,7 @@ Models:
                 )
 
         except Exception as e:
-            print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -843,12 +732,11 @@ Models:
                 )
 
         except Exception as e:
-            print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
 
-    @try_except
     def call_mc(self, other_args: List[str]):
         """Process mc command"""
         parser = argparse.ArgumentParser(
@@ -887,7 +775,7 @@ Models:
         )
         if ns_parser:
             if self.target != "AdjClose":
-                print("MC Prediction designed for AdjClose prices\n")
+                console.print("MC Prediction designed for AdjClose prices\n")
 
             mc_view.display_mc_forecast(
                 data=self.stock[self.target],
@@ -896,90 +784,3 @@ Models:
                 use_log=ns_parser.dist == "lognormal",
                 export=ns_parser.export,
             )
-
-
-def menu(
-    ticker: str,
-    start: datetime,
-    interval: str,
-    stock: pd.DataFrame,
-    queue: List[str] = None,
-):
-    """Prediction Techniques Menu"""
-
-    pred_controller = PredictionTechniquesController(
-        ticker, start, interval, stock, queue
-    )
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if pred_controller.queue and len(pred_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if pred_controller.queue[0] in ("q", "..", "quit"):
-                if len(pred_controller.queue) > 1:
-                    return pred_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = pred_controller.queue[0]
-            pred_controller.queue = pred_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in pred_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /stocks/pred/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                pred_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and pred_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/pred/ $ ",
-                        completer=pred_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/pred/ $ ")
-
-        try:
-            # Process the input command
-            pred_controller.queue = pred_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/options menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                pred_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        pred_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                pred_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

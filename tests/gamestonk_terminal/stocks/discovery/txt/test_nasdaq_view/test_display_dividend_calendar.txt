@@ -1,0 +1,4 @@
+                          Name Symbol Ex-Dividend Date Payment Date Record Date  Dividend  Annual Dividend
+9           InterDigital, Inc.   IDCC       01/11/2022   01/26/2022  01/12/2022      0.35             1.40
+10  Winnebago Industries, Inc.    WGO       01/11/2022   01/26/2022  01/12/2022      0.18             0.72
+

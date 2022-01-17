@@ -2,23 +2,21 @@
 __docformat__ = "numpy"
 
 import argparse
-import difflib
 import configparser
 import os
 import datetime
-from typing import List, Union
+from typing import List
 
-from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.rich_config import console
+
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    get_flair,
     parse_known_args_and_warn,
-    system_clear,
-    try_except,
     valid_date,
 )
 from gamestonk_terminal.menu import session
@@ -34,24 +32,14 @@ presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets
 
 # pylint: disable=E1121
 
+# TODO: HELP WANTED! This menu required some refactoring. Things that can be addressed:
+#       - better preset management (MVC style).
+#       - decoupling view and model in the yfinance_view
 
-class ScreenerController:
+
+class ScreenerController(BaseController):
     """Screener Controller class"""
 
-    # Command choices
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
     CHOICES_COMMANDS = [
         "view",
         "set",
@@ -65,7 +53,6 @@ class ScreenerController:
         "po",
         "ca",
     ]
-    CHOICES += CHOICES_COMMANDS
 
     preset_choices = [
         preset.split(".")[0]
@@ -74,19 +61,17 @@ class ScreenerController:
     ]
 
     historical_candle_choices = ["o", "h", "l", "c", "a"]
+    PATH = "/stocks/scr/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        self.scr_parser = argparse.ArgumentParser(add_help=False, prog="scr")
-        self.scr_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        super().__init__(queue)
 
-        self.completer: Union[None, NestedCompleter] = None
+        self.preset = "top_gainers"
+        self.screen_tickers: List = list()
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
             choices["view"] = {c: None for c in self.preset_choices}
             choices["set"] = {
                 c: None
@@ -115,21 +100,15 @@ class ScreenerController:
             }
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-        self.preset = "top_gainers"
-        self.screen_tickers: List = list()
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
-
     def print_help(self):
         """Print help"""
-        help_text = f"""
+        has_tickers_start = "[unvl]" if not self.screen_tickers else ""
+        has_tickers_end = "[/unvl]" if not self.screen_tickers else ""
+        help_text = f"""[cmds]
     view          view available presets (defaults and customs)
-    set           set one of the available presets
+    set           set one of the available presets[/cmds]
 
-PRESET: {self.preset}
+[param]PRESET: [/param]{self.preset}[cmds]
 
     historical     view historical price
     overview       overview (e.g. Sector, Industry, Market Cap, Volume)
@@ -137,96 +116,14 @@ PRESET: {self.preset}
     financial      financial (e.g. Dividend, ROA, ROE, ROI, Earnings)
     ownership      ownership (e.g. Float, Insider Own, Short Ratio)
     performance    performance (e.g. Perf Week, Perf YTD, Volatility M)
-    technical      technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
-    {Style.NORMAL if self.screen_tickers else Style.DIM}
-Last screened tickers: {', '.join(self.screen_tickers)}
+    technical      technical (e.g. Beta, SMA50, 52W Low, RSI, Change)[/cmds]
+    {has_tickers_start}
+[param]Last screened tickers: [/param]{', '.join(self.screen_tickers)}
 >   ca             take these to comparison analysis menu
->   po             take these to portfolio optimization menu{Style.RESET_ALL}
+>   po             take these to portfolio optimization menu{has_tickers_end}
         """
-        print(help_text)
+        console.print(text=help_text, menu="Stocks - Screener")
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.scr_parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        # additional quit for when we come to this menu through a relative path
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
-        self.queue.insert(0, "scr")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    @try_except
     def call_view(self, other_args: List[str]):
         """Process view command"""
         parser = argparse.ArgumentParser(
@@ -255,19 +152,19 @@ Last screened tickers: {', '.join(self.screen_tickers)}
 
                 filters_headers = ["General", "Descriptive", "Fundamental", "Technical"]
 
-                print("")
+                console.print("")
                 for filter_header in filters_headers:
-                    print(f" - {filter_header} -")
+                    console.print(f" - {filter_header} -")
                     d_filters = {**preset_filter[filter_header]}
                     d_filters = {k: v for k, v in d_filters.items() if v}
                     if d_filters:
                         max_len = len(max(d_filters, key=len))
                         for key, value in d_filters.items():
-                            print(f"{key}{(max_len-len(key))*' '}: {value}")
-                    print("")
+                            console.print(f"{key}{(max_len-len(key))*' '}: {value}")
+                    console.print("")
 
             else:
-                print("\nCustom Presets:")
+                console.print("\nCustom Presets:")
                 for preset in self.preset_choices:
                     with open(
                         presets_path + preset + ".ini",
@@ -278,16 +175,15 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                             if line.strip() == "[General]":
                                 break
                             description += line.strip()
-                    print(
+                    console.print(
                         f"   {preset}{(50-len(preset)) * ' '}{description.split('Description: ')[1].replace('#', '')}"
                     )
 
-                print("\nDefault Presets:")
+                console.print("\nDefault Presets:")
                 for signame, sigdesc in finviz_model.d_signals_desc.items():
-                    print(f"   {signame}{(50-len(signame)) * ' '}{sigdesc}")
-                print("")
+                    console.print(f"   {signame}{(50-len(signame)) * ' '}{sigdesc}")
+                console.print("")
 
-    @try_except
     def call_set(self, other_args: List[str]):
         """Process set command"""
         parser = argparse.ArgumentParser(
@@ -310,9 +206,8 @@ Last screened tickers: {', '.join(self.screen_tickers)}
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.preset = ns_parser.preset
-        print("")
+        console.print("")
 
-    @try_except
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
         parser = argparse.ArgumentParser(
@@ -370,7 +265,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 ns_parser.export,
             )
 
-    @try_except
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
         parser = argparse.ArgumentParser(
@@ -432,7 +326,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_valuation(self, other_args: List[str]):
         """Process valuation command"""
         parser = argparse.ArgumentParser(
@@ -494,7 +387,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_financial(self, other_args: List[str]):
         """Process financial command"""
         parser = argparse.ArgumentParser(
@@ -556,7 +448,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_ownership(self, other_args: List[str]):
         """Process ownership command"""
         parser = argparse.ArgumentParser(
@@ -618,7 +509,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_performance(self, other_args: List[str]):
         """Process performance command"""
         parser = argparse.ArgumentParser(
@@ -680,7 +570,6 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_technical(self, other_args: List[str]):
         """Process technical command"""
         parser = argparse.ArgumentParser(
@@ -742,99 +631,24 @@ Last screened tickers: {', '.join(self.screen_tickers)}
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
         if self.screen_tickers:
-            self.queue = po_controller.menu(self.screen_tickers, from_submenu=True)
+            self.queue = po_controller.PortfolioOptimization(self.screen_tickers).menu(
+                custom_path_menu_above="/portfolio/"
+            )
         else:
-            print("Some tickers must be screened first through one of the presets!\n")
+            console.print(
+                "Some tickers must be screened first through one of the presets!\n"
+            )
 
-    @try_except
     def call_ca(self, _):
         """Call the comparison analysis menu with selected tickers"""
         if self.screen_tickers:
-            self.queue = ca_controller.menu(
-                self.screen_tickers, self.queue, from_submenu=True
-            )
+            self.queue = ca_controller.ComparisonAnalysisController(
+                self.screen_tickers, self.queue
+            ).menu(custom_path_menu_above="/stocks/")
         else:
-            print("Some tickers must be screened first through one of the presets!\n")
-
-
-def menu(queue: List[str] = None):
-    """Screener Menu"""
-    scr_controller = ScreenerController(queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if scr_controller.queue and len(scr_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if scr_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(scr_controller.queue) > 1:
-                    return scr_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = scr_controller.queue[0]
-            scr_controller.queue = scr_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in scr_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /stocks/scr/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                scr_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and scr_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/scr/ $ ",
-                        completer=scr_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/scr/ $ ")
-
-        try:
-            # Process the input command
-            scr_controller.queue = scr_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/scr menu.",
-                end="",
+            console.print(
+                "Some tickers must be screened first through one of the presets!\n"
             )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                scr_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        scr_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                scr_controller.queue.insert(0, an_input)
-            else:
-                print("\n")

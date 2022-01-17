@@ -3,8 +3,7 @@ import discord
 import yfinance as yf
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_bot
-
+from discordbot.run_discordbot import gst_bot, logger
 from discordbot.stocks.dark_pool_shorts.shorted import shorted_command
 from discordbot.stocks.dark_pool_shorts.ftd import ftd_command
 from discordbot.stocks.dark_pool_shorts.dpotc import dpotc_command
@@ -37,6 +36,7 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         num: int
             Number of the most shorted stocks to retrieve
         """
+        logger.info("stocks.dps.shorted")
         await shorted_command(ctx, num)
 
     @discord.ext.commands.command(
@@ -51,6 +51,7 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         num: int
             Number of top stocks to print
         """
+        logger.info("stocks.dps.hsi")
         await hsi_command(ctx, num)
 
     @discord.ext.commands.command(
@@ -70,6 +71,7 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         num: int
             Number of top tickers to show
         """
+        logger.info("stocks.dps.pos")
         await pos_command(ctx, sort, num)
 
     @discord.ext.commands.command(
@@ -87,6 +89,7 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         num: int
             Number of top tickers to show
         """
+        logger.info("stocks.dps.sidtc")
         await sidtc_command(ctx, sort, num)
 
     @discord.ext.commands.command(
@@ -105,6 +108,7 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         end: datetime
             Ending date in YYYY-MM-DD format
         """
+        logger.info("stocks.dps.ftd")
         await ftd_command(ctx, ticker, start, end)
 
     @discord.ext.commands.command(
@@ -119,6 +123,7 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         ticker: str
             Stock ticker
         """
+        logger.info("stocks.dps.dpotc")
         await dpotc_command(ctx, ticker)
 
     @discord.ext.commands.command(
@@ -133,6 +138,7 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         ticker: str
             Stock ticker
         """
+        logger.info("stocks.dps.spos")
         await spos_command(ctx, ticker)
 
     @discord.ext.commands.command(
@@ -147,6 +153,7 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         ticker: str
             Stock ticker
         """
+        logger.info("stocks.dps.psi")
         await psi_command(ctx, ticker)
 
     @discord.ext.commands.command(
@@ -164,9 +171,7 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
         Sends a message to the discord user with the commands from the dps context.
         The user can then select a reaction to trigger a command.
         """
-
-        if cfg.DEBUG:
-            print(f"\n!stocks.dps {ticker}")
+        logger.info("!stocks.dps %s", ticker)
 
         if ticker:
             stock = yf.download(ticker, progress=False)
@@ -227,36 +232,28 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
                 "reaction_add", timeout=cfg.MENU_TIMEOUT, check=check
             )
             if reaction.emoji == "0️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 0")
+                logger.info("!stocks.dps. Reaction selected: 0")
                 await shorted_command(ctx)
             elif reaction.emoji == "1️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 1")
+                logger.info("!stocks.dps. Reaction selected: 1")
                 await hsi_command(ctx)
             elif reaction.emoji == "2️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 2")
+                logger.info("!stocks.dps. Reaction selected: 2")
                 await pos_command(ctx)
             elif reaction.emoji == "3️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 3")
+                logger.info("!stocks.dps. Reaction selected: 3")
                 await sidtc_command(ctx)
             elif reaction.emoji == "4️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 4")
+                logger.info("!stocks.dps. Reaction selected: 4")
                 await ftd_command(ctx, ticker)
             elif reaction.emoji == "5️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 5")
+                logger.info("!stocks.dps. Reaction selected: 5")
                 await dpotc_command(ctx, ticker)
             elif reaction.emoji == "6️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 6")
+                logger.info("!stocks.dps. Reaction selected: 6")
                 await spos_command(ctx, ticker)
             elif reaction.emoji == "7️⃣":
-                if cfg.DEBUG:
-                    print("Reaction selected: 7")
+                logger.info("!stocks.dps. Reaction selected: 7")
                 await psi_command(ctx, ticker)
 
             for emoji in emoji_list:

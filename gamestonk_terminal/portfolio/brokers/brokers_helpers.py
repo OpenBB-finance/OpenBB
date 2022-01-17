@@ -1,10 +1,10 @@
 import pandas as pd
-from termcolor import colored
+from gamestonk_terminal.rich_config import console
 
 
 def merge_brokers_holdings(df: pd.DataFrame) -> pd.DataFrame:
     if set(df.columns) != {"Symbol", "MarketValue", "Quantity", "CostBasis", "Broker"}:
-        print("Check df generation")
+        console.print("Check df generation")
         return None
 
     df = df.groupby("Symbol").agg(
@@ -19,7 +19,7 @@ def merge_brokers_holdings(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def print_brokers_holdings(portfolio):
-    print(
+    console.print(
         "Stonk\t Market Value \t\t Quantity \t\t Cost Basis \t\t All Time % Change \t\t Brokers"
     )
 
@@ -32,7 +32,7 @@ def print_brokers_holdings(portfolio):
         )
 
         if pct_change >= 0:
-            print(colored(to_print, "green"))
+            console.print(to_print, "green")
         else:
-            print(colored(to_print, "red"))
-    print("")
+            console.print(to_print, "red")
+    console.print("")

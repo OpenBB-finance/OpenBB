@@ -5,9 +5,14 @@ from typing import Any, Tuple
 
 import pandas as pd
 
+from gamestonk_terminal.rich_config import console
+
 
 def calculate_fib_levels(
-    df_stock: pd.DataFrame, period: int, open_date: Any, close_date: Any
+    df_stock: pd.DataFrame,
+    period: int = 120,
+    open_date: Any = None,
+    close_date: Any = None,
 ) -> Tuple[pd.DataFrame, pd.Timestamp, pd.Timestamp, float, float]:
     """Calculate Fibonacci levels
 
@@ -36,15 +41,14 @@ def calculate_fib_levels(
         Price at max point
     """
     if open_date and close_date:
-
         if open_date not in df_stock.index:
             date0 = df_stock.index[df_stock.index.get_loc(open_date, method="nearest")]
-            print(f"Start date not in df_stock.  Using nearest: {date0}")
+            console.print(f"Start date not in df_stock.  Using nearest: {date0}")
         else:
             date0 = open_date
         if close_date not in df_stock.index:
             date1 = df_stock.index[df_stock.index.get_loc(close_date, method="nearest")]
-            print(f"End date not in df_stock.  Using nearest: {date1}")
+            console.print(f"End date not in df_stock.  Using nearest: {date1}")
         else:
             date1 = close_date
 

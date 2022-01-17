@@ -3,19 +3,17 @@ __docformat__ = "numpy"
 
 import os
 import argparse
-import difflib
 import configparser
-from typing import List, Union
+from typing import List
 import pandas as pd
-from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.rich_config import console
+
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    get_flair,
     parse_known_args_and_warn,
     check_positive,
-    try_except,
-    system_clear,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
@@ -28,25 +26,16 @@ from gamestonk_terminal.stocks.insider import (
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
-# pylint: disable=C0302,inconsistent-return-statements,too-many-public-methods
+# pylint: disable=,inconsistent-return-statements
+
+# TODO: HELP WANTED! This menu required some refactoring. Things that can be addressed:
+#       - better preset management (MVC style)
+#       - unification of model return types (now some return dataframes other records list)
 
 
-class InsiderController:
+class InsiderController(BaseController):
     """Screener Controller class"""
 
-    CHOICES = [
-        "cls",
-        "home",
-        "h",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "..",
-        "exit",
-        "r",
-        "reset",
-    ]
     CHOICES_COMMANDS = [
         "load",
         "view",
@@ -76,13 +65,13 @@ class InsiderController:
         "lins",
         "stats",
     ]
-    CHOICES += CHOICES_COMMANDS
 
     preset_choices = [
         preset.split(".")[0]
         for preset in os.listdir(presets_path)
         if preset[-4:] == ".ini"
     ]
+    PATH = "/stocks/ins/"
 
     def __init__(
         self,
@@ -93,51 +82,44 @@ class InsiderController:
         queue: List[str] = None,
     ):
         """Constructor"""
-        self.insider_parser = argparse.ArgumentParser(add_help=False, prog="ins")
-        self.insider_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
-
-        self.completer: Union[None, NestedCompleter] = None
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.CHOICES}
-            choices["view"] = {c: None for c in self.preset_choices}
-            choices["set"] = {c: None for c in self.preset_choices}
-            self.completer = NestedCompleter.from_nested_dict(choices)
-
-        if queue:
-            self.queue = queue
-        else:
-            self.queue = list()
+        super().__init__(queue)
 
         self.ticker = ticker
         self.start = start
         self.interval = interval
         self.stock = stock
-
         self.preset = "whales"
+
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["view"] = {c: None for c in self.preset_choices}
+            choices["set"] = {c: None for c in self.preset_choices}
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
+        has_ticker_start = "[unvl]" if not self.ticker else ""
+        has_ticker_end = "[/unvl]" if not self.ticker else ""
+
+        help_text = f"""[cmds]
     view          view available presets
-    set           set one of the available presets
+    set           set one of the available presets[/cmds]
 
-PRESET: {self.preset}
+[param]PRESET: [/param]{self.preset}[cmds]
 
-    filter        filter insiders based on preset
+    filter        filter insiders based on preset [src][Open Insider][/src]
 
-    load          load a specific stock ticker for analysis
-{Style.DIM if not self.ticker else ''}
-Ticker: {self.ticker}
 
-    stats         insider stats of the company [Open Insider]
-    act           insider activity over time [Business Insider]
-    lins          last insider trading of the company [Finviz]
-{Style.RESET_ALL if not self.ticker else ''}
-Latest Insiders:
+    load          load a specific stock ticker for analysis[/cmds]
+{has_ticker_start}
+[param]Ticker: [/param]{self.ticker}
+
+    stats         insider stats of the company [src][Open Insider][/src]
+    act           insider activity over time [src][Business Insider][/src]
+    lins          last insider trading of the company [src][Finviz][/src]
+{has_ticker_end}
+
+[info]Latest Insiders[/info] [src][Open Insider][/src][cmds]
     lcb           latest cluster boys
     lpsb          latest penny stock buys
     lit           latest insider trading (all filings)
@@ -149,7 +131,7 @@ Latest Insiders:
     blis          big latest insider sales ($100k+)
     blos          big latest officer sales ($100k+)
     blcs          big latest CEO/CFO sales ($100k+)
-Top Insiders:
+[info]Top Insiders [src][Open Insider][/src][/info]
     topt          top officer purchases today
     toppw         top officer purchases past week
     toppm         top officer purchases past month
@@ -158,104 +140,26 @@ Top Insiders:
     tippm         top insider purchases past month
     tist          top insider sales today
     tispw         top insider sales past week
-    tispm         top insider sales past month
+    tispm         top insider sales past month[/cmds]
 """
-        print(help_text)
+        console.print(text=help_text, menu="Stocks - Insider Trading")
 
-    def switch(self, an_input: str):
-        """Process and dispatch input
-
-        Returns
-        -------
-        List[str]
-            List of commands in the queue to execute
-        """
-        # Empty command
-        if not an_input:
-            print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.insider_parser.parse_known_args(
-            an_input.split()
-        )
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
-
-        return self.queue
-
-    def call_cls(self, _):
-        """Process cls command"""
-        system_clear()
-
-    def call_home(self, _):
-        """Process home command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_help(self, _):
-        """Process help command"""
-        self.print_help()
-
-    def call_quit(self, _):
-        """Process quit menu command"""
-        print("")
-        self.queue.insert(0, "quit")
-
-    def call_exit(self, _):
-        """Process exit terminal command"""
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
-
-    def call_reset(self, _):
-        """Process reset command"""
+    def custom_reset(self):
+        """Class specific component of reset command"""
         if self.ticker:
-            self.queue.insert(0, f"load {self.ticker}")
-        self.queue.insert(0, "ins")
-        self.queue.insert(0, "stocks")
-        self.queue.insert(0, "reset")
-        self.queue.insert(0, "quit")
-        self.queue.insert(0, "quit")
+            return ["stocks", f"load {self.ticker}", "ins"]
+        return []
 
-    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
-            " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
-            " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
+            description="Load stock ticker to perform analysis on. When the data source"
+            + " is 'yf', an Indian ticker can be loaded by using '.NS' at the end,"
+            + " e.g. 'SBIN.NS'. See available market in"
+            + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
         )
         parser.add_argument(
             "-t",
@@ -282,7 +186,6 @@ Top Insiders:
                 self.start = self.stock.index[0].strftime("%Y-%m-%d")
                 self.interval = "1440min"
 
-    @try_except
     def call_view(self, other_args: List[str]):
         """Process view command"""
         parser = argparse.ArgumentParser(
@@ -320,16 +223,16 @@ Top Insiders:
                     "CompanyTotals",
                 ]
 
-                print("")
+                console.print("")
                 for filter_header in filters_headers:
-                    print(f" - {filter_header} -")
+                    console.print(f" - {filter_header} -")
                     d_filters = {**preset_filter[filter_header]}
                     d_filters = {k: v for k, v in d_filters.items() if v}
                     if d_filters:
                         max_len = len(max(d_filters, key=len))
                         for key, value in d_filters.items():
-                            print(f"{key}{(max_len-len(key))*' '}: {value}")
-                    print("")
+                            console.print(f"{key}{(max_len-len(key))*' '}: {value}")
+                    console.print("")
 
             else:
                 for preset in self.preset_choices:
@@ -342,11 +245,12 @@ Top Insiders:
                             if line.strip() == "[General]":
                                 break
                             description += line.strip()
-                    print(f"\nPRESET: {preset}")
-                    print(description.split("Description: ")[1].replace("#", ""))
-                print("")
+                    console.print(f"\nPRESET: {preset}")
+                    console.print(
+                        description.split("Description: ")[1].replace("#", "")
+                    )
+                console.print("")
 
-    @try_except
     def call_set(self, other_args: List[str]):
         """Process set command"""
         parser = argparse.ArgumentParser(
@@ -369,9 +273,8 @@ Top Insiders:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.preset = ns_parser.preset
-            print("")
+            console.print("")
 
-    @try_except
     def call_filter(self, other_args: List[str]):
         """Process filter command"""
         parser = argparse.ArgumentParser(
@@ -411,7 +314,6 @@ Top Insiders:
                 export=ns_parser.export,
             )
 
-    @try_except
     def call_stats(self, other_args: List[str]):
         """Process stats command"""
         parser = argparse.ArgumentParser(
@@ -452,9 +354,8 @@ Top Insiders:
                     export=ns_parser.export,
                 )
             else:
-                print("Please use `load <ticker>` before.\n")
+                console.print("Please use `load <ticker>` before.\n")
 
-    @try_except
     def call_lcb(self, other_args: List[str]):
         """Process latest-cluster-buys"""
         parser = argparse.ArgumentParser(
@@ -482,7 +383,6 @@ Top Insiders:
                 "lcb", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_lpsb(self, other_args: List[str]):
         """Process latest-penny-stock-buys"""
         parser = argparse.ArgumentParser(
@@ -510,7 +410,6 @@ Top Insiders:
                 "lpsb", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_lit(self, other_args: List[str]):
         """Process latest-insider-trading"""
         parser = argparse.ArgumentParser(
@@ -538,7 +437,6 @@ Top Insiders:
                 "lit", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_lip(self, other_args: List[str]):
         """Process insider-purchases"""
         parser = argparse.ArgumentParser(
@@ -566,7 +464,6 @@ Top Insiders:
                 "lip", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_blip(self, other_args: List[str]):
         """Process latest-insider-purchases-25k"""
         parser = argparse.ArgumentParser(
@@ -594,7 +491,6 @@ Top Insiders:
                 "blip", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_blop(self, other_args: List[str]):
         """Process latest-officer-purchases-25k"""
         parser = argparse.ArgumentParser(
@@ -622,7 +518,6 @@ Top Insiders:
                 "blop", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_blcp(self, other_args: List[str]):
         """Process latest-ceo-cfo-purchases-25k"""
         parser = argparse.ArgumentParser(
@@ -650,7 +545,6 @@ Top Insiders:
                 "blcp", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_lis(self, other_args: List[str]):
         """Process insider-sales"""
         parser = argparse.ArgumentParser(
@@ -678,7 +572,6 @@ Top Insiders:
                 "lis", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_blis(self, other_args: List[str]):
         """Process latest-insider-sales-100k"""
         parser = argparse.ArgumentParser(
@@ -706,7 +599,6 @@ Top Insiders:
                 "blis", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_blos(self, other_args: List[str]):
         """Process latest-officer-sales-100k"""
         parser = argparse.ArgumentParser(
@@ -734,7 +626,6 @@ Top Insiders:
                 "blos", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_blcs(self, other_args: List[str]):
         """Process latest-ceo-cfo-sales-100k"""
         parser = argparse.ArgumentParser(
@@ -762,7 +653,6 @@ Top Insiders:
                 "blcs", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_topt(self, other_args: List[str]):
         """Process top-officer-purchases-of-the-day"""
         parser = argparse.ArgumentParser(
@@ -790,7 +680,6 @@ Top Insiders:
                 "topt", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_toppw(self, other_args: List[str]):
         """Process top-officer-purchases-of-the-week"""
         parser = argparse.ArgumentParser(
@@ -818,7 +707,6 @@ Top Insiders:
                 "toppw", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_toppm(self, other_args: List[str]):
         """Process top-officer-purchases-of-the-month"""
         parser = argparse.ArgumentParser(
@@ -846,7 +734,6 @@ Top Insiders:
                 "toppm", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_tipt(self, other_args: List[str]):
         """Process top-insider-purchases-of-the-day"""
         parser = argparse.ArgumentParser(
@@ -874,7 +761,6 @@ Top Insiders:
                 "tipt", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_tippw(self, other_args: List[str]):
         """Process top-insider-purchases-of-the-week"""
         parser = argparse.ArgumentParser(
@@ -902,7 +788,6 @@ Top Insiders:
                 "tippw", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_tippm(self, other_args: List[str]):
         """Process top-insider-purchases-of-the-month"""
         parser = argparse.ArgumentParser(
@@ -930,7 +815,6 @@ Top Insiders:
                 "tippm", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_tist(self, other_args: List[str]):
         """Process top-insider-sales-of-the-day"""
         parser = argparse.ArgumentParser(
@@ -958,7 +842,6 @@ Top Insiders:
                 "tist", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_tispw(self, other_args: List[str]):
         """Process top-insider-sales-of-the-week"""
         parser = argparse.ArgumentParser(
@@ -986,7 +869,6 @@ Top Insiders:
                 "tispw", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_tispm(self, other_args: List[str]):
         """Process top-insider-sales-of-the-month"""
         parser = argparse.ArgumentParser(
@@ -1014,7 +896,6 @@ Top Insiders:
                 "tispm", ns_parser.limit, ns_parser.export
             )
 
-    @try_except
     def call_act(self, other_args: List[str]):
         """Process act command"""
         parser = argparse.ArgumentParser(
@@ -1055,9 +936,8 @@ Top Insiders:
                     export=ns_parser.export,
                 )
             else:
-                print("No ticker loaded. First use `load {ticker}`\n")
+                console.print("No ticker loaded. First use `load {ticker}`\n")
 
-    @try_except
     def call_lins(self, other_args: List[str]):
         """Process lins command"""
         parser = argparse.ArgumentParser(
@@ -1090,85 +970,4 @@ Top Insiders:
                     export=ns_parser.export,
                 )
             else:
-                print("No ticker loaded. First use `load {ticker}`\n")
-
-
-def menu(
-    ticker: str, start: str, interval: str, stock: pd.DataFrame, queue: List[str] = None
-):
-    """Insider Menu"""
-    ins_controller = InsiderController(ticker, start, interval, stock, queue)
-    an_input = "HELP_ME"
-
-    while True:
-        # There is a command in the queue
-        if ins_controller.queue and len(ins_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
-            if ins_controller.queue[0] in ("q", "..", "quit"):
-                print("")
-                if len(ins_controller.queue) > 1:
-                    return ins_controller.queue[1:]
-                return []
-
-            # Consume 1 element from the queue
-            an_input = ins_controller.queue[0]
-            ins_controller.queue = ins_controller.queue[1:]
-
-            # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in ins_controller.CHOICES_COMMANDS:
-                print(f"{get_flair()} /stocks/ins/ $ {an_input}")
-
-        # Get input command from user
-        else:
-            # Display help menu when entering on this menu from a level above
-            if an_input == "HELP_ME":
-                ins_controller.print_help()
-
-            # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT and ins_controller.completer:
-                try:
-                    an_input = session.prompt(
-                        f"{get_flair()} /stocks/ins/ $ ",
-                        completer=ins_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
-                    # Exit in case of keyboard interrupt
-                    an_input = "exit"
-            # Get input from user without auto-completion
-            else:
-                an_input = input(f"{get_flair()} /stocks/ins/ $ ")
-
-        try:
-            # Process the input command
-            ins_controller.queue = ins_controller.switch(an_input)
-
-        except SystemExit:
-            print(
-                f"\nThe command '{an_input}' doesn't exist on the /stocks/ins menu.",
-                end="",
-            )
-            similar_cmd = difflib.get_close_matches(
-                an_input.split(" ")[0] if " " in an_input else an_input,
-                ins_controller.CHOICES,
-                n=1,
-                cutoff=0.7,
-            )
-            if similar_cmd:
-                if " " in an_input:
-                    candidate_input = (
-                        f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
-                    )
-                    if candidate_input == an_input:
-                        an_input = ""
-                        ins_controller.queue = []
-                        print("\n")
-                        continue
-                    an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
-
-                print(f" Replacing by '{an_input}'.")
-                ins_controller.queue.insert(0, an_input)
-            else:
-                print("\n")
+                console.print("No ticker loaded. First use `load {ticker}`\n")

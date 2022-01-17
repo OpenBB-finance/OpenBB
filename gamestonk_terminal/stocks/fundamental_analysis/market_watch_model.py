@@ -13,6 +13,7 @@ from gamestonk_terminal.helper_funcs import (
     get_user_agent,
     int_or_round_float,
 )
+from gamestonk_terminal.rich_config import console
 
 
 def prepare_df_financials(
@@ -331,7 +332,7 @@ def get_sean_seah_warnings(
                 f"\tInterest Coverage Ratio: {sa_interest_coverage_ratio} < 3"
             )
 
-    print("")
+    console.print("")
     return (
         df_sean_seah.applymap(lambda x: int_or_round_float(x)),
         warnings,
