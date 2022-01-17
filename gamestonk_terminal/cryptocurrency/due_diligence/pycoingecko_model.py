@@ -2,10 +2,10 @@
 __docformat__ = "numpy"
 
 from typing import Tuple, Union, Any, Dict, List, Optional
-from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import read_file_data
 import regex as re
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
+from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import read_file_data
 from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
     remove_keys,
     filter_list,
@@ -18,6 +18,7 @@ from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     replace_underscores_in_column_names,
 )
+from gamestonk_terminal.rich_config import console
 
 CHANNELS = {
     "telegram_channel_identifier": "telegram",
@@ -540,7 +541,7 @@ class Coin:
                 single_stats["circulating_supply"] / single_stats["total_supply"]
             )
         except (ZeroDivisionError, TypeError) as e:
-            print(e)
+            console.print(e)
         df = pd.Series(single_stats).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
         df["Metric"] = df["Metric"].apply(

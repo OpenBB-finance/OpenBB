@@ -11,6 +11,7 @@ from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal import feature_flags as gtff
 
 from gamestonk_terminal.stocks.discovery import fidelity_model
+from gamestonk_terminal.rich_config import console
 
 
 def buy_sell_ratio_color_red_green(val: str) -> str:
@@ -74,7 +75,7 @@ def orders_view(num: int, export: str):
         Export dataframe data to csv,json,xlsx file
     """
     order_header, df_orders = fidelity_model.get_orders()
-    print(order_header, ":")
+    console.print(order_header, ":")
 
     pd.set_option("display.max_colwidth", None)
 
@@ -97,7 +98,7 @@ def orders_view(num: int, export: str):
             tablefmt="fancy_grid",
         )
     )
-    print("")
+    console.print("")
 
     export_data(
         export,

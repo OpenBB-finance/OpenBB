@@ -70,7 +70,8 @@ class TestCoinGeckoAPI(TestCase):
     )
     def test_coin_top_volume_coins(self):
         disc_pycoingecko_view.display_top_volume_coins(
-            top=15, sortby="Rank", descend=True, export=""
+            top=15,
+            export="",  # sortby="Rank", descend=True,
         )
 
     @check_print(assert_in="═════════")
@@ -80,7 +81,7 @@ class TestCoinGeckoAPI(TestCase):
     )
     def test_coin_top_defi_coins(self):
         disc_pycoingecko_view.display_top_defi_coins(
-            top=15, sortby="Rank", descend=True, links=False, export=""
+            top=15, export=""  # sortby="Rank", descend=True, links=False,
         )
 
     @check_print(assert_in="════════")

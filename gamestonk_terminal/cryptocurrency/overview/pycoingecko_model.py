@@ -7,9 +7,9 @@ import math
 from typing import Any, List
 import re
 import pandas as pd
-from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import get_coins
 import numpy as np
 from pycoingecko import CoinGeckoAPI
+from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import get_coins
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     wrap_text_in_df,
     create_df_index,
@@ -21,6 +21,7 @@ from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
     GECKO_BASE_URL,
     RetryError,
 )
+from gamestonk_terminal.rich_config import console
 
 HOLD_COINS = ["ethereum", "bitcoin"]
 
@@ -141,7 +142,7 @@ def get_news(n: int = 100) -> pd.DataFrame:
         try:
             scraped_data = scrape_gecko_data(url)
         except RetryError as e:
-            print(e)
+            console.print(e)
             return pd.DataFrame()
         rows = scraped_data.find_all("article")
         results = []
@@ -257,7 +258,7 @@ def get_nft_of_the_day() -> pd.DataFrame:
     try:
         scraped_data = scrape_gecko_data(url)
     except RetryError as e:
-        print(e)
+        console.print(e)
         return pd.DataFrame()
     row = scraped_data.find("div", class_="tw-px-4 tw-py-5 sm:tw-p-6")
     try:
@@ -300,7 +301,7 @@ def get_nft_market_status() -> pd.DataFrame:
     try:
         scraped_data = scrape_gecko_data(url)
     except RetryError as e:
-        print(e)
+        console.print(e)
         return pd.DataFrame()
     rows = scraped_data.find_all("span", class_="overview-box d-inline-block p-3 mr-2")
     kpis = {}

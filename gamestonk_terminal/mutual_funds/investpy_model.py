@@ -6,9 +6,7 @@ from typing import Tuple
 
 import investpy
 import pandas as pd
-from rich.console import Console
-
-console = Console()
+from gamestonk_terminal.rich_config import console
 
 
 def search_funds(by: str = "name", value: str = "") -> pd.DataFrame:
@@ -164,8 +162,8 @@ def get_fund_historical(
             return pd.DataFrame(), "", fund, country
 
     # Note that dates for investpy need to be in the format dd/mm/yyyy
-    from_date = start_date.strftime("%Y-%m-%d")
-    to_date = end_date.strftime("%Y-%m-%d")
+    from_date = start_date.strftime("%d/%m/%Y")
+    to_date = end_date.strftime("%d/%m/%Y")
     search_country = matching_country if matching_country else country
     try:
         return (

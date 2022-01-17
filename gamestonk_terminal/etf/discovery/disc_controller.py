@@ -5,7 +5,7 @@ import argparse
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -25,10 +25,11 @@ class DiscoveryController(BaseController):
         "decliners",
         "active",
     ]
+    PATH = "/etf/disc/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/etf/disc/", queue)
+        super().__init__(queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -36,12 +37,13 @@ class DiscoveryController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_str = """
-    gainers     show top gainers [WSJ]
-    decliners   show top decliners [WSJ]
-    active      show most active [WSJ]
+        help_text = """
+[src][Wall Street Journal][/src][cmds]
+    gainers     top gainers
+    decliners   top decliners
+    active      most active[/cmds]
 """
-        print(help_str)
+        console.print(text=help_text, menu="ETF - Discovery")
 
     def call_gainers(self, other_args):
         """Process gainers command"""

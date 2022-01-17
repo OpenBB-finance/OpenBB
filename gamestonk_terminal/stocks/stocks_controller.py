@@ -9,8 +9,9 @@ from typing import List
 from datetime import datetime, timedelta
 import yfinance as yf
 import pandas as pd
-from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
+from rich.markdown import Markdown
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -41,6 +42,7 @@ class StocksController(BaseController):
         "quote",
         "candle",
         "news",
+        "resources",
     ]
     CHOICES_MENUS = [
         "ta",
@@ -61,9 +63,11 @@ class StocksController(BaseController):
         "options",
     ]
 
+    PATH = "/stocks/"
+
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/", queue)
+        super().__init__(queue)
 
         self.stock = pd.DataFrame()
         self.ticker = ""
@@ -80,23 +84,24 @@ class StocksController(BaseController):
         """Print help"""
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.ticker and self.start:
-            stock_text = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            stock_text = (
+                f"{s_intraday} {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            )
         else:
-            stock_text = f"{s_intraday} Stock: {self.ticker}"
-        dim_if_no_ticker = Style.DIM if not self.ticker else ""
-        reset_style_if_no_ticker = Style.RESET_ALL if not self.ticker else ""
-        help_text = f"""
+            stock_text = f"{s_intraday} {self.ticker}"
+        has_ticker_start = "" if self.ticker else "[unvl]"
+        has_ticker_end = "" if self.ticker else "[/unvl]"
+        help_text = f"""[cmds]
     search      search a specific stock ticker for analysis
-    load        load a specific stock ticker and additional info for analysis
-{dim_if_no_ticker}
-{stock_text}
-{self.add_info}
+    load        load a specific stock ticker and additional info for analysis[/cmds][param]
 
+Stock: [/param]{stock_text}
+{self.add_info}
+[cmds]
     quote       view the current price for a specific stock ticker
     candle      view a candle chart for a specific stock ticker
-    news        latest news of the company [News API]
-{reset_style_if_no_ticker}
-Stocks Menus:
+    news        latest news of the company[/cmds] [src][News API][/src]
+[menu]
 >   options     options menu,  \t\t\t e.g.: chains, open interest, greeks, parity
 >   disc        discover trending stocks, \t e.g. map, sectors, high short interest
 >   sia         sector and industry analysis, \t e.g. companies per sector, quick ratio per industry and country
@@ -105,7 +110,7 @@ Stocks Menus:
 >   ins         insider trading,         \t e.g.: latest penny stock buys, top officer purchases
 >   gov         government menu, \t\t e.g. house trading, contracts, corporate lobbying
 >   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google
->   ca          comparison analysis,     \t e.g.: get similar, historical, correlation, financials{dim_if_no_ticker}
+>   ca          comparison analysis,     \t e.g.: get similar, historical, correlation, financials{has_ticker_start}
 >   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings
 >   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool
 >   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
@@ -113,8 +118,8 @@ Stocks Menus:
 >   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
 >   qa          quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis
 >   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm
-{reset_style_if_no_ticker}"""
-        print(help_text)
+{has_ticker_end}"""
+        console.print(text=help_text, menu="Stocks")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -126,6 +131,16 @@ Stocks Menus:
                 else f"load {self.ticker}",
             ]
         return []
+
+    def call_resources(self, _):
+        """Process resources command"""
+        resources_md = os.path.join(os.path.dirname(__file__), "README.md")
+        if os.path.isfile(resources_md):
+            with open(resources_md) as f:
+                console.print(Markdown(f.read()))
+            console.print("")
+        else:
+            console.print("No resources available.\n")
 
     def call_search(self, other_args: List[str]):
         """Process search command"""
@@ -164,9 +179,10 @@ Stocks Menus:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load stock ticker to perform analysis on. When the data source is syf', an Indian ticker can be"
-            " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
-            " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
+            description="Load stock ticker to perform analysis on. When the data source"
+            + " is syf', an Indian ticker can be"
+            + " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
+            + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
         )
         parser.add_argument(
             "-t",
@@ -245,7 +261,7 @@ Stocks Menus:
                 self.add_info = stocks_helper.additional_info_about_ticker(
                     ns_parser.ticker
                 )
-                print(self.add_info)
+                console.print(self.add_info)
                 if "." in ns_parser.ticker:
                     self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
                 else:
@@ -257,7 +273,7 @@ Stocks Menus:
                 else:
                     self.start = ns_parser.start
                 self.interval = f"{ns_parser.interval}min"
-                print("")
+                console.print("")
 
     def call_quote(self, other_args: List[str]):
         """Process quote command"""
@@ -354,12 +370,12 @@ Stocks Menus:
                         intraday=self.interval != "1440min",
                     )
             else:
-                print("No ticker loaded. First use `load {ticker}`\n")
+                console.print("No ticker loaded. First use `load {ticker}`\n")
 
     def call_news(self, other_args: List[str]):
         """Process news command"""
         if not self.ticker:
-            print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!", "\n")
             return
 
         parser = argparse.ArgumentParser(
@@ -428,7 +444,7 @@ Stocks Menus:
             DiscoveryController,
         )
 
-        self.queue = DiscoveryController(self.queue).menu()
+        self.queue = self.load_class(DiscoveryController, self.queue)
 
     def call_dps(self, _):
         """Process dps command"""
@@ -436,9 +452,9 @@ Stocks Menus:
             DarkPoolShortsController,
         )
 
-        self.queue = DarkPoolShortsController(
-            self.ticker, self.start, self.stock, self.queue
-        ).menu()
+        self.queue = self.load_class(
+            DarkPoolShortsController, self.ticker, self.start, self.stock, self.queue
+        )
 
     def call_scr(self, _):
         """Process scr command"""
@@ -446,7 +462,7 @@ Stocks Menus:
             ScreenerController,
         )
 
-        self.queue = ScreenerController(self.queue).menu()
+        self.queue = self.load_class(ScreenerController, self.queue)
 
     def call_sia(self, _):
         """Process ins command"""
@@ -454,7 +470,9 @@ Stocks Menus:
             SectorIndustryAnalysisController,
         )
 
-        self.queue = SectorIndustryAnalysisController(self.ticker, self.queue).menu()
+        self.queue = self.load_class(
+            SectorIndustryAnalysisController, self.ticker, self.queue
+        )
 
     def call_ins(self, _):
         """Process ins command"""
@@ -462,19 +480,20 @@ Stocks Menus:
             InsiderController,
         )
 
-        self.queue = InsiderController(
+        self.queue = self.load_class(
+            InsiderController,
             self.ticker,
             self.start,
             self.interval,
             self.stock,
             self.queue,
-        ).menu()
+        )
 
     def call_gov(self, _):
         """Process gov command"""
         from gamestonk_terminal.stocks.government.gov_controller import GovController
 
-        self.queue = GovController(self.ticker, self.queue).menu()
+        self.queue = self.load_class(GovController, self.ticker, self.queue)
 
     def call_options(self, _):
         """Process options command"""
@@ -482,7 +501,7 @@ Stocks Menus:
             OptionsController,
         )
 
-        self.queue = OptionsController(self.ticker, self.queue).menu()
+        self.queue = self.load_class(OptionsController, self.ticker, self.queue)
 
     def call_res(self, _):
         """Process res command"""
@@ -491,75 +510,92 @@ Stocks Menus:
                 ResearchController,
             )
 
-            self.queue = ResearchController(
-                self.ticker,
-                self.start,
-                self.interval,
-                self.queue,
-            ).menu()
+            self.queue = self.load_class(
+                ResearchController, self.ticker, self.start, self.interval, self.queue
+            )
         else:
-            print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!", "\n")
 
     def call_dd(self, _):
         """Process dd command"""
         if self.ticker:
             from gamestonk_terminal.stocks.due_diligence import dd_controller
 
-            self.queue = dd_controller.DueDiligenceController(
-                self.ticker, self.start, self.interval, self.stock, self.queue
-            ).menu()
+            self.queue = self.load_class(
+                dd_controller.DueDiligenceController,
+                self.ticker,
+                self.start,
+                self.interval,
+                self.stock,
+                self.queue,
+            )
         else:
-            print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!", "\n")
 
     def call_ca(self, _):
         """Process ca command"""
 
         from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 
-        self.queue = ca_controller.ComparisonAnalysisController(
-            [self.ticker] if self.ticker else "", self.queue
-        ).menu()
+        self.queue = self.load_class(
+            ca_controller.ComparisonAnalysisController,
+            [self.ticker] if self.ticker else "",
+            self.queue,
+        )
 
     def call_fa(self, _):
         """Process fa command"""
         if self.ticker:
             from gamestonk_terminal.stocks.fundamental_analysis import fa_controller
 
-            self.queue = fa_controller.FundamentalAnalysisController(
-                self.ticker, self.start, self.interval, self.suffix, self.queue
-            ).menu()
+            self.queue = self.load_class(
+                fa_controller.FundamentalAnalysisController,
+                self.ticker,
+                self.start,
+                self.interval,
+                self.suffix,
+                self.queue,
+            )
         else:
-            print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!", "\n")
 
     def call_bt(self, _):
         """Process bt command"""
         if self.ticker:
             from gamestonk_terminal.stocks.backtesting import bt_controller
 
-            self.queue = bt_controller.BacktestingController(
-                self.ticker, self.stock, self.queue
-            ).menu()
+            self.queue = self.load_class(
+                bt_controller.BacktestingController, self.ticker, self.stock, self.queue
+            )
         else:
-            print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!", "\n")
 
     def call_ta(self, _):
         """Process ta command"""
         if self.ticker:
             from gamestonk_terminal.stocks.technical_analysis import ta_controller
 
-            self.queue = ta_controller.TechnicalAnalysisController(
-                self.ticker, self.start, self.interval, self.stock, self.queue
-            ).menu()
+            self.queue = self.load_class(
+                ta_controller.TechnicalAnalysisController,
+                self.ticker,
+                self.start,
+                self.interval,
+                self.stock,
+                self.queue,
+            )
         else:
-            print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!", "\n")
 
     def call_ba(self, _):
         """Process ba command"""
         from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
 
-        self.queue = ba_controller.BehaviouralAnalysisController(
-            self.ticker, self.start, self.queue
-        ).menu()
+        self.queue = self.load_class(
+            ba_controller.BehaviouralAnalysisController,
+            self.ticker,
+            self.start,
+            self.queue,
+        )
 
     def call_qa(self, _):
         """Process qa command"""
@@ -569,13 +605,18 @@ Stocks Menus:
                     qa_controller,
                 )
 
-                self.queue = qa_controller.QaController(
-                    self.ticker, self.start, self.interval, self.stock, self.queue
-                ).menu()
+                self.queue = self.load_class(
+                    qa_controller.QaController,
+                    self.ticker,
+                    self.start,
+                    self.interval,
+                    self.stock,
+                    self.queue,
+                )
             # TODO: This menu should work regardless of data being daily or not!
-            print("Load daily data to use this menu!", "\n")
+            console.print("Load daily data to use this menu!", "\n")
         else:
-            print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!", "\n")
 
     def call_pred(self, _):
         """Process pred command"""
@@ -587,26 +628,27 @@ Stocks Menus:
                             pred_controller,
                         )
 
-                        self.queue = pred_controller.PredictionTechniquesController(
+                        self.queue = self.load_class(
+                            pred_controller.PredictionTechniquesController,
                             self.ticker,
                             self.start,
                             self.interval,
                             self.stock,
                             self.queue,
-                        ).menu()
+                        )
                     except ModuleNotFoundError as e:
-                        print(
+                        console.print(
                             "One of the optional packages seems to be missing: ",
                             e,
                             "\n",
                         )
 
                 # TODO: This menu should work regardless of data being daily or not!
-                print("Load daily data to use this menu!", "\n")
+                console.print("Load daily data to use this menu!", "\n")
             else:
-                print("Use 'load <ticker>' prior to this command!", "\n")
+                console.print("Use 'load <ticker>' prior to this command!", "\n")
         else:
-            print(
+            console.print(
                 "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
                 "\n",
             )

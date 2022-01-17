@@ -13,6 +13,7 @@ from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
 from gamestonk_terminal.common.behavioural_analysis import finbrain_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 register_matplotlib_converters()
@@ -91,7 +92,7 @@ def display_sentiment_analysis(ticker: str, export: str = ""):
     """
     df_sentiment = finbrain_model.get_sentiment(ticker)
     if df_sentiment.empty:
-        print("No sentiment data found.\n")
+        console.print("No sentiment data found.\n")
         return
 
     plot_sentiment(df_sentiment, ticker)
@@ -109,7 +110,7 @@ def display_sentiment_analysis(ticker: str, export: str = ""):
             )
             print(tabulate(color_df, headers=["Sentiment"], tablefmt="fancy_grid"))
         else:
-            print(color_df.to_string())
+            console.print(color_df.to_string())
     else:
         if gtff.USE_TABULATE_DF:
             print(
@@ -124,8 +125,8 @@ def display_sentiment_analysis(ticker: str, export: str = ""):
             )
 
         else:
-            print(df_sentiment.to_string())
-    print("")
+            console.print(df_sentiment.to_string())
+    console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "headlines", df_sentiment
     )

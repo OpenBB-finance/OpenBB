@@ -6,9 +6,8 @@ import random
 from typing import List
 from datetime import datetime, timedelta
 import yfinance as yf
-from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -33,6 +32,10 @@ from gamestonk_terminal.stocks.comparison_analysis import (
 
 
 # pylint: disable=E1121,C0302,R0904
+
+# TODO: HELP WANTED! This controller still has some view functionality that should be
+#       refactored in order to implement an API wrapper. Use the discovery controller
+#       as an example.
 
 
 class ComparisonAnalysisController(BaseController):
@@ -65,10 +68,11 @@ class ComparisonAnalysisController(BaseController):
     CHOICES_MENUS = [
         "po",
     ]
+    PATH = "/stocks/ca/"
 
     def __init__(self, similar: List[str] = None, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/ca/", queue)
+        super().__init__(queue)
 
         self.ticker = ""
         self.user = ""
@@ -86,34 +90,41 @@ class ComparisonAnalysisController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
-    ticker        set ticker to get similar companies from{Style.NORMAL if self.ticker else Style.DIM}
+        has_ticker_start = "" if self.ticker else "[unvl]"
+        has_ticker_end = "" if self.ticker else "[/unvl]"
 
-Ticker to get similar companies from: {self.ticker}
+        has_similar_start = "" if self.similar and len(self.similar) > 1 else "[unvl]"
+        has_similar_end = "" if self.similar and len(self.similar) > 1 else "[/unvl]"
 
+        help_text = f"""[cmds]
+    ticker        set ticker to get similar companies from[/cmds]
+
+[param]Ticker to get similar companies from: [/param]{self.ticker}
+[cmds]{has_ticker_start}
     tsne          run TSNE on all SP500 stocks and returns closest tickers
     getpoly       get similar stocks from polygon API
     getfinnhub    get similar stocks from finnhub API
-    getfinviz     get similar stocks from finviz API{Style.RESET_ALL}
+    getfinviz     get similar stocks from finviz API{has_ticker_end}
+
 
     set           reset and set similar companies
     add           add more similar companies
-    rmv           remove similar companies individually or all
-{Style.NORMAL if self.similar and len(self.similar)>1 else Style.DIM}
-Similar Companies: {', '.join(self.similar) if self.similar else ''}
+    rmv           remove similar companies individually or all[/cmds]
+{has_similar_start}
+[param]Similar Companies: [/param]{', '.join(self.similar) if self.similar else ''}
 
-Yahoo Finance:
+[src][Yahoo Finance][/src]
     historical    historical price data comparison
     hcorr         historical price correlation
     volume        historical volume data comparison
-Market Watch:
+[src][Market Watch][/src]
     income        income financials comparison
     balance       balance financials comparison
     cashflow      cashflow comparison
-Finbrain:
+[src][Finbrain][/src]
     sentiment     sentiment analysis comparison
     scorr         sentiment correlation
-Finviz:
+[src][Finviz][/src]
     overview      brief overview comparison
     valuation     brief valuation comparison
     financial     brief financial comparison
@@ -121,9 +132,9 @@ Finviz:
     performance   brief performance comparison
     technical     brief technical comparison
 
->   po            portfolio optimization for selected tickers{Style.RESET_ALL}
+[menu]>   po            portfolio optimization for selected tickers[/menu]{has_similar_end}
         """
-        print(help_text)
+        console.print(text=help_text, menu="Stocks - Comparison Analysis")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -131,13 +142,14 @@ Finviz:
             return ["stocks", "ca", f"set {','.join(self.similar)}"]
         return []
 
+    # TODO: Figure out if this function is actually needed here
     def call_ticker(self, other_args: List[str]):
         """Process ticker command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="ticker",
-            description="""Set ticker to extract similars from""",
+            description="""Set ticker to extract similar from""",
         )
         parser.add_argument(
             "-t",
@@ -152,17 +164,19 @@ Finviz:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if "," in ns_parser.ticker:
-                print("Only one ticker must be selected!")
+                console.print("Only one ticker must be selected!")
             else:
                 stock_data = yf.download(
                     ns_parser.ticker,
                     progress=False,
                 )
                 if stock_data.empty:
-                    print(f"The ticker '{ns_parser.ticker}' provided does not exist!")
+                    console.print(
+                        f"The ticker '{ns_parser.ticker}' provided does not exist!"
+                    )
                 else:
                     self.ticker = ns_parser.ticker.upper()
-            print("")
+            console.print("")
 
     def call_tsne(self, other_args: List[str]):
         """Process tsne command"""
@@ -204,10 +218,14 @@ Finviz:
                 )
 
                 self.similar = [self.ticker] + self.similar
-                print(f"[ML] Similar Companies: {', '.join(self.similar)}", "\n")
+                console.print(
+                    f"[ML] Similar Companies: {', '.join(self.similar)}", "\n"
+                )
 
             else:
-                print("You need to 'set' a ticker to get similar companies from first!")
+                console.print(
+                    "You need to 'set' a ticker to get similar companies from first!"
+                )
 
     def call_getfinviz(self, other_args: List[str]):
         """Process getfinviz command"""
@@ -253,19 +271,21 @@ Finviz:
                 if len(self.similar) > ns_parser.limit:
                     random.shuffle(self.similar)
                     self.similar = sorted(self.similar[: ns_parser.limit])
-                    print(
+                    console.print(
                         f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
                     )
 
                 if self.similar:
                     self.similar = [self.ticker] + self.similar
 
-                    print(
+                    console.print(
                         f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
                         "\n",
                     )
             else:
-                print("You need to 'set' a ticker to get similar companies from first!")
+                console.print(
+                    "You need to 'set' a ticker to get similar companies from first!"
+                )
 
     def call_getpoly(self, other_args: List[str]):
         """Process get command"""
@@ -306,20 +326,22 @@ Finviz:
                 if len(self.similar) > ns_parser.limit:
                     random.shuffle(self.similar)
                     self.similar = sorted(self.similar[: ns_parser.limit])
-                    print(
+                    console.print(
                         f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
                     )
 
                 self.similar = [self.ticker] + self.similar
 
                 if self.similar:
-                    print(
+                    console.print(
                         f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
                         "\n",
                     )
 
             else:
-                print("You need to 'set' a ticker to get similar companies from first!")
+                console.print(
+                    "You need to 'set' a ticker to get similar companies from first!"
+                )
 
     def call_getfinnhub(self, other_args: List[str]):
         """Process get command"""
@@ -352,20 +374,22 @@ Finviz:
                 if len(self.similar) > ns_parser.limit:
                     random.shuffle(self.similar)
                     self.similar = sorted(self.similar[: ns_parser.limit])
-                    print(
+                    console.print(
                         f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
                     )
 
                 self.similar = [self.ticker] + self.similar
 
                 if self.similar:
-                    print(
+                    console.print(
                         f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
                         "\n",
                     )
 
             else:
-                print("You need to 'set' a ticker to get similar companies from first!")
+                console.print(
+                    "You need to 'set' a ticker to get similar companies from first!"
+                )
 
     def call_add(self, other_args: List[str]):
         """Process add command"""
@@ -393,7 +417,9 @@ Finviz:
                 self.similar = ns_parser.l_similar
             self.user = "Custom"
 
-            print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
+            console.print(
+                f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n"
+            )
 
     def call_rmv(self, other_args: List[str]):
         """Process rmv command"""
@@ -420,16 +446,18 @@ Finviz:
                     if symbol in self.similar:
                         self.similar.remove(symbol)
                     else:
-                        print(
+                        console.print(
                             f"Ticker {symbol} does not exist in similar list to be removed"
                         )
 
-                print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}")
+                console.print(
+                    f"[{self.user}] Similar Companies: {', '.join(self.similar)}"
+                )
 
             else:
                 self.similar = []
 
-            print("")
+            console.print("")
             self.user = "Custom"
 
     def call_set(self, other_args: List[str]):
@@ -454,7 +482,9 @@ Finviz:
         if ns_parser:
             self.similar = list(set(ns_parser.l_similar))
             self.user = "Custom"
-            print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
+            console.print(
+                f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n"
+            )
 
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
@@ -506,7 +536,7 @@ Finviz:
                 )
 
             else:
-                print(
+                console.print(
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
@@ -549,7 +579,7 @@ Finviz:
                     candle_type=ns_parser.type_candle,
                 )
             else:
-                print("Please make sure there are similar tickers selected. \n")
+                console.print("Please make sure there are similar tickers selected. \n")
 
     def call_income(self, other_args: List[str]):
         """Process income command"""
@@ -621,7 +651,7 @@ Finviz:
                 )
 
             else:
-                print("Please make sure there are similar tickers selected. \n")
+                console.print("Please make sure there are similar tickers selected. \n")
 
     def call_balance(self, other_args: List[str]):
         """Process balance command"""
@@ -726,7 +756,7 @@ Finviz:
                     export=ns_parser.export,
                 )
             else:
-                print(
+                console.print(
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
@@ -759,7 +789,7 @@ Finviz:
                     export=ns_parser.export,
                 )
             else:
-                print("Please make sure there are similar tickers selected. \n")
+                console.print("Please make sure there are similar tickers selected. \n")
 
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
@@ -782,7 +812,7 @@ Finviz:
                     export=ns_parser.export,
                 )
             else:
-                print(
+                console.print(
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
@@ -807,7 +837,7 @@ Finviz:
                     export=ns_parser.export,
                 )
             else:
-                print(
+                console.print(
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
@@ -832,7 +862,7 @@ Finviz:
                     export=ns_parser.export,
                 )
             else:
-                print(
+                console.print(
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
@@ -857,7 +887,7 @@ Finviz:
                     export=ns_parser.export,
                 )
             else:
-                print(
+                console.print(
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
@@ -882,7 +912,7 @@ Finviz:
                     export=ns_parser.export,
                 )
             else:
-                print(
+                console.print(
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
@@ -907,7 +937,7 @@ Finviz:
                     export=ns_parser.export,
                 )
             else:
-                print(
+                console.print(
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
@@ -918,4 +948,6 @@ Finviz:
                 self.similar, self.queue
             ).menu(custom_path_menu_above="/portfolio/")
         else:
-            print("Please make sure there are more than 1 similar tickers selected. \n")
+            console.print(
+                "Please make sure there are more than 1 similar tickers selected. \n"
+            )

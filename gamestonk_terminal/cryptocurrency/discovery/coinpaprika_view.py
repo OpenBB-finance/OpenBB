@@ -6,6 +6,7 @@ from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import export_data
 import gamestonk_terminal.cryptocurrency.discovery.coinpaprika_model as paprika
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def display_search_results(
@@ -35,7 +36,9 @@ def display_search_results(
     df = paprika.get_search_results(query=query, category=category)
 
     if df.empty:
-        print(f"No results for search query '{query}' in category '{category}'\n")
+        console.print(
+            f"No results for search query '{query}' in category '{category}'\n"
+        )
         return
 
     df = df.sort_values(by=sortby, ascending=descend)
@@ -52,7 +55,7 @@ def display_search_results(
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,

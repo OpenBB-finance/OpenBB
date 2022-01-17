@@ -13,6 +13,7 @@ from binance.exceptions import BinanceAPIException
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.feature_flags import USE_ION as ion
+from gamestonk_terminal.rich_config import console
 
 
 def _get_trading_pairs() -> List[dict]:
@@ -119,7 +120,7 @@ def show_available_pairs_for_given_symbol(
     for k, v in pairs.items():
         if k == symbol_upper:
             return k, v
-    print(f"Couldn't find anything for symbol {symbol_upper}\n")
+    console.print(f"Couldn't find anything for symbol {symbol_upper}\n")
     return None, []
 
 
@@ -151,4 +152,4 @@ def plot_candles(candles_df: pd.DataFrame, title: str) -> None:
     if ion:
         plt.ion()
     plt.show()
-    print("")
+    console.print("")

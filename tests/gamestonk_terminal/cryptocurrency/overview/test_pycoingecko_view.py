@@ -47,7 +47,7 @@ class TestCoinGeckoAPI(TestCase):
     )
     def test_coin_stablecoins(self):
         ov_pycoingecko_view.display_stablecoins(
-            top=15, sortby="Rank", descend=True, links=False, export=""
+            top=15, export=""  # sortby="Rank", descend=True, links=False,
         )
 
     @check_print(assert_in="Metric")

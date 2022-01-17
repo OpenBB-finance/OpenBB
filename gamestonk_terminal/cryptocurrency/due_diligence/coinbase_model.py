@@ -8,6 +8,7 @@ from gamestonk_terminal.cryptocurrency.coinbase_helpers import (
     check_validity_of_product,
     make_coinbase_request,
 )
+from gamestonk_terminal.rich_config import console
 
 
 def show_available_pairs_for_given_symbol(symbol: str = "ETH") -> Tuple[str, list]:
@@ -15,7 +16,7 @@ def show_available_pairs_for_given_symbol(symbol: str = "ETH") -> Tuple[str, lis
     df = pd.DataFrame(pairs)[["base_currency", "quote_currency"]]
 
     if not isinstance(symbol, str):
-        print(
+        console.print(
             f"You did not provide correct symbol {symbol}. Symbol needs to be a string.\n"
         )
         return symbol, []
@@ -42,7 +43,7 @@ def get_trading_pair_info(product_id: str) -> pd.DataFrame:
     pair = make_coinbase_request(f"/products/{product_id}")
     df = pd.Series(pair).to_frame().reset_index()
     df.columns = ["Metric", "Value"]
-    print(df)
+    console.print(df)
     return df
 
 
@@ -141,7 +142,9 @@ def get_candles(product_id: str, interval: str = "24h") -> pd.DataFrame:
         "1day": 86400,
     }
     if interval not in interval_map:
-        print(f"Wrong interval. Please use on from {list(interval_map.keys())}\n")
+        console.print(
+            f"Wrong interval. Please use on from {list(interval_map.keys())}\n"
+        )
         return pd.DataFrame()
 
     granularity: int = interval_map[interval]

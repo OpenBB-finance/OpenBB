@@ -7,6 +7,7 @@ from tabulate import tabulate
 from gamestonk_terminal.stocks.insider import finviz_model
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def last_insider_activity(ticker: str, num: int, export: str):
@@ -48,8 +49,8 @@ def last_insider_activity(ticker: str, num: int, export: str):
             )
         )
     else:
-        print(df.to_string())
-    print("")
+        console.print(df.to_string())
+    console.print("")
 
     export_data(
         export,

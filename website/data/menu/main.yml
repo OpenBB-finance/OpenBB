@@ -54,6 +54,8 @@ main:
             ref: "/stocks/discovery/fds"
           - name: rtat
             ref: "/stocks/discovery/rtat"
+          - name: divcal
+            ref: "/stocks/discovery/divcal"
       - name: Sector and Industry Analysis (SIA)
         ref: "/stocks/sia"
         sub:
@@ -867,10 +869,18 @@ main:
       - name: defi
         ref: "/cryptocurrency/defi"
         sub:
-          - name: llama
-            ref: "/cryptocurrency/defi/llama"
-          - name: tvl
-            ref: "/cryptocurrency/defi/tvl"
+          - name: ldapps
+            ref: "/cryptocurrency/defi/ldapps"
+          - name: gdapps
+            ref: "/cryptocurrency/defi/gdapps"
+          - name: dtvl
+            ref: "/cryptocurrency/defi/dtvl"
+          - name: stvl
+            ref: "/cryptocurrency/defi/stvl"
+          - name: ayr
+            ref: "/cryptocurrency/defi/ayr"
+          - name: aterra
+            ref: "/cryptocurrency/defi/aterra"
           - name: newsletter
             ref: "/cryptocurrency/defi/newsletter"
           - name: dpi

@@ -14,6 +14,7 @@ from dateutil import parser
 from requests.adapters import HTTPAdapter, RetryError
 from urllib3.util.retry import Retry
 from gamestonk_terminal.helper_funcs import get_user_agent
+from gamestonk_terminal.rich_config import console
 
 
 GECKO_BASE_URL = "https://www.coingecko.com"
@@ -90,7 +91,6 @@ def _retry_session(
         connect=retries,
         status_forcelist=[500, 502, 503, 504],
         backoff_factor=backoff_factor,
-        method_whitelist=False,
     )
     adapter = HTTPAdapter(max_retries=retry)
     session.mount(url, adapter)
@@ -114,7 +114,7 @@ def scrape_gecko_data(url: str) -> BeautifulSoup:
     try:
         req = session.get(url, headers=headers, timeout=5)
     except Exception as error:
-        print(error)
+        console.print(error)
         raise RetryError(
             "Connection error. Couldn't connect to CoinGecko and scrape the data. "
             "Please visit CoinGecko site, and check if it's not under maintenance"
@@ -230,8 +230,8 @@ def collateral_auditors_parse(
             auditors = []
         else:
             n_elem = int(args[0])
-            auditors = args[1 : n_elem + 1]
-            collateral = args[n_elem + 1 :]
+            auditors = args[1 : n_elem + 1]  # noqa: E203
+            collateral = args[n_elem + 1 :]  # noqa: E203
 
         return auditors, collateral
     except ValueError:

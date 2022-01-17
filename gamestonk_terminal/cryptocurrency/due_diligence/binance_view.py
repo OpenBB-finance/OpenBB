@@ -12,6 +12,7 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def display_order_book(coin: str, limit: int, currency: str, export: str) -> None:
@@ -66,17 +67,17 @@ def display_balance(coin: str, currency: str, export: str) -> None:
     pair = coin + currency
     current_balance = client.get_asset_balance(asset=pair)
     if current_balance is None:
-        print("Check loaded coin")
+        console.print("Check loaded coin")
         return
 
-    print("")
+    console.print("")
     amounts = [float(current_balance["free"]), float(current_balance["locked"])]
     total = np.sum(amounts)
     df = pd.DataFrame(amounts).apply(lambda x: str(float(x)))
     df.columns = ["Amount"]
     df.index = ["Free", "Locked"]
     df["Percent"] = df.div(df.sum(axis=0), axis=1).round(3)
-    print(f"You currently have {total} coins and the breakdown is:")
+    console.print(f"You currently have {total} coins and the breakdown is:")
 
     if gtff.USE_TABULATE_DF:
         print(
@@ -84,7 +85,7 @@ def display_balance(coin: str, currency: str, export: str) -> None:
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,

@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 from gamestonk_terminal.stocks.fundamental_analysis import eclect_us_model
+from gamestonk_terminal.rich_config import console
 
 
 def display_analysis(
@@ -18,7 +19,7 @@ def display_analysis(
     analysis = eclect_us_model.get_filings_analysis(ticker)
 
     if analysis:
-        print(analysis)
+        console.print(analysis)
     else:
-        print("Filings not found from eclect.us")
-    print("")
+        console.print("Filings not found from eclect.us")
+    console.print("")

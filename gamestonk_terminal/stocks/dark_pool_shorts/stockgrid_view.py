@@ -12,6 +12,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     export_data,
 )
+from gamestonk_terminal.rich_config import console
 
 
 def dark_pool_short_positions(num: int, sort_field: str, ascending: bool, export: str):
@@ -52,7 +53,7 @@ def dark_pool_short_positions(num: int, sort_field: str, ascending: bool, export
     ]
 
     # Assuming that the datetime is the same, which from my experiments seems to be the case
-    print(f"The following data corresponds to the date: {dp_date}")
+    console.print(f"The following data corresponds to the date: {dp_date}")
     print(
         tabulate(
             df.iloc[:num],
@@ -62,7 +63,7 @@ def dark_pool_short_positions(num: int, sort_field: str, ascending: bool, export
             showindex=False,
         )
     )
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -99,7 +100,7 @@ def short_interest_days_to_cover(num: int, sort_field: str, export: str):
     ]
 
     # Assuming that the datetime is the same, which from my experiments seems to be the case
-    print(f"The following data corresponds to the date: {dp_date}")
+    console.print(f"The following data corresponds to the date: {dp_date}")
     print(
         tabulate(
             df.iloc[:num],
@@ -109,7 +110,7 @@ def short_interest_days_to_cover(num: int, sort_field: str, export: str):
             showindex=False,
         )
     )
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -233,7 +234,7 @@ def short_interest_volume(ticker: str, num: int, raw: bool, export: str):
             plt.ion()
 
         plt.show()
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -324,7 +325,7 @@ def net_short_position(ticker: str, num: int, raw: bool, export: str):
             plt.ion()
 
         plt.show()
-    print("")
+    console.print("")
 
     export_data(
         export,

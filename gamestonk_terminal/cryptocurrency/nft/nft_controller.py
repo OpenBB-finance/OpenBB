@@ -2,6 +2,7 @@ import argparse
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
@@ -18,10 +19,11 @@ class NFTController(BaseController):
     """NFT Controller class"""
 
     CHOICES_COMMANDS = ["today", "upcoming", "ongoing", "newest", "stats"]
+    PATH = "/crypto/nft/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/crypto/nft/", queue)
+        super().__init__(queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -30,16 +32,16 @@ class NFTController(BaseController):
     def print_help(self):
         """Print help"""
 
-        help_text = """
-nftcalendar.io:
+        help_text = """[cmds]
+[src][Nftcalendar.io][/src]
     today       today's NFT drops
     upcoming    upcoming NFT drops
     ongoing     Ongoing NFT drops
     newest      Recently NFTs added
-opensea.io
-    stats       check open sea collection stats
+[src][Opensea.io][/src]
+    stats       check open sea collection stats[/cmds]
 """
-        print(help_text)
+        console.print(text=help_text, menu="Cryptocurrency - Non Fungible Token")
 
     def call_stats(self, other_args: List[str]):
         """Process stats command"""

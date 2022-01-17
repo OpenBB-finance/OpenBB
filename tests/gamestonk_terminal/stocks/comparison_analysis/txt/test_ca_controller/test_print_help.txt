@@ -1,31 +1,32 @@
 
-    ticker        set ticker to get similar companies from[2m
+    ticker        set ticker to get similar companies from
 
 Ticker to get similar companies from: 
-
+[unvl]
     tsne          run TSNE on all SP500 stocks and returns closest tickers
     getpoly       get similar stocks from polygon API
     getfinnhub    get similar stocks from finnhub API
-    getfinviz     get similar stocks from finviz API[0m
+    getfinviz     get similar stocks from finviz API[/unvl]
+
 
     set           reset and set similar companies
     add           add more similar companies
     rmv           remove similar companies individually or all
-[2m
+[unvl]
 Similar Companies: 
 
-Yahoo Finance:
+[Yahoo Finance]
     historical    historical price data comparison
     hcorr         historical price correlation
     volume        historical volume data comparison
-Market Watch:
+[Market Watch]
     income        income financials comparison
     balance       balance financials comparison
     cashflow      cashflow comparison
-Finbrain:
+[Finbrain]
     sentiment     sentiment analysis comparison
     scorr         sentiment correlation
-Finviz:
+[Finviz]
     overview      brief overview comparison
     valuation     brief valuation comparison
     financial     brief financial comparison
@@ -33,5 +34,5 @@ Finviz:
     performance   brief performance comparison
     technical     brief technical comparison
 
->   po            portfolio optimization for selected tickers[0m
+>   po            portfolio optimization for selected tickers[/unvl]
         

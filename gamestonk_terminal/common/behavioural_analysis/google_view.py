@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
 from gamestonk_terminal.common.behavioural_analysis import google_model
 from gamestonk_terminal import config_plot as cfp, feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def display_mentions(ticker: str, start: datetime, export: str = ""):
@@ -54,7 +55,7 @@ def display_mentions(ticker: str, start: datetime, export: str = ""):
         plt.ion()
     fig.tight_layout()
     plt.show()
-    print("")
+    console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "mentions", df_interest
     )
@@ -89,8 +90,8 @@ def display_regions(ticker: str, num: int = 5, export: str = ""):
         fig.tight_layout()
         plt.show()
     else:
-        print("No region data found.")
-    print("")
+        console.print("No region data found.")
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "regions", df)
 
 
@@ -113,7 +114,7 @@ def display_queries(ticker: str, num: int = 5, export: str = ""):
     df_related_queries["value"] = df_related_queries["value"].apply(
         lambda x: str(x) + "%"
     )
-    print(f"Top {ticker}'s related queries")
+    console.print(f"Top {ticker}'s related queries")
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
@@ -123,8 +124,8 @@ def display_queries(ticker: str, num: int = 5, export: str = ""):
             )
         )
     else:
-        print(df_related_queries.to_string(index=False))
-    print("")
+        console.print(df_related_queries.to_string(index=False))
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "queries", df)
 
 
@@ -144,7 +145,7 @@ def display_rise(ticker: str, num: int, export: str = ""):
     df = df_related_queries.copy()
     df_related_queries = df_related_queries.head(num)
 
-    print(f"Top rising {ticker}'s related queries")
+    console.print(f"Top rising {ticker}'s related queries")
 
     if gtff.USE_TABULATE_DF:
         print(
@@ -155,6 +156,6 @@ def display_rise(ticker: str, num: int, export: str = ""):
             )
         )
     else:
-        print(df_related_queries.to_string(index=False))
-    print("")
+        console.print(df_related_queries.to_string(index=False))
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "rise", df)
