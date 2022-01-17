@@ -21,7 +21,7 @@ register_matplotlib_converters()
 def sentiment_coloring(val: float, last_val: float) -> str:
     if float(val) > last_val:
         return f"[green]{val}[/green]"
-    return f"[red]{val}[red]"
+    return f"[red]{val}[/red]"
 
 
 def plot_sentiment(sentiment: pd.DataFrame, ticker: str) -> None:
