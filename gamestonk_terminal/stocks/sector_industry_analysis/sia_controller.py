@@ -121,6 +121,7 @@ class SectorIndustryAnalysisController(BaseController):
     }
     mktcap_choices = ["Small", "Mid", "Large", "small", "mid", "large"]
     clear_choices = ["industry", "sector", "country", "mktcap"]
+    PATH = "/stocks/sia/"
 
     def __init__(
         self,
@@ -128,7 +129,7 @@ class SectorIndustryAnalysisController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/stocks/sia/", queue)
+        super().__init__(queue)
 
         self.country = "United States"
         self.sector = "Financial Services"
@@ -242,7 +243,7 @@ class SectorIndustryAnalysisController(BaseController):
 [param]Sector            : [/param]{self.sector}
 [param]Country           : [/param]{self.country}
 [param]Market Cap        : [/param]{self.mktcap}
-[param]Exclude Exchanges : [/param]{self.exclude_exhanges}
+[param]Exclude Exchanges : [/param]{self.exclude_exchanges}
 
 [info]Statistics[/info]{c}[cmds]
     cps           companies per Sector based on Country{c_}{m} and Market Cap{m_}{c}
@@ -571,9 +572,9 @@ class SectorIndustryAnalysisController(BaseController):
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            self.exclude_exhanges: bool = not self.exclude_exhanges
+            self.exclude_exchanges = not self.exclude_exchanges
             console.print(
-                f"International exchanges {'excluded' if self.exclude_exhanges else 'included'}",
+                f"International exchanges {'excluded' if self.exclude_exchanges else 'included'}",
                 "\n",
             )
 

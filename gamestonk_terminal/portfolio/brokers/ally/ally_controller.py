@@ -28,10 +28,11 @@ class AllyController(BaseController):
         "topgainers",
         "toppctgainers",
     ]
+    PATH = "/portfolio/bro/ally/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/portfolio/bro/ally/", queue)
+        super().__init__(queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}

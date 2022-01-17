@@ -68,10 +68,11 @@ class ComparisonAnalysisController(BaseController):
     CHOICES_MENUS = [
         "po",
     ]
+    PATH = "/stocks/ca/"
 
     def __init__(self, similar: List[str] = None, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/ca/", queue)
+        super().__init__(queue)
 
         self.ticker = ""
         self.user = ""

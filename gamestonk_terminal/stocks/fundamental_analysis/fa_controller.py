@@ -67,6 +67,7 @@ class FundamentalAnalysisController(BaseController):
     CHOICES_MENUS = [
         "fmp",
     ]
+    PATH = "/stocks/fa/"
 
     def __init__(
         self,
@@ -77,7 +78,7 @@ class FundamentalAnalysisController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/stocks/fa/", queue)
+        super().__init__(queue)
 
         self.ticker = f"{ticker}.{suffix}" if suffix else ticker
         self.start = start
@@ -786,9 +787,13 @@ Ticker: [/param] {self.ticker} [cmds]
 
     def call_fmp(self, _):
         """Process fmp command."""
-        self.queue = fmp_controller.FinancialModelingPrepController(
-            self.ticker, self.start, self.interval, self.queue
-        ).menu()
+        self.queue = self.load_class(
+            fmp_controller.FinancialModelingPrepController,
+            self.ticker,
+            self.start,
+            self.interval,
+            self.queue,
+        )
 
 
 def key_metrics_explained(other_args: List[str]):
