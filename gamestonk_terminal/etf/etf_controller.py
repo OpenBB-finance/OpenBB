@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import mplfinance as mpf
 
 from prompt_toolkit.completion import NestedCompleter
+from rich.markdown import Markdown
 from thepassiveinvestor import create_ETF_report
 from gamestonk_terminal.rich_config import console
 
@@ -57,6 +58,7 @@ class ETFController(BaseController):
         "weights",
         "summary",
         "compare",
+        "resources",
     ]
     CHOICES_MENUS = [
         "ta",
@@ -65,10 +67,11 @@ class ETFController(BaseController):
         "scr",
         "disc",
     ]
+    PATH = "/etf/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/etf/", queue)
+        super().__init__(queue)
 
         self.etf_name = ""
         self.etf_data = ""
@@ -116,6 +119,16 @@ class ETFController(BaseController):
         if self.etf_name:
             return ["etf", f"load {self.etf_name}"]
         return []
+
+    def call_resources(self, _):
+        """Process resources command"""
+        resources_md = os.path.join(os.path.dirname(__file__), "README.md")
+        if os.path.isfile(resources_md):
+            with open(resources_md) as f:
+                console.print(Markdown(f.read()))
+            console.print("")
+        else:
+            console.print("No resources available.\n")
 
     def call_ln(self, other_args: List[str]):
         """Process ln command"""
@@ -569,9 +582,13 @@ class ETFController(BaseController):
     def call_ta(self, _):
         """Process ta command"""
         if self.etf_name:
-            self.queue = ta_controller.TechnicalAnalysisController(
-                self.etf_name, self.etf_data.index[0], self.etf_data, self.queue
-            ).menu()
+            self.queue = self.load_class(
+                ta_controller.TechnicalAnalysisController,
+                self.etf_name,
+                self.etf_data.index[0],
+                self.etf_data,
+                self.queue,
+            )
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
@@ -584,13 +601,15 @@ class ETFController(BaseController):
                         pred_controller,
                     )
 
-                    self.queue = pred_controller.PredictionTechniquesController(
+                    self.queue = self.load_class(
+                        pred_controller.PredictionTechniquesController,
                         self.etf_name,
                         self.etf_data.index[0],
                         "1440min",
                         self.etf_data,
                         self.queue,
-                    ).menu()
+                    )
+
                 except ModuleNotFoundError as e:
                     console.print(
                         "One of the optional packages seems to be missing: ",
@@ -616,11 +635,11 @@ class ETFController(BaseController):
 
     def call_scr(self, _):
         """Process scr command"""
-        self.queue = screener_controller.ScreenerController(self.queue).menu()
+        self.queue = self.load_class(screener_controller.ScreenerController, self.queue)
 
     def call_disc(self, _):
         """Process disc command"""
-        self.queue = disc_controller.DiscoveryController(self.queue).menu()
+        self.queue = self.load_class(disc_controller.DiscoveryController, self.queue)
 
     def call_compare(self, other_args):
         """Process compare command"""

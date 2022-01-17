@@ -32,10 +32,11 @@ class PayoffController(BaseController):
     ]
 
     underlying_asset_choices = ["long", "short", "none"]
+    PATH = "/stocks/options/payoff/"
 
     def __init__(self, ticker: str, expiration: str, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/options/payoff/", queue)
+        super().__init__(queue)
 
         self.chain = get_option_chain(ticker, expiration)
         self.calls = list(

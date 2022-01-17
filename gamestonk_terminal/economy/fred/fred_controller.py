@@ -26,10 +26,11 @@ class FredController(BaseController):
 
     CHOICES_COMMANDS = ["search", "add", "rmv", "plot"]
     CHOICES_MENUS = ["pred"]
+    PATH = "/economy/fred/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/economy/fred/", queue)
+        super().__init__(queue)
 
         self.current_series: Dict = dict()
         self.long_id = 0
@@ -235,6 +236,6 @@ class FredController(BaseController):
             PredictionTechniquesController,
         )
 
-        self.queue = PredictionTechniquesController(
-            self.current_series, self.queue
-        ).menu()
+        self.queue = self.load_class(
+            PredictionTechniquesController, self.current_series, self.queue
+        )
