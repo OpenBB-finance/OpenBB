@@ -48,10 +48,11 @@ class PortfolioController(BaseController):
         "po",
         "pa",
     ]
+    PATH = "/portfolio/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/portfolio/", queue)
+        super().__init__(queue)
 
         self.portfolio = pd.DataFrame(
             columns=[
@@ -98,17 +99,21 @@ class PortfolioController(BaseController):
             BrokersController,
         )
 
-        self.queue = BrokersController(self.queue).menu()
+        self.queue = self.load_class(BrokersController, self.queue)
 
     def call_po(self, _):
         """Process po command"""
-        self.queue = po_controller.PortfolioOptimization([], self.queue).menu()
+        self.queue = self.load_class(
+            po_controller.PortfolioOptimization, [], self.queue
+        )
 
     def call_pa(self, _):
         """Process pa command"""
         from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
 
-        self.queue = pa_controller.PortfolioAnalysis(self.queue).menu()
+        self.queue = self.queue = self.load_class(
+            pa_controller.PortfolioAnalysis, self.queue
+        )
 
     def call_load(self, other_args: List[str]):
         """Process load command"""

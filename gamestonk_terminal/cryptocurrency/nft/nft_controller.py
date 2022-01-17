@@ -19,10 +19,11 @@ class NFTController(BaseController):
     """NFT Controller class"""
 
     CHOICES_COMMANDS = ["today", "upcoming", "ongoing", "newest", "stats"]
+    PATH = "/crypto/nft/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/crypto/nft/", queue)
+        super().__init__(queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}

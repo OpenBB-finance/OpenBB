@@ -50,6 +50,8 @@ class PredictionTechniquesController(BaseController):
         "mc",
     ]
 
+    PATH = "/etf/pred/"
+
     def __init__(
         self,
         ticker: str,
@@ -59,7 +61,7 @@ class PredictionTechniquesController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/etf/pred/", queue)
+        super().__init__(queue)
 
         stock["Returns"] = stock["Adj Close"].pct_change()
         stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(

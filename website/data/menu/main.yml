@@ -54,6 +54,8 @@ main:
             ref: "/stocks/discovery/fds"
           - name: rtat
             ref: "/stocks/discovery/rtat"
+          - name: divcal
+            ref: "/stocks/discovery/divcal"
       - name: Sector and Industry Analysis (SIA)
         ref: "/stocks/sia"
         sub:

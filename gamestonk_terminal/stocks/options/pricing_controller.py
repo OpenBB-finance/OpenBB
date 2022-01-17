@@ -25,6 +25,7 @@ class PricingController(BaseController):
         "show",
         "rnval",
     ]
+    PATH = "/stocks/options/pricing/"
 
     def __init__(
         self,
@@ -34,7 +35,7 @@ class PricingController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/stocks/options/pricing/", queue)
+        super().__init__(queue)
 
         self.ticker = ticker
         self.selected_date = selected_date

@@ -44,6 +44,7 @@ class DueDiligenceController(BaseController):
         "customer",
         "arktrades",
     ]
+    PATH = "/stocks/dd/"
 
     def __init__(
         self,
@@ -54,7 +55,7 @@ class DueDiligenceController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/stocks/dd/", queue)
+        super().__init__(queue)
 
         self.ticker = ticker
         self.start = start
