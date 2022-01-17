@@ -51,7 +51,6 @@ class TerminalController(BaseController):
         "portfolio",
         "forex",
         "etf",
-        "resources",
         "jupyter",
         "funds",
         "alternative",
@@ -101,6 +100,7 @@ class TerminalController(BaseController):
     quit / q / ..   quit this menu and go one menu above
     exit            exit the terminal
     reset / r       reset the terminal and reload configs from the current location
+    resources       only available on main contexts (not sub-menus)
 
     about           about us
     update          update terminal automatically
@@ -115,10 +115,9 @@ class TerminalController(BaseController):
 >   economy
 >   forex
 >   funds
+>   alternative
 >   portfolio
->   jupyter
->   resources
->   alternative [/menu]
+>   jupyter [/menu]
     """,
             menu="Home",
         )
@@ -179,16 +178,8 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(JupyterController, self.queue)
 
-    def call_resources(self, _):
-        """Process resources command"""
-        from gamestonk_terminal.resources.resources_controller import (
-            ResourceCollectionController,
-        )
-
-        self.queue = self.load_class(ResourceCollectionController, self.queue)
-
     def call_alternative(self, _):
-        """Process resources command"""
+        """Process alternative command"""
         from gamestonk_terminal.alternative.alt_controller import (
             AlternativeDataController,
         )

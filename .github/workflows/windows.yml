@@ -76,6 +76,12 @@ jobs:
           restore-keys: |
             windows-pip-
 
+      # TODO: Is there a better way to do this?
+      - name: Uninstall Brotlipy
+        shell: bash -l {0}
+        run: |
+          conda remove brotlipy -y
+
       - name: Install dependencies (Bash)
         shell: bash -l {0}
         run: |

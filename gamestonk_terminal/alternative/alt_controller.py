@@ -29,8 +29,7 @@ class AlternativeDataController(BaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-    @staticmethod
-    def print_help():
+    def print_help(self):
         """Print help"""
         help_text = """[menu]
 >   covid     COVID menu,                    e.g.: cases, deaths, rates[/menu]
