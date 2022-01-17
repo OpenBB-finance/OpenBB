@@ -18,7 +18,9 @@ from gamestonk_terminal.helper_funcs import (
 )
 
 
-def display_covid_ov(country, raw: bool = False, limit: int = 10, export: str = ""):
+def display_covid_ov(
+    country, raw: bool = False, limit: int = 10, export: str = ""
+) -> None:
     """Show historical cases and deaths by country
 
     Parameters
@@ -87,7 +89,7 @@ def display_covid_ov(country, raw: bool = False, limit: int = 10, export: str = 
 
 def display_covid_stat(
     country, stat: str = "cases", raw: bool = False, limit: int = 10, export: str = ""
-):
+) -> None:
     """Show historical cases and deaths by country
 
     Parameters
@@ -164,7 +166,7 @@ def display_country_slopes(
     ascend: bool = False,
     threshold: int = 10000,
     export: str = "",
-):
+) -> None:
     """
 
     Parameters
