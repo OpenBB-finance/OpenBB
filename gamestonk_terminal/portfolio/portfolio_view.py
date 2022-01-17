@@ -262,10 +262,11 @@ def al(data: pd.DataFrame, graph: bool):
     if graph:
         labels = data.index.values
         sizes = data["value"].to_list()
-        fig1, ax1 = plt.subplots()
-        ax1.pie(sizes, labels=labels, autopct="%1.1f%%", startangle=90)
-        ax1.axis("equal")
-        plt.title = "Portfolio Allocation"
+        fig, ax = plt.subplots()
+        ax.pie(sizes, labels=labels, autopct="%1.1f%%", startangle=90)
+        ax.axis("equal")
+        ax.set_title("Portfolio Allocation")
+        fig.set_tight_layout(True)
 
         plt.show()
     else:
