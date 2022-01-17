@@ -1,6 +1,8 @@
 """Defi Controller Module"""
 __docformat__ = "numpy"
 
+# pylint: disable=C0302
+
 import argparse
 
 from typing import List
@@ -11,6 +13,8 @@ from gamestonk_terminal.cryptocurrency.defi import (
     coindix_model,
     terraengineer_model,
     terraengineer_view,
+    terramoney_fcd_view,
+    terramoney_fcd_model,
 )
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -18,6 +22,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
+    check_terra_address_format,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
 )
@@ -54,6 +59,12 @@ class DefiController(BaseController):
         "vaults",
         "ayr",
         "aterra",
+        "sinfo",
+        "validators",
+        "govp",
+        "gacc",
+        "sratio",
+        "sreturn",
     ]
 
     PATH = "/crypto/defi/"
@@ -75,6 +86,14 @@ class DefiController(BaseController):
             choices["vaults"]["-k"] = {c: {} for c in coindix_model.VAULT_KINDS}
             choices["vaults"]["-c"] = {c: {} for c in coindix_model.CHAINS}
             choices["vaults"]["-p"] = {c: {} for c in coindix_model.PROTOCOLS}
+            choices["govp"]["-s"] = {c: {} for c in terramoney_fcd_model.GOV_COLUMNS}
+            choices["govp"]["--status"] = {
+                c: {} for c in terramoney_fcd_model.GOV_STATUSES
+            }
+            choices["validators"]["-s"] = {
+                c: {} for c in terramoney_fcd_model.VALIDATORS_COLUMNS
+            }
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -95,12 +114,19 @@ class DefiController(BaseController):
     swaps         Recent swaps done on Uniswap
 [src][Defi Llama][/src]
     ldapps        Lists dApps
-    gdapps        Display top DeFi dApps grouped by chain
-    stvl          Display historical values of the total sum of TVLs from all dApps
-    dtvl          Display historical total value locked (TVL) by dApp
+    gdapps        Displays top DeFi dApps grouped by chain
+    stvl          Displays historical values of the total sum of TVLs from all dApps
+    dtvl          Displays historical total value locked (TVL) by dApp
 [src][Terra Engineer][/src]
-    aterra        Displays 30-day history of specified asset in terra address
-    ayr           Displays 30-day history of anchor yield reserve[/cmds]
+    aterra        Displays 30-day history of specified asset in terra address [src][Terra Engineer][/src]
+    ayr           Displays 30-day history of anchor yield reserve [src][Terra Engineer][/src]
+[src][Terra FCD][/src]
+    sinfo         Displays staking info for provided terra account address
+    validators    Displays information about terra blockchain validators
+    govp          Displays terra blockchain governance proposals list
+    gacc          Displays terra blockchain account growth history
+    sratio        Displays terra blockchain staking ratio history
+    sreturn       Displays terra blockchain staking returns history[/cmds]
 """
         console.print(text=help_text, menu="Cryptocurrency - Decentralized Finance")
 
@@ -125,7 +151,7 @@ class DefiController(BaseController):
         parser.add_argument(
             "--address",
             dest="address",
-            type=str,
+            type=check_terra_address_format,
             help="Terra address. Valid terra addresses start with 'terra'",
             required=True,
         )
@@ -166,6 +192,265 @@ class DefiController(BaseController):
 
         if ns_parser:
             terraengineer_view.display_anchor_yield_reserve(export=ns_parser.export)
+
+    def call_sinfo(self, other_args: List[str]):
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="sinfo",
+            description="""
+                Displays staking info of a certain terra address.
+                [Source: https://fcd.terra.dev/swagger]
+            """,
+        )
+        parser.add_argument(
+            "-a",
+            "--address",
+            dest="address",
+            type=check_terra_address_format,
+            help="Terra address. Valid terra addresses start with 'terra'",
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=check_positive,
+            help="Number of delegations",
+            default=10,
+        )
+
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-a")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            terramoney_fcd_view.display_account_staking_info(
+                export=ns_parser.export, address=ns_parser.address, top=ns_parser.limit
+            )
+
+    def call_validators(self, other_args: List[str]):
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="validators",
+            description="""
+                Displays information about terra validators.
+                [Source: https://fcd.terra.dev/swagger]
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=check_positive,
+            help="Number of validators to show",
+            default=10,
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: votingPower",
+            default="votingPower",
+            choices=[
+                "validatorName",
+                "tokensAmount",
+                "votingPower",
+                "commissionRate",
+                "status",
+                "uptime",
+            ],
+        )
+        parser.add_argument(
+            "--descend",
+            action="store_true",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=False,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            terramoney_fcd_view.display_validators(
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                top=ns_parser.limit,
+            )
+
+    def call_govp(self, other_args: List[str]):
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="govp",
+            description="""
+                Displays terra blockchain governance proposals list.
+                [Source: https://fcd.terra.dev/swagger]
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=check_positive,
+            help="Number of proposals to show",
+            default=10,
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: id",
+            default="id",
+            choices=terramoney_fcd_model.GOV_COLUMNS,
+        )
+        parser.add_argument(
+            "--status",
+            dest="status",
+            type=str,
+            help="Status of proposal. Default: all",
+            default="all",
+            choices=terramoney_fcd_model.GOV_STATUSES,
+        )
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=False,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            terramoney_fcd_view.display_gov_proposals(
+                status=ns_parser.status,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                top=ns_parser.limit,
+            )
+
+    def call_gacc(self, other_args: List[str]):
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="gacc",
+            description="""
+                Displays terra blockchain account growth history.
+                [Source: https://fcd.terra.dev/swagger]
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=check_positive,
+            help="Number of days to show",
+            default=90,
+        )
+        parser.add_argument(
+            "--cumulative",
+            action="store_false",
+            help="Show cumulative or discrete values. For active accounts only discrete value are available",
+            dest="cumulative",
+            default=True,
+        )
+        parser.add_argument(
+            "-k",
+            "--kind",
+            dest="kind",
+            type=str,
+            help="Total account count or active account count. Default: total",
+            default="total",
+            choices=["active", "total"],
+        )
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=False,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            terramoney_fcd_view.display_account_growth(
+                kind=ns_parser.kind,
+                export=ns_parser.export,
+                cumulative=ns_parser.cumulative,
+                top=ns_parser.limit,
+            )
+
+    def call_sratio(self, other_args: List[str]):
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="sratio",
+            description="""
+                Displays terra blockchain staking ratio history.
+                [Source: https://fcd.terra.dev/swagger]
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=check_positive,
+            help="Number of days to show",
+            default=90,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            terramoney_fcd_view.display_staking_ratio_history(
+                export=ns_parser.export, top=ns_parser.limit
+            )
+
+    def call_sreturn(self, other_args: List[str]):
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="sreturn",
+            description="""
+                 Displays terra blockchain staking returns history.
+                 [Source: https://fcd.terra.dev/swagger]
+             """,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=check_positive,
+            help="Number of days to show",
+            default=90,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            terramoney_fcd_view.display_staking_returns_history(
+                export=ns_parser.export, top=ns_parser.limit
+            )
 
     def call_dpi(self, other_args: List[str]):
         """Process dpi command"""
