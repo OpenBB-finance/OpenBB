@@ -1,2 +1,2 @@
-<rich.table.Table object at 0x7fba2394de50>
+<rich.table.Table object at 0x7f9ff9312940>
 

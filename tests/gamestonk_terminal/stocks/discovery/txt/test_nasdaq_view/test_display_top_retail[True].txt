@@ -1,6 +1,6 @@
-<rich.table.Table object at 0x7f8072ba3a30>
+<rich.table.Table object at 0x7fa03f797af0>
 
-<rich.table.Table object at 0x7f8072ba3c10>
+<rich.table.Table object at 0x7fa03f797cd0>
 
-<rich.table.Table object at 0x7f8072ba3d90>
+<rich.table.Table object at 0x7fa03f7971f0>
 
