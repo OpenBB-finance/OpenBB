@@ -22,6 +22,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
+    check_terra_address_format,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
 )
@@ -114,15 +115,16 @@ class DefiController(BaseController):
     gdapps        Displays top DeFi dApps grouped by chain
     stvl          Displays historical values of the total sum of TVLs from all dApps
     dtvl          Displays historical total value locked (TVL) by dApp
-[src][Terra][/src]
+[src][Terra Engineer][/src]
     aterra        Displays 30-day history of specified asset in terra address [src][Terra Engineer][/src]
     ayr           Displays 30-day history of anchor yield reserve [src][Terra Engineer][/src]
-    sinfo         Displays staking info for provided terra account address [src][Terra FCD][/src]
-    validators    Displays information about terra blockchain validators [src][Terra FCD][/src]
-    govp          Displays terra blockchain governance proposals list [src][Terra FCD][/src]
-    gacc          Displays terra blockchain account growth history [src][Terra FCD][/src]
-    sratio        Displays terra blockchain staking ratio history [src][Terra FCD][/src]
-    sreturn       Displays terra blockchain staking returns history [src][Terra FCD][/src][/cmds]
+[src][Terra FCD][/src]
+    sinfo         Displays staking info for provided terra account address
+    validators    Displays information about terra blockchain validators
+    govp          Displays terra blockchain governance proposals list
+    gacc          Displays terra blockchain account growth history
+    sratio        Displays terra blockchain staking ratio history
+    sreturn       Displays terra blockchain staking returns history[/cmds]
 """
         console.print(text=help_text, menu="Cryptocurrency - Decentralized Finance")
 
@@ -147,7 +149,7 @@ class DefiController(BaseController):
         parser.add_argument(
             "--address",
             dest="address",
-            type=str,
+            type=check_terra_address_format,
             help="Terra address. Valid terra addresses start with 'terra'",
             required=True,
         )
@@ -203,7 +205,7 @@ class DefiController(BaseController):
             "-a",
             "--address",
             dest="address",
-            type=str,
+            type=check_terra_address_format,
             help="Terra address. Valid terra addresses start with 'terra'",
             required="-h" not in other_args,
         )
@@ -262,10 +264,9 @@ class DefiController(BaseController):
                 "uptime",
             ],
         )
-
         parser.add_argument(
             "--descend",
-            action="store_false",
+            action="store_true",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
             default=False,
@@ -308,24 +309,15 @@ class DefiController(BaseController):
             type=str,
             help="Sort by given column. Default: id",
             default="id",
-            choices=[
-                "submitTime",
-                "id",
-                "depositEndTime",
-                "status",
-                "type",
-                "title",
-                "Yes",
-                "No",
-            ],
+            choices=terramoney_fcd_model.GOV_COLUMNS,
         )
         parser.add_argument(
             "--status",
             dest="status",
             type=str,
-            help="Status of proposal. Default: voting",
-            default="voting",
-            choices=["voting", "deposit", "passed", "rejected"],
+            help="Status of proposal. Default: all",
+            default="all",
+            choices=terramoney_fcd_model.GOV_STATUSES,
         )
         parser.add_argument(
             "--descend",
@@ -391,7 +383,7 @@ class DefiController(BaseController):
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
         if ns_parser:
@@ -422,7 +414,7 @@ class DefiController(BaseController):
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
         if ns_parser:
@@ -450,7 +442,7 @@ class DefiController(BaseController):
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
         if ns_parser:

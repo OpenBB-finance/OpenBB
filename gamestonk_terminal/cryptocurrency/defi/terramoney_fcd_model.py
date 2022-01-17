@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import textwrap
-from typing import Any
+from typing import Any, Tuple
 from datetime import datetime
 import requests
 import pandas as pd
@@ -22,7 +22,7 @@ GOV_COLUMNS = [
     "Yes",
     "No",
 ]
-GOV_STATUSES = ["voting", "deposit", "passed", "rejected"]
+GOV_STATUSES = ["voting", "deposit", "passed", "rejected", "all"]
 VALIDATORS_COLUMNS = [
     "validatorName",
     "tokensAmount",
@@ -84,7 +84,7 @@ def _adjust_delegation_info(delegation: dict) -> dict:
     return delegation_info
 
 
-def get_staking_account_info(address: str = "") -> tuple[pd.DataFrame, str]:
+def get_staking_account_info(address: str = "") -> Tuple[pd.DataFrame, str]:
     """Get staking info for provided terra account [Source: https://fcd.terra.dev/swagger]
 
     Parameters
@@ -93,7 +93,7 @@ def get_staking_account_info(address: str = "") -> tuple[pd.DataFrame, str]:
         terra blockchain address e.g. terra1jvwelvs7rdk6j3mqdztq5tya99w8lxk6l9hcqg
     Returns
     -------
-    tuple[pd.DataFrame, str]:
+    Tuple[pd.DataFrame, str]:
         luna delegations and summary report for given address
     """
 
@@ -121,12 +121,12 @@ def get_staking_account_info(address: str = "") -> tuple[pd.DataFrame, str]:
         response.get("rewards", {}).get("total", 0)
     )
 
-    report = "Overview: \n"
-    report += f"{3*' '}Address: {address}\n"
-    report += f"{3*' '}Available Luna: {results['availableLuna']}\n"
-    report += f"{3*' '}Delegated Luna: {results['delegationTotal']}\n"
-    report += f"{3*' '}Total Rewards:  {results['totalRewards']}\n"
-    report += "\nDelegations: "
+    report = f"""Overview:
+    Address: {address}
+    Available Luna: {results['availableLuna']}
+    Delegated Luna: {results['delegationTotal']}
+    Total Rewards:  {results['totalRewards']}\n"""
+    report += "\nDelegations: " if not df.empty else "\nNo delegations found\n"
 
     return df, report
 

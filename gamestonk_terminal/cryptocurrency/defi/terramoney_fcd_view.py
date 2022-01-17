@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import os
-from tabulate import tabulate
 import matplotlib.pyplot as plt
 from matplotlib import ticker, dates as mdates
 from gamestonk_terminal.cryptocurrency.defi import terramoney_fcd_model
@@ -38,18 +37,19 @@ def display_account_staking_info(
 
     df, report = terramoney_fcd_model.get_staking_account_info(address)
     console.print(report)
-    if gtff.USE_TABULATE_DF:
-        console.print(
-            rich_table_from_df(
-                df.head(top),
-                headers=list(df.columns),
-                floatfmt=".2f",
-                show_index=False,
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    if not df.empty:
+        if gtff.USE_TABULATE_DF:
+            console.print(
+                rich_table_from_df(
+                    df.head(top),
+                    headers=list(df.columns),
+                    floatfmt=".2f",
+                    show_index=False,
+                ),
+                "\n",
+            )
+        else:
+            console.print(df.to_string, "\n")
 
     export_data(
         export,
@@ -78,7 +78,7 @@ def display_validators(
 
     df = terramoney_fcd_model.get_validators()
     df_data = df.copy()
-    df = df.sort_values(by=sortby, ascending=descend).head(top)
+    df = df.sort_values(by=sortby, ascending=descend)
     df["tokensAmount"] = df["tokensAmount"].apply(
         lambda x: very_long_number_formatter(x)
     )
@@ -88,13 +88,12 @@ def display_validators(
     ]
 
     if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
+        console.print(
+            rich_table_from_df(
+                df.head(top),
+                headers=list(df.columns),
                 floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
+                show_index=False,
             ),
             "\n",
         )
@@ -111,7 +110,7 @@ def display_validators(
 
 def display_gov_proposals(
     top: int = 10,
-    status: str = "Voting",
+    status: str = "all",
     sortby: str = "id",
     descend: bool = False,
     export: str = "",
@@ -138,13 +137,12 @@ def display_gov_proposals(
     df.columns = prettify_column_names(df.columns)
 
     if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
+        console.print(
+            rich_table_from_df(
                 df,
-                headers=df.columns,
+                headers=list(df.columns),
                 floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
+                show_index=False,
             ),
             "\n",
         )
@@ -196,7 +194,7 @@ def display_account_growth(
         ax.bar(x=df.index, height=df[opt], label=df[opt])
 
     ax.set_ylabel(f"{opt}")
-    ax.set_xlabel("date")
+    ax.set_xlabel("Date")
     dateFmt = mdates.DateFormatter("%m/%d/%Y")
     ax.xaxis.set_major_formatter(dateFmt)
 
@@ -206,7 +204,7 @@ def display_account_growth(
     fig.tight_layout(pad=8)
     ax.set_title(f"{label} number of {opt.lower()} in period from {start} to {end}")
     ax.grid(alpha=0.5)
-    ax.tick_params(axis="x", labelrotation=90)
+    ax.tick_params(axis="x", labelrotation=45)
     if gtff.USE_ION:
         plt.ion()
     plt.show()
@@ -240,14 +238,14 @@ def display_staking_ratio_history(top: int = 90, export: str = "") -> None:
 
     ax.plot(df, label=df["stakingRatio"])
     ax.set_ylabel("Staking ratio [%]")
-    ax.set_xlabel("date")
+    ax.set_xlabel("Date")
     dateFmt = mdates.DateFormatter("%m/%d/%Y")
     ax.xaxis.set_major_formatter(dateFmt)
 
     fig.tight_layout(pad=8)
     ax.set_title(f"Staking ratio in period from {start} to {end}")
     ax.grid(alpha=0.5)
-    ax.tick_params(axis="x", labelrotation=90)
+    ax.tick_params(axis="x", labelrotation=45)
     if gtff.USE_ION:
         plt.ion()
     plt.show()
@@ -281,14 +279,14 @@ def display_staking_returns_history(top: int = 90, export: str = "") -> None:
 
     ax.plot(df, label=df["annualizedReturn"])
     ax.set_ylabel("Staking returns [%]")
-    ax.set_xlabel("date")
+    ax.set_xlabel("Date")
     dateFmt = mdates.DateFormatter("%m/%d/%Y")
     ax.xaxis.set_major_formatter(dateFmt)
 
     fig.tight_layout(pad=8)
     ax.set_title(f"Staking returns in period from {start} to {end}")
     ax.grid(alpha=0.5)
-    ax.tick_params(axis="x", labelrotation=90)
+    ax.tick_params(axis="x", labelrotation=45)
     if gtff.USE_ION:
         plt.ion()
     plt.show()
