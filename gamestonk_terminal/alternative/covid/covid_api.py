@@ -6,11 +6,12 @@ from gamestonk_terminal.helper_classes import ModelsNamespace as _models
 # pylint: disable=unused-import
 
 # Menu commands
-"""
-from .covid_view import print_insider_data
-from .businessinsider_view import insider_activity as act
-from .finviz_view import last_insider_activity as lins
+from gamestonk_terminal.alternative.covid.covid_view import display_covid_ov as ov
+from gamestonk_terminal.alternative.covid.covid_view import display_covid_stat as stat
+from gamestonk_terminal.alternative.covid.covid_view import (
+    display_country_slopes as slopes,
+)
+
 
 # Models
 models = _models(os.path.abspath(os.path.dirname(__file__)))
-"""
