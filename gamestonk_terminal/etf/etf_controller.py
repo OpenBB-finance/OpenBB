@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import mplfinance as mpf
 
 from prompt_toolkit.completion import NestedCompleter
+from rich.markdown import Markdown
 from thepassiveinvestor import create_ETF_report
 from gamestonk_terminal.rich_config import console
 
@@ -57,6 +58,7 @@ class ETFController(BaseController):
         "weights",
         "summary",
         "compare",
+        "resources",
     ]
     CHOICES_MENUS = [
         "ta",
@@ -117,6 +119,16 @@ class ETFController(BaseController):
         if self.etf_name:
             return ["etf", f"load {self.etf_name}"]
         return []
+
+    def call_resources(self, _):
+        """Process resources command"""
+        resources_md = os.path.join(os.path.dirname(__file__), "README.md")
+        if os.path.isfile(resources_md):
+            with open(resources_md) as f:
+                console.print(Markdown(f.read()))
+            console.print("")
+        else:
+            console.print("No resources available.\n")
 
     def call_ln(self, other_args: List[str]):
         """Process ln command"""
