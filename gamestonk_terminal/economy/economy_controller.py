@@ -9,7 +9,7 @@ import logging
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-
+from rich.markdown import Markdown
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -63,6 +63,7 @@ class EconomyController(BaseController):
         "unemp",
         "industry",
         "bigmac",
+        "resources",
     ]
     CHOICES_MENUS = ["fred"]
 
@@ -121,10 +122,11 @@ class EconomyController(BaseController):
         "country": "Country (U.S. listed stocks only)",
         "capitalization": "Capitalization",
     }
+    PATH = "/economy/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/economy/", queue)
+        super().__init__(queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -162,8 +164,7 @@ class EconomyController(BaseController):
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-    @staticmethod
-    def print_help():
+    def print_help(self):
         """Print help"""
         help_text = """[cmds]
 [src][CNN][/src]
@@ -199,6 +200,16 @@ class EconomyController(BaseController):
 >   fred          Federal Reserve Economic Data submenu[/menu]
 """
         console.print(text=help_text, menu="Economy")
+
+    def call_resources(self, _):
+        """Process resources command"""
+        resources_md = os.path.join(os.path.dirname(__file__), "README.md")
+        if os.path.isfile(resources_md):
+            with open(resources_md) as f:
+                console.print(Markdown(f.read()))
+            console.print("")
+        else:
+            console.print("No resources available.\n")
 
     def call_feargreed(self, other_args: List[str]):
         """Process feargreed command"""
@@ -1023,4 +1034,4 @@ class EconomyController(BaseController):
         """Process fred command"""
         from gamestonk_terminal.economy.fred.fred_controller import FredController
 
-        self.queue = FredController(self.queue).menu()
+        self.queue = self.load_class(FredController, self.queue)

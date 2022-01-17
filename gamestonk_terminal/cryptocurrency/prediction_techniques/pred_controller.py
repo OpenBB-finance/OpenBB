@@ -53,6 +53,7 @@ class PredictionTechniquesController(BaseController):
     ]
 
     sampling_map = {"H": "Hour", "D": "Day"}
+    PATH = "/crypto/pred/"
 
     def __init__(
         self,
@@ -61,7 +62,7 @@ class PredictionTechniquesController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/crypto/pred/", queue)
+        super().__init__(queue)
 
         data["Returns"] = data["Close"].pct_change()
         data["LogRet"] = np.log(data["Close"]) - np.log(data["Close"].shift(1))

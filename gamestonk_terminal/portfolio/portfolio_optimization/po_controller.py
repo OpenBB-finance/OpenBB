@@ -150,10 +150,11 @@ class PortfolioOptimization(BaseController):
         "fiveYearAverageReturn",
         "regularMarketPrice",
     ]
+    PATH = "/portfolio/po/"
 
     def __init__(self, tickers: List[str] = None, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/portfolio/po/", queue)
+        super().__init__(queue)
 
         if tickers:
             self.tickers = list(set(tickers))
@@ -374,7 +375,7 @@ class PortfolioOptimization(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="3mo",
+            default="1y",
             dest="period",
             help="period to get yfinance data from",
             choices=self.period_choices,
@@ -430,7 +431,7 @@ class PortfolioOptimization(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="3mo",
+            default="1y",
             dest="period",
             help="period to get yfinance data from",
             choices=self.period_choices,
@@ -476,7 +477,7 @@ class PortfolioOptimization(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="3mo",
+            default="1y",
             dest="period",
             help="period to get yfinance data from",
             choices=self.period_choices,
@@ -547,7 +548,7 @@ class PortfolioOptimization(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="3mo",
+            default="1y",
             dest="period",
             help="period to get yfinance data from",
             choices=self.period_choices,
@@ -621,7 +622,7 @@ class PortfolioOptimization(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="3mo",
+            default="1y",
             dest="period",
             help="period to get yfinance data from",
             choices=self.period_choices,
@@ -695,7 +696,7 @@ class PortfolioOptimization(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="3mo",
+            default="1y",
             dest="period",
             help="period to get yfinance data from",
             choices=self.period_choices,

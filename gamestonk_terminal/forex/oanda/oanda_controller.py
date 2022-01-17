@@ -43,10 +43,11 @@ class OandaController(BaseController):
         # "news",
         # "reddit",
     ]
+    PATH = "/forex/oanda/"
 
     def __init__(self, queue: List[str] = None):
         """Construct Data."""
-        super().__init__("/forex/oanda/", queue)
+        super().__init__(queue)
 
         self.from_symbol = ""
         self.to_symbol = ""
