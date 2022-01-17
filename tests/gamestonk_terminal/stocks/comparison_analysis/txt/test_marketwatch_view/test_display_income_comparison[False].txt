@@ -1,63 +1,63 @@
 Other available quarterly timeframes are: 30-Sep-2020, 31-Dec-2020, 31-Mar-2021, 30-Jun-2021, 30-Sep-2021
 
-                                          31-Dec-2020         
-                                                 TSLA       GM
-Item                                                          
-Sales/Revenue                                  10.74B   37.52B
-Sales Growth                              [32m     22.49% [0m[32m   5.74%[0m
-Cost of Goods Sold (COGS) incl. D&A             8.68B   32.52B
-COGS Growth                               [32m     29.37% [0m[32m  10.89%[0m
-COGS excluding D&A                              8.06B   29.46B
-Depreciation & Amortization Expense              618M    3.06B
-Depreciation                                        -        -
-Amortization of Intangibles                         -        -
-Gross Income                                    2.07B       5B
-Gross Income Growth                       [32m      0.15% [0m[31m -18.77%[0m
-Gross Profit Margin                                 -        -
-SG&A Expense                                    1.49B    2.13B
-SGA Growth                                [32m     18.90% [0m[32m  30.84%[0m
-Research & Development                           522M        -
-Other SG&A                                       969M    2.13B
-Other Operating Expense                             -        -
-Unusual Expense                           [31m       (5M) [0m[31m  (521M)[0m
-EBIT after Unusual Expense                         5M     521M
-Non Operating Income/Expense                      39M [31m    (5M)[0m
-Non-Operating Interest Income                      6M      46M
-Equity in Affiliates (Pretax)                       -     285M
-Interest Expense                                 246M     275M
-Interest Expense Growth                   [32m     50.92% [0m[31m -15.90%[0m
-Gross Interest Expense                           261M     275M
-Interest Capitalized                              15M        -
-Pretax Income                                    379M    3.44B
-Pretax Income Growth                      [31m    -31.71% [0m[31m -29.89%[0m
-Pretax Margin                                       -        -
-Income Tax                                        83M     642M
-Income Tax - Current Domestic                       -        -
-Income Tax - Current Foreign                        -        -
-Income Tax - Deferred Domestic                      -        -
-Income Tax - Deferred Foreign                       -        -
-Income Tax Credits                                  -        -
-Equity in Affiliates                                -        -
-Other After Tax Income (Expense)                    -        -
-Consolidated Net Income                          296M     2.8B
-Minority Interest Expense                         26M [31m   (49M)[0m
-Net Income                                       270M    2.85B
-Net Income Growth                         [31m    -10.00% [0m[31m -29.64%[0m
-Net Margin Growth                                   -        -
-Extraordinaries & Discontinued Operations           -        -
-Extra Items & Gain/Loss Sale Of Assets              -        -
-Cumulative Effect - Accounting Chg                  -        -
-Discontinued Operations                             -        -
-Net Income After Extraordinaries                 270M    2.85B
-Preferred Dividends                                 -      45M
-Net Income Available to Common                   270M     2.8B
-EPS (Basic)                                      0.28     1.95
-EPS (Basic) Growth                        [31m    -12.18% [0m[31m -30.26%[0m
-Basic Shares Outstanding                         960M    1.44B
-EPS (Diluted)                                    0.24     1.93
-EPS (Diluted) Growth                      [31m    -11.42% [0m[31m -30.64%[0m
-Diluted Shares Outstanding                      1.12B    1.45B
-EBITDA                                          1.19B    5.93B
-EBITDA Growth                             [31m    -14.36% [0m[31m -22.82%[0m
-EBITDA Margin                                       -        - 
+                                                     31-Dec-2020                       
+                                                            TSLA                     GM
+Item                                                                                   
+Sales/Revenue                                             10.74B                 37.52B
+Sales Growth                               [green]22.49%[/green]   [green]5.74%[/green]
+Cost of Goods Sold (COGS) incl. D&A                        8.68B                 32.52B
+COGS Growth                                [green]29.37%[/green]  [green]10.89%[/green]
+COGS excluding D&A                                         8.06B                 29.46B
+Depreciation & Amortization Expense                         618M                  3.06B
+Depreciation                                                   -                      -
+Amortization of Intangibles                                    -                      -
+Gross Income                                               2.07B                     5B
+Gross Income Growth                         [green]0.15%[/green]     [red]-18.77%[/red]
+Gross Profit Margin                                            -                      -
+SG&A Expense                                               1.49B                  2.13B
+SGA Growth                                 [green]18.90%[/green]  [green]30.84%[/green]
+Research & Development                                      522M                      -
+Other SG&A                                                  969M                  2.13B
+Other Operating Expense                                        -                      -
+Unusual Expense                                  [red](5M)[/red]      [red](521M)[/red]
+EBIT after Unusual Expense                                    5M                   521M
+Non Operating Income/Expense                                 39M        [red](5M)[/red]
+Non-Operating Interest Income                                 6M                    46M
+Equity in Affiliates (Pretax)                                  -                   285M
+Interest Expense                                            246M                   275M
+Interest Expense Growth                    [green]50.92%[/green]     [red]-15.90%[/red]
+Gross Interest Expense                                      261M                   275M
+Interest Capitalized                                         15M                      -
+Pretax Income                                               379M                  3.44B
+Pretax Income Growth                          [red]-31.71%[/red]     [red]-29.89%[/red]
+Pretax Margin                                                  -                      -
+Income Tax                                                   83M                   642M
+Income Tax - Current Domestic                                  -                      -
+Income Tax - Current Foreign                                   -                      -
+Income Tax - Deferred Domestic                                 -                      -
+Income Tax - Deferred Foreign                                  -                      -
+Income Tax Credits                                             -                      -
+Equity in Affiliates                                           -                      -
+Other After Tax Income (Expense)                               -                      -
+Consolidated Net Income                                     296M                   2.8B
+Minority Interest Expense                                    26M       [red](49M)[/red]
+Net Income                                                  270M                  2.85B
+Net Income Growth                             [red]-10.00%[/red]     [red]-29.64%[/red]
+Net Margin Growth                                              -                      -
+Extraordinaries & Discontinued Operations                      -                      -
+Extra Items & Gain/Loss Sale Of Assets                         -                      -
+Cumulative Effect - Accounting Chg                             -                      -
+Discontinued Operations                                        -                      -
+Net Income After Extraordinaries                            270M                  2.85B
+Preferred Dividends                                            -                    45M
+Net Income Available to Common                              270M                   2.8B
+EPS (Basic)                                                 0.28                   1.95
+EPS (Basic) Growth                            [red]-12.18%[/red]     [red]-30.26%[/red]
+Basic Shares Outstanding                                    960M                  1.44B
+EPS (Diluted)                                               0.24                   1.93
+EPS (Diluted) Growth                          [red]-11.42%[/red]     [red]-30.64%[/red]
+Diluted Shares Outstanding                                 1.12B                  1.45B
+EBITDA                                                     1.19B                  5.93B
+EBITDA Growth                                 [red]-14.36%[/red]     [red]-22.82%[/red]
+EBITDA Margin                                                  -                      - 
 

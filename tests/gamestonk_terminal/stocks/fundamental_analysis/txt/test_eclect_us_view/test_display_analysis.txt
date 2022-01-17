@@ -1,5 +1,5 @@
-[1m
-	RISK FACTORS:[0m
+[bold]
+	RISK FACTORS:[/bold]
 Apple Inc. | 2021 Form 10-K | 8 The Company depends on component and product manufacturing and logistical services provided by outsourcing partners, many of which are located outside of the U. S. Substantially all of the Company’ s manufacturing is performed in whole or in part by outsourcing partners located primarily in Asia.
 
 Apple Inc. | 2021 Form 10-K | 14 The Company’ s business is subject to a variety of U. S. and international laws, rules, policies and other obligations regarding data protection.
@@ -21,8 +21,8 @@ Apple Inc. | 2021 Form 10-K | 11 The Company has invested and will continue to i
 Apple Inc. | 2021 Form 10-K | 15 The weakening of foreign currencies relative to the U. S. dollar adversely affects the U. S. dollar value of the Company’ s foreign currency–denominated sales and earnings, and generally leads the Company to raise international pricing, potentially reducing demand for the Company’ s products.
 
 Apple Inc. | 2021 Form 10-K | 13 The outcome of litigation or government investigations is inherently uncertain.
-[1m
-	DISCUSSION AND ANALYSIS:[0m
+[bold]
+	DISCUSSION AND ANALYSIS:[/bold]
 Services net sales also include amortization of the deferred value of services bundled in the sales price of certain products. iPhoneiPhone net sales increased during 2021 compared to 2020 due primarily to higher net sales from the Company’ s new iPhone models launched in the first quarter and fourth quarter of 2021 and a favorable mix of iPhone sales.
 
 The movement of foreign currencies in Europe relative to the U. S. dollar had a net favorable impact on Europe net sales during 2021.

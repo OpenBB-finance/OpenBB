@@ -21,15 +21,15 @@ def display_top_retail(n_days: int = 3, export: str = ""):
     """
     retails = nasdaq_model.get_retail_tickers()
     for date, df in retails.head(n_days * 10).groupby("Date"):
-        console.print(f"[bold]{date} Top Retail:[/bold]")
         df = df.drop(columns=["Date"])
         if gtff.USE_TABULATE_DF:
+            df = df.reset_index(drop=True)
             console.print(
                 rich_table_from_df(
-                    df.reset_index(drop=True),
-                    headers=df.columns[1:],
+                    df,
+                    headers=[x.title() for x in df.columns],
                     show_index=False,
-                    title="Top Retail Companies",
+                    title=f"[bold]{date} Top Retail:[/bold]",
                 )
             )
         else:
@@ -85,7 +85,7 @@ def display_dividend_calendar(
         console.print(
             rich_table_from_df(
                 calendar.head(limit),
-                headers=list(calendar.columns),
+                headers=[x.title() for x in calendar.columns],
                 title=f"[bold]Dividend Calendar for {date}[/bold]",
             )
         )

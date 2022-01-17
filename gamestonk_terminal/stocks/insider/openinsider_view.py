@@ -190,7 +190,10 @@ def print_insider_data(type_insider: str, limit: int = 10, export: str = ""):
     if gtff.USE_TABULATE_DF:
         console.print(
             rich_table_from_df(
-                df, headers=df.columns, show_index=False, title="Insider Data"
+                df,
+                headers=[x.title() for x in df.columns],
+                show_index=False,
+                title="Insider Data",
             )
         )
     else:
@@ -286,7 +289,9 @@ def print_insider_filter(
     if gtff.USE_TABULATE_DF:
         console.print(
             rich_table_from_df(
-                df_insider, headers=df_insider.columns, title="Insider filtered"
+                df_insider,
+                headers=[x.title() for x in df_insider.columns],
+                title="Insider filtered",
             )
         )
     else:

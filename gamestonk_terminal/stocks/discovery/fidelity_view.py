@@ -71,7 +71,6 @@ def orders_view(num: int, export: str):
         Export dataframe data to csv,json,xlsx file
     """
     order_header, df_orders = fidelity_model.get_orders()
-    console.print(order_header, ":")
 
     pd.set_option("display.max_colwidth", None)
 
@@ -88,9 +87,9 @@ def orders_view(num: int, export: str):
     console.print(
         rich_table_from_df(
             df_orders,
-            headers=df_orders.columns,
+            headers=[x.title() for x in df_orders.columns],
             show_index=False,
-            title="Fidelity Orders",
+            title=f"{order_header}:",
         )
     )
     console.print("")

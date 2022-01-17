@@ -1,59 +1,59 @@
-                                     Item      2016      2017       2018   2019    2020
-                            Sales/Revenue        7B    11.76B     21.46B 24.58B  31.54B
-                             Sales Growth         - [32m   67.98% [0m[32m    82.51% [0m[32m14.52% [0m[32m 28.31%[0m
-      Cost of Goods Sold (COGS) incl. D&A     5.45B     9.54B     17.42B 20.51B  24.91B
-                              COGS Growth         - [32m   75.22% [0m[32m    82.56% [0m[32m17.74% [0m[32m 21.44%[0m
-                       COGS excluding D&A      4.5B     7.91B     15.52B 18.36B  22.58B
-      Depreciation & Amortization Expense    947.1M     1.64B       1.9B  2.15B   2.32B
-                             Depreciation         -         -          -      -       -
-              Amortization of Intangibles         -         -          -      -       -
-                             Gross Income     1.55B     2.22B      4.04B  4.07B   6.63B
-                      Gross Income Growth         - [32m   42.62% [0m[32m    82.33% [0m[32m 0.67% [0m[32m 62.94%[0m
-                      Gross Profit Margin         -         -          -      - [32m 21.02%[0m
-                             SG&A Expense     2.24B     3.85B      4.29B  3.99B   4.64B
-                               SGA Growth         - [32m   71.70% [0m[32m    11.42% [0m[31m-7.12% [0m[32m 16.22%[0m
-                   Research & Development   834.41M     1.38B      1.46B  1.34B   1.49B
-                               Other SG&A     1.41B     2.48B      2.83B  2.65B   3.15B
-                  Other Operating Expense         -         -          -      -       -
-                          Unusual Expense [31m (74.03M) [0m[31m  (7.19M) [0m   113.68M   189M     36M
-               EBIT after Unusual Expense [31m(616.51M) [0m[31m  (1.63B) [0m[31m (366.52M) [0m[31m(189M) [0m  1.96B
-             Non Operating Income/Expense    60.45M [31m(126.97M) [0m      308K    85M [31m  (86M)[0m
-            Non-Operating Interest Income     8.53M    19.69M     24.53M    44M     30M
-            Equity in Affiliates (Pretax)         -         -          -      -       -
-                         Interest Expense   198.81M   471.26M    663.07M   685M    748M
-                  Interest Expense Growth         - [32m  137.04% [0m[32m    40.70% [0m[32m 3.31% [0m[32m  9.20%[0m
-                   Gross Interest Expense   245.51M   596.16M    717.97M   716M    796M
-                     Interest Capitalized     46.7M    124.9M      54.9M    31M     48M
-                            Pretax Income [31m(746.35M) [0m[31m  (2.21B) [0m[31m      (1B) [0m[31m(665M) [0m  1.15B
-                     Pretax Income Growth         - [31m -195.98% [0m[32m    54.52% [0m[32m33.81% [0m[32m273.53%[0m
-                            Pretax Margin         -         -          -      - [32m  3.66%[0m
-                               Income Tax     26.7M    31.55M     57.84M   110M    292M
-            Income Tax - Current Domestic      568K [31m  (7.52M) [0m     1.89M     5M      4M
-             Income Tax - Current Foreign    53.96M    42.72M     23.62M    86M    248M
-           Income Tax - Deferred Domestic         -         -          - [31m  (4M) [0m      -
-            Income Tax - Deferred Foreign [31m (27.83M) [0m[31m  (3.65M) [0m    32.32M    23M     40M
-                       Income Tax Credits         -         -          -      -       -
-                     Equity in Affiliates         -         -          -      -       -
-         Other After Tax Income (Expense)         -         -          - [31m  (8M) [0m[31m  (31M)[0m
-                  Consolidated Net Income [31m(773.05M) [0m[31m  (2.24B) [0m[31m   (1.06B) [0m[31m(783M) [0m   831M
-                Minority Interest Expense [31m (98.13M) [0m[31m(279.18M) [0m[31m  (86.49M) [0m   87M    141M
-                               Net Income [31m(674.91M) [0m[31m  (1.96B) [0m[31m (976.09M) [0m[31m(870M) [0m   690M
-                        Net Income Growth         - [31m -190.61% [0m[32m    50.23% [0m[32m10.87% [0m[32m179.31%[0m
-                        Net Margin Growth         -         -          -      - [32m  2.19%[0m
-Extraordinaries & Discontinued Operations         -         -          -      -       -
-   Extra Items & Gain/Loss Sale Of Assets         -         -          -      -       -
-       Cumulative Effect - Accounting Chg         -         -          -      -       -
-                  Discontinued Operations         -         -          -      -       -
-         Net Income After Extraordinaries [31m(674.91M) [0m[31m  (1.96B) [0m[31m (976.09M) [0m[31m(870M) [0m   690M
-                      Preferred Dividends         -         -          -      -       -
-           Net Income Available to Common [31m(674.91M) [0m[31m  (1.96B) [0m[31m (976.09M) [0m[31m(870M) [0m   690M
-                              EPS (Basic) [31m   (0.94) [0m[31m   (2.37) [0m[31m    (1.14) [0m[31m(0.98) [0m   0.74
-                       EPS (Basic) Growth         - [31m -152.78% [0m[32m    51.61% [0m[32m14.33% [0m[32m175.41%[0m
-                 Basic Shares Outstanding   721.06M   828.79M    852.63M   887M    933M
-                            EPS (Diluted) [31m   (0.94) [0m[31m   (2.37) [0m[31m    (1.14) [0m[31m(0.98) [0m   0.64
-                     EPS (Diluted) Growth         - [31m -152.78% [0m[32m    51.61% [0m[32m14.33% [0m[32m164.96%[0m
-               Diluted Shares Outstanding   721.06M   828.79M    852.63M   887M   1.08B
-                                   EBITDA   256.56M [31m  (1.68M) [0m     1.65B  2.23B   4.32B
-                            EBITDA Growth         - [31m -100.66% [0m[32m98,032.86% [0m[32m35.54% [0m[32m 93.20%[0m
-                            EBITDA Margin         -         -          -      - [32m 13.69%[0m
+                                     Item                 2016                   2017                      2018                  2019                   2020
+                            Sales/Revenue                   7B                 11.76B                    21.46B                24.58B                 31.54B
+                             Sales Growth                    -  [green]67.98%[/green]     [green]82.51%[/green] [green]14.52%[/green]  [green]28.31%[/green]
+      Cost of Goods Sold (COGS) incl. D&A                5.45B                  9.54B                    17.42B                20.51B                 24.91B
+                              COGS Growth                    -  [green]75.22%[/green]     [green]82.56%[/green] [green]17.74%[/green]  [green]21.44%[/green]
+                       COGS excluding D&A                 4.5B                  7.91B                    15.52B                18.36B                 22.58B
+      Depreciation & Amortization Expense               947.1M                  1.64B                      1.9B                 2.15B                  2.32B
+                             Depreciation                    -                      -                         -                     -                      -
+              Amortization of Intangibles                    -                      -                         -                     -                      -
+                             Gross Income                1.55B                  2.22B                     4.04B                 4.07B                  6.63B
+                      Gross Income Growth                    -  [green]42.62%[/green]     [green]82.33%[/green]  [green]0.67%[/green]  [green]62.94%[/green]
+                      Gross Profit Margin                    -                      -                         -                     -  [green]21.02%[/green]
+                             SG&A Expense                2.24B                  3.85B                     4.29B                 3.99B                  4.64B
+                               SGA Growth                    -  [green]71.70%[/green]     [green]11.42%[/green]     [red]-7.12%[/red]  [green]16.22%[/green]
+                   Research & Development              834.41M                  1.38B                     1.46B                 1.34B                  1.49B
+                               Other SG&A                1.41B                  2.48B                     2.83B                 2.65B                  3.15B
+                  Other Operating Expense                    -                      -                         -                     -                      -
+                          Unusual Expense  [red](74.03M)[/red]     [red](7.19M)[/red]                   113.68M                  189M                    36M
+               EBIT after Unusual Expense [red](616.51M)[/red]     [red](1.63B)[/red]      [red](366.52M)[/red]     [red](189M)[/red]                  1.96B
+             Non Operating Income/Expense               60.45M   [red](126.97M)[/red]                      308K                   85M       [red](86M)[/red]
+            Non-Operating Interest Income                8.53M                 19.69M                    24.53M                   44M                    30M
+            Equity in Affiliates (Pretax)                    -                      -                         -                     -                      -
+                         Interest Expense              198.81M                471.26M                   663.07M                  685M                   748M
+                  Interest Expense Growth                    - [green]137.04%[/green]     [green]40.70%[/green]  [green]3.31%[/green]   [green]9.20%[/green]
+                   Gross Interest Expense              245.51M                596.16M                   717.97M                  716M                   796M
+                     Interest Capitalized                46.7M                 124.9M                     54.9M                   31M                    48M
+                            Pretax Income [red](746.35M)[/red]     [red](2.21B)[/red]           [red](1B)[/red]     [red](665M)[/red]                  1.15B
+                     Pretax Income Growth                    -    [red]-195.98%[/red]     [green]54.52%[/green] [green]33.81%[/green] [green]273.53%[/green]
+                            Pretax Margin                    -                      -                         -                     -   [green]3.66%[/green]
+                               Income Tax                26.7M                 31.55M                    57.84M                  110M                   292M
+            Income Tax - Current Domestic                 568K     [red](7.52M)[/red]                     1.89M                    5M                     4M
+             Income Tax - Current Foreign               53.96M                 42.72M                    23.62M                   86M                   248M
+           Income Tax - Deferred Domestic                    -                      -                         -       [red](4M)[/red]                      -
+            Income Tax - Deferred Foreign  [red](27.83M)[/red]     [red](3.65M)[/red]                    32.32M                   23M                    40M
+                       Income Tax Credits                    -                      -                         -                     -                      -
+                     Equity in Affiliates                    -                      -                         -                     -                      -
+         Other After Tax Income (Expense)                    -                      -                         -       [red](8M)[/red]       [red](31M)[/red]
+                  Consolidated Net Income [red](773.05M)[/red]     [red](2.24B)[/red]        [red](1.06B)[/red]     [red](783M)[/red]                   831M
+                Minority Interest Expense  [red](98.13M)[/red]   [red](279.18M)[/red]       [red](86.49M)[/red]                   87M                   141M
+                               Net Income [red](674.91M)[/red]     [red](1.96B)[/red]      [red](976.09M)[/red]     [red](870M)[/red]                   690M
+                        Net Income Growth                    -    [red]-190.61%[/red]     [green]50.23%[/green] [green]10.87%[/green] [green]179.31%[/green]
+                        Net Margin Growth                    -                      -                         -                     -   [green]2.19%[/green]
+Extraordinaries & Discontinued Operations                    -                      -                         -                     -                      -
+   Extra Items & Gain/Loss Sale Of Assets                    -                      -                         -                     -                      -
+       Cumulative Effect - Accounting Chg                    -                      -                         -                     -                      -
+                  Discontinued Operations                    -                      -                         -                     -                      -
+         Net Income After Extraordinaries [red](674.91M)[/red]     [red](1.96B)[/red]      [red](976.09M)[/red]     [red](870M)[/red]                   690M
+                      Preferred Dividends                    -                      -                         -                     -                      -
+           Net Income Available to Common [red](674.91M)[/red]     [red](1.96B)[/red]      [red](976.09M)[/red]     [red](870M)[/red]                   690M
+                              EPS (Basic)    [red](0.94)[/red]      [red](2.37)[/red]         [red](1.14)[/red]     [red](0.98)[/red]                   0.74
+                       EPS (Basic) Growth                    -    [red]-152.78%[/red]     [green]51.61%[/green] [green]14.33%[/green] [green]175.41%[/green]
+                 Basic Shares Outstanding              721.06M                828.79M                   852.63M                  887M                   933M
+                            EPS (Diluted)    [red](0.94)[/red]      [red](2.37)[/red]         [red](1.14)[/red]     [red](0.98)[/red]                   0.64
+                     EPS (Diluted) Growth                    -    [red]-152.78%[/red]     [green]51.61%[/green] [green]14.33%[/green] [green]164.96%[/green]
+               Diluted Shares Outstanding              721.06M                828.79M                   852.63M                  887M                  1.08B
+                                   EBITDA              256.56M     [red](1.68M)[/red]                     1.65B                 2.23B                  4.32B
+                            EBITDA Growth                    -    [red]-100.66%[/red] [green]98,032.86%[/green] [green]35.54%[/green]  [green]93.20%[/green]
+                            EBITDA Margin                    -                      -                         -                     -  [green]13.69%[/green]
 
