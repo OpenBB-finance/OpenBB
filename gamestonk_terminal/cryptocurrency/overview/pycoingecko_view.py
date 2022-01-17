@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import os
-import textwrap
 from pandas.plotting import register_matplotlib_converters
 from rich.console import Console
 from tabulate import tabulate
@@ -60,42 +59,6 @@ def display_holdings_overview(coin: str, export: str) -> None:
         )
 
 
-def display_nft_of_the_day(export: str) -> None:
-    """Shows NFT of the day "https://www.coingecko.com/en/nft" [Source: CoinGecko]
-
-    NFT (Non-fungible Token) refers to digital assets with unique characteristics.
-    Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
-
-    Parameters
-    ----------
-    export: str
-        Export dataframe data to csv,json,xlsx
-    """
-
-    df = gecko.get_nft_of_the_day()
-
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "nftday",
-        df,
-    )
-
-
 def display_nft_market_status(export: str) -> None:
     """Shows overview data of nft markets "https://www.coingecko.com/en/nft" [Source: CoinGecko]
 
@@ -108,7 +71,7 @@ def display_nft_market_status(export: str) -> None:
         Export dataframe data to csv,json,xlsx
     """
 
-    df = gecko.get_nft_market_status()
+    df = gecko.get_nft_data()
     if not df.empty:
         if gtff.USE_TABULATE_DF:
             print(
@@ -306,66 +269,6 @@ def display_stablecoins(
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
-
-
-def display_news(
-    sortby: str, descend: bool, top: int, links: bool, export: str
-) -> None:
-    """Shows latest crypto news. [Source: CoinGecko]
-
-    Parameters
-    ----------
-    top: int
-        Number of records to display
-    sortby: str
-        Key by which to sort data
-    descend: bool
-        Flag to sort data descending
-    links: bool
-        Flag to display urls
-    export : str
-        Export dataframe data to csv,json,xlsx file
-    """
-
-    df = gecko.get_news(n=top)
-
-    if not df.empty:
-        df = df.sort_values(by=sortby, ascending=descend)
-        df_data = df.copy()
-
-        df["Title"] = df["Title"].apply(
-            lambda x: "\n".join(textwrap.wrap(x, width=65)) if isinstance(x, str) else x
-        )
-
-        if not links:
-            df.drop("Url", axis=1, inplace=True)
-        else:
-            df = df[["Index", "Url"]]
-
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df,
-                    headers=df.columns,
-                    floatfmt=".0f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            console.print(df.to_string, "\n")
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "news",
-            df_data,
-        )
-    else:
-        console.print("")
-        console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
 
 
 def display_categories(sortby: str, top: int, export: str) -> None:

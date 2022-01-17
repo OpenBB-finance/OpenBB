@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 # pylint: disable=C0301
 
-import math
 from typing import Any, List
 import re
 import pandas as pd
@@ -11,17 +10,9 @@ import numpy as np
 from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import get_coins
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
-    wrap_text_in_df,
     create_df_index,
     replace_underscores_in_column_names,
 )
-from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
-    clean_row,
-    scrape_gecko_data,
-    GECKO_BASE_URL,
-    RetryError,
-)
-from gamestonk_terminal.rich_config import console
 
 HOLD_COINS = ["ethereum", "bitcoin"]
 
@@ -121,60 +112,6 @@ def get_holdings_overview(endpoint: str = "bitcoin") -> List[Any]:
     return [stats_str, df]
 
 
-# This function does not use coingecko api because there is not an endpoint for this
-def get_news(n: int = 100) -> pd.DataFrame:
-    """Scrapes news from "https://www.coingecko.com/en/news?page={}" [Source: CoinGecko]
-
-    Parameters
-    ----------
-    n: int
-        Number of news, by default n=100, one page has 25 news, so 4 pages are scraped.
-    Returns
-    -------
-    pandas.DataFrame:
-        Title, Author, Posted, Article
-    """
-
-    n_of_pages = (math.ceil(n / 25) + 1) if n else 2
-    dfs = []
-    for page in range(1, n_of_pages):
-        url = f"https://www.coingecko.com/en/news?page={page}"
-        try:
-            scraped_data = scrape_gecko_data(url)
-        except RetryError as e:
-            console.print(e)
-            return pd.DataFrame()
-        rows = scraped_data.find_all("article")
-        results = []
-        for row in rows:
-            header = row.find("header")
-            link = header.find("a")["href"]
-            text = [t for t in header.text.strip().split("\n") if t not in ["", " "]]
-            article = row.find("div", class_="post-body").text.strip()
-            title, *by_who = text
-            author, posted = " ".join(by_who).split("(")
-            posted = posted.strip().replace(")", "")
-            results.append([title, author.strip(), posted, article, link])
-        dfs.append(
-            pd.DataFrame(
-                results,
-                columns=[
-                    "Title",
-                    "Author",
-                    "Posted",
-                    "Article",
-                    "Url",
-                ],
-            )
-        )
-    df = pd.concat(dfs, ignore_index=True).head(n)
-    df.drop("Article", axis=1, inplace=True)
-    df.index = df.index + 1
-    df.reset_index(inplace=True)
-    df.rename(columns={"index": "Index"}, inplace=True)
-    return df
-
-
 SORT_VALUES = [
     "market_cap_desc",
     "market_cap_asc",
@@ -194,7 +131,6 @@ def coin_formatter(n):
     return ",".join(coins)
 
 
-# This function does not use coingecko api because there is not an endpoint for this
 def get_top_crypto_categories(sort_filter: str = SORT_VALUES[0]) -> pd.DataFrame:
     """Scrapes top crypto categories [Source: CoinGecko]
 
@@ -219,7 +155,7 @@ def get_top_crypto_categories(sort_filter: str = SORT_VALUES[0]) -> pd.DataFrame
     return pd.DataFrame()
 
 
-# This function does not use coingecko api because there is not an endpoint for this
+# TODO: add string with overview
 def get_stable_coins(top: int = 20) -> pd.DataFrame:
     """Returns top stable coins [Source: CoinGecko]
 
@@ -244,74 +180,29 @@ def get_stable_coins(top: int = 20) -> pd.DataFrame:
     ]
 
 
-# This function does not use coingecko api because there is not an endpoint for this
-def get_nft_of_the_day() -> pd.DataFrame:
-    """Scrapes data about nft of the day. [Source: CoinGecko]
+# TODO: add string with overview
+def get_nft_data(top: int = 20) -> pd.DataFrame:
+    """Returns top stable coins [Source: CoinGecko]
 
     Returns
     -------
     pandas.DataFrame
-        metric, value
+        Rank, Name, Symbol, Price, Change_24h, Exchanges, Market_Cap, Change_30d, Url
     """
 
-    url = "https://www.coingecko.com/en/nft"
-    try:
-        scraped_data = scrape_gecko_data(url)
-    except RetryError as e:
-        console.print(e)
-        return pd.DataFrame()
-    row = scraped_data.find("div", class_="tw-px-4 tw-py-5 sm:tw-p-6")
-    try:
-        *author, description, _ = clean_row(row)
-        if len(author) > 3:
-            author, description = author[:3], author[3]
-    except (ValueError, IndexError):
-        return pd.DataFrame()
-    df = (
-        pd.Series(
-            {
-                "author": " ".join(author),
-                "desc": description,
-                "url": GECKO_BASE_URL + row.find("a")["href"],
-                "img": row.find("img")["src"],
-            }
-        )
-        .to_frame()
-        .reset_index()
-    )
-    df.columns = ["Metric", "Value"]
-    df["Metric"] = df["Metric"].apply(
-        lambda x: replace_underscores_in_column_names(x) if isinstance(x, str) else x
-    )
-    df = wrap_text_in_df(df, w=100)
-    return df
-
-
-# This function does not use coingecko api because there is not an endpoint for this
-def get_nft_market_status() -> pd.DataFrame:
-    """Scrapes overview data of nft markets from "https://www.coingecko.com/en/nft" [Source: CoinGecko]
-
-    Returns
-    -------
-    pandas.DataFrame
-        Metric, Value
-    """
-
-    url = "https://www.coingecko.com/en/nft"
-    try:
-        scraped_data = scrape_gecko_data(url)
-    except RetryError as e:
-        console.print(e)
-        return pd.DataFrame()
-    rows = scraped_data.find_all("span", class_="overview-box d-inline-block p-3 mr-2")
-    kpis = {}
-    for row in rows:
-        value, *kpi = clean_row(row)
-        name = " ".join(kpi)
-        kpis[name] = value
-    df = pd.Series(kpis).to_frame().reset_index()
-    df.columns = ["Metric", "Value"]
-    return df
+    df = get_coins(top=top, category="non-fungible-tokens-nft")
+    return df[
+        [
+            "symbol",
+            "name",
+            "current_price",
+            "market_cap",
+            "market_cap_rank",
+            "price_change_percentage_7d_in_currency",
+            "price_change_percentage_24h_in_currency",
+            "total_volume",
+        ]
+    ]
 
 
 def get_exchanges() -> pd.DataFrame:

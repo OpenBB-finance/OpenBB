@@ -47,10 +47,8 @@ class OverviewController(BaseController):
     CHOICES_COMMANDS = [
         "cgglobal",
         "cgdefi",
-        "cgnews",
         "cgstables",
         "cgnft",
-        "cgnftday",
         "cgexchanges",
         "cgexrates",
         "cgplatforms",
@@ -85,7 +83,6 @@ class OverviewController(BaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             choices["cghold"] = {c: None for c in pycoingecko_model.HOLD_COINS}
             choices["cgcompanies"] = {c: None for c in pycoingecko_model.HOLD_COINS}
-            choices["cgnews"]["-s"] = {c: None for c in pycoingecko_model.NEWS_FILTERS}
             choices["cgcategories"]["-s"] = {
                 c: None for c in pycoingecko_model.CATEGORIES_FILTERS
             }
@@ -137,11 +134,9 @@ class OverviewController(BaseController):
         help_text = """[cmds]
 [src][CoinGecko][/src]
     cgglobal          global crypto market info
-    cgnews            last news available
     cgdefi            global DeFi market info
     cgstables         stablecoins
     cgnft             non fungible token market status
-    cgnftday          non fungible token of the day
     cgexchanges       top crypto exchanges
     cgexrates         coin exchange rates
     cgplatforms       crypto financial platforms
@@ -414,66 +409,6 @@ class OverviewController(BaseController):
                 coin=ns_parser.coin, export=ns_parser.export
             )
 
-    def call_cgnews(self, other_args):
-        """Process news command"""
-        parser = argparse.ArgumentParser(
-            prog="cgnews",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="Shows latest crypto news from CoinGecko. "
-            "You will see Index, Title, Author, Posted columns. "
-            "You can sort by each of column above, using --sort parameter and also do it descending with --descend flag"
-            "To display urls to news use --urls flag.",
-        )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=int,
-            help="display N number of news >=10",
-            default=15,
-        )
-
-        parser.add_argument(
-            "-s",
-            "--sort",
-            dest="sortby",
-            type=str,
-            help="Sort by given column. Default: index",
-            default="Index",
-            choices=pycoingecko_model.NEWS_FILTERS,
-        )
-
-        parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
-        )
-
-        parser.add_argument(
-            "-u",
-            "--urls",
-            dest="urls",
-            action="store_true",
-            help="Flag to show urls. If you will use that flag you will additional column with urls",
-            default=False,
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            pycoingecko_view.display_news(
-                top=ns_parser.limit,
-                export=ns_parser.export,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                links=ns_parser.urls,
-            )
-
     def call_cgcategories(self, other_args):
         """Process top_categories command"""
         parser = argparse.ArgumentParser(
@@ -598,25 +533,6 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_nft_market_status(export=ns_parser.export)
-
-    def call_cgnftday(self, other_args):
-        """Process nftday command"""
-        parser = argparse.ArgumentParser(
-            prog="cgnftday",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Shows NFT of the day
-                NFT (Non-fungible Token) refers to digital assets with unique characteristics.
-                Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
-                With nft_today command you will display:
-                    author, description, url, img url for NFT which was chosen on CoinGecko as a nft of the day.""",
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            pycoingecko_view.display_nft_of_the_day(export=ns_parser.export)
 
     def call_cgproducts(self, other_args):
         """Process products command"""
