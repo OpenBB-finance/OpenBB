@@ -27,6 +27,7 @@ class CustomDataController(BaseController):
     """Alternative Controller class"""
 
     CHOICES_COMMANDS: List[str] = ["load", "plot", "show", "info"]
+    CHOICES_MENUS: List[str] = ["qa"]
     pandas_plot_choices = [
         "line",
         "scatter",
@@ -39,10 +40,11 @@ class CustomDataController(BaseController):
         "pie",
         "hexbin",
     ]
+    PATH = "/custom/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/custom/", queue)
+        super().__init__(queue)
         self.data = pd.DataFrame()
         self.file = ""
         self.DATA_FILES = [file.name for file in Path("custom_imports").iterdir()]
@@ -75,7 +77,9 @@ Current file:    {self.file or None}[cmds]{has_data_start}
     show            show portion of loaded data
     info            show data info (columns and datatypes)
     plot            plot data from loaded file{has_data_end}[/cmds]
-            """
+[menus]
+>   qa          quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis[/menus]
+"""
         console.print(text=help_text, menu="Custom")
 
     def call_load(self, other_args: List[str]):
@@ -105,6 +109,7 @@ Current file:    {self.file or None}[cmds]{has_data_start}
             for col in self.data.columns:
                 if col in ["date", "time", "timestamp"]:  # Could be others?
                     self.data[col] = pd.to_datetime(self.data[col])
+                    self.data = self.data.set_index(col)
             self.file = ns_parser.file
             self.update_runtime_choices()
         console.print("")
@@ -211,3 +216,14 @@ Current file:    {self.file or None}[cmds]{has_data_start}
                 return
             console.print(self.data.info())
         console.print()
+
+    def call_qa(self, _):
+        """Process qa command"""
+        from gamestonk_terminal.custom.quantitative_analysis import qa_controller
+
+        self.queue = self.load_class(
+            qa_controller.QaController,
+            custom_df=self.data,
+            file=self.file,
+            queue=self.queue,
+        )
