@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 import yfinance as yf
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
+from rich.markdown import Markdown
 from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
@@ -41,6 +42,7 @@ class StocksController(BaseController):
         "quote",
         "candle",
         "news",
+        "resources",
     ]
     CHOICES_MENUS = [
         "ta",
@@ -129,6 +131,16 @@ Stock: [/param]{stock_text}
                 else f"load {self.ticker}",
             ]
         return []
+
+    def call_resources(self, _):
+        """Process resources command"""
+        resources_md = os.path.join(os.path.dirname(__file__), "README.md")
+        if os.path.isfile(resources_md):
+            with open(resources_md) as f:
+                console.print(Markdown(f.read()))
+            console.print("")
+        else:
+            console.print("No resources available.\n")
 
     def call_search(self, other_args: List[str]):
         """Process search command"""

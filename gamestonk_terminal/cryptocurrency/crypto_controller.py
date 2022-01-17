@@ -2,11 +2,13 @@
 __docformat__ = "numpy"
 # pylint: disable=R0904, C0302, R1710, W0622, C0201, C0301
 
+import os
 import argparse
 from typing import List
 from datetime import datetime, timedelta
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
+from rich.markdown import Markdown
 from binance.client import Client
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
@@ -52,7 +54,15 @@ CRYPTO_SOURCES = {
 class CryptoController(BaseController):
     """Crypto Controller"""
 
-    CHOICES_COMMANDS = ["headlines", "chart", "load", "coins", "find", "prt"]
+    CHOICES_COMMANDS = [
+        "headlines",
+        "chart",
+        "load",
+        "coins",
+        "find",
+        "prt",
+        "resources",
+    ]
     CHOICES_MENUS = ["ta", "dd", "ov", "disc", "onchain", "defi", "nft", "pred"]
 
     DD_VIEWS_MAPPING = {
@@ -113,6 +123,16 @@ class CryptoController(BaseController):
 {has_ticker_end}
 """
         console.print(text=help_text, menu="Cryptocurrency")
+
+    def call_resources(self, _):
+        """Process resources command"""
+        resources_md = os.path.join(os.path.dirname(__file__), "README.md")
+        if os.path.isfile(resources_md):
+            with open(resources_md) as f:
+                console.print(Markdown(f.read()))
+            console.print("")
+        else:
+            console.print("No resources available.\n")
 
     def call_prt(self, other_args):
         """Process prt command"""
