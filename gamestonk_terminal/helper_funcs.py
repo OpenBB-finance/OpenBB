@@ -161,6 +161,27 @@ def check_non_negative(value) -> int:
     return new_value
 
 
+def check_terra_address_format(address: str) -> str:
+    """Validate if terra account address has proper format: ^terra1[a-z0-9]{38}$
+
+    Parameters
+    ----------
+    address: str
+        terra blockchain account address
+    Returns
+    -------
+    str
+        Terra blockchain address or raise argparse exception
+    """
+
+    pattern = re.compile(r"^terra1[a-z0-9]{38}$")
+    if not pattern.match(address):
+        raise argparse.ArgumentTypeError(
+            f"Terra address: {address} has invalid format. Valid format: ^terra1[a-z0-9]{{38}}$"
+        )
+    return address
+
+
 def check_non_negative_float(value) -> float:
     """Argparse type to check non negative int"""
     new_value = float(value)

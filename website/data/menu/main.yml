@@ -903,6 +903,18 @@ main:
             ref: "/cryptocurrency/defi/pools"
           - name: swaps
             ref: "/cryptocurrency/defi/swaps"
+          - name: sinfo
+            ref: "/cryptocurrency/defi/sinfo"
+          - name: govp
+            ref: "/cryptocurrency/defi/govp"
+          - name: gacc
+            ref: "/cryptocurrency/defi/gacc"
+          - name: validators
+            ref: "/cryptocurrency/defi/validators"
+          - name: sratio
+            ref: "/cryptocurrency/defi/sratio"
+          - name: sreturn
+            ref: "/cryptocurrency/defi/sreturn"
   - name: economy
     ref: "/economy"
     sub:
