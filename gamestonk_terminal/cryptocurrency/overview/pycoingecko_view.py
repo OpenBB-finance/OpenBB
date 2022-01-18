@@ -3,9 +3,15 @@ __docformat__ = "numpy"
 
 import os
 from pandas.plotting import register_matplotlib_converters
+from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
+    long_number_format_with_type_check,
+)
 from rich.console import Console
 from tabulate import tabulate
-from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    rich_table_from_df,
+)
 import gamestonk_terminal.cryptocurrency.overview.pycoingecko_model as gecko
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
@@ -54,7 +60,7 @@ def display_holdings_overview(coin: str, export: str) -> None:
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
-            "hold",
+            "cghold",
             df,
         )
 
@@ -224,12 +230,8 @@ def display_global_defi_info(export: str) -> None:
         console.print("")
 
 
-def display_stablecoins(
-    top: int,
-    export: str
-    # sortby: str, descend: bool, top: int, links: bool, export: str
-) -> None:
-    """Shows stablecoins data from "https://www.coingecko.com/en/stablecoins". [Source: CoinGecko]
+def display_stablecoins(top: int, export: str, sortby: str, descend: bool) -> None:
+    """Shows stablecoins data [Source: CoinGecko]
 
     Parameters
     ----------
@@ -239,8 +241,6 @@ def display_stablecoins(
         Key by which to sort data
     descend: bool
         Flag to sort data descending
-    links: bool
-        Flag to display urls
     export : str
         Export dataframe data to csv,json,xlsx file
     """
@@ -248,8 +248,30 @@ def display_stablecoins(
     df = gecko.get_stable_coins(top)
 
     if not df.empty:
+        df = df.sort_values(by=sortby, ascending=descend).head(top)
+        df = df.set_axis(
+            [
+                "Symbol",
+                "Name",
+                "Price ($)",
+                "Market Cap ($)",
+                "Market Cap Rank",
+                "Change 24h (%)",
+                "Change 7d (%)",
+                "Volume ($)",
+            ],
+            axis=1,
+            inplace=False,
+        )
+        total_market_cap = int(df["Market Cap ($)"].sum())
+        df = df.applymap(lambda x: long_number_format_with_type_check(x))
+        console.print(
+            f"""
+First {top} stablecoins have a total {long_number_format_with_type_check(total_market_cap)} dollards of market cap.
+"""
+        )
         if gtff.USE_TABULATE_DF:
-            t_console.print(
+            console.print(
                 rich_table_from_df(
                     df.head(top),
                     headers=list(df.columns),

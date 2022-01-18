@@ -62,7 +62,6 @@ class CryptoController(BaseController):
         "headlines",
         "chart",
         "load",
-        "coins",
         "find",
         "prt",
         "resources",
@@ -94,7 +93,6 @@ class CryptoController(BaseController):
             choices["load"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
             choices["find"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
             choices["find"]["-k"] = {c: {} for c in FIND_KEYS}
-            choices["coins"]["--category"] = {c: None for c in get_categories_keys()}
             choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
             # choices["prt"]["--vs"] = {c: {} for c in coingecko_coin_ids} # list is huge. makes typing buggy
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -106,8 +104,7 @@ class CryptoController(BaseController):
         has_ticker_end = "" if self.current_coin else "[/unvl]"
         help_text = f"""[cmds]
     load        load a specific cryptocurrency for analysis
-    find        find coins in a certain source
-    coins       find coins and check map across multiple sources[/cmds]
+    find        find coins[/cmds]
 
 [param]Coin: [/param]{self.current_coin}
 [param]Source: [/param]{source_txt}
@@ -194,46 +191,6 @@ class CryptoController(BaseController):
         else:
             console.print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
-            )
-
-    def call_coins(self, other_args):
-        """Process coins command"""
-        parser = argparse.ArgumentParser(
-            prog="coins",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Check coins in by category and market cap. [Source: CoinGecko]
-            """,
-        )
-
-        parser.add_argument(
-            "-c",
-            "--category",
-            default="",
-            dest="category",
-            help="Category (e.g., stablecoins). Empty for no category",
-        )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            default=10,
-            dest="limit",
-            help="Limit of records",
-            type=check_positive,
-        )
-
-        if other_args and not other_args[0][0] == "-":
-            other_args.insert(0, "-c")
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            display_coins(
-                category=ns_parser.category,
-                top=ns_parser.limit,
-                export=ns_parser.export,
             )
 
     def call_load(self, other_args):

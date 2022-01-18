@@ -61,7 +61,7 @@ def display_coins(category: str, top: int, export: str) -> None:
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
-            "coins",
+            "cgtop",
             df,
         )
     else:

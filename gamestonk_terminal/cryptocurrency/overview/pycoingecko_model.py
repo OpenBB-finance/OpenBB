@@ -77,6 +77,17 @@ DERIVATIVES_FILTERS = [
     "Volume_24h",
 ]
 
+COINS_COLUMNS = [
+    "symbol",
+    "name",
+    "current_price",
+    "market_cap",
+    "market_cap_rank",
+    "price_change_percentage_7d_in_currency",
+    "price_change_percentage_24h_in_currency",
+    "total_volume",
+]
+
 
 def get_holdings_overview(endpoint: str = "bitcoin") -> List[Any]:
     """Scrapes overview of public companies that holds ethereum or bitcoin
@@ -166,18 +177,7 @@ def get_stable_coins(top: int = 20) -> pd.DataFrame:
     """
 
     df = get_coins(top=top, category="stablecoins")
-    return df[
-        [
-            "symbol",
-            "name",
-            "current_price",
-            "market_cap",
-            "market_cap_rank",
-            "price_change_percentage_7d_in_currency",
-            "price_change_percentage_24h_in_currency",
-            "total_volume",
-        ]
-    ]
+    return df[COINS_COLUMNS]
 
 
 # TODO: add string with overview

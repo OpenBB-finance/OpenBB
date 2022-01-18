@@ -87,7 +87,7 @@ class OverviewController(BaseController):
                 c: None for c in pycoingecko_model.CATEGORIES_FILTERS
             }
             choices["cgstables"]["-s"] = {
-                c: None for c in pycoingecko_model.STABLES_FILTERS
+                c: None for c in pycoingecko_model.COINS_COLUMNS
             }
             choices["cgproducts"]["-s"] = {
                 c: None for c in pycoingecko_model.PRODUCTS_FILTERS
@@ -480,9 +480,9 @@ class OverviewController(BaseController):
             "--sort",
             dest="sortby",
             type=str,
-            help="Sort by given column. Default: Rank",
-            default="Rank",
-            choices=pycoingecko_model.STABLES_FILTERS,
+            help="Sort by given column. Default: market_cap",
+            default=pycoingecko_model.COINS_COLUMNS[0],
+            choices=pycoingecko_model.COINS_COLUMNS,
         )
 
         parser.add_argument(
@@ -493,15 +493,6 @@ class OverviewController(BaseController):
             default=True,
         )
 
-        parser.add_argument(
-            "-u",
-            "--urls",
-            dest="urls",
-            action="store_true",
-            help="Flag to show urls. If you will use that flag you will additional column with urls",
-            default=False,
-        )
-
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -509,9 +500,8 @@ class OverviewController(BaseController):
             pycoingecko_view.display_stablecoins(
                 top=ns_parser.limit,
                 export=ns_parser.export,
-                # sortby=ns_parser.sortby,
-                # descend=ns_parser.descend,
-                # links=ns_parser.urls,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
             )
 
     def call_cgnft(self, other_args):

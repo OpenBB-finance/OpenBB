@@ -36,6 +36,7 @@ class DiscoveryController(BaseController):
         "cggainers",
         "cglosers",
         "cgdefi",
+        "cgtop",
         "drnft",
         "drgames",
         "drdapps",
@@ -55,6 +56,12 @@ class DiscoveryController(BaseController):
             choices["cgtrending"]["-s"] = {
                 c: {} for c in pycoingecko_model.TRENDING_FILTERS
             }
+            choices["cgtop"] = {
+                c: None for c in pycoingecko_model.get_categories_keys()
+            }
+            choices["cgtop"]["--category"] = {
+                c: None for c in pycoingecko_model.get_categories_keys()
+            }
             choices["cgvolume"]["-s"] = {c: {} for c in pycoingecko_model.CAP_FILTERS}
             choices["cgdefi"]["-s"] = {c: {} for c in pycoingecko_model.CAP_FILTERS}
             choices["cmctop"]["-s"] = {c: {} for c in coinmarketcap_model.FILTERS}
@@ -66,6 +73,7 @@ class DiscoveryController(BaseController):
         """Print help"""
         help_text = """[cmds]
 [src][CoinGecko][/src]
+    cgtop             top coins (with or withoug category)
     cgtrending        trending coins
     cgvolume          coins with highest volume
     cggainers         top gainers - coins which price gained the most in given period
@@ -83,6 +91,45 @@ class DiscoveryController(BaseController):
 [/cmds]
 """
         console.print(text=help_text, menu="Cryptocurrency - Discovery")
+
+    def call_cgtop(self, other_args):
+        """Process cgtop command"""
+        parser = argparse.ArgumentParser(
+            prog="cgtop",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Check coins by category and market cap. [Source: CoinGecko]""",
+        )
+
+        parser.add_argument(
+            "-c",
+            "--category",
+            default="",
+            dest="category",
+            help="Category (e.g., stablecoins). Empty for no category",
+        )
+
+        parser.add_argument(
+            "-l",
+            "--limit",
+            default=10,
+            dest="limit",
+            help="Limit of records",
+            type=check_positive,
+        )
+
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-c")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            pycoingecko_view.display_coins(
+                category=ns_parser.category,
+                top=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
     def call_drdapps(self, other_args):
         """Process drdapps command"""
