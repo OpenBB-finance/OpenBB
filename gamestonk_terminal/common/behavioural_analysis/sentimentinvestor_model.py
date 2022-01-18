@@ -44,10 +44,14 @@ def get_historical(ticker: str, start: str, end: str, number: int) -> pd.DataFra
     )
 
     if response.status_code == 200:
-        df = pd.DataFrame(response.json()["results"])
-        df = df.set_index("timestamp_date")
-        df.index = pd.to_datetime(df.index)
+        result = response.json()["results"]
+        
+        # check if result is not empty
+        if result:
+            df = pd.DataFrame(response.json()["results"])
+            df = df.set_index("timestamp_date")
+            df.index = pd.to_datetime(df.index)
 
-        return df
+            return df
 
     return pd.DataFrame()

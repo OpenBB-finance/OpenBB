@@ -719,8 +719,9 @@ SentimentInvestor:
             "-s",
             "--start",
             type=valid_date,
-            default=self.start,
+            default=(datetime.utcnow() - timedelta(days=7)).strftime("%Y-%m-%d"),
             dest="start",
+            required="--end" in other_args,
             help="The starting date (format YYYY-MM-DD) of the stock. Default: 7 days ago",
         )
 
@@ -728,8 +729,9 @@ SentimentInvestor:
             "-e",
             "--end",
             type=valid_date,
-            default=(self.start + timedelta(days=7)).strftime("%Y-%m-%d"),
+            default=datetime.utcnow().strftime("%Y-%m-%d"),
             dest="end",
+            required="--start" in other_args,
             help="The ending date (format YYYY-MM-DD) of the stock. Default: today",
         )
 
@@ -742,25 +744,8 @@ SentimentInvestor:
             help="Number of results returned from Sentiment Investor. Default: 100",
         )
 
-        parser.add_argument(
-            "--raw",
-            help="Display raw data",
-            action="store_true",
-            dest="raw",
-            default=True,
-        )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            default=10,
-            type=check_positive,
-            dest="limit",
-            help="Number of records to display on the terminal. Default: 10",
-        )
-
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True, limit=10
         )
 
         if ns_parser:
