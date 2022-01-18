@@ -1,5 +1,5 @@
 ```
-usage: vsurf [-h] [--export {png,jpg,pdf,svg}]
+usage: vsurf [-h] [-z Z] [--export {png,jpg,pdf,svg}]
 ```
 
 Plot 3D volatility surface.
@@ -7,6 +7,7 @@ Plot 3D volatility surface.
 ```
 optional arguments:
   -h, --help            show this help message (default: False)
+  -z Z, --z-axis Z      variable to be used as the z-axis (default: IV)
   --export {png,jpg,pdf,svg}
                         Export figure into png, jpg, pdf, svg (default: )
 ```
