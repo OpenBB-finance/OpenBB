@@ -39,8 +39,8 @@ def display_account_staking_info(
     if not df.empty:
         rich_table_from_df(
             df.head(top), headers=list(df.columns), show_index=False, title=report
-        ),
-        console.print("")
+        )
+    console.print("")
 
     export_data(
         export,

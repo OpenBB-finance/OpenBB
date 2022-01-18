@@ -117,11 +117,7 @@ def display_defi_protocols(
         inplace=True,
     )
 
-    rich_table_from_df(
-        df.head(top),
-        headers=list(df.columns),
-        show_index=False,
-    ),
+    rich_table_from_df(df.head(top), headers=list(df.columns), show_index=False)
     console.print("")
 
     export_data(
