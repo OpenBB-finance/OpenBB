@@ -34,33 +34,8 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_discover(self):
-        disc_pycoingecko_view.display_discover(
-            category="trending",
-            top=15,
-            sortby="Rank",
-            descend=True,
-            links=False,
+        disc_pycoingecko_view.display_trending(
             export="",
-        )
-
-    @check_print(assert_in="════════")
-    @vcr.use_cassette(
-        "tests/gamestonk_terminal/cryptocurrency/discovery/cassettes/test_pycoingecko_view/recently_added.yaml",
-        record_mode="new_episodes",
-    )
-    def test_coin_recently_added(self):
-        disc_pycoingecko_view.display_recently_added(
-            top=15, sortby="Rank", descend=True, links=False, export=""
-        )
-
-    @check_print(assert_in="════════")
-    @vcr.use_cassette(
-        "tests/gamestonk_terminal/cryptocurrency/discovery/cassettes/test_pycoingecko_view/yfarms.yaml",
-        record_mode="new_episodes",
-    )
-    def test_coin_yfarms(self):
-        disc_pycoingecko_view.display_yieldfarms(
-            top=15, sortby="Rank", descend=True, export=""
         )
 
     @check_print(assert_in="════════")
@@ -82,14 +57,4 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_top_defi_coins(self):
         disc_pycoingecko_view.display_top_defi_coins(
             top=15, export=""  # sortby="Rank", descend=True, links=False,
-        )
-
-    @check_print(assert_in="════════")
-    @vcr.use_cassette(
-        "tests/gamestonk_terminal/cryptocurrency/discovery/cassettes/test_pycoingecko_view/top_dex.yaml",
-        record_mode="new_episodes",
-    )
-    def test_coin_top_dex(self):
-        disc_pycoingecko_view.display_top_dex(
-            top=15, sortby="Rank", descend=True, export=""
         )

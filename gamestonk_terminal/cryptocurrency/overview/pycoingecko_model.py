@@ -11,6 +11,7 @@ from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import get_coins
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     create_df_index,
+    long_number_format_with_type_check,
     replace_underscores_in_column_names,
 )
 
@@ -107,7 +108,7 @@ def get_holdings_overview(endpoint: str = "bitcoin") -> List[Any]:
     cg = CoinGeckoAPI()
     data = cg.get_companies_public_treasury_by_coin_id(coin_id=endpoint)
 
-    stats_str = f"""{len(data["companies"])} companies hold a total of {data["total_holdings"]} {endpoint} ({data["market_cap_dominance"]}% of market cap dominance) with the current value of {int(data["total_value_usd"])} USD dollars"""  # noqa
+    stats_str = f"""{len(data["companies"])} companies hold a total of {long_number_format_with_type_check(data["total_holdings"])} {endpoint} ({data["market_cap_dominance"]}% of market cap dominance) with the current value of {long_number_format_with_type_check(int(data["total_value_usd"]))} USD dollars"""  # noqa
 
     df = pd.json_normalize(data, record_path=["companies"])
 

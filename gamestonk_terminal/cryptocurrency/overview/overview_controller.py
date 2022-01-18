@@ -397,6 +397,21 @@ class OverviewController(BaseController):
             default="bitcoin",
             choices=pycoingecko_model.HOLD_COINS,
         )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=check_positive,
+            help="display N number of records",
+            default=5,
+        )
+        parser.add_argument(
+            "--bar",
+            action="store_true",
+            help="Flag to show bar chart",
+            dest="bar",
+            default=False,
+        )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
@@ -406,7 +421,10 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_holdings_overview(
-                coin=ns_parser.coin, export=ns_parser.export
+                coin=ns_parser.coin,
+                export=ns_parser.export,
+                show_bar=ns_parser.bar,
+                top=ns_parser.limit,
             )
 
     def call_cgcategories(self, other_args):
@@ -441,6 +459,14 @@ class OverviewController(BaseController):
             choices=pycoingecko_model.SORT_VALUES,
         )
 
+        parser.add_argument(
+            "--pie",
+            action="store_true",
+            help="Flag to show pie chart",
+            dest="pie",
+            default=False,
+        )
+
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -449,6 +475,7 @@ class OverviewController(BaseController):
                 top=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
+                pie=ns_parser.pie,
             )
 
     def call_cgstables(self, other_args):
@@ -481,7 +508,7 @@ class OverviewController(BaseController):
             dest="sortby",
             type=str,
             help="Sort by given column. Default: market_cap",
-            default=pycoingecko_model.COINS_COLUMNS[0],
+            default="market_cap",
             choices=pycoingecko_model.COINS_COLUMNS,
         )
 
@@ -490,7 +517,15 @@ class OverviewController(BaseController):
             action="store_false",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
-            default=True,
+            default=False,
+        )
+
+        parser.add_argument(
+            "--pie",
+            action="store_true",
+            help="Flag to show pie chart",
+            dest="pie",
+            default=False,
         )
 
         ns_parser = parse_known_args_and_warn(
@@ -502,6 +537,7 @@ class OverviewController(BaseController):
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
+                pie=ns_parser.pie,
             )
 
     def call_cgnft(self, other_args):

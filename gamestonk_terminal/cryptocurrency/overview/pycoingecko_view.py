@@ -3,13 +3,15 @@ __docformat__ = "numpy"
 
 import os
 from pandas.plotting import register_matplotlib_converters
+from matplotlib import pyplot as plt, ticker
+from tabulate import tabulate
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     long_number_format_with_type_check,
 )
-from rich.console import Console
-from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import (
     export_data,
+    plot_autoscale,
     rich_table_from_df,
 )
 import gamestonk_terminal.cryptocurrency.overview.pycoingecko_model as gecko
@@ -21,10 +23,8 @@ register_matplotlib_converters()
 # pylint: disable=inconsistent-return-statements
 # pylint: disable=R0904, C0302
 
-t_console = Console()
 
-
-def display_holdings_overview(coin: str, export: str) -> None:
+def display_holdings_overview(coin: str, show_bar: bool, export: str, top: int) -> None:
     """Shows overview of public companies that holds ethereum or bitcoin. [Source: CoinGecko]
 
     Parameters
@@ -39,10 +39,27 @@ def display_holdings_overview(coin: str, export: str) -> None:
     stats_string = res[0]
     df = res[1]
 
+    df = df.head(top)
+
     if df.empty:
         console.print("\nZero companies holding this crypto\n")
     else:
+        if show_bar:
+            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+            for _, row in df.iterrows():
+                ax.bar(x=row["Symbol"], height=row["Total Holdings"])
+
+            ax.set_ylabel("BTC Number")
+            ax.get_yaxis().set_major_formatter(
+                ticker.FuncFormatter(lambda x, _: long_number_format_with_type_check(x))
+            )
+            ax.set_xlabel("Company Symbol")
+            fig.tight_layout(pad=8)
+            ax.set_title("Total BTC Holdings per company")
+            ax.tick_params(axis="x", labelrotation=90)
         console.print(f"\n{stats_string}\n")
+        df = df.applymap(lambda x: long_number_format_with_type_check(x))
         if gtff.USE_TABULATE_DF:
             print(
                 tabulate(
@@ -230,7 +247,9 @@ def display_global_defi_info(export: str) -> None:
         console.print("")
 
 
-def display_stablecoins(top: int, export: str, sortby: str, descend: bool) -> None:
+def display_stablecoins(
+    top: int, export: str, sortby: str, descend: bool, pie: bool
+) -> None:
     """Shows stablecoins data [Source: CoinGecko]
 
     Parameters
@@ -248,6 +267,9 @@ def display_stablecoins(top: int, export: str, sortby: str, descend: bool) -> No
     df = gecko.get_stable_coins(top)
 
     if not df.empty:
+        total_market_cap = int(df["market_cap"].sum())
+        df[f"Percentage (%) of top {top}"] = (df["market_cap"] / total_market_cap) * 100
+        df_data = df
         df = df.sort_values(by=sortby, ascending=descend).head(top)
         df = df.set_axis(
             [
@@ -259,15 +281,37 @@ def display_stablecoins(top: int, export: str, sortby: str, descend: bool) -> No
                 "Change 24h (%)",
                 "Change 7d (%)",
                 "Volume ($)",
+                f"Percentage (%) of top {top}",
             ],
             axis=1,
             inplace=False,
         )
-        total_market_cap = int(df["Market Cap ($)"].sum())
         df = df.applymap(lambda x: long_number_format_with_type_check(x))
+        if pie:
+            stables_to_display = df_data[df_data[f"Percentage (%) of top {top}"] >= 1]
+            other_stables = df_data[df_data[f"Percentage (%) of top {top}"] < 1]
+            values_list = list(
+                stables_to_display[f"Percentage (%) of top {top}"].values
+            )
+            values_list.append(other_stables[f"Percentage (%) of top {top}"].sum())
+            labels_list = list(stables_to_display["name"].values)
+            labels_list.append("Others")
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            ax.pie(
+                values_list,
+                labels=labels_list,
+                wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
+                labeldistance=1.05,
+                autopct="%1.0f%%",
+                startangle=90,
+            )
+            ax.set_title(f"Market cap distribution of top {top} Stablecoins")
+            if gtff.USE_ION:
+                plt.ion()
+            plt.show()
         console.print(
             f"""
-First {top} stablecoins have a total {long_number_format_with_type_check(total_market_cap)} dollards of market cap.
+First {top} stablecoins have a total {long_number_format_with_type_check(total_market_cap)} dollars of market cap.
 """
         )
         if gtff.USE_TABULATE_DF:
@@ -293,8 +337,8 @@ First {top} stablecoins have a total {long_number_format_with_type_check(total_m
         console.print("\nUnable to retrieve data from CoinGecko.\n")
 
 
-def display_categories(sortby: str, top: int, export: str) -> None:
-    """Shows top cryptocurrency categories by market capitalization from https://www.coingecko.com/en/categories
+def display_categories(sortby: str, top: int, export: str, pie: bool) -> None:
+    """Shows top cryptocurrency categories by market capitalization
 
     The cryptocurrency category ranking is based on market capitalization. [Source: CoinGecko]
 
@@ -309,9 +353,33 @@ def display_categories(sortby: str, top: int, export: str) -> None:
     """
 
     df = gecko.get_top_crypto_categories(sortby)
+    df_data = df
     if not df.empty:
+        if pie:
+            df_data[f"% relative to top {top}"] = (
+                df_data["Market Cap"] / df_data["Market Cap"].sum()
+            ) * 100
+            stables_to_display = df_data[df_data[f"% relative to top {top}"] >= 1]
+            other_stables = df_data[df_data[f"% relative to top {top}"] < 1]
+            values_list = list(stables_to_display[f"% relative to top {top}"].values)
+            values_list.append(other_stables[f"% relative to top {top}"].sum())
+            labels_list = list(stables_to_display["Name"].values)
+            labels_list.append("Others")
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            ax.pie(
+                values_list,
+                labels=labels_list,
+                wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
+                autopct="%1.0f%%",
+                startangle=90,
+            )
+            ax.set_title(f"Market Cap distribution of top {top} crypto categories")
+            if gtff.USE_ION:
+                plt.ion()
+            plt.show()
+        df = df.applymap(lambda x: long_number_format_with_type_check(x))
         if gtff.USE_TABULATE_DF:
-            t_console.print(
+            console.print(
                 rich_table_from_df(
                     df.head(top),
                     headers=list(df.columns),
@@ -327,7 +395,7 @@ def display_categories(sortby: str, top: int, export: str) -> None:
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "cgcategories",
-            df,
+            df_data,
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")

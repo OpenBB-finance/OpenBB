@@ -20,16 +20,8 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_holdings_overview(self):
-        ov_pycoingecko_view.display_holdings_overview(coin="bitcoin", export="")
-
-    @check_print(assert_in="═════════════")
-    @vcr.use_cassette(
-        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/news.yaml",
-        record_mode="new_episodes",
-    )
-    def test_coin_news(self):
-        ov_pycoingecko_view.display_news(
-            top=15, sortby="Index", descend=True, links=False, export=""
+        ov_pycoingecko_view.display_holdings_overview(
+            coin="bitcoin", show_bar=False, export="", top=20
         )
 
     @check_print(assert_in="Decentralized Finance")
@@ -38,7 +30,9 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_categories(self):
-        ov_pycoingecko_view.display_categories(top=15, sortby="Rank", export="")
+        ov_pycoingecko_view.display_categories(
+            top=15, export="", pie=False, sortby="market_cap"
+        )
 
     @check_print(assert_in="════")
     @vcr.use_cassette(
@@ -47,7 +41,7 @@ class TestCoinGeckoAPI(TestCase):
     )
     def test_coin_stablecoins(self):
         ov_pycoingecko_view.display_stablecoins(
-            top=15, export=""  # sortby="Rank", descend=True, links=False,
+            top=15, export="", sortby="market_cap", pie=False, descend=False
         )
 
     @check_print(assert_in="Metric")
