@@ -756,6 +756,13 @@ Ticker: [/param] {self.ticker} [cmds]
             help="Removes ratios from DCF.",
         )
         parser.add_argument(
+            "--no-filter",
+            action="store_true",
+            dest="ratios",
+            default=False,
+            help="Allow similar companies of any market cap to be shown.",
+        )
+        parser.add_argument(
             "-p" "--prediction",
             type=int,
             dest="prediction",
@@ -763,11 +770,11 @@ Ticker: [/param] {self.ticker} [cmds]
             help="Number of years to predict before using terminal value.",
         )
         parser.add_argument(
-            "-s" "--sisters",
+            "-s" "--similar",
             type=int,
-            dest="sisters",
-            default=3,
-            help="Number of sister companies to generate ratios for.",
+            dest="similar",
+            default=6,
+            help="Number of similar companies to generate ratios for.",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -779,7 +786,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 ns_parser.audit,
                 ns_parser.ratios,
                 ns_parser.prediction,
-                ns_parser.sisters,
+                ns_parser.similar,
             )
             dcf.create_workbook()
 

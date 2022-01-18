@@ -204,7 +204,9 @@ def get_fama_coe(ticker: str) -> float:
     ) * 12
 
 
-def others_in_sector(ticker: str, sector: str, industry: str) -> List[str]:
+def others_in_sector(
+    ticker: str, sector: str, industry: str, no_filter: bool = False
+) -> List[str]:
     """Get other stocks in a ticker's sector
 
     Parameters
@@ -215,6 +217,8 @@ def others_in_sector(ticker: str, sector: str, industry: str) -> List[str]:
         The sector to pull from
     industry : str
         The industry to pull from
+    no_filter : bool
+        True means that we do not filter based on market cap
 
     Returns
     -------
@@ -224,17 +228,18 @@ def others_in_sector(ticker: str, sector: str, industry: str) -> List[str]:
     industry = industry.replace("—", " - ")
     industry = industry.replace("/", " ")
 
-    sister_ticks = fd.select_equities(sector=sector, industry=industry)
+    similars = fd.select_equities(sector=sector, industry=industry)
 
-    # This filters sisters to match market cap and removes ticker analyzed
-    if ticker in sister_ticks:
-        market_cap = sister_ticks[ticker]["market_cap"]
-        sister_ticks.pop(ticker, None)
-        sister_ticks = {
-            k: v for (k, v) in sister_ticks.items() if v["market_cap"] == market_cap
-        }
-    sister_ticks = list(sister_ticks)
-    return sister_ticks
+    # This filters similars to match market cap and removes ticker analyzed
+    if ticker in similars:
+        market_cap = similars[ticker]["market_cap"]
+        similars.pop(ticker, None)
+        if not no_filter:
+            similars = {
+                k: v for (k, v) in similars.items() if v["market_cap"] == market_cap
+            }
+    similars = list(similars)
+    return similars
 
 
 def create_dataframe(ticker: str, statement: str):
@@ -331,9 +336,9 @@ def create_dataframe(ticker: str, statement: str):
     return df, rounding
 
 
-def get_sister_dfs(ticker: str, info: Dict[str, Any], n: int):
+def get_similar_dfs(ticker: str, info: Dict[str, Any], n: int, no_filter: bool = False):
     """
-    Get dataframes for sister companies
+    Get dataframes for similar companies
 
     Parameters
     ----------
@@ -342,24 +347,26 @@ def get_sister_dfs(ticker: str, info: Dict[str, Any], n: int):
     into : Dict[str,Any]
         The dictionary produced from the yfinance.info function
     n : int
-        The number of sister companies to produce
+        The number of similar companies to produce
+    no_filter : bool
+        True means that we do not filter based on market cap
 
     Returns
     -------
-    new_list: List[str, pd.DataFrame]
-        A list of sister companies
+    new_list : List[str, pd.DataFrame]
+        A list of similar companies
     """
-    sisters = others_in_sector(ticker, info["sector"], info["industry"])
+    similars = others_in_sector(ticker, info["sector"], info["industry"], no_filter)
     i = 0
     new_list = []
-    while i < n and sisters:
-        sister_ret = [create_dataframe(sisters[0], x)[0] for x in ["BS", "IS", "CF"]]
-        blank = [x.empty for x in sister_ret]
+    while i < n and similars:
+        similar_ret = [create_dataframe(similars[0], x)[0] for x in ["BS", "IS", "CF"]]
+        blank = [x.empty for x in similar_ret]
         if True not in blank:
-            vals = [sisters[0], sister_ret]
+            vals = [similars[0], similar_ret]
             new_list.append(vals)
             i += 1
-        sisters.pop(0)
+        similars.pop(0)
     return new_list
 
 
@@ -406,3 +413,22 @@ def get_value(df: pd.DataFrame, row: str, column: int) -> Tuple[float, float]:
     val2: str = df.at[row, df.columns[column + 1]]
     fin_val2: float = float(val2.replace(",", "").replace("-", "-0"))
     return fin_val1, fin_val2
+
+
+def frac(num: float, denom: float) -> Union[str, float]:
+    """
+    Converts a numerator and a denominator in a fraction, checking for invalid denominators
+
+    Parameters
+    ----------
+    num : float
+        The numerator
+    denom : float
+        The denominator
+
+    Returns
+    -------
+    value : Union[str, float]
+        The fraction
+    """
+    return "N/A" if denom == 0 else num / denom

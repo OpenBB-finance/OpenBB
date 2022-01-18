@@ -1,5 +1,5 @@
 ```text
-usage: dcf [-a] [--no-ratios] [-p NUM] [-s NUM] [-h]
+usage: dcf [-a] [--no-ratios] [--no-filter] [-p NUM] [-s NUM] [-h]
 ```
 
 Generates a completed discounted cash flow statement as an excel spreadsheet export. The statement uses machine learning to predict future financial statements and share price based on the predicted financials. Source: https://stockanalysis.com/stocks/
@@ -8,6 +8,7 @@ Generates a completed discounted cash flow statement as an excel spreadsheet exp
 optional arguments:
   -a, --audit  Confirms that the numbers provided are accurate. (default: False)
   --no-ratios  Disables generation of ratio for company and sister companies. (default: False)
+  --no-filter  Disables filtering of similar companies based on market cap (default: False)
   -p, --prediction
                The number of years to create financial statements for. (default: 10)
   -s, --sisters

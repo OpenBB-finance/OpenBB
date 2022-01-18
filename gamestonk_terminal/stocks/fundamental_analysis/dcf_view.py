@@ -28,7 +28,8 @@ class CreateExcelFA:
         audit: bool = False,
         ratios: bool = True,
         len_pred: int = 10,
-        max_sisters: int = 3,
+        max_similars: int = 3,
+        no_filter: bool = False,
     ):
         """
         Creates a detialed DCF for a given company
@@ -40,20 +41,23 @@ class CreateExcelFA:
         audit : bool
             Whether or not to show that the balance sheet and income statement tie-out
         ratios : bool
-            Whether to show ratios for the company and for sister companies
-        len_pred: int
+            Whether to show ratios for the company and for similar companies
+        len_pred : int
             The number of years to make predictions for before assuming a terminal value
-        max_sisters: int
-            The maximum number of sister companies to show, will be less if there are not enough similar companies
+        max_similars : int
+            The maximum number of similar companies to show, will be less if there are not enough similar companies
+        no_filter : bool
+            Disable filtering of similar companies to being in the same market cap category
         """
         self.info: Dict[str, Any] = {
             "len_data": 0,
             "len_pred": len_pred,
-            "max_sisters": max_sisters,
+            "max_similars": max_similars,
             "rounding": 0,
             "ticker": ticker,
             "audit": audit,
             "ratios": ratios,
+            "no_filter": no_filter,
         }
         self.letter: int = 0
         self.starts: Dict[str, int] = {"IS": 4, "BS": 18, "CF": 47}
@@ -929,14 +933,17 @@ class CreateExcelFA:
         self.ws[4].column_dimensions["A"].width = 27
         dcf_model.set_cell(self.ws[4], "B4", "Sector:")
         dcf_model.set_cell(self.ws[4], "C4", self.data["info"]["sector"])
-        sister_data = dcf_model.get_sister_dfs(
-            self.info["ticker"], self.data["info"], self.info["max_sisters"]
+        similar_data = dcf_model.get_similar_dfs(
+            self.info["ticker"],
+            self.data["info"],
+            self.info["max_similars"],
+            self.info["no_filter"],
         )
-        sister_data.insert(
+        similar_data.insert(
             0, [self.info["ticker"], [self.df["BS"], self.df["IS"], self.df["CF"]]]
         )
         row = 6
-        for val in sister_data:
+        for val in similar_data:
             self.ws[4].merge_cells(f"A{row}:J{row}")
 
             # Header columns formatted as row index, text, format type
@@ -1008,9 +1015,6 @@ class CreateExcelFA:
                 pdiv1 = dcf_model.get_value(val[1][1], "Preferred Dividends", j)[1]
                 opcf1 = dcf_model.get_value(val[1][2], "Operating Cash Flow", j)[1]
 
-                def frac(num: float, denom: float) -> Union[str, float]:
-                    return "N/A" if denom == 0 else num / denom
-
                 info, outstand = self.data["info"], float(
                     self.data["info"]["sharesOutstanding"]
                 )
@@ -1018,42 +1022,44 @@ class CreateExcelFA:
                 # Enter row offset, number to display, and format number
                 rows = [
                     [1, int(val[1][0].columns[j + 1]), 1],
-                    [2, frac(ca1, cl1), 0],
-                    [3, frac(cace1 + ar1, cl1), 0],
-                    [6, frac(sls1, (ar0 + ar1) / 2), 0],
-                    [7, frac(ar1, sls1 / 365), 0],
-                    [8, frac(cogs1, (inv0 + inv1) / 2), 0],
-                    [9, frac(inv1, cogs1 / 365), 0],
-                    [10, frac(cogs1, (ap0 + ap1) / 2), 0],
-                    [11, frac(ap1, cogs1 / 365), 0],
+                    [2, dcf_model.frac(ca1, cl1), 0],
+                    [3, dcf_model.frac(cace1 + ar1, cl1), 0],
+                    [6, dcf_model.frac(sls1, (ar0 + ar1) / 2), 0],
+                    [7, dcf_model.frac(ar1, sls1 / 365), 0],
+                    [8, dcf_model.frac(cogs1, (inv0 + inv1) / 2), 0],
+                    [9, dcf_model.frac(inv1, cogs1 / 365), 0],
+                    [10, dcf_model.frac(cogs1, (ap0 + ap1) / 2), 0],
+                    [11, dcf_model.frac(ap1, cogs1 / 365), 0],
                     [
                         12,
                         "N/A"
                         if sls1 == 0 or cogs1 == 0
-                        else frac(ar1, sls1 / 365)
-                        + frac(inv1, cogs1 / 365)
-                        - frac(ap1, cogs1 / 365),
+                        else dcf_model.frac(ar1, sls1 / 365)
+                        + dcf_model.frac(inv1, cogs1 / 365)
+                        - dcf_model.frac(ap1, cogs1 / 365),
                         0,
                     ],
-                    [13, frac(sls1, (ta0 + ta1) / 2), 0],
-                    [16, frac(ni1, sls1), 0],
-                    [17, frac(ni1, (ar0 + ar1) / 2), 0],
-                    [18, frac(ni1, (te0 + te1) / 2), 0],
-                    [19, frac(ni1 + inte1 + tax1, sls1), 0],
-                    [20, frac(sls1 - cogs1, sls1), 0],
-                    [21, frac(opcf1, cl1), 0],
-                    [24, frac(tl1, te1), 0],
-                    [25, frac(tl1, ta1), 0],
-                    [26, frac(ta1, te1), 0],
-                    [27, frac(ni1 + inte1 + tax1, inte1), 0],
-                    [30, frac((ni1 - pdiv1) * self.info["rounding"], outstand), 0],
+                    [13, dcf_model.frac(sls1, (ta0 + ta1) / 2), 0],
+                    [16, dcf_model.frac(ni1, sls1), 0],
+                    [17, dcf_model.frac(ni1, (ar0 + ar1) / 2), 0],
+                    [18, dcf_model.frac(ni1, (te0 + te1) / 2), 0],
+                    [19, dcf_model.frac(ni1 + inte1 + tax1, sls1), 0],
+                    [20, dcf_model.frac(sls1 - cogs1, sls1), 0],
+                    [21, dcf_model.frac(opcf1, cl1), 0],
+                    [24, dcf_model.frac(tl1, te1), 0],
+                    [25, dcf_model.frac(tl1, ta1), 0],
+                    [26, dcf_model.frac(ta1, te1), 0],
+                    [27, dcf_model.frac(ni1 + inte1 + tax1, inte1), 0],
+                    [
+                        30,
+                        dcf_model.frac((ni1 - pdiv1) * self.info["rounding"], outstand),
+                        0,
+                    ],
                     [
                         31,
-                        frac(
-                            float(info["previousClose"])
-                            * outstand
-                            * self.info["rounding"],
-                            ni1 - pdiv1,
+                        dcf_model.frac(
+                            float(info["previousClose"]) * outstand,
+                            (ni1 - pdiv1) * self.info["rounding"],
                         ),
                         0,
                     ],
