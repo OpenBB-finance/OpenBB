@@ -224,11 +224,9 @@ def others_in_sector(ticker: str, sector: str, industry: str) -> List[str]:
     industry = industry.replace("—", " - ")
     industry = industry.replace("/", " ")
 
-    sister_ticks = fd.select_equities(
-        country="United States", sector=sector, industry=industry
-    )
+    sister_ticks = fd.select_equities(sector=sector, industry=industry)
 
-    # This filters sisters to match marekt cap and removes ticker analyzed
+    # This filters sisters to match market cap and removes ticker analyzed
     if ticker in sister_ticks:
         market_cap = sister_ticks[ticker]["market_cap"]
         sister_ticks.pop(ticker, None)
