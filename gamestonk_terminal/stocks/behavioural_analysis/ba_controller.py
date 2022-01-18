@@ -61,7 +61,6 @@ class BehaviouralAnalysisController(BaseController):
         "hist",
     ]
 
-
     historical_sort = ["date", "value"]
     historical_direction = ["asc", "desc"]
     historical_metric = ["sentiment", "AHI", "RHI", "SGP"]
@@ -765,7 +764,6 @@ class BehaviouralAnalysisController(BaseController):
                     export=ns_parser.export,
                     raw=ns_parser.raw,
                     limit=ns_parser.limit,
-
                 )
 
             else:
