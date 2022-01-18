@@ -5,7 +5,6 @@ import argparse
 from typing import List
 from datetime import datetime, timedelta
 from prompt_toolkit.completion import NestedCompleter
-from colorama import Style
 from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
