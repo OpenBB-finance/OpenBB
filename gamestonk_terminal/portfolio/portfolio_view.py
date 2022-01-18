@@ -251,7 +251,7 @@ def plot_ef(
     return ImageReader(imgdata)
 
 
-def al(data: pd.DataFrame, graph: bool):
+def display_allocation(data: pd.DataFrame, graph: bool):
     """Displays allocation
     Parameters
     ----------
