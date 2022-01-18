@@ -1011,3 +1011,23 @@ class LineAnnotateDrawer:
 def system_clear():
     """Clear screen"""
     os.system("cls||clear")  # nosec
+
+
+def excel_columns() -> List[str]:
+    """
+    Returns potential columns for excel
+
+    Returns
+    -------
+    letters : List[str]
+        Letters to be used as excel columns
+    """
+    letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"]
+    letters += ["N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+
+    opts = (
+        [f"{x}" for x in letters]
+        + [f"{x}{y}" for x in letters for y in letters]
+        + [f"{x}{y}{z}" for x in letters for y in letters for z in letters]
+    )
+    return opts
