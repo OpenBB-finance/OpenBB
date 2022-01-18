@@ -934,15 +934,17 @@ def show_binom(
     )
 
 
-def display_vol_surface(ticker: str, export: str = ""):
+def display_vol_surface(ticker: str, export: str = "", z: str = "IV"):
     """Display vol surface
 
     Parameters
     ----------
-    ticker: str
+    ticker : str
         Ticker to get surface for
-    export: str
+    export : str
         Format to export data
+    z : str
+        The variable for the Z axis
 
     """
     data = yfinance_model.get_iv_surface(ticker)
@@ -951,15 +953,23 @@ def display_vol_surface(ticker: str, export: str = ""):
         return
     X = data.dte
     Y = data.strike
-    Z = data.impliedVolatility
+    if z == "IV":
+        Z = data.impliedVolatility
+        label = "Volatility"
+    elif z == "OI":
+        Z = data.openInterest
+        label = "Open Interest"
+    elif z == "LP":
+        Z = data.lastPrice
+        label = "Last Price"
     fig = plt.figure()
     ax = plt.axes(projection="3d")
     ax.plot_trisurf(X, Y, Z, cmap="jet", linewidth=0.2)
     ax.set_xlabel("DTE")
     ax.set_ylabel("Strike")
-    ax.set_zlabel("IV")
+    ax.set_zlabel(z)
     fig.tight_layout()
-    fig.suptitle(f"Volatility Surface for {ticker}")
+    fig.suptitle(f"{label} Surface for {ticker}")
     if gtff.USE_ION:
         plt.ion()
     plt.show()
@@ -969,4 +979,4 @@ def display_vol_surface(ticker: str, export: str = ""):
         "vsurf",
         data,
     )
-    print("")
+    console.print("")
