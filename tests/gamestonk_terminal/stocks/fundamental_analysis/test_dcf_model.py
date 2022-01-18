@@ -7,7 +7,7 @@ import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
-from gamestonk_terminal.stocks.fundamental_analysis import dcf_model
+from gamestonk_terminal.stocks.fundamental_analysis import dcf_model, dcf_static
 
 
 @pytest.fixture(scope="module")
@@ -78,11 +78,11 @@ def test_set_cell():
         ws=worksheet,
         cell="A1",
         text="some content",
-        font=dcf_model.bold_font,
-        fill=dcf_model.green_bg,
-        border=dcf_model.thin_border_nr,
-        alignment=dcf_model.center,
-        num_form=dcf_model.fmt_acct,
+        font=dcf_static.bold_font,
+        fill=dcf_static.green_bg,
+        border=dcf_static.thin_border_nr,
+        alignment=dcf_static.center,
+        num_form=dcf_static.fmt_acct,
     )
     assert worksheet["A1"].value == "some content"
 

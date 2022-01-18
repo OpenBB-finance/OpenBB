@@ -20,7 +20,7 @@ from openpyxl import Workbook
 
 import gamestonk_terminal.config_plot as cfp
 import gamestonk_terminal.feature_flags as gtff
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.helper_funcs import export_data, plot_autoscale, excel_columns
 from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
 from gamestonk_terminal.stocks.options.yfinance_model import (
     generate_data,
@@ -755,41 +755,8 @@ def export_binomial_calcs(
     ticker : str
         The ticker for the company
     """
-    letters = [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F",
-        "G",
-        "H",
-        "I",
-        "J",
-        "K",
-        "L",
-        "M",
-    ]
-    letters += [
-        "N",
-        "O",
-        "P",
-        "Q",
-        "R",
-        "S",
-        "T",
-        "U",
-        "V",
-        "W",
-        "X",
-        "Y",
-        "Z",
-    ]
-    opts = (
-        [f"{x}" for x in letters]
-        + [f"{x}{y}" for x in letters for y in letters]
-        + [f"{x}{y}{z}" for x in letters for y in letters for z in letters]
-    )
+
+    opts = excel_columns()
     wb = Workbook()
     ws = wb.active
 
