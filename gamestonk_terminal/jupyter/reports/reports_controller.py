@@ -49,7 +49,7 @@ class ReportController(BaseController):
             notebook_content.find(metadata_cell) :  # noqa: E203
         ]
         cell_start = 'source": '
-        cell_end = '"report_name='
+        cell_end = '"report_name ='
         params = (
             notebook_metadata_content[
                 notebook_metadata_content.find(
@@ -65,7 +65,6 @@ class ReportController(BaseController):
             for param in literal_eval(params.strip('source": '))
             if param[0] not in ["#", "\n"]
         ]
-
         d_params[report_to_run] = l_params
 
         args = f"<{'> <'.join(l_params)}>"
@@ -191,6 +190,8 @@ Select one of the following reports:[/info][cmds]
                 d_report_params[args] = other_args[idx]
 
             d_report_params["report_name"] = notebook_output
+
+            print(notebook_template)
 
             pm.execute_notebook(
                 notebook_template + ".ipynb",
