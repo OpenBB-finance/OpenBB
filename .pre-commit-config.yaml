@@ -3,7 +3,7 @@ repos:
     hooks:
       - id: check-debug-mode
         name: check-debug-mode
-        entry: python custom_pre_commit/debug_mode.py
+        entry: python custom_pre_commit/check_config_terminal.py
         language: python
         language_version: python3
         types: ["file"]
