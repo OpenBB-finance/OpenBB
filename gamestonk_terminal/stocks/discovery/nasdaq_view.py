@@ -7,6 +7,8 @@ from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
 from gamestonk_terminal.stocks.discovery import nasdaq_model
 from gamestonk_terminal.rich_config import console
 
+# pylint: disable=E1123
+
 
 def display_top_retail(n_days: int = 3, export: str = ""):
     """Display the top 10 retail traded stocks for last days
