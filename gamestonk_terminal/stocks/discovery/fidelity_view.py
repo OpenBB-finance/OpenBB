@@ -84,13 +84,11 @@ def orders_view(num: int, export: str):
 
     df_orders = df_orders.head(n=num).iloc[:, :-1]
 
-    console.print(
-        rich_table_from_df(
-            df_orders,
-            headers=[x.title() for x in df_orders.columns],
-            show_index=False,
-            title=f"{order_header}:",
-        )
+    rich_table_from_df(
+        df_orders,
+        headers=[x.title() for x in df_orders.columns],
+        show_index=False,
+        title=f"{order_header}:",
     )
     console.print("")
 

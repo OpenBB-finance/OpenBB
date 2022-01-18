@@ -49,7 +49,7 @@ def rich_table_from_df(
     index_name: str = "",
     headers: Union[List[str], pd.Index] = None,
     floatfmt: Union[str, List[str]] = ".2f",
-) -> None:
+):
     """Prepare a table from df in rich
 
     Parameters

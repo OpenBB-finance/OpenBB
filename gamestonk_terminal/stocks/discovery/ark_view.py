@@ -74,13 +74,11 @@ def ark_orders_view(
 
     # df_orders["link"] = "https://finviz.com/quote.ashx?t=" + df_orders["ticker"]
 
-    console.print(
-        rich_table_from_df(
-            df_orders,
-            headers=[x.title() for x in df_orders.columns],
-            show_index=False,
-            title="Orders by ARK Investment Management LLC",
-        )
+    rich_table_from_df(
+        df_orders,
+        headers=[x.title() for x in df_orders.columns],
+        show_index=False,
+        title="Orders by ARK Investment Management LLC",
     )
     console.print("")
 

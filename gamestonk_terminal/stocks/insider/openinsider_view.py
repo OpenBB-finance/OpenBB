@@ -187,17 +187,12 @@ def print_insider_data(type_insider: str, limit: int = 10, export: str = ""):
             lambda x: "\n".join(textwrap.wrap(x, width=20)) if isinstance(x, str) else x
         )
 
-    if gtff.USE_TABULATE_DF:
-        console.print(
-            rich_table_from_df(
-                df,
-                headers=[x.title() for x in df.columns],
-                show_index=False,
-                title="Insider Data",
-            )
-        )
-    else:
-        console.print(df.to_string())
+    rich_table_from_df(
+        df,
+        headers=[x.title() for x in df.columns],
+        show_index=False,
+        title="Insider Data",
+    )
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), type_insider, df)
 
@@ -286,16 +281,11 @@ def print_insider_filter(
         df_insider = df_insider.drop(columns=["Filing Date"])
 
     console.print("")
-    if gtff.USE_TABULATE_DF:
-        console.print(
-            rich_table_from_df(
-                df_insider,
-                headers=[x.title() for x in df_insider.columns],
-                title="Insider filtered",
-            )
-        )
-    else:
-        console.print(df_insider.to_string(index=False))
+    rich_table_from_df(
+        df_insider,
+        headers=[x.title() for x in df_insider.columns],
+        title="Insider filtered",
+    )
 
     if export:
         if preset_loaded:
