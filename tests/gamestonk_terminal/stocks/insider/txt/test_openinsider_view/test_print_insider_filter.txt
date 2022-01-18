@@ -1,5 +1,10 @@
 
-<rich.table.Table object at 0x7fa03f94a8e0>
+                  X               Trading Date               Ticker                                       Insider                    Title                  Price                   Quantity                      Owned           Delta Own                         Value                     Company
+0  [green]M[/green]  [green]2021-12-15[/green]  [green]INCY[/green]        [green]Baker Bros. Advisors LP[/green]  [green]Dir, 10%[/green]  [green]$72.43[/green]  [green]+1,595,519[/green]  [green]34,399,479[/green]  [green]+5%[/green]  [green]+$115,558,900[/green]  [green]Incyte Corp[/green]
+1      [red]M[/red]      [red]2021-12-16[/red]       [red]WMT[/red]                    [red]Walton S Robson[/red]      [red]Dir, 10%[/red]     [red]$143.38[/red]        [red]-932,094[/red]   [red]1,298,267,576[/red]       [red]0%[/red]      [red]-$133,642,549[/red]     [red]Walmart Inc.[/red]
+2      [red]M[/red]      [red]2021-12-16[/red]       [red]WMT[/red]                     [red]Walton Alice L[/red]           [red]10%[/red]     [red]$143.38[/red]        [red]-932,094[/red]   [red]1,301,798,685[/red]       [red]0%[/red]      [red]-$133,642,549[/red]     [red]Walmart Inc.[/red]
+3      [red]M[/red]      [red]2021-12-16[/red]       [red]WMT[/red]                       [red]Walton Jim C[/red]           [red]10%[/red]     [red]$143.38[/red]        [red]-932,094[/red]   [red]1,305,557,229[/red]       [red]0%[/red]      [red]-$133,642,549[/red]     [red]Walmart Inc.[/red]
+4       [red][/red]      [red]2021-12-16[/red]      [red]LESL[/red]  [red]Bubbles Investor Aggregator, L.P.[/red]           [red]10%[/red]      [red]$20.25[/red]     [red]-13,625,310[/red]      [red]18,120,403[/red]     [red]-43%[/red]      [red]-$275,912,528[/red]   [red]Leslie'S, Inc.[/red]
 
 D: Derivative transaction in filing (usually option exercise)
 E: Error detected in filing

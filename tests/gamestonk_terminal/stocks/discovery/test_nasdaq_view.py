@@ -20,9 +20,7 @@ def vcr_config():
 @pytest.mark.record_stdout
 @pytest.mark.parametrize("use_tab", [True, False])
 def test_display_top_retail(mocker, use_tab):
-    mocker.patch.object(
-        target=nasdaq_view.gtff, attribute="USE_TABULATE_DF", new=use_tab
-    )
+    # mocker.patch.object(target=nasdaq_view.gtff, attribute="USE_TABULATE_DF", new=use_tab)
 
     nasdaq_view.display_top_retail(n_days=3, export="")
 
@@ -31,6 +29,6 @@ def test_display_top_retail(mocker, use_tab):
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_display_dividend_calendar(mocker):
-    mocker.patch.object(target=nasdaq_view.gtff, attribute="USE_TABULATE_DF", new=False)
+    # mocker.patch.object(target=nasdaq_view.gtff, attribute="USE_TABULATE_DF", new=False)
 
     nasdaq_view.display_dividend_calendar(date="2022-01-11", limit=2)
