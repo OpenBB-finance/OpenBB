@@ -11,6 +11,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import trend_indicators_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -82,7 +83,7 @@ def display_adx(
     plt.gcf().autofmt_xdate()
 
     plt.show()
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -156,7 +157,7 @@ def display_aroon(
     plt.show()
     plt.gcf().autofmt_xdate()
 
-    print("")
+    console.print("")
 
     export_data(
         export,

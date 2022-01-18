@@ -11,6 +11,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.quantitative_analysis import rolling_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -76,7 +77,7 @@ def display_mean_std(
     fig.tight_layout(pad=1)
     plt.gcf().autofmt_xdate()
     plt.show()
-    print("")
+    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
@@ -137,7 +138,7 @@ def display_spread(
     plt.gcf().autofmt_xdate()
     fig.tight_layout(pad=1)
     plt.show()
-    print("")
+    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
@@ -193,7 +194,7 @@ def display_quantile(
 
     plt.legend()
     plt.show()
-    print("")
+    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
@@ -246,7 +247,7 @@ def display_skew(
     plt.legend()
     plt.show()
 
-    print("")
+    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
@@ -297,7 +298,7 @@ def display_kurtosis(
     plt.legend()
     plt.show()
 
-    print("")
+    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),

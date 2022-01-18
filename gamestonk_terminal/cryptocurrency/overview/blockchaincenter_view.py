@@ -8,6 +8,7 @@ from gamestonk_terminal.cryptocurrency.overview.blockchaincenter_model import (
 )
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def display_altcoin_index(
@@ -34,7 +35,7 @@ def display_altcoin_index(
         df = get_altcoin_index(period, since, until)
 
         if df.empty:
-            print("\nError scraping blockchain central\n")
+            console.print("\nError scraping blockchain central\n")
         else:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             ax.set_ylabel("Altcoin Index")
@@ -53,7 +54,7 @@ def display_altcoin_index(
             if gtff.USE_ION:
                 plt.ion()
             plt.show()
-            print("")
+            console.print("")
 
             export_data(
                 export,

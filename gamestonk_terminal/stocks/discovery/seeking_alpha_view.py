@@ -8,6 +8,7 @@ import pandas as pd
 from gamestonk_terminal.helper_funcs import export_data
 
 from gamestonk_terminal.stocks.discovery import seeking_alpha_model
+from gamestonk_terminal.rich_config import console
 
 
 def upcoming_earning_release_dates(num_pages: int, num_earnings: int, export: str):
@@ -98,15 +99,15 @@ def news(article_id: int, num: int, export: str):
             df_articles = pd.DataFrame(articles)
 
         for idx, article in enumerate(articles):
-            print(
+            console.print(
                 article["publishedAt"].replace("T", " ").replace("Z", ""),
                 "-",
                 article["id"],
                 "-",
                 article["title"],
             )
-            print(article["url"])
-            print("")
+            console.print(article["url"])
+            console.print("")
 
             if idx >= num - 1:
                 break
@@ -118,16 +119,16 @@ def news(article_id: int, num: int, export: str):
         if export:
             df_articles = pd.DataFrame(article)
 
-        print(
+        console.print(
             article["publishedAt"][: article["publishedAt"].rfind(":") - 3].replace(
                 "T", " "
             ),
             " ",
             article["title"],
         )
-        print(article["url"])
-        print("")
-        print(article["content"])
+        console.print(article["url"])
+        console.print("")
+        console.print(article["content"])
 
     if export:
         export_data(
@@ -154,19 +155,19 @@ def display_news(news_type: str = "Top-News", num: int = 5, export: str = ""):
     news_to_display: List = seeking_alpha_model.get_news(news_type, num)
 
     if not news:
-        print("No news found.", "\n")
+        console.print("No news found.", "\n")
 
     else:
         for news_element in news_to_display:
-            print(
+            console.print(
                 news_element["publishOn"]
                 + " - "
                 + news_element["id"]
                 + " - "
                 + news_element["title"]
             )
-            print(news_element["url"])
-            print("")
+            console.print(news_element["url"])
+            console.print("")
 
         export_data(
             export,

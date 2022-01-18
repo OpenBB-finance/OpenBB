@@ -20,6 +20,7 @@ from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
     get_btc_price,
     GECKO_BASE_URL,
 )
+from gamestonk_terminal.rich_config import console
 
 PERIODS = {
     "1h": "?time=h1",
@@ -123,7 +124,7 @@ def get_gainers_or_losers(period: str = "1h", typ: str = "gainers") -> pd.DataFr
     try:
         scraped_data = scrape_gecko_data(url)
     except RetryError as e:
-        print(e)
+        console.print(e)
         return pd.DataFrame()
     rows = scraped_data.find_all("tbody")[category.get(typ)].find_all("tr")
     results = []
@@ -133,7 +134,7 @@ def get_gainers_or_losers(period: str = "1h", typ: str = "gainers") -> pd.DataFr
         try:
             change = percent_to_float(change)
         except (ValueError, TypeError) as e:
-            print(e)
+            console.print(e)
         results.append([symbol, name, volume, price, change, url])
     df = pd.DataFrame(
         results,
@@ -180,7 +181,7 @@ def get_discovered_coins(category: str = "trending") -> pd.DataFrame:
     try:
         scraped_data = scrape_gecko_data(url)
     except RetryError as e:
-        print(e)
+        console.print(e)
         return pd.DataFrame()
     popular = scraped_data.find_all("div", class_="col-12 col-sm-6 col-md-6 col-lg-4")[
         CATEGORIES[category]
@@ -234,7 +235,7 @@ def get_recently_added_coins() -> pd.DataFrame:
     try:
         scraped_data = scrape_gecko_data(url)
     except RetryError as e:
-        print(e)
+        console.print(e)
         return pd.DataFrame()
     rows = scraped_data.find("tbody").find_all("tr")
     results = []
@@ -286,7 +287,7 @@ def get_yield_farms() -> pd.DataFrame:
     try:
         scraped_data = scrape_gecko_data(url)
     except RetryError as e:
-        print(e)
+        console.print(e)
         return pd.DataFrame()
     rows = scraped_data.find("tbody").find_all("tr")
     results = []
@@ -357,7 +358,7 @@ def get_top_volume_coins() -> pd.DataFrame:
     try:
         scraped_data = scrape_gecko_data(url)
     except RetryError as e:
-        print(e)
+        console.print(e)
         return pd.DataFrame()
     rows = scraped_data.find("tbody").find_all("tr")
     results = []
@@ -401,7 +402,7 @@ Defi has currently a market cap of {int(float(data['defi_market_cap']))} USD dol
     try:
         scraped_data = scrape_gecko_data(url)
     except RetryError as e:
-        print(e)
+        console.print(e)
         return ["", pd.DataFrame()]
     rows = scraped_data.find("tbody").find_all("tr")
     results = []
@@ -467,7 +468,7 @@ def get_top_dexes() -> pd.DataFrame:
     try:
         scraped_data = scrape_gecko_data(url)
     except RetryError as e:
-        print(e)
+        console.print(e)
         return pd.DataFrame()
     rows = scraped_data.find("tbody").find_all("tr")
     results = []
@@ -510,7 +511,7 @@ def get_top_nfts() -> pd.DataFrame:
     try:
         scraped_data = scrape_gecko_data(url)
     except RetryError as e:
-        print(e)
+        console.print(e)
         return pd.DataFrame()
     rows = scraped_data.find("tbody").find_all("tr")
     results = []

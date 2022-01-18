@@ -7,6 +7,7 @@ import pandas as pd
 import requests
 
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.rich_config import console
 
 option_columns = [
     "symbol",
@@ -67,7 +68,7 @@ def get_historical_options(
                 "symbol"
             ].values[0]
         except IndexError:
-            print(f"Strike: {strike}, Option type: {op_type} not not found \n")
+            console.print(f"Strike: {strike}, Option type: {op_type} not not found \n")
             return pd.DataFrame
     else:
         symbol = chain_id
@@ -82,12 +83,12 @@ def get_historical_options(
     )
 
     if response.status_code != 200:
-        print("Error with request")
+        console.print("Error with request")
         return pd.DataFrame()
 
     data = response.json()["history"]
     if not data:
-        print("No historical data available")
+        console.print("No historical data available")
         return pd.DataFrame()
 
     df_hist = pd.DataFrame(data["day"], index=[data["day"]["date"]]).drop(
@@ -126,10 +127,10 @@ def option_expirations(ticker: str) -> List[str]:
             dates = r.json()["expirations"]["date"]
             return dates
         except TypeError:
-            print("Error in tradier JSON response.  Check loaded ticker.\n")
+            console.print("Error in tradier JSON response.  Check loaded ticker.\n")
             return []
     else:
-        print("Tradier request failed.  Check token. \n")
+        console.print("Tradier request failed.  Check token. \n")
         return []
 
 
@@ -161,7 +162,7 @@ def get_option_chains(symbol: str, expiry: str) -> pd.DataFrame:
         headers=headers,
     )
     if response.status_code != 200:
-        print("Error in request. Check TRADIER_TOKEN\n")
+        console.print("Error in request. Check TRADIER_TOKEN\n")
         return pd.DataFrame()
 
     chains = process_chains(response)
@@ -231,5 +232,5 @@ def last_price(ticker: str):
     if r.status_code == 200:
         return float(r.json()["quotes"]["quote"]["last"])
     else:
-        print("Error getting last price")
+        console.print("Error getting last price")
         return None

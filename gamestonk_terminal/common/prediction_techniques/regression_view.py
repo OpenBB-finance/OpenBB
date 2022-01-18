@@ -23,6 +23,7 @@ from gamestonk_terminal.common.prediction_techniques.pred_helper import (
 from gamestonk_terminal.common.prediction_techniques import regression_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -149,7 +150,7 @@ def display_regression(
     plt.show()
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "regression")
-    print("")
+    console.print("")
 
     # BACKTESTING
     if s_end_date:
@@ -240,15 +241,17 @@ def display_regression(
 
             patch_pandas_text_adjustment()
 
-            print("Time         Real [$]  x  Prediction [$]")
-            print(df_pred.apply(price_prediction_backtesting_color, axis=1).to_string())
+            console.print("Time         Real [$]  x  Prediction [$]")
+            console.print(
+                df_pred.apply(price_prediction_backtesting_color, axis=1).to_string()
+            )
         else:
-            print(df_pred[["Real", "Prediction"]].round(2).to_string())
+            console.print(df_pred[["Real", "Prediction"]].round(2).to_string())
 
-        print("")
+        console.print("")
         print_prediction_kpis(df_pred["Real"].values, df_pred["Prediction"].values)
 
     else:
         # Print prediction data
         print_pretty_prediction(df_pred, values.values[-1])
-    print("")
+    console.print("")

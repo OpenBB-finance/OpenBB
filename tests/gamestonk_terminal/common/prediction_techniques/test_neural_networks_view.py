@@ -6,9 +6,9 @@ import unittest
 #        display_mlp,
 #    )
 # except ModuleNotFoundError as e_module:
-#    print("One of the optional packages seems to be missing")
-#   print(e_module)
-#   print("Skipping the test")
+#    console.print("One of the optional packages seems to be missing")
+#   console.print(e_module)
+#   console.print("Skipping the test")
 
 # from gamestonk_terminal import feature_flags as gtff
 
@@ -24,6 +24,6 @@ class TestPredNeuralNetworks(unittest.TestCase):
         # Fix: need to move loading of ticker data into a df somewhere
         #    display_mlp([], "TLSA", None)
         # except NameError as e_name:
-        #    print("One of the optional packages seems to be missing")
-        #    print(e_name)
-        #    print("Skipping the test")
+        #    console.print("One of the optional packages seems to be missing")
+        #    console.print(e_name)
+        #    console.print("Skipping the test")

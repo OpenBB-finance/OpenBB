@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 import numpy as np
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -50,6 +50,8 @@ class PredictionTechniquesController(BaseController):
         "mc",
     ]
 
+    PATH = "/etf/pred/"
+
     def __init__(
         self,
         ticker: str,
@@ -59,7 +61,7 @@ class PredictionTechniquesController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/etf/pred/", queue)
+        super().__init__(queue)
 
         stock["Returns"] = stock["Adj Close"].pct_change()
         stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(
@@ -86,22 +88,16 @@ class PredictionTechniquesController(BaseController):
 
     def print_help(self):
         """Print help"""
-        s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
-        if self.start:
-            stock_info = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-        else:
-            stock_info = "{s_intraday} Stock: {self.ticker}"
+        etf_info = f"{self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
 
-        help_string = f"""
-Prediction Techniques Menu:
-
+        help_text = f"""[cmds]
     load        load new ticker
-    pick        pick new target variable
+    pick        pick new target variable[/cmds]
 
-Ticker Loaded: {stock_info}
-Target Column: {self.target}
+[param]Ticker Loaded: [/param]{etf_info}
+[param]Target Column: [/param]{self.target}
 
-Models:
+[info]Models:[/info][cmds]
     ets         exponential smoothing (e.g. Holt-Winters)
     knn         k-Nearest Neighbors
     regression  polynomial regression
@@ -110,9 +106,9 @@ Models:
     rnn         Recurrent Neural Network
     lstm        Long-Short Term Memory
     conv1d      1D Convolutional Neural Network
-    mc          Monte-Carlo simulations
+    mc          Monte-Carlo simulations[/cmds]
         """
-        print(help_string)
+        console.print(text=help_text, menu="ETF - Prediction Techniques")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -240,7 +236,7 @@ Models:
         )
         if ns_parser:
             self.target = ns_parser.target
-            print("")
+            console.print("")
 
     def call_ets(self, other_args: List[str]):
         """Process ets command"""
@@ -317,7 +313,7 @@ Models:
             if ns_parser.s_end_date:
 
                 if ns_parser.s_end_date < self.stock.index[0]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
 
@@ -325,7 +321,7 @@ Models:
                     last_stock_day=self.stock.index[0],
                     n_next_days=5 + ns_parser.n_days,
                 )[-1]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
 
@@ -498,7 +494,7 @@ Models:
             # BACKTESTING CHECK
             if ns_parser.s_end_date:
                 if ns_parser.s_end_date < self.stock.index[0]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
 
@@ -506,7 +502,7 @@ Models:
                     last_stock_day=self.stock.index[0],
                     n_next_days=5 + ns_parser.n_days,
                 )[-1]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
 
@@ -599,7 +595,7 @@ Models:
             if ns_parser.s_end_date:
 
                 if ns_parser.s_end_date < self.stock.index[0]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
 
@@ -607,7 +603,7 @@ Models:
                     last_stock_day=self.stock.index[0],
                     n_next_days=5 + ns_parser.n_days,
                 )[-1]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
 
@@ -645,7 +641,7 @@ Models:
                     no_shuffle=ns_parser.no_shuffle,
                 )
         except Exception as e:
-            print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -673,7 +669,7 @@ Models:
                 )
 
         except Exception as e:
-            print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -701,7 +697,7 @@ Models:
                 )
 
         except Exception as e:
-            print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -729,7 +725,7 @@ Models:
                 )
 
         except Exception as e:
-            print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -772,7 +768,7 @@ Models:
         )
         if ns_parser:
             if self.target != "AdjClose":
-                print("MC Prediction designed for AdjClose prices\n")
+                console.print("MC Prediction designed for AdjClose prices\n")
 
             mc_view.display_mc_forecast(
                 data=self.stock[self.target],

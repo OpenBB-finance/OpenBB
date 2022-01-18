@@ -13,6 +13,7 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.stocks.technical_analysis import finviz_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def view(ticker: str):
@@ -36,4 +37,4 @@ def view(ticker: str):
 
     plt.imshow(im)
     plt.show()
-    print("")
+    console.print("")

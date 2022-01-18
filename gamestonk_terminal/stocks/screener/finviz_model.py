@@ -9,6 +9,7 @@ from finvizfinance.screener import (
     ownership,
     performance,
 )
+from gamestonk_terminal.rich_config import console
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -83,7 +84,7 @@ def get_screener_data(preset_loaded: str, data_type: str, limit: int, ascend: bo
     elif data_type == "technical":
         screen = technical.Technical()
     else:
-        print("Invalid selected screener type")
+        console.print("Invalid selected screener type")
         return pd.DataFrame()
 
     if preset_loaded in d_signals:
@@ -109,11 +110,13 @@ def get_screener_data(preset_loaded: str, data_type: str, limit: int, ascend: bo
         for section in ["General", "Descriptive", "Fundamental", "Technical"]:
             for key, val in {**preset_filter[section]}.items():
                 if key not in d_check_screener:
-                    print(f"The screener variable {section}.{key} shouldn't exist!\n")
+                    console.print(
+                        f"The screener variable {section}.{key} shouldn't exist!\n"
+                    )
                     return pd.DataFrame()
 
                 if val not in d_check_screener[key]:
-                    print(
+                    console.print(
                         f"Invalid [{section}] {key}={val}. "
                         f"Choose one of the following options:\n{', '.join(d_check_screener[key])}.\n"
                     )

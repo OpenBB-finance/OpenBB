@@ -19,6 +19,7 @@ from oandapyV20.endpoints import (
 from oandapyV20.exceptions import V20Error
 
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.rich_config import console
 
 client = API(access_token=cfg.OANDA_TOKEN, environment=cfg.OANDA_ACCOUNT_TYPE)
 account = cfg.OANDA_ACCOUNT
@@ -42,10 +43,12 @@ def fx_price_request(
         The currency pair price or False
     """
     if accountID == "REPLACE_ME":
-        print("Error: Oanda account credentials are required.")
+        console.print("Error: Oanda account credentials are required.")
         return False
     if instrument is None:
-        print("Error: An instrument should be loaded before running this command.")
+        console.print(
+            "Error: An instrument should be loaded before running this command."
+        )
         return False
     try:
         parameters = {"instruments": instrument}
@@ -54,7 +57,7 @@ def fx_price_request(
         return response
     except V20Error as e:
         d_error = json.loads(e.msg)
-        print(d_error["errorMessage"], "\n")
+        console.print(d_error["errorMessage"], "\n")
         return False
 
 
@@ -72,7 +75,7 @@ def account_summary_request(accountID: str = account) -> Union[pd.DataFrame, boo
         Account summary data or False
     """
     if accountID == "REPLACE_ME":
-        print("Error: Oanda account credentials are required.")
+        console.print("Error: Oanda account credentials are required.")
         return False
     try:
         request = accounts.AccountSummary(accountID=accountID)
@@ -112,7 +115,7 @@ def account_summary_request(accountID: str = account) -> Union[pd.DataFrame, boo
         return df_summary
     except V20Error as e:
         d_error = json.loads(e.msg)
-        print(d_error["errorMessage"], "\n")
+        console.print(d_error["errorMessage"], "\n")
         return False
 
 
@@ -134,10 +137,12 @@ def orderbook_plot_data_request(
         Order book data or False
     """
     if accountID == "REPLACE_ME":
-        print("Error: Oanda account credentials are required.")
+        console.print("Error: Oanda account credentials are required.")
         return False
     if instrument is None:
-        print("Error: An instrument should be loaded before running this command.")
+        console.print(
+            "Error: An instrument should be loaded before running this command."
+        )
         return False
     parameters = {"bucketWidth": "1"}
     try:
@@ -149,7 +154,7 @@ def orderbook_plot_data_request(
         return df_orderbook_data
     except V20Error as e:
         d_error = json.loads(e.msg)
-        print(d_error["errorMessage"], "\n")
+        console.print(d_error["errorMessage"], "\n")
         return False
 
 
@@ -171,10 +176,12 @@ def positionbook_plot_data_request(
         Position book data or False
     """
     if accountID == "REPLACE_ME":
-        print("Error: Oanda account credentials are required.")
+        console.print("Error: Oanda account credentials are required.")
         return False
     if instrument is None:
-        print("Error: An instrument should be loaded before running this command.")
+        console.print(
+            "Error: An instrument should be loaded before running this command."
+        )
         return False
     try:
         request = instruments.InstrumentsPositionBook(instrument=instrument)
@@ -185,7 +192,7 @@ def positionbook_plot_data_request(
         return df_positionbook_data
     except V20Error as e:
         d_error = json.loads(e.msg)
-        print(d_error["errorMessage"], "\n")
+        console.print(d_error["errorMessage"], "\n")
         return False
 
 
@@ -204,7 +211,7 @@ def order_history_request(
         Oanda account ID, by default cfg.OANDA_ACCOUNT
     """
     if accountID == "REPLACE_ME":
-        print("Error: Oanda account credentials are required.")
+        console.print("Error: Oanda account credentials are required.")
         return False
     parameters: Dict[str, Union[str, int]] = {}
     parameters["state"] = order_state
@@ -220,11 +227,11 @@ def order_history_request(
         ]
         return df_order_list
     except KeyError:
-        print("No orders were found\n")
+        console.print("No orders were found\n")
         return False
     except V20Error as e:
         d_error = json.loads(e.msg)
-        print(d_error["errorMessage"], "\n")
+        console.print(d_error["errorMessage"], "\n")
         return False
 
 
@@ -253,10 +260,12 @@ def create_order_request(
         Orders data or False
     """
     if accountID == "REPLACE_ME":
-        print("Error: Oanda account credentials are required.")
+        console.print("Error: Oanda account credentials are required.")
         return False
     if instrument is None:
-        print("Error: An instrument should be loaded before running this command.")
+        console.print(
+            "Error: An instrument should be loaded before running this command."
+        )
         return False
     if "JPY" in instrument or "THB" in instrument or "HUF" in instrument:
         price = round(price, 3)
@@ -288,10 +297,10 @@ def create_order_request(
         return df_orders
     except V20Error as e:
         d_error = json.loads(e.msg)
-        print(d_error["errorMessage"], "\n")
+        console.print(d_error["errorMessage"], "\n")
         return False
     except Exception as e:
-        print(e)
+        console.print(e)
         return False
 
 
@@ -308,7 +317,7 @@ def cancel_pending_order_request(
         Oanda account ID, by default cfg.OANDA_ACCOUNT
     """
     if accountID == "REPLACE_ME":
-        print("Error: Oanda account credentials are required.")
+        console.print("Error: Oanda account credentials are required.")
         return False
     try:
         request = orders.OrderCancel(accountID, orderID)
@@ -317,7 +326,7 @@ def cancel_pending_order_request(
         return order_id
     except V20Error as e:
         d_error = json.loads(e.msg)
-        print(d_error["errorMessage"], "\n")
+        console.print(d_error["errorMessage"], "\n")
         return False
 
 
@@ -330,7 +339,7 @@ def open_positions_request(accountID: str = account) -> Union[pd.DataFrame, bool
         Oanda account ID, by default cfg.OANDA_ACCOUNT
     """
     if accountID == "REPLACE_ME":
-        print("Error: Oanda account credentials are required.")
+        console.print("Error: Oanda account credentials are required.")
         return False
     try:
         request = positions.OpenPositions(accountID)
@@ -356,7 +365,7 @@ def open_positions_request(accountID: str = account) -> Union[pd.DataFrame, bool
         return df_positions
     except V20Error as e:
         d_error = json.loads(e.msg)
-        print(d_error["errorMessage"], "\n")
+        console.print(d_error["errorMessage"], "\n")
         return False
 
 
@@ -374,7 +383,7 @@ def pending_orders_request(accountID: str = account) -> Union[pd.DataFrame, bool
         Pending orders data or False
     """
     if accountID == "REPLACE_ME":
-        print("Error: Oanda account credentials are required.")
+        console.print("Error: Oanda account credentials are required.")
         return False
     try:
         request = orders.OrdersPending(accountID)
@@ -399,7 +408,7 @@ def pending_orders_request(accountID: str = account) -> Union[pd.DataFrame, bool
         return df_pending
     except V20Error as e:
         d_error = json.loads(e.msg)
-        print(d_error["errorMessage"], "\n")
+        console.print(d_error["errorMessage"], "\n")
         return False
 
 
@@ -417,7 +426,7 @@ def open_trades_request(accountID: str = account) -> Union[pd.DataFrame, bool]:
         Open trades data or False
     """
     if accountID == "REPLACE_ME":
-        print("Error: Oanda account credentials are required.")
+        console.print("Error: Oanda account credentials are required.")
         return False
     try:
         request = trades.OpenTrades(accountID)
@@ -449,7 +458,7 @@ def open_trades_request(accountID: str = account) -> Union[pd.DataFrame, bool]:
         return df_trades
     except V20Error as e:
         d_error = json.loads(e.msg)
-        print(d_error["errorMessage"], "\n")
+        console.print(d_error["errorMessage"], "\n")
         return False
 
 
@@ -473,7 +482,7 @@ def close_trades_request(
         Close trades data or False
     """
     if accountID == "REPLACE_ME":
-        print("Error: Oanda account credentials are required.")
+        console.print("Error: Oanda account credentials are required.")
         return False
     data = {}
     if units is not None:
@@ -498,7 +507,7 @@ def close_trades_request(
         return df_trades
     except V20Error as e:
         d_error = json.loads(e.msg)
-        print(d_error["errorMessage"], "\n")
+        console.print(d_error["errorMessage"], "\n")
         return False
 
 
@@ -522,7 +531,9 @@ def get_candles_dataframe(
         Candle chart data or False
     """
     if instrument is None:
-        print("Error: An instrument should be loaded before running this command.")
+        console.print(
+            "Error: An instrument should be loaded before running this command."
+        )
         return False
     parameters = {
         "granularity": granularity,
@@ -554,7 +565,7 @@ def get_candles_dataframe(
         return df_candles
     except V20Error as e:
         d_error = json.loads(e.msg)
-        print(d_error["errorMessage"], "\n")
+        console.print(d_error["errorMessage"], "\n")
         return False
 
 
@@ -576,7 +587,9 @@ def get_calendar_request(
         Calendar events data or False
     """
     if instrument is None:
-        print("Error: An instrument should be loaded before running this command.")
+        console.print(
+            "Error: An instrument should be loaded before running this command."
+        )
         return False
     parameters = {"instrument": instrument, "period": str(days * 86400 * -1)}
     try:
@@ -638,5 +651,5 @@ def get_calendar_request(
         return df_calendar
     except V20Error as e:
         d_error = json.loads(e.msg)
-        print(d_error["message"], "\n")
+        console.print(d_error["message"], "\n")
         return False
