@@ -32,18 +32,22 @@ def get_nft_drops(url: str) -> pd.DataFrame:
         drop_titles.append(droptitle.text.strip())
 
     drop_descriptions = list()
-    for dropdesc in nft_calendar.find_all("div", {"class": "pb-0 md:pb-2 text-normal"}):
+    for dropdesc in nft_calendar.find_all(
+        "div", {"class": "pb-0 md:pb-2 text-normal text-black dark:text-yellow-50"}
+    ):
         drop_descriptions.append(dropdesc.text.strip())
 
     drop_dates = list()
     for dropdate in nft_calendar.find_all(
-        "div", {"class": "py-2 text-normal md:text-lg"}
+        "div", {"class": "py-2 text-normal text-black dark:text-yellow-50 md:text-lg"}
     ):
         drop_dates.append(dropdate.text.strip().replace("\n", " "))
 
     base_url = "https://nftcalendar.io"
     drop_readmores = list()
-    for readmore in nft_calendar.find_all("div", {"class": "w-full md:w-2/5"}):
+    for readmore in nft_calendar.find_all(
+        "div", {"class": "pt-4 pb-0 md:pt-2 md:pb-2 text-right md:text-left"}
+    ):
         drop_readmores.append(base_url + readmore.find("a")["href"])
 
     return pd.DataFrame(

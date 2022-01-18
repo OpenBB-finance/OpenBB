@@ -217,7 +217,7 @@ class BaseController(metaclass=ABCMeta):
 
                 # Print location because this was an instruction and we want user to know the action
                 if an_input and an_input.split(" ")[0] in self.controller_choices:
-                    console.print(f"{get_flair()} {self.path} $ {an_input}")
+                    console.print(f"{get_flair()} {self.PATH} $ {an_input}")
 
             # Get input command from user
             else:
@@ -246,7 +246,7 @@ class BaseController(metaclass=ABCMeta):
 
             except SystemExit:
                 console.print(
-                    f"\nThe command '{an_input}' doesn't exist on the {self.path} menu.",
+                    f"\nThe command '{an_input}' doesn't exist on the {self.PATH} menu.",
                     end="",
                 )
                 similar_cmd = difflib.get_close_matches(
