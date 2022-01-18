@@ -5,6 +5,19 @@ import sys
 import os
 from typing import List
 
+"""
+Note: This code is no longer called in favor of using gitignore. The below code shows how to add it back:
+  - repo: local
+    hooks:
+      - id: check-debug-mode
+        name: check-debug-mode
+        entry: python custom_pre_commit/check_config_terminal.py
+        language: python
+        language_version: python3
+        types: ["file"]
+        pass_filenames: false
+"""
+
 # This is a dictionary of all settings to check in config_terminal.py
 settings = {
     "DEBUG_MODE": "DEBUG_MODE = False",
