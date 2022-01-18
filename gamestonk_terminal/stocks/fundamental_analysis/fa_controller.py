@@ -746,7 +746,7 @@ Ticker: [/param] {self.ticker} [cmds]
             action="store_true",
             dest="audit",
             default=False,
-            help="Confirms that the numbers provided are accurate.",
+            help="Generates a tie-out for financial statement information pulled from online.",
         )
         parser.add_argument(
             "--no-ratios",

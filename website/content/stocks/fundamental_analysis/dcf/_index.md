@@ -6,7 +6,7 @@ Generates a completed discounted cash flow statement as an excel spreadsheet exp
 
 ```
 optional arguments:
-  -a, --audit  Confirms that the numbers provided are accurate. (default: False)
+  -a, --audit  Generates a tie-out for financial statement information pulled from online. (default: False)
   --no-ratios  Disables generation of ratio for company and sister companies. (default: False)
   --no-filter  Disables filtering of similar companies based on market cap (default: False)
   -p, --prediction
