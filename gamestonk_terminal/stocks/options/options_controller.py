@@ -1100,12 +1100,23 @@ Expiry: [/param]{self.selected_date or None}
             prog="vsurf",
             description="Plot 3D volatility surface.",
         )
+        parser.add_argument(
+            "-z",
+            "--z-axis",
+            default="IV",
+            dest="z",
+            choices=["IV", "OI", "LP"],
+            type=str,
+            help="The data for the Z axis",
+        )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
-            yfinance_view.display_vol_surface(self.ticker, export=ns_parser.export)
+            yfinance_view.display_vol_surface(
+                self.ticker, export=ns_parser.export, z=ns_parser.z
+            )
 
     def call_parity(self, other_args: List[str]):
         """Process parity command"""

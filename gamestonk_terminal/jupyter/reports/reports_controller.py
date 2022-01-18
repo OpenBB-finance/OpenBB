@@ -191,8 +191,6 @@ Select one of the following reports:[/info][cmds]
 
             d_report_params["report_name"] = notebook_output
 
-            print(notebook_template)
-
             pm.execute_notebook(
                 notebook_template + ".ipynb",
                 notebook_output + ".ipynb",
