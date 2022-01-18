@@ -49,7 +49,7 @@ def rich_table_from_df(
     index_name: str = "",
     headers: Union[List[str], pd.Index] = None,
     floatfmt: Union[str, List[str]] = ".2f",
-) -> Table:
+) -> None:
     """Prepare a table from df in rich
 
     Parameters
@@ -71,38 +71,42 @@ def rich_table_from_df(
     Table: Table
         rich table
     """
-    table = Table(title=title, show_lines=True)
 
-    if show_index:
-        table.add_column(index_name)
+    if gtff.USE_TABULATE_DF:
+        table = Table(title=title, show_lines=True)
 
-    if headers:
-        if isinstance(headers, pd.Index):
-            headers = list(headers)
-        if len(headers) != len(df.columns):
-            raise ValueError("Length of headers does not match length of DataFrame")
-        for header in headers:
-            table.add_column(str(header))
+        if show_index:
+            table.add_column(index_name)
+
+        if headers:
+            if isinstance(headers, pd.Index):
+                headers = list(headers)
+            if len(headers) != len(df.columns):
+                raise ValueError("Length of headers does not match length of DataFrame")
+            for header in headers:
+                table.add_column(str(header))
+        else:
+            for column in df.columns:
+                table.add_column(str(column))
+
+        if isinstance(floatfmt, list):
+            if len(floatfmt) != len(df.columns):
+                raise ValueError(
+                    "Length of floatfmt list does not match length of DataFrame columns."
+                )
+        if isinstance(floatfmt, str):
+            floatfmt = [floatfmt for _ in range(len(df.columns))]
+
+        for idx, values in zip(df.index.tolist(), df.values.tolist()):
+            row = [str(idx)] if show_index else []
+            row += [
+                str(x) if not isinstance(x, float) else f"{x:{floatfmt[idx]}}"
+                for idx, x in enumerate(values)
+            ]
+            table.add_row(*row)
+        console.print(table)
     else:
-        for column in df.columns:
-            table.add_column(str(column))
-
-    if isinstance(floatfmt, list):
-        if len(floatfmt) != len(df.columns):
-            raise ValueError(
-                "Length of floatfmt list does not match length of DataFrame columns."
-            )
-    if isinstance(floatfmt, str):
-        floatfmt = [floatfmt for _ in range(len(df.columns))]
-
-    for idx, values in zip(df.index.tolist(), df.values.tolist()):
-        row = [str(idx)] if show_index else []
-        row += [
-            str(x) if not isinstance(x, float) else f"{x:{floatfmt[idx]}}"
-            for idx, x in enumerate(values)
-        ]
-        table.add_row(*row)
-    return table
+        console.print(df.to_string())
 
 
 def check_int_range(mini: int, maxi: int):

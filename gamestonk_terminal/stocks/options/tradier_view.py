@@ -135,13 +135,11 @@ def display_chains(
     df = calls_df if calls_only else puts_df
 
     if calls_only or puts_only:
-        console.print(
-            rich_table_from_df(
-                df,
-                headers=[x.title() for x in df.columns],
-                show_index=False,
-                title=f"The strike prices are displayed between {min_strike} and {max_strike}",
-            )
+        rich_table_from_df(
+            df,
+            headers=[x.title() for x in df.columns],
+            show_index=False,
+            title=f"The strike prices are displayed between {min_strike} and {max_strike}",
         )
 
     else:
@@ -166,11 +164,8 @@ def display_chains(
             else col
             for col in chain_table.columns
         ]
-        console.print(
-            rich_table_from_df(
-                chain_table, headers=headers, show_index=False, title="Option chain"
-            ),
-            "\n",
+        rich_table_from_df(
+            chain_table, headers=headers, show_index=False, title="Option chain"
         )
 
     export_data(
@@ -603,12 +598,10 @@ def display_historical(
     )
 
     if raw:
-        console.print(
-            rich_table_from_df(
-                df_hist,
-                headers=[x.title() for x in df_hist.columns],
-                title="Historical Option Prices",
-            )
+        rich_table_from_df(
+            df_hist,
+            headers=[x.title() for x in df_hist.columns],
+            title="Historical Option Prices",
         )
 
     op_type = ["call", "put"][put]
