@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import pandas as pd
 from tabulate import tabulate
 import gamestonk_terminal.feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def display_group_holdings(
@@ -38,4 +39,4 @@ def display_group_holdings(
             "\n",
         )
     else:
-        print(portfolio.to_string(), "\n")
+        console.print(portfolio.to_string(), "\n")

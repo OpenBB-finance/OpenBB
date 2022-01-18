@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import requests
 
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.rich_config import console
 
 
 def news(
@@ -40,13 +41,15 @@ def news(
 
     # Check that the API response was successful
     if response.status_code == 426:
-        print(f"Error in request: {response.json()['message']}", "\n")
+        console.print(f"Error in request: {response.json()['message']}", "\n")
 
     elif response.status_code != 200:
-        print(f"Error in request {response.status_code}. Check News API token", "\n")
+        console.print(
+            f"Error in request {response.status_code}. Check News API token", "\n"
+        )
 
     else:
-        print(
+        console.print(
             f"{response.json()['totalResults']} news articles for {term} were found since {s_from}\n"
         )
 
@@ -57,13 +60,13 @@ def news(
             articles = response.json()["articles"][::-1]
 
         for idx, article in enumerate(articles):
-            print(
+            console.print(
                 article["publishedAt"].replace("T", " ").replace("Z", ""),
                 " ",
                 article["title"],
             )
             # Unnecessary to use name of the source because contained in link article["source"]["name"]
-            print(article["url"], "\n")
+            console.print(article["url"], "\n")
 
             if idx >= num - 1:
                 break

@@ -10,6 +10,7 @@ from gamestonk_terminal.helper_funcs import get_next_stock_market_days
 from gamestonk_terminal.common.prediction_techniques.pred_helper import (
     prepare_scale_train_valid_test,
 )
+from gamestonk_terminal.rich_config import console
 
 
 def get_knn_model_data(
@@ -75,7 +76,7 @@ def get_knn_model_data(
     future_dates = get_next_stock_market_days(
         dates_forecast_input[-1], n_next_days=n_predict_days
     )
-    print(
+    console.print(
         f"Training on {X_train.shape[0]} sequences of length {X_train.shape[1]}.  Using {X_valid.shape[0]} sequences "
         f" of length {X_valid.shape[1]} for validation"
     )

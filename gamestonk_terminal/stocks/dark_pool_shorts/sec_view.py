@@ -10,6 +10,7 @@ import matplotlib.dates as mdates
 from gamestonk_terminal.stocks.dark_pool_shorts import sec_model
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.rich_config import console
 
 
 def fails_to_deliver(
@@ -68,7 +69,7 @@ def fails_to_deliver(
         plt.ion()
 
     plt.show()
-    print("")
+    console.print("")
 
     if raw:
         print(
@@ -80,7 +81,7 @@ def fails_to_deliver(
                 showindex=False,
             )
         )
-        print("")
+        console.print("")
 
     export_data(
         export,

@@ -8,6 +8,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from gamestonk_terminal.helper_funcs import get_user_agent
+from gamestonk_terminal.rich_config import console
 
 
 def get_financial_comparisons(
@@ -49,7 +50,7 @@ def get_financial_comparisons(
     else:
         s_timeframe = l_timeframes[-1]
 
-    print(
+    console.print(
         f"Other available {('yearly', 'quarterly')[quarter]} timeframes are: {', '.join(l_timeframes)}\n"
     )
 

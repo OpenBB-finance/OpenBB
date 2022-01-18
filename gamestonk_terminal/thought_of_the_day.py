@@ -9,6 +9,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from gamestonk_terminal.helper_funcs import get_user_agent
+from gamestonk_terminal.rich_config import console
 
 
 class ThoughtOfTheDay:
@@ -132,7 +133,7 @@ def get_thought_of_the_day():
         metadata = totd.get_metadata(an_author)
         quotes = quotes + metadata["quotes"]
 
-    print("Thought of the day:")
-    print(totd.quote_to_str(quotes[random.randint(0, len(quotes) - 1)]))
+    console.print("Thought of the day:")
+    console.print(totd.quote_to_str(quotes[random.randint(0, len(quotes) - 1)]))
 
-    print("")
+    console.print("")

@@ -10,6 +10,7 @@ from gamestonk_terminal.stocks.dark_pool_shorts import finra_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
+from gamestonk_terminal.rich_config import console
 
 
 def plot_dark_pools(ticker: str, ats: pd.DataFrame, otc: pd.DataFrame):
@@ -108,10 +109,10 @@ def darkpool_ats_otc(ticker: str, export: str):
     df_ats, df_otc = finra_model.getTickerFINRAdata(ticker)
 
     if df_ats.empty and df_otc.empty:
-        print("No ticker data found!")
+        console.print("No ticker data found!")
 
     plot_dark_pools(ticker, df_ats, df_otc)
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -184,7 +185,7 @@ def darkpool_otc(num: int, promising: int, tier: str, export: str):
     )[:promising]
 
     plot_dark_pools_ats(df_ats, top_ats_tickers)
-    print("")
+    console.print("")
 
     export_data(
         export,

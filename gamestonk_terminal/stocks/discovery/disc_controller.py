@@ -5,7 +5,7 @@ import argparse
 from datetime import datetime
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -54,6 +54,7 @@ class DiscoveryController(BaseController):
         "rtearn",
         "cnews",
         "rtat",
+        "divcal",
     ]
 
     arkord_sortby_choices = [
@@ -94,10 +95,21 @@ class DiscoveryController(BaseController):
             "Technology",
         ]
     ]
+    PATH = "/stocks/disc/"
+    dividend_columns = [
+        "Name",
+        "Symbol",
+        "Ex-Dividend Date",
+        "Payment Date",
+        "Record Date",
+        "Dividend",
+        "Indicated Annual Dividend",
+        "Announcement Date",
+    ]
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/disc/", queue)
+        super().__init__(queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -109,18 +121,20 @@ class DiscoveryController(BaseController):
             choices["arkord"]["--fund"] = {c: None for c in self.arkord_fund_choices}
             choices["cnews"]["-t"] = {c: None for c in self.cnews_type_choices}
             choices["cnews"]["--type"] = {c: None for c in self.cnews_type_choices}
+            choices["divcal"]["-s"] = {c: None for c in self.dividend_columns}
+            choices["divcal"]["--sort"] = {c: None for c in self.dividend_columns}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
-        help_text = """
-Geek of Wall St:
+        help_text = """[cmds]
+[src][Geek of Wall St][/src]
     rtearn         realtime earnings from and expected moves
-Finnhub:
+[src][Finnhub][/src]
     pipo           past IPOs dates
     fipo           future IPOs dates
-Yahoo Finance:
+[src][Yahoo Finance][/src]
     gainers        show latest top gainers
     losers         show latest top losers
     ugs            undervalued stocks with revenue and earnings growth in excess of 25%
@@ -128,22 +142,75 @@ Yahoo Finance:
     active         most active stocks by intraday trade volume
     ulc            potentially undervalued large cap stocks
     asc            small cap stocks with earnings growth rates better than 25%
-Fidelity:
+[src][Fidelity][/src]
     ford           orders by Fidelity Customers
-cathiesark.com:
+[src][Cathiesark.com][/src]
     arkord         orders by ARK Investment Management LLC
-Seeking Alpha:
+[src][Seeking Alpha][/src]
     upcoming       upcoming earnings release dates
     trending       trending news
     cnews          customized news (buybacks, ipos, spacs, healthcare, politics)
-shortinterest.com
+[src][Shortinterest.com][/src]
     lowfloat       low float stocks under 10M shares float
-pennystockflow.com
+[src][Pennystockflow.com][/src]
     hotpenny       today's hot penny stocks
-NASDAQ Data Link (Formerly Quandl):
+[src][NASDAQ Data Link (Formerly Quandl)][/src]
     rtat           top 10 retail traded stocks per day
+    divcal         dividend calendar for selected date[/cmds]
 """
-        print(help_text)
+        console.print(text=help_text, menu="Stocks - Discovery")
+
+    # TODO Add flag for adding last price to the following table
+    def call_divcal(self, other_args: List[str]):
+        """Process divcal command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="divcal",
+            description="""Get dividend calendar for selected date""",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            default=datetime.now(),
+            type=valid_date,
+            dest="date",
+            help="Date to get format for",
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            default=["Dividend"],
+            nargs="+",
+            type=str,
+            help="Column to sort by",
+            dest="sort",
+        )
+        parser.add_argument(
+            "-a",
+            "--ascend",
+            default=False,
+            action="store_true",
+            help="Flag to sort in ascending order",
+            dest="ascend",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-d")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
+        )
+        if ns_parser:
+            sort_col = " ".join(ns_parser.sort)
+            if sort_col not in self.dividend_columns:
+                console.print(f"{sort_col} not a valid selection for sorting.\n")
+                return
+            nasdaq_view.display_dividend_calendar(
+                ns_parser.date.strftime("%Y-%m-%d"),
+                sort_col=sort_col,
+                ascending=ns_parser.ascend,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
     def call_rtearn(self, other_args: List[str]):
         """Process rtearn command"""

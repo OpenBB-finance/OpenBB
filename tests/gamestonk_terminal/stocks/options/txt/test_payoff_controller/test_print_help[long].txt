@@ -9,8 +9,8 @@ Underlying Asset: Long
 
     list          list available strike prices for calls and puts
 
-    add           add option to the list of the options to be plotted[2m
-    rmv           remove option from the list of the options to be plotted[0m
+    add           add option to the list of the options to be plotted[unvl]
+    rmv           remove option from the list of the options to be plotted[/unvl]
 
     sop           selected options
     plot          show the option payoff diagram

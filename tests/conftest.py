@@ -3,6 +3,7 @@ import json
 import os
 import pathlib
 from typing import Any, Dict, List, Optional, Type
+import pkg_resources
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -15,6 +16,8 @@ from _pytest.fixtures import SubRequest
 from _pytest.mark.structures import Mark
 
 # IMPORTATION INTERNAL
+from gamestonk_terminal import rich_config
+
 
 # pylint: disable=redefined-outer-name
 
@@ -301,6 +304,11 @@ def pytest_addoption(parser: Parser):
 
 
 def pytest_configure(config: Config) -> None:
+    installed_packages = pkg_resources.working_set
+    for item in list(installed_packages):
+        if "brotli" in str(item).lower():
+            pytest.exit("Uninstall brotli before running tests")
+    rich_config.disable_rich()
     config.addinivalue_line("markers", "record_stdout: Mark the test as text record.")
 
 

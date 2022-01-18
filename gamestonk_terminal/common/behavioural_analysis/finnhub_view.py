@@ -7,6 +7,7 @@ import pandas as pd
 
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.common.behavioural_analysis import finnhub_model
+from gamestonk_terminal.rich_config import console
 
 
 def display_sentiment_stats(ticker: str, export: str = ""):
@@ -24,7 +25,7 @@ def display_sentiment_stats(ticker: str, export: str = ""):
     d_stats = finnhub_model.get_sentiment_stats(ticker)
 
     if d_stats:
-        print(
+        console.print(
             f"""
 Buzz: {round(100*d_stats['buzz']['buzz'],2)} %
 News Score: {round(100*d_stats['companyNewsScore'],2)} %
@@ -46,5 +47,5 @@ Sector Average News Score: {round(100*d_stats['sectorAverageNewsScore'],2)} %"""
         )
 
     else:
-        print("No sentiment stats found.")
-    print("")
+        console.print("No sentiment stats found.")
+    console.print("")

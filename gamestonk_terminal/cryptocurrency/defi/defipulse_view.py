@@ -6,6 +6,7 @@ from tabulate import tabulate
 from gamestonk_terminal.cryptocurrency.defi import defipulse_model
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def display_defipulse(top: int, sortby: str, descend: bool, export: str = "") -> None:
@@ -41,7 +42,7 @@ def display_defipulse(top: int, sortby: str, descend: bool, export: str = "") ->
             "\n",
         )
     else:
-        print(df.to_string, "\n")
+        console.print(df.to_string, "\n")
 
     export_data(
         export,

@@ -11,6 +11,7 @@ import pytz
 
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -50,17 +51,18 @@ class TerminalController(BaseController):
         "portfolio",
         "forex",
         "etf",
-        "resources",
         "jupyter",
         "funds",
         "alternative",
     ]
 
+    PATH = "/"
+
     all_timezones = pytz.all_timezones
 
     def __init__(self, jobs_cmds: List[str] = None):
         """Constructor"""
-        super().__init__("/", jobs_cmds)
+        super().__init__(jobs_cmds)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: None for c in self.controller_choices}
@@ -81,42 +83,44 @@ class TerminalController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
-Multiple jobs queue (where each '/' denotes a new command). E.g.
-    /stocks $ disc/ugs -n 3/../load tsla/candle
+        console.print(
+            text=f"""
+[info]Multiple jobs queue (where each '/' denotes a new command).[/info]
+    E.g. '/stocks $ disc/ugs -n 3/../load tsla/candle'
 
-If you want to jump from crypto/ta to stocks you can use an absolute path that starts with a slash (/). E.g.
-    /crypto/ta $ /stocks
+[info]If you want to jump from crypto/ta to stocks you can use an absolute path that starts with a slash (/).[/info]
+    E.g. '/crypto/ta $ /stocks'
 
-The previous logic also holds for when launching the terminal. E.g.
-    $ python terminal.py /stocks/disc/ugs -n 3/../load tsla/candle
+[info]The previous logic also holds for when launching the terminal.[/info]
+    E.g. '$ python terminal.py /stocks/disc/ugs -n 3/../load tsla/candle'
 
-The main commands you should be aware when navigating through the terminal are:
+[info]The main commands you should be aware when navigating through the terminal are:[/info][cmds]
     cls             clear the screen
     help / h / ?    help menu
     quit / q / ..   quit this menu and go one menu above
     exit            exit the terminal
     reset / r       reset the terminal and reload configs from the current location
+    resources       only available on main contexts (not sub-menus)
 
     about           about us
     update          update terminal automatically
     keys            check for status of API keys
-    tz              set different timezone
+    tz              set different timezone[/cmds]
 
-Timezone: {get_user_timezone_or_invalid()}
-
+[param]Timezone:[/param] {get_user_timezone_or_invalid()}
+[menu]
 >   stocks
 >   crypto
 >   etf
 >   economy
 >   forex
 >   funds
->   portfolio
->   jupyter
->   resources
 >   alternative
-    """
-        print(help_text)
+>   portfolio
+>   jupyter [/menu]
+    """,
+            menu="Home",
+        )
 
     def call_update(self, _):
         """Process update command"""
@@ -134,25 +138,25 @@ Timezone: {get_user_timezone_or_invalid()}
         """Process stocks command"""
         from gamestonk_terminal.stocks.stocks_controller import StocksController
 
-        self.queue = StocksController(self.queue).menu()
+        self.queue = self.load_class(StocksController, self.queue)
 
     def call_crypto(self, _):
         """Process crypto command"""
         from gamestonk_terminal.cryptocurrency.crypto_controller import CryptoController
 
-        self.queue = CryptoController(self.queue).menu()
+        self.queue = self.load_class(CryptoController, self.queue)
 
     def call_economy(self, _):
         """Process economy command"""
         from gamestonk_terminal.economy.economy_controller import EconomyController
 
-        self.queue = EconomyController(self.queue).menu()
+        self.queue = self.load_class(EconomyController, self.queue)
 
     def call_etf(self, _):
         """Process etf command"""
         from gamestonk_terminal.etf.etf_controller import ETFController
 
-        self.queue = ETFController(self.queue).menu()
+        self.queue = self.load_class(ETFController, self.queue)
 
     def call_funds(self, _):
         """Process etf command"""
@@ -160,35 +164,27 @@ Timezone: {get_user_timezone_or_invalid()}
             FundController,
         )
 
-        self.queue = FundController(self.queue).menu()
+        self.queue = self.load_class(FundController, self.queue)
 
     def call_forex(self, _):
         """Process forex command"""
         from gamestonk_terminal.forex.forex_controller import ForexController
 
-        self.queue = ForexController(self.queue).menu()
+        self.queue = self.load_class(ForexController, self.queue)
 
     def call_jupyter(self, _):
         """Process jupyter command"""
         from gamestonk_terminal.jupyter.jupyter_controller import JupyterController
 
-        self.queue = JupyterController(self.queue).menu()
-
-    def call_resources(self, _):
-        """Process resources command"""
-        from gamestonk_terminal.resources.resources_controller import (
-            ResourceCollectionController,
-        )
-
-        self.queue = ResourceCollectionController(self.queue).menu()
+        self.queue = self.load_class(JupyterController, self.queue)
 
     def call_alternative(self, _):
-        """Process resources command"""
+        """Process alternative command"""
         from gamestonk_terminal.alternative.alt_controller import (
             AlternativeDataController,
         )
 
-        self.queue = AlternativeDataController(self.queue).menu()
+        self.queue = self.load_class(AlternativeDataController, self.queue)
 
     def call_portfolio(self, _):
         """Process portfolio command"""
@@ -196,7 +192,7 @@ Timezone: {get_user_timezone_or_invalid()}
             PortfolioController,
         )
 
-        self.queue = PortfolioController(self.queue).menu()
+        self.queue = self.load_class(PortfolioController, self.queue)
 
     def call_tz(self, other_args: List[str]):
         """Process tz command"""
@@ -220,7 +216,7 @@ def terminal(jobs_cmds: List[str] = None):
 
     while ret_code:
         if gtff.ENABLE_QUICK_EXIT:
-            print("Quick exit enabled")
+            console.print("Quick exit enabled")
             break
 
         # There is a command in the queue
@@ -238,8 +234,8 @@ def terminal(jobs_cmds: List[str] = None):
             t_controller.queue = t_controller.queue[1:]
 
             # Print the current location because this was an instruction and we want user to know what was the action
-            if an_input and an_input.split(" ")[0] in t_controller.controller_choices:
-                print(f"{get_flair()} / $ {an_input}")
+            if an_input and an_input.split(" ")[0] in t_controller.CHOICES_COMMANDS:
+                console.print(f"{get_flair()} / $ {an_input}")
 
         # Get input command from user
         else:
@@ -279,7 +275,9 @@ def terminal(jobs_cmds: List[str] = None):
                     break
 
         except SystemExit:
-            print(f"\nThe command '{an_input}' doesn't exist on the / menu", end="")
+            console.print(
+                f"\nThe command '{an_input}' doesn't exist on the / menu", end=""
+            )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
                 t_controller.controller_choices,
@@ -294,16 +292,16 @@ def terminal(jobs_cmds: List[str] = None):
                     if candidate_input == an_input:
                         an_input = ""
                         t_controller.queue = []
-                        print("\n")
+                        console.print("\n")
                         continue
                     an_input = candidate_input
                 else:
                     an_input = similar_cmd[0]
 
-                print(f" Replacing by '{an_input}'.")
+                console.print(f" Replacing by '{an_input}'.")
                 t_controller.queue.insert(0, an_input)
             else:
-                print("\n")
+                console.print("\n")
 
 
 if __name__ == "__main__":
@@ -314,7 +312,7 @@ if __name__ == "__main__":
                     simulate_argv = f"/{'/'.join([line.rstrip() for line in fp])}"
                     terminal(simulate_argv.replace("//", "/home/").split())
             else:
-                print(
+                console.print(
                     f"The file '{sys.argv[1]}' doesn't exist. Launching terminal without any configuration.\n"
                 )
                 terminal()

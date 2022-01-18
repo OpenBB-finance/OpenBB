@@ -9,6 +9,7 @@ from robin_stocks import robinhood
 
 from gamestonk_terminal.config_terminal import RH_PASSWORD as pw
 from gamestonk_terminal.config_terminal import RH_USERNAME as user
+from gamestonk_terminal.rich_config import console
 
 dt_format = "%Y-%m-%dT%H:%M:%SZ"
 
@@ -16,7 +17,7 @@ dt_format = "%Y-%m-%dT%H:%M:%SZ"
 def login():
     """Robinhood login"""
     robinhood.login(user, pw)
-    print("")
+    console.print("")
 
 
 def logoff():

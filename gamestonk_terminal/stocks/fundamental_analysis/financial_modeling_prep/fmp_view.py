@@ -11,6 +11,7 @@ from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep impo
     fmp_model,
 )
 import gamestonk_terminal.feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def valinvest_score(ticker: str):
@@ -24,8 +25,8 @@ def valinvest_score(ticker: str):
         Fundamental analysis ticker symbol
     """
     score = fmp_model.get_score(ticker)
-    print(f"Score: {score:.2f}".rstrip("0").rstrip(".") + " %")
-    print("")
+    console.print(f"Score: {score:.2f}".rstrip("0").rstrip(".") + " %")
+    console.print("")
 
 
 def display_profile(ticker: str):
@@ -48,11 +49,13 @@ def display_profile(ticker: str):
             )
         )
     else:
-        print(profile.drop(index=["description", "image"]).to_string(header=False))
+        console.print(
+            profile.drop(index=["description", "image"]).to_string(header=False)
+        )
 
-    print(f"\nImage: {profile.loc['image'][0]}")
-    print(f"\nDescription: {profile.loc['description'][0]}")
-    print("")
+    console.print(f"\nImage: {profile.loc['image'][0]}")
+    console.print(f"\nDescription: {profile.loc['description'][0]}")
+    console.print("")
 
 
 def display_quote(ticker: str):
@@ -68,8 +71,8 @@ def display_quote(ticker: str):
     if gtff.USE_TABULATE_DF:
         print(tabulate(quote, headers=[], tablefmt="fancy_grid"))
     else:
-        print(quote.to_string(header=False))
-    print("")
+        console.print(quote.to_string(header=False))
+    console.print("")
 
 
 def display_enterprise(
@@ -93,8 +96,8 @@ def display_enterprise(
     if gtff.USE_TABULATE_DF:
         print(tabulate(df_fa, headers=df_fa.columns, tablefmt="fancy_grid"))
     else:
-        print(df_fa.to_string())
-    print("")
+        console.print(df_fa.to_string())
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "enterprise", df_fa)
 
 
@@ -119,9 +122,9 @@ def display_discounted_cash_flow(
     if gtff.USE_TABULATE_DF:
         print(tabulate(dcf, headers=[], tablefmt="fancy_grid"))
     else:
-        print(dcf.to_string())
+        console.print(dcf.to_string())
 
-    print("")
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "dcf", dcf)
 
 
@@ -154,14 +157,14 @@ def display_income_statement(
 
     else:
 
-        print(income.drop(index=["Final link", "Link"]).to_string())
+        console.print(income.drop(index=["Final link", "Link"]).to_string())
 
     pd.set_option("display.max_colwidth", None)
-    print("")
-    print(income.loc["Final link"].to_frame().to_string())
-    print("")
-    print(income.loc["Link"].to_frame().to_string())
-    print("")
+    console.print("")
+    console.print(income.loc["Final link"].to_frame().to_string())
+    console.print("")
+    console.print(income.loc["Link"].to_frame().to_string())
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "income", income)
 
 
@@ -193,14 +196,14 @@ def display_balance_sheet(
         )
 
     else:
-        print(balance.drop(index=["Final link", "Link"]).to_string())
+        console.print(balance.drop(index=["Final link", "Link"]).to_string())
 
     pd.set_option("display.max_colwidth", None)
-    print("")
-    print(balance.loc["Final link"].to_frame().to_string())
-    print("")
-    print(balance.loc["Link"].to_frame().to_string())
-    print("")
+    console.print("")
+    console.print(balance.loc["Final link"].to_frame().to_string())
+    console.print("")
+    console.print(balance.loc["Link"].to_frame().to_string())
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "balance", balance)
 
 
@@ -231,14 +234,14 @@ def display_cash_flow(
             )
         )
     else:
-        print(cash.drop(index=["Final link", "Link"]).to_string())
+        console.print(cash.drop(index=["Final link", "Link"]).to_string())
 
     pd.set_option("display.max_colwidth", None)
-    print("")
-    print(cash.loc["Final link"].to_frame().to_string())
-    print("")
-    print(cash.loc["Link"].to_frame().to_string())
-    print("")
+    console.print("")
+    console.print(cash.loc["Final link"].to_frame().to_string())
+    console.print("")
+    console.print(cash.loc["Link"].to_frame().to_string())
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "cash", cash)
 
 
@@ -263,8 +266,8 @@ def display_key_metrics(
     if gtff.USE_TABULATE_DF:
         print(tabulate(key_metrics, headers=key_metrics.columns, tablefmt="fancy_grid"))
     else:
-        print(key_metrics.to_string())
-    print("")
+        console.print(key_metrics.to_string())
+    console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "metrics", key_metrics
     )
@@ -292,8 +295,8 @@ def display_financial_ratios(
         print(tabulate(ratios, headers=ratios.columns, tablefmt="fancy_grid"))
     else:
 
-        print(ratios.to_string())
-    print("")
+        console.print(ratios.to_string())
+    console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "grratiosowth", ratios
     )
@@ -321,6 +324,6 @@ def display_financial_statement_growth(
         print(tabulate(growth, headers=growth.columns, tablefmt="fancy_grid"))
     else:
 
-        print(growth.to_string())
-    print("")
+        console.print(growth.to_string())
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "growth", growth)

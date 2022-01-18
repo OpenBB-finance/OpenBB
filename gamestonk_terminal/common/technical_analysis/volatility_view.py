@@ -11,6 +11,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import volatility_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -71,7 +72,7 @@ def display_bbands(
     fig.tight_layout(pad=1)
 
     plt.show()
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -138,7 +139,7 @@ def display_donchian(
     plt.legend()
 
     plt.show()
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -213,7 +214,7 @@ def view_kc(
     plt.legend()
     plt.show()
 
-    print("")
+    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),

@@ -10,6 +10,7 @@ from gamestonk_terminal.helper_funcs import (
     export_data,
 )
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def show_top_mover(sort_type: str, limit: int = 10, export=""):
@@ -26,7 +27,7 @@ def show_top_mover(sort_type: str, limit: int = 10, export=""):
     """
     data = wsj_model.etf_movers(sort_type)
     if data.empty:
-        print("No data available\n")
+        console.print("No data available\n")
         return
 
     if gtff.USE_TABULATE_DF:
@@ -40,11 +41,11 @@ def show_top_mover(sort_type: str, limit: int = 10, export=""):
             )
         )
     else:
-        print(data.head(limit).to_string())
+        console.print(data.head(limit).to_string())
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         sort_type,
         data,
     )
-    print("")
+    console.print("")
