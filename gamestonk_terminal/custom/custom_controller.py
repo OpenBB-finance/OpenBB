@@ -78,8 +78,8 @@ Current file:    {self.file or None}[cmds]{has_data_start}
     info            show data info (columns and datatypes)
     plot            plot data from loaded file{has_data_end}[/cmds]
 [menus]
->   qa          quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis[
->   pred        prediction techniques    \t e.g.: regression, arima, rnn, lstm/menus]
+>   qa          quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis
+>   pred        prediction techniques    \t e.g.: regression, arima, rnn, lstm[/menus]
 """
         console.print(text=help_text, menu="Custom")
 
@@ -207,7 +207,7 @@ Current file:    {self.file or None}[cmds]{has_data_start}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="info",
-            description="Show infomration of custom data.",
+            description="Show information of custom data.",
         )
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
