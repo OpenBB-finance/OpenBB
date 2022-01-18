@@ -310,8 +310,10 @@ def pytest_configure(config: Config) -> None:
         if "brotli" in str(item).lower():
             pytest.exit("Uninstall brotli before running tests")
     rich_config.disable_rich()
+
     def effect(df, *xargs, **kwargs):  # pylint: disable=unused-argument
         print(df.to_string())
+
     helper_funcs.rich_table_from_df = effect
     config.addinivalue_line("markers", "record_stdout: Mark the test as text record.")
 
