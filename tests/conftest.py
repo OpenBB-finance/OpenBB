@@ -1,9 +1,9 @@
 # IMPORTATION STANDARD
+from typing import Any, Dict, List, Optional, Type
 import json
 import os
 import pathlib
 import pkg_resources
-from typing import Any, Dict, List, Optional, Type
 
 # IMPORTATION THIRDPARTY
 import pandas as pd

@@ -66,10 +66,6 @@ def rich_table_from_df(
         Titles for columns
     floatfmt: str
         String to
-    Returns
-    -------
-    Table: Table
-        rich table
     """
 
     if gtff.USE_TABULATE_DF:
