@@ -197,6 +197,7 @@ Select one of the following reports:[/info][cmds]
                 notebook_template + ".ipynb",
                 notebook_output + ".ipynb",
                 parameters=d_report_params,
+                kernel_name="python3",
             )
 
             if gtff.OPEN_REPORT_AS_HTML:
