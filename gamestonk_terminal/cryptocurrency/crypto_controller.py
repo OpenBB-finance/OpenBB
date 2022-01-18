@@ -10,10 +10,6 @@ import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 from rich.markdown import Markdown
 from binance.client import Client
-from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import (
-    get_categories_keys,
-)
-from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_view import display_coins
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import calc_change

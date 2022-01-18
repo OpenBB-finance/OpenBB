@@ -73,7 +73,7 @@ class DiscoveryController(BaseController):
         """Print help"""
         help_text = """[cmds]
 [src][CoinGecko][/src]
-    cgtop             top coins (with or withoug category)
+    cgtop             top coins (with or without category)
     cgtrending        trending coins
     cgvolume          coins with highest volume
     cggainers         top gainers - coins which price gained the most in given period
