@@ -45,7 +45,7 @@ def get_historical(ticker: str, start: str, end: str, number: int) -> pd.DataFra
 
     if response.status_code == 200:
         result = response.json()["results"]
-        
+
         # check if result is not empty
         if result:
             df = pd.DataFrame(response.json()["results"])
