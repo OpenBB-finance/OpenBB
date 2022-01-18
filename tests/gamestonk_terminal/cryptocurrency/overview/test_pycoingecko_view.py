@@ -25,6 +25,7 @@ class TestCoinGeckoAPI(TestCase):
         )
 
     @check_print(assert_in="Decentralized Finance")
+    @pytest.mark.skip
     @vcr.use_cassette(
         "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/categories.yaml",
         record_mode="new_episodes",
@@ -34,6 +35,7 @@ class TestCoinGeckoAPI(TestCase):
             top=15, export="", pie=False, sortby="market_cap"
         )
 
+    @pytest.mark.skip
     @check_print(assert_in="════")
     @vcr.use_cassette(
         "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/stablecoins.yaml",
@@ -44,6 +46,7 @@ class TestCoinGeckoAPI(TestCase):
             top=15, export="", sortby="market_cap", pie=False, descend=False
         )
 
+    @pytest.mark.skip
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
         "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/nft_market-status.yaml",
