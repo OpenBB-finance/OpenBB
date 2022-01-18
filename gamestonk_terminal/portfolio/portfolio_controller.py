@@ -392,7 +392,7 @@ class PortfolioController(BaseController):
                     ns_parser.limit,
                     ns_parser.no_etf_positions,
                 )
-                portfolio_view.al(df, ns_parser.graph)
+                portfolio_view.display_allocation(df, ns_parser.graph)
             else:
                 console.print("Cannot generate a graph from an empty dataframe\n")
         else:
