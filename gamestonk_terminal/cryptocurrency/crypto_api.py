@@ -19,3 +19,8 @@ from .technical_analysis import ta_api as ta
 from .due_diligence.finbrain_crypto_view import (
     display_crypto_sentiment_analysis as headlines,
 )
+
+try:
+    from .prediction_techniques import pred_api as pred
+except Exception:
+    print("Prediction API is not available.")
