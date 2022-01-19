@@ -290,12 +290,12 @@ Stock: [/param]{stock_text}
             description="Shows historic data for a stock",
         )
         parser.add_argument(
-            "-m",
-            "--matplotlib",
-            dest="matplotlib",
-            action="store_true",
-            default=False,
-            help="Flag to show matplotlib instead of interactive plot using plotly.",
+            "-p",
+            "--plotly",
+            dest="plotly",
+            action="store_false",
+            default=True,
+            help="Flag to show interactive plotly chart.",
         )
         parser.add_argument(
             "--sort",
@@ -337,6 +337,21 @@ Stock: [/param]{stock_text}
             dest="num",
             default=20,
         )
+        parser.add_argument(
+            "-t",
+            "--trend",
+            action="store_true",
+            default=False,
+            help="Flag to add high and low trends to candle.",
+            dest="trendlines",
+        )
+        parser.add_argument(
+            "--ma",
+            dest="mov_avg",
+            type=str,
+            help="Add moving averaged to plot",
+            default="",
+        )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -361,13 +376,21 @@ Stock: [/param]{stock_text}
                     )
 
                 else:
+
                     data = stocks_helper.process_candle(self.stock)
+                    mov_avgs = (
+                        tuple(int(num) for num in ns_parser.mov_avg.split(","))
+                        if ns_parser.mov_avg
+                        else None
+                    )
 
                     stocks_helper.display_candle(
                         s_ticker=self.ticker,
                         df_stock=data,
-                        use_matplotlib=ns_parser.matplotlib,
+                        use_matplotlib=ns_parser.plotly,
                         intraday=self.interval != "1440min",
+                        add_trend=ns_parser.trendlines,
+                        ma=mov_avgs,
                     )
             else:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
