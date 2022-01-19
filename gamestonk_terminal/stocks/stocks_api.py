@@ -25,4 +25,5 @@ from .technical_analysis import ta_api as ta
 try:
     from .prediction_techniques import pred_api as pred
 except Exception:
-    print("Prediction API is not available.")
+    pass
+    # print("Prediction API is not available.")
