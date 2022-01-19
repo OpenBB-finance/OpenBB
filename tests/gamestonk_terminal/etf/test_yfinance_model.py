@@ -1,0 +1,42 @@
+# IMPORTATION STANDARD
+
+# IMPORTATION THIRDPARTY
+import pytest
+
+# IMPORTATION INTERNAL
+from gamestonk_terminal.etf import yfinance_model
+
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("User-Agent", None)],
+    }
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize(
+    "name",
+    [
+        "ARKW",
+        "ARKK",
+    ],
+)
+def test_get_etfs_by_name(recorder, name):
+    result = yfinance_model.get_etf_sector_weightings(name)
+
+    recorder.capture(result)
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize(
+    "name",
+    [
+        "ARKW",
+        "ARKK",
+    ],
+)
+def test_get_etf_summary_description(recorder, name):
+    result = yfinance_model.get_etf_summary_description(name)
+
+    recorder.capture(result)
