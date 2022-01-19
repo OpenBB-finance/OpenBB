@@ -118,7 +118,7 @@ class TerminalController(BaseController):
 >   funds
 >   alternative
 >   portfolio
->   jupyter 
+>   jupyter
 >   custom[/menu]
     """,
             menu="Home",
