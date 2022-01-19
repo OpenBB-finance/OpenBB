@@ -1,1 +1,1 @@
-[31mSell[0m
+[red]Sell[/red]
