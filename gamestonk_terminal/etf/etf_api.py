@@ -1,6 +1,5 @@
 """ETF context API."""
 import os
-from tkinter import N
 from gamestonk_terminal.helper_classes import ModelsNamespace as _models
 
 # flake8: noqa
