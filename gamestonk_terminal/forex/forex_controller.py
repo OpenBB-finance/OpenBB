@@ -9,7 +9,6 @@ import logging
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from rich.markdown import Markdown
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.forex import av_view, av_model
@@ -32,6 +31,7 @@ class ForexController(BaseController):
     CHOICES_COMMANDS = ["to", "from", "load", "quote", "candle", "resources"]
     CHOICES_MENUS = ["oanda"]
     PATH = "/forex/"
+    FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
     def __init__(self, queue: List[str] = None):
         """Construct Data."""
@@ -67,16 +67,6 @@ class ForexController(BaseController):
 >   oanda         Oanda menu[/menu][/cmds]
  """
         console.print(text=help_text, menu="Forex")
-
-    def call_resources(self, _):
-        """Process resources command"""
-        resources_md = os.path.join(os.path.dirname(__file__), "README.md")
-        if os.path.isfile(resources_md):
-            with open(resources_md) as f:
-                console.print(Markdown(f.read()))
-            console.print("")
-        else:
-            console.print("No resources available.\n")
 
     def call_to(self, other_args: List[str]):
         """Process 'to' command."""
