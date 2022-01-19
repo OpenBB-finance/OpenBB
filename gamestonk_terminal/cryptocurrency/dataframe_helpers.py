@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import re
-from typing import Union, Any
+from typing import Union, Any, Optional
 import textwrap
 import pandas as pd
 from gamestonk_terminal.helper_funcs import long_number_format
@@ -137,3 +137,46 @@ def prettify_column_names(columns: list) -> list:
     list with reformatted columns
     """
     return [" ".join(re.findall(".[^A-Z]*", val)).capitalize() for val in columns]
+
+
+def denominate_number(
+    number: Any, divider: int = 1000000, round_digits: Optional[int] = 4
+) -> float:
+    """Denominate numbers base on provided divider and round number by provided digit
+
+    Parameters
+    ----------
+    number: Any
+        value to round
+    divider: int
+        divide by value
+    round_digits:
+        round number to n digits
+    Returns
+    -------
+    float:
+        denominated number
+    """
+
+    if round_digits:
+        return round(float(number) / divider, round_digits)
+    return round(float(number) / divider)
+
+
+def replace_unicode(x: Any) -> Any:
+    """Replace unicode characters to ?
+
+    Parameters
+    ----------
+    x: Any
+        value to replace unicode chars
+
+    Returns
+    -------
+    Any
+        replaced value
+    """
+
+    if isinstance(x, str):
+        return x.encode("ascii", "replace").decode()
+    return x

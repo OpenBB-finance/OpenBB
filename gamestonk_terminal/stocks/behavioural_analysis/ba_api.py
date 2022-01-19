@@ -58,17 +58,3 @@ from gamestonk_terminal.common.behavioural_analysis.finbrain_view import (
 from gamestonk_terminal.common.behavioural_analysis.finnhub_view import (
     display_sentiment_stats as stats,
 )
-from gamestonk_terminal.common.behavioural_analysis.sentimentinvestor_view import (
-    display_metrics as metrics,
-)
-from gamestonk_terminal.common.behavioural_analysis.sentimentinvestor_view import (
-    display_social as social,
-)
-from gamestonk_terminal.common.behavioural_analysis.sentimentinvestor_view import (
-    display_historical as historical,
-)
-from gamestonk_terminal.common.behavioural_analysis.sentimentinvestor_view import (
-    display_top as popularsi,
-)
-
-emerging = popularsi

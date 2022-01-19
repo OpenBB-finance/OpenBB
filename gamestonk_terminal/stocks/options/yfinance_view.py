@@ -20,7 +20,7 @@ from openpyxl import Workbook
 
 import gamestonk_terminal.config_plot as cfp
 import gamestonk_terminal.feature_flags as gtff
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.helper_funcs import export_data, plot_autoscale, excel_columns
 from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
 from gamestonk_terminal.stocks.options.yfinance_model import (
     generate_data,
@@ -755,41 +755,8 @@ def export_binomial_calcs(
     ticker : str
         The ticker for the company
     """
-    letters = [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F",
-        "G",
-        "H",
-        "I",
-        "J",
-        "K",
-        "L",
-        "M",
-    ]
-    letters += [
-        "N",
-        "O",
-        "P",
-        "Q",
-        "R",
-        "S",
-        "T",
-        "U",
-        "V",
-        "W",
-        "X",
-        "Y",
-        "Z",
-    ]
-    opts = (
-        [f"{x}" for x in letters]
-        + [f"{x}{y}" for x in letters for y in letters]
-        + [f"{x}{y}{z}" for x in letters for y in letters for z in letters]
-    )
+
+    opts = excel_columns()
     wb = Workbook()
     ws = wb.active
 
@@ -934,15 +901,17 @@ def show_binom(
     )
 
 
-def display_vol_surface(ticker: str, export: str = ""):
+def display_vol_surface(ticker: str, export: str = "", z: str = "IV"):
     """Display vol surface
 
     Parameters
     ----------
-    ticker: str
+    ticker : str
         Ticker to get surface for
-    export: str
+    export : str
         Format to export data
+    z : str
+        The variable for the Z axis
 
     """
     data = yfinance_model.get_iv_surface(ticker)
@@ -951,15 +920,23 @@ def display_vol_surface(ticker: str, export: str = ""):
         return
     X = data.dte
     Y = data.strike
-    Z = data.impliedVolatility
+    if z == "IV":
+        Z = data.impliedVolatility
+        label = "Volatility"
+    elif z == "OI":
+        Z = data.openInterest
+        label = "Open Interest"
+    elif z == "LP":
+        Z = data.lastPrice
+        label = "Last Price"
     fig = plt.figure()
     ax = plt.axes(projection="3d")
     ax.plot_trisurf(X, Y, Z, cmap="jet", linewidth=0.2)
     ax.set_xlabel("DTE")
     ax.set_ylabel("Strike")
-    ax.set_zlabel("IV")
+    ax.set_zlabel(z)
     fig.tight_layout()
-    fig.suptitle(f"Volatility Surface for {ticker}")
+    fig.suptitle(f"{label} Surface for {ticker}")
     if gtff.USE_ION:
         plt.ion()
     plt.show()
@@ -969,4 +946,4 @@ def display_vol_surface(ticker: str, export: str = ""):
         "vsurf",
         data,
     )
-    print("")
+    console.print("")

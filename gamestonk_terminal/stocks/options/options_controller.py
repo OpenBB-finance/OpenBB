@@ -104,10 +104,11 @@ class OptionsController(BaseController):
     oi_source_choices = ["tr", "yf"]
     plot_vars_choices = ["ltd", "s", "lp", "b", "a", "c", "pc", "v", "oi", "iv"]
     plot_custom_choices = ["smile"]
+    PATH = "/stocks/options/"
 
     def __init__(self, ticker: str, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/options/", queue)
+        super().__init__(queue)
 
         self.ticker = ticker
         self.prices = pd.DataFrame(columns=["Price", "Chance"])
@@ -1099,12 +1100,23 @@ Expiry: [/param]{self.selected_date or None}
             prog="vsurf",
             description="Plot 3D volatility surface.",
         )
+        parser.add_argument(
+            "-z",
+            "--z-axis",
+            default="IV",
+            dest="z",
+            choices=["IV", "OI", "LP"],
+            type=str,
+            help="The data for the Z axis",
+        )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
-            yfinance_view.display_vol_surface(self.ticker, export=ns_parser.export)
+            yfinance_view.display_vol_surface(
+                self.ticker, export=ns_parser.export, z=ns_parser.z
+            )
 
     def call_parity(self, other_args: List[str]):
         """Process parity command"""
@@ -1246,9 +1258,12 @@ Expiry: [/param]{self.selected_date or None}
         """Process payoff command"""
         if self.ticker:
             if self.selected_date:
-                self.queue = payoff_controller.PayoffController(
-                    self.ticker, self.selected_date, self.queue
-                ).menu()
+                self.queue = self.load_class(
+                    payoff_controller.PayoffController,
+                    self.ticker,
+                    self.selected_date,
+                    self.queue,
+                )
             else:
                 console.print("No expiry loaded. First use `exp {expiry date}`\n")
 
@@ -1259,9 +1274,13 @@ Expiry: [/param]{self.selected_date or None}
         """Process pricing command"""
         if self.ticker:
             if self.selected_date:
-                self.queue = pricing_controller.PricingController(
-                    self.ticker, self.selected_date, self.prices, self.queue
-                ).menu()
+                self.queue = self.load_class(
+                    pricing_controller.PricingController,
+                    self.ticker,
+                    self.selected_date,
+                    self.prices,
+                    self.queue,
+                )
             else:
                 console.print("No expiry loaded. First use `exp {expiry date}`\n")
 

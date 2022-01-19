@@ -67,6 +67,7 @@ class FundamentalAnalysisController(BaseController):
     CHOICES_MENUS = [
         "fmp",
     ]
+    PATH = "/stocks/fa/"
 
     def __init__(
         self,
@@ -77,7 +78,7 @@ class FundamentalAnalysisController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/stocks/fa/", queue)
+        super().__init__(queue)
 
         self.ticker = f"{ticker}.{suffix}" if suffix else ticker
         self.start = start
@@ -745,14 +746,48 @@ Ticker: [/param] {self.ticker} [cmds]
             action="store_true",
             dest="audit",
             default=False,
-            help="Confirms that the numbers provided are accurate.",
+            help="Generates a tie-out for financial statement information pulled from online.",
+        )
+        parser.add_argument(
+            "--no-ratios",
+            action="store_false",
+            dest="ratios",
+            default=True,
+            help="Removes ratios from DCF.",
+        )
+        parser.add_argument(
+            "--no-filter",
+            action="store_true",
+            dest="ratios",
+            default=False,
+            help="Allow similar companies of any market cap to be shown.",
+        )
+        parser.add_argument(
+            "-p" "--prediction",
+            type=int,
+            dest="prediction",
+            default=10,
+            help="Number of years to predict before using terminal value.",
+        )
+        parser.add_argument(
+            "-s" "--similar",
+            type=int,
+            dest="similar",
+            default=6,
+            help="Number of similar companies to generate ratios for.",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
         if ns_parser:
-            dcf = dcf_view.CreateExcelFA(self.ticker, ns_parser.audit)
+            dcf = dcf_view.CreateExcelFA(
+                self.ticker,
+                ns_parser.audit,
+                ns_parser.ratios,
+                ns_parser.prediction,
+                ns_parser.similar,
+            )
             dcf.create_workbook()
 
     def call_warnings(self, other_args: List[str]):
@@ -786,9 +821,13 @@ Ticker: [/param] {self.ticker} [cmds]
 
     def call_fmp(self, _):
         """Process fmp command."""
-        self.queue = fmp_controller.FinancialModelingPrepController(
-            self.ticker, self.start, self.interval, self.queue
-        ).menu()
+        self.queue = self.load_class(
+            fmp_controller.FinancialModelingPrepController,
+            self.ticker,
+            self.start,
+            self.interval,
+            self.queue,
+        )
 
 
 def key_metrics_explained(other_args: List[str]):

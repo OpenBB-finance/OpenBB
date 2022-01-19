@@ -161,6 +161,27 @@ def check_non_negative(value) -> int:
     return new_value
 
 
+def check_terra_address_format(address: str) -> str:
+    """Validate if terra account address has proper format: ^terra1[a-z0-9]{38}$
+
+    Parameters
+    ----------
+    address: str
+        terra blockchain account address
+    Returns
+    -------
+    str
+        Terra blockchain address or raise argparse exception
+    """
+
+    pattern = re.compile(r"^terra1[a-z0-9]{38}$")
+    if not pattern.match(address):
+        raise argparse.ArgumentTypeError(
+            f"Terra address: {address} has invalid format. Valid format: ^terra1[a-z0-9]{{38}}$"
+        )
+    return address
+
+
 def check_non_negative_float(value) -> float:
     """Argparse type to check non negative int"""
     new_value = float(value)
@@ -990,3 +1011,23 @@ class LineAnnotateDrawer:
 def system_clear():
     """Clear screen"""
     os.system("cls||clear")  # nosec
+
+
+def excel_columns() -> List[str]:
+    """
+    Returns potential columns for excel
+
+    Returns
+    -------
+    letters : List[str]
+        Letters to be used as excel columns
+    """
+    letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"]
+    letters += ["N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+
+    opts = (
+        [f"{x}" for x in letters]
+        + [f"{x}{y}" for x in letters for y in letters]
+        + [f"{x}{y}{z}" for x in letters for y in letters for z in letters]
+    )
+    return opts
