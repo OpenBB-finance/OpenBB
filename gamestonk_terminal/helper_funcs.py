@@ -14,6 +14,7 @@ import pandas as pd
 from rich.table import Table
 import iso8601
 
+import plotly.offline
 import matplotlib
 import matplotlib.pyplot as plt
 from holidays import US as us_holidays
@@ -23,6 +24,9 @@ from pandas.plotting import register_matplotlib_converters
 import pandas.io.formats.format
 import requests
 from screeninfo import get_monitors
+from PyQt5.QtCore import QUrl
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt5.QtWidgets import QApplication
 
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
@@ -1031,3 +1035,23 @@ def excel_columns() -> List[str]:
         + [f"{x}{y}{z}" for x in letters for y in letters for z in letters]
     )
     return opts
+
+
+def show_in_window(fig):
+    """
+    Show a plotly graph in a separate window
+
+    Parameters
+    ----------
+    fig :
+        The figure to show
+    """
+    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "name.html"))
+    plotly.offline.plot(fig, filename=file_path, auto_open=False)
+
+    app = QApplication(sys.argv)
+    web = QWebEngineView()
+
+    web.load(QUrl.fromLocalFile(file_path))
+    web.show()
+    sys.exit(app.exec_())

@@ -15,6 +15,7 @@ exports/*
 .idea
 .coverage
 htmlcov
+name.html
 gamestonk_terminal/reports
 gamestonk_terminal/jupyter/reports/stored/*
 !gamestonk_terminal/jupyter/reports/stored/.gitkeep

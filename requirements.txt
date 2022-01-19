@@ -145,6 +145,11 @@ pyotp==2.6.0; python_version >= "3"
 pyparsing==3.0.6; python_full_version >= "3.6.8" and python_full_version < "4.0.0" and python_version >= "3.7"
 pyportfolioopt==1.5.1; python_full_version >= "3.6.1" and python_full_version < "4.0.0"
 pyprind==2.11.3; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
+pyqt5-qt5==5.15.2; python_version >= "3.6"
+pyqt5-sip==12.9.0; python_version >= "3.6"
+pyqt5==5.15.6; python_version >= "3.6"
+pyqtwebengine-qt5==5.15.2; python_version >= "3.6"
+pyqtwebengine==5.15.5; python_version >= "3.6"
 pyrsistent==0.18.1; python_version >= "3.7"
 python-binance==1.0.15
 python-coinmarketcap==0.2
