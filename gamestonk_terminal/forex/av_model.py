@@ -123,4 +123,6 @@ def get_historical(
         }
     )
     df.index = pd.DatetimeIndex(df.index)
+    df = df[::-1]
+
     return df.astype(float)
