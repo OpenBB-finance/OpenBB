@@ -19,7 +19,7 @@ def load(file: str) -> pd.DataFrame:
         Dataframe with custom data
     """
     if not Path(file).exists():
-        return pd.DataFrame
+        return pd.DataFrame()
     file_type = Path(file).suffix
     # TODO More data types
     if file_type != ".csv":
