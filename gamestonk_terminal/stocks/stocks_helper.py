@@ -1,12 +1,14 @@
 """Main helper"""
 __docformat__ = "numpy"
+
 import argparse
 import json
 from datetime import datetime, timedelta
-from typing import List, Union
+from typing import List, Union, Tuple, Optional
 
 import matplotlib.pyplot as plt
 import mplfinance as mpf
+import numpy as np
 import pandas as pd
 import pandas_market_calendars as mcal
 import plotly.graph_objects as go
@@ -266,7 +268,12 @@ def load(
 
 
 def display_candle(
-    s_ticker: str, df_stock: pd.DataFrame, use_matplotlib: bool, intraday: bool = False
+    s_ticker: str,
+    df_stock: pd.DataFrame,
+    use_matplotlib: bool,
+    intraday: bool = False,
+    add_trend: bool = False,
+    ma: Optional[Tuple[int, ...]] = None,
 ):
     """Shows candle plot of loaded ticker. [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
 
@@ -280,10 +287,15 @@ def display_candle(
         Flag to use matplotlib instead of interactive plotly chart
     intraday: bool
         Flag for intraday data for plotly range breaks
+    add_trend: bool
+        Flag to add high and low trends to chart
+    mov_avg: Tuple[int]
+        Moving averages to add to the candle
     """
-    if (df_stock.index[1] - df_stock.index[0]).total_seconds() >= 86400:
-        df_stock = find_trendline(df_stock, "OC_High", "high")
-        df_stock = find_trendline(df_stock, "OC_Low", "low")
+    if add_trend:
+        if (df_stock.index[1] - df_stock.index[0]).total_seconds() >= 86400:
+            df_stock = find_trendline(df_stock, "OC_High", "high")
+            df_stock = find_trendline(df_stock, "OC_Low", "low")
 
     if use_matplotlib:
         mc = mpf.make_marketcolors(
@@ -298,24 +310,24 @@ def display_candle(
         s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
 
         ap0 = []
+        if add_trend:
+            if "OC_High_trend" in df_stock.columns:
+                ap0.append(
+                    mpf.make_addplot(df_stock["OC_High_trend"], color="g"),
+                )
 
-        if "OC_High_trend" in df_stock.columns:
-            ap0.append(
-                mpf.make_addplot(df_stock["OC_High_trend"], color="g"),
-            )
-
-        if "OC_Low_trend" in df_stock.columns:
-            ap0.append(
-                mpf.make_addplot(df_stock["OC_Low_trend"], color="b"),
-            )
+            if "OC_Low_trend" in df_stock.columns:
+                ap0.append(
+                    mpf.make_addplot(df_stock["OC_Low_trend"], color="b"),
+                )
 
         if gtff.USE_ION:
             plt.ion()
+        kwargs = {"mav": ma} if ma else {}
 
         mpf.plot(
             df_stock,
             type="candle",
-            mav=(20, 50),
             volume=True,
             title=f"\nStock {s_ticker}",
             addplot=ap0,
@@ -327,6 +339,8 @@ def display_candle(
             update_width_config=dict(
                 candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
             ),
+            warn_too_much_data=10000,
+            **kwargs,
         )
     else:
         fig = make_subplots(
@@ -349,60 +363,70 @@ def display_candle(
             row=1,
             col=1,
         )
-        fig.add_trace(
-            go.Scatter(
-                x=df_stock.index,
-                y=df_stock["ma20"],
-                name="MA20",
-                mode="lines",
-                line=go.scatter.Line(color="royalblue"),
-            ),
-            row=1,
-            col=1,
-        )
-        fig.add_trace(
-            go.Scatter(
-                x=df_stock.index,
-                y=df_stock["ma50"],
-                name="MA50",
-                mode="lines",
-                line=go.scatter.Line(color="black"),
-            ),
-            row=1,
-            col=1,
-        )
+        if ma:
+            plotly_colors = [
+                "black",
+                "teal",
+                "blue",
+                "purple",
+                "orange",
+                "gray",
+                "deepskyblue",
+            ]
+            for idx, ma_val in enumerate(ma):
+                temp = df_stock["Adj Close"].copy()
+                temp[f"ma{ma_val}"] = df_stock["Adj Close"].rolling(ma_val).mean()
+                temp = temp.dropna()
+                fig.add_trace(
+                    go.Scatter(
+                        x=temp.index,
+                        y=temp[f"ma{ma_val}"],
+                        name=f"MA{ma_val}",
+                        mode="lines",
+                        line=go.scatter.Line(
+                            color=plotly_colors[np.mod(idx, len(plotly_colors))]
+                        ),
+                    ),
+                    row=1,
+                    col=1,
+                )
 
-        if "OC_High_trend" in df_stock.columns:
-            fig.add_trace(
-                go.Scatter(
-                    x=df_stock.index,
-                    y=df_stock["OC_High_trend"],
-                    name="High Trend",
-                    mode="lines",
-                    line=go.scatter.Line(color="green"),
-                ),
-                row=1,
-                col=1,
-            )
-        if "OC_Low_trend" in df_stock.columns:
-            fig.add_trace(
-                go.Scatter(
-                    x=df_stock.index,
-                    y=df_stock["OC_Low_trend"],
-                    name="Low Trend",
-                    mode="lines",
-                    line=go.scatter.Line(color="red"),
-                ),
-                row=1,
-                col=1,
-            )
+        if add_trend:
+            if "OC_High_trend" in df_stock.columns:
+                fig.add_trace(
+                    go.Scatter(
+                        x=df_stock.index,
+                        y=df_stock["OC_High_trend"],
+                        name="High Trend",
+                        mode="lines",
+                        line=go.scatter.Line(color="green"),
+                    ),
+                    row=1,
+                    col=1,
+                )
+            if "OC_Low_trend" in df_stock.columns:
+                fig.add_trace(
+                    go.Scatter(
+                        x=df_stock.index,
+                        y=df_stock["OC_Low_trend"],
+                        name="Low Trend",
+                        mode="lines",
+                        line=go.scatter.Line(color="red"),
+                    ),
+                    row=1,
+                    col=1,
+                )
 
+        colors = [
+            "red" if row.Open < row["Adj Close"] else "green"
+            for _, row in df_stock.iterrows()
+        ]
         fig.add_trace(
             go.Bar(
                 x=df_stock.index,
                 y=df_stock.Volume,
                 name="Volume",
-                marker_color="#696969",
+                marker_color=colors,
             ),
             row=2,
             col=1,
@@ -440,11 +464,29 @@ def display_candle(
                 type="date",
             ),
         )
+
+        fig.update_layout(
+            updatemenus=[
+                dict(
+                    buttons=[
+                        dict(
+                            label="linear",
+                            method="relayout",
+                            args=[{"yaxis.type": "linear"}],
+                        ),
+                        dict(
+                            label="log", method="relayout", args=[{"yaxis.type": "log"}]
+                        ),
+                    ]
+                )
+            ]
+        )
+
         if intraday:
             fig.update_xaxes(
                 rangebreaks=[
                     dict(bounds=["sat", "mon"]),
-                    dict(bounds=[16, 9.5], pattern="hour"),
+                    dict(bounds=[20, 9], pattern="hour"),
                 ]
             )
 
