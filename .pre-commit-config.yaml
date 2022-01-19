@@ -44,13 +44,14 @@ repos:
       - id: mypy
         args: ["--ignore-missing-imports", '--exclude=/setup\.py$']
         additional_dependencies: [types-all]
-
-  - repo: https://github.com/roy-ht/pre-commit-jupyter
-    rev: v1.2.1
+  - repo: local
     hooks:
-      - id: jupyter-notebook-cleanup
-        args:
-          - --pin-patterns
+      - id: jupyter-nb-clear-output
+        name: jupyter-nb-clear-output
+        files: \.ipynb$
+        stages: [commit]
+        language: system
+        entry: jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace
   - repo: local
     hooks:
       - id: pylint
