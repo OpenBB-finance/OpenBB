@@ -68,18 +68,13 @@ def display_covid_ov(
 
     if raw:
         ov.index = [x.strftime("%Y-%m-%d") for x in ov.index]
-        if gtff.USE_TABULATE_DF:
-            console.print(
-                rich_table_from_df(
-                    ov.tail(limit),
-                    headers=[x.title() for x in ov.columns],
-                    show_index=True,
-                    index_name="Date",
-                    title=f"[bold]{country} COVID Numbers[/bold]",
-                )
-            )
-        else:
-            console.print(ov.tail(limit).to_string())
+        rich_table_from_df(
+            ov.tail(limit),
+            headers=[x.title() for x in ov.columns],
+            show_index=True,
+            index_name="Date",
+            title=f"[bold]{country} COVID Numbers[/bold]",
+        )
 
         console.print("")
 
@@ -142,18 +137,13 @@ def display_covid_stat(
 
     if raw:
         data.index = [x.strftime("%Y-%m-%d") for x in data.index]
-        if gtff.USE_TABULATE_DF:
-            console.print(
-                rich_table_from_df(
-                    data.tail(limit),
-                    headers=[stat.title()],
-                    show_index=True,
-                    index_name="Date",
-                    title=f"[bold]{country} COVID {stat}[/bold]",
-                )
-            )
-        else:
-            console.print(data.tail(limit).to_string())
+        rich_table_from_df(
+            data.tail(limit),
+            headers=[stat.title()],
+            show_index=True,
+            index_name="Date",
+            title=f"[bold]{country} COVID {stat}[/bold]",
+        )
 
         console.print("")
 
@@ -185,17 +175,12 @@ def display_country_slopes(
     hist_slope = covid_model.get_case_slopes(days_back, threshold).sort_values(
         by="Slope", ascending=ascend
     )
-    if gtff.USE_TABULATE_DF:
-        console.print(
-            rich_table_from_df(
-                hist_slope.head(limit),
-                show_index=True,
-                index_name="Country",
-                title=f"[bold]{('Highest','Lowest')[ascend]} Sloping Cases[/bold] (Cases/Day)",
-            )
-        )
-    else:
-        console.print(hist_slope.head(limit).to_string())
+    rich_table_from_df(
+        hist_slope.head(limit),
+        show_index=True,
+        index_name="Country",
+        title=f"[bold]{('Highest','Lowest')[ascend]} Sloping Cases[/bold] (Cases/Day)",
+    )
     console.print("")
 
     export_data(

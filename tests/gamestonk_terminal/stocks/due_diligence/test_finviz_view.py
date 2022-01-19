@@ -13,9 +13,9 @@ from gamestonk_terminal.stocks.due_diligence import finviz_view
     "val, expected",
     [
         ("RANDOM_VALUE", "RANDOM_VALUE"),
-        ("Upgrade", "\x1b[32mUpgrade\x1b[0m"),
-        ("Downgrade", "\x1b[31mDowngrade\x1b[0m"),
-        ("Reiterated", "\x1b[33mReiterated\x1b[0m"),
+        ("Upgrade", "[green]Upgrade[/green]"),
+        ("Downgrade", "[red]Downgrade[/red]"),
+        ("Reiterated", "[yellow]Reiterated[/yellow]"),
     ],
 )
 def test_category_color_red_green(val, expected):

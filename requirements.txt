@@ -23,7 +23,7 @@ cffi==1.15.0; implementation_name == "pypy" and python_version >= "3.7" and pyth
 chardet==4.0.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
 charset-normalizer==2.0.10; python_full_version >= "3.7.1" and python_version >= "3.6" and python_full_version < "4.0.0" and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0") and (python_version >= "3.8" and python_full_version < "3.0.0" and python_version < "4.0" or python_version >= "3.8" and python_version < "4.0" and python_full_version >= "3.6.0") and (python_version >= "3" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3")
 click==8.0.3; python_full_version >= "3.6.2" and python_version >= "3.6"
-colorama==0.4.4; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
+colorama==0.4.4; python_full_version >= "3.6.8" and python_full_version < "4.0.0" and sys_platform == "win32" and python_version >= "3.6" and (python_version >= "3.6" and python_full_version < "3.0.0" and platform_system == "Windows" or python_full_version >= "3.5.0" and platform_system == "Windows" and python_version >= "3.6") and platform_system == "Windows" and (python_version >= "3.7" and python_full_version < "3.0.0" and sys_platform == "win32" or sys_platform == "win32" and python_version >= "3.7" and python_full_version >= "3.5.0")
 commonmark==0.9.1; python_full_version >= "3.6.2" and python_full_version < "4.0.0"
 convertdate==2.3.2; python_version >= "3.6"
 cryptography==36.0.1; python_version >= "3.6"

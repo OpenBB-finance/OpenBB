@@ -3,11 +3,9 @@ __docformat__ = "numpy"
 
 import os
 import re
-from tabulate import tabulate
-from colorama import Fore, Style
 import pandas as pd
 
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
 from gamestonk_terminal import feature_flags as gtff
 
 from gamestonk_terminal.stocks.discovery import fidelity_model
@@ -37,9 +35,9 @@ def buy_sell_ratio_color_red_green(val: str) -> str:
     sells = int(buy_sell_match.group(2))
 
     if buys >= sells:
-        return f"{Fore.GREEN}{buys}%{Style.RESET_ALL} Buys, {sells}% Sells"
+        return f"[green]{buys}%[/green] Buys, {sells}% Sells"
 
-    return f"{buys}% Buys, {Fore.RED}{sells}%{Style.RESET_ALL} Sells"
+    return f"{buys}% Buys, [red]{sells}%[/red] Sells"
 
 
 def price_change_color_red_green(val: str) -> str:
@@ -58,10 +56,8 @@ def price_change_color_red_green(val: str) -> str:
 
     val_float = float(val.split(" ")[0])
     if val_float > 0:
-        color = Fore.GREEN
-    else:
-        color = Fore.RED
-    return color + val + Style.RESET_ALL
+        return f"[green]{val}[/green]"
+    return f"[red]{val}[/red]"
 
 
 def orders_view(num: int, export: str):
@@ -75,7 +71,6 @@ def orders_view(num: int, export: str):
         Export dataframe data to csv,json,xlsx file
     """
     order_header, df_orders = fidelity_model.get_orders()
-    console.print(order_header, ":")
 
     pd.set_option("display.max_colwidth", None)
 
@@ -89,14 +84,11 @@ def orders_view(num: int, export: str):
 
     df_orders = df_orders.head(n=num).iloc[:, :-1]
 
-    print(
-        tabulate(
-            df_orders,
-            headers=df_orders.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        )
+    rich_table_from_df(
+        df_orders,
+        headers=[x.title() for x in df_orders.columns],
+        show_index=False,
+        title=f"{order_header}:",
     )
     console.print("")
 

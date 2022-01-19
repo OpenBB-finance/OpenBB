@@ -719,7 +719,6 @@ class BehaviouralAnalysisController(BaseController):
             prog="hist",
             description="Plot historical sentiment data of RHI and AHI by hour",
         )
-
         parser.add_argument(
             "-s",
             "--start",
@@ -739,7 +738,6 @@ class BehaviouralAnalysisController(BaseController):
             required="--start" in other_args,
             help="The ending date (format YYYY-MM-DD) of the stock. Default: today",
         )
-
         parser.add_argument(
             "-n",
             "--number",
@@ -748,7 +746,6 @@ class BehaviouralAnalysisController(BaseController):
             dest="number",
             help="Number of results returned from Sentiment Investor. Default: 100",
         )
-
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True, limit=10
         )
