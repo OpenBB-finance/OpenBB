@@ -48,10 +48,10 @@ repos:
     hooks:
       - id: jupyter-nb-clear-output
         name: jupyter-nb-clear-output
-        files: \.ipynb$
-        stages: [commit]
         language: system
         entry: jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace
+        files: \.ipynb$
+        types: [python]
   - repo: local
     hooks:
       - id: pylint
