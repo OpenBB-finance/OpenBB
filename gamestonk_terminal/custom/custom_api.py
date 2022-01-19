@@ -9,5 +9,5 @@ from .quantitative_analysis import qa_api as qa
 try:
     from .prediction_techniques import pred_api as pred
 except Exception:
-    pass
     # print("Prediction API is not available.")
+    pass
