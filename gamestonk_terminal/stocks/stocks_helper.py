@@ -464,6 +464,24 @@ def display_candle(
                 type="date",
             ),
         )
+
+        fig.update_layout(
+            updatemenus=[
+                dict(
+                    buttons=[
+                        dict(
+                            label="linear",
+                            method="relayout",
+                            args=[{"yaxis.type": "linear"}],
+                        ),
+                        dict(
+                            label="log", method="relayout", args=[{"yaxis.type": "log"}]
+                        ),
+                    ]
+                )
+            ]
+        )
+
         if intraday:
             fig.update_xaxes(
                 rangebreaks=[
