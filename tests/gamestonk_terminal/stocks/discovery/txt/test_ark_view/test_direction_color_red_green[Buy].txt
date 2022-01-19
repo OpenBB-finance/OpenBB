@@ -1,1 +1,1 @@
-[32mBuy[0m
+[green]Buy[/green]

@@ -7,7 +7,6 @@ import matplotlib.dates as mdates
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import numpy as np
-from colorama import Fore, Style
 from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
 from gamestonk_terminal.common.behavioural_analysis import finbrain_model
@@ -20,11 +19,12 @@ register_matplotlib_converters()
 
 
 def sentiment_coloring(val: float, last_val: float) -> str:
-    color = Fore.GREEN if float(val) > last_val else Fore.RED
-    return f"{color}{val}{Style.RESET_ALL}"
+    if float(val) > last_val:
+        return f"[green]{val}[/green]"
+    return f"[red]{val}[/red]"
 
 
-def plot_sentiment(sentiment: pd.DataFrame, ticker: str):
+def plot_sentiment(sentiment: pd.DataFrame, ticker: str) -> None:
     """Plot Sentiment analysis provided by FinBrain's API
 
     Parameters
