@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import os
 import warnings
 from typing import Any
+from datetime import datetime
 
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -94,13 +95,18 @@ def display_hist(
     """
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     data = df[target]
-    start = df.index[0]
 
     sns.histplot(data, bins=bins, kde=True, ax=ax, stat="proportion")
     sns.rugplot(data, c="r", ax=ax)
 
-    ax.set_title(f"Histogram of {name} {target} from {start.strftime('%Y-%m-%d')}")
-    ax.set_xlabel("Share Price")
+    if isinstance(df.index[0], datetime):
+        start = df.index[0]
+
+        ax.set_title(f"Histogram of {name} {target} from {start.strftime('%Y-%m-%d')}")
+    else:
+        ax.set_title(f"Histogram of {name} {target}")
+
+    ax.set_xlabel("Value")
     ax.grid(True)
 
     if gtff.USE_ION:
