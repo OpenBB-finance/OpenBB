@@ -36,20 +36,11 @@ def display_account_staking_info(
     """
 
     df, report = terramoney_fcd_model.get_staking_account_info(address)
-    console.print(report)
     if not df.empty:
-        if gtff.USE_TABULATE_DF:
-            console.print(
-                rich_table_from_df(
-                    df.head(top),
-                    headers=list(df.columns),
-                    floatfmt=".2f",
-                    show_index=False,
-                ),
-                "\n",
-            )
-        else:
-            console.print(df.to_string, "\n")
+        rich_table_from_df(
+            df.head(top), headers=list(df.columns), show_index=False, title=report
+        )
+    console.print("")
 
     export_data(
         export,
@@ -87,18 +78,13 @@ def display_validators(
         for x in prettify_column_names(df.columns)
     ]
 
-    if gtff.USE_TABULATE_DF:
-        console.print(
-            rich_table_from_df(
-                df.head(top),
-                headers=list(df.columns),
-                floatfmt=".2f",
-                show_index=False,
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    rich_table_from_df(
+        df.head(top),
+        headers=list(df.columns),
+        floatfmt=".2f",
+        show_index=False,
+    )
+    console.print("")
 
     export_data(
         export,
@@ -136,18 +122,13 @@ def display_gov_proposals(
     df = df.sort_values(by=sortby, ascending=descend).head(top)
     df.columns = prettify_column_names(df.columns)
 
-    if gtff.USE_TABULATE_DF:
-        console.print(
-            rich_table_from_df(
-                df,
-                headers=list(df.columns),
-                floatfmt=".2f",
-                show_index=False,
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    rich_table_from_df(
+        df,
+        headers=list(df.columns),
+        floatfmt=".2f",
+        show_index=False,
+    )
+    console.print("")
 
     export_data(
         export,

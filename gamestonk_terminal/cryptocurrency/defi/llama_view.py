@@ -117,18 +117,8 @@ def display_defi_protocols(
         inplace=True,
     )
 
-    if gtff.USE_TABULATE_DF:
-        console.print(
-            rich_table_from_df(
-                df.head(top),
-                headers=list(df.columns),
-                floatfmt=".2f",
-                show_index=False,
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    rich_table_from_df(df.head(top), headers=list(df.columns), show_index=False)
+    console.print("")
 
     export_data(
         export,

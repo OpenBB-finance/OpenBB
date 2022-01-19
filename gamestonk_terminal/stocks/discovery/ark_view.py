@@ -3,11 +3,8 @@ __docformat__ = "numpy"
 
 import os
 
-from tabulate import tabulate
-from colorama import Fore, Style
-
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
 from gamestonk_terminal.stocks.discovery import ark_model
 from gamestonk_terminal.rich_config import console
 
@@ -25,15 +22,8 @@ def direction_color_red_green(val: str) -> str:
     str
         Direction string with color tags added
     """
-
-    if val == "Buy":
-        ret = Fore.GREEN + val + Style.RESET_ALL
-    elif val == "Sell":
-        ret = Fore.RED + val + Style.RESET_ALL
-    else:
-        ret = val
-
-    return ret
+    color = "green" if val == "Buy" else "red" if val == "Sell" else ""
+    return f"[{color}]{val}[/{color}]"
 
 
 def ark_orders_view(
@@ -44,7 +34,7 @@ def ark_orders_view(
     sells_only: bool = False,
     fund: str = "",
     export: str = "",
-):
+) -> None:
     """Prints a table of the last N ARK Orders
 
     Parameters
@@ -84,15 +74,11 @@ def ark_orders_view(
 
     # df_orders["link"] = "https://finviz.com/quote.ashx?t=" + df_orders["ticker"]
 
-    console.print("Orders by ARK Investment Management LLC")
-    print(
-        tabulate(
-            df_orders,
-            headers=df_orders.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
+    rich_table_from_df(
+        df_orders,
+        headers=[x.title() for x in df_orders.columns],
+        show_index=False,
+        title="Orders by ARK Investment Management LLC",
     )
     console.print("")
 
