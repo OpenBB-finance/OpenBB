@@ -1,0 +1,11 @@
+
+    load            load in custom data set
+
+Current file:    None[unvl]
+    show            show portion of loaded data
+    info            show data info (columns and datatypes)
+    plot            plot data from loaded file[/unvl]
+[menus]
+>   qa          quantitative analysis,   	 e.g.: decompose, cusum, residuals analysis
+>   pred        prediction techniques    	 e.g.: regression, arima, rnn, lstm[/menus]
+
