@@ -912,7 +912,6 @@ def display_vol_surface(ticker: str, export: str = "", z: str = "IV"):
         Format to export data
     z : str
         The variable for the Z axis
-
     """
     data = yfinance_model.get_iv_surface(ticker)
     if data.empty:
@@ -936,7 +935,7 @@ def display_vol_surface(ticker: str, export: str = "", z: str = "IV"):
     ax.set_ylabel("Strike")
     ax.set_zlabel(z)
     fig.tight_layout()
-    fig.suptitle(f"{label} Surface for {ticker}")
+    fig.suptitle(f"{label} Surface for {ticker.upper()}")
     if gtff.USE_ION:
         plt.ion()
     plt.show()

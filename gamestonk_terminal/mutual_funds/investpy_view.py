@@ -59,16 +59,11 @@ def display_search(
 
     # If we want to move forward with rich -- should rename this gtff
     # Additionally, I recreated the tabulate functions with the rich.Table class.
-    if gtff.USE_TABULATE_DF:
-        console.print(
-            rich_table_from_df(
-                searches.head(limit),
-                show_index=False,
-                title=f"[bold]Mutual Funds with {by} matching {value}[/bold]",
-            )
-        )
-    else:
-        console.print(searches.head(limit).to_string())
+    rich_table_from_df(
+        searches.head(limit),
+        show_index=False,
+        title=f"[bold]Mutual Funds with {by} matching {value}[/bold]",
+    )
     console.print("\n")
 
 
@@ -87,14 +82,9 @@ def display_overview(country: str = "united states", limit: int = 10, export: st
     overview = investpy_model.get_overview(country=country, limit=limit)
     overview["Assets (1B)"] = overview.total_assets / 1_000_000_000
     overview = overview.drop(columns=["country", "total_assets"])
-    if gtff.USE_TABULATE_DF:
-        console.print(
-            rich_table_from_df(
-                overview, title=f"[bold]Fund overview for {country.title()}[/bold]"
-            )
-        )
-    else:
-        console.print(overview.to_string())
+    rich_table_from_df(
+        overview, title=f"[bold]Fund overview for {country.title()}[/bold]"
+    )
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -120,17 +110,12 @@ def display_fund_info(fund_name: str, country: str = "united states"):
         .applymap(lambda x: np.nan if not x else x)
         .dropna()
     )
-    if gtff.USE_TABULATE_DF:
-        console.print(
-            rich_table_from_df(
-                info,
-                title=f"[bold]{fund_name.title()} Information[/bold]",
-                show_index=False,
-                headers=["Info", "Value"],
-            )
-        )
-    else:
-        console.print(info.to_string())
+    rich_table_from_df(
+        info,
+        title=f"[bold]{fund_name.title()} Information[/bold]",
+        show_index=False,
+        headers=["Info", "Value"],
+    )
     console.print("\n")
 
 
