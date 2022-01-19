@@ -3,3 +3,4 @@
 from .stocks import stocks_api as stocks
 from .alternative import alt_api as alt
 from .cryptocurrency import crypto_api as crypto
+from .custom import custom_api as custom
