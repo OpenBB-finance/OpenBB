@@ -108,7 +108,7 @@ class BehaviouralAnalysisController(BaseController):
     regions       regions that show highest interest in stock
     queries       top related queries with this stock
     rise          top rising related queries with stock{has_ticker_end}
-[src][SentimentInvestor][/src]
+[src][SentimentInvestor][/src]{has_ticker_start}
     hist          plot historical RHI and AHI data by hour{has_ticker_end}[/cmds]
 
         """
