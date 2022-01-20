@@ -34,6 +34,8 @@ from gamestonk_terminal.terminal_helper import (
 
 logger = logging.getLogger(__name__)
 
+DEBUG_MODE = False
+
 
 class TerminalController(BaseController):
     """Terminal Controller class"""
@@ -316,7 +318,12 @@ def terminal(jobs_cmds: List[str] = None):
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        if ".gst" in sys.argv[1]:
+        if "--debug" in sys.argv:
+            os.environ["DEBUG_MODE"] = "true"
+            sys.argv.remove("--debug")
+        else:
+            os.environ["DEBUG_MODE"] = "false"
+        if len(sys.argv) > 1 and ".gst" in sys.argv[1]:
             if os.path.isfile(sys.argv[1]):
                 with open(sys.argv[1]) as fp:
                     simulate_argv = f"/{'/'.join([line.rstrip() for line in fp])}"
@@ -329,4 +336,5 @@ if __name__ == "__main__":
         else:
             terminal(sys.argv[1:])
     else:
+        os.environ["DEBUG_MODE"] = "false"
         terminal()
