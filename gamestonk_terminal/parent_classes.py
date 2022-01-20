@@ -4,10 +4,12 @@ __docformat__ = "numpy"
 from abc import ABCMeta, abstractmethod
 import argparse
 import re
+import os
 import difflib
 from typing import Union, List, Dict, Any
 
 from prompt_toolkit.completion import NestedCompleter
+from rich.markdown import Markdown
 
 from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
@@ -39,6 +41,7 @@ class BaseController(metaclass=ABCMeta):
     CHOICES_MENUS: List[str] = []
 
     PATH: str = ""
+    FILE_PATH: str = ""
 
     def __init__(self, queue: List[str] = None) -> None:
         """
@@ -88,7 +91,7 @@ class BaseController(metaclass=ABCMeta):
             return old_class.menu()
         return class_ins(*args, **kwargs).menu()
 
-    def save_class(self):
+    def save_class(self) -> None:
         """Saves the current instance of the class to be loaded later"""
         if gtff.REMEMBER_CONTEXTS:
             controllers[self.PATH] = self
@@ -189,6 +192,15 @@ class BaseController(metaclass=ABCMeta):
             self.queue.insert(0, "reset")
             for _ in range(len(self.path)):
                 self.queue.insert(0, "quit")
+
+    def call_resources(self, _) -> None:
+        """Process resources command"""
+        if os.path.isfile(self.FILE_PATH):
+            with open(self.FILE_PATH) as f:
+                console.print(Markdown(f.read()))
+            console.print("")
+        else:
+            console.print("No resources available.\n")
 
     def menu(self, custom_path_menu_above: str = ""):
         an_input = "HELP_ME"

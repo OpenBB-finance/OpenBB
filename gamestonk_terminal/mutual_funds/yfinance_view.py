@@ -50,18 +50,13 @@ def display_sector(fund: str, min_pct_to_display: float = 5, export: str = ""):
         "Real Estate" if x == "realestate" else x.replace("_", " ").title()
         for x in df_weight.index
     ]
-    if gtff.USE_TABULATE_DF:
-        console.print(
-            rich_table_from_df(
-                df_weight,
-                show_index=True,
-                index_name="Sector",
-                headers=["Weight (%)"],
-                title=f"[bold]{fund.upper()} Sector Weightings[/bold] ",
-            )
-        )
-    else:
-        console.print(df_weight.to_string())
+    rich_table_from_df(
+        df_weight,
+        show_index=True,
+        index_name="Sector",
+        headers=["Weight (%)"],
+        title=f"[bold]{fund.upper()} Sector Weightings[/bold] ",
+    )
     console.print("\n")
     main_holdings = df_weight[df_weight.Weight > min_pct_to_display].to_dict()[
         df_weight.columns[0]
@@ -115,16 +110,11 @@ def display_equity(fund: str):
     df_weight = pd.DataFrame.from_dict(equity_hold, orient="index")
     df_weight = df_weight.apply(lambda x: round(100 * x, 3))
     df_weight.index = df_weight.index.map(title_map)
-    if gtff.USE_TABULATE_DF:
-        console.print(
-            rich_table_from_df(
-                df_weight,
-                show_index=True,
-                index_name="Equity",
-                headers=["Holding"],
-                title=f"[bold]{fund.upper()} Equity Holdings[/bold] ",
-            )
-        )
-    else:
-        console.print(df_weight.to_string())
+    rich_table_from_df(
+        df_weight,
+        show_index=True,
+        index_name="Equity",
+        headers=["Holding"],
+        title=f"[bold]{fund.upper()} Equity Holdings[/bold] ",
+    )
     console.print("\n")
