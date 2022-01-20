@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import os
 from pandas.plotting import register_matplotlib_converters
-from tabulate import tabulate
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     very_long_number_formatter,
 )
@@ -152,16 +151,13 @@ def display_losers(period: str, top: int, export: str, sortby: str) -> None:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
         if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df.head(top),
-                    headers=df.columns,
-                    floatfmt=".4f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
+            rich_table_from_df(
+                df.head(top),
+                headers=list(df.columns),
+                floatfmt=".4f",
+                show_index=False,
             )
+            console.print()
         else:
             console.print(df.to_string, "\n")
 

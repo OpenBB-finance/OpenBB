@@ -105,7 +105,12 @@ class DiscoveryController(BaseController):
             prog="cgtop",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Check coins by category and market cap. [Source: CoinGecko]""",
+            description="""Display N coins from CoinGecko[Source: CoinGecko]
+            can receive a category as argument (-c decentralized-finance-defi or -c stablecoins)
+            and will show only the top coins in that category.
+            can also receive sort arguments, e.g., --sort Volume [$]
+            Number of coins to show: -l 10
+            """,
         )
 
         parser.add_argument(
@@ -154,12 +159,9 @@ class DiscoveryController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
-            Shows Largest Gainers - coins which gain the most in given period.
-            You can use parameter --period to set which timeframe are you interested in: 1h, 24h, 7d, 14d, 30d, 60d, 1y
-            You can look on only N number of records with --limit,
-            You can sort by Rank, Symbol, Name, Volume, Price, Change with --sort and also with --descend flag to set it
-            to sort descending.
-            There is --urls flag, which will display one additional column you all urls for coins.
+            Shows top decentralized applications [Source: https://dappradar.com/]
+            Accepts --sort {Name,Category,Protocols,Daily Users,Daily Volume [$]}
+            to sort by column
             """,
         )
 
@@ -196,12 +198,9 @@ class DiscoveryController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
-            Shows Largest Gainers - coins which gain the most in given period.
-            You can use parameter --period to set which timeframe are you interested in: 1h, 24h, 7d, 14d, 30d, 60d, 1y
-            You can look on only N number of records with --limit,
-            You can sort by Rank, Symbol, Name, Volume, Price, Change with --sort and also with --descend flag to set it
-            to sort descending.
-            There is --urls flag, which will display one additional column you all urls for coins.
+            Shows top blockchain games [Source: https://dappradar.com/]
+            Accepts --sort {Name,Daily Users,Daily Volume [$]}
+            to sort by column
             """,
         )
 
@@ -238,12 +237,9 @@ class DiscoveryController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
-            Shows Largest Gainers - coins which gain the most in given period.
-            You can use parameter --period to set which timeframe are you interested in: 1h, 24h, 7d, 14d, 30d, 60d, 1y
-            You can look on only N number of records with --limit,
-            You can sort by Rank, Symbol, Name, Volume, Price, Change with --sort and also with --descend flag to set it
-            to sort descending.
-            There is --urls flag, which will display one additional column you all urls for coins.
+            Shows top decentralized exchanges [Source: https://dappradar.com/]
+            Accepts --sort {Name,Daily Users,Daily Volume [$]}
+            to sort by column
             """,
         )
 
@@ -280,12 +276,9 @@ class DiscoveryController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
-            Shows Largest Gainers - coins which gain the most in given period.
-            You can use parameter --period to set which timeframe are you interested in: 1h, 24h, 7d, 14d, 30d, 60d, 1y
-            You can look on only N number of records with --limit,
-            You can sort by Rank, Symbol, Name, Volume, Price, Change with --sort and also with --descend flag to set it
-            to sort descending.
-            There is --urls flag, which will display one additional column you all urls for coins.
+            Shows top NFT collections [Source: https://dappradar.com/]
+            Accepts --sort {Name,Protocols,Floor Price [$],Avg Price [$],Market Cap [$],Volume [$]}
+            to sort by column
             """,
         )
 
@@ -435,10 +428,6 @@ class DiscoveryController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Discover trending coins.
                 Use --limit parameter to display only N number of records,
-                You can sort by Rank, Name, Price_BTC, Price_USD, using --sort parameter and also with --descend flag
-                to sort descending.
-                Flag --urls will display one additional column with all coingecko urls for listed coins.
-                trending will display: Rank, Name, Price_BTC, Price_USD
             """,
         )
 

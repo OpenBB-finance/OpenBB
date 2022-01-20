@@ -84,6 +84,7 @@ def display_top_games(top: int = 10, export: str = "", sortby: str = "") -> None
                 headers=list(df.columns),
                 floatfmt=".2f",
                 show_index=False,
+                title="Top Blockchain Games",
             )
             console.print("")
         else:
@@ -125,6 +126,7 @@ def display_top_dexes(top: int = 10, export: str = "", sortby: str = "") -> None
                 headers=list(df.columns),
                 floatfmt=".2f",
                 show_index=False,
+                title="Top Decentralized Exchanges",
             )
             console.print("")
         else:
@@ -166,6 +168,7 @@ def display_top_dapps(top: int = 10, export: str = "", sortby: str = "") -> None
                 headers=list(df.columns),
                 floatfmt=".2f",
                 show_index=False,
+                title="Top Decentralized Applications",
             )
             console.print("")
         else:
