@@ -12,6 +12,19 @@ from gamestonk_terminal.etf import etf_controller
 # pylint: disable=W0603
 # pylint: disable=E1111
 
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [
+            ("period1", "MOCK_PERIOD_1"),
+            ("period2", "MOCK_PERIOD_2"),
+            ("date", "MOCK_DATE"),
+        ],
+    }
+
+
 EMPTY_DF = pd.DataFrame()
 DF_ETF = pd.DataFrame.from_dict(
     data={
@@ -392,15 +405,26 @@ def test_call_load(mocker):
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_call_candle(mocker):
-    # MOCK CHARTS
+    # FORCE SINGLE THREADING
+    yf_download = etf_controller.yf.download
+
+    def mock_yf_download(*args, **kwargs):
+        kwargs["threads"] = False
+        return yf_download(*args, **kwargs)
+
+    mocker.patch("yfinance.download", side_effect=mock_yf_download)
+
+    # MOCK GTFF
     mocker.patch.object(target=etf_controller.gtff, attribute="USE_ION", new=True)
+
+    # MOCK CHARTS
     mocker.patch(target="gamestonk_terminal.etf.etf_controller.plt.ion")
     mocker.patch(target="gamestonk_terminal.etf.etf_controller.plt.show")
+    mocker.patch(target="gamestonk_terminal.etf.etf_controller.mpf.plot")
 
     controller = etf_controller.ETFController(queue=None)
     other_args = ["ARKW", "--start=2021-12-15", "--end=2021-12-18", "--limit=5"]
     controller.call_load(other_args=other_args)
-
     controller.call_candle(other_args=[])
 
 
