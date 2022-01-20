@@ -217,7 +217,7 @@ GAINERS_LOSERS_COLUMNS = [
 def get_gainers_or_losers(
     top: int = 20, period: str = "1h", typ: str = "gainers"
 ) -> pd.DataFrame:
-    """Scrape data about top gainers - coins which gain the most in given period and
+    """Returns data about top gainers - coins which gain the most in given period and
     top losers - coins that lost the most in given period of time. [Source: CoinGecko]
 
     Parameters
@@ -225,7 +225,7 @@ def get_gainers_or_losers(
     top: int
         Num of coins to get
     period: str
-        One from [1h, 24h, 7d, 14d, 30d, 60d, 1y]
+        One from {14d,1h,1y,200d,24h,30d,7d}
     typ: str
         Either "gainers" or "losers"
     Returns

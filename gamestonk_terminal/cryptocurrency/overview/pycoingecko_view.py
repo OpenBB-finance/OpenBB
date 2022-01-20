@@ -82,46 +82,6 @@ def display_holdings_overview(coin: str, show_bar: bool, export: str, top: int) 
         )
 
 
-def display_nft_market_status(export: str) -> None:
-    """Shows overview data of nft markets "https://www.coingecko.com/en/nft" [Source: CoinGecko]
-
-    NFT (Non-fungible Token) refers to digital assets with unique characteristics.
-    Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
-
-    Parameters
-    ----------
-    export: str
-        Export dataframe data to csv,json,xlsx
-    """
-
-    df = gecko.get_nft_data()
-    if not df.empty:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df,
-                    headers=df.columns,
-                    floatfmt=".2f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            console.print(df.to_string, "\n")
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "nft",
-            df,
-        )
-    else:
-        console.print("")
-        console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
-
-
 def display_exchange_rates(sortby: str, descend: bool, top: int, export: str) -> None:
     """Shows  list of crypto, fiats, commodity exchange rates. [Source: CoinGecko]
 

@@ -666,10 +666,6 @@ main:
             ref: "/cryptocurrency/overview/cgdefi"
           - name: cgstables
             ref: "/cryptocurrency/overview/cgstables"
-          - name: cgnft
-            ref: "/cryptocurrency/overview/cgnft"
-          - name: cgnftday
-            ref: "/cryptocurrency/overview/cgnftday"
           - name: cgexchanges
             ref: "/cryptocurrency/overview/cgexchanges"
           - name: cgexrates

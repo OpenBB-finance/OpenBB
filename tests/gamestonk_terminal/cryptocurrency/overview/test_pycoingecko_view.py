@@ -46,15 +46,6 @@ class TestCoinGeckoAPI(TestCase):
             top=15, export="", sortby="market_cap", pie=False, descend=False
         )
 
-    @pytest.mark.skip
-    @check_print(assert_in="Metric")
-    @vcr.use_cassette(
-        "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/nft_market-status.yaml",
-        record_mode="new_episodes",
-    )
-    def test_coin_nft_market_status(self):
-        ov_pycoingecko_view.display_nft_market_status(export="")
-
     @check_print(assert_in="═══════════")
     @vcr.use_cassette(
         "tests/gamestonk_terminal/cryptocurrency/overview/cassettes/test_pycoingecko_view/exchanges.yaml",

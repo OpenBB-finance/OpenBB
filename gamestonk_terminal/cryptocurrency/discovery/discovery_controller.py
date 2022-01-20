@@ -105,7 +105,7 @@ class DiscoveryController(BaseController):
             prog="cgtop",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Display N coins from CoinGecko[Source: CoinGecko]
+            description="""Display N coins from CoinGecko [Source: CoinGecko]
             can receive a category as argument (-c decentralized-finance-defi or -c stablecoins)
             and will show only the top coins in that category.
             can also receive sort arguments, e.g., --sort Volume [$]
@@ -317,11 +317,9 @@ class DiscoveryController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
             Shows Largest Gainers - coins which gain the most in given period.
-            You can use parameter --period to set which timeframe are you interested in: 1h, 24h, 7d, 14d, 30d, 60d, 1y
+            You can use parameter --period to set which timeframe are you interested in: {14d,1h,1y,200d,24h,30d,7d}
             You can look on only N number of records with --limit,
-            You can sort by Rank, Symbol, Name, Volume, Price, Change with --sort and also with --descend flag to set it
-            to sort descending.
-            There is --urls flag, which will display one additional column you all urls for coins.
+            You can sort by Rank, Symbol, Name, Volume, Price, Change with --sort.
             """,
         )
 
@@ -330,7 +328,7 @@ class DiscoveryController(BaseController):
             "--period",
             dest="period",
             type=str,
-            help="time period, one from [1h, 24h, 7d, 14d, 30d, 60d, 1y]",
+            help="time period, one from {14d,1h,1y,200d,24h,30d,7d}",
             default="1h",
             choices=pycoingecko_model.API_PERIODS,
         )
@@ -372,11 +370,9 @@ class DiscoveryController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
            Shows Largest Losers - coins which price dropped the most in given period
-           You can use parameter --period to set which timeframe are you interested in: 1h, 24h, 7d, 14d, 30d, 60d, 1y
+           You can use parameter --period to set which timeframe are you interested in: {14d,1h,1y,200d,24h,30d,7d}
            You can look on only N number of records with --limit,
-           You can sort by Rank, Symbol, Name, Volume, Price, Change with --sort and also with --descend flag
-           to sort descending.
-           Flag --urls will display one additional column with all coingecko urls for listed coins.
+           You can sort by Rank, Symbol, Name, Volume, Price, Change with --sort.
             """,
         )
 
@@ -385,7 +381,7 @@ class DiscoveryController(BaseController):
             "--period",
             dest="period",
             type=str,
-            help="time period, one from [1h, 24h, 7d, 14d, 30d, 60d, 1y]",
+            help="time period, one from {14d,1h,1y,200d,24h,30d,7d}",
             default="1h",
             choices=pycoingecko_model.API_PERIODS,
         )

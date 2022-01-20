@@ -48,7 +48,6 @@ class OverviewController(BaseController):
         "cgglobal",
         "cgdefi",
         "cgstables",
-        "cgnft",
         "cgexchanges",
         "cgexrates",
         "cgplatforms",
@@ -136,7 +135,6 @@ class OverviewController(BaseController):
     cgglobal          global crypto market info
     cgdefi            global DeFi market info
     cgstables         stablecoins
-    cgnft             non fungible token market status
     cgexchanges       top crypto exchanges
     cgexrates         coin exchange rates
     cgplatforms       crypto financial platforms
@@ -435,9 +433,7 @@ class OverviewController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows top cryptocurrency categories by market capitalization. It includes categories like:
             stablecoins, defi, solana ecosystem, polkadot ecosystem and many others.
-            "You can sort by each of column above, using --sort parameter and also do it descending with --descend flag"
-            "To display urls use --urls flag.",
-            Displays: Rank, Name, Change_1h, Change_7d, Market_Cap, Volume_24h, Coins,""",
+            You can sort by {}, using --sort parameter""",
         )
 
         parser.add_argument(
@@ -488,9 +484,7 @@ class OverviewController(BaseController):
                 Stablecoins are cryptocurrencies that attempt to peg their market value to some external reference
                 like the U.S. dollar or to a commodity's price such as gold.
                 You can display only N number of coins with --limit parameter.
-                You can sort data by Rank, Name, Symbol, Price, Change_24h, Exchanges, Market_Cap, Change_30d with --sort
-                and also with --descend flag to sort descending.
-                Flag --urls will display stablecoins urls""",
+                You can sort data by {} with --sort""",
         )
 
         parser.add_argument(
@@ -539,26 +533,6 @@ class OverviewController(BaseController):
                 descend=ns_parser.descend,
                 pie=ns_parser.pie,
             )
-
-    def call_cgnft(self, other_args):
-        """Process nft command"""
-
-        parser = argparse.ArgumentParser(
-            prog="cgnft",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Shows NFT market status
-                NFT (Non-fungible Token) refers to digital assets with unique characteristics.
-                Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
-                Displays: NFT Market Cap, 24h Trading Volume, NFT Dominance vs Global market, Theta Network NFT Dominance
-                """,
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            pycoingecko_view.display_nft_market_status(export=ns_parser.export)
 
     def call_cgproducts(self, other_args):
         """Process products command"""

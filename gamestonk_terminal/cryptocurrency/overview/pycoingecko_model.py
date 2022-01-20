@@ -91,8 +91,7 @@ COINS_COLUMNS = [
 
 
 def get_holdings_overview(endpoint: str = "bitcoin") -> List[Any]:
-    """Scrapes overview of public companies that holds ethereum or bitcoin
-    from "https://www.coingecko.com/en/public-companies-{bitcoin/ethereum}" [Source: CoinGecko]
+    """Returns public companies that holds ethereum or bitcoin [Source: CoinGecko]
 
     Parameters
     ----------
@@ -144,7 +143,7 @@ def coin_formatter(n):
 
 
 def get_top_crypto_categories(sort_filter: str = SORT_VALUES[0]) -> pd.DataFrame:
-    """Scrapes top crypto categories [Source: CoinGecko]
+    """Returns top crypto categories [Source: CoinGecko]
 
     Returns
     -------
@@ -179,31 +178,6 @@ def get_stable_coins(top: int = 20) -> pd.DataFrame:
 
     df = get_coins(top=top, category="stablecoins")
     return df[COINS_COLUMNS]
-
-
-# TODO: add string with overview
-def get_nft_data(top: int = 20) -> pd.DataFrame:
-    """Returns top stable coins [Source: CoinGecko]
-
-    Returns
-    -------
-    pandas.DataFrame
-        Rank, Name, Symbol, Price, Change_24h, Exchanges, Market_Cap, Change_30d, Url
-    """
-
-    df = get_coins(top=top, category="non-fungible-tokens-nft")
-    return df[
-        [
-            "symbol",
-            "name",
-            "current_price",
-            "market_cap",
-            "market_cap_rank",
-            "price_change_percentage_7d_in_currency",
-            "price_change_percentage_24h_in_currency",
-            "total_volume",
-        ]
-    ]
 
 
 def get_exchanges() -> pd.DataFrame:

@@ -13,7 +13,6 @@ from .withdrawalfees_view import display_crypto_withdrawal_fees as wfpe
 from .pycoingecko_view import display_holdings_overview as cghold
 from .pycoingecko_view import display_categories as cgcategories
 from .pycoingecko_view import display_stablecoins as cgstables
-from .pycoingecko_view import display_nft_market_status as cgnft
 from .pycoingecko_view import display_products as cgproducts
 from .pycoingecko_view import display_platforms as cgplatforms
 from .pycoingecko_view import display_exchanges as cgexchanges
