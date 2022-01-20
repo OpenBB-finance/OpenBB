@@ -1,8 +1,9 @@
 """Helper classes."""
 __docformat__ = "numpy"
 import os
+import json
 from importlib import machinery, util
-from typing import Union, List
+from typing import Union, List, Dict, Optional
 import matplotlib
 import matplotlib.pyplot as plt
 
@@ -76,3 +77,96 @@ class ModelsNamespace:
                     loader.exec_module(getattr(self, model_name))
                 else:
                     pass
+
+
+class TerminalStyle:
+    """The class that helps with handling of style configurations."""
+
+    _STYLES_FOLDER = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "styles")
+    )
+    DEFAULT_STYLES_LOCATION = os.path.join(_STYLES_FOLDER, "default")
+    USER_STYLES_LOCATION = os.path.join(_STYLES_FOLDER, "user")
+
+    # Matplotlib stylesheets
+    mpl_styles_available: Dict[str, str] = {}
+    # Matplotlib loads custom styles from absolute paths to the .mplstyle files
+    mpl_style: str = ""
+
+    # MPLFinance style dictionaries
+    mpf_styles_available: Dict[str, str] = {}
+    # Matplotlib Finance constructs custom styles from python dictionaries
+    mpf_style: Dict = {}
+
+    # Rich style dictionaries
+    console_styles_available: Dict[str, str] = {}
+    # Rich constructs custom styles from python dictionaries
+    console_style: Dict[str, str] = {}
+
+    def __init__(
+        self,
+        mpl_style: Optional[str] = "",
+        mpf_style: Optional[str] = "",
+        console_style: Optional[str] = "",
+    ) -> None:
+        """Instantiate a terminal style class
+
+        An instance of this class helps serving stylesheets for matplotlib, mplfinance
+        and rich in a way the stylesheets can be directly used by the libraries.
+
+        The stylesheet files should be placed to the `styles/default` or `styles/user`
+        folders. The parameters required for class instantiation are stylesheet names
+        without extensions (following matplotlib convention).
+
+        Ex. `styles/default/boring.mplstyle` should be passed as `boring`.
+
+        Parameters
+        ----------
+        mpl_style : str, optional
+            Style name without extension, by default ""
+        mpf_style : str, optional
+            Style name without extension, by default ""
+        console_style : str, optional
+            Style name without extension, by default ""
+        """
+        for folder in [self.DEFAULT_STYLES_LOCATION, self.USER_STYLES_LOCATION]:
+            self.load_available_styles_from_folder(folder)
+
+        if mpl_style in self.mpl_styles_available:
+            self.mpl_style = self.mpl_styles_available[mpl_style]
+        else:
+            self.mpl_style = self.mpl_styles_available["boring"]
+
+        if mpf_style in self.mpf_styles_available:
+            with open(self.mpf_styles_available[mpf_style]) as stylesheet:
+                self.mpf_style = json.load(stylesheet)
+                self.mpf_style["base_mpl_style"] = self.mpl_style
+        else:
+            with open(self.mpf_styles_available["boring"]) as stylesheet:
+                self.mpf_style = json.load(stylesheet)
+                self.mpf_style["base_mpl_style"] = self.mpl_style
+
+        if console_style in self.console_styles_available:
+            with open(self.console_styles_available[console_style]) as stylesheet:
+                self.console_style = json.load(stylesheet)
+        else:
+            with open(self.console_styles_available["boring"]) as stylesheet:
+                self.console_style = json.load(stylesheet)
+
+    def load_available_styles_from_folder(self, folder: str) -> None:
+        for stf in os.listdir(folder):
+            if stf.endswith(".mplstyle"):
+                self.mpl_styles_available[stf.replace(".mplstyle", "")] = os.path.join(
+                    folder, stf
+                )
+            elif stf.endswith(".mpfstyle.json"):
+                self.mpf_styles_available[
+                    stf.replace(".mpfstyle.json", "")
+                ] = os.path.join(folder, stf)
+            elif stf.endswith(".richstyle.json"):
+                self.console_styles_available[
+                    stf.replace(".richstyle.json", "")
+                ] = os.path.join(folder, stf)
+
+    def applyMPLstyle(self):
+        plt.style.use(self.mpl_style)
