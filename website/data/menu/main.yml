@@ -774,6 +774,10 @@ main:
       - name: onchain
         ref: "/cryptocurrency/onchain"
         sub:
+          - name: btccp
+            ref: "/cryptocurrency/onchain/btccp"
+          - name: btcct
+            ref: "/cryptocurrency/onchain/btcct"
           - name: gwei
             ref: "/cryptocurrency/onchain/gwei"
           - name: hr

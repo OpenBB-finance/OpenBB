@@ -31,6 +31,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 
 from gamestonk_terminal.cryptocurrency.onchain import (
+    blockchain_view,
     ethgasstation_view,
     ethplorer_model,
     whale_alert_model,
@@ -77,6 +78,8 @@ class OnchainController(BaseController):
         "ueat",
         "ttcp",
         "baas",
+        "btccp",
+        "btcct",
     ]
 
     PATH = "/crypto/onchain/"
@@ -137,7 +140,10 @@ class OnchainController(BaseController):
 
         help_text = f"""[cmds]
 [src][Glassnode][/src]
-    hr              check blockchain hashrate over time (BTC or ETH)
+    hr               check blockchain hashrate over time (BTC or ETH)
+[src][Blockchain][/src]
+    btccp            displays BTC circulating supply
+    btcct            displays BTC confirmed transactions
 [src][Eth Gas Station][/src]
     gwei             check current eth gas fees
 [src][Whale Alert][/src]
@@ -165,6 +171,86 @@ class OnchainController(BaseController):
     tx              ethereum blockchain transaction info{has_tx_end}
     """
         console.print(text=help_text, menu="Cryptocurrency - Onchain")
+
+    def call_btcct(self, other_args: List[str]):
+        """Process btcct command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="btcct",
+            description="""
+                Display BTC confirmed transactions [Source: https://api.blockchain.info/]
+            """,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--since",
+            dest="since",
+            type=valid_date,
+            help="Initial date. Default: 2010-01-01",
+            default=datetime(2010, 1, 1).strftime("%Y-%m-%d"),
+        )
+
+        parser.add_argument(
+            "-u",
+            "--until",
+            dest="until",
+            type=valid_date,
+            help="Final date. Default: 2021-01-01",
+            default=(datetime.now()).strftime("%Y-%m-%d"),
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            blockchain_view.display_btc_confirmed_transactions(
+                since=int(datetime.timestamp(ns_parser.since)),
+                until=int(datetime.timestamp(ns_parser.until)),
+                export=ns_parser.export,
+            )
+
+    def call_btccp(self, other_args: List[str]):
+        """Process btccp command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="btccp",
+            description="""
+                Display BTC circulating supply [Source: https://api.blockchain.info/]
+            """,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--since",
+            dest="since",
+            type=valid_date,
+            help="Initial date. Default: 2010-01-01",
+            default=datetime(2010, 1, 1).strftime("%Y-%m-%d"),
+        )
+
+        parser.add_argument(
+            "-u",
+            "--until",
+            dest="until",
+            type=valid_date,
+            help="Final date. Default: 2021-01-01",
+            default=(datetime.now()).strftime("%Y-%m-%d"),
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            blockchain_view.display_btc_circulating_supply(
+                since=int(datetime.timestamp(ns_parser.since)),
+                until=int(datetime.timestamp(ns_parser.until)),
+                export=ns_parser.export,
+            )
 
     def call_hr(self, other_args: List[str]):
         """Process hr command"""
