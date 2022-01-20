@@ -5,6 +5,19 @@ import sys
 import os
 from typing import List
 
+"""
+Disables this for a better solution. Here is the code to add in custom pre-commit items
+  - repo: local
+    hooks:
+      - id: check-config
+        name: check-config
+        entry: python custom_pre_commit/check_config_terminal.py
+        language: python
+        language_version: python3
+        types: ["file"]
+        pass_filenames: false
+"""
+
 # This is a dictionary of all settings to check in config_terminal.py
 settings = {
     "DEBUG_MODE": "DEBUG_MODE = False",
@@ -69,7 +82,7 @@ def search(lst: List[str], search_item: str):
 
     """
     for i, val in enumerate(lst):
-        if search_item+" " in val:
+        if search_item + " " in val:
             return i, val
     return None, None
 
