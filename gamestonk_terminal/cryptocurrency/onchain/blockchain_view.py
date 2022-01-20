@@ -20,6 +20,10 @@ def display_btc_circulating_supply(since: int, until: int, export: str) -> None:
 
     Parameters
     ----------
+    since : int
+        Initial date timestamp (e.g., 1_609_459_200)
+    until : int
+        End date timestamp (e.g., 1_641_588_030)
     export : str
         Export dataframe data to csv,json,xlsx file
     """
@@ -63,6 +67,10 @@ def display_btc_confirmed_transactions(since: int, until: int, export: str) -> N
 
     Parameters
     ----------
+    since : int
+        Initial date timestamp (e.g., 1_609_459_200)
+    until : int
+        End date timestamp (e.g., 1_641_588_030)
     export : str
         Export dataframe data to csv,json,xlsx file
     """
