@@ -11,7 +11,7 @@ def etf_movers(sort_type: str = "gainers") -> pd.DataFrame:
     Parameters
     ----------
     sort_type: str
-        Data to get.  Can be "gainers", "decliners" or "activity
+        Data to get.  Can be "gainers", "decliners" or "active"
 
     Returns
     -------
@@ -34,25 +34,30 @@ def etf_movers(sort_type: str = "gainers") -> pd.DataFrame:
             "https://www.wsj.com/market-data/mutualfunds-etfs/etfmovers?id=%7B%22application"
             "%22%3A%22WSJ%22%2C%22etfMover%22%3A%22most_active%22%2C%22count%22%3A25%7D&type=mdc_etfmovers"
         )
+    else:
+        url = ""
 
-    data = requests.get(url, headers={"User-Agent": get_user_agent()}).json()
-    name, last_price, net_change, percent_change, volume = [], [], [], [], []
+    if url:
+        data = requests.get(url, headers={"User-Agent": get_user_agent()}).json()
+        name, last_price, net_change, percent_change, volume = [], [], [], [], []
 
-    for entry in data["data"]["instruments"]:
-        name.append(entry["name"])
-        last_price.append(entry["lastPrice"])
-        net_change.append(entry["priceChange"])
-        percent_change.append(entry["percentChange"])
-        volume.append(entry["formattedVolume"])
+        for entry in data["data"]["instruments"]:
+            name.append(entry["name"])
+            last_price.append(entry["lastPrice"])
+            net_change.append(entry["priceChange"])
+            percent_change.append(entry["percentChange"])
+            volume.append(entry["formattedVolume"])
 
-    etfmovers = pd.DataFrame(
-        {
-            " ": name,
-            "Price": last_price,
-            "Chg": net_change,
-            "%Chg": percent_change,
-            "Vol": volume,
-        }
-    )
+        etfmovers = pd.DataFrame(
+            {
+                " ": name,
+                "Price": last_price,
+                "Chg": net_change,
+                "%Chg": percent_change,
+                "Vol": volume,
+            }
+        )
 
-    return etfmovers
+        return etfmovers
+
+    return pd.DataFrame()

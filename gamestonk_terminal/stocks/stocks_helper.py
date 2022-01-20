@@ -88,7 +88,7 @@ def search(
             "\n",
         )
     else:
-        console.print(equities_dataframe.iloc[:amount].to_string(), "\n")
+        console.print(equities_dataframe.iloc[:amount].to_string())
 
 
 def load(
@@ -171,6 +171,7 @@ def load(
             # Check that loading a stock was not successful
             # pylint: disable=no-member
             if df_stock_candidate.empty:
+                console.print("")
                 return pd.DataFrame()
 
             df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
@@ -195,6 +196,7 @@ def load(
 
             # Check that loading a stock was not successful
             if df_stock_candidate.empty:
+                console.print("")
                 return pd.DataFrame()
 
             df_stock_candidate.index.name = "date"
@@ -207,6 +209,7 @@ def load(
 
             # Check that loading a stock was not successful
             if df_stock_candidate.empty:
+                console.print("")
                 return pd.DataFrame()
 
             df_stock_candidate = df_stock_candidate[
@@ -246,6 +249,7 @@ def load(
 
         # Check that loading a stock was not successful
         if df_stock_candidate.empty:
+            console.print("")
             return pd.DataFrame()
 
         df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
@@ -264,6 +268,7 @@ def load(
         f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis.",
     )
 
+    console.print("")
     return df_stock_candidate
 
 
@@ -490,7 +495,7 @@ def display_candle(
                 ]
             )
 
-        fig.show()
+        fig.show(config=dict({"scrollZoom": True}))
     console.print("")
 
 

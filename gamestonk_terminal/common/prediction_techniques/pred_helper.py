@@ -18,7 +18,6 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, Normalizer
-from tabulate import tabulate
 from tensorflow.keras.models import Sequential
 from gamestonk_terminal.helper_funcs import (
     check_positive,
@@ -26,6 +25,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     valid_date,
     plot_autoscale,
+    rich_table_from_df,
 )
 from gamestonk_terminal import config_neural_network_models as cfg
 from gamestonk_terminal import feature_flags as gtff
@@ -563,8 +563,16 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
             df_pred["pred"] = df_pred["pred"].apply(
                 lambda x: price_prediction_color(x, last_val=last_price)
             )
-            console.print("Prediction:")
-            print(tabulate(df_pred, headers=["Prediction"], tablefmt="fancy_grid"))
+            console.print(
+                rich_table_from_df(
+                    df_pred,
+                    show_index=True,
+                    title="Predictions",
+                    index_name="Datetime",
+                    headers=["Prediction"],
+                    floatfmt=".2f",
+                )
+            )
 
         else:
 
@@ -576,8 +584,16 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
         if gtff.USE_TABULATE_DF:
             df_pred = pd.DataFrame(df_pred)
             df_pred.columns = ["pred"]
-            console.print("Prediction:")
-            print(tabulate(df_pred, headers=["Prediction"], tablefmt="fancy_grid"))
+            console.print(
+                rich_table_from_df(
+                    df_pred,
+                    show_index=True,
+                    title="Predictions",
+                    index_name="Datetime",
+                    headers=["Prediction"],
+                    floatfmt=".2f",
+                )
+            )
         else:
             console.print(f"Actual price: {last_price:.2f} $\n")
             console.print("Prediction:")
@@ -615,11 +631,18 @@ def print_prediction_kpis(real: np.ndarray, pred: np.ndarray):
         "RMSE": f"{mean_squared_error(real, pred, squared=False):.3f}",
     }
 
-    console.print("KPIs")
     df = pd.DataFrame.from_dict(kpis, orient="index")
     if gtff.USE_TABULATE_DF:
-        print(tabulate(df, tablefmt="fancy_grid", showindex=True))
+        console.print(
+            rich_table_from_df(
+                df,
+                show_index=True,
+                title="KPIs",
+                floatfmt=".2f",
+            )
+        )
     else:
+        console.print("KPIs")
         console.print(df.to_string())
 
 

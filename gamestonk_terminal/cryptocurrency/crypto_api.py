@@ -23,4 +23,5 @@ from .due_diligence.finbrain_crypto_view import (
 try:
     from .prediction_techniques import pred_api as pred
 except Exception:
-    print("Prediction API is not available.")
+    # print("Prediction API is not available.")
+    pass
