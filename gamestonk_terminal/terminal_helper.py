@@ -360,7 +360,7 @@ def about_us():
         "\n"
         "[cyan]Join our community on discord: [/cyan]https://discord.gg/Up2QGbMKHY\n"
         "[cyan]Follow our twitter for updates: [/cyan]https://twitter.com/gamestonkt\n"
-        "[cyan]Access our landing page: [/cyan]https://gamestonkterminal.vercel.app\n"
+        "[cyan]Access our landing page: [/cyan]https://gamestonkterminal.github.io/GamestonkTerminal/\n"
         "\n"
         "[yellow]Partnerships:[/yellow]]\n"
         "[cyan]FinBrain: [/cyan]https://finbrain.tech\n"
@@ -373,7 +373,7 @@ def about_us():
         "markets, carefully consider your investment objectives, level of experience, and risk appetite, and seek "
         "professional advice where needed. The data contained in Gamestonk Terminal (GST) is not necessarily accurate. "
         "GST and any provider of the data contained in this website will not accept liability for any loss or damage "
-        "as a result of your trading, or your reliance on the information displayed.[/red]"
+        "as a result of your trading, or your reliance on the information displayed.[/red]\n"
     )
 
 
