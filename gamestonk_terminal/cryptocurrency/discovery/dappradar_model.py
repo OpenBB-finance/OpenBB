@@ -76,8 +76,8 @@ def get_top_nfts() -> pd.DataFrame:
         axis=1,
         inplace=False,
     )
-    df["Protocols"].apply(lambda x: ",".join(x))
     df = df.applymap(lambda x: long_number_format_with_type_check(x))
+    df["Protocols"] = df["Protocols"].apply(lambda x: ",".join(x))
     return df
 
 
