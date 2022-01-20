@@ -544,12 +544,12 @@ class DarkPoolShortsController(BaseController):
             default=False,
         )
         parser.add_argument(
-            "-m",
-            "--mpl",
-            help="Display plot using matplotlb.",
-            dest="mpl",
-            action="store_true",
-            default=False,
+            "-p",
+            "--plotly",
+            help="Display plot using interactive plotly.",
+            dest="plotly",
+            action="store_false",
+            default=True,
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -561,7 +561,7 @@ class DarkPoolShortsController(BaseController):
                     raw=ns_parser.raw,
                     sort=ns_parser.sort,
                     asc=ns_parser.asc,
-                    mpl=ns_parser.mpl,
+                    mpl=ns_parser.plotly,
                     export=ns_parser.export,
                 )
             else:

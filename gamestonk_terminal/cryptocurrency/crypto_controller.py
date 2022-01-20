@@ -8,7 +8,6 @@ from typing import List
 from datetime import datetime, timedelta
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from rich.markdown import Markdown
 from binance.client import Client
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
@@ -71,6 +70,7 @@ class CryptoController(BaseController):
         "bin": binance_view,
     }
     PATH = "/crypto/"
+    FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -123,16 +123,6 @@ class CryptoController(BaseController):
 {has_ticker_end}
 """
         console.print(text=help_text, menu="Cryptocurrency")
-
-    def call_resources(self, _):
-        """Process resources command"""
-        resources_md = os.path.join(os.path.dirname(__file__), "README.md")
-        if os.path.isfile(resources_md):
-            with open(resources_md) as f:
-                console.print(Markdown(f.read()))
-            console.print("")
-        else:
-            console.print("No resources available.\n")
 
     def call_prt(self, other_args):
         """Process prt command"""

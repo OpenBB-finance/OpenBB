@@ -17,7 +17,6 @@ import quandl
 import requests
 from alpha_vantage.timeseries import TimeSeries
 from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
-from colorama import Fore, Style
 from prawcore.exceptions import ResponseException
 from pyEX.common.exception import PyEXception
 from tabulate import tabulate
@@ -357,24 +356,24 @@ def update_terminal():
 def about_us():
     """Prints an about us section"""
     console.print(
-        f"{Fore.GREEN}Thanks for using Gamestonk Terminal. This is our way!{Style.RESET_ALL}\n"
+        "[green]Thanks for using Gamestonk Terminal. This is our way![/green]\n"
         "\n"
-        f"{Fore.CYAN}Join our community on discord: {Style.RESET_ALL}https://discord.gg/Up2QGbMKHY\n"
-        f"{Fore.CYAN}Follow our twitter for updates: {Style.RESET_ALL}https://twitter.com/gamestonkt\n"
-        f"{Fore.CYAN}Access our landing page: {Style.RESET_ALL}https://gamestonkterminal.vercel.app\n"
+        "[cyan]Join our community on discord: [/cyan]https://discord.gg/Up2QGbMKHY\n"
+        "[cyan]Follow our twitter for updates: [/cyan]https://twitter.com/gamestonkt\n"
+        "[cyan]Access our landing page: [/cyan]https://gamestonkterminal.vercel.app\n"
         "\n"
-        f"{Fore.YELLOW}Partnerships:{Style.RESET_ALL}\n"
-        f"{Fore.CYAN}FinBrain: {Style.RESET_ALL}https://finbrain.tech\n"
-        f"{Fore.CYAN}Quiver Quantitative: {Style.RESET_ALL}https://www.quiverquant.com\n"
-        f"{Fore.CYAN}SentimentInvestor: {Style.RESET_ALL}https://sentimentinvestor.com\n"
-        f"\n{Fore.RED}"
+        "[yellow]Partnerships:[/yellow]]\n"
+        "[cyan]FinBrain: [/cyan]https://finbrain.tech\n"
+        "[cyan]Quiver Quantitative: [/cyan]https://www.quiverquant.com\n"
+        "[cyan]SentimentInvestor: [/cyan]https://sentimentinvestor.com\n"
+        "\n[red]"
         "DISCLAIMER: Trading in financial instruments involves high risks including the risk of losing some, "
         "or all, of your investment amount, and may not be suitable for all investors. Before deciding to trade in "
         "financial instrument you should be fully informed of the risks and costs associated with trading the financial "
         "markets, carefully consider your investment objectives, level of experience, and risk appetite, and seek "
         "professional advice where needed. The data contained in Gamestonk Terminal (GST) is not necessarily accurate. "
         "GST and any provider of the data contained in this website will not accept liability for any loss or damage "
-        f"as a result of your trading, or your reliance on the information displayed.{Style.RESET_ALL}"
+        "as a result of your trading, or your reliance on the information displayed.[/red]"
     )
 
 
