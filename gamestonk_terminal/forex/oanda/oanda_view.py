@@ -10,6 +10,7 @@ import pandas as pd
 import pandas_ta as ta
 import seaborn as sns
 
+from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import config_plot as cfgPlot
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -293,11 +294,21 @@ def show_candles(
     _, ax = mpf.plot(
         df_candles,
         type="candle",
-        style="charles",
+        style=cfg.style.mpf_style,
         volume=True,
-        scale_padding={"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
         returnfig=True,
         addplot=plots_to_add,
+        xrotation=10,
+        figratio=(10, 7),
+        figscale=1.10,
+        scale_padding={"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
+        figsize=(plot_autoscale()),
+        update_width_config=dict(
+            candle_linewidth=0.6,
+            candle_width=0.8,
+            volume_linewidth=0.8,
+            volume_width=0.8,
+        ),
     )
 
     ax[0].set_title(f"{instrument} {granularity}")

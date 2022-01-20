@@ -914,25 +914,30 @@ def plot_chart(
             f"\n{symbol_coinpaprika}/{currency} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}",  # noqa: E501
         )
         df["Volume"] = df["Volume"] / 1_000_000
-        mpf.plot(
-            df,
-            type="candle",
-            volume=True,
-            ylabel_lower="Volume [1M]",
-            title=str(title[0]) if isinstance(title, tuple) else title,
-            xrotation=20,
-            style="binance",
-            figratio=(10, 7),
-            figscale=1.10,
-            figsize=(plot_autoscale()),
-            update_width_config=dict(
-                candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
-            ),
-        )
 
         if ion:
             plt.ion()
-        plt.show()
+
+        mpf.plot(
+            df,
+            type="candle",
+            style=cfg.style.mpf_style,
+            volume=True,
+            ylabel_lower="Volume [1M]",
+            title=str(title[0]) if isinstance(title, tuple) else title,
+            xrotation=10,
+            figratio=(10, 7),
+            figscale=1.10,
+            scale_padding={"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
+            figsize=(plot_autoscale()),
+            update_width_config=dict(
+                candle_linewidth=0.6,
+                candle_width=0.8,
+                volume_linewidth=0.8,
+                volume_width=0.8,
+            ),
+        )
+
         console.print("")
 
     if source == "cg":
@@ -953,24 +958,28 @@ def plot_chart(
             f"to {df.index[-1].strftime('%Y/%m/%d')}",
         )
 
+        if ion:
+            plt.ion()
+
         mpf.plot(
             df,
             type="candle",
+            style=cfg.style.mpf_style,
             volume=False,
             title=str(title[0]) if isinstance(title, tuple) else title,
-            xrotation=20,
-            style="binance",
+            xrotation=10,
             figratio=(10, 7),
             figscale=1.10,
+            scale_padding={"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
             figsize=(plot_autoscale()),
             update_width_config=dict(
-                candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
+                candle_linewidth=0.6,
+                candle_width=0.8,
+                volume_linewidth=0.8,
+                volume_width=0.8,
             ),
         )
 
-        if ion:
-            plt.ion()
-        plt.show()
         console.print("")
 
     if source == "cb":
@@ -993,25 +1002,30 @@ def plot_chart(
                 f"\n{coin}/{currency} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}",
             )
             df["Volume"] = df["Volume"] / 1_000
-            mpf.plot(
-                df,
-                type="candle",
-                volume=True,
-                ylabel_lower="Volume [1K]",
-                title=str(title[0]) if isinstance(title, tuple) else title,
-                xrotation=20,
-                style="binance",
-                figratio=(10, 7),
-                figscale=1.10,
-                figsize=(plot_autoscale()),
-                update_width_config=dict(
-                    candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
-                ),
-            )
 
             if ion:
                 plt.ion()
-            plt.show()
+
+            mpf.plot(
+                df,
+                type="candle",
+                style=cfg.style.mpf_style,
+                volume=True,
+                ylabel_lower="Volume [1K]",
+                title=str(title[0]) if isinstance(title, tuple) else title,
+                xrotation=10,
+                figratio=(10, 7),
+                figscale=1.10,
+                scale_padding={"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
+                figsize=(plot_autoscale()),
+                update_width_config=dict(
+                    candle_linewidth=0.6,
+                    candle_width=0.8,
+                    volume_linewidth=0.8,
+                    volume_width=0.8,
+                ),
+            )
+
             console.print("")
 
 

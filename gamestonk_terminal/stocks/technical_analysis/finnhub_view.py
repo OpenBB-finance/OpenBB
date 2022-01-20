@@ -8,6 +8,7 @@ from datetime import datetime
 import yfinance as yf
 import mplfinance as mpf
 
+from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
 from gamestonk_terminal.stocks.technical_analysis import finnhub_model
 from gamestonk_terminal.rich_config import console
@@ -96,25 +97,23 @@ def plot_pattern_recognition(ticker: str, resolution: str, export: str):
     df_stock["OC_High"] = df_stock[["Open", "Close"]].max(axis=1)
     df_stock["OC_Low"] = df_stock[["Open", "Close"]].min(axis=1)
 
-    mc = mpf.make_marketcolors(
-        up="green", down="red", edge="black", wick="black", volume="in", ohlc="i"
-    )
-
-    s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=False)
-
     mpf.plot(
         df_stock,
         type="candle",
+        style=cfg.style.mpf_style,
         volume=False,
         title=f"\n{ticker}",
         alines=l_segments,
         xrotation=10,
-        style=s,
         figratio=(10, 7),
         figscale=1.10,
-        figsize=plot_autoscale(),
+        scale_padding={"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
+        figsize=(plot_autoscale()),
         update_width_config=dict(
-            candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
+            candle_linewidth=0.6,
+            candle_width=0.8,
+            volume_linewidth=0.8,
+            volume_width=0.8,
         ),
     )
 

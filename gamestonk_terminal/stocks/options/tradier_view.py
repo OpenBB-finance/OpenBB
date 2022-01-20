@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
+from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -606,26 +607,25 @@ def display_historical(
 
     op_type = ["call", "put"][put]
 
-    mc = mpf.make_marketcolors(
-        up="green", down="red", edge="black", wick="black", volume="in", ohlc="i"
-    )
-
-    s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
-
     if gtff.USE_ION:
         plt.ion()
 
     mpf.plot(
         df_hist,
         type="candle",
+        style=cfg.style.mpf_style,
         volume=True,
         title=f"\n{ticker.upper()} {strike} {op_type} expiring {expiry} Historical",
-        style=s,
+        xrotation=10,
         figratio=(10, 7),
         figscale=1.10,
+        scale_padding={"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
         figsize=(plot_autoscale()),
         update_width_config=dict(
-            candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
+            candle_linewidth=0.6,
+            candle_width=0.8,
+            volume_linewidth=0.8,
+            volume_width=0.8,
         ),
     )
 

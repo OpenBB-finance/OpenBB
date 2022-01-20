@@ -9,6 +9,7 @@ import mplfinance as mpf
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
+from gamestonk_terminal import config_terminal as cfg
 import gamestonk_terminal.feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import overlap_model
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -127,26 +128,32 @@ def view_vwap(
     day_df = df_stock[df_stock.Day == df_stock.Day[-1]]
 
     df_vwap = overlap_model.vwap(day_df, offset)
-    mc = mpf.make_marketcolors(
-        up="green", down="red", edge="black", wick="black", volume="in", ohlc="i"
-    )
 
-    s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
-    addplot_result = mpf.make_addplot(df_vwap, color="k")
-
-    mpf.plot(
-        day_df,
-        style=s,
-        type="candle",
-        addplot=addplot_result,
-        volume=True,
-        title=f"\n{s_ticker} {s_interval} VWAP",
-    )
+    addplot_result = mpf.make_addplot(df_vwap)
 
     if gtff.USE_ION:
         plt.ion()
 
-    plt.show()
+    mpf.plot(
+        day_df,
+        style=cfg.style.mpf_style,
+        type="candle",
+        addplot=addplot_result,
+        volume=True,
+        title=f"\n{s_ticker} {s_interval} VWAP",
+        xrotation=10,
+        figratio=(10, 7),
+        figscale=1.10,
+        scale_padding={"left": 0.3, "right": 1.2, "top": 0.8, "bottom": 0.8},
+        figsize=(plot_autoscale()),
+        update_width_config=dict(
+            candle_linewidth=0.6,
+            candle_width=0.8,
+            volume_linewidth=0.8,
+            volume_width=0.8,
+        ),
+    )
+
     console.print("")
 
     export_data(

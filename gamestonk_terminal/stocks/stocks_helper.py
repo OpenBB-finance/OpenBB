@@ -298,17 +298,6 @@ def display_candle(
             df_stock = find_trendline(df_stock, "OC_Low", "low")
 
     if use_matplotlib:
-        mc = mpf.make_marketcolors(
-            up="green",
-            down="red",
-            edge="black",
-            wick="black",
-            volume="in",
-            ohlc="i",
-        )
-
-        s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
-
         ap0 = []
         if add_trend:
             if "OC_High_trend" in df_stock.columns:
@@ -328,16 +317,20 @@ def display_candle(
         mpf.plot(
             df_stock,
             type="candle",
+            style=cfg.style.mpf_style,
             volume=True,
             title=f"\nStock {s_ticker}",
             addplot=ap0,
             xrotation=10,
-            style=s,
             figratio=(10, 7),
             figscale=1.10,
+            scale_padding={"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
             figsize=(plot_autoscale()),
             update_width_config=dict(
-                candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
+                candle_linewidth=0.6,
+                candle_width=0.8,
+                volume_linewidth=0.8,
+                volume_width=0.8,
             ),
             warn_too_much_data=10000,
             **kwargs,

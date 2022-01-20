@@ -5,6 +5,7 @@ import pandas as pd
 import mplfinance as mpf
 import matplotlib.pyplot as plt
 from gamestonk_terminal.forex import av_model
+from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import plot_autoscale, rich_table_from_df
 from gamestonk_terminal.rich_config import console
@@ -49,34 +50,26 @@ def display_candle(data: pd.DataFrame, to_symbol: str, from_symbol: str):
     from_symbol : str
         From forex symbol
     """
-    mc = mpf.make_marketcolors(
-        up="green",
-        down="red",
-        edge="black",
-        wick="black",
-        volume="in",
-        ohlc="i",
-    )
-
-    s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
-
     if gtff.USE_ION:
         plt.ion()
 
     mpf.plot(
         data,
         type="candle",
+        style=cfg.style.mpf_style,
         mav=(20, 50),
         volume=False,
         title=f"\n{from_symbol}/{to_symbol}",
         xrotation=10,
-        style=s,
         figratio=(10, 7),
         figscale=1.10,
+        scale_padding={"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
         figsize=(plot_autoscale()),
         update_width_config=dict(
-            candle_linewidth=0.7,
+            candle_linewidth=0.6,
             candle_width=0.8,
+            volume_linewidth=0.8,
+            volume_width=0.8,
         ),
     )
 

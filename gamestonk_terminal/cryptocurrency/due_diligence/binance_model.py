@@ -135,21 +135,26 @@ def plot_candles(candles_df: pd.DataFrame, title: str) -> None:
         title of graph
     """
 
+    if ion:
+        plt.ion()
+
     mpf.plot(
         candles_df,
         type="candle",
+        style=cfg.style.mpf_style,
         volume=True,
         title=f"\n{title}",
-        xrotation=20,
-        style="binance",
+        xrotation=10,
         figratio=(10, 7),
         figscale=1.10,
+        scale_padding={"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
         figsize=(plot_autoscale()),
         update_width_config=dict(
-            candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
+            candle_linewidth=0.6,
+            candle_width=0.8,
+            volume_linewidth=0.8,
+            volume_width=0.8,
         ),
     )
-    if ion:
-        plt.ion()
-    plt.show()
+
     console.print("")
