@@ -52,7 +52,7 @@ def display_ad(
         dpi=PLOT_DPI,
     )
     ax = axes[0]
-    ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
+    ax.plot(df_stock.index, df_stock["Adj Close"].values)
     ax.set_title(f"{s_ticker} AD")
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax.set_ylabel("Price")
@@ -73,9 +73,9 @@ def display_ad(
     ax3 = axes[2]
     ax3.set_ylabel("A/D [M]")
     ax3.set_xlabel("Time")
-    ax3.plot(df_ta.index, df_cal, "b", lw=1)
+    ax3.plot(df_ta.index, df_cal)
     ax3.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax3.axhline(0, linewidth=2, color="k", ls="--")
+    ax3.axhline(0, linestyle="--")
     ax3.grid(b=True, which="major", color="#666666", linestyle="-")
 
     if gtff.USE_ION:

@@ -70,7 +70,7 @@ def view_ma(
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax.set_title(f"{s_ticker} {ma_type.upper()}")
 
-    ax.plot(values.index, values.values, lw=3, c="k")
+    ax.plot(values.index, values.values, linewidth=1)
 
     ax.set_xlabel("Time")
     ax.set_xlim([price_df.index[0], price_df.index[-1]])
@@ -80,7 +80,7 @@ def view_ma(
         ax.plot(price_df.iloc[:, idx])
 
     ax.legend(l_legend)
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax.grid(b=True, which="major", linestyle=":")
 
     if gtff.USE_ION:
         plt.ion()
