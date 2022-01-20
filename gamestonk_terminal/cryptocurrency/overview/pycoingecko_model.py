@@ -371,11 +371,11 @@ def get_global_info() -> pd.DataFrame:
     results = client.get_global()
 
     total_mcap = results.pop("market_cap_percentage")
-    eth, btc = total_mcap.get("btc"), total_mcap.get("eth")
+    btc, eth = total_mcap.get("btc"), total_mcap.get("eth")
     for key in ["total_market_cap", "total_volume", "updated_at"]:
         del results[key]
-    results["eth_market_cap_in_pct"] = eth
     results["btc_market_cap_in_pct"] = btc
+    results["eth_market_cap_in_pct"] = eth
     results["altcoin_market_cap_in_pct"] = 100 - (float(eth) + float(btc))
     df = pd.Series(results).reset_index()
     df.columns = ["Metric", "Value"]

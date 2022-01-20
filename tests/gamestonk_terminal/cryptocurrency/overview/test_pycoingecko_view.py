@@ -121,7 +121,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_global_market_info(self):
-        ov_pycoingecko_view.display_global_market_info(export="")
+        ov_pycoingecko_view.display_global_market_info(export="", pie=False)
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(

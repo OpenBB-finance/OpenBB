@@ -3,8 +3,6 @@ __docformat__ = "numpy"
 
 import os
 from pandas.plotting import register_matplotlib_converters
-from rich.console import Console
-
 from tabulate import tabulate
 from gamestonk_terminal.cryptocurrency.discovery import pycoingecko_model
 from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
@@ -12,8 +10,6 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
-
-t_console = Console()
 
 # pylint: disable=inconsistent-return-statements
 # pylint: disable=R0904, C0302
@@ -32,7 +28,6 @@ def display_coins(category: str, top: int, export: str) -> None:
         Export dataframe data to csv,json,xlsx file
     """
     df = pycoingecko_model.get_coins(top=top, category=category)
-    print(df)
     if not df.empty:
         df = df[
             [
@@ -46,17 +41,15 @@ def display_coins(category: str, top: int, export: str) -> None:
             ]
         ]
         if gtff.USE_TABULATE_DF:
-            t_console.print(
-                rich_table_from_df(
-                    df.head(top),
-                    headers=list(df.columns),
-                    floatfmt=".4f",
-                    show_index=False,
-                ),
-                "\n",
+            rich_table_from_df(
+                df.head(top),
+                headers=list(df.columns),
+                floatfmt=".4f",
+                show_index=False,
             )
+            console.print("")
         else:
-            t_console.print(df.to_string, "\n")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
@@ -65,7 +58,7 @@ def display_coins(category: str, top: int, export: str) -> None:
             df,
         )
     else:
-        t_console.print("\nUnable to retrieve data from CoinGecko.\n")
+        console.print("\nUnable to retrieve data from CoinGecko.\n")
 
 
 def display_gainers(period: str, top: int, export: str) -> None:
@@ -162,18 +155,16 @@ def display_trending(export: str) -> None:
     df = pycoingecko_model.get_trending_coins()
     if not df.empty:
         if gtff.USE_TABULATE_DF:
-            t_console.print(
-                rich_table_from_df(
-                    df,
-                    headers=list(df.columns),
-                    floatfmt=".4f",
-                    show_index=False,
-                    title="Trending coins on CoinGecko",
-                ),
-                "\n",
+            rich_table_from_df(
+                df,
+                headers=list(df.columns),
+                floatfmt=".4f",
+                show_index=False,
+                title="Trending coins on CoinGecko",
             )
+            console.print("")
         else:
-            t_console.print(df.to_string, "\n")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
@@ -182,7 +173,7 @@ def display_trending(export: str) -> None:
             df,
         )
     else:
-        t_console.print("\nUnable to retrieve data from CoinGecko.\n")
+        console.print("\nUnable to retrieve data from CoinGecko.\n")
 
 
 def display_top_defi_coins(
@@ -216,15 +207,13 @@ def display_top_defi_coins(
     else:
         console.print("\n", stats_str, "\n")
         if gtff.USE_TABULATE_DF:
-            console.print(
-                rich_table_from_df(
-                    df.head(top),
-                    headers=list(df.columns),
-                    floatfmt=".4f",
-                    show_index=False,
-                ),
-                "\n",
+            rich_table_from_df(
+                df.head(top),
+                headers=list(df.columns),
+                floatfmt=".4f",
+                show_index=False,
             )
+            console.print("")
         else:
             console.print(df.to_string, "\n")
 

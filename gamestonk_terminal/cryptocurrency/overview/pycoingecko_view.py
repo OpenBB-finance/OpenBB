@@ -166,7 +166,7 @@ def display_exchange_rates(sortby: str, descend: bool, top: int, export: str) ->
         console.print("")
 
 
-def display_global_market_info(export: str) -> None:
+def display_global_market_info(pie: bool, export: str) -> None:
     """Shows global statistics about crypto. [Source: CoinGecko]
         - market cap change
         - number of markets
@@ -183,6 +183,35 @@ def display_global_market_info(export: str) -> None:
     df = gecko.get_global_info()
 
     if not df.empty:
+        if pie:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            ax.pie(
+                [
+                    round(
+                        df.loc[df["Metric"] == "Btc Market Cap In Pct"]["Value"].item(),
+                        2,
+                    ),
+                    round(
+                        df.loc[df["Metric"] == "Eth Market Cap In Pct"]["Value"].item(),
+                        2,
+                    ),
+                    round(
+                        df.loc[df["Metric"] == "Altcoin Market Cap In Pct"][
+                            "Value"
+                        ].item(),
+                        2,
+                    ),
+                ],
+                labels=["BTC", "ETH", "Altcoins"],
+                wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
+                labeldistance=1.05,
+                autopct="%1.0f%%",
+                startangle=90,
+            )
+            ax.set_title("Market cap distribution")
+            if gtff.USE_ION:
+                plt.ion()
+            plt.show()
         if gtff.USE_TABULATE_DF:
             print(
                 tabulate(
@@ -200,7 +229,7 @@ def display_global_market_info(export: str) -> None:
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
-            "global",
+            "cgglobal",
             df,
         )
     else:
@@ -315,15 +344,13 @@ First {top} stablecoins have a total {long_number_format_with_type_check(total_m
 """
         )
         if gtff.USE_TABULATE_DF:
-            console.print(
-                rich_table_from_df(
-                    df.head(top),
-                    headers=list(df.columns),
-                    floatfmt=".2f",
-                    show_index=False,
-                ),
-                "\n",
+            rich_table_from_df(
+                df.head(top),
+                headers=list(df.columns),
+                floatfmt=".2f",
+                show_index=False,
             )
+            console.print("")
         else:
             console.print(df.to_string, "\n")
 
@@ -379,15 +406,13 @@ def display_categories(sortby: str, top: int, export: str, pie: bool) -> None:
             plt.show()
         df = df.applymap(lambda x: long_number_format_with_type_check(x))
         if gtff.USE_TABULATE_DF:
-            console.print(
-                rich_table_from_df(
-                    df.head(top),
-                    headers=list(df.columns),
-                    floatfmt=".2f",
-                    show_index=False,
-                ),
-                "\n",
+            rich_table_from_df(
+                df.head(top),
+                headers=list(df.columns),
+                floatfmt=".2f",
+                show_index=False,
             )
+            console.print("")
         else:
             console.print(df.to_string, "\n")
 

@@ -891,11 +891,21 @@ class OverviewController(BaseController):
             description="""Shows global statistics about Crypto Market""",
         )
 
+        parser.add_argument(
+            "--pie",
+            action="store_true",
+            help="Flag to show pie chart with market cap distribution",
+            dest="pie",
+            default=False,
+        )
+
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            pycoingecko_view.display_global_market_info(export=ns_parser.export)
+            pycoingecko_view.display_global_market_info(
+                export=ns_parser.export, pie=ns_parser.pie
+            )
 
     def call_cgdefi(self, other_args):
         """Process defi command"""

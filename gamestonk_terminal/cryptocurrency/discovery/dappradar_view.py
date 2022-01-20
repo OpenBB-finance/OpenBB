@@ -28,15 +28,14 @@ def display_top_nfts(top: int = 10, export: str = "") -> None:
 
     df = dappradar_model.get_top_nfts()
     if gtff.USE_TABULATE_DF:
-        console.print(
-            rich_table_from_df(
-                df.head(top),
-                headers=list(df.columns),
-                floatfmt=".2f",
-                show_index=False,
-            ),
-            "\n",
+        rich_table_from_df(
+            df.head(top),
+            headers=list(df.columns),
+            floatfmt=".2f",
+            show_index=False,
+            title="Top NFT collections",
         )
+        console.print("")
     else:
         console.print(df.to_string, "\n")
 
@@ -65,15 +64,13 @@ def display_top_games(top: int = 10, export: str = "") -> None:
 
     df = dappradar_model.get_top_games()
     if gtff.USE_TABULATE_DF:
-        console.print(
-            rich_table_from_df(
-                df.head(top),
-                headers=list(df.columns),
-                floatfmt=".2f",
-                show_index=False,
-            ),
-            "\n",
+        rich_table_from_df(
+            df.head(top),
+            headers=list(df.columns),
+            floatfmt=".2f",
+            show_index=False,
         )
+        console.print("")
     else:
         console.print(df.to_string, "\n")
 
@@ -102,15 +99,13 @@ def display_top_dexes(top: int = 10, export: str = "") -> None:
 
     df = dappradar_model.get_top_dexes()
     if gtff.USE_TABULATE_DF:
-        console.print(
-            rich_table_from_df(
-                df.head(top),
-                headers=list(df.columns),
-                floatfmt=".2f",
-                show_index=False,
-            ),
-            "\n",
+        rich_table_from_df(
+            df.head(top),
+            headers=list(df.columns),
+            floatfmt=".2f",
+            show_index=False,
         )
+        console.print("")
     else:
         console.print(df.to_string, "\n")
 
@@ -139,15 +134,13 @@ def display_top_dapps(top: int = 10, export: str = "") -> None:
 
     df = dappradar_model.get_top_dapps()
     if gtff.USE_TABULATE_DF:
-        console.print(
-            rich_table_from_df(
-                df.head(top),
-                headers=list(df.columns),
-                floatfmt=".2f",
-                show_index=False,
-            ),
-            "\n",
+        rich_table_from_df(
+            df.head(top),
+            headers=list(df.columns),
+            floatfmt=".2f",
+            show_index=False,
         )
+        console.print("")
     else:
         console.print(df.to_string, "\n")
 
