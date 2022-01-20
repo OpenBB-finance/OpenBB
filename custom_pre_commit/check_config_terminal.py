@@ -5,19 +5,6 @@ import sys
 import os
 from typing import List
 
-"""
-Note: This code is no longer called in favor of using gitignore. The below code shows how to add it back:
-  - repo: local
-    hooks:
-      - id: check-debug-mode
-        name: check-debug-mode
-        entry: python custom_pre_commit/check_config_terminal.py
-        language: python
-        language_version: python3
-        types: ["file"]
-        pass_filenames: false
-"""
-
 # This is a dictionary of all settings to check in config_terminal.py
 settings = {
     "DEBUG_MODE": "DEBUG_MODE = False",
@@ -45,7 +32,6 @@ settings = {
     "DG_USERNAME": 'DG_USERNAME = os.getenv("GT_DG_USERNAME") or "REPLACE_ME"',
     "DG_PASSWORD": 'DG_PASSWORD = os.getenv("GT_DG_PASSWORD") or "REPLACE_ME"',
     "DG_TOTP_SECRET": 'DG_TOTP_SECRET = os.getenv("GT_DG_TOTP_SECRET") or None',
-    "OANDA_ACCOUNT_TYPE": 'OANDA_ACCOUNT_TYPE = os.getenv("GT_OANDA_ACCOUNT_TYPE") or "practice"',
     "OANDA_ACCOUNT": 'OANDA_ACCOUNT = os.getenv("GT_OANDA_ACCOUNT") or "REPLACE_ME"',
     "OANDA_TOKEN": 'OANDA_TOKEN = os.getenv("GT_OANDA_TOKEN") or "REPLACE_ME"',
     "TRADIER_TOKEN": 'TRADIER_TOKEN = os.getenv("GT_API_TRADIER_TOKEN") or "REPLACE_ME"',
@@ -80,14 +66,11 @@ def search(lst: List[str], search_item: str):
     search_item : str
         The item to search for in the strings
 
-    Returns
-    ----------
-
     """
     for i, val in enumerate(lst):
         if search_item in val:
             return i, val
-    return None
+    return None, None
 
 
 def check_setting(lines: List[str], setting: str, value: str) -> bool:
