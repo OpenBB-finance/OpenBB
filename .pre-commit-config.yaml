@@ -1,8 +1,8 @@
 repos:
   - repo: local
     hooks:
-      - id: check-debug-mode
-        name: check-debug-mode
+      - id: check-config
+        name: check-config
         entry: python custom_pre_commit/check_config_terminal.py
         language: python
         language_version: python3

@@ -7,10 +7,10 @@ if env_files:
     load_dotenv(env_files[0])
 
 # Set to True to see full stack traces for debugging/error reporting
-DEBUG_MODE = False
+DEBUG_MODE = True
 
 # By default the jupyter notebook will be run on port 8888
-PAPERMILL_NOTEBOOK_REPORT_PORT = "7777"
+PAPERMILL_NOTEBOOK_REPORT_PORT = "7757"
 
 # Logging settings
 
@@ -78,7 +78,7 @@ DG_PASSWORD = os.getenv("GT_DG_PASSWORD") or "REPLACE_ME"
 DG_TOTP_SECRET = os.getenv("GT_DG_TOTP_SECRET") or None
 
 # https://developer.oanda.com
-OANDA_ACCOUNT = os.getenv("GT_OANDA_ACCOUNT") or "REPLACE_ME"
+OANDA_ACCOUNT_TYPE = os.getenv("GT_OANDA_ACCOUNT") or "REPLACE_ME"
 # "live" or "practice"
 OANDA_ACCOUNT = os.getenv("GT_OANDA_ACCOUNT") or "REPLACE_ME"
 OANDA_TOKEN = os.getenv("GT_OANDA_TOKEN") or "REPLACE_ME"

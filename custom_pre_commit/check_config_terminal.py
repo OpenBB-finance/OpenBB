@@ -69,7 +69,7 @@ def search(lst: List[str], search_item: str):
 
     """
     for i, val in enumerate(lst):
-        if search_item in val:
+        if search_item+" " in val:
             return i, val
     return None, None
 
@@ -92,12 +92,13 @@ def check_setting(lines: List[str], setting: str, value: str) -> bool:
     correct : bool
         Returns whether the setting was already correct
     """
+    print(setting)
     debug_line, debug_val = search(lines, setting)
 
     if debug_val == value:
         return True
 
-    lines[debug_line] = settings[setting]
+    lines[debug_line] = value
     return False
 
 
