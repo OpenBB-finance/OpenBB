@@ -21,6 +21,7 @@ def vcr_config():
         "gainers",
         "decliners",
         "active",
+        "wrong",
     ],
 )
 def test_get_etfs_by_name(recorder, sort_type):
