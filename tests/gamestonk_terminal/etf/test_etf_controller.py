@@ -205,7 +205,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
     assert controller.queue == expected_queue
 
 
-# TODO: call_news, and going into submenus?
+# TODO: call_news, candle, and going into submenus?
 
 
 @pytest.mark.vcr(record_mode="none")
