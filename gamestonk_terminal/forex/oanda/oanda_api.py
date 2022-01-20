@@ -1,4 +1,4 @@
-"""Forex context API."""
+"""Oanda context API."""
 import os
 from gamestonk_terminal.helper_classes import ModelsNamespace as _models
 
