@@ -59,7 +59,7 @@ class BrokersController(BaseController):
         )
 
     def call_cb(self, _):
-        """Process degiro command."""
+        """Process coinbase command."""
         self.queue = self.load_class(coinbase_controller.CoinbaseController, self.queue)
 
     # TODO: Consistent way of merging across brokers including crypto

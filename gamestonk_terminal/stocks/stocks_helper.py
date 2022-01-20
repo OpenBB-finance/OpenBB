@@ -88,7 +88,7 @@ def search(
             "\n",
         )
     else:
-        console.print(equities_dataframe.iloc[:amount].to_string(), "\n")
+        console.print(equities_dataframe.iloc[:amount].to_string())
 
 
 def load(
@@ -490,7 +490,7 @@ def display_candle(
                 ]
             )
 
-        fig.show()
+        fig.show(config=dict({"scrollZoom": True}))
     console.print("")
 
 

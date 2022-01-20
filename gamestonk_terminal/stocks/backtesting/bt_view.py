@@ -83,11 +83,22 @@ def display_whatif_scenario(
     current_shares_value = (
         data[data.index > date_shares_acquired].values[-1] * num_shares_acquired
     )
-    increase_pct = 100 * current_shares_value / initial_shares_value
-    console.print(
-        f"{these} would be worth {current_shares_value:.2f}. Which represents an increase of {increase_pct:.2f}%.",
-        "\n",
-    )
+    if current_shares_value > initial_shares_value:
+        pct = 100 * (
+            (current_shares_value - initial_shares_value) / initial_shares_value
+        )
+        console.print(
+            f"{these} would be worth {current_shares_value:.2f}. Which represents an increase of {pct:.2f}%.",
+            "\n",
+        )
+    else:
+        pct = 100 * (
+            (initial_shares_value - current_shares_value) / initial_shares_value
+        )
+        console.print(
+            f"{these} would be worth {current_shares_value:.2f}. Which represents an decrease of {pct:.2f}%.",
+            "\n",
+        )
 
 
 def display_simple_ema(
