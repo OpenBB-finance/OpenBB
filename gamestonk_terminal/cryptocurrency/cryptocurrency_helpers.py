@@ -289,7 +289,8 @@ def load(
             coin_map_df.iloc[0]
             if isinstance(coin_map_df, pd.DataFrame)
             else coin_map_df
-        )  # TODO: improve to choose the row that matches better; if it is dataframe, it means that found more than 1 coin
+        )  # TODO: improve to choose the row that matches better;
+        # if it is dataframe, it means that found more than 1 coin
         if should_load_ta_data:
             df_prices, currency = load_ta_data(
                 coin_map_df=coin_map_df,
@@ -642,7 +643,7 @@ def display_all_coins(
         console.print("")
 
     try:
-        df = df[skip : skip + top]
+        df = df[skip : skip + top]  # noqa
     except Exception as e:
         console.print(e)
 

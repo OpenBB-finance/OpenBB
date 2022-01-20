@@ -641,10 +641,12 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
-            Find similar coin by coin name,symbol or id. If you don't remember exact name or id of the Coin at CoinGecko,
-            Binance, Coinbase or CoinPaprika you can use this command to display coins with similar name, symbol or id
-            to your search query.
-            Example of usage: coin name is something like "polka". So I can try: find -c polka -k name -t 25
+            Find similar coin by coin name,symbol or id. If you don't remember exact
+            name or id of the Coin at CoinGecko, Binance, Coinbase or CoinPaprika you
+            can use this command to display coins with similar name, symbol or id to
+            your search query.
+            Example of usage: coin name is something like "polka". So I can try:
+            find -c polka -k name -t 25
             It will search for coin that has similar name to polka and display top 25 matches.
             -c, --coin stands for coin - you provide here your search query
             -k, --key it's a searching key. You can search by symbol, id or name of coin

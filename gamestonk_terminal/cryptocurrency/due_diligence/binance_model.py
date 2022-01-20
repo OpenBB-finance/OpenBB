@@ -74,7 +74,7 @@ def get_binance_available_quotes_for_each_coin() -> dict:
     Returns
     -------
     dict:
-        Aall quote assets for given coin
+        All quote assets for given coin
         {'ETH' : ['BTC', 'USDT' ...], 'UNI' : ['ETH', 'BTC','BUSD', ...]
 
     """
@@ -130,7 +130,7 @@ def plot_candles(candles_df: pd.DataFrame, title: str) -> None:
     Parameters
     ----------
     candles_df: pd.DataFrame
-        Dataframe containing time and OHLVC
+        Dataframe containing time and OHLCV
     title: str
         title of graph
     """
