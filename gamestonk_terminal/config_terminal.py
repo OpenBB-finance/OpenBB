@@ -10,7 +10,7 @@ if env_files:
 DEBUG_MODE = False
 
 # By default the jupyter notebook will be run on port 8888
-PAPERMILL_NOTEBOOK_REPORT_PORT = "8888"
+PAPERMILL_NOTEBOOK_REPORT_PORT = "7777"
 
 # Logging settings
 
