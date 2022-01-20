@@ -37,3 +37,6 @@ jupyterlab/*/ui-tests/tests/*.ts-snapshots/
 
 # Sphinx documentation build files
 docs/_build
+
+# User stylesheets
+styles/user
