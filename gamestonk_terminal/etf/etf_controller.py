@@ -418,6 +418,8 @@ class ETFController(BaseController):
                 df_etf = stocks_helper.find_trendline(data, "OC_High", "high")
                 df_etf = stocks_helper.find_trendline(data, "OC_Low", "low")
 
+                # TODO: Move plot into a view
+
                 mc = mpf.make_marketcolors(
                     up="green",
                     down="red",
