@@ -17,6 +17,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.discovery import (
     coinmarketcap_model,
     coinpaprika_model,
+    dappradar_model,
     dappradar_view,
     pycoingecko_model,
     pycoingecko_view,
@@ -32,10 +33,8 @@ class DiscoveryController(BaseController):
         "cpsearch",
         "cmctop",
         "cgtrending",
-        "cgvolume",
         "cggainers",
         "cglosers",
-        "cgdefi",
         "cgtop",
         "drnft",
         "drgames",
@@ -52,21 +51,31 @@ class DiscoveryController(BaseController):
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["cggainers"]["-p"] = {c: {} for c in pycoingecko_model.API_PERIODS}
-            choices["cglosers"]["-p"] = {c: {} for c in pycoingecko_model.API_PERIODS}
-            choices["cgtrending"]["-s"] = {
-                c: {} for c in pycoingecko_model.TRENDING_FILTERS
+            choices["cggainers"]["--sort"] = {
+                c: {} for c in pycoingecko_model.GAINERS_LOSERS_COLUMNS
             }
+            choices["cglosers"]["--sort"] = {
+                c: {} for c in pycoingecko_model.GAINERS_LOSERS_COLUMNS
+            }
+            choices["cglosers"]["-p"] = {c: {} for c in pycoingecko_model.API_PERIODS}
             choices["cgtop"] = {
                 c: None for c in pycoingecko_model.get_categories_keys()
             }
             choices["cgtop"]["--category"] = {
                 c: None for c in pycoingecko_model.get_categories_keys()
             }
-            choices["cgvolume"]["-s"] = {c: {} for c in pycoingecko_model.CAP_FILTERS}
-            choices["cgdefi"]["-s"] = {c: {} for c in pycoingecko_model.CAP_FILTERS}
+            choices["cgtop"]["--sort"] = {
+                c: None for c in pycoingecko_view.COINS_COLUMNS
+            }
             choices["cmctop"]["-s"] = {c: {} for c in coinmarketcap_model.FILTERS}
             choices["cpsearch"]["-s"] = {c: {} for c in coinpaprika_model.FILTERS}
             choices["cpsearch"]["-c"] = {c: {} for c in coinpaprika_model.CATEGORIES}
+            choices["drnft"]["--sort"] = {c: {} for c in dappradar_model.NFT_COLUMNS}
+            choices["drgames"]["--sort"] = {c: {} for c in dappradar_model.DEX_COLUMNS}
+            choices["drdex"]["--sort"] = {c: {} for c in dappradar_model.DEX_COLUMNS}
+            choices["drdapps"]["--sort"] = {
+                c: {} for c in dappradar_model.DAPPS_COLUMNS
+            }
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -75,10 +84,8 @@ class DiscoveryController(BaseController):
 [src][CoinGecko][/src]
     cgtop             top coins (with or without category)
     cgtrending        trending coins
-    cgvolume          coins with highest volume
     cggainers         top gainers - coins which price gained the most in given period
     cglosers          top losers - coins which price dropped the most in given period
-    cgdefi            decentralized finance coins
 [src][CoinPaprika][/src]
     cpsearch          search for coins
 [src][CoinMarketCap][/src]
@@ -117,6 +124,14 @@ class DiscoveryController(BaseController):
             help="Limit of records",
             type=check_positive,
         )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            nargs="+",
+            help="Sort by given column. Default: Market Cap Rank",
+            default="Market Cap Rank",
+        )
 
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-c")
@@ -126,6 +141,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_coins(
+                sortby=" ".join(ns_parser.sortby),
                 category=ns_parser.category,
                 top=ns_parser.limit,
                 export=ns_parser.export,
@@ -155,12 +171,20 @@ class DiscoveryController(BaseController):
             help="Number of records to display",
             default=15,
         )
-
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            nargs="+",
+            help="Sort by given column. Default: Daily Volume [$]",
+            default="Daily Volume [$]",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             dappradar_view.display_top_dapps(
+                sortby=" ".join(ns_parser.sortby),
                 top=ns_parser.limit,
                 export=ns_parser.export,
             )
@@ -189,12 +213,20 @@ class DiscoveryController(BaseController):
             help="Number of records to display",
             default=15,
         )
-
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            nargs="+",
+            help="Sort by given column. Default: Daily Volume [$]",
+            default="Daily Volume [$]",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             dappradar_view.display_top_games(
+                sortby=" ".join(ns_parser.sortby),
                 top=ns_parser.limit,
                 export=ns_parser.export,
             )
@@ -223,12 +255,20 @@ class DiscoveryController(BaseController):
             help="Number of records to display",
             default=15,
         )
-
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            nargs="+",
+            help="Sort by given column. Default: Daily Volume [$]",
+            default="Daily Volume [$]",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             dappradar_view.display_top_dexes(
+                sortby=" ".join(ns_parser.sortby),
                 top=ns_parser.limit,
                 export=ns_parser.export,
             )
@@ -257,12 +297,21 @@ class DiscoveryController(BaseController):
             help="Number of records to display",
             default=15,
         )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            nargs="+",
+            help="Sort by given column. Default: Market Cap [$]",
+            default="Market Cap [$]",
+        )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             dappradar_view.display_top_nfts(
+                sortby=" ".join(ns_parser.sortby),
                 top=ns_parser.limit,
                 export=ns_parser.export,
             )
@@ -302,6 +351,15 @@ class DiscoveryController(BaseController):
             default=15,
         )
 
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            nargs="+",
+            help="Sort by given column. Default: Market Cap Rank",
+            default="Market Cap Rank",
+        )
+
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -310,6 +368,7 @@ class DiscoveryController(BaseController):
                 period=ns_parser.period,
                 top=ns_parser.limit,
                 export=ns_parser.export,
+                sortby=" ".join(ns_parser.sortby),
             )
 
     def call_cglosers(self, other_args):
@@ -347,6 +406,15 @@ class DiscoveryController(BaseController):
             default=15,
         )
 
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            nargs="+",
+            help="Sort by given column. Default: Market Cap Rank",
+            default="Market Cap Rank",
+        )
+
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -356,6 +424,7 @@ class DiscoveryController(BaseController):
                 period=ns_parser.period,
                 top=ns_parser.limit,
                 export=ns_parser.export,
+                sortby=" ".join(ns_parser.sortby),
             )
 
     def call_cgtrending(self, other_args):
@@ -378,120 +447,6 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_trending(
-                export=ns_parser.export,
-            )
-
-    def call_cgvolume(self, other_args):
-        """Process volume command"""
-        parser = argparse.ArgumentParser(
-            prog="cgvolume",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Shows Top Coins by Trading Volume.
-                You can display only N number of coins with --limit parameter.
-                You can sort data by on of columns  Rank, Name, Symbol, Price, Change_1h, Change_24h, Change_7d,
-                Volume_24h, Market_Cap with --sort parameter and also with --descend flag to sort descending.
-                Displays columns:  Rank, Name, Symbol, Price, Change_1h, Change_24h, Change_7d, Volume_24h, Market_Cap""",
-        )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="Number of records to display",
-            default=15,
-        )
-
-        parser.add_argument(
-            "-s",
-            "--sort",
-            dest="sortby",
-            type=str,
-            help="Sort by given column. Default: Rank",
-            default="Rank",
-            choices=pycoingecko_model.CAP_FILTERS,
-        )
-
-        parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            pycoingecko_view.display_top_volume_coins(
-                top=ns_parser.limit,
-                # sortby=ns_parser.sortby,
-                # descend=ns_parser.descend,
-                export=ns_parser.export,
-            )
-
-    def call_cgdefi(self, other_args):
-        """Process defi command"""
-        parser = argparse.ArgumentParser(
-            prog="cgdefi",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Shows Top DeFi Coins by Market Capitalization
-               DeFi or Decentralized Finance refers to financial services that are built
-               on top of distributed networks with no central intermediaries.
-               You can display only N number of coins with --limit parameter.
-               You can sort data by Rank, Name, Symbol, Price, Change_1h, Change_24h, Change_7d,
-                Volume 24h, Market Cap, Url with --sort and also with --descend flag to sort descending.
-               Flag --urls will display  urls""",
-        )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="Number of records to display",
-            default=15,
-        )
-
-        parser.add_argument(
-            "-s",
-            "--sort",
-            dest="sortby",
-            type=str,
-            help="Sort by given column. Default: rank",
-            default="Rank",
-            choices=pycoingecko_model.CAP_FILTERS,
-        )
-
-        parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
-        )
-
-        parser.add_argument(
-            "-u",
-            "--urls",
-            dest="urls",
-            action="store_true",
-            help="Flag to show urls",
-            default=False,
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            pycoingecko_view.display_top_defi_coins(
-                top=ns_parser.limit,
-                # sortby=ns_parser.sortby,
-                # descend=ns_parser.descend,
-                # links=ns_parser.urls,
                 export=ns_parser.export,
             )
 

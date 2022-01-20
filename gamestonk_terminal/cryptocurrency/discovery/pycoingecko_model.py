@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import os
 import json
-from typing import Any, List
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
 
@@ -205,7 +204,14 @@ def get_coins(top: int = 250, category: str = ""):
     return df
 
 
-# TODO: convert Volume and other str that should be int to int otherwise sort won't work
+GAINERS_LOSERS_COLUMNS = [
+    "Symbol",
+    "Name",
+    "Price [$]",
+    "Market Cap [$]",
+    "Market Cap Rank",
+    "Volume [$]",
+]
 
 
 def get_gainers_or_losers(
@@ -238,16 +244,23 @@ def get_gainers_or_losers(
         by=[f"price_change_percentage_{period}_in_currency"],
         ascending=typ != "gainers",
     )
-    return sorted_df[
+    sorted_df = sorted_df[
         [
             "symbol",
             "name",
             "current_price",
             "market_cap",
             "market_cap_rank",
+            "total_volume",
             f"price_change_percentage_{period}_in_currency",
         ]
     ]
+    sorted_df = sorted_df.set_axis(
+        GAINERS_LOSERS_COLUMNS + [f"Change {period} [%]"],
+        axis=1,
+        inplace=False,
+    )
+    return sorted_df
 
 
 def get_trending_coins() -> pd.DataFrame:
@@ -270,75 +283,6 @@ def get_trending_coins() -> pd.DataFrame:
         coin = coin["item"]
         df.loc[i] = [coin["id"], coin["name"], coin["market_cap_rank"]]
     return df
-
-
-def get_top_volume_coins(top: int = 50) -> pd.DataFrame:
-    """Returns N coins with top volume [Source: CoinGecko]
-
-    Returns
-    -------
-    pandas.DataFrame
-        Top Coins by Trading Volume
-        Columns: Rank, Name, Symbol, Price, Change_1h, Change_24h, Change_7d, Volume_24h, Market_Cap
-    """
-
-    df = get_coins(top)
-    sorted_df = df.sort_values(
-        by=["total_volume"],
-        ascending=False,
-    )
-    return sorted_df[
-        [
-            "symbol",
-            "name",
-            "market_cap",
-            "market_cap_rank",
-            "price_change_percentage_7d_in_currency",
-            "price_change_percentage_24h_in_currency",
-            "total_volume",
-        ]
-    ]
-
-
-def get_top_defi_coins(top: int = 20) -> List[Any]:
-    """Scrapes top decentralized finance coins "https://www.coingecko.com/en/defi" [Source: CoinGecko]
-
-    Returns
-    -------
-    str
-        Top defi coins stats
-    pandas.DataFrame
-        Top Decentralized Finance Coins
-        Columns: Rank, Name, Symbol, Price, Change_1h, Change_24h, Change_7d, Volume_24h, Market_Cap, Url
-    """
-
-    cg = CoinGeckoAPI()
-    data = cg.get_global_decentralized_finance_defi()
-
-    stats_str = f"""
-Defi has currently a market cap of {int(float(data['defi_market_cap']))} USD dollars:
-    - {data["defi_to_eth_ratio"]}% of ETH market cap
-    - {round(float(data["defi_dominance"]),2)}% of total market cap
-{data["top_coin_name"]} is the most popular Defi cryptocurrency with {round(float(data["top_coin_defi_dominance"]), 2)}% of defi dominance
-    """  # noqa
-
-    df = get_coins(top, "decentralized-finance-defi")
-
-    return [
-        stats_str,
-        df[
-            [
-                "symbol",
-                "name",
-                "current_price",
-                "market_cap",
-                "market_cap_rank",
-                "price_change_percentage_7d_in_currency",
-                "price_change_percentage_24h_in_currency",
-                "total_volume",
-            ]
-        ],
-    ]
 
 
 def get_coin_list() -> pd.DataFrame:

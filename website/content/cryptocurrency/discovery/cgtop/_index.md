@@ -1,5 +1,5 @@
 ```
-usage: coins [-c COIN] [-s SKIP] [-l N] [--source SOURCE] [--export {csv,json,xlsx}] [-h]
+usage: cgtop
 ```
 
 Shows list of coins available on CoinGecko, CoinPaprika and Binance.If you provide name of coin then in result you will see ids of coins with best
