@@ -1,0 +1,7 @@
+                                                Price   Chg  %Chg     Vol
+0                      SPDR S&P 500 ETF Trust  451.75 -4.74 -1.04  109.1M
+1                      ProShares UltraPro QQQ   64.37 -2.32 -3.48   91.2M
+2            Financial Select Sector SPDR ETF   39.25 -0.67 -1.68   85.9M
+3                  Invesco QQQ Trust Series I  366.48 -4.07 -1.10   81.4M
+4  ProShares Ultra VIX Short-Term Futures ETF   14.20  0.52  3.80   80.2M
+

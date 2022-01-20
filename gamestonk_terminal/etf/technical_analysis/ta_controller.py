@@ -363,7 +363,7 @@ class TechnicalAnalysisController(BaseController):
             overlap_view.view_ma(
                 ma_type="ZLMA",
                 s_ticker=self.ticker,
-                values=self.data["Adj  Close"],
+                values=self.data["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
