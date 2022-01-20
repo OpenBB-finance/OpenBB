@@ -1,0 +1,47 @@
+{
+    "style_name": "hackerman",
+    "base_mpf_style": null,
+    "marketcolors": {
+        "candle": {
+            "up": "#2BFF6B",
+            "down": "#FF5352"
+        },
+        "edge": {
+            "up": "#219E4F",
+            "down": "#9E1711"
+        },
+        "wick": {
+            "up": "#2BFF6B",
+            "down": "#FF5352"
+        },
+        "ohlc": {
+            "up": "#2BFF6B",
+            "down": "#FF5352"
+        },
+        "volume": {
+            "up": "#2BFF6B",
+            "down": "#FF5352"
+        },
+        "vcedge": {
+            "up": "#219E4F",
+            "down": "#9E1711"
+        },
+        "vcdopcod": true,
+        "alpha": 1
+    },
+    "mavcolors": [
+        "#EB3DBC",
+        "#31EBEA",
+        "#EB8C54",
+        "#EB5549"
+    ],
+    "y_on_right": true,
+    "gridcolor": "#A3A0A2",
+    "gridstyle": ":",
+    "facecolor": "#21262A",
+    "edgecolor": null,
+    "figcolor": null,
+    "gridaxis": null,
+    "rc": null,
+    "legacy_rc": null
+}

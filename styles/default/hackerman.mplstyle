@@ -1,0 +1,75 @@
+# The cool hackerman style
+
+# LINES
+# http://matplotlib.org/api/artist_api.html#module-matplotlib.lines
+lines.linewidth: 1.5
+lines.color: F5EFF3
+lines.linestyle: -
+lines.marker: None
+lines.markeredgewidth: 0.5
+lines.markersize: 4
+lines.dash_joinstyle: miter
+lines.dash_capstyle: butt
+lines.solid_joinstyle: miter
+lines.solid_capstyle: projecting
+lines.antialiased: True
+
+patch.edgecolor: F5EFF3
+
+
+# TEXT
+# http://matplotlib.org/api/font_manager_api.html
+font.family: sans-serif
+font.style: normal
+font.variant: normal
+font.weight: medium
+font.stretch: normal
+font.size: 13
+
+text.color: F5EFF3
+
+axes.spines.left: true
+axes.spines.bottom: true
+axes.spines.top: false
+axes.spines.right: false
+
+axes.labelsize: small
+
+axes.facecolor: 21262A
+axes.edgecolor: F5EFF3
+axes.labelcolor: F5EFF3
+
+axes.linewidth: 0.8
+axes.prop_cycle: cycler('color', ['1ED3D3', 'FF46F8', '2BFF6B', '9638FF', 'FF5352', 'FFFE5E', '7A66FF', 'FFAC73', '589AFF', 'FFE640'])
+
+xtick.color: F5EFF3
+ytick.color: F5EFF3
+
+xtick.major.size: 2
+xtick.minor.size: 1
+xtick.labelsize: small
+ytick.major.size: 2
+ytick.minor.size: 1
+ytick.labelsize: small
+
+legend.framealpha: 0
+
+grid.color: F5EFF3
+grid.linewidth: 0.4
+
+legend.frameon: false
+legend.scatterpoints: 3
+legend.fontsize: small
+
+figure.facecolor: 21262A
+figure.edgecolor: 21262A
+
+savefig.facecolor: 21262A
+savefig.edgecolor: 21262A
+
+### Boxplots
+boxplot.boxprops.color: F5EFF3
+boxplot.capprops.color: F5EFF3
+boxplot.flierprops.color: F5EFF3
+boxplot.flierprops.markeredgecolor: F5EFF3
+boxplot.whiskerprops.color: F5EFF3

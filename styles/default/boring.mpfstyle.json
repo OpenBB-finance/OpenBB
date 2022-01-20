@@ -1,0 +1,47 @@
+{
+    "style_name": "boring",
+    "base_mpf_style": null,
+    "marketcolors": {
+        "candle": {
+            "up": "#4AEB86",
+            "down": "#EB5049"
+        },
+        "edge": {
+            "up": "#219E4F",
+            "down": "#9E1711"
+        },
+        "wick": {
+            "up": "#049E46",
+            "down": "#9E2B21"
+        },
+        "ohlc": {
+            "up": "#4AEB86",
+            "down": "#EB5049"
+        },
+        "volume": {
+            "up": "#4AEB86",
+            "down": "#EB5049"
+        },
+        "vcedge": {
+            "up": "#219E4F",
+            "down": "#9E1711"
+        },
+        "vcdopcod": true,
+        "alpha": 1
+    },
+    "mavcolors": [
+        "#EB3DBC",
+        "#31EBEA",
+        "#EB8C54",
+        "#EB5549"
+    ],
+    "y_on_right": true,
+    "gridcolor": "grey",
+    "gridstyle": ":",
+    "facecolor": "white",
+    "edgecolor": null,
+    "figcolor": null,
+    "gridaxis": null,
+    "rc": null,
+    "legacy_rc": null
+}

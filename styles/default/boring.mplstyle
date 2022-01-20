@@ -1,0 +1,32 @@
+# The default boring stylesheet for all charts
+
+lines.color: white
+patch.edgecolor: white
+
+text.color: black
+
+axes.facecolor: white
+axes.edgecolor: black
+axes.labelcolor: black
+axes.prop_cycle: cycler('color', ['006BA4', 'FF800E', 'ABABAB', '595959', '5F9ED1', 'C85200', '898989', 'A2C8EC', 'FFBC79', 'CFCFCF'])
+
+xtick.color: black
+ytick.color: black
+
+grid.color: grey
+
+figure.facecolor: FFFFFF
+figure.edgecolor: 818181
+
+savefig.facecolor: white
+savefig.edgecolor: white
+
+### Boxplots
+boxplot.boxprops.color: white
+boxplot.capprops.color: white
+boxplot.flierprops.color: white
+boxplot.flierprops.markeredgecolor: white
+boxplot.whiskerprops.color: white
+
+# Tableau colorblind 10 palette
+patch.facecolor: 006BA4
