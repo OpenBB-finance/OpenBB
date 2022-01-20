@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import os
 from typing import List, Any
-from colorama import Fore, Style
 from tabulate import tabulate
 from gamestonk_terminal.stocks.due_diligence import finviz_model
 from gamestonk_terminal.helper_funcs import export_data
@@ -26,11 +25,11 @@ def category_color_red_green(val: str) -> str:
     """
 
     if val == "Upgrade":
-        return Fore.GREEN + val + Style.RESET_ALL
+        return f"[green]{val}[/green]"
     if val == "Downgrade":
-        return Fore.RED + val + Style.RESET_ALL
+        return f"[red]{val}[/red]"
     if val == "Reiterated":
-        return Fore.YELLOW + val + Style.RESET_ALL
+        return f"[yellow]{val}[/yellow]"
     return val
 
 

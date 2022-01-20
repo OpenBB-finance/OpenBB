@@ -1,38 +1,38 @@
-                                Item    2016    2017    2018   2019    2020
-       Cash & Short Term Investments    3.5B   3.52B   3.88B  6.51B  19.62B
-Cash & Short Term Investments Growth       - [32m  0.70% [0m[32m 10.07% [0m[32m67.97% [0m[32m201.23%[0m
-                           Cash Only    3.5B   3.52B   3.88B  6.51B  19.62B
-              Short-Term Investments       -       -       -      -       -
-Cash & ST Investments / Total Assets [32m 15.44% [0m[32m 12.30% [0m[32m 13.04% [0m[32m18.99% [0m[32m 37.63%[0m
-           Total Accounts Receivable 499.14M 515.38M 949.02M  1.32B   1.89B
-    Total Accounts Receivable Growth       - [32m  3.25% [0m[32m 84.14% [0m[32m39.51% [0m[32m 42.45%[0m
-           Accounts Receivables, Net 499.14M 515.38M 949.02M  1.32B   1.89B
-         Accounts Receivables, Gross 499.14M 515.38M 949.02M  1.32B   1.89B
-          Bad Debt/Doubtful Accounts       -       -       -      -       -
-                    Other Receivable       -       -       -      -       -
-        Accounts Receivable Turnover   14.02   22.82   22.61  18.56   16.72
-                         Inventories   2.07B   2.26B   3.11B  3.55B    4.1B
-                      Finished Goods   1.02B   1.01B   1.58B  1.36B   1.67B
-                    Work in Progress 233.75M 243.18M 296.99M   362M    493M
-                       Raw Materials 816.98M   1.01B   1.23B  1.83B   1.94B
-           Progress Payments & Other       -       -       -      -       -
-                Other Current Assets 193.97M 268.37M 365.67M   713M   1.11B
-        Miscellaneous Current Assets 193.97M 268.37M 365.67M   713M   1.11B
-                Total Current Assets   6.26B   6.57B   8.31B  12.1B  26.72B
-     Net Property, Plant & Equipment  15.04B  20.49B  19.69B  20.2B  23.38B
- Property, Plant & Equipment - Gross  16.05B  22.44B  22.89B 25.06B  29.89B
-                           Buildings   1.08B   2.52B   4.05B  3.02B   3.66B
-                 Land & Improvements       -       -       -      -       -
-     Computer Software and Equipment 275.66M 395.07M 487.42M   595M    856M
-   Other Property, Plant & Equipment   8.62B  11.61B  14.06B 15.12B  16.85B
-            Accumulated Depreciation   1.02B   1.94B   3.19B  4.86B   6.52B
-      Total Investments and Advances 268.17M 441.72M 398.22M   270M    279M
-         Other Long-Term Investments 268.17M 441.72M 398.22M   270M    279M
-          Long-Term Note Receivables  506.3M 456.65M 421.55M   402M    334M
-                   Intangible Assets 376.15M 421.74M 350.65M   537M    520M
-                        Net Goodwill       -  60.24M  68.16M   198M    207M
-               Net Other Intangibles 376.15M  361.5M 282.49M   339M    313M
-                        Other Assets 217.25M 273.12M 571.66M   798M    923M
-                        Total Assets  22.66B  28.66B  29.74B 34.31B  52.15B
-                 Total Assets Growth       - [32m 26.44% [0m[32m  3.78% [0m[32m15.36% [0m[32m 52.00%[0m
+                                Item                  2016                  2017                  2018                  2019                   2020
+       Cash & Short Term Investments                  3.5B                 3.52B                 3.88B                 6.51B                 19.62B
+Cash & Short Term Investments Growth                     -  [green]0.70%[/green] [green]10.07%[/green] [green]67.97%[/green] [green]201.23%[/green]
+                           Cash Only                  3.5B                 3.52B                 3.88B                 6.51B                 19.62B
+              Short-Term Investments                     -                     -                     -                     -                      -
+Cash & ST Investments / Total Assets [green]15.44%[/green] [green]12.30%[/green] [green]13.04%[/green] [green]18.99%[/green]  [green]37.63%[/green]
+           Total Accounts Receivable               499.14M               515.38M               949.02M                 1.32B                  1.89B
+    Total Accounts Receivable Growth                     -  [green]3.25%[/green] [green]84.14%[/green] [green]39.51%[/green]  [green]42.45%[/green]
+           Accounts Receivables, Net               499.14M               515.38M               949.02M                 1.32B                  1.89B
+         Accounts Receivables, Gross               499.14M               515.38M               949.02M                 1.32B                  1.89B
+          Bad Debt/Doubtful Accounts                     -                     -                     -                     -                      -
+                    Other Receivable                     -                     -                     -                     -                      -
+        Accounts Receivable Turnover                 14.02                 22.82                 22.61                 18.56                  16.72
+                         Inventories                 2.07B                 2.26B                 3.11B                 3.55B                   4.1B
+                      Finished Goods                 1.02B                 1.01B                 1.58B                 1.36B                  1.67B
+                    Work in Progress               233.75M               243.18M               296.99M                  362M                   493M
+                       Raw Materials               816.98M                 1.01B                 1.23B                 1.83B                  1.94B
+           Progress Payments & Other                     -                     -                     -                     -                      -
+                Other Current Assets               193.97M               268.37M               365.67M                  713M                  1.11B
+        Miscellaneous Current Assets               193.97M               268.37M               365.67M                  713M                  1.11B
+                Total Current Assets                 6.26B                 6.57B                 8.31B                 12.1B                 26.72B
+     Net Property, Plant & Equipment                15.04B                20.49B                19.69B                 20.2B                 23.38B
+ Property, Plant & Equipment - Gross                16.05B                22.44B                22.89B                25.06B                 29.89B
+                           Buildings                 1.08B                 2.52B                 4.05B                 3.02B                  3.66B
+                 Land & Improvements                     -                     -                     -                     -                      -
+     Computer Software and Equipment               275.66M               395.07M               487.42M                  595M                   856M
+   Other Property, Plant & Equipment                 8.62B                11.61B                14.06B                15.12B                 16.85B
+            Accumulated Depreciation                 1.02B                 1.94B                 3.19B                 4.86B                  6.52B
+      Total Investments and Advances               268.17M               441.72M               398.22M                  270M                   279M
+         Other Long-Term Investments               268.17M               441.72M               398.22M                  270M                   279M
+          Long-Term Note Receivables                506.3M               456.65M               421.55M                  402M                   334M
+                   Intangible Assets               376.15M               421.74M               350.65M                  537M                   520M
+                        Net Goodwill                     -                60.24M                68.16M                  198M                   207M
+               Net Other Intangibles               376.15M                361.5M               282.49M                  339M                   313M
+                        Other Assets               217.25M               273.12M               571.66M                  798M                   923M
+                        Total Assets                22.66B                28.66B                29.74B                34.31B                 52.15B
+                 Total Assets Growth                     - [green]26.44%[/green]  [green]3.78%[/green] [green]15.36%[/green]  [green]52.00%[/green]
 

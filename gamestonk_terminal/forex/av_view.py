@@ -29,16 +29,11 @@ def display_quote(to_symbol: str, from_symbol: str):
     df = pd.DataFrame.from_dict(quote)
     df.index = df.index.to_series().apply(lambda x: x[3:]).values
     df = df.iloc[[0, 2, 5, 4, 7, 8]]
-    if gtff.USE_TABULATE_DF:
-        console.print(
-            rich_table_from_df(
-                df,
-                show_index=True,
-                title=f"[bold]{from_symbol}/{to_symbol} Quote [/bold]",
-            )
-        )
-    else:
-        console.print(df.to_string())
+    rich_table_from_df(
+        df,
+        show_index=True,
+        title=f"[bold]{from_symbol}/{to_symbol} Quote [/bold]",
+    )
     console.print("")
 
 
