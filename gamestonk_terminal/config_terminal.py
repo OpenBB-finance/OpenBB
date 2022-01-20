@@ -78,7 +78,7 @@ DG_PASSWORD = os.getenv("GT_DG_PASSWORD") or "REPLACE_ME"
 DG_TOTP_SECRET = os.getenv("GT_DG_TOTP_SECRET") or None
 
 # https://developer.oanda.com
-DEBUG_MODE = False
+OANDA_ACCOUNT = os.getenv("GT_OANDA_ACCOUNT") or "REPLACE_ME"
 # "live" or "practice"
 OANDA_ACCOUNT = os.getenv("GT_OANDA_ACCOUNT") or "REPLACE_ME"
 OANDA_TOKEN = os.getenv("GT_OANDA_TOKEN") or "REPLACE_ME"

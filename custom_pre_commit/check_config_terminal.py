@@ -32,6 +32,7 @@ settings = {
     "DG_USERNAME": 'DG_USERNAME = os.getenv("GT_DG_USERNAME") or "REPLACE_ME"',
     "DG_PASSWORD": 'DG_PASSWORD = os.getenv("GT_DG_PASSWORD") or "REPLACE_ME"',
     "DG_TOTP_SECRET": 'DG_TOTP_SECRET = os.getenv("GT_DG_TOTP_SECRET") or None',
+    "OANDA_ACCOUNT_TYPE": 'OANDA_ACCOUNT_TYPE = os.getenv("GT_OANDA_ACCOUNT_TYPE") or "practice"',
     "OANDA_ACCOUNT": 'OANDA_ACCOUNT = os.getenv("GT_OANDA_ACCOUNT") or "REPLACE_ME"',
     "OANDA_TOKEN": 'OANDA_TOKEN = os.getenv("GT_OANDA_TOKEN") or "REPLACE_ME"',
     "TRADIER_TOKEN": 'TRADIER_TOKEN = os.getenv("GT_API_TRADIER_TOKEN") or "REPLACE_ME"',
@@ -96,7 +97,7 @@ def check_setting(lines: List[str], setting: str, value: str) -> bool:
     if debug_val == value:
         return True
 
-    lines[debug_line] = "DEBUG_MODE = False"
+    lines[debug_line] = settings[setting]
     return False
 
 
@@ -109,7 +110,10 @@ def main():
 
     returns = [check_setting(lines, k, v) for k, v in settings.items()]
 
+    print(returns)
+
     if False not in returns:
+        print("Success")
         sys.exit(0)
 
     with open(path, "w") as file:
