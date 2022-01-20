@@ -582,7 +582,7 @@ class ETFController(BaseController):
 
     def call_ta(self, _):
         """Process ta command"""
-        if self.etf_name:
+        if self.etf_name and not self.etf_data.empty:
             self.queue = self.load_class(
                 ta_controller.TechnicalAnalysisController,
                 self.etf_name,

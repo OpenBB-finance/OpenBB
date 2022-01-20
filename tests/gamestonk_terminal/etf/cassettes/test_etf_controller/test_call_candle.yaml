@@ -15,10 +15,10 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/ARKW?period1=1639526400&period2=1639785600&interval=1d&includePrePost=False&events=div%2Csplits
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"ARKW","exchangeName":"PCX","instrumentType":"ETF","firstTradeDate":1412083800,"regularMarketTime":1642694754,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":103.255,"chartPreviousClose":120.66,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1642689000,"start":1642669200,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1642712400,"start":1642689000,"gmtoffset":-18000},"post":{"timezone":"EST","end":1642726800,"start":1642712400,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1639578600,1639665000,1639751400],"indicators":{"quote":[{"open":[119.62999725341797,123.26000213623047,116.5],"close":[121.55999755859375,117.88999938964844,121.55000305175781],"high":[122.19999694824219,123.47000122070312,122.33999633789062],"volume":[1503000,1292600,1459500],"low":[115.37000274658203,116.48999786376953,114.55000305175781]}],"adjclose":[{"adjclose":[118.27759552001953,114.70669555664062,118.26786804199219]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"ARKW","exchangeName":"PCX","instrumentType":"ETF","firstTradeDate":1412083800,"regularMarketTime":1642694754,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":103.255,"chartPreviousClose":120.66,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1642689000,"start":1642669200,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1642712400,"start":1642689000,"gmtoffset":-18000},"post":{"timezone":"EST","end":1642726800,"start":1642712400,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1639578600,1639665000,1639751400],"indicators":{"quote":[{"low":[115.37000274658203,116.48999786376953,114.55000305175781],"close":[121.55999755859375,117.88999938964844,121.55000305175781],"volume":[1503000,1292600,1459500],"open":[119.62999725341797,123.26000213623047,116.5],"high":[122.19999694824219,123.47000122070312,122.33999633789062]}],"adjclose":[{"adjclose":[118.27759552001953,114.70669555664062,118.26786804199219]}]}}],"error":null}}'
     headers:
       Age:
-      - '1'
+      - '0'
       Connection:
       - keep-alive
       Expect-CT:
@@ -40,7 +40,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 20 Jan 2022 16:06:29 GMT
+      - Thu, 20 Jan 2022 16:06:30 GMT
       server:
       - ATS
       vary:
@@ -48,13 +48,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '9'
+      - '13'
       x-request-id:
-      - c2c4d52d-f5cf-4008-b67b-0d61c63861ae
+      - 233a77be-ba62-4f6f-b948-6436c4ceb0d5
       x-yahoo-request-id:
-      - dorr5ndguj246
+      - 3sml3bhguj246
       y-rid:
-      - dorr5ndguj246
+      - 3sml3bhguj246
     status:
       code: 200
       message: OK
@@ -341,7 +341,7 @@ interactions:
       x-vercel-cache:
       - MISS
       x-vercel-id:
-      - lhr1::iad1::6l2sk-1642694790141-c6b36beb8349
+      - lhr1::iad1::w8p76-1642694790571-6233d034be3b
     status:
       code: 200
       message: OK

@@ -13,6 +13,33 @@ from gamestonk_terminal.etf import etf_controller
 # pylint: disable=E1111
 
 EMPTY_DF = pd.DataFrame()
+DF_ETF = pd.DataFrame.from_dict(
+    data={
+        pd.Timestamp("2020-11-30 00:00:00"): {
+            "Open": 75.69999694824219,
+            "High": 76.08999633789062,
+            "Low": 75.41999816894531,
+            "Close": 75.75,
+            "Adj Close": 71.90919494628906,
+            "Volume": 5539100,
+            "date_id": 1,
+            "OC_High": 75.75,
+            "OC_Low": 75.69999694824219,
+        },
+        pd.Timestamp("2020-12-01 00:00:00"): {
+            "Open": 76.0199966430664,
+            "High": 77.12999725341797,
+            "Low": 75.69000244140625,
+            "Close": 77.02999877929688,
+            "Adj Close": 73.1242904663086,
+            "Volume": 6791700,
+            "date_id": 2,
+            "OC_High": 77.02999877929688,
+            "OC_Low": 76.0199966430664,
+        },
+    },
+    orient="index",
+)
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -205,9 +232,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
     assert controller.queue == expected_queue
 
 
-# TODO: call_news, candle, and going into submenus?
-
-
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
@@ -282,6 +306,40 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [["ARKW", "ARKF"]],
             dict(export=""),
         ),
+        (
+            "call_ca",
+            [],
+            "ca_controller.ComparisonAnalysisController.menu",
+            [],
+            dict(),
+        ),
+        (
+            "call_ta",
+            [],
+            "ETFController.load_class",
+            [
+                etf_controller.ta_controller.TechnicalAnalysisController,
+                "MOCK_ETF_NAME",
+                DF_ETF.index[0],
+                DF_ETF,
+                [],
+            ],
+            dict(),
+        ),
+        (
+            "call_disc",
+            [],
+            "ETFController.load_class",
+            [etf_controller.disc_controller.DiscoveryController, []],
+            dict(),
+        ),
+        (
+            "call_scr",
+            [],
+            "ETFController.load_class",
+            [etf_controller.screener_controller.ScreenerController, []],
+            dict(),
+        ),
     ],
 )
 def test_call_func_test(
@@ -298,7 +356,8 @@ def test_call_func_test(
 
         controller = etf_controller.ETFController(queue=None)
         controller.etf_name = "MOCK_ETF_NAME"
-        controller.etf_data = EMPTY_DF
+        controller.etf_data = DF_ETF
+        controller.etf_holdings = ["MOCK", "HOLDINGS"]
 
         getattr(controller, tested_func)(other_args)
 
@@ -309,7 +368,8 @@ def test_call_func_test(
     else:
         controller = etf_controller.ETFController(queue=None)
         controller.etf_name = "MOCK_ETF_NAME"
-        controller.etf_data = EMPTY_DF
+        controller.etf_data = DF_ETF
+        controller.etf_holdings = ["MOCK", "HOLDINGS"]
         getattr(controller, tested_func)(other_args)
 
 
@@ -327,3 +387,41 @@ def test_call_load(mocker):
     controller = etf_controller.ETFController(queue=None)
     other_args = ["ARKW", "--start=2021-12-15", "--end=2021-12-18", "--limit=5"]
     controller.call_load(other_args=other_args)
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+def test_call_candle(mocker):
+    # MOCK CHARTS
+    mocker.patch.object(target=etf_controller.gtff, attribute="USE_ION", new=True)
+    mocker.patch(target="gamestonk_terminal.etf.etf_controller.plt.ion")
+    mocker.patch(target="gamestonk_terminal.etf.etf_controller.plt.show")
+
+    controller = etf_controller.ETFController(queue=None)
+    other_args = ["ARKW", "--start=2021-12-15", "--end=2021-12-18", "--limit=5"]
+    controller.call_load(other_args=other_args)
+
+    controller.call_candle(other_args=[])
+
+
+@pytest.mark.vcr(record_mode="none")
+def test_call_news(mocker):
+    mocker.patch(
+        target="gamestonk_terminal.etf.etf_controller.yf.Ticker",
+    )
+    mocker.patch(
+        target="gamestonk_terminal.etf.etf_controller.yf.Ticker.info",
+        return_value={"shortName": "ARK Next Generation Internet ET"},
+    )
+    mock_news = mocker.Mock()
+    mocker.patch(
+        target="gamestonk_terminal.etf.etf_controller.newsapi_view.news",
+        new=mock_news,
+    )
+
+    controller = etf_controller.ETFController(queue=None)
+    controller.etf_name = "MOCK_ETF_NAME"
+
+    controller.call_news(other_args=["-l=3", "-s=bbc"])
+
+    mock_news.assert_called_once()

@@ -215,9 +215,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
     assert controller.queue == expected_queue
 
 
-# TODO: call_set and call_view
-
-
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
@@ -241,6 +238,31 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "financedatabase_view.display_etf_by_category",
             [],
             dict(category="Bank Loan", limit=3, export=""),
+        ),
+        (
+            "call_view",
+            [],
+            "",
+            [],
+            dict(),
+        ),
+        (
+            "call_view",
+            [
+                "etf_config",
+            ],
+            "",
+            [],
+            dict(),
+        ),
+        (
+            "call_set",
+            [
+                "etf_config",
+            ],
+            "",
+            [],
+            dict(),
         ),
     ],
 )

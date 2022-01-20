@@ -215,9 +215,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
     assert controller.queue == expected_queue
 
 
-# TODO: call_set and call_view
-
-
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
