@@ -474,6 +474,7 @@ class OverviewController(BaseController):
                 pie=ns_parser.pie,
             )
 
+    # TODO: solve sort (similar to cglosers from discovery)
     def call_cgstables(self, other_args):
         """Process stables command"""
         parser = argparse.ArgumentParser(

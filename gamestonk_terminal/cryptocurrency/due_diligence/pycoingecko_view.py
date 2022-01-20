@@ -1,6 +1,6 @@
 """CoinGecko view"""
 __docformat__ = "numpy"
-# pylint: disable=C0209
+
 import os
 from typing import Union
 from pandas.plotting import register_matplotlib_converters

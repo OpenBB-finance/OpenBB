@@ -563,6 +563,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
 
         self.queue = self.load_class(NFTController, self.queue)
 
+    # TODO: merge the two views that this command calls. (find + previously called coins)
     def call_find(self, other_args):
         """Process find command"""
         parser = argparse.ArgumentParser(
