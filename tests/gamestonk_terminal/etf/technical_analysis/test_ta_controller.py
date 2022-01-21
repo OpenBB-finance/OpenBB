@@ -662,3 +662,24 @@ def test_call_func(
         )
         controller.screen_tickers = ["PM"]
         getattr(controller, tested_func)(other_args)
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "ticker, expected",
+    [
+        (None, []),
+        ("MOCK_TICKER", ['etf', 'load MOCK_TICKER', 'ta']),
+    ],
+)
+def test_custom_reset(expected, ticker):
+    controller = ta_controller.TechnicalAnalysisController(
+        ticker=None,
+        start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
+        data=EMPTY_DF,
+        queue=None,
+    )
+    controller.ticker = ticker
+
+    result = controller.custom_reset()
+
+    assert result == expected
