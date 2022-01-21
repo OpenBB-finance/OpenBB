@@ -628,7 +628,8 @@ def test_update_runtime_choices(mocker):
 
     # SETUP CONTROLLER
     controller = sia_controller.SectorIndustryAnalysisController(
-        ticker=None, queue=None,
+        ticker=None,
+        queue=None,
     )
     country = controller.country
     sector = controller.sector
@@ -704,7 +705,7 @@ def test_call_industry(mocker, name):
 @pytest.mark.parametrize(
     "ticker, expected",
     [
-        (None,  []),
+        (None, []),
         ("MOCK_TICKER", ["stocks", "load MOCK_TICKER", "sia"]),
     ],
 )
@@ -764,7 +765,9 @@ def test_call_load(countries, industries, mocker, sectors):
         target=f"{path_controller}.SectorIndustryAnalysisController.update_runtime_choices",
     )
 
-    controller = sia_controller.SectorIndustryAnalysisController(ticker=None, queue=None)
+    controller = sia_controller.SectorIndustryAnalysisController(
+        ticker=None, queue=None
+    )
 
     other_args = [
         "TSLA",
@@ -802,7 +805,9 @@ def test_call_load_market_cap(market_cap, mocker):
         target=f"{path_controller}.SectorIndustryAnalysisController.update_runtime_choices",
     )
 
-    controller = sia_controller.SectorIndustryAnalysisController(ticker=None, queue=None)
+    controller = sia_controller.SectorIndustryAnalysisController(
+        ticker=None, queue=None
+    )
 
     other_args = [
         "TSLA",
@@ -810,6 +815,7 @@ def test_call_load_market_cap(market_cap, mocker):
         "--end=2021-12-18",
     ]
     controller.call_load(other_args=other_args)
+
 
 @pytest.mark.vcr(record_mode="none")
 def test_call_ca(mocker):
@@ -821,7 +827,9 @@ def test_call_ca(mocker):
     target = f"{path_controller}.ca_controller.ComparisonAnalysisController"
     mocker.patch(target=target)
 
-    controller = sia_controller.SectorIndustryAnalysisController(ticker=None, queue=None)
+    controller = sia_controller.SectorIndustryAnalysisController(
+        ticker=None, queue=None
+    )
     controller.tickers = ["MOCK_TICKER_1"]
     controller.call_ca([])
 
@@ -837,7 +845,9 @@ def test_call_metric(mocker):
     target = f"{path_controller}.financedatabase_view.display_bars_financials"
     mocker.patch(target=target, return_value=mock_display_bars_financials)
 
-    controller = sia_controller.SectorIndustryAnalysisController(ticker=None, queue=None)
+    controller = sia_controller.SectorIndustryAnalysisController(
+        ticker=None, queue=None
+    )
     other_args = [
         "roa",
         "--limit=1",
@@ -845,7 +855,6 @@ def test_call_metric(mocker):
         "--export=csv",
     ]
     controller.call_metric(other_args=other_args)
-
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -885,7 +894,6 @@ def test_call_country(mocker, name):
         industry=industry,
         sector=sector,
     )
-
 
 
 @pytest.mark.vcr(record_mode="none")
