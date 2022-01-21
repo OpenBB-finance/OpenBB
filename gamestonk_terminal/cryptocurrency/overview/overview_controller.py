@@ -228,6 +228,9 @@ class OverviewController(BaseController):
             default="",
         )
 
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-s")
+
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
