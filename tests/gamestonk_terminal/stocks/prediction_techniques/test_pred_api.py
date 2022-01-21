@@ -11,5 +11,6 @@ try:
 except ImportError:
     pytest.skip(allow_module_level=True)
 
+
 def test_models():
     assert isinstance(pred_api.models, _models)
