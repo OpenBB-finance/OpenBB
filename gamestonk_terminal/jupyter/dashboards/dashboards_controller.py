@@ -39,7 +39,8 @@ class DashboardsController(BaseController):
    stocks        historic stock information
    correlation   stock correlations
    vsurf         options volatility surface
-   chains        options chain analysis[/cmds]
+   chains        options chain analysis
+   shortdata     finra shortdata analysis[/cmds]
         """
         console.print(text=help_text, menu="Jupyter - Dashboards")
 
