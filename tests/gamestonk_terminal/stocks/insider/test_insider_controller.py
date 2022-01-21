@@ -589,7 +589,7 @@ def test_custom_reset(expected, ticker):
     "func",
     ["call_stats", "call_act", "call_lins"],
 )
-def test_call_func_EMPTY_DF(func):
+def test_call_func_no_stock(func):
     controller = insider_controller.InsiderController(
         ticker=None,
         start="2021-10-25",
