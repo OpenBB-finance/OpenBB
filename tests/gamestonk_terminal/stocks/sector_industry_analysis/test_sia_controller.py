@@ -269,27 +269,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
 @pytest.mark.parametrize(
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
     [
-        # (
-        #     "call_sector",
-        #     [],
-        #     "",
-        #     [],
-        #     dict(),
-        # ),
-        # (
-        #     "call_country",
-        #     [],
-        #     "",
-        #     [],
-        #     dict(),
-        # ),
-        # (
-        #     "call_mktcap",
-        #     [],
-        #     "",
-        #     [],
-        #     dict(),
-        # ),
         (
             "call_mktcap",
             [
