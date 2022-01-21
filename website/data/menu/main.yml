@@ -1235,7 +1235,7 @@ main:
             - name: "stocks"
               ref: "/jupyter/dashboards/stocks"
             - name: "correlation"
-              ref: "/jupyter/dashboards/correlation"
+              ref: "/jupyter/dashboards/correlations"
             - name: "vsurf"
               ref: "/jupyter/dashboards/vsurf"
             - name: "chains"
