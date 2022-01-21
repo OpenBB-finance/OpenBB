@@ -22,7 +22,7 @@ from gamestonk_terminal.menu import session
 class DashboardsController(BaseController):
     """Dashboards Controller class"""
 
-    CHOICES_COMMANDS = ["stocks", "correlation", "vsurf"]
+    CHOICES_COMMANDS = ["stocks", "correlation", "vsurf", "chains"]
     PATH = "/jupyter/dashboard/"
 
     def __init__(self, queue: List[str] = None):
@@ -36,9 +36,10 @@ class DashboardsController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = """[cmds]
-   stocks        interactive dashboard with ticker information
-   correlation   interactive dashboard with correlation information
-   vsurf         options volatility surface[/cmds]
+   stocks        historic stock information
+   correlation   stock correlations
+   vsurf         options volatility surface
+   chains        options chain analysis[/cmds]
         """
         console.print(text=help_text, menu="Jupyter - Dashboards")
 
@@ -53,6 +54,10 @@ class DashboardsController(BaseController):
     def call_vsurf(self, other_args: List[str]):
         """Process vsurf command"""
         create_call(other_args, "vsurf", "")
+
+    def call_chains(self, other_args: List[str]):
+        """Process vsurf command"""
+        create_call(other_args, "chains", "")
 
 
 def create_call(other_args: List[str], name: str, filename: str = None) -> None:
