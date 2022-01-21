@@ -226,7 +226,7 @@ class OverviewController(BaseController):
             dest="slug",
             type=str,
             help="Slug to check crypto hack (e.g., polynetwork-rekt)",
-            default=""
+            default="",
         )
 
         ns_parser = parse_known_args_and_warn(

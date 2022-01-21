@@ -35,11 +35,11 @@ def display_crypto_hacks(
         if text:
             console.print(text)
         export_data(
-                export,
-                os.path.dirname(os.path.abspath(__file__)),
-                "ch",
-                text,
-            )
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "ch",
+            text,
+        )
     else:
         df = rekt_model.get_crypto_hacks()
 
