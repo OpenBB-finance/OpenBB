@@ -1,8 +1,6 @@
 # IMPORTATION STANDARD
-import os
 
 # IMPORTATION THIRDPARTY
-import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.helper_classes import ModelsNamespace as _models
