@@ -1226,3 +1226,19 @@ main:
             ref: "/common/prediction_techniques/conv1d"
           - name: mc
             ref: "/common/prediction_techniques/mc"
+  - name: jupyter
+    ref: "/jupyter"
+    sub:
+        - name: "dashboards"
+          ref: "/jupyter/dashboards"
+          sub: 
+            - name: "stocks"
+              ref: "/jupyter/dashboards/stocks"
+            - name: "correlation"
+              ref: "/jupyter/dashboards/correlation"
+            - name: "vsurf"
+              ref: "/jupyter/dashboards/vsurf"
+            - name: "chains"
+              ref: "/jupyter/dashboards/chains"
+        - name: "reports"
+          ref: "/jupyter/reports"
