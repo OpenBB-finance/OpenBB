@@ -6,11 +6,14 @@ import os
 from typing import List
 
 import matplotlib.pyplot as plt
-from tabulate import tabulate
 
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    rich_table_from_df,
+)
 from gamestonk_terminal.stocks.options import syncretism_model
 from gamestonk_terminal.rich_config import console
 
@@ -83,18 +86,10 @@ def view_screener_output(
     if n_show > 0:
         df_res = df_res.head(n_show)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_res,
-                headers=df_res.columns,
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df_res.to_string())
+    rich_table_from_df(
+        df_res, headers=list(df_res.columns), show_index=False, title="Screener Output"
+    )
+    console.print("")
 
     return df_res["S"].values.tolist()
 
@@ -139,7 +134,9 @@ def view_historical_greeks(
     df = syncretism_model.get_historical_greeks(ticker, expiry, chain_id, strike, put)
 
     if raw:
-        print(tabulate(df.tail(n_show), headers=df.columns, tablefmt="fancy_grid"))
+        rich_table_from_df(
+            df.tail(n_show), headers=list(df.columns), title="Historical Greeks"
+        )
 
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     im1 = ax.plot(df.index, df[greek], c="firebrick", label=greek)
