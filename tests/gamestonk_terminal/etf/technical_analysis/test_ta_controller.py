@@ -663,12 +663,13 @@ def test_call_func(
         controller.screen_tickers = ["PM"]
         getattr(controller, tested_func)(other_args)
 
+
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "ticker, expected",
     [
         (None, []),
-        ("MOCK_TICKER", ['etf', 'load MOCK_TICKER', 'ta']),
+        ("MOCK_TICKER", ["etf", "load MOCK_TICKER", "ta"]),
     ],
 )
 def test_custom_reset(expected, ticker):

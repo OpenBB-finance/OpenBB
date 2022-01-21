@@ -562,7 +562,7 @@ def test_call_func_no_parser(func, mocker):
     "ticker, expected",
     [
         (None, []),
-        ("MOCK_TICKER", ['stocks', 'load MOCK_TICKER', 'pred'] ),
+        ("MOCK_TICKER", ["stocks", "load MOCK_TICKER", "pred"]),
     ],
 )
 def test_custom_reset(expected, ticker):

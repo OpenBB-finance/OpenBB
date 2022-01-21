@@ -415,12 +415,13 @@ def test_call_func_test(
         )
         getattr(controller, tested_func)(other_args)
 
+
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "ticker, expected",
     [
         (None, []),
-        ("MOCK_TICKER", ['stocks', 'load MOCK_TICKER', 'res']),
+        ("MOCK_TICKER", ["stocks", "load MOCK_TICKER", "res"]),
     ],
 )
 def test_custom_reset(expected, ticker):
@@ -435,4 +436,3 @@ def test_custom_reset(expected, ticker):
     result = controller.custom_reset()
 
     assert result == expected
-

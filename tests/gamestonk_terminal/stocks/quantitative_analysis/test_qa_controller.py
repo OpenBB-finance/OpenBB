@@ -552,12 +552,13 @@ def test_call_load(mocker):
     assert not controller.stock.empty
     assert not controller.stock.equals(old_stock)
 
+
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "ticker, expected",
     [
         (None, []),
-        ("MOCK_TICKER", ['stocks', 'load MOCK_TICKER', 'qa', 'pick returns']),
+        ("MOCK_TICKER", ["stocks", "load MOCK_TICKER", "qa", "pick returns"]),
     ],
 )
 def test_custom_reset(expected, ticker):
