@@ -5,6 +5,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.options import chartexchange_view
+from gamestonk_terminal import helper_funcs
 
 
 @pytest.fixture(scope="module")
@@ -24,7 +25,7 @@ def vcr_config():
 def test_display_raw(mocker, tab):
     # MOCK CHARTS
     mocker.patch.object(
-        target=chartexchange_view.gtff,
+        target=helper_funcs.gtff,
         attribute="USE_TABULATE_DF",
         new=tab,
     )

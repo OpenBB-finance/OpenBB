@@ -42,7 +42,7 @@ def display_raw(
         df.head(num),
         headers=list(df.columns),
         show_index=True,
-        title=f"{ticker.upper()} raw data"
+        title=f"{ticker.upper()} raw data",
     )
 
     console.print("")

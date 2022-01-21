@@ -94,14 +94,14 @@ def display_last_government(
                 df_gov_rep,
                 headers=list(df_gov_rep.columns),
                 show_index=False,
-                title="Representative Trading"
+                title="Representative Trading",
             )
     else:
         rich_table_from_df(
             df_gov,
             headers=list(df_gov.columns),
             show_index=False,
-            title="Representative Trading"
+            title="Representative Trading",
         )
     console.print("")
     export_data(
@@ -342,12 +342,12 @@ def display_last_contracts(
     ]
     df_contracts["Description"] = df_contracts["Description"].apply(
         lambda x: "\n".join(textwrap.wrap(x, 50))
-        )
+    )
     rich_table_from_df(
         df_contracts,
         headers=list(df_contracts.columns),
         show_index=False,
-        title="Last Government Contracts"
+        title="Last Government Contracts",
     )
     if sum_contracts:
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -472,7 +472,7 @@ def display_government_trading(
             df_gov,
             headers=list(df_gov.columns),
             show_index=False,
-            title=f"Government Trading for {ticker.upper()}"
+            title=f"Government Trading for {ticker.upper()}",
         )
     else:
         plot_government(df_gov, ticker, gov_type)
@@ -516,7 +516,7 @@ def display_contracts(
             df_contracts,
             headers=list(df_contracts.columns),
             show_index=False,
-            title=f"Government Contracts for {ticker.upper()}"
+            title=f"Government Contracts for {ticker.upper()}",
         )
 
     else:
@@ -564,7 +564,7 @@ def display_qtr_contracts(analysis: str, num: int, raw: bool = False, export: st
                 pd.DataFrame(tickers.values),
                 headers=["tickers"],
                 show_index=False,
-                title="Quarterly Contracts"
+                title="Quarterly Contracts",
             )
         else:
             fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -617,9 +617,7 @@ def display_qtr_contracts(analysis: str, num: int, raw: bool = False, export: st
             plt.show()
 
     elif analysis == "total":
-        rich_table_from_df(
-            tickers, headers=["Total"], title="Quarterly Contracts"
-        )
+        rich_table_from_df(tickers, headers=["Total"], title="Quarterly Contracts")
 
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "qtrcontracts", df_contracts
@@ -660,7 +658,7 @@ def display_hist_contracts(ticker: str, raw: bool = False, export: str = ""):
         rich_table_from_df(
             df_contracts,
             headers=list(df_contracts.columns),
-            title="Historical Quarterly Government Contracts"
+            title="Historical Quarterly Government Contracts",
         )
 
     else:
@@ -714,7 +712,7 @@ def display_top_lobbying(num: int, raw: bool = False, export: str = ""):
             lobbying_by_ticker.head(num),
             headers=["Amount ($100k)"],
             show_index=True,
-            title="Top Lobbying Tickers"
+            title="Top Lobbying Tickers",
         )
     else:
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)

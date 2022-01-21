@@ -6,6 +6,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.screener import finviz_view
+from gamestonk_terminal import helper_funcs
 
 
 @pytest.mark.vcr
@@ -20,7 +21,7 @@ from gamestonk_terminal.stocks.screener import finviz_view
 def test_screener(mocker, toggle):
     # MOCK CHARTS
     mocker.patch.object(
-        target=finviz_view.gtff,
+        target=helper_funcs.gtff,
         attribute="USE_TABULATE_DF",
         new=toggle,
     )
@@ -84,7 +85,7 @@ def test_screener_no_data(data, mocker):
 def test_screener_sort_matches(sort, mocker):
     # MOCK CHARTS
     mocker.patch.object(
-        target=finviz_view.gtff,
+        target=helper_funcs.gtff,
         attribute="USE_TABULATE_DF",
         new=True,
     )

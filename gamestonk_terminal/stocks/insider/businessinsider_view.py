@@ -8,7 +8,7 @@ from pandas.plotting import register_matplotlib_converters
 from gamestonk_terminal.helper_funcs import (
     export_data,
     get_next_stock_market_days,
-    rich_table_from_df
+    rich_table_from_df,
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.stocks.insider import businessinsider_model
@@ -61,7 +61,7 @@ def insider_activity(
             .applymap(lambda x: x.replace(".00", "").replace(",", "")),
             headers=list(df_insider.columns),
             show_index=True,
-            title="Insider Activity"
+            title="Insider Activity",
         )
 
     else:

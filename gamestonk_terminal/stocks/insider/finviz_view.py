@@ -40,7 +40,7 @@ def last_insider_activity(ticker: str, num: int, export: str):
         df.head(num),
         headers=list(df.columns),
         show_index=True,
-        title="Insider Activity"
+        title="Insider Activity",
     )
     console.print("")
 
