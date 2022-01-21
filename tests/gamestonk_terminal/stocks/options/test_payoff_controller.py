@@ -103,7 +103,7 @@ def vcr_config():
 def test_menu_with_queue(expected, mocker, queue):
     path_controller = "gamestonk_terminal.stocks.options.payoff_controller"
 
-    # MOCK CHAIN + PRICE
+    # MOCK GET_CHAIN + GET_PRICE
     mocker.patch(
         target=f"{path_controller}.get_option_chain",
         return_value=CHAIN,
@@ -131,7 +131,7 @@ def test_menu_with_queue(expected, mocker, queue):
 def test_menu_without_queue_completion(mocker):
     path_controller = "gamestonk_terminal.stocks.options.payoff_controller"
 
-    # MOCK CHAIN + PRICE
+    # MOCK GET_CHAIN + GET_PRICE
     mocker.patch(
         target=f"{path_controller}.get_option_chain",
         return_value=CHAIN,
@@ -194,7 +194,7 @@ def test_menu_without_queue_completion(mocker):
 def test_menu_without_queue_sys_exit(mock_input, mocker):
     path_controller = "gamestonk_terminal.stocks.options.payoff_controller"
 
-    # MOCK CHAIN + PRICE
+    # MOCK GET_CHAIN + GET_PRICE
     mocker.patch(
         target=f"{path_controller}.get_option_chain",
         return_value=CHAIN,
@@ -253,7 +253,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 def test_print_help(mocker, underlying):
     path_controller = "gamestonk_terminal.stocks.options.payoff_controller"
 
-    # MOCK CHAIN + PRICE
+    # MOCK GET_CHAIN + GET_PRICE
     mocker.patch(
         target=f"{path_controller}.get_option_chain",
         return_value=CHAIN,
@@ -300,7 +300,7 @@ def test_print_help(mocker, underlying):
 def test_switch(an_input, expected_queue, mocker):
     path_controller = "gamestonk_terminal.stocks.options.payoff_controller"
 
-    # MOCK CHAIN + PRICE
+    # MOCK GET_CHAIN + GET_PRICE
     mocker.patch(
         target=f"{path_controller}.get_option_chain",
         return_value=CHAIN,
@@ -327,7 +327,7 @@ def test_call_cls(mocker):
     # MOCK SYSTEM
     mocker.patch("os.system")
 
-    # MOCK CHAIN + PRICE
+    # MOCK GET_CHAIN + GET_PRICE
     mocker.patch(
         target=f"{path_controller}.get_option_chain",
         return_value=CHAIN,
@@ -398,7 +398,7 @@ def test_call_cls(mocker):
 def test_call_func_expect_queue(expected_queue, func, mocker, queue):
     path_controller = "gamestonk_terminal.stocks.options.payoff_controller"
 
-    # MOCK CHAIN + PRICE
+    # MOCK GET_CHAIN + GET_PRICE
     mocker.patch(
         target=f"{path_controller}.get_option_chain",
         return_value=CHAIN,
@@ -502,7 +502,7 @@ def test_call_func_test(
 ):
     path_controller = "gamestonk_terminal.stocks.options.payoff_controller"
 
-    # MOCK CHAIN + PRICE
+    # MOCK GET_CHAIN + GET_PRICE
     mocker.patch(
         target=f"{path_controller}.get_option_chain",
         return_value=CHAIN,
@@ -539,3 +539,39 @@ def test_call_func_test(
         )
         controller.call_add(["0", "--put", "--short"])
         getattr(controller, tested_func)(other_args)
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "ticker, expected",
+    [
+        (None, []),
+        (
+            "MOCK_TICKER",
+            ["stocks", "load MOCK_TICKER", "options", "exp -d 2022-01-07", "payoff"],
+        ),
+    ],
+)
+def test_custom_reset(expected, mocker, ticker):
+    path_controller = "gamestonk_terminal.stocks.options.payoff_controller"
+
+    # MOCK GET_CHAIN + GET_PRICE
+    mocker.patch(
+        target=f"{path_controller}.get_option_chain",
+        return_value=CHAIN,
+    )
+    mocker.patch(
+        target=f"{path_controller}.get_price",
+        return_value=95.0,
+    )
+
+    controller = payoff_controller.PayoffController(
+        ticker="",
+        expiration="2022-01-07",
+        queue=None,
+    )
+    controller.ticker = ticker
+
+    result = controller.custom_reset()
+
+    assert result == expected

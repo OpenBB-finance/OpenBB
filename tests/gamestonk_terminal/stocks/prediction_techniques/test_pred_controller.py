@@ -555,3 +555,25 @@ def test_call_func_no_parser(func, mocker):
     assert func_result is None
     assert controller.queue == []
     getattr(pred_controller, "parse_known_args_and_warn").assert_called_once()
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "ticker, expected",
+    [
+        (None, []),
+        ("MOCK_TICKER", ['stocks', 'load MOCK_TICKER', 'pred'] ),
+    ],
+)
+def test_custom_reset(expected, ticker):
+    controller = pred_controller.PredictionTechniquesController(
+        ticker=None,
+        start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
+        interval="1440min",
+        stock=DF_STOCK.copy(),
+    )
+    controller.ticker = ticker
+
+    result = controller.custom_reset()
+
+    assert result == expected
