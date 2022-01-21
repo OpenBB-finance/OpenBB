@@ -15,7 +15,7 @@ from gamestonk_terminal.etf.technical_analysis import ta_controller
 
 EMPTY_DF = pd.DataFrame()
 MOCK_STOCK_DF = pd.read_csv(
-    "tests/gamestonk_terminal/etf/technical_analysis/csv/testdf.csv", index_col=0
+    "tests/gamestonk_terminal/etf/technical_analysis/csv/test_ta_controller/stock_df.csv", index_col=0
 )
 print(MOCK_STOCK_DF.columns)
 
