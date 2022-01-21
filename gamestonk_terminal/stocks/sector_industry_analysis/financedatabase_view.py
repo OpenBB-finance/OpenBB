@@ -279,7 +279,7 @@ def display_companies_per_sector_in_country(
     title += " excluding exchanges" if exclude_exchanges else " including exchanges"
 
     if raw:
-        rich_table_from_df(df, headers=list(df.columns), show_index=True, title=title),
+        rich_table_from_df(df, headers=list(df.columns), show_index=True, title=title)
     else:
         colors = [
             "b",
