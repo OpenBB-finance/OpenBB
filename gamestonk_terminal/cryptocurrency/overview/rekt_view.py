@@ -14,7 +14,8 @@ from gamestonk_terminal.rich_config import console
 def display_crypto_hacks(
     top: int, sortby: str, descend: bool, slug: str, export: str = ""
 ) -> None:
-    """Display list of major crypto-related hacks. If slug is passed individual crypto hack is displayed instead of list of crypto hacks
+    """Display list of major crypto-related hacks. If slug is passed
+    individual crypto hack is displayed instead of list of crypto hacks
     [Source: https://rekt.news]
 
     Parameters

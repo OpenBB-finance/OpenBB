@@ -76,7 +76,6 @@ class OverviewController(BaseController):
         "btcrb",
         "altindex",
         "ch",
-        "ich",
     ]
 
     PATH = "/crypto/ov/"
