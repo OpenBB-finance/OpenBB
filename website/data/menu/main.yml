@@ -666,6 +666,10 @@ main:
       - name: overview
         ref: "/cryptocurrency/overview"
         sub:
+          - name: ich
+            ref: "/cryptocurrency/overview/ich"
+          - name: ch
+            ref: "/cryptocurrency/overview/ch"
           - name: btcrb
             ref: "/cryptocurrency/overview/btcrb"
           - name: cgglobal
