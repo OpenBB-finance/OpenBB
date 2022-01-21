@@ -86,9 +86,12 @@ class OverviewController(BaseController):
         super().__init__(queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
+            crypto_hack_slugs = rekt_model.get_crypto_hack_slugs()
             choices: dict = {c: {} for c in self.controller_choices}
             choices["ch"]["--sort"] = {c: None for c in rekt_model.HACKS_COLUMNS}
-            choices["ich"] = {c: None for c in rekt_model.POSSIBLE_SLUGS}
+            choices["ch"]["-s"] = {c: None for c in rekt_model.HACKS_COLUMNS}
+            choices["ich"] = {c: None for c in crypto_hack_slugs}
+            choices["ich"]["-s"] = {c: None for c in crypto_hack_slugs}
             choices["cghold"] = {c: None for c in pycoingecko_model.HOLD_COINS}
             choices["cgcompanies"] = {c: None for c in pycoingecko_model.HOLD_COINS}
             choices["cgnews"]["-s"] = {c: None for c in pycoingecko_model.NEWS_FILTERS}
@@ -199,6 +202,7 @@ class OverviewController(BaseController):
             dest="slug",
             type=str,
             help="Slug to check crypto hack (e.g., polynetwork-rekt)",
+            required="-h" not in other_args,
         )
 
         if other_args and "-" not in other_args[0][0]:

@@ -208,10 +208,7 @@ def get_crypto_hack(slug: str) -> Union[str, None]:
     url = f"https://rekt.news/{slug}"
     soup = _make_request(url)
     if not soup:
-        slugs = get_crypto_hack_slugs()
-        console.print(
-            f'Slug "{slug}" not found, try one of the following:', ",".join(slugs)
-        )
+        console.print(f'Slug "{slug}" not found\n')
         return None
     title = soup.find("h1", {"class": "post-title"}).text
     date = soup.find("time").text
