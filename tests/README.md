@@ -332,6 +332,38 @@ So if both of these conditions are fulfilled :
 
 Then the `test` might work in local but crash during `PullRequest`.
 
+
+
+**BEFORE_RECORD_RESPONSE**
+
+The library `vcrpy` has a `before_record_response` which accept a filtering function that can be used to filter your cassette content :
+
+```python
+import pytest
+
+def my_custom_filter(response):
+    return response
+
+@pytest.mark.vcr(before_record_response=my_custom_filter)
+def test_simple(recorder):
+    pass
+```
+
+For instance this can be used to reduce the size of a `cassette` if it's too heavy.
+
+Or to filter sensitive data in the response.
+
+The issue with this `before_record_response` : it isn't launched at the first run of the test.
+
+More on this here : https://github.com/kevin1024/vcrpy/pull/594
+
+A solution for now is to run this command while initializing the `cassettes` :
+```bash
+# THE SAME COMMAND NEEDS TO BE RUN TWICE
+pytest tests/.../test_some_test_module.py --record-mode=once --rewrite-expected
+pytest tests/.../test_some_test_module.py --record-mode=once --rewrite-expected
+```
+
 ## 3.9. List of useful `vscode` tools for `unit tests`
 
 **VSCODE TESTING**
