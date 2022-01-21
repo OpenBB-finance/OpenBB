@@ -47,6 +47,7 @@ def test_getTickerFINRAdata(recorder):
 
     recorder.capture_list(result_list)
 
+
 def filter_json_data(response):
     """To reduce cassette size."""
 
