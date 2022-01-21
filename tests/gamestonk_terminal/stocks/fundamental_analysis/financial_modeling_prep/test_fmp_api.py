@@ -4,7 +4,9 @@
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.helper_classes import ModelsNamespace as _models
-from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import fmp_api
+from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
+    fmp_api,
+)
 
 
 def test_models():
