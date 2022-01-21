@@ -89,9 +89,8 @@ class OverviewController(BaseController):
             crypto_hack_slugs = rekt_model.get_crypto_hack_slugs()
             choices: dict = {c: {} for c in self.controller_choices}
             choices["ch"]["--sort"] = {c: None for c in rekt_model.HACKS_COLUMNS}
-            choices["ch"]["-s"] = {c: None for c in rekt_model.HACKS_COLUMNS}
-            choices["ich"] = {c: None for c in crypto_hack_slugs}
-            choices["ich"]["-s"] = {c: None for c in crypto_hack_slugs}
+            choices["ch"]["-s"] = {c: None for c in crypto_hack_slugs}
+            choices["ch"]["--slug"] = {c: None for c in crypto_hack_slugs}
             choices["cghold"] = {c: None for c in pycoingecko_model.HOLD_COINS}
             choices["cgcompanies"] = {c: None for c in pycoingecko_model.HOLD_COINS}
             choices["cgnews"]["-s"] = {c: None for c in pycoingecko_model.NEWS_FILTERS}
@@ -180,42 +179,8 @@ class OverviewController(BaseController):
     btcrb             display bitcoin rainbow price chart (logarithmic regression)
 [src][Rekt][/src]
     ch                lists major crypto-related hacks
-    ich               display individual crypto hack[/cmds]
 """
         console.print(text=help_text, menu="Cryptocurrency - Overview")
-
-    def call_ich(self, other_args):
-        """Process ich command"""
-        parser = argparse.ArgumentParser(
-            prog="ich",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""
-            Display crypto hack [Source: https://rekt.news]
-            Expects the slug of the hack (e.g., polynetwork-rekt)
-            """,
-        )
-
-        parser.add_argument(
-            "-s",
-            "--slug",
-            dest="slug",
-            type=str,
-            help="Slug to check crypto hack (e.g., polynetwork-rekt)",
-            required="-h" not in other_args,
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-s")
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            rekt_view.display_crypto_hack(
-                export=ns_parser.export,
-                slug=ns_parser.slug,
-            )
 
     def call_ch(self, other_args):
         """Process ch command"""
@@ -227,6 +192,7 @@ class OverviewController(BaseController):
             Can be sorted by {Platform,Date,Amount [$],Audit,Slug,URL} with --sort
             and reverse the display order with --descend
             Show only N elements with --limit
+            Accepts --slug or -s to check individual crypto hack (e.g., -s polynetwork-rekt)
             """,
         )
 
@@ -239,7 +205,6 @@ class OverviewController(BaseController):
             default=15,
         )
         parser.add_argument(
-            "-s",
             "--sort",
             dest="sortby",
             type=str,
@@ -255,11 +220,21 @@ class OverviewController(BaseController):
             default=False,
         )
 
+        parser.add_argument(
+            "-s",
+            "--slug",
+            dest="slug",
+            type=str,
+            help="Slug to check crypto hack (e.g., polynetwork-rekt)",
+            default=""
+        )
+
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             rekt_view.display_crypto_hacks(
+                slug=ns_parser.slug,
                 top=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=" ".join(ns_parser.sortby),

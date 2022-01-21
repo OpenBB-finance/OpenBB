@@ -12,13 +12,15 @@ from gamestonk_terminal.rich_config import console
 
 
 def display_crypto_hacks(
-    top: int, sortby: str, descend: bool, export: str = ""
+    top: int, sortby: str, descend: bool, slug: str, export: str = ""
 ) -> None:
-    """Display list of major crypto-related hacks
+    """Display list of major crypto-related hacks. If slug is passed individual crypto hack is displayed instead of list of crypto hacks
     [Source: https://rekt.news]
 
     Parameters
     ----------
+    slug: str
+        Crypto hack slug to check (e.g., polynetwork-rekt)
     top: int
         Number of hacks to search
     sortby: str
@@ -28,55 +30,42 @@ def display_crypto_hacks(
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-
-    df = rekt_model.get_crypto_hacks()
-
-    if df.empty:
-        console.print("\nError in rekt request\n")
-    else:
-        if sortby in rekt_model.HACKS_COLUMNS:
-            df = df.sort_values(by=sortby, ascending=descend)
-        df["Amount [$]"] = df["Amount [$]"].apply(lambda x: long_number_format(x))
-        df["Date"] = df["Date"].dt.date
-
-        if gtff.USE_TABULATE_DF:
-            rich_table_from_df(
-                df.head(top),
-                headers=list(df.columns),
-                floatfmt=".1f",
-                show_index=False,
-                title="Major Crypto Hacks",
+    if slug:
+        text = rekt_model.get_crypto_hack(slug)
+        if text:
+            console.print(text)
+        export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                "ch",
+                text,
             )
-            console.print()
+    else:
+        df = rekt_model.get_crypto_hacks()
+
+        if df.empty:
+            console.print("\nError in rekt request\n")
         else:
-            console.print(df.to_string(index=False), "\n")
+            if sortby in rekt_model.HACKS_COLUMNS:
+                df = df.sort_values(by=sortby, ascending=descend)
+            df["Amount [$]"] = df["Amount [$]"].apply(lambda x: long_number_format(x))
+            df["Date"] = df["Date"].dt.date
 
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "ch",
-            df,
-        )
+            if gtff.USE_TABULATE_DF:
+                rich_table_from_df(
+                    df.head(top),
+                    headers=list(df.columns),
+                    floatfmt=".1f",
+                    show_index=False,
+                    title="Major Crypto Hacks",
+                )
+                console.print()
+            else:
+                console.print(df.to_string(index=False), "\n")
 
-
-def display_crypto_hack(slug: str, export: str = ""):
-    """Display  a certain crypto related hack
-    [Source: https://rekt.news]
-
-    Parameters
-    ----------
-    slug: str
-        Crypto hack slug to check
-    export : str
-        Export dataframe data to csv,json,xlsx file
-    """
-
-    text = rekt_model.get_crypto_hack(slug)
-    if text:
-        console.print(text)
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "ich",
-            text,
-        )
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                "ch",
+                df,
+            )

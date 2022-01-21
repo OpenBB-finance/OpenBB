@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:83.0) Gecko/20100101 Firefox/83.0
+      - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:86.1) Gecko/20100101 Firefox/86.1
     method: GET
     uri: https://rekt.news/bitmart-rekt
   response:
@@ -23,7 +23,7 @@ interactions:
       Content-Type:
       - text/plain
       Date:
-      - Fri, 21 Jan 2022 10:00:30 GMT
+      - Fri, 21 Jan 2022 15:26:41 GMT
       Refresh:
       - 0;url=/bitmart-rekt/
       Transfer-Encoding:
@@ -39,7 +39,7 @@ interactions:
       x-vercel-cache:
       - MISS
       x-vercel-id:
-      - cdg1::kgrst-1642759230453-c938fcebc483
+      - cdg1::rxssm-1642778801953-2e04dc396ee8
     status:
       code: 308
       message: Permanent Redirect
@@ -53,7 +53,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:83.0) Gecko/20100101 Firefox/83.0
+      - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:86.1) Gecko/20100101 Firefox/86.1
     method: GET
     uri: https://rekt.news/bitmart-rekt/
   response:
@@ -215,7 +215,7 @@ interactions:
         ts++xZcy0629nb58H3N/VI+zvf8B5DOx9BuSAAA=
     headers:
       Age:
-      - '37372'
+      - '56944'
       Connection:
       - keep-alive
       Content-Encoding:
@@ -223,7 +223,7 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Fri, 21 Jan 2022 10:00:30 GMT
+      - Fri, 21 Jan 2022 15:26:42 GMT
       Transfer-Encoding:
       - chunked
       X-Vercel-Cache:
@@ -243,7 +243,7 @@ interactions:
       x-matched-path:
       - /en/bitmart-rekt/
       x-vercel-id:
-      - cdg1:cdg1::kgrst-1642759230508-6c4d45599312
+      - cdg1:cdg1::rxssm-1642778801998-f9d8f716aef3
     status:
       code: 200
       message: OK

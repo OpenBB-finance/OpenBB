@@ -23,7 +23,7 @@ interactions:
       Content-Type:
       - text/plain
       Date:
-      - Fri, 21 Jan 2022 10:00:30 GMT
+      - Fri, 21 Jan 2022 15:26:42 GMT
       Refresh:
       - 0;url=/leaderboard/
       Transfer-Encoding:
@@ -39,7 +39,7 @@ interactions:
       x-vercel-cache:
       - MISS
       x-vercel-id:
-      - cdg1::8mgvc-1642759230691-bfe7c97eac4e
+      - cdg1::sch48-1642778802164-9d5d37ebab5f
     status:
       code: 308
       message: Permanent Redirect
@@ -314,7 +314,7 @@ interactions:
         A7bQpLzIDgEA
     headers:
       Age:
-      - '77224'
+      - '96795'
       Connection:
       - keep-alive
       Content-Encoding:
@@ -322,7 +322,7 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Fri, 21 Jan 2022 10:00:30 GMT
+      - Fri, 21 Jan 2022 15:26:42 GMT
       Transfer-Encoding:
       - chunked
       X-Vercel-Cache:
@@ -342,7 +342,7 @@ interactions:
       x-matched-path:
       - /en/leaderboard/
       x-vercel-id:
-      - cdg1:cdg1::8mgvc-1642759230747-022dee214b4f
+      - cdg1:cdg1::sch48-1642778802208-8cfe7fa50897
     status:
       code: 200
       message: OK
