@@ -1,16 +1,12 @@
 
-                  X               Trading Date               Ticker                                       Insider                    Title                  Price                   Quantity                      Owned           Delta Own                         Value                     Company
-0  [green]M[/green]  [green]2021-12-15[/green]  [green]INCY[/green]        [green]Baker Bros. Advisors LP[/green]  [green]Dir, 10%[/green]  [green]$72.43[/green]  [green]+1,595,519[/green]  [green]34,399,479[/green]  [green]+5%[/green]  [green]+$115,558,900[/green]  [green]Incyte Corp[/green]
-1      [red]M[/red]      [red]2021-12-16[/red]       [red]WMT[/red]                    [red]Walton S Robson[/red]      [red]Dir, 10%[/red]     [red]$143.38[/red]        [red]-932,094[/red]   [red]1,298,267,576[/red]       [red]0%[/red]      [red]-$133,642,549[/red]     [red]Walmart Inc.[/red]
-2      [red]M[/red]      [red]2021-12-16[/red]       [red]WMT[/red]                     [red]Walton Alice L[/red]           [red]10%[/red]     [red]$143.38[/red]        [red]-932,094[/red]   [red]1,301,798,685[/red]       [red]0%[/red]      [red]-$133,642,549[/red]     [red]Walmart Inc.[/red]
-3      [red]M[/red]      [red]2021-12-16[/red]       [red]WMT[/red]                       [red]Walton Jim C[/red]           [red]10%[/red]     [red]$143.38[/red]        [red]-932,094[/red]   [red]1,305,557,229[/red]       [red]0%[/red]      [red]-$133,642,549[/red]     [red]Walmart Inc.[/red]
-4       [red][/red]      [red]2021-12-16[/red]      [red]LESL[/red]  [red]Bubbles Investor Aggregator, L.P.[/red]           [red]10%[/red]      [red]$20.25[/red]     [red]-13,625,310[/red]      [red]18,120,403[/red]     [red]-43%[/red]      [red]-$275,912,528[/red]   [red]Leslie'S, Inc.[/red]
+             X           Trading Date         Ticker                       Insider                                   Title               Price            Quantity               Owned        Delta Own                   Value
+0  [red][/red]  [red]2021-07-27[/red]  [red]PM[/red]     [red]King Martin G.[/red]             [red]CEO, PMI America[/red]  [red]$100.18[/red]  [red]-21,725[/red]  [red]128,484[/red]  [red]-14%[/red]  [red]-$2,176,482[/red]
+1  [red][/red]  [red]2021-05-25[/red]  [red]PM[/red]     [red]Azinovic Drago[/red]    [red]Pres Mid East, Africa, DF[/red]   [red]$98.04[/red]  [red]-15,000[/red]  [red]120,396[/red]  [red]-11%[/red]  [red]-$1,470,600[/red]
+2  [red][/red]  [red]2021-05-25[/red]  [red]PM[/red]         [red]Riley Paul[/red]    [red]Pres East Asia, Australia[/red]   [red]$98.04[/red]  [red]-10,984[/red]   [red]38,854[/red]  [red]-22%[/red]  [red]-$1,076,871[/red]
+3  [red][/red]  [red]2021-05-24[/red]  [red]PM[/red]  [red]De Wilde Frederic[/red]  [red]Pres, European Union Region[/red]   [red]$97.76[/red]  [red]-10,000[/red]  [red]186,628[/red]   [red]-5%[/red]    [red]-$977,600[/red]
+4  [red][/red]  [red]2021-05-10[/red]  [red]PM[/red]    [red]Masseroli Mario[/red]  [red]Pres, Latin America, Canada[/red]   [red]$98.31[/red]   [red]-1,734[/red]   [red]14,710[/red]  [red]-11%[/red]    [red]-$170,470[/red]
 
-D: Derivative transaction in filing (usually option exercise)
-E: Error detected in filing
 M: Multiple transactions in filing; earliest reported transaction date and weighted average transaction price
 
-[green]P - Purchase: Purchase of securities on an exchange or from another person[/green]
 [red]S - Sale: Sale of securities on an exchange or to another person[/red]
-[yellow]S - Sale+OE: Sale of securities on an exchange or to another person (after option exercise)[/yellow]
 

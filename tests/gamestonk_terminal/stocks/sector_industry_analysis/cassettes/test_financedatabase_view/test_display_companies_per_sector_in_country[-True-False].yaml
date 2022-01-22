@@ -1,0 +1,307 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/Database/Equities/Countries/Georgia/Georgia%20Sectors.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4vm5VIAAiW3zLzEvOTMxByF4NSisszk1GIlHaiUZ15KaXFJEVCuWImXKxYAHYin
+        uTIAAAA=
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=300
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '62'
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Fri, 21 Jan 2022 03:56:15 GMT
+      ETag:
+      - W/"440d2f007680712f0c4b6b8130245cf58b5ffe764d3c67550665b230a3799bc3"
+      Expires:
+      - Fri, 21 Jan 2022 04:01:15 GMT
+      Source-Age:
+      - '4'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Via:
+      - 1.1 varnish
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '1'
+      X-Content-Type-Options:
+      - nosniff
+      X-Fastly-Request-ID:
+      - b9f3ddf0d43fe70661848947927784b4b6cfe80f
+      X-Frame-Options:
+      - deny
+      X-GitHub-Request-Id:
+      - A8B2:E247:AD2DF3:C9E8F1:61EA2EDA
+      X-Served-By:
+      - cache-cdg20768-CDG
+      X-Timer:
+      - S1642737376.513053,VS0,VE0
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/Database/Equities/Countries/Georgia/Georgia%20Industries.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4vm5VIAAiWnxLzsYgVdhaDU9Mz8vMQcJR2ohHN+XnpOfm5qUWJJarESL1csAAls
+        MO0yAAAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=300
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '63'
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Fri, 21 Jan 2022 03:56:15 GMT
+      ETag:
+      - W/"85e16372b3994786771a90640818cd9592d18700fc6d3b819d8ec4aa7a58275c"
+      Expires:
+      - Fri, 21 Jan 2022 04:01:15 GMT
+      Source-Age:
+      - '4'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Via:
+      - 1.1 varnish
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '3'
+      X-Content-Type-Options:
+      - nosniff
+      X-Fastly-Request-ID:
+      - 16bf9f27f555f673d6d09215aa0d86e0dcac3543
+      X-Frame-Options:
+      - deny
+      X-GitHub-Request-Id:
+      - FFB4:11EF5:B3761C:D51222:61EA2EDB
+      X-Served-By:
+      - cache-cdg20776-CDG
+      X-Timer:
+      - S1642737376.579002,VS0,VE0
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/Database/Equities/Countries/Georgia/Financial%20Services/_Financial%20Services.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3VUTU/bQBC9V+p/GHE2IaGiiOYElEZVaYuAntFkPbG3We9aO2vSgPrfO+N1ALc0
+        p3g+37x5O49v34D89m7PzheTy70P8JgNvZHrENOdx4bEoSFwdvrtCyyuv/+4gqvLc/h+/REWZ1fT
+        yXS2V7xIdMFX4zz0a1jE0LWaN4rlrmkwbl+PLCDV8r+qwSYG7pZsS4vREhfQxnBvS2JYSor1VQGO
+        kPs/yxjWFLGiAtCXYDCWGm6I1Q9M8d7KB6QAJsQ2REzUR1pfWinaoQPTcQoNRRYjLCjEymIBpw8U
+        l2h/os+lfzwsaW05oZ/AbU1SrmnRbyG0pEX5Cf81JbRuDue7fvM+/6s1MRRw06Bz2UCl7Rq48Ili
+        Gy1LCaaqIZ94Ap8ThNVKMd0LCaFjQRmj+A6YUnKkYYDGhE7CM0Ap00BJbWBhcA6NbLTqiTHBC/UU
+        C4g9tIGqJzpcQK81GDak2DhbYBUiNBk1K+qc12TY9Ax7DiaKMfXsS6Hhy1mvy3OCV+cIq8GRy1Qd
+        RpQamt6XDZ62kMTGMnZG2E9stkC/TI2+oqd1jjeAjsOzRpqQgozq7CovWtbDwcuahS0J8KnXk1jT
+        toCa0KU6IwqplsZWuBIQhjSq7IxSaf09cWr63L8F98Tiyvo+jYPrkhXK568p8oV0r67z4BjXlHpL
+        FDQgnbRcg16a5J7IsvSRRUfv0sATh1XaYBREtC8O2bQZ0IkWkpR8pu2zByxlB4KvkIe205jVZXrp
+        kTextI52b+0/nP+jegTJ34S41kXPjo6FKKGj1vXOiqPjKWAnj0xSVKjOCfQGTa0SmcPhUTF7/07Q
+        Cg5NZ5T+Kmeh1A08vitOpkcCxq32B0TPEQLtn3sCG1QFd74kfewwOzk5zA9fzwhn461MatkWu1c/
+        Gd2rnf70YC3O2vEtIyMyU8+nfu9WaL4ZmBoFyp2R85KvniJk2JcLUVmV5ChwJ3INvLy5GPmyRtRT
+        Le+GjxFSPQO5xzDJGKwqSpy+k0f8Ms2mfI0zDaOcB9uaUPZoprPp4ci3IbnOfcW9OqX2w8HBZrOZ
+        pKVRzVS6gYno5JUJ7gy2mpWP4Ll85JDfb9/8/gPjDAtpoAYAAA==
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=300
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '835'
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Fri, 21 Jan 2022 03:56:15 GMT
+      ETag:
+      - W/"054d777dca560e9e103539a6b4a46cf07480c72de1e8465d0feda62bff6099ac"
+      Expires:
+      - Fri, 21 Jan 2022 04:01:15 GMT
+      Source-Age:
+      - '4'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Via:
+      - 1.1 varnish
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '1'
+      X-Content-Type-Options:
+      - nosniff
+      X-Fastly-Request-ID:
+      - b50d36c6f3303cb395a90d206413b06ab9df3175
+      X-Frame-Options:
+      - deny
+      X-GitHub-Request-Id:
+      - 29FC:37C1:1837467:1923988:61EA2EDB
+      X-Served-By:
+      - cache-cdg20759-CDG
+      X-Timer:
+      - S1642737376.643183,VS0,VE0
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/Database/Equities/Countries/Georgia/Industrials/_Industrials.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+1UTXPTMBC9M8N/2MmBU6a0XPi4taF0MgSaacu5s5bWtqayZCQ5JjD8d55sA/FM
+        e+DABZpDEmvfvl2/t9pvT58QPovVxfnl0Wbxhr6NB8NhrH1It44bQWABxNXF+pRWp9v1zemGtpsV
+        XV69pZPtYnmQZL2rfueID5VhWnFrEtucMwPHrmk47B+AkonE1Aaz4yQknzuT9sRO005c6oKQmrCl
+        CQ3FVpRha74aV5FxJBzsnmLiSpYEbnZGURV8n+qBhBUIo0nGu3hE60QKf4yWAJCIK41YHSnVwXdV
+        TQ0PFQc6IJsWdIK8m1rG8mnfGsUWJY3bSUwx98Bd8o1PZicUJLGxSxLdKc5FKUrYGSVxSbVPYvEb
+        JELxSM9IBfQmZI2T8TxxF9glPBSyk4Aucp6wTbXigDcs2N3hqA2+lTDppDh2QOSWYk5XwFlTyhAc
+        kw9DrMGcoImrlqTRdIgGMmi6Ol/fgLuHDYG6ZCxUy/UzTRAnPRcWBllRKRgFlwY9o8gdBPSTIFmP
+        yeQD2UZQ4Tloav1oR0a2XWHhVws9Sm+NP9Qc3PLFpN/mrLeXcJhSYA2LGL2Aocyqo3oSR3sMw6FZ
+        gaFu/DU/P3kORkxLkWB6uJOUeV1kNU3KfYPac6TSd05DLJR+cXzyamDBABccx8ObArpFs/xF0Js8
+        iVoP7wwiX5YYhwzdeKe9AzLIIPn4PDCeBROTxxx9ciaB+D3M0r65v608CiDIo6ilFXy5hAH1JZ3h
+        NoPedy21VhHax+EH3tOL18uh/aPZPVVdgM9qvKhn7fwOw3UfcmTtdBcxAWzjDGHG8yF7hfVgfTP2
+        NUPJF1Wzq4a9sbk+n8VGI3KkKm6nh1l/0D7N9si8xYRqCLrO2lka3M45kzWznK+mVV4P3RyfvHw9
+        i/VSYFKHWJ1S++b5877vj6qx8jRUeLznFW4RzWnXDVZF9moxQr5P0MXF1cXq3Z/u4ccF/LiAHxfw
+        /7KAP12//esLePvx/QMLuIv/5gJ++uT7Dwh7CoMNCwAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=300
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '774'
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Fri, 21 Jan 2022 03:56:15 GMT
+      ETag:
+      - W/"7944e09935c5795d659b0fec4489e9a0e8555b6cf79154782631f68102e1ff07"
+      Expires:
+      - Fri, 21 Jan 2022 04:01:15 GMT
+      Source-Age:
+      - '4'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Via:
+      - 1.1 varnish
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '1'
+      X-Content-Type-Options:
+      - nosniff
+      X-Fastly-Request-ID:
+      - 2d9267727a38421628dfe7cff2acabb34a3dd855
+      X-Frame-Options:
+      - deny
+      X-GitHub-Request-Id:
+      - 60BA:16D9:23C72F7:26279D9:61EA2EDB
+      X-Served-By:
+      - cache-cdg20747-CDG
+      X-Timer:
+      - S1642737376.707154,VS0,VE0
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
