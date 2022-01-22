@@ -3,9 +3,11 @@ __docformat__ = "numpy"
 
 from urllib.request import urlopen
 from typing import List, Union, Dict, Any, Tuple
+from pathlib import Path
 from zipfile import ZipFile
 from io import BytesIO
 import re
+import os
 
 from sklearn.linear_model import LinearRegression
 from openpyxl import worksheet
@@ -432,3 +434,32 @@ def frac(num: float, denom: float) -> Union[str, float]:
         The fraction
     """
     return "N/A" if denom == 0 else num / denom
+
+
+def generate_path(n: int, ticker: str, date: str) -> Path:
+    """
+    Create the path to save an excel file to
+
+    Parameters
+    ----------
+    n : int
+        The try number
+    ticker : str
+        The ticker to be saved
+    date : str
+        The date the dcf was generated
+
+    Returns
+    -------
+    path : Path
+        The path to save a file to
+    """
+    val = "" if n == 0 else f"({n})"
+    trypath = os.path.join(
+        os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")),
+        "exports",
+        "stocks",
+        "fundamental_analysis",
+        f"{ticker} {date}{val}.xlsx",
+    )
+    return Path(trypath)

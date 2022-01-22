@@ -19,23 +19,34 @@ def vcr_config():
     }
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_option_expirations_no_dates(mocker):
-    mock_yf_ticker = mocker.Mock()
-    mock_yf_ticker.options = ()
+    # MOCK TICKER
     mocker.patch(
         target="gamestonk_terminal.stocks.options.yfinance_model.yf.Ticker",
-        return_value=mock_yf_ticker,
     )
+
+    # MOCK OPTION
+    mocker.patch(
+        target="gamestonk_terminal.stocks.options.yfinance_model.yf.Ticker.option",
+        return_value=(),
+    )
+
     yfinance_model.option_expirations(ticker="PM")
 
 
-@pytest.mark.skip(
-    "Something wrong with 'lastTradeDate' format while running on the server"
-)
 @pytest.mark.vcr
-def test_get_option_chain(recorder):
+def test_get_option_chain(mocker, recorder):
+    # FORCE SINGLE THREADING
+    yf_download = yfinance_model.yf.download
+
+    def mock_yf_download(*args, **kwargs):
+        kwargs["threads"] = False
+        return yf_download(*args, **kwargs)
+
+    mocker.patch("yfinance.download", side_effect=mock_yf_download)
+
     result_tuple = yfinance_model.get_option_chain(
         ticker="PM",
         expiration="2022-01-07",
@@ -45,7 +56,6 @@ def test_get_option_chain(recorder):
     recorder.capture_list(result_tuple)
 
 
-@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "func",
@@ -58,7 +68,16 @@ def test_get_option_chain(recorder):
         "get_iv_surface",
     ],
 )
-def test_get_closing(func, recorder):
+def test_call_func(func, mocker, recorder):
+    # FORCE SINGLE THREADING
+    yf_download = yfinance_model.yf.download
+
+    def mock_yf_download(*args, **kwargs):
+        kwargs["threads"] = False
+        return yf_download(*args, **kwargs)
+
+    mocker.patch("yfinance.download", side_effect=mock_yf_download)
+
     result = getattr(yfinance_model, func)(ticker="PM")
 
     recorder.capture(result)

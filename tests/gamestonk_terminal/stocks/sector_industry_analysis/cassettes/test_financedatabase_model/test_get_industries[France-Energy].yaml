@@ -1,0 +1,72 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/Database/Equities/Countries/France/Energy/_Energy%20Industries.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4vm5VIAAiX/zBwFNQX3xGIFV7UAJR1M0cLSzILc1LwSID84tagsMzm1GIsyz7yS
+        1PSixJLUFCySQalpmXmZeelArm9iUXZqCZCtxMsVCwATghM5hAAAAA==
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=300
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '97'
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Fri, 21 Jan 2022 03:56:10 GMT
+      ETag:
+      - W/"62c5aacfbe364d59bae061a82e08f695a3d4ac7ef0368d8cf976f88ff5129c4f"
+      Expires:
+      - Fri, 21 Jan 2022 04:01:10 GMT
+      Source-Age:
+      - '0'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Via:
+      - 1.1 varnish
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Content-Type-Options:
+      - nosniff
+      X-Fastly-Request-ID:
+      - 3462753bb73a5ca5d6db8e0bf1b1c9920cbebc84
+      X-Frame-Options:
+      - deny
+      X-GitHub-Request-Id:
+      - 73B8:E248:1E4CF94:2047F7A:61EA2EDA
+      X-Served-By:
+      - cache-cdg20758-CDG
+      X-Timer:
+      - S1642737370.074023,VS0,VE160
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

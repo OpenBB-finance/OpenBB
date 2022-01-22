@@ -281,8 +281,11 @@ def display_allocation(data: pd.DataFrame, graph: bool):
                 data["value"].sum() - graph_data["value"].sum(),
                 100 - graph_data["value"].sum(),
             ]
-        labels = graph_data.index.values
-        sizes = graph_data["value"].to_list()
+            labels = graph_data.index.values
+            sizes = graph_data["value"].to_list()
+        else:
+            labels = data.index.values
+            sizes = data["value"].to_list()
         fig, ax = plt.subplots()
         ax.pie(sizes, labels=labels, autopct="%1.1f%%", startangle=90)
         ax.axis("equal")
