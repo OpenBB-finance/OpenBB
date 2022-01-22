@@ -3,10 +3,9 @@ __docformat__ = "numpy"
 
 import pandas as pd
 
-from tabulate import tabulate
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.behavioural_analysis import stocktwits_model
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.helper_funcs import rich_table_from_df
 
 
 def display_bullbear(ticker: str):
@@ -42,31 +41,23 @@ def display_messages(ticker: str, limit: int = 30):
     """
     messages = stocktwits_model.get_messages(ticker, limit)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                pd.DataFrame(messages), headers=[], tablefmt="grid", showindex=False
-            )
-        )
-    else:
-        for message in messages:
-            console.print(message, "\n")
+    rich_table_from_df(
+        pd.DataFrame(messages),
+        headers=[],
+        show_index=False,
+        title="Last Messages on Board",
+    )
 
 
 def display_trending():
     """Show trensing stocks on stocktwits"""
     df_trending = stocktwits_model.get_trending()
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_trending,
-                headers=df_trending.columns,
-                tablefmt="fancy_grid",
-                showindex=False,
-            )
-        )
-    else:
-        console.print(df_trending.to_string(index=False))
+    rich_table_from_df(
+        df_trending,
+        headers=list(df_trending.columns),
+        show_index=False,
+        title="Trending Stocks",
+    )
     console.print("")
 
 
