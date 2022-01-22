@@ -258,10 +258,34 @@ def display_allocation(data: pd.DataFrame, graph: bool):
     data: pd.DataFrame
         The portfolio allocation dataframe
     graph: bool
-        If pie chart shall be displayed instead of table"""
+        If pie chart shall be displayed with table"""
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                data,
+                headers=data.columns,
+                tablefmt="fancy_grid",
+                floatfmt=".2f",
+            ),
+        )
+    else:
+        console.print(data.to_string())
+    console.print("")
+
     if graph:
-        labels = data.index.values
-        sizes = data["value"].to_list()
+        graph_data = data[data["pct_allocation"] >= 5].copy()
+        if not graph_data.empty:
+            graph_data.loc["Other"] = [
+                "NA",
+                data["value"].sum() - graph_data["value"].sum(),
+                100 - graph_data["value"].sum(),
+            ]
+            labels = graph_data.index.values
+            sizes = graph_data["value"].to_list()
+        else:
+            labels = data.index.values
+            sizes = data["value"].to_list()
         fig, ax = plt.subplots()
         ax.pie(sizes, labels=labels, autopct="%1.1f%%", startangle=90)
         ax.axis("equal")
@@ -269,19 +293,6 @@ def display_allocation(data: pd.DataFrame, graph: bool):
         fig.set_tight_layout(True)
 
         plt.show()
-    else:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    data,
-                    headers=data.columns,
-                    tablefmt="fancy_grid",
-                    floatfmt=".2f",
-                ),
-            )
-        else:
-            console.print(data.to_string())
-        console.print("")
 
 
 class Report:
