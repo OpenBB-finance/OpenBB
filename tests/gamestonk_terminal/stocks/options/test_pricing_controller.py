@@ -291,15 +291,14 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_show",
             [],
-            "tabulate",
+            "rich_table_from_df",
             [
                 PRICES,
             ],
             dict(
-                headers=PRICES.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
+                headers=list(PRICES.columns),
+                show_index=False,
+                title="Estimated price(s) of MOCK_TICKER at 2022-01-07",
             ),
         ),
         (

@@ -251,6 +251,39 @@ def plot_ef(
     return ImageReader(imgdata)
 
 
+def display_allocation(data: pd.DataFrame, graph: bool):
+    """Displays allocation
+    Parameters
+    ----------
+    data: pd.DataFrame
+        The portfolio allocation dataframe
+    graph: bool
+        If pie chart shall be displayed instead of table"""
+    if graph:
+        labels = data.index.values
+        sizes = data["value"].to_list()
+        fig, ax = plt.subplots()
+        ax.pie(sizes, labels=labels, autopct="%1.1f%%", startangle=90)
+        ax.axis("equal")
+        ax.set_title("Portfolio Allocation")
+        fig.set_tight_layout(True)
+
+        plt.show()
+    else:
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    data,
+                    headers=data.columns,
+                    tablefmt="fancy_grid",
+                    floatfmt=".2f",
+                ),
+            )
+        else:
+            console.print(data.to_string())
+        console.print("")
+
+
 class Report:
     def __init__(self, df: pd.DataFrame, hist: pd.DataFrame, m_tick: str, n: int):
         """Generate financial reports.
