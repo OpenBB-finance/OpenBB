@@ -7,13 +7,13 @@ import textwrap
 from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
-from tabulate import tabulate
 from matplotlib import pyplot as plt
 import matplotlib.dates as mdates
 from gamestonk_terminal.stocks.government import quiverquant_model
 from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     export_data,
+    rich_table_from_df,
 )
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
@@ -90,29 +90,19 @@ def display_last_government(
                 f"{', '.join(df_gov['Representative'].str.split().str[0].unique())}"
             )
         else:
-            if gtff.USE_TABULATE_DF:
-                console.print(
-                    tabulate(
-                        df_gov_rep,
-                        headers=df_gov_rep.columns,
-                        tablefmt="fancy_grid",
-                        showindex=False,
-                    )
-                )
-            else:
-                console.print(df_gov_rep.to_string(index=False))
-    else:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df_gov,
-                    headers=df_gov.columns,
-                    tablefmt="fancy_grid",
-                    showindex=False,
-                )
+            rich_table_from_df(
+                df_gov_rep,
+                headers=list(df_gov_rep.columns),
+                show_index=False,
+                title="Representative Trading",
             )
-        else:
-            console.print(df_gov.to_string(index=False))
+    else:
+        rich_table_from_df(
+            df_gov,
+            headers=list(df_gov.columns),
+            show_index=False,
+            title="Representative Trading",
+        )
     console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "lasttrades", df_gov
@@ -187,14 +177,9 @@ def display_government_buys(
             .sort_values(ascending=False)
             .head(n=num)
         )
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df, headers=["Amount ($1k)"], tablefmt="fancy_grid", showindex=True
-                )
-            )
-        else:
-            console.print(df.to_string())
+        rich_table_from_df(
+            df, headers=["Amount ($1k)"], show_index=True, title="Top Government Buys"
+        )
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values(ascending=False).head(
@@ -295,14 +280,9 @@ def display_government_sells(
             .abs()
             .head(n=num)
         )
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df, headers=["Amount ($1k)"], tablefmt="fancy_grid", showindex=True
-                )
-            )
-        else:
-            console.print(df.to_string())
+        rich_table_from_df(
+            df, headers=["Amount ($1k)"], show_index=True, title="Top Government Trades"
+        )
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values().abs().head(
@@ -360,21 +340,15 @@ def display_last_contracts(
     df_contracts = df_contracts[["Date", "Ticker", "Amount", "Description", "Agency"]][
         :num
     ]
-    if gtff.USE_TABULATE_DF:
-        df_contracts["Description"] = df_contracts["Description"].apply(
-            lambda x: "\n".join(textwrap.wrap(x, 50))
-        )
-        print(
-            tabulate(
-                df_contracts,
-                headers=df_contracts.columns,
-                tablefmt="fancy_grid",
-                showindex=False,
-                floatfmt=".2f",
-            )
-        )
-    else:
-        console.print(df_contracts.to_string(index=False))
+    df_contracts["Description"] = df_contracts["Description"].apply(
+        lambda x: "\n".join(textwrap.wrap(x, 50))
+    )
+    rich_table_from_df(
+        df_contracts,
+        headers=list(df_contracts.columns),
+        show_index=False,
+        title="Last Government Contracts",
+    )
     if sum_contracts:
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         df["Date"] = pd.to_datetime(df["Date"]).dt.date
@@ -494,17 +468,12 @@ def display_government_trading(
     df_gov = df_gov.sort_values("TransactionDate", ascending=True)
 
     if raw:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df_gov,
-                    headers=df_gov.columns,
-                    tablefmt="fancy_grid",
-                    showindex=False,
-                )
-            )
-        else:
-            console.print(df_gov.to_string())
+        rich_table_from_df(
+            df_gov,
+            headers=list(df_gov.columns),
+            show_index=False,
+            title=f"Government Trading for {ticker.upper()}",
+        )
     else:
         plot_government(df_gov, ticker, gov_type)
 
@@ -543,18 +512,12 @@ def display_contracts(
     df_contracts.drop_duplicates(inplace=True)
 
     if raw:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df_contracts,
-                    headers=df_contracts.columns,
-                    tablefmt="fancy_grid",
-                    showindex=False,
-                    floatfmt=".2f",
-                )
-            )
-        else:
-            console.print(df_contracts.to_string())
+        rich_table_from_df(
+            df_contracts,
+            headers=list(df_contracts.columns),
+            show_index=False,
+            title=f"Government Contracts for {ticker.upper()}",
+        )
 
     else:
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -597,17 +560,12 @@ def display_qtr_contracts(analysis: str, num: int, raw: bool = False, export: st
     tickers = quiverquant_model.analyze_qtr_contracts(analysis, num)
     if analysis in ("upmom", "downmom"):
         if raw:
-            if gtff.USE_TABULATE_DF:
-                console.print(
-                    tabulate(
-                        pd.DataFrame(tickers.values),
-                        headers=["tickers"],
-                        tablefmt="fancy_grid",
-                        showindex=False,
-                    )
-                )
-            else:
-                console.print(tickers.to_string())
+            rich_table_from_df(
+                pd.DataFrame(tickers.values),
+                headers=["tickers"],
+                show_index=False,
+                title="Quarterly Contracts",
+            )
         else:
             fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             max_amount = 0
@@ -659,14 +617,7 @@ def display_qtr_contracts(analysis: str, num: int, raw: bool = False, export: st
             plt.show()
 
     elif analysis == "total":
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    tickers, headers=["Total"], tablefmt="fancy_grid", floatfmt=".2e"
-                )
-            )
-        else:
-            console.print(tickers.to_string())
+        rich_table_from_df(tickers, headers=["Total"], title="Quarterly Contracts")
 
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "qtrcontracts", df_contracts
@@ -704,17 +655,11 @@ def display_hist_contracts(ticker: str, raw: bool = False, export: str = ""):
     ]
 
     if raw:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df_contracts,
-                    headers=df_contracts.columns,
-                    tablefmt="fancy_grid",
-                    showindex=False,
-                )
-            )
-        else:
-            console.print(df_contracts.to_string())
+        rich_table_from_df(
+            df_contracts,
+            headers=list(df_contracts.columns),
+            title="Historical Quarterly Government Contracts",
+        )
 
     else:
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -763,18 +708,12 @@ def display_top_lobbying(num: int, raw: bool = False, export: str = ""):
     ).sort_values(by="Amount", ascending=False)
 
     if raw:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    lobbying_by_ticker.head(num),
-                    headers=["Amount ($100k)"],
-                    tablefmt="fancy_grid",
-                    showindex=True,
-                    floatfmt=".2f",
-                )
-            )
-        else:
-            console.print(lobbying_by_ticker.head(num).to_string())
+        rich_table_from_df(
+            lobbying_by_ticker.head(num),
+            headers=["Amount ($100k)"],
+            show_index=True,
+            title="Top Lobbying Tickers",
+        )
     else:
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         lobbying_by_ticker.head(num).plot(kind="bar", ax=ax)

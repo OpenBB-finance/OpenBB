@@ -4,13 +4,13 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 import pandas as pd
-from tabulate import tabulate
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
+    rich_table_from_df,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.options import yfinance_view
@@ -155,22 +155,12 @@ class PricingController(BaseController):
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            console.print(
-                f"Estimated price(s) of {self.ticker} at {self.selected_date}"
+            rich_table_from_df(
+                self.prices,
+                headers=list(self.prices.columns),
+                show_index=False,
+                title=f"Estimated price(s) of {self.ticker} at {self.selected_date}",
             )
-            if gtff.USE_TABULATE_DF:
-                console.print(
-                    tabulate(
-                        self.prices,
-                        headers=self.prices.columns,
-                        floatfmt=".2f",
-                        showindex=False,
-                        tablefmt="fancy_grid",
-                    ),
-                    "\n",
-                )
-            else:
-                console.print(self.prices.to_string, "\n")
 
     def call_rnval(self, other_args: List[str]):
         """Process rnval command"""
