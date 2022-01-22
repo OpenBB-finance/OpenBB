@@ -1,0 +1,69 @@
+
+    Crypto.com - REKT
+    Wednesday, January 19, 2022
+
+    
+
+It’s worse than we thought.
+After our initial investigation, 
+ErgoBTC uncovered even more lost funds from Crypto.com.
+Another 444 BTC: ~$18.7M.
+That brings the total value lost up to $33.7M, and moves Crypto.com up to position 15 on the leaderboard.
+And still no acknowledgement of any loss from Crypto.com.
+“All funds safe” ???
+They’re lying to you.
+ErgoBTC investigates…
+We noted this abnormally large withdrawal from @cryptocom's payout wallet 
+bc1q7cyrfmck2ffu2ud3rn5l5a8yv6f0chkp0zpemf via
+06f7b6adac715ea7f30e2f23f52b3dfeed53...
+Shortly after, several hundred withdrawals are consolidated into 4 outputs for 67.75 BTC.
+The 271 BTC then make a series 24 or 25 BTC deposits to a well known BTC tumbler. 173 BTC at address 
+bc1qk8wlwypvvr6v5lmsngg5a248k2a9cgrsrw5jsq is likely associated with the hack, has not yet been sent to the tumbler.
+This tumbler has been commonly used in hacks attributed to the DPRK Lazarus Group and more recently in the attempted laundering of BTC from to this summer's Darkside ransomware activity.
+These findings double the damage from our initial investigation, and increase the pressure on Crypto.com to come clean about what happened.
+At least the 
+CEO is happy…
+Crypto.com should stop 
+shitposting and tell their users where their money has gone.
+Our original article continues below.
+
+
+Another CEX rekt, but they have yet to admit it.
+The first message from crypto.com about the attack was at Jan-17-2022 04:44 AM UTC, stating that:
+”We have a small number of users reporting suspicious activity on their accounts.
+We will be pausing withdrawals shortly, as our team is investigating. 
+All funds are safe.
+”
+~8 hours later, at 12:17,  Crypto.com doubled down on their statements, with 
+a tweet that said:
+”Earlier today a small number of users experienced unauthorized activity in their accounts. 
+All funds are safe.
+”
+Later that day, at 18:44 +UTC, hundreds of users crypto.com wallets were drained. Funds were not safe.
+How did the attacker bypass users 2FA, and their email withdrawal approvals?
+If, as CEO 
+@Kris_HK also claimed 
+“all funds are safe”
+Why are 
+so 
+many 
+users claiming to have lost their ETH?
+Peckshield suggests that the total loss is about $15M, with at least 
+4.6K ETH taken directly from hundreds of different users wallets.
+Certik wrote that:
+The total loss is around 4,836 ETH and 282 users' wallets have been affected by the hack.
+The stolen ETH was sent to Tornado Cash and the address has been inactive since Jan-18-2022 01:21:13 AM +UTC.
+The hacker bypassed existing 2FA, they bypassed the withdrawal whitelist, could this attack really have come from outside?
+Even a 
+"SOC2" audit from Deloitte couldn't stop this attack, which gives Crypto.com position 29 on 
+the leaderboard.
+	
+When one of the most recognisable crypto brands falls victim to an exploit, it damages the reputation of the entire industry. Centralised exchanges rely on retail investors, who will be easily put off by events such as this.
+Will crypto.com ever admit that funds were not safe?
+Surely a $15M recompensation plan is better than trying to pretend that nothing happened.
+Or maybe they will quietly refund the affected users, rather than announce anything official.
+We await the official post-mortem from crypto.com.
+
+
+    Detailed history in https://rekt.news/cryptocom-rekt
+    
