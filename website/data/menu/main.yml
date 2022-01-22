@@ -666,6 +666,8 @@ main:
       - name: overview
         ref: "/cryptocurrency/overview"
         sub:
+          - name: ch
+            ref: "/cryptocurrency/overview/ch"
           - name: btcrb
             ref: "/cryptocurrency/overview/btcrb"
           - name: cgglobal
@@ -1240,5 +1242,7 @@ main:
               ref: "/jupyter/dashboards/vsurf"
             - name: "chains"
               ref: "/jupyter/dashboards/chains"
+            - name: "shortdata"
+              ref: "jupyter/dashboards/shortdata"
         - name: "reports"
           ref: "/jupyter/reports"

@@ -36,12 +36,9 @@ def test_create_xls():
             assert item in items_cf
 
 
-@pytest.mark.skip
+@pytest.mark.skip("Issue with `create_workbook`")
 @pytest.mark.vcr
 def test_create_workbook(mocker):
-    excel = dcf_view.CreateExcelFA(ticker="AEIS", audit=False)
-    mocker.patch(
-        "gamestonk_terminal.stocks.fundamental_analysis.dcf_view.random.shuffle"
-    )
+    excel = dcf_view.CreateExcelFA(ticker="AAPL", audit=False)
     mocker.patch.object(excel.wb, "save")
     excel.create_workbook()

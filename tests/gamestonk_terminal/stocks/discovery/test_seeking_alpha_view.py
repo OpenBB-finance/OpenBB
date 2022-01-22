@@ -34,7 +34,6 @@ def test_news():
     )
 
 
-@pytest.mark.skip("Broken ?")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_display_news():

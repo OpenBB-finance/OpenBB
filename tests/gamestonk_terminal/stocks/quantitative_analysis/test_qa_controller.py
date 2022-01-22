@@ -54,8 +54,9 @@ def vcr_config():
     return {
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
-            ("period1", "1598220000"),
-            ("period2", "1635980400"),
+            ("period1", "MOCK_PERIOD_1"),
+            ("period2", "MOCK_PERIOD_2"),
+            ("date", "MOCK_DATE"),
         ],
     }
 
@@ -551,3 +552,25 @@ def test_call_load(mocker):
     controller.call_load(other_args=other_args)
     assert not controller.stock.empty
     assert not controller.stock.equals(old_stock)
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "ticker, expected",
+    [
+        (None, []),
+        ("MOCK_TICKER", ["stocks", "load MOCK_TICKER", "qa", "pick returns"]),
+    ],
+)
+def test_custom_reset(expected, ticker):
+    controller = qa_controller.QaController(
+        ticker=None,
+        start="MOCK_DATE",
+        interval="MOCK_INTERVAL",
+        stock=DF_STOCK.copy(),
+    )
+    controller.ticker = ticker
+
+    result = controller.custom_reset()
+
+    assert result == expected

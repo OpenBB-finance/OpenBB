@@ -12,7 +12,7 @@ interactions:
       - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML,
         like Gecko) Chrome/39.0.2171.95 Safari/537.36
     method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/TSLA?period1=1639695600&period2=1639782000&interval=1d&includePrePost=False&events=div%2Csplits
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/TSLA?period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2&interval=1d&includePrePost=False&events=div%2Csplits
   response:
     body:
       string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1641330002,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":1149.59,"chartPreviousClose":926.92,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1641373200,"end":1641393000,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1641393000,"end":1641416400,"gmtoffset":-18000},"post":{"timezone":"EST","start":1641416400,"end":1641430800,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1639665000,1639751400],"indicators":{"quote":[{"volume":[27590500,33479100],"open":[994.5,914.77001953125],"close":[926.9199829101562,932.5700073242188],"high":[994.97998046875,960.6599731445312],"low":[921.8499755859375,909.0399780273438]}],"adjclose":[{"adjclose":[926.9199829101562,932.5700073242188]}]}}],"error":null}}'
