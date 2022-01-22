@@ -6,4 +6,5 @@ cgexchanges
 cghold
 news
 btcrb
+ch
 exit
