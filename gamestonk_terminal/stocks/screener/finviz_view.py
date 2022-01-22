@@ -4,15 +4,14 @@ __docformat__ = "numpy"
 from typing import List
 import os
 import difflib
-from tabulate import tabulate
 import pandas as pd
 from gamestonk_terminal.helper_funcs import (
     export_data,
+    rich_table_from_df,
 )
 from gamestonk_terminal.stocks.screener.finviz_model import (
     get_screener_data,
 )
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
 
@@ -192,18 +191,12 @@ def screener(
 
         df_screen = df_screen.fillna("")
 
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df_screen.head(n=limit),
-                    headers=df_screen.columns,
-                    floatfmt=".2f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-            )
-        else:
-            console.print(df_screen.head(n=limit).to_string())
+        rich_table_from_df(
+            df_screen.head(n=limit),
+            headers=list(df_screen.columns),
+            show_index=False,
+            title="Finzin Screener",
+        )
         console.print("")
 
         export_data(

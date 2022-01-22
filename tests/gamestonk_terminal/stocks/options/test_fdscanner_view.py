@@ -5,6 +5,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.options import fdscanner_view
+from gamestonk_terminal import helper_funcs
 
 
 # pylint: disable=E1101
@@ -27,7 +28,7 @@ def vcr_config():
 def test_display_options(mocker, toggle):
     # MOCK CHARTS
     mocker.patch.object(
-        target=fdscanner_view.gtff,
+        target=helper_funcs.gtff,
         attribute="USE_TABULATE_DF",
         new=toggle,
     )
