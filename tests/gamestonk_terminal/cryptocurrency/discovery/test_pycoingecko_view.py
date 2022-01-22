@@ -9,6 +9,7 @@ from tests.helpers.helpers import check_print
 
 # pylint: disable=R0904
 
+
 class TestCoinGeckoAPI(TestCase):
     @check_print(assert_in="Rank")
     @pytest.mark.vcr
