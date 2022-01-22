@@ -16,4 +16,5 @@ Reports:
 Graphs:
     rmr         graph your returns versus the market's returns
     al          displays the allocation of the portfolio
+    mdd         display portfolio drawdown
         
