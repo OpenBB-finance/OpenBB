@@ -746,6 +746,7 @@ def get_flair() -> str:
         "golf": "(⛳)",
         "piece": "(☮)",
         "yy": "(☯)",
+        "custom": gtff.CUSTOM_FLAIR,
     }
 
     if flair.get(gtff.USE_FLAIR):

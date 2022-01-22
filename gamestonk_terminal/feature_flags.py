@@ -19,6 +19,9 @@ USE_COLOR = strtobool(os.getenv("GTFF_USE_COLOR", "True"))
 # Select console flair (choose from config_terminal.py list)
 USE_FLAIR = os.getenv("GTFF_USE_FLAIR") or "stars"
 
+# Sets a custom flair, must also set USE_FLAIR to "custom"
+CUSTOM_FLAIR = os.getenv("GTFF_CUSTOM_FLAIR") or "()"
+
 # Add date and time to command line
 USE_DATETIME = strtobool(os.getenv("GTFF_USE_DATETIME", "True"))
 
