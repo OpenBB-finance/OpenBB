@@ -11,6 +11,7 @@ What do you want to do?
 
 >   bro         brokers holdings,                supports: robinhood, ally, degiro, coinbase
 >   po          portfolio optimization,          optimal portfolio weights from pyportfolioopt
+>   pa          portfolio analysis,              analyse portfolios
 
 Portfolio:
     load        load data into the portfolio
@@ -24,4 +25,5 @@ Reports:
 
 Graphs:
     rmr         graph your returns versus the market's returns
+    al          displays the allocation of the portfolio
 ```

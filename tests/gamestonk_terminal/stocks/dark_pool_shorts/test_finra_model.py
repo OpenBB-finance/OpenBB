@@ -48,17 +48,37 @@ def test_getTickerFINRAdata(recorder):
     recorder.capture_list(result_list)
 
 
-def filter_test_getATSdata(response):
-    content = gzip.decompress(response["body"]["string"]).decode()
-    content_json = json.loads(content)
-    if len(content_json) > 10:
-        new_content = json.dumps(content_json[:10])
-        response["body"]["string"] = gzip.compress(new_content.encode())
+def filter_json_data(response):
+    """To reduce cassette size."""
+
+    headers = response["headers"]
+    if "FILTERED" in headers:
+        return response
+
+    if "gzip" in headers.get("Content-Encoding", {}) or "gzip" in headers.get(
+        "content-encoding", {}
+    ):
+        limit = 10
+        content_gz = response["body"]["string"]
+        content_json = gzip.decompress(content_gz).decode()
+        content = json.loads(content_json)
+
+        if isinstance(content, list):
+            new_content = content[:limit]
+        elif isinstance(content, dict):
+            new_content = {k: content[k] for k in list(content)[:limit]}
+        else:
+            raise AttributeError(f"Content type not supported : {content}")
+
+        new_content_json = json.dumps(new_content)
+        new_content_gz = gzip.compress(new_content_json.encode())
+        response["body"]["string"] = new_content_gz
+        response["headers"]["FILTERED"] = ["TRUE"]
+
     return response
 
 
-@pytest.mark.skip(reason="Weird behaviour on 3.9 MAC OS.")
-@pytest.mark.vcr(before_record_response=filter_test_getATSdata)
+@pytest.mark.vcr(before_record_response=filter_json_data)
 def test_getATSdata(recorder):
     result_list = finra_model.getATSdata(
         num_tickers_to_filter=2,
