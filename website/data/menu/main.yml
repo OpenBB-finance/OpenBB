@@ -1242,5 +1242,7 @@ main:
               ref: "/jupyter/dashboards/vsurf"
             - name: "chains"
               ref: "/jupyter/dashboards/chains"
+            - name: "shortdata"
+              ref: "jupyter/dashboards/shortdata"
         - name: "reports"
           ref: "/jupyter/reports"
