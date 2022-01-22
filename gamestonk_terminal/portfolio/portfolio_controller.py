@@ -31,6 +31,8 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 # pylint: disable=R1710,E1101,C0415
 
+portfolios_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "portfolios")
+
 
 class PortfolioController(BaseController):
     """Portfolio Controller class"""
@@ -71,6 +73,7 @@ class PortfolioController(BaseController):
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+            choices["load"]: dict = {c: None for c in os.listdir(portfolios_path)}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -120,8 +123,7 @@ class PortfolioController(BaseController):
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
-        path = os.path.dirname(os.path.abspath(__file__))
-        path = os.path.abspath(os.path.join(path, "portfolios"))
+        path = portfolios_path
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,

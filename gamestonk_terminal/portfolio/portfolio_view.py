@@ -268,6 +268,9 @@ def display_allocation(data: pd.DataFrame, graph: bool):
         ax.set_title("Portfolio Allocation")
         fig.set_tight_layout(True)
 
+        if gtff.USE_ION:
+            plt.ion()
+
         plt.show()
     else:
         if gtff.USE_TABULATE_DF:
