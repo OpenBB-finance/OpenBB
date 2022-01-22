@@ -1,8 +1,8 @@
-                    Relationship      Transaction    #Shares     Cost    Value ($) #Shares Total   Insider Trading       SEC Form 4
-Date                                                                                                                               
-Dec 09                       CEO  Option Exercise  2,165,241     6.24   13,511,104     2,165,241         Musk Elon  Dec 09 08:19 PM
-Dec 09                       CEO             Sale    390,639  1044.54  408,039,939     1,231,150         Musk Elon  Dec 09 08:21 PM
-Dec 09                       CEO             Sale    543,452  1021.56  555,171,415     1,621,789         Musk Elon  Dec 09 08:19 PM
-Dec 06  Chief Accounting Officer             Sale      1,590   980.41    1,559,339        22,905    Taneja Vaibhav  Dec 07 09:11 PM
-Dec 06   Chief Financial Officer             Sale      2,652   980.43    2,600,345        56,634  Kirkhorn Zachary  Dec 07 09:02 PM
+                    Relationship      Transaction #Shares     Cost  Value ($) #Shares Total   Insider Trading       SEC Form 4
+Date                                                                                                                          
+Jan 18   Chief Financial Officer             Sale   1,250  1026.75  1,283,438        57,334  Kirkhorn Zachary  Jan 20 07:39 PM
+Jan 05  Chief Accounting Officer  Option Exercise   7,000    54.66    382,620        29,905    Taneja Vaibhav  Jan 07 06:36 PM
+Jan 05  Chief Accounting Officer             Sale   1,100  1160.85  1,276,940        22,905    Taneja Vaibhav  Jan 07 06:37 PM
+Jan 05  Chief Accounting Officer             Sale   5,900  1131.26  6,674,424        24,005    Taneja Vaibhav  Jan 07 06:36 PM
+Dec 31   Chief Financial Officer  Option Exercise   3,200    55.32    177,024        58,584  Kirkhorn Zachary  Jan 04 09:50 PM
 

@@ -405,3 +405,28 @@ def test_call_func_no_selected_date(func, mocker):
     func_result = getattr(controller, func)(list())
     assert func_result is None
     assert controller.selected_date is None
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "ticker, expected",
+    [
+        (None, []),
+        (
+            "MOCK_TICKER",
+            ["stocks", "load MOCK_TICKER", "options", "exp -d 2022-01-07", "pricing"],
+        ),
+    ],
+)
+def test_custom_reset(expected, ticker):
+    controller = pricing_controller.PricingController(
+        ticker=None,
+        selected_date="2022-01-07",
+        prices=PRICES,
+        queue=None,
+    )
+    controller.ticker = ticker
+
+    result = controller.custom_reset()
+
+    assert result == expected

@@ -261,10 +261,12 @@ To solve that you can filter the `start/end` date like this :
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
+        "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
-            ("period1", "1598220000"),
-            ("period2", "1635980400"),
-        ]
+            ("period1", "MOCK_PERIOD_1"),
+            ("period2", "MOCK_PERIOD_2"),
+            ("date", "MOCK_DATE"),
+        ],
     }
 ```
 
@@ -331,6 +333,38 @@ So if both of these conditions are fulfilled :
 - the server choose to send `brotli` compressed data
 
 Then the `test` might work in local but crash during `PullRequest`.
+
+
+
+**BEFORE_RECORD_RESPONSE**
+
+The library `vcrpy` has a `before_record_response` which accept a filtering function that can be used to filter your cassette content :
+
+```python
+import pytest
+
+def my_custom_filter(response):
+    return response
+
+@pytest.mark.vcr(before_record_response=my_custom_filter)
+def test_simple(recorder):
+    pass
+```
+
+For instance this can be used to reduce the size of a `cassette` if it's too heavy.
+
+Or to filter sensitive data in the response.
+
+The issue with this `before_record_response` : it isn't launched at the first run of the test.
+
+More on this here : https://github.com/kevin1024/vcrpy/pull/594
+
+A solution for now is to run this command while initializing the `cassettes` :
+```bash
+# THE SAME COMMAND NEEDS TO BE RUN TWICE
+pytest tests/.../test_some_test_module.py --record-mode=once --rewrite-expected
+pytest tests/.../test_some_test_module.py --record-mode=once --rewrite-expected
+```
 
 ## 3.9. List of useful `vscode` tools for `unit tests`
 
