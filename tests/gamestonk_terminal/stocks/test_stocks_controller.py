@@ -41,6 +41,7 @@ DF_STOCK = pd.DataFrame.from_dict(
 )
 EMPTY_DF = pd.DataFrame()
 
+
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
@@ -62,9 +63,7 @@ def vcr_config():
     ],
 )
 def test_menu_with_queue(expected, mocker, queue):
-    path_controller = (
-        "gamestonk_terminal.stocks.stocks_controller"
-    )
+    path_controller = "gamestonk_terminal.stocks.stocks_controller"
 
     # MOCK SWITCH
     mocker.patch(
@@ -78,9 +77,7 @@ def test_menu_with_queue(expected, mocker, queue):
 
 @pytest.mark.vcr(record_mode="none")
 def test_menu_without_queue_completion(mocker):
-    path_controller = (
-        "gamestonk_terminal.stocks.stocks_controller"
-    )
+    path_controller = "gamestonk_terminal.stocks.stocks_controller"
 
     # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
     mocker.patch(
@@ -120,9 +117,7 @@ def test_menu_without_queue_completion(mocker):
     ["help", "homee help", "home help", "mock"],
 )
 def test_menu_without_queue_sys_exit(mock_input, mocker):
-    path_controller = (
-        "gamestonk_terminal.stocks.stocks_controller"
-    )
+    path_controller = "gamestonk_terminal.stocks.stocks_controller"
 
     # DISABLE AUTO-COMPLETION
     mocker.patch.object(
@@ -446,15 +441,15 @@ def test_call_func_expect_queue(expected_queue, func, queue):
 def test_call_func(
     tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
 ):
-    path_controller = (
-        "gamestonk_terminal.stocks.stocks_controller"
-    )
+    path_controller = "gamestonk_terminal.stocks.stocks_controller"
 
     # MOCK EXPORT_DATA
     mocker.patch(target=f"{path_controller}.export_data")
 
     # MOCK PROCESS_CANDLE
-    mocker.patch(target=f"{path_controller}.stocks_helper.process_candle", return_value=EMPTY_DF)
+    mocker.patch(
+        target=f"{path_controller}.stocks_helper.process_candle", return_value=EMPTY_DF
+    )
 
     # MOCK TICKER + INFO
     mocker.patch(
@@ -514,6 +509,7 @@ def test_call_func_no_parser(func, mocker):
     assert controller.queue == []
     getattr(stocks_controller, "parse_known_args_and_warn").assert_called_once()
 
+
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "func",
@@ -542,12 +538,13 @@ def test_call_func_no_ticker(func, mocker):
     assert func_result is None
     assert controller.queue == []
 
+
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "ticker, expected",
     [
         (None, []),
-        ("MOCK_TICKER", ['stocks', 'load MOCK_TICKER']),
+        ("MOCK_TICKER", ["stocks", "load MOCK_TICKER"]),
     ],
 )
 def test_custom_reset(expected, ticker):
@@ -557,6 +554,7 @@ def test_custom_reset(expected, ticker):
     result = controller.custom_reset()
 
     assert result == expected
+
 
 @pytest.mark.vcr
 def test_call_load(mocker):
