@@ -54,6 +54,7 @@ class QaController(BaseController):
         "goodness",
         "unitroot",
         "capm",
+        "avar",
     ]
 
     stock_interval = [1, 5, 15, 30, 60]
@@ -127,6 +128,8 @@ class QaController(BaseController):
     quantile    rolling median and quantile of prices
     skew        rolling skewness of distribution of prices
     kurtosis    rolling kurtosis of distribution of prices
+[info]Risk:[/info]
+    avar        kurtosis and skew adjusted value at risk
 [info]Other:[/info]
     raw         print raw data
     decompose   decomposition in cyclic-trend, season, and residuals of prices
@@ -799,3 +802,26 @@ class QaController(BaseController):
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             capm_view(self.ticker)
+
+    def call_avar(self, other_args: List[str]):
+        """Process avar command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="avar",
+            description="""
+                Provides VaR adjusted for skew and kurtosis 
+            """,
+        )
+        parser.add_argument(
+            "-m",
+            "--mean",
+            action="store_true",
+            default=False,
+            dest="use_mean",
+            help="If one should use the mean of the stock",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            qa_view.display_adjusted_var(self.stock, ns_parser.use_mean, self.ticker)

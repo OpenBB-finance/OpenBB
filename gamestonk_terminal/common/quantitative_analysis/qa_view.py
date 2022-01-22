@@ -619,3 +619,19 @@ def display_line(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "line",
     )
+
+
+def display_adjusted_var(data: pd.DataFrame, use_mean: bool, ticker: str):
+    var_list, hist_var_list = qa_model.get_adjusted_var(data, use_mean)
+
+    dict = {"Adjusted VaR:": var_list, "Historical VaR:": hist_var_list}
+    data = pd.DataFrame(dict, index=["90%", "95%", "99%"])
+
+    rich_table_from_df(
+        data,
+        show_index=True,
+        headers=list(data.columns),
+        title=f"[bold]{ticker} Adjusted Value at Risk[/bold]",
+        floatfmt=".4f",
+    )
+    console.print("")
