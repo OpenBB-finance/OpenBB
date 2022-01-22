@@ -3,8 +3,6 @@ __docformat__ = "numpy"
 
 from typing import List, Union, Dict, Any
 from datetime import datetime
-from pathlib import Path
-import os
 
 from openpyxl.styles.numbers import FORMAT_PERCENTAGE_00
 from openpyxl import Workbook
@@ -102,22 +100,15 @@ class CreateExcelFA:
         if self.info["audit"]:
             self.run_audit()
 
-        trypath = os.path.join(
-            os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")),
-            "exports",
-            "stocks",
-            "fundamental_analysis",
-            f"{self.info['ticker']} {self.data['now']}.xlsx",
-        )
+        i = 0
+        while True:
+            path = dcf_model.generate_path(i, self.info["ticker"], self.data["now"])
 
-        my_file = Path(trypath)
-        if my_file.is_file():
-            console.print("Analysis already ran. Please move file to rerun.")
-        else:
-            self.wb.save(trypath)
-            console.print(
-                f"Analysis ran for {self.info['ticker']}\nFile in {trypath}.\n"
-            )
+            if not path.is_file():
+                self.wb.save(path)
+                console.print(f"Analysis for {self.info['ticker']} At:\n{path}.\n")
+                break
+            i += 1
 
     def get_data(self, statement: str, row: int, header: bool) -> pd.DataFrame:
         df, rounding = dcf_model.create_dataframe(self.info["ticker"], statement)
