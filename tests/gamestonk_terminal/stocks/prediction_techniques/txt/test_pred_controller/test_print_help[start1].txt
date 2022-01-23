@@ -1,10 +1,8 @@
 
-Prediction Techniques Menu:
-
     load        load new ticker
     pick        pick new target variable
 
-Ticker Loaded: Daily Stock: TSLA (from 2020-12-01)
+Stock: Daily TSLA (from 2020-12-01)
 Target Column: AdjClose
 
 Models:

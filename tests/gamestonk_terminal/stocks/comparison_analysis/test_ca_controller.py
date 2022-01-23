@@ -565,3 +565,26 @@ def test_call_tsne(mocker):
         no_plot=True,
         num_tickers=5,
     )
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "similar, expected",
+    [
+        (None, []),
+        (
+            ["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
+            ["stocks", "ca", "set MOCK_SIMILAR_1,MOCK_SIMILAR_2"],
+        ),
+    ],
+)
+def test_custom_reset(expected, similar):
+    controller = ca_controller.ComparisonAnalysisController(
+        similar=None,
+        queue=None,
+    )
+    controller.similar = similar
+
+    result = controller.custom_reset()
+
+    assert result == expected

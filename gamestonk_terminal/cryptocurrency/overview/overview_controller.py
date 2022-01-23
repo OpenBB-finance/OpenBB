@@ -25,6 +25,8 @@ from gamestonk_terminal.cryptocurrency.overview import (
     pycoingecko_view,
     coinpaprika_view,
     cryptopanic_view,
+    rekt_model,
+    rekt_view,
     withdrawalfees_model,
     withdrawalfees_view,
     coinpaprika_model,
@@ -73,6 +75,7 @@ class OverviewController(BaseController):
         "wfpe",
         "btcrb",
         "altindex",
+        "ch",
     ]
 
     PATH = "/crypto/ov/"
@@ -82,7 +85,11 @@ class OverviewController(BaseController):
         super().__init__(queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
+            crypto_hack_slugs = rekt_model.get_crypto_hack_slugs()
             choices: dict = {c: {} for c in self.controller_choices}
+            choices["ch"]["--sort"] = {c: None for c in rekt_model.HACKS_COLUMNS}
+            choices["ch"]["-s"] = {c: None for c in crypto_hack_slugs}
+            choices["ch"]["--slug"] = {c: None for c in crypto_hack_slugs}
             choices["cghold"] = {c: None for c in pycoingecko_model.HOLD_COINS}
             choices["cgcompanies"] = {c: None for c in pycoingecko_model.HOLD_COINS}
             choices["cgnews"]["-s"] = {c: None for c in pycoingecko_model.NEWS_FILTERS}
@@ -167,10 +174,74 @@ class OverviewController(BaseController):
     ewf               overall exchange withdrawal fees
     wfpe              crypto withdrawal fees per exchange
 [src][BlockchainCenter][/src]
-    altindex          displays altcoin season index (if 75% of top 50 coins perform better than BTC)
-    btcrb             display bitcoin rainbow price chart (logarithmic regression)[/cmds]
+    altindex          display altcoin season index (if 75% of top 50 coins perform better than BTC)
+    btcrb             display bitcoin rainbow price chart (logarithmic regression)
+[src][Rekt][/src]
+    ch                lists major crypto-related hacks
 """
         console.print(text=help_text, menu="Cryptocurrency - Overview")
+
+    def call_ch(self, other_args):
+        """Process ch command"""
+        parser = argparse.ArgumentParser(
+            prog="ch",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Display list of major crypto-related hacks [Source: https://rekt.news]
+            Can be sorted by {Platform,Date,Amount [$],Audit,Slug,URL} with --sort
+            and reverse the display order with --descend
+            Show only N elements with --limit
+            Accepts --slug or -s to check individual crypto hack (e.g., -s polynetwork-rekt)
+            """,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=int,
+            help="Display N items",
+            default=15,
+        )
+        parser.add_argument(
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: Amount [$]",
+            default="Amount [$]",
+            nargs="+",
+        )
+        parser.add_argument(
+            "--descend",
+            action="store_true",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=False,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--slug",
+            dest="slug",
+            type=str,
+            help="Slug to check crypto hack (e.g., polynetwork-rekt)",
+            default="",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-s")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            rekt_view.display_crypto_hacks(
+                slug=ns_parser.slug,
+                top=ns_parser.limit,
+                export=ns_parser.export,
+                sortby=" ".join(ns_parser.sortby),
+                descend=ns_parser.descend,
+            )
 
     def call_btcrb(self, other_args: List[str]):
         """Process btcrb command"""

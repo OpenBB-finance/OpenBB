@@ -31,6 +31,7 @@ non_gaap_is = [
     "EBIT Margin",
     "Operating Expenses",
     "Pretax Income",
+    "Revenue Growth (YoY)",
 ]
 gaap_is = [
     "Revenue",

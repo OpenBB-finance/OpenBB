@@ -414,6 +414,7 @@ class ETFController(BaseController):
         )
         if ns_parser:
             if self.etf_name:
+                # TODO: Should be done in one function
                 data = stocks_helper.process_candle(self.etf_data)
                 df_etf = stocks_helper.find_trendline(data, "OC_High", "high")
                 df_etf = stocks_helper.find_trendline(data, "OC_Low", "low")
@@ -506,9 +507,9 @@ class ETFController(BaseController):
             other_args.insert(0, "-e")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if self.etf_name:
+            if ns_parser.names:
                 create_ETF_report(
-                    ns_parser.names if ns_parser.names else [self.etf_name],
+                    ns_parser.names,
                     filename=ns_parser.filename,
                     folder=ns_parser.folder,
                 )
@@ -571,7 +572,7 @@ class ETFController(BaseController):
 
     def call_ta(self, _):
         """Process ta command"""
-        if self.etf_name:
+        if self.etf_name and not self.etf_data.empty:
             self.queue = self.load_class(
                 ta_controller.TechnicalAnalysisController,
                 self.etf_name,

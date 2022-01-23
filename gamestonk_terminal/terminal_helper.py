@@ -19,11 +19,11 @@ from alpha_vantage.timeseries import TimeSeries
 from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
 from prawcore.exceptions import ResponseException
 from pyEX.common.exception import PyEXception
-from tabulate import tabulate
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import thought_of_the_day as thought
+from gamestonk_terminal.helper_funcs import rich_table_from_df
 from gamestonk_terminal.rich_config import console
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302
@@ -274,15 +274,13 @@ def check_api_keys():
         else:
             key_dict["SENTIMENT_INVESTOR"] = "Defined, test unsuccessful"
 
-    print(
-        tabulate(
-            pd.DataFrame(key_dict.items()),
-            showindex=False,
-            headers=[],
-            tablefmt="fancy_grid",
-        ),
-        "\n",
+    rich_table_from_df(
+        pd.DataFrame(key_dict.items()),
+        show_index=False,
+        headers=["API", "Key"],
+        title="API Keys",
     )
+    console.print("")
 
 
 def print_goodbye():
@@ -360,7 +358,7 @@ def about_us():
         "\n"
         "[cyan]Join our community on discord: [/cyan]https://discord.gg/Up2QGbMKHY\n"
         "[cyan]Follow our twitter for updates: [/cyan]https://twitter.com/gamestonkt\n"
-        "[cyan]Access our landing page: [/cyan]https://gamestonkterminal.vercel.app\n"
+        "[cyan]Access our landing page: [/cyan]https://gamestonkterminal.github.io/GamestonkTerminal/\n"
         "\n"
         "[yellow]Partnerships:[/yellow]]\n"
         "[cyan]FinBrain: [/cyan]https://finbrain.tech\n"
@@ -373,7 +371,7 @@ def about_us():
         "markets, carefully consider your investment objectives, level of experience, and risk appetite, and seek "
         "professional advice where needed. The data contained in Gamestonk Terminal (GST) is not necessarily accurate. "
         "GST and any provider of the data contained in this website will not accept liability for any loss or damage "
-        "as a result of your trading, or your reliance on the information displayed.[/red]"
+        "as a result of your trading, or your reliance on the information displayed.[/red]\n"
     )
 
 
