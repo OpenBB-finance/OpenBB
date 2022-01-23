@@ -9,8 +9,8 @@
 
 
 
-    <meta name="description" content="usage: dcf [-a] [--no-ratios] [--no-filter] [-p NUM] [-s NUM] [-h] Generates a completed discounted cash flow statement as an excel spreadsheet export. The statement uses machine learning to predict future financial statements and share price based on the predicted financials. Source: https://stockanalysis.com/stocks/
-optional arguments: -a, --audit Generates a tie-out for financial statement information pulled from online. (default: False) --no-ratios Disables generation of ratio for company and sister companies. (default: False) --no-filter Disables filtering of similar companies based on market cap (default: False) -p, --prediction The number of years to create financial statements for.">
+    <meta name="description" content="usage: dcf [-a] [--no-ratios] [--no-filter] [-p NUM] [-s NUM] [-h] A discounted cash flow statement looks to analyze the value of a company. To do this we need to predict the future cash flows and then determine how much those cash flows are worth to us today.
+We predict the future expected cash flows by prediciting what the financial statements will look like in the future, and then using this to determine the cash the company will have in the future.">
 
 
 
@@ -19618,7 +19618,10 @@ optional arguments: -a, --audit Generates a tie-out for financial statement info
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Dcf</h1>
         <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">usage: dcf [-a] [--no-ratios] [--no-filter] [-p NUM] [-s NUM] [-h]
-</code></pre></div><p>Generates a completed discounted cash flow statement as an excel spreadsheet export. The statement uses machine learning to predict future financial statements and share price based on the predicted financials. Source: <a class="gdoc-markdown__link" href="https://stockanalysis.com/stocks/">https://stockanalysis.com/stocks/</a></p>
+</code></pre></div><p>A discounted cash flow statement looks to analyze the value of a company. To do this we need to predict the future cash flows and then determine how much those cash flows are worth to us today.</p>
+<p>We predict the future expected cash flows by prediciting what the financial statements will look like in the future, and then using this to determine the cash the company will have in the future. This cash is paid to share holders. We us linear regression to predict the future financial statements.</p>
+<p>Once we have our predicted financial statements we need to determine how much the cash flows are worth today. This is done with a discount factor. Our DCF allows users to choose between Fama French and CAPM for the factor. This allows us to calculate the present value of the future cash flows.</p>
+<p>The present value of all of these cash payments is the companies' value. Dividing this value by the number of shares outstanding allows us to calculate the value of each share in a company. Source: <a class="gdoc-markdown__link" href="https://stockanalysis.com/stocks/">https://stockanalysis.com/stocks/</a></p>
 <pre><code>optional arguments:
   -a, --audit  Generates a tie-out for financial statement information pulled from online. (default: False)
   --no-ratios  Disables generation of ratio for company and sister companies. (default: False)
