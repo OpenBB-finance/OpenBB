@@ -18,6 +18,7 @@ def vcr_config():
     }
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 def test_create_xls():
     for ticker in ["AEIS"]:
