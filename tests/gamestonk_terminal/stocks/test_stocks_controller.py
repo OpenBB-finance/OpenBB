@@ -549,6 +549,7 @@ def test_custom_reset(expected, ticker):
     assert result == expected
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 def test_call_load(mocker):
     # FORCE SINGLE THREADING

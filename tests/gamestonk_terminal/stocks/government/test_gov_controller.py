@@ -423,6 +423,7 @@ def test_call_func_no_ticker(func, mocker):
     getattr(gov_controller, "parse_known_args_and_warn").assert_called_once()
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 def test_call_load(mocker):
     yf_download = gov_controller.stocks_helper.yf.download
