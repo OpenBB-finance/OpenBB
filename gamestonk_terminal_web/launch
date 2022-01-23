@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+if [ ! -f ./setenv ]; then
+    touch setenv
+fi
+
+docker build -t gst_web . && docker run -it -p 8080:8080 --env-file setenv gst_web
