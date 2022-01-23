@@ -42,7 +42,7 @@ MENU_QUIT = 1
 MENU_RESET = 2
 
 
-def rich_table_from_df(
+def print_rich_table(
     df: pd.DataFrame,
     show_index: bool = False,
     title: str = "",

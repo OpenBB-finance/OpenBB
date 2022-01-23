@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import os
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.stocks.discovery import ark_model
 from gamestonk_terminal.rich_config import console
 
@@ -74,7 +74,7 @@ def ark_orders_view(
 
     # df_orders["link"] = "https://finviz.com/quote.ashx?t=" + df_orders["ticker"]
 
-    rich_table_from_df(
+    print_rich_table(
         df_orders,
         headers=[x.title() for x in df_orders.columns],
         show_index=False,

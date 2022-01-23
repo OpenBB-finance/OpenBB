@@ -23,7 +23,7 @@ from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     excel_columns,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
 from gamestonk_terminal.stocks.options.yfinance_model import (
@@ -606,7 +606,7 @@ def show_parity(
     if ask:
         console.print("Warning: Options with no current ask price not shown.\n")
 
-    rich_table_from_df(
+    print_rich_table(
         show,
         headers=[x.title() for x in show.columns],
         show_index=False,
@@ -679,7 +679,7 @@ def risk_neutral_vals(
     new_df = new_df[new_df["Strike"] >= mini]
     new_df = new_df[new_df["Strike"] <= maxi]
 
-    rich_table_from_df(
+    print_rich_table(
         new_df,
         headers=[x.title() for x in new_df.columns],
         show_index=False,

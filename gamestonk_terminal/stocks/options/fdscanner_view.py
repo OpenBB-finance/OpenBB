@@ -5,7 +5,7 @@ import os
 
 import pandas as pd
 
-from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.stocks.options import fdscanner_model
 from gamestonk_terminal.rich_config import console
 
@@ -41,7 +41,7 @@ def display_options(
         data = data[data.Type == "Put"]
     if calls_only:
         data = data[data.Type == "Call"]
-    rich_table_from_df(
+    print_rich_table(
         data[:num],
         headers=list(data.columns),
         show_index=False,

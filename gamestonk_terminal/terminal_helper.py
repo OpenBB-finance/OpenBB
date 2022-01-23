@@ -23,7 +23,7 @@ from pyEX.common.exception import PyEXception
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import thought_of_the_day as thought
-from gamestonk_terminal.helper_funcs import rich_table_from_df
+from gamestonk_terminal.helper_funcs import print_rich_table
 from gamestonk_terminal.rich_config import console
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302
@@ -274,7 +274,7 @@ def check_api_keys():
         else:
             key_dict["SENTIMENT_INVESTOR"] = "Defined, test unsuccessful"
 
-    rich_table_from_df(
+    print_rich_table(
         pd.DataFrame(key_dict.items()),
         show_index=False,
         headers=["API", "Key"],
