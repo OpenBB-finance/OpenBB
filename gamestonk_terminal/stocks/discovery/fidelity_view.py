@@ -5,7 +5,7 @@ import os
 import re
 import pandas as pd
 
-from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal import feature_flags as gtff
 
 from gamestonk_terminal.stocks.discovery import fidelity_model
@@ -84,7 +84,7 @@ def orders_view(num: int, export: str):
 
     df_orders = df_orders.head(n=num).iloc[:, :-1]
 
-    rich_table_from_df(
+    print_rich_table(
         df_orders,
         headers=[x.title() for x in df_orders.columns],
         show_index=False,

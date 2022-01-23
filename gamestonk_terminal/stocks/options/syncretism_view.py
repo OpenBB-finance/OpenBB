@@ -12,7 +12,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal.stocks.options import syncretism_model
 from gamestonk_terminal.rich_config import console
@@ -86,7 +86,7 @@ def view_screener_output(
     if n_show > 0:
         df_res = df_res.head(n_show)
 
-    rich_table_from_df(
+    print_rich_table(
         df_res, headers=list(df_res.columns), show_index=False, title="Screener Output"
     )
     console.print("")
@@ -134,7 +134,7 @@ def view_historical_greeks(
     df = syncretism_model.get_historical_greeks(ticker, expiry, chain_id, strike, put)
 
     if raw:
-        rich_table_from_df(
+        print_rich_table(
             df.tail(n_show), headers=list(df.columns), title="Historical Greeks"
         )
 

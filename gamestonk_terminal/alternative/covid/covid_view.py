@@ -14,7 +14,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     export_data,
-    rich_table_from_df,
+    print_rich_table,
 )
 
 
@@ -68,7 +68,7 @@ def display_covid_ov(
 
     if raw:
         ov.index = [x.strftime("%Y-%m-%d") for x in ov.index]
-        rich_table_from_df(
+        print_rich_table(
             ov.tail(limit),
             headers=[x.title() for x in ov.columns],
             show_index=True,
@@ -137,7 +137,7 @@ def display_covid_stat(
 
     if raw:
         data.index = [x.strftime("%Y-%m-%d") for x in data.index]
-        rich_table_from_df(
+        print_rich_table(
             data.tail(limit),
             headers=[stat.title()],
             show_index=True,
@@ -175,7 +175,7 @@ def display_country_slopes(
     hist_slope = covid_model.get_case_slopes(days_back, threshold).sort_values(
         by="Slope", ascending=ascend
     )
-    rich_table_from_df(
+    print_rich_table(
         hist_slope.head(limit),
         show_index=True,
         index_name="Country",
