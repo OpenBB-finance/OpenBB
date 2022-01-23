@@ -25,7 +25,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     valid_date,
     plot_autoscale,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal import config_neural_network_models as cfg
 from gamestonk_terminal import feature_flags as gtff
@@ -564,7 +564,7 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
                 lambda x: price_prediction_color(x, last_val=last_price)
             )
             console.print(
-                rich_table_from_df(
+                print_rich_table(
                     df_pred,
                     show_index=True,
                     title="Predictions",
@@ -585,7 +585,7 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
             df_pred = pd.DataFrame(df_pred)
             df_pred.columns = ["pred"]
             console.print(
-                rich_table_from_df(
+                print_rich_table(
                     df_pred,
                     show_index=True,
                     title="Predictions",
@@ -634,7 +634,7 @@ def print_prediction_kpis(real: np.ndarray, pred: np.ndarray):
     df = pd.DataFrame.from_dict(kpis, orient="index")
     if gtff.USE_TABULATE_DF:
         console.print(
-            rich_table_from_df(
+            print_rich_table(
                 df,
                 show_index=True,
                 title="KPIs",

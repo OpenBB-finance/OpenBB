@@ -6,7 +6,7 @@ import mplfinance as mpf
 import matplotlib.pyplot as plt
 from gamestonk_terminal.forex import av_model
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import plot_autoscale, rich_table_from_df
+from gamestonk_terminal.helper_funcs import plot_autoscale, print_rich_table
 from gamestonk_terminal.rich_config import console
 
 
@@ -29,7 +29,7 @@ def display_quote(to_symbol: str, from_symbol: str):
     df = pd.DataFrame.from_dict(quote)
     df.index = df.index.to_series().apply(lambda x: x[3:]).values
     df = df.iloc[[0, 2, 5, 4, 7, 8]]
-    rich_table_from_df(
+    print_rich_table(
         df,
         show_index=True,
         title=f"[bold]{from_symbol}/{to_symbol} Quote [/bold]",

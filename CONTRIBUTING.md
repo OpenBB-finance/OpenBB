@@ -196,7 +196,7 @@ __docformat__ = "numpy"
 
 import os
 from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.stocks.dark_pool_shorts import yahoofinance_model
 
 
@@ -217,7 +217,7 @@ def display_most_shorted(num_stocks: int, export: str):
     if df.empty:
         console.print("No data found.")
     else:
-        rich_table_from_df(
+        print_rich_table(
             df.head(num_stocks),
             headers=list(df.columns),
             show_index=False,
