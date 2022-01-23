@@ -5,7 +5,7 @@ from gamestonk_terminal.cryptocurrency.overview import rekt_model
 from gamestonk_terminal.helper_funcs import (
     export_data,
     long_number_format,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
@@ -53,7 +53,7 @@ def display_crypto_hacks(
             df["Date"] = df["Date"].dt.date
 
             if gtff.USE_TABULATE_DF:
-                rich_table_from_df(
+                print_rich_table(
                     df.head(top),
                     headers=list(df.columns),
                     floatfmt=".1f",
