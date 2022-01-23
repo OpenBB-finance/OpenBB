@@ -529,7 +529,6 @@ def test_call_func(
         getattr(QA_CONTROLLER, tested_func)(other_args=other_args)
 
 
-@pytest.mark.skip
 @pytest.mark.vcr
 def test_call_load(mocker):
     yf_download = qa_controller.stocks_helper.yf.download
