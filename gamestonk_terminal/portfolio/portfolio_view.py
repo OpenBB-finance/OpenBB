@@ -5,6 +5,7 @@ from typing import List
 from datetime import datetime
 from io import BytesIO
 from os import path
+import os
 
 import numpy as np
 import pandas as pd
@@ -24,7 +25,7 @@ from gamestonk_terminal.portfolio import (
     yfinance_model,
 )
 from gamestonk_terminal.portfolio import reportlab_helpers
-from gamestonk_terminal.helper_funcs import get_rf
+from gamestonk_terminal.helper_funcs import get_rf, plot_autoscale, export_data
 from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_model
 from gamestonk_terminal.rich_config import console
 
@@ -293,6 +294,40 @@ def display_allocation(data: pd.DataFrame, graph: bool):
         fig.set_tight_layout(True)
 
         plt.show()
+
+
+def display_drawdown(holdings: pd.DataFrame, export: str = ""):
+    """Display drawdown curve
+
+    Parameters
+    ----------
+    holdings: pd.DataFrame
+        Dataframe of holdings vs time
+    export: str
+        Format to export data
+
+    """
+    drawdown = portfolio_model.calculate_drawdown(holdings)
+    fig, ax = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
+    ax[0].plot(holdings.index, holdings)
+    ax[0].set_title("Cumulative Returns")
+
+    ax[1].plot(holdings.index, drawdown)
+    ax[1].fill_between(holdings.index, np.asarray(drawdown["return"]), alpha=0.4)
+    ax[1].set_title("Portfolio Drawdown")
+    ax[0].grid()
+    ax[1].grid()
+    fig.autofmt_xdate()
+    fig.tight_layout()
+    if gtff.USE_ION:
+        plt.ion()
+    console.print()
+    plt.show()
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "mdd",
+    )
 
 
 class Report:
