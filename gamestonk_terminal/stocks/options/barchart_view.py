@@ -3,9 +3,7 @@ __docformat__ = "numpy"
 
 import os
 
-from tabulate import tabulate
-
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
 from gamestonk_terminal.stocks.options import barchart_model
 from gamestonk_terminal.rich_config import console
 
@@ -23,6 +21,8 @@ def print_options_data(ticker: str, export: str):
 
     data = barchart_model.get_options_info(ticker)
 
-    print(tabulate(data, tablefmt="fancy_grid", showindex=False))
+    rich_table_from_df(
+        data, show_index=False, headers=list(data.columns), title="Options Information"
+    )
     console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "info", data)

@@ -19,11 +19,11 @@ from alpha_vantage.timeseries import TimeSeries
 from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
 from prawcore.exceptions import ResponseException
 from pyEX.common.exception import PyEXception
-from tabulate import tabulate
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import thought_of_the_day as thought
+from gamestonk_terminal.helper_funcs import rich_table_from_df
 from gamestonk_terminal.rich_config import console
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302
@@ -274,15 +274,13 @@ def check_api_keys():
         else:
             key_dict["SENTIMENT_INVESTOR"] = "Defined, test unsuccessful"
 
-    print(
-        tabulate(
-            pd.DataFrame(key_dict.items()),
-            showindex=False,
-            headers=[],
-            tablefmt="fancy_grid",
-        ),
-        "\n",
+    rich_table_from_df(
+        pd.DataFrame(key_dict.items()),
+        show_index=False,
+        headers=["API", "Key"],
+        title="API Keys",
     )
+    console.print("")
 
 
 def print_goodbye():
