@@ -167,7 +167,8 @@ If you are using macOS or other Linux operating systems you can jump the next se
 4. Launch it with `./launch`. If you get a permission denied error, do `sudo ./launch` instead
 5. Once it's launched, you will be able to access it by going to `http://host-ip:8080` in a browser, or `http://localhost:8080` if you are running it on your local machine.
 
-For API keys, create the `setenv` file if it doesn't already exist. It will automatically get created on the first launch, and won't get commited to Git because it is on the `.gitignore`. Set the API keys [as explained here](https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/DOCKER_ADVANCED.md#environment-variables). Once you've put the API keys in that file, re-run the launch script, and it will use your API keys. There are a few things that still don't work, and you can see what works and what doesn't [here](https://github.com/CoconutMacaroon/GamestonkTerminal/blob/main/gamestonk_terminal_web/README.md#todo).
+For API keys, create the `setenv` file if it doesn't already exist. It will automatically get created on the first launch, and won't get committed to Git because it is on the `.gitignore`. Set the API keys [as explained here](https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/DOCKER_ADVANCED.md#environment-variables). Once you've put the API keys in that file, re-run the launch script, and it will use your API keys. There are a few things that still don't work, and you can see what works and what doesn't [here](https://github.com/CoconutMacaroon/GamestonkTerminal/blob/main/gamestonk_terminal_web/README.md#todo).
+
 #### Installing WSL (Only for Windows users)
 
 If you are using Windows you first you need to install WSL. The process is simple and a tutorial can be found [here](https://www.sitepoint.com/wsl2/). Once you reach the section **Update Linux** on that tutorial, you should have a linux machine installed and can proceed to the next steps.
