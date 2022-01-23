@@ -20,6 +20,7 @@ def vcr_config():
     }
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_price_target_from_analysts_raw():
@@ -34,6 +35,7 @@ def test_price_target_from_analysts_raw():
     )
 
 
+@pytest.mark.skip
 @pytest.mark.default_cassette("test_price_target_from_analysts_TSLA")
 @pytest.mark.vcr
 @pytest.mark.parametrize("start", [datetime.strptime("2021-12-05", "%Y-%m-%d")])
@@ -60,6 +62,7 @@ def test_price_target_from_analysts_plt(capsys, interval, mocker, start, monkeyp
     mock_show.assert_called_once()
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_estimates():

@@ -19,6 +19,7 @@ def vcr_config():
     }
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 def test_display_historical(mocker):
     # FORCE SINGLE THREADING
@@ -44,6 +45,7 @@ def test_display_historical(mocker):
     mock_show.assert_called_once()
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 def test_display_volume(mocker):
     # FORCE SINGLE THREADING
@@ -67,6 +69,7 @@ def test_display_volume(mocker):
     mock_show.assert_called_once()
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 def test_display_correlation(mocker):
     # FORCE SINGLE THREADING
