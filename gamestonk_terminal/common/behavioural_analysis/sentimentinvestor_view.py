@@ -6,7 +6,7 @@ import matplotlib.dates as mdates
 from matplotlib import pyplot as plt
 
 from gamestonk_terminal.common.behavioural_analysis import sentimentinvestor_model
-from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal import feature_flags as gtff
 
 # pylint: disable=E1101
@@ -83,7 +83,7 @@ def display_historical(
             df.index = df.index.strftime("%Y-%m-%d %H:%M")
             df.index.name = "Time"
 
-            rich_table_from_df(
+            print_rich_table(
                 df[RAW_COLS].head(limit),
                 headers=[
                     "Time",

@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import os
-from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.cryptocurrency.defi import defirate_model
 from gamestonk_terminal.rich_config import console
 
@@ -25,7 +25,7 @@ def display_funding_rates(top: int, current: bool = True, export: str = "") -> N
 
     df_data = df.copy()
 
-    rich_table_from_df(
+    print_rich_table(
         df.head(top),
         headers=list(df.columns),
         show_index=False,
@@ -59,7 +59,7 @@ def display_lending_rates(top: int, current: bool = True, export: str = "") -> N
     df_data = df.copy()
     df = df.loc[:, ~df.eq("–").all()]
 
-    rich_table_from_df(
+    print_rich_table(
         df.head(top),
         headers=list(df.columns),
         show_index=False,
@@ -95,7 +95,7 @@ def display_borrow_rates(top: int, current: bool = True, export: str = "") -> No
     df_data = df.copy()
     df = df.loc[:, ~df.eq("–").all()]
 
-    rich_table_from_df(
+    print_rich_table(
         df.head(top),
         headers=list(df.columns),
         show_index=False,

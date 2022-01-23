@@ -8,7 +8,7 @@ from gamestonk_terminal.cryptocurrency.defi import coindix_model
 from gamestonk_terminal.helper_funcs import (
     export_data,
     long_number_format,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal.rich_config import console
 
@@ -75,7 +75,7 @@ def display_defi_vaults(
     if link is True:
         df.drop("Link", axis=1, inplace=True)
 
-    rich_table_from_df(
+    print_rich_table(
         df.head(top),
         headers=list(df.columns),
         show_index=False,

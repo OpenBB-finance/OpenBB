@@ -15,7 +15,7 @@ from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     export_data,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.cryptocurrency.due_diligence import (
@@ -526,7 +526,7 @@ def find(source: str, coin: str, key: str, top: int, export: str) -> None:
         )
         df = pd.DataFrame()
 
-    rich_table_from_df(
+    print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Similar Coins"
     )
     console.print("")
@@ -636,7 +636,7 @@ def display_all_coins(
     except Exception as e:
         console.print(e)
 
-    rich_table_from_df(
+    print_rich_table(
         df.fillna("N/A"),
         headers=list(df.columns),
         show_index=False,

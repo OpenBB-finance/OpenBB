@@ -11,7 +11,7 @@ import praw
 import pandas as pd
 
 from gamestonk_terminal.common.behavioural_analysis import reddit_model
-from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
 
@@ -62,7 +62,7 @@ def print_and_record_reddit_post(
         s_all_awards,
     ]
     df = pd.DataFrame(data, columns=columns)
-    rich_table_from_df(
+    print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Reddit Submission"
     )
     console.print("\n")
@@ -125,7 +125,7 @@ def display_popular_tickers(
         n_top, posts_to_look_at, subreddits
     )
     if not popular_tickers_df.empty:
-        rich_table_from_df(
+        print_rich_table(
             popular_tickers_df,
             headers=list(popular_tickers_df.columns),
             show_index=False,

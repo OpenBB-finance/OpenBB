@@ -5,7 +5,7 @@ import pandas as pd
 
 from gamestonk_terminal.common.behavioural_analysis import stocktwits_model
 from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.helper_funcs import rich_table_from_df
+from gamestonk_terminal.helper_funcs import print_rich_table
 
 
 def display_bullbear(ticker: str):
@@ -41,7 +41,7 @@ def display_messages(ticker: str, limit: int = 30):
     """
     messages = stocktwits_model.get_messages(ticker, limit)
 
-    rich_table_from_df(
+    print_rich_table(
         pd.DataFrame(messages),
         headers=[],
         show_index=False,
@@ -52,7 +52,7 @@ def display_messages(ticker: str, limit: int = 30):
 def display_trending():
     """Show trensing stocks on stocktwits"""
     df_trending = stocktwits_model.get_trending()
-    rich_table_from_df(
+    print_rich_table(
         df_trending,
         headers=list(df_trending.columns),
         show_index=False,

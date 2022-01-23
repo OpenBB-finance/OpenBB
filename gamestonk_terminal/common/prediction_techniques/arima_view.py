@@ -21,7 +21,7 @@ from gamestonk_terminal.helper_funcs import (
     export_data,
     get_next_stock_market_days,
     plot_autoscale,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal.rich_config import console
 
@@ -272,7 +272,7 @@ def display_arima(
             df_pred["Real"] = df_pred["Real"].astype(float)
             df_pred["Prediction"] = df_pred["Prediction"].astype(float)
             df_pred["Dif"] = 100 * (df_pred.Prediction - df_pred.Real) / df_pred.Real
-            rich_table_from_df(
+            print_rich_table(
                 df_pred,
                 headers=["Date", "Predicted", "Actual", "% Difference"],
                 show_index=True,
@@ -282,7 +282,7 @@ def display_arima(
             df_pred["Real"] = df_pred["Real"].astype(float)
             df_pred["Prediction"] = df_pred["Predicted"].astype(float)
             df_pred["Dif"] = 100 * (df_pred.Prediction - df_pred.Real) / df_pred.Real
-            rich_table_from_df(
+            print_rich_table(
                 df_pred,
                 headers=["Date", "Predicted", "Actual", "% Difference"],
                 show_index=True,

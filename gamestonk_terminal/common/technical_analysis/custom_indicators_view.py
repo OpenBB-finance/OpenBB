@@ -13,7 +13,7 @@ from gamestonk_terminal.common.technical_analysis import custom_indicators_model
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal.rich_config import console
 
@@ -81,7 +81,7 @@ def fibonacci_retracement(
         plt.ion()
     plt.show()
 
-    rich_table_from_df(
+    print_rich_table(
         df_fib,
         headers=["Fib Level", "Price"],
         show_index=False,

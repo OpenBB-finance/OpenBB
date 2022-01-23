@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     export_data,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal.common.behavioural_analysis import google_model
 from gamestonk_terminal import config_plot as cfp, feature_flags as gtff
@@ -117,7 +117,7 @@ def display_queries(ticker: str, num: int = 5, export: str = ""):
     df_related_queries["value"] = df_related_queries["value"].apply(
         lambda x: str(x) + "%"
     )
-    rich_table_from_df(
+    print_rich_table(
         df_related_queries,
         headers=list(df_related_queries.columns),
         title=f"Top {ticker}'s related queries",
@@ -142,7 +142,7 @@ def display_rise(ticker: str, num: int, export: str = ""):
     df = df_related_queries.copy()
     df_related_queries = df_related_queries.head(num)
 
-    rich_table_from_df(
+    print_rich_table(
         df_related_queries,
         headers=list(df_related_queries.columns),
         title=f"Top rising {ticker}'s related queries",
