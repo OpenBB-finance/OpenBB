@@ -94,7 +94,6 @@ def test_get_fama_raw(recorder):
     recorder.capture(result_df)
 
 
-@pytest.mark.skip
 @pytest.mark.vcr
 def test_get_historical_5(recorder):
     result_df = dcf_model.get_historical_5(ticker="TSLA")
@@ -102,7 +101,6 @@ def test_get_historical_5(recorder):
     recorder.capture(result_df)
 
 
-@pytest.mark.skip
 @pytest.mark.vcr
 def test_get_fama_coe():
     coef = dcf_model.get_fama_coe(ticker="TSLA")
