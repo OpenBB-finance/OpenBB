@@ -8,7 +8,6 @@ import pytest
 from gamestonk_terminal.stocks.comparison_analysis import finviz_compare_view
 
 
-@pytest.mark.skip
 @pytest.mark.default_cassette("test_screener")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
