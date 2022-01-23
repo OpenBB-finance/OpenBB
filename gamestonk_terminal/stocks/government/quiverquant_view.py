@@ -13,7 +13,7 @@ from gamestonk_terminal.stocks.government import quiverquant_model
 from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     export_data,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
@@ -90,14 +90,14 @@ def display_last_government(
                 f"{', '.join(df_gov['Representative'].str.split().str[0].unique())}"
             )
         else:
-            rich_table_from_df(
+            print_rich_table(
                 df_gov_rep,
                 headers=list(df_gov_rep.columns),
                 show_index=False,
                 title="Representative Trading",
             )
     else:
-        rich_table_from_df(
+        print_rich_table(
             df_gov,
             headers=list(df_gov.columns),
             show_index=False,
@@ -177,7 +177,7 @@ def display_government_buys(
             .sort_values(ascending=False)
             .head(n=num)
         )
-        rich_table_from_df(
+        print_rich_table(
             df, headers=["Amount ($1k)"], show_index=True, title="Top Government Buys"
         )
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -280,7 +280,7 @@ def display_government_sells(
             .abs()
             .head(n=num)
         )
-        rich_table_from_df(
+        print_rich_table(
             df, headers=["Amount ($1k)"], show_index=True, title="Top Government Trades"
         )
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -343,7 +343,7 @@ def display_last_contracts(
     df_contracts["Description"] = df_contracts["Description"].apply(
         lambda x: "\n".join(textwrap.wrap(x, 50))
     )
-    rich_table_from_df(
+    print_rich_table(
         df_contracts,
         headers=list(df_contracts.columns),
         show_index=False,
@@ -468,7 +468,7 @@ def display_government_trading(
     df_gov = df_gov.sort_values("TransactionDate", ascending=True)
 
     if raw:
-        rich_table_from_df(
+        print_rich_table(
             df_gov,
             headers=list(df_gov.columns),
             show_index=False,
@@ -512,7 +512,7 @@ def display_contracts(
     df_contracts.drop_duplicates(inplace=True)
 
     if raw:
-        rich_table_from_df(
+        print_rich_table(
             df_contracts,
             headers=list(df_contracts.columns),
             show_index=False,
@@ -560,7 +560,7 @@ def display_qtr_contracts(analysis: str, num: int, raw: bool = False, export: st
     tickers = quiverquant_model.analyze_qtr_contracts(analysis, num)
     if analysis in ("upmom", "downmom"):
         if raw:
-            rich_table_from_df(
+            print_rich_table(
                 pd.DataFrame(tickers.values),
                 headers=["tickers"],
                 show_index=False,
@@ -617,7 +617,7 @@ def display_qtr_contracts(analysis: str, num: int, raw: bool = False, export: st
             plt.show()
 
     elif analysis == "total":
-        rich_table_from_df(tickers, headers=["Total"], title="Quarterly Contracts")
+        print_rich_table(tickers, headers=["Total"], title="Quarterly Contracts")
 
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "qtrcontracts", df_contracts
@@ -655,7 +655,7 @@ def display_hist_contracts(ticker: str, raw: bool = False, export: str = ""):
     ]
 
     if raw:
-        rich_table_from_df(
+        print_rich_table(
             df_contracts,
             headers=list(df_contracts.columns),
             title="Historical Quarterly Government Contracts",
@@ -708,7 +708,7 @@ def display_top_lobbying(num: int, raw: bool = False, export: str = ""):
     ).sort_values(by="Amount", ascending=False)
 
     if raw:
-        rich_table_from_df(
+        print_rich_table(
             lobbying_by_ticker.head(num),
             headers=["Amount ($100k)"],
             show_index=True,

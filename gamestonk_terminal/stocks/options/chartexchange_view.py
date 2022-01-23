@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import os
 
-from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.stocks.options import chartexchange_model
 from gamestonk_terminal.rich_config import console
 
@@ -38,7 +38,7 @@ def display_raw(
         df,
     )
 
-    rich_table_from_df(
+    print_rich_table(
         df.head(num),
         headers=list(df.columns),
         show_index=True,

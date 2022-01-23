@@ -10,7 +10,7 @@ import numpy as np
 from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     export_data,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal.common.behavioural_analysis import finbrain_model
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -110,14 +110,14 @@ def display_sentiment_analysis(ticker: str, export: str = ""):
             data=color_df.values,
             index=pd.to_datetime(df_sentiment.index).strftime("%Y-%m-%d"),
         )
-        rich_table_from_df(
+        print_rich_table(
             color_df,
             headers=["Sentiment"],
             title="FinBrain Ticker Sentiment",
             show_index=True,
         )
     else:
-        rich_table_from_df(
+        print_rich_table(
             pd.DataFrame(
                 data=df_sentiment.values,
                 index=pd.to_datetime(df_sentiment.index).strftime("%Y-%m-%d"),

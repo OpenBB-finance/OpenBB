@@ -7,7 +7,7 @@ import difflib
 import pandas as pd
 from gamestonk_terminal.helper_funcs import (
     export_data,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal.stocks.screener.finviz_model import (
     get_screener_data,
@@ -191,7 +191,7 @@ def screener(
 
         df_screen = df_screen.fillna("")
 
-        rich_table_from_df(
+        print_rich_table(
             df_screen.head(n=limit),
             headers=list(df_screen.columns),
             show_index=False,
