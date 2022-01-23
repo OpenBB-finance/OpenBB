@@ -193,9 +193,7 @@ def display_ath(symbol: str, currency: str, export: str) -> None:
 
     df = coin.get_all_time_high(currency=currency)
 
-    print_rich_table(
-        df, headers=list(df.columns), show_index=False, title="Coin Highs"
-    )
+    print_rich_table(df, headers=list(df.columns), show_index=False, title="Coin Highs")
     console.print("")
 
     export_data(
@@ -223,9 +221,7 @@ def display_atl(symbol: str, currency: str, export: str) -> None:
 
     df = coin.get_all_time_low(currency=currency)
 
-    print_rich_table(
-        df, headers=list(df.columns), show_index=False, title="Coin Lows"
-    )
+    print_rich_table(df, headers=list(df.columns), show_index=False, title="Coin Lows")
     console.print("")
 
     export_data(
