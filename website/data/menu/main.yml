@@ -1126,6 +1126,8 @@ main:
         ref: "/portfolio/ar"
       - name: rmr
         ref: "/portfolio/rmr"
+      - name: mdd
+        ref: "portfolio/mdd"
   - name: forex
     ref: "/forex"
     sub:
