@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import os
-import pandas as pd
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
 from gamestonk_terminal.stocks.discovery import ark_model
@@ -65,9 +64,7 @@ def ark_orders_view(
         df_orders = df_orders[df_orders.direction == "Buy"]
     if sells_only:
         df_orders = df_orders[df_orders.direction == "Sell"]
-    pd.options.mode.chained_assignment = None
     df_orders = ark_model.add_order_total(df_orders.head(num))
-    pd.options.mode.chained_assignment = "warn"
 
     if sort_col:
         df_orders = df_orders.sort_values(by=sort_col, ascending=ascending)
