@@ -8,5 +8,7 @@ cgcategories
 cpglobal
 altindex
 btcrb
+wf
 ch
+news
 exit
