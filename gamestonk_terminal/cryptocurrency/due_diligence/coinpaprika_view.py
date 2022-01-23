@@ -5,7 +5,7 @@ import os
 from pandas.plotting import register_matplotlib_converters
 from gamestonk_terminal.helper_funcs import (
     export_data,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal.cryptocurrency.due_diligence import coinpaprika_model
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
@@ -109,7 +109,7 @@ def display_twitter(
     df["status"] = df["status"].apply(
         lambda text: "".join(i if ord(i) < 128 else "" for i in text)
     )
-    rich_table_from_df(
+    print_rich_table(
         df.head(top),
         headers=list(df.columns),
         show_index=False,
@@ -161,7 +161,7 @@ def display_events(
     else:
         df.drop("link", axis=1, inplace=True)
 
-    rich_table_from_df(
+    print_rich_table(
         df.head(top), headers=list(df.columns), show_index=False, title="All Events"
     )
     console.print("")
@@ -201,7 +201,7 @@ def display_exchanges(
 
     df = df.sort_values(by=sortby, ascending=descend)
 
-    rich_table_from_df(
+    print_rich_table(
         df.head(top), headers=list(df.columns), show_index=False, title="All Exchanges"
     )
     console.print("")
@@ -261,7 +261,7 @@ def display_markets(
     else:
         df.drop("market_url", axis=1, inplace=True)
 
-    rich_table_from_df(
+    print_rich_table(
         df.head(top), headers=list(df.columns), show_index=False, title="All Markets"
     )
     console.print("")
@@ -296,7 +296,7 @@ def display_price_supply(coin_id: str, currency: str, export: str) -> None:
 
     df = df.applymap(lambda x: long_number_format_with_type_check(x))
 
-    rich_table_from_df(
+    print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Coin Information"
     )
     console.print("")
@@ -327,7 +327,7 @@ def display_basic(coin_id: str, export: str) -> None:
         console.print("No data available\n")
         return
 
-    rich_table_from_df(
+    print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Basic Coin Information"
     )
 

@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 
 import os
 from gamestonk_terminal.cryptocurrency.defi import substack_model
-from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
 
@@ -23,7 +23,7 @@ def display_newsletters(top: int = 10, export: str = "") -> None:
     df = substack_model.get_newsletters()
     df_data = df.copy()
 
-    rich_table_from_df(
+    print_rich_table(
         df.head(top),
         headers=list(df.columns),
         show_index=False,

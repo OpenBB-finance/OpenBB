@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from gamestonk_terminal.helper_funcs import (
     export_data,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
 import gamestonk_terminal.config_terminal as cfg
@@ -78,7 +78,7 @@ def display_balance(coin: str, currency: str, export: str) -> None:
     df["Percent"] = df.div(df.sum(axis=0), axis=1).round(3)
     console.print(f"You currently have {total} coins and the breakdown is:")
 
-    rich_table_from_df(
+    print_rich_table(
         df, headers=df.columns, show_index=True, title="Account Holdings for Assets"
     )
     console.print("")

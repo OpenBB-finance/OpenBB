@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import os
-from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 import gamestonk_terminal.cryptocurrency.discovery.coinpaprika_model as paprika
 from gamestonk_terminal.rich_config import console
 
@@ -41,7 +41,7 @@ def display_search_results(
 
     df = df.sort_values(by=sortby, ascending=descend)
 
-    rich_table_from_df(
+    print_rich_table(
         df.head(top),
         headers=list(df.columns),
         show_index=False,

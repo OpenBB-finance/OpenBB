@@ -5,7 +5,7 @@ import os
 from typing import Optional
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
-from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
 from gamestonk_terminal.rich_config import console
@@ -54,7 +54,7 @@ def display_trades(
     df = coinbase_model.get_trades(product_id, limit, side)
     df_data = df.copy()
 
-    rich_table_from_df(
+    print_rich_table(
         df,
         headers=list(df.columns),
         show_index=False,
@@ -85,7 +85,7 @@ def display_candles(product_id: str, interval: str, export) -> None:
     df = coinbase_model.get_candles(product_id, interval)
     df_data = df.copy()
 
-    rich_table_from_df(
+    print_rich_table(
         df, headers=list(df.columns), show_index=True, title="Trading Pair Candles"
     )
 
@@ -112,7 +112,7 @@ def display_stats(product_id: str, export: str) -> None:
     df = coinbase_model.get_product_stats(product_id)
     df_data = df.copy()
 
-    rich_table_from_df(
+    print_rich_table(
         df, headers=list(df.columns), show_index=False, title="24 hr Product Stats"
     )
 

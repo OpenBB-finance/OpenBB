@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import os
 from gamestonk_terminal.cryptocurrency.defi import graph_model
-from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     very_long_number_formatter,
 )
@@ -43,7 +43,7 @@ def display_uni_tokens(
         ["totalLiquidity", "tradeVolumeUSD"]
     ].applymap(lambda x: very_long_number_formatter(x))
 
-    rich_table_from_df(
+    print_rich_table(
         df.head(limit),
         headers=list(df.columns),
         show_index=False,
@@ -73,7 +73,7 @@ def display_uni_stats(export: str = "") -> None:
     df = graph_model.get_uniswap_stats()
     df_data = df.copy()
 
-    rich_table_from_df(
+    print_rich_table(
         df,
         headers=list(df.columns),
         show_index=False,
@@ -136,7 +136,7 @@ def display_recently_added(
         lambda x: very_long_number_formatter(x)
     )
 
-    rich_table_from_df(
+    print_rich_table(
         df.head(top),
         headers=list(df.columns),
         show_index=False,
@@ -176,7 +176,7 @@ def display_uni_pools(
     df["volumeUSD"] = df["volumeUSD"].apply(lambda x: very_long_number_formatter(x))
     df_data = df.copy()
 
-    rich_table_from_df(
+    print_rich_table(
         df.head(top), headers=list(df.columns), show_index=False, title="Uniswap Pools"
     )
     console.print("")
@@ -215,7 +215,7 @@ def display_last_uni_swaps(
     df["amountUSD"] = df["amountUSD"].apply(lambda x: very_long_number_formatter(x))
     df_data = df.copy()
 
-    rich_table_from_df(
+    print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Last Uniswap Swaps"
     )
 

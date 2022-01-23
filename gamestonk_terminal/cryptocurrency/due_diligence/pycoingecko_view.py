@@ -6,7 +6,7 @@ from typing import Union
 from pandas.plotting import register_matplotlib_converters
 from gamestonk_terminal.helper_funcs import (
     export_data,
-    rich_table_from_df,
+    print_rich_table,
 )
 import gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model as gecko
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import wrap_text_in_df
@@ -48,7 +48,7 @@ def display_coin_potential_returns(
         lambda x: "{:,}".format(int(x["Current Market Cap ($)"])), axis=1
     )
 
-    rich_table_from_df(
+    print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Potential Coin Returns"
     )
     console.print("")
@@ -76,7 +76,7 @@ def display_info(symbol: str, export: str) -> None:
 
     df = wrap_text_in_df(coin.get_base_info, w=80)
 
-    rich_table_from_df(
+    print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Basic Coin Information"
     )
     console.print("")
@@ -104,7 +104,7 @@ def display_web(symbol: str, export: str) -> None:
 
     df = coin.get_websites
 
-    rich_table_from_df(
+    print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Websites for Loaded Coin"
     )
     console.print("")
@@ -130,7 +130,7 @@ def display_social(symbol: str, export: str) -> None:
     coin = gecko.Coin(symbol)
     df = coin.get_social_media
 
-    rich_table_from_df(
+    print_rich_table(
         df,
         headers=list(df.columns),
         show_index=False,
@@ -160,7 +160,7 @@ def display_dev(symbol: str, export: str) -> None:
 
     df = coin.get_developers_data
 
-    rich_table_from_df(
+    print_rich_table(
         df,
         headers=list(df.columns),
         show_index=False,
@@ -193,7 +193,7 @@ def display_ath(symbol: str, currency: str, export: str) -> None:
 
     df = coin.get_all_time_high(currency=currency)
 
-    rich_table_from_df(
+    print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Coin Highs"
     )
     console.print("")
@@ -223,7 +223,7 @@ def display_atl(symbol: str, currency: str, export: str) -> None:
 
     df = coin.get_all_time_low(currency=currency)
 
-    rich_table_from_df(
+    print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Coin Lows"
     )
     console.print("")
@@ -250,7 +250,7 @@ def display_score(symbol: str, export: str) -> None:
 
     df = coin.get_scores
 
-    rich_table_from_df(
+    print_rich_table(
         df,
         headers=list(df.columns),
         show_index=False,
@@ -280,7 +280,7 @@ def display_bc(symbol: str, export: str) -> None:
 
     df = coin.get_blockchain_explorers
 
-    rich_table_from_df(
+    print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Blockchain URLs"
     )
     console.print("")
@@ -307,7 +307,7 @@ def display_market(symbol: str, export: str) -> None:
 
     df = coin.get_market_data
 
-    rich_table_from_df(
+    print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Market Data"
     )
     console.print("")
