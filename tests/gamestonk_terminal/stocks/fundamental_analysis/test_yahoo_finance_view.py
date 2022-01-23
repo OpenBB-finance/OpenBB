@@ -19,6 +19,7 @@ def vcr_config():
     }
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(

@@ -12,7 +12,7 @@ interactions:
       - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML,
         like Gecko) Chrome/39.0.2171.95 Safari/537.36
     method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/TSLA?events=div%2Csplits&includePrePost=False&interval=1d&period1=1605481200&period2=1637103600
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/TSLA?events=div%2Csplits&includePrePost=False&interval=1d&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2
   response:
     body:
       string: !!binary |

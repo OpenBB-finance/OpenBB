@@ -15,7 +15,8 @@ from gamestonk_terminal.etf.technical_analysis import ta_controller
 
 EMPTY_DF = pd.DataFrame()
 MOCK_STOCK_DF = pd.read_csv(
-    "tests/gamestonk_terminal/etf/technical_analysis/csv/testdf.csv", index_col=0
+    "tests/gamestonk_terminal/etf/technical_analysis/csv/test_ta_controller/stock_df.csv",
+    index_col=0,
 )
 print(MOCK_STOCK_DF.columns)
 
@@ -661,3 +662,25 @@ def test_call_func(
         )
         controller.screen_tickers = ["PM"]
         getattr(controller, tested_func)(other_args)
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "ticker, expected",
+    [
+        (None, []),
+        ("MOCK_TICKER", ["etf", "load MOCK_TICKER", "ta"]),
+    ],
+)
+def test_custom_reset(expected, ticker):
+    controller = ta_controller.TechnicalAnalysisController(
+        ticker=None,
+        start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
+        data=EMPTY_DF,
+        queue=None,
+    )
+    controller.ticker = ticker
+
+    result = controller.custom_reset()
+
+    assert result == expected

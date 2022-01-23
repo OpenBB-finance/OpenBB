@@ -16,6 +16,7 @@ from gamestonk_terminal.portfolio import (
     yfinance_model,
     portfolio_helper,
 )
+from gamestonk_terminal.etf import stockanalysis_model
 from gamestonk_terminal.rich_config import console
 
 # pylint: disable=E1136
@@ -278,7 +279,7 @@ def convert_df(portfolio: pd.DataFrame) -> pd.DataFrame:
     cashes = changes[changes["Type"] == "cash"]
     if cashes.empty:
         raise ValueError("Brokers require cash, input cash deposits")
-    changes = changes[changes["Type"] == ("stock" or "etf")]
+    changes = changes[(changes["Type"] == "stock") | (changes["Type"] == "etf")]
     uniques = list(set(changes["Name"].tolist()))
     if uniques:
         hist = yfinance_model.get_stocks(uniques, min(changes["Date"]))
@@ -385,6 +386,137 @@ def get_rolling_beta(
     final = final[final.index >= datetime.now() - timedelta(days=n + 1)]
     comb = pd.merge(final, dropped, how="left", left_index=True, right_index=True)
     return comb
+
+
+def fix_etf_allocation(
+    data: pd.DataFrame,
+    df_new: pd.DataFrame,
+    etf: str,
+    no_etf_positions: bool,
+    number: int,
+):
+    """Adjusting the dataframe to etf positions, by adding etf holdings to identical portfolio positions or
+    if 'add_etf_positions' is true add a new position
+
+    Parameters
+    ----------
+    data : pd.DataFrame
+        The dataframe of positions
+    df_new: pd.DataFrame
+        A dataframe of etf holdings
+    etf: str
+        String of the etf
+    no_etf_positions: bool
+        If new positions should not be added to the 'data' dataframe for etf holdings
+    number: int
+        Number of etf positions to be checked
+
+    Returns
+    ----------
+    data: pd.DataFrame
+        etf adjusted dataframe
+    """
+    i = 0
+    length = int(df_new.index.size) - 1
+    while i <= (
+        length ^ ((number ^ length) & -(number < length))
+    ):  # gets minimum of number and length
+        if df_new.iloc[[i]].index[0].lower() in data.index:
+            change = (
+                float(df_new.iloc[i]["% Of Etf"].replace("%", ""))
+                * data["value"].loc[data.index == etf][0]
+                / 100
+            )
+            data.loc[data.index == df_new.iloc[[i]].index[0].lower(), "value"] += change
+        elif not no_etf_positions:
+            change = (
+                float(df_new.iloc[i]["% Of Etf"].replace("%", ""))
+                * data["value"].loc[data.index == etf][0]
+                / 100
+            )
+            data.loc[len(data.index)] = [f"{etf}_etf", change]
+            data.rename(
+                index={len(data.index) - 1: df_new.iloc[[i]].index[0].lower()},
+                inplace=True,
+            )
+            data.loc[data.index == etf, "value"] -= change
+        data.loc[data.index == etf, "value"] -= change
+        i += 1
+    data.rename(
+        index={data.loc[data.index == etf].index[0]: f"{etf}_rest"}, inplace=True
+    )
+    return data
+
+
+def get_allocation(
+    data: pd.DataFrame,
+    hist: pd.DataFrame,
+    portfolio: pd.DataFrame,
+    number: int,
+    no_etf_positions: bool,
+) -> pd.DataFrame:
+    """Formatting the dataframe to an allocation dataframe of the positions
+
+    Parameters
+    ----------
+    data : pd.DataFrame
+        The dataframe of positions
+    hist: pd.DataFrame
+        A dataframe of the positions historical performances
+    portfolio: pd.DataFrame
+        Portfolio dataframe
+    number: int
+        Number of etf positions to be checked
+    no_etf_positions: bool
+        If new positions should not be added to the 'data' dataframe for etf holdings
+
+    Returns
+    ----------
+    df: pd.DataFrame
+        Dataframe of allocation
+    """
+    # Fixing dataframe formatting
+    df = data["Quantity"].tail(1).transpose()
+    df.columns = ["amount"]
+    df = df.sort_index(axis=0, ascending=True)
+    hist = hist.tail(1).transpose()
+    hist = hist.reset_index(["first"])
+    hist.columns = ["position", "value"]
+    hist = pd.DataFrame(hist["value"])
+
+    i = 0
+    value = []
+    while i < df.index.size:
+        value.append(df["amount"].iloc[i] * hist["value"].iloc[i])
+        i += 1
+    df["value"] = value
+
+    i = 0
+    length = df.index.size
+    while i < length:
+        row_index = df.iloc[[i]].index[0]
+        if (
+            portfolio["Type"].loc[portfolio["Name"] == row_index].to_list()[0] == "etf"
+        ):  # check if position is an etf
+            df = fix_etf_allocation(
+                df,
+                stockanalysis_model.get_etf_holdings(row_index),
+                row_index,
+                no_etf_positions,
+                number,
+            )
+        if df.iloc[i].loc["value"] < 0:
+            # Converting negative positions to "shorts" in order to correctly calculate allocation
+            df.loc[row_index, "value"] = abs(df.loc[row_index, "value"])
+            df.loc[row_index, "amount"] = abs(df.loc[row_index, "amount"])
+            df.rename(index={row_index: f"short_{row_index}"}, inplace=True)
+        i += 1
+
+    total_value = df["value"].sum()
+    df["pct_allocation"] = df["value"] / total_value * 100  # calculate allocation
+    df = df.sort_values(by="pct_allocation", ascending=False)
+
+    return df
 
 
 def get_main_text(df: pd.DataFrame) -> str:

@@ -494,6 +494,7 @@ def test_call_func_no_ticker(func, mocker):
     getattr(dps_controller, "parse_known_args_and_warn").assert_called_once()
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 def test_call_load(mocker):
     yf_download = stocks_helper.yf.download
@@ -513,3 +514,24 @@ def test_call_load(mocker):
         "--start=2021-12-17",
     ]
     controller.call_load(other_args=other_args)
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "ticker, expected",
+    [
+        (None, []),
+        ("MOCK_TICKER", ["stocks", "load MOCK_TICKER", "dps"]),
+    ],
+)
+def test_custom_reset(expected, ticker):
+    controller = dps_controller.DarkPoolShortsController(
+        ticker=None,
+        start=None,
+        stock=pd.DataFrame(),
+    )
+    controller.ticker = ticker
+
+    result = controller.custom_reset()
+
+    assert result == expected
