@@ -70,6 +70,7 @@ class PortfolioController(BaseController):
                 "Side",
             ]
         )
+        self.portname = ""
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -78,24 +79,29 @@ class PortfolioController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """[menu]
+        has_port_start = "" if not self.portfolio.empty else "[unvl]"
+        has_port_end = "" if not self.portfolio.empty else "[/unvl]"
+        help_text = f"""[menu]
 >   bro         brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
 >   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt
 >   pa          portfolio analysis, \t\t analyse portfolios[/menu]
 
 [info]Portfolio:[/info][cmds]
-    load        load data into the portfolio
+    load        load data into the portfolio[/cmds][param]
+
+Current Portfolio:[/param] {self.portname or None}{has_port_start}[cmds]
+
     save        save your portfolio for future use
     show        show existing transactions
     add         add a security to your portfolio
-    rmv         remove a security from your portfolio[/cmds]
+    rmv         remove a security from your portfolio{has_port_end}
 
-[info]Reports:[/info][cmds]
-    ar          annual report for performance of a given portfolio
+[info]Reports:[/info][cmds]{has_port_start}
+    ar          annual report for performance of a given portfolio{has_port_end}[/cmds]
 
-[info]Graphs:[/info][cmds]
+[info]Graphs:[/info][cmds]{has_port_start}
     rmr         graph your returns versus the market's returns
-    al          displays the allocation of the portfolio
+    al          displays the allocation of the portfolio{has_port_end}[/cmds]
         """
         console.print(text=help_text, menu="Portfolio")
 
@@ -146,7 +152,8 @@ class PortfolioController(BaseController):
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.portfolio = portfolio_model.load_df(ns_parser.name)
-            console.print("")
+            self.portname = ns_parser.name
+            console.print(f"Load portfolio {self.portname}\n")
 
     def call_save(self, other_args: List[str]):
         """Process save command"""
