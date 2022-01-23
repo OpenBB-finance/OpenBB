@@ -18,7 +18,7 @@ def try_except(f):
     # pylint: disable=inconsistent-return-statements
     @functools.wraps(f)
     def inner(*args, **kwargs):
-        if os.environ["DEBUG_MODE"] == "true":
+        if os.environ.get("DEBUG_MODE") == "true":
             return f(*args, **kwargs)
         try:
             return f(*args, **kwargs)

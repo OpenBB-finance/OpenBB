@@ -105,7 +105,6 @@ def check_setting(lines: List[str], setting: str, value: str) -> bool:
     correct : bool
         Returns whether the setting was already correct
     """
-    print(setting)
     debug_line, debug_val = search(lines, setting)
 
     if debug_val == value:
@@ -123,8 +122,6 @@ def main():
         lines = [line.rstrip() for line in lines]
 
     returns = [check_setting(lines, k, v) for k, v in settings.items()]
-
-    print(returns)
 
     if False not in returns:
         print("Success")
