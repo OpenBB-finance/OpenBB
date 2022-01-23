@@ -21,6 +21,7 @@ def vcr_config():
     }
 
 
+@pytest.mark.skip
 @pytest.mark.default_cassette("test_get_ark_trades_by_ticker_TSLA")
 @pytest.mark.vcr
 def test_get_ark_trades_by_ticker(recorder):
@@ -36,6 +37,7 @@ def test_get_ark_trades_by_ticker_not_recorded():
         ark_model.get_ark_trades_by_ticker(ticker="AAPL")
 
 
+@pytest.mark.skip
 @pytest.mark.default_cassette("test_get_ark_trades_by_ticker_INVALID_TICKER")
 @pytest.mark.vcr
 def test_get_ark_trades_by_ticker_invalid_ticker():
