@@ -6,7 +6,7 @@ import os
 from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.stocks.technical_analysis import tradingview_model
-from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 
 
 def print_recommendation(
@@ -38,7 +38,7 @@ def print_recommendation(
         "recom",
         recom,
     )
-    rich_table_from_df(
+    print_rich_table(
         recom,
         headers=list(recom.columns),
         title="Ticker Recomendation",

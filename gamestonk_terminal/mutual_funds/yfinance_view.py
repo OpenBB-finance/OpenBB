@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.helper_funcs import (
-    rich_table_from_df,
+    print_rich_table,
     export_data,
     plot_autoscale,
 )
@@ -50,7 +50,7 @@ def display_sector(fund: str, min_pct_to_display: float = 5, export: str = ""):
         "Real Estate" if x == "realestate" else x.replace("_", " ").title()
         for x in df_weight.index
     ]
-    rich_table_from_df(
+    print_rich_table(
         df_weight,
         show_index=True,
         index_name="Sector",
@@ -110,7 +110,7 @@ def display_equity(fund: str):
     df_weight = pd.DataFrame.from_dict(equity_hold, orient="index")
     df_weight = df_weight.apply(lambda x: round(100 * x, 3))
     df_weight.index = df_weight.index.map(title_map)
-    rich_table_from_df(
+    print_rich_table(
         df_weight,
         show_index=True,
         index_name="Equity",

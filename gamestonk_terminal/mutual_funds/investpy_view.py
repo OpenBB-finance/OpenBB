@@ -13,7 +13,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal.mutual_funds import investpy_model
 
@@ -59,7 +59,7 @@ def display_search(
 
     # If we want to move forward with rich -- should rename this gtff
     # Additionally, I recreated the tabulate functions with the rich.Table class.
-    rich_table_from_df(
+    print_rich_table(
         searches.head(limit),
         show_index=False,
         title=f"[bold]Mutual Funds with {by} matching {value}[/bold]",
@@ -82,7 +82,7 @@ def display_overview(country: str = "united states", limit: int = 10, export: st
     overview = investpy_model.get_overview(country=country, limit=limit)
     overview["Assets (1B)"] = overview.total_assets / 1_000_000_000
     overview = overview.drop(columns=["country", "total_assets"])
-    rich_table_from_df(
+    print_rich_table(
         overview, title=f"[bold]Fund overview for {country.title()}[/bold]"
     )
     export_data(
@@ -110,7 +110,7 @@ def display_fund_info(fund_name: str, country: str = "united states"):
         .applymap(lambda x: np.nan if not x else x)
         .dropna()
     )
-    rich_table_from_df(
+    print_rich_table(
         info,
         title=f"[bold]{fund_name.title()} Information[/bold]",
         show_index=False,
