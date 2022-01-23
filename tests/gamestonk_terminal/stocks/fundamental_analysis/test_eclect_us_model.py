@@ -26,7 +26,7 @@ def test_get_filings_analysis(recorder):
     recorder.capture(result_txt)
 
 
-@pytest.mark.vcr(record_move="none")
+@pytest.mark.vcr(record_mode="none")
 def test_get_filings_analysis_invalid(mocker):
     mock_response = requests.Response()
     mock_response.status_code = 400
