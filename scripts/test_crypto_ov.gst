@@ -3,7 +3,10 @@ ov
 cbpairs
 cgexchanges
 cghold
-news
+cgglobal
+cgcategories
+cpglobal
+altindex
 btcrb
 ch
 exit
