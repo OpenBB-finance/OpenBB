@@ -40,7 +40,7 @@ def save_df(df: pd.DataFrame, name: str) -> None:
     elif ".json" in name:
         df.to_json(path, index=False)
     elif ".xlsx" in name:
-        df = df.to_excel(path, index=False, engine="openpyxl")
+        df.to_excel(path, index=False, engine="openpyxl")
 
 
 def load_df(name: str) -> pd.DataFrame:
@@ -597,3 +597,28 @@ performance_text = (
     ". The information ratio is the excess return on systematic risk. An information ratio of"
     " 0.4 to 0.6 is considered good."
 )
+
+
+def calculate_drawdown(input_series: pd.Series, is_returns: bool = False) -> pd.Series:
+    """Calculate the drawdown (MDD) of historical series.  Note that the calculation is done
+     on cumulative returns (or prices).  The definition of drawdown is
+
+     DD = (current value - rolling maximum) / rolling maximum
+
+    Parameters
+    ----------
+    input_series: pd.DataFrame
+        Dataframe of input values
+    is_returns: bool
+        Flag to indicate inputs are returns
+
+    Returns
+    pd.Series
+        Drawdown series
+    -------
+    """
+    if is_returns:
+        input_series = (1 + input_series).cumprod()
+    rolling_max = input_series.cummax()
+    drawdown = (input_series - rolling_max) / rolling_max
+    return drawdown

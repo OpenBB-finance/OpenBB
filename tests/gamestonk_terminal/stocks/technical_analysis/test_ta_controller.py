@@ -757,6 +757,7 @@ def test_call_func(
         getattr(controller, tested_func)(other_args)
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 def test_call_load(mocker):
     # FORCE SINGLE THREADING

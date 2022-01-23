@@ -386,6 +386,7 @@ def test_call_func_test(
         getattr(controller, tested_func)(other_args)
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 def test_call_load(mocker):
     # FORCE SINGLE THREADING
@@ -402,6 +403,7 @@ def test_call_load(mocker):
     controller.call_load(other_args=other_args)
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_call_candle(mocker):
@@ -428,6 +430,7 @@ def test_call_candle(mocker):
     controller.call_candle(other_args=[])
 
 
+@pytest.mark.skip
 @pytest.mark.vcr(record_mode="none")
 def test_call_news(mocker):
     mocker.patch(

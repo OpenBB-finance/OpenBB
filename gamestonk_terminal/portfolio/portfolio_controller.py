@@ -17,6 +17,7 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     check_positive_float,
     check_positive,
+    EXPORT_ONLY_FIGURES_ALLOWED,
 )
 from gamestonk_terminal.menu import session
 
@@ -37,16 +38,7 @@ portfolios_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "port
 class PortfolioController(BaseController):
     """Portfolio Controller class"""
 
-    CHOICES_COMMANDS = [
-        "load",
-        "save",
-        "show",
-        "add",
-        "rmv",
-        "ar",
-        "rmr",
-        "al",
-    ]
+    CHOICES_COMMANDS = ["load", "save", "show", "add", "rmv", "ar", "rmr", "al", "mdd"]
     CHOICES_MENUS = [
         "bro",
         "po",
@@ -100,8 +92,9 @@ Current Portfolio:[/param] {self.portname or None}{has_port_start}[cmds]
     ar          annual report for performance of a given portfolio{has_port_end}[/cmds]
 
 [info]Graphs:[/info][cmds]{has_port_start}
-    rmr         graph your returns versus the market's returns
-    al          displays the allocation of the portfolio{has_port_end}[/cmds]
+    rmr         returns versus the market's returns
+    al          allocation of the portfolio
+    mdd         maximum drawdown{has_port_end}[/cmds]
         """
         console.print(text=help_text, menu="Portfolio")
 
@@ -411,3 +404,24 @@ Current Portfolio:[/param] {self.portname or None}{has_port_start}[cmds]
                 console.print("Cannot generate a graph from an empty dataframe\n")
         else:
             console.print("Please add items to the portfolio\n")
+
+    def call_mdd(self, other_args: List[str]):
+        """Process mdd command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="mdd",
+            description="Show portfolio drawdown",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            if not self.portfolio.empty:
+                val, _ = portfolio_model.convert_df(self.portfolio)
+                if not val.empty:
+                    df_m = yfinance_model.get_market(val.index[0], "SPY")
+                    returns, _ = portfolio_model.get_return(val, df_m, 365)
+                    portfolio_view.display_drawdown(returns[["return"]].dropna())
+            else:
+                console.print("[red]No portfolio loaded.\n[/red]")
