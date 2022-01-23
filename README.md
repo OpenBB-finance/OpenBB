@@ -66,6 +66,7 @@
       <ul>
         <li><a href="#docker-installation">Docker Installation</a></li>
         <li><a href="#local-install---anaconda-and-python">Local Install - Anaconda and Python</a></li>
+        <li><a href="#web-ui---docker">Web UI - Docker</a></li>
         <li><a href="#advanced-user-install---machine-learning">Advanced User Install - Machine Learning</a></li>
         <li><a href="#update-terminal">Update Terminal</a></li>
         <li><a href="#api-keys">API Keys</a></li>
