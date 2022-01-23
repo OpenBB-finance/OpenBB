@@ -24,6 +24,7 @@ def test_get_ark_orders(recorder):
     recorder.capture(result_df)
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 def test_add_order_total(recorder, mocker):
     yf_download = ark_model.yf.download

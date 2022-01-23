@@ -19,6 +19,7 @@ def vcr_config():
     }
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 def test_capm_information(mocker, recorder):
     # FORCE SINGLE THREADING
