@@ -12,19 +12,22 @@ from gamestonk_terminal.stocks import stocks_helper
 def vcr_config():
     return {
         "filter_query_parameters": [
-            ("period1", "1605481200"),
-            ("period2", "1637103600"),
+            ("period1", "MOCK_PERIOD_1"),
+            ("period2", "MOCK_PERIOD_2"),
+            ("date", "MOCK_DATE"),
             ("token", "MOCK_TOKEN"),
             ("apikey", "MOCK_API_KEY"),
         ]
     }
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 def test_quote():
     stocks_helper.quote(["GME"], "GME")
 
 
+@pytest.mark.skip
 @pytest.mark.default_cassette("test_search")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -39,6 +42,7 @@ def test_search(mocker, use_tab):
     stocks_helper.search(query="pharma", amount=5)
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "interval, source",
@@ -65,6 +69,7 @@ def test_load(interval, recorder, source):
     recorder.capture(result_df)
 
 
+@pytest.mark.skip
 @pytest.mark.default_cassette("test_display_candle")
 @pytest.mark.vcr
 @pytest.mark.parametrize(
@@ -106,6 +111,7 @@ def test_display_candle(mocker, use_matplotlib):
     )
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 def test_load_ticker(recorder):
     ticker = "PM"

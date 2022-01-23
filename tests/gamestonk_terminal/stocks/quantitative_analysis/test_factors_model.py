@@ -12,8 +12,9 @@ def vcr_config():
     return {
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
-            ("period1", "1598220000"),
-            ("period2", "1635980400"),
+            ("period1", "MOCK_PERIOD_1"),
+            ("period2", "MOCK_PERIOD_2"),
+            ("date", "MOCK_DATE"),
         ],
     }
 
@@ -31,4 +32,6 @@ def test_capm_information(mocker, recorder):
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
     result_tuple = factors_model.capm_information(ticker="PM")
-    recorder.capture(result_tuple)
+
+    result_tuple_rounded = [round(number, 4) for number in result_tuple]
+    recorder.capture(result_tuple_rounded)

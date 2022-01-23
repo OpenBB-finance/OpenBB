@@ -291,15 +291,14 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_show",
             [],
-            "tabulate",
+            "rich_table_from_df",
             [
                 PRICES,
             ],
             dict(
-                headers=PRICES.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
+                headers=list(PRICES.columns),
+                show_index=False,
+                title="Estimated price(s) of MOCK_TICKER at 2022-01-07",
             ),
         ),
         (
@@ -406,3 +405,28 @@ def test_call_func_no_selected_date(func, mocker):
     func_result = getattr(controller, func)(list())
     assert func_result is None
     assert controller.selected_date is None
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "ticker, expected",
+    [
+        (None, []),
+        (
+            "MOCK_TICKER",
+            ["stocks", "load MOCK_TICKER", "options", "exp -d 2022-01-07", "pricing"],
+        ),
+    ],
+)
+def test_custom_reset(expected, ticker):
+    controller = pricing_controller.PricingController(
+        ticker=None,
+        selected_date="2022-01-07",
+        prices=PRICES,
+        queue=None,
+    )
+    controller.ticker = ticker
+
+    result = controller.custom_reset()
+
+    assert result == expected

@@ -666,6 +666,8 @@ main:
       - name: overview
         ref: "/cryptocurrency/overview"
         sub:
+          - name: ch
+            ref: "/cryptocurrency/overview/ch"
           - name: btcrb
             ref: "/cryptocurrency/overview/btcrb"
           - name: cgglobal
@@ -774,6 +776,10 @@ main:
       - name: onchain
         ref: "/cryptocurrency/onchain"
         sub:
+          - name: btccp
+            ref: "/cryptocurrency/onchain/btccp"
+          - name: btcct
+            ref: "/cryptocurrency/onchain/btcct"
           - name: gwei
             ref: "/cryptocurrency/onchain/gwei"
           - name: hr
@@ -903,6 +909,18 @@ main:
             ref: "/cryptocurrency/defi/pools"
           - name: swaps
             ref: "/cryptocurrency/defi/swaps"
+          - name: sinfo
+            ref: "/cryptocurrency/defi/sinfo"
+          - name: govp
+            ref: "/cryptocurrency/defi/govp"
+          - name: gacc
+            ref: "/cryptocurrency/defi/gacc"
+          - name: validators
+            ref: "/cryptocurrency/defi/validators"
+          - name: sratio
+            ref: "/cryptocurrency/defi/sratio"
+          - name: sreturn
+            ref: "/cryptocurrency/defi/sreturn"
   - name: economy
     ref: "/economy"
     sub:
@@ -1135,3 +1153,96 @@ main:
             ref: "/alternative/covid/cases"
           - name: rates
             ref: "/alternative/covid/rates"
+  - name: custom
+    ref: "/custom"
+    sub:
+      - name: load
+        ref: "/custom/load"
+      - name: show
+        ref: "/custom/show"
+      - name: info
+        ref: "/custom/info"
+      - name: plot
+        ref: "/custom/plot"
+      - name: quantitative analysis
+        ref: "/common/quantitative_analysis"
+        sub:
+          - name: load
+            ref: "/common/quantitative_analysis/load"
+          - name: pick
+            ref: "/common/quantitative_analysis/pick"
+          - name: summary
+            ref: "/common/quantitative_analysis/summary"
+          - name: normality
+            ref: "/common/quantitative_analysis/normality"
+          - name: unitroot
+            ref: "/common/quantitative_analysis/unitroot"
+          - name: hist
+            ref: "/common/quantitative_analysis/hist"
+          - name: cdf
+            ref: "/common/quantitative_analysis/cdf"
+          - name: bw
+            ref: "/common/quantitative_analysis/bw"
+          - name: acf
+            ref: "/common/quantitative_analysis/acf"
+          - name: qqplot
+            ref: "/common/quantitative_analysis/qqplot"
+          - name: rolling
+            ref: "/common/quantitative_analysis/rolling"
+          - name: spread
+            ref: "/common/quantitative_analysis/spread"
+          - name: quantile
+            ref: "/common/quantitative_analysis/quantile"
+          - name: skew
+            ref: "/common/quantitative_analysis/skew"
+          - name: kurtosis
+            ref: "/common/quantitative_analysis/kurtosis"
+          - name: decompose
+            ref: "/common/quantitative_analysis/decompose"
+          - name: cusum
+            ref: "/common/quantitative_analysis/cusum"
+          - name: capm
+            ref: "/common/quantitative_analysis/capm"
+          - name: data
+            ref: "/common/quantitative_analysis/data"
+          - name: line
+            ref: "/common/quantitative_analysis/line"
+      - name: prediction techniques
+        ref: "/common/prediction_techniques"
+        sub:
+          - name: ets
+            ref: "/common/prediction_techniques/ets"
+          - name: knn
+            ref: "/common/prediction_techniques/knn"
+          - name: regression
+            ref: "/common/prediction_techniques/regression"
+          - name: arima
+            ref: "/common/prediction_techniques/arima"
+          - name: mlp
+            ref: "/common/prediction_techniques/mlp"
+          - name: rnn
+            ref: "/common/prediction_techniques/rnn"
+          - name: lstm
+            ref: "/common/prediction_techniques/lstm"
+          - name: conv1d
+            ref: "/common/prediction_techniques/conv1d"
+          - name: mc
+            ref: "/common/prediction_techniques/mc"
+  - name: jupyter
+    ref: "/jupyter"
+    sub:
+        - name: "dashboards"
+          ref: "/jupyter/dashboards"
+          sub: 
+            - name: "stocks"
+              ref: "/jupyter/dashboards/stocks"
+            - name: "correlation"
+              ref: "/jupyter/dashboards/correlations"
+            - name: "vsurf"
+              ref: "/jupyter/dashboards/vsurf"
+            - name: "chains"
+              ref: "/jupyter/dashboards/chains"
+            - name: "shortdata"
+              ref: "jupyter/dashboards/shortdata"
+        - name: "reports"
+          ref: "/jupyter/reports"

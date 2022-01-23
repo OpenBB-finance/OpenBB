@@ -1,0 +1,173 @@
+
+    Poly Network - REKT
+    Wednesday, August 11, 2021
+
+    This is it rekt readers; the big one.
+$611 million dollars stolen.
+That’s more than the 
+Mt Gox hack.
+	 More than the GDP of several small countries. More than the entire rekt.news leaderboard added together.
+The biggest cryptocurrency hack... 
+ever.
+	
+Poly Network = rekt.
+But how?
+Credit:
+breadcrumbs.app,  
+slowmist,  
+blocksec
+Attacker ETH: 
+0xc8a65fadf0e0ddaf421f28feab69bf6e2e589963
+Attacker BSC: 
+0x0D6e286A7cfD25E0c01fEe9756765D8033B32C71
+This was not the usual smart contract flash loan / arbitrage affair.
+The hacker exploited the Proxy Lock Contracts of Poly Network on three different chains.
+Ethereum:
+0x250e76987d838a75310c34bf422ea9f1ac4cc906
+BSC:
+0x05f0fDD0E49A5225011fff92aD85cC68e1D1F08e
+Polygon:
+0x28FF66a1B95d7CAcf8eDED2e658f768F44841212
+Credit: 
+@kelvinfichter
+"Poly has a contract called the "
+EthCrossChainManager
+". It's a privileged contract that has the right to trigger messages from another chain. It's a standard thing for cross-chain projects.
+It has a function named 
+verifyHeaderAndExecuteTx that anyone can call to execute a cross-chain transaction.
+It (1) verifies that the block header is correct by checking signatures (seems the other chain was a poa sidechain or) and then (2) checks that the transaction was included within that block with a Merkle proof. 
+Here's the code.
+One of the last things the function does is call 
+executeCrossChainTx,  which makes the call to the target contract. This is where the critical flaw sits. 
+Poly checks that the target is a contract, but they forgot to prevent users from calling a very important target... the 
+EthCrossChainData contract
+By sending this cross-chain message, the user could trick the 
+EthCrossChainManager into calling the 
+EthCrossChainData contract, passing the 
+onlyOwner check. Now the user just had to craft the right data to be able to trigger the function that changes the public keys…
+The only remaining challenge was to figure out how to make the 
+EthCrossChainManager call the right function. Now comes a little bit of complexity around how Solidity picks which function you're trying to call.
+The first four bytes of transaction input data is called the "signature hash" or "sighash" for short. It's a short piece of information that tells a Solidity contract what you're trying to do.
+The sighash of a function is calculated by taking the first four bytes of the hash of "
+<function name>
+(
+<function input types>
+)". For example, the sighash of the ERC20 transfer function is the first four bytes of the hash of "transfer(address,uint256)".
+Poly's contract was willing to call any contract. However, it would only call the contract function that corresponded to the following sighash:
+Errr but wait... 
+"_method" here was user input. All the attacker had to do to call the right function was figure out 
+some value for "
+_method
+" that, when combined with those other values and hashed, had the same leading four bytes as the sighash of our target function.
+With just a little bit of grinding, you can easily find some input that produces the right sighash. You don't need to find a full hash collision, you're only checking the first four bytes. So is this theory correct?
+Well... here's the actual sighash of the target function:
+http://ethers.utils.id ('putCurEpochConPubKeyBytes(bytes)').slice(0, 10)
+'0x41973cd9'
+And the sighash that the attacker crafted...
+http://ethers.utils.id ('f1121318093(bytes,bytes,uint64)').slice(0, 10)
+'0x41973cd9'
+Fantastic. No private key compromise required! Just craft the right data and boom... the contract will just hack itself!
+One of the biggest design lessons that people need to take away from this is: if you have cross-chain relay contracts like this, 
+MAKE SURE THAT THEY CAN'T BE USED TO CALL SPECIAL CONTRACTS. The 
+EthCrossDomainManager shouldn't have owned the 
+EthCrossDomainData contract.
+Separate concerns. If your contract absolutely needs to have special privileges like this, make sure that users can't use cross-chain messages to call those special contracts."
+On the Ethereum blockchain, the hacker stole
+USDC - 96,389,444
+WBTC - 1,032
+DAI - 673,227
+UNI - 43,023
+SHIBA - 259,737,345,149
+renBTC
+- 14.47
+USDT - 33,431,197
+wETH - 26,109
+FEI USD - 616,082
+On BSC, the hacker stole:
+BNB - 6,613.44
+USDC - 87,603,373
+ETH - 299
+BTCB - 26,629
+BUSD - 1,023
+On the Polygon blockchain, the hacker stole:
+USDC - 85,089,610
+TOTAL VALUE LOST - ~$611,000,000
+At the time of writing, the stolen funds are located in the following wallets:
+ETH: 
+0xC8a65Fadf0e0dDAf421F28FEAb69Bf6E2E589963
+BSC: 
+0x0D6e286A7cfD25E0c01fEe9756765D8033B32C71
+Polygon: 
+0x5dc3603C9D42Ff184153a8a9094a73d461663214
+DeFi storylines are rarely straightforward, and this one is no exception.
+Even anonymous actors adore attention.
+Shortly after the exploit, an unexpected protagonist appeared, going by the name of 
+hanashiro.eth.
+hanashiro.eth first gained attention when they 
+sent the hacker a tip about how to handle USDT, for which they 
+received 13.37 Ether from the hacker as a reward.
+Many others sent messages to the hacker afterwards, but none were quite as successful as hanashiro.eth.
+With a truly crypto native level of philanthropic showmanship, hanashiro.eth went on to donate their stolen money to a few of the foundational organisations which support our industry, such as Infura, Etherscan, and 
+rekt.news.
+	
+But not all of the funds were so freely accessible.
+Tether froze all of the 33M USDT that were stolen on the Ethereum chain.
+Their coin - their choice… A fact worth remembering if you use USDT.
+By this point the shit had really hit the fan; and all eyes were on 
+Poly Network, who resorted to posting an open letter to the attacker begging them to return the funds.
+A single tweet asking a criminal to return six hundred million dollars... Maybe Gensler was right when he said we are in the 
+“Wild West” phase of cryptocurrency.
+Consider the mindset of the attacker at this point in the story. Which do you think they felt more; euphoria, or terror?
+Stealing 600 million dollars whilst sat at your computer must be a surreal experience.
+The experience of then trying to launder that money must be equally intense.
+Aside from JPEGS, tornado.cash would be the obvious starting point, and that’s exactly where our hacker went.
+They 
+sent themself a transaction containing the message;
+Wonder why Tornado? Will miners stop me? Teach me please
+Was that psyops or stupidity? In crypto it’s never quite clear...
+On the run with 600 million, and broadcasting messages to an audience of thousands.
+The hacker was growing too confident.
+When 
+@WardBradt tweeted the following;
+Did the PolyNetwork Exploiter accidentally use the wrong sender address for this tx 
+0xb12681d9e
+? The sender address is tied to FTX, Binance, Okex accounts.
+Suddenly the attacker's attitude changed.
+Surely a hacker who feels confident enough to attempt an attack of this scale wouldn’t make such a basic OPSEC error? Or maybe they used fake KYC documents…
+Either way, we began to see signs of fear from the attacker.
+The hacker 
+began to suggest that they might return 
+"some tokens" or even abandon them, saying that they were 
+"not so interested in the money".
+Then the hacker considered the idea of creating a DAO to distribute the stolen funds.
+Finally, the pressure became too much, and the hacker announced that they were 
+“READY TO SURRENDER”
+In an unexpected and unprecedented move, the attacker is now returning the funds to Poly Network.
+They announced that they were 
+"READY TO RETURN THE FUNDS!" in an Ethereum transaction that was sent from the same wallet used for the attack.
+Before sending the first return transaction, the hacker created a token called "The hacker is ready to surrender" and sent this token to Poly Network who announced that they had set up a 
+multisig controlled by ‘’known Poly addresses’’.
+	
+A summary of the hackers' communication with Poly Network can be found here.
+At the time of writing, the hacker has returned the following:
+On the Ethereum blockchain: 
+$2.6M
+On the BSC: 
+$1.1M
+On the Polygon blockchain: 
+$1M
+Will the hacker continue to return the funds, or is this just another stunt?
+Can they really just return the money and be forgiven?
+Poly Network. 611 million.
+And you thought you knew all the big protocols in DeFi.
+This industry has grown bigger than our echo chamber can handle.
+This may be the first, but it won’t be the last hack of this size that we will see over the coming years. Yet the market seems unfazed, and rightly so.
+For 
+better or for 
+worse,  crypto will make the news, and the 
+world will have to take notice as our industry becomes the norm.
+This is just another inevitable part of the progress.
+
+
+    Detailed history in https://rekt.news/polynetwork-rekt
+    

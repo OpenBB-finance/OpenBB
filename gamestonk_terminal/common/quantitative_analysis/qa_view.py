@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import os
 import warnings
 from typing import Any
+from datetime import datetime
 
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -55,14 +56,12 @@ def display_summary(df: pd.DataFrame, export: str):
     """
     summary = qa_model.get_summary(df)
 
-    console.print(
-        rich_table_from_df(
-            summary,
-            headers=list(summary.columns),
-            floatfmt=".3f",
-            show_index=True,
-            title="[bold]Summary Statistics[/bold]",
-        )
+    rich_table_from_df(
+        summary,
+        headers=list(summary.columns),
+        floatfmt=".3f",
+        show_index=True,
+        title="[bold]Summary Statistics[/bold]",
     )
     console.print("")
     export_data(
@@ -94,13 +93,18 @@ def display_hist(
     """
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     data = df[target]
-    start = df.index[0]
 
     sns.histplot(data, bins=bins, kde=True, ax=ax, stat="proportion")
     sns.rugplot(data, c="r", ax=ax)
 
-    ax.set_title(f"Histogram of {name} {target} from {start.strftime('%Y-%m-%d')}")
-    ax.set_xlabel("Share Price")
+    if isinstance(df.index[0], datetime):
+        start = df.index[0]
+
+        ax.set_title(f"Histogram of {name} {target} from {start.strftime('%Y-%m-%d')}")
+    else:
+        ax.set_title(f"Histogram of {name} {target}")
+
+    ax.set_xlabel("Value")
     ax.grid(True)
 
     if gtff.USE_ION:
@@ -422,19 +426,14 @@ def display_normality(df: pd.DataFrame, target: str, export: str = ""):
     stats1 = normal.copy().T
     stats1.iloc[:, 1] = stats1.iloc[:, 1].apply(lambda x: color_red(x))
 
-    if gtff.USE_TABULATE_DF:
-        console.print(
-            rich_table_from_df(
-                stats1,
-                show_index=True,
-                headers=["Statistic", "p-value"],
-                floatfmt=".4f",
-                title="[bold]Normality Statistics[/bold]",
-            )
-        )
-        console.print("")
-    else:
-        console.print(normal.round(4).to_string(), "\n")
+    rich_table_from_df(
+        stats1,
+        show_index=True,
+        headers=["Statistic", "p-value"],
+        floatfmt=".4f",
+        title="[bold]Normality Statistics[/bold]",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -493,18 +492,13 @@ def display_unitroot(
     """
     df = df[target]
     data = qa_model.get_unitroot(df, fuller_reg, kpss_reg)
-    if gtff.USE_TABULATE_DF:
-        console.print(
-            rich_table_from_df(
-                data,
-                show_index=True,
-                headers=list(data.columns),
-                title="[bold]Unit Root Calculation[/bold]",
-                floatfmt=".4f",
-            )
-        )
-    else:
-        console.print(data.round(4).to_string(), "\n")
+    rich_table_from_df(
+        data,
+        show_index=True,
+        headers=list(data.columns),
+        title="[bold]Unit Root Calculation[/bold]",
+        floatfmt=".4f",
+    )
     console.print("")
     export_data(
         export,
@@ -546,18 +540,13 @@ def display_raw(
     if sort:
         df = df.sort_values(by=sort, ascending=des)
     df.index = [x.strftime("%Y-%m-%d") for x in df.index]
-    if gtff.USE_TABULATE_DF:
-        console.print(
-            rich_table_from_df(
-                df.tail(num),
-                headers=[x.title() if x != "" else "Date" for x in df.columns],
-                title="[bold]Raw Data[/bold]",
-                show_index=True,
-                floatfmt=".3f",
-            )
-        )
-    else:
-        console.print(df.to_string(index=False))
+    rich_table_from_df(
+        df.tail(num),
+        headers=[x.title() if x != "" else "Date" for x in df.columns],
+        title="[bold]Raw Data[/bold]",
+        show_index=True,
+        floatfmt=".3f",
+    )
 
     console.print("")
 

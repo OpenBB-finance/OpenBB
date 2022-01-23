@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 import mplfinance as mpf
 
 from prompt_toolkit.completion import NestedCompleter
-from rich.markdown import Markdown
 from thepassiveinvestor import create_ETF_report
 from gamestonk_terminal.rich_config import console
 
@@ -68,6 +67,7 @@ class ETFController(BaseController):
         "disc",
     ]
     PATH = "/etf/"
+    FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -119,16 +119,6 @@ class ETFController(BaseController):
         if self.etf_name:
             return ["etf", f"load {self.etf_name}"]
         return []
-
-    def call_resources(self, _):
-        """Process resources command"""
-        resources_md = os.path.join(os.path.dirname(__file__), "README.md")
-        if os.path.isfile(resources_md):
-            with open(resources_md) as f:
-                console.print(Markdown(f.read()))
-            console.print("")
-        else:
-            console.print("No resources available.\n")
 
     def call_ln(self, other_args: List[str]):
         """Process ln command"""
@@ -424,6 +414,7 @@ class ETFController(BaseController):
         )
         if ns_parser:
             if self.etf_name:
+                # TODO: Should be done in one function
                 data = stocks_helper.process_candle(self.etf_data)
                 df_etf = stocks_helper.find_trendline(data, "OC_High", "high")
                 df_etf = stocks_helper.find_trendline(data, "OC_Low", "low")
@@ -516,9 +507,9 @@ class ETFController(BaseController):
             other_args.insert(0, "-e")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if self.etf_name:
+            if ns_parser.names:
                 create_ETF_report(
-                    ns_parser.names if ns_parser.names else [self.etf_name],
+                    ns_parser.names,
                     filename=ns_parser.filename,
                     folder=ns_parser.folder,
                 )
@@ -581,7 +572,7 @@ class ETFController(BaseController):
 
     def call_ta(self, _):
         """Process ta command"""
-        if self.etf_name:
+        if self.etf_name and not self.etf_data.empty:
             self.queue = self.load_class(
                 ta_controller.TechnicalAnalysisController,
                 self.etf_name,

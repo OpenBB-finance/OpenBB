@@ -1,4 +1,4 @@
-"""Insider Trading API."""
+"""Covid API."""
 import os
 from gamestonk_terminal.helper_classes import ModelsNamespace as _models
 

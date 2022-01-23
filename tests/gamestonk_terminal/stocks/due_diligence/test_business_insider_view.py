@@ -13,12 +13,14 @@ from gamestonk_terminal.stocks.stocks_helper import load
 def vcr_config():
     return {
         "filter_query_parameters": [
-            ("period1", "1605481200"),
-            ("period2", "1637103600"),
+            ("period1", "MOCK_PERIOD_1"),
+            ("period2", "MOCK_PERIOD_2"),
+            ("date", "MOCK_DATE"),
         ]
     }
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_price_target_from_analysts_raw():
@@ -33,6 +35,7 @@ def test_price_target_from_analysts_raw():
     )
 
 
+@pytest.mark.skip
 @pytest.mark.default_cassette("test_price_target_from_analysts_TSLA")
 @pytest.mark.vcr
 @pytest.mark.parametrize("start", [datetime.strptime("2021-12-05", "%Y-%m-%d")])
@@ -59,6 +62,7 @@ def test_price_target_from_analysts_plt(capsys, interval, mocker, start, monkeyp
     mock_show.assert_called_once()
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_estimates():

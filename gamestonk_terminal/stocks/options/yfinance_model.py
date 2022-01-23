@@ -193,11 +193,12 @@ def get_iv_surface(ticker: str) -> pd.DataFrame:
     stock = yf.Ticker(ticker)
     dates = stock.options
     vol_df = pd.DataFrame()
+    columns = ["strike", "impliedVolatility", "openInterest", "lastPrice"]
     for date in dates:
-        df = stock.option_chain(date).calls[["strike", "impliedVolatility"]]
+        df = stock.option_chain(date).calls[columns]
         df["dte"] = get_dte(date)
         vol_df = pd.concat([vol_df, df], axis=0)
-        df = stock.option_chain(date).puts[["strike", "impliedVolatility"]]
+        df = stock.option_chain(date).puts[columns]
         df["dte"] = get_dte(date)
         vol_df = pd.concat([vol_df, df], axis=0)
     return vol_df

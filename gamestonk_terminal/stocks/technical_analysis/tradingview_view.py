@@ -3,10 +3,10 @@ __docformat__ = "numpy"
 
 import os
 
-from tabulate import tabulate
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.stocks.technical_analysis import tradingview_model
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
 
 
 def print_recommendation(
@@ -38,10 +38,10 @@ def print_recommendation(
         "recom",
         recom,
     )
-
-    print(
-        tabulate(
-            recom, headers=["INTERVAL"] + list(recom.columns), tablefmt="fancy_grid"
-        ),
-        "\n",
+    rich_table_from_df(
+        recom,
+        headers=list(recom.columns),
+        title="Ticker Recomendation",
+        show_index=True,
     )
+    console.print("")
