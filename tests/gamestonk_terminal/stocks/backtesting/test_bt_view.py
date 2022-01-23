@@ -20,6 +20,7 @@ def vcr_config():
     }
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_display_simple_ema(mocker):
@@ -49,6 +50,7 @@ def test_display_simple_ema(mocker):
     )
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_display_ema_cross(mocker):
@@ -80,6 +82,7 @@ def test_display_ema_cross(mocker):
     )
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_display_rsi_strategy(mocker):
