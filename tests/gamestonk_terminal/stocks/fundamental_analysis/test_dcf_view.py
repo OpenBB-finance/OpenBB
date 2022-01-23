@@ -42,7 +42,7 @@ def test_create_workbook(mocker):
 
     # MOCK GENERATE_PATH
     attrs = {
-        'is_file.return_value': False,
+        "is_file.return_value": False,
     }
     mock_path = mocker.Mock(**attrs)
     mocker.patch(
@@ -51,6 +51,8 @@ def test_create_workbook(mocker):
     )
 
     # MOCK SAVE
-    mocker.patch(target="gamestonk_terminal.stocks.fundamental_analysis.dcf_view.Workbook.save")
+    mocker.patch(
+        target="gamestonk_terminal.stocks.fundamental_analysis.dcf_view.Workbook.save"
+    )
 
     excel.create_workbook()
