@@ -22,6 +22,7 @@ def vcr_config():
     }
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 def test_get_historical(mocker, recorder):
     # FORCE SINGLE THREADING
@@ -61,6 +62,7 @@ def filter_reduce_csv(response):
     return response
 
 
+@pytest.mark.skip
 @pytest.mark.vcr(before_record_response=filter_reduce_csv)
 def test_get_sp500_comps_tsne(mocker, recorder):
     # FORCE SINGLE THREADING
