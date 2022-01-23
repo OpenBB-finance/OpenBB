@@ -103,104 +103,38 @@ def get_coins(top: int = 250, category: str = ""):
     pandas.DataFrame
         N coins
     """
-    i = 1
-    remaining_top = top
     client = CoinGeckoAPI()
-    if category:
-        categories_dict = read_file_data("coingecko_categories.json")
-        if category not in categories_dict:
-            raise ValueError(
-                f"Category does not exist\nPlease chose one from list: {categories_dict.keys()}"
-            )
-    if top > 250:
+    df = pd.DataFrame()
+    if top <= 250:
+        kwargs = {
+            "vs_currency": "usd",
+            "order": "market_cap_desc",
+            "per_page": top,
+            "sparkline": False,
+            "price_change_percentage": "1h,24h,7d,14d,30d,200d,1y",
+        }
         if category:
-            data = client.get_coins_markets(
-                category=category,
-                vs_currency="usd",
-                order="market_cap_desc",
-                per_page=top,
-                page=i,
-                sparkline=False,
-                price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
-            )
-        else:
-            data = client.get_coins_markets(
-                vs_currency="usd",
-                order="market_cap_desc",
-                per_page=top,
-                page=i,
-                sparkline=False,
-                price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
-            )
-        df = pd.DataFrame(data)
-        remaining_top -= 250
-        i += 1
+            kwargs["category"] = category
+        data = client.get_coins_markets(**kwargs)
+        df = df.append(pd.DataFrame(data), ignore_index=True)
     else:
-        if category:
-            data = client.get_coins_markets(
-                category=category,
-                vs_currency="usd",
-                order="market_cap_desc",
-                per_page=top,
-                page=i,
-                sparkline=False,
-                price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
-            )
-        else:
-            data = client.get_coins_markets(
-                vs_currency="usd",
-                order="market_cap_desc",
-                per_page=top,
-                page=i,
-                sparkline=False,
-                price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
-            )
-        df = pd.DataFrame(data)
-        return df
-    while remaining_top > 250:
-        if category:
-            data = client.get_coins_markets(
-                category=category,
-                vs_currency="usd",
-                order="market_cap_desc",
-                per_page=top,
-                page=i,
-                sparkline=False,
-                price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
-            )
-        else:
-            data = client.get_coins_markets(
-                vs_currency="usd",
-                order="market_cap_desc",
-                per_page=top,
-                page=i,
-                sparkline=False,
-                price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
-            )
-        df = df.append(pd.DataFrame(data), ignore_index=True)
-        remaining_top -= 250
-        i += 1
-    if remaining_top > 0:
-        if category:
-            data = client.get_coins_markets(
-                category=category,
-                vs_currency="usd",
-                order="market_cap_desc",
-                per_page=remaining_top,
-                page=i,
-                sparkline=False,
-                price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
-            )
-        else:
-            data = client.get_coins_markets(
-                vs_currency="usd",
-                order="market_cap_desc",
-                per_page=top,
-                page=i,
-                sparkline=False,
-                price_change_percentage="1h,24h,7d,14d,30d,200d,1y",
-            )
-        df = df.append(pd.DataFrame(data), ignore_index=True)
+        p = 1
+        while top > 0:
+            kwargs = {
+                "vs_currency": "usd",
+                "order": "market_cap_desc",
+                "per_page": top,
+                "sparkline": False,
+                "price_change_percentage": "1h,24h,7d,14d,30d,200d,1y",
+                "page": p,
+            }
+            if category:
+                kwargs["category"] = category
+
+            data = client.get_coins_markets(**kwargs)
+            df = df.append(pd.DataFrame(data), ignore_index=True)
+            top -= 250
+            p += 1
     return df
 
 
@@ -273,7 +207,6 @@ def get_trending_coins() -> pd.DataFrame:
     -------
     pandas.DataFrame:
         Trending Coins
-        Columns:
     """
     client = CoinGeckoAPI()
     data = client.get_search_trending()
