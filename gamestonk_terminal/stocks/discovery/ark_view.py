@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import os
-
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
 from gamestonk_terminal.stocks.discovery import ark_model
@@ -71,8 +70,6 @@ def ark_orders_view(
         df_orders = df_orders.sort_values(by=sort_col, ascending=ascending)
     if gtff.USE_COLOR:
         df_orders["direction"] = df_orders["direction"].apply(direction_color_red_green)
-
-    # df_orders["link"] = "https://finviz.com/quote.ashx?t=" + df_orders["ticker"]
 
     rich_table_from_df(
         df_orders,
