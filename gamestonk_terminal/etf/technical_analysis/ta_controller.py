@@ -59,6 +59,8 @@ class TechnicalAnalysisController(BaseController):
         "fib",
     ]
 
+    PATH = "/etf/ta/"
+
     def __init__(
         self,
         ticker: str,
@@ -67,7 +69,7 @@ class TechnicalAnalysisController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/etf/ta/", queue)
+        super().__init__(queue)
 
         self.ticker = ticker
         self.start = start
@@ -361,7 +363,7 @@ class TechnicalAnalysisController(BaseController):
             overlap_view.view_ma(
                 ma_type="ZLMA",
                 s_ticker=self.ticker,
-                values=self.data["Adj  Close"],
+                values=self.data["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,

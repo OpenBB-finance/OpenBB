@@ -61,10 +61,11 @@ class ScreenerController(BaseController):
     ]
 
     historical_candle_choices = ["o", "h", "l", "c", "a"]
+    PATH = "/stocks/scr/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/scr/", queue)
+        super().__init__(queue)
 
         self.preset = "top_gainers"
         self.screen_tickers: List = list()

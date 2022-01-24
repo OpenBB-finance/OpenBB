@@ -23,6 +23,7 @@ from .yfinance_view import plot_oi as oi_yf
 from .yfinance_view import plot_plot as plot
 from .yfinance_view import show_parity as parity
 from .yfinance_view import show_binom as binom
+from .yfinance_view import display_vol_surface as vsurf
 
 
 # Models

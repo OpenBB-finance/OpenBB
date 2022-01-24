@@ -22,11 +22,12 @@ from gamestonk_terminal.menu import session
 class DashboardsController(BaseController):
     """Dashboards Controller class"""
 
-    CHOICES_COMMANDS = ["stocks", "correlation"]
+    CHOICES_COMMANDS = ["stocks", "correlation", "vsurf", "chains", "shortdata"]
+    PATH = "/jupyter/dashboard/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/jupyter/dashboards/", queue)
+        super().__init__(queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -35,8 +36,11 @@ class DashboardsController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = """[cmds]
-   stocks        interactive dashboard with ticker information
-   correlation   interactive dashboard with correlation information[/cmds]
+   stocks        historic stock information
+   correlation   stock correlations
+   vsurf         options volatility surface
+   chains        options chain analysis
+   shortdata     finra shortdata analysis[/cmds]
         """
         console.print(text=help_text, menu="Jupyter - Dashboards")
 
@@ -48,6 +52,18 @@ class DashboardsController(BaseController):
         """Process correlation command"""
         create_call(other_args, "correlation", "correlation")
 
+    def call_vsurf(self, other_args: List[str]):
+        """Process vsurf command"""
+        create_call(other_args, "vsurf", "")
+
+    def call_chains(self, other_args: List[str]):
+        """Process vsurf command"""
+        create_call(other_args, "chains", "")
+
+    def call_shortdata(self, other_args: List[str]):
+        """Process vsurf command"""
+        create_call(other_args, "shortdata", "")
+
 
 def create_call(other_args: List[str], name: str, filename: str = None) -> None:
     filename = filename if filename else name
@@ -56,7 +72,7 @@ def create_call(other_args: List[str], name: str, filename: str = None) -> None:
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog=name,
-        description="""Shows correlations between stocks""",
+        description=f"""Shows {name} dashboard""",
     )
     parser.add_argument(
         "-j",
@@ -76,28 +92,15 @@ def create_call(other_args: List[str], name: str, filename: str = None) -> None:
         file = os.path.join(
             os.path.abspath(os.path.dirname(__file__)), f"{filename}.ipynb"
         )
-
-        print(
-            f"Warning: this command will open a port on your computer to run a {cmd} server."
-        )
+        console.print(f"Warning: opens a port on your computer to run a {cmd} server.")
         response = input("Would you like us to run the server for you? y/n\n")
         if response.lower() == "y":
-
-            console.print(
-                f"Warning: this command will open a port on your computer to run a {cmd} server."
+            subprocess.Popen(
+                f"{cmd} {file}",
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                shell=True,
             )
-            response = input("Would you like us to run the server for you? y/n\n")
-            if response.lower() == "y":
-
-                subprocess.Popen(
-                    f"{cmd} {file}",
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.STDOUT,
-                    shell=True,
-                )
-            else:
-                console.print(
-                    f"To run manually type: {cmd} {file}\ninto a terminal after"
-                    " entering the environment you use to run the terminal."
-                )
+        else:
+            console.print(f"Type: {cmd} {file}\ninto a terminal to run.")
         console.print("")

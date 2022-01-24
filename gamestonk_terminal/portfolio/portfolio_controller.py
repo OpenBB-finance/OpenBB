@@ -16,6 +16,8 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     valid_date,
     check_positive_float,
+    check_positive,
+    EXPORT_ONLY_FIGURES_ALLOWED,
 )
 from gamestonk_terminal.menu import session
 
@@ -34,24 +36,17 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 class PortfolioController(BaseController):
     """Portfolio Controller class"""
 
-    CHOICES_COMMANDS = [
-        "load",
-        "save",
-        "show",
-        "add",
-        "rmv",
-        "ar",
-        "rmr",
-    ]
+    CHOICES_COMMANDS = ["load", "save", "show", "add", "rmv", "ar", "rmr", "al", "mdd"]
     CHOICES_MENUS = [
         "bro",
         "po",
         "pa",
     ]
+    PATH = "/portfolio/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/portfolio/", queue)
+        super().__init__(queue)
 
         self.portfolio = pd.DataFrame(
             columns=[
@@ -89,6 +84,8 @@ class PortfolioController(BaseController):
 
 [info]Graphs:[/info][cmds]
     rmr         graph your returns versus the market's returns
+    al          displays the allocation of the portfolio
+    mdd         display portfolio drawdown[/cmds]
         """
         console.print(text=help_text, menu="Portfolio")
 
@@ -98,17 +95,21 @@ class PortfolioController(BaseController):
             BrokersController,
         )
 
-        self.queue = BrokersController(self.queue).menu()
+        self.queue = self.load_class(BrokersController, self.queue)
 
     def call_po(self, _):
         """Process po command"""
-        self.queue = po_controller.PortfolioOptimization([], self.queue).menu()
+        self.queue = self.load_class(
+            po_controller.PortfolioOptimization, [], self.queue
+        )
 
     def call_pa(self, _):
         """Process pa command"""
         from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
 
-        self.queue = pa_controller.PortfolioAnalysis(self.queue).menu()
+        self.queue = self.queue = self.load_class(
+            pa_controller.PortfolioAnalysis, self.queue
+        )
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -345,3 +346,73 @@ class PortfolioController(BaseController):
                     console.print("Cannot generate a graph from an empty dataframe\n")
             else:
                 console.print("Please add items to the portfolio\n")
+
+    def call_al(self, other_args: List[str]):
+        """Process al command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="al",
+            description="Gives allocation",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            help="Number to show",
+            type=check_positive,
+            default=20,
+            dest="limit",
+        )
+        parser.add_argument(
+            "-n",
+            "--noetf",
+            action="store_true",
+            default=False,
+            dest="no_etf_positions",
+            help="If etf positions should not be added to the portfolio",
+        )
+        parser.add_argument(
+            "-g",
+            "--graph",
+            action="store_true",
+            default=False,
+            dest="graph",
+            help="Display table or pi chart of holdings",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not self.portfolio.empty:
+            val, hist = portfolio_model.convert_df(self.portfolio)
+            if not val.empty:
+                df = portfolio_model.get_allocation(
+                    val,
+                    hist,
+                    self.portfolio,
+                    ns_parser.limit,
+                    ns_parser.no_etf_positions,
+                )
+                portfolio_view.display_allocation(df, ns_parser.graph)
+            else:
+                console.print("Cannot generate a graph from an empty dataframe\n")
+        else:
+            console.print("Please add items to the portfolio\n")
+
+    def call_mdd(self, other_args: List[str]):
+        """Process mdd command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="mdd",
+            description="Show portfolio drawdown",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            if not self.portfolio.empty:
+                val, _ = portfolio_model.convert_df(self.portfolio)
+                if not val.empty:
+                    df_m = yfinance_model.get_market(val.index[0], "SPY")
+                    returns, _ = portfolio_model.get_return(val, df_m, 365)
+                    portfolio_view.display_drawdown(returns[["return"]].dropna())
+            else:
+                console.print("[red]No portfolio loaded.\n[/red]")

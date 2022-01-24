@@ -41,6 +41,7 @@ class StocksController(BaseController):
         "quote",
         "candle",
         "news",
+        "resources",
     ]
     CHOICES_MENUS = [
         "ta",
@@ -61,9 +62,12 @@ class StocksController(BaseController):
         "options",
     ]
 
+    PATH = "/stocks/"
+    FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
+
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/stocks/", queue)
+        super().__init__(queue)
 
         self.stock = pd.DataFrame()
         self.ticker = ""
@@ -276,12 +280,12 @@ Stock: [/param]{stock_text}
             description="Shows historic data for a stock",
         )
         parser.add_argument(
-            "-m",
-            "--matplotlib",
-            dest="matplotlib",
-            action="store_true",
-            default=False,
-            help="Flag to show matplotlib instead of interactive plot using plotly.",
+            "-p",
+            "--plotly",
+            dest="plotly",
+            action="store_false",
+            default=True,
+            help="Flag to show interactive plotly chart.",
         )
         parser.add_argument(
             "--sort",
@@ -323,6 +327,21 @@ Stock: [/param]{stock_text}
             dest="num",
             default=20,
         )
+        parser.add_argument(
+            "-t",
+            "--trend",
+            action="store_true",
+            default=False,
+            help="Flag to add high and low trends to candle.",
+            dest="trendlines",
+        )
+        parser.add_argument(
+            "--ma",
+            dest="mov_avg",
+            type=str,
+            help="Add moving averaged to plot",
+            default="",
+        )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -347,13 +366,21 @@ Stock: [/param]{stock_text}
                     )
 
                 else:
+
                     data = stocks_helper.process_candle(self.stock)
+                    mov_avgs = (
+                        tuple(int(num) for num in ns_parser.mov_avg.split(","))
+                        if ns_parser.mov_avg
+                        else None
+                    )
 
                     stocks_helper.display_candle(
                         s_ticker=self.ticker,
                         df_stock=data,
-                        use_matplotlib=ns_parser.matplotlib,
+                        use_matplotlib=ns_parser.plotly,
                         intraday=self.interval != "1440min",
+                        add_trend=ns_parser.trendlines,
+                        ma=mov_avgs,
                     )
             else:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
@@ -430,7 +457,7 @@ Stock: [/param]{stock_text}
             DiscoveryController,
         )
 
-        self.queue = DiscoveryController(self.queue).menu()
+        self.queue = self.load_class(DiscoveryController, self.queue)
 
     def call_dps(self, _):
         """Process dps command"""
@@ -438,9 +465,9 @@ Stock: [/param]{stock_text}
             DarkPoolShortsController,
         )
 
-        self.queue = DarkPoolShortsController(
-            self.ticker, self.start, self.stock, self.queue
-        ).menu()
+        self.queue = self.load_class(
+            DarkPoolShortsController, self.ticker, self.start, self.stock, self.queue
+        )
 
     def call_scr(self, _):
         """Process scr command"""
@@ -448,7 +475,7 @@ Stock: [/param]{stock_text}
             ScreenerController,
         )
 
-        self.queue = ScreenerController(self.queue).menu()
+        self.queue = self.load_class(ScreenerController, self.queue)
 
     def call_sia(self, _):
         """Process ins command"""
@@ -456,7 +483,9 @@ Stock: [/param]{stock_text}
             SectorIndustryAnalysisController,
         )
 
-        self.queue = SectorIndustryAnalysisController(self.ticker, self.queue).menu()
+        self.queue = self.load_class(
+            SectorIndustryAnalysisController, self.ticker, self.queue
+        )
 
     def call_ins(self, _):
         """Process ins command"""
@@ -464,19 +493,20 @@ Stock: [/param]{stock_text}
             InsiderController,
         )
 
-        self.queue = InsiderController(
+        self.queue = self.load_class(
+            InsiderController,
             self.ticker,
             self.start,
             self.interval,
             self.stock,
             self.queue,
-        ).menu()
+        )
 
     def call_gov(self, _):
         """Process gov command"""
         from gamestonk_terminal.stocks.government.gov_controller import GovController
 
-        self.queue = GovController(self.ticker, self.queue).menu()
+        self.queue = self.load_class(GovController, self.ticker, self.queue)
 
     def call_options(self, _):
         """Process options command"""
@@ -484,7 +514,7 @@ Stock: [/param]{stock_text}
             OptionsController,
         )
 
-        self.queue = OptionsController(self.ticker, self.queue).menu()
+        self.queue = self.load_class(OptionsController, self.ticker, self.queue)
 
     def call_res(self, _):
         """Process res command"""
@@ -493,12 +523,9 @@ Stock: [/param]{stock_text}
                 ResearchController,
             )
 
-            self.queue = ResearchController(
-                self.ticker,
-                self.start,
-                self.interval,
-                self.queue,
-            ).menu()
+            self.queue = self.load_class(
+                ResearchController, self.ticker, self.start, self.interval, self.queue
+            )
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
@@ -507,9 +534,14 @@ Stock: [/param]{stock_text}
         if self.ticker:
             from gamestonk_terminal.stocks.due_diligence import dd_controller
 
-            self.queue = dd_controller.DueDiligenceController(
-                self.ticker, self.start, self.interval, self.stock, self.queue
-            ).menu()
+            self.queue = self.load_class(
+                dd_controller.DueDiligenceController,
+                self.ticker,
+                self.start,
+                self.interval,
+                self.stock,
+                self.queue,
+            )
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
@@ -518,18 +550,25 @@ Stock: [/param]{stock_text}
 
         from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 
-        self.queue = ca_controller.ComparisonAnalysisController(
-            [self.ticker] if self.ticker else "", self.queue
-        ).menu()
+        self.queue = self.load_class(
+            ca_controller.ComparisonAnalysisController,
+            [self.ticker] if self.ticker else "",
+            self.queue,
+        )
 
     def call_fa(self, _):
         """Process fa command"""
         if self.ticker:
             from gamestonk_terminal.stocks.fundamental_analysis import fa_controller
 
-            self.queue = fa_controller.FundamentalAnalysisController(
-                self.ticker, self.start, self.interval, self.suffix, self.queue
-            ).menu()
+            self.queue = self.load_class(
+                fa_controller.FundamentalAnalysisController,
+                self.ticker,
+                self.start,
+                self.interval,
+                self.suffix,
+                self.queue,
+            )
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
@@ -538,9 +577,9 @@ Stock: [/param]{stock_text}
         if self.ticker:
             from gamestonk_terminal.stocks.backtesting import bt_controller
 
-            self.queue = bt_controller.BacktestingController(
-                self.ticker, self.stock, self.queue
-            ).menu()
+            self.queue = self.load_class(
+                bt_controller.BacktestingController, self.ticker, self.stock, self.queue
+            )
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
@@ -549,9 +588,14 @@ Stock: [/param]{stock_text}
         if self.ticker:
             from gamestonk_terminal.stocks.technical_analysis import ta_controller
 
-            self.queue = ta_controller.TechnicalAnalysisController(
-                self.ticker, self.start, self.interval, self.stock, self.queue
-            ).menu()
+            self.queue = self.load_class(
+                ta_controller.TechnicalAnalysisController,
+                self.ticker,
+                self.start,
+                self.interval,
+                self.stock,
+                self.queue,
+            )
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
@@ -559,9 +603,12 @@ Stock: [/param]{stock_text}
         """Process ba command"""
         from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
 
-        self.queue = ba_controller.BehaviouralAnalysisController(
-            self.ticker, self.start, self.queue
-        ).menu()
+        self.queue = self.load_class(
+            ba_controller.BehaviouralAnalysisController,
+            self.ticker,
+            self.start,
+            self.queue,
+        )
 
     def call_qa(self, _):
         """Process qa command"""
@@ -571,9 +618,14 @@ Stock: [/param]{stock_text}
                     qa_controller,
                 )
 
-                self.queue = qa_controller.QaController(
-                    self.ticker, self.start, self.interval, self.stock, self.queue
-                ).menu()
+                self.queue = self.load_class(
+                    qa_controller.QaController,
+                    self.ticker,
+                    self.start,
+                    self.interval,
+                    self.stock,
+                    self.queue,
+                )
             # TODO: This menu should work regardless of data being daily or not!
             console.print("Load daily data to use this menu!", "\n")
         else:
@@ -589,13 +641,14 @@ Stock: [/param]{stock_text}
                             pred_controller,
                         )
 
-                        self.queue = pred_controller.PredictionTechniquesController(
+                        self.queue = self.load_class(
+                            pred_controller.PredictionTechniquesController,
                             self.ticker,
                             self.start,
                             self.interval,
                             self.stock,
                             self.queue,
-                        ).menu()
+                        )
                     except ModuleNotFoundError as e:
                         console.print(
                             "One of the optional packages seems to be missing: ",

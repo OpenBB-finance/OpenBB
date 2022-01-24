@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import argparse
 from datetime import datetime, timedelta
 from typing import List
+import os
 
 import investpy
 import pandas as pd
@@ -29,6 +30,7 @@ class FundController(BaseController):
     """Fund Controller class"""
 
     CHOICES_COMMANDS = [
+        "resources",
         "country",
         "search",
         "overview",
@@ -51,10 +53,12 @@ class FundController(BaseController):
         "currency",
         "underlying",
     ]
+    PATH = "/funds/"
+    FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/funds/", queue)
+        super().__init__(queue)
 
         self.country = "united states"
         self.data = pd.DataFrame()

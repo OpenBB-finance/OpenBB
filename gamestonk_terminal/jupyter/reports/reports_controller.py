@@ -49,7 +49,7 @@ class ReportController(BaseController):
             notebook_content.find(metadata_cell) :  # noqa: E203
         ]
         cell_start = 'source": '
-        cell_end = '"report_name='
+        cell_end = '"report_name ='
         params = (
             notebook_metadata_content[
                 notebook_metadata_content.find(
@@ -65,7 +65,6 @@ class ReportController(BaseController):
             for param in literal_eval(params.strip('source": '))
             if param[0] not in ["#", "\n"]
         ]
-
         d_params[report_to_run] = l_params
 
         args = f"<{'> <'.join(l_params)}>"
@@ -75,10 +74,11 @@ class ReportController(BaseController):
             + f"{args if args != '<>' else ''}\n"
         )
     CHOICES_MENUS = report_names + ids_reports
+    PATH = "/jupyter/reports/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/jupyter/reports/", queue)
+        super().__init__(queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -195,6 +195,7 @@ Select one of the following reports:[/info][cmds]
                 notebook_template + ".ipynb",
                 notebook_output + ".ipynb",
                 parameters=d_report_params,
+                kernel_name="python3",
             )
 
             if gtff.OPEN_REPORT_AS_HTML:

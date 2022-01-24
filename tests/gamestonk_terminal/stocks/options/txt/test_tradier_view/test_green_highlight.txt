@@ -1,1 +1,1 @@
-[32mMOCK TEXT[0m
+[green]MOCK TEXT[/green]

@@ -3,12 +3,12 @@ __docformat__ = "numpy"
 
 import argparse
 from datetime import timedelta, datetime
+import os
 from typing import List
 import logging
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.forex import av_view, av_model
@@ -28,12 +28,14 @@ logger = logging.getLogger(__name__)
 class ForexController(BaseController):
     """Forex Controller class."""
 
-    CHOICES_COMMANDS = ["to", "from", "load", "quote", "candle"]
+    CHOICES_COMMANDS = ["to", "from", "load", "quote", "candle", "resources"]
     CHOICES_MENUS = ["oanda"]
+    PATH = "/forex/"
+    FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
     def __init__(self, queue: List[str] = None):
         """Construct Data."""
-        super().__init__("/forex/", queue)
+        super().__init__(queue)
 
         self.from_symbol = "USD"
         self.to_symbol = ""
@@ -220,7 +222,7 @@ class ForexController(BaseController):
         """Enter Oanda menu."""
         from gamestonk_terminal.forex.oanda.oanda_controller import OandaController
 
-        self.queue = OandaController(self.queue).menu()
+        self.queue = self.load_class(OandaController, self.queue)
 
     # HELP WANTED!
     # TODO: Add news and reddit commands back

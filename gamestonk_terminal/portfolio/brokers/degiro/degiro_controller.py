@@ -30,12 +30,13 @@ class DegiroController(BaseController):
         "topnews",
         "update",
     ]
+    PATH = "/portfolio/bro/derigo/"
 
     ERROR_MAP = {"Connection required.": "You haven't logged in Degiro"}
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/portfolio/bro/degiro/", queue)
+        super().__init__(queue)
 
         self.__degiro_view = DegiroView()
 

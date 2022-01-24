@@ -57,6 +57,7 @@ class ETFController(BaseController):
         "weights",
         "summary",
         "compare",
+        "resources",
     ]
     CHOICES_MENUS = [
         "ta",
@@ -65,10 +66,12 @@ class ETFController(BaseController):
         "scr",
         "disc",
     ]
+    PATH = "/etf/"
+    FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/etf/", queue)
+        super().__init__(queue)
 
         self.etf_name = ""
         self.etf_data = ""
@@ -411,6 +414,7 @@ class ETFController(BaseController):
         )
         if ns_parser:
             if self.etf_name:
+                # TODO: Should be done in one function
                 data = stocks_helper.process_candle(self.etf_data)
                 df_etf = stocks_helper.find_trendline(data, "OC_High", "high")
                 df_etf = stocks_helper.find_trendline(data, "OC_Low", "low")
@@ -503,9 +507,9 @@ class ETFController(BaseController):
             other_args.insert(0, "-e")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if self.etf_name:
+            if ns_parser.names:
                 create_ETF_report(
-                    ns_parser.names if ns_parser.names else [self.etf_name],
+                    ns_parser.names,
                     filename=ns_parser.filename,
                     folder=ns_parser.folder,
                 )
@@ -568,10 +572,14 @@ class ETFController(BaseController):
 
     def call_ta(self, _):
         """Process ta command"""
-        if self.etf_name:
-            self.queue = ta_controller.TechnicalAnalysisController(
-                self.etf_name, self.etf_data.index[0], self.etf_data, self.queue
-            ).menu()
+        if self.etf_name and not self.etf_data.empty:
+            self.queue = self.load_class(
+                ta_controller.TechnicalAnalysisController,
+                self.etf_name,
+                self.etf_data.index[0],
+                self.etf_data,
+                self.queue,
+            )
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
@@ -584,13 +592,15 @@ class ETFController(BaseController):
                         pred_controller,
                     )
 
-                    self.queue = pred_controller.PredictionTechniquesController(
+                    self.queue = self.load_class(
+                        pred_controller.PredictionTechniquesController,
                         self.etf_name,
                         self.etf_data.index[0],
                         "1440min",
                         self.etf_data,
                         self.queue,
-                    ).menu()
+                    )
+
                 except ModuleNotFoundError as e:
                     console.print(
                         "One of the optional packages seems to be missing: ",
@@ -616,11 +626,11 @@ class ETFController(BaseController):
 
     def call_scr(self, _):
         """Process scr command"""
-        self.queue = screener_controller.ScreenerController(self.queue).menu()
+        self.queue = self.load_class(screener_controller.ScreenerController, self.queue)
 
     def call_disc(self, _):
         """Process disc command"""
-        self.queue = disc_controller.DiscoveryController(self.queue).menu()
+        self.queue = self.load_class(disc_controller.DiscoveryController, self.queue)
 
     def call_compare(self, other_args):
         """Process compare command"""

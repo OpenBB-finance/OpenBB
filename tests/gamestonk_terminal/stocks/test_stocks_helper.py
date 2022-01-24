@@ -12,8 +12,9 @@ from gamestonk_terminal.stocks import stocks_helper
 def vcr_config():
     return {
         "filter_query_parameters": [
-            ("period1", "1605481200"),
-            ("period2", "1637103600"),
+            ("period1", "MOCK_PERIOD_1"),
+            ("period2", "MOCK_PERIOD_2"),
+            ("date", "MOCK_DATE"),
             ("token", "MOCK_TOKEN"),
             ("apikey", "MOCK_API_KEY"),
         ]

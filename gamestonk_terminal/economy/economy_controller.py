@@ -9,7 +9,6 @@ import logging
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -63,6 +62,7 @@ class EconomyController(BaseController):
         "unemp",
         "industry",
         "bigmac",
+        "resources",
     ]
     CHOICES_MENUS = ["fred"]
 
@@ -121,10 +121,12 @@ class EconomyController(BaseController):
         "country": "Country (U.S. listed stocks only)",
         "capitalization": "Capitalization",
     }
+    PATH = "/economy/"
+    FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/economy/", queue)
+        super().__init__(queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -162,8 +164,7 @@ class EconomyController(BaseController):
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-    @staticmethod
-    def print_help():
+    def print_help(self):
         """Print help"""
         help_text = """[cmds]
 [src][CNN][/src]
@@ -1023,4 +1024,4 @@ class EconomyController(BaseController):
         """Process fred command"""
         from gamestonk_terminal.economy.fred.fred_controller import FredController
 
-        self.queue = FredController(self.queue).menu()
+        self.queue = self.load_class(FredController, self.queue)

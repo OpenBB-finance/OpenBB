@@ -11,7 +11,7 @@ from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.rich_config import console
 
 
-def view_overview(symbol: str, export: str):
+def view_overview(symbol: str, export: str = ""):
     """Print etf overview information
 
     Parameters
@@ -28,8 +28,12 @@ def view_overview(symbol: str, export: str):
 
     data = stockanalysis_model.get_etf_overview(symbol)
 
-    print(tabulate(data, headers=data.columns, tablefmt="fancy_grid"), "\n")
+    if gtff.USE_TABULATE_DF:
+        print(tabulate(data, headers=data.columns, tablefmt="fancy_grid"))
+    else:
+        print(data.to_string(), "\n")
 
+    print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "overview", data)
 
 
