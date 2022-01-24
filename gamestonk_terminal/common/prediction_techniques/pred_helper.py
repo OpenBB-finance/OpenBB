@@ -556,48 +556,35 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
     """Print predictions"""
     console.print("")
     if gtff.USE_COLOR:
-        console.print(f"Actual price: [yellow]{last_price:.2f} $[/yellow]\n")
-        if gtff.USE_TABULATE_DF:
-            df_pred = pd.DataFrame(df_pred)
-            df_pred.columns = ["pred"]
-            df_pred["pred"] = df_pred["pred"].apply(
-                lambda x: price_prediction_color(x, last_val=last_price)
+        df_pred = pd.DataFrame(df_pred)
+        df_pred.columns = ["pred"]
+        df_pred["pred"] = df_pred["pred"].apply(
+            lambda x: price_prediction_color(x, last_val=last_price)
+        )
+        console.print(
+            print_rich_table(
+                df_pred,
+                show_index=True,
+                index_name="Datetime",
+                headers=["Prediction"],
+                floatfmt=".2f",
+                title=f"Actual price: [yellow]{last_price:.2f} $[/yellow]\n",
             )
-            console.print(
-                print_rich_table(
-                    df_pred,
-                    show_index=True,
-                    title="Predictions",
-                    index_name="Datetime",
-                    headers=["Prediction"],
-                    floatfmt=".2f",
-                )
-            )
+        )
 
-        else:
-
-            console.print("Prediction:")
-            console.print(
-                df_pred.apply(price_prediction_color, last_val=last_price).to_string()
-            )
     else:
-        if gtff.USE_TABULATE_DF:
-            df_pred = pd.DataFrame(df_pred)
-            df_pred.columns = ["pred"]
-            console.print(
-                print_rich_table(
-                    df_pred,
-                    show_index=True,
-                    title="Predictions",
-                    index_name="Datetime",
-                    headers=["Prediction"],
-                    floatfmt=".2f",
-                )
+        df_pred = pd.DataFrame(df_pred)
+        df_pred.columns = ["pred"]
+        console.print(
+            print_rich_table(
+                df_pred,
+                show_index=True,
+                title=f"Actual price: [yellow]{last_price:.2f} $[/yellow]\n",
+                index_name="Datetime",
+                headers=["Prediction"],
+                floatfmt=".2f",
             )
-        else:
-            console.print(f"Actual price: {last_price:.2f} $\n")
-            console.print("Prediction:")
-            console.print(df_pred.to_string())
+        )
 
 
 def print_pretty_prediction_nn(df_pred: pd.DataFrame, last_price: float):
@@ -632,18 +619,14 @@ def print_prediction_kpis(real: np.ndarray, pred: np.ndarray):
     }
 
     df = pd.DataFrame.from_dict(kpis, orient="index")
-    if gtff.USE_TABULATE_DF:
-        console.print(
-            print_rich_table(
-                df,
-                show_index=True,
-                title="KPIs",
-                floatfmt=".2f",
-            )
+    console.print(
+        print_rich_table(
+            df,
+            show_index=True,
+            title="KPIs",
+            floatfmt=".2f",
         )
-    else:
-        console.print("KPIs")
-        console.print(df.to_string())
+    )
 
 
 def price_prediction_backtesting_color(val: list) -> str:
