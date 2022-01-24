@@ -1129,14 +1129,6 @@ Expiry: [/param]{self.selected_date or None}
             description="The greeks for a given option.",
         )
         parser.add_argument(
-            "-s",
-            "--strike",
-            dest="strike",
-            type=float,
-            help="The strike for the option",
-            required="-h" not in other_args,
-        )
-        parser.add_argument(
             "-d",
             "--div",
             dest="dividend",
@@ -1173,7 +1165,6 @@ Expiry: [/param]{self.selected_date or None}
                 opt_type = -1 if ns_parser.put else 1
                 yfinance_view.show_greeks(
                     ticker=self.ticker,
-                    k=ns_parser.strike,
                     div_cont=ns_parser.dividend,
                     expire=self.selected_date,
                     rf=ns_parser.risk_free,

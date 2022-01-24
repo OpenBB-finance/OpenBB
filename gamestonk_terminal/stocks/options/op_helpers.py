@@ -1,7 +1,6 @@
 """Option helper functions"""
 __docformat__ = "numpy"
 
-from abc import abstractmethod
 from math import log, e
 from typing import Union
 import numpy as np
@@ -142,7 +141,8 @@ class Option:
         opt_type: int = 1,
     ):
         """
-        A baseclass for creating options
+        Class for getting the greeks of options. Inspiration from:
+        http://www.smileofthales.com/computation/option-pricing-python-inheritance/
 
         Parameters
         ----------
@@ -162,30 +162,24 @@ class Option:
             The underlying volatility for an option
         """
         self.Type = int(opt_type)
-        self.S = float(s)
-        self.K = float(k)
-        self.r = float(rf)
-        self.q = float(div_cont)
-        self.T = float(expiry) / 365.0
+        self.price = float(s)
+        self.strike = float(k)
+        self.risk_free = float(rf)
+        self.div_cont = float(div_cont)
+        self.exp_time = float(expiry) / 365.0
         self._sigma = float(vol)
-        self.sigmaT = self._sigma * self.T ** 0.5
+        self.sigmaT = self._sigma * self.exp_time ** 0.5
 
     @property
-    @abstractmethod
     def d1(self):
-        raise AttributeError("This must be overridden")
+        return (
+            log(self.price / self.strike)
+            + (self.risk_free - self.div_cont + 0.5 * (self.sigma ** 2)) * self.exp_time
+        ) / self.sigmaT
 
     @property
     def d2(self):
         return self.d1 - self.sigmaT
-
-
-class BSVanilla(Option):
-    @property
-    def d1(self):
-        return (
-            log(self.S / self.K) + (self.r - self.q + 0.5 * (self.sigma ** 2)) * self.T
-        ) / self.sigmaT
 
     @property
     def sigma(self):
@@ -194,19 +188,23 @@ class BSVanilla(Option):
     @sigma.setter
     def sigma(self, val):
         self._sigma = val
-        self.sigmaT = val * self.T ** 0.5
+        self.sigmaT = val * self.exp_time ** 0.5
 
     def Premium(self):
         tmpprem = self.Type * (
-            self.S * e ** (-self.q * self.T) * norm.cdf(self.Type * self.d1)
-            - self.K * e ** (-self.r * self.T) * norm.cdf(self.Type * self.d2)
+            self.price
+            * e ** (-self.div_cont * self.exp_time)
+            * norm.cdf(self.Type * self.d1)
+            - self.strike
+            * e ** (-self.risk_free * self.exp_time)
+            * norm.cdf(self.Type * self.d2)
         )
         return tmpprem
 
     # 1st order greeks
 
     def Delta(self):
-        dfq = e ** (-self.q * self.T)
+        dfq = e ** (-self.div_cont * self.exp_time)
         if self.Type == 1:
             return dfq * norm.cdf(self.d1)
         return dfq * (norm.cdf(self.d1) - 1)
@@ -214,63 +212,122 @@ class BSVanilla(Option):
     def Vega(self):
         """Vega for 1% change in vol"""
         return (
-            0.01 * self.S * e ** (-self.q * self.T) * norm.pdf(self.d1) * self.T ** 0.5
+            0.01
+            * self.price
+            * e ** (-self.div_cont * self.exp_time)
+            * norm.pdf(self.d1)
+            * self.exp_time ** 0.5
         )
 
     def Theta(self):
         """Theta for 1 day change"""
-        df = e ** -(self.r * self.T)
-        dfq = e ** (-self.q * self.T)
+        df = e ** -(self.risk_free * self.exp_time)
+        dfq = e ** (-self.div_cont * self.exp_time)
         tmptheta = (1.0 / 365.0) * (
-            -0.5 * self.S * dfq * norm.pdf(self.d1) * self.sigma / (self.T ** 0.5)
+            -0.5
+            * self.price
+            * dfq
+            * norm.pdf(self.d1)
+            * self.sigma
+            / (self.exp_time ** 0.5)
             + self.Type
             * (
-                self.q * self.S * dfq * norm.cdf(self.Type * self.d1)
-                - self.r * self.K * df * norm.cdf(self.Type * self.d2)
+                self.div_cont * self.price * dfq * norm.cdf(self.Type * self.d1)
+                - self.risk_free * self.strike * df * norm.cdf(self.Type * self.d2)
             )
         )
         return tmptheta
 
     def Rho(self):
-        df = e ** -(self.r * self.T)
-        return self.Type * self.K * self.T * df * 0.01 * norm.cdf(self.Type * self.d2)
+        df = e ** -(self.risk_free * self.exp_time)
+        return (
+            self.Type
+            * self.strike
+            * self.exp_time
+            * df
+            * 0.01
+            * norm.cdf(self.Type * self.d2)
+        )
 
     def Phi(self):
         return (
             0.01
             * -self.Type
-            * self.T
-            * self.S
-            * e ** (-self.q * self.T)
+            * self.exp_time
+            * self.price
+            * e ** (-self.div_cont * self.exp_time)
             * norm.cdf(self.Type * self.d1)
         )
 
     # 2nd order greeks
 
     def Gamma(self):
-        return e ** (-self.q * self.T) * norm.pdf(self.d1) / (self.S * self.sigmaT)
+        return (
+            e ** (-self.div_cont * self.exp_time)
+            * norm.pdf(self.d1)
+            / (self.price * self.sigmaT)
+        )
 
     def Charm(self):
         """Calculates Charm for one day change"""
-        dfq = e ** (-self.q * self.T)
+        dfq = e ** (-self.div_cont * self.exp_time)
         cdf = norm.cdf(self.Type * self.d1)
         return (
             (1.0 / 365.0)
             * -dfq
             * (
                 norm.pdf(self.d1)
-                * ((self.r - self.q) / (self.sigmaT) - self.d2 / (2 * self.T))
-                + (self.Type * -self.q) * cdf
+                * (
+                    (self.risk_free - self.div_cont) / (self.sigmaT)
+                    - self.d2 / (2 * self.exp_time)
+                )
+                + (self.Type * -self.div_cont) * cdf
             )
         )
 
-    def Vanna(self):
-        """Vanna for 1% change in vol"""
+    def Vanna(self, change: float):
+        """
+        Vanna for a given percent change in volatility
+
+        Parameters
+        ----------
+        change : float
+            The change in volatility
+
+        Returns
+        -------
+        num : float
+            The Vanna
+
+        """
+
         return (
-            0.01 * -(e ** (-self.q * self.T)) * self.d2 / self.sigma * norm.pdf(self.d1)
+            change
+            * -(e ** (-self.div_cont * self.exp_time))
+            * self.d2
+            / self.sigma
+            * norm.pdf(self.d1)
         )
 
-    def Vomma(self):
+    def Vomma(self, change):
+        """
+        Vomma for a given percent change in volatility
+
+        Parameters
+        ----------
+        change : float
+            The change in volatility
+
+        Returns
+        -------
+        num : float
+            The Vomma
+
+        """
         return (
-            0.01 * -(e ** (-self.q * self.T)) * self.d2 / self.sigma * norm.pdf(self.d1)
+            change
+            * -(e ** (-self.div_cont * self.exp_time))
+            * self.d2
+            / self.sigma
+            * norm.pdf(self.d1)
         )

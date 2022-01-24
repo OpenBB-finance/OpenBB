@@ -33,7 +33,7 @@ from gamestonk_terminal.stocks.options.yfinance_model import (
     get_price,
 )
 from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.stocks.options.op_helpers import BSVanilla
+from gamestonk_terminal.stocks.options.op_helpers import Option
 
 # pylint: disable=C0302
 
@@ -944,7 +944,6 @@ def display_vol_surface(ticker: str, export: str = "", z: str = "IV"):
 
 def show_greeks(
     ticker: str,
-    k: float,
     div_cont: float,
     expire: str,
     rf: float = None,
@@ -957,8 +956,6 @@ def show_greeks(
     ----------
     ticker : str
         The ticker value of the option
-    k : float
-        The option strike price
     div_cont : float
         The dividend continuous rate
     expire : str
@@ -971,41 +968,36 @@ def show_greeks(
     s = yfinance_model.get_price(ticker)
     chains = yfinance_model.get_option_chain(ticker, expire)
     chain = chains.calls if opt_type == 1 else chains.puts
-    if k in chain["strike"].tolist():
-        selection = chain.loc[chain["strike"] == float(k)]
-        vol = selection["impliedVolatility"].tolist()[0]
-    else:
-        console.print("Invalid strike selected")
-        return None
+
     risk_free = rf if rf is not None else get_rf()
     expire_dt = datetime.strptime(expire, "%Y-%m-%d")
     dif = (expire_dt - datetime.now()).days
-    option = BSVanilla(s, k, risk_free, div_cont, dif, vol, opt_type)
-    data = {
-        "Greek": [
+
+    strikes = []
+    for row in chain.iterrows():
+        vol = row["impliedVolatility"]
+        opt = Option(s, row["strike"], risk_free, div_cont, dif, vol, opt_type)
+        result = [
+            row["strike"],
+            opt.Delta(),
+            opt.Vega(),
+            opt.Theta(),
+            opt.Rho(),
+            opt.Phi(),
+        ]
+        strikes.append(result)
+
+    df = pd.DataFrame(
+        strikes,
+        columns=[
+            "Strike",
             "Delta",
             "Vega",
             "Theta",
             "Rho",
             "Phi",
-            "Gamma",
-            "Charm",
-            "Vanna",
-            "Vomma",
         ],
-        "Value": [
-            option.Delta(),
-            option.Vega(),
-            option.Theta(),
-            option.Rho(),
-            option.Phi(),
-            option.Gamma(),
-            option.Charm(),
-            option.Vanna(),
-            option.Vomma(),
-        ],
-    }
-    df = pd.DataFrame(data)
+    )
     print_rich_table(df, headers=list(df.columns), show_index=False, title="Greeks")
     console.print("")
     return None
