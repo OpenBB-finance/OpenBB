@@ -1,0 +1,97 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://data.nasdaq.com/api/v3/datasets/ECONOMIST/BIGMAC_VNM?api_key=MOCK_API_KEY&column_index=3
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA21Uy27bMBD8FYJn2+BDfOnWJkXhg5NDjBxaBAYj0TZRvUpKTowg/96lI9lOEUA+
+        2LOzszO71hsubW+j63H+hn2Jc8a0pCSTswnYFG3pcI6/L3+uvt1sHu9W+AN7BtoE/ri5v7tfLR/W
+        gDW2PtX7HVrZAi2b0r2iOXr0rgcokV0sgu963zZQt9479LnWR2Qb5JttG2pbodrZOASH2i0qhhBc
+        UxyRey32ttk5FGzvoLxHXdct0LKfqiPq984HdLDV4JDdWd/EHlkUfe0rGxAM/8f1qeeubcskWKLo
+        wsEXLs5AG+gwRgEWgTSOt0C3frt1wTc71IVUmYRrG1Kn/yZ6aYeqRL7uqiO0grK2cZfxofUAsQTU
+        wnMA2TRluYBsgtsGF/eu3FhYCWaEsTmhcyrWhOTwMLUwXP1KMbsXF/uNPVgw9Fy5DSwy5Q4UOidq
+        zikUtRWE/WURzc5FRVsNdbNJe4s4/41vUyNYU1tBUpuTU/w0wzDY3yGlDyIliB6hpj92SXPta4ce
+        IBloMMNdcLUfapxvbRXdDFeQOZhphqoCRrBNTJudfhjVfToTnPMZjr0N/cXN1aCuKb90mU4YBv/9
+        yTtbGCOZVowYzpRQT7MJp6ds2AIOXRKWGcWNFtmIkykWwDPFNKPcKCXkxAf8zM+UUlwIrQU35oNP
+        zYWvjEqNBcnO8gk+0wnVWWaIokTTka2v1BllGVWaZIzIC3w1vNGSQQsuJlhd2JIbbhh8JOPTaABP
+        bCk0eBeCaaNG51ResQ0RmhlhZEb5qA3wma2IYBkxhAs25kLFlW9BCaeSSy25HtkAX3wDBJ4FZXJq
+        fj5GSJ1Jqg0XGdD1E9wdHEhluwh39nFBbYB/zvQlrf70IkrvLsE5eX//B27vTLnTBAAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - X-RateLimit-Limit, X-RateLimit-Remaining
+      Access-Control-Max-Age:
+      - '1728000'
+      Allow:
+      - GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '678'
+      Content-Security-Policy:
+      - frame-ancestors 'self';
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 24 Jan 2022 18:24:21 GMT
+      ETag:
+      - W/"213829aa5f7d40ef9cfb801209d06212"
+      Pragma:
+      - no-cache
+      Referrer-Policy:
+      - origin-when-cross-origin
+      Server:
+      - openresty
+      Set-Cookie:
+      - visid_incap_2170999=tTw5FQ9jTnatNDHcoXfiGdTu7mEAAAAAQUIPAAAAAAB2GGuMkBPzF9HJqFVFbKsY;
+        expires=Tue, 24 Jan 2023 09:00:56 GMT; HttpOnly; path=/; Domain=.nasdaq.com
+      - nlbi_2170999=px2FQJh/thVEtFMoKj7S7QAAAABfBsmFzqkNjlvARbhOo4o4; path=/; Domain=.nasdaq.com
+      - incap_ses_891_2170999=nOAvUnXDEnMblQI9THhdDNTu7mEAAAAAGFn5TjnGaUEh0sqUQKT51Q==;
+        path=/; Domain=.nasdaq.com
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-CDN:
+      - Imperva
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Iinfo:
+      - 9-21501221-21501226 NNNN CT(3 3 0) RT(1643048660682 114) q(0 0 1 -1) r(2 2)
+        U2
+      X-RateLimit-Limit:
+      - '50000'
+      X-RateLimit-Remaining:
+      - '49997'
+      X-Request-Id:
+      - 5c05361a-a18e-4784-b2da-b2fc37448162
+      X-Runtime:
+      - '0.128855'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

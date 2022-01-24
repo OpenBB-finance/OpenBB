@@ -1,0 +1,5 @@
+Fear & Greed Now: 43 (Fear)
+   Previous Close: 55 (Neutral)
+   1 Week Ago: 58 (Greed)
+   1 Month Ago: 35 (Fear)
+   1 Year Ago: 63 (Greed)
