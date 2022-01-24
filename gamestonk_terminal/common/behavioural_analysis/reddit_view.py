@@ -8,12 +8,10 @@ from typing import Dict
 
 import finviz
 import praw
-from tabulate import tabulate
 import pandas as pd
 
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.behavioural_analysis import reddit_model
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
 
@@ -64,14 +62,9 @@ def print_and_record_reddit_post(
         s_all_awards,
     ]
     df = pd.DataFrame(data, columns=columns)
-    t_post = tabulate(
-        df,
-        headers=df.columns,
-        tablefmt="fancy_grid",
-        showindex=False,
+    print_rich_table(
+        df, headers=list(df.columns), show_index=False, title="Reddit Submission"
     )
-
-    console.print(t_post)
     console.print("\n")
 
 
@@ -132,18 +125,12 @@ def display_popular_tickers(
         n_top, posts_to_look_at, subreddits
     )
     if not popular_tickers_df.empty:
-        console.print(f"\nThe following TOP {n_top} tickers have been mentioned:")
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    popular_tickers_df,
-                    headers=popular_tickers_df.columns,
-                    tablefmt="fancy_grid",
-                    showindex=False,
-                )
-            )
-        else:
-            console.print(popular_tickers_df.to_string())
+        print_rich_table(
+            popular_tickers_df,
+            headers=list(popular_tickers_df.columns),
+            show_index=False,
+            title=f"\nThe following TOP {n_top} tickers have been mentioned:",
+        )
     else:
         console.print("No tickers found")
 

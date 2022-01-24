@@ -4,13 +4,12 @@ __docformat__ = "numpy"
 import os
 from typing import Union
 from pandas.plotting import register_matplotlib_converters
-from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import (
     export_data,
+    print_rich_table,
 )
 import gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model as gecko
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import wrap_text_in_df
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
@@ -49,19 +48,10 @@ def display_coin_potential_returns(
         lambda x: "{:,}".format(int(x["Current Market Cap ($)"])), axis=1
     )
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df, headers=list(df.columns), show_index=False, title="Potential Coin Returns"
+    )
+    console.print("")
 
     export_data(
         export,
@@ -86,19 +76,10 @@ def display_info(symbol: str, export: str) -> None:
 
     df = wrap_text_in_df(coin.get_base_info, w=80)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df, headers=list(df.columns), show_index=False, title="Basic Coin Information"
+    )
+    console.print("")
 
     export_data(
         export,
@@ -123,19 +104,10 @@ def display_web(symbol: str, export: str) -> None:
 
     df = coin.get_websites
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df, headers=list(df.columns), show_index=False, title="Websites for Loaded Coin"
+    )
+    console.print("")
 
     export_data(
         export,
@@ -158,19 +130,13 @@ def display_social(symbol: str, export: str) -> None:
     coin = gecko.Coin(symbol)
     df = coin.get_social_media
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Social Media for Loaded Coin",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -194,19 +160,13 @@ def display_dev(symbol: str, export: str) -> None:
 
     df = coin.get_developers_data
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Developers Data for Loaded Coin",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -233,19 +193,8 @@ def display_ath(symbol: str, currency: str, export: str) -> None:
 
     df = coin.get_all_time_high(currency=currency)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(df, headers=list(df.columns), show_index=False, title="Coin Highs")
+    console.print("")
 
     export_data(
         export,
@@ -272,19 +221,8 @@ def display_atl(symbol: str, currency: str, export: str) -> None:
 
     df = coin.get_all_time_low(currency=currency)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(df, headers=list(df.columns), show_index=False, title="Coin Lows")
+    console.print("")
 
     export_data(
         export,
@@ -308,19 +246,13 @@ def display_score(symbol: str, export: str) -> None:
 
     df = coin.get_scores
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Different Scores for Loaded Coin",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -344,19 +276,10 @@ def display_bc(symbol: str, export: str) -> None:
 
     df = coin.get_blockchain_explorers
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df, headers=list(df.columns), show_index=False, title="Blockchain URLs"
+    )
+    console.print("")
 
     export_data(
         export,
@@ -380,19 +303,10 @@ def display_market(symbol: str, export: str) -> None:
 
     df = coin.get_market_data
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df, headers=list(df.columns), show_index=False, title="Market Data"
+    )
+    console.print("")
 
     export_data(
         export,
