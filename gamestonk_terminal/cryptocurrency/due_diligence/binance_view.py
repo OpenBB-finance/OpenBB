@@ -3,15 +3,14 @@ __docformat__ = "numpy"
 
 import os
 from binance.client import Client
-from tabulate import tabulate
 import numpy as np
 import pandas as pd
 from gamestonk_terminal.helper_funcs import (
     export_data,
+    print_rich_table,
 )
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
 import gamestonk_terminal.config_terminal as cfg
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
 
@@ -79,13 +78,10 @@ def display_balance(coin: str, currency: str, export: str) -> None:
     df["Percent"] = df.div(df.sum(axis=0), axis=1).round(3)
     console.print(f"You currently have {total} coins and the breakdown is:")
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(df, headers=df.columns, showindex=True, tablefmt="fancy_grid"),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df, headers=df.columns, show_index=True, title="Account Holdings for Assets"
+    )
+    console.print("")
 
     export_data(
         export,
