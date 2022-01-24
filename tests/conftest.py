@@ -1,12 +1,12 @@
 # IMPORTATION STANDARD
-from typing import Any, Dict, List, Optional, Type
 import json
 import os
 import pathlib
-import pkg_resources
+from typing import Any, Dict, List, Optional, Type
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
+import pkg_resources
 import pytest
 from _pytest.config.argparsing import Parser
 
@@ -316,6 +316,7 @@ def pytest_configure(config: Config) -> None:
 
     helper_funcs.print_rich_table = effect
     config.addinivalue_line("markers", "record_stdout: Mark the test as text record.")
+    os.environ["DEBUG_MODE"] = "true"
 
 
 @pytest.fixture(scope="session")  # type: ignore

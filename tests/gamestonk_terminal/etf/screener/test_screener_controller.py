@@ -123,7 +123,6 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_print_help():
-
     controller = screener_controller.ScreenerController(queue=None)
     controller.print_help()
 
@@ -150,7 +149,6 @@ def test_print_help():
     ],
 )
 def test_switch(an_input, expected_queue):
-
     controller = screener_controller.ScreenerController(queue=None)
     queue = controller.switch(an_input=an_input)
 
