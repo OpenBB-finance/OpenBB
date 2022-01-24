@@ -948,6 +948,9 @@ def show_greeks(
     expire: str,
     rf: float = None,
     opt_type: int = 1,
+    mini: float = None,
+    maxi: float = None,
+    second: bool = False,
 ) -> None:
     """
     Shows the greeks for a given option
@@ -964,17 +967,32 @@ def show_greeks(
         The risk-free rate
     opt_type : Union[1, -1]
         The option type 1 is for call and -1 is for put
+    mini : float
+        The minimum strike price to include in the table
+    maxi : float
+        The maximum strike price to include in the table
+    second : bool
+        Whether to show second level derivatives
     """
+
     s = yfinance_model.get_price(ticker)
     chains = yfinance_model.get_option_chain(ticker, expire)
     chain = chains.calls if opt_type == 1 else chains.puts
 
+    if mini is None:
+        mini = chain.strike.quantile(0.25)
+    if maxi is None:
+        maxi = chain.strike.quantile(0.75)
+
+    chain = chain[chain["strike"] >= mini]
+    chain = chain[chain["strike"] <= maxi]
+
     risk_free = rf if rf is not None else get_rf()
     expire_dt = datetime.strptime(expire, "%Y-%m-%d")
-    dif = (expire_dt - datetime.now()).days
+    dif = (expire_dt - datetime.now()).seconds / (60 * 60 * 24)
 
     strikes = []
-    for row in chain.iterrows():
+    for _, row in chain.iterrows():
         vol = row["impliedVolatility"]
         opt = Option(s, row["strike"], risk_free, div_cont, dif, vol, opt_type)
         result = [
@@ -985,19 +1003,21 @@ def show_greeks(
             opt.Rho(),
             opt.Phi(),
         ]
+        if second:
+            result += [opt.Gamma(), opt.Charm(), opt.Vanna(0.01), opt.Vomma(0.01)]
         strikes.append(result)
 
-    df = pd.DataFrame(
-        strikes,
-        columns=[
-            "Strike",
-            "Delta",
-            "Vega",
-            "Theta",
-            "Rho",
-            "Phi",
-        ],
-    )
+    columns = [
+        "Strike",
+        "Delta",
+        "Vega",
+        "Theta",
+        "Rho",
+        "Phi",
+    ]
+    if second:
+        columns += ["Gamma", "Charm", "Vanna", "Vomma"]
+    df = pd.DataFrame(strikes, columns=columns)
     print_rich_table(df, headers=list(df.columns), show_index=False, title="Greeks")
     console.print("")
     return None

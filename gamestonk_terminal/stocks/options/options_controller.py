@@ -1152,6 +1152,29 @@ Expiry: [/param]{self.selected_date or None}
             default=False,
             help="Whether the option is a put.",
         )
+        parser.add_argument(
+            "-m",
+            "--min",
+            dest="min",
+            type=float,
+            default=None,
+            help="Minimum strike price to show.",
+        )
+        parser.add_argument(
+            "-M",
+            "--max",
+            dest="max",
+            type=float,
+            default=None,
+            help="Maximum strike price to show.",
+        )
+        parser.add_argument(
+            "--second",
+            dest="second",
+            action="store_true",
+            default=False,
+            help="Whether to show second level derivatives.",
+        )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
@@ -1169,6 +1192,9 @@ Expiry: [/param]{self.selected_date or None}
                     expire=self.selected_date,
                     rf=ns_parser.risk_free,
                     opt_type=opt_type,
+                    mini=ns_parser.min,
+                    maxi=ns_parser.max,
+                    second=ns_parser.second,
                 )
 
     def call_parity(self, other_args: List[str]):
