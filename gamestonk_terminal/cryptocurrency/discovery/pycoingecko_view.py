@@ -3,10 +3,8 @@ __docformat__ = "numpy"
 
 import os
 from pandas.plotting import register_matplotlib_converters
-from tabulate import tabulate
 from gamestonk_terminal.cryptocurrency.discovery import pycoingecko_model
-from gamestonk_terminal.helper_funcs import export_data
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
@@ -49,19 +47,12 @@ def display_gainers(
         if not links:
             df.drop("Url", axis=1, inplace=True)
 
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df.head(top),
-                    headers=df.columns,
-                    floatfmt=".4f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            show_index=False,
+            title="Largest Gainers",
+        )
 
         export_data(
             export,
@@ -108,19 +99,13 @@ def display_losers(
         if not links:
             df.drop("Url", axis=1, inplace=True)
 
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df.head(top),
-                    headers=df.columns,
-                    floatfmt=".4f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            show_index=False,
+            title="Shows Largest Losers",
+        )
+        console.print("")
 
         export_data(
             export,
@@ -172,19 +157,9 @@ def display_discover(
         if not links:
             df.drop("Url", axis=1, inplace=True)
 
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df.head(top),
-                    headers=df.columns,
-                    floatfmt=".4f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df.head(top), headers=list(df.columns), show_index=False, title="Coins"
+        )
 
         export_data(
             export,
@@ -228,19 +203,13 @@ def display_recently_added(
     else:
         df.drop("Url", axis=1, inplace=True)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".0f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top),
+        headers=list(df.columns),
+        show_index=False,
+        title="Recently Added Coins",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -285,19 +254,13 @@ def display_top_defi_coins(
             df.drop("Url", axis=1, inplace=True)
 
         console.print("\n", stats_str, "\n")
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df.head(top),
-                    headers=df.columns,
-                    floatfmt=".4f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            show_index=False,
+            title="Top 100 Defi Coins by Market Cap",
+        )
+        console.print("")
 
         export_data(
             export,
@@ -325,19 +288,13 @@ def display_top_dex(top: int, sortby: str, descend: bool, export: str) -> None:
 
     df = pycoingecko_model.get_top_dexes().sort_values(by=sortby, ascending=descend)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top),
+        headers=list(df.columns),
+        show_index=False,
+        title="Top Decentralized Exchanges by Trading Volume",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -366,19 +323,12 @@ def display_top_volume_coins(top: int, sortby: str, descend: bool, export: str) 
 
     if not df.empty:
         df = df.sort_values(by=sortby, ascending=descend)
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df.head(top),
-                    headers=df.columns,
-                    floatfmt=".4f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            show_index=False,
+            title="Top 100 Coins by Trading Volume",
+        )
 
         export_data(
             export,
@@ -425,19 +375,12 @@ def display_top_nft(
         else:
             df.drop("Url", axis=1, inplace=True)
 
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df.head(top),
-                    headers=df.columns,
-                    floatfmt=".4f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            show_index=False,
+            title="Top 100 NFT Coins by Market Cap",
+        )
 
         export_data(
             export,
@@ -474,19 +417,13 @@ def display_yieldfarms(top: int, sortby: str, descend: bool, export: str) -> Non
 
         df = df.sort_values(by=sortby, ascending=descend)
 
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df.head(top),
-                    headers=df.columns,
-                    floatfmt=".0f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            floatfmt=".0f",
+            show_index=False,
+            title="Top Yield Farming Pools by Value Locked",
+        )
 
         export_data(
             export,
