@@ -1,5 +1,5 @@
-[1m
-	DISCUSSION AND ANALYSIS:[0m
+[bold]
+	DISCUSSION AND ANALYSIS:[/bold]
 The TPD sets forth a comprehensive set of regulatory requirements for tobacco products, including: • health warnings covering 65% of the front and back panels of cigarette packs, with an option for member states to further standardize tobacco packaging, including the introduction of plain packaging; • a ban on characterizing flavors in some tobacco products, with a transition period for menthol that expired in May 2020; • security features and tracking and tracing measures that became effective in May 2019; and • a framework for the regulation of novel tobacco products and e-cigarettes, including requirements for health warnings and information leaflets, a prohibition on product packaging text related to reduced risk, and the introduction of notification requirements or authorization procedures in advance of commercialization.
 
 68 Table of ContentsIllicit Trade: Illicit tobacco trade creates a cheap and unregulated supply of tobacco products, undermines efforts to reduce smoking prevalence, especially among youth, damages legitimate businesses and intellectual property rights, stimulates organized crime, increases corruption and reduces government tax revenue.

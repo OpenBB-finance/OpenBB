@@ -41,7 +41,7 @@ def get_price_target_from_analysts(ticker: str) -> pd.DataFrame:
         if "window.analyseChartConfigs.push" in str(script):
             # Extract config data:
             s_analyst_data = str(script).split("config: ", 1)[1].split(",\r\n", 1)[0]
-            d_analyst_data = json.loads(s_analyst_data)
+            d_analyst_data = json.loads(s_analyst_data.split(",\n")[0])
             break
 
     df_analyst_data = pd.DataFrame.from_dict(d_analyst_data["Markers"])  # type: ignore

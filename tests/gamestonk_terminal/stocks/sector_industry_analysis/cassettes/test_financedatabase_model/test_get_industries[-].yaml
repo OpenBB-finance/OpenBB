@@ -1,0 +1,106 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/Database/Categories/equities_industries.json
+  response:
+    body:
+      string: !!binary |
+        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
+        hRqhvJx0vu23P//49/97iI42IRwAAA==
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=300
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '2017'
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Fri, 21 Jan 2022 03:56:10 GMT
+      ETag:
+      - W/"bec06f34decad0baec39ad6c71d6246490e25b7c2b763e54e88d22c78bcd2b05"
+      Expires:
+      - Fri, 21 Jan 2022 04:01:10 GMT
+      Source-Age:
+      - '0'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Via:
+      - 1.1 varnish
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Content-Type-Options:
+      - nosniff
+      X-Fastly-Request-ID:
+      - 52b824f9b9dc8037a1e81125b66e5ee7cd098905
+      X-Frame-Options:
+      - deny
+      X-GitHub-Request-Id:
+      - 7862:DB8F:1551B93:161D0EF:61EA2EDA
+      X-Served-By:
+      - cache-cdg20743-CDG
+      X-Timer:
+      - S1642737370.327270,VS0,VE167
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

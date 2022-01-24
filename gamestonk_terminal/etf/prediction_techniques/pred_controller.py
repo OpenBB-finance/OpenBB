@@ -57,20 +57,18 @@ class PredictionTechniquesController(BaseController):
         ticker: str,
         start: datetime,
         interval: str,
-        stock: pd.DataFrame,
+        data: pd.DataFrame,
         queue: List[str] = None,
     ):
         """Constructor"""
         super().__init__(queue)
 
-        stock["Returns"] = stock["Adj Close"].pct_change()
-        stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(
-            stock["Adj Close"].shift(1)
-        )
-        stock = stock.rename(columns={"Adj Close": "AdjClose"})
-        stock = stock.dropna()
+        data["Returns"] = data["Adj Close"].pct_change()
+        data["LogRet"] = np.log(data["Adj Close"]) - np.log(data["Adj Close"].shift(1))
+        data = data.rename(columns={"Adj Close": "AdjClose"})
+        data = data.dropna()
 
-        self.stock = stock
+        self.data = data
         self.ticker = ticker
         self.start = start
         self.interval = interval
@@ -79,7 +77,7 @@ class PredictionTechniquesController(BaseController):
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["-r"] = {c: {} for c in stocks_helper.INTERVALS}
-            choices["pick"] = {c: {} for c in self.stock.columns}
+            choices["pick"] = {c: {} for c in self.data.columns}
             choices["ets"]["-t"] = {c: {} for c in ets_model.TRENDS}
             choices["ets"]["-s"] = {c: {} for c in ets_model.SEASONS}
             choices["arima"]["-i"] = {c: {} for c in arima_model.ICS}
@@ -195,7 +193,7 @@ class PredictionTechniquesController(BaseController):
             )
 
             if not df_stock_candidate.empty:
-                self.stock = df_stock_candidate
+                self.data = df_stock_candidate
                 if "." in ns_parser.ticker:
                     self.ticker = ns_parser.ticker.upper().split(".")[0]
                 else:
@@ -204,12 +202,12 @@ class PredictionTechniquesController(BaseController):
                 self.start = ns_parser.start
                 self.interval = str(ns_parser.interval) + "min"
 
-                self.stock["Returns"] = self.stock["Adj Close"].pct_change()
-                self.stock["LogRet"] = np.log(self.stock["Adj Close"]) - np.log(
-                    self.stock["Adj Close"].shift(1)
+                self.data["Returns"] = self.data["Adj Close"].pct_change()
+                self.data["LogRet"] = np.log(self.data["Adj Close"]) - np.log(
+                    self.data["Adj Close"].shift(1)
                 )
-                self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
-                self.stock = self.stock.dropna()
+                self.data = self.data.rename(columns={"Adj Close": "AdjClose"})
+                self.data = self.data.dropna()
 
     def call_pick(self, other_args: List[str]):
         """Process pick command"""
@@ -225,7 +223,7 @@ class PredictionTechniquesController(BaseController):
             "-t",
             "--target",
             dest="target",
-            choices=list(self.stock.columns),
+            choices=list(self.data.columns),
             help="Select variable to analyze",
         )
         if other_args and "-t" not in other_args and "-h" not in other_args:
@@ -312,13 +310,13 @@ class PredictionTechniquesController(BaseController):
 
             if ns_parser.s_end_date:
 
-                if ns_parser.s_end_date < self.stock.index[0]:
+                if ns_parser.s_end_date < self.data.index[0]:
                     console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
 
                 if ns_parser.s_end_date < get_next_stock_market_days(
-                    last_stock_day=self.stock.index[0],
+                    last_stock_day=self.data.index[0],
                     n_next_days=5 + ns_parser.n_days,
                 )[-1]:
                     console.print(
@@ -327,7 +325,7 @@ class PredictionTechniquesController(BaseController):
 
             ets_view.display_exponential_smoothing(
                 ticker=self.ticker,
-                values=self.stock[self.target],
+                values=self.data[self.target],
                 n_predict=ns_parser.n_days,
                 trend=ns_parser.trend,
                 seasonal=ns_parser.seasonal,
@@ -414,7 +412,7 @@ class PredictionTechniquesController(BaseController):
         if ns_parser:
             knn_view.display_k_nearest_neighbors(
                 ticker=self.ticker,
-                data=self.stock[self.target],
+                data=self.data[self.target],
                 n_neighbors=ns_parser.n_neighbors,
                 n_input_days=ns_parser.n_inputs,
                 n_predict_days=ns_parser.n_days,
@@ -493,13 +491,13 @@ class PredictionTechniquesController(BaseController):
         if ns_parser:
             # BACKTESTING CHECK
             if ns_parser.s_end_date:
-                if ns_parser.s_end_date < self.stock.index[0]:
+                if ns_parser.s_end_date < self.data.index[0]:
                     console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
 
                 if ns_parser.s_end_date < get_next_stock_market_days(
-                    last_stock_day=self.stock.index[0],
+                    last_stock_day=self.data.index[0],
                     n_next_days=5 + ns_parser.n_days,
                 )[-1]:
                     console.print(
@@ -508,7 +506,7 @@ class PredictionTechniquesController(BaseController):
 
             regression_view.display_regression(
                 dataset=self.ticker,
-                values=self.stock[self.target],
+                values=self.data[self.target],
                 poly_order=ns_parser.n_polynomial,
                 n_input=ns_parser.n_inputs,
                 n_predict=ns_parser.n_days,
@@ -594,13 +592,13 @@ class PredictionTechniquesController(BaseController):
             # BACKTESTING CHECK
             if ns_parser.s_end_date:
 
-                if ns_parser.s_end_date < self.stock.index[0]:
+                if ns_parser.s_end_date < self.data.index[0]:
                     console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
 
                 if ns_parser.s_end_date < get_next_stock_market_days(
-                    last_stock_day=self.stock.index[0],
+                    last_stock_day=self.data.index[0],
                     n_next_days=5 + ns_parser.n_days,
                 )[-1]:
                     console.print(
@@ -609,7 +607,7 @@ class PredictionTechniquesController(BaseController):
 
             arima_view.display_arima(
                 dataset=self.ticker,
-                values=self.stock[self.target],
+                values=self.data[self.target],
                 arima_order=ns_parser.s_order,
                 n_predict=ns_parser.n_days,
                 seasonal=ns_parser.b_seasonal,
@@ -630,7 +628,7 @@ class PredictionTechniquesController(BaseController):
             if ns_parser:
                 neural_networks_view.display_mlp(
                     dataset=self.ticker,
-                    data=self.stock[self.target],
+                    data=self.data[self.target],
                     n_input_days=ns_parser.n_inputs,
                     n_predict_days=ns_parser.n_days,
                     learning_rate=ns_parser.lr,
@@ -657,7 +655,7 @@ class PredictionTechniquesController(BaseController):
             if ns_parser:
                 neural_networks_view.display_rnn(
                     dataset=self.ticker,
-                    data=self.stock[self.target],
+                    data=self.data[self.target],
                     n_input_days=ns_parser.n_inputs,
                     n_predict_days=ns_parser.n_days,
                     learning_rate=ns_parser.lr,
@@ -685,7 +683,7 @@ class PredictionTechniquesController(BaseController):
             if ns_parser:
                 neural_networks_view.display_lstm(
                     dataset=self.ticker,
-                    data=self.stock[self.target],
+                    data=self.data[self.target],
                     n_input_days=ns_parser.n_inputs,
                     n_predict_days=ns_parser.n_days,
                     learning_rate=ns_parser.lr,
@@ -713,7 +711,7 @@ class PredictionTechniquesController(BaseController):
             if ns_parser:
                 neural_networks_view.display_conv1d(
                     dataset=self.ticker,
-                    data=self.stock[self.target],
+                    data=self.data[self.target],
                     n_input_days=ns_parser.n_inputs,
                     n_predict_days=ns_parser.n_days,
                     learning_rate=ns_parser.lr,
@@ -771,7 +769,7 @@ class PredictionTechniquesController(BaseController):
                 console.print("MC Prediction designed for AdjClose prices\n")
 
             mc_view.display_mc_forecast(
-                data=self.stock[self.target],
+                data=self.data[self.target],
                 n_future=ns_parser.n_days,
                 n_sims=ns_parser.n_sims,
                 use_log=ns_parser.dist == "lognormal",

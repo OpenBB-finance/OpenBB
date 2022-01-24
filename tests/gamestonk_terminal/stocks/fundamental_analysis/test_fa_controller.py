@@ -433,3 +433,25 @@ def test_call_fmp(mocker):
     mocker.patch.object(controller, "print_help", autospec=True)
     controller.call_fmp(list())
     assert controller.queue == ["quit"]
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "ticker, expected",
+    [
+        (None, []),
+        ("MOCK_TICKER", ["stocks", "load MOCK_TICKER", "fa"]),
+    ],
+)
+def test_custom_reset(expected, ticker):
+    controller = fa_controller.FundamentalAnalysisController(
+        ticker=None,
+        start="10/25/2021",
+        interval="1440min",
+        suffix="",
+    )
+    controller.ticker = ticker
+
+    result = controller.custom_reset()
+
+    assert result == expected

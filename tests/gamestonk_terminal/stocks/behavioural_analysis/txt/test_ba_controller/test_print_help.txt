@@ -28,9 +28,4 @@ Ticker: TSLA
     queries       top related queries with this stock
     rise          top rising related queries with stock
 [SentimentInvestor]
-    popularsi     show most popular stocks on social media right now
-    emerging      show stocks that are being talked about more than usual
-    metrics       core social sentiment metrics for this stock
-    social        social media figures for stock popularity
-    historical    plot the past week of data for a selected metric
-        
+    hist          plot historical RHI and AHI data by hour

@@ -36,12 +36,23 @@ def test_create_xls():
             assert item in items_cf
 
 
-@pytest.mark.skip
 @pytest.mark.vcr
 def test_create_workbook(mocker):
-    excel = dcf_view.CreateExcelFA(ticker="AEIS", audit=False)
+    excel = dcf_view.CreateExcelFA(ticker="AAPL", audit=False)
+
+    # MOCK GENERATE_PATH
+    attrs = {
+        "is_file.return_value": False,
+    }
+    mock_path = mocker.Mock(**attrs)
     mocker.patch(
-        "gamestonk_terminal.stocks.fundamental_analysis.dcf_view.random.shuffle"
+        target="gamestonk_terminal.stocks.fundamental_analysis.dcf_view.dcf_model.generate_path",
+        return_value=mock_path,
     )
-    mocker.patch.object(excel.wb, "save")
+
+    # MOCK SAVE
+    mocker.patch(
+        target="gamestonk_terminal.stocks.fundamental_analysis.dcf_view.Workbook.save"
+    )
+
     excel.create_workbook()

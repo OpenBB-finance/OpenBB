@@ -15,9 +15,21 @@ from gamestonk_terminal.stocks.technical_analysis import ta_controller
 
 EMPTY_DF = pd.DataFrame()
 MOCK_STOCK_DF = pd.read_csv(
-    "tests/gamestonk_terminal/stocks/technical_analysis/csv/testdf.csv", index_col=0
+    "tests/gamestonk_terminal/stocks/technical_analysis/csv/test_ta_controller/stock_df.csv",
+    index_col=0,
 )
-print(MOCK_STOCK_DF.columns)
+
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [
+            ("period1", "MOCK_PERIOD_1"),
+            ("period2", "MOCK_PERIOD_2"),
+            ("date", "MOCK_DATE"),
+        ],
+    }
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -745,7 +757,6 @@ def test_call_func(
         getattr(controller, tested_func)(other_args)
 
 
-@pytest.mark.skip
 @pytest.mark.vcr
 def test_call_load(mocker):
     # FORCE SINGLE THREADING

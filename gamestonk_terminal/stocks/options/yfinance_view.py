@@ -15,12 +15,16 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import yfinance as yf
-from tabulate import tabulate
 from openpyxl import Workbook
 
 import gamestonk_terminal.config_plot as cfp
 import gamestonk_terminal.feature_flags as gtff
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale, excel_columns
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    excel_columns,
+    print_rich_table,
+)
 from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
 from gamestonk_terminal.stocks.options.yfinance_model import (
     generate_data,
@@ -599,22 +603,15 @@ def show_parity(
 
     show = filtered[["strike", diff]].copy()
 
-    console.print("Warning: Low volume options may be difficult to trade.\n")
     if ask:
         console.print("Warning: Options with no current ask price not shown.\n")
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                show,
-                headers=[x.title() for x in show.columns],
-                tablefmt="fancy_grid",
-                showindex=False,
-                floatfmt=".2f",
-            )
-        )
-    else:
-        console.print(show.to_string(index=False))
+    print_rich_table(
+        show,
+        headers=[x.title() for x in show.columns],
+        show_index=False,
+        title="Warning: Low volume options may be difficult to trade.",
+    )
 
     export_data(
         export,
@@ -682,18 +679,12 @@ def risk_neutral_vals(
     new_df = new_df[new_df["Strike"] >= mini]
     new_df = new_df[new_df["Strike"] <= maxi]
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                new_df,
-                headers=[x.title() for x in new_df.columns],
-                tablefmt="fancy_grid",
-                showindex=False,
-                floatfmt=".2f",
-            )
-        )
-    else:
-        console.print(new_df.to_string(index=False))
+    print_rich_table(
+        new_df,
+        headers=[x.title() for x in new_df.columns],
+        show_index=False,
+        title="Risk Neutral Values",
+    )
     console.print("")
 
 
@@ -912,7 +903,6 @@ def display_vol_surface(ticker: str, export: str = "", z: str = "IV"):
         Format to export data
     z : str
         The variable for the Z axis
-
     """
     data = yfinance_model.get_iv_surface(ticker)
     if data.empty:
@@ -936,7 +926,7 @@ def display_vol_surface(ticker: str, export: str = "", z: str = "IV"):
     ax.set_ylabel("Strike")
     ax.set_zlabel(z)
     fig.tight_layout()
-    fig.suptitle(f"{label} Surface for {ticker}")
+    fig.suptitle(f"{label} Surface for {ticker.upper()}")
     if gtff.USE_ION:
         plt.ion()
     plt.show()

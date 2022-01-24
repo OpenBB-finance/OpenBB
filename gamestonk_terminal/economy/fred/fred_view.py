@@ -16,7 +16,7 @@ from gamestonk_terminal.economy.fred import fred_model
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
-    rich_table_from_df,
+    print_rich_table,
 )
 
 register_matplotlib_converters()
@@ -57,19 +57,12 @@ def notes(series_term: str, num: int):
     df_search["title"] = df_search["title"].apply(
         lambda x: "\n".join(textwrap.wrap(x, width=50)) if isinstance(x, str) else x
     )
-    if gtff.USE_TABULATE_DF:
-        console.print(
-            rich_table_from_df(
-                df_search[["id", "title", "notes"]].head(num),
-                title=f"[bold]Search results for {series_term}[/bold]",
-                show_index=False,
-                headers=["Series ID", "Title", "Description"],
-            )
-        )
-    else:
-        console.print(
-            df_search[["id", "title", "notes"]].head(num).to_string(index=False)
-        )
+    print_rich_table(
+        df_search[["id", "title", "notes"]].head(num),
+        title=f"[bold]Search results for {series_term}[/bold]",
+        show_index=False,
+        headers=["Series ID", "Title", "Description"],
+    )
     console.print("")
 
 
@@ -145,17 +138,12 @@ def display_fred_series(
     plt.show()
     data.index = [x.strftime("%Y-%m-%d") for x in data.index]
     if raw:
-        if gtff.USE_TABULATE_DF:
-            console.print(
-                rich_table_from_df(
-                    data.tail(limit),
-                    headers=list(data.columns),
-                    show_index=True,
-                    index_name="Date",
-                )
-            )
-        else:
-            console.print(data.tail(limit).to_string())
+        print_rich_table(
+            data.tail(limit),
+            headers=list(data.columns),
+            show_index=True,
+            index_name="Date",
+        )
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),

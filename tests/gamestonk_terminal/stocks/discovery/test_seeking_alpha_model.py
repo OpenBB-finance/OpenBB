@@ -26,13 +26,11 @@ def test_get_trending_list(recorder):
     recorder.capture(trending_list)
 
 
-@pytest.mark.skip("Broken ?")
 @pytest.mark.vcr
 def test_get_news_html():
     seeking_alpha_model.get_news_html()
 
 
-@pytest.mark.skip("Broken ?")
 @pytest.mark.vcr
 def test_get_news():
     seeking_alpha_model.get_news()

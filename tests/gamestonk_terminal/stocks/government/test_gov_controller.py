@@ -440,3 +440,20 @@ def test_call_load(mocker):
         "--start=2021-12-17",
     ]
     controller.call_load(other_args=other_args)
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "ticker, expected",
+    [
+        (None, []),
+        ("MOCK_TICKER", ["stocks", "load MOCK_TICKER", "gov"]),
+    ],
+)
+def test_custom_reset(expected, ticker):
+    controller = gov_controller.GovController(ticker=None)
+    controller.ticker = ticker
+
+    result = controller.custom_reset()
+
+    assert result == expected
