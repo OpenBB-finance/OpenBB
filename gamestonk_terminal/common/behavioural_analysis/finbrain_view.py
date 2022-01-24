@@ -106,33 +106,27 @@ def display_sentiment_analysis(ticker: str, export: str = ""):
         color_df = df_sentiment["Sentiment Analysis"].apply(
             sentiment_coloring, last_val=0
         )
-        if gtff.USE_TABULATE_DF:
-            color_df = pd.DataFrame(
-                data=color_df.values,
-                index=pd.to_datetime(df_sentiment.index).strftime("%Y-%m-%d"),
-            )
-            print_rich_table(
-                color_df,
-                headers=["Sentiment"],
-                title="FinBrain Ticker Sentiment",
-                show_index=True,
-            )
-        else:
-            console.print(color_df.to_string())
+        color_df = pd.DataFrame(
+            data=color_df.values,
+            index=pd.to_datetime(df_sentiment.index).strftime("%Y-%m-%d"),
+        )
+        print_rich_table(
+            color_df,
+            headers=["Sentiment"],
+            title="FinBrain Ticker Sentiment",
+            show_index=True,
+        )
     else:
-        if gtff.USE_TABULATE_DF:
-            print_rich_table(
-                pd.DataFrame(
-                    data=df_sentiment.values,
-                    index=pd.to_datetime(df_sentiment.index).strftime("%Y-%m-%d"),
-                ),
-                headers=["Sentiment"],
-                title="FinBrain Ticker Sentiment",
-                show_index=True,
-            )
+        print_rich_table(
+            pd.DataFrame(
+                data=df_sentiment.values,
+                index=pd.to_datetime(df_sentiment.index).strftime("%Y-%m-%d"),
+            ),
+            headers=["Sentiment"],
+            title="FinBrain Ticker Sentiment",
+            show_index=True,
+        )
 
-        else:
-            console.print(df_sentiment.to_string())
     console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "headlines", df_sentiment

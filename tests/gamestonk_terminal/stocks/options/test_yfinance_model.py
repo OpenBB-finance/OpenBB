@@ -78,6 +78,12 @@ def test_call_func(func, mocker, recorder):
 
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
+    # MOCK OPTION
+    mocker.patch(
+        target="gamestonk_terminal.stocks.options.yfinance_model.get_dte",
+        return_value=1,
+    )
+
     result = getattr(yfinance_model, func)(ticker="PM")
 
     recorder.capture(result)
