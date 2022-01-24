@@ -30,9 +30,7 @@ class DegiroController(BaseController):
         "topnews",
         "update",
     ]
-    PATH = "/portfolio/bro/derigo/"
-
-    ERROR_MAP = {"Connection required.": "You haven't logged in Degiro"}
+    PATH = "/portfolio/bro/degiro/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -47,17 +45,6 @@ class DegiroController(BaseController):
     def print_help(self):
         """Print help."""
         DegiroView.help_display()
-
-    def switch(self, an_input):
-        try:
-            super().switch(an_input)
-        except Exception as exception:
-            error = str(exception)
-            err_map = DegiroController.ERROR_MAP
-            if error in err_map:
-                print(err_map[error])
-            else:
-                raise exception
 
     def call_cancel(self, other_args: List[str]):
         """Cancel an order using the `id`."""
