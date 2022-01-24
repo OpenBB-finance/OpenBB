@@ -1,9 +1,13 @@
 """Option helper functions"""
 __docformat__ = "numpy"
 
+from abc import abstractmethod
+from math import log, e
 from typing import Union
 import numpy as np
 import pandas as pd
+from scipy.stats import norm
+
 from gamestonk_terminal.rich_config import console
 
 
@@ -124,3 +128,149 @@ opt_chain_cols = {
     "openInterest": {"format": "", "label": "Open Interest"},
     "impliedVolatility": {"format": "{x:.2f}", "label": "Implied Volatility"},
 }
+
+
+class Option:
+    def __init__(
+        self,
+        s: float,
+        k: float,
+        rf: float,
+        div_cont: float,
+        expiry: float,
+        vol: float,
+        opt_type: int = 1,
+    ):
+        """
+        A baseclass for creating options
+
+        Parameters
+        ----------
+        type : int
+            Option type, 1 for call and -1 for a put
+        s : float
+            The underlying asset price
+        k : float
+            The option strike price
+        rf : float
+            The risk-free rate
+        div_cont : float
+            The dividend continuous rate
+        expiry : float
+            The number of days until expiration
+        vol : float
+            The underlying volatility for an option
+        """
+        self.Type = int(opt_type)
+        self.S = float(s)
+        self.K = float(k)
+        self.r = float(rf)
+        self.q = float(div_cont)
+        self.T = float(expiry) / 365.0
+        self._sigma = float(vol)
+        self.sigmaT = self._sigma * self.T ** 0.5
+
+    @property
+    @abstractmethod
+    def d1(self):
+        raise AttributeError("This must be overridden")
+
+    @property
+    def d2(self):
+        return self.d1 - self.sigmaT
+
+
+class BSVanilla(Option):
+    @property
+    def d1(self):
+        return (
+            log(self.S / self.K) + (self.r - self.q + 0.5 * (self.sigma ** 2)) * self.T
+        ) / self.sigmaT
+
+    @property
+    def sigma(self):
+        return self._sigma
+
+    @sigma.setter
+    def sigma(self, val):
+        self._sigma = val
+        self.sigmaT = val * self.T ** 0.5
+
+    def Premium(self):
+        tmpprem = self.Type * (
+            self.S * e ** (-self.q * self.T) * norm.cdf(self.Type * self.d1)
+            - self.K * e ** (-self.r * self.T) * norm.cdf(self.Type * self.d2)
+        )
+        return tmpprem
+
+    # 1st order greeks
+
+    def Delta(self):
+        dfq = e ** (-self.q * self.T)
+        if self.Type == 1:
+            return dfq * norm.cdf(self.d1)
+        return dfq * (norm.cdf(self.d1) - 1)
+
+    def Vega(self):
+        """Vega for 1% change in vol"""
+        return (
+            0.01 * self.S * e ** (-self.q * self.T) * norm.pdf(self.d1) * self.T ** 0.5
+        )
+
+    def Theta(self):
+        """Theta for 1 day change"""
+        df = e ** -(self.r * self.T)
+        dfq = e ** (-self.q * self.T)
+        tmptheta = (1.0 / 365.0) * (
+            -0.5 * self.S * dfq * norm.pdf(self.d1) * self.sigma / (self.T ** 0.5)
+            + self.Type
+            * (
+                self.q * self.S * dfq * norm.cdf(self.Type * self.d1)
+                - self.r * self.K * df * norm.cdf(self.Type * self.d2)
+            )
+        )
+        return tmptheta
+
+    def Rho(self):
+        df = e ** -(self.r * self.T)
+        return self.Type * self.K * self.T * df * 0.01 * norm.cdf(self.Type * self.d2)
+
+    def Phi(self):
+        return (
+            0.01
+            * -self.Type
+            * self.T
+            * self.S
+            * e ** (-self.q * self.T)
+            * norm.cdf(self.Type * self.d1)
+        )
+
+    # 2nd order greeks
+
+    def Gamma(self):
+        return e ** (-self.q * self.T) * norm.pdf(self.d1) / (self.S * self.sigmaT)
+
+    def Charm(self):
+        """Calculates Charm for one day change"""
+        dfq = e ** (-self.q * self.T)
+        cdf = norm.cdf(self.Type * self.d1)
+        return (
+            (1.0 / 365.0)
+            * -dfq
+            * (
+                norm.pdf(self.d1)
+                * ((self.r - self.q) / (self.sigmaT) - self.d2 / (2 * self.T))
+                + (self.Type * -self.q) * cdf
+            )
+        )
+
+    def Vanna(self):
+        """Vanna for 1% change in vol"""
+        return (
+            0.01 * -(e ** (-self.q * self.T)) * self.d2 / self.sigma * norm.pdf(self.d1)
+        )
+
+    def Vomma(self):
+        return (
+            0.01 * -(e ** (-self.q * self.T)) * self.d2 / self.sigma * norm.pdf(self.d1)
+        )
