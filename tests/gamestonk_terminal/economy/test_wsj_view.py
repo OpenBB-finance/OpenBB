@@ -7,14 +7,6 @@ import pytest
 from gamestonk_terminal.economy import wsj_view
 
 
-@pytest.fixture(scope="module")
-def vcr_config():
-    return {
-        "filter_headers": [("User-Agent", None)],
-        "filter_query_parameters": [("apikey", "MOCK_API_KEY")],
-    }
-
-
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "tab",
