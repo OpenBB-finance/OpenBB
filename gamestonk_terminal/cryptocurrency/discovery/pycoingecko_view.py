@@ -7,7 +7,7 @@ from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     very_long_number_formatter,
 )
 from gamestonk_terminal.cryptocurrency.discovery import pycoingecko_model
-from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
@@ -65,7 +65,7 @@ def display_coins(category: str, top: int, sortby: str, export: str) -> None:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
         if gtff.USE_TABULATE_DF:
-            rich_table_from_df(
+            print_rich_table(
                 df.head(top),
                 headers=list(df.columns),
                 floatfmt=".4f",
@@ -108,7 +108,7 @@ def display_gainers(period: str, top: int, sortby: str, export: str) -> None:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
         if gtff.USE_TABULATE_DF:
-            rich_table_from_df(
+            print_rich_table(
                 df.head(top),
                 headers=list(df.columns),
                 floatfmt=".4f",
@@ -151,7 +151,7 @@ def display_losers(period: str, top: int, export: str, sortby: str) -> None:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
         if gtff.USE_TABULATE_DF:
-            rich_table_from_df(
+            print_rich_table(
                 df.head(top),
                 headers=list(df.columns),
                 floatfmt=".4f",
@@ -183,7 +183,7 @@ def display_trending(export: str) -> None:
     df = pycoingecko_model.get_trending_coins()
     if not df.empty:
         if gtff.USE_TABULATE_DF:
-            rich_table_from_df(
+            print_rich_table(
                 df,
                 headers=list(df.columns),
                 floatfmt=".4f",

@@ -12,7 +12,7 @@ from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
-    rich_table_from_df,
+    print_rich_table,
 )
 import gamestonk_terminal.cryptocurrency.overview.pycoingecko_model as gecko
 from gamestonk_terminal import feature_flags as gtff
@@ -304,7 +304,7 @@ First {top} stablecoins have a total {long_number_format_with_type_check(total_m
 """
         )
         if gtff.USE_TABULATE_DF:
-            rich_table_from_df(
+            print_rich_table(
                 df.head(top),
                 headers=list(df.columns),
                 floatfmt=".2f",
@@ -366,7 +366,7 @@ def display_categories(sortby: str, top: int, export: str, pie: bool) -> None:
             plt.show()
         df = df.applymap(lambda x: long_number_format_with_type_check(x))
         if gtff.USE_TABULATE_DF:
-            rich_table_from_df(
+            print_rich_table(
                 df.head(top),
                 headers=list(df.columns),
                 floatfmt=".2f",

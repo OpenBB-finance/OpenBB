@@ -8,7 +8,7 @@ from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
 from gamestonk_terminal.cryptocurrency.discovery import dappradar_model
 from gamestonk_terminal.helper_funcs import (
     export_data,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
@@ -37,7 +37,7 @@ def display_top_nfts(top: int = 10, sortby: str = "", export: str = "") -> None:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
         if gtff.USE_TABULATE_DF:
-            rich_table_from_df(
+            print_rich_table(
                 df.head(top),
                 headers=list(df.columns),
                 floatfmt=".2f",
@@ -79,7 +79,7 @@ def display_top_games(top: int = 10, export: str = "", sortby: str = "") -> None
         if col in df.columns:
             df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
     if gtff.USE_TABULATE_DF:
-        rich_table_from_df(
+        print_rich_table(
             df.head(top),
             headers=list(df.columns),
             floatfmt=".2f",
@@ -121,7 +121,7 @@ def display_top_dexes(top: int = 10, export: str = "", sortby: str = "") -> None
         if col in df.columns:
             df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
     if gtff.USE_TABULATE_DF:
-        rich_table_from_df(
+        print_rich_table(
             df.head(top),
             headers=list(df.columns),
             floatfmt=".2f",
@@ -163,7 +163,7 @@ def display_top_dapps(top: int = 10, export: str = "", sortby: str = "") -> None
         if col in df.columns:
             df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
     if gtff.USE_TABULATE_DF:
-        rich_table_from_df(
+        print_rich_table(
             df.head(top),
             headers=list(df.columns),
             floatfmt=".2f",
