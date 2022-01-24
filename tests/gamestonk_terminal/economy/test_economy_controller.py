@@ -3,7 +3,6 @@ import os
 from datetime import datetime
 
 # IMPORTATION THIRDPARTY
-import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
@@ -119,7 +118,6 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_print_help():
-
     controller = economy_controller.EconomyController(queue=None)
     controller.print_help()
 
@@ -144,7 +142,6 @@ def test_print_help():
     ],
 )
 def test_switch(an_input, expected_queue):
-
     controller = economy_controller.EconomyController(queue=None)
     queue = controller.switch(an_input=an_input)
 
@@ -592,7 +589,7 @@ def test_call_bigmac_codes(mocker):
     # MOCK CHECK_COUNTRY_CODE_TYPE
     mocker.patch(
         target=f"{path_controller}.nasdaq_model.check_country_code_type",
-        return_value=["MOCK_COUNTRY_CODE"]
+        return_value=["MOCK_COUNTRY_CODE"],
     )
 
     # MOCK READ_CSV
@@ -621,7 +618,7 @@ def test_call_bigmac_countries(mocker):
     # MOCK READ_CSV
     mocker.patch(
         target=f"{path_controller}.nasdaq_model.check_country_code_type",
-        return_value=["MOCK_COUNTRY_CODE"]
+        return_value=["MOCK_COUNTRY_CODE"],
     )
 
     # MOCK DISPLAY_BIG_MAC_INDEX
