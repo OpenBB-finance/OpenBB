@@ -20,5 +20,5 @@ Accounts Payable                                        1.34B                   
 Other Assets/Liabilities                                 259M                   823M
 Net Operating Cash Flow                                 3.02B                  6.69B
 Net Operating Cash Flow Growth          [green]25.79%[/green]     [red]-40.41%[/red]
-Net Operating Cash Flow / Sales         [green]28.10%[/green]  [green]17.84%[/green] 
+Net Operating Cash Flow / Sales         [green]28.10%[/green]  [green]17.84%[/green]
 

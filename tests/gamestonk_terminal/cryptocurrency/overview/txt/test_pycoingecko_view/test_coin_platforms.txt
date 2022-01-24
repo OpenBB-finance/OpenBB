@@ -1,0 +1,17 @@
+    Rank              Name       Category  Centralized                                 Url
+0      1   Binance Staking  CeFi Platform         True  https://www.binance.com/en/staking
+1      2   Celsius Network  CeFi Platform         True            https://celsius.network/
+2      3              Cobo  CeFi Platform         True                   https://cobo.com/
+3      4  Dai Savings Rate  DeFi Platform        False              https://oasis.app/save
+4      5              dYdX  DeFi Platform        False              https://dydx.exchange/
+5      6      Idle Finance  DeFi Platform        False             https://idle.finance/#/
+6      7         Staked US  CeFi Platform         True                  https://staked.us/
+7      8        Crypto.com  CeFi Platform         True              https://crypto.com/en/
+8      9              Aave  DeFi Platform        False                   https://aave.com/
+9     10              Nexo  CeFi Platform         True                    https://nexo.io/
+10    11            Inlock  CeFi Platform         True                  https://inlock.io/
+11    12          Bitfinex  CeFi Platform         True            https://www.bitfinex.com
+12    13  Compound Finance  DeFi Platform        False           https://compound.finance/
+13    14           Fulcrum  DeFi Platform        False       https://fulcrum.trade/lending
+14    15   Binance Savings  CeFi Platform         True  https://www.binance.com/en/lending
+

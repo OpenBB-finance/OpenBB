@@ -5,6 +5,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.etf.discovery import wsj_view
+from gamestonk_terminal import helper_funcs
 
 
 @pytest.fixture(scope="module")
@@ -25,5 +26,7 @@ def vcr_config():
     ],
 )
 def test_show_top_mover(sort_type, mocker):
-    mocker.patch.object(target=wsj_view.gtff, attribute="USE_TABULATE_DF", new=False)
+    mocker.patch.object(
+        target=helper_funcs.gtff, attribute="USE_TABULATE_DF", new=False
+    )
     wsj_view.show_top_mover(sort_type, limit=5, export="")
