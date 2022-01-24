@@ -35,7 +35,7 @@ from gamestonk_terminal.stocks.options.yfinance_model import (
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.options.op_helpers import BSVanilla
 
-# pylint: disable=too-many-lines
+# pylint: disable=C0302
 
 
 def plot_oi(
