@@ -39,3 +39,6 @@ jupyterlab/*/ui-tests/tests/*.ts-snapshots/
 
 # Sphinx documentation build files
 docs/_build
+
+# the file containing the API keys for the web version
+gamestonk_terminal_web/setenv

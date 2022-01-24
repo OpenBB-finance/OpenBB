@@ -66,6 +66,7 @@
       <ul>
         <li><a href="#docker-installation">Docker Installation</a></li>
         <li><a href="#local-install---anaconda-and-python">Local Install - Anaconda and Python</a></li>
+        <li><a href="#web-ui---docker">Web UI - Docker</a></li>
         <li><a href="#advanced-user-install---machine-learning">Advanced User Install - Machine Learning</a></li>
         <li><a href="#update-terminal">Update Terminal</a></li>
         <li><a href="#api-keys">API Keys</a></li>
@@ -101,6 +102,7 @@ There are currently two main options to install the terminal:
 
 * using Docker: recommended if you just want to use the terminal
 * using Python: recommended if you want to develop new features
+* using the Docker web UI: recommended if you want to deploy the web UI for users to access over your LAN
 
 First step in both options is to star the project
 
@@ -157,6 +159,20 @@ If you want to install the terminal using Python ignore the Docker section and j
 This installation type supports both Windows and Unix systems (Linux + MacOS). However, on Windows it can become messy so it is easier to use Windows Subsystem Linux (WSL) on this operating system. WSL emulates a Linux machine inside your Windows system.
 
 If you are using macOS or other Linux operating systems you can jump the next section <a href="#installing-the-terminal">Installing the terminal</a>.
+
+### Web UI - Docker
+
+1. Ensure Docker is installed.
+2. Navigate to the location of the Dockerfile in the repo (`cd gamestonk_terminal_web`)
+3. Ensure the launcher is executable with `chmod +x ./launch`
+4. Launch it with `./launch`. If you get a permission denied error, do `sudo ./launch` instead
+5. Once it's launched, you will be able to access it by going to `http://host-ip:8080` in a browser, or `http://localhost:8080` if you are running it on your local machine.
+
+For API keys, create the `setenv` file if it doesn't already exist.
+It will automatically get created on the first launch, and won't get committed to Git because it is on the `.gitignore`.
+Set the API keys [as explained here](https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/DOCKER_ADVANCED.md#environment-variables).
+Once you've put the API keys in that file, re-run the launch script, and it will use your API keys.
+There are a few things that still don't work, and you can see what works and what doesn't [here](https://github.com/CoconutMacaroon/GamestonkTerminal/blob/main/gamestonk_terminal_web/README.md#todo).
 
 #### Installing WSL (Only for Windows users)
 
