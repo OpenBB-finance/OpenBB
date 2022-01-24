@@ -57,8 +57,6 @@ def display_search(
     if sortby:
         searches = searches.sort_values(by=sortby, ascending=ascending)
 
-    # If we want to move forward with rich -- should rename this gtff
-    # Additionally, I recreated the tabulate functions with the rich.Table class.
     print_rich_table(
         searches.head(limit),
         show_index=False,
