@@ -267,9 +267,11 @@ def valid_date(s: str) -> datetime:
 def valid_hour(hr: str) -> int:
     """Argparse type to check hour is valid with 24-hour notation"""
 
+    # breakpoint()
     new_hr = int(hr)
 
-    if (new_hr <= 0) or (new_hr > 24):
+    # breakpoint()
+    if (new_hr < 0) or (new_hr > 24):
         raise argparse.ArgumentTypeError(f"{hr} doesn't follow 24-hour notion.")
     return new_hr
 
