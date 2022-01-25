@@ -3,20 +3,89 @@ __docformat__ = "numpy"
 
 import os
 from pandas.plotting import register_matplotlib_converters
+from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
+    very_long_number_formatter,
+)
 from gamestonk_terminal.cryptocurrency.discovery import pycoingecko_model
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
-
 # pylint: disable=inconsistent-return-statements
 # pylint: disable=R0904, C0302
 
+COINS_COLUMNS = [
+    "Symbol",
+    "Name",
+    "Volume [$]",
+    "Market Cap [$]",
+    "Market Cap Rank",
+    "7D Change [%]",
+    "24H Change [%]",
+]
 
-def display_gainers(
-    period: str, top: int, sortby: str, descend: bool, links: bool, export: str
-) -> None:
+
+def display_coins(category: str, top: int, sortby: str, export: str) -> None:
+    """Display top coins [Source: CoinGecko]
+
+    Parameters
+    ----------
+    category: str
+        Coingecko category. If no category is passed it will search for all coins. (E.g., smart-contract-platform)
+    top: int
+        Number of records to display
+    sortby: str
+        Key to sort data
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+    df = pycoingecko_model.get_coins(top=top, category=category)
+    if not df.empty:
+        df = df[
+            [
+                "symbol",
+                "name",
+                "total_volume",
+                "market_cap",
+                "market_cap_rank",
+                "price_change_percentage_7d_in_currency",
+                "price_change_percentage_24h_in_currency",
+            ]
+        ]
+        df = df.set_axis(
+            COINS_COLUMNS,
+            axis=1,
+            inplace=False,
+        )
+        if sortby in COINS_COLUMNS:
+            df = df.sort_values(by=sortby, ascending=False)
+        for col in ["Volume [$]", "Market Cap [$]"]:
+            if col in df.columns:
+                df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
+        if gtff.USE_TABULATE_DF:
+            print_rich_table(
+                df.head(top),
+                headers=list(df.columns),
+                floatfmt=".4f",
+                show_index=False,
+            )
+            console.print("")
+        else:
+            console.print(df.to_string, "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "cgtop",
+            df,
+        )
+    else:
+        console.print("\nUnable to retrieve data from CoinGecko.\n")
+
+
+def display_gainers(period: str, top: int, sortby: str, export: str) -> None:
     """Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]
 
     Parameters
@@ -26,49 +95,40 @@ def display_gainers(
     top: int
         Number of records to display
     sortby: str
-        Key by which to sort data
-    descend: bool
-        Flag to sort data descending
-    links: bool
-        Flag to display urls
+        Key to sort data
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    if sortby == "Change":
-        sortby = f"%Change_{period}"
-
-    df = pycoingecko_model.get_gainers_or_losers(period=period, typ="gainers")
+    df = pycoingecko_model.get_gainers_or_losers(top=top, period=period, typ="gainers")
     if not df.empty:
-        df = df.sort_values(by=sortby, ascending=descend)
-
-        df_data = df.copy()
-
-        if not links:
-            df.drop("Url", axis=1, inplace=True)
-
-        print_rich_table(
-            df.head(top),
-            headers=list(df.columns),
-            show_index=False,
-            title="Largest Gainers",
-        )
+        if sortby in COINS_COLUMNS:
+            df = df.sort_values(by=sortby, ascending=False)
+        for col in ["Volume [$]", "Market Cap [$]"]:
+            if col in df.columns:
+                df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
+        if gtff.USE_TABULATE_DF:
+            print_rich_table(
+                df.head(top),
+                headers=list(df.columns),
+                floatfmt=".4f",
+                show_index=False,
+            )
+            console.print("")
+        else:
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "gainers",
-            df_data,
+            df,
         )
     else:
-        console.print("")
-        console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
+        console.print("\nUnable to retrieve data from CoinGecko.\n")
 
 
-def display_losers(
-    period: str, top: int, sortby: str, descend: bool, links: bool, export: str
-) -> None:
+def display_losers(period: str, top: int, export: str, sortby: str) -> None:
     """Shows Largest Losers - coins which lost the most in given period of time. [Source: CoinGecko]
 
     Parameters
@@ -78,360 +138,67 @@ def display_losers(
     top: int
         Number of records to display
     sortby: str
-        Key by which to sort data
-    descend: bool
-        Flag to sort data descending
-    links: bool
-        Flag to display urls
+        Key to sort data
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    if sortby == "Change":
-        sortby = f"%Change_{period}"
-
-    df = pycoingecko_model.get_gainers_or_losers(period=period, typ="losers")
+    df = pycoingecko_model.get_gainers_or_losers(top=top, period=period, typ="losers")
     if not df.empty:
-        df = df.sort_values(by=sortby, ascending=descend)
-
-        df_data = df.copy()
-
-        if not links:
-            df.drop("Url", axis=1, inplace=True)
-
-        print_rich_table(
-            df.head(top),
-            headers=list(df.columns),
-            show_index=False,
-            title="Shows Largest Losers",
-        )
-        console.print("")
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "losers",
-            df_data,
-        )
-    else:
-        console.print("")
-        console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
-
-
-def display_discover(
-    category: str, top: int, sortby: str, descend: bool, links: bool, export: str
-) -> None:
-    """Discover coins by different categories. [Source: CoinGecko]
-        - Most voted coins
-        - Most popular coins
-        - Recently added coins
-        - Most positive sentiment coins
-
-    Parameters
-    ----------
-    category: str
-        one from list: [trending, most_voted, positive_sentiment, most_visited]
-    top: int
-        Number of records to display
-    sortby: str
-        Key by which to sort data
-    descend: bool
-        Flag to sort data descending
-    links: bool
-        Flag to display urls
-    export : str
-        Export dataframe data to csv,json,xlsx file
-    """
-
-    df = pycoingecko_model.get_discovered_coins(category=category)
-    if not df.empty:
-        df.index = df.index + 1
-        df.reset_index(inplace=True)
-        df.rename(columns={"index": "Rank"}, inplace=True)
-
-        df = df.sort_values(by=sortby, ascending=descend)
-
-        df_data = df.copy()
-
-        if not links:
-            df.drop("Url", axis=1, inplace=True)
-
-        print_rich_table(
-            df.head(top), headers=list(df.columns), show_index=False, title="Coins"
-        )
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            category,
-            df_data,
-        )
-    else:
-        console.print("")
-        console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
-
-
-def display_recently_added(
-    top: int, sortby: str, descend: bool, links: bool, export: str
-) -> None:
-    """Shows recently added coins from "https://www.coingecko.com/en/coins/recently_added" [Source: CoinGecko]
-
-    Parameters
-    ----------
-    top: int
-        Number of records to display
-    sortby: str
-        Key by which to sort data
-    descend: bool
-        Flag to sort data descending
-    links: bool
-        Flag to display urls
-    export : str
-        Export dataframe data to csv,json,xlsx file
-    """
-
-    df = pycoingecko_model.get_recently_added_coins().sort_values(
-        by=sortby, ascending=descend
-    )
-
-    df_data = df.copy()
-
-    if links is True:
-        df = df[["Rank", "Symbol", "Added", "Url"]]
-    else:
-        df.drop("Url", axis=1, inplace=True)
-
-    print_rich_table(
-        df.head(top),
-        headers=list(df.columns),
-        show_index=False,
-        title="Recently Added Coins",
-    )
-    console.print("")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "recently",
-        df_data,
-    )
-
-
-def display_top_defi_coins(
-    top: int, sortby: str, descend: bool, links: bool, export: str
-) -> None:
-    """Shows Top 100 DeFi Coins by Market Capitalization from "https://www.coingecko.com/en/defi"
-    DeFi or Decentralized Finance refers to financial services that are built
-    on top of distributed networks with no central intermediaries. [Source: CoinGecko]
-
-    Parameters
-    ----------
-    top: int
-        Number of records to display
-    sortby: str
-        Key by which to sort data
-    descend: bool
-        Flag to sort data descending
-    links: bool
-        Flag to display urls
-    export : str
-        Export dataframe data to csv,json,xlsx file
-    """
-
-    res = pycoingecko_model.get_top_defi_coins()
-    stats_str = res[0]
-    df = res[1].sort_values(by=sortby, ascending=descend)
-    if df.empty:
-        console.print("No available data\n")
-    else:
-        df_data = df.copy()
-
-        if links is True:
-            df = df[["Rank", "Name", "Symbol", "Url"]]
+        if sortby in COINS_COLUMNS:
+            df = df.sort_values(by=sortby, ascending=False)
+        for col in ["Volume [$]", "Market Cap [$]"]:
+            if col in df.columns:
+                df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
+        if gtff.USE_TABULATE_DF:
+            print_rich_table(
+                df.head(top),
+                headers=list(df.columns),
+                floatfmt=".4f",
+                show_index=False,
+            )
+            console.print()
         else:
-            df.drop("Url", axis=1, inplace=True)
-
-        console.print("\n", stats_str, "\n")
-        print_rich_table(
-            df.head(top),
-            headers=list(df.columns),
-            show_index=False,
-            title="Top 100 Defi Coins by Market Cap",
-        )
-        console.print("")
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
-            "defi",
-            df_data,
-        )
-
-
-def display_top_dex(top: int, sortby: str, descend: bool, export: str) -> None:
-    """Shows Top Decentralized Exchanges on CoinGecko by Trading Volume from "https://www.coingecko.com/en/dex"
-    [Source: CoinGecko]
-
-    Parameters
-    ----------
-    top: int
-        Number of records to display
-    sortby: str
-        Key by which to sort data
-    descend: bool
-        Flag to sort data descending
-    export : str
-        Export dataframe data to csv,json,xlsx file
-    """
-
-    df = pycoingecko_model.get_top_dexes().sort_values(by=sortby, ascending=descend)
-
-    print_rich_table(
-        df.head(top),
-        headers=list(df.columns),
-        show_index=False,
-        title="Top Decentralized Exchanges by Trading Volume",
-    )
-    console.print("")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "dex",
-        df,
-    )
-
-
-def display_top_volume_coins(top: int, sortby: str, descend: bool, export: str) -> None:
-    """Shows Top 100 Coins by Trading Volume from "https://www.coingecko.com/en/yield-farming" [Source: CoinGecko]
-
-    Parameters
-    ----------
-    top: int
-        Number of records to display
-    sortby: str
-        Key by which to sort data
-    descend: bool
-        Flag to sort data descending
-    export : str
-        Export dataframe data to csv,json,xlsx file
-    """
-
-    df = pycoingecko_model.get_top_volume_coins()
-
-    if not df.empty:
-        df = df.sort_values(by=sortby, ascending=descend)
-        print_rich_table(
-            df.head(top),
-            headers=list(df.columns),
-            show_index=False,
-            title="Top 100 Coins by Trading Volume",
-        )
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "volume",
+            "cglosers",
             df,
         )
     else:
-        console.print("")
-        console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
+        console.print("\nUnable to retrieve data from CoinGecko.\n")
 
 
-def display_top_nft(
-    top: int, sortby: str, descend: bool, links: bool, export: str
-) -> None:
-    """Shows Top 100 NFT Coins by Market Capitalization from "https://www.coingecko.com/en/nft"
-    Top 100 NFT Coins by Market Capitalization
-    NFT (Non-fungible Token) refers to digital assets with unique characteristics.
-    Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
-    [Source: CoinGecko]
+def display_trending(export: str) -> None:
+    """Display trending coins [Source: CoinGecko]
 
     Parameters
     ----------
-    top: int
-        Number of records to display
-    sortby: str
-        Key by which to sort data
-    descend: bool
-        Flag to sort data descending
-    links: bool
-        Flag to display urls
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = pycoingecko_model.get_top_nfts().sort_values(by=sortby, ascending=descend)
-
+    df = pycoingecko_model.get_trending_coins()
     if not df.empty:
-        df_data = df.copy()
-
-        if links is True:
-            df = df[["Rank", "Name", "Symbol", "Url"]]
+        if gtff.USE_TABULATE_DF:
+            print_rich_table(
+                df,
+                headers=list(df.columns),
+                floatfmt=".4f",
+                show_index=False,
+                title="Trending coins on CoinGecko",
+            )
+            console.print("")
         else:
-            df.drop("Url", axis=1, inplace=True)
-
-        print_rich_table(
-            df.head(top),
-            headers=list(df.columns),
-            show_index=False,
-            title="Top 100 NFT Coins by Market Cap",
-        )
+            console.print(df.to_string, "\n")
 
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
-            "nft",
-            df_data,
+            "cgtrending",
+            df,
         )
     else:
-        console.print("")
-        console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
-
-
-def display_yieldfarms(top: int, sortby: str, descend: bool, export: str) -> None:
-    """Shows Top Yield Farming Pools by Value Locked from "https://www.coingecko.com/en/yield-farming"
-    [Source: CoinGecko]
-
-    Parameters
-    ----------
-    top: int
-        Number of records to display
-    sortby: str
-        Key by which to sort data
-    descend: bool
-        Flag to sort data descending
-    export : str
-        Export dataframe data to csv,json,xlsx file
-    """
-
-    df = pycoingecko_model.get_yield_farms()
-
-    if not df.empty:
-        df_data = df.copy()
-
-        df = df.sort_values(by=sortby, ascending=descend)
-
-        print_rich_table(
-            df.head(top),
-            headers=list(df.columns),
-            floatfmt=".0f",
-            show_index=False,
-            title="Top Yield Farming Pools by Value Locked",
-        )
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "yfarms",
-            df_data,
-        )
-    else:
-        console.print("")
-        console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
+        console.print("\nUnable to retrieve data from CoinGecko.\n")

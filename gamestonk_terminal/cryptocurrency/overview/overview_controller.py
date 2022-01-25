@@ -49,10 +49,7 @@ class OverviewController(BaseController):
     CHOICES_COMMANDS = [
         "cgglobal",
         "cgdefi",
-        "cgnews",
         "cgstables",
-        "cgnft",
-        "cgnftday",
         "cgexchanges",
         "cgexrates",
         "cgplatforms",
@@ -92,12 +89,11 @@ class OverviewController(BaseController):
             choices["ch"]["--slug"] = {c: None for c in crypto_hack_slugs}
             choices["cghold"] = {c: None for c in pycoingecko_model.HOLD_COINS}
             choices["cgcompanies"] = {c: None for c in pycoingecko_model.HOLD_COINS}
-            choices["cgnews"]["-s"] = {c: None for c in pycoingecko_model.NEWS_FILTERS}
             choices["cgcategories"]["-s"] = {
                 c: None for c in pycoingecko_model.CATEGORIES_FILTERS
             }
             choices["cgstables"]["-s"] = {
-                c: None for c in pycoingecko_model.STABLES_FILTERS
+                c: None for c in pycoingecko_model.COINS_COLUMNS
             }
             choices["cgproducts"]["-s"] = {
                 c: None for c in pycoingecko_model.PRODUCTS_FILTERS
@@ -144,11 +140,8 @@ class OverviewController(BaseController):
         help_text = """[cmds]
 [src][CoinGecko][/src]
     cgglobal          global crypto market info
-    cgnews            last news available
     cgdefi            global DeFi market info
     cgstables         stablecoins
-    cgnft             non fungible token market status
-    cgnftday          non fungible token of the day
     cgexchanges       top crypto exchanges
     cgexrates         coin exchange rates
     cgplatforms       crypto financial platforms
@@ -473,6 +466,21 @@ class OverviewController(BaseController):
             default="bitcoin",
             choices=pycoingecko_model.HOLD_COINS,
         )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=check_positive,
+            help="display N number of records",
+            default=5,
+        )
+        parser.add_argument(
+            "--bar",
+            action="store_true",
+            help="Flag to show bar chart",
+            dest="bar",
+            default=False,
+        )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
@@ -482,67 +490,10 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_holdings_overview(
-                coin=ns_parser.coin, export=ns_parser.export
-            )
-
-    def call_cgnews(self, other_args):
-        """Process news command"""
-        parser = argparse.ArgumentParser(
-            prog="cgnews",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="Shows latest crypto news from CoinGecko. "
-            "You will see Index, Title, Author, Posted columns. "
-            "You can sort by each of column above, using --sort parameter and also do it descending with --descend flag"
-            "To display urls to news use --urls flag.",
-        )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=int,
-            help="display N number of news >=10",
-            default=15,
-        )
-
-        parser.add_argument(
-            "-s",
-            "--sort",
-            dest="sortby",
-            type=str,
-            help="Sort by given column. Default: index",
-            default="Index",
-            choices=pycoingecko_model.NEWS_FILTERS,
-        )
-
-        parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
-        )
-
-        parser.add_argument(
-            "-u",
-            "--urls",
-            dest="urls",
-            action="store_true",
-            help="Flag to show urls. If you will use that flag you will additional column with urls",
-            default=False,
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            pycoingecko_view.display_news(
-                top=ns_parser.limit,
+                coin=ns_parser.coin,
                 export=ns_parser.export,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                links=ns_parser.urls,
+                show_bar=ns_parser.bar,
+                top=ns_parser.limit,
             )
 
     def call_cgcategories(self, other_args):
@@ -553,9 +504,7 @@ class OverviewController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows top cryptocurrency categories by market capitalization. It includes categories like:
             stablecoins, defi, solana ecosystem, polkadot ecosystem and many others.
-            "You can sort by each of column above, using --sort parameter and also do it descending with --descend flag"
-            "To display urls use --urls flag.",
-            Displays: Rank, Name, Change_1h, Change_7d, Market_Cap, Volume_24h, Coins,""",
+            You can sort by {}, using --sort parameter""",
         )
 
         parser.add_argument(
@@ -572,25 +521,16 @@ class OverviewController(BaseController):
             "--sort",
             dest="sortby",
             type=str,
-            help="Sort by given column. Default: Rank",
-            default="Rank",
-            choices=pycoingecko_model.CATEGORIES_FILTERS,
+            help="Sort by given column. Default: market_cap_desc",
+            default=pycoingecko_model.SORT_VALUES[0],
+            choices=pycoingecko_model.SORT_VALUES,
         )
 
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
-        )
-
-        parser.add_argument(
-            "-u",
-            "--urls",
-            dest="urls",
+            "--pie",
             action="store_true",
-            help="Flag to show urls. If you will use that flag you will additional column with urls",
+            help="Flag to show pie chart",
+            dest="pie",
             default=False,
         )
 
@@ -602,10 +542,10 @@ class OverviewController(BaseController):
                 top=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                links=ns_parser.urls,
+                pie=ns_parser.pie,
             )
 
+    # TODO: solve sort (similar to cglosers from discovery)
     def call_cgstables(self, other_args):
         """Process stables command"""
         parser = argparse.ArgumentParser(
@@ -616,9 +556,7 @@ class OverviewController(BaseController):
                 Stablecoins are cryptocurrencies that attempt to peg their market value to some external reference
                 like the U.S. dollar or to a commodity's price such as gold.
                 You can display only N number of coins with --limit parameter.
-                You can sort data by Rank, Name, Symbol, Price, Change_24h, Exchanges, Market_Cap, Change_30d with --sort
-                and also with --descend flag to sort descending.
-                Flag --urls will display stablecoins urls""",
+                You can sort data by {} with --sort""",
         )
 
         parser.add_argument(
@@ -635,9 +573,9 @@ class OverviewController(BaseController):
             "--sort",
             dest="sortby",
             type=str,
-            help="Sort by given column. Default: Rank",
-            default="Rank",
-            choices=pycoingecko_model.STABLES_FILTERS,
+            help="Sort by given column. Default: market_cap",
+            default="market_cap",
+            choices=pycoingecko_model.COINS_COLUMNS,
         )
 
         parser.add_argument(
@@ -645,15 +583,14 @@ class OverviewController(BaseController):
             action="store_false",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
-            default=True,
+            default=False,
         )
 
         parser.add_argument(
-            "-u",
-            "--urls",
-            dest="urls",
+            "--pie",
             action="store_true",
-            help="Flag to show urls. If you will use that flag you will additional column with urls",
+            help="Flag to show pie chart",
+            dest="pie",
             default=False,
         )
 
@@ -666,47 +603,8 @@ class OverviewController(BaseController):
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
-                links=ns_parser.urls,
+                pie=ns_parser.pie,
             )
-
-    def call_cgnft(self, other_args):
-        """Process nft command"""
-
-        parser = argparse.ArgumentParser(
-            prog="cgnft",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Shows NFT market status
-                NFT (Non-fungible Token) refers to digital assets with unique characteristics.
-                Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
-                Displays: NFT Market Cap, 24h Trading Volume, NFT Dominance vs Global market, Theta Network NFT Dominance
-                """,
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            pycoingecko_view.display_nft_market_status(export=ns_parser.export)
-
-    def call_cgnftday(self, other_args):
-        """Process nftday command"""
-        parser = argparse.ArgumentParser(
-            prog="cgnftday",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Shows NFT of the day
-                NFT (Non-fungible Token) refers to digital assets with unique characteristics.
-                Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
-                With nft_today command you will display:
-                    author, description, url, img url for NFT which was chosen on CoinGecko as a nft of the day.""",
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            pycoingecko_view.display_nft_of_the_day(export=ns_parser.export)
 
     def call_cgproducts(self, other_args):
         """Process products command"""
@@ -1039,11 +937,21 @@ class OverviewController(BaseController):
             description="""Shows global statistics about Crypto Market""",
         )
 
+        parser.add_argument(
+            "--pie",
+            action="store_true",
+            help="Flag to show pie chart with market cap distribution",
+            dest="pie",
+            default=False,
+        )
+
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            pycoingecko_view.display_global_market_info(export=ns_parser.export)
+            pycoingecko_view.display_global_market_info(
+                export=ns_parser.export, pie=ns_parser.pie
+            )
 
     def call_cgdefi(self, other_args):
         """Process defi command"""

@@ -4,6 +4,8 @@ import functools
 import logging
 import os
 
+from gamestonk_terminal.rich_config import console
+
 logger = logging.getLogger(__name__)
 
 
@@ -23,6 +25,7 @@ def try_except(f):
         try:
             return f(*args, **kwargs)
         except Exception as e:
+            console.print(f"[red]Error: {e}[/red]")
             logger.exception("%s", type(e).__name__)
             return []
 
