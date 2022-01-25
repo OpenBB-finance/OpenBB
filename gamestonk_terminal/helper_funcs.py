@@ -758,8 +758,8 @@ def get_flair() -> str:
         # if there is no flair, don't add an extra space after the time
         if flair == "":
             return f"{dtime}"
-        else:
-            return f"{dtime} {flair}"
+        
+        return f"{dtime} {flair}"
 
     return flair
 
