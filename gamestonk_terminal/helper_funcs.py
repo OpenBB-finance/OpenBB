@@ -754,7 +754,13 @@ def get_flair() -> str:
         dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
             "%Y %b %d, %H:%M"
         )
-        return f"{dtime} {flair}"
+
+        # if there is no flair, don't add an extra space after the time
+        if flair == "":
+            return f"{dtime}"
+        else:
+            return f"{dtime} {flair}"
+
     return flair
 
 
