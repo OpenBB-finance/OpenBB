@@ -950,7 +950,7 @@ def show_greeks(
     opt_type: int = 1,
     mini: float = None,
     maxi: float = None,
-    second: bool = False,
+    show_all: bool = False,
 ) -> None:
     """
     Shows the greeks for a given option
@@ -971,8 +971,8 @@ def show_greeks(
         The minimum strike price to include in the table
     maxi : float
         The maximum strike price to include in the table
-    second : bool
-        Whether to show second level derivatives
+    all : bool
+        Whether to show all greeks
     """
 
     s = yfinance_model.get_price(ticker)
@@ -997,26 +997,32 @@ def show_greeks(
         opt = Option(s, row["strike"], risk_free, div_cont, dif, vol, opt_type)
         result = [
             row["strike"],
+            row["impliedVolatility"],
             opt.Delta(),
+            opt.Gamma(),
             opt.Vega(),
             opt.Theta(),
-            opt.Rho(),
-            opt.Phi(),
         ]
-        if second:
-            result += [opt.Gamma(), opt.Charm(), opt.Vanna(0.01), opt.Vomma(0.01)]
+        if show_all:
+            result += [
+                opt.Rho(),
+                opt.Phi(),
+                opt.Charm(),
+                opt.Vanna(0.01),
+                opt.Vomma(0.01),
+            ]
         strikes.append(result)
 
     columns = [
         "Strike",
+        "Implied Vol",
         "Delta",
+        "Gamma",
         "Vega",
         "Theta",
-        "Rho",
-        "Phi",
     ]
-    if second:
-        columns += ["Gamma", "Charm", "Vanna", "Vomma"]
+    if show_all:
+        columns += ["Rho", "Phi", "Charm", "Vanna", "Vomma"]
     df = pd.DataFrame(strikes, columns=columns)
     print_rich_table(df, headers=list(df.columns), show_index=False, title="Greeks")
     console.print("")

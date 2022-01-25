@@ -1169,11 +1169,11 @@ Expiry: [/param]{self.selected_date or None}
             help="Maximum strike price to show.",
         )
         parser.add_argument(
-            "--second",
-            dest="second",
+            "-a" "--all",
+            dest="all",
             action="store_true",
             default=False,
-            help="Whether to show second level derivatives.",
+            help="Whether to show all greeks.",
         )
 
         ns_parser = parse_known_args_and_warn(
@@ -1194,7 +1194,7 @@ Expiry: [/param]{self.selected_date or None}
                     opt_type=opt_type,
                     mini=ns_parser.min,
                     maxi=ns_parser.max,
-                    second=ns_parser.second,
+                    show_all=ns_parser.all,
                 )
 
     def call_parity(self, other_args: List[str]):
