@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import os
 import matplotlib.dates as mdates
 from matplotlib import pyplot as plt
+import pandas as pd
 
 from gamestonk_terminal.common.behavioural_analysis import sentimentinvestor_model
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
@@ -44,56 +45,135 @@ def display_historical(
     -------
     """
 
-    df = sentimentinvestor_model.get_historical(ticker, start, end, number)
+    supported_ticker = sentimentinvestor_model.check_supported_ticker(ticker)
+
+    # Check to see if the ticker is supported
+    if not supported_ticker:
+        print(f"Ticker {ticker} not supported. Please try another one!")
+
+    else:
+        df = sentimentinvestor_model.get_historical(ticker, start, end, number)
+
+        if df.empty:
+            print("Error in Sentiment Investor request")
+        else:
+            _, ax1 = plt.subplots(figsize=(25, 7))
+            ax1.plot(df.index, df["RHI"], c="k")
+            ax2 = ax1.twinx()
+
+            ax1.grid()
+            ax2.plot(df.index, df["AHI"], c="orange")
+
+            ax1.set_ylabel("RHI")
+            ax1.set_xlabel("Time")
+            ax1.set_title("Hourly-level data of RHI and AHI")
+            ax1.set_xlim(df.index[0], df.index[-1])
+            ax2.set_ylabel("AHI")
+
+            plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d %H:%M"))
+            plt.gcf().autofmt_xdate()
+
+            if gtff.USE_ION:
+                plt.ion()
+
+            plt.show()
+
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+                "hist",
+                df,
+            )
+
+            RAW_COLS = ["twitter", "stocktwits", "yahoo", "likes", "RHI", "AHI"]
+
+            if raw:
+                df.index = df.index.strftime("%Y-%m-%d %H:%M")
+                df.index.name = "Time"
+
+                print_rich_table(
+                    df[RAW_COLS].head(limit),
+                    headers=[
+                        "Time",
+                        "Twitter",
+                        "Stocktwits",
+                        "Yahoo",
+                        "Likes",
+                        "RHI",
+                        "AHI",
+                    ],
+                    show_index=True,
+                    title="Historical Sentiment Data",
+                )
+
+
+def display_trending(
+    start: str,
+    hour: int,
+    export: str,
+    number: int = 10,
+    limit: int = 10,
+):
+    """Display most talked about tickers within
+    the last hour together with their sentiment data.
+
+    Parameters
+    ----------
+    start: str
+        Initial date like string (e.g. 12-21-2021)
+    hour: int
+        Hour of the day in 24-hour notation (e.g. 14)
+    number : int
+        Number of results returned by API call
+        Maximum 250 per api call
+    limit: int
+        Number of results display on the terminal
+        Default: 10
+    Returns
+    -------
+    """
+
+    df = sentimentinvestor_model.get_trending(start, hour, number)
 
     if df.empty:
         print("Error in Sentiment Investor request")
+
     else:
-        _, ax1 = plt.subplots(figsize=(25, 7))
-        ax1.plot(df.index, df["RHI"], c="k")
-        ax2 = ax1.twinx()
-
-        ax1.grid()
-        ax2.plot(df.index, df["AHI"], c="orange")
-
-        ax1.set_ylabel("RHI")
-        ax1.set_xlabel("Time")
-        ax1.set_title("Hourly-level data of RHI and AHI")
-        ax1.set_xlim(df.index[0], df.index[-1])
-        ax2.set_ylabel("AHI")
-
-        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d %H:%M"))
-        plt.gcf().autofmt_xdate()
-
-        if gtff.USE_ION:
-            plt.ion()
-
-        plt.show()
-
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
-            "hist",
+            "trend",
             df,
         )
 
-        RAW_COLS = ["twitter", "stocktwits", "yahoo", "likes", "RHI", "AHI"]
+        RAW_COLS = [
+            "total",
+            "twitter",
+            "stocktwits",
+            "yahoo",
+            "likes",
+            "RHI",
+            "AHI",
+        ]
 
-        if raw:
-            df.index = df.index.strftime("%Y-%m-%d %H:%M")
-            df.index.name = "Time"
+        df.ticker = df.ticker.str.upper()
+        df = df.set_index("ticker")
 
-            print_rich_table(
-                df[RAW_COLS].head(limit),
-                headers=[
-                    "Time",
-                    "Twitter",
-                    "Stocktwits",
-                    "Yahoo",
-                    "Likes",
-                    "RHI",
-                    "AHI",
-                ],
-                show_index=True,
-                title="Historical Sentiment Data",
-            )
+        df.timestamp_date = pd.to_datetime(df.timestamp_date)
+        timestamp = df.timestamp_date[0].strftime("%Y-%m-%d %H:%M")
+
+        print_rich_table(
+            df[RAW_COLS].head(limit),
+            headers=[
+                "Total",
+                "Twitter",
+                "Stocktwits",
+                "Yahoo",
+                "Likes",
+                "RHI",
+                "AHI",
+            ],
+            show_index=True,
+            index_name="Ticker",
+            title=f"Most trending stocks at {timestamp}",
+        )
