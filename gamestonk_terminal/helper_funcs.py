@@ -722,7 +722,8 @@ def lett_to_num(word: str) -> str:
     return word
 
 
-def get_flair() -> str:
+def get_
+() -> str:
     """Get a flair icon"""
     flairs = {
         ":rocket": "(🚀🚀)",
@@ -732,6 +733,7 @@ def get_flair() -> str:
         ":boat": "(⛵)",
         ":phone": "(☎)",
         ":mercury": "(☿)",
+        ":hidden": "",
         ":sun": "(☼)",
         ":moon": "(☾)",
         ":nuke": "(☢)",
