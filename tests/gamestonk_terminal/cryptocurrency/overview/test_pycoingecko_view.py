@@ -20,13 +20,6 @@ class TestCoinGeckoAPI(TestCase):
 
     @pytest.mark.record_stdout
     @pytest.mark.vcr()
-    def test_coin_news(self):
-        ov_pycoingecko_view.display_news(
-            top=15, sortby="Index", descend=True, links=False, export=""
-        )
-
-    @pytest.mark.record_stdout
-    @pytest.mark.vcr()
     def test_coin_categories(self):
         ov_pycoingecko_view.display_categories(
             top=15, export="", pie=False, sortby="market_cap"

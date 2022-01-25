@@ -3,8 +3,8 @@ __docformat__ = "numpy"
 
 import os
 from pandas.plotting import register_matplotlib_converters
-from gamestonk_terminal import feature_flags as gtff
 from matplotlib import pyplot as plt, ticker
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     long_number_format_with_type_check,
