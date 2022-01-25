@@ -1,17 +1,3 @@
-    Rank                              Name Change_1h Change_24h Change_7d        Market_Cap       Volume_24h Coins
-0      1           Smart Contract Platform     -1.6%      -7.2%    -32.0%  $525,766,838,746  $52,888,990,820   173
-1      2                 Polygon Ecosystem     -0.6%      -1.1%    -14.5%  $272,716,640,469  $96,025,468,201   551
-2      3     Binance Smart Chain Ecosystem     -0.6%      -0.6%    -15.2%  $268,481,059,214  $97,796,706,628  1961
-3      4               Avalanche Ecosystem     -0.5%      -0.5%    -13.2%  $265,579,064,113  $92,428,849,544   241
-4      5               Moonriver Ecosystem     -0.4%      -0.1%    -63.0%  $250,179,050,479  $90,820,312,312    34
-5      6                  Fantom Ecosystem     -0.5%       2.1%    302.3%  $199,750,514,802  $92,956,601,336   114
-6      7                       Stablecoins     -0.1%       3.2%      1.5%  $175,727,495,764  $84,798,367,273    84
-7      8                Arbitrum Ecosystem     -0.5%       2.4%     -6.0%  $167,922,000,760  $82,299,454,164    45
-8      9      Decentralized Finance (DeFi)     -1.5%      -5.1%    -26.0%  $107,251,368,838  $11,414,131,936   431
-9     10             Exchange-based Tokens     -0.8%      -5.2%    -28.0%  $103,167,492,317   $9,578,226,533   240
-10    11  Centralized Exchange Token (CEX)     -0.6%      -4.2%    -24.3%   $86,514,712,035   $5,189,393,229    61
-11    12            Gnosis Chain Ecosystem     -0.5%       3.4%    -13.3%   $76,003,336,314   $9,828,889,883    77
-12    13                  Cosmos Ecosystem     -1.6%       0.1%    -17.6%   $55,233,209,283   $8,120,705,363    65
-13    14                  Solana Ecosystem     -2.7%     -10.4%    -38.7%   $41,406,343,108   $6,342,403,801   105
-14    15                 Cardano Ecosystem     -2.2%      -7.9%    -34.0%   $39,842,955,823   $4,026,246,441    13
+
+Unable to retrieve data from CoinGecko.
 
