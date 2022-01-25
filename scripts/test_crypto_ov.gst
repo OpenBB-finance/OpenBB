@@ -1,10 +1,14 @@
 crypto
 ov
 cbpairs
-cgnft
 cgexchanges
 cghold
-news
+cgglobal
+cgcategories
+cpglobal
+altindex
 btcrb
+wf
 ch
+news
 exit

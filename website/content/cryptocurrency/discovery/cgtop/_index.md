@@ -1,5 +1,5 @@
 ```
-usage: cggainers [-p {14d,1h,1y,200d,24h,30d,7d}] [-l N] [-s {Symbol,Name,Price [$],Market Cap [$],Market Cap Rank,Volume [$]}] [--descend] [-l] [--export {csv,json,xlsx}] [-h]
+usage: cgtop [-c CATEGORY] [-l N] [-s {Symbol,Name,Price [$],Market Cap [$],Market Cap Rank,Volume [$]}] [--descend] [-l] [--export {csv,json,xlsx}] [-h]
 ```
 
 Shows Largest Gainers - coins which gain the most in given period. You can use parameter --period to set which timeframe are you interested in: 1h,
@@ -7,8 +7,8 @@ Shows Largest Gainers - coins which gain the most in given period. You can use p
 
 ```
 optional arguments:
-  -p {14d,1h,1y,200d,24h,30d,7d}, --period {14d,1h,1y,200d,24h,30d,7d}
-                        time period, one from {14d,1h,1y,200d,24h,30d,7d} (default: 1h)
+  -c CATEGORY, --category CATEGORY
+                        Category to check top coins. Empty for none.
   -l N, --limit N       display N records (default: 15)
   -s {Symbol,Name,Price [$],Market Cap [$],Market Cap Rank,Volume [$]}, --sort {Symbol,Name,Price [$],Market Cap [$],Market Cap Rank,Volume [$]}
                         Sort by given column (default: Market Cap Rank)

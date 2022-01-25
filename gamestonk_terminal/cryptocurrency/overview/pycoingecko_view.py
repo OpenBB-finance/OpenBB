@@ -2,10 +2,18 @@
 __docformat__ = "numpy"
 
 import os
-import textwrap
 from pandas.plotting import register_matplotlib_converters
+from matplotlib import pyplot as plt, ticker
 from tabulate import tabulate
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
+    long_number_format_with_type_check,
+)
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    print_rich_table,
+)
 import gamestonk_terminal.cryptocurrency.overview.pycoingecko_model as gecko
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
@@ -16,7 +24,7 @@ register_matplotlib_converters()
 # pylint: disable=R0904, C0302
 
 
-def display_holdings_overview(coin: str, export: str) -> None:
+def display_holdings_overview(coin: str, show_bar: bool, export: str, top: int) -> None:
     """Shows overview of public companies that holds ethereum or bitcoin. [Source: CoinGecko]
 
     Parameters
@@ -31,10 +39,27 @@ def display_holdings_overview(coin: str, export: str) -> None:
     stats_string = res[0]
     df = res[1]
 
+    df = df.head(top)
+
     if df.empty:
         console.print("\nZero companies holding this crypto\n")
     else:
+        if show_bar:
+            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+            for _, row in df.iterrows():
+                ax.bar(x=row["Symbol"], height=row["Total Holdings"])
+
+            ax.set_ylabel("BTC Number")
+            ax.get_yaxis().set_major_formatter(
+                ticker.FuncFormatter(lambda x, _: long_number_format_with_type_check(x))
+            )
+            ax.set_xlabel("Company Symbol")
+            fig.tight_layout(pad=8)
+            ax.set_title("Total BTC Holdings per company")
+            ax.tick_params(axis="x", labelrotation=90)
         console.print(f"\n{stats_string}\n")
+        df = df.applymap(lambda x: long_number_format_with_type_check(x))
         if gtff.USE_TABULATE_DF:
             print(
                 tabulate(
@@ -52,85 +77,9 @@ def display_holdings_overview(coin: str, export: str) -> None:
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
-            "hold",
+            "cghold",
             df,
         )
-
-
-def display_nft_of_the_day(export: str) -> None:
-    """Shows NFT of the day "https://www.coingecko.com/en/nft" [Source: CoinGecko]
-
-    NFT (Non-fungible Token) refers to digital assets with unique characteristics.
-    Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
-
-    Parameters
-    ----------
-    export: str
-        Export dataframe data to csv,json,xlsx
-    """
-
-    df = gecko.get_nft_of_the_day()
-
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "nftday",
-        df,
-    )
-
-
-def display_nft_market_status(export: str) -> None:
-    """Shows overview data of nft markets "https://www.coingecko.com/en/nft" [Source: CoinGecko]
-
-    NFT (Non-fungible Token) refers to digital assets with unique characteristics.
-    Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
-
-    Parameters
-    ----------
-    export: str
-        Export dataframe data to csv,json,xlsx
-    """
-
-    df = gecko.get_nft_market_status()
-    if not df.empty:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df,
-                    headers=df.columns,
-                    floatfmt=".2f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            console.print(df.to_string, "\n")
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "nft",
-            df,
-        )
-    else:
-        console.print("")
-        console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
 
 
 def display_exchange_rates(sortby: str, descend: bool, top: int, export: str) -> None:
@@ -177,7 +126,7 @@ def display_exchange_rates(sortby: str, descend: bool, top: int, export: str) ->
         console.print("")
 
 
-def display_global_market_info(export: str) -> None:
+def display_global_market_info(pie: bool, export: str) -> None:
     """Shows global statistics about crypto. [Source: CoinGecko]
         - market cap change
         - number of markets
@@ -194,6 +143,35 @@ def display_global_market_info(export: str) -> None:
     df = gecko.get_global_info()
 
     if not df.empty:
+        if pie:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            ax.pie(
+                [
+                    round(
+                        df.loc[df["Metric"] == "Btc Market Cap In Pct"]["Value"].item(),
+                        2,
+                    ),
+                    round(
+                        df.loc[df["Metric"] == "Eth Market Cap In Pct"]["Value"].item(),
+                        2,
+                    ),
+                    round(
+                        df.loc[df["Metric"] == "Altcoin Market Cap In Pct"][
+                            "Value"
+                        ].item(),
+                        2,
+                    ),
+                ],
+                labels=["BTC", "ETH", "Altcoins"],
+                wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
+                labeldistance=1.05,
+                autopct="%1.0f%%",
+                startangle=90,
+            )
+            ax.set_title("Market cap distribution")
+            if gtff.USE_ION:
+                plt.ion()
+            plt.show()
         if gtff.USE_TABULATE_DF:
             print(
                 tabulate(
@@ -211,7 +189,7 @@ def display_global_market_info(export: str) -> None:
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
-            "global",
+            "cgglobal",
             df,
         )
     else:
@@ -259,9 +237,9 @@ def display_global_defi_info(export: str) -> None:
 
 
 def display_stablecoins(
-    sortby: str, descend: bool, top: int, links: bool, export: str
+    top: int, export: str, sortby: str, descend: bool, pie: bool
 ) -> None:
-    """Shows stablecoins data from "https://www.coingecko.com/en/stablecoins". [Source: CoinGecko]
+    """Shows stablecoins data [Source: CoinGecko]
 
     Parameters
     ----------
@@ -271,113 +249,83 @@ def display_stablecoins(
         Key by which to sort data
     descend: bool
         Flag to sort data descending
-    links: bool
-        Flag to display urls
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = gecko.get_stable_coins()
+    df = gecko.get_stable_coins(top)
 
     if not df.empty:
-        df = df.sort_values(by=sortby, ascending=descend)
-        df_data = df.copy()
-
-        if links is True:
-            df = df[["Rank", "Name", "Symbol", "Url"]]
-        else:
-            df.drop("Url", axis=1, inplace=True)
-
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df.head(top),
-                    headers=df.columns,
-                    floatfmt=".0f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
+        total_market_cap = int(df["market_cap"].sum())
+        df[f"Percentage [%] of top {top}"] = (df["market_cap"] / total_market_cap) * 100
+        df_data = df
+        df = df.sort_values(by=sortby, ascending=descend).head(top)
+        df = df.set_axis(
+            [
+                "Symbol",
+                "Name",
+                "Price [$]",
+                "Market Cap [$]",
+                "Market Cap Rank",
+                "Change 24h [%]",
+                "Change 7d [%]",
+                "Volume [$]",
+                f"Percentage [%] of top {top}",
+            ],
+            axis=1,
+            inplace=False,
+        )
+        df = df.applymap(lambda x: long_number_format_with_type_check(x))
+        if pie:
+            stables_to_display = df_data[df_data[f"Percentage [%] of top {top}"] >= 1]
+            other_stables = df_data[df_data[f"Percentage [%] of top {top}"] < 1]
+            values_list = list(
+                stables_to_display[f"Percentage [%] of top {top}"].values
             )
+            values_list.append(other_stables[f"Percentage [%] of top {top}"].sum())
+            labels_list = list(stables_to_display["name"].values)
+            labels_list.append("Others")
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            ax.pie(
+                values_list,
+                labels=labels_list,
+                wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
+                labeldistance=1.05,
+                autopct="%1.0f%%",
+                startangle=90,
+            )
+            ax.set_title(f"Market cap distribution of top {top} Stablecoins")
+            if gtff.USE_ION:
+                plt.ion()
+            plt.show()
+        console.print(
+            f"""
+First {top} stablecoins have a total {long_number_format_with_type_check(total_market_cap)} dollars of market cap.
+"""
+        )
+        if gtff.USE_TABULATE_DF:
+            print_rich_table(
+                df.head(top),
+                headers=list(df.columns),
+                floatfmt=".2f",
+                show_index=False,
+            )
+            console.print("")
         else:
             console.print(df.to_string, "\n")
 
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
-            "stables",
-            df_data,
+            "cgstables",
+            df,
         )
     else:
-        console.print("")
-        console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
+        console.print("\nUnable to retrieve data from CoinGecko.\n")
 
 
-def display_news(
-    sortby: str, descend: bool, top: int, links: bool, export: str
-) -> None:
-    """Shows latest crypto news. [Source: CoinGecko]
-
-    Parameters
-    ----------
-    top: int
-        Number of records to display
-    sortby: str
-        Key by which to sort data
-    descend: bool
-        Flag to sort data descending
-    links: bool
-        Flag to display urls
-    export : str
-        Export dataframe data to csv,json,xlsx file
-    """
-
-    df = gecko.get_news(n=top)
-
-    if not df.empty:
-        df = df.sort_values(by=sortby, ascending=descend)
-        df_data = df.copy()
-
-        df["Title"] = df["Title"].apply(
-            lambda x: "\n".join(textwrap.wrap(x, width=65)) if isinstance(x, str) else x
-        )
-
-        if not links:
-            df.drop("Url", axis=1, inplace=True)
-        else:
-            df = df[["Index", "Url"]]
-
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df,
-                    headers=df.columns,
-                    floatfmt=".0f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            console.print(df.to_string, "\n")
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "news",
-            df_data,
-        )
-    else:
-        console.print("")
-        console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
-
-
-def display_categories(
-    sortby: str, descend: bool, top: int, links: bool, export: str
-) -> None:
-    """Shows top cryptocurrency categories by market capitalization from https://www.coingecko.com/en/categories
+def display_categories(sortby: str, top: int, export: str, pie: bool) -> None:
+    """Shows top cryptocurrency categories by market capitalization
 
     The cryptocurrency category ranking is based on market capitalization. [Source: CoinGecko]
 
@@ -387,49 +335,55 @@ def display_categories(
         Number of records to display
     sortby: str
         Key by which to sort data
-    descend: bool
-        Flag to sort data descending
-    links: bool
-        Flag to display urls
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = gecko.get_top_crypto_categories()
-
+    df = gecko.get_top_crypto_categories(sortby)
+    df_data = df
     if not df.empty:
-        df = df.sort_values(by=sortby, ascending=descend)
-        df_data = df.copy()
-
-        if not links:
-            df.drop("Url", axis=1, inplace=True)
-        else:
-            df = df[["Rank", "Name", "Url"]]
-
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df.head(top),
-                    headers=df.columns,
-                    floatfmt=".0f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
+        if pie:
+            df_data[f"% relative to top {top}"] = (
+                df_data["Market Cap"] / df_data["Market Cap"].sum()
+            ) * 100
+            stables_to_display = df_data[df_data[f"% relative to top {top}"] >= 1]
+            other_stables = df_data[df_data[f"% relative to top {top}"] < 1]
+            values_list = list(stables_to_display[f"% relative to top {top}"].values)
+            values_list.append(other_stables[f"% relative to top {top}"].sum())
+            labels_list = list(stables_to_display["Name"].values)
+            labels_list.append("Others")
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            ax.pie(
+                values_list,
+                labels=labels_list,
+                wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
+                autopct="%1.0f%%",
+                startangle=90,
             )
+            ax.set_title(f"Market Cap distribution of top {top} crypto categories")
+            if gtff.USE_ION:
+                plt.ion()
+            plt.show()
+        df = df.applymap(lambda x: long_number_format_with_type_check(x))
+        if gtff.USE_TABULATE_DF:
+            print_rich_table(
+                df.head(top),
+                headers=list(df.columns),
+                floatfmt=".2f",
+                show_index=False,
+            )
+            console.print("")
         else:
             console.print(df.to_string, "\n")
 
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
-            "categories",
+            "cgcategories",
             df_data,
         )
     else:
-        console.print("")
-        console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
+        console.print("\nUnable to retrieve data from CoinGecko.\n")
 
 
 def display_exchanges(

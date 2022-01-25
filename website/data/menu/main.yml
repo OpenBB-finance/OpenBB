@@ -626,8 +626,6 @@ main:
         ref: "/cryptocurrency/chart"
       - name: find
         ref: "/cryptocurrency/find"
-      - name: coins
-        ref: "/cryptocurrency/coins"
       - name: headlines
         ref: "/cryptocurrency/headlines"
       - name: prt
@@ -637,28 +635,20 @@ main:
         sub:
           - name: cgtrending
             ref: "/cryptocurrency/discovery/cgtrending"
-          - name: cgvoted
-            ref: "/cryptocurrency/discovery/cgvoted"
-          - name: cgvisited
-            ref: "/cryptocurrency/discovery/cgvisited"
-          - name: cgvolume
-            ref: "/cryptocurrency/discovery/cgvolume"
-          - name: cgrecently
-            ref: "/cryptocurrency/discovery/cgrecently"
-          - name: cgsentiment
-            ref: "/cryptocurrency/discovery/cgsentiment"
+          - name: drnft
+            ref: "/cryptocurrency/discovery/drnft"
+          - name: drdex
+            ref: "/cryptocurrency/discovery/drdex"
+          - name: drdapps
+            ref: "/cryptocurrency/discovery/drdapps"
+          - name: drgames
+            ref: "/cryptocurrency/discovery/drgames"
           - name: cggainers
             ref: "/cryptocurrency/discovery/cggainers"
           - name: cglosers
             ref: "/cryptocurrency/discovery/cglosers"
-          - name: cgyfarms
-            ref: "/cryptocurrency/discovery/cgyfarms"
-          - name: cgdefi
-            ref: "/cryptocurrency/discovery/cgdefi"
-          - name: cgdex
-            ref: "/cryptocurrency/discovery/cgdex"
-          - name: cgnft
-            ref: "/cryptocurrency/discovery/cgnft"
+          - name: cgtop
+            ref: "/cryptocurrency/discovery/cgtop"
           - name: cpsearch
             ref: "/cryptocurrency/discovery/cpsearch"
           - name: cmctop
@@ -678,10 +668,6 @@ main:
             ref: "/cryptocurrency/overview/cgdefi"
           - name: cgstables
             ref: "/cryptocurrency/overview/cgstables"
-          - name: cgnft
-            ref: "/cryptocurrency/overview/cgnft"
-          - name: cgnftday
-            ref: "/cryptocurrency/overview/cgnftday"
           - name: cgexchanges
             ref: "/cryptocurrency/overview/cgexchanges"
           - name: cgexrates
