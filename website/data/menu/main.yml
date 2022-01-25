@@ -1012,21 +1012,21 @@ main:
       - name: ln
         ref: "/etf/ln"
       - name: ld
-        ref: "/eft/ld"
+        ref: "/etf/ld"
       - name: overview
         ref: "/etf/overview"
       - name: holdings
         ref: "/etf/holdings"
       - name: weights
-        ref: "/eft/weights"
+        ref: "/etf/weights"
       - name: summary
-        ref: "/eft/summary"
+        ref: "/etf/summary"
       - name: candle
         ref: "/etf/candle"
       - name: news
         ref: "/etf/news"
       - name: disc
-        ref: "/eft/disc"
+        ref: "/etf/disc"
         sub:
           - name: gainers
             ref: "/etf/disc/gainers"
