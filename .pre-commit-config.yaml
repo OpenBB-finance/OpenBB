@@ -1,13 +1,4 @@
 repos:
-  - repo: local
-    hooks:
-      - id: check-debug-mode
-        name: check-debug-mode
-        entry: python custom_pre_commit/debug_mode.py
-        language: python
-        language_version: python3
-        types: ["file"]
-        pass_filenames: false
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.0.1
     hooks:

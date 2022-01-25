@@ -2,10 +2,8 @@
 __docformat__ = "numpy"
 
 import os
-from tabulate import tabulate
 from gamestonk_terminal.cryptocurrency.defi import graph_model
-from gamestonk_terminal.helper_funcs import export_data
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     very_long_number_formatter,
 )
@@ -45,19 +43,13 @@ def display_uni_tokens(
         ["totalLiquidity", "tradeVolumeUSD"]
     ].applymap(lambda x: very_long_number_formatter(x))
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(limit),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df.head(limit),
+        headers=list(df.columns),
+        show_index=False,
+        title="UniSwarp DEX Trade-able Tokens",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -81,19 +73,13 @@ def display_uni_stats(export: str = "") -> None:
     df = graph_model.get_uniswap_stats()
     df_data = df.copy()
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Uniswap DEX Base Statistics",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -150,19 +136,13 @@ def display_recently_added(
         lambda x: very_long_number_formatter(x)
     )
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top),
+        headers=list(df.columns),
+        show_index=False,
+        title="Latest Added Pairs on Uniswap DEX",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -196,19 +176,10 @@ def display_uni_pools(
     df["volumeUSD"] = df["volumeUSD"].apply(lambda x: very_long_number_formatter(x))
     df_data = df.copy()
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top), headers=list(df.columns), show_index=False, title="Uniswap Pools"
+    )
+    console.print("")
 
     export_data(
         export,
@@ -244,19 +215,9 @@ def display_last_uni_swaps(
     df["amountUSD"] = df["amountUSD"].apply(lambda x: very_long_number_formatter(x))
     df_data = df.copy()
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df, headers=list(df.columns), show_index=False, title="Last Uniswap Swaps"
+    )
 
     export_data(
         export,

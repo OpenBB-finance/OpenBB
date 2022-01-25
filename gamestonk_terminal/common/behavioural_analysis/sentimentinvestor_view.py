@@ -4,10 +4,9 @@ __docformat__ = "numpy"
 import os
 import matplotlib.dates as mdates
 from matplotlib import pyplot as plt
-from tabulate import tabulate
 
 from gamestonk_terminal.common.behavioural_analysis import sentimentinvestor_model
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal import feature_flags as gtff
 
 # pylint: disable=E1101
@@ -84,22 +83,17 @@ def display_historical(
             df.index = df.index.strftime("%Y-%m-%d %H:%M")
             df.index.name = "Time"
 
-            if gtff.USE_TABULATE_DF:
-                print(
-                    tabulate(
-                        df[RAW_COLS].head(limit),
-                        headers=[
-                            "Time",
-                            "Twitter",
-                            "Stocktwits",
-                            "Yahoo",
-                            "Likes",
-                            "RHI",
-                            "AHI",
-                        ],
-                        tablefmt="fancy_grid",
-                        showindex=True,
-                    )
-                )
-            else:
-                print(df[RAW_COLS].head(limit).to_string())
+            print_rich_table(
+                df[RAW_COLS].head(limit),
+                headers=[
+                    "Time",
+                    "Twitter",
+                    "Stocktwits",
+                    "Yahoo",
+                    "Likes",
+                    "RHI",
+                    "AHI",
+                ],
+                show_index=True,
+                title="Historical Sentiment Data",
+            )

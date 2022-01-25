@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# check if the setenv file exists (it holds the API keys)
+if [ ! -f ./setenv ]; then
+    # and if it doesn't exist, create it
+    touch setenv
+fi
+
+# build the Dockerfile, and if that worked, run it on port 8080
+docker build -t gst_web . && docker run -it -p 8080:8080 --env-file setenv gst_web
