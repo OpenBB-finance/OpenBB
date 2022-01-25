@@ -1,0 +1,82 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.alphavantage.co/query?apikey=MOCK_API_KEY&function=REAL_GDP_PER_CAPITA
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6d2909b12d88edbb-CDG
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 24 Jan 2022 11:49:20 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Cookie
+      Via:
+      - 1.1 vegur
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1
