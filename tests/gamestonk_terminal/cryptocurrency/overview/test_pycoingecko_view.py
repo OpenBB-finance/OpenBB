@@ -14,7 +14,9 @@ class TestCoinGeckoAPI(TestCase):
     @pytest.mark.record_stdout
     @pytest.mark.vcr()
     def test_coin_holdings_overview(self):
-        ov_pycoingecko_view.display_holdings_overview(coin="bitcoin", export="")
+        ov_pycoingecko_view.display_holdings_overview(
+            coin="bitcoin", show_bar=False, export="", top=20
+        )
 
     @pytest.mark.record_stdout
     @pytest.mark.vcr()
@@ -27,20 +29,16 @@ class TestCoinGeckoAPI(TestCase):
     @pytest.mark.vcr()
     def test_coin_categories(self):
         ov_pycoingecko_view.display_categories(
-            top=15, sortby="Rank", descend=True, links=False, export=""
+            top=15, export="", pie=False, sortby="market_cap"
         )
 
+    @pytest.mark.skip
     @pytest.mark.record_stdout
     @pytest.mark.vcr()
     def test_coin_stablecoins(self):
         ov_pycoingecko_view.display_stablecoins(
-            top=15, sortby="Rank", descend=True, links=False, export=""
+            top=15, export="", sortby="market_cap", pie=False, descend=False
         )
-
-    @pytest.mark.record_stdout
-    @pytest.mark.vcr()
-    def test_coin_nft_market_status(self):
-        ov_pycoingecko_view.display_nft_market_status(export="")
 
     @pytest.mark.record_stdout
     @pytest.mark.vcr()
@@ -87,7 +85,7 @@ class TestCoinGeckoAPI(TestCase):
     @pytest.mark.record_stdout
     @pytest.mark.vcr()
     def test_coin_global_market_info(self):
-        ov_pycoingecko_view.display_global_market_info(export="")
+        ov_pycoingecko_view.display_global_market_info(export="", pie=False)
 
     @pytest.mark.record_stdout
     @pytest.mark.vcr()
