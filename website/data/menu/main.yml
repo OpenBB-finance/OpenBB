@@ -1009,26 +1009,46 @@ main:
   - name: etf
     ref: "/etf"
     sub:
-      - name: search
-        ref: "/etf/search"
+      - name: ln
+        ref: "/etf/ln"
+      - name: ld
+        ref: "/etf/ld"
       - name: overview
         ref: "/etf/overview"
       - name: holdings
         ref: "/etf/holdings"
-      - name: compare
-        ref: "/etf/compare"
-      - name: screener
-        ref: "/etf/screener"
-      - name: gainers
-        ref: "/etf/gainers"
-      - name: decliners
-        ref: "/etf/decliners"
-      - name: active
-        ref: "/etf/active"
+      - name: weights
+        ref: "/etf/weights"
+      - name: summary
+        ref: "/etf/summary"
+      - name: candle
+        ref: "/etf/candle"
+      - name: news
+        ref: "/etf/news"
+      - name: disc
+        ref: "/etf/disc"
+        sub:
+          - name: gainers
+            ref: "/etf/disc/gainers"
+          - name: decliners
+            ref: "/etf/disc/decliners"
+          - name: active
+            ref: "/etf/disc/active"
+      - name: scr
+        ref: "/etf/scr"
+        sub:
+          - name: view
+            ref: "/etf/scr/view"
+          - name: set
+            ref: "/etf/scr/set"
+          - name: screen
+            ref: "/etf/scr/screen"
+          - name: sbc
+            ref: "/etf/scr/sbc"
       - name: pir
         ref: "/etf/pir"
-      - name: fds
-        ref: "/etf/fds"
+      - name: compare
+        ref: "/etf/compare"
   - name: funds
     ref: "/funds"
     sub:
@@ -1235,7 +1255,7 @@ main:
     sub:
         - name: "dashboards"
           ref: "/jupyter/dashboards"
-          sub: 
+          sub:
             - name: "stocks"
               ref: "/jupyter/dashboards/stocks"
             - name: "correlation"
