@@ -7,6 +7,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.fundamental_analysis import av_view
+from gamestonk_terminal import helper_funcs
 
 
 @pytest.fixture(scope="module")
@@ -71,7 +72,7 @@ def vcr_config():
     [True, False],
 )
 def test_check_output(func, kwargs_dict, monkeypatch, use_tab):
-    monkeypatch.setattr(av_view.gtff, "USE_TABULATE_DF", use_tab)
+    monkeypatch.setattr(helper_funcs.gtff, "USE_TABULATE_DF", use_tab)
     getattr(av_view, func)(**kwargs_dict)
 
 
