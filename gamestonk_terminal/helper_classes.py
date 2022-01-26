@@ -6,6 +6,7 @@ from importlib import machinery, util
 from typing import Union, List, Dict, Optional
 import matplotlib
 import matplotlib.pyplot as plt
+from matplotlib import font_manager
 
 
 class LineAnnotateDrawer:
@@ -131,6 +132,7 @@ class TerminalStyle:
         """
         for folder in [self.DEFAULT_STYLES_LOCATION, self.USER_STYLES_LOCATION]:
             self.load_available_styles_from_folder(folder)
+            self.load_custom_fonts_from_folder(folder)
 
         if mpl_style in self.mpl_styles_available:
             self.mpl_style = self.mpl_styles_available[mpl_style]
@@ -152,6 +154,22 @@ class TerminalStyle:
         else:
             with open(self.console_styles_available["boring"]) as stylesheet:
                 self.console_style = json.load(stylesheet)
+
+    def load_custom_fonts_from_folder(self, folder: str) -> None:
+        """Load custom fonts form folder.
+
+        TTF and OTF fonts are loaded into the mpl font manager and are available for
+        selection in mpl by their name (for example "Consolas" or "Hack").
+
+        Parameters
+        ----------
+        folder : str
+            Path to the folder containing the fonts
+        """
+        for font_file in os.listdir(folder):
+            if font_file.endswith(".otf") or font_file.endswith(".ttf"):
+                font_path = os.path.abspath(os.path.join(folder, font_file))
+                font_manager.fontManager.addfont(font_path)
 
     def load_available_styles_from_folder(self, folder: str) -> None:
         for stf in os.listdir(folder):
