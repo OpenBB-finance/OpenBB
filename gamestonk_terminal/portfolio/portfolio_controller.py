@@ -63,11 +63,11 @@ class PortfolioController(BaseController):
             ]
         )
         self.portname = ""
-        self.port_list = os.listdir(portfolios_path)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"]: dict = {c: None for c in self.port_list}
+            choices["load"]: {c: None for c in os.listdir(portfolios_path)}
+            choices["save"]: {c: None for c in os.listdir(portfolios_path)}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
