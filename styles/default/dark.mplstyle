@@ -15,11 +15,12 @@ lines.solid_capstyle: projecting
 lines.antialiased: True
 
 patch.edgecolor: F5EFF3
-
+patch.facecolor: aqua
 
 # TEXT
 # http://matplotlib.org/api/font_manager_api.html
 font.family: sans-serif
+font.sans-serif: Consolas, Deja Vu Sans, Arial, Helvetica
 font.style: normal
 font.variant: normal
 font.weight: medium
@@ -30,17 +31,18 @@ text.color: F5EFF3
 
 axes.spines.left: true
 axes.spines.bottom: true
-axes.spines.top: false
-axes.spines.right: false
+axes.spines.top: true
+axes.spines.right: true
+axes.linewidth: 0.2
 
 axes.labelsize: small
+axes.titlelocation: left
 
-axes.facecolor: 21262A
+axes.facecolor: black
 axes.edgecolor: F5EFF3
 axes.labelcolor: F5EFF3
 
-axes.linewidth: 0.8
-axes.prop_cycle: cycler('color', ['1ED3D3', 'FF46F8', '2BFF6B', '9638FF', 'FF5352', 'FFFE5E', '7A66FF', 'FFAC73', '589AFF', 'FFE640'])
+axes.prop_cycle: cycler('color', ['ffed00', 'ef7d00', 'e4003a', 'c13246', '822661', '48277c', '005ca9', '00aaff', '9b30d9', 'af005f', '5f00af', 'af87ff'])
 
 xtick.color: F5EFF3
 ytick.color: F5EFF3
@@ -48,24 +50,32 @@ ytick.color: F5EFF3
 xtick.major.size: 2
 xtick.minor.size: 1
 xtick.labelsize: small
+
 ytick.major.size: 2
 ytick.minor.size: 1
 ytick.labelsize: small
+
+ytick.left: False
+ytick.labelleft: False
+ytick.right: True
+ytick.labelright: True
 
 legend.framealpha: 0
 
 grid.color: F5EFF3
 grid.linewidth: 0.4
+grid.linestyle: :
 
 legend.frameon: false
 legend.scatterpoints: 3
 legend.fontsize: small
+legend.loc: best
 
-figure.facecolor: 21262A
-figure.edgecolor: 21262A
+figure.facecolor: black
+figure.edgecolor: black
 
-savefig.facecolor: 21262A
-savefig.edgecolor: 21262A
+savefig.facecolor: black
+savefig.edgecolor: black
 
 ### Boxplots
 boxplot.boxprops.color: F5EFF3

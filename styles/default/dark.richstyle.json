@@ -4,6 +4,6 @@
     "param": "rgb(247,206,70)",
     "menu": "rgb(50,115,185)",
     "src": "rgb(216,90,64)",
-    "help": "green",
-    "unvl": "grey30"
+    "unvl": "grey30",
+    "help": "#FAC900"
 }

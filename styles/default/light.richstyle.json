@@ -2,8 +2,8 @@
     "info": "rgb(224,131,48)",
     "cmds": "rgb(70,156,222)",
     "param": "rgb(247,206,70)",
-    "menu": "rgb(13,184,166)",
+    "menu": "rgb(50,115,185)",
     "src": "rgb(216,90,64)",
-    "help": "green",
-    "unvl": "rgb(133,85,130)"
+    "unvl": "grey30",
+    "help": "#FAC900"
 }

@@ -1,26 +1,26 @@
 {
-    "style_name": "hackerman",
+    "style_name": "openbb",
     "base_mpf_style": null,
     "marketcolors": {
         "candle": {
-            "up": "#2BFF6B",
-            "down": "#FF5352"
+            "up": "#00ACFF",
+            "down": "#e4003a"
         },
         "edge": {
-            "up": "#219E4F",
-            "down": "#9E1711"
+            "up": "#00ACFF",
+            "down": "#e4003a"
         },
         "wick": {
-            "up": "#2BFF6B",
-            "down": "#FF5352"
+            "up": "#00ACFF",
+            "down": "#e4003a"
         },
         "ohlc": {
-            "up": "#2BFF6B",
-            "down": "#FF5352"
+            "up": "#00ACFF",
+            "down": "#e4003a"
         },
         "volume": {
-            "up": "#2BFF6B",
-            "down": "#FF5352"
+            "up": "#00ACFF",
+            "down": "#e4003a"
         },
         "vcedge": {
             "up": "#219E4F",
@@ -36,9 +36,9 @@
         "#EB5549"
     ],
     "y_on_right": true,
-    "gridcolor": "#A3A0A2",
+    "gridcolor": "grey",
     "gridstyle": ":",
-    "facecolor": "#21262A",
+    "facecolor": "white",
     "edgecolor": null,
     "figcolor": null,
     "gridaxis": null,

@@ -1,26 +1,26 @@
 {
-    "style_name": "boring",
+    "style_name": "openbb",
     "base_mpf_style": null,
     "marketcolors": {
         "candle": {
-            "up": "#4AEB86",
-            "down": "#EB5049"
+            "up": "#00ACFF",
+            "down": "#e4003a"
         },
         "edge": {
-            "up": "#219E4F",
-            "down": "#9E1711"
+            "up": "#00ACFF",
+            "down": "#e4003a"
         },
         "wick": {
-            "up": "#049E46",
-            "down": "#9E2B21"
+            "up": "#00ACFF",
+            "down": "#e4003a"
         },
         "ohlc": {
-            "up": "#4AEB86",
-            "down": "#EB5049"
+            "up": "#00ACFF",
+            "down": "#e4003a"
         },
         "volume": {
-            "up": "#4AEB86",
-            "down": "#EB5049"
+            "up": "#00ACFF",
+            "down": "#e4003a"
         },
         "vcedge": {
             "up": "#219E4F",
@@ -36,9 +36,9 @@
         "#EB5549"
     ],
     "y_on_right": true,
-    "gridcolor": "grey",
+    "gridcolor": "#A3A0A2",
     "gridstyle": ":",
-    "facecolor": "white",
+    "facecolor": "black",
     "edgecolor": null,
     "figcolor": null,
     "gridaxis": null,
