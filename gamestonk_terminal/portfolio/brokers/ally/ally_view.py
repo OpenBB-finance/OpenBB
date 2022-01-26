@@ -2,35 +2,27 @@
 __docformat__ = "numpy"
 
 import os
-from tabulate import tabulate
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.portfolio.brokers.ally import ally_model
 from gamestonk_terminal.rich_config import console
 
 
-def display_history(n_to_show: int = 15, export: str = ""):
+def display_history(n_to_show: int = 15, export: str = "") -> None:
     history = ally_model.get_history()
     show_history = history[["amount", "date", "symbol", "transactiontype", "quantity"]]
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                show_history.tail(n_to_show),
-                headers=show_history.columns,
-                tablefmt="fancy_grid",
-                floatfmt=".2f",
-                showindex=False,
-            )
-        )
-    else:
-        console.print(show_history.tail(n_to_show).to_string())
+    print_rich_table(
+        show_history.tail(n_to_show),
+        headers=list(show_history.columns),
+        show_index=False,
+        title="Ally History",
+    )
     console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "ally_history", history
     )
 
 
-def display_holdings(export: str = ""):
+def display_holdings(export: str = "") -> None:
     """Display holdings from ally account
 
     Parameters
@@ -40,18 +32,9 @@ def display_holdings(export: str = ""):
     """
     holdings = ally_model.get_holdings()
     holdings = holdings.set_index("Symbol")
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                holdings,
-                headers=holdings.columns,
-                tablefmt="fancy_grid",
-                floatfmt=".2f",
-                showindex=True,
-            )
-        )
-    else:
-        console.print(holdings.to_string())
+    print_rich_table(
+        holdings, headers=list(holdings.columns), show_index=True, title="Ally Holdings"
+    )
     console.print("")
     export_data(
         export,
@@ -61,7 +44,7 @@ def display_holdings(export: str = ""):
     )
 
 
-def display_balances(export: str = ""):
+def display_balances(export: str = "") -> None:
     """Display balances from ally account
 
     Parameters
@@ -87,22 +70,16 @@ def display_balances(export: str = ""):
             "securities.total",
         ]
     ]
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                balances,
-                headers=balances.columns,
-                tablefmt="fancy_grid",
-                floatfmt=".2f",
-                showindex=False,
-            )
-        )
-    else:
-        console.print(balances.to_string())
+    print_rich_table(
+        balances,
+        headers=list(balances.columns),
+        show_index=False,
+        title="Ally Balances",
+    )
     console.print("")
 
 
-def display_stock_quote(ticker: str):
+def display_stock_quote(ticker: str) -> None:
     """Displays stock quote for ticker/tickers
 
     Parameters
@@ -111,14 +88,9 @@ def display_stock_quote(ticker: str):
         Ticker to get.  Can be in form of 'tick1,tick2...'
     """
     quote = ally_model.get_stock_quote(ticker)
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                quote, tablefmt="fancy_grid", headers=quote.columns, showindex=True
-            )
-        )
-    else:
-        console.print(quote.to_string())
+    print_rich_table(
+        quote, headers=list(quote.columns), show_index=True, title="Stock Quote"
+    )
     console.print("")
 
 
@@ -141,18 +113,12 @@ def display_top_lists(
         Format to export data, by default ""
     """
     movers = ally_model.get_top_movers(list_type, exchange)
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                movers.head(num_to_show),
-                headers=movers.columns,
-                tablefmt="fancy_grid",
-                floatfmt=".2f",
-                showindex=True,
-            )
-        )
-    else:
-        console.print(movers.to_string())
+    print_rich_table(
+        movers.head(num_to_show),
+        headers=list(movers.columns),
+        show_index=True,
+        title="Ally Top Lists",
+    )
     console.print("")
     export_data(
         export,

@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import os
 from pandas.plotting import register_matplotlib_converters
 from matplotlib import pyplot as plt, ticker
-from tabulate import tabulate
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     long_number_format_with_type_check,
@@ -15,7 +15,6 @@ from gamestonk_terminal.helper_funcs import (
     print_rich_table,
 )
 import gamestonk_terminal.cryptocurrency.overview.pycoingecko_model as gecko
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
@@ -60,19 +59,13 @@ def display_holdings_overview(coin: str, show_bar: bool, export: str, top: int) 
             ax.tick_params(axis="x", labelrotation=90)
         console.print(f"\n{stats_string}\n")
         df = df.applymap(lambda x: long_number_format_with_type_check(x))
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df,
-                    headers=df.columns,
-                    floatfmt=".2f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=False,
+            title="Public Companies Holding BTC or ETH",
+        )
+        console.print("")
 
         export_data(
             export,
@@ -100,19 +93,13 @@ def display_exchange_rates(sortby: str, descend: bool, top: int, export: str) ->
     df = gecko.get_exchange_rates().sort_values(by=sortby, ascending=descend)
 
     if not df.empty:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df.head(top),
-                    headers=df.columns,
-                    floatfmt=".2f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            show_index=False,
+            title="Exchange Rates",
+        )
+        console.print("")
 
         export_data(
             export,
@@ -172,19 +159,10 @@ def display_global_market_info(pie: bool, export: str) -> None:
             if gtff.USE_ION:
                 plt.ion()
             plt.show()
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df,
-                    headers=df.columns,
-                    floatfmt=".2f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df, headers=list(df.columns), show_index=False, title="Global Statistics"
+        )
+        console.print("")
 
         export_data(
             export,
@@ -210,19 +188,13 @@ def display_global_defi_info(export: str) -> None:
     df = gecko.get_global_defi_info()
 
     if not df.empty:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df,
-                    headers=df.columns,
-                    floatfmt=".1f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=False,
+            title="Global DEFI Statistics",
+        )
+        console.print("")
 
         export_data(
             export,
@@ -303,16 +275,13 @@ def display_stablecoins(
 First {top} stablecoins have a total {long_number_format_with_type_check(total_market_cap)} dollars of market cap.
 """
         )
-        if gtff.USE_TABULATE_DF:
-            print_rich_table(
-                df.head(top),
-                headers=list(df.columns),
-                floatfmt=".2f",
-                show_index=False,
-            )
-            console.print("")
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            show_index=False,
+            title="Stablecoin Data",
+        )
+        console.print("")
 
         export_data(
             export,
@@ -365,16 +334,13 @@ def display_categories(sortby: str, top: int, export: str, pie: bool) -> None:
                 plt.ion()
             plt.show()
         df = df.applymap(lambda x: long_number_format_with_type_check(x))
-        if gtff.USE_TABULATE_DF:
-            print_rich_table(
-                df.head(top),
-                headers=list(df.columns),
-                floatfmt=".2f",
-                show_index=False,
-            )
-            console.print("")
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            floatfmt=".2f",
+            show_index=False,
+        )
+        console.print("")
 
         export_data(
             export,
@@ -415,19 +381,13 @@ def display_exchanges(
         else:
             df.drop("Url", axis=1, inplace=True)
 
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df.head(top),
-                    headers=df.columns,
-                    floatfmt=".1f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            show_index=False,
+            title="Top CoinGecko Exchanges",
+        )
+        console.print("")
 
         export_data(
             export,
@@ -461,19 +421,13 @@ def display_platforms(sortby: str, descend: bool, top: int, export: str) -> None
     if not df.empty:
         df = df.sort_values(by=sortby, ascending=descend)
 
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df.head(top),
-                    headers=df.columns,
-                    floatfmt=".2f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            show_index=False,
+            title="Financial Platforms",
+        )
+        console.print("")
 
         export_data(
             export,
@@ -507,19 +461,13 @@ def display_products(sortby: str, descend: bool, top: int, export: str) -> None:
     if not df.empty:
         df = df.sort_values(by=sortby, ascending=descend)
 
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df.head(top),
-                    headers=df.columns,
-                    floatfmt=".2f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            show_index=False,
+            title="Financial Products",
+        )
+        console.print("")
 
         export_data(
             export,
@@ -552,19 +500,13 @@ def display_indexes(sortby: str, descend: bool, top: int, export: str) -> None:
     if not df.empty:
         df = df.sort_values(by=sortby, ascending=descend)
 
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df.head(top),
-                    headers=df.columns,
-                    floatfmt=".2f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            show_index=False,
+            title="Crypto Indexes",
+        )
+        console.print("")
 
         export_data(
             export,
@@ -598,19 +540,13 @@ def display_derivatives(sortby: str, descend: bool, top: int, export: str) -> No
     if not df.empty:
         df = df.sort_values(by=sortby, ascending=descend)
 
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df.head(top),
-                    headers=df.columns,
-                    floatfmt=".4f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            show_index=False,
+            title="Crypto Derivatives",
+        )
+        console.print("")
 
         export_data(
             export,
