@@ -5,6 +5,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.discovery import financedatabase_view
+from gamestonk_terminal import helper_funcs
 
 
 @pytest.mark.default_cassette("test_show_equities")
@@ -33,7 +34,7 @@ from gamestonk_terminal.stocks.discovery import financedatabase_view
 )
 def test_show_equities(kwargs_dict, mocker, use_tab):
     mocker.patch.object(
-        target=financedatabase_view.gtff, attribute="USE_TABULATE_DF", new=use_tab
+        target=helper_funcs.gtff, attribute="USE_TABULATE_DF", new=use_tab
     )
 
     kwargs_dict_none = {

@@ -4,13 +4,13 @@ __docformat__ = "numpy"
 import os
 from datetime import timedelta
 import matplotlib.pyplot as plt
-from tabulate import tabulate
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.feature_flags import USE_ION
 from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
 from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     export_data,
+    print_rich_table,
 )
 from gamestonk_terminal.rich_config import console
 
@@ -53,15 +53,11 @@ def dark_pool_short_positions(num: int, sort_field: str, ascending: bool, export
     ]
 
     # Assuming that the datetime is the same, which from my experiments seems to be the case
-    console.print(f"The following data corresponds to the date: {dp_date}")
-    print(
-        tabulate(
-            df.iloc[:num],
-            tablefmt="fancy_grid",
-            floatfmt=".2f",
-            headers=list(df.columns),
-            showindex=False,
-        )
+    print_rich_table(
+        df.iloc[:num],
+        headers=list(df.columns),
+        show_index=False,
+        title=f"Data for: {dp_date}",
     )
     console.print("")
 
@@ -100,15 +96,11 @@ def short_interest_days_to_cover(num: int, sort_field: str, export: str):
     ]
 
     # Assuming that the datetime is the same, which from my experiments seems to be the case
-    console.print(f"The following data corresponds to the date: {dp_date}")
-    print(
-        tabulate(
-            df.iloc[:num],
-            tablefmt="fancy_grid",
-            floatfmt=".2f",
-            headers=list(df.columns),
-            showindex=False,
-        )
+    print_rich_table(
+        df.iloc[:num],
+        headers=list(df.columns),
+        show_index=False,
+        title=f"Data for: {dp_date}",
     )
     console.print("")
 
@@ -156,14 +148,11 @@ def short_interest_volume(ticker: str, num: int, raw: bool, export: str):
 
         df.date = df.date.dt.date
 
-        print(
-            tabulate(
-                df.iloc[:num],
-                tablefmt="fancy_grid",
-                floatfmt=".2f",
-                headers=list(df.columns),
-                showindex=False,
-            )
+        print_rich_table(
+            df.iloc[:num],
+            headers=list(df.columns),
+            show_index=False,
+            title="Price vs Short Volume",
         )
     else:
         _, axes = plt.subplots(
@@ -276,14 +265,11 @@ def net_short_position(ticker: str, num: int, raw: bool, export: str):
 
         df["dates"] = df["dates"].dt.date
 
-        print(
-            tabulate(
-                df.iloc[:num],
-                tablefmt="fancy_grid",
-                floatfmt=".2f",
-                headers=list(df.columns),
-                showindex=False,
-            )
+        print_rich_table(
+            df.iloc[:num],
+            headers=list(df.columns),
+            show_index=False,
+            title="Net Short Positions",
         )
 
     else:
