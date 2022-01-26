@@ -10,7 +10,6 @@ from gamestonk_terminal.helper_funcs import (
     export_data,
     print_rich_table,
 )
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
 
@@ -36,17 +35,13 @@ def display_top_nfts(top: int = 10, sortby: str = "", export: str = "") -> None:
         for col in ["Floor Price [$]", "Avg Price [$]", "Market Cap [$]", "Volume [$]"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
-        if gtff.USE_TABULATE_DF:
-            print_rich_table(
-                df.head(top),
-                headers=list(df.columns),
-                floatfmt=".2f",
-                show_index=False,
-                title="Top NFT collections",
-            )
-            console.print("")
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            show_index=False,
+            title="Top NFT collections",
+        )
+        console.print("")
 
         export_data(
             export,
@@ -78,17 +73,13 @@ def display_top_games(top: int = 10, export: str = "", sortby: str = "") -> None
     for col in ["Daily Users", "Daily Volume [$]"]:
         if col in df.columns:
             df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
-    if gtff.USE_TABULATE_DF:
-        print_rich_table(
-            df.head(top),
-            headers=list(df.columns),
-            floatfmt=".2f",
-            show_index=False,
-            title="Top Blockchain Games",
-        )
-        console.print("")
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top),
+        headers=list(df.columns),
+        show_index=False,
+        title="Top Blockchain Games",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -120,17 +111,13 @@ def display_top_dexes(top: int = 10, export: str = "", sortby: str = "") -> None
     for col in ["Daily Users", "Daily Volume [$]"]:
         if col in df.columns:
             df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
-    if gtff.USE_TABULATE_DF:
-        print_rich_table(
-            df.head(top),
-            headers=list(df.columns),
-            floatfmt=".2f",
-            show_index=False,
-            title="Top Decentralized Exchanges",
-        )
-        console.print("")
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top),
+        headers=list(df.columns),
+        show_index=False,
+        title="Top Decentralized Exchanges",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -162,17 +149,13 @@ def display_top_dapps(top: int = 10, export: str = "", sortby: str = "") -> None
     for col in ["Daily Users", "Daily Volume [$]"]:
         if col in df.columns:
             df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
-    if gtff.USE_TABULATE_DF:
-        print_rich_table(
-            df.head(top),
-            headers=list(df.columns),
-            floatfmt=".2f",
-            show_index=False,
-            title="Top Decentralized Applications",
-        )
-        console.print("")
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top),
+        headers=list(df.columns),
+        show_index=False,
+        title="Top Decentralized Applications",
+    )
+    console.print("")
 
     export_data(
         export,

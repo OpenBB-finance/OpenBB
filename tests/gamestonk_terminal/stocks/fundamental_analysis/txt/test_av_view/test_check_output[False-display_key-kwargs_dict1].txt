@@ -1,3 +1,4 @@
+                                0
 Market capitalization     1.100 T
 EBITDA                    7.267 B
 EPS                         3.062

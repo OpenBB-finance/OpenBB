@@ -5,6 +5,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.fundamental_analysis import business_insider_view
+from gamestonk_terminal import helper_funcs
 
 
 @pytest.fixture(scope="module")
@@ -21,5 +22,5 @@ def vcr_config():
     [True, False],
 )
 def test_display_management(monkeypatch, use_tab):
-    monkeypatch.setattr(business_insider_view.gtff, "USE_TABULATE_DF", use_tab)
+    monkeypatch.setattr(helper_funcs.gtff, "USE_TABULATE_DF", use_tab)
     business_insider_view.display_management(ticker="TSLA", export="")
