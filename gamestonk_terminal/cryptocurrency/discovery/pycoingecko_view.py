@@ -8,7 +8,6 @@ from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
 )
 from gamestonk_terminal.cryptocurrency.discovery import pycoingecko_model
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
@@ -64,16 +63,12 @@ def display_coins(category: str, top: int, sortby: str, export: str) -> None:
         for col in ["Volume [$]", "Market Cap [$]"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
-        if gtff.USE_TABULATE_DF:
-            print_rich_table(
-                df.head(top),
-                headers=list(df.columns),
-                floatfmt=".4f",
-                show_index=False,
-            )
-            console.print("")
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            show_index=False,
+        )
+        console.print("")
 
         export_data(
             export,
@@ -107,16 +102,12 @@ def display_gainers(period: str, top: int, sortby: str, export: str) -> None:
         for col in ["Volume [$]", "Market Cap [$]"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
-        if gtff.USE_TABULATE_DF:
-            print_rich_table(
-                df.head(top),
-                headers=list(df.columns),
-                floatfmt=".4f",
-                show_index=False,
-            )
-            console.print("")
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            show_index=False,
+        )
+        console.print("")
 
         export_data(
             export,
@@ -150,16 +141,12 @@ def display_losers(period: str, top: int, export: str, sortby: str) -> None:
         for col in ["Volume [$]", "Market Cap [$]"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
-        if gtff.USE_TABULATE_DF:
-            print_rich_table(
-                df.head(top),
-                headers=list(df.columns),
-                floatfmt=".4f",
-                show_index=False,
-            )
-            console.print()
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            show_index=False,
+        )
+        console.print()
 
         export_data(
             export,
@@ -182,17 +169,14 @@ def display_trending(export: str) -> None:
 
     df = pycoingecko_model.get_trending_coins()
     if not df.empty:
-        if gtff.USE_TABULATE_DF:
-            print_rich_table(
-                df,
-                headers=list(df.columns),
-                floatfmt=".4f",
-                show_index=False,
-                title="Trending coins on CoinGecko",
-            )
-            console.print("")
-        else:
-            console.print(df.to_string, "\n")
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            floatfmt=".4f",
+            show_index=False,
+            title="Trending coins on CoinGecko",
+        )
+        console.print("")
 
         export_data(
             export,
