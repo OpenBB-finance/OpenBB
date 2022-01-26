@@ -649,7 +649,7 @@ def display_var(data: pd.DataFrame, use_mean: bool, ticker: str, adjusted_var: b
     dict = {str_var_label: var_list, str_hist_label: hist_var_list}
     data = pd.DataFrame(dict, index=["90%", "95%", "99%"])
 
-    rich_table_from_df(
+    print_rich_table(
         data,
         show_index=True,
         headers=list(data.columns),
