@@ -2,7 +2,7 @@
 usage: compare [-e NAMES] [--export {csv,json,xlsx}] [-h]
 ```
 
-Compare stats of selected ETFs
+Compare the fundamentals of multiple ETFs.
 
 ```
 optional arguments:

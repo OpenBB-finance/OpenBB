@@ -1,0 +1,67 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.coingecko.com/api/v3/global/decentralized_finance_defi
+  response:
+    body:
+      string: !!binary |
+        H4sIAA3j7mEAA1yPy2rDQAxF/8XrYkZvKd/R/TDEbmNa28E43YT8e+VAoS3aCR3dc+/d0PbWne7d
+        ML5NdW7bx7jXc7t2pw4KqTKKcVDP4DlIoq7gQcjevXTjfvnLoJUSgIIc0QMTmOcbMhYLVZFknkH7
+        Wg92a/u0JkbekwOEqRIrqiKFU/JWMKwoBrE8x5jSSQ0tUg8Ci4odKvvWhml5r1/r520eK/LlqABF
+        Pc/ZSq+HhBcskG/cxBHsR2dY52lpy3lMRnt0jeztZBaiAJahBVU0lLO6FAoDzhN3FyVnJ04bNHbV
+        Q2W91vM6LXVp8/Hxddy29nv/PxOlZ2YHyhgDIHs8vgEAAP//AwDVoJdrmQEAAA==
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization
+      Access-Control-Allow-Methods:
+      - POST, PUT, DELETE, GET, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - link, per-page, total
+      Access-Control-Request-Method:
+      - '*'
+      Alternate-Protocol:
+      - 443:npn-spdy/2
+      CF-Cache-Status:
+      - MISS
+      CF-RAY:
+      - 6d2b02b0faa3209d-IND
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 24 Jan 2022 17:34:05 GMT
+      ETag:
+      - W/"b0706f67f7ec428f1b263109a1381853"
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, Origin
+      X-Request-Id:
+      - 8b7a5274-e871-4a15-ace9-0e8bcde2840c
+      X-Runtime:
+      - '0.212552'
+    status:
+      code: 200
+      message: OK
+version: 1

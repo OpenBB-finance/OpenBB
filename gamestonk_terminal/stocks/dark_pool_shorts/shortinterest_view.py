@@ -2,11 +2,9 @@
 __docformat__ = "numpy"
 
 import os
-from tabulate import tabulate
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 
 from gamestonk_terminal.stocks.dark_pool_shorts import shortinterest_model
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
 
@@ -28,19 +26,13 @@ def high_short_interest(num: int, export: str):
 
     df_high_short_interest = df_high_short_interest.iloc[1:].head(n=num)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_high_short_interest,
-                headers=df_high_short_interest.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df_high_short_interest.to_string())
+    print_rich_table(
+        df_high_short_interest,
+        headers=list(df_high_short_interest.columns),
+        show_index=False,
+        title="Top Interest Stocks",
+    )
+    console.print("")
 
     export_data(
         export,
