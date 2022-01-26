@@ -188,3 +188,21 @@ class TerminalStyle:
 
     def applyMPLstyle(self):
         plt.style.use(self.mpl_style)
+        self.mpf_style["mavcolors"] = plt.rcParams["axes.prop_cycle"].by_key()["color"]
+
+    def hex_to_rgb(self, color):
+        color = color.lstrip("#")
+        return tuple(int(color[i : i + 2], 16) for i in (0, 2, 4))  # noqa: E203
+
+    def get_pie_colors(self) -> List:
+        plt.style.use(self.mpl_style)
+        colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]
+        colors.sort(key=self.hex_to_rgb)
+        return colors
+
+    def get_bar_colors(self) -> List:
+        plt.style.use(self.mpl_style)
+        colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]
+        colors.sort(key=self.hex_to_rgb)
+        colors.reverse()
+        return colors
