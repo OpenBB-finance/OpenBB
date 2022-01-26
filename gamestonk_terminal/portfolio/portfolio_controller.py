@@ -5,7 +5,7 @@ import argparse
 import os
 from os import listdir
 from os.path import isfile, join
-from typing import List
+from typing import List, Dict
 from datetime import datetime
 
 from prompt_toolkit.completion import NestedCompleter
@@ -66,8 +66,8 @@ class PortfolioController(BaseController):
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"]: {c: None for c in os.listdir(portfolios_path)}
-            choices["save"]: {c: None for c in os.listdir(portfolios_path)}
+            choices["load"]: Dict = {c: None for c in os.listdir(portfolios_path)}
+            choices["save"]: Dict = {c: None for c in os.listdir(portfolios_path)}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
