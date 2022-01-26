@@ -485,7 +485,6 @@ def test_call_func(
     "func",
     [
         "call_search",
-        "call_load",
         "call_candle",
     ],
 )

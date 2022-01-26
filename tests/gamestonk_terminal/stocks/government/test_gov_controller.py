@@ -6,6 +6,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.government import gov_controller
+from gamestonk_terminal import parent_classes
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -374,7 +375,6 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
 @pytest.mark.parametrize(
     "func",
     [
-        "call_load",
         "call_contracts",
         "call_gtrades",
         "call_histcont",
@@ -425,7 +425,7 @@ def test_call_func_no_ticker(func, mocker):
 
 @pytest.mark.vcr
 def test_call_load(mocker):
-    yf_download = gov_controller.stocks_helper.yf.download
+    yf_download = parent_classes.stocks_helper.yf.download
 
     def mock_yf_download(*args, **kwargs):
         kwargs["threads"] = False
