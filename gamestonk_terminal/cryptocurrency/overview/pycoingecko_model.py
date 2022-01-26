@@ -292,7 +292,9 @@ def get_derivatives() -> pd.DataFrame:
 
     df.rename(columns={"price_percentage_change_24h": "pct_change_24h"}, inplace=True)
     create_df_index(df, "rank")
-    df["price"] = df["price"].apply(lambda x: float(x.strip("$").replace(",", "")))
+    df["price"] = df["price"].apply(
+        lambda x: "" if not x else float(x.strip("$").replace(",", ""))
+    )
 
     df.columns = [
         "Rank",

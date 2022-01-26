@@ -4,10 +4,8 @@ __docformat__ = "numpy"
 import os
 from typing import List
 
-from tabulate import tabulate
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.etf import stockanalysis_model
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
 
@@ -28,12 +26,9 @@ def view_overview(symbol: str, export: str = ""):
 
     data = stockanalysis_model.get_etf_overview(symbol)
 
-    if gtff.USE_TABULATE_DF:
-        print(tabulate(data, headers=data.columns, tablefmt="fancy_grid"))
-    else:
-        print(data.to_string(), "\n")
+    print_rich_table(data, headers=list(data.columns), title="ETF Overview Information")
+    console.print("")
 
-    print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "overview", data)
 
 
@@ -51,17 +46,12 @@ def view_holdings(symbol: str, num_to_show: int, export: str):
     """
 
     data = stockanalysis_model.get_etf_holdings(symbol)
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                data[:num_to_show],
-                headers=data.columns,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(data.head(num_to_show).to_string(), "\n")
+    print_rich_table(
+        data[:num_to_show],
+        headers=list(data.columns),
+        title="ETF Holdings",
+    )
+    console.print("")
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "holdings", data)
 
@@ -87,10 +77,8 @@ def view_comparisons(symbols: List[str], export: str):
     if data.empty:
         console.print("No data found for given ETFs\n")
         return
-    if gtff.USE_TABULATE_DF:
-        print(tabulate(data, headers=data.columns, tablefmt="fancy_grid"), "\n")
-    else:
-        console.print(data.to_string())
+    print_rich_table(data, headers=list(data.columns), title="ETF Comparisons")
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "overview", data)
 
 
@@ -109,17 +97,12 @@ def display_etf_by_name(name: str, limit: int, export: str):
     """
     matching_etfs = stockanalysis_model.get_etfs_by_name(name)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                matching_etfs.head(limit),
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(matching_etfs.head(limit).to_string(), "\n")
+    print_rich_table(
+        matching_etfs.head(limit),
+        show_index=False,
+        title="ETF Search Result",
+    )
+    console.print("")
 
     export_data(
         export,

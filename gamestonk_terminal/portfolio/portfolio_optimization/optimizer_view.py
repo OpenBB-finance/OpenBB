@@ -10,11 +10,10 @@ from matplotlib.lines import Line2D
 import numpy as np
 import pandas as pd
 from pypfopt import plotting
-from tabulate import tabulate
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.helper_funcs import plot_autoscale, get_rf
+from gamestonk_terminal.helper_funcs import plot_autoscale, get_rf, print_rich_table
 from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_model
 from gamestonk_terminal.rich_config import console
 
@@ -61,30 +60,12 @@ def display_weights(weights: dict, market_neutral: bool = False):
                 + " $"
             )
 
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    weight_df, headers=["Value"], showindex=True, tablefmt="fancy_grid"
-                )
-            )
-        else:
-            console.print(weight_df.to_string(header=False))
+        print_rich_table(weight_df, headers=["Value"], show_index=True, title="Weights")
 
     else:
         tot_value = weight_df["value"].abs().mean()
         header = "Value ($)" if tot_value > 1.01 else "Value (%)"
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    weight_df,
-                    headers=[header],
-                    showindex=True,
-                    tablefmt="fancy_grid",
-                    floatfmt=".2f",
-                ),
-            )
-        else:
-            console.print(weight_df.to_string(header=False))
+        print_rich_table(weight_df, headers=[header], show_index=True, title="Weights")
     console.print("")
 
 

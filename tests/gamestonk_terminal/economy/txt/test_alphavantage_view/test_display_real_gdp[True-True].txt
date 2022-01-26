@@ -1,5 +1,4 @@
-╒════════╤═══════╕
-│ Date   │ GDP   │
-╞════════╪═══════╡
-╘════════╧═══════╛
+Empty DataFrame
+Columns: [date, GDP]
+Index: []
 

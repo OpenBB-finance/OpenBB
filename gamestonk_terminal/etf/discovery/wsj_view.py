@@ -3,13 +3,8 @@ __docformat__ = "numpy"
 
 import os
 
-from tabulate import tabulate
-
 from gamestonk_terminal.etf.discovery import wsj_model
-from gamestonk_terminal.helper_funcs import (
-    export_data,
-)
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
 
@@ -30,18 +25,13 @@ def show_top_mover(sort_type: str, limit: int = 10, export=""):
         console.print("No data available\n")
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                data.iloc[:limit],
-                showindex=False,
-                headers=data.columns,
-                floatfmt=".2f",
-                tablefmt="fancy_grid",
-            )
-        )
-    else:
-        console.print(data.head(limit).to_string())
+    print_rich_table(
+        data.iloc[:limit],
+        show_index=False,
+        headers=list(data.columns),
+        title="ETF Movers",
+    )
+    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
