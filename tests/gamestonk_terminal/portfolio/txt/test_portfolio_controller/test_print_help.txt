@@ -6,7 +6,7 @@
 [info]Portfolio:[/info][cmds]
     load        load data into the portfolio[/cmds][param]
 
-Current Portfolio:[/param] {self.portname or None}[cmds]
+Current Portfolio:[/param][cmds]
 
     save        save your portfolio for future use
     show        show existing transactions
