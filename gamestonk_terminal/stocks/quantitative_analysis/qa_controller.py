@@ -54,6 +54,7 @@ class QaController(BaseController):
         "goodness",
         "unitroot",
         "capm",
+        "var",
         "avar",
     ]
 
@@ -129,6 +130,7 @@ class QaController(BaseController):
     skew        rolling skewness of distribution of prices
     kurtosis    rolling kurtosis of distribution of prices
 [info]Risk:[/info]
+    var         value at risk
     avar        kurtosis and skew adjusted value at risk
 [info]Other:[/info]
     raw         print raw data
@@ -803,14 +805,14 @@ class QaController(BaseController):
         if ns_parser:
             capm_view(self.ticker)
 
-    def call_avar(self, other_args: List[str]):
-        """Process avar command"""
+    def call_var(self, other_args: List[str]):
+        """Process var command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="avar",
+            prog="var",
             description="""
-                Provides VaR adjusted for skew and kurtosis 
+                Provides VaR
             """,
         )
         parser.add_argument(
@@ -819,9 +821,32 @@ class QaController(BaseController):
             action="store_true",
             default=False,
             dest="use_mean",
-            help="If one should use the mean of the stock",
+            help="If one should use the mean of the stocks return",
         )
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            qa_view.display_adjusted_var(self.stock, ns_parser.use_mean, self.ticker)
+            qa_view.display_var(self.stock, ns_parser.use_mean, self.ticker, False)
+
+    def call_avar(self, other_args: List[str]):
+        """Process avar command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="avar",
+            description="""
+                Provides VaR adjusted for skew and kurtosis (Cornish-Fisher-Expansion)
+            """,
+        )
+        parser.add_argument(
+            "-m",
+            "--mean",
+            action="store_true",
+            default=False,
+            dest="use_mean",
+            help="If one should use the mean of the stocks return",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            qa_view.display_var(self.stock, ns_parser.use_mean, self.ticker, True)

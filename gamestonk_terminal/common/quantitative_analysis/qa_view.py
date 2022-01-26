@@ -621,17 +621,39 @@ def display_line(
     )
 
 
-def display_adjusted_var(data: pd.DataFrame, use_mean: bool, ticker: str):
-    var_list, hist_var_list = qa_model.get_adjusted_var(data, use_mean)
+def display_var(data: pd.DataFrame, use_mean: bool, ticker: str, adjusted_var: bool):
+    """Displays VaR of dataframe
 
-    dict = {"Adjusted VaR:": var_list, "Historical VaR:": hist_var_list}
+    Parameters
+    ----------
+    data: pd.Dataframe
+        stock dataframe
+    use_mean: bool
+        if one should use the stocks mean return
+    ticker: str
+        ticker of the stock
+    adjusted_var: bool
+        if one should have VaR adjusted for skew and kurtosis (Cornish-Fisher-Expansion)
+    """
+    var_list, hist_var_list = qa_model.get_var(data, use_mean, adjusted_var)
+
+    str_hist_label = "Historical VaR:"
+
+    if adjusted_var:
+        str_var_label = "Adjusted Var:"
+        str_title = "Adjusted "
+    else:
+        str_var_label = "VaR:"
+        str_title = ""
+
+    dict = {str_var_label: var_list, str_hist_label: hist_var_list}
     data = pd.DataFrame(dict, index=["90%", "95%", "99%"])
 
     rich_table_from_df(
         data,
         show_index=True,
         headers=list(data.columns),
-        title=f"[bold]{ticker} Adjusted Value at Risk[/bold]",
+        title=f"[bold]{ticker} {str_title}Value at Risk[/bold]",
         floatfmt=".4f",
     )
     console.print("")
