@@ -24,6 +24,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     excel_columns,
     print_rich_table,
+    get_rf,
 )
 from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
 from gamestonk_terminal.stocks.options.yfinance_model import (
@@ -31,8 +32,10 @@ from gamestonk_terminal.stocks.options.yfinance_model import (
     get_option_chain,
     get_price,
 )
-from gamestonk_terminal.helper_funcs import get_rf
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.options.op_helpers import Option
+
+# pylint: disable=C0302
 
 
 def plot_oi(
@@ -937,3 +940,90 @@ def display_vol_surface(ticker: str, export: str = "", z: str = "IV"):
         data,
     )
     console.print("")
+
+
+def show_greeks(
+    ticker: str,
+    div_cont: float,
+    expire: str,
+    rf: float = None,
+    opt_type: int = 1,
+    mini: float = None,
+    maxi: float = None,
+    show_all: bool = False,
+) -> None:
+    """
+    Shows the greeks for a given option
+
+    Parameters
+    ----------
+    ticker : str
+        The ticker value of the option
+    div_cont : float
+        The dividend continuous rate
+    expire : str
+        The date of expiration
+    rf : float
+        The risk-free rate
+    opt_type : Union[1, -1]
+        The option type 1 is for call and -1 is for put
+    mini : float
+        The minimum strike price to include in the table
+    maxi : float
+        The maximum strike price to include in the table
+    all : bool
+        Whether to show all greeks
+    """
+
+    s = yfinance_model.get_price(ticker)
+    chains = yfinance_model.get_option_chain(ticker, expire)
+    chain = chains.calls if opt_type == 1 else chains.puts
+
+    if mini is None:
+        mini = chain.strike.quantile(0.25)
+    if maxi is None:
+        maxi = chain.strike.quantile(0.75)
+
+    chain = chain[chain["strike"] >= mini]
+    chain = chain[chain["strike"] <= maxi]
+
+    risk_free = rf if rf is not None else get_rf()
+    expire_dt = datetime.strptime(expire, "%Y-%m-%d")
+    dif = (expire_dt - datetime.now()).seconds / (60 * 60 * 24)
+
+    strikes = []
+    for _, row in chain.iterrows():
+        vol = row["impliedVolatility"]
+        opt = Option(s, row["strike"], risk_free, div_cont, dif, vol, opt_type)
+        result = [
+            row["strike"],
+            row["impliedVolatility"],
+            opt.Delta(),
+            opt.Gamma(),
+            opt.Vega(),
+            opt.Theta(),
+        ]
+        if show_all:
+            result += [
+                opt.Rho(),
+                opt.Phi(),
+                opt.Charm(),
+                opt.Vanna(0.01),
+                opt.Vomma(0.01),
+            ]
+        strikes.append(result)
+
+    columns = [
+        "Strike",
+        "Implied Vol",
+        "Delta",
+        "Gamma",
+        "Vega",
+        "Theta",
+    ]
+    if show_all:
+        columns += ["Rho", "Phi", "Charm", "Vanna", "Vomma"]
+    df = pd.DataFrame(strikes, columns=columns)
+    print_rich_table(df, headers=list(df.columns), show_index=False, title="Greeks")
+    console.print("")
+    return None

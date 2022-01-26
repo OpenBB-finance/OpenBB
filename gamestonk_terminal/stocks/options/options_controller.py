@@ -65,6 +65,7 @@ class OptionsController(BaseController):
         "parity",
         "binom",
         "vsurf",
+        "greeks",
     ]
     CHOICES_MENUS = [
         "payoff",
@@ -189,6 +190,7 @@ Expiry: [/param]{self.selected_date or None}
     plot          plot variables provided by the user [src][Yfinance][/src]
     parity        shows whether options are above or below expected price [src][Yfinance][/src]
     binom         shows the value of an option using binomial options pricing [src][Yfinance][/src]
+    greeks        shows the greeks for a given option [src][Yfinance][/src]
 {has_ticker_start}
 >   screen        screens tickers based on preset [src][Syncretism.io][/src]
 >   payoff        shows payoff diagram for a selection of options [src][Yfinance][/src]
@@ -1117,6 +1119,83 @@ Expiry: [/param]{self.selected_date or None}
             yfinance_view.display_vol_surface(
                 self.ticker, export=ns_parser.export, z=ns_parser.z
             )
+
+    def call_greeks(self, other_args: List[str]):
+        """Process greeks command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="greeks",
+            description="The greeks for a given option.",
+        )
+        parser.add_argument(
+            "-d",
+            "--div",
+            dest="dividend",
+            type=float,
+            default=0,
+            help="The dividend continuous rate",
+        )
+        parser.add_argument(
+            "-r",
+            "--risk-free",
+            dest="risk_free",
+            default=None,
+            type=float,
+            help="The risk free rate",
+        )
+        parser.add_argument(
+            "-p",
+            "--put",
+            dest="put",
+            action="store_true",
+            default=False,
+            help="Whether the option is a put.",
+        )
+        parser.add_argument(
+            "-m",
+            "--min",
+            dest="min",
+            type=float,
+            default=None,
+            help="Minimum strike price to show.",
+        )
+        parser.add_argument(
+            "-M",
+            "--max",
+            dest="max",
+            type=float,
+            default=None,
+            help="Maximum strike price to show.",
+        )
+        parser.add_argument(
+            "-a" "--all",
+            dest="all",
+            action="store_true",
+            default=False,
+            help="Whether to show all greeks.",
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            if not self.ticker:
+                console.print("No ticker loaded. First use `load <ticker>`\n")
+            elif not self.selected_date:
+                console.print("No expiry loaded. First use `exp {expiry date}`\n")
+            else:
+                opt_type = -1 if ns_parser.put else 1
+                yfinance_view.show_greeks(
+                    ticker=self.ticker,
+                    div_cont=ns_parser.dividend,
+                    expire=self.selected_date,
+                    rf=ns_parser.risk_free,
+                    opt_type=opt_type,
+                    mini=ns_parser.min,
+                    maxi=ns_parser.max,
+                    show_all=ns_parser.all,
+                )
 
     def call_parity(self, other_args: List[str]):
         """Process parity command"""
