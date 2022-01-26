@@ -1,14 +1,5 @@
-╒══════╤═══════════════════════════════════╕
-│      │ Earnings on 2021-12-10            │
-╞══════╪═══════════════════════════════════╡
-│ JOUT │ Johnson Outdoors Inc.             │
-├──────┼───────────────────────────────────┤
-│ ASO  │ Academy Sports and Outdoors, Inc. │
-╘══════╧═══════════════════════════════════╛ 
-
-╒═══════╤═══════════════════════════════════════╕
-│       │ Earnings on 2021-12-12                │
-╞═══════╪═══════════════════════════════════════╡
-│ GMLPP │ Golar LNG Partners LP 8.75% CUM PFD A │
-╘═══════╧═══════════════════════════════════════╛ 
-
+                                   Name
+JOUT              Johnson Outdoors Inc.
+ASO   Academy Sports and Outdoors, Inc.
+                                        Name
+GMLPP  Golar LNG Partners LP 8.75% CUM PFD A

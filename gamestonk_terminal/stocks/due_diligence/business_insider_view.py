@@ -5,10 +5,11 @@ import os
 from pandas.core.frame import DataFrame
 from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
-from tabulate import tabulate
+
 from gamestonk_terminal.stocks.due_diligence import business_insider_model
 from gamestonk_terminal.helper_funcs import (
     export_data,
+    print_rich_table,
 )
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
@@ -51,18 +52,12 @@ def price_target_from_analysts(
 
     if raw:
         df_analyst_data.index = df_analyst_data.index.strftime("%Y-%m-%d")
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df_analyst_data.sort_index(ascending=False).head(num),
-                    headers=df_analyst_data.columns,
-                    floatfmt=".2f",
-                    showindex=True,
-                    tablefmt="fancy_grid",
-                )
-            )
-        else:
-            console.print(df_analyst_data.head(num).to_string())
+        print_rich_table(
+            df_analyst_data.sort_index(ascending=False).head(num),
+            headers=list(df_analyst_data.columns),
+            show_index=True,
+            title="Analyst Price Targets",
+        )
 
     else:
         plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -122,34 +117,25 @@ def estimates(ticker: str, export: str):
         df_quarter_revenues,
     ) = business_insider_model.get_estimates(ticker)
 
-    print(
-        tabulate(
-            df_year_estimates,
-            headers=df_year_estimates.columns,
-            floatfmt=".2f",
-            showindex=True,
-            tablefmt="fancy_grid",
-        ),
+    print_rich_table(
+        df_year_estimates,
+        headers=list(df_year_estimates.columns),
+        show_index=True,
+        title="Annual Earnings Estimates",
     )
     console.print("")
-    print(
-        tabulate(
-            df_quarter_earnings,
-            headers=df_quarter_earnings.columns,
-            floatfmt=".2f",
-            showindex=True,
-            tablefmt="fancy_grid",
-        ),
+    print_rich_table(
+        df_quarter_earnings,
+        headers=list(df_quarter_earnings.columns),
+        show_index=True,
+        title="Quarterly Earnings Estimates",
     )
     console.print("")
-    print(
-        tabulate(
-            df_quarter_revenues,
-            headers=df_quarter_revenues.columns,
-            floatfmt=".2f",
-            showindex=True,
-            tablefmt="fancy_grid",
-        )
+    print_rich_table(
+        df_quarter_revenues,
+        headers=list(df_quarter_revenues.columns),
+        show_index=True,
+        title="Quarterly Revenue Estimates",
     )
     console.print("")
 

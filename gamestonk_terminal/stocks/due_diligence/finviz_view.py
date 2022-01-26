@@ -3,9 +3,8 @@ __docformat__ = "numpy"
 
 import os
 from typing import List, Any
-from tabulate import tabulate
 from gamestonk_terminal.stocks.due_diligence import finviz_model
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
@@ -71,17 +70,11 @@ def analyst(ticker: str, export: str = ""):
     if gtff.USE_COLOR:
         df["category"] = df["category"].apply(category_color_red_green)
 
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=True,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
+    print_rich_table(
+        df, headers=list(df.columns), show_index=True, title="Display Analyst Ratings"
     )
 
+    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
