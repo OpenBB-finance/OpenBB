@@ -6,10 +6,13 @@ import os
 
 import matplotlib.pyplot as plt
 import pandas as pd
-from tabulate import tabulate
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.economy import nasdaq_model
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    print_rich_table,
+)
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.rich_config import console
 
@@ -48,10 +51,7 @@ def display_big_mac_index(
     plt.show()
 
     if raw:
-        if gtff.USE_TABULATE_DF:
-            print(tabulate(big_mac, headers=big_mac.columns, tablefmt="fancy_grid"))
-        else:
-            console.print(big_mac.head(20).to_string())
+        print_rich_table(big_mac, headers=list(big_mac.columns), title="Big Mac Index")
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "bigmac", big_mac)
     console.print("")

@@ -27,7 +27,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal.helper_classes import LineAnnotateDrawer
 
@@ -56,7 +56,7 @@ def display_summary(df: pd.DataFrame, export: str):
     """
     summary = qa_model.get_summary(df)
 
-    rich_table_from_df(
+    print_rich_table(
         summary,
         headers=list(summary.columns),
         floatfmt=".3f",
@@ -426,7 +426,7 @@ def display_normality(df: pd.DataFrame, target: str, export: str = ""):
     stats1 = normal.copy().T
     stats1.iloc[:, 1] = stats1.iloc[:, 1].apply(lambda x: color_red(x))
 
-    rich_table_from_df(
+    print_rich_table(
         stats1,
         show_index=True,
         headers=["Statistic", "p-value"],
@@ -492,7 +492,7 @@ def display_unitroot(
     """
     df = df[target]
     data = qa_model.get_unitroot(df, fuller_reg, kpss_reg)
-    rich_table_from_df(
+    print_rich_table(
         data,
         show_index=True,
         headers=list(data.columns),
@@ -540,7 +540,7 @@ def display_raw(
     if sort:
         df = df.sort_values(by=sort, ascending=des)
     df.index = [x.strftime("%Y-%m-%d") for x in df.index]
-    rich_table_from_df(
+    print_rich_table(
         df.tail(num),
         headers=[x.title() if x != "" else "Date" for x in df.columns],
         title="[bold]Raw Data[/bold]",

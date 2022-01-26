@@ -2,12 +2,15 @@
 __docformat__ = "numpy"
 
 import os
-from tabulate import tabulate
 import pandas as pd
 from matplotlib import pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 from gamestonk_terminal.stocks.due_diligence import finnhub_model
-from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
+from gamestonk_terminal.helper_funcs import (
+    plot_autoscale,
+    export_data,
+    print_rich_table,
+)
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
@@ -83,18 +86,12 @@ def rating_over_time(ticker: str, num: int, raw: bool, export: str):
             .rename(columns=d_cols)
             .head(num)
         )
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df_rot_raw,
-                    headers=df_rot_raw.columns,
-                    floatfmt=".2f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                )
-            )
-        else:
-            console.print(df_rot_raw.to_string())
+        print_rich_table(
+            df_rot_raw,
+            headers=list(df_rot_raw.columns),
+            show_index=False,
+            title="Monthly Rating",
+        )
     else:
         plot_rating_over_time(df_rot.head(num), ticker)
 

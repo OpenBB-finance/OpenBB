@@ -10,12 +10,12 @@ import pandas as pd
 import numpy as np
 from binance.client import Client
 import matplotlib.pyplot as plt
-from tabulate import tabulate
 import mplfinance as mpf
 from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     export_data,
+    print_rich_table,
 )
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.cryptocurrency.due_diligence import (
@@ -35,7 +35,6 @@ from gamestonk_terminal.cryptocurrency.due_diligence.binance_model import (
 from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.feature_flags import USE_ION as ion
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
 INTERVALS = ["1H", "3H", "6H", "1D"]
@@ -527,19 +526,10 @@ def find(source: str, coin: str, key: str, top: int, export: str) -> None:
         )
         df = pd.DataFrame()
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".1f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df, headers=list(df.columns), show_index=False, title="Similar Coins"
+    )
+    console.print("")
 
     export_data(
         export,
@@ -646,19 +636,12 @@ def display_all_coins(
     except Exception as e:
         console.print(e)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.fillna("N/A"),
-                headers=df.columns,
-                floatfmt=".1f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            )
-        )
-
-    else:
-        console.print(df.fillna("N/A").to_string, "\n")
+    print_rich_table(
+        df.fillna("N/A"),
+        headers=list(df.columns),
+        show_index=False,
+        title="Similar Coins",
+    )
 
     export_data(
         export,

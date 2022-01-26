@@ -1,0 +1,94 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/Database/ETFs/Bank%20Loan.json
+  response:
+    body:
+      string: !!binary |
+        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
+        vv8PiBpzem4SAAA=
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=300
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1436'
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Wed, 19 Jan 2022 12:51:16 GMT
+      ETag:
+      - W/"28afbcc49a2e9c3ba150ba75ba0cb0db5d15659f9e01db3f787df01777323d05"
+      Expires:
+      - Wed, 19 Jan 2022 12:56:16 GMT
+      Source-Age:
+      - '135'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Via:
+      - 1.1 varnish
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '1'
+      X-Content-Type-Options:
+      - nosniff
+      X-Fastly-Request-ID:
+      - d2d5dbe9327275a764d877ee52309d5257eda33d
+      X-Frame-Options:
+      - deny
+      X-GitHub-Request-Id:
+      - A458:16D9:1CDC5FD:1ECCD5E:61E808BD
+      X-Served-By:
+      - cache-lhr7328-LHR
+      X-Timer:
+      - S1642596677.821370,VS0,VE1
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

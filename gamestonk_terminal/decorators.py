@@ -2,8 +2,9 @@
 __docformat__ = "numpy"
 import functools
 import logging
+import os
 
-import gamestonk_terminal.config_terminal as cfg
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -19,11 +20,12 @@ def try_except(f):
     # pylint: disable=inconsistent-return-statements
     @functools.wraps(f)
     def inner(*args, **kwargs):
-        if cfg.DEBUG_MODE:
+        if os.environ.get("DEBUG_MODE") == "true":
             return f(*args, **kwargs)
         try:
             return f(*args, **kwargs)
         except Exception as e:
+            console.print(f"[red]Error: {e}[/red]")
             logger.exception("%s", type(e).__name__)
             return []
 

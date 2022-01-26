@@ -18,7 +18,7 @@ from gamestonk_terminal.helper_funcs import (
     export_data,
     patch_pandas_text_adjustment,
     plot_autoscale,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal.stocks.options import op_helpers, tradier_model
 from gamestonk_terminal.rich_config import console
@@ -135,7 +135,7 @@ def display_chains(
     df = calls_df if calls_only else puts_df
 
     if calls_only or puts_only:
-        rich_table_from_df(
+        print_rich_table(
             df,
             headers=[x.title() for x in df.columns],
             show_index=False,
@@ -164,7 +164,7 @@ def display_chains(
             else col
             for col in chain_table.columns
         ]
-        rich_table_from_df(
+        print_rich_table(
             chain_table, headers=headers, show_index=False, title="Option chain"
         )
 
@@ -598,7 +598,7 @@ def display_historical(
     )
 
     if raw:
-        rich_table_from_df(
+        print_rich_table(
             df_hist,
             headers=[x.title() for x in df_hist.columns],
             title="Historical Option Prices",

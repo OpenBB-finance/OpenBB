@@ -3,10 +3,8 @@ __docformat__ = "numpy"
 
 import os
 import pandas as pd
-from tabulate import tabulate
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.etf import financedatabase_model
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
 
@@ -31,25 +29,19 @@ def display_etf_by_name(
         console.print("No data was found with that name\n")
         return
 
-    tabulate_data = pd.DataFrame(data).T[
+    table_data = pd.DataFrame(data).T[
         ["long_name", "family", "category", "total_assets"]
     ]
-    tabulate_data_sorted = tabulate_data.sort_values(by="total_assets", ascending=False)
-    tabulate_data_sorted["total_assets"] = tabulate_data_sorted["total_assets"] / 1e6
+    table_data_sorted = table_data.sort_values(by="total_assets", ascending=False)
+    table_data_sorted["total_assets"] = table_data_sorted["total_assets"] / 1e6
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                tabulate_data_sorted.iloc[:limit],
-                showindex=True,
-                headers=["Name", "Family", "Category", "Total Assets [M]"],
-                floatfmt=".2f",
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(tabulate_data_sorted.iloc[:limit].to_string(), "\n")
+    print_rich_table(
+        table_data_sorted.iloc[:limit],
+        show_index=True,
+        headers=["Name", "Family", "Category", "Total Assets [M]"],
+        title="ETFs by Total Assets",
+    )
+    console.print("")
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "ln_fd", data)
 
@@ -75,25 +67,19 @@ def display_etf_by_description(
         console.print("No data was found with that description\n")
         return
 
-    tabulate_data = pd.DataFrame(data).T[
+    table_data = pd.DataFrame(data).T[
         ["long_name", "family", "category", "total_assets"]
     ]
-    tabulate_data_sorted = tabulate_data.sort_values(by="total_assets", ascending=False)
-    tabulate_data_sorted["total_assets"] = tabulate_data_sorted["total_assets"] / 1e6
+    table_data_sorted = table_data.sort_values(by="total_assets", ascending=False)
+    table_data_sorted["total_assets"] = table_data_sorted["total_assets"] / 1e6
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                tabulate_data_sorted.iloc[:limit],
-                showindex=True,
-                headers=["Name", "Family", "Category", "Total Assets [M]"],
-                floatfmt=".2f",
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(tabulate_data_sorted.iloc[:limit].to_string(), "\n")
+    print_rich_table(
+        table_data_sorted.iloc[:limit],
+        show_index=True,
+        headers=["Name", "Family", "Category", "Total Assets [M]"],
+        title="ETFs by Total Assets",
+    )
+    console.print("")
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "ld", data)
 
@@ -119,25 +105,19 @@ def display_etf_by_category(
         console.print("No data was found on that category\n")
         return
 
-    tabulate_data = pd.DataFrame(data).T[
+    table_data = pd.DataFrame(data).T[
         ["long_name", "family", "category", "total_assets"]
     ]
-    tabulate_data_sorted = tabulate_data.sort_values(by="total_assets", ascending=False)
-    tabulate_data_sorted["total_assets"] = tabulate_data_sorted["total_assets"] / 1e6
+    table_data_sorted = table_data.sort_values(by="total_assets", ascending=False)
+    table_data_sorted["total_assets"] = table_data_sorted["total_assets"] / 1e6
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                tabulate_data_sorted.iloc[:limit],
-                showindex=True,
-                headers=["Name", "Family", "Category", "Total Assets [M]"],
-                floatfmt=".2f",
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(tabulate_data_sorted.iloc[:limit].to_string(), "\n")
+    print_rich_table(
+        table_data_sorted.iloc[:limit],
+        show_index=True,
+        headers=["Name", "Family", "Category", "Total Assets [M]"],
+        title="ETFs by Category and Total Assets",
+    )
+    console.print("")
 
     export_data(
         export,

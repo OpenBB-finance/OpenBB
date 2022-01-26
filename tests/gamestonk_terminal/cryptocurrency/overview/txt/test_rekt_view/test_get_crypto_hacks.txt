@@ -1,0 +1,12 @@
+                 Platform        Date Amount [$]      Audit                Slug                                    URL
+0     Poly Network - REKT  2021-08-10      611 M  Unaudited    polynetwork-rekt    https://rekt.news/polynetwork-rekt/
+1          BitMart - REKT  2021-12-04      196 M        N/A        bitmart-rekt        https://rekt.news/bitmart-rekt/
+2         Compound - REKT  2021-09-29      147 M  Unaudited       compound-rekt       https://rekt.news/compound-rekt/
+3    Vulcan Forged - REKT  2021-12-13      140 M  Unaudited  vulcan-forged-rekt  https://rekt.news/vulcan-forged-rekt/
+4  Cream Finance - REKT 2  2021-10-27      130 M  Unaudited        cream-rekt-2        https://rekt.news/cream-rekt-2/
+5           Badger - REKT  2021-12-02      120 M  Unaudited         badger-rekt         https://rekt.news/badger-rekt/
+6         Ascendex - REKT  2021-12-12   77.700 M  Unaudited       ascendex-rekt       https://rekt.news/ascendex-rekt/
+7           EasyFi - REKT  2021-04-19       59 M  Unaudited         easyfi-rekt         https://rekt.news/easyfi-rekt/
+8  Uranium Finance - REKT  2021-04-28   57.200 M  Unaudited        uranium-rekt        https://rekt.news/uranium-rekt/
+9              bZx - REKT  2021-11-05       55 M  Unaudited            bzx-rekt            https://rekt.news/bzx-rekt/
+

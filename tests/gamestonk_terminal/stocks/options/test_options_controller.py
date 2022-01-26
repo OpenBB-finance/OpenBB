@@ -1013,3 +1013,20 @@ def test_call_load(mocker, other_args):
     old_expiry_dates = controller.expiry_dates
     controller.call_load(other_args=other_args)
     assert old_expiry_dates != controller.expiry_dates
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "ticker, expected",
+    [
+        (None, []),
+        ("MOCK_TICKER", ["stocks", "load MOCK_TICKER", "options"]),
+    ],
+)
+def test_custom_reset(expected, ticker):
+    controller = options_controller.OptionsController(ticker=None)
+    controller.ticker = ticker
+
+    result = controller.custom_reset()
+
+    assert result == expected

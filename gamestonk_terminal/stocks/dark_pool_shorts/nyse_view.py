@@ -6,10 +6,13 @@ import os
 import matplotlib.pyplot as plt
 import seaborn as sns
 from plotly import express as px
-from tabulate import tabulate
 from gamestonk_terminal.stocks.dark_pool_shorts import nyse_model
-from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
-from gamestonk_terminal.feature_flags import USE_ION, USE_TABULATE_DF
+from gamestonk_terminal.helper_funcs import (
+    plot_autoscale,
+    export_data,
+    print_rich_table,
+)
+from gamestonk_terminal.feature_flags import USE_ION
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.rich_config import console
 
@@ -77,17 +80,12 @@ def display_short_by_exchange(
         fig.show()
 
     if raw:
-        if not USE_TABULATE_DF:
-            console.print(volume_by_exchange.head(20).to_string())
-        else:
-            print(
-                tabulate(
-                    volume_by_exchange.head(20),
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                    headers=volume_by_exchange.columns,
-                )
-            )
+        print_rich_table(
+            volume_by_exchange.head(20),
+            show_index=False,
+            title="Short Data",
+            headers=list(volume_by_exchange.columns),
+        )
     console.print("")
     if export:
         export_data(

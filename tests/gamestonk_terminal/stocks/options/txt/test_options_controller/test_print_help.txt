@@ -20,6 +20,7 @@ Expiry: None
     plot          plot variables provided by the user [Yfinance]
     parity        shows whether options are above or below expected price [Yfinance]
     binom         shows the value of an option using binomial options pricing [Yfinance]
+    greeks        shows the greeks for a given option [Yfinance]
 [dim]
 >   screen        screens tickers based on preset [Syncretism.io]
 >   payoff        shows payoff diagram for a selection of options [Yfinance]

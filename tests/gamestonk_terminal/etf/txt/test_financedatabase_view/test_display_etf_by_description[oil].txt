@@ -1,0 +1,7 @@
+                                                            long_name                             family                  category  total_assets
+XLE                                    Energy Select Sector SPDR Fund  SPDR State Street Global Advisors             Equity Energy  23081.066496
+PDBC  Invesco Optimum Yield Diversified Commodity Strategy No K-1 ETF                            Invesco                      None   4189.590016
+XOP                   SPDR S&P Oil & Gas Exploration & Production ETF  SPDR State Street Global Advisors             Equity Energy   3828.978432
+USO                                        United States Oil Fund, LP                   USCF Investments                      None   3074.400256
+DBC                          Invesco DB Commodity Index Tracking Fund                            Invesco  Commodities Broad Basket    1891.86176 
+

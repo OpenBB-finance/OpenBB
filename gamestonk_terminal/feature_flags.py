@@ -17,7 +17,7 @@ USE_CLEAR_AFTER_CMD = strtobool(os.getenv("GTFF_USE_CLEAR_AFTER_CMD", "False"))
 USE_COLOR = strtobool(os.getenv("GTFF_USE_COLOR", "True"))
 
 # Select console flair (choose from config_terminal.py list)
-USE_FLAIR = os.getenv("GTFF_USE_FLAIR") or "stars"
+USE_FLAIR = os.getenv("GTFF_USE_FLAIR") or ":stars"
 
 # Add date and time to command line
 USE_DATETIME = strtobool(os.getenv("GTFF_USE_DATETIME", "True"))
