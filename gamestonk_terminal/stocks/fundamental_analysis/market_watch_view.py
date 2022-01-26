@@ -9,13 +9,13 @@ import argparse
 from typing import List
 
 import pandas as pd
-from tabulate import tabulate
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     financials_colored_values,
     parse_known_args_and_warn,
     patch_pandas_text_adjustment,
+    print_rich_table,
 )
 from gamestonk_terminal.stocks.fundamental_analysis import market_watch_model as mwm
 from gamestonk_terminal.rich_config import console
@@ -252,17 +252,9 @@ def display_sean_seah_warnings(ticker: str, debug: bool = False):
         console.print(f"No financials found for {ticker}\n")
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                financials,
-                headers=financials.columns,
-                tablefmt="fancy_grid",
-                floatfmt=".2f",
-            )
-        )
-    else:
-        console.print(financials.to_string())
+    print_rich_table(
+        financials, headers=list(financials.columns), title="Sean Seah Warnings"
+    )
 
     if not warnings:
         console.print("No warnings found.  Good stonk")
